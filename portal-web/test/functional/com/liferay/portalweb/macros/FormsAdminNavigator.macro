@@ -13,7 +13,7 @@ definition {
 	}
 
 	macro gotoDeleteField {
-		var key_fieldName = "${fieldName}";
+		var key_fieldName = ${fieldName};
 
 		MouseOver(locator1 = "Form#FIELD_LABEL");
 
@@ -23,7 +23,7 @@ definition {
 	}
 
 	macro gotoEditField {
-		var key_fieldName = "${fieldName}";
+		var key_fieldName = ${fieldName};
 
 		MouseOver(locator1 = "Form#FIELD_LABEL");
 
@@ -34,15 +34,15 @@ definition {
 
 	macro gotoEditFormByName {
 		AssertClick(
-			key_formName = "${formName}",
+			key_formName = ${formName},
 			locator1 = "FormsAdmin#FORMS_TABLE_NAME",
-			value1 = "${formName}");
+			value1 = ${formName});
 	}
 
 	macro gotoPermissions {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Permissions",
-			rowEntry = "${formName}");
+			rowEntry = ${formName});
 
 		IFrame.selectDialogFrame();
 	}
@@ -84,7 +84,7 @@ definition {
 	macro openPublishURL {
 		var publishFormURL = selenium.getElementValue("Form#PUBLISH_FORM_PUBLIC_URL");
 
-		Navigator.openSpecificURL(url = "${publishFormURL}");
+		Navigator.openSpecificURL(url = ${publishFormURL});
 	}
 
 }

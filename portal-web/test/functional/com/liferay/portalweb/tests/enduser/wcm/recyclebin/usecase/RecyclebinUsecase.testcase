@@ -30,7 +30,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -38,7 +38,7 @@ definition {
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DisableRecycleBin {
 		Navigator.openURL();
 
@@ -67,7 +67,7 @@ definition {
 		WebContent.deleteWithDisabledRB(entryTitle = "Web Content Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinBlogs {
 		Navigator.gotoSitePage(
 			pageName = "Test Page",
@@ -118,7 +118,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinBookmarks {
 		Navigator.gotoSitePage(
 			pageName = "Test Page",
@@ -218,7 +218,7 @@ definition {
 			bookmarkURL = "https://www.liferay.com");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinMBAttachment {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -255,7 +255,7 @@ definition {
 
 		MessageboardsThread.viewCP(
 			mbAttachmentFile = "Recently Removed Attachment",
-			postsNumber = "1",
+			postsNumber = 1,
 			threadBody = "MB Body Edit",
 			threadSubject = "MB Subject",
 			userName = "Test Test");
@@ -273,13 +273,13 @@ definition {
 
 		MessageboardsThread.viewCP(
 			mbAttachmentFile = "Document_1.doc",
-			postsNumber = "1",
+			postsNumber = 1,
 			threadBody = "MB Body Edit",
 			threadSubject = "MB Subject",
 			userName = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinScheduledCleanup {
 		property custom.properties = "trash.entry.check.interval=1${line.separator}trash.entries.max.age=1";
 
@@ -315,14 +315,14 @@ definition {
 			customMaxAgeMsg = "Entries that have been in the Recycle Bin for more than 1 minute are automatically deleted.",
 			deleteUser = "Test Test");
 
-		Pause(locator1 = "120000");
+		Pause(locator1 = 120000);
 
 		Refresh();
 
 		RecycleBin.viewDefaultCP(assetName = "Blogs Entry Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinSearchBlogsEntries {
 		Navigator.gotoSitePage(
 			pageName = "Test Page",
@@ -376,7 +376,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Recycle Bin");
 
-		RecycleBin.searchCP(assetName = "1");
+		RecycleBin.searchCP(assetName = 1);
 
 		RecycleBin.viewCP(
 			assetName = "Blogs Entry Title 1",
@@ -390,7 +390,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Recycle Bin");
 
-		RecycleBin.searchCP(assetName = "2");
+		RecycleBin.searchCP(assetName = 2);
 
 		RecycleBin.viewCP(
 			assetName = "Blogs Entry Title 2",
@@ -404,7 +404,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Recycle Bin");
 
-		RecycleBin.searchCP(assetName = "3");
+		RecycleBin.searchCP(assetName = 3);
 
 		RecycleBin.viewCP(
 			assetName = "Blogs Entry Title 3",
@@ -412,7 +412,7 @@ definition {
 			deleteUser = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinSearchDMEntriesInFolder {
 		property custom.properties = "default.layout.template.id=1_column";
 
@@ -465,7 +465,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Recycle Bin");
 
-		RecycleBin.searchCP(assetName = "1");
+		RecycleBin.searchCP(assetName = 1);
 
 		RecycleBin.viewCP(
 			assetName = "DM Document Title 1",
@@ -479,7 +479,7 @@ definition {
 			panel = "Site Administration",
 			portlet = "Recycle Bin");
 
-		RecycleBin.searchCP(assetName = "2");
+		RecycleBin.searchCP(assetName = 2);
 
 		RecycleBin.viewCP(
 			assetName = "DM Document Title 2",
@@ -487,7 +487,7 @@ definition {
 			deleteUser = "test test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinStaging {
 		Navigator.gotoSitePage(
 			pageName = "Test Page",
@@ -569,7 +569,7 @@ definition {
 			deleteUser = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinWebContent {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -699,7 +699,7 @@ definition {
 			templateName = "WC Template Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RecycleBinWiki {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -797,7 +797,7 @@ definition {
 			portlet = "Wiki");
 
 		WikiNode.viewCP(
-			numberOfWikiPages = "2",
+			numberOfWikiPages = 2,
 			wikiNodeName = "Wiki Node Name");
 
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
@@ -809,7 +809,7 @@ definition {
 			wikiPageTitle = "Wiki Page Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test RestoreDMDocumentFromFolderCP {
 		property portal.acceptance = "false";
 
@@ -898,7 +898,7 @@ definition {
 		DMDocument.viewCP(dmDocumentTitle = "DM Document Title 2");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RestoreMessageboardsThreadViaRBCP {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -959,12 +959,12 @@ definition {
 
 		MessageboardsCategory.viewCP(
 			categoryName = "MB Category Name",
-			postsNumber = "2",
-			subcategoriesNumber = "0",
-			threadsNumber = "1");
+			postsNumber = 2,
+			subcategoriesNumber = 0,
+			threadsNumber = 1);
 
 		MessageboardsThread.viewCP(
-			postsNumber = "2",
+			postsNumber = 2,
 			threadBody = "MB Body",
 			threadSubject = "MB Subject",
 			userName = "Test Test");
@@ -975,7 +975,7 @@ definition {
 			userName = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RestoreWebContentFromFolderCP {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1048,7 +1048,7 @@ definition {
 			webContentTitle = "Web Content Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RestoreWebContentWithArticleVersions {
 		Navigator.openSiteURL(siteName = "Site Name");
 

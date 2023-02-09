@@ -30,7 +30,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -38,7 +38,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWCWithMultipleTranslations {
 		property test.name.skip.portal.instance = "LanguageUsecase#AddWCWithMultipleTranslations";
 
@@ -120,7 +120,7 @@ definition {
 			webContentTranslationLanguage = "suomi (Suomi)");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddWCWithTranslation {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "LanguageUsecase#AddWCWithTranslation";
@@ -177,7 +177,7 @@ definition {
 			webContentTranslationLanguage = "español (España)");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test MoveCurrentLanguagesToAvailable {
 		property test.name.skip.portal.instance = "LanguageUsecase#MoveCurrentLanguagesToAvailable";
 
@@ -208,7 +208,7 @@ definition {
 
 	@description = "This is a use case for 119020. Can add web content when the portal change the default language. This will be ignored until LPS-141915 is fixed."
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ViewChangedDefaultPortalLanguageViaWebContent {
 		property test.name.skip.portal.instance = "LanguageUsecase#ViewChangedDefaultPortalLanguageViaWebContent";
 
@@ -257,7 +257,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewDisplayOptionsViaLanguagePortlet {
 		property test.name.skip.portal.instance = "LanguageUsecase#ViewDisplayOptionsViaLanguagePortlet";
 
@@ -316,7 +316,7 @@ definition {
 		LanguagePortlet.viewDisplayTemplateShortText(languageKey = "HU");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewRemovedCurrentPortalLanguagesViaLanguagePortlet {
 		property test.name.skip.portal.instance = "LanguageUsecase#ViewRemovedCurrentPortalLanguagesViaLanguagePortlet";
 
@@ -346,7 +346,7 @@ definition {
 		LanguagePortlet.configureViewCurrentLanguages(currentLanguages = "Chinese (China),French (France),English (United States)");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewRemovedCurrentSiteLanguagesViaLanguagePortlet {
 		property test.name.skip.portal.instance = "LanguageUsecase#ViewRemovedCurrentSiteLanguagesViaLanguagePortlet";
 

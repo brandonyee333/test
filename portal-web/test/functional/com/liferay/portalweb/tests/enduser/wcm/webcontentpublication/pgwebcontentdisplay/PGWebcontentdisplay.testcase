@@ -23,7 +23,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -35,7 +35,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddDraftNotApproved {
 		WebContent.addDraftPGViaWCD(
 			webContentContent = "WC WebContent Content",
@@ -48,7 +48,7 @@ definition {
 			webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddNewWebContentViaAddContentPanel {
 		Page.add(pageName = "Web Content Page");
 
@@ -69,7 +69,7 @@ definition {
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddPortletWCDSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -94,7 +94,7 @@ definition {
 		Portlet.addPG(portletName = "Web Content Display");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddWebContent {
 		property portal.acceptance = "true";
 
@@ -107,7 +107,7 @@ definition {
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddWebContentPortalScopeCurrentPage {
 		for (var i : list "1,2,3") {
 			Page.add(pageName = "Web Content Display Page${i}");
@@ -160,7 +160,7 @@ definition {
 		WebContent.viewSelectNoPGViaWCD(webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddWebContentViaAddContentPanel {
 		property testray.component.names = "Training";
 
@@ -191,7 +191,7 @@ definition {
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddWithStructure {
 		property app.server.types = "jboss,resin,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
@@ -247,7 +247,7 @@ definition {
 			webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AssertExpired {
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -274,7 +274,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-83798. Validate File system can't access using Journal/DDM templates."
-	@priority = "5"
+	@priority = 5
 	test AssertNoFileSystemAccessViaJournalTemplates {
 		Navigator.openURL();
 
@@ -305,7 +305,7 @@ definition {
 
 		var os = OSDetector.isWindows();
 
-		if ("${os}" == "true") {
+		if (${os} == "true") {
 			var templateScript = '''
 ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().create("file:///C:/boot.ini").toURL())}
 ''';
@@ -320,7 +320,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 			templateFieldNames = "Text",
 			templateLanguage = "ftl",
 			templateName = "WC Template Name",
-			templateScript = "${templateScript}");
+			templateScript = ${templateScript});
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
@@ -351,7 +351,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 		AssertTextPresent(value1 = "An error occurred while processing the template.");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ChangeTemplate {
 		Navigator.openURL();
 
@@ -411,7 +411,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebContent {
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -428,7 +428,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 			webContentTitleEdit = "WC WebContent Title Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test LocalizeWebContent {
 		property test.name.skip.portal.instance = "PGWebcontentdisplay#LocalizeWebContent";
 
@@ -463,7 +463,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test RemoveWCDPortletSite {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -471,7 +471,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 		Portlet.deletePG(portletName = "Web Content Display");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchWebContent {
 		Navigator.openURL();
 
@@ -511,7 +511,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 			webContentTitle = "WC2 WebContent2 Title2");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SelectWebContent {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -540,7 +540,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SelectWebContentScopeGlobal {
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -575,7 +575,7 @@ ${httpUtil.URLtoString(request.getAttribute("CTX").getResource(".").toURI().crea
 	}
 
 	@description = "This is a test for LPS-64814. Validate remote code execution via untrusted Java Deserialization in templates cannot cause out of memory errors."
-	@priority = "5"
+	@priority = 5
 	test ValidateRemoteCodeViaTemplatesCannotCauseOutOfMemoryErrors {
 		Navigator.openURL();
 
@@ -614,7 +614,7 @@ ${company.getKeyObj()}
 			templateFieldNames = "Text",
 			templateLanguage = "ftl",
 			templateName = "WC Template Name",
-			templateScript = "${templateScript}");
+			templateScript = ${templateScript});
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
@@ -639,7 +639,7 @@ ${company.getKeyObj()}
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
 		Portlet.gotoPortletOptions(
-			order = "${order}",
+			order = ${order},
 			portletName = "Web Content Display",
 			portletOption = "Configuration");
 
@@ -662,7 +662,7 @@ ${company.getKeyObj()}
 	}
 
 	@description = "This is a test for LPS-58698. Validate remote code execution can't privilege escalation in templates."
-	@priority = "5"
+	@priority = 5
 	test ValidateTemplateRCEReturnsNoRuntimeClasses {
 		Navigator.openURL();
 
@@ -708,7 +708,7 @@ ${runtimeInstance}
 			templateFieldNames = "Text",
 			templateLanguage = "ftl",
 			templateName = "WC Template Name",
-			templateScript = "${templateScript}");
+			templateScript = ${templateScript});
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
@@ -741,7 +741,7 @@ ${runtimeInstance}
 		AssertTextNotPresent(value1 = "java.lang.Runtime@");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewAllFileTypesEnabled {
 		property test.name.skip.portal.instance = "PGWebcontentdisplay#ViewAllFileTypesEnabled";
 
@@ -775,7 +775,7 @@ ${runtimeInstance}
 		WebContentDisplayPortlet.viewEnabledFileTypesPGViaWCD(fileTypes = "DOC,ODT,PDF,TXT");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewAllSettingsEnabledWCDConfiguration {
 		property test.name.skip.portal.instance = "PGWebcontentdisplay#ViewAllSettingsEnabledWCDConfiguration";
 
@@ -852,7 +852,7 @@ ${runtimeInstance}
 			webContentContent = "Web Content Content 1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewArticleWithGuestViewPermission {
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -936,7 +936,7 @@ ${runtimeInstance}
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewEditTemplate {
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -954,7 +954,7 @@ ${runtimeInstance}
 			webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewPortletWCDShowAvailableLocales {
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -995,7 +995,7 @@ ${runtimeInstance}
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewWCDWithDeletedWCArticle {
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -1019,7 +1019,7 @@ ${runtimeInstance}
 		WebContentDisplayPortlet.viewDeletedArticlePGViaWCD(webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewWithPaginationScript {
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 

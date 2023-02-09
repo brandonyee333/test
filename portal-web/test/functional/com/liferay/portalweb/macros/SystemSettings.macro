@@ -1,16 +1,16 @@
 definition {
 
 	macro editConfiguration {
-		var key_rowEntry = "${configurationName}";
+		var key_rowEntry = ${configurationName};
 
 		while (IsElementNotPresent(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS")) {
 			Click(locator1 = "Pagination#NEXT_LINK");
 		}
 
-		if ("${configurationName}" == "Dynamic Data Lists") {
+		if (${configurationName} == "Dynamic Data Lists") {
 			Click.waitForMenuToggleJSClick(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS_2");
 		}
-		else if ("${configurationName}" == "Web Content") {
+		else if (${configurationName} == "Web Content") {
 			Click.waitForMenuToggleJSClick(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS_3");
 		}
 		else {
@@ -23,7 +23,7 @@ definition {
 	macro editSecurityCredential {
 		Type(
 			locator1 = "SystemSettings#SECURITY_CREDENTIAL_FIELD",
-			value1 = "${securityCredential}");
+			value1 = ${securityCredential});
 
 		var key_fieldName = "securityPrincipal";
 
@@ -37,7 +37,7 @@ definition {
 	}
 
 	macro enableSetting {
-		if ("${enableSetting}" == "false") {
+		if (${enableSetting} == "false") {
 			Uncheck(locator1 = "SystemSettings#${checkboxSetting}");
 		}
 		else {
@@ -50,9 +50,9 @@ definition {
 	}
 
 	macro getCurrentUserEmailResquestDenied {
-		var output = JSONCurlUtil.post("${curl}");
+		var output = JSONCurlUtil.post(${curl});
 
-		if (contains("${output}", "Access denied to com.liferay.portal.kernel.service.UserService#getCurrentUser")) {
+		if (contains(${output}, "Access denied to com.liferay.portal.kernel.service.UserService#getCurrentUser")) {
 			echo("Access denied to com.liferay.portal.kernel.service.UserService#getCurrentUser");
 		}
 		else {
@@ -61,9 +61,9 @@ definition {
 	}
 
 	macro getUserEmailAddressRequestDenied {
-		var output = JSONCurlUtil.post("${curl}");
+		var output = JSONCurlUtil.post(${curl});
 
-		if (contains("${output}", "Access denied to com.liferay.portal.kernel.service.UserService#getUserByEmailAddress")) {
+		if (contains(${output}, "Access denied to com.liferay.portal.kernel.service.UserService#getUserByEmailAddress")) {
 			echo("Access denied to com.liferay.portal.kernel.service.UserService#getUserByEmailAddress");
 		}
 		else {
@@ -74,12 +74,12 @@ definition {
 	macro getUserEmailSuccessfully {
 		Variables.assertDefined(parameterList = "${curl},${companyId}");
 
-		var output = JSONCurlUtil.post("${curl}");
+		var output = JSONCurlUtil.post(${curl});
 
-		var result1 = JSONUtil.getWithJSONPath("${output}", "$.agreedToTermsOfUse");
-		var result2 = JSONUtil.getWithJSONPath("${output}", "$.companyId");
+		var result1 = JSONUtil.getWithJSONPath(${output}, "$.agreedToTermsOfUse");
+		var result2 = JSONUtil.getWithJSONPath(${output}, "$.companyId");
 
-		if (("${result1}" == "true") && ("${result2}" == "${companyId}")) {
+		if ((${result1} == "true") && (${result2} == ${companyId})) {
 			echo("Get current user successful.");
 		}
 		else {
@@ -90,9 +90,9 @@ definition {
 	macro getViewUserEmailPermissionDenied {
 		Variables.assertDefined(parameterList = "${curl},${userId}");
 
-		var output = JSONCurlUtil.post("${curl}");
+		var output = JSONCurlUtil.post(${curl});
 
-		if (contains("${output}", "must have VIEW permission for com.liferay.portal.kernel.model.User ${userId}")) {
+		if (contains(${output}, "must have VIEW permission for com.liferay.portal.kernel.model.User ${userId}")) {
 			echo("Default user must have VIEW permission for com.liferay.portal.kernel.model.User ${userId}");
 		}
 		else {
@@ -101,31 +101,31 @@ definition {
 	}
 
 	macro gotoCategory {
-		var key_category = "${category}";
+		var key_category = ${category};
 
 		AssertClick(
 			locator1 = "SystemSettings#MENUBAR_CATEGORY",
-			value1 = "${category}");
+			value1 = ${category});
 	}
 
 	macro gotoConfiguration {
 		Click(
-			key_itemName = "${configurationCategory}",
+			key_itemName = ${configurationCategory},
 			locator1 = "ListGroupItem#ITEM_TEXT");
 
 		var browserType = PropsUtil.get("browser.type");
 
-		if ("${browserType}" == "chrome") {
-			Pause(locator1 = "5000");
+		if (${browserType} == "chrome") {
+			Pause(locator1 = 5000);
 		}
 
 		Click(
-			key_configurationName = "${configurationName}",
-			key_configurationScope = "${configurationScope}",
+			key_configurationName = ${configurationName},
+			key_configurationScope = ${configurationScope},
 			locator1 = "SystemSettings#SCOPED_CONFIGURATION_NAME");
 
 		AssertElementPresent(
-			key_title = "${configurationName}",
+			key_title = ${configurationName},
 			locator1 = "Header#H2_TITLE");
 	}
 
@@ -134,11 +134,11 @@ definition {
 	}
 
 	macro resetConfiguration {
-		SystemSettings.gotoCategory(category = "${category}");
+		SystemSettings.gotoCategory(category = ${category});
 
-		var key_rowEntry = "${configurationName}";
+		var key_rowEntry = ${configurationName};
 
-		if ("${configurationName}" == "Dynamic Data Lists") {
+		if (${configurationName} == "Dynamic Data Lists") {
 			Click.waitForMenuToggleJSClick(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS_2");
 		}
 		else {
@@ -166,7 +166,7 @@ definition {
 	}
 
 	macro viewConfiguration {
-		var key_rowEntry = "${configurationName}";
+		var key_rowEntry = ${configurationName};
 
 		while (IsElementNotPresent(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS")) {
 			Click(locator1 = "Pagination#NEXT_LINK");
@@ -174,10 +174,10 @@ definition {
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit",
-			rowEntry = "${configurationName}");
+			rowEntry = ${configurationName});
 
-		if ("${configurationName}" == "LDAP Auth") {
-			if ("${enableLDAP}" == "true") {
+		if (${configurationName} == "LDAP Auth") {
+			if (${enableLDAP} == "true") {
 				FormFields.viewCheckboxChecked(fieldName = "enabled");
 			}
 			else {

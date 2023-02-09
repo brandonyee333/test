@@ -3,7 +3,7 @@ definition {
 	macro _addPageTypeEmbedded {
 		Type(
 			locator1 = "SitePagesEditPage#PAGE_TYPE_EMBEDDED_URL_FIELD",
-			value1 = "${pageTypeURL}");
+			value1 = ${pageTypeURL});
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "SitePagesEditPage#PAGE_TYPE_DESCRIPTION_FIELD",
@@ -13,13 +13,13 @@ definition {
 	macro _addPageTypeFullPageApplication {
 		Select(
 			locator1 = "SitePagesEditPage#PAGE_TYPE_FULL_PAGE_APPLICATION_SELECT",
-			value1 = "${portlet}");
+			value1 = ${portlet});
 	}
 
 	macro _addPageTypeLinkToURL {
 		Type(
 			locator1 = "SitePagesEditPage#PAGE_TYPE_LINK_TO_URL_URL_FIELD",
-			value1 = "${pageTypeURL}");
+			value1 = ${pageTypeURL});
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "SitePagesEditPage#PAGE_TYPE_DESCRIPTION_FIELD",
@@ -27,7 +27,7 @@ definition {
 	}
 
 	macro _addPageTypePanel {
-		var key_componentOrPortletName = "${componentName}";
+		var key_componentOrPortletName = ${componentName};
 
 		Click(locator1 = "SitePagesEditPage#PAGE_TYPE_PANEL_CHECKBOX");
 
@@ -35,49 +35,49 @@ definition {
 	}
 
 	macro _selectPageTypeRadio {
-		if ("${sitePageType}" == "Embedded") {
+		if (${sitePageType} == "Embedded") {
 			Select(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT",
 				value1 = "Embedded");
 
 			Page._addPageTypeEmbedded(
-				pageTypeDescription = "${pageTypeDescription}",
-				pageTypeURL = "${pageTypeURL}");
+				pageTypeDescription = ${pageTypeDescription},
+				pageTypeURL = ${pageTypeURL});
 		}
-		else if ("${sitePageType}" == "Link to URL") {
+		else if (${sitePageType} == "Link to URL") {
 			Select(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT",
 				value1 = "Link to URL");
 
 			Page._addPageTypeLinkToURL(
-				pageTypeDescription = "${pageTypeDescription}",
-				pageTypeURL = "${pageTypeURL}");
+				pageTypeDescription = ${pageTypeDescription},
+				pageTypeURL = ${pageTypeURL});
 		}
-		else if ("${sitePageType}" == "Panel") {
+		else if (${sitePageType} == "Panel") {
 			Select(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT",
 				value1 = "Panel");
 
-			Page._addPageTypePanel(componentName = "${componentName}");
+			Page._addPageTypePanel(componentName = ${componentName});
 		}
-		else if ("${sitePageType}" == "Full Page Application") {
+		else if (${sitePageType} == "Full Page Application") {
 			Select(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT",
 				value1 = "Full Page Application");
 
-			Page._addPageTypeFullPageApplication(portlet = "${portlet}");
+			Page._addPageTypeFullPageApplication(portlet = ${portlet});
 		}
-		else if ("${sitePageType}" == "Empty Page") {
-			var key_columnName = "${columnName}";
+		else if (${sitePageType} == "Empty Page") {
+			var key_columnName = ${columnName};
 
 			Click(locator1 = "SitePagesEditPage#LAYOUT_CARD");
 		}
-		else if ("${sitePageType}" == "Page Set") {
+		else if (${sitePageType} == "Page Set") {
 			Select(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT",
 				value1 = "Page Set");
 		}
-		else if ("${sitePageType}" == "Link to a Page of This Site") {
+		else if (${sitePageType} == "Link to a Page of This Site") {
 			Select(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT",
 				value1 = "Link to a Page of This Site");
@@ -91,26 +91,26 @@ definition {
 	@summary = "Add a page named '${pageName}'"
 	macro add {
 		if (isSet(siteName)) {
-			ProductMenu.gotoSite(site = "${siteName}");
+			ProductMenu.gotoSite(site = ${siteName});
 		}
 
 		if (isSet(pageStaging)) {
 			Navigator.gotoStagedView();
 		}
 
-		SitePageNavigator.gotoAddPage(sitePagePrivacy = "${sitePagePrivacy}");
+		SitePageNavigator.gotoAddPage(sitePagePrivacy = ${sitePagePrivacy});
 
 		Type.typeClickAt(
 			locator1 = "TextInput#NAME",
-			value1 = "${pageName}");
+			value1 = ${pageName});
 
 		if (isSet(pageTemplateName)) {
 			Select(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT",
-				value1 = "${pageTemplateName}");
+				value1 = ${pageTemplateName});
 
 			if (isSet(inheritChanges)) {
-				Page.togglePageTemplateInheritChanges(toggleValue = "${inheritChanges}");
+				Page.togglePageTemplateInheritChanges(toggleValue = ${inheritChanges});
 			}
 			else {
 				Page.togglePageTemplateInheritChanges(toggleValue = "enable");
@@ -119,28 +119,28 @@ definition {
 
 		if (isSet(sitePageType)) {
 			Page._selectPageTypeRadio(
-				columnName = "${columnName}",
-				componentName = "${componentName}",
-				linkToPage = "${linkToPage}",
-				pageTypeDescription = "${pageTypeDescription}",
-				pageTypeURL = "${pageTypeURL}",
-				portlet = "${portlet}",
-				sitePageType = "${sitePageType}");
+				columnName = ${columnName},
+				componentName = ${componentName},
+				linkToPage = ${linkToPage},
+				pageTypeDescription = ${pageTypeDescription},
+				pageTypeURL = ${pageTypeURL},
+				portlet = ${portlet},
+				sitePageType = ${sitePageType});
 		}
 
 		AssertClick(
 			locator1 = "Button#ADD_PAGE_BTN",
 			value1 = "Add Page");
 
-		if ("${sitePageType}" != "Page Set") {
-			if (contains("${pageName}", "'")) {
+		if (${sitePageType} != "Page Set") {
+			if (contains(${pageName}, "'")) {
 				AssertVisible(
-					key_pageName = "${pageName}",
+					key_pageName = ${pageName},
 					locator1 = "Home#PAGE_WITH_QUOTES");
 			}
 			else {
 				AssertVisible(
-					key_pageName = "${pageName}",
+					key_pageName = ${pageName},
 					locator1 = "Home#PAGE");
 			}
 		}
@@ -149,38 +149,38 @@ definition {
 	}
 
 	macro addChild {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
-		var key_siteName = "${siteName}";
+		var key_siteName = ${siteName};
 
 		if (!(isSet(siteScopeSelected))) {
 			Type(
 				locator1 = "NavBar#BASIC_SEARCH_FIELD",
-				value1 = "${siteName}");
+				value1 = ${siteName});
 
 			Click(locator1 = "Icon#BASIC_SEARCH");
 
-			LexiconEntry.gotoEntry(rowEntry = "${siteName}");
+			LexiconEntry.gotoEntry(rowEntry = ${siteName});
 		}
 
-		SitePageNavigator.gotoPages(page = "${page}");
+		SitePageNavigator.gotoPages(page = ${page});
 
-		var key_page = "${pageName}";
+		var key_page = ${pageName};
 
 		Click.mouseOverClick(locator1 = "SitePages#SPECIFIC_PAGE_ELLIPSIS");
 
 		Click(locator1 = "SitePages#ADD_CHILD_PAGE");
 
-		PortletEntry.inputName(name = "${siteChildPageName}");
+		PortletEntry.inputName(name = ${siteChildPageName});
 
 		if (isSet(sitePageType)) {
 			Page._selectPageTypeRadio(
-				columnName = "${columnName}",
-				componentName = "${componentName}",
-				pageTypeDescription = "${pageTypeDescription}",
-				pageTypeURL = "${pageTypeURL}",
-				portlet = "${portlet}",
-				sitePageType = "${sitePageType}");
+				columnName = ${columnName},
+				componentName = ${componentName},
+				pageTypeDescription = ${pageTypeDescription},
+				pageTypeURL = ${pageTypeURL},
+				portlet = ${portlet},
+				sitePageType = ${sitePageType});
 		}
 
 		AssertClick(
@@ -191,17 +191,17 @@ definition {
 	}
 
 	macro addFriendlyURLLocalizedPG {
-		var key_friendlyUrlLocalized = "${friendlyUrlLocalized}";
+		var key_friendlyUrlLocalized = ${friendlyUrlLocalized};
 
 		Click(locator1 = "SitePagesEditPage#FRIENDLY_URL_LOCALIZED");
 
 		Type(
 			locator1 = "TextInput#FRIENDLY_URL",
-			value1 = "${localizedFriendlyURL}");
+			value1 = ${localizedFriendlyURL});
 	}
 
 	macro addJavaScript {
-		SitePageNavigator.gotoEditPage(page = "${pageName}");
+		SitePageNavigator.gotoEditPage(page = ${pageName});
 
 		Navigator.gotoNavTab(navTab = "Advanced");
 
@@ -213,7 +213,7 @@ definition {
 
 		Type(
 			locator1 = "SitePages#JAVASCRIPT_TEXTAREA",
-			value1 = "${javaScript}");
+			value1 = ${javaScript});
 
 		AssertClickNoError(
 			locator1 = "Button#SAVE",
@@ -221,23 +221,23 @@ definition {
 	}
 
 	macro addPageTranslations {
-		SitePageNavigator.gotoEditPage(page = "${page}");
+		SitePageNavigator.gotoEditPage(page = ${page});
 
-		var key_pageTranslation = "${pageTranslation}";
+		var key_pageTranslation = ${pageTranslation};
 
 		Click(locator1 = "SitePages#DETAILS_LANGUAGE_TRANSLATIONS");
 
-		PortletEntry.inputName(name = "${pageTranslationName}");
+		PortletEntry.inputName(name = ${pageTranslationName});
 
 		PortletEntry.save();
 	}
 
 	macro assertCannotDeleteOnlyPage {
-		var key_page = "${pageName}";
+		var key_page = ${pageName};
 
 		SitePageNavigator.gotoEditPage(
-			page = "${pageName}",
-			sitePagePrivacy = "${sitePagePrivacy}");
+			page = ${pageName},
+			sitePagePrivacy = ${sitePagePrivacy});
 
 		LexiconEntry.gotoHeaderMenuItemNoError(menuItem = "Delete");
 
@@ -251,11 +251,11 @@ definition {
 	}
 
 	macro assertNodePortPG {
-		var key_nodePort = "${nodePort}";
+		var key_nodePort = ${nodePort};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Home#NODE_NAME",
-			value1 = "${nodePort}");
+			value1 = ${nodePort});
 	}
 
 	macro changeCurrentTheme {
@@ -263,11 +263,11 @@ definition {
 
 		SelectFrame(locator1 = "IFrame#DIALOG");
 
-		var key_cardText = "${themeName}";
+		var key_cardText = ${themeName};
 
 		AssertTextPresent(
 			locator1 = "Card#SPECIFIC_LARGE_TEXT",
-			value1 = "${key_cardText}");
+			value1 = ${key_cardText});
 
 		Click(locator1 = "Card#SPECIFIC_LARGE_TEXT");
 
@@ -277,7 +277,7 @@ definition {
 	}
 
 	macro changeLogoViaPageCP {
-		SitePageNavigator.gotoEditPage(page = "${page}");
+		SitePageNavigator.gotoEditPage(page = ${page});
 
 		if (IsElementPresent(locator1 = "SitePagesEditPage#PAGE_TYPE_LAYOUT")) {
 			AssertClick(
@@ -288,7 +288,7 @@ definition {
 			Panel.expandPanel(panelHeading = "Logo");
 		}
 
-		Page.uploadFileForLogo(logoFile = "${logoFile}");
+		Page.uploadFileForLogo(logoFile = ${logoFile});
 	}
 
 	macro copyApplicationsFromPageToPage {
@@ -310,7 +310,7 @@ definition {
 	}
 
 	macro deleteFriendlyURLPG {
-		var key_friendlyUrlLocalized = "${friendlyUrlLocalized}";
+		var key_friendlyUrlLocalized = ${friendlyUrlLocalized};
 
 		Click.pauseClickAt(locator1 = "SitePagesEditPage#FRIENDLY_URL_LOCALIZED");
 
@@ -326,7 +326,7 @@ definition {
 	}
 
 	macro deleteLogoPG {
-		SitePageNavigator.gotoEditPage(page = "${page}");
+		SitePageNavigator.gotoEditPage(page = ${page});
 
 		if (IsElementPresent(locator1 = "SitePagesEditPage#PAGE_TYPE_LAYOUT")) {
 			AssertClick(
@@ -345,9 +345,9 @@ definition {
 	}
 
 	macro deletePG {
-		SitePageNavigator.gotoPages(page = "${pageName}");
+		SitePageNavigator.gotoPages(page = ${pageName});
 
-		var key_page = "${pageName}";
+		var key_page = ${pageName};
 
 		Click.mouseOverClick(locator1 = "SitePages#SPECIFIC_PAGE_ELLIPSIS");
 
@@ -359,7 +359,7 @@ definition {
 	}
 
 	macro deleteViaX {
-		var key_page = "${pageName}";
+		var key_page = ${pageName};
 
 		MouseOver(locator1 = "SitePages#NAVIGATION_SPECIFIC_PAGE");
 
@@ -379,7 +379,7 @@ definition {
 	}
 
 	macro editName {
-		PortletEntry.inputName(name = "${pageNameEdit}");
+		PortletEntry.inputName(name = ${pageNameEdit});
 
 		AssertClick.pauseAssertTextClickAt(
 			locator1 = "Button#SAVE",
@@ -389,7 +389,7 @@ definition {
 	}
 
 	macro editPageLayoutColumn {
-		var key_columnName = "${columnName}";
+		var key_columnName = ${columnName};
 
 		Click(locator1 = "SitePagesEditPage#LAYOUT_CARD");
 
@@ -403,15 +403,15 @@ definition {
 	macro editPageMetadata {
 		Type.typeClickAt(
 			locator1 = "TextInput#SEO_HTML_TITLE",
-			value1 = "${HTMLTitle}");
+			value1 = ${HTMLTitle});
 
 		Type.typeClickAt(
 			locator1 = "TextArea#SEO_META_TAGS_DESCRIPTION",
-			value1 = "${metaTagsDescription}");
+			value1 = ${metaTagsDescription});
 
 		Type.typeClickAt(
 			locator1 = "TextArea#SEO_META_TAGS_KEYWORDS",
-			value1 = "${metaTagsKeywords}");
+			value1 = ${metaTagsKeywords});
 
 		AssertClick.pauseAssertTextClickAt(
 			locator1 = "Button#SAVE",
@@ -421,7 +421,7 @@ definition {
 	}
 
 	macro editPageTypeLayout {
-		var key_columnName = "${columnName}";
+		var key_columnName = ${columnName};
 
 		Click(locator1 = "SitePagesEditPage#LAYOUT_CARD");
 
@@ -429,22 +429,22 @@ definition {
 	}
 
 	macro editSelectPageType {
-		SitePageNavigator.gotoEditPage(page = "${page}");
+		SitePageNavigator.gotoEditPage(page = ${page});
 
-		var key_pageType = "${pageType}";
+		var key_pageType = ${pageType};
 
 		Select(
 			locator1 = "SitePagesEditPage#PAGE_TYPE_LAYOUT",
-			value1 = "${pageType}");
+			value1 = ${pageType});
 
-		if ("${pageType}" == "Link to a Page of This Site") {
-			var key_indexNumber = "${indexNumber}";
+		if (${pageType} == "Link to a Page of This Site") {
+			var key_indexNumber = ${indexNumber};
 
 			Select(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_LINK_TO_PAGE_PAGE_SELECT",
 				value1 = "index=${indexNumber}");
 		}
-		else if ("${pageType}" == "Embedded") {
+		else if (${pageType} == "Embedded") {
 			Type(
 				locator1 = "SitePagesEditPage#PAGE_TYPE_EMBEDDED_URL_FIELD",
 				value1 = "http://www.liferay.com");
@@ -454,7 +454,7 @@ definition {
 	}
 
 	macro firstPageCanNotBeOfTypeLinkToURL {
-		SitePageNavigator.gotoEditPage(page = "${pageName}");
+		SitePageNavigator.gotoEditPage(page = ${pageName});
 
 		LexiconEntry.gotoHeaderMenuItemNoError(menuItem = "Delete");
 
@@ -468,11 +468,11 @@ definition {
 
 		ProductMenuHelper.openProductMenu();
 
-		var key_page = "${pageName}";
+		var key_page = ${pageName};
 
 		AssertTextEquals(
 			locator1 = "SitePages#PAGE_TREE_PAGE_LINK",
-			value1 = "${pageName}");
+			value1 = ${pageName});
 	}
 
 	macro getAuthTokenFromHtmlSource {
@@ -482,11 +482,11 @@ definition {
 		return authToken;
 		''';
 
-		var authToken = selenium.getEval("${javaScript}");
+		var authToken = selenium.getEval(${javaScript});
 
 		echo("## * Auth Token: ${authToken}");
 
-		return "${authToken}";
+		return ${authToken};
 	}
 
 	macro getPlidFromHtmlSource {
@@ -496,21 +496,21 @@ definition {
 		return plid;
 		''';
 
-		var plid = selenium.getEval("${javaScript}");
+		var plid = selenium.getEval(${javaScript});
 
 		echo("## * p_l_id: ${plid}");
 
-		return "${plid}";
+		return ${plid};
 	}
 
 	macro gotoChildPagePG {
-		var key_pageName = "${pageName}";
+		var key_pageName = ${pageName};
 
 		ClickNoError(locator1 = "Home#PAGE");
 
 		MouseOver(locator1 = "Home#CHILD_TOGGLE");
 
-		var key_childPageName = "${childPageName}";
+		var key_childPageName = ${childPageName};
 
 		AssertVisible(locator1 = "Home#PAGE_CHILD_PAGE");
 
@@ -524,27 +524,27 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "My Account",
 			panel = "User",
-			portlet = "${portletName}");
+			portlet = ${portletName});
 	}
 
 	macro gotoPagePanelPortlet {
-		var key_portletName = "${portletName}";
+		var key_portletName = ${portletName};
 
 		AssertClick(
 			locator1 = "Panel#MENU_ITEM",
-			value1 = "${portletName}");
+			value1 = ${portletName});
 	}
 
 	macro gotoSALocalizedCP {
 		Navigator.gotoPage(pageName = "Social Activity Page");
 
-		var key_portletCategoryName = "${portletCategoryName}";
+		var key_portletCategoryName = ${portletCategoryName};
 
-		ProductMenuHelper.expandCategory(category = "${portletCategoryName}");
+		ProductMenuHelper.expandCategory(category = ${portletCategoryName});
 
-		var key_portletName = "${portletName}";
+		var key_portletName = ${portletName};
 
-		ProductMenuHelper.gotoPortlet(portlet = "${portletName}");
+		ProductMenuHelper.gotoPortlet(portlet = ${portletName});
 	}
 
 	macro hideFromNavigationMenu {
@@ -556,11 +556,11 @@ definition {
 	}
 
 	macro localizedPG {
-		var key_pageLocale = "${pageLocale}";
+		var key_pageLocale = ${pageLocale};
 
 		Click(
 			locator1 = "Link#PAGE_LOCALE",
-			value1 = "${pageLocale}");
+			value1 = ${pageLocale});
 	}
 
 	macro manageDeviceFamilyActions {
@@ -570,23 +570,23 @@ definition {
 
 		Click(locator1 = "Button#ADD_ACTION");
 
-		PortletEntry.inputName(name = "${actionName}");
+		PortletEntry.inputName(name = ${actionName});
 
-		var key_actionType = "${actionType}";
+		var key_actionType = ${actionType};
 
 		Click(locator1 = "MobileDevice#ADD_ACTION_TYPE_OPTION");
 
-		if ("${actionType}" == "Redirect to URL") {
+		if (${actionType} == "Redirect to URL") {
 			Type(
 				locator1 = "TextInput#URL",
-				value1 = "${actionURL}");
+				value1 = ${actionURL});
 		}
-		else if ("${actionType}" == "Redirect to Site") {
-			var key_siteName = "${siteName}";
+		else if (${actionType} == "Redirect to Site") {
+			var key_siteName = ${siteName};
 
 			Click(locator1 = "MobileDevice#ADD_ACTION_SITE_OPTION");
 
-			var key_pageName = "${pageName}";
+			var key_pageName = ${pageName};
 
 			Click(locator1 = "MobileDevice#ADD_ACTION_PAGE_OPTION");
 		}
@@ -601,9 +601,9 @@ definition {
 	}
 
 	macro openURLLocale {
-		Navigator.openSpecificURL(url = "${localizationPageURL}");
+		Navigator.openSpecificURL(url = ${localizationPageURL});
 
-		AssertLocation(value1 = "${localizationPageURL}");
+		AssertLocation(value1 = ${localizationPageURL});
 	}
 
 	macro saveAddPage {
@@ -621,11 +621,11 @@ definition {
 
 		IFrame.selectDialogFrame();
 
-		var key_deviceFamilyName = "${deviceFamilyName}";
+		var key_deviceFamilyName = ${deviceFamilyName};
 
 		AssertClick(
 			locator1 = "MobileDevice#DEVICE_FAMILY_TABLE_NAME_LINK",
-			value1 = "${deviceFamilyName}");
+			value1 = ${deviceFamilyName});
 
 		SelectFrame(value1 = "relative=top");
 	}
@@ -633,16 +633,16 @@ definition {
 	macro selectSitePagesVariationName {
 		Click(locator1 = "SitePages#STAGING_SITE_PAGES_VARIATION_BUTTON");
 
-		var key_sitePagesVariationName = "${sitePagesVariationName}";
+		var key_sitePagesVariationName = ${sitePagesVariationName};
 
-		MenuItem.click(menuItem = "${sitePagesVariationName}");
+		MenuItem.click(menuItem = ${sitePagesVariationName});
 	}
 
 	@summary = "Delete all pages except the Welcome Page"
 	macro tearDownPG {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
-		Navigator.openSiteURL(siteName = "${siteName}");
+		Navigator.openSiteURL(siteName = ${siteName});
 
 		while (IsElementPresent(locator1 = "SitePages#PAGE_ELLIPSIS_2")) {
 			ProductMenuHelper.expandPanel(panel = "Site Administration");
@@ -662,12 +662,12 @@ definition {
 	}
 
 	macro togglePageTemplateInheritChanges {
-		if ("${toggleValue}" == "enable") {
+		if (${toggleValue} == "enable") {
 			Check.checkToggleSwitch(
 				key_toggleSwitchLabel = "Inherit Changes",
 				locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
 		}
-		else if ("${toggleValue}" == "disable") {
+		else if (${toggleValue} == "disable") {
 			Uncheck.uncheckToggleSwitch(
 				key_toggleSwitchLabel = "Inherit Changes",
 				locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
@@ -685,13 +685,13 @@ definition {
 
 		UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
 			locator1 = "TextInput#FILE",
-			value1 = "${logoFile}");
+			value1 = ${logoFile});
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Button.clickDone();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		SelectFrameTop();
 
@@ -704,9 +704,9 @@ definition {
 		ProductMenuHelper.expandCategory(category = "Navigation");
 
 		AssertTextEquals(
-			key_page = "${pageName}",
+			key_page = ${pageName},
 			locator1 = "SitePages#PAGE_TREE_PAGE_LINK",
-			value1 = "${pageName}");
+			value1 = ${pageName});
 	}
 
 	macro viewChildPage {
@@ -716,40 +716,40 @@ definition {
 
 		ProductMenuHelper.expandCategory(category = "Navigation");
 
-		var key_page = "${pageName}";
+		var key_page = ${pageName};
 
 		ProductMenuHelper.expandPageTree();
 
 		AssertTextEquals(
 			locator1 = "ProductMenu#PAGES",
-			value1 = "${pageName}");
+			value1 = ${pageName});
 	}
 
 	macro viewChildPageDropdown {
 		ClickNoError.clickNoMouseOver(locator1 = "Home#${viewChildPageDropdown}");
 
 		if (isSet(javaScriptPage)) {
-			Confirm.waitForConfirmation(value1 = "${javaScriptPage}");
+			Confirm.waitForConfirmation(value1 = ${javaScriptPage});
 		}
 
 		MouseOver.mouseOverClickNavigation(locator1 = "Home#PAGE_2");
 
-		var key_childPageName = "${childPageName}";
+		var key_childPageName = ${childPageName};
 
 		AssertTextEquals(
 			locator1 = "Home#PAGE_CHILD_PAGE",
-			value1 = "${childPageName}");
+			value1 = ${childPageName});
 	}
 
 	macro viewCurrentPage {
 		AssertVisible(
-			key_pageName = "${pageName}",
+			key_pageName = ${pageName},
 			locator1 = "Home#PAGE_ACTIVE");
 	}
 
 	macro viewCurrentTheme {
-		var key_page = "${page}";
-		var key_themeName = "${themeName}";
+		var key_page = ${page};
+		var key_themeName = ${themeName};
 
 		ProductMenuHelper.expandCategory(category = "Navigation");
 
@@ -760,11 +760,11 @@ definition {
 			locator1 = "MenuItem#ANY_MENU_ITEM",
 			value1 = "Configure Page");
 
-		Navigator.gotoNavTab(navTab = "${navTab}");
+		Navigator.gotoNavTab(navTab = ${navTab});
 
 		AssertTextPresent(
 			locator1 = "SitePagesEditPage#VIEW_THEME",
-			value1 = "${themeName}");
+			value1 = ${themeName});
 	}
 
 	macro viewCustomLogoPG {
@@ -782,27 +782,27 @@ definition {
 	macro viewDefaultSiteTemplatePagesPG {
 		Click(locator1 = "Home#PAGE_NAVIGATION_BAR");
 
-		var key_pageName = "${pageName}";
+		var key_pageName = ${pageName};
 
-		if ("${siteTemplate}" == "Community") {
+		if (${siteTemplate} == "Community") {
 			AssertTextEquals(
 				locator1 = "Home#PAGE_TEMPLATE_1",
-				value1 = "${pageName}");
+				value1 = ${pageName});
 
 			AssertTextEquals(
 				locator1 = "Home#PAGE_TEMPLATE_2",
 				value1 = "Wiki");
 		}
-		else if ("${siteTemplate}" == "Intranet") {
+		else if (${siteTemplate} == "Intranet") {
 			AssertTextEquals(
 				locator1 = "Home#PAGE_TEMPLATE_1",
-				value1 = "${pageName}");
+				value1 = ${pageName});
 
 			AssertTextEquals(
 				locator1 = "Home#PAGE_TEMPLATE_2",
 				value1 = "Documents and Media");
 		}
-		else if ("${siteTemplate}" == "Zoe Healthcare Theme") {
+		else if (${siteTemplate} == "Zoe Healthcare Theme") {
 			AssertElementPresent(locator1 = "Home#SITE_NAME_LOGO");
 
 			AssertElementPresent(locator1 = "Home#PAGE_TEMPLATE_1");
@@ -822,12 +822,12 @@ definition {
 	}
 
 	macro viewDeletedPage {
-		var key_page = "${pageName}";
+		var key_page = ${pageName};
 
 		AssertElementNotPresent(locator1 = "Home#PAGE");
 
 		AssertElementNotPresent(
-			key_page = "${pageName}",
+			key_page = ${pageName},
 			locator1 = "SitePages#PAGE_TREE_PAGE_LINK");
 	}
 
@@ -838,7 +838,7 @@ definition {
 	}
 
 	macro viewFriendlyURL {
-		SitePageNavigator.gotoEditPage(page = "${pageName}");
+		SitePageNavigator.gotoEditPage(page = ${pageName});
 
 		AssertTextEquals(
 			locator1 = "SitePages#DETAILS_FRIENDLY_BASE_URL",
@@ -846,19 +846,19 @@ definition {
 	}
 
 	macro viewFriendlyURLLanguageOptionsPG {
-		for (var languageKey : list "${currentLanguageList}") {
+		for (var languageKey : list ${currentLanguageList}) {
 			AssertElementPresent(locator1 = "SitePagesEditPage#${languageKey}");
 		}
 
-		if ("${assertUnavailableLanguages}" == "true") {
-			for (var languageKey : list "${unavailableLanguageList}") {
+		if (${assertUnavailableLanguages} == "true") {
+			for (var languageKey : list ${unavailableLanguageList}) {
 				AssertElementNotPresent(locator1 = "SitePagesEditPage#${languageKey}");
 			}
 		}
 	}
 
 	macro viewLayoutLogoPG {
-		if ("${assertLayoutLogoPresent}" == "true") {
+		if (${assertLayoutLogoPresent} == "true") {
 			AssertElementPresent(locator1 = "Home#LAYOUT_LOGO");
 		}
 		else {
@@ -869,7 +869,7 @@ definition {
 	macro viewLoadMoreResultsPages {
 		ProductMenuHelper.expandPageTree();
 
-		if ("${siteChildPages}" == "false") {
+		if (${siteChildPages} == "false") {
 			AssertClick(
 				locator1 = "SitePages#PAGE_TREE_LOAD_MORE_RESULTS_LINK",
 				value1 = "Load more results");
@@ -882,7 +882,7 @@ definition {
 				locator1 = "SitePages#PAGE_TREE_PAGE_LINK_5",
 				value1 = "Page4 Name");
 		}
-		else if ("${siteChildPages}" == "true") {
+		else if (${siteChildPages} == "true") {
 			AssertClick(
 				locator1 = "SitePages#PAGE_TREE_LOAD_MORE_RESULTS_LINK",
 				value1 = "Load more results");
@@ -902,7 +902,7 @@ definition {
 
 		ProductMenuHelper.expandPageTree();
 
-		var key_page = "${page}";
+		var key_page = ${page};
 
 		Click.mouseOverClick(locator1 = "SitePages#SPECIFIC_PAGE_ELLIPSIS");
 
@@ -920,28 +920,28 @@ definition {
 	}
 
 	macro viewNoPG {
-		var key_pageName = "${pageName}";
+		var key_pageName = ${pageName};
 
 		AssertElementNotPresent(locator1 = "Home#PAGE");
 	}
 
 	macro viewNoSelectCategory {
-		SitePageNavigator.gotoAddPage(sitePagePrivacy = "${sitePagePrivacy}");
+		SitePageNavigator.gotoAddPage(sitePagePrivacy = ${sitePagePrivacy});
 
 		Type.typeClickAt(
 			locator1 = "TextInput#NAME",
-			value1 = "${pageName}");
+			value1 = ${pageName});
 
 		Panel.expandPanel(panelHeading = "Categorization");
 
 		AssertElementNotPresent(
-			key_vocabularyName = "${vocabularyName}",
+			key_vocabularyName = ${vocabularyName},
 			locator1 = "AssetCategorization#CATEGORY_SELECT");
 	}
 
 	macro viewPageFriendlyURLPG {
 		if (isSet(friendlyUrlLocalized)) {
-			var key_friendlyUrlLocalized = "${friendlyUrlLocalized}";
+			var key_friendlyUrlLocalized = ${friendlyUrlLocalized};
 
 			Click(locator1 = "SitePagesEditPage#FRIENDLY_URL_LOCALIZED");
 		}
@@ -952,12 +952,12 @@ definition {
 	}
 
 	macro viewPageLayout {
-		if ("${pageLayout}" == "1 Column") {
+		if (${pageLayout} == "1 Column") {
 			AssertVisible(locator1 = "Home#PAGE_COLUMN_1_LAYOUT_1_COLUMN");
 
 			AssertElementNotPresent(locator1 = "Home#PAGE_COLUMN_2");
 		}
-		else if ("${pageLayout}" == "2 Column (30/70)") {
+		else if (${pageLayout} == "2 Column (30/70)") {
 			AssertVisible(locator1 = "Home#PAGE_COLUMN_1_LAYOUT_2_COLUMNS_30_SPLIT");
 
 			AssertVisible(locator1 = "Home#PAGE_COLUMN_2_LAYOUT_2_COLUMNS_70_SPLIT");
@@ -966,7 +966,7 @@ definition {
 
 	macro viewPageLayoutColumn {
 		AssertElementPresent(
-			key_columnName = "${columnName}",
+			key_columnName = ${columnName},
 			locator1 = "SitePagesEditPage#LAYOUT_CARD");
 	}
 
@@ -976,10 +976,10 @@ definition {
 		}
 
 		ProductMenu.gotoLocalizedEditPage(
-			category = "${category}",
-			page = "${page}");
+			category = ${category},
+			page = ${page});
 
-		var key_defaultSiteLanguageKey = "${defaultSiteLanguageKey}";
+		var key_defaultSiteLanguageKey = ${defaultSiteLanguageKey};
 
 		Navigator.gotoSEOPanel();
 
@@ -999,47 +999,47 @@ definition {
 	macro viewPageMetadata {
 		AssertTextEquals(
 			locator1 = "TextInput#SEO_HTML_TITLE",
-			value1 = "${HTMLTitle}");
+			value1 = ${HTMLTitle});
 
 		AssertTextEquals(
 			locator1 = "TextArea#SEO_META_TAGS_DESCRIPTION",
-			value1 = "${metaTagsDescription}");
+			value1 = ${metaTagsDescription});
 
 		AssertTextEquals(
 			locator1 = "TextArea#SEO_META_TAGS_KEYWORDS",
-			value1 = "${metaTagsKeywords}");
+			value1 = ${metaTagsKeywords});
 	}
 
 	macro viewPageOrderStagingLivePG {
 		AssertTextEquals(
 			locator1 = "Home#PAGE_1_STAGING_LIVE",
-			value1 = "${pageName1}");
+			value1 = ${pageName1});
 
 		AssertTextEquals(
 			locator1 = "Home#PAGE_2_STAGING_LIVE",
-			value1 = "${pageName2}");
+			value1 = ${pageName2});
 
 		AssertTextEquals(
 			locator1 = "Home#PAGE_3_STAGING_LIVE",
-			value1 = "${pageName3}");
+			value1 = ${pageName3});
 	}
 
 	macro viewPagesOrder {
 		ProductMenuHelper.expandCategory(category = "Navigation");
 
-		var key_page = "${pageName1}";
+		var key_page = ${pageName1};
 
 		AssertTextEquals(
 			locator1 = "SitePages#PAGE_TREE_PAGE_LINK",
-			value1 = "${pageName1}");
+			value1 = ${pageName1});
 
 		AssertTextEquals(
 			locator1 = "SitePages#PAGE_TREE_PAGE_LINK_2",
-			value1 = "${pageName2}");
+			value1 = ${pageName2});
 
 		AssertTextEquals(
 			locator1 = "SitePages#PAGE_TREE_PAGE_LINK_3",
-			value1 = "${pageName3}");
+			value1 = ${pageName3});
 	}
 
 	macro viewPageTemplate {
@@ -1055,7 +1055,7 @@ definition {
 
 		ProductMenuHelper.expandCategory(category = "Navigation");
 
-		SitePageNavigator.gotoEditPage(page = "${page}");
+		SitePageNavigator.gotoEditPage(page = ${page});
 
 		AssertTextEquals(
 			locator1 = "Message#ERROR_3",
@@ -1065,17 +1065,17 @@ definition {
 	}
 
 	macro viewPageTemplateTypeNotPresent {
-		var key_pageName = "${pageTemplateName}";
+		var key_pageName = ${pageTemplateName};
 
 		Click(locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT");
 
 		AssertTextNotPresent(
 			locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 	}
 
 	macro viewPageTemplateTypePresent {
-		var key_pageName = "${pageTemplateName}";
+		var key_pageName = ${pageTemplateName};
 
 		AssertElementPresent(locator1 = "SitePagesEditPage#PAGE_TYPE_SELECT");
 	}
@@ -1083,48 +1083,48 @@ definition {
 	macro viewPanelPortletListCP {
 		ProductMenuHelper.openProductMenu();
 
-		SitePageNavigator.gotoEditPage(page = "${pageName}");
+		SitePageNavigator.gotoEditPage(page = ${pageName});
 
-		var key_componentName = "${componentName}";
+		var key_componentName = ${componentName};
 
 		if (IsElementPresent(locator1 = "SitePages#DETAILS_PAGE_TYPE_PANEL_COMPONENT_TREE_ARROW")) {
 			Click(locator1 = "SitePages#DETAILS_PAGE_TYPE_PANEL_COMPONENT_TREE_ARROW");
 		}
 
-		var key_componentOrPortletName = "${componentName}";
+		var key_componentOrPortletName = ${componentName};
 
 		AssertChecked.assertCheckedNotVisible(locator1 = "SitePages#DETAILS_PAGE_TYPE_PANEL_CHECKBOX_INPUT");
 
-		for (var portletName : list "${portletNameList}") {
-			var key_componentOrPortletName = "${portletName}";
+		for (var portletName : list ${portletNameList}) {
+			var key_componentOrPortletName = ${portletName};
 
 			AssertChecked.assertCheckedNotVisible(locator1 = "SitePages#DETAILS_PAGE_TYPE_PANEL_CHECKBOX_INPUT");
 		}
 	}
 
 	macro viewPanelPortletListPG {
-		var key_componentName = "${componentName}";
+		var key_componentName = ${componentName};
 
 		AssertTextEquals(
 			locator1 = "Panel#PANEL_TITLE",
-			value1 = "${componentName}");
+			value1 = ${componentName});
 
-		var key_pageName = "${pageName}";
+		var key_pageName = ${pageName};
 
 		AssertTextEquals(
 			locator1 = "Panel#PANEL_PAGE_TITLE",
-			value1 = "${pageName}");
+			value1 = ${pageName});
 
 		AssertTextEquals(
 			locator1 = "Message#INFO",
 			value1 = "Please select a tool from the left menu.");
 
-		for (var portletName : list "${portletNameList}") {
-			var key_portletName = "${portletName}";
+		for (var portletName : list ${portletNameList}) {
+			var key_portletName = ${portletName};
 
 			AssertTextEquals(
 				locator1 = "Panel#MENU_ITEM",
-				value1 = "${portletName}");
+				value1 = ${portletName});
 		}
 	}
 
@@ -1151,77 +1151,77 @@ definition {
 		AssertCssValue(
 			locator1 = "Home#SITE_WRAPPER",
 			locator2 = "padding-right",
-			value1 = "${sideNavWidth}");
+			value1 = ${sideNavWidth});
 	}
 
 	macro viewSelectedLayoutColumn {
 		AssertElementPresent(
-			key_columnName = "${columnName}",
+			key_columnName = ${columnName},
 			locator1 = "SitePagesEditPage#LAYOUT_CARD_SELECTED");
 	}
 
 	macro viewSiteNameTranslationsPG {
 		Click(
-			key_language = "${language}",
+			key_language = ${language},
 			locator1 = "Language#SELECT_LANGUAGE");
 
 		AssertTextEquals(
 			locator1 = "Home#SITE_NAME",
-			value1 = "${siteName}");
+			value1 = ${siteName});
 	}
 
 	macro viewSpecificPG {
-		for (var pageName : list "${pageNameList}") {
-			var key_pageName = "${pageName}";
+		for (var pageName : list ${pageNameList}) {
+			var key_pageName = ${pageName};
 
 			AssertTextEquals(
 				locator1 = "Home#PAGE",
-				value1 = "${pageName}");
+				value1 = ${pageName});
 		}
 	}
 
 	macro viewTranslationsPG {
-		Navigator.openSpecificURL(url = "${sitePageURL}");
+		Navigator.openSpecificURL(url = ${sitePageURL});
 
-		AssertLocation(value1 = "${sitePageURL}");
+		AssertLocation(value1 = ${sitePageURL});
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Home#PORTAL_LOCALIZATION_MESSAGE_INFO",
-			value1 = "${pageLocalizationMessage}");
+			value1 = ${pageLocalizationMessage});
 
 		AssertTextEquals(
 			locator1 = "Home#PORTAL_LOCALIZATION_PREFERRED_MESSAGE",
-			value1 = "${pageLocalizationPreferredLanguage}");
+			value1 = ${pageLocalizationPreferredLanguage});
 	}
 
 	macro viewURLLocale {
 		if (isSet(localizationOption)) {
 			AssertClick(
 				locator1 = "Message#INFO_4",
-				value1 = "${localizationOption}");
+				value1 = ${localizationOption});
 		}
 
-		AssertLocation(value1 = "${localizationPageURL}");
+		AssertLocation(value1 = ${localizationPageURL});
 	}
 
 	macro viewWithWorkflowPG {
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
-		if ("${workflowStatus}" == "Ready for Publication") {
+		if (${workflowStatus} == "Ready for Publication") {
 			AssertElementPresent(locator1 = "Staging#STAGING_MENU_READY_FOR_PUBLICATION");
 		}
 		else {
 			AssertTextEquals(
 				locator1 = "Message#WORKFLOW_STATUS",
-				value1 = "${workflowStatus}");
+				value1 = ${workflowStatus});
 		}
 
-		if ("${livePage}" == "true") {
+		if (${livePage} == "true") {
 			AssertClick.assertPartialTextClickAt(
 				locator1 = "Staging#LIVE_BUTTON",
 				value1 = "Live");
 
-			var key_pageName = "${pageName}";
+			var key_pageName = ${pageName};
 
 			AssertElementNotPresent(locator1 = "Home#PAGE");
 		}

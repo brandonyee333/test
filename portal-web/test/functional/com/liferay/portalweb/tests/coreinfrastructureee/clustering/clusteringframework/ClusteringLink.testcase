@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -24,7 +24,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ClusteringLinkPortalProperties {
 		property custom.properties = "cluster.link.enabled=false";
 		property test.name.skip.portal.instance = "ClusteringLink#ClusteringLinkPortalProperties";
@@ -93,7 +93,7 @@ definition {
 
 		AssertConsoleTextPresent(value1 = "Autodetecting JGroups outgoing IP address and interface for www.google.com:80");
 
-		var ipAddress = Clustering.getClusterNodeOutgoingIPAddress(nodePort = "8080");
+		var ipAddress = Clustering.getClusterNodeOutgoingIPAddress(nodePort = 8080);
 
 		Portlet.shutdownServer();
 

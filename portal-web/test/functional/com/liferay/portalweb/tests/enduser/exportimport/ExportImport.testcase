@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -31,7 +31,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-84223."
-	@priority = "3"
+	@priority = 3
 	test DLLinkValidationInWebContent {
 		Navigator.openURL();
 
@@ -51,7 +51,7 @@ definition {
 
 		var dmDocumentURL = selenium.getAttribute("//input[contains(@class,'lfr-input-resource')]@value");
 
-		var editDocumentURL = StringUtil.extractFirst("${dmDocumentURL}", "jpg");
+		var editDocumentURL = StringUtil.extractFirst(${dmDocumentURL}, "jpg");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -75,7 +75,7 @@ definition {
 			value1 = "Unable to validate referenced file entry because it cannot be found with the following parameters");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditExportTemplate {
 		property test.name.skip.portal.instance = "ExportImport#EditExportTemplate";
 
@@ -131,7 +131,7 @@ definition {
 			exportTemplateName = "Export Template Name",
 			larFileName = "Export.Template");
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		var larFileName = LAR.getLarFileName();
 
@@ -145,7 +145,7 @@ definition {
 		Site.addBlankCP(siteName = "Site Name");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -194,10 +194,10 @@ definition {
 
 		LAR.downloadLar();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -216,7 +216,7 @@ definition {
 
 	@description = "This will be ignored until LPS-95589 is fixed. This is a use case for LPS-95589."
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ExportDMWithDeletedDocumentLink {
 		JSONGroup.addGroup(groupName = "Site Name");
 
@@ -264,7 +264,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "NoSuchFileEntryException");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ExportImportDDLViaGlobal {
 		property test.name.skip.portal.instance = "ExportImport#ExportImportDDLViaGlobal";
 
@@ -374,7 +374,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-91735."
-	@priority = "3"
+	@priority = 3
 	test ExportImportGlobalDDMStructureViaInstances {
 		property portal.release = "false";
 		property test.name.skip.portal.instance = "ExportImport#ExportImportGlobalDDMStructureViaInstances";
@@ -423,14 +423,14 @@ definition {
 
 		LAR.importSiteCP(
 			baseURL = "http://www.able.com:8080",
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Global");
 
 		AssertConsoleTextNotPresent(value1 = "com.liferay.exportimport.kernel.lar.PortletDataException");
 	}
 
 	@description = "This is a use case for LPS-88378."
-	@priority = "3"
+	@priority = 3
 	test ExportImportLayoutCircularReference {
 		JSONGroup.addGroup(groupName = "Site Name");
 
@@ -537,7 +537,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_STATUS",
@@ -552,13 +552,13 @@ definition {
 		Navigator.openSiteLanding(siteURLKey = "Site Name B");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name B");
 
 		AssertConsoleTextNotPresent(value1 = "java.lang.NullPointerException");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ExportImportPortletWithADT {
 		property test.name.skip.portal.instance = "ExportImport#ExportImportPortletWithADT";
 
@@ -609,7 +609,7 @@ definition {
 		Site.addBlankCP(siteName = "Site Name");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name");
 
 		Navigator.gotoSitePage(
@@ -623,7 +623,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Link#MOVE_TO_THE_RECYCLE_BIN");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ExportImportPrivatePage {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "ExportImport#ExportImportPrivatePage";
@@ -642,7 +642,7 @@ definition {
 			larFileName = "ExportPrivatePage",
 			privateLayout = "true");
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_STATUS",
@@ -660,7 +660,7 @@ definition {
 		Site.addBlankCP(siteName = "Site Name");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			privateLayout = "true",
 			siteName = "Site Name");
 
@@ -669,7 +669,7 @@ definition {
 			sitePagePrivacy = "true");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ExportImportSampleLARPortlet {
 		property portal.acceptance = "true";
 		property portlet.plugins.includes = "sample-lar-portlet";
@@ -686,7 +686,7 @@ definition {
 
 		echo("Booking Number ${bookingNumber}");
 
-		SampleLARPortlet.viewSampleBookingNumber(bookingNumber = "${bookingNumber}");
+		SampleLARPortlet.viewSampleBookingNumber(bookingNumber = ${bookingNumber});
 
 		LAR.exportPortlet(larFileName = "SampleLARPortlet.lar");
 
@@ -718,11 +718,11 @@ definition {
 			pageName = "Test Site Page",
 			siteName = "Test Site Name");
 
-		SampleLARPortlet.viewSampleBookingNumber(bookingNumber = "${bookingNumber}");
+		SampleLARPortlet.viewSampleBookingNumber(bookingNumber = ${bookingNumber});
 	}
 
 	@description = "This is a use case for LPS-84201."
-	@priority = "3"
+	@priority = 3
 	test ExportImportSiteWithAssetPublisherScopeSetting {
 		JSONGroup.addGroup(groupName = "Site Name A");
 
@@ -750,7 +750,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_STATUS",
@@ -774,7 +774,7 @@ definition {
 		Navigator.openSiteLanding(siteURLKey = "Site Name A");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name A");
 
 		Navigator.gotoSitePage(
@@ -785,7 +785,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-88331."
-	@priority = "3"
+	@priority = 3
 	test ExportImportSiteWithNestedDocumentsAndMediaField {
 		JSONGroup.addGroup(groupName = "Site A");
 
@@ -850,7 +850,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -862,7 +862,7 @@ definition {
 		Navigator.openSiteLanding(siteURLKey = "Site B");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site B");
 
 		Navigator.openSiteLanding(siteURLKey = "Site B");
@@ -878,7 +878,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-54392 and LPS-88014."
-	@priority = "3"
+	@priority = 3
 	test ExportImportSiteWithReferencedWebContent {
 		JSONGroup.addGroup(groupName = "Site Name A");
 
@@ -894,7 +894,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName1}";
+		var key_larFileName = ${larFileName1};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_STATUS",
@@ -924,7 +924,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName2}";
+		var key_larFileName = ${larFileName2};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_STATUS",
@@ -946,19 +946,19 @@ definition {
 		JSONGroup.addGroup(groupName = "Site Name C");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName1}",
+			larFileName = ${larFileName1},
 			siteName = "Site Name C");
 
 		JSONGroup.addGroup(groupName = "Site Name D");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName2}",
+			larFileName = ${larFileName2},
 			siteName = "Site Name D");
 
 		AssertConsoleTextNotPresent(value1 = "com.liferay.exportimport.kernel.lar.PortletDataException");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ExportImportSmoke {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "ExportImport#ExportImportSmoke";
@@ -970,7 +970,7 @@ definition {
 			locator1 = "SitePagesExport#EXPORT_BUTTON",
 			value1 = "Export");
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_STATUS",
@@ -988,7 +988,7 @@ definition {
 		Site.addBlankCP(siteName = "Site Name");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name");
 
 		AssertConsoleTextNotPresent(value1 = "java.lang.StringIndexOutOfBoundsException");
@@ -996,7 +996,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "java.lang.NullPointerException");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ExportImportValidation {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "ExportImport#ExportImportValidation";
@@ -1072,12 +1072,12 @@ definition {
 
 		LAR.importSiteCP(
 			importValidationMissingItem = "DM Document Title",
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name");
 	}
 
 	@description = "This is a use case for LPS-84204."
-	@priority = "4"
+	@priority = 4
 	test ExportImportWCDReferenceWhenNotStagedWebContent {
 		JSONGroup.addGroup(groupName = "Site Name A");
 
@@ -1128,7 +1128,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1136,7 +1136,7 @@ definition {
 		JSONGroup.addGroup(groupName = "Site Name C");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name C");
 
 		Navigator.gotoSitePage(
@@ -1148,7 +1148,7 @@ definition {
 
 	@description = "This will be ignored until LPS-88743 is fixed.This is a use case for LPS-88743."
 	@ignore = "true"
-	@priority = "3"
+	@priority = 3
 	test ExportImportWebContentCircularReference {
 		property portal.upstream = "quarantine";
 		property test.name.skip.portal.instance = "ExportImport#ExportImportWebContentCircularReference";
@@ -1222,7 +1222,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1234,14 +1234,14 @@ definition {
 		Navigator.openSiteLanding(siteURLKey = "Site Name A");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name A");
 
 		AssertConsoleTextNotPresent(value1 = "com.liferay.journal.exception.NoSuchArticleException");
 	}
 
 	@description = "This is a use case for LPS-83326 and LPS-99287."
-	@priority = "5"
+	@priority = 5
 	test ExportImportWebcontentFolderWithWorkflow {
 		Navigator.openSiteLanding(siteURLKey = "Guest");
 
@@ -1286,7 +1286,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "com.liferay.exportimport.kernel.lar.PortletDataException");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ExportImportWithExportTemplate {
 		Navigator.openURL();
 
@@ -1323,12 +1323,12 @@ definition {
 		Site.addBlankCP(siteName = "Site Name");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name");
 	}
 
 	@description = "This is a use case for LPS-88498."
-	@priority = "5"
+	@priority = 5
 	test ExportViaGuest {
 		property portal.release = "false";
 		property test.name.skip.portal.instance = "ExportImport#ExportViaGuest";
@@ -1356,7 +1356,7 @@ definition {
 			userLoginEmailAddress = "userea@liferay.com",
 			userLoginFullName = "userfn userln");
 
-		Navigator.openSpecificURL(url = "${downloadURL}");
+		Navigator.openSpecificURL(url = ${downloadURL});
 
 		AssertTextEquals(
 			locator1 = "Home#ERROR_MESSAGE_ALERT_ERROR",
@@ -1364,7 +1364,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-88831, LPS-88889 and LPS-88890."
-	@priority = "4"
+	@priority = 4
 	test ExportWebContentWithDeletedReference {
 		property test.name.skip.portal.instance = "ExportImport#ExportWebContentWithDeletedReference";
 
@@ -1391,9 +1391,9 @@ definition {
 
 		for (var structureFieldName : list "Documents and Media,Link to Page,Image") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
@@ -1453,7 +1453,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "com.liferay.exportimport.kernel.lar.PortletDataException");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportCorruptedFile {
 		property portal.acceptance = "true";
 
@@ -1476,7 +1476,7 @@ definition {
 
 	@description = "This is a use case for LPS-88571."
 	@ignore = "true"
-	@priority = "3"
+	@priority = 3
 	test ImportSiteWithMissingReferenceOfPreloadedEntry {
 		property test.name.skip.portal.instance = "ExportImport#ImportSiteWithMissingReferenceOfPreloadedEntry";
 
@@ -1500,13 +1500,13 @@ definition {
 
 		for (var dmDocumentTypeName : list "Google Docs,Contract,Marketing Banner,Online Training,Sales Presentation") {
 			DMDocumentType.viewCP(
-				dmDocumentTypeName = "${dmDocumentTypeName}",
+				dmDocumentTypeName = ${dmDocumentTypeName},
 				dmDocumentTypeScope = "Global");
 		}
 
 		for (var dmDocumentTypeName : list "Google Docs,Contract,Marketing Banner,Online Training,Sales Presentation") {
 			DMDocumentType.viewCP(
-				dmDocumentTypeName = "${dmDocumentTypeName}",
+				dmDocumentTypeName = ${dmDocumentTypeName},
 				dmDocumentTypeScope = "Current Site");
 		}
 
@@ -1515,7 +1515,7 @@ definition {
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Document Types");
 
 		for (var dmDocumentTypeName : list "Google Docs,Contract,Marketing Banner,Online Training,Sales Presentation") {
-			DMDocumentType.deletePG(dmDocumentTypeName = "${dmDocumentTypeName}");
+			DMDocumentType.deletePG(dmDocumentTypeName = ${dmDocumentTypeName});
 		}
 
 		Portlet.viewEmptyMessage(message = "There are no results.");
@@ -1550,7 +1550,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1568,7 +1568,7 @@ definition {
 
 		LAR.importSiteCP(
 			importValidationMissingItem = "Document Type",
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site C");
 
 		ProductMenu.gotoPortlet(
@@ -1587,7 +1587,7 @@ definition {
 		SystemSettings.saveConfiguration();
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site C");
 
 		Navigator.gotoSitePage(
@@ -1597,7 +1597,7 @@ definition {
 
 	@description = "This will be ignored until LPS-98557 is fixed.This is a use case for LPS-97544 and LPS-90886."
 	@ignore = "true"
-	@priority = "3"
+	@priority = 3
 	test ImportStagedSiteWithCircularReference {
 		JSONGroup.addGroup(groupName = "Site Name");
 
@@ -1748,7 +1748,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1758,12 +1758,12 @@ definition {
 		JSONGroup.addGroup(groupName = "Site Name B");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name B");
 	}
 
 	@description = "This is a use case for LPS-94738."
-	@priority = "4"
+	@priority = 4
 	test ImportWCDReferenceAfterActivateStaging {
 		JSONGroup.addGroup(groupName = "Site Name A");
 
@@ -1785,7 +1785,7 @@ definition {
 
 		LAR.exportSiteCP();
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -1804,7 +1804,7 @@ definition {
 		Staging.activateStagingCP(siteName = "Site Name B");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "site-name-b-staging");
 
 		Navigator.gotoStagedSitePage(
@@ -1815,7 +1815,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-91233."
-	@priority = "3"
+	@priority = 3
 	test PublishWebContentWithBrokenLink {
 		property test.name.skip.portal.instance = "ExportImport#PublishWebContentWithBrokenLink";
 

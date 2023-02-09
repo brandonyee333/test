@@ -3,37 +3,37 @@ definition {
 	macro addCP {
 		LexiconEntry.gotoAdd();
 
-		WebContentStructures.addName(structureName = "${structureName}");
+		WebContentStructures.addName(structureName = ${structureName});
 
 		Panel.expandPanel(panelHeading = "Details");
 
 		if (isSet(structureDescription)) {
-			PortletEntry.inputDescriptionTextInput(description = "${structureDescription}");
+			PortletEntry.inputDescriptionTextInput(description = ${structureDescription});
 		}
 
 		SelectFrame(value1 = "relative=top");
 	}
 
 	macro addLocalization {
-		var key_localizationName = "${localization1NameKey}";
+		var key_localizationName = ${localization1NameKey};
 
 		Click(locator1 = "Translation#LOCALIZATION_NAME");
 
-		WebContentStructures.addName(structureName = "${localization1Name}");
+		WebContentStructures.addName(structureName = ${localization1Name});
 
 		if (isSet(localization2NameKey)) {
-			var key_localizationName = "${localization2NameKey}";
+			var key_localizationName = ${localization2NameKey};
 
 			Click(locator1 = "Translation#LOCALIZATION_NAME");
 
-			WebContentStructures.addName(structureName = "${localization2Name}");
+			WebContentStructures.addName(structureName = ${localization2Name});
 		}
 	}
 
 	macro addName {
 		Type.clickAtType(
 			locator1 = "TextInput#NAME",
-			value1 = "${structureName}");
+			value1 = ${structureName});
 	}
 
 	macro addNullCP {
@@ -59,11 +59,11 @@ definition {
 
 		IFrame.selectDialogFrame();
 
-		var key_ddlDataDefinitionName = "${parentStructureName}";
+		var key_ddlDataDefinitionName = ${parentStructureName};
 
 		AssertClickNoError(
 			locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_NAME_LINK",
-			value1 = "${parentStructureName}");
+			value1 = ${parentStructureName});
 
 		Confirm.assertConfirmationNoWait(value1 = "Selecting a new structure deletes all unsaved content. Do you want to proceed?");
 
@@ -71,37 +71,37 @@ definition {
 	}
 
 	macro advancedSearchCP {
-		var key_ddlDataDefinitionName = "${structureName}";
+		var key_ddlDataDefinitionName = ${structureName};
 
 		AssertTextEquals(
 			locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_NAME",
-			value1 = "${structureName}");
+			value1 = ${structureName});
 
 		Click(locator1 = "Icon#ADVANCED_SEARCH");
 
 		if (isSet(structureName)) {
-			PortletEntry.inputName(name = "${structureName}");
+			PortletEntry.inputName(name = ${structureName});
 		}
 
 		if (isSet(structureDescription)) {
-			PortletEntry.inputDescriptionTextInput(description = "${structureDescription}");
+			PortletEntry.inputDescriptionTextInput(description = ${structureDescription});
 		}
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 
 		AssertTextEquals(
 			locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_NAME",
-			value1 = "${structureName}");
+			value1 = ${structureName});
 
 		AssertTextEquals(
 			locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_DESCRIPTION",
-			value1 = "${structureDescription}");
+			value1 = ${structureDescription});
 	}
 
 	macro deleteCP {
 		WebContentNavigator.gotoManageStructures();
 
-		var key_ddlDataDefinitionName = "${structureName}";
+		var key_ddlDataDefinitionName = ${structureName};
 
 		Click(locator1 = "DDMSelectStructure#DDM_STRUCTURE_ELLIPSIS");
 
@@ -109,7 +109,7 @@ definition {
 
 		Confirm(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 
-		if ("${webContentHasReference}" == "true") {
+		if (${webContentHasReference} == "true") {
 			Alert.viewRequestFailedToComplete();
 
 			AssertTextEquals.assertPartialText(
@@ -122,21 +122,21 @@ definition {
 	}
 
 	macro editSubstructureDefaultValuesCP {
-		var key_ddlDataDefinitionName = "${substructureName}";
+		var key_ddlDataDefinitionName = ${substructureName};
 
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "${substructureName}");
+			value1 = ${substructureName});
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit Default Values",
-			rowEntry = "${substructureName}");
+			rowEntry = ${substructureName});
 
-		for (var structureFieldName : list "${editSubstructureFieldNames}") {
-			var key_fieldDefaultValue = "${structureFieldName}";
-			var structureFieldName = StringUtil.replace("${structureFieldName}", " ", "");
+		for (var structureFieldName : list ${editSubstructureFieldNames}) {
+			var key_fieldDefaultValue = ${structureFieldName};
+			var structureFieldName = StringUtil.replace(${structureFieldName}, " ", "");
 
 			Type(
 				locator1 = "DDMField#DDM_INPUT",
@@ -152,20 +152,20 @@ definition {
 
 		WebContentNavigator.gotoManageStructures();
 
-		var key_ddlDataDefinitionName = "${substructureName}";
+		var key_ddlDataDefinitionName = ${substructureName};
 
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "${substructureName}");
+			value1 = ${substructureName});
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit Default Values",
-			rowEntry = "${substructureName}");
+			rowEntry = ${substructureName});
 
-		for (var structureFieldName : list "${editSubstructureFieldNames}") {
-			var key_fieldDefaultValue = "${structureFieldName}";
+		for (var structureFieldName : list ${editSubstructureFieldNames}) {
+			var key_fieldDefaultValue = ${structureFieldName};
 
 			AssertTextEquals(
 				locator1 = "DDMField#DDM_INPUT",
@@ -185,13 +185,13 @@ definition {
 		if (isSet(addRoleViewPermissions)) {
 			LexiconEntry.gotoEntryMenuItem(
 				menuItem = "Permissions",
-				rowEntry = "${structureName}");
+				rowEntry = ${structureName});
 
 			IFrame.selectDialogFrame();
 
 			PermissionsInline.addOrRemoveViewPermissionFromAllRoles(
 				addOrRemoveViewPermission = "Add",
-				roleList = "${addRoleViewPermissions}");
+				roleList = ${addRoleViewPermissions});
 
 			IFrame.selectTopFrame();
 		}
@@ -209,7 +209,7 @@ definition {
 
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "2");
+			value1 = 2);
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 
@@ -243,33 +243,33 @@ definition {
 	}
 
 	macro viewCP {
-		var key_ddlDataDefinitionName = "${structureName}";
+		var key_ddlDataDefinitionName = ${structureName};
 
 		if (isSet(structureName)) {
 			AssertTextEquals(
 				locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_NAME",
-				value1 = "${structureName}");
+				value1 = ${structureName});
 		}
 
 		if (isSet(structureDescription)) {
 			AssertTextEquals(
 				locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_DESCRIPTION",
-				value1 = "${structureDescription}");
+				value1 = ${structureDescription});
 		}
 
 		SelectFrame(value1 = "relative=top");
 	}
 
 	macro viewTableEntryCP {
-		var key_ddlDataDefinitionName = "${structureName}";
+		var key_ddlDataDefinitionName = ${structureName};
 
 		AssertTextEquals(
 			locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_NAME",
-			value1 = "${structureName}");
+			value1 = ${structureName});
 
 		AssertTextEquals(
 			locator1 = "DDMSelectStructure#DDM_STRUCTURE_TABLE_DESCRIPTION",
-			value1 = "${structureDescription}");
+			value1 = ${structureDescription});
 	}
 
 	macro viewTemplateValidation {

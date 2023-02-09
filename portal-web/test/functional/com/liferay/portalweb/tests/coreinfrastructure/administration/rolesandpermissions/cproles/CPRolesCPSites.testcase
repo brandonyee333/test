@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -32,7 +32,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSiteRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			page = "Public Pages",
@@ -111,7 +111,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Button#ADD");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchPermissions {
 		property testray.component.names = "Training";
 
@@ -280,7 +280,7 @@ definition {
 		Site.viewSiteAdminPermissionsCP(siteName = "Child SiteName");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewSiteManageChildSiteSiteRole {
 		Permissions.setUpSiteRoleLoginUserCP(
 			page = "Public Pages",
@@ -478,9 +478,9 @@ definition {
 			value1 = "Public Pages");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewSiteManagePagesRegRole {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Permissions.setUpRegRoleLoginUserCP(
 			portletName = "Sites",
@@ -547,13 +547,13 @@ definition {
 			panel = "Control Panel",
 			portlet = "Sites");
 
-		var key_site = "${siteName}";
+		var key_site = ${siteName};
 
 		AssertClick.assertPartialTextClickAt(
 			locator1 = "ContentRow#ENTRY_CONTENT_ROW_TD_1_SITE_LINK",
-			value1 = "${siteName}");
+			value1 = ${siteName});
 
-		var key_siteName = "${siteName}";
+		var key_siteName = ${siteName};
 
 		AssertElementPresent(locator1 = "SitePages#SITE_NAME");
 

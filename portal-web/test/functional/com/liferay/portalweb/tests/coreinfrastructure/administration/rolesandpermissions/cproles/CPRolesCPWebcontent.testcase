@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -34,7 +34,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddFolderSiteRoleDefaultPermission {
 		property portal.acceptance = "true";
 
@@ -67,7 +67,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Button#PLUS");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddFolderSiteRoleDefinePermission {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddFolderSiteRoleDefinePermission";
@@ -172,7 +172,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Button#PLUS");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddStructureSiteRoleDefaultPermission {
 		property portal.acceptance = "true";
 
@@ -205,7 +205,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Toolbar#MANAGE");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddStructureSiteRoleDefinePermission {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddStructureSiteRoleDefinePermission";
@@ -285,7 +285,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Toolbar#MANAGE");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddTemplateSiteRoleDefaultPermission {
 		property portal.acceptance = "true";
 
@@ -318,7 +318,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Toolbar#MANAGE");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddTemplateSiteRoleDefinePermission {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddTemplateSiteRoleDefinePermission";
@@ -393,7 +393,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Toolbar#MANAGE");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddWebContentSiteRoleDefaultPermission {
 		property portal.acceptance = "true";
 
@@ -426,7 +426,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Button#PLUS");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddWebContentSiteRoleDefinePermission {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "CPRolesCPWebcontent#AddWebContentSiteRoleDefinePermission";
@@ -503,7 +503,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Button#PLUS");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewWebContentPortletRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			portletName = "Web Content",
@@ -548,7 +548,7 @@ definition {
 			userLoginFullName = "userfn userln");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewWebContentPortletSiteRole {
 		Permissions.setUpSiteRoleLoginUserCP(
 			page = "Public Pages",

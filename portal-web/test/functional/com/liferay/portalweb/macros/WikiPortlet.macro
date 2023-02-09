@@ -3,7 +3,7 @@ definition {
 	macro configureDisplaySettings {
 		IFrame.selectDialogFrame();
 
-		for (var SettingName : list "${uncheckSetting}") {
+		for (var SettingName : list ${uncheckSetting}) {
 			Uncheck(locator1 = "Checkbox#${SettingName}");
 		}
 
@@ -17,7 +17,7 @@ definition {
 
 		Navigator.gotoNavItem(navItem = "Sharing");
 
-		if ("${enabled}" == "true") {
+		if (${enabled} == "true") {
 			Check.checkToggleSwitch(locator1 = "WikiConfiguration#ALLOW_USERS_TO_ADD_WIKI_TO_ANY_WEBSITE_CHECKBOX");
 		}
 		else {
@@ -30,7 +30,7 @@ definition {
 	}
 
 	macro subscribeToNodeCP {
-		var key_wikiNodeName = "${wikiNodeName}";
+		var key_wikiNodeName = ${wikiNodeName};
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Subscribe");
 
@@ -65,11 +65,11 @@ definition {
 	macro viewConfigurationTabs {
 		IFrame.selectDialogFrame();
 
-		for (var isPresent : list "${isPresent}") {
+		for (var isPresent : list ${isPresent}) {
 			AssertElementPresent(locator1 = "Configuration#${isPresent}");
 		}
 
-		for (var isNotPresent : list "${isNotPresent}") {
+		for (var isNotPresent : list ${isNotPresent}) {
 			AssertElementNotPresent(locator1 = "Configuration#${isNotPresent}");
 		}
 	}
@@ -79,7 +79,7 @@ definition {
 
 		Navigator.gotoNavItem(navItem = "Sharing");
 
-		if ("${enabled}" == "true") {
+		if (${enabled} == "true") {
 			AssertChecked.assertCheckedNotVisible(locator1 = "WikiConfiguration#ALLOW_USERS_TO_ADD_WIKI_TO_ANY_WEBSITE_CHECKBOX");
 		}
 		else {
@@ -92,7 +92,7 @@ definition {
 	macro viewDisplaySettings {
 		IFrame.selectDialogFrame();
 
-		for (var SettingName : list "${uncheckedSetting}") {
+		for (var SettingName : list ${uncheckedSetting}) {
 			AssertNotChecked(locator1 = "Checkbox#${SettingName}");
 		}
 	}

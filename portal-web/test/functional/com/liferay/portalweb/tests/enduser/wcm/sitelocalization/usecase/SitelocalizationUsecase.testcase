@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -24,7 +24,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AvailableSiteLocalesSubsetNotAllowed {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#AvailableSiteLocalesSubsetOfAvailablePortalLocales";
@@ -54,7 +54,7 @@ definition {
 			failExpected = "true");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test LocalizationStyle0 {
 		property custom.properties = "locale.prepend.friendly.url.style=0";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle0";
@@ -84,7 +84,7 @@ definition {
 		Navigator.gotoPage(pageName = "Language Test Page");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test LocalizationStyle1 {
 		property custom.properties = "locale.prepend.friendly.url.style=1";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle1";
@@ -114,7 +114,7 @@ definition {
 		Navigator.gotoPage(pageName = "Language Test Page");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test LocalizationStyle2 {
 		property custom.properties = "locale.prepend.friendly.url.style=2";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle2";
@@ -144,7 +144,7 @@ definition {
 		Navigator.gotoPage(pageName = "Language Test Page");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test LocalizeCountryName {
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizeCountryName";
 
@@ -218,7 +218,7 @@ definition {
 			orgName = "Organization Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test NoLocalePrependedWhenLocaleMatchMyPreferredLocalization {
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#NoLocalePrependedWhenLocaleMatchMyPreferredLocalization";
 
@@ -344,7 +344,7 @@ definition {
 			localizationPageURL = "${portalURL}/web/site2-name/");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test PortletInteractionLocalization {
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#PortletInteractionLocalization";
 
@@ -489,7 +489,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-59345"
-	@priority = "4"
+	@priority = 4
 	test RedirectLocalizedFriendlyURL {
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#RedirectLocalizedFriendlyURL";
 
@@ -536,7 +536,7 @@ definition {
 		AssertLocation(value1 = "${portalURL}/hu/web/site-name/teszt");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SiteTemplateLocalization {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#SiteTemplateLocalization";
@@ -596,7 +596,7 @@ definition {
 			siteTemplateName = "Site Template Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewAvailableSiteLocaleAlternatives {
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#ViewAvailableSiteLocaleAlternatives";
 
@@ -679,7 +679,7 @@ definition {
 		User.loginPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewEditURLLocale {
 		property custom.properties = "locale.use.default.if.not.available=true";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#ViewEditURLLocale";
@@ -767,7 +767,7 @@ definition {
 			value1 = "Sign In");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewSiteLocalizationAfterDeletingOriginalLocale {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "SitelocalizationUsecase#ViewSiteLocalizationAfterDeletingOriginalLocale";

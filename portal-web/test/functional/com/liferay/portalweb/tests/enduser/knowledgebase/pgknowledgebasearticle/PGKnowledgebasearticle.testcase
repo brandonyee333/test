@@ -16,21 +16,21 @@ definition {
 
 		User.firstLoginPG();
 
-		Page.add(pageName = "${pageName}");
+		Page.add(pageName = ${pageName});
 
-		SitePageNavigator.gotoEditPage(page = "${pageName}");
+		SitePageNavigator.gotoEditPage(page = ${pageName});
 
 		Page.editPageLayoutColumn(columnName = "1 Column");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
-		Portlet.addPG(portletName = "${portletName}");
+		Portlet.addPG(portletName = ${portletName});
 	}
 
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -40,7 +40,7 @@ definition {
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeleteKBArticleViaKBArticle {
 		Navigator.openURL();
 

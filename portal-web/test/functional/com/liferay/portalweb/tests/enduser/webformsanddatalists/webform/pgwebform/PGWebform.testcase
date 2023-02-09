@@ -14,17 +14,17 @@ definition {
 
 		User.firstLoginPG();
 
-		Page.add(pageName = "${pageName}");
+		Page.add(pageName = ${pageName});
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
-		Portlet.addPG(portletName = "${portletName}");
+		Portlet.addPG(portletName = ${portletName});
 	}
 
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -32,13 +32,13 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditAndSendWebFormWithRequiredCheckbox {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG(
 			wfInformationDescription = "Please let us know what you think!",
@@ -59,7 +59,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Please let us know what you think!",
@@ -86,9 +86,9 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebForm {
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -100,7 +100,7 @@ definition {
 
 		WebForm.viewFormFieldTextBox(wfFieldName = "Comments");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG(
 			wfInformationDescription = "Please let us know what you think!",
@@ -121,7 +121,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Please let us know what you think!",
@@ -136,9 +136,9 @@ definition {
 			wfFieldType = "Text Box");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebFormAndViewMultipleFields {
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -150,7 +150,7 @@ definition {
 
 		WebForm.viewFormFieldTextBox(wfFieldName = "Comments");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG(
 			wfInformationDescription = "Please let us know what you think!",
@@ -176,7 +176,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Please let us know what you think!",
@@ -207,13 +207,13 @@ definition {
 		AssertElementPresent(locator1 = "//fieldset/div/div[contains(@class,'form-group')]/textarea");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditWebFormAndViewOptionalCheckBoxField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -231,7 +231,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -242,13 +242,13 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebFormAndViewOptionalOptionsField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -266,7 +266,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -277,13 +277,13 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebFormAndViewOptionalRadioField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -302,7 +302,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -315,13 +315,13 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditWebFormAndViewOptionalTextBoxField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -339,7 +339,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -350,13 +350,13 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebFormAndViewOptionalTextField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -374,7 +374,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -385,13 +385,13 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebFormAndViewParagraphField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -417,7 +417,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -434,13 +434,13 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditWebFormAndViewRequiredCheckBoxField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -457,7 +457,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -474,13 +474,13 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebFormAndViewRequiredOptionsField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -497,7 +497,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -517,20 +517,20 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewFormFieldOptions(wfFieldName = "Test Options Field");
 
 		WebForm.sendPG();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditWebFormAndViewRequiredRadioField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -548,7 +548,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -562,18 +562,18 @@ definition {
 
 		WebForm.populateFieldRadio(
 			wfFieldName = "Test Radio Field",
-			wfFieldValue = "2");
+			wfFieldValue = 2);
 
 		WebForm.sendPG();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditWebFormAndViewRequiredTextBoxField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -590,7 +590,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -607,13 +607,13 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebFormAndViewRequiredTextField {
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
 			wfInformationTitle = "Suggestions");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebFormPortlet.configureSetupFormFieldsPG();
 
@@ -630,7 +630,7 @@ definition {
 
 		WebFormPortlet.saveConfiguration();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.viewPG(
 			wfInformationDescription = "Your input is valuable to us. Please send us your suggestions.",
@@ -647,9 +647,9 @@ definition {
 		WebForm.sendPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SendWebForm {
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		Portlet.gotoPortletOptions(portletOption = "Configuration");
 
@@ -663,7 +663,7 @@ definition {
 
 		SelectFrameTop(value1 = "relative=top");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		WebForm.populateFieldText(
 			wfFieldName = "Name",
@@ -679,7 +679,7 @@ definition {
 
 		WebForm.sendPG();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		Portlet.gotoPortletOptions(portletOption = "Configuration");
 

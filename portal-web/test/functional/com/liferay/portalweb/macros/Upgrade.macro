@@ -13,7 +13,7 @@ definition {
 		DDLNavigator.gotoManageDataDefinitions();
 
 		for (var ddlDataDefinitionName : list "Contacts,Events,Inventory,Issues Tracking,Meeting Minutes,To Do") {
-			DDLDataDefinition.viewName(ddlDataDefinitionName = "${ddlDataDefinitionName}");
+			DDLDataDefinition.viewName(ddlDataDefinitionName = ${ddlDataDefinitionName});
 		}
 
 		AssertConsoleTextNotPresent(value1 = "SQLCODE=-134");
@@ -593,7 +593,7 @@ definition {
 	macro resetTestUserPassword {
 		Type(
 			locator1 = "TextInput#EMAIL",
-			value1 = "${administratorEmail}");
+			value1 = ${administratorEmail});
 
 		SetupWizard.finishConfigurationPG();
 
@@ -688,7 +688,7 @@ definition {
 			addressType = "Business",
 			city = "Walnut",
 			country = "United States",
-			postalCode = "91789",
+			postalCode = 91789,
 			region = "California",
 			street1 = "1220 Brea Canyon Rd");
 
@@ -697,7 +697,7 @@ definition {
 			numberType = "Business");
 
 		User.viewIdentificationInformation(
-			addressCount = "10",
+			addressCount = 10,
 			addressPrefix = "test");
 
 		User.viewIdentificationInformation(
@@ -709,7 +709,7 @@ definition {
 		Organization.gotoMiscellaneousCP();
 
 		for (var announcementType : list "General,News,Test") {
-			var key_announcementType = "${announcementType}";
+			var key_announcementType = ${announcementType};
 			var key_notificationType = "Email";
 
 			AssertChecked(locator1 = "UsersAndOrganizationsEditUser#ANNOUNCEMENTS_NOTIFICATION_CHECKBOX");
@@ -791,7 +791,7 @@ definition {
 		User.addAddressViaMyAccount(
 			userAddressCity = "Diamond Bar",
 			userAddressCountry = "United States",
-			userAddressPostalCode = "91765",
+			userAddressPostalCode = 91765,
 			userAddressRegion = "California",
 			userAddressStreet1 = "1400 Montefino Ave",
 			userAddressType = "Personal");
@@ -825,7 +825,7 @@ definition {
 			addressType = "Personal",
 			city = "Diamond Bar",
 			country = "United States",
-			postalCode = "91765",
+			postalCode = 91765,
 			region = "California",
 			street1 = "1400 Montefino Ave");
 
@@ -1144,7 +1144,7 @@ definition {
 			value1 = "Drag applications below to nest them.");
 
 		NestedPortlets.viewPG(
-			portletColumnNumberTo = "1",
+			portletColumnNumberTo = 1,
 			portletName = "Web Content Display");
 	}
 
@@ -1166,7 +1166,7 @@ definition {
 
 		Notifications.viewBadgeCount(
 			activePanel = "Notifications",
-			notificationCount = "2");
+			notificationCount = 2);
 
 		Notifications.gotoNotifications();
 
@@ -1183,7 +1183,7 @@ definition {
 
 		Notifications.viewBadgeCount(
 			activePanel = "Notifications",
-			notificationCount = "1");
+			notificationCount = 1);
 
 		Notifications.gotoNotifications();
 
@@ -1216,8 +1216,8 @@ definition {
 
 		Polls.viewVotedPollPG(
 			pollsQuestionChoice = "Yes",
-			pollsQuestionTotalVotes = "1",
-			pollsQuestionVoteCount = "1",
+			pollsQuestionTotalVotes = 1,
+			pollsQuestionVoteCount = 1,
 			pollsQuestionVotePercent = "100%");
 	}
 
@@ -1232,7 +1232,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			threadSubject = "Message Boards Subject");
 
 		MessageboardsThread.viewPG(
@@ -1306,11 +1306,11 @@ definition {
 			value1 = "Drag applications below to nest them.");
 
 		NestedPortlets.viewPG(
-			portletColumnNumberTo = "1",
+			portletColumnNumberTo = 1,
 			portletName = "Web Content Display");
 
 		NestedPortlets.viewPG(
-			portletColumnNumberTo = "1",
+			portletColumnNumberTo = 1,
 			portletName = "Blogs");
 	}
 
@@ -1344,7 +1344,7 @@ definition {
 
 		FormFields.viewTextValue(
 			fieldName = "checkInterval",
-			fieldValue = "300000");
+			fieldValue = 300000);
 
 		FormFields.viewMultilineTextValue(
 			fieldName = "customTokenNames",
@@ -1435,7 +1435,7 @@ definition {
 
 		FormFields.viewTextValue(
 			fieldName = "rssAbstractLength",
-			fieldValue = "500");
+			fieldValue = 500);
 
 		Navigator.gotoBack();
 
@@ -1463,16 +1463,16 @@ definition {
 		FormFields.viewRepeatableTextMultilineValue(
 			fieldName = "smallImageExtensions",
 			fieldValue = ".svg",
-			repeatableFieldNumber = "4");
+			repeatableFieldNumber = 4);
 
 		FormFields.viewRepeatableTextMultilineValue(
 			fieldName = "smallImageExtensions",
 			fieldValue = "*",
-			repeatableFieldNumber = "5");
+			repeatableFieldNumber = 5);
 
 		FormFields.viewTextValue(
 			fieldName = "smallImageMaxSize",
-			fieldValue = "5120");
+			fieldValue = 5120);
 
 		Navigator.gotoBack();
 
@@ -1518,7 +1518,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			startedByUserName = "Test Test",
 			threadBody = "Message Boards Body",
 			threadSubject = "Message Boards Subject");
@@ -1587,7 +1587,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			startedByUserName = "Test Test",
 			threadBody = "Message Boards Body",
 			threadSubject = "Message Boards Subject");
@@ -1663,7 +1663,7 @@ definition {
 		Navigator.gotoBack();
 
 		WebContent.viewWithStructureCP(
-			webContentInteger = "9",
+			webContentInteger = 9,
 			webContentTitle = "Integer Web Content");
 
 		Navigator.gotoBack();
@@ -1721,7 +1721,7 @@ definition {
 		var imageFieldValue = selenium.getElementValue("//input[contains(@id,'Image')][contains(@readonly,'readonly')]");
 
 		TestUtils.assertNotEquals(
-			actual = "${imageFieldValue}",
+			actual = ${imageFieldValue},
 			expected = "");
 
 		AssertVisible(

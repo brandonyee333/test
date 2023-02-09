@@ -5,17 +5,17 @@ definition {
 	macro gotoAddDocumentType {
 		LexiconEntry.gotoAdd();
 
-		var key_dmDocumentTypeName = "${dmDocumentTypeName}";
+		var key_dmDocumentTypeName = ${dmDocumentTypeName};
 
-		MenuItem.click(menuItem = "${dmDocumentTypeName}");
+		MenuItem.click(menuItem = ${dmDocumentTypeName});
 	}
 
 	macro gotoAddDocumentTypePG {
 		Portlet.clickPortletPlusIconPG(portletName = "Documents and Media");
 
-		var key_dmDocumentTypeName = "${dmDocumentTypeName}";
+		var key_dmDocumentTypeName = ${dmDocumentTypeName};
 
-		MenuItem.click(menuItem = "${dmDocumentTypeName}");
+		MenuItem.click(menuItem = ${dmDocumentTypeName});
 	}
 
 	macro gotoAddRepositoryCP {
@@ -31,25 +31,25 @@ definition {
 	}
 
 	macro gotoCheckedOutDocument {
-		var key_dmDocumentTitle = "${dmDocumentTitle}";
+		var key_dmDocumentTitle = ${dmDocumentTitle};
 
 		AssertClick(
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_TITLE",
-			value1 = "${dmCheckedOutDocumentTitle}");
+			value1 = ${dmCheckedOutDocumentTitle});
 	}
 
 	macro gotoDocumentCP {
-		var key_dmDocumentTitle = "${dmDocumentTitle}";
+		var key_dmDocumentTitle = ${dmDocumentTitle};
 
 		if (IsElementPresent(locator1 = "Icon#DISPLAY_STYLE_DESCRIPTIVE_ACTIVE")) {
 			AssertClick(
 				locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_TITLE",
-				value1 = "${dmDocumentTitle}");
+				value1 = ${dmDocumentTitle});
 		}
 		else {
 			AssertClick(
 				locator1 = "DocumentsAndMedia#ICON_DOCUMENT_TITLE_LINK",
-				value1 = "${dmDocumentTitle}");
+				value1 = ${dmDocumentTitle});
 		}
 	}
 
@@ -64,17 +64,17 @@ definition {
 	macro gotoDocumentPermissionsCP {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Permissions",
-			rowEntry = "${dmDocumentTitle}");
+			rowEntry = ${dmDocumentTitle});
 
 		IFrame.selectDialogFrame();
 	}
 
 	macro gotoDocumentPG {
-		var key_dmDocumentTitle = "${dmDocumentTitle}";
+		var key_dmDocumentTitle = ${dmDocumentTitle};
 
 		AssertClick(
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_TITLE",
-			value1 = "${dmDocumentTitle}");
+			value1 = ${dmDocumentTitle});
 	}
 
 	macro gotoDocumentVersion {
@@ -84,7 +84,7 @@ definition {
 	}
 
 	macro gotoEditDocument {
-		var key_dmDocumentTitle = "${dmDocumentTitle}";
+		var key_dmDocumentTitle = ${dmDocumentTitle};
 
 		Click(locator1 = "DocumentsAndMedia#ICON_DOCUMENT_VERTICAL_ELLIPSIS");
 
@@ -92,17 +92,17 @@ definition {
 	}
 
 	macro gotoFolder {
-		var key_dmFolderName = "${dmFolderName}";
+		var key_dmFolderName = ${dmFolderName};
 
 		AssertClick(
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_FOLDER_TITLE",
-			value1 = "${dmFolderName}");
+			value1 = ${dmFolderName});
 
 		AssertVisible(locator1 = "DocumentsAndMedia#BREADCRUMB_FOLDER_NAME");
 	}
 
 	macro gotoFolderPermissions {
-		var key_dmFolderName = "${dmFolderName}";
+		var key_dmFolderName = ${dmFolderName};
 
 		Click(locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_VERTICAL_ELLIPSIS");
 
@@ -118,17 +118,17 @@ definition {
 	}
 
 	macro gotoRelatedAssetPG {
-		var key_dmDocumentTitle = "${dmDocumentTitle}";
+		var key_dmDocumentTitle = ${dmDocumentTitle};
 
 		AssertClick(
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_TITLE",
-			value1 = "${dmDocumentTitle}");
+			value1 = ${dmDocumentTitle});
 
-		var key_assetTitle = "${key_assetTitle}";
+		var key_assetTitle = ${key_assetTitle};
 
 		AssertTextEquals(
 			locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_TITLE",
-			value1 = "${dmDocumentTitle}");
+			value1 = ${dmDocumentTitle});
 
 		AssertTextEquals(
 			locator1 = "AssetRelatedAssets#HEADER",
@@ -136,19 +136,19 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_RELATED_ASSETS_TITLE",
-			value1 = "${assetTitle}");
+			value1 = ${assetTitle});
 
 		AssertClick(
 			locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_RELATED_ASSETS_TITLE",
-			value1 = "${assetTitle}");
+			value1 = ${assetTitle});
 	}
 
 	macro gotoRepository {
-		var key_dmFolderName = "${dmRepositoryName}";
+		var key_dmFolderName = ${dmRepositoryName};
 
 		AssertClick(
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_FOLDER_TITLE",
-			value1 = "${dmRepositoryName}");
+			value1 = ${dmRepositoryName});
 
 		AssertVisible(locator1 = "DocumentsAndMedia#BREADCRUMB_FOLDER_NAME");
 	}

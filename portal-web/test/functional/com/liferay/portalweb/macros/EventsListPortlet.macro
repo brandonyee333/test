@@ -1,19 +1,19 @@
 definition {
 
 	macro gotoEventToday {
-		var key_eventTitle = "${eventTitle}";
+		var key_eventTitle = ${eventTitle};
 
 		AssertClick(
 			locator1 = "EventsListPortlet#TODAYS_EVENTS_EVENT",
-			value1 = "${eventTitle}");
+			value1 = ${eventTitle});
 	}
 
 	macro gotoEventUpcoming {
-		var key_eventTitle = "${eventTitle}";
+		var key_eventTitle = ${eventTitle};
 
 		AssertClick(
 			locator1 = "EventsListPortlet#UPCOMING_EVENTS_EVENT",
-			value1 = "${eventTitle}");
+			value1 = ${eventTitle});
 	}
 
 	macro viewDefaultMessage {
@@ -23,7 +23,7 @@ definition {
 	}
 
 	macro viewEventTime {
-		var key_eventTitle = "${eventTitle}";
+		var key_eventTitle = ${eventTitle};
 
 		AssertElementPresent(locator1 = "EventsListPortlet#TODAYS_EVENTS_EVENT_TIME");
 	}

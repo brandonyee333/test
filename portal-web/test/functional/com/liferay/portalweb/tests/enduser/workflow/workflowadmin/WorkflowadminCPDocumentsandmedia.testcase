@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -33,7 +33,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ApproveInDMFolderCustomWorkflow {
 		property portal.release = "false";
 		property test.name.skip.portal.instance = "WorkflowadminCPDocumentsandmedia#ApproveInDMFolderCustomWorkflow";
@@ -112,7 +112,7 @@ definition {
 		Workflow.viewDefinition(
 			workflowDefinitionName = "Quarterly Reports Review Process",
 			workflowDefinitionTitle = "Quarterly Reports Review Process",
-			workflowDefinitionVersionNumber = "1");
+			workflowDefinitionVersionNumber = 1);
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -172,7 +172,7 @@ definition {
 			Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 			Workflow.approveTaskByActions(
-				boardWorkflowTask = "${i}",
+				boardWorkflowTask = ${i},
 				workflowAssetTitle = "Document_1.doc",
 				workflowAssetType = "Document",
 				workflowTask = "Board Member Review ${i}");
@@ -191,7 +191,7 @@ definition {
 			Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 			Workflow.approveTaskByActions(
-				boardWorkflowTask = "${i}",
+				boardWorkflowTask = ${i},
 				workflowAssetTitle = "Document_2.doc",
 				workflowAssetType = "Document",
 				workflowTask = "Board Member Review ${i}");
@@ -210,7 +210,7 @@ definition {
 			Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 			Workflow.approveTaskByActions(
-				boardWorkflowTask = "${i}",
+				boardWorkflowTask = ${i},
 				workflowAssetTitle = "Document_3.doc",
 				workflowAssetType = "Document",
 				workflowTask = "Board Member Review ${i}");
@@ -238,7 +238,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ApproveInDMFolderNoWorkflowWithHomeFolderSingleApproverWorkflowCP {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -338,7 +338,7 @@ definition {
 			dmDocumentTitle = "DM Document Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ApproveInDMFolderSingleApproverTypeSpecificWorkflowCP {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -479,7 +479,7 @@ definition {
 			dmDocumentTitle = "DM Folder Document Type Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ApproveInDMFolderSingleApproverWorkflowWithNoHomeFolderWorkflowCP {
 		Navigator.openURL();
 
@@ -582,7 +582,7 @@ definition {
 			dmDocumentTitle = "DM Folder Document Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ApproveInDMFolderWithParentFolderSingleApproverWorkflowCP {
 		Navigator.openURL();
 
@@ -732,7 +732,7 @@ definition {
 	}
 
 	@description = "This test covers LPS-90346. It ensures that the document preview displays correctly after submitting an edit."
-	@priority = "4"
+	@priority = 4
 	test PreviewSubmittedEdit {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -760,7 +760,7 @@ definition {
 			dmDocumentFile = "Document_1.jpg",
 			dmDocumentTitle = "Document_1.jpg");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = 1);
 
 		WorkflowAsset.gotoViaNotification(
 			assetType = "Document",
@@ -809,7 +809,7 @@ definition {
 
 		Navigator.openURL();
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = 1);
 
 		WorkflowAsset.gotoViaNotification(
 			assetType = "Document",
@@ -820,7 +820,7 @@ definition {
 		AssertElementPresent(locator1 = "//img[contains(@src,'Document_1.jpg') and contains(@src,'version=1.1')]");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RejectDMDocumentCP {
 		Navigator.openURL();
 
@@ -889,7 +889,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-60870."
-	@priority = "5"
+	@priority = 5
 	test SaveAsDraftAndViewCategories {
 		property custom.properties = "dl.file.entry.drafts.enabled=true";
 		property portal.acceptance = "false";

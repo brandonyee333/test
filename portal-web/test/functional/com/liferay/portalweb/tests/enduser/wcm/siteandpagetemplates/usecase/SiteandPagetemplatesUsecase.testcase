@@ -16,7 +16,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -40,7 +40,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-51432 and LPS-95113."
-	@priority = "4"
+	@priority = 4
 	test AdminCanNotAddASubpageOfAChildPageLinkedToSiteTemplatePage {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -102,14 +102,14 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "java.lang.NullPointerException");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditSiteTemplateGuestPermissions {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
 			portlet = "Site Templates");
 
-		SiteTemplates.addCP(siteTemplateName = "${siteTemplateName}");
+		SiteTemplates.addCP(siteTemplateName = ${siteTemplateName});
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -137,9 +137,9 @@ definition {
 			roleName = "Guest");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test PortletPreferencesPersistWithSiteTemplateWhenSamePortletAddedOnSecondPage {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -164,7 +164,7 @@ definition {
 
 		SiteTemplatesNavigator.gotoSiteTemplatesPageLowercase(
 			pageName = "Page1 Name",
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			siteTemplateName = "Site Template Name");
 
 		Portlet.addPG(
@@ -211,7 +211,7 @@ definition {
 			portlet = "Site Templates");
 
 		SiteTemplates.gotoViewPages(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			siteTemplateName = "Site Template Name");
 
 		AssertClick(
@@ -237,7 +237,7 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "3"
+	@priority = 3
 	test SiteAdminCannotDeletePagesThatWereCreatedBySiteTemplates {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -259,13 +259,13 @@ definition {
 		for (var page : list "Home,Wiki") {
 			ProductMenu.gotoSiteViaLink(site = "UG UserGroup Name");
 
-			Page.viewNoDeletePagesAssociatedWithSiteTemplate(page = "${page}");
+			Page.viewNoDeletePagesAssociatedWithSiteTemplate(page = ${page});
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SitesDynamicTemplateInheritance {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -284,7 +284,7 @@ definition {
 			portlet = "Site Templates");
 
 		SiteTemplates.gotoViewPages(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			siteTemplateName = "Site Template Name");
 
 		Portlet.addPG(portletName = "Message Boards");
@@ -315,7 +315,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -349,7 +349,7 @@ definition {
 		UserGroup.viewPG(
 			pageName = "home",
 			portletName = "Message Boards",
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userGroupName = "UG UserGroup Name");
 
 		User.firstLoginPG(
@@ -357,12 +357,12 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SitesTemplateResourceInheritance {
 		property osgi.app.includes = "tasks";
 		property plugins.deployment.type = "osgi";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -377,7 +377,7 @@ definition {
 			portlet = "Site Templates");
 
 		SiteTemplates.gotoViewPages(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			siteTemplateName = "Site Template Name");
 
 		Portlet.addPG(portletName = "Documents and Media");
@@ -388,7 +388,7 @@ definition {
 			portlet = "Site Templates");
 
 		SiteTemplates.gotoViewPages(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			siteTemplateName = "Site Template Name");
 
 		DMDocument.addPG(
@@ -450,7 +450,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-107677."
-	@priority = "3"
+	@priority = 3
 	test ViewImportedSitePageWithoutInfoMessage {
 		SiteTemplatesNavigator.openSiteTemplatesAdmin();
 
@@ -478,7 +478,7 @@ definition {
 
 		LAR.exportSiteCP(siteScopeName = "Site A");
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 		var larFileName = LAR.getLarFileName();
 
 		LAR.downloadLar();
@@ -502,7 +502,7 @@ definition {
 		JSONGroup.addGroup(groupName = "Site B");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site B");
 
 		Navigator.gotoSitePage(
@@ -512,9 +512,9 @@ definition {
 		SiteTemplates.viewNoInfoMessage();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewInlineGuestPermissionsInSiteTemplatesViaWCD {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -529,7 +529,7 @@ definition {
 			portlet = "Site Templates");
 
 		SiteTemplates.gotoViewPages(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			siteTemplateName = "Site Template Name");
 
 		Portlet.addPG(
@@ -542,7 +542,7 @@ definition {
 			portlet = "Site Templates");
 
 		SiteTemplates.gotoViewPages(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			siteTemplateName = "Site Template Name");
 
 		PermissionsInline.gotoConfigurationPG(portletName = "Web Content Display");
@@ -553,9 +553,9 @@ definition {
 			roleName = "Guest");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewNoAddPageTabViaPageTemplatesCP {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",

@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -32,7 +32,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddDisplayTemplateFreeMarker {
 		Navigator.openURL();
 
@@ -64,7 +64,7 @@ definition {
 			ddlDisplayTemplateTextFieldScript = "Text");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddDisplayTemplateVelocity {
 		Navigator.openURL();
 
@@ -96,7 +96,7 @@ definition {
 			ddlDisplayTemplateTextFieldScript = "Text");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddFormTemplate {
 		property portal.acceptance = "true";
 
@@ -151,7 +151,7 @@ definition {
 			fieldName = "Text");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddList {
 		Navigator.openURL();
 
@@ -192,7 +192,7 @@ definition {
 		DDLList.viewCP(ddlListName = "List Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddListAndRecordWithContactsPredefinedDataDefinition {
 		Navigator.openURL();
 
@@ -282,7 +282,7 @@ definition {
 		DDLNavigator.gotoListRecords(ddlListName = "Contacts");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddListAndRecordWithEventsPredefinedDataDefinition {
 		Navigator.openURL();
 
@@ -316,7 +316,7 @@ definition {
 			fieldName = "attachment");
 
 		DDLRecord.populateFieldNumber(
-			ddlRecordFieldData = "10",
+			ddlRecordFieldData = 10,
 			fieldFieldLabel = "Cost",
 			fieldName = "cost");
 
@@ -357,7 +357,7 @@ definition {
 		DDLNavigator.gotoListRecords(ddlListName = "Events");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddListAndRecordWithInventoryPredefinedDataDefinition {
 		Navigator.openURL();
 
@@ -406,12 +406,12 @@ definition {
 			fieldName = "purchaseDate");
 
 		DDLRecord.populateFieldNumber(
-			ddlRecordFieldData = "12000",
+			ddlRecordFieldData = 12000,
 			fieldFieldLabel = "Purchase Price",
 			fieldName = "purchasePrice");
 
 		DDLRecord.populateFieldNumber(
-			ddlRecordFieldData = "100",
+			ddlRecordFieldData = 100,
 			fieldFieldLabel = "Quantity",
 			fieldName = "quantity");
 
@@ -427,7 +427,7 @@ definition {
 		DDLNavigator.gotoListRecords(ddlListName = "Inventory");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddListAndRecordWithIssuesTrackingPredefinedDataDefinition {
 		Navigator.openURL();
 
@@ -512,7 +512,7 @@ definition {
 		DDLNavigator.gotoListRecords(ddlListName = "Issues Tracking");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddListAndRecordWithMeetingMinutesPredefinedDataDefinition {
 		Navigator.openURL();
 
@@ -587,7 +587,7 @@ definition {
 		DDLNavigator.gotoListRecords(ddlListName = "Meeting Minutes");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddListAndRecordWithToDoPredefinedDataDefinition {
 		property portal.acceptance = "true";
 
@@ -643,7 +643,7 @@ definition {
 			fieldName = "endDate");
 
 		DDLRecord.populateFieldInteger(
-			ddlRecordFieldData = "7",
+			ddlRecordFieldData = 7,
 			fieldFieldLabel = "% Complete",
 			fieldName = "percentComplete");
 
@@ -679,7 +679,7 @@ definition {
 		DDLNavigator.gotoListRecords(ddlListName = "To Do");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithBooleanField {
 		Navigator.openURL();
 
@@ -759,7 +759,7 @@ definition {
 			fieldFieldLabel = "Boolean");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithDateField {
 		Navigator.openURL();
 
@@ -839,7 +839,7 @@ definition {
 			fieldFieldLabel = "Date");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithDecimalField {
 		Navigator.openURL();
 
@@ -919,7 +919,7 @@ definition {
 			fieldFieldLabel = "Decimal");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithDocumentsAndMediaField {
 		Navigator.openURL();
 
@@ -999,7 +999,7 @@ definition {
 			fieldFieldLabel = "Documents and Media");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithGeolocationField {
 		Navigator.openURL();
 
@@ -1073,7 +1073,7 @@ definition {
 		DDLRecord.viewGeolocationRecord(fieldFieldLabel = "Geolocation");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddListRecordWithHTMLField {
 		Navigator.openURL();
 
@@ -1153,7 +1153,7 @@ definition {
 			fieldFieldLabel = "HTML");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithIntegerField {
 		Navigator.openURL();
 
@@ -1212,7 +1212,7 @@ definition {
 			ddlListName = "List Name");
 
 		DDLRecord.populateFieldInteger(
-			ddlRecordFieldData = "7",
+			ddlRecordFieldData = 7,
 			fieldFieldLabel = "Integer",
 			fieldName = "Integer");
 
@@ -1228,13 +1228,13 @@ definition {
 		DDLNavigator.gotoListRecords(ddlListName = "List Name");
 
 		DDLRecord.viewFirstFieldCP(
-			ddlRecordFieldData = "7",
+			ddlRecordFieldData = 7,
 			field = "Integer",
 			fieldFieldLabel = "Integer");
 	}
 
 	@description = "This is a use case for LPS-65726"
-	@priority = "5"
+	@priority = 5
 	test AddListRecordWithLinkToPageField {
 		property portal.acceptance = "true";
 
@@ -1324,7 +1324,7 @@ definition {
 		DDLRecord.viewLinkToPageLink(ddlRecordFieldData = "Test Page");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithNumberField {
 		Navigator.openURL();
 
@@ -1383,7 +1383,7 @@ definition {
 			ddlListName = "List Name");
 
 		DDLRecord.populateFieldNumber(
-			ddlRecordFieldData = "46",
+			ddlRecordFieldData = 46,
 			fieldFieldLabel = "Number",
 			fieldName = "Number");
 
@@ -1399,12 +1399,12 @@ definition {
 		DDLNavigator.gotoListRecords(ddlListName = "List Name");
 
 		DDLRecord.viewFirstFieldCP(
-			ddlRecordFieldData = "46",
+			ddlRecordFieldData = 46,
 			field = "Number",
 			fieldFieldLabel = "Number");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithRadioField {
 		Navigator.openURL();
 
@@ -1485,7 +1485,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-65248"
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithRequiredBooleanField {
 		Navigator.openURL();
 
@@ -1571,7 +1571,7 @@ definition {
 			fieldFieldLabel = "Boolean");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithSelectField {
 		Navigator.openURL();
 
@@ -1651,7 +1651,7 @@ definition {
 			fieldFieldLabel = "Select");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithTextBoxField {
 		Navigator.openURL();
 
@@ -1731,7 +1731,7 @@ definition {
 			fieldFieldLabel = "Text Box");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddListRecordWithTextField {
 		Navigator.openURL();
 
@@ -1811,7 +1811,7 @@ definition {
 			fieldFieldLabel = "Text");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test CopyDataDefinition {
 		Navigator.openURL();
 
@@ -1891,7 +1891,7 @@ definition {
 		DDLTemplate.viewDefaultNoTemplatesCP(ddlDataDefinitionName = "Data Definition Copy");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test CopyDataDefinitionWithCopyDisplayTemplates {
 		Navigator.openURL();
 
@@ -1985,7 +1985,7 @@ definition {
 			ddlTemplateName = "Data Definition Form Template Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test CopyDataDefinitionWithCopyFormTemplates {
 		Navigator.openURL();
 
@@ -2088,7 +2088,7 @@ definition {
 			ddlTemplateName = "Data Definition Display Template Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test CopyDataDefinitionWithCopyFormTemplatesAndCopyDisplayTemplates {
 		Navigator.openURL();
 
@@ -2192,7 +2192,7 @@ definition {
 			fieldName = "Separator");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteDataDefinition {
 		Navigator.openURL();
 
@@ -2220,7 +2220,7 @@ definition {
 		DDLDataDefinition.deleteCP(ddlDataDefinitionName = "Data Definition");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteDisplayTemplateFreeMarker {
 		Navigator.openURL();
 
@@ -2263,7 +2263,7 @@ definition {
 			ddlTemplateName = "Data Definition FreeMarker Display Template Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteDisplayTemplateVelocity {
 		Navigator.openURL();
 
@@ -2306,7 +2306,7 @@ definition {
 			ddlTemplateName = "Data Definition Velocity Display Template Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteFormTemplate {
 		Navigator.openURL();
 
@@ -2349,7 +2349,7 @@ definition {
 			ddlTemplateName = "Data Definition Form Template Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteList {
 		property portal.acceptance = "true";
 
@@ -2392,7 +2392,7 @@ definition {
 		DDLList.deleteCP(ddlListName = "List Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteListRecord {
 		Navigator.openURL();
 
@@ -2453,7 +2453,7 @@ definition {
 			ddlRecordFieldData = "Text Field");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditBooleanFieldFieldLabel {
 		Navigator.openURL();
 
@@ -2554,7 +2554,7 @@ definition {
 			fieldFieldLabel = "Boolean Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditBooleanFieldName {
 		Navigator.openURL();
 
@@ -2655,7 +2655,7 @@ definition {
 			fieldName = "BooleanEdit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditBooleanFieldShowLabel {
 		Navigator.openURL();
 
@@ -2745,7 +2745,7 @@ definition {
 			fieldShowLabel = "No");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditBooleanFieldTip {
 		Navigator.openURL();
 
@@ -2787,7 +2787,7 @@ definition {
 			fieldTip = "Boolean Field Tip");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditDataDefinition {
 		property portal.acceptance = "true";
 
@@ -2850,7 +2850,7 @@ definition {
 			fieldName = "Boolean");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditDisplayTemplateFreeMarker {
 		Navigator.openURL();
 
@@ -2907,7 +2907,7 @@ definition {
 			ddlTemplateName = "Data Definition FreeMarker Display Template Name Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditDisplayTemplateVelocity {
 		Navigator.openURL();
 
@@ -2964,7 +2964,7 @@ definition {
 			ddlTemplateName = "Data Definition Velocity Display Template Name Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditFormTemplate {
 		Navigator.openURL();
 
@@ -3056,7 +3056,7 @@ definition {
 			fieldName = "Separator");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditList {
 		Navigator.openURL();
 
@@ -3113,7 +3113,7 @@ definition {
 			ddlListName = "List Name Edit");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditListRecord {
 		property portal.acceptance = "true";
 
@@ -3195,7 +3195,7 @@ definition {
 			fieldFieldLabel = "Text");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditListRecordViaRecordView {
 		Navigator.openURL();
 
@@ -3273,7 +3273,7 @@ definition {
 			fieldFieldLabel = "Text");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditRadioFieldOptions {
 		Navigator.openURL();
 
@@ -3319,7 +3319,7 @@ definition {
 			fieldOptionsValues = "Radio Value 1,Radio Value 2,Radio Value 3");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditRadioFieldOptionsWithUTF8Characters {
 		Navigator.openURL();
 
@@ -3365,7 +3365,7 @@ definition {
 			fieldOptionsValues = "Radio Value 1,Radio Value 2,Radio Value 3");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditSelectFieldOptions {
 		Navigator.openURL();
 
@@ -3411,7 +3411,7 @@ definition {
 			fieldOptionsValues = "Select Value 1,Select Value 2,Select Value 3");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditSelectFieldOptionsWithUTF8Characters {
 		Navigator.openURL();
 
@@ -3457,7 +3457,7 @@ definition {
 			fieldOptionsValues = "Select Value 1,Select Value 2,Select Value 3");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportLAR {
 		property portal.acceptance = "true";
 
@@ -3570,7 +3570,7 @@ definition {
 			fieldFieldLabel = "Boolean");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewBooleanFieldPredefinedValue {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -3693,7 +3693,7 @@ definition {
 			fieldFieldLabel = "Boolean");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewCannotAddNonAlphanumericCharactersToFieldName {
 		var character1 = '''`''';
 		var character2 = '''~''';
@@ -3746,7 +3746,7 @@ definition {
 			DynamicDataMapping.editFieldNameInvalidCharacter(
 				field = "Text",
 				fieldFieldLabel = "Text",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		DynamicDataMapping.editFieldNameInvalidCharacter(
@@ -3755,7 +3755,7 @@ definition {
 			fieldName = ''',''');
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewFormTemplateFieldReadOnlyWithEditMode {
 		Navigator.openURL();
 
@@ -3810,7 +3810,7 @@ definition {
 			fieldReadOnly = "No");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewFormTemplateFields {
 		Navigator.openURL();
 
@@ -3858,7 +3858,7 @@ definition {
 		DynamicDataMapping.viewCanAddField(field = "Text");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewFormTemplateFieldsAfterSaveAndContinue {
 		Navigator.openURL();
 
@@ -3898,7 +3898,7 @@ definition {
 		DynamicDataMapping.viewCannotAddField(field = "Text");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewListRecordAndAssertAnchorLink {
 		Navigator.openURL();
 
@@ -3983,7 +3983,7 @@ definition {
 			fieldFieldLabel = "Text");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewNoDuplicatesInOriginalAfterCopy {
 		Navigator.openURL();
 
@@ -4068,7 +4068,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-66384."
-	@priority = "3"
+	@priority = 3
 	test ViewRecordInfoSidebar {
 		Navigator.openURL();
 

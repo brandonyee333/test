@@ -9,13 +9,13 @@ definition {
 	macro closePortalLocalizationWarning {
 		Alert._closeMessage(messageType = "PORTAL_LOCALIZATION");
 
-		Pause(locator1 = "2000");
+		Pause(locator1 = 2000);
 	}
 
 	macro viewErrorMessage {
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR",
-			value1 = "${errorMessage}");
+			value1 = ${errorMessage});
 
 		Alert._closeMessage(messageType = "ERROR");
 	}
@@ -47,7 +47,7 @@ definition {
 	macro viewSecondErrorMessage {
 		AssertTextEquals(
 			locator1 = "Message#ERROR_2",
-			value1 = "${errorMessage}");
+			value1 = ${errorMessage});
 
 		Alert._closeMessage(messageType = "ERROR");
 	}
@@ -57,7 +57,7 @@ definition {
 
 		Click(locator1 = "Message#SUCCESS");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Alert._closeMessage(messageType = "SUCCESS");
 	}
@@ -69,12 +69,12 @@ definition {
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#SUCCESS",
-			value1 = "${successMessage}");
+			value1 = ${successMessage});
 	}
 
 	macro viewWarningSpecific {
 		AssertElementPresent(
-			key_warningMessage = "${warningMessage}",
+			key_warningMessage = ${warningMessage},
 			locator1 = "Message#WARNING_SPECIFIC");
 	}
 

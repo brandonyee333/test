@@ -5,15 +5,15 @@ definition {
 
 		SelectFrame(locator1 = "IFrame#SELECT_ASSIGNEES");
 
-		RoleNavigator.gotoAssigneeType(assigneeType = "${assigneeType}");
+		RoleNavigator.gotoAssigneeType(assigneeType = ${assigneeType});
 
-		Search.searchCP(searchTerm = "${assigneeName}");
+		Search.searchCP(searchTerm = ${assigneeName});
 
-		var key_assigneeName = "${assigneeName}";
+		var key_assigneeName = ${assigneeName};
 
 		AssertTextEquals(
 			locator1 = "RolesAssignMembers#ADD_ASSIGNEE_TABLE_NAME",
-			value1 = "${assigneeName}");
+			value1 = ${assigneeName});
 
 		Check(locator1 = "RolesAssignMembers#ADD_ASSIGNEE_TABLE_CHECKBOX");
 
@@ -27,18 +27,18 @@ definition {
 	}
 
 	macro addCP {
-		if ("${roleType}" == "Organization") {
+		if (${roleType} == "Organization") {
 			Navigator.gotoNavItem(navItem = "Organization Roles");
 		}
-		else if ("${roleType}" == "Site") {
+		else if (${roleType} == "Site") {
 			Navigator.gotoNavItem(navItem = "Site Roles");
 		}
 		else {
 			Navigator.gotoNavItem(navItem = "Regular Roles");
 		}
 
-		if (("${roleType}" == "Organization") || ("${roleType}" == "Site")) {
-			var key_roleType = "${roleType}";
+		if ((${roleType} == "Organization") || (${roleType} == "Site")) {
+			var key_roleType = ${roleType};
 		}
 		else {
 			var key_roleType = "Regular";
@@ -52,14 +52,14 @@ definition {
 			locator1 = "Portlet#HEADER",
 			value1 = "New Role");
 
-		PortletEntry.inputName(name = "${roleName}");
+		PortletEntry.inputName(name = ${roleName});
 
 		if (isSet(roleDescription)) {
-			PortletEntry.inputDescription(description = "${roleDescription}");
+			PortletEntry.inputDescription(description = ${roleDescription});
 		}
 
 		if (isSet(roleTitle)) {
-			PortletEntry.inputTitle(title = "${roleTitle}");
+			PortletEntry.inputTitle(title = ${roleTitle});
 		}
 
 		AssertClick(
@@ -70,7 +70,7 @@ definition {
 	}
 
 	macro addPermissions {
-		for (var permissionDefinitionKey : list "${permissionDefinitionKeys}") {
+		for (var permissionDefinitionKey : list ${permissionDefinitionKeys}) {
 			Check(locator1 = "RolesPermissions#${permissionDefinitionKey}");
 		}
 
@@ -83,9 +83,9 @@ definition {
 		var roleName = "Staging Admin";
 
 		Role.addCP(
-			roleDescription = "${roleDescription}",
-			roleName = "${roleName}",
-			roleTitle = "${roleTitle}",
+			roleDescription = ${roleDescription},
+			roleName = ${roleName},
+			roleTitle = ${roleTitle},
 			roleType = "Site");
 
 		ProductMenu.gotoPortlet(
@@ -95,56 +95,56 @@ definition {
 
 		Role.definePermissionsCP(
 			permissionDefinitionKeys = "SITE_ADMIN_PAGES_SITE_PAGES_GENERAL_PERMISSIONS_ACTION_CHECKBOX,SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE_ACTION_CHECKBOX,SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_PAGE_ACTION_CHECKBOX,SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_PAGE_VARIATION_ACTION_CHECKBOX,SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE_PAGES_VARIATION_ACTION_CHECKBOX",
-			roleName = "${roleName}",
+			roleName = ${roleName},
 			roleType = "Site");
 	}
 
 	macro definePermissionCmdCP {
 		Role.editPermissionCmdCP(
-			confirmation = "${confirmation}",
+			confirmation = ${confirmation},
 			define = "true",
-			permissionDefinitionKey = "${permissionDefinitionKey}",
-			permissionDefinitionKeyChange = "${permissionDefinitionKeyChange}",
-			permissionDefinitionKeys = "${permissionDefinitionKeys}",
-			permissionDefinitionKeySiteScope = "${permissionDefinitionKeySiteScope}",
-			permissionNavigationKey = "${permissionNavigationKey}",
-			permissionNavigationValue = "${permissionNavigationValue}",
-			remove = "${remove}",
-			removeLink = "${removeLink}",
-			roleName = "${roleName}",
-			roleType = "${roleType}",
-			roleUser = "${roleUser}",
-			siteNameScope = "${siteNameScope}");
+			permissionDefinitionKey = ${permissionDefinitionKey},
+			permissionDefinitionKeyChange = ${permissionDefinitionKeyChange},
+			permissionDefinitionKeys = ${permissionDefinitionKeys},
+			permissionDefinitionKeySiteScope = ${permissionDefinitionKeySiteScope},
+			permissionNavigationKey = ${permissionNavigationKey},
+			permissionNavigationValue = ${permissionNavigationValue},
+			remove = ${remove},
+			removeLink = ${removeLink},
+			roleName = ${roleName},
+			roleType = ${roleType},
+			roleUser = ${roleUser},
+			siteNameScope = ${siteNameScope});
 	}
 
 	macro definePermissionCP {
 		Role.definePermissionCmdCP(
-			confirmation = "${confirmation}",
-			permissionDefinitionKey = "${permissionDefinitionKey}",
-			removeLink = "${removeLink}",
-			roleName = "${roleName}",
-			roleType = "${roleType}",
-			roleUser = "${roleUser}",
-			siteNameScope = "${siteNameScope}");
+			confirmation = ${confirmation},
+			permissionDefinitionKey = ${permissionDefinitionKey},
+			removeLink = ${removeLink},
+			roleName = ${roleName},
+			roleType = ${roleType},
+			roleUser = ${roleUser},
+			siteNameScope = ${siteNameScope});
 
 		Role.viewPermissionCP(
-			permissionDefinitionKey = "${permissionDefinitionKey}",
-			permissionDefinitionValue = "${permissionDefinitionValue}",
-			permissionNavigationValue = "${permissionNavigationValue}",
-			remove = "${remove}");
+			permissionDefinitionKey = ${permissionDefinitionKey},
+			permissionDefinitionValue = ${permissionDefinitionValue},
+			permissionNavigationValue = ${permissionNavigationValue},
+			remove = ${remove});
 	}
 
 	macro definePermissionPG {
-		var key_roleName = StringUtil.replace("${roleName}", " ", "-");
+		var key_roleName = StringUtil.replace(${roleName}, " ", "-");
 
-		var key_roleName = StringUtil.lowerCase("${key_roleName}");
+		var key_roleName = StringUtil.lowerCase(${key_roleName});
 
 		if (IsElementPresent.isElementPresentAfterWait(locator1 = "IFrame#DIALOG")) {
 			IFrame.selectDialogFrame();
 		}
 
 		if (isSet(permissionsList)) {
-			for (var permissionDefinitionKey : list "${permissionsList}") {
+			for (var permissionDefinitionKey : list ${permissionsList}) {
 				Check(locator1 = "Permissions#${permissionDefinitionKey}");
 			}
 		}
@@ -163,10 +163,10 @@ definition {
 
 	macro definePermissionsCP {
 		Role.definePermissionCmdCP(
-			permissionDefinitionKeys = "${permissionDefinitionKeys}",
-			roleName = "${roleName}",
-			roleType = "${roleType}",
-			roleUser = "${roleUser}");
+			permissionDefinitionKeys = ${permissionDefinitionKeys},
+			roleName = ${roleName},
+			roleType = ${roleType},
+			roleUser = ${roleUser});
 	}
 
 	macro deleteCP {
@@ -176,7 +176,7 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
-		var key_roleName = "${roleName}";
+		var key_roleName = ${roleName};
 
 		Click(locator1 = "Roles#ROLE_TABLE_ACTIONS");
 
@@ -186,9 +186,9 @@ definition {
 	}
 
 	macro editPermissionCmdCP {
-		var key_roleName = "${roleName}";
+		var key_roleName = ${roleName};
 
-		if (contains("Organization,Site", "${roleType}")) {
+		if (contains("Organization,Site", ${roleType})) {
 			Navigator.gotoNavItem(navItem = "${roleType} Roles");
 		}
 		else {
@@ -197,23 +197,23 @@ definition {
 
 		Type.sendKeys(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "${roleName}");
+			value1 = ${roleName});
 
 		Click(locator1 = "Button#SUBMIT");
 
 		if (isSet(roleUser)) {
-			var key_roleUser = "${roleUser}";
+			var key_roleUser = ${roleUser};
 
 			AssertTextEquals(
 				locator1 = "Roles#ROLE_TABLE_USER_TITLE",
-				value1 = "${roleUser}");
+				value1 = ${roleUser});
 
 			Click(locator1 = "Roles#ROLE_TABLE_ACTIONS");
 		}
 		else {
 			AssertTextEquals(
 				locator1 = "Roles#ROLE_TABLE_TITLE",
-				value1 = "${roleName}");
+				value1 = ${roleName});
 
 			Click(locator1 = "Roles#ROLE_TABLE_ACTIONS");
 		}
@@ -227,115 +227,115 @@ definition {
 		}
 
 		if (!(isSet(permissionDefinitionKeys))) {
-			var permissionDefinitionKeys = "${permissionDefinitionKey}";
+			var permissionDefinitionKeys = ${permissionDefinitionKey};
 		}
 
-		for (var permissionDefinitionKey : list "${permissionDefinitionKeys}") {
-			if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_GENERAL_PERMISSIONS")) {
+		for (var permissionDefinitionKey : list ${permissionDefinitionKeys}) {
+			if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_GENERAL_PERMISSIONS")) {
 				var permissionNavigationKey = "CONTROL_PANEL_GENERAL_PERMISSIONS";
 				var permissionNavigationValue = "General Permissions";
 			}
-			else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_USERS_ROLES")) {
+			else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_USERS_ROLES")) {
 				var permissionNavigationKey = "CONTROL_PANEL_USERS_ROLES";
 				var permissionNavigationValue = "Roles";
 			}
-			else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_SITES_SITES")) {
+			else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_SITES_SITES")) {
 				var permissionNavigationKey = "CONTROL_PANEL_SITES_SITES";
 				var permissionNavigationValue = "Sites";
 			}
-			else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_USERS_USER_GROUPS")) {
+			else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_USERS_USER_GROUPS")) {
 				var permissionNavigationKey = "CONTROL_PANEL_USERS_USER_GROUPS";
 				var permissionNavigationValue = "User Groups";
 			}
-			else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS")) {
+			else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS")) {
 				var permissionNavigationKey = "CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS";
 				var permissionNavigationValue = "Users and Organizations";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_ASSET_PUBLISHER")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_ASSET_PUBLISHER")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_ASSET_PUBLISHER";
 				var permissionNavigationValue = "Asset Publisher";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_BLOGS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_BLOGS")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_BLOGS";
 				var permissionNavigationValue = "Blogs";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_BOOKMARKS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_BOOKMARKS")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_BOOKMARKS";
 				var permissionNavigationValue = "Bookmarks";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_CALENDAR")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_CALENDAR")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_CALENDAR";
 				var permissionNavigationValue = "Calendar";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_CATEGORIES_NAVIGATION")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_CATEGORIES_NAVIGATION")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_CATEGORIES_NAVIGATION";
 				var permissionNavigationValue = "Categories Navigation";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA";
 				var permissionNavigationValue = "Documents and Media";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_LANGUAGE")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_LANGUAGE")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_LANGUAGE";
 				var permissionNavigationValue = "Language Selector";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_MESSAGE_BOARDS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_MESSAGE_BOARDS")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_MESSAGE_BOARDS";
 				var permissionNavigationValue = "Message Boards";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_WEB_CONTENT_DISPLAY")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_WEB_CONTENT_DISPLAY")) {
 				var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_WEB_CONTENT_DISPLAY";
 				var permissionNavigationValue = "Web Content Display";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_BLOGS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_BLOGS")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_BLOGS";
 				var permissionNavigationValue = "Blogs";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_BOOKMARKS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_BOOKMARKS")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_BOOKMARKS";
 				var permissionNavigationValue = "Bookmarks";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_CATEGORIES")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_CATEGORIES")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_CATEGORIES";
 				var permissionNavigationValue = "Categories";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA";
 				var permissionNavigationValue = "Documents and Media";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS";
 				var permissionNavigationValue = "Dynamic Data Lists";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_KALEO_FORMS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_KALEO_FORMS")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_KALEO_FORMS";
 				var permissionNavigationValue = "Kaleo Forms Admin";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_MESSAGE_BOARDS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_MESSAGE_BOARDS")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_MESSAGE_BOARDS";
 				var permissionNavigationValue = "Message Boards";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_MEMBERS_SITE_MEMBERSHIPS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_MEMBERS_SITE_MEMBERSHIPS")) {
 				var permissionNavigationKey = "SITE_ADMIN_MEMBERS_SITE_MEMBERSHIPS";
 				var permissionNavigationValue = "Site Memberships";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_MEMBERS_SITE_TEAMS")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_MEMBERS_SITE_TEAMS")) {
 				var permissionNavigationKey = "SITE_ADMIN_MEMBERS_SITE_TEAMS";
 				var permissionNavigationValue = "Site Teams";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_PAGES_SITE_PAGES")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_PAGES_SITE_PAGES")) {
 				var permissionNavigationKey = "SITE_ADMIN_PAGES_SITE_PAGES";
 				var permissionNavigationValue = "Site Pages";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_WEB_CONTENT")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_WEB_CONTENT")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_WEB_CONTENT";
 				var permissionNavigationValue = "Web Content";
 			}
-			else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_WIKI")) {
+			else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_WIKI")) {
 				var permissionNavigationKey = "SITE_ADMIN_CONTENT_WIKI";
 				var permissionNavigationValue = "Wiki";
 			}
-			else if (contains("${permissionDefinitionKey}", "USER_MY_ACCOUNT_MY_WORKFLOW_TASKS")) {
+			else if (contains(${permissionDefinitionKey}, "USER_MY_ACCOUNT_MY_WORKFLOW_TASKS")) {
 				var permissionNavigationKey = "USER_MY_ACCOUNT_MY_WORKFLOW_TASKS";
 				var permissionNavigationValue = "My Workflow Tasks";
 			}
@@ -343,53 +343,53 @@ definition {
 			if (!(IsElementPresent(locator1 = "RolesPermissions#${permissionDefinitionKey}"))) {
 				Type(
 					locator1 = "RolesPermissionsNavigation#SEARCH_FIELD",
-					value1 = "${permissionNavigationValue}");
+					value1 = ${permissionNavigationValue});
 
 				AssertClick(
 					locator1 = "RolesPermissionsNavigation#${permissionNavigationKey}",
-					value1 = "${permissionNavigationValue}");
+					value1 = ${permissionNavigationValue});
 
 				AssertTextEquals(
 					locator1 = "RolesPermissions#PERMISSION_HEADER",
-					value1 = "${permissionNavigationValue}");
+					value1 = ${permissionNavigationValue});
 			}
 
-			if ("${define}" == "true") {
+			if (${define} == "true") {
 				ScrollBy(value1 = "0, 400");
 
 				Check(locator1 = "RolesPermissions#${permissionDefinitionKey}");
 			}
-			else if ("${remove}" == "true") {
+			else if (${remove} == "true") {
 				Uncheck(locator1 = "RolesPermissions#${permissionDefinitionKey}");
 			}
 
 			if (isSet(siteNameScope)) {
-				var permissionDefinitionKeyChange = StringUtil.replace("${permissionDefinitionKey}", "CHECKBOX", "CHANGE_LINK");
+				var permissionDefinitionKeyChange = StringUtil.replace(${permissionDefinitionKey}, "CHECKBOX", "CHANGE_LINK");
 
 				AssertClick(
 					locator1 = "RolesPermissions#${permissionDefinitionKeyChange}",
 					value1 = "Change");
 
-				var key_siteNameScope = "${siteNameScope}";
+				var key_siteNameScope = ${siteNameScope};
 
 				SelectFrame(locator1 = "RolesPermissionsSelectSite#SELECT_SITE_IFRAME");
 
 				AssertClick.assertPartialTextClickAt(
 					locator1 = "RolesPermissionsSelectSite#SCOPE_SITES_TABLE_NAME",
-					value1 = "${siteNameScope}");
+					value1 = ${siteNameScope});
 
-				var key_siteNameScope = "${siteNameScope}";
-				var permissionDefinitionKeySiteScope = StringUtil.replace("${permissionDefinitionKey}", "CHECKBOX", "SITE_SCOPE");
+				var key_siteNameScope = ${siteNameScope};
+				var permissionDefinitionKeySiteScope = StringUtil.replace(${permissionDefinitionKey}, "CHECKBOX", "SITE_SCOPE");
 
 				SelectFrame(value1 = "relative=top");
 
 				AssertTextEquals.assertPartialText(
 					locator1 = "RolesPermissions#${permissionDefinitionKeySiteScope}",
-					value1 = "${siteNameScope}");
+					value1 = ${siteNameScope});
 			}
 		}
 
-		if ("${confirmation}" == "true") {
+		if (${confirmation} == "true") {
 			ScrollWebElementIntoView(locator1 = "RolesPermissions#SAVE_BUTTON");
 
 			AssertClickNoError(
@@ -404,7 +404,7 @@ definition {
 				value1 = "Save");
 		}
 
-		if ("${removeLink}" == "true") {
+		if (${removeLink} == "true") {
 			Confirm.waitForConfirmation(value1 = "Updating the chosen permissions will overwrite the respective individually defined permissions for one or more of these resource types: Bookmarks Entry, Bookmarks Folder, Calendar Booking, Calendar, Calendar Resource");
 		}
 
@@ -417,30 +417,30 @@ definition {
 
 	macro removePermissionCP {
 		Role.editPermissionCmdCP(
-			permissionDefinitionKey = "${permissionDefinitionKey}",
-			permissionDefinitionKeyChange = "${permissionDefinitionKeyChange}",
-			permissionDefinitionKeys = "${permissionDefinitionKeys}",
-			permissionDefinitionKeySiteScope = "${permissionDefinitionKeySiteScope}",
-			permissionNavigationKey = "${permissionNavigationKey}",
-			permissionNavigationValue = "${permissionNavigationValue}",
+			permissionDefinitionKey = ${permissionDefinitionKey},
+			permissionDefinitionKeyChange = ${permissionDefinitionKeyChange},
+			permissionDefinitionKeys = ${permissionDefinitionKeys},
+			permissionDefinitionKeySiteScope = ${permissionDefinitionKeySiteScope},
+			permissionNavigationKey = ${permissionNavigationKey},
+			permissionNavigationValue = ${permissionNavigationValue},
 			remove = "true",
-			removeLink = "${removeLink}",
-			roleName = "${roleName}",
-			roleType = "${roleType}",
-			roleUser = "${roleUser}",
-			siteNameScope = "${siteNameScope}");
+			removeLink = ${removeLink},
+			roleName = ${roleName},
+			roleType = ${roleType},
+			roleUser = ${roleUser},
+			siteNameScope = ${siteNameScope});
 
 		Role.viewPermissionCP(
-			permissionDefinitionKey = "${permissionDefinitionKey}",
-			permissionDefinitionValue = "${permissionDefinitionValue}",
-			permissionNavigationValue = "${permissionNavigationValue}",
+			permissionDefinitionKey = ${permissionDefinitionKey},
+			permissionDefinitionValue = ${permissionDefinitionValue},
+			permissionNavigationValue = ${permissionNavigationValue},
 			remove = "true");
 	}
 
 	macro removePermissionPG {
-		var key_roleName = StringUtil.replace("${roleName}", " ", "-");
+		var key_roleName = StringUtil.replace(${roleName}, " ", "-");
 
-		var key_roleName = StringUtil.lowerCase("${key_roleName}");
+		var key_roleName = StringUtil.lowerCase(${key_roleName});
 
 		if (IsElementPresent.isElementPresentAfterWait(locator1 = "IFrame#DIALOG")) {
 			IFrame.selectDialogFrame();
@@ -479,34 +479,34 @@ definition {
 	}
 
 	macro viewAssignee {
-		RoleNavigator.gotoAssignees(roleTitle = "${roleTitle}");
+		RoleNavigator.gotoAssignees(roleTitle = ${roleTitle});
 
-		LexiconEntry.viewEntryName(rowEntry = "${assigneeName}");
+		LexiconEntry.viewEntryName(rowEntry = ${assigneeName});
 	}
 
 	macro viewCP {
-		if (contains("Organization,Site", "${roleType}")) {
+		if (contains("Organization,Site", ${roleType})) {
 			Navigator.gotoNavItem(navItem = "${roleType} Roles");
 		}
 		else {
 			Navigator.gotoNavItem(navItem = "Regular Roles");
 		}
 
-		var key_roleName = "${roleName}";
+		var key_roleName = ${roleName};
 
 		AssertTextEquals(
 			locator1 = "Roles#ROLE_TABLE_TITLE",
-			value1 = "${roleName}");
+			value1 = ${roleName});
 
 		Click(locator1 = "Roles#ROLE_TABLE_ACTIONS");
 
 		MenuItem.click(menuItem = "Edit");
 
-		SiteAdmin.viewPortletTitle(portletTitle = "${roleName}");
+		SiteAdmin.viewPortletTitle(portletTitle = ${roleName});
 
 		AssertTextEquals(
 			locator1 = "TextInput#NAME",
-			value1 = "${roleName}");
+			value1 = ${roleName});
 	}
 
 	macro viewDefaultCP {
@@ -522,106 +522,106 @@ definition {
 	}
 
 	macro viewPermissionCP {
-		if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_GENERAL_PERMISSIONS")) {
+		if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_GENERAL_PERMISSIONS")) {
 			var permissionNavigationKey = "CONTROL_PANEL_GENERAL_PERMISSIONS";
 			var permissionNavigationValue = "General Permissions";
 		}
-		else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_USERS_ROLES")) {
+		else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_USERS_ROLES")) {
 			var permissionNavigationKey = "CONTROL_PANEL_USERS_ROLES";
 			var permissionNavigationValue = "Roles";
 		}
-		else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_SITES_SITES_RESOURCE_PERMISSIONS_SITE")) {
+		else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_SITES_SITES_RESOURCE_PERMISSIONS_SITE")) {
 			var permissionNavigationKey = "CONTROL_PANEL_SITES_SITES";
 			var permissionNavigationValue = "Site Settings";
 		}
-		else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_SITES_SITES")) {
+		else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_SITES_SITES")) {
 			var permissionNavigationKey = "CONTROL_PANEL_SITES_SITES";
 			var permissionNavigationValue = "Sites";
 		}
-		else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_USERS_USER_GROUPS")) {
+		else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_USERS_USER_GROUPS")) {
 			var permissionNavigationKey = "CONTROL_PANEL_USERS_USER_GROUPS";
 			var permissionNavigationValue = "User Groups";
 		}
-		else if (contains("${permissionDefinitionKey}", "CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS")) {
+		else if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS")) {
 			var permissionNavigationKey = "CONTROL_PANEL_USERS_USERS_AND_ORGANIZATIONS";
 			var permissionNavigationValue = "Users and Organizations";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_ASSET_PUBLISHER")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_ASSET_PUBLISHER")) {
 			var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_ASSET_PUBLISHER";
 			var permissionNavigationValue = "Asset Publisher";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_BLOGS")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_BLOGS")) {
 			var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_BLOGS";
 			var permissionNavigationValue = "Blogs";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_BOOKMARKS")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_BOOKMARKS")) {
 			var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_BOOKMARKS";
 			var permissionNavigationValue = "Bookmarks";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_CALENDAR")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_CALENDAR")) {
 			var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_CALENDAR";
 			var permissionNavigationValue = "Calendar";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA")) {
 			var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_DOCUMENTS_AND_MEDIA";
 			var permissionNavigationValue = "Documents and Media";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_LANGUAGE")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_LANGUAGE")) {
 			var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_LANGUAGE";
 			var permissionNavigationValue = "Language";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_MESSAGE_BOARDS")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_MESSAGE_BOARDS")) {
 			var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_MESSAGE_BOARDS";
 			var permissionNavigationValue = "Message Boards";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_APPLICATIONS_WEB_CONTENT_DISPLAY")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_APPLICATIONS_WEB_CONTENT_DISPLAY")) {
 			var permissionNavigationKey = "SITE_ADMIN_APPLICATIONS_WEB_CONTENT_DISPLAY";
 			var permissionNavigationValue = "Web Content Display";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_BLOGS")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_BLOGS")) {
 			var permissionNavigationKey = "SITE_ADMIN_CONTENT_BLOGS";
 			var permissionNavigationValue = "Blogs";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA")) {
 			var permissionNavigationKey = "SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA";
 			var permissionNavigationValue = "Documents and Media";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS")) {
 			var permissionNavigationKey = "SITE_ADMIN_CONTENT_DYNAMIC_DATA_LISTS";
 			var permissionNavigationValue = "Dynamic Data Lists";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_MESSAGE_BOARDS")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_MESSAGE_BOARDS")) {
 			var permissionNavigationKey = "SITE_ADMIN_CONTENT_MESSAGE_BOARDS";
 			var permissionNavigationValue = "Message Boards";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_MEMBERS_SITE_MEMBERSHIPS")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_MEMBERS_SITE_MEMBERSHIPS")) {
 			var permissionNavigationKey = "SITE_ADMIN_MEMBERS_SITE_MEMBERSHIPS";
 			var permissionNavigationValue = "Site Memberships";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_PAGES_SITE_PAGES")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_PAGES_SITE_PAGES")) {
 			var permissionNavigationKey = "SITE_ADMIN_PAGES_SITE_PAGES";
 			var permissionNavigationValue = "Site Pages";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_WEB_CONTENT")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_WEB_CONTENT")) {
 			var permissionNavigationKey = "SITE_ADMIN_CONTENT_WEB_CONTENT";
 			var permissionNavigationValue = "Web Content";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_CONTENT_WIKI")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_CONTENT_WIKI")) {
 			var permissionNavigationKey = "SITE_ADMIN_CONTENT_WIKI";
 			var permissionNavigationValue = "Wiki";
 		}
 
-		if ("${permissionNavigationValue}" == "General Permissions") {
+		if (${permissionNavigationValue} == "General Permissions") {
 			var permissionNavigationValue = "Portal";
 		}
-		else if (contains("${permissionDefinitionKey}", "SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE")) {
+		else if (contains(${permissionDefinitionKey}, "SITE_ADMIN_PAGES_SITE_PAGES_RESOURCE_PERMISSIONS_SITE")) {
 			var permissionNavigationValue = "Site";
 		}
 
-		var key_permissionDefinitionValue = "${permissionDefinitionValue}";
-		var key_permissionNavigationValue = "${permissionNavigationValue}";
+		var key_permissionDefinitionValue = ${permissionDefinitionValue};
+		var key_permissionNavigationValue = ${permissionNavigationValue};
 
-		if ("${remove}" == "true") {
+		if (${remove} == "true") {
 			AssertElementNotPresent(locator1 = "RolesPermissionsSummary#PERMISSION_TABLE_PERMISSIONS");
 
 			AssertElementNotPresent(locator1 = "RolesPermissionsSummary#PERMISSION_TABLE_REMOVE");
@@ -635,7 +635,7 @@ definition {
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "RolesPermissionsSummary#PERMISSION_TABLE_PERMISSIONS",
-				value1 = "${permissionNavigationValue}");
+				value1 = ${permissionNavigationValue});
 
 			AssertTextEquals(
 				locator1 = "RolesPermissionsSummary#PERMISSION_TABLE_REMOVE",
@@ -644,20 +644,20 @@ definition {
 	}
 
 	macro viewPermissionPG {
-		var key_roleName = StringUtil.replace("${roleName}", " ", "-");
+		var key_roleName = StringUtil.replace(${roleName}, " ", "-");
 
-		var key_roleName = StringUtil.lowerCase("${key_roleName}");
+		var key_roleName = StringUtil.lowerCase(${key_roleName});
 
-		if ("${permissionFlagged}" == "true") {
+		if (${permissionFlagged} == "true") {
 			AssertChecked(locator1 = "Permissions#${permissionDefinitionKey}");
 		}
-		else if ("${permissionFlagged}" == "false") {
+		else if (${permissionFlagged} == "false") {
 			AssertNotChecked(locator1 = "Permissions#${permissionDefinitionKey}");
 		}
 	}
 
 	macro viewPermissionSubdirectory {
-		var key_navItem = "${navItem}";
+		var key_navItem = ${navItem};
 
 		if (IsElementPresent(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_COLLAPSED")) {
 			Click.clickAt(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_COLLAPSED");
@@ -665,8 +665,8 @@ definition {
 			AssertElementNotPresent(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_COLLAPSED");
 		}
 
-		for (var subItem : list "${subItemList}") {
-			var key_subItem = "${subItem}";
+		for (var subItem : list ${subItemList}) {
+			var key_subItem = ${subItem};
 
 			AssertElementPresent(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_SUBITEM");
 

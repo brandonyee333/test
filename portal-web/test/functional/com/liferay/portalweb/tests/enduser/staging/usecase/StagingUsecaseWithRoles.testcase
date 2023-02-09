@@ -32,7 +32,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -50,7 +50,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingDemoLocalLive1 {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -179,7 +179,7 @@ definition {
 			dmDocumentTitle = "DM Document Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingDemoLocalLive2 {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -313,7 +313,7 @@ definition {
 		Page.viewPageLayoutColumn(columnName = "1 Column");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingDemoLocalLive3 {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -551,7 +551,7 @@ definition {
 		Page.view(pageName = "Test Page Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingDemoLocalLive4 {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -682,7 +682,7 @@ definition {
 			locator1 = "Home#PAGE_2_GUEST_VIEW",
 			value1 = "New Page Name");
 
-		Pause(locator1 = "120000");
+		Pause(locator1 = 120000);
 
 		Navigator.gotoSitePage(
 			pageName = "Home",
@@ -693,7 +693,7 @@ definition {
 			value1 = "New Page Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingLocalLiveWorkflow {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -987,7 +987,7 @@ definition {
 			workflowTask = "Review");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test StagingPublishPage {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1128,7 +1128,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-88004."
-	@priority = "3"
+	@priority = 3
 	test UpdateAndDeleteWebContentCommentOnLiveSite {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1204,7 +1204,7 @@ definition {
 
 		for (var resourceActionIndex : list "UPDATE_DISCUSSION,DELETE_DISCUSSION") {
 			Permissions.definePermissionViaJSONAPI(
-				resourceAction = "${resourceActionIndex}",
+				resourceAction = ${resourceActionIndex},
 				resourceName = "com.liferay.journal.model.JournalArticle",
 				roleName = "Web Content Comment Reviewer");
 		}

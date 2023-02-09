@@ -37,7 +37,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -46,7 +46,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-78833."
-	@priority = "5"
+	@priority = 5
 	test PublishEntryWithDeletedSmallImage {
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Blogs Page",
@@ -165,7 +165,7 @@ definition {
 			locator1 = "ControlMenuAddPanel#CONTENT_TITLE");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test StagingBlogsCP {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -185,7 +185,7 @@ definition {
 		Staging.publishToLive();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test StagingBlogsPG {
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Blogs Page",
@@ -241,7 +241,7 @@ definition {
 
 		RecentBloggers.viewPG(
 			entryAuthor = "Test Test",
-			postCount = "1");
+			postCount = 1);
 
 		BlogsAggregatorPortlet.viewBlogsEntryViaBAPortletPG(viewEntryTitle = "Blogs Entry Title 1");
 
@@ -265,7 +265,7 @@ definition {
 
 		RecentBloggers.viewPG(
 			entryAuthor = "Test Test",
-			postCount = "1");
+			postCount = 1);
 
 		BlogsAggregatorPortlet.viewBlogsEntryViaBAPortletPG(viewEntryTitle = "Blogs Entry Title 1");
 
@@ -336,7 +336,7 @@ definition {
 			viewNoEntryTitle = "Blogs Entry Title 2");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test StagingBlogsWithScheduledPublishing {
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Blogs Page",

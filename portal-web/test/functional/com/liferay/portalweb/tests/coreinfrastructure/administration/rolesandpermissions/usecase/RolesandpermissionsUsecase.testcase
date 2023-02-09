@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -44,7 +44,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditTeamPermissions {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -218,7 +218,7 @@ definition {
 
 		for (var permissionDefinitionKey : list "ACTION_ASSIGN_MEMBERS,ACTION_DELETE,ACTION_PERMISSIONS,ACTION_UPDATE,ACTION_VIEW") {
 			Team.definePermissionPG(
-				permissionDefinitionKey = "${permissionDefinitionKey}",
+				permissionDefinitionKey = ${permissionDefinitionKey},
 				teamName = "Site Team Name");
 		}
 
@@ -226,7 +226,7 @@ definition {
 
 		for (var permissionDefinitionKey : list "ACTION_ASSIGN_MEMBERS,ACTION_DELETE,ACTION_PERMISSIONS,ACTION_UPDATE,ACTION_VIEW") {
 			Team.viewPermissionPG(
-				permissionDefinitionKey = "${permissionDefinitionKey}",
+				permissionDefinitionKey = ${permissionDefinitionKey},
 				teamName = "Site Team Name");
 		}
 
@@ -253,11 +253,11 @@ definition {
 			userScreenName = "usersn");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test GroupScopePermissionCheck {
 		property test.name.skip.portal.instance = "RolesandpermissionsUsecase#GroupScopePermissionCheck";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -352,7 +352,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -404,7 +404,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test NoGuestRolePermissionsFromPrivateLayout {
 		property custom.properties = "permissions.check.guest.enabled=false";
 
@@ -446,7 +446,7 @@ definition {
 			value1 = "Guest");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RolesOrganizationSearch {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -665,9 +665,9 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RolesPermissionsDynamicDataLists {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -757,7 +757,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -795,7 +795,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -911,7 +911,7 @@ definition {
 			fieldName = "StartDate");
 
 		DDLRecord.populateFieldDecimal(
-			ddlRecordFieldData = "35000",
+			ddlRecordFieldData = 35000,
 			fieldFieldLabel = "Salary",
 			fieldName = "Salary");
 
@@ -921,12 +921,12 @@ definition {
 			fieldName = "Resume");
 
 		DDLRecord.populateFieldInteger(
-			ddlRecordFieldData = "30",
+			ddlRecordFieldData = 30,
 			fieldFieldLabel = "Age",
 			fieldName = "Age");
 
 		DDLRecord.populateFieldNumber(
-			ddlRecordFieldData = "40",
+			ddlRecordFieldData = 40,
 			fieldFieldLabel = "Weekly Hours",
 			fieldName = "WeeklyHours");
 
@@ -988,9 +988,9 @@ definition {
 			userEmailAddress = "userea1@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RolesSiteSearch {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1038,7 +1038,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -1067,7 +1067,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn2");
 
 		ProductMenu.gotoPortlet(
@@ -1175,7 +1175,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RolesSitesPermissionsInheritance {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1762,9 +1762,9 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SiteRoleBookmarksInlinePermissions {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1824,7 +1824,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		User.logoutPG();
@@ -1873,7 +1873,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test TeamPermissionsSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1965,7 +1965,7 @@ definition {
 
 		for (var permissionDefinitionKey : list "ACTION_ADD_DISCUSSION,ACTION_ADD_LAYOUT,ACTION_CONFIGURE_PORTLETS,ACTION_CUSTOMIZE,ACTION_DELETE,ACTION_DELETE_DISCUSSION,ACTION_PERMISSIONS,ACTION_UPDATE,ACTION_UPDATE_DISCUSSION,ACTION_VIEW") {
 			Team.definePermissionPG(
-				permissionDefinitionKey = "${permissionDefinitionKey}",
+				permissionDefinitionKey = ${permissionDefinitionKey},
 				teamName = "Site Team Name");
 		}
 
@@ -1973,7 +1973,7 @@ definition {
 
 		for (var permissionDefinitionKey : list "ACTION_ADD_DISCUSSION,ACTION_ADD_LAYOUT,ACTION_CONFIGURE_PORTLETS,ACTION_CUSTOMIZE,ACTION_DELETE,ACTION_DELETE_DISCUSSION,ACTION_PERMISSIONS,ACTION_UPDATE,ACTION_UPDATE_DISCUSSION,ACTION_VIEW") {
 			Team.viewPermissionPG(
-				permissionDefinitionKey = "${permissionDefinitionKey}",
+				permissionDefinitionKey = ${permissionDefinitionKey},
 				teamName = "Site Team Name");
 		}
 
@@ -1988,11 +1988,11 @@ definition {
 			siteName = "Site Name");
 
 		for (var portletTitleName : list "Blogs,Tag Cloud,Recent Bloggers") {
-			var key_portletTitleName = "${portletTitleName}";
+			var key_portletTitleName = ${portletTitleName};
 
 			AssertTextEquals(
 				locator1 = "Portlet#SPECIFIC_TITLE",
-				value1 = "${portletTitleName}");
+				value1 = ${portletTitleName});
 		}
 
 		User.logoutPG();
@@ -2013,7 +2013,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewAutomaticAssignedRoles {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -2051,7 +2051,7 @@ definition {
 			permissionNavigationValue = "Site Settings > Site");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewDocumentsAndMediaAddRepositoryPermissionSiteMemberRole {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -2078,11 +2078,11 @@ definition {
 			roleType = "Site");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewPreferencesPanelPermissionSiteMemberRole {
 		property osgi.app.includes = "currency-converter";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
@@ -2096,7 +2096,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -2147,7 +2147,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewPrivatePageSiteMemberRole {
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
@@ -2202,7 +2202,7 @@ definition {
 		Page.viewSpecificPG(pageNameList = "Private Page");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewRegRolePermissionsDefaultView {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -2330,18 +2330,18 @@ definition {
 
 		AssertVisible(locator1 = "Button#PLUS");
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		LexiconEntry.gotoAdd();
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		WebContent.viewWCViewableByPermissions();
 	}
 
 	@description = "This is a use case for LPS-115692. This will be ignored until BPR-64533 is fixed."
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ViewTeamUserOnStagingSite {
 		task ("Add new Site Role") {
 			JSONRole.addSiteRole(roleName = "Roles Siterole Name");
@@ -2350,7 +2350,7 @@ definition {
 		task ("Define permission to new Site Role") {
 			for (var resourceActionIndex : list "VIEW_SITE_ADMINISTRATION,VIEW_STAGING") {
 				Permissions.definePermissionViaJSONAPI(
-					resourceAction = "${resourceActionIndex}",
+					resourceAction = ${resourceActionIndex},
 					resourceName = "com.liferay.portal.kernel.model.Group",
 					roleName = "Roles Siterole Name",
 					roleType = "site");
@@ -2377,7 +2377,7 @@ definition {
 				userScreenName = "usersn");
 		}
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		task ("Assgin Default Site to new user") {
 			ProductMenu.gotoPortlet(
@@ -2386,7 +2386,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.editUserSiteCP(
-				siteName = "${siteName}",
+				siteName = ${siteName},
 				userScreenName = "usersn");
 		}
 
@@ -2443,7 +2443,7 @@ definition {
 			Refresh();
 		}
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		task ("Activate Staging of Default site") {
 			ProductMenu.gotoPortlet(
@@ -2451,11 +2451,11 @@ definition {
 				panel = "Site Administration",
 				portlet = "Staging");
 
-			Staging.activateStagingCP(siteName = "${siteName}");
+			Staging.activateStagingCP(siteName = ${siteName});
 		}
 
 		task ("Assert team user on staging site") {
-			ProductMenu.gotoStagingSite(site = "${siteName}");
+			ProductMenu.gotoStagingSite(site = ${siteName});
 
 			ProductMenu.gotoPortlet(
 				category = "Members",
@@ -2471,9 +2471,9 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-97321."
-	@priority = "4"
+	@priority = 4
 	test ViewUserPermissionSubdirectoryDisplays {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",

@@ -3,15 +3,15 @@ definition {
 	macro calculatePG {
 		Type(
 			locator1 = "TextInput#LOAN_AMOUNT",
-			value1 = "${loanAmount}");
+			value1 = ${loanAmount});
 
 		Type(
 			locator1 = "TextInput#INTEREST_RATE",
-			value1 = "${loanInterestRate}");
+			value1 = ${loanInterestRate});
 
 		Type(
 			locator1 = "TextInput#YEARS",
-			value1 = "${loanYears}");
+			value1 = ${loanYears});
 
 		AssertClick(
 			locator1 = "Button#CALCULATE",
@@ -19,15 +19,15 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "TextInput#MONTHLY_PAYMENT",
-			value1 = "${loanMonthlyPayment}");
+			value1 = ${loanMonthlyPayment});
 
 		AssertTextEquals(
 			locator1 = "TextInput#INTEREST_PAID",
-			value1 = "${loanInterestPaid}");
+			value1 = ${loanInterestPaid});
 
 		AssertTextEquals(
 			locator1 = "TextInput#TOTAL_PAID",
-			value1 = "${loanTotalPaid}");
+			value1 = ${loanTotalPaid});
 	}
 
 }

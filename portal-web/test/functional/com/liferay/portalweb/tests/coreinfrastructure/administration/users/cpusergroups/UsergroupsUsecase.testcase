@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -30,7 +30,7 @@ definition {
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ExportUserGroupMembers {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -87,7 +87,7 @@ definition {
 		LAR.exportUserGroups(larFileName = "User_Group_Members.lar");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test UserGroupPrivatePageInheritance {
 		property custom.properties = "layout.user.private.layouts.auto.create=false${line.separator}user.groups.copy.layouts.to.user.personal.site=true";
 
@@ -174,7 +174,7 @@ definition {
 			userScreenName = "usersn");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test UserGroupSiteOwnerPermissions {
 		property test.name.skip.portal.instance = "UsergroupsUsecase#UserGroupSiteOwnerPermissions";
 
@@ -416,7 +416,7 @@ definition {
 			userScreenName = "test");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test UserGroupSiteTemplates {
 		property test.name.skip.portal.instance = "UsergroupsUsecase#UserGroupSiteTemplates";
 
@@ -600,7 +600,7 @@ definition {
 			userScreenName = "test");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewUserGroupPermissionsNoAsUser {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -778,7 +778,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewUserGroupSiteRolePermissions {
 		ProductMenu.gotoPortlet(
 			category = "Users",

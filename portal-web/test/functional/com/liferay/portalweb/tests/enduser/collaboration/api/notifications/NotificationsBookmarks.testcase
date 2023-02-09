@@ -44,7 +44,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -58,7 +58,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewWebsiteNotificationForNewBookmarkInFolder {
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
@@ -72,7 +72,7 @@ definition {
 			folderDescription = "Bookmarks Folder Description",
 			folderName = "Bookmarks Folder Name");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -90,7 +90,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -100,7 +100,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = 1);
 
 		Notifications.gotoNotifications();
 
@@ -117,10 +117,10 @@ definition {
 			bookmarkName = "Bookmark Name",
 			bookmarkURL = "https://www.liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewWebsiteNotificationForUpdatedBookmarkInFolder {
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
@@ -142,7 +142,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -160,7 +160,7 @@ definition {
 			bookmarkURL = "https://www.liferay.com",
 			bookmarkURLEdit = "https://www.liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -170,7 +170,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = 1);
 
 		Notifications.gotoNotifications();
 
@@ -187,7 +187,7 @@ definition {
 			bookmarkName = "Bookmark Name Edit",
 			bookmarkURL = "https://www.liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 	}
 
 }

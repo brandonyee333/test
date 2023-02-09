@@ -10,7 +10,7 @@ definition {
 		User.firstLoginPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EmailToMBFilterHookSmoke {
 		property hook.plugins.includes = "email-to-mb-filter-hook";
 
@@ -18,8 +18,8 @@ definition {
 		var portletName = "email-to-mb-filter-hook";
 
 		OSGiSmoke.Smoke(
-			appName = "${portletName}",
-			portletName = "${portletName}");
+			appName = ${portletName},
+			portletName = ${portletName});
 	}
 
 }

@@ -15,7 +15,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -34,7 +34,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test BlogsDemo {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -59,10 +59,10 @@ definition {
 		SocialActivity.enableBlogsCP();
 
 		SocialActivity.configureActionCP(
-			contributionIncrement = "2",
-			contributionLimitValue = "2",
-			participationIncrement = "2",
-			participationLimitValue = "2",
+			contributionIncrement = 2,
+			contributionLimitValue = 2,
+			participationIncrement = 2,
+			participationLimitValue = 2,
 			userAction = "Adds a Comment");
 
 		SocialActivity.removeActionCP(userAction = "Reads a Blog");
@@ -70,7 +70,7 @@ definition {
 		SocialActivity.removeActionCP(userAction = "Subscribes to a Blog");
 
 		SocialActivity.configureActionCP(
-			participationIncrement = "0",
+			participationIncrement = 0,
 			userAction = "Votes on a Blog");
 
 		Page.add(pageName = "Social Activity Page");
@@ -188,7 +188,7 @@ definition {
 			userRank = "Rank: 2");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test Localization {
 		property test.name.skip.portal.instance = "SocialactivityUsecase#Localization";
 
@@ -251,7 +251,7 @@ definition {
 			value1 = "English (United States)");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SaveUserStatisticsConfiguration {
 		Page.add(pageName = "User Statistics Page");
 
@@ -306,7 +306,7 @@ definition {
 		SelectFrameTop(value1 = "relative=top");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewActivityViaGroupStatistics {
 		Page.add(pageName = "Group Statistics Page");
 
@@ -353,7 +353,7 @@ definition {
 		Navigator.gotoPage(pageName = "Group Statistics Page");
 
 		SocialActivity.viewPGViaGroupStatistics(
-			currentValue = "3",
+			currentValue = 3,
 			siteStatistics = "Users' Blog Entries");
 	}
 

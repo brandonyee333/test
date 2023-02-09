@@ -14,7 +14,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewLocalizedChinese {
 		Page.add(pageName = "Test Localized Page");
 
@@ -29,7 +29,7 @@ definition {
 		AssertTextNotPresent(value1 = "FAILED");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewLocalizedEnglish {
 		Page.add(pageName = "Test Localized Page");
 
@@ -46,7 +46,7 @@ definition {
 		AssertTextNotPresent(value1 = "FAILED");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewLocalizedFrench {
 		Page.add(pageName = "Test Localized Page");
 
@@ -61,7 +61,7 @@ definition {
 		AssertTextNotPresent(value1 = "FAILED");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewLocalizedSpanish {
 		Page.add(pageName = "Test Localized Page");
 

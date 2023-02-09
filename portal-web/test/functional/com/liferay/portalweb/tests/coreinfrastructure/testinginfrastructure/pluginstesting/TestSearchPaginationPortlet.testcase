@@ -17,13 +17,13 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-65608."
-	@priority = "4"
+	@priority = 4
 	test SearchAndViewPagination {
 		Page.add(pageName = "Sample Service Builder Page");
 
 		Portlet.addPG(portletName = "Sample Service Builder");
 
-		TestSearchPaginationPortlet.search15Results(itemsPerPage = "5");
+		TestSearchPaginationPortlet.search15Results(itemsPerPage = 5);
 	}
 
 }

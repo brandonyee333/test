@@ -14,7 +14,7 @@ definition {
 
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "${ddlDataDefinitionName}");
+			value1 = ${ddlDataDefinitionName});
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 
@@ -31,8 +31,8 @@ definition {
 		IFrame.selectDialogFrame();
 
 		WorkflowAsset.viewDetails(
-			userName = "${userName}",
-			workflowStatus = "${workflowStatus}");
+			userName = ${userName},
+			workflowStatus = ${workflowStatus});
 	}
 
 	macro gotoEdit {
@@ -42,21 +42,21 @@ definition {
 	}
 
 	macro gotoListRecords {
-		var key_ddlListName = "${ddlListName}";
+		var key_ddlListName = ${ddlListName};
 
 		AssertTextEquals(
 			locator1 = "DDL#LIST_TABLE_NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
 		AssertClick(
 			locator1 = "DDL#LIST_TABLE_NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
-		SiteAdmin.viewPortletTitle(portletTitle = "${ddlListName}");
+		SiteAdmin.viewPortletTitle(portletTitle = ${ddlListName});
 	}
 
 	macro gotoManageDataDefinitions {
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Manage Data Definitions");
 
@@ -75,7 +75,7 @@ definition {
 	macro gotoManageTemplates {
 		DDLNavigator.gotoManageDataDefinitions();
 
-		var key_ddlDataDefinitionName = "${ddlDataDefinitionName}";
+		var key_ddlDataDefinitionName = ${ddlDataDefinitionName};
 
 		Click.waitForMenuToggleJSClick(locator1 = "DDMSelectStructure#DDM_STRUCTURE_ELLIPSIS");
 
@@ -92,13 +92,13 @@ definition {
 
 	macro gotoSpreadsheetView {
 		AssertTextEquals(
-			key_ddlListName = "${ddlListName}",
+			key_ddlListName = ${ddlListName},
 			locator1 = "DDL#LIST_TABLE_NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Spreadsheet View",
-			rowEntry = "${ddlListName}");
+			rowEntry = ${ddlListName});
 	}
 
 	macro gotoView {

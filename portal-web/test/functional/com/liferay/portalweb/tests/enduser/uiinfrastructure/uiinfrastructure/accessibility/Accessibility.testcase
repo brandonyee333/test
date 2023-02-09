@@ -15,12 +15,12 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test Smoke {
 		Page.add(pageName = "Test Page1");
 
@@ -40,7 +40,7 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ViewCollaborationPortlets {
 		property osgi.app.includes = "invitation,knowledge-base,twitter";
 		property plugins.deployment.type = "osgi";
@@ -158,7 +158,7 @@ definition {
 		AssertAccessible();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewDefaultLandingPageAsGuestUser {
 		SignOut.signOut();
 

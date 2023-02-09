@@ -18,7 +18,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -38,7 +38,7 @@ definition {
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddFieldSetWithDocumentsAndMediaField {
 		Navigator.openURL();
 
@@ -102,7 +102,7 @@ definition {
 		KaleoFormsAdmin.viewProcess(kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddProcessWithNewFieldSetAndWorkflowViaSourceTab {
 		property test.name.skip.portal.instance = "CPKaleoformsadmin#AddProcessWithNewFieldSetAndWorkflowViaSourceTab";
 
@@ -176,7 +176,7 @@ definition {
 		KaleoFormsAdmin.viewProcess(kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeactivateAndActivateWorkflowDefinition {
 		property test.name.skip.portal.instance = "CPKaleoformsadmin#DeactivateAndActivateWorkflowDefinition";
 
@@ -235,7 +235,7 @@ definition {
 		KaleoFormsAdmin.viewNoUnpublishedWorkflowDefinitions();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeactivateAndDeleteWorkflowDefinition {
 		property test.name.skip.portal.instance = "CPKaleoformsadmin#DeactivateAndDeleteWorkflowDefinition";
 
@@ -327,9 +327,9 @@ definition {
 		Workflow.reactivateInactiveWorkflowDefinition(workflowDefinitionName = "Single Approver");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeleteCreateFormViaDDL {
-		var kfFieldSetName = "${kfFieldSetName}";
+		var kfFieldSetName = ${kfFieldSetName};
 		var kfProcessName = "Kaleo Forms Process";
 
 		Navigator.openURL();
@@ -343,13 +343,13 @@ definition {
 
 		KaleoFormsAdmin.addProcessDetails(
 			kfProcessDescription = "Kaleo Forms Process Description",
-			kfProcessName = "${kfProcessName}");
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.addFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		DynamicDataMapping.addField(
 			field = "Boolean",
@@ -359,19 +359,19 @@ definition {
 		KaleoFormsAdmin.saveFieldSet();
 
 		KaleoFormsAdmin.chooseFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.chooseWorkflow(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowDefinitionTitle = "Single Approver");
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.assignForm(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "create");
 
 		KaleoFormsAdmin.addForm(kfFormName = "Created Task Form");
@@ -379,19 +379,19 @@ definition {
 		KaleoFormsAdmin.saveForm();
 
 		KaleoFormsAdmin.assignForm(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "create");
 
 		KaleoFormsAdmin.chooseForm(kfFormName = "Created Task Form");
 
-		KaleoFormsAdmin.saveProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.saveProcess(kfProcessName = ${kfProcessName});
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
 			portlet = "Kaleo Forms Admin");
 
-		KaleoFormsAdmin.viewProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.viewProcess(kfProcessName = ${kfProcessName});
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -401,7 +401,7 @@ definition {
 		KaleoFormsAdmin.assignNewForm(
 			kfFormName = "Created Task Form",
 			kfFormNameNew = "New Assigned Form",
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "created");
 
 		ProductMenu.gotoPortlet(
@@ -410,7 +410,7 @@ definition {
 			portlet = "Kaleo Forms Admin");
 
 		KaleoFormsAdmin.deleteForm(
-			kfFieldSetName = "${kfFieldSetName}",
+			kfFieldSetName = ${kfFieldSetName},
 			kfFormName = "Created Task Form");
 
 		Navigator.openURL();
@@ -420,27 +420,27 @@ definition {
 			panel = "Site Administration",
 			portlet = "Kaleo Forms Admin");
 
-		KaleoFormsAdmin.viewProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.viewProcess(kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.viewProcessDetails(
 			kfProcessDescription = "${kfProcessName} Description",
-			kfProcessName = "${kfProcessName}");
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.viewProcessFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.viewProcessWorkflow(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowDefinitionTitle = "Single Approver");
 
 		KaleoFormsAdmin.viewProcessFormsDeleted(
 			kfFormName = "Created Task Form",
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "create");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteCreateFormViaKaleoFormsAdmin {
 		var kfProcessName = "Kaleo Forms Process";
 
@@ -455,13 +455,13 @@ definition {
 
 		KaleoFormsAdmin.addProcessDetails(
 			kfProcessDescription = "${kfProcessName} Description",
-			kfProcessName = "${kfProcessName}");
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.addFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		DynamicDataMapping.addField(
 			field = "Text",
@@ -471,19 +471,19 @@ definition {
 		KaleoFormsAdmin.saveFieldSet();
 
 		KaleoFormsAdmin.chooseFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.chooseWorkflow(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowDefinitionTitle = "Single Approver");
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.assignForm(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "create");
 
 		KaleoFormsAdmin.addForm(kfFormName = "Created Task Form");
@@ -491,19 +491,19 @@ definition {
 		KaleoFormsAdmin.saveForm();
 
 		KaleoFormsAdmin.assignForm(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "create");
 
 		KaleoFormsAdmin.chooseForm(kfFormName = "Created Task Form");
 
-		KaleoFormsAdmin.saveProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.saveProcess(kfProcessName = ${kfProcessName});
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
 			portlet = "Kaleo Forms Admin");
 
-		KaleoFormsAdmin.viewProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.viewProcess(kfProcessName = ${kfProcessName});
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -513,7 +513,7 @@ definition {
 		KaleoFormsAdmin.assignNewForm(
 			kfFormName = "Created Task Form",
 			kfFormNameNew = "New Assigned Form",
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "created");
 
 		ProductMenu.gotoPortlet(
@@ -522,11 +522,11 @@ definition {
 			portlet = "Kaleo Forms Admin");
 
 		KaleoFormsAdmin.deleteForm(
-			kfFieldSetName = "${kfFieldSetName}",
+			kfFieldSetName = ${kfFieldSetName},
 			kfFormName = "Created Task Form");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeleteEditFormViaKaleoFormsAdmin {
 		var kfProcessName = "Kaleo Forms Process";
 
@@ -541,13 +541,13 @@ definition {
 
 		KaleoFormsAdmin.addProcessDetails(
 			kfProcessDescription = "${kfProcessName} Description",
-			kfProcessName = "${kfProcessName}");
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.addFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		DynamicDataMapping.addField(
 			field = "Text",
@@ -557,19 +557,19 @@ definition {
 		KaleoFormsAdmin.saveFieldSet();
 
 		KaleoFormsAdmin.chooseFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.chooseWorkflow(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowDefinitionTitle = "Single Approver");
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.assignForm(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "created");
 
 		KaleoFormsAdmin.addForm(kfFormName = "Created Task Form");
@@ -577,12 +577,12 @@ definition {
 		KaleoFormsAdmin.saveForm();
 
 		KaleoFormsAdmin.assignForm(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "created");
 
 		KaleoFormsAdmin.chooseForm(kfFormName = "Created Task Form");
 
-		KaleoFormsAdmin.saveProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.saveProcess(kfProcessName = ${kfProcessName});
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -599,7 +599,7 @@ definition {
 		KaleoFormsAdmin.assignNewForm(
 			kfFormName = "Created Task Form",
 			kfFormNameNew = "New Assigned Form",
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "created");
 
 		ProductMenu.gotoPortlet(
@@ -608,11 +608,11 @@ definition {
 			portlet = "Kaleo Forms Admin");
 
 		KaleoFormsAdmin.deleteForm(
-			kfFieldSetName = "${kfFieldSetName}",
+			kfFieldSetName = ${kfFieldSetName},
 			kfFormName = "Created Task Form");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteFieldSet {
 		Navigator.openURL();
 
@@ -640,9 +640,9 @@ definition {
 		KaleoFormsAdmin.deleteFieldSet();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteForm {
-		var kfFieldSetName = "${kfFieldSetName}";
+		var kfFieldSetName = ${kfFieldSetName};
 		var kfProcessDescription = "Kaleo Forms Process Description";
 		var kfProcessName = "Kaleo Forms Process";
 
@@ -656,14 +656,14 @@ definition {
 		KaleoFormsAdmin.addProcess();
 
 		KaleoFormsAdmin.addProcessDetails(
-			kfProcessDescription = "${kfProcessDescription}",
-			kfProcessName = "${kfProcessName}");
+			kfProcessDescription = ${kfProcessDescription},
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.addFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		DynamicDataMapping.addField(
 			field = "Boolean",
@@ -673,19 +673,19 @@ definition {
 		KaleoFormsAdmin.saveFieldSet();
 
 		KaleoFormsAdmin.chooseFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.chooseWorkflow(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowDefinitionTitle = "Single Approver");
 
 		KaleoFormsAdmin.next();
 
 		KaleoFormsAdmin.assignForm(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "create");
 
 		KaleoFormsAdmin.addForm(kfFormName = "Created Task Form");
@@ -693,14 +693,14 @@ definition {
 		KaleoFormsAdmin.saveForm();
 
 		KaleoFormsAdmin.assignForm(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "create");
 
 		KaleoFormsAdmin.chooseForm(kfFormName = "Created Task Form");
 
-		KaleoFormsAdmin.saveProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.saveProcess(kfProcessName = ${kfProcessName});
 
-		KaleoFormsAdmin.viewProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.viewProcess(kfProcessName = ${kfProcessName});
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -710,7 +710,7 @@ definition {
 		KaleoFormsAdmin.assignNewForm(
 			kfFormName = "Created Task Form",
 			kfFormNameNew = "New Assigned Form",
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "created");
 
 		ProductMenu.gotoPortlet(
@@ -719,7 +719,7 @@ definition {
 			portlet = "Kaleo Forms Admin");
 
 		KaleoFormsAdmin.deleteForm(
-			kfFieldSetName = "${kfFieldSetName}",
+			kfFieldSetName = ${kfFieldSetName},
 			kfFormName = "Created Task Form");
 
 		Navigator.openURL();
@@ -729,27 +729,27 @@ definition {
 			panel = "Site Administration",
 			portlet = "Kaleo Forms Admin");
 
-		KaleoFormsAdmin.viewProcess(kfProcessName = "${kfProcessName}");
+		KaleoFormsAdmin.viewProcess(kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.viewProcessDetails(
 			kfProcessDescription = "Kaleo Forms Process Description",
-			kfProcessName = "${kfProcessName}");
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.viewProcessFieldSet(
-			kfFieldSetName = "${kfFieldSetName}",
-			kfProcessName = "${kfProcessName}");
+			kfFieldSetName = ${kfFieldSetName},
+			kfProcessName = ${kfProcessName});
 
 		KaleoFormsAdmin.viewProcessWorkflow(
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowDefinitionTitle = "Single Approver");
 
 		KaleoFormsAdmin.viewProcessFormsDeleted(
 			kfFormName = "Created Task Form",
-			kfProcessName = "${kfProcessName}",
+			kfProcessName = ${kfProcessName},
 			workflowTask = "create");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteProcess {
 		Navigator.openURL();
 
@@ -815,7 +815,7 @@ definition {
 		KaleoFormsAdmin.deleteProcess(kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeleteProcessRecords {
 		Navigator.openURL();
 
@@ -968,7 +968,7 @@ definition {
 		KaleoFormsAdmin.viewProcessNoRecords(kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditCreateTaskForm {
 		Navigator.openURL();
 
@@ -1065,7 +1065,7 @@ definition {
 			fieldName = "Separator");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditFieldSetViaAddProcess {
 		Navigator.openURL();
 
@@ -1142,7 +1142,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-49037."
-	@priority = "2"
+	@priority = 2
 	test EditProcessFieldSetPaginationAndViewSelectedForm {
 		for (var kfFieldSetName : list "Field1,Field2,Field3,Field4,Field5,Field6") {
 			ProductMenu.gotoPortlet(
@@ -1151,8 +1151,8 @@ definition {
 				portlet = "Kaleo Forms Admin");
 
 			KaleoFormsAdmin.addFieldSet(
-				kfFieldSetName = "${kfFieldSetName}",
-				kfProcessName = "${kfProcessName}");
+				kfFieldSetName = ${kfFieldSetName},
+				kfProcessName = ${kfProcessName});
 
 			DynamicDataMapping.addField(
 				field = "Text",
@@ -1216,7 +1216,7 @@ definition {
 
 		KaleoFormsAdmin.next();
 
-		KaleoFormsAdmin.editFieldSetPagination(paginationNumber = "5");
+		KaleoFormsAdmin.editFieldSetPagination(paginationNumber = 5);
 
 		KaleoFormsAdmin.viewNextFieldSetPage();
 
@@ -1231,7 +1231,7 @@ definition {
 		KaleoFormsAdmin.viewProcessForms(kfFormName = "Created Task Form");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditProcessForms {
 		Navigator.openURL();
 
@@ -1336,7 +1336,7 @@ definition {
 		KaleoFormsAdmin.viewProcessForms(kfFormName = "Edited Process Task Form");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditProcessNewDetails {
 		Navigator.openURL();
 
@@ -1421,7 +1421,7 @@ definition {
 			kfProcessName = "Kaleo Forms Process Edited");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditProcessNewFieldSet {
 		Navigator.openURL();
 
@@ -1432,7 +1432,7 @@ definition {
 				portlet = "Kaleo Forms Admin");
 
 			KaleoFormsAdmin.addFieldSet(
-				kfFieldSetName = "${kfFieldSetName}",
+				kfFieldSetName = ${kfFieldSetName},
 				kfProcessName = "Kaleo Forms Process");
 
 			DynamicDataMapping.addField(
@@ -1555,7 +1555,7 @@ definition {
 			kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditProcessNewWorkflowViaSourceTab {
 		property test.name.skip.portal.instance = "CPKaleoformsadmin#EditProcessNewWorkflowViaSourceTab";
 
@@ -1720,7 +1720,7 @@ definition {
 		KaleoFormsAdmin.viewProcessForms(kfFormName = "Created Task Form");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditSingleApproverWorkflowViaSourceTabViaAddProcess {
 		property test.name.skip.portal.instance = "CPKaleoformsadmin#EditSingleApproverWorkflowViaSourceTabViaAddProcess";
 
@@ -1795,7 +1795,7 @@ definition {
 		KaleoFormsAdmin.viewProcess(kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditSingleApproverWorkflowViaViewTabViaAddProcess {
 		property test.name.skip.portal.instance = "CPKaleoformsadmin#EditSingleApproverWorkflowViaViewTabViaAddProcess";
 
@@ -1879,7 +1879,7 @@ definition {
 		KaleoFormsAdmin.viewProcess(kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditUploadedWorkflowViaViewTabViaAddProcess {
 		property test.name.skip.portal.instance = "CPKaleoformsadmin#EditUploadedWorkflowViaViewTabViaAddProcess";
 
@@ -1895,7 +1895,7 @@ definition {
 		Workflow.viewDefinition(
 			workflowDefinitionName = "Uploaded Definition",
 			workflowDefinitionTitle = "Uploaded Definition",
-			workflowDefinitionVersionNumber = "1");
+			workflowDefinitionVersionNumber = 1);
 
 		Navigator.openURL();
 
@@ -1978,7 +1978,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-49107."
-	@priority = "4"
+	@priority = 4
 	test ExportAllProcessRecordsCSV {
 		Navigator.openURL();
 
@@ -2107,7 +2107,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-49107."
-	@priority = "4"
+	@priority = 4
 	test ExportAllProcessRecordsXML {
 		Navigator.openURL();
 
@@ -2236,7 +2236,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-49107."
-	@priority = "4"
+	@priority = 4
 	test ExportApprovedProcessRecordsCSV {
 		Navigator.openURL();
 
@@ -2366,7 +2366,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-49107."
-	@priority = "4"
+	@priority = 4
 	test ExportApprovedProcessRecordsXML {
 		Navigator.openURL();
 
@@ -2495,7 +2495,7 @@ definition {
 			kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchProcessRecords {
 		Navigator.openURL();
 
@@ -2647,7 +2647,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-50363."
-	@priority = "3"
+	@priority = 3
 	test ViewCanAddFieldsAfterSaveAndContinue {
 		Navigator.openURL();
 
@@ -2710,7 +2710,7 @@ definition {
 		KaleoFormsAdmin.viewProcess(kfProcessName = "Kaleo Forms Process");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewErrorMessageUponSavingBlankFieldSet {
 		Navigator.openURL();
 
@@ -2736,7 +2736,7 @@ definition {
 		KaleoFormsAdmin.viewInvalidDefinitionMessage();
 	}
 
-	@priority = "2"
+	@priority = 2
 	test ViewFieldSetCreateHeaderTitle {
 		Navigator.openURL();
 
@@ -2772,7 +2772,7 @@ definition {
 		KaleoFormsAdmin.saveFieldSet();
 	}
 
-	@priority = "2"
+	@priority = 2
 	test ViewFieldSetParentDefinitionIframeTitle {
 		Navigator.openURL();
 
@@ -2789,7 +2789,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-47352."
-	@priority = "3"
+	@priority = 3
 	test ViewNoUnpublishedWorkflowMessage {
 		Navigator.openURL();
 
@@ -2826,7 +2826,7 @@ definition {
 		KaleoFormsAdmin.viewNoUnpublishedWorkflowDefinitions();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewProcessRecordDetails {
 		Navigator.openURL();
 
@@ -2968,7 +2968,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-49475."
-	@priority = "3"
+	@priority = 3
 	test ViewSelectedFieldSetWithPagination {
 		Navigator.openURL();
 
@@ -2979,7 +2979,7 @@ definition {
 				portlet = "Kaleo Forms Admin");
 
 			KaleoFormsAdmin.addFieldSet(
-				kfFieldSetName = "${kfFieldSetName}",
+				kfFieldSetName = ${kfFieldSetName},
 				kfProcessName = "Kaleo Forms Process");
 
 			DynamicDataMapping.addField(
@@ -3007,7 +3007,7 @@ definition {
 			kfFieldSetName = "Field5",
 			kfProcessName = "Kaleo Forms Process");
 
-		KaleoFormsAdmin.editFieldSetPagination(paginationNumber = "5");
+		KaleoFormsAdmin.editFieldSetPagination(paginationNumber = 5);
 
 		KaleoFormsAdmin.viewNextFieldSetPage();
 
@@ -3040,7 +3040,7 @@ definition {
 		KaleoFormsAdmin.next();
 	}
 
-	@priority = "2"
+	@priority = 2
 	test ViewUnpublishedWorkflowDefinitionsMenulist {
 		Navigator.openURL();
 

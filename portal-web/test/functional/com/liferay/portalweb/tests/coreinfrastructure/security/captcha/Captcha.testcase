@@ -13,7 +13,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -23,7 +23,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewCaptchaEnabled {
 		SignInNavigator.gotoCreateAccount();
 
@@ -31,7 +31,7 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ViewRecaptchaEnabled {
 		property test.name.skip.portal.instance = "Captcha#ViewRecaptchaEnabled";
 
@@ -48,8 +48,8 @@ definition {
 		Navigator.gotoNavItem(navItem = "CAPTCHA");
 
 		ServerAdministration.enableRecaptcha(
-			privateKey = "${recaptchaPrivateKey}",
-			publicKey = "${recaptchaPublicKey}");
+			privateKey = ${recaptchaPrivateKey},
+			publicKey = ${recaptchaPublicKey});
 
 		User.logoutPG();
 

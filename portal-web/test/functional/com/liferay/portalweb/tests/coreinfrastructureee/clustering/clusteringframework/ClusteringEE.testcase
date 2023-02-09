@@ -19,7 +19,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -29,14 +29,14 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddAndDeleteBlogEntriesOnSeparateNodes {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "ClusteringEE#AddAndDeleteBlogEntriesOnSeparateNodes";
 
 		Clustering.viewClusterStatusInConsole();
 
-		Page.assertNodePortPG(nodePort = "8080");
+		Page.assertNodePortPG(nodePort = 8080);
 
 		Page.add(pageName = "Test Page1");
 
@@ -55,11 +55,11 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Page.assertNodePortPG(nodePort = "9080");
+		Page.assertNodePortPG(nodePort = 9080);
 
 		Navigator.gotoSpecificURLPage(
 			pageName = "Test Page1",
@@ -73,7 +73,7 @@ definition {
 			entryContent = "Blogs Entry1 Content",
 			entryTitle = "Blogs Entry1 Title");
 
-		Navigator.openNodePort(nodePort = "9080");
+		Navigator.openNodePort(nodePort = 9080);
 
 		Page.add(pageName = "Test Page2");
 
@@ -111,7 +111,7 @@ definition {
 			assetType = "Blogs Entry",
 			entryContent = "Blogs Entry1 Content",
 			entryTitle = "Blogs Entry1 Title",
-			nodePort = "9080");
+			nodePort = 9080);
 
 		Navigator.openSpecificURL(url = "http://localhost:9080");
 
@@ -123,7 +123,7 @@ definition {
 		RecycleBin.emptyCP();
 
 		User.logoutPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -150,75 +150,75 @@ definition {
 			searchTerm = "Entry1");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ShutdownAndStartupNodes {
 		property test.name.skip.portal.instance = "ClusteringEE#ShutdownAndStartupNodes";
 
 		Clustering.viewClusterStatusInConsole();
 
-		Page.assertNodePortPG(nodePort = "8080");
+		Page.assertNodePortPG(nodePort = 8080);
 
 		User.logoutPG(
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Page.assertNodePortPG(nodePort = "9080");
+		Page.assertNodePortPG(nodePort = 9080);
 
-		Portlet.shutdownSpecificServer(nodePort = "8080");
+		Portlet.shutdownSpecificServer(nodePort = 8080);
 
-		Page.assertNodePortPG(nodePort = "9080");
+		Page.assertNodePortPG(nodePort = 9080);
 
 		Portlet.startSpecificServer(
 			deleteLiferayHome = "true",
 			keepCachedAppServerData = "true",
-			nodePort = "8080");
+			nodePort = 8080);
 
-		Page.assertNodePortPG(nodePort = "9080");
+		Page.assertNodePortPG(nodePort = 9080);
 
 		User.logoutPG(
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "8080",
+			nodePort = 8080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Page.assertNodePortPG(nodePort = "8080");
+		Page.assertNodePortPG(nodePort = 8080);
 
-		Portlet.shutdownSpecificServer(nodePort = "9080");
+		Portlet.shutdownSpecificServer(nodePort = 9080);
 
 		Portlet.startSpecificServer(
 			deleteLiferayHome = "true",
 			keepCachedAppServerData = "true",
-			nodePort = "9080");
+			nodePort = 9080);
 
-		Page.assertNodePortPG(nodePort = "8080");
+		Page.assertNodePortPG(nodePort = 8080);
 
 		User.logoutPG(
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Page.assertNodePortPG(nodePort = "9080");
+		Page.assertNodePortPG(nodePort = 9080);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ValidateDocumentOnSeparateNodes {
 		property test.name.skip.portal.instance = "ClusteringEE#ValidateDocumentOnSeparateNodes";
 
 		Clustering.viewClusterStatusInConsole();
 
-		Page.assertNodePortPG(nodePort = "8080");
+		Page.assertNodePortPG(nodePort = 8080);
 
 		Page.add(pageName = "Documents and Media Page");
 
@@ -241,11 +241,11 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Page.assertNodePortPG(nodePort = "9080");
+		Page.assertNodePortPG(nodePort = 9080);
 
 		Navigator.gotoSpecificURLPage(
 			pageName = "Documents and Media Page",
@@ -254,7 +254,7 @@ definition {
 		DMDocument.viewAllPG(dmDocumentTitle = "DM Document Title");
 
 		User.logoutPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -264,13 +264,13 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-142472."
-	@priority = "4"
+	@priority = 4
 	test ValidatePublishOnTwoNodes {
 		property test.name.skip.portal.instance = "ClusteringEE#ValidatePublishOnTwoNodes";
 
 		Clustering.viewClusterStatusInConsole();
 
-		Page.assertNodePortPG(nodePort = "8080");
+		Page.assertNodePortPG(nodePort = 8080);
 
 		JSONGroup.addGroup(groupName = "Site Name");
 
@@ -310,11 +310,11 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Page.assertNodePortPG(nodePort = "9080");
+		Page.assertNodePortPG(nodePort = 9080);
 
 		Navigator.gotoSitePage(
 			baseURL = "http://localhost:9080",
@@ -340,7 +340,7 @@ definition {
 		Staging.publishToLive();
 
 		User.logoutPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -360,7 +360,7 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ValidateSchedulerOnSeparateNodes {
 		property test.name.skip.portal.instance = "ClusteringEE#ValidateSchedulerOnSeparateNodes";
 
@@ -368,7 +368,7 @@ definition {
 
 		var pageName = "Home";
 
-		Page.assertNodePortPG(nodePort = "8080");
+		Page.assertNodePortPG(nodePort = 8080);
 
 		Navigator.openURL();
 
@@ -398,11 +398,11 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Page.assertNodePortPG(nodePort = "9080");
+		Page.assertNodePortPG(nodePort = 9080);
 
 		Navigator.gotoSpecificURLPage(
 			pageName = "Welcome",
@@ -412,7 +412,7 @@ definition {
 			locator1 = "Home#PAGE_2_GUEST_VIEW",
 			value1 = "New Page Name");
 
-		Pause(locator1 = "120000");
+		Pause(locator1 = 120000);
 
 		Navigator.gotoSpecificURLPage(
 			pageName = "Welcome",
@@ -432,7 +432,7 @@ definition {
 		Staging.deactivateStagingCP(siteName = "Liferay DXP");
 
 		User.logoutPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 

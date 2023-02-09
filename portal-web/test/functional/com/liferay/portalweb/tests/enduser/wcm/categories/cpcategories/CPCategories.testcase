@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -22,7 +22,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCategories {
 		Navigator.openURL();
 
@@ -101,7 +101,7 @@ definition {
 	}
 
 	@description = "Ensure that a user can add a category."
-	@priority = "5"
+	@priority = 5
 	test AddCategory {
 		property portal.acceptance = "true";
 
@@ -130,7 +130,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddCategoryProperties {
 		Navigator.openURL();
 
@@ -145,7 +145,7 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Property",
 			propertiesValueField = "Category Property",
-			propertyNumber = "2",
+			propertyNumber = 2,
 			vocabularyName = "Vocabulary Name");
 
 		Navigator.openURL();
@@ -159,7 +159,7 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Property",
 			propertiesValueField = "Category Property",
-			propertyNumber = "1",
+			propertyNumber = 1,
 			vocabularyName = "Vocabulary Name");
 
 		Navigator.openURL();
@@ -173,11 +173,11 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Property",
 			propertiesValueField = "Category Property",
-			propertyNumber = "2",
+			propertyNumber = 2,
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCategoryProperty {
 		Navigator.openURL();
 
@@ -192,7 +192,7 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Property",
 			propertiesValueField = "Category Property",
-			propertyNumber = "0",
+			propertyNumber = 0,
 			vocabularyName = "Vocabulary Name");
 
 		Navigator.openURL();
@@ -206,11 +206,11 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Property",
 			propertiesValueField = "Category Property",
-			propertyNumber = "0",
+			propertyNumber = 0,
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCategoryViewableByAnyone {
 		Navigator.openURL();
 
@@ -239,7 +239,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCategoryViewableByOwner {
 		Navigator.openURL();
 
@@ -268,7 +268,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCategoryViewableBySiteMembers {
 		Navigator.openURL();
 
@@ -297,7 +297,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSubcategories {
 		Navigator.openURL();
 
@@ -385,7 +385,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSubcategory {
 		Navigator.openURL();
 
@@ -425,7 +425,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddVocabularies {
 		Navigator.openURL();
 
@@ -454,7 +454,7 @@ definition {
 		Vocabulary.viewCP(vocabularyName = "Vocabulary Name 3");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddVocabulary {
 		Navigator.openURL();
 
@@ -468,7 +468,7 @@ definition {
 		Vocabulary.viewCP(vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyAssetTypeAllAssetTypes {
 		Navigator.openURL();
 
@@ -486,7 +486,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyAssetTypeBlogsEntry {
 		Navigator.openURL();
 
@@ -504,7 +504,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyAssetTypeBookmarksEntry {
 		Navigator.openURL();
 
@@ -522,7 +522,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyAssetTypeDocument {
 		Navigator.openURL();
 
@@ -540,7 +540,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyAssetTypes {
 		Navigator.openURL();
 
@@ -573,7 +573,7 @@ definition {
 			vocabularyName = "Vocabulary Name 2");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyAssetTypeUser {
 		Navigator.openURL();
 
@@ -591,7 +591,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyAssetTypeWebContent {
 		Navigator.openURL();
 
@@ -609,7 +609,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyAssetTypeWikiPage {
 		Navigator.openURL();
 
@@ -627,7 +627,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyDisallowMultipleCategories {
 		Navigator.openURL();
 
@@ -652,7 +652,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyViewableByGuest {
 		Navigator.openURL();
 
@@ -677,7 +677,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyViewableByOwner {
 		Navigator.openURL();
 
@@ -702,7 +702,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddVocabularyViewableBySiteMembers {
 		Navigator.openURL();
 
@@ -727,7 +727,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test CannotAddCategoryWithNullTitle {
 		Navigator.openURL();
 
@@ -741,7 +741,7 @@ definition {
 		Category.addWithNullTitleCP(vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test CannotAddVocabularyWithNullTitle {
 		Navigator.openURL();
 
@@ -753,7 +753,7 @@ definition {
 		Vocabulary.addVocabularyWithNullTitle();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeleteAssociatedAssetTypeViaVocabulary {
 		Navigator.openURL();
 
@@ -775,7 +775,7 @@ definition {
 		Vocabulary.addAssociatedAssetType(
 			assetType = "Web Content Article",
 			required = "true",
-			rowNumber = "2");
+			rowNumber = 2);
 
 		Button.clickSave();
 
@@ -786,7 +786,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteCategories {
 		Navigator.openURL();
 
@@ -840,7 +840,7 @@ definition {
 		Category.deleteCategoriesCP(vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteCategory {
 		Navigator.openURL();
 
@@ -867,7 +867,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteCategoryByMenu {
 		Navigator.openURL();
 
@@ -894,7 +894,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeleteCategoryProperty2 {
 		Navigator.openURL();
 
@@ -909,7 +909,7 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Property",
 			propertiesValueField = "Category Property",
-			propertyNumber = "2",
+			propertyNumber = 2,
 			vocabularyName = "Vocabulary Name");
 
 		Navigator.openURL();
@@ -934,7 +934,7 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Property",
 			propertiesValueField = "Category Property",
-			propertyNumber = "1",
+			propertyNumber = 1,
 			vocabularyName = "Vocabulary Name");
 
 		AssertTextNotPresent(
@@ -946,7 +946,7 @@ definition {
 			value1 = "Category Property 2 Value");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeleteSubcategoryViaIcon {
 		Navigator.openURL();
 
@@ -993,7 +993,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteSubcategoryViaMenu {
 		Navigator.openURL();
 
@@ -1033,7 +1033,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteVocabulary {
 		property portal.acceptance = "true";
 
@@ -1049,7 +1049,7 @@ definition {
 		Vocabulary.deleteByIconCP(vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteVocabularyByMenu {
 		Navigator.openURL();
 
@@ -1063,7 +1063,7 @@ definition {
 		Vocabulary.deleteByMenuCP(vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditCategory {
 		property portal.acceptance = "true";
 
@@ -1093,7 +1093,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditCategoryProperty {
 		Navigator.openURL();
 
@@ -1108,7 +1108,7 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Key",
 			propertiesValueField = "Category Value",
-			propertyNumber = "1",
+			propertyNumber = 1,
 			vocabularyName = "Vocabulary Name");
 
 		Navigator.openURL();
@@ -1122,7 +1122,7 @@ definition {
 			categoryName = "Category Name",
 			propertiesKeyField = "Category Key",
 			propertiesValueField = "Category Value",
-			propertyNumber = "1",
+			propertyNumber = 1,
 			vocabularyName = "Vocabulary Name");
 
 		Navigator.openURL();
@@ -1150,11 +1150,11 @@ definition {
 			categoryName = "Category Name Edit",
 			propertiesKeyField = "Category Key Edit",
 			propertiesValueField = "Category Value Edit",
-			propertyNumber = "1",
+			propertyNumber = 1,
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditSubcategory {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -1198,7 +1198,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditVocabulary {
 		property portal.acceptance = "true";
 
@@ -1216,7 +1216,7 @@ definition {
 			vocabularyNameEdit = "Vocabulary Name Edit");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test MoveCategoryViaEdit {
 		Navigator.openURL();
 
@@ -1271,7 +1271,7 @@ definition {
 			vocabularyName = "Vocabulary Name 2");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ValidateClickingCloseButtonDoesNotSaveVocabulary {
 		Navigator.openURL();
 

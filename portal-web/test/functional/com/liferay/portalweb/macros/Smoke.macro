@@ -6,50 +6,50 @@ definition {
 	@summary-ignore = "true"
 	macro runSmoke {
 		Page.add(
-			defaultURL = "${defaultURL}",
-			nodePort = "${nodePort}",
+			defaultURL = ${defaultURL},
+			nodePort = ${nodePort},
 			pageName = "Test Page1",
-			pageTemplateName = "${pageTemplateName}",
-			sitePageType = "${pageType}");
+			pageTemplateName = ${pageTemplateName},
+			sitePageType = ${pageType});
 
 		Page.add(
-			defaultURL = "${defaultURL}",
-			nodePort = "${nodePort}",
+			defaultURL = ${defaultURL},
+			nodePort = ${nodePort},
 			pageName = "Test Page2",
-			pageTemplateName = "${pageTemplateName}",
-			sitePageType = "${pageType}");
+			pageTemplateName = ${pageTemplateName},
+			sitePageType = ${pageType});
 
 		Page.add(
-			defaultURL = "${defaultURL}",
-			nodePort = "${nodePort}",
+			defaultURL = ${defaultURL},
+			nodePort = ${nodePort},
 			pageName = "Test Page3",
-			pageTemplateName = "${pageTemplateName}",
-			sitePageType = "${pageType}");
+			pageTemplateName = ${pageTemplateName},
+			sitePageType = ${pageType});
 
 		var pageName = "Test Page1";
 		var portletBody = "Welcome to Liferay";
 		var portletName = "Hello World";
 
 		task ("Add a '${portletName}' portlet to the page named '${pageName}'") {
-			Navigator.gotoPage(pageName = "${pageName}");
+			Navigator.gotoPage(pageName = ${pageName});
 
 			Portlet.addPG(
-				i = "${i}",
-				portletName = "${portletName}");
+				i = ${i},
+				portletName = ${portletName});
 
-			Portlet.viewTitle(portletName = "${portletName}");
-
-			Portlet.viewBody(
-				portletBody = "${portletBody}",
-				portletName = "${portletName}");
-
-			Navigator.gotoPage(pageName = "${pageName}");
-
-			Portlet.viewTitle(portletName = "${portletName}");
+			Portlet.viewTitle(portletName = ${portletName});
 
 			Portlet.viewBody(
-				portletBody = "${portletBody}",
-				portletName = "${portletName}");
+				portletBody = ${portletBody},
+				portletName = ${portletName});
+
+			Navigator.gotoPage(pageName = ${pageName});
+
+			Portlet.viewTitle(portletName = ${portletName});
+
+			Portlet.viewBody(
+				portletBody = ${portletBody},
+				portletName = ${portletName});
 		}
 
 		var portlet = "Web Content";
@@ -60,9 +60,9 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Content",
 				panel = "Site Administration",
-				portlet = "${portlet}");
+				portlet = ${portlet});
 
-			SiteAdmin.viewPortletTitle(portletTitle = "${portlet}");
+			SiteAdmin.viewPortletTitle(portletTitle = ${portlet});
 		}
 
 		var webContentContent = "Web Content Content";
@@ -71,15 +71,15 @@ definition {
 		task ("Add a web content article with '${webContentTitle}' as the title and '${webContentContent}' as the content") {
 			WebContentNavigator.gotoAddCP();
 
-			Pause(locator1 = "30000");
+			Pause(locator1 = 30000);
 
 			WebContent.addCP(
-				webContentContent = "${webContentContent}",
-				webContentTitle = "${webContentTitle}");
+				webContentContent = ${webContentContent},
+				webContentTitle = ${webContentTitle});
 
 			PortletEntry.publish();
 
-			WebContent.viewTitle(webContentTitle = "${webContentTitle}");
+			WebContent.viewTitle(webContentTitle = ${webContentTitle});
 		}
 	}
 

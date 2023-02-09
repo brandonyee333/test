@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -30,12 +30,12 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test PreviewDeviceRegRole {
 		property testray.component.names = "Mobile Web,User Interface";
 
 		Permissions.setUpRegRoleLoginUserCP(
-			portletName = "${portletName1}",
+			portletName = ${portletName1},
 			roleName = "Regrole Name",
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",

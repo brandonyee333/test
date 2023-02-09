@@ -10,7 +10,7 @@ definition {
 		User.firstLoginPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test 323ColumnsLayouttplSmoke {
 		property layouttpl.plugins.includes = "3-2-3-columns-layouttpl";
 
@@ -18,8 +18,8 @@ definition {
 		var portletName = "3-2-3-columns-layouttpl";
 
 		OSGiSmoke.Smoke(
-			appName = "${portletName}",
-			portletName = "${portletName}");
+			appName = ${portletName},
+			portletName = ${portletName});
 	}
 
 }

@@ -15,7 +15,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewOAuth {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -29,19 +29,19 @@ definition {
 
 		var applicationCredentials = TestOAuth.getApplicationCredentials(applicationName = "oauth1");
 
-		var consumerSecret = TestOAuth.getConsumerSecret(applicationCredentials = "${applicationCredentials}");
+		var consumerSecret = TestOAuth.getConsumerSecret(applicationCredentials = ${applicationCredentials});
 
 		var consumerKey = TestOAuth.getConsumerKey(
-			applicationCredentials = "${applicationCredentials}",
-			consumerSecret = "${consumerSecret}");
+			applicationCredentials = ${applicationCredentials},
+			consumerSecret = ${consumerSecret});
 
 		Page.add(pageName = "Test Page");
 
 		Portlet.addPG(portletName = "Test OAuth");
 
 		TestOAuth.testConsumerKeyAndSecret(
-			consumerKey = "${consumerKey}",
-			consumerSecret = "${consumerSecret}",
+			consumerKey = ${consumerKey},
+			consumerSecret = ${consumerSecret},
 			webID = "liferay.com");
 
 		TestOAuth.viewJSON(domainName = "liferay.com");

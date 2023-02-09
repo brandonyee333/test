@@ -9,7 +9,7 @@ definition {
 
 		Select(
 			locator1 = "Select#MAXIMUM_ITEMS_TO_DISPLAY",
-			value1 = "5");
+			value1 = 5);
 
 		PortletEntry.save();
 
@@ -19,11 +19,11 @@ definition {
 	macro configurePaginationManageEntriesPG {
 		Select(
 			locator1 = "AnnouncementsManageEntries#DISTRIBUTION_SCOPE_SELECT",
-			value1 = "${distributionScope}");
+			value1 = ${distributionScope});
 
 		Click(locator1 = "Button#ITEMS_PER_PAGE");
 
-		MenuItem.click(menuItem = "${itemsPerPage}");
+		MenuItem.click(menuItem = ${itemsPerPage});
 	}
 
 }

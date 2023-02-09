@@ -34,7 +34,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -48,7 +48,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ApprovePageCommentPG {
 		Navigator.gotoPage(pageName = "Page Comments Page");
 
@@ -98,7 +98,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-54707."
-	@priority = "4"
+	@priority = 4
 	test DeleteComment {
 		Navigator.gotoPage(pageName = "Page Comments Page");
 
@@ -129,7 +129,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-68780."
-	@priority = "4"
+	@priority = 4
 	test EditCommentAssignedToMe {
 		Navigator.gotoPage(pageName = "Page Comments Page");
 
@@ -170,7 +170,7 @@ definition {
 			workflowTask = "Review");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RejectPageCommentPG {
 		Navigator.gotoPage(pageName = "Page Comments Page");
 

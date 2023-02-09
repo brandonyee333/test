@@ -23,7 +23,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -45,7 +45,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddBlogsEntryWithHTML {
 		Navigator.openURL();
 
@@ -74,7 +74,7 @@ definition {
 
 	@description = "LPS-110117 - Image editing toolbar does not display anymore after adding a link to the image."
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test AddBlogsEntryWithInlineImage {
 		Navigator.openURL();
 
@@ -93,7 +93,7 @@ definition {
 			navTab = "Upload Image",
 			uploadFileName = "Document_1.jpg");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		PortletEntry.publish();
 
@@ -110,7 +110,7 @@ definition {
 		BlogsEntry.viewInlineImage(uploadFileName = "Document_1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AllowMultiplePortletConfigurationsPerSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -143,7 +143,7 @@ definition {
 
 		IFrame.selectDialogFrame();
 
-		BlogsConfiguration.selectMaximumItemstoDisplay(maximumItemsToDisplay = "75");
+		BlogsConfiguration.selectMaximumItemstoDisplay(maximumItemsToDisplay = 75);
 
 		BlogsConfiguration.uncheckComments();
 
@@ -196,7 +196,7 @@ definition {
 		BlogsConfiguration.viewDefaultConfigurationRSS();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ChangeBlogsEntryCoverImage {
 		Navigator.openURL();
 
@@ -262,7 +262,7 @@ definition {
 			uploadFileName = "Document_1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ChangeBlogsRatingType {
 		Blogs.addEntry(
 			entryContent = "Blogs Entry Content",
@@ -288,7 +288,7 @@ definition {
 		AssertElementPresent(locator1 = "Ratings#YOUR_RATING_STAR_EMPTY_1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteBlogsEntry {
 		Navigator.openURL();
 
@@ -342,7 +342,7 @@ definition {
 		BlogsEntry.viewDefaultCP(entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteDraftBlogsEntry {
 		Navigator.openURL();
 
@@ -399,7 +399,7 @@ definition {
 		BlogsEntry.viewDefaultCP(entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DemoTrackbackURL {
 		property custom.properties = "blogs.trackback.enabled=true";
 		property dummy.socket.proxy.disabled = "true";
@@ -425,7 +425,7 @@ definition {
 			entryTitle = "Blogs Entry1 Title");
 
 		Comments.viewPG(
-			commentCount = "1",
+			commentCount = 1,
 			entryComment = "[...] Blogs Entry2 Content [...] Read More",
 			userFullName = "Test Test");
 
@@ -470,7 +470,7 @@ definition {
 
 		AssertClick(
 			locator1 = "Blogs#ENTRY_COMMENTS_COUNT",
-			value1 = "0");
+			value1 = 0);
 
 		BlogsEntry.viewPG(
 			entryContent = "Blogs Entry3 Content",
@@ -503,7 +503,7 @@ definition {
 			entryTitle = "Blogs Entry3 Title");
 
 		Comments.viewPG(
-			commentCount = "1",
+			commentCount = 1,
 			entryComment = "[...] Blogs Entry4 Content [...] Read More",
 			entryContent = "Blogs Entry3 Content",
 			entryTitle = "Blogs Entry3 Title",
@@ -538,7 +538,7 @@ definition {
 
 		AssertClick(
 			locator1 = "Blogs#ENTRY_COMMENTS_COUNT",
-			value1 = "0");
+			value1 = 0);
 
 		BlogsEntry.viewPG(
 			entryContent = "Blogs Entry5 Content",
@@ -570,7 +570,7 @@ definition {
 			entryTitle = "Blogs Entry5 Title");
 
 		Comments.viewPG(
-			commentCount = "1",
+			commentCount = 1,
 			entryComment = "[...] Blogs Entry6 Content [...] Read More",
 			userFullName = "Test Test");
 
@@ -587,7 +587,7 @@ definition {
 			entryTitle = "Blogs Entry6 Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ImportBlogsCommentLAR {
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -620,7 +620,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 
 		Comments.viewPG(
-			commentCount = "1",
+			commentCount = 1,
 			entryComment = "Blogs Entry Comment",
 			userFullName = "Test Test");
 
@@ -653,12 +653,12 @@ definition {
 			entryTitle = "Blogs Entry Title");
 
 		Comments.viewPG(
-			commentCount = "1",
+			commentCount = 1,
 			entryComment = "Blogs Entry Comment",
 			userFullName = "Test Test");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test RestoreBlogsEntry {
 		property portal.acceptance = "true";
 
@@ -719,7 +719,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsEntriesAsGuestViaAP {
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -764,7 +764,7 @@ definition {
 			entryTitle = "Blogs Entry Title 2");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewBlogsEntriesWithSpecialCharactersOnPublicAndPrivateVirtualHostPages {
 		property test.name.skip.portal.instance = "BlogsUsecase#ViewBlogsEntriesWithSpecialCharactersOnPublicAndPrivateVirtualHostPages";
 
@@ -808,7 +808,7 @@ definition {
 			portlet = "Site Settings");
 
 		Site.addVirtualHostsURLCP(
-			privatePageVirtualHostURL = "${privatePageVirtualHostURL}",
+			privatePageVirtualHostURL = ${privatePageVirtualHostURL},
 			privateVirtualHosts = "true");
 
 		SitePageNavigator.gotoPages(page = "Public Pages");
@@ -857,7 +857,7 @@ definition {
 			entryTitle = '''Blogs Entry Title `~!@#$%^&*(){}[],.<>/?|''');
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsEntryAsPublishedAferFutureDisplayDateEditing {
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -879,7 +879,7 @@ definition {
 
 		Panel.expandPanel(panelHeading = "Configuration");
 
-		BlogsEntry.editDisplayDate(displayTimeMinute = "00");
+		BlogsEntry.editDisplayDate(displayTimeMinute = 00);
 
 		PortletEntry.publish();
 
@@ -890,7 +890,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewBlogsEntryAsPublishedViaAP {
 		Page.add(pageName = "Asset Publisher Page");
 
@@ -953,7 +953,7 @@ definition {
 			entryTitle = "Blogs Entry Title Edit");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewBlogsEntryFriendlyURLViaBlogsPortletAndRecentBloggers {
 		var portalURL = PropsUtil.get("portal.url");
 		var entryAuthor = "Test Test";
@@ -961,10 +961,10 @@ definition {
 		var entryTitle = "Blogs Entry Title";
 		var entryTitleURL = StringUtil.replace("Blogs Entry Title", " ", "-");
 
-		var entryTitleURL = StringUtil.lowerCase("${entryTitleURL}");
+		var entryTitleURL = StringUtil.lowerCase(${entryTitleURL});
 		var pageNameURL = StringUtil.replace("Blogs Page", " ", "-");
 
-		var pageNameURL = StringUtil.lowerCase("${pageNameURL}");
+		var pageNameURL = StringUtil.lowerCase(${pageNameURL});
 
 		var friendlyURL = "${portalURL}/web/guest/${pageNameURL}/-/blogs/${entryTitleURL}";
 
@@ -976,7 +976,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
-		Navigator.openSpecificURL(url = "${friendlyURL}");
+		Navigator.openSpecificURL(url = ${friendlyURL});
 
 		BlogsEntry.viewPG(
 			entryContent = "Blogs Entry Content",
@@ -994,16 +994,16 @@ definition {
 			locator1 = "Blogs#RECENT_BLOGGER_USER_NAME",
 			value1 = "Test Test");
 
-		AssertLocation(value1 = "${friendlyURL}");
+		AssertLocation(value1 = ${friendlyURL});
 
 		BlogsEntry.viewPG(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsEntryOnMultiplePagesWithDefaultAndPageScope {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -1074,7 +1074,7 @@ definition {
 
 		BlogsNavigator.gotoConfigurationScopePG();
 
-		BlogsConfiguration.viewScopeSelection(scopeSelection = "${siteName}");
+		BlogsConfiguration.viewScopeSelection(scopeSelection = ${siteName});
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -1099,7 +1099,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewBlogsEntryWithCoverImageFromDMFolders {
 		Page.add(pageName = "Documents and Media Page");
 
@@ -1184,7 +1184,7 @@ definition {
 		AssertElementPresent(locator1 = "BlogsEntry#ENTRY_COVER_IMAGE");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewBlogsEntryWithCoverImageUploadedToDM {
 		Navigator.openURL();
 
@@ -1201,7 +1201,7 @@ definition {
 			navTab = "Documents and Media",
 			uploadFileName = "Document_1.jpg");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		PortletEntry.publish();
 
@@ -1227,7 +1227,7 @@ definition {
 		DMDocument.viewCP(dmDocumentTitle = "Document_1.jpg");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsEntryWithCustomAbstract {
 		Navigator.openURL();
 
@@ -1257,7 +1257,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsEntryWithDefaultAbstract {
 		Navigator.openURL();
 
@@ -1287,7 +1287,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewBlogsEntryWithFutureDisplayDateViaBlogsAggregator {
 		Page.add(pageName = "Blogs Aggregator Page");
 
@@ -1333,7 +1333,7 @@ definition {
 
 		BlogsEntry.viewNoEntryViaBlogsAggregatorPG();
 
-		Pause(locator1 = "180000");
+		Pause(locator1 = 180000);
 
 		Navigator.gotoPage(pageName = "Blogs Aggregator Page");
 
@@ -1383,7 +1383,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsEntryWithImageEditedViaItemSelector {
 		Navigator.openURL();
 
@@ -1414,7 +1414,7 @@ definition {
 
 		ImageEditor.rotateImage(rotateDirection = "right");
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		ImageEditor.applyChangesAndSaveFile();
 
@@ -1456,7 +1456,7 @@ definition {
 		BlogsEntry.viewInlineImage(uploadFileName = '''Document_2+%281%29.jpg''');
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsEntryWithUploadedCoverImage {
 		Navigator.openURL();
 
@@ -1475,7 +1475,7 @@ definition {
 
 		Button.clickPublish();
 
-		Pause(locator1 = "30000");
+		Pause(locator1 = 30000);
 
 		BlogsNavigator.gotoEntryCP(entryTitle = "Blogs Entry Title");
 
@@ -1484,7 +1484,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewNoBlogsDraftDisplaysInAP {
 		Page.add(pageName = "Asset Publisher Page");
 
@@ -1548,14 +1548,14 @@ definition {
 			entryTitle = "Blogs Entry Title Draft");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewParentOrganizationViaSelectOrganizationInBlogsConfiguration {
 		Navigator.gotoPage(pageName = "Blogs Page");
 
 		Portlet.addPG(portletName = "Blogs Aggregator");
 
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		var key_portletName = "Blogs Aggregator";
@@ -1591,7 +1591,7 @@ definition {
 
 		for (var orgName : list "Organization1 Name,Organization2 Name,Organization3 Name") {
 			Organization.addCP(
-				orgName = "${orgName}",
+				orgName = ${orgName},
 				orgType = "Organization");
 
 			ProductMenu.gotoPortlet(

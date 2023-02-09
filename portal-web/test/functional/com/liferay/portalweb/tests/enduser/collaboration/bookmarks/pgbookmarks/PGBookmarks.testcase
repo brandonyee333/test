@@ -24,7 +24,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -36,7 +36,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddBookmark {
 		property portal.acceptance = "false";
 
@@ -54,7 +54,7 @@ definition {
 			bookmarkURL = "https://www.liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddFolder {
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
@@ -63,7 +63,7 @@ definition {
 			folderName = "Test Folder Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddFolderBookmark {
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
@@ -86,14 +86,14 @@ definition {
 
 		Refresh();
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		Bookmark.viewBookmark(
 			bookmarkName = "Test Bookmark Name",
 			bookmarkURL = "https://www.liferay.com");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddFolderBookmarkURLInvalid {
 		property portal.acceptance = "false";
 
@@ -114,7 +114,7 @@ definition {
 			folderName = "Test Folder Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteFolder {
 		property portal.acceptance = "true";
 
@@ -131,7 +131,7 @@ definition {
 			folderName = "Test Folder Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteFolderBookmark {
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
@@ -155,7 +155,7 @@ definition {
 		Bookmark.deletePG(bookmarkName = "Test Bookmark Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditFolder {
 		property portal.acceptance = "true";
 
@@ -174,7 +174,7 @@ definition {
 			folderNameEdit = "Test Folder Name Edit");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditFolderBookmark {
 		property portal.acceptance = "false";
 
@@ -204,7 +204,7 @@ definition {
 			bookmarkURLEdit = "https://portal.liferay.dev");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test MoveFolderBookmarkToFolder {
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 
@@ -248,7 +248,7 @@ definition {
 			value1 = "Test Bookmark Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test RemoveBookmarkPortlet {
 		property portal.acceptance = "false";
 
@@ -257,7 +257,7 @@ definition {
 		Portlet.deletePG(portletName = "Bookmarks");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchFolderBookmark {
 		Navigator.gotoPage(pageName = "Bookmarks Page");
 

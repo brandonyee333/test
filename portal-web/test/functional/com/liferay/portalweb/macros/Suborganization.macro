@@ -1,39 +1,39 @@
 definition {
 
 	macro addCP {
-		var key_orgName = "${orgName}";
+		var key_orgName = ${orgName};
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Add Organization");
 
 		Type(
 			locator1 = "TextInput#NAME",
-			value1 = "${suborgName}");
+			value1 = ${suborgName});
 
 		PortletEntry.save();
 
 		AssertTextEquals(
 			locator1 = "TextInput#NAME",
-			value1 = "${suborgName}");
+			value1 = ${suborgName});
 	}
 
 	macro gotoCP {
 		Type(
 			locator1 = "TextInput#SEARCH",
-			value1 = "${searchToken}");
+			value1 = ${searchToken});
 
 		Click(locator1 = "Button#SUBMIT");
 
-		var key_suborgName = "${suborgName}";
+		var key_suborgName = ${suborgName};
 
 		AssertTextEquals(
 			locator1 = "UsersAndOrganizationsOrganization#SUBORGANIZATION_TABLE_NAME",
-			value1 = "${suborgName}");
+			value1 = ${suborgName});
 
 		AssertClick(
 			locator1 = "UsersAndOrganizationsOrganization#SUBORGANIZATION_TABLE_NAME",
-			value1 = "${suborgName}");
+			value1 = ${suborgName});
 
-		Breadcrumb.viewActiveEntry(breadcrumbName = "${suborgName}");
+		Breadcrumb.viewActiveEntry(breadcrumbName = ${suborgName});
 	}
 
 	macro tearDownCP {
@@ -42,18 +42,18 @@ definition {
 
 	macro viewCP {
 		Organization.viewSubOrganizationCP(
-			orgName = "${orgName}",
-			orgType = "${orgType}",
-			suborgName = "${suborgName}",
-			suborgType = "${suborgType}");
+			orgName = ${orgName},
+			orgType = ${orgType},
+			suborgName = ${suborgName},
+			suborgType = ${suborgType});
 
-		var key_suborgName = "${suborgName}";
+		var key_suborgName = ${suborgName};
 
-		LexiconEntry.openEntryMenu(rowEntry = "${suborgName}");
+		LexiconEntry.openEntryMenu(rowEntry = ${suborgName});
 
 		MenuItem.click(menuItem = "Edit");
 
-		var key_orgType = "${orgType}";
+		var key_orgType = ${orgType};
 
 		AssertTextEquals(
 			locator1 = "Portlet#HEADER",
@@ -61,19 +61,19 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "TextInput#NAME",
-			value1 = "${suborgName}");
+			value1 = ${suborgName});
 
 		AssertTextEquals.assertValue(
 			locator1 = "UsersAndOrganizationsEditOrganization#DETAILS_TYPE",
-			value1 = "${orgType}");
+			value1 = ${orgType});
 
 		AssertTextEquals(
 			locator1 = "UsersAndOrganizationsEditOrganization#PARENT_ORGANIZATION_TABLE_NAME",
-			value1 = "${orgName}");
+			value1 = ${orgName});
 
 		AssertTextEquals(
 			locator1 = "UsersAndOrganizationsEditOrganization#PARENT_ORGANIZATION_TABLE_TYPE",
-			value1 = "${orgType}");
+			value1 = ${orgType});
 	}
 
 }

@@ -1,17 +1,17 @@
 definition {
 
 	macro deleteCP {
-		var key_assetName = "${assetName}";
+		var key_assetName = ${assetName};
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_NAME",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_TYPE",
-			value1 = "${assetType}");
+			value1 = ${assetType});
 
-		LexiconEntry.openEntryMenu(rowEntry = "${assetName}");
+		LexiconEntry.openEntryMenu(rowEntry = ${assetName});
 
 		MenuItem.clickNoError(menuItem = "Delete");
 
@@ -23,7 +23,7 @@ definition {
 			locator1 = "Message#EMPTY_INFO",
 			value1 = "The Recycle Bin is empty.");
 
-		AssertTextNotPresent(value1 = "${assetName}");
+		AssertTextNotPresent(value1 = ${assetName});
 	}
 
 	macro disableRecycleBinViaSiteSettings {
@@ -57,7 +57,7 @@ definition {
 	}
 
 	macro gotoEntryViaSuccessMessage {
-		var key_assetName = "${assetName}";
+		var key_assetName = ${assetName};
 
 		AssertClick(
 			locator1 = "RecycleBin#SUCCESS_MESSAGE_CONTENT_LINK",
@@ -67,29 +67,29 @@ definition {
 	}
 
 	macro restoreContentFromFolderCP {
-		var key_assetName = "${assetName}";
+		var key_assetName = ${assetName};
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_NAME",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_TYPE",
-			value1 = "${assetType}");
+			value1 = ${assetType});
 
 		AssertClick(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_NAME",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 
-		var key_assetName = "${documentName}";
+		var key_assetName = ${documentName};
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_FOLDER_DOCUMENT_NAME",
-			value1 = "${documentName}");
+			value1 = ${documentName});
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Restore",
-			rowEntry = "${documentName}");
+			rowEntry = ${documentName});
 
 		SelectFrame(locator1 = "RecycleBin#RECYCLE_BIN_FOLDER_WARNING_IFRAME");
 
@@ -109,20 +109,20 @@ definition {
 	}
 
 	macro restoreCP {
-		var key_assetName = "${assetName}";
+		var key_assetName = ${assetName};
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_NAME",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 
-		LexiconEntry.openEntryMenu(rowEntry = "${assetName}");
+		LexiconEntry.openEntryMenu(rowEntry = ${assetName});
 
 		MenuItem.click(menuItem = "Restore");
 
 		if (isSet(assetType)) {
 			AssertTextEquals.assertPartialText(
 				locator1 = "Message#RECYCLE_BIN_RESTORE_SUCCESS",
-				value1 = "${assetType}");
+				value1 = ${assetType});
 		}
 		else {
 			AssertTextEquals.assertPartialText(
@@ -133,10 +133,10 @@ definition {
 		if (isSet(assetRestoreLocation)) {
 			AssertTextEquals.assertPartialText(
 				locator1 = "Message#RECYCLE_BIN_RESTORE_SUCCESS",
-				value1 = "${assetRestoreLocation}");
+				value1 = ${assetRestoreLocation});
 		}
 
-		if ("${multipleAssets}" == "true") {
+		if (${multipleAssets} == "true") {
 			AssertElementNotPresent(locator1 = "Message#EMPTY_INFO");
 		}
 		else {
@@ -149,7 +149,7 @@ definition {
 	}
 
 	macro restoreOverwriteCP {
-		LexiconEntry.openEntryMenu(rowEntry = "${assetName}");
+		LexiconEntry.openEntryMenu(rowEntry = ${assetName});
 
 		MenuItem.click(menuItem = "Restore");
 
@@ -163,7 +163,7 @@ definition {
 	macro searchCP {
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 	}
@@ -175,7 +175,7 @@ definition {
 	}
 
 	macro viewCP {
-		var key_assetName = "${assetName}";
+		var key_assetName = ${assetName};
 
 		if (IsElementPresent(locator1 = "RecycleBin#EMPTY_RECYCLE_BIN")) {
 			MouseOver(locator1 = "Icon#TOOLTIP");
@@ -183,7 +183,7 @@ definition {
 			if (isSet(customMaxAgeMsg)) {
 				AssertTextEquals.assertPartialText(
 					locator1 = "Message#TOOLTIP",
-					value1 = "${customMaxAgeMsg}");
+					value1 = ${customMaxAgeMsg});
 			}
 			else {
 				AssertTextEquals(
@@ -194,17 +194,17 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_NAME",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_TYPE",
-			value1 = "${assetType}");
+			value1 = ${assetType});
 
 		AssertElementPresent(locator1 = "RecycleBin#RECYCLE_BIN_TABLE_REMOVED_DATE");
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_REMOVED_BY",
-			value1 = "${deleteUser}");
+			value1 = ${deleteUser});
 
 		AssertElementPresent(locator1 = "RecycleBin#RECYCLE_BIN_TABLE_ACTIONS");
 	}
@@ -214,32 +214,32 @@ definition {
 			locator1 = "Message#EMPTY_INFO",
 			value1 = "The Recycle Bin is empty.");
 
-		AssertTextNotPresent(value1 = "${assetName}");
+		AssertTextNotPresent(value1 = ${assetName});
 	}
 
 	macro viewDuplicateNames {
-		var key_assetName = "${assetName}";
-		var key_rowNumber = "1";
+		var key_assetName = ${assetName};
+		var key_rowNumber = 1;
 
 		AssertTextEquals(
 			locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD_2",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 
-		var key_rowNumber = "2";
+		var key_rowNumber = 2;
 
 		AssertTextEquals(
 			locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD_2",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 	}
 
 	macro viewEntry {
-		var key_assetName = "${assetName}";
+		var key_assetName = ${assetName};
 
 		AssertTextEquals(
 			locator1 = "RecycleBin#RECYCLE_BIN_TABLE_NAME",
-			value1 = "${assetName}");
+			value1 = ${assetName});
 
-		LexiconEntry.openEntryMenu(rowEntry = "${assetName}");
+		LexiconEntry.openEntryMenu(rowEntry = ${assetName});
 
 		MenuItem.viewPresent(menuItem = "Restore");
 

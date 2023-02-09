@@ -48,7 +48,7 @@ definition {
 	function assertTextEquals {
 		WaitForSPARefresh();
 
-		if (contains("${locator1}", "/input")) {
+		if (contains(${locator1}, "/input")) {
 			AssertTextEquals.assertValue();
 		}
 		else {

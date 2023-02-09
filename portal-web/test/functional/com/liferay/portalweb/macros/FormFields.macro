@@ -1,22 +1,22 @@
 definition {
 
-	var rowNumber = "1";
+	var rowNumber = 1;
 
 	macro addRepeatableField {
 		Click(
-			key_fieldName = "${fieldName}",
-			key_repeatableFieldNumber = "${repeatableFieldNumber}",
+			key_fieldName = ${fieldName},
+			key_repeatableFieldNumber = ${repeatableFieldNumber},
 			locator1 = "FormFields#FIELD_ADD_SPECIFIC");
 	}
 
 	macro addRichTextContent {
 		SelectFrame.selectFrameNoLoading(
-			key_fieldLabel = "${fieldLabel}",
+			key_fieldLabel = ${fieldLabel},
 			locator1 = "FormFields#RICH_TEXT_CONTENT");
 
 		Type(
 			locator1 = "FormFields#PREDEFINED_VALUE_BODY",
-			value1 = "${content}");
+			value1 = ${content});
 
 		SelectFrame(value1 = "relative=top");
 	}
@@ -24,31 +24,31 @@ definition {
 	macro changeFieldType {
 		Click(locator1 = "FormFields#CHANGE_FIELD_TYPE_BUTTON");
 
-		MenuItem.click(menuItem = "${selectOption}");
+		MenuItem.click(menuItem = ${selectOption});
 	}
 
 	macro deleteGridOptionsRow {
 		Click(
-			key_gridField = "${gridField}",
-			key_rowNumber = "${rowNumber}",
+			key_gridField = ${gridField},
+			key_rowNumber = ${rowNumber},
 			locator1 = "FormFields#GRID_OPTIONS_OPTION_DELETE_ROW_BUTTON");
 	}
 
 	macro deleteOptionsRow {
-		var key_rowNumber = "${rowNumber}";
+		var key_rowNumber = ${rowNumber};
 
 		Click(locator1 = "FormFields#OPTIONS_DELETE_ROW_BUTTON");
 	}
 
 	macro disableCheckbox {
 		Uncheck(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#CHECKBOX");
 	}
 
 	macro editBlankMultiTextFieldWithEnterKey {
 		KeyPress(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_MULTILINE_FIELD",
 			value1 = "\RETURN");
 	}
@@ -56,14 +56,14 @@ definition {
 	macro editCaptchaTextVerification {
 		Type(
 			locator1 = "FormFields#CAPTCHA_TEXT_VERIFICATION",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro editDate {
 		Type(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#DATE_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro editFieldName {
@@ -71,36 +71,36 @@ definition {
 
 		Type(
 			locator1 = "FormFields#FIELD_NAME_EDIT",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 
 		Click(locator1 = "FormFields#FIELD_NAME_EDIT_DONE");
 	}
 
 	macro editHelpText {
 		Type(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_FIELD",
-			value1 = "${fieldHelpText}");
+			value1 = ${fieldHelpText});
 	}
 
 	macro editOptionsRow {
-		var key_rowNumber = "${rowNumber}";
+		var key_rowNumber = ${rowNumber};
 
 		Type(
 			locator1 = "FormFields#OPTIONS_OPTION_VALUE_FIELD",
-			value1 = "${optionValue}");
+			value1 = ${optionValue});
 
 		AssertElementPresent(locator1 = "FormFields#OPTIONS_OPTION_NAME_FIELD");
 	}
 
 	macro editOptionsRowNameField {
-		var key_rowNumber = "${rowNumber}";
+		var key_rowNumber = ${rowNumber};
 
 		Click(locator1 = "FormFields#OPTIONS_OPTION_NAME_FIELD_PLACEHOLDER");
 
 		Type(
 			locator1 = "FormFields#OPTIONS_OPTION_NAME_FIELD_EDIT",
-			value1 = "${optionValue}");
+			value1 = ${optionValue});
 
 		Click(locator1 = "FormFields#OPTIONS_OPTION_NAME_FIELD_EDIT_DONE");
 
@@ -112,76 +112,76 @@ definition {
 	macro editParagraphBody {
 		Type(
 			locator1 = "FormFields#PARAGRAPH_BODY_TEXT_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro editPassword {
-		var key_fieldName = "${fieldName}";
+		var key_fieldName = ${fieldName};
 
 		Type(
 			locator1 = "FormFields#PASSWORD_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro editRepeatableTextMultiline {
 		Type(
-			key_fieldName = "${fieldName}",
-			key_repeatableFieldNumber = "${repeatableFieldNumber}",
+			key_fieldName = ${fieldName},
+			key_repeatableFieldNumber = ${repeatableFieldNumber},
 			locator1 = "FormFields#REPEATABLE_TEXT_MULTILINE_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro editRepeatingText {
-		var key_fieldName = "${fieldName}";
+		var key_fieldName = ${fieldName};
 
 		Type(
 			locator1 = "FormFields#TEXT_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 
 		AssertElementPresent(locator1 = "FormFields#TEXT_FIELD_2");
 
 		Type(
 			locator1 = "FormFields#TEXT_FIELD_2",
-			value1 = "${fieldValueRepeat}");
+			value1 = ${fieldValueRepeat});
 	}
 
 	macro editText {
 		Type(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro editTextAlt {
 		Type(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_FIELD_ALT",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro editTextMultiline {
 		Type(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_MULTILINE_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro editValidation {
 		Select(
 			locator1 = "FormFields#VALIDATION_TYPE",
-			value1 = "${validationType}");
+			value1 = ${validationType});
 
 		Select(
 			locator1 = "FormFields#VALIDATION_ARGUMENT",
-			value1 = "${validationArgument}");
+			value1 = ${validationArgument});
 
 		Type(
 			locator1 = "FormFields#VALIDATION_INPUT",
-			value1 = "${validationInput}");
+			value1 = ${validationInput});
 
 		Type(
 			locator1 = "FormFields#VALIDATION_ERROR_MESSAGE",
-			value1 = "${validationErrorMessage}");
+			value1 = ${validationErrorMessage});
 	}
 
 	macro enableAdvancedOptions {
@@ -192,13 +192,13 @@ definition {
 
 	macro enableCheckbox {
 		Check(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#CHECKBOX");
 	}
 
 	macro enableSwitcher {
 		Click(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#SWITCHER");
 	}
 
@@ -220,30 +220,30 @@ definition {
 
 	macro selectCheckboxOption {
 		Click(
-			key_checkboxOption = "${checkboxOption}",
-			key_fieldName = "${fieldName}",
+			key_checkboxOption = ${checkboxOption},
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#CHECKBOX_OPTION");
 	}
 
 	macro selectRadioOption {
 		Click(
-			key_fieldName = "${fieldName}",
-			key_radioOption = "${radioOption}",
+			key_fieldName = ${fieldName},
+			key_radioOption = ${radioOption},
 			locator1 = "FormFields#RADIO_OPTION");
 	}
 
 	macro selectSelectOption {
 		Select(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#SELECT_FIELD",
-			value1 = "${selectOption}");
+			value1 = ${selectOption});
 
 		Click(locator1 = "FormPortlet#FORM_CONTAINER");
 	}
 
 	macro selectTextFieldLineOption {
 		Click(
-			key_textFieldLineOption = "${textFieldLineOption}",
+			key_textFieldLineOption = ${textFieldLineOption},
 			locator1 = "FormFields#TEXT_FIELD_LINE_OPTION");
 	}
 
@@ -261,36 +261,36 @@ definition {
 
 	macro viewCheckboxChecked {
 		AssertChecked(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#CHECKBOX");
 	}
 
 	macro viewCheckboxLabel {
 		AssertTextEquals.assertText(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#CHECKBOX_LABEL",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 	}
 
 	macro viewCheckboxNotChecked {
 		AssertNotChecked(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#CHECKBOX");
 	}
 
 	macro viewDateField {
 		FormFields.viewDateLabel(
-			fieldLabel = "${fieldLabel}",
-			fieldName = "${fieldName}");
+			fieldLabel = ${fieldLabel},
+			fieldName = ${fieldName});
 
 		AssertElementPresent.assertVisible(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#DATE_FIELD");
 	}
 
 	macro viewDateFieldNotPresent {
-		var key_fieldLabel = "${fieldLabel}";
-		var key_fieldName = "${fieldName}";
+		var key_fieldLabel = ${fieldLabel};
+		var key_fieldName = ${fieldName};
 
 		if (IsElementPresent(locator1 = "FormFields#DATE_FIELD")) {
 			AssertNotVisible(locator1 = "FormFields#TEXT_LABEL");
@@ -306,25 +306,25 @@ definition {
 
 	macro viewDateLabel {
 		AssertTextEquals.assertText(
-			key_fieldLabel = "${fieldLabel}",
-			key_fieldName = "${fieldName}",
+			key_fieldLabel = ${fieldLabel},
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_LABEL",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 	}
 
 	macro viewDateValue {
 		AssertTextEquals(
-			key_fieldLabel = "${fieldLabel}",
-			key_fieldName = "${fieldName}",
+			key_fieldLabel = ${fieldLabel},
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#DATE_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro viewFieldHelpText {
 		AssertTextEquals(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#HELP_TEXT",
-			value1 = "${fieldHelpText}");
+			value1 = ${fieldHelpText});
 	}
 
 	macro viewFieldName {
@@ -334,7 +334,7 @@ definition {
 	}
 
 	macro viewFieldValidationErrorMessage {
-		var key_fieldName = "${fieldName}";
+		var key_fieldName = ${fieldName};
 
 		if (IsElementNotPresent(locator1 = "Message#ERROR_SPECIFIC_FORM_FIELD_REQUIRED")) {
 			Click(locator1 = "FormPortlet#FORM_CONTAINER");
@@ -342,112 +342,112 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "Message#ERROR_SPECIFIC_FORM_FIELD_REQUIRED",
-			value1 = "${fieldValidationErrorMessage}");
+			value1 = ${fieldValidationErrorMessage});
 	}
 
 	macro viewMultilineTextValue {
 		AssertTextEquals(
-			key_fieldName = "${fieldName}",
-			key_fieldValue = "${fieldValue}",
+			key_fieldName = ${fieldName},
+			key_fieldValue = ${fieldValue},
 			locator1 = "FormFields#TEXT_MULTILINE_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro viewOptionsRowFieldName {
 		AssertTextEquals(
-			key_rowNumber = "${rowNumber}",
+			key_rowNumber = ${rowNumber},
 			locator1 = "FormFields#OPTIONS_OPTION_NAME_FIELD",
 			value1 = "Field Name:${fieldName}");
 	}
 
 	macro viewParagraphField {
-		var key_fieldName = "${fieldTitle}";
-		var key_fieldName = StringUtil.replace("${fieldTitle}", " ", "");
+		var key_fieldName = ${fieldTitle};
+		var key_fieldName = StringUtil.replace(${fieldTitle}, " ", "");
 
 		AssertTextEquals(
 			locator1 = "FormFields#PARAGRAPH_TITLE",
-			value1 = "${fieldTitle}");
+			value1 = ${fieldTitle});
 
 		AssertTextEquals(
 			locator1 = "FormFields#PARAGRAPH_BODY_TEXT_CONTENT",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro viewRadioLabel {
 		AssertTextEquals.assertText(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#RADIO_LABEL",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 	}
 
 	macro viewRadioValue {
-		var key_fieldName = "${fieldName}";
-		var key_radioOption = "${fieldValue}";
+		var key_fieldName = ${fieldName};
+		var key_radioOption = ${fieldValue};
 
 		AssertElementPresent(locator1 = "FormFields#RADIO_OPTION");
 
-		var fieldValue = StringUtil.replace("${fieldValue}", " ", "");
+		var fieldValue = StringUtil.replace(${fieldValue}, " ", "");
 
 		AssertTextEquals(
 			locator1 = "FormFields#RADIO_OPTION",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro viewRepeatableFieldHelpText {
 		AssertTextEquals(
-			key_fieldName = "${fieldName}",
-			key_repeatableFieldNumber = "${repeatableFieldNumber}",
+			key_fieldName = ${fieldName},
+			key_repeatableFieldNumber = ${repeatableFieldNumber},
 			locator1 = "FormFields#REPEATABLE_HELP_TEXT",
-			value1 = "${fieldHelpText}");
+			value1 = ${fieldHelpText});
 	}
 
 	macro viewRepeatableTextFieldLabel {
-		var key_fieldLabel = "${fieldLabel}";
-		var key_fieldName = "${fieldName}";
+		var key_fieldLabel = ${fieldLabel};
+		var key_fieldName = ${fieldName};
 
 		AssertTextEquals.assertText(
 			locator1 = "FormFields#TEXT_LABEL",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 
 		AssertTextEquals.assertText(
 			locator1 = "FormFields#TEXT_LABEL_2",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 	}
 
 	macro viewRepeatableTextMultilineField {
 		FormFields.viewRepeatableTextMultilineLabel(
-			fieldLabel = "${fieldLabel}",
-			fieldName = "${fieldName}",
-			repeatableFieldNumber = "${repeatableFieldNumber}");
+			fieldLabel = ${fieldLabel},
+			fieldName = ${fieldName},
+			repeatableFieldNumber = ${repeatableFieldNumber});
 
 		if (isSet(fieldHelpText)) {
 			FormFields.viewRepeatableFieldHelpText(
-				fieldHelpText = "${fieldHelpText}",
-				fieldName = "${fieldName}",
-				repeatableFieldNumber = "${repeatableFieldNumber}");
+				fieldHelpText = ${fieldHelpText},
+				fieldName = ${fieldName},
+				repeatableFieldNumber = ${repeatableFieldNumber});
 		}
 
 		AssertElementPresent.assertVisible(
-			key_fieldName = "${fieldName}",
-			key_repeatableFieldNumber = "${repeatableFieldNumber}",
+			key_fieldName = ${fieldName},
+			key_repeatableFieldNumber = ${repeatableFieldNumber},
 			locator1 = "FormFields#REPEATABLE_TEXT_MULTILINE_FIELD");
 	}
 
 	macro viewRepeatableTextMultilineLabel {
 		AssertTextEquals.assertText(
-			key_fieldLabel = "${fieldLabel}",
-			key_fieldName = "${fieldName}",
-			key_repeatableFieldNumber = "${repeatableFieldNumber}",
+			key_fieldLabel = ${fieldLabel},
+			key_fieldName = ${fieldName},
+			key_repeatableFieldNumber = ${repeatableFieldNumber},
 			locator1 = "FormFields#REPEATABLE_TEXT_MULTILINE_LABEL",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 	}
 
 	macro viewRepeatableTextMultilineValue {
 		AssertTextEquals(
-			key_fieldName = "${fieldName}",
-			key_repeatableFieldNumber = "${repeatableFieldNumber}",
+			key_fieldName = ${fieldName},
+			key_repeatableFieldNumber = ${repeatableFieldNumber},
 			locator1 = "FormFields#REPEATABLE_TEXT_MULTILINE_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro viewRequiredAsterisk {
@@ -456,51 +456,51 @@ definition {
 
 	macro viewSelectLabel {
 		AssertTextEquals.assertText(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "Form#FIELD_LABEL",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 	}
 
 	macro viewSelectOption {
 		AssertTextEquals.assertText(
-			key_fieldName = "${fieldName}",
-			key_selectOption = "${selectOption}",
+			key_fieldName = ${fieldName},
+			key_selectOption = ${selectOption},
 			locator1 = "FormFields#SELECT_OPTION",
-			value1 = "${selectOption}");
+			value1 = ${selectOption});
 	}
 
 	macro viewSelectValue {
 		AssertElementPresent(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#SELECT_FIELD");
 	}
 
 	macro viewSwitcherLabel {
 		AssertTextEquals.assertText(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "Form#FIELD_LABEL",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 	}
 
 	macro viewTextField {
 		FormFields.viewTextLabel(
-			fieldLabel = "${fieldLabel}",
-			fieldName = "${fieldName}");
+			fieldLabel = ${fieldLabel},
+			fieldName = ${fieldName});
 
 		if (isSet(fieldHelpText)) {
 			FormFields.viewFieldHelpText(
-				fieldHelpText = "${fieldHelpText}",
-				fieldName = "${fieldName}");
+				fieldHelpText = ${fieldHelpText},
+				fieldName = ${fieldName});
 		}
 
 		AssertElementPresent.assertVisible(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_FIELD");
 	}
 
 	macro viewTextFieldNotVisible {
-		var key_fieldLabel = "${fieldLabel}";
-		var key_fieldName = "${fieldName}";
+		var key_fieldLabel = ${fieldLabel};
+		var key_fieldName = ${fieldName};
 
 		AssertNotVisible(locator1 = "FormFields#TEXT_LABEL");
 
@@ -509,24 +509,24 @@ definition {
 
 	macro viewTextLabel {
 		AssertTextEquals.assertText(
-			key_fieldLabel = "${fieldLabel}",
-			key_fieldName = "${fieldName}",
+			key_fieldLabel = ${fieldLabel},
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_LABEL",
-			value1 = "${fieldLabel}");
+			value1 = ${fieldLabel});
 	}
 
 	macro viewTextValue {
 		AssertTextEquals(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_FIELD",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 	macro viewTextValueAlt {
 		AssertTextEquals(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "FormFields#TEXT_FIELD_ALT",
-			value1 = "${fieldValue}");
+			value1 = ${fieldValue});
 	}
 
 }

@@ -14,7 +14,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewHook {
 		Page.add(pageName = "Test Hook Page");
 

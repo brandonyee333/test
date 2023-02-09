@@ -8,10 +8,10 @@ definition {
 		ProductMenuHelper.expandPageTree();
 
 		if ((IsElementNotPresent(locator1 = "ProductMenu#PUBLIC_PAGES")) && (IsElementNotPresent(locator1 = "ProductMenu#PRIVATE_PAGES"))) {
-			ProductMenuHelper.addFirstPage(sitePagePrivacy = "${sitePagePrivacy}");
+			ProductMenuHelper.addFirstPage(sitePagePrivacy = ${sitePagePrivacy});
 		}
 		else {
-			if ("${sitePagePrivacy}" == "Private") {
+			if (${sitePagePrivacy} == "Private") {
 				if (IsElementNotPresent(locator1 = "ProductMenu#PRIVATE_PAGES")) {
 					Click(locator1 = "SitePages#PUBLIC_PAGE_ELLIPSIS");
 
@@ -70,13 +70,13 @@ definition {
 
 		ProductMenuHelper.expandPageTree();
 
-		if ("${sitePagePrivacy}" == "Private Pages") {
+		if (${sitePagePrivacy} == "Private Pages") {
 			Click(locator1 = "ProductMenu#PRIVATE_PAGES");
 		}
 
-		var key_page = "${page}";
+		var key_page = ${page};
 
-		if ("${page}" == "Public Pages") {
+		if (${page} == "Public Pages") {
 			Click(locator1 = "SitePages#PUBLIC_PAGE_ELLIPSIS");
 
 			AssertClick.assertPartialTextClickAt(
@@ -84,7 +84,7 @@ definition {
 				locator1 = "MenuItem#ANY_MENU_ITEM",
 				value1 = "Configure");
 		}
-		else if ("${page}" == "Private Pages") {
+		else if (${page} == "Private Pages") {
 			Click(locator1 = "SitePages#PRIVATE_PAGE_ELLIPSIS");
 
 			AssertClick.assertPartialTextClickAt(
@@ -111,7 +111,7 @@ definition {
 
 		ProductMenuHelper.expandPageTree();
 
-		if ("${page}" == "Private Pages") {
+		if (${page} == "Private Pages") {
 			Click(locator1 = "ProductMenu#PRIVATE_PAGES");
 		}
 	}

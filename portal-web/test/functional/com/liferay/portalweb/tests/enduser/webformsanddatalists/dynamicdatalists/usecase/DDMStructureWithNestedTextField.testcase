@@ -55,7 +55,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -68,7 +68,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-69335."
-	@priority = "4"
+	@priority = 4
 	test ViewFieldTranslations {
 		DDLRecord.addCP();
 
@@ -81,7 +81,7 @@ definition {
 			fieldName = "textChild");
 
 		for (var language : list "Spanish (Spain),Portuguese (Brazil)") {
-			DDLRecord.addTranslation(localizedLanguage = "${language}");
+			DDLRecord.addTranslation(localizedLanguage = ${language});
 
 			DDLRecord.populateFieldText(
 				ddlRecordFieldData = "${language} Parent",
@@ -93,7 +93,7 @@ definition {
 		}
 
 		for (var language : list "English (United States),Spanish (Spain),Portuguese (Brazil)") {
-			DDLRecord.selectTranslation(localizedLanguage = "${language}");
+			DDLRecord.selectTranslation(localizedLanguage = ${language});
 
 			FormFields.viewTextValue(
 				fieldName = "textParent",

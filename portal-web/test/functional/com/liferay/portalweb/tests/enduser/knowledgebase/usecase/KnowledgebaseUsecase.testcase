@@ -17,7 +17,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -34,7 +34,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-68599."
-	@priority = "5"
+	@priority = 5
 	test AddCommentInWorkflowSubmission {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -96,7 +96,7 @@ definition {
 		WorkflowComment.add(workflowComment = "Workflow Comment");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddKBChildArticleAsDraft {
 		Page.add(pageName = "Knowledge Base Page");
 
@@ -126,7 +126,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Child Article Title",
 			saveAsDraft = "true");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Navigator.gotoPage(pageName = "Knowledge Base Page");
 
@@ -151,7 +151,7 @@ definition {
 			kbStatus = "Draft");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteConfiguredKBFolder {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
@@ -226,7 +226,7 @@ definition {
 			kbArticleTitle = "KB Article Outside Folder");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteImportedArticles {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
@@ -274,7 +274,7 @@ definition {
 		KBArticle.deleteCP();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditKBArticleWithCustomField {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -339,7 +339,7 @@ definition {
 			kbArticleTitle = "KB Article Title Edited");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditKBFolderWithCustomField {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -432,7 +432,7 @@ definition {
 
 			LexiconEntry.gotoEntryMenuItem(
 				menuItem = "Edit",
-				rowEntry = "${kbEntry}");
+				rowEntry = ${kbEntry});
 
 			AssertTextEquals(
 				locator1 = "TextInput#CUSTOM_FIELD",
@@ -440,7 +440,7 @@ definition {
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SaveEditedChildArticleAsDraft {
 		Page.add(pageName = "Knowledge Base Page");
 
@@ -469,7 +469,7 @@ definition {
 			kbArticleContent = "Knowledge Base Child Article Content",
 			kbArticleTitle = "Knowledge Base Child Article Title");
 
-		Pause(value1 = "5000");
+		Pause(value1 = 5000);
 
 		Navigator.gotoPage(pageName = "Knowledge Base Page");
 
@@ -487,7 +487,7 @@ definition {
 
 		KBArticle.gotoChildArticleDescriptiveDetails(kbArticleTitle = "Knowledge Base Parent Article Title");
 
-		Pause(value1 = "5000");
+		Pause(value1 = 5000);
 
 		KBArticle.editCP(
 			kbArticleContentEdit = "Knowledge Base Child Article Content Edited",
@@ -518,7 +518,7 @@ definition {
 			kbStatus = "Draft");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchChildArticleViaSearchPortletPG {
 		Navigator.openURL();
 
@@ -548,7 +548,7 @@ definition {
 			searchAssetType = "Knowledge Base Article");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchKBArticleInFolderViaSearchPortlet {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -597,7 +597,7 @@ definition {
 			searchAssetType = "Knowledge Base Article");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchKBArticleViaSearchPortlet {
 		Navigator.openURL();
 
@@ -622,7 +622,7 @@ definition {
 			searchAssetType = "Knowledge Base Article");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchKBArticleWithSpecialCharactersViaSearchPortletPG {
 		Navigator.openURL();
 
@@ -648,7 +648,7 @@ definition {
 			searchAssetType = "Knowledge Base Article");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewChildArticleViaUserDefinedFriendlyURL {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -692,7 +692,7 @@ definition {
 		AssertLocation(value1 = "${portalURL}/web/guest/knowledge-base-page/-/knowledge_base/friendly-url");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewConfiguredKBArticleViaKBDisplay {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -761,7 +761,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title 2");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewDefaultFolderViaKBDisplay {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -793,7 +793,7 @@ definition {
 		KBArticle.viewDefaultViaKBDisplayPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewImportedKBArticlesInHierarchyWithMarkdownFormat {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -841,7 +841,7 @@ definition {
 			kbMarkdownImageCaption = "Figure 1: The First Start wizard makes it easy to configure the runtime that ships with Liferay Developer Studio.");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewImportedKBArticlesWithMultiplePeerHierarchies {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -881,7 +881,7 @@ definition {
 		KBArticle.viewChildArticleHierarchyViaKBDisplayPG(kbArticleTitle = "Knowledge Base Article Parent Title 5");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewImportedKBArticleWithImagesAsKBAttachments {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -935,7 +935,7 @@ definition {
 		KBArticle.viewAttachmentCP(kbArticleTitle = "Knowledge Base Article Parent Title 2 Child 2");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewImportedKBArticleWithSourceURLMetadata {
 		property test.name.skip.portal.instance = "KnowledgebaseUsecase#ViewImportedKBArticleWithSourceURLMetadata";
 
@@ -992,7 +992,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Parent Title 1 Child 1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewKBArticleFriendlyURL {
 		property test.name.skip.portal.instance = "KnowledgebaseUsecase#ViewKBArticleFriendlyURL";
 
@@ -1037,7 +1037,7 @@ definition {
 			kbArticleTitle = "Article Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewKBArticleGitHubSourceURL {
 		property test.name.skip.portal.instance = "KnowledgebaseUsecase#ViewKBArticleGitHubSourceURL";
 
@@ -1091,7 +1091,7 @@ definition {
 			subscribe = "true");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewKBArticleNoHierarchyInFolder {
 		Page.add(pageName = "Knowledge Base Page");
 
@@ -1139,7 +1139,7 @@ definition {
 		KBArticle.viewNoHierarchyPG(kbArticleTitle = "Article 1 Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewKBArticlesHierarchyWithinFolders {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -1248,7 +1248,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Folder 1 Title 1 Grandchild");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewKBArticlesInDifferentScopesPerSite {
 		Page.add(pageName = "Knowledge Base Display Page 1");
 
@@ -1327,7 +1327,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title for Page 2");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewKBArticlesInKBFolder {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -1373,7 +1373,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title 2");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewKBArticlesInMultipleKBFolders {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -1458,7 +1458,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Folder 2 Title 2");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewKBArticleSuggestionsWorkflow {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -1534,7 +1534,7 @@ definition {
 
 		KBArticle.gotoSuggestionsNavigationCP();
 
-		KBArticleSuggestion.gotoSuggestionStatusNew(suggestionCount = "1");
+		KBArticleSuggestion.gotoSuggestionStatusNew(suggestionCount = 1);
 
 		KBArticleSuggestion.moveToInProgressStatus(
 			kbArticleTitle = "Knowledge Base Article Title",
@@ -1572,12 +1572,12 @@ definition {
 		KBArticleSuggestion.viewNoSuggestions();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewKBArticleSuggestionsWorkflowNotificationEmail {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property test.smtp.server.enabled = "true";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -1588,7 +1588,7 @@ definition {
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "Test",
-			userLastName = "2",
+			userLastName = 2,
 			userScreenName = "usersn");
 
 		JSONUser.setFirstPassword(
@@ -1602,7 +1602,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1713,7 +1713,7 @@ definition {
 			subject = "We have resolved your suggestion for article KB Article Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewKBArticlesWithTheSamePriorityViaNavigationLinks {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -1821,7 +1821,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Parent Title 1");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewKBArticleWithTheSameTitleAndPriorityInDifferentFolders {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -1908,7 +1908,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title 2");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewSuggestionsWithPermissions {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -1998,7 +1998,7 @@ definition {
 
 		KBArticle.gotoSuggestionsNavigationPG();
 
-		KBArticleSuggestion.gotoSuggestionStatusNew(suggestionCount = "1");
+		KBArticleSuggestion.gotoSuggestionStatusNew(suggestionCount = 1);
 
 		KBArticleSuggestion.viewPG(
 			kbSuggestionBody = "Test Test Knowledge Base Article Suggestion",
@@ -2025,7 +2025,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title",
 			kbSuggestionBody = "User 1 Knowledge Base Article Suggestion 2");
 
-		KBArticleSuggestion.viewSubmittedSuggestionCountNoPermissionPG(kbSuggestionCount = "2");
+		KBArticleSuggestion.viewSubmittedSuggestionCountNoPermissionPG(kbSuggestionCount = 2);
 
 		User.logoutPG();
 
@@ -2043,7 +2043,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title",
 			kbSuggestionBody = "User 2 Knowledge Base Article Suggestion 1");
 
-		KBArticleSuggestion.viewSubmittedSuggestionCountNoPermissionPG(kbSuggestionCount = "1");
+		KBArticleSuggestion.viewSubmittedSuggestionCountNoPermissionPG(kbSuggestionCount = 1);
 
 		User.logoutPG();
 
@@ -2084,7 +2084,7 @@ definition {
 			status = "New");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewUnchangedKBArticlePriorityAfterEdit {
 		Page.add(pageName = "Knowledge Base Display Page");
 
@@ -2163,9 +2163,9 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Parent Title 1 Child 2");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewUnchangedKBArticleTitleViaLocalizedPage {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 		var portalURL = PropsUtil.get("portal.url");
 
 		ProductMenu.gotoPortlet(
@@ -2177,7 +2177,7 @@ definition {
 			page = "Public Pages",
 			pageName = "Welcome",
 			siteChildPageName = "Knowledge Base Display Page",
-			siteName = "${siteName}");
+			siteName = ${siteName});
 
 		SitePageNavigator.gotoEditPage(page = "Knowledge Base Display Page");
 

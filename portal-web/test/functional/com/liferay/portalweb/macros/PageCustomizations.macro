@@ -1,9 +1,9 @@
 definition {
 
 	macro enableSectionCustomizableCP {
-		var key_columnId = "${columnId}";
+		var key_columnId = ${columnId};
 
-		SitePageNavigator.gotoEditPage(page = "${pageName}");
+		SitePageNavigator.gotoEditPage(page = ${pageName});
 
 		Navigator.gotoNavTab(navTab = "Advanced");
 
@@ -17,7 +17,7 @@ definition {
 	}
 
 	macro enableSectionCustomizablePG {
-		var key_columnId = "${columnId}";
+		var key_columnId = ${columnId};
 
 		Check.checkToggleSwitch(locator1 = "SitePagesEditPage#CUSTOMIZATION_SETTINGS_SHOW_CUSTOMIZABLE_SECTIONS");
 

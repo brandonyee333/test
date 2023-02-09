@@ -13,7 +13,7 @@ definition {
 		}
 
 		if (isSet(groupName)) {
-			var serviceContext = JSONBlogSetter.setServiceContext(groupName = "${groupName}");
+			var serviceContext = JSONBlogSetter.setServiceContext(groupName = ${groupName});
 		}
 		else {
 			var serviceContext = JSONBlogSetter.setServiceContext(groupName = "Guest");
@@ -46,7 +46,7 @@ definition {
 
 		echo("## * Content: ${entryContent}");
 
-		var messageId = JSONCurlUtil.post("${curl}");
+		var messageId = JSONCurlUtil.post(${curl});
 	}
 
 	macro getBlogEntryId {
@@ -55,8 +55,8 @@ definition {
 		}
 
 		var groupId = JSONGroupAPI._getGroupIdByName(
-			groupName = "${groupName}",
-			site = "${site}");
+			groupName = ${groupName},
+			site = ${site});
 		var portalURL = JSONCompany.getPortalURL();
 
 		if (isSet(friendlyURL)) {
@@ -76,9 +76,9 @@ definition {
 			''';
 		}
 
-		var entryId = JSONCurlUtil.post("${curl}", "$.[?(@['title'] == '${entryTitle}')]['entryId']");
+		var entryId = JSONCurlUtil.post(${curl}, "$.[?(@['title'] == '${entryTitle}')]['entryId']");
 
-		return "${entryId}";
+		return ${entryId};
 
 		echo("## * Blogs ID: ${entryId}");
 	}

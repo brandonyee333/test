@@ -20,7 +20,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -30,7 +30,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWSRPUnitConverter {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -84,7 +84,7 @@ definition {
 
 		UnitConverter.convertPG(
 			initialUnit = "Inch",
-			initialValue = "12",
+			initialValue = 12,
 			targetUnit = "Foot",
 			targetValue = "1.0",
 			unitType = "Length");

@@ -49,7 +49,7 @@ definition {
 
 		SikuliClick(locator1 = "TCat#NEW_ARTIFACT_ADD_BUTTON");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Click(locator1 = "TCat#DEPLOYMENT_TAB");
 
@@ -73,7 +73,7 @@ definition {
 
 		Click(locator1 = "TCat#SERVER_DEPLOY_BUTTON");
 
-		Pause(locator1 = "160000");
+		Pause(locator1 = 160000);
 	}
 
 }

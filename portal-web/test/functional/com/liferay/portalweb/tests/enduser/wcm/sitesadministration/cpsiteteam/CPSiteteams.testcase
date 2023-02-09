@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -28,7 +28,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSiteTeam {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -53,7 +53,7 @@ definition {
 			teamName = "Site Team Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSiteTeamAssignUser {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -114,7 +114,7 @@ definition {
 			userLastName = "userln");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSiteTeamAssignUserGroup {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -176,7 +176,7 @@ definition {
 			userGroupName = "User Group Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddSiteTeamMultiple {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -226,7 +226,7 @@ definition {
 			teamName = "Site Team3 Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddSiteTeamRemoveUser {
 		property portal.acceptance = "true";
 
@@ -307,7 +307,7 @@ definition {
 		Team.viewNoMembersCP(teamName = "Site Team Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSiteTeamRemoveUserGroup {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -509,18 +509,18 @@ definition {
 		for (var searchTerm : list "userfn1,userln1,usersn1") {
 			Team.searchCP(
 				membershipType = "User",
-				searchTerm = "${searchTerm}");
+				searchTerm = ${searchTerm});
 		}
 
 		for (var searchTerm : list "userfn2,userln2,usersn2") {
 			Team.searchCP(
 				isEmpty = "true",
 				membershipType = "User",
-				searchTerm = "${searchTerm}");
+				searchTerm = ${searchTerm});
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteSiteTeam {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -547,7 +547,7 @@ definition {
 		Team.viewDefaultCP(teamName = "Site Team Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditSiteTeam {
 		property portal.acceptance = "true";
 

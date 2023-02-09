@@ -15,7 +15,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddContent {
 		Navigator.gotoPage(pageName = "WYSIWYG Page");
 

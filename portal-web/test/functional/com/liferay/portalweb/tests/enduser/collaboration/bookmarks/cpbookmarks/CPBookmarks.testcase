@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -24,7 +24,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddBookmark {
 		Navigator.openURL();
 
@@ -50,7 +50,7 @@ definition {
 			bookmarkURL = "https://www.liferay.com");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddBookmarks {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
@@ -102,7 +102,7 @@ definition {
 			bookmarkURL = "http://www.wiki.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddFolder {
 		Navigator.openURL();
 
@@ -116,7 +116,7 @@ definition {
 			folderName = "Test Bookmarks Folder");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddIncorrectURLBookmark {
 		Navigator.openURL();
 
@@ -131,7 +131,7 @@ definition {
 			bookmarkURL = "www.liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddNullBookmark {
 		Navigator.openURL();
 
@@ -143,7 +143,7 @@ definition {
 		Bookmark.addNullCP();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddNullFolder {
 		property portal.acceptance = "false";
 
@@ -157,7 +157,7 @@ definition {
 		BookmarksFolder.addNullCP();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddNullSubfolder {
 		Navigator.openURL();
 
@@ -180,7 +180,7 @@ definition {
 		BookmarksFolder.addNullSubfolderCP(folderName = "Test Bookmarks Folder");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddNullTitleBookmark {
 		Navigator.openURL();
 
@@ -194,7 +194,7 @@ definition {
 			bookmarkURL = "https://www.liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddNullURLBookmark {
 		Navigator.openURL();
 
@@ -208,7 +208,7 @@ definition {
 			bookmarkName = "Test Bookmark");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSubfolder {
 		Navigator.openURL();
 
@@ -234,7 +234,7 @@ definition {
 			subfolderName = "Test Bookmarks Subfolder");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteBookmark {
 		property portal.acceptance = "false";
 
@@ -267,7 +267,7 @@ definition {
 			bookmarkURL = "https://www.liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteSecondBookmark {
 		Navigator.openURL();
 
@@ -305,7 +305,7 @@ definition {
 			bookmarkURL = "http://www.wiki.com");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditBookmark {
 		property portal.acceptance = "false";
 
@@ -348,7 +348,7 @@ definition {
 			editBookmarkURL = "https://www.google.com");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditFolder {
 		property portal.acceptance = "true";
 
@@ -377,7 +377,7 @@ definition {
 			folderNameEdit = "Test Bookmarks Folder Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditSubfolder {
 		Navigator.openURL();
 
@@ -416,7 +416,7 @@ definition {
 			subfolderName = "Test Bookmarks Subfolder");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test MergeSubfolderBookmarkToFolder {
 		Navigator.openURL();
 
@@ -469,7 +469,7 @@ definition {
 			subfolderName = "Test Bookmarks Subfolder");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test MoveSubfolderBookmarkToHome {
 		Navigator.openURL();
 
@@ -521,7 +521,7 @@ definition {
 			subfolderName = "Test Bookmarks Subfolder");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test MoveToRecycleBinFolder {
 		property portal.acceptance = "false";
 
@@ -559,7 +559,7 @@ definition {
 			folderName = "Test Bookmarks Folder");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchBookmark {
 		Navigator.openURL();
 
@@ -596,7 +596,7 @@ definition {
 		Search.viewSearchAssetTitle(searchAssetTitle = "Test Bookmark");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchBookmarks {
 		Navigator.openURL();
 
@@ -667,7 +667,7 @@ definition {
 		Search.viewSearchAssetTitle(searchAssetTitle = "Test Bookmark 2");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchNullBookmark {
 		Navigator.openURL();
 

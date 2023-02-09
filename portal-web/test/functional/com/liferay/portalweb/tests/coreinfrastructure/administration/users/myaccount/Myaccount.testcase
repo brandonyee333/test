@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -22,7 +22,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddOrganizationMember {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -67,7 +67,7 @@ definition {
 			userScreenName = "usersn");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddOrganizations {
 		ProductMenu.gotoPortlet(
 			category = "My Account",
@@ -88,7 +88,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteOrganization {
 		ProductMenu.gotoPortlet(
 			category = "My Account",
@@ -112,7 +112,7 @@ definition {
 		Organization.viewNoOrganizationsFoundCP();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditOrganizationSite {
 		ProductMenu.gotoPortlet(
 			category = "My Account",
@@ -162,7 +162,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-101973."
-	@priority = "4"
+	@priority = 4
 	test UpdateUserInUserPersonalSite {
 		UserBar.gotoProfile();
 
@@ -180,7 +180,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-105387."
-	@priority = "5"
+	@priority = 5
 	test UpdateUserPortrait {
 		UserBar.viewUserDefaultIcon();
 
@@ -196,14 +196,14 @@ definition {
 		AssertElementNotPresent(locator1 = "UserBar#USER_AVATAR_DEFAULT");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewMyAccount {
 		Page.gotoMyAccount(portletName = "Account Settings");
 
 		MyAccount.view();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewMyAccountUser {
 		var userEmailAddress = "userea@liferay.com";
 		var userFirstName = "userfn";
@@ -245,7 +245,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-76106."
-	@priority = "5"
+	@priority = 5
 	test ViewMyAccountUserViaURL {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -279,7 +279,7 @@ definition {
 			userLoginFullName = "Test Test");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewMyAccountViaSignInPortlet {
 		Portlet.addPG(portletName = "Sign In");
 

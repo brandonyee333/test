@@ -18,7 +18,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -32,11 +32,11 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test MarkAsNotSpamWikiPage {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Apps",
@@ -62,7 +62,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -160,9 +160,9 @@ definition {
 			wikiPageRevision = "1.0");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test MarkAsSpamWikiPage {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Apps",
@@ -188,7 +188,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(

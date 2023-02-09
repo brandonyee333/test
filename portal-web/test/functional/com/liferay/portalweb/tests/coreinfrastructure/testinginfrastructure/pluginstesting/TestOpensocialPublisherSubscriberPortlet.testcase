@@ -14,7 +14,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewPublisherSubscriber {
 		Page.add(pageName = "Test Publisher Subscriber Page");
 

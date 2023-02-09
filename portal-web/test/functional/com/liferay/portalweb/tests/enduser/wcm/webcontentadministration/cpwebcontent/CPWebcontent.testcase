@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -26,7 +26,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddFolder {
 		property testray.component.names = "Training";
 
@@ -42,7 +42,7 @@ definition {
 			folderName = "WC Folder Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddStructures {
 		property testray.component.names = "Training";
 
@@ -61,9 +61,9 @@ definition {
 
 		for (var structureFieldName : list "Boolean,Date,Decimal,Documents and Media") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name 1");
@@ -83,9 +83,9 @@ definition {
 
 		for (var structureFieldName : list "HTML,Image,Integer,Link to Page") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name 2");
@@ -105,9 +105,9 @@ definition {
 
 		for (var structureFieldName : list "Number,Radio,Select,Separator,Text,Text Box") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name 3");
@@ -129,8 +129,8 @@ definition {
 
 		for (var structureFieldName : list "Boolean,Date,Decimal,Documents and Media") {
 			DynamicDataMapping.viewField(
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		Navigator.openURL();
@@ -150,8 +150,8 @@ definition {
 
 		for (var structureFieldName : list "HTML,Image,Integer,Link to Page") {
 			DynamicDataMapping.viewField(
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		Navigator.openURL();
@@ -171,13 +171,13 @@ definition {
 
 		for (var structureFieldName : list "Number,Radio,Select,Separator,Text,Text Box") {
 			DynamicDataMapping.viewField(
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 	}
 
 	@description = "This is a use case for LPS-77387."
-	@priority = "4"
+	@priority = 4
 	test AddStructureViaLocaleURL {
 		property test.name.skip.portal.instance = "CPWebcontent#AddStructureViaLocaleURL";
 
@@ -194,7 +194,7 @@ definition {
 
 		LexiconEntry.gotoAdd();
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		Navigator.ensureLocaleURL(locale = "en");
 
@@ -228,7 +228,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-52248."
-	@priority = "4"
+	@priority = 4
 	test AddStructureWithSeparatorField {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -285,7 +285,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "freemarker.core.NonStringException");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddStructureWithSubfield {
 		Navigator.openURL();
 
@@ -344,7 +344,7 @@ definition {
 		WebContent.addWithStructureCP(
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
-			webContentInteger = "123",
+			webContentInteger = 123,
 			webContentText = "Text",
 			webContentTitle = "WC WebContent Title");
 
@@ -359,7 +359,7 @@ definition {
 		WebContent.viewNestedField(
 			fieldName = "Text",
 			nestedField = "Integer",
-			nestedFieldData = "123");
+			nestedFieldData = 123);
 
 		Navigator.openURL();
 
@@ -378,12 +378,12 @@ definition {
 
 		for (var structureFieldName : list "Text,Integer") {
 			DynamicDataMapping.viewField(
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = "${structureFieldName}");
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = ${structureFieldName});
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddStructureWithUnlocalizableFields {
 		Navigator.openURL();
 
@@ -400,9 +400,9 @@ definition {
 
 		for (var structureFieldName : list "Text,Text Box") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
@@ -419,7 +419,7 @@ definition {
 		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Name");
 
 		for (var structureFieldName : list "Text Box") {
-			DynamicDataMapping.editFieldLocalizable(fieldFieldLabel = "${structureFieldName}");
+			DynamicDataMapping.editFieldLocalizable(fieldFieldLabel = ${structureFieldName});
 		}
 
 		WebContentStructures.saveCP();
@@ -504,7 +504,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-69560."
-	@priority = "5"
+	@priority = 5
 	test AddStructureWithWebContentAndGeolocationFields {
 		Navigator.openURL();
 
@@ -595,7 +595,7 @@ definition {
 			webContentTitle = "WC WebContent 2 Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddTemplateWithStructure {
 		property portal.acceptance = "true";
 
@@ -655,7 +655,7 @@ definition {
 			templateScript = '''${Text.getData()}''');
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddTemplateXSL {
 		property testray.component.names = "Training";
 
@@ -690,7 +690,7 @@ definition {
 			templateScript = '''"/root/dynamic-element[@name='Text']"''');
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWebContent {
 		Navigator.openURL();
 
@@ -716,7 +716,7 @@ definition {
 			webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWebContentDraft {
 		Navigator.openURL();
 
@@ -748,7 +748,7 @@ definition {
 			webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddWebContentExpirationDate {
 		Navigator.openURL();
 
@@ -776,7 +776,7 @@ definition {
 		WebContent.viewExpirationDateCP(expirationDate = "01/02/3000");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddWebContentMultiple {
 		Navigator.openURL();
 
@@ -869,7 +869,7 @@ definition {
 			webContentTitle = "WC WebContent Title 3");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWebContentTitleEscapeCharacter {
 		Navigator.openURL();
 
@@ -900,7 +900,7 @@ definition {
 			webContentTitleEscapeCharacter = '''&lt;!-- --&gt;''');
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWebContentWithImageField {
 		property test.name.skip.portal.instance = "CPWebcontent#AddWebContentWithImageField";
 
@@ -977,7 +977,7 @@ definition {
 		WebContentDisplayPortlet.viewImageFieldViaWCD();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWebContentWithStructure {
 		Navigator.openURL();
 
@@ -1038,7 +1038,7 @@ definition {
 		WebContent.viewTitle(webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddWebContentWithTemplateXSL {
 		Navigator.openURL();
 
@@ -1117,7 +1117,7 @@ definition {
 			webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AdvancedSearchStructure {
 		Navigator.openURL();
 
@@ -1153,7 +1153,7 @@ definition {
 			structureName = "WC Structure Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AdvancedSearchTemplate {
 		Navigator.openURL();
 
@@ -1183,7 +1183,7 @@ definition {
 			templateName = "WC Template Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test CannotRepublishExpiredWebContent {
 		Navigator.openURL();
 
@@ -1248,7 +1248,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-83319. The user could change default language of web content after enable Changeable Default Language."
-	@priority = "5"
+	@priority = 5
 	test ChangeWebContentDefaultLanguage {
 		property test.name.skip.portal.instance = "CPWebcontent#ChangeWebContentDefaultLanguage";
 
@@ -1305,7 +1305,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test CompareWebContentVersionsHistory {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1347,7 +1347,7 @@ definition {
 			version = "1.1");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteWebContent {
 		Navigator.openURL();
 
@@ -1376,7 +1376,7 @@ definition {
 		WebContent.deleteCP(webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DeleteWebContentTitleEscapeCharacter {
 		Navigator.openURL();
 
@@ -1402,7 +1402,7 @@ definition {
 			webContentTitleEscapeCharacter = '''&lt;!-- --&gt;''');
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditBasicWebContentStructureAndTemplate {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1417,9 +1417,9 @@ definition {
 
 		for (var structureFieldName : list "Date,Image") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = "${structureFieldName}");
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = ${structureFieldName});
 		}
 
 		WebContentStructures.saveCP(structureName = "Basic Web Content Edit");
@@ -1444,7 +1444,7 @@ definition {
 		PortletEntry.inputDescription(description = "Basic Web Content Description");
 
 		for (var templateFieldName : list "Date,Image") {
-			WebContentTemplates.addField(fieldName = "${templateFieldName}");
+			WebContentTemplates.addField(fieldName = ${templateFieldName});
 		}
 
 		PortletEntry.save();
@@ -1460,8 +1460,8 @@ definition {
 
 		for (var structureFieldName : list "Date,Image") {
 			DynamicDataMapping.viewField(
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = "${structureFieldName}");
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = ${structureFieldName});
 		}
 
 		ProductMenu.gotoPortlet(
@@ -1477,7 +1477,7 @@ definition {
 			templateScript = '''${Image.getData()}''');
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditSubstructureDefaultValues {
 		Navigator.openURL();
 
@@ -1494,9 +1494,9 @@ definition {
 
 		for (var structureFieldName : list "Text,Text Box,Image,Documents and Media") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name1");
@@ -1512,7 +1512,7 @@ definition {
 
 		LexiconEntry.gotoAdd();
 
-		WebContentStructures.addName(structureName = "2");
+		WebContentStructures.addName(structureName = 2);
 
 		Panel.expandPanel(panelHeading = "Details");
 
@@ -1520,7 +1520,7 @@ definition {
 
 		WebContentStructures.addSubstructure(
 			parentStructureName = "WC Structure Name1",
-			structureName = "2");
+			structureName = 2);
 
 		DynamicDataMapping.addField(
 			field = "Integer",
@@ -1540,10 +1540,10 @@ definition {
 
 		WebContentStructures.editSubstructureDefaultValuesCP(
 			editSubstructureFieldNames = "Text",
-			substructureName = "2");
+			substructureName = 2);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWCAddLocalization {
 		Navigator.openURL();
 
@@ -1585,7 +1585,7 @@ definition {
 			webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditWebContent {
 		Navigator.openURL();
 
@@ -1618,7 +1618,7 @@ definition {
 			webContentTitle = "WC WebContent Title Edit");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ExpireEditWebContent {
 		Navigator.openURL();
 
@@ -1665,7 +1665,7 @@ definition {
 			webContentTitle = "WC WebContent Title Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ExpireWebContent {
 		Navigator.openURL();
 
@@ -1706,7 +1706,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-88889."
-	@priority = "4"
+	@priority = 4
 	test ExportLARWithDeletedDocumentLink {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1789,7 +1789,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "com.liferay.exportimport.kernel.lar.PortletDataException");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportLAR {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -1928,7 +1928,7 @@ definition {
 			templateName = "WC Template Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ImportLARLinkToPageValidation {
 		Page.add(pageName = "Test Page");
 
@@ -2012,7 +2012,7 @@ definition {
 			siteName = "Site Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportTrainingLAR {
 		property testray.component.names = "Training";
 
@@ -2063,7 +2063,7 @@ definition {
 		Portlet.viewApplicationDecorator(decorator = "Barebone");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test PublishDraftWebContent {
 		Navigator.openURL();
 
@@ -2117,7 +2117,7 @@ definition {
 		WebContent.viewApprovedStatus(webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchWebContent {
 		Navigator.openURL();
 
@@ -2161,12 +2161,12 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-98669."
-	@priority = "4"
+	@priority = 4
 	test SelectLinkToPagePage {
 		for (var pageName : list "P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12") {
 			JSONLayout.addPublicLayout(
 				groupName = "Guest",
-				layoutName = "${pageName}");
+				layoutName = ${pageName});
 		}
 
 		ProductMenu.gotoPortlet(
@@ -2226,7 +2226,7 @@ definition {
 			webContentTitle = "WC Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test UserEditWebContent {
 		Navigator.openURL();
 
@@ -2329,7 +2329,7 @@ definition {
 			webContentTitle = "WC WebContent Title Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ValidateDDMNavigation {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -2371,7 +2371,7 @@ definition {
 			structureName = "Basic Web Content");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewContentNotLostWithBlankTitle {
 		Navigator.openURL();
 
@@ -2385,7 +2385,7 @@ definition {
 		WebContent.addNullCP(webContentContent = "WC WebContent Content");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewDisplayStyleCP {
 		Navigator.openURL();
 

@@ -3,19 +3,19 @@ definition {
 	macro convertPG {
 		Type(
 			locator1 = "UnitConverter#FROM_FIELD",
-			value1 = "${initialValue}");
+			value1 = ${initialValue});
 
 		Select(
 			locator1 = "UnitConverter#UNIT_FROM_SELECT",
-			value1 = "${initialUnit}");
+			value1 = ${initialUnit});
 
 		Select(
 			locator1 = "UnitConverter#UNIT_TYPE_SELECT",
-			value1 = "${unitType}");
+			value1 = ${unitType});
 
 		Select(
 			locator1 = "UnitConverter#UNIT_TO_SELECT",
-			value1 = "${targetUnit}");
+			value1 = ${targetUnit});
 
 		AssertClick(
 			locator1 = "Button#CONVERT",
@@ -23,7 +23,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "UnitConverter#TO_FIELD",
-			value1 = "${targetValue}");
+			value1 = ${targetValue});
 	}
 
 }

@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -22,7 +22,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddTag {
 		property portal.acceptance = "true";
 
@@ -38,7 +38,7 @@ definition {
 		Tag.viewCP(tagName = "tag name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddTagInvalidCharacters {
 		Navigator.openURL();
 
@@ -232,7 +232,7 @@ definition {
 		Tag.addInvalidCP(tagName = '''~tag''');
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddTags {
 		for (var n : list "1,2,3") {
 			Navigator.openURL();
@@ -258,7 +258,7 @@ definition {
 			tagName3 = "tag name 3");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddTagWithUTF8Encoding {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -270,7 +270,7 @@ definition {
 		Tag.viewCP(tagName = "標籤名稱");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteTagFromList {
 		Navigator.openURL();
 
@@ -293,7 +293,7 @@ definition {
 			tagName = "tag name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteTagFromToolbar {
 		Navigator.openURL();
 
@@ -316,7 +316,7 @@ definition {
 			tagName = "tag name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditTag {
 		property portal.acceptance = "true";
 
@@ -343,7 +343,7 @@ definition {
 		Tag.viewCP(tagName = "tag name edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditTagCancel {
 		Navigator.openURL();
 
@@ -357,7 +357,7 @@ definition {
 		Tag.editCancelCP(tagName = "tag name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test MergeMultipleTags {
 		Navigator.openURL();
 
@@ -382,11 +382,11 @@ definition {
 		Tag.viewCP(tagName = "tag name 2");
 
 		for (var tagName : list "tag name 1,tag name 3") {
-			Tag.viewMergedTagsCP(tagName = "${tagName}");
+			Tag.viewMergedTagsCP(tagName = ${tagName});
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test MergeSingleTagWarning {
 		Navigator.openURL();
 
@@ -400,7 +400,7 @@ definition {
 		Tag.mergeSingleTagWarning(tagName = "tag name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchTag {
 		property portal.acceptance = "true";
 

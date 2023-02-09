@@ -3,52 +3,52 @@ definition {
 	macro addCP {
 		LexiconEntry.gotoAdd();
 
-		PortletEntry.inputName(name = "${pageTemplateName}");
+		PortletEntry.inputName(name = ${pageTemplateName});
 
 		PortletEntry.inputDescriptionTextInput(description = "This is a page template description");
 
-		if ("${pageTemplateActive}" == "No") {
+		if (${pageTemplateActive} == "No") {
 			Click(locator1 = "ToggleSwitch#ACTIVE");
 		}
 
 		PortletEntry.save();
 
-		var key_pageTemplateName = "${pageTemplateName}";
+		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
 		AssertTextEquals(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_ACTIVE",
-			value1 = "${pageTemplateActive}");
+			value1 = ${pageTemplateActive});
 	}
 
 	macro configurePageTemplateLayout {
 		Click(
-			key_pageTemplateName = "${pageTemplateName}",
+			key_pageTemplateName = ${pageTemplateName},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		SelectWindow.selectPopUp(locator1 = "null");
 
 		Click.pauseClickAt(locator1 = "ControlMenu#EDIT_COG");
 
-		Page.editPageLayoutColumn(columnName = "${columnName}");
+		Page.editPageLayoutColumn(columnName = ${columnName});
 	}
 
 	macro deactivateAndActivate {
-		var key_pageTemplateName = "${pageTemplateName}";
+		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit",
-			rowEntry = "${pageTemplateName}");
+			rowEntry = ${pageTemplateName});
 
 		if (isSet(pageTemplateStatus)) {
 			Click(locator1 = "ToggleSwitch#ACTIVE");
@@ -60,7 +60,7 @@ definition {
 	macro deleteCP {
 		LexiconEntry.gotoEntryMenuItemNoError(
 			menuItem = "Delete",
-			rowEntry = "${pageTemplateName}");
+			rowEntry = ${pageTemplateName});
 
 		Confirm(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 
@@ -69,23 +69,23 @@ definition {
 
 	macro editCP {
 		AssertTextEquals.assertPartialText(
-			key_pageTemplateName = "${pageTemplateName}",
+			key_pageTemplateName = ${pageTemplateName},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit",
-			rowEntry = "${pageTemplateName}");
+			rowEntry = ${pageTemplateName});
 
 		PortletEntry.inputName(name = "${pageTemplateName} Edit");
 
-		if ("${pageTemplateActive}" == "No") {
+		if (${pageTemplateActive} == "No") {
 			Click(locator1 = "ToggleSwitch#ACTIVE");
 		}
 
 		Button.clickSave();
 
-		var key_pageTemplateName = "${pageTemplateName}";
+		var key_pageTemplateName = ${pageTemplateName};
 
 		Alert.viewSuccessMessage();
 
@@ -95,23 +95,23 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_ACTIVE",
-			value1 = "${pageTemplateActive}");
+			value1 = ${pageTemplateActive});
 	}
 
 	macro editDescription {
 		AssertTextEquals.assertPartialText(
-			key_pageTemplateName = "${pageTemplateName}",
+			key_pageTemplateName = ${pageTemplateName},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
 		AssertTextEquals.assertPartialText(
-			key_pageTemplateDescription = "${pageTemplateDescription}",
+			key_pageTemplateDescription = ${pageTemplateDescription},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_DESCRITPION",
-			value1 = "${pageTemplateDescription}");
+			value1 = ${pageTemplateDescription});
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit",
-			rowEntry = "${pageTemplateName}");
+			rowEntry = ${pageTemplateName});
 
 		PortletEntry.inputDescriptionTextInput(description = "This is a page template description edit");
 
@@ -119,15 +119,15 @@ definition {
 	}
 
 	macro gotoPageTemplateViaEdit {
-		var key_pageTemplateName = "${pageTemplateName}";
+		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
 		AssertClick.assertPartialTextClickAt(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 	}
 
 	macro tearDownCP {
@@ -151,101 +151,101 @@ definition {
 
 	macro viewCP {
 		AssertTextEquals.assertPartialText(
-			key_pageTemplateName = "${pageTemplateName}",
+			key_pageTemplateName = ${pageTemplateName},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 	}
 
 	macro viewDefaultCP {
-		for (var pageTemplateName : list "${pageTemplateNameList}") {
-			var key_pageTemplateName = "${pageTemplateName}";
+		for (var pageTemplateName : list ${pageTemplateNameList}) {
+			var key_pageTemplateName = ${pageTemplateName};
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-				value1 = "${pageTemplateName}");
+				value1 = ${pageTemplateName});
 		}
 
 		AssertElementNotPresent(locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME_4");
 	}
 
 	macro viewDefaultLocalizedCP {
-		for (var pageTemplateNameTranslation : list "${pageTemplateNameList}") {
-			var key_pageTemplateName = "${pageTemplateNameTranslation}";
+		for (var pageTemplateNameTranslation : list ${pageTemplateNameList}) {
+			var key_pageTemplateName = ${pageTemplateNameTranslation};
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-				value1 = "${pageTemplateNameTranslation}");
+				value1 = ${pageTemplateNameTranslation});
 		}
 
-		for (var DescriptionTranslation : list "${pageTemplateDescriptionList}") {
-			var key_pageTemplateDescription = "${DescriptionTranslation}";
+		for (var DescriptionTranslation : list ${pageTemplateDescriptionList}) {
+			var key_pageTemplateDescription = ${DescriptionTranslation};
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_DESCRITPION",
-				value1 = "${DescriptionTranslation}");
+				value1 = ${DescriptionTranslation});
 		}
 	}
 
 	macro viewDefaultPortletPG {
-		if ("${pageTemplateName}" == "Blog") {
+		if (${pageTemplateName} == "Blog") {
 			AssertElementPresent(locator1 = "Home#PORTLET_1");
 
 			AssertElementPresent(locator1 = "Home#PORTLET_2");
 
 			AssertElementPresent(locator1 = "Home#PORTLET_3");
 
-			for (var portletName : list "${portletTitleList}") {
-				var key_portletName = "${portletName}";
+			for (var portletName : list ${portletTitleList}) {
+				var key_portletName = ${portletName};
 
 				AssertTextEquals(
 					locator1 = "Portlet#TITLE",
-					value1 = "${portletName}");
+					value1 = ${portletName});
 			}
 		}
 	}
 
 	macro viewDescription {
-		var key_pageTemplateName = "${pageTemplateName}";
+		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
-		var key_pageTemplateDescription = "${pageTemplateDescription}";
+		var key_pageTemplateDescription = ${pageTemplateDescription};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_DESCRITPION",
-			value1 = "${pageTemplateDescription}");
+			value1 = ${pageTemplateDescription});
 	}
 
 	macro viewPG {
-		var key_pageTemplateName = "${pageTemplateName}";
+		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertClick.assertPartialTextClickAt(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
 		SelectWindow(locator1 = "title=${pageTemplateName} - ${siteName}");
 
 		AssertTextEquals(
 			locator1 = "Home#SITE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
 		AssertTextEquals(
 			locator1 = "Home#PAGE_TEMPLATE",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 	}
 
 	macro viewStatus {
-		var key_pageTemplateName = "${pageTemplateName}";
+		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
-			value1 = "${pageTemplateName}");
+			value1 = ${pageTemplateName});
 
 		AssertTextEquals(
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_ACTIVE",
-			value1 = "${pageTemplateStatus}");
+			value1 = ${pageTemplateStatus});
 	}
 
 }

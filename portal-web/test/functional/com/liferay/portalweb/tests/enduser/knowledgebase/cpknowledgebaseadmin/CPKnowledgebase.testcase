@@ -16,7 +16,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -36,7 +36,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddChildArticleToKBArticleViaKBAdmin {
 		Navigator.openURL();
 
@@ -70,7 +70,7 @@ definition {
 			kbChildArticleTitle = "Knowledge Base Child Article Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddKBArticleAsDraft {
 		Navigator.openURL();
 
@@ -97,7 +97,7 @@ definition {
 			kbStatus = "Draft");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddKBArticlesViaKBAdmin {
 		Navigator.openURL();
 
@@ -126,7 +126,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddKBArticleViaKBAdmin {
 		Navigator.openURL();
 
@@ -151,7 +151,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddKBArticleViaTemplateCP {
 		Navigator.openURL();
 
@@ -188,7 +188,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddKBArticleWithAttachmentViaKBAdmin {
 		Navigator.openURL();
 
@@ -215,7 +215,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddKBArticleWithBlogsEntryRelatedAssetViaKBAdmin {
 		Navigator.openURL();
 
@@ -255,16 +255,16 @@ definition {
 
 		var kbArticleRelatedAssetTitle = "Blogs Entry Title";
 
-		var key_kbArticleRelatedAssetTitle = "${kbArticleRelatedAssetTitle}";
+		var key_kbArticleRelatedAssetTitle = ${kbArticleRelatedAssetTitle};
 
 		AssertClick(
 			locator1 = "AssetRelatedAssets#KB_RELATED_ASSETS_LINKS",
-			value1 = "${kbArticleRelatedAssetTitle}");
+			value1 = ${kbArticleRelatedAssetTitle});
 
 		KBArticle.viewBlogsEntryRelatedAsset();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddKBArticleWithCategory {
 		Navigator.openURL();
 
@@ -309,7 +309,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddKBArticleWithHTMLViaKBAdmin {
 		var kbArticleContentSource = '''<b>Knowledge Base&rsquo;s Article Content</b>''';
 
@@ -322,10 +322,10 @@ definition {
 
 		KBArticle.addCP(
 			kbArticleAddViaSource = "true",
-			kbArticleContentSource = "${kbArticleContentSource}",
+			kbArticleContentSource = ${kbArticleContentSource},
 			kbArticleTitle = "Knowledge Base Article Title");
 
-		Pause(value1 = "5000");
+		Pause(value1 = 5000);
 
 		KBArticle.viewCPWithHTML(
 			kbArticleContent = "Knowledge Base’s Article Content",
@@ -334,7 +334,7 @@ definition {
 		AssertElementNotPresent(locator1 = "KnowledgeBaseArticle#CONTENT");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddKBArticleWithInvalidAttachmentSize {
 		property test.name.skip.portal.instance = "CPKnowledgebase#AddKBArticleWithInvalidAttachmentSize";
 
@@ -343,7 +343,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Server Administration");
 
-		ServerAdministration.configureFileUploadOverallMaximumFileSize(maxFileSize = "2048");
+		ServerAdministration.configureFileUploadOverallMaximumFileSize(maxFileSize = 2048);
 
 		Navigator.openURL();
 
@@ -371,7 +371,7 @@ definition {
 			noAttachment = "true");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddKBArticleWithoutRequiredCategory {
 		Navigator.openURL();
 
@@ -410,7 +410,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddKBFolder {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
@@ -448,7 +448,7 @@ definition {
 		KBArticle.viewDefaultCP();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddTemplateCP {
 		Navigator.openURL();
 
@@ -473,7 +473,7 @@ definition {
 			kbTemplateTitle = "Knowledge Base Template Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test CancelAddKBArticle {
 		Navigator.openURL();
 
@@ -489,7 +489,7 @@ definition {
 		KBArticle.viewDefaultCP();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test CancelEditKBArticle {
 		Navigator.openURL();
 
@@ -527,7 +527,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test CannotAddDuplicateKBFolder {
 		Navigator.openURL();
 
@@ -546,7 +546,7 @@ definition {
 			kbFolderName = "KB Folder 1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteKBArticleViaKBAdmin {
 		Navigator.openURL();
 
@@ -580,7 +580,7 @@ definition {
 		KBArticle.viewDefaultCP();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteKBFolder {
 		Navigator.openURL();
 
@@ -609,7 +609,7 @@ definition {
 		KBFolder.deleteCP(kbFolderName = "KB Folder 1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditKBArticleAndAddAttachmentViaKBAdmin {
 		Navigator.openURL();
 
@@ -648,7 +648,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditKBArticleViaKBAdmin {
 		Navigator.openURL();
 
@@ -685,7 +685,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditKBFolder {
 		Navigator.openURL();
 
@@ -719,7 +719,7 @@ definition {
 		KBFolder.viewFolderNameCP(kbFolderName = "KB Folder 1 Edited");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RemoveParentArticleViaKBAdmin {
 		Navigator.openURL();
 
@@ -806,7 +806,7 @@ definition {
 			kbStatus = "Draft");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SelectParentArticleViaKBAdmin {
 		Navigator.openURL();
 
@@ -838,7 +838,7 @@ definition {
 			kbChildArticleTitle = "Knowledge Base Article Title Child");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewChildArticleInKBArticleViaKBAdmin {
 		Navigator.openURL();
 
@@ -872,7 +872,7 @@ definition {
 			kbChildArticleTitle = "Knowledge Base Child Article Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewDuplicateFriendlyURLIsNotAllowed {
 		Navigator.openURL();
 
@@ -915,7 +915,7 @@ definition {
 			kbArticleTitle = "Knowledge Base Article Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewImportedKBArticlesPrioritization {
 		Navigator.openURL();
 
@@ -1065,7 +1065,7 @@ definition {
 			kbPriority = "4.0");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewKBArticlePriority {
 		Navigator.openURL();
 
@@ -1089,7 +1089,7 @@ definition {
 			kbPriority = "2.0");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewKBTemplateViaAddKBArticleCP {
 		Navigator.openURL();
 
@@ -1114,7 +1114,7 @@ definition {
 			kbTemplateTitle = "Knowledge Base Template Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewNoErrorAfterImportWithoutParentMarkdownFiles {
 		Navigator.openURL();
 
@@ -1130,7 +1130,7 @@ definition {
 		KBArticle.viewUploadFailed(kbImportFail = "false");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewPendingKBArticleContent {
 		Navigator.openURL();
 

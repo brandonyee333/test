@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -28,9 +28,9 @@ definition {
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddPageMultiplePagesToSite {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.openURL();
 
@@ -43,21 +43,21 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddPagesFullPageApplication {
 		for (var portlet : list "Blogs,Documents and Media,Wiki,Media Gallery,Message Boards,Form,Hello Soy Portlet,RSS Publisher") {
 			Page.add(
 				pageName = "${portlet} Full Page Application",
-				portlet = "${portlet}",
+				portlet = ${portlet},
 				sitePageType = "Full Page Application");
 
-			if ("${portlet}" == "Dynamic Data Lists Form") {
+			if (${portlet} == "Dynamic Data Lists Form") {
 				AssertTextEquals(
 					key_portletTitleName = "Form",
 					locator1 = "Home#PAGE_COLUMN_PORTLET_COLUMN_1_PORTLET_TITLE",
 					value1 = "Form");
 			}
-			else if ("${portlet}" == "RSS") {
+			else if (${portlet} == "RSS") {
 				AssertTextEquals(
 					key_portletTitleName = "RSS Publisher",
 					locator1 = "Home#PAGE_COLUMN_PORTLET_COLUMN_1_PORTLET_TITLE",
@@ -65,16 +65,16 @@ definition {
 			}
 			else {
 				AssertTextEquals(
-					key_portletTitleName = "${portlet}",
+					key_portletTitleName = ${portlet},
 					locator1 = "Home#PAGE_COLUMN_PORTLET_COLUMN_1_PORTLET_TITLE",
-					value1 = "${portlet}");
+					value1 = ${portlet});
 			}
 
 			AssertElementNotPresent(locator1 = "ControlMenu#ADD");
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddPageViaNavigationMenu {
 		property test.name.skip.portal.instance = "CPSitepages#AddPageViaNavigationMenu";
 
@@ -89,12 +89,12 @@ definition {
 		AssertLocation(value1 = "${portalURL}/web/guest/test-page-name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddPageWithEscapeCharacter {
 		Page.add(pageName = "Tester's Page");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddPageWithMultipleChildPagesToSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -121,7 +121,7 @@ definition {
 			Page.addChild(
 				page = "Public Pages",
 				pageName = "Site Page",
-				siteChildPageName = "${childPageName}",
+				siteChildPageName = ${childPageName},
 				siteName = "Site Name");
 		}
 
@@ -130,11 +130,11 @@ definition {
 				pageName = "Site Page",
 				siteName = "Site Name");
 
-			Page.viewChildPage(pageName = "${childPageName}");
+			Page.viewChildPage(pageName = ${childPageName});
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSitePrivateChildPage {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -175,7 +175,7 @@ definition {
 		Page.viewChildPage(pageName = "Site Child Page");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSitePrivatePage {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -203,7 +203,7 @@ definition {
 		Page.view(pageName = "Site Page");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSitePrivatePagePortlet {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -236,7 +236,7 @@ definition {
 			siteURL = "true");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSitePublicChildPage {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -274,7 +274,7 @@ definition {
 		Page.viewChildPage(pageName = "Site Child Page");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddSitePublicPage {
 		property portal.acceptance = "true";
 
@@ -303,7 +303,7 @@ definition {
 		Page.view(pageName = "Site Page");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSitePublicPagePortlet {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -328,7 +328,7 @@ definition {
 		Portlet.addPG(portletName = "Blogs");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ChangePageLayout {
 		property osgi.app.includes = "frontend-columns-layouttpl";
 		property plugins.deployment.type = "osgi";
@@ -424,7 +424,7 @@ definition {
 	}
 
 	@description = "This is for LPS-150849."
-	@priority = "5"
+	@priority = 5
 	test ChooseColumnTypeAndViewSelectedIcon {
 		Page.add(pageName = "Site Page Name");
 
@@ -441,7 +441,7 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test CopyApplicationsFromPageToPage {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -481,7 +481,7 @@ definition {
 			pageNameCopy = "Site Page");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteSitePages {
 		property portal.acceptance = "true";
 
@@ -502,14 +502,14 @@ definition {
 
 			Page.add(
 				page = "Public Pages",
-				pageName = "${pageName}",
+				pageName = ${pageName},
 				siteName = "Site Name");
 		}
 
 		Page.deletePG(pageName = "Site Page 2");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditSitePage {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -537,7 +537,7 @@ definition {
 		Page.view(pageName = "Home");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SaveEmbeddedPageType {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -574,7 +574,7 @@ definition {
 		Page.viewEmbeddedPagePG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SavePortletPageType {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -600,7 +600,7 @@ definition {
 		Blogs.viewControlsPG();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewNoInfoMessageWhenChangingSiteTemplateAsUser {
 		ProductMenu.gotoPortlet(
 			category = "Users",

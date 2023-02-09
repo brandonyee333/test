@@ -11,14 +11,14 @@ definition {
 		User.firstLoginPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SocialBookmarksHookSmoke {
 		var appName = "Social Bookmarks";
 		var portletName = "social-bookmarks-hook";
 
 		OSGiSmoke.Smoke(
-			appName = "${portletName}",
-			portletName = "${portletName}");
+			appName = ${portletName},
+			portletName = ${portletName});
 	}
 
 }

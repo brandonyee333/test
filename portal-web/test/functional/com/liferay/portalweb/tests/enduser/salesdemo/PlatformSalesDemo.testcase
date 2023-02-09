@@ -17,7 +17,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -37,7 +37,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SampleDroolsDemo {
 		var structureDescription = "WC Structure Description";
 		var structureFieldNames = "Text,Image";
@@ -52,7 +52,7 @@ definition {
 
 		User.addAddressViaMyAccount(
 			userAddressCountry = "United States",
-			userAddressPostalCode = "91789",
+			userAddressPostalCode = 91789,
 			userAddressRegion = "California",
 			userAddressStreet1 = "1220 Brea Canyon Rd",
 			userAddressType = "Business");
@@ -72,9 +72,9 @@ definition {
 
 		for (var structureFieldName : list "Text,Image") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
@@ -89,13 +89,13 @@ definition {
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
-			templateDescription = "${templateDescription}",
+			templateDescription = ${templateDescription},
 			templateLanguage = "ftl",
-			templateName = "${templateName}");
+			templateName = ${templateName});
 
 		WebContentTemplates.addStructure(
-			structureName = "${structureName}",
-			templateFieldNames = "${structureFieldNames}",
+			structureName = ${structureName},
+			templateFieldNames = ${structureFieldNames},
 			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
@@ -108,15 +108,15 @@ definition {
 			portlet = "Web Content");
 
 		WebContent.addWithStructureCP(
-			structureName = "${structureName}",
-			templateName = "${templateName}",
-			webContentImage = "${webContentImage}",
-			webContentText = "${webContentText}",
-			webContentTitle = "${webContentTitle}");
+			structureName = ${structureName},
+			templateName = ${templateName},
+			webContentImage = ${webContentImage},
+			webContentText = ${webContentText},
+			webContentTitle = ${webContentTitle});
 
 		PortletEntry.publish();
 
-		WebContent.viewTitle(webContentTitle = "${webContentTitle}");
+		WebContent.viewTitle(webContentTitle = ${webContentTitle});
 
 		Page.add(pageName = "WC Page");
 
@@ -124,7 +124,7 @@ definition {
 			pageName = "WC Page",
 			portletName = "Web Content Display");
 
-		WebContentDisplayPortlet.selectWebContent(webContentTitle = "${webContentTitle}");
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = ${webContentTitle});
 
 		WebContentNavigator.gotoEditPGViaWCD();
 
@@ -193,7 +193,7 @@ definition {
 
 		User.addAddressViaMyAccount(
 			userAddressCountry = "Germany",
-			userAddressPostalCode = "91789",
+			userAddressPostalCode = 91789,
 			userAddressRegion = "Berlin",
 			userAddressStreet1 = "1220 Brea Canyon Rd",
 			userAddressType = "Business");
@@ -201,7 +201,7 @@ definition {
 		Navigator.gotoPage(pageName = "Drools Page");
 
 		Drools.viewContentPG(
-			droolsContent = "${webContentText}",
+			droolsContent = ${webContentText},
 			screenshotFileName = "web_content_image_field.png",
 			welcomeMessage = "Welcome userfn userln!");
 	}

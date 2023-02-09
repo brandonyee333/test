@@ -7,11 +7,11 @@ definition {
 		if (IsElementPresent.pauseIsElementPresent(locator1 = "MicrosoftLogin#LOGIN_USER_CHOOSER")) {
 			AssertClick(
 				locator1 = "MicrosoftLogin#LOGIN_USER_CHOOSER",
-				value1 = "${key_userEmail}");
+				value1 = ${key_userEmail});
 
 			Type(
 				locator1 = "TextInput#LOGIN_PASSWORD_FIELD",
-				value1 = "${userPassword}");
+				value1 = ${userPassword});
 
 			AssertClick(
 				locator1 = "MicrosoftLogin#LOGIN_SIGN_IN_BUTTON",
@@ -20,7 +20,7 @@ definition {
 		else if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#LOGIN_EMAIL_FIELD")) {
 			Type(
 				locator1 = "TextInput#LOGIN_EMAIL_FIELD",
-				value1 = "${key_userEmail}");
+				value1 = ${key_userEmail});
 
 			AssertClick(
 				locator1 = "MicrosoftLogin#LOGIN_NEXT_BUTTON",
@@ -28,7 +28,7 @@ definition {
 
 			Type(
 				locator1 = "TextInput#LOGIN_PASSWORD_FIELD",
-				value1 = "${userPassword}");
+				value1 = ${userPassword});
 
 			AssertClick(
 				locator1 = "MicrosoftLogin#LOGIN_SIGN_IN_BUTTON",
@@ -41,7 +41,7 @@ definition {
 	}
 
 	macro confirmSharepointApp {
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		var app_name = "Collaboration Test Application";
 
@@ -54,7 +54,7 @@ definition {
 		if (IsElementPresent(locator1 = "Portlet#HEADER")) {
 			AssertTextEquals(
 				locator1 = "Portlet#HEADER",
-				value1 = "${dmRepositoryName}");
+				value1 = ${dmRepositoryName});
 		}
 		else {
 			AssertTextEquals(

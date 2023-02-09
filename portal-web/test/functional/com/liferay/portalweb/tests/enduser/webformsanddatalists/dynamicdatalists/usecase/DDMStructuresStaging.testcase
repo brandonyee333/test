@@ -41,7 +41,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -55,7 +55,7 @@ definition {
 
 	@description = "This will be ignored until LPS-107107 is fixed.This is a use case for LPS-80085."
 	@ignore = "true"
-	@priority = "3"
+	@priority = 3
 	test AddWebContentTemplateWithSmallImage {
 		property test.name.skip.portal.instance = "DDMStructuresStaging#AddWebContentTemplateWithSmallImage";
 
@@ -121,7 +121,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-68661."
-	@priority = "3"
+	@priority = 3
 	test CreateWebContentStructureAndTemplate {
 		ProductMenu.gotoStagingSite();
 

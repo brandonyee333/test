@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -24,7 +24,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddPageTemplate {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -36,7 +36,7 @@ definition {
 			pageTemplateName = "Page Template Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddSitePageTemplate {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -80,7 +80,7 @@ definition {
 
 		PageTemplate.gotoPageTemplateViaEdit(pageTemplateName = "Page Template Name");
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		SelectWindow(locator1 = "title=Page Template Name - ${siteName}");
 
@@ -126,9 +126,9 @@ definition {
 		Portlet.viewNoSpecificPG(portletName = "Web Content Display");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeactivateAndActivatePageTemplate {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -157,7 +157,7 @@ definition {
 			pageTemplateName = "Page Template Name",
 			pageTemplateStatus = "No");
 
-		Navigator.openSiteURL(siteName = "${siteName}");
+		Navigator.openSiteURL(siteName = ${siteName});
 
 		SitePageNavigator.gotoPages(page = "Public Pages");
 
@@ -183,7 +183,7 @@ definition {
 			pageTemplateName = "Page Template Name",
 			pageTemplateStatus = "Yes");
 
-		Navigator.openSiteURL(siteName = "${siteName}");
+		Navigator.openSiteURL(siteName = ${siteName});
 
 		SitePageNavigator.gotoPages(page = "Public Pages");
 
@@ -192,7 +192,7 @@ definition {
 		Page.viewPageTemplateTypePresent(pageTemplateName = "Page Template Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeletePageTemplate {
 		property portal.acceptance = "true";
 
@@ -221,7 +221,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-54099."
-	@priority = "5"
+	@priority = 5
 	test EditPageTemplate {
 		property portal.acceptance = "true";
 
@@ -236,7 +236,7 @@ definition {
 
 		PageTemplate.gotoPageTemplateViaEdit(pageTemplateName = "Page Template Name");
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		SelectWindow(locator1 = "title=Page Template Name - ${siteName}");
 
@@ -260,7 +260,7 @@ definition {
 			pageTemplateName = "Page Template Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditPageTemplateDescription {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -290,7 +290,7 @@ definition {
 			pageTemplateName = "Page Template Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportLAR {
 		property testray.component.names = "Training";
 
@@ -307,17 +307,17 @@ definition {
 
 		PageTemplate.viewCP(pageTemplateName = "Department Landing Page");
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		PageTemplate.viewPG(
 			pageTemplateName = "College Landing Page",
-			siteName = "${siteName}");
+			siteName = ${siteName});
 
 		Portlet.viewSpecificPG(portletName = "Media Gallery");
 
 		Portlet.viewDuplicatePG(
 			portletName = "Web Content Display",
-			totalPortletCount = "3");
+			totalPortletCount = 3);
 
 		Portlet.viewSpecificPG(portletName = "Asset Publisher");
 
@@ -334,20 +334,20 @@ definition {
 
 		PageTemplate.viewPG(
 			pageTemplateName = "Department Landing Page",
-			siteName = "${siteName}");
+			siteName = ${siteName});
 
 		Portlet.viewSpecificPG(portletName = "Media Gallery");
 
 		Portlet.viewDuplicatePG(
 			portletName = "Web Content Display",
-			totalPortletCount = "2");
+			totalPortletCount = 2);
 
 		Portlet.viewSpecificPG(portletName = "Members");
 
 		Portlet.viewSpecificPG(portletName = "Navigation Menu");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test LocalizeDefaultPageTemplates {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -399,7 +399,7 @@ definition {
 		PageTemplate.viewDefaultCP(pageTemplateNameList = "Blog,Content Display Page,Wiki");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewEditedPageTemplatePageName {
 		property testray.component.names = "Site and Page Templates";
 
@@ -412,11 +412,11 @@ definition {
 			pageTemplateActive = "Yes",
 			pageTemplateName = "Page Template Name");
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		PageTemplate.viewPG(
 			pageTemplateName = "Page Template Name",
-			siteName = "${siteName}");
+			siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -429,7 +429,7 @@ definition {
 
 		PageTemplate.viewPG(
 			pageTemplateName = "Page Template Name Edit",
-			siteName = "${siteName}");
+			siteName = ${siteName});
 	}
 
 }

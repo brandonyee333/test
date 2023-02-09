@@ -23,7 +23,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -37,7 +37,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchWebContent {
 		Page.add(pageName = "Web Content Display Page");
 
@@ -106,7 +106,7 @@ definition {
 		WebContentSearchPortlet.viewNoResults(webContentSearchTerm = "Content1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchWebContentCategory {
 		Navigator.openURL();
 
@@ -172,7 +172,7 @@ definition {
 		WebContentSearchPortlet.viewNoResults(webContentSearchTerm = "Name1");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchWebContentCategoryQuotes {
 		Navigator.openURL();
 
@@ -238,7 +238,7 @@ definition {
 		WebContentSearchPortlet.viewNoResults(webContentSearchTerm = "\"Name1\"");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchWebContentQuotes {
 		Page.add(pageName = "Web Content Display Page");
 
@@ -325,7 +325,7 @@ definition {
 		WebContentSearchPortlet.viewNoResults(webContentSearchTerm = "\"Content1\"");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchWebContentTag {
 		property testray.component.names = "Training";
 
@@ -376,7 +376,7 @@ definition {
 		WebContentSearchPortlet.viewNoResults(webContentSearchTerm = "name1");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchWebContentTagQuotes {
 		Page.add(pageName = "Web Content Display Page");
 

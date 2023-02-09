@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -27,7 +27,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-42515"
-	@priority = "4"
+	@priority = 4
 	test AddContract {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -60,7 +60,7 @@ definition {
 		DMDocument.viewDocumentTypePG(textContent = "DM Contract Deal Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddShortcutToSiteDocument {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -110,7 +110,7 @@ definition {
 	}
 
 	@description = "This test covers LPS-130154. It ensures that the user can search for a document based on the content."
-	@priority = "4"
+	@priority = 4
 	test CanSearchForDocumentBasedOnContent {
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -131,7 +131,7 @@ definition {
 	}
 
 	@description = "This case covers LPS-110213. It ensures that a document file can be downloaded after moving it between folders."
-	@priority = "5"
+	@priority = 5
 	test DownloadDocumentAfterMoveBetweenFolders {
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -167,7 +167,7 @@ definition {
 		AssertTextNotPresent(value1 = "The requested resource could not be found.");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditDocument {
 		property app.server.types = "jboss,resin,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
@@ -213,7 +213,7 @@ definition {
 		DMDocument.viewEditCP(dmDocumentTitleEdit = "DM Document Title Edit");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditFolder {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -247,7 +247,7 @@ definition {
 		DMFolder.viewEditCP(dmFolderNameEdit = "DM Folder Name Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test MoveDocumentToFolder {
 		Navigator.openURL();
 
@@ -296,7 +296,7 @@ definition {
 			dmFolderName = "DM Folder Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test MoveFolderToFolder {
 		Navigator.openURL();
 
@@ -319,7 +319,7 @@ definition {
 			dmFolderName2 = "DM Folder2 Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test MoveToRecycleBinDocument {
 		property portal.acceptance = "true";
 
@@ -345,7 +345,7 @@ definition {
 			dmDocumentTitle = "DM Document Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test MoveToRecycleBinFolder {
 		property portal.acceptance = "true";
 
@@ -374,7 +374,7 @@ definition {
 			dmFolderName = "DM Folder Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RotateImageViaDMSiteAdmin {
 		Navigator.openURL();
 
@@ -403,7 +403,7 @@ definition {
 
 		ImageEditor.rotateImage(rotateDirection = "left");
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		ImageEditor.applyChangesAndSaveFile();
 
@@ -419,7 +419,7 @@ definition {
 		DMDocument.viewDocumentVersionNumberCmdPG(dmDocumentVersionNumber = "1.1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchForDocumentInHomeFolder {
 		Navigator.openURL();
 
@@ -447,7 +447,7 @@ definition {
 			dmParentFolder = "Home");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewImageEditorControls {
 		property portal.acceptance = "false";
 

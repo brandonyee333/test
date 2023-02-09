@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -36,7 +36,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewBlogsEntryRegRoleInline {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "CPRolesCPBlogs#ViewBlogsEntryRegRoleInline";
@@ -132,7 +132,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsPortletRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			portletName = "Blogs",
@@ -177,7 +177,7 @@ definition {
 			userLoginFullName = "userfn userln");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewBlogsPortletSiteRole {
 		Permissions.setUpSiteRoleLoginUserCP(
 			page = "Public Pages",

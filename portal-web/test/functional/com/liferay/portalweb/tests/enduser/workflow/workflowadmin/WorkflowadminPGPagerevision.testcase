@@ -60,7 +60,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -72,7 +72,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RejectPageRevisionPG {
 		var pageName = "Page Revision Page";
 
@@ -80,81 +80,81 @@ definition {
 			pageName = "Site Page Name",
 			siteName = "Site Name");
 
-		Page.add(pageName = "${pageName}");
+		Page.add(pageName = ${pageName});
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Staging.submitForPublicationPageRevision();
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Page.viewWithWorkflowPG(
 			livePage = "true",
-			pageName = "${pageName}",
+			pageName = ${pageName},
 			workflowStatus = "Pending (Review)");
 
 		Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 		Workflow.assignToMeTaskByActions(
-			workflowAssetTitle = "${pageName}",
-			workflowAssetType = "${workflowAssetType}",
+			workflowAssetTitle = ${pageName},
+			workflowAssetType = ${workflowAssetType},
 			workflowTask = "Review");
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Page.viewWithWorkflowPG(
 			livePage = "true",
-			pageName = "${pageName}",
+			pageName = ${pageName},
 			workflowStatus = "Pending (Review)");
 
 		Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 		Workflow.rejectTaskByActions(
-			workflowAssetTitle = "${pageName}",
-			workflowAssetType = "${workflowAssetType}",
+			workflowAssetTitle = ${pageName},
+			workflowAssetType = ${workflowAssetType},
 			workflowTask = "Review");
 
 		Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 		Workflow.viewRejectedTask(
-			workflowAssetTitle = "${pageName}",
-			workflowAssetType = "${workflowAssetType}");
+			workflowAssetTitle = ${pageName},
+			workflowAssetType = ${workflowAssetType});
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Page.viewWithWorkflowPG(
 			livePage = "true",
-			pageName = "${pageName}",
+			pageName = ${pageName},
 			workflowStatus = "Pending (Update)");
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Staging.gotoPublishToLive();
 
 		Staging.publishToLive();
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Page.viewWithWorkflowPG(
 			livePage = "true",
-			pageName = "${pageName}",
+			pageName = ${pageName},
 			workflowStatus = "Pending (Update)");
 	}
 
 	@description = "This is a use case for LPS-65319."
-	@priority = "5"
+	@priority = 5
 	test ViewApprovedPageAfterStagingDeactivated {
 		property portal.acceptance = "false";
 
@@ -162,78 +162,78 @@ definition {
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Site Page Name",
-			siteName = "${siteName}");
+			siteName = ${siteName});
 
-		Page.add(pageName = "${pageName}");
+		Page.add(pageName = ${pageName});
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Staging.submitForPublicationPageRevision();
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Page.viewWithWorkflowPG(
 			livePage = "true",
-			pageName = "${pageName}",
+			pageName = ${pageName},
 			workflowStatus = "Pending (Review)");
 
 		Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 		Workflow.assignToMeTaskByActions(
-			workflowAssetTitle = "${pageName}",
-			workflowAssetType = "${workflowAssetType}",
+			workflowAssetTitle = ${pageName},
+			workflowAssetType = ${workflowAssetType},
 			workflowTask = "Review");
 
 		Workflow.approveTaskByActions(
-			workflowAssetTitle = "${pageName}",
-			workflowAssetType = "${workflowAssetType}",
+			workflowAssetTitle = ${pageName},
+			workflowAssetType = ${workflowAssetType},
 			workflowTask = "Review");
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Page.viewWithWorkflowPG(
 			livePage = "true",
-			pageName = "${pageName}",
+			pageName = ${pageName},
 			workflowStatus = "Ready for Publication");
 
 		Navigator.gotoStagedSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
 		Staging.gotoPublishToLive();
 
 		Staging.publishToLive();
 
-		ProductMenu.gotoStagingSite(site = "${siteName}");
+		ProductMenu.gotoStagingSite(site = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
 			portlet = "Staging");
 
-		Staging.deactivateStagingCP(siteName = "${siteName}");
+		Staging.deactivateStagingCP(siteName = ${siteName});
 
 		Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 		Navigator.gotoNavTab(navTab = "Assigned to Me");
 
-		Workflow.viewCompletedTasksTaskNotPresentCP(workflowAssetTitle = "${pageName}");
+		Workflow.viewCompletedTasksTaskNotPresentCP(workflowAssetTitle = ${pageName});
 
 		Navigator.gotoSitePage(
-			pageName = "${pageName}",
-			siteName = "${siteName}");
+			pageName = ${pageName},
+			siteName = ${siteName});
 
-		Page.deletePG(pageName = "${pageName}");
+		Page.deletePG(pageName = ${pageName});
 	}
 
 	@description = "This is a use case for LPS-58754"
-	@priority = "2"
+	@priority = 2
 	test WithdrawWorkflowSubmissionFromRemovedUser {
 		ProductMenu.gotoPortlet(
 			category = "Users",

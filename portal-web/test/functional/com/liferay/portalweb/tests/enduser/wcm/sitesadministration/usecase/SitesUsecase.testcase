@@ -16,7 +16,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -34,7 +34,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddChildSiteFromImportedSiteTemplate {
 		property test.name.skip.portal.instance = "SitesUsecase#AddChildSiteFromImportedSiteTemplate";
 		property testray.component.names = "Training";
@@ -117,7 +117,7 @@ definition {
 
 		for (var pageName : list "Courses,Student Boards,Materials") {
 			Navigator.gotoPrivateSitePage(
-				pageName = "${pageName}",
+				pageName = ${pageName},
 				siteName = "Moon Rocks 101");
 		}
 
@@ -125,12 +125,12 @@ definition {
 
 		for (var pageName : list "Courses,Student Boards,Materials") {
 			Navigator.gotoPrivateSitePage(
-				pageName = "${pageName}",
+				pageName = ${pageName},
 				siteName = "Moon Rocks 202");
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddPageAndChildPageTranslations {
 		property test.name.skip.portal.instance = "SitesUsecase#AddPageAndChildPageTranslations";
 
@@ -187,7 +187,7 @@ definition {
 			sitePageURL = "${portalURL}/es/web/site-name/blog-page");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SitesTemplatePermissionPersistence {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -217,7 +217,7 @@ definition {
 		Portlet.viewTitle(portletName = "Asset Publisher");
 
 		SiteTemplates.resetPageChanges(
-			columnNumberTo = "1",
+			columnNumberTo = 1,
 			portletName = "Asset Publisher");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -260,7 +260,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			threadBody = "This is the message boards thread.",
 			threadSubject = "Thread");
 
@@ -278,7 +278,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			threadBody = "This is the message boards thread.",
 			threadSubject = "Thread");
 
@@ -329,7 +329,7 @@ definition {
 			value1 = "You do not have the roles required to access this portlet.");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewDefaultGlobalScopeLandingPage {
 		ProductMenu.gotoPortlet(
 			category = "Sites",

@@ -13,17 +13,17 @@ definition {
 			locator1 = "Button#NEXT",
 			value1 = "Next");
 
-		var key_formPageName = "${formPageCurrent}";
+		var key_formPageName = ${formPageCurrent};
 
 		AssertTextEquals(
 			locator1 = "FormPortlet#FORM_PAGE_INACTIVE",
-			value1 = "${formPageCurrent}");
+			value1 = ${formPageCurrent});
 
-		var key_formPageName = "${formPageNext}";
+		var key_formPageName = ${formPageNext};
 
 		AssertTextEquals(
 			locator1 = "FormPortlet#FORM_PAGE_ACTIVE",
-			value1 = "${formPageNext}");
+			value1 = ${formPageNext});
 	}
 
 	macro submit {
@@ -35,7 +35,7 @@ definition {
 	macro submitLocalizedSuccessfully {
 		AssertClick(
 			locator1 = "Button#MAIN_CONTENT_SUBMIT",
-			value1 = "${buttonName}");
+			value1 = ${buttonName});
 
 		Alert.viewSuccessMessage();
 	}
@@ -51,7 +51,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "Message#ERROR",
-			value1 = "${errorMessage}");
+			value1 = ${errorMessage});
 	}
 
 	macro submitWithValidationError {
@@ -59,15 +59,15 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "Message#ERROR_FORM_FIELD_REQUIRED",
-			value1 = "${validationErrorMessage}");
+			value1 = ${validationErrorMessage});
 	}
 
 	macro waitFormRenderer {
-		var key_text = "${text}";
+		var key_text = ${text};
 
 		WaitForElementPresent(locator1 = "Button#ANY_ENABLED");
 
-		Pause(locator1 = "2500");
+		Pause(locator1 = 2500);
 	}
 
 }

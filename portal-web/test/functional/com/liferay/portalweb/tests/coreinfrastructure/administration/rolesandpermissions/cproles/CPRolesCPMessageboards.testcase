@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -34,7 +34,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewMessageBoardsPortletRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			portletName = "Message Boards",
@@ -79,7 +79,7 @@ definition {
 			userLoginFullName = "userfn userln");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewMessageBoardsPortletSiteRole {
 		Permissions.setUpSiteRoleLoginUserCP(
 			page = "Public Pages",

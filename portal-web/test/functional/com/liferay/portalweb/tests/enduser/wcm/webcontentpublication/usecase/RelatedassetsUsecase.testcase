@@ -14,12 +14,12 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AssertRelatedAssetsDisplayWithCategory {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -162,7 +162,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-72472."
-	@priority = "4"
+	@priority = 4
 	test AssertRelatedAssetsWithGlobalWebConent {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -260,7 +260,7 @@ definition {
 			value1 = "Web Content Title 1");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewNoFolders {
 		ProductMenu.gotoPortlet(
 			category = "Sites",

@@ -1,11 +1,11 @@
 definition {
 
 	macro searchPG {
-		var key_networkDomain = "${networkDomain}";
+		var key_networkDomain = ${networkDomain};
 
 		Type(
 			locator1 = "NetworkUtilities#DNS_LOOKUP_FIELD",
-			value1 = "${dnsDomain}");
+			value1 = ${dnsDomain});
 
 		AssertClick(
 			locator1 = "Button#SUBMIT_1",
@@ -13,7 +13,7 @@ definition {
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "NetworkUtilities#NETWORK_DOMAIN",
-			value1 = "${networkDomain}");
+			value1 = ${networkDomain});
 	}
 
 }

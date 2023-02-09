@@ -1,21 +1,21 @@
 definition {
 
 	macro addField {
-		var key_wfPreviousFieldName = "${wfPreviousFieldName}";
+		var key_wfPreviousFieldName = ${wfPreviousFieldName};
 
 		Click(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_ADD_ROW_BUTTON");
 
 		WebFormPortlet.editField(
-			optional = "${optional}",
-			optionsList = "${optionsList}",
+			optional = ${optional},
+			optionsList = ${optionsList},
 			wfFieldName = "New Item",
-			wfFieldType = "${wfFieldType}",
-			wfNewFieldName = "${wfNewFieldName}");
+			wfFieldType = ${wfFieldType},
+			wfNewFieldName = ${wfNewFieldName});
 	}
 
 	macro configureSetupFormFieldsPG {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		SelectFrame(locator1 = "WebFormConfiguration#CONFIGURATION_IFRAME");
@@ -23,71 +23,71 @@ definition {
 		if (isSet(wfInformationTitle)) {
 			Type(
 				locator1 = "TextInput#TITLE",
-				value1 = "${wfInformationTitle}");
+				value1 = ${wfInformationTitle});
 		}
 
 		if (isSet(wfInformationDescription)) {
 			Type(
 				locator1 = "TextArea#DESCRIPTION",
-				value1 = "${wfInformationDescription}");
+				value1 = ${wfInformationDescription});
 		}
 	}
 
 	macro deleteEditableField {
-		WebFormPortlet.viewEditableField(wfFieldName = "${wfFieldName}");
+		WebFormPortlet.viewEditableField(wfFieldName = ${wfFieldName});
 
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		DoubleClick(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_DELETE_ROW_BUTTON");
 
-		WebFormPortlet.viewEditableFieldNotVisibleCmd(wfFieldName = "${wfFieldName}");
+		WebFormPortlet.viewEditableFieldNotVisibleCmd(wfFieldName = ${wfFieldName});
 	}
 
 	macro editField {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
-		if ("${wfFieldName}" == "New Item") {
+		if (${wfFieldName} == "New Item") {
 			Type(
 				locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_NAME_FIELD_NEW",
-				value1 = "${wfNewFieldName}");
+				value1 = ${wfNewFieldName});
 		}
 		else {
 			Type(
 				locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_NAME_FIELD",
-				value1 = "${wfNewFieldName}");
+				value1 = ${wfNewFieldName});
 		}
 
 		Click(locator1 = "Button#BROWSE");
 
 		if (isSet(wfFieldType)) {
-			var key_wfNewFieldName = "${wfNewFieldName}";
+			var key_wfNewFieldName = ${wfNewFieldName};
 
 			Select(
 				locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_TYPE_SELECT",
-				value1 = "${wfFieldType}");
+				value1 = ${wfFieldType});
 		}
 
-		if ((("${wfFieldType}" == "Options") || ("${wfFieldType}" == "Radio Buttons")) && isSet(optionsList)) {
-			var key_wfNewFieldName = "${wfNewFieldName}";
+		if (((${wfFieldType} == "Options") || (${wfFieldType} == "Radio Buttons")) && isSet(optionsList)) {
+			var key_wfNewFieldName = ${wfNewFieldName};
 
 			Type(
 				locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_OPTIONS_FIELD",
-				value1 = "${optionsList}");
+				value1 = ${optionsList});
 		}
 
-		if ("${optional}" == "true") {
-			var key_wfNewFieldName = "${wfNewFieldName}";
+		if (${optional} == "true") {
+			var key_wfNewFieldName = ${wfNewFieldName};
 
 			Check(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_OPTIONAL_CHECKBOX");
 		}
 	}
 
 	macro editParagraphField {
-		var key_wfNewFieldName = "${wfNewFieldName}";
+		var key_wfNewFieldName = ${wfNewFieldName};
 
 		Type(
 			locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_PARAGRAPH_FIELD",
-			value1 = "${wfParagraphFieldText}");
+			value1 = ${wfParagraphFieldText});
 	}
 
 	macro saveConfiguration {
@@ -101,51 +101,51 @@ definition {
 	}
 
 	macro viewEditableField {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertElementPresent(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_NAME_FIELD");
 	}
 
 	macro viewEditableFieldNotPresent {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertElementNotPresent(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_NAME_EDITABLE_FIELD");
 	}
 
 	macro viewEditableFieldNotVisibleCmd {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertNotVisible(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_NAME_FIELD");
 	}
 
 	macro viewSubmittedField {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebFormConfiguration#SETUP_FORM_POPULATED_FIELDS_FIELD_TITLE",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		AssertTextEquals(
 			locator1 = "WebFormConfiguration#SETUP_FORM_POPULATED_FIELDS_FIELD_NAME",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
-		if ("${wfFieldType}" == "Text Box") {
+		if (${wfFieldType} == "Text Box") {
 			var key_wfFieldType = "textarea";
 			var wfFieldType = "textarea";
 
 			AssertTextEquals(
 				locator1 = "WebFormConfiguration#SETUP_FORM_POPULATED_FIELDS_FIELD_TYPE",
-				value1 = "${wfFieldType}");
+				value1 = ${wfFieldType});
 		}
 		else {
-			var key_wfFieldType = "${wfFieldType}";
+			var key_wfFieldType = ${wfFieldType};
 
 			AssertTextEquals(
 				locator1 = "WebFormConfiguration#SETUP_FORM_POPULATED_FIELDS_FIELD_TYPE",
-				value1 = "${wfFieldType}");
+				value1 = ${wfFieldType});
 		}
 
-		if ("${optional}" == "true") {
+		if (${optional} == "true") {
 			AssertTextEquals(
 				locator1 = "WebFormConfiguration#SETUP_FORM_POPULATED_FIELDS_FIELD_OPTIONAL",
 				value1 = "Yes");
@@ -157,11 +157,11 @@ definition {
 		}
 
 		if (isSet(optionsList)) {
-			var key_optionsList = "${optionsList}";
+			var key_optionsList = ${optionsList};
 
 			AssertTextEquals(
 				locator1 = "WebFormConfiguration#SETUP_FORM_POPULATED_FIELDS_FIELD_OPTIONS",
-				value1 = "${optionsList}");
+				value1 = ${optionsList});
 		}
 	}
 

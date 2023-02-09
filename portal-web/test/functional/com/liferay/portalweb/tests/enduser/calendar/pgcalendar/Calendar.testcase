@@ -30,7 +30,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -56,11 +56,11 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddCalendarResource {
 		property portal.acceptance = "true";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -71,26 +71,26 @@ definition {
 		CalendarResource.view(calendarResourceName = "Calendar Resource Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCalendarToCurrentSiteCalendars {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.add(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			site = "${siteName}");
+			site = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.view(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			site = "${siteName}");
+			site = ${siteName});
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCalendarToMyCalendars {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -108,9 +108,9 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-64945."
-	@priority = "3"
+	@priority = 3
 	test AddEventAfterClosingModal {
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		CalendarNavigator.gotoAddEvent();
 
@@ -124,12 +124,12 @@ definition {
 
 		CalendarEvent.publish();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		CalendarEvent.view(eventTitle = "Calendar Event Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddEventAllDay {
 		property portal.acceptance = "true";
 
@@ -147,16 +147,16 @@ definition {
 		CalendarEvent.viewAllDay(eventTitle = "Calendar Event All Day Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventAllDayCommentToCurrentSiteCalendars {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.enableComments(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			calendarType = "Current Site Calendars",
-			site = "${siteName}",
+			site = ${siteName},
 			user = "Test Test");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -164,27 +164,27 @@ definition {
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event All Day Comment",
 			eventCommentEnabled = "true",
 			eventTitle = "Calendar Event All Day Title",
 			eventType = "All Day",
 			pageName = "Calendar Page",
-			site = "${siteName}",
+			site = ${siteName},
 			userFullName = "Test Test (You)");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewComment(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event All Day Comment",
 			eventTitle = "Calendar Event All Day Title",
 			eventType = "All Day",
-			site = "${siteName}",
+			site = ${siteName},
 			userFullName = "Test Test (You)");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventAllDayRSVPYes {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -206,7 +206,7 @@ definition {
 		CalendarEvent.viewAllDay(eventTitle = "Calendar Event All Day Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventAllDayWithRemindersEnabled {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -217,8 +217,8 @@ definition {
 			duration2 = "Minutes",
 			eventTitle = "Calendar Event All Day Title",
 			eventType = "All Day",
-			number1 = "5",
-			number2 = "10",
+			number1 = 5,
+			number2 = 10,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -227,9 +227,9 @@ definition {
 		CalendarEvent.viewAllDay(eventTitle = "Calendar Event All Day Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventAllDayWithTag {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -246,14 +246,14 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewDetails(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Calendar Event All Day Title",
 			eventType = "All Day");
 
 		CalendarEvent.viewDetailsTags(tagText = "tag1");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventAllDayWithUserInviteAccept {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -319,9 +319,9 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-55163."
-	@priority = "4"
+	@priority = 4
 	test AddEventAsPowerUserWhenSiteMemberNoViewPermissions {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -358,10 +358,10 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.removeViewPermissions(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			calendarType = "Current Site Calendars",
 			roleName = "Site Member",
-			site = "${siteName}");
+			site = ${siteName});
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
@@ -388,7 +388,7 @@ definition {
 			userLoginFullName = "Test Test");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRegular {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -404,7 +404,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Regular Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddEventRegularAndResourceWithStagingAndSchedulePublishToLive {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -505,7 +505,7 @@ definition {
 			frequency = "Daily",
 			scheduleTitleName = "Staging Schedule Title");
 
-		Pause(locator1 = "120000");
+		Pause(locator1 = 120000);
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -520,16 +520,16 @@ definition {
 			calendarType = "Other Calendars");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRegularCommentToCurrentSiteCalendars {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.enableComments(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			calendarType = "Current Site Calendars",
-			site = "${siteName}",
+			site = ${siteName},
 			user = "Test Test");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -537,27 +537,27 @@ definition {
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event Regular Comment",
 			eventCommentEnabled = "true",
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular",
 			pageName = "Calendar Page",
-			site = "${siteName}",
+			site = ${siteName},
 			userFullName = "Test Test (You)");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewComment(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event Regular Comment",
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular",
-			site = "${siteName}",
+			site = ${siteName},
 			userFullName = "Test Test (You)");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRegularRSVPYes {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -579,7 +579,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Regular Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRegularWithRemindersEnabled {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -590,8 +590,8 @@ definition {
 			duration2 = "Minutes",
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular",
-			number1 = "5",
-			number2 = "10",
+			number1 = 5,
+			number2 = 10,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -602,9 +602,9 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Regular Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRegularWithTag {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -621,14 +621,14 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewDetails(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular");
 
 		CalendarEvent.viewDetailsTags(tagText = "tag1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRegularWithUserInvite {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -647,7 +647,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Regular Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRegularWithUserInviteAccept {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -710,7 +710,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Regular Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRepeating {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -720,7 +720,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1",
+			numberOfOccurrences = 1,
 			pageName = "Calendar Page");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -735,19 +735,19 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1");
+			numberOfOccurrences = 1);
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventRepeatingCommentToCurrentSiteCalendars {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.enableComments(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			calendarType = "Current Site Calendars",
-			site = "${siteName}",
+			site = ${siteName},
 			user = "Test Test");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -755,29 +755,29 @@ definition {
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event Repeating Comment",
 			eventCommentEnabled = "true",
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1",
+			numberOfOccurrences = 1,
 			pageName = "Calendar Page",
-			site = "${siteName}",
+			site = ${siteName},
 			userFullName = "Test Test (You)");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewComment(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event Repeating Comment",
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
-			site = "${siteName}",
+			site = ${siteName},
 			userFullName = "Test Test (You)");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddEventRepeatingMonthly2Times {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -787,17 +787,17 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Monthly",
-			numberOfOccurrences = "2",
+			numberOfOccurrences = 2,
 			pageName = "Calendar Page");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.view(
 			eventTitle = "Calendar Event Repeating Title",
-			numberOfOccurrences = "2");
+			numberOfOccurrences = 2);
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventRepeatingRSVPYes {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -807,7 +807,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1",
+			numberOfOccurrences = 1,
 			pageName = "Calendar Page");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -821,10 +821,10 @@ definition {
 		CalendarEvent.view(
 			eventTitle = "Calendar Event Repeating Title",
 			frequency = "Daily",
-			numberOfOccurrences = "1");
+			numberOfOccurrences = 1);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRepeatingWeekly2Times {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -842,7 +842,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Weekly",
-			numberOfOccurrences = "2",
+			numberOfOccurrences = 2,
 			pageName = "Calendar Page");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -850,7 +850,7 @@ definition {
 		CalendarEvent.view(
 			eventTitle = "Calendar Event Repeating Title",
 			frequency = "Weekly",
-			numberOfOccurrences = "2");
+			numberOfOccurrences = 2);
 
 		CalendarNavigator.gotoEventDetails(
 			eventTitle = "Calendar Event Repeating Title",
@@ -860,11 +860,11 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Weekly",
-			numberOfOccurrences = "2");
+			numberOfOccurrences = 2);
 	}
 
 	@description = "This is a use case for LPS-56337."
-	@priority = "3"
+	@priority = 3
 	test AddEventRepeatingWithEndDateBeforeStartDate {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -880,7 +880,7 @@ definition {
 		CalendarEvent.viewRepeatingEventErrorMessage();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventRepeatingWithRemindersEnabled {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -892,9 +892,9 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			number1 = "5",
-			number2 = "10",
-			numberOfOccurrences = "1",
+			number1 = 5,
+			number2 = 10,
+			numberOfOccurrences = 1,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -905,12 +905,12 @@ definition {
 		CalendarEvent.view(
 			eventTitle = "Calendar Event Repeating Title",
 			frequency = "Daily",
-			numberOfOccurrences = "1");
+			numberOfOccurrences = 1);
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventRepeatingWithTag {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -920,7 +920,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1",
+			numberOfOccurrences = 1,
 			optionSet = "true",
 			optionSetValue = "tag",
 			pageName = "Calendar Page",
@@ -929,14 +929,14 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewDetails(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating");
 
 		CalendarEvent.viewDetailsTags(tagText = "tag1");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEventRepeatingWithUserInviteAccept {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -982,7 +982,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1",
+			numberOfOccurrences = 1,
 			optionSet = "true",
 			optionSetValue = "inviteResource",
 			pageName = "Calendar Page",
@@ -1001,11 +1001,11 @@ definition {
 		CalendarEvent.view(
 			eventTitle = "Calendar Event Repeating Title",
 			frequency = "Daily",
-			numberOfOccurrences = "1");
+			numberOfOccurrences = 1);
 	}
 
 	@description = "This is a use case for LPS-51402."
-	@priority = "4"
+	@priority = 4
 	test AddEventRepeatingYearly {
 		property portal.release = "false";
 
@@ -1034,7 +1034,7 @@ definition {
 
 		CalendarNavigator.gotoMonthViaSmallCalendar(dateMonth = "February 2016");
 
-		CalendarNavigator.gotoSpecificBusyDayViaSmallCalendar(dateNumber = "2");
+		CalendarNavigator.gotoSpecificBusyDayViaSmallCalendar(dateNumber = 2);
 
 		CalendarEvent.viewYearly(eventTitle = "Calendar Event Repeating Title");
 
@@ -1053,7 +1053,7 @@ definition {
 			yearlyRecurrenceSummary = "Yearly, on the Third Sunday of February");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventsViaScheduler {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1091,7 +1091,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-44540."
-	@priority = "5"
+	@priority = 5
 	test AddEventTwiceViaMyCalendars {
 		CalendarNavigator.gotoAddEventViaMyCalendars(user = "Test Test");
 
@@ -1116,7 +1116,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-61427."
-	@priority = "5"
+	@priority = 5
 	test AddEventWithLargeDateRange {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1128,23 +1128,23 @@ definition {
 
 		CalendarEvent.publish();
 
-		var i = "0";
-		var refreshCount = "5";
+		var i = 0;
+		var refreshCount = 5;
 
-		while ("${i}" != "${refreshCount}") {
+		while (${i} != ${refreshCount}) {
 			Navigator.gotoPage(pageName = "Calendar Page");
 
 			CalendarEvent.view(eventTitle = "Calendar Event Title");
 
-			Pause(locator1 = "1000");
+			Pause(locator1 = 1000);
 
 			AssertConsoleTextNotPresent(value1 = "java.lang.OutOfMemoryError");
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventWithRelatedAssetViaAssetPublisher {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Page.add(pageName = "AP Page");
 
@@ -1181,7 +1181,7 @@ definition {
 		Navigator.gotoPage(pageName = "AP Page");
 
 		CalendarEvent.viewViaAssetPublisher(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Calendar Event Title");
 
 		AssetPublisherPortlet.viewPG(
@@ -1199,13 +1199,13 @@ definition {
 		AssetPublisherPortlet.gotoViewInContext();
 
 		CalendarEvent.viewDetailsInPortlet(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Calendar Event Title",
 			relatedAssetTitle = "Blogs Entry Title");
 	}
 
 	@description = "This is a use case for LPS-52083."
-	@priority = "3"
+	@priority = 3
 	test AddEventWithStaging {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1313,7 +1313,7 @@ definition {
 		CalendarEvent.viewAvailableCalendars(availableCalendarList = "Test Test");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddResourceCalendarToOtherCalendars {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1334,7 +1334,7 @@ definition {
 			calendarType = "Other Calendars");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddUserCalendarToOtherCalendars {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1366,9 +1366,9 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-45616."
-	@priority = "4"
+	@priority = 4
 	test CancelRepeatingDialog {
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		CalendarNavigator.gotoAddEvent();
 
@@ -1388,7 +1388,7 @@ definition {
 
 		CalendarEvent.publish();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		CalendarNavigator.gotoAddEvent();
 
@@ -1410,7 +1410,7 @@ definition {
 
 		CalendarEvent.publish();
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		CalendarNavigator.gotoAddEvent();
 
@@ -1429,9 +1429,9 @@ definition {
 		CalendarEvent.publish();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ChangeCalendarTypeForAllDayEvent {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1445,15 +1445,15 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarScheduler.changeCalendar(
-			calendarDefaultName = "${siteName}",
+			calendarDefaultName = ${siteName},
 			calendarName = "Test Test",
 			eventTitle = "Calendar Event All Day Title",
 			eventType = "All Day");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ChangeCalendarTypeForRegularEvent {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1467,15 +1467,15 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarScheduler.changeCalendar(
-			calendarDefaultName = "${siteName}",
+			calendarDefaultName = ${siteName},
 			calendarName = "Test Test",
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ChangeCalendarTypeForRepeatingEvent {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1485,21 +1485,21 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1",
+			numberOfOccurrences = 1,
 			pageName = "Calendar Page");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarScheduler.changeCalendar(
-			calendarDefaultName = "${siteName}",
+			calendarDefaultName = ${siteName},
 			calendarName = "Test Test",
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ChangeColorCalendarSiteCalendarsEventRegular {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1514,7 +1514,7 @@ definition {
 
 		Calendar.changeColor(
 			calendarType = "Current Site Calendars",
-			site = "${siteName}",
+			site = ${siteName},
 			siteCalendarColor = "668CD9");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -1559,7 +1559,7 @@ definition {
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "${userLoginFullName}");
+			userLoginFullName = ${userLoginFullName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1577,24 +1577,24 @@ definition {
 			userLoginFullName = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ConfigureDefaultView {
 		for (var defaultView : list "Day,Week,Month,Agenda") {
 			Navigator.gotoPage(pageName = "Calendar Page");
 
 			CalendarNavigator.gotoConfiguration();
 
-			CalendarConfiguration.selectDefaultView(defaultView = "${defaultView}");
+			CalendarConfiguration.selectDefaultView(defaultView = ${defaultView});
 
 			PortletEntry.save();
 
 			Navigator.gotoPage(pageName = "Calendar Page");
 
-			CalendarScheduler.viewSelectedView(view = "${defaultView}");
+			CalendarScheduler.viewSelectedView(view = ${defaultView});
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ConfigureDisplayTimeZone {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1663,7 +1663,7 @@ definition {
 			startDateTime = "AM");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeactivateAndDeleteSiteCalendarAndViewSiteCalendarEvent {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1725,7 +1725,7 @@ definition {
 		CalendarScheduler.viewSpecificEventNotPresent(eventTitle = "Site Name Calendar Event Regular");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteCalendarMyCalendars {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1743,27 +1743,27 @@ definition {
 		Calendar.viewDefault();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteCalendarResource {
 		var calendarResourceName = "Calendar Resource Name";
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
-		CalendarResource.add(calendarResourceName = "${calendarResourceName}");
+		CalendarResource.add(calendarResourceName = ${calendarResourceName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
-		CalendarResource.delete(calendarResourceName = "${calendarResourceName}");
+		CalendarResource.delete(calendarResourceName = ${calendarResourceName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
-		CalendarResource.viewDefault(calendarResourceName = "${calendarResourceName}");
+		CalendarResource.viewDefault(calendarResourceName = ${calendarResourceName});
 	}
 
 	@description = "This is a use case for LPS-67928."
-	@priority = "3"
+	@priority = 3
 	test DeleteEventAndViewRSSFeed {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1783,15 +1783,15 @@ definition {
 
 		Calendar.chooseSiteCalendarMenulistOption(
 			menuListOption = "RSS",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Calendar.viewRSSFeedEventPresent(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Current Day Event",
 			pageName = "Calendar Page",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Navigator.closeWindow();
 
@@ -1801,24 +1801,24 @@ definition {
 
 		Calendar.chooseSiteCalendarMenulistOption(
 			menuListOption = "RSS",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Calendar.viewRSSFeedEventNotPresent(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Current Day Event",
 			pageName = "Calendar Page",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Navigator.closeWindow();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteEventRegular {
 		property test.name.skip.portal.instance = "Calendar#DeleteEventRegular";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1840,7 +1840,7 @@ definition {
 			pageName = "Calendar Page");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteEventRepeatingAllEventsInTheSeries {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1850,7 +1850,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "2",
+			numberOfOccurrences = 2,
 			pageName = "Calendar Page");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -1865,7 +1865,7 @@ definition {
 			pageName = "Calendar Page");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteEventRepeatingAllFollowing {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "Calendar#DeleteEventRepeatingAllFollowing";
@@ -1878,7 +1878,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "2",
+			numberOfOccurrences = 2,
 			pageName = "Calendar Page");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -1891,7 +1891,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Repeating Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteEventRepeatingOnlyThisInstance {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1909,7 +1909,7 @@ definition {
 
 		CalendarEvent.setRepeating(
 			frequency = "Daily",
-			numberOfOccurrences = "2");
+			numberOfOccurrences = 2);
 
 		CalendarEvent.publish();
 
@@ -1917,11 +1917,11 @@ definition {
 
 		CalendarNavigator.gotoMonthViaSmallCalendar(dateMonth = "February 2016");
 
-		CalendarNavigator.gotoSpecificBusyDayViaSmallCalendar(dateNumber = "2");
+		CalendarNavigator.gotoSpecificBusyDayViaSmallCalendar(dateNumber = 2);
 
 		CalendarEvent.viewEventNotToday(
 			eventTitle = "Calendar Event Repeating Title",
-			numberOfOccurrences = "2");
+			numberOfOccurrences = 2);
 
 		CalendarEvent.deleteRepeatingEventViaAgendaView(
 			deleteOptionSet = "Single Event",
@@ -1932,15 +1932,15 @@ definition {
 
 		CalendarNavigator.gotoMonthViaSmallCalendar(dateMonth = "February 2016");
 
-		CalendarNavigator.gotoSpecificBusyDayViaSmallCalendar(dateNumber = "3");
+		CalendarNavigator.gotoSpecificBusyDayViaSmallCalendar(dateNumber = 3);
 
 		CalendarEvent.viewEventNotToday(eventTitle = "Calendar Event Repeating Title");
 	}
 
 	@description = "This is a use case for LPS-67928."
-	@priority = "3"
+	@priority = 3
 	test DisableRSSFeedForSiteCalendar {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -1960,15 +1960,15 @@ definition {
 
 		Calendar.chooseSiteCalendarMenulistOption(
 			menuListOption = "RSS",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Calendar.viewRSSFeedEventPresent(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Current Day Event",
 			pageName = "Calendar Page",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		var rssURL = selenium.getLocation();
 
@@ -1986,22 +1986,22 @@ definition {
 
 		Calendar.viewSiteCalendarNoMenulistOption(
 			menuListOption = "RSS",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
-		Calendar.viewNoRSS(rssURL = "${rssURL}");
+		Calendar.viewNoRSS(rssURL = ${rssURL});
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditCalendarCurrentSiteCalendars {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.add(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			site = "${siteName}");
+			site = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2009,10 +2009,10 @@ definition {
 			calendarName = "Site Calendar Name",
 			calendarNameEdit = "Site Calendar Name Edit",
 			calendarType = "Current Site Calendars",
-			site = "${siteName}");
+			site = ${siteName});
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditCalendarMyCalendars {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2037,7 +2037,7 @@ definition {
 			user = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditCalendarResource {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2054,7 +2054,7 @@ definition {
 		CalendarResource.view(calendarResourceName = "Calendar Resource Name Edit");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditEventAllDay {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2076,7 +2076,7 @@ definition {
 		CalendarEvent.viewAllDay(eventTitle = "Calendar Event All Day Title Edit");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditEventAllDayReminders {
 		property portal.release = "false";
 
@@ -2089,8 +2089,8 @@ definition {
 			duration2 = "Minutes",
 			eventTitle = "Calendar Event All Day Title",
 			eventType = "All Day",
-			number1 = "5",
-			number2 = "10",
+			number1 = 5,
+			number2 = 10,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -2102,8 +2102,8 @@ definition {
 			eventTitle = "Calendar Event All Day Title",
 			eventTitleEdit = "Calendar Event All Day Title Edit",
 			eventType = "All Day",
-			number1 = "2",
-			number2 = "4",
+			number1 = 2,
+			number2 = 4,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -2112,7 +2112,7 @@ definition {
 		CalendarEvent.viewAllDay(eventTitle = "Calendar Event All Day Title Edit");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditEventAllDayWithUserInvite {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2142,7 +2142,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-59097."
-	@priority = "4"
+	@priority = 4
 	test EditEventAndViewRSVP {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2237,7 +2237,7 @@ definition {
 
 		CalendarNavigator.gotoMonthViaSmallCalendar(dateMonth = "March 2016");
 
-		CalendarNavigator.gotoSpecificBusyDayViaSmallCalendar(dateNumber = "29");
+		CalendarNavigator.gotoSpecificBusyDayViaSmallCalendar(dateNumber = 29);
 
 		Calendar.showMyCalendarsCalendar();
 
@@ -2248,7 +2248,7 @@ definition {
 			eventToday = "false");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditEventRegular {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2270,7 +2270,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Regular Title Edit");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditEventRegularReminders {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2281,8 +2281,8 @@ definition {
 			duration2 = "Minutes",
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular",
-			number1 = "5",
-			number2 = "10",
+			number1 = 5,
+			number2 = 10,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -2294,8 +2294,8 @@ definition {
 			eventTitle = "Calendar Event Regular Title",
 			eventTitleEdit = "Calendar Event Regular Title Edit",
 			eventType = "Regular",
-			number1 = "2",
-			number2 = "4",
+			number1 = 2,
+			number2 = 4,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -2304,11 +2304,11 @@ definition {
 		CalendarEvent.view(
 			eventTitle = "Calendar Event Regular Title Edit",
 			frequency = "Daily",
-			numberOfOccurrences = "1");
+			numberOfOccurrences = 1);
 	}
 
 	@description = "This is a use case for LPS-50026."
-	@priority = "4"
+	@priority = 4
 	test EditEventRegularWithUserInvite {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2355,7 +2355,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Edited Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditEventRepeating {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2365,7 +2365,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1",
+			numberOfOccurrences = 1,
 			pageName = "Calendar Page");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -2379,11 +2379,11 @@ definition {
 		CalendarEvent.view(
 			eventTitle = "Calendar Event Repeating Title Edit",
 			frequency = "Daily",
-			numberOfOccurrences = "1");
+			numberOfOccurrences = 1);
 	}
 
 	@description = "This is a use case for LPS-50016."
-	@priority = "3"
+	@priority = 3
 	test EditEventRepeatingAllEventsInTheSeries {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2421,7 +2421,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-50017"
-	@priority = "2"
+	@priority = 2
 	test EditEventRepeatingAllFollowing {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2454,7 +2454,7 @@ definition {
 		CalendarEvent.viewTitle(eventTitle = "Edited Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditEventRepeatingReminders {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2466,9 +2466,9 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			number1 = "5",
-			number2 = "10",
-			numberOfOccurrences = "1",
+			number1 = 5,
+			number2 = 10,
+			numberOfOccurrences = 1,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -2480,8 +2480,8 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventTitleEdit = "Calendar Event Repeating Title Edit",
 			eventType = "Repeating",
-			number1 = "2",
-			number2 = "4",
+			number1 = 2,
+			number2 = 4,
 			pageName = "Calendar Page",
 			reminders = "true");
 
@@ -2490,10 +2490,10 @@ definition {
 		CalendarEvent.view(
 			eventTitle = "Calendar Event Repeating Title Edit",
 			frequency = "Daily",
-			numberOfOccurrences = "1");
+			numberOfOccurrences = 1);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditEventRepeatingWithUserInvite {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2503,7 +2503,7 @@ definition {
 			eventTitle = "Calendar Event Repeating Title",
 			eventType = "Repeating",
 			frequency = "Daily",
-			numberOfOccurrences = "1",
+			numberOfOccurrences = 1,
 			optionSet = "true",
 			optionSetValue = "inviteResource",
 			pageName = "Calendar Page",
@@ -2522,7 +2522,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Repeating Title Edit");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditInviteEmailTemplateForCalendarResourceCalendar {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2550,16 +2550,16 @@ definition {
 			calendarType = "Other Calendars");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditInviteEmailTemplateForCurrentSiteCalendarsCalendar {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.add(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			site = "${siteName}");
+			site = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2569,17 +2569,17 @@ definition {
 			fromAddressEdit = "testedit@liferay.com",
 			fromNameEdit = "Site Calendar Name Edit",
 			inviteEmail = "true",
-			site = "${siteName}");
+			site = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.view(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			site = "${siteName}");
+			site = ${siteName});
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditInviteEmailTemplateForMyCalendarsCalendar {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2606,7 +2606,7 @@ definition {
 			user = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditInviteEmailTemplateForUserCalendar {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -2642,7 +2642,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-58649."
-	@priority = "3"
+	@priority = 3
 	test EditLanguageSelectorAndViewEvent {
 		property test.name.skip.portal.instance = "Calendar#EditLanguageSelectorAndViewEvent";
 
@@ -2670,7 +2670,7 @@ definition {
 		CalendarScheduler.viewDay(eventTitle = "Calendar Event Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditReminderEmailTemplateForCalendarResourceCalendar {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2698,16 +2698,16 @@ definition {
 			calendarType = "Other Calendars");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditReminderEmailTemplateForCurrentSiteCalendarsCalendar {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.add(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			site = "${siteName}");
+			site = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2717,17 +2717,17 @@ definition {
 			fromAddressEdit = "testedit@liferay.com",
 			fromNameEdit = "Site Calendar Name Edit",
 			reminderEmail = "true",
-			site = "${siteName}");
+			site = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.view(
 			calendarName = "Site Calendar Name",
 			calendarType = "Current Site Calendars",
-			site = "${siteName}");
+			site = ${siteName});
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditReminderEmailTemplateForMyCalendarsCalendar {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2754,7 +2754,7 @@ definition {
 			user = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditReminderEmailTemplateForUserCalendar {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -2789,7 +2789,7 @@ definition {
 			calendarType = "Other Calendars");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditUserCalendarOtherCalendars {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -2823,7 +2823,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-57992."
-	@priority = "4"
+	@priority = 4
 	test ExportUserCalendarAsICS {
 		CalendarNavigator.gotoAddEvent();
 
@@ -2844,16 +2844,16 @@ definition {
 		CalendarEvent.view(eventTitle = "Event For Export");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportCalendarAndViewEventRegularComment {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.enableComments(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			calendarType = "Current Site Calendars",
-			site = "${siteName}",
+			site = ${siteName},
 			user = "Test Test");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -2861,23 +2861,23 @@ definition {
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event Regular Comment",
 			eventCommentEnabled = "true",
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular",
 			pageName = "Calendar Page",
-			site = "${siteName}",
+			site = ${siteName},
 			userFullName = "Test Test (You)");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewComment(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event Regular Comment",
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular",
-			site = "${siteName}",
+			site = ${siteName},
 			userFullName = "Test Test (You)");
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -2903,7 +2903,7 @@ definition {
 		CalendarEvent.view(eventTitle = "Calendar Event Regular Title");
 
 		CalendarEvent.viewComment(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventComment = "Calendar Event Regular Comment",
 			eventTitle = "Calendar Event Regular Title",
 			eventType = "Regular",
@@ -2911,9 +2911,9 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-53072."
-	@priority = "4"
+	@priority = 4
 	test ImportMicrosoftOutlookCalendarICS {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2921,11 +2921,11 @@ definition {
 
 		Calendar.importCalendarFile(
 			calendarFile = "calendar_microsoft_outlook_calendar.ics",
-			calendarName = "${siteName}");
+			calendarName = ${siteName});
 	}
 
 	@description = "This is a use case for LPS-46700."
-	@priority = "3"
+	@priority = 3
 	test InviteAndViewAdditionalUsers {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -2960,9 +2960,9 @@ definition {
 			usersList = "userfn userln,Test Test");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test InviteUsersAndViewResponse {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -3005,7 +3005,7 @@ definition {
 
 			User.editPasswordCP(
 				userEmailAddress = "${userScreenName}@liferay.com",
-				userScreenName = "${userScreenName}");
+				userScreenName = ${userScreenName});
 		}
 
 		Navigator.gotoPage(pageName = "Calendar Page");
@@ -3058,7 +3058,7 @@ definition {
 
 		CalendarNavigator.gotoEditEvent(eventTitle = "Calendar Event Title");
 
-		CalendarEvent.viewRSVPAccepted(resourceName = "${siteName}");
+		CalendarEvent.viewRSVPAccepted(resourceName = ${siteName});
 
 		CalendarEvent.viewRSVPAccepted(resourceName = "userfn3 userln3");
 
@@ -3068,7 +3068,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-45062."
-	@priority = "5"
+	@priority = 5
 	test ResizeAddedEventsViaEventBlock {
 		property portal.release = "false";
 
@@ -3112,7 +3112,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-59743."
-	@priority = "3"
+	@priority = 3
 	test SearchCalendarResource {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3140,7 +3140,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-54548."
-	@priority = "4"
+	@priority = 4
 	test SearchEventInSearchPortletWithTag {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3173,13 +3173,13 @@ definition {
 			searchAssetType = "Calendar Event");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchForOtherCalendars {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "Calendar#SearchForOtherCalendars";
 		property testray.component.names = "Training";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -3226,7 +3226,7 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarScheduler.changeCalendar(
-			calendarDefaultName = "${siteName}",
+			calendarDefaultName = ${siteName},
 			calendarName = "userfn userln",
 			eventTitle = "User Calendar Event 1",
 			eventType = "Regular");
@@ -3243,7 +3243,7 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarScheduler.changeCalendar(
-			calendarDefaultName = "${siteName}",
+			calendarDefaultName = ${siteName},
 			calendarName = "userfn userln",
 			eventTitle = "User Calendar Event 2",
 			eventType = "Regular");
@@ -3260,7 +3260,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-51572."
-	@priority = "3"
+	@priority = 3
 	test SearchForOtherCalendarsAsNonPowerUser {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -3333,7 +3333,7 @@ definition {
 			userLoginFullName = "Test Test");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test View24hourTimeFormat {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3422,7 +3422,7 @@ definition {
 			startDateTime = "09:00 PM");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewAvailableCalendars {
 		property test.name.skip.portal.instance = "Calendar#ViewAvailableCalendars";
 
@@ -3510,7 +3510,7 @@ definition {
 		CalendarEvent.viewAvailableCalendars(availableCalendarList = "Liferay,Test Test,Site Name,userfn userln");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewCalendarTimeZoneDefaults {
 		property test.name.skip.portal.instance = "Calendar#ViewCalendarTimeZoneDefaults";
 
@@ -3539,9 +3539,9 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-51222."
-	@priority = "3"
+	@priority = 3
 	test ViewCorrectCalendarOnEventSwitch {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3549,7 +3549,7 @@ definition {
 
 		PortletEntry.inputTitle(title = "Site Event");
 
-		CalendarEvent.selectCalendar(calendarName = "${siteName}");
+		CalendarEvent.selectCalendar(calendarName = ${siteName});
 
 		CalendarEvent.publish();
 
@@ -3566,10 +3566,10 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewDetails(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Site Event");
 
-		CalendarEvent.viewDetailsResources(calendarName = "${siteName}");
+		CalendarEvent.viewDetailsResources(calendarName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3582,10 +3582,10 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewDetails(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Site Event");
 
-		CalendarEvent.viewDetailsResources(calendarName = "${siteName}");
+		CalendarEvent.viewDetailsResources(calendarName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3597,21 +3597,21 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-52517."
-	@priority = "3"
+	@priority = 3
 	test ViewCorrectNumberOfWeeksMonthView {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		Calendar.viewMonth(dateMonth = "April 2016");
 
-		Calendar.viewWeekCountViaMonthView(weekNumber = "5");
+		Calendar.viewWeekCountViaMonthView(weekNumber = 5);
 
 		Calendar.viewMonth(dateMonth = "July 2016");
 
-		Calendar.viewWeekCountViaMonthView(weekNumber = "6");
+		Calendar.viewWeekCountViaMonthView(weekNumber = 6);
 	}
 
 	@description = "This is a use case for LPS-67400."
-	@priority = "2"
+	@priority = 2
 	test ViewCreatedEventVisibleOnScheduler {
 		CalendarNavigator.gotoAddEvent();
 
@@ -3619,8 +3619,8 @@ definition {
 		var startDateTime = selenium.getElementValue("CalendarEditEvent#START_DATE_TIME");
 
 		CalendarEvent.viewTimes(
-			endDateTime = "${endDateTime}",
-			startDateTime = "${startDateTime}");
+			endDateTime = ${endDateTime},
+			startDateTime = ${startDateTime});
 
 		PortletEntry.inputTitle(title = "Calendar Event");
 
@@ -3631,7 +3631,7 @@ definition {
 		CalendarScheduler.selectSpecificEvent(eventTitle = "Calendar Event");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewDefaultDurationsViaScheduler {
 		for (var minutes : list "15,30,60,120") {
 			Navigator.gotoPage(pageName = "Calendar Page");
@@ -3650,18 +3650,18 @@ definition {
 
 			CalendarScheduler.viewEventDuration(
 				eventTitle = "Calendar Event ${minutes} Minutes Title",
-				minutes = "${minutes}");
+				minutes = ${minutes});
 
 			CalendarEvent.tearDown();
 		}
 	}
 
 	@description = "This is a use case for LPS-59251."
-	@priority = "3"
+	@priority = 3
 	test ViewDisplayedSiteCalendarEventsAsGuest {
 		property test.name.skip.portal.instance = "Calendar#ViewDisplayedSiteCalendarEventsAsGuest";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3673,7 +3673,7 @@ definition {
 			endDateTime = "04:00 AM",
 			startDateTime = "03:00 AM");
 
-		CalendarEvent.selectCalendar(calendarName = "${siteName}");
+		CalendarEvent.selectCalendar(calendarName = ${siteName});
 
 		CalendarEvent.publish();
 
@@ -3706,10 +3706,10 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewSiteCalendarEventWithDefaultPermissions(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			endDateTime = "04:00 AM",
 			eventTitle = "Liferay Calendar Event Title",
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			startDateTime = "03:00 AM");
 
 		CalendarEvent.viewSiteCalendarEventNotPresent(
@@ -3730,12 +3730,12 @@ definition {
 
 		CalendarEvent.viewSiteCalendarEventNotPresent(
 			endDateTime = "04:00 AM",
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			startDateTime = "03:00 AM");
 	}
 
 	@description = "LPS-60800, Verify that can save individual calendar permissions."
-	@priority = "3"
+	@priority = 3
 	test ViewEntryPermissionsNotDefinedByRolePermissions {
 		CalendarNavigator.gotoAddEvent();
 
@@ -3793,7 +3793,7 @@ definition {
 			locator1 = "Permissions#CONTENT_PERMISSIONS_UPDATE_CHECKBOX");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewEventCalendarChange {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -3891,7 +3891,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-62410."
-	@priority = "4"
+	@priority = 4
 	test ViewEventDateAndTimeInResourcesAvailability {
 		CalendarNavigator.gotoAddEvent();
 
@@ -3919,9 +3919,9 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-51783."
-	@priority = "4"
+	@priority = 4
 	test ViewEventDetailsAllDayWithModifiedUserTimeZone {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		UserBar.gotoMyAccount();
 
@@ -3940,7 +3940,7 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.viewDetails(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Calendar Event All Day Title",
 			eventType = "All Day");
 
@@ -3950,7 +3950,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-55171."
-	@priority = "2"
+	@priority = 2
 	test ViewInactiveResourceNotPresent {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -4001,7 +4001,7 @@ definition {
 		CalendarEvent.viewInvitationResourceNotPresent(resourceNameList = "Calendar Resource");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewInvitedResourceAvailability {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -4070,14 +4070,14 @@ definition {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		CalendarEvent.view(
-			eventNumber = "2",
+			eventNumber = 2,
 			eventTitle = "Calendar Event All Day Title");
 	}
 
 	@description = "This is a use case for LPS-69884."
-	@priority = "2"
+	@priority = 2
 	test ViewResourceCalendarPageAfterCancellingEdit {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -4093,7 +4093,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-54786."
-	@priority = "3"
+	@priority = 3
 	test ViewShowMoreLocalization {
 		property test.name.skip.portal.instance = "Calendar#ViewShowMoreLocalization";
 
@@ -4132,9 +4132,9 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-67928."
-	@priority = "5"
+	@priority = 5
 	test ViewSiteCalendarRSSFeed {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -4166,34 +4166,34 @@ definition {
 
 		Calendar.chooseSiteCalendarMenulistOption(
 			menuListOption = "RSS",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Calendar.viewRSSFeedEventNotPresent(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Past Day Event",
 			pageName = "Calendar Page",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Calendar.viewRSSFeedEventPresent(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Current Day Event",
 			pageName = "Calendar Page",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Calendar.viewRSSFeedEventPresent(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Future Day Event",
 			pageName = "Calendar Page",
-			siteCalendarName = "${siteName}",
-			siteName = "${siteName}");
+			siteCalendarName = ${siteName},
+			siteName = ${siteName});
 
 		Navigator.closeWindow();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewSiteNameUpdate {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -4248,7 +4248,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-56229."
-	@priority = "3"
+	@priority = 3
 	test ViewUserCanAddSiteCalendarsWithCalendarPermissions {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -4309,7 +4309,7 @@ definition {
 				panel = "Control Panel",
 				portlet = "Sites");
 
-			Site.addBlankCP(siteName = "${siteName}");
+			Site.addBlankCP(siteName = ${siteName});
 
 			ProductMenu.gotoPortlet(
 				category = "Users",
@@ -4317,7 +4317,7 @@ definition {
 				portlet = "Users and Organizations");
 
 			User.editUserSiteCP(
-				siteName = "${siteName}",
+				siteName = ${siteName},
 				userScreenName = "usersn");
 		}
 
@@ -4364,7 +4364,7 @@ definition {
 		Calendar.searchOtherCalendars(searchValue = "site");
 
 		for (var calendarName : list "Site A,Site B,Site C") {
-			Calendar.viewOtherCalendarsSearchResult(calendarName = "${calendarName}");
+			Calendar.viewOtherCalendarsSearchResult(calendarName = ${calendarName});
 		}
 
 		CalendarNavigator.gotoAddEvent();
@@ -4375,7 +4375,7 @@ definition {
 	}
 
 	@description = "This is a use case for 51127."
-	@priority = "5"
+	@priority = 5
 	test ViewWeekStartMonday {
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -4405,7 +4405,7 @@ definition {
 	}
 
 	@description = "This is a use case for 51127."
-	@priority = "3"
+	@priority = 3
 	test ViewWeekStartSaturday {
 		Navigator.gotoPage(pageName = "Calendar Page");
 

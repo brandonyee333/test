@@ -5,7 +5,7 @@ definition {
 			locator1 = "NavTab#PRODUCERS",
 			value1 = "Producers");
 
-		var key_producerName = "${producerName}";
+		var key_producerName = ${producerName};
 
 		Copy(locator1 = "WSRPAdmin#PRODUCER_TABLE_URL");
 
@@ -15,7 +15,7 @@ definition {
 
 		Click(locator1 = "Button#PLUS");
 
-		PortletEntry.inputName(name = "${consumerName}");
+		PortletEntry.inputName(name = ${consumerName});
 
 		Paste(locator1 = "TextArea#URL");
 
@@ -23,7 +23,7 @@ definition {
 	}
 
 	macro addConsumerPortletCP {
-		var key_consumerName = "${consumerName}";
+		var key_consumerName = ${consumerName};
 
 		Click(locator1 = "WSRPAdmin#CONSUMER_TABLE_ACTIONS_BUTTON");
 
@@ -31,11 +31,11 @@ definition {
 
 		Click(locator1 = "Button#PLUS");
 
-		PortletEntry.inputName(name = "${consumerPortletName}");
+		PortletEntry.inputName(name = ${consumerPortletName});
 
 		Select(
 			locator1 = "Select#REMOTE_PORTLET",
-			value1 = "${consumerPortletType}");
+			value1 = ${consumerPortletType});
 
 		PortletEntry.save();
 	}
@@ -47,7 +47,7 @@ definition {
 
 		Click(locator1 = "Button#PLUS");
 
-		PortletEntry.inputName(name = "${producerName}");
+		PortletEntry.inputName(name = ${producerName});
 
 		Select(
 			locator1 = "Select#VERSION",
@@ -55,17 +55,17 @@ definition {
 
 		Select(
 			locator1 = "Select#AVAILABLE",
-			value1 = "${portletsAvailableSelect}");
+			value1 = ${portletsAvailableSelect});
 
 		Click(locator1 = "Button#MOVE_AVAILABLE_TO_CURRENT");
 
 		PortletEntry.save();
 
-		var key_producerName = "${producerName}";
+		var key_producerName = ${producerName};
 
 		AssertTextEquals(
 			locator1 = "WSRPAdmin#PRODUCER_TABLE_PRODUCER",
-			value1 = "${producerName}");
+			value1 = ${producerName});
 
 		AssertElementPresent(locator1 = "WSRPAdmin#PRODUCER_TABLE_URL");
 	}

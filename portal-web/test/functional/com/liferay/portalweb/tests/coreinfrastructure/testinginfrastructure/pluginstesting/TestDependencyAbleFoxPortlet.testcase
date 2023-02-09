@@ -17,7 +17,7 @@ definition {
 	// LPS-83458
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ViewDependencyAbleFox {
 		Page.add(pageName = "Test Dependency Page");
 

@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -31,7 +31,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddPortletAsUserWithCustomizePermission {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -57,7 +57,7 @@ definition {
 
 		PageCustomizations.gotoCustomizationSettingsPG();
 
-		PageCustomizations.enableSectionCustomizablePG(columnId = "1");
+		PageCustomizations.enableSectionCustomizablePG(columnId = 1);
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -123,7 +123,7 @@ definition {
 		Portlet.viewSpecificPG(portletName = "Navigation Menu");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test PortletConfigurationChangesWithinCustomizableColumnShouldNotAffectAllUsers {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -149,7 +149,7 @@ definition {
 
 		PageCustomizations.gotoCustomizationSettingsPG();
 
-		PageCustomizations.enableSectionCustomizablePG(columnId = "1");
+		PageCustomizations.enableSectionCustomizablePG(columnId = 1);
 
 		Navigator.gotoSitePage(
 			pageName = "Site Page Name",
@@ -223,7 +223,7 @@ definition {
 		WikiPortlet.viewConfigureSharingAllowUsersToAddWikiToAnyWebsite(enabled = "false");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SiteMembershouldAddAndRemovePortletFromHisCustomizableView {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -249,7 +249,7 @@ definition {
 
 		PageCustomizations.gotoCustomizationSettingsPG();
 
-		PageCustomizations.enableSectionCustomizablePG(columnId = "1");
+		PageCustomizations.enableSectionCustomizablePG(columnId = 1);
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -321,11 +321,11 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SiteMemberWithCustomizablePagePermissionsWillOnlySeePortletsInCustomizableView {
 		property test.name.skip.portal.instance = "PageCustomizations#SiteMemberWithCustomizablePagePermissionsWillOnlySeePortletsInCustomizableView";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -388,7 +388,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		Site.assignUserSitesCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		Page.add(pageName = "Site Page Name");
@@ -396,7 +396,7 @@ definition {
 		SitePageNavigator.gotoPages(page = "Public Pages");
 
 		PageCustomizations.enableSectionCustomizableCP(
-			columnId = "1",
+			columnId = 1,
 			pageName = "Site Page Name");
 
 		Navigator.gotoPage(pageName = "Site Page Name");

@@ -7,23 +7,23 @@ definition {
 
 		LexiconEntry.gotoAdd();
 
-		PortletEntry.inputName(name = "${dmDocumentTypeName}");
+		PortletEntry.inputName(name = ${dmDocumentTypeName});
 
-		PortletEntry.inputDescription(description = "${dmDocumentTypeDescription}");
+		PortletEntry.inputDescription(description = ${dmDocumentTypeDescription});
 
 		Panel.expandPanel(panelHeading = "Main Metadata Fields");
 
-		for (var dmDocumentTypeFieldName : list "${dmDocumentTypeFieldNames}") {
+		for (var dmDocumentTypeFieldName : list ${dmDocumentTypeFieldNames}) {
 			DynamicDataMapping.addField(
-				field = "${dmDocumentTypeFieldName}",
-				fieldFieldLabel = "${dmDocumentTypeFieldName}",
-				fieldName = StringUtil.replace("${dmDocumentTypeFieldName}", " ", ""));
+				field = ${dmDocumentTypeFieldName},
+				fieldFieldLabel = ${dmDocumentTypeFieldName},
+				fieldName = StringUtil.replace(${dmDocumentTypeFieldName}, " ", ""));
 		}
 
 		if (isSet(metadataSetName)) {
 			Panel.expandPanel(panelHeading = "Additional Metadata Fields");
 
-			DMDocumentType.selectPGMetadataSet(key_metadataSetName = "${metadataSetName}");
+			DMDocumentType.selectPGMetadataSet(key_metadataSetName = ${metadataSetName});
 		}
 
 		DDLDataDefinition.save();
@@ -32,9 +32,9 @@ definition {
 	macro deletePG {
 		DMDocumentType.selectDocumentTypeFrame();
 
-		var key_dmDocumentTypeName = "${dmDocumentTypeName}";
+		var key_dmDocumentTypeName = ${dmDocumentTypeName};
 
-		LexiconEntry.openEntryMenu(rowEntry = "${dmDocumentTypeName}");
+		LexiconEntry.openEntryMenu(rowEntry = ${dmDocumentTypeName});
 
 		MenuItem.clickNoError(menuItem = "Delete");
 
@@ -44,34 +44,34 @@ definition {
 
 		AssertTextNotPresent(
 			locator1 = "DocumentsAndMediaDocumentTypes#DOCUMENT_TYPES_TABLE_NAME",
-			value1 = "${dmDocumentTypeName}");
+			value1 = ${dmDocumentTypeName});
 	}
 
 	macro edit {
 		DMDocumentType.selectDocumentTypeFrame();
 
-		var key_dmDocumentTypeName = "${dmDocumentTypeName}";
+		var key_dmDocumentTypeName = ${dmDocumentTypeName};
 
-		LexiconEntry.openEntryMenu(rowEntry = "${dmDocumentTypeName}");
+		LexiconEntry.openEntryMenu(rowEntry = ${dmDocumentTypeName});
 
 		MenuItem.click(menuItem = "Edit");
 
 		if (isSet(dmDocumentTypeNameEdit)) {
 			Type.clickAtType(
 				locator1 = "TextInput#NAME",
-				value1 = "${dmDocumentTypeNameEdit}");
+				value1 = ${dmDocumentTypeNameEdit});
 		}
 
 		if (isSet(dmDocumentTypeDescriptionEdit)) {
 			Type(
 				locator1 = "DocumentsAndMediaEditDocumentType#DETAILS_DESCRIPTION_FIELD",
-				value1 = "${dmDocumentTypeDescriptionEdit}");
+				value1 = ${dmDocumentTypeDescriptionEdit});
 		}
 
 		if (isSet(dmDocumentTypeFieldRequiredEdit)) {
 			Panel.expandPanel(panelHeading = "Main Metadata Fields");
 
-			DynamicDataMapping.editFieldSettings(fieldFieldLabel = "${dmDocumentTypeFieldRequiredEdit}");
+			DynamicDataMapping.editFieldSettings(fieldFieldLabel = ${dmDocumentTypeFieldRequiredEdit});
 
 			DynamicDataMapping.makeFieldRequired();
 		}
@@ -79,33 +79,33 @@ definition {
 		if (isSet(dmDocumentTypeFieldNames)) {
 			Panel.expandPanel(panelHeading = "Main Metadata Fields");
 
-			for (var dmDocumentTypeFieldName : list "${dmDocumentTypeFieldNames}") {
+			for (var dmDocumentTypeFieldName : list ${dmDocumentTypeFieldNames}) {
 				if (!(isSet(dmDocumentTypeFieldLabel))) {
-					var dmDocumentTypeFieldLabel = "${dmDocumentTypeFieldName}";
+					var dmDocumentTypeFieldLabel = ${dmDocumentTypeFieldName};
 				}
 
 				DynamicDataMapping.addField(
-					field = "${dmDocumentTypeFieldName}",
-					fieldFieldLabel = "${dmDocumentTypeFieldLabel}",
-					fieldName = StringUtil.replace("${dmDocumentTypeFieldLabel}", " ", ""));
+					field = ${dmDocumentTypeFieldName},
+					fieldFieldLabel = ${dmDocumentTypeFieldLabel},
+					fieldName = StringUtil.replace(${dmDocumentTypeFieldLabel}, " ", ""));
 
 				if (isSet(fieldPredefinedValue)) {
 					DynamicDataMapping.editFieldPredefinedValue(
-						field = "${dmDocumentTypeFieldName}",
-						fieldFieldLabel = "${dmDocumentTypeFieldLabel}",
-						fieldName = "${dmDocumentTypeFieldLabel}",
-						fieldPredefinedValue = "${fieldPredefinedValue}");
+						field = ${dmDocumentTypeFieldName},
+						fieldFieldLabel = ${dmDocumentTypeFieldLabel},
+						fieldName = ${dmDocumentTypeFieldLabel},
+						fieldPredefinedValue = ${fieldPredefinedValue});
 				}
 			}
 		}
 
 		DMDocumentType.selectDocumentTypeFrame();
 
-		if ("${removeMetadataSet}" == "true") {
+		if (${removeMetadataSet} == "true") {
 			Panel.expandPanel(panelHeading = "Additional Metadata Fields");
 
 			AssertClick(
-				key_metadataSetName = "${metadataSetName}",
+				key_metadataSetName = ${metadataSetName},
 				locator1 = "DocumentsAndMediaEditDocumentType#REMOVE_METADATA_SET_BUTTON",
 				value1 = "Remove");
 		}
@@ -115,13 +115,13 @@ definition {
 		if (isSet(dmDocumentTypeNameEdit)) {
 			AssertTextEquals(
 				locator1 = "DocumentsAndMediaDocumentTypes#DOCUMENT_TYPES_TABLE_NAME",
-				value1 = "${dmDocumentTypeNameEdit}");
+				value1 = ${dmDocumentTypeNameEdit});
 		}
 		else {
 			AssertTextEquals(
-				key_dmDocumentTypeName = "${dmDocumentTypeName}",
+				key_dmDocumentTypeName = ${dmDocumentTypeName},
 				locator1 = "DocumentsAndMediaDocumentTypes#DOCUMENT_TYPES_TABLE_NAME",
-				value1 = "${dmDocumentTypeName}");
+				value1 = ${dmDocumentTypeName});
 		}
 	}
 
@@ -141,7 +141,7 @@ definition {
 		DMMetadataSet.selectMetadataSetsFrame();
 
 		Click(
-			key_metadataSetName = "${metadataSetName}",
+			key_metadataSetName = ${metadataSetName},
 			locator1 = "DocumentsAndMediaMetadataSets#METADATA_SETS_NAME");
 
 		SelectFrameTop(value1 = "relative=top");
@@ -177,25 +177,25 @@ definition {
 	}
 
 	macro viewCP {
-		var key_dmDocumentTypeName = "${dmDocumentTypeName}";
+		var key_dmDocumentTypeName = ${dmDocumentTypeName};
 
 		if (isSet(dmDocumentTypeScope)) {
-			var key_dmDocumentTypeScope = "${dmDocumentTypeScope}";
+			var key_dmDocumentTypeScope = ${dmDocumentTypeScope};
 
 			AssertTextEquals(
 				locator1 = "DocumentsAndMediaDocumentTypes#DOCUMENT_TYPES_TABLE_SCOPE",
-				value1 = "${dmDocumentTypeName}");
+				value1 = ${dmDocumentTypeName});
 		}
 
 		AssertTextEquals(
 			locator1 = "DocumentsAndMediaDocumentTypes#DOCUMENT_TYPES_TABLE_NAME",
-			value1 = "${dmDocumentTypeName}");
+			value1 = ${dmDocumentTypeName});
 	}
 
 	macro viewMenulistOption {
 		LexiconEntry.gotoAdd();
 
-		MenuItem.viewPresent(menuItem = "${dmDocumentTypeName}");
+		MenuItem.viewPresent(menuItem = ${dmDocumentTypeName});
 	}
 
 	macro viewNoAvailableActionsViaDocumentTypesPG {

@@ -8,7 +8,7 @@ definition {
 		while (IsElementNotPresent(locator1 = "ConfigurationAdmin#CONFIGURATION_ADMIN_NAME_LINK")) {
 			Click(locator1 = "Icon#CARET_RIGHT");
 
-			Pause(value1 = "1000");
+			Pause(value1 = 1000);
 		}
 
 		Click(locator1 = "ConfigurationAdmin#CONFIGURATION_ADMIN_NAME_LINK");
@@ -23,11 +23,11 @@ definition {
 	}
 
 	macro gotoDocumentURL {
-		var key_dmDocumentTitle = "${dmDocumentTitle}";
+		var key_dmDocumentTitle = ${dmDocumentTitle};
 
 		AssertClick(
 			locator1 = "DocumentsAndMedia#ICON_DOCUMENT_TITLE_LINK",
-			value1 = "${dmDocumentTitle}");
+			value1 = ${dmDocumentTitle});
 
 		AssertTextEquals(
 			locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_UPLOADED_BY",
@@ -37,7 +37,7 @@ definition {
 
 		ClickNoError(locator1 = "Link#URL");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 	}
 
 	macro viewConfigurationXSLContent {
@@ -55,7 +55,7 @@ definition {
 	}
 
 	macro viewConsoleError {
-		AssertConsoleTextPresent(value1 = "${consoleTextError}");
+		AssertConsoleTextPresent(value1 = ${consoleTextError});
 	}
 
 	macro viewErrorMessage {
@@ -85,23 +85,23 @@ definition {
 			locator1 = "XSLContentPortlet#TABLE_YEAR_HEADER",
 			value1 = "Year");
 
-		var key_titleEntry = "${tableTitleEntry}";
+		var key_titleEntry = ${tableTitleEntry};
 
 		AssertTextEquals(
 			locator1 = "XSLContentPortlet#TABLE_TITLE_ENTRY",
-			value1 = "${tableTitleEntry}");
+			value1 = ${tableTitleEntry});
 
 		AssertTextEquals(
 			locator1 = "XSLContentPortlet#TABLE_ARTIST_ENTRY",
-			value1 = "${tableArtistEntry}");
+			value1 = ${tableArtistEntry});
 
 		AssertTextEquals(
 			locator1 = "XSLContentPortlet#TABLE_COUNTRY_ENTRY",
-			value1 = "${tableCountryEntry}");
+			value1 = ${tableCountryEntry});
 
 		AssertTextEquals(
 			locator1 = "XSLContentPortlet#TABLE_YEAR_ENTRY",
-			value1 = "${tableYearEntry}");
+			value1 = ${tableYearEntry});
 	}
 
 }

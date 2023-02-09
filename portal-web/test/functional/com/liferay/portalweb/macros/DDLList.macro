@@ -9,18 +9,18 @@ definition {
 
 		Type.clickAtType(
 			locator1 = "TextInput#NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
 		if (isSet(ddlListDescription)) {
 			Type.clickAtType(
 				locator1 = "TextArea#DESCRIPTION",
-				value1 = "${ddlListDescription}");
+				value1 = ${ddlListDescription});
 		}
 
 		if (isSet(workflowDefinition)) {
 			Select(
 				locator1 = "DDLEditList#WORKFLOW_SELECT",
-				value1 = "${workflowDefinition}");
+				value1 = ${workflowDefinition});
 		}
 
 		AssertClick(
@@ -37,16 +37,16 @@ definition {
 
 		IFrame.selectDialogFrame();
 
-		PortletEntry.inputName(name = "${ddlListName}");
+		PortletEntry.inputName(name = ${ddlListName});
 
 		if (isSet(ddlListDescription)) {
-			PortletEntry.inputDescription(description = "${ddlListDescription}");
+			PortletEntry.inputDescription(description = ${ddlListDescription});
 		}
 
 		if (isSet(workflowDefinition)) {
 			Select(
 				locator1 = "DDLEditList#WORKFLOW_SELECT",
-				value1 = "${workflowDefinition}");
+				value1 = ${workflowDefinition});
 		}
 
 		AssertClick(
@@ -65,11 +65,11 @@ definition {
 	}
 
 	macro deleteCP {
-		var key_ddlListName = "${ddlListName}";
+		var key_ddlListName = ${ddlListName};
 
 		AssertTextEquals(
 			locator1 = "DDL#LIST_TABLE_NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
 		LexiconEntry.gotoEllipsisMenuItemNoError(menuItem = "Delete");
 
@@ -77,26 +77,26 @@ definition {
 
 		Alert.viewSuccessMessage();
 
-		AssertTextNotPresent(value1 = "${ddlListName}");
+		AssertTextNotPresent(value1 = ${ddlListName});
 	}
 
 	macro editCP {
-		var key_ddlListName = "${ddlListName}";
+		var key_ddlListName = ${ddlListName};
 
 		AssertTextEquals(
 			locator1 = "DDL#LIST_TABLE_NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Edit");
 
 		Type.clickAtType(
 			locator1 = "TextInput#NAME",
-			value1 = "${ddlListNameEdit}");
+			value1 = ${ddlListNameEdit});
 
 		if (isSet(ddlListDescriptionEdit)) {
 			Type.clickAtType(
 				locator1 = "TextArea#DESCRIPTION",
-				value1 = "${ddlListDescriptionEdit}");
+				value1 = ${ddlListDescriptionEdit});
 		}
 
 		Click(locator1 = "Button#SAVE");
@@ -107,7 +107,7 @@ definition {
 	macro editPermissions {
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 
@@ -119,10 +119,10 @@ definition {
 
 		IFrame.selectDialogFrame();
 
-		PortletEntry.inputName(name = "${ddlListNameEdit}");
+		PortletEntry.inputName(name = ${ddlListNameEdit});
 
 		if (isSet(ddlListDescription)) {
-			PortletEntry.inputDescription(description = "${ddlListDescriptionEdit}");
+			PortletEntry.inputDescription(description = ${ddlListDescriptionEdit});
 		}
 
 		AssertClick(
@@ -133,7 +133,7 @@ definition {
 	macro saveViaDDLDisplayPG {
 		DDLDataDefinition.save();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 	}
 
 	macro selectViaDDLDisplayPG {
@@ -141,11 +141,11 @@ definition {
 
 		SelectFrame(locator1 = "DDLConfiguration#CONFIGURATION_IFRAME");
 
-		var key_ddlListName = "${ddlListName}";
+		var key_ddlListName = ${ddlListName};
 
 		AssertClick(
 			locator1 = "DDLConfiguration#LIST_TABLE_NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
 		AssertTextEquals(
 			locator1 = "Message#INFO",
@@ -178,25 +178,25 @@ definition {
 	}
 
 	macro viewCP {
-		var key_ddlListName = "${ddlListName}";
+		var key_ddlListName = ${ddlListName};
 
 		AssertTextEquals(
 			locator1 = "DDL#LIST_TABLE_NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
 		if (isSet(ddlListDescription)) {
-			var key_ddlListDescription = "${ddlListDescription}";
+			var key_ddlListDescription = ${ddlListDescription};
 
 			AssertTextEquals(
 				locator1 = "DDL#LIST_TABLE_DESCRIPTION",
-				value1 = "${ddlListDescription}");
+				value1 = ${ddlListDescription});
 		}
 
 		AssertClick(
 			locator1 = "DDL#LIST_TABLE_NAME",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 
-		SiteAdmin.viewPortletTitle(portletTitle = "${ddlListName}");
+		SiteAdmin.viewPortletTitle(portletTitle = ${ddlListName});
 	}
 
 	macro viewDeleteRecordOptionViaDDLDisplayPG {
@@ -208,7 +208,7 @@ definition {
 	macro viewViaDDLDisplayPG {
 		AssertTextEquals(
 			locator1 = "Portlet#H2_HEADER",
-			value1 = "${ddlListName}");
+			value1 = ${ddlListName});
 	}
 
 }

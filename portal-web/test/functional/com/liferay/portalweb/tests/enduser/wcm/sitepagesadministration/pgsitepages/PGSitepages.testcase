@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -25,7 +25,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-75936. The admin user should access to product menu on page with Full Page Application type."
-	@priority = "5"
+	@priority = 5
 	test AccessToProductMenuOnFullPageApplicationPageAsAdmin {
 		task ("Given an admin user has a page with Full Page Application type") {
 			JSONGroup.addGroup(groupName = "Test Site Name");
@@ -56,7 +56,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddPageFromExistingPage {
 		property testray.component.names = "Training";
 
@@ -73,11 +73,11 @@ definition {
 		Navigator.gotoPage(pageName = "Site Page Name");
 
 		for (var portletName : list "Tags Navigation,Categories Navigation,Asset Publisher") {
-			Portlet.viewSpecificPG(portletName = "${portletName}");
+			Portlet.viewSpecificPG(portletName = ${portletName});
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeletePages {
 		Page.add(pageName = "Page1");
 
@@ -95,7 +95,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-71160"
-	@priority = "5"
+	@priority = 5
 	test EditPageViaControlMenu {
 		property testray.component.names = "Training";
 
@@ -130,7 +130,7 @@ definition {
 			metaTagsKeywords = "space, education, space travel, graduateschool");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditSitePage {
 		Navigator.openURL();
 

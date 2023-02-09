@@ -10,7 +10,7 @@ definition {
 	property testray.component.names = "Training";
 	property testray.main.component.name = "Setup Wizard";
 
-	@priority = "4"
+	@priority = 4
 	test HSQLtoDB2 {
 		property database.types = "db2";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoDB2";
@@ -32,7 +32,7 @@ definition {
 		Smoke.runSmoke();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test HSQLtoDB2SampleDataDisabled {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "db2";
@@ -54,7 +54,7 @@ definition {
 		Smoke.runSmoke();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test HSQLtoOracle {
 		property database.types = "oracle";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoOracle";
@@ -76,7 +76,7 @@ definition {
 		Smoke.runSmoke();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test HSQLtoOracleSampleDataDisabled {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "oracle";
@@ -98,7 +98,7 @@ definition {
 		Smoke.runSmoke();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test HSQLtoSybase {
 		property database.types = "sybase";
 		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoSybase";
@@ -120,7 +120,7 @@ definition {
 		Smoke.runSmoke();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test HSQLtoSybaseSampleDataDisabled {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "sybase";

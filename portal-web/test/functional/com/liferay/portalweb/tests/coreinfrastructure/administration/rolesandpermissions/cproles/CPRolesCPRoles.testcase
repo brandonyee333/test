@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -30,7 +30,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddOrganizationRoleRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			roleName = "Regrole Name",
@@ -100,7 +100,7 @@ definition {
 		AssertElementNotPresent(locator1 = "NavBar#ADD");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddRegularRoleRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			roleName = "Regrole Name",
@@ -168,7 +168,7 @@ definition {
 		AssertElementNotPresent(locator1 = "NavBar#ADD");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSiteRoleRegRole {
 		Permissions.setUpRegRoleLoginUserCP(
 			roleName = "Regrole Name",

@@ -11,7 +11,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -26,7 +26,7 @@ definition {
 	// LPS-83448
 
 	@ignore = "true"
-	@priority = "5"
+	@priority = 5
 	test ViewSampleExtPluginValidationViaDeploy {
 		property test.name.skip.portal.instance = "ExtPlugins#ViewSampleExtPluginValidationViaDeploy";
 
@@ -54,7 +54,7 @@ definition {
 
 		AssertElementNotPresent(locator1 = "UserBar#USER_SIGN_IN");
 
-		Pause(locator1 = "120000");
+		Pause(locator1 = 120000);
 
 		AssertTextEquals(
 			locator1 = "Home#ERROR_MESSAGE_EXPIRED_SESSION",
@@ -65,7 +65,7 @@ definition {
 		AssertElementPresent(locator1 = "UserBar#USER_SIGN_IN");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewSampleExtPluginValidationViaDirectDeploy {
 		property direct.deploy.enabled = "true";
 
@@ -83,7 +83,7 @@ definition {
 
 		AssertElementNotPresent(locator1 = "UserBar#USER_SIGN_IN");
 
-		Pause(locator1 = "120000");
+		Pause(locator1 = 120000);
 
 		AssertTextEquals(
 			locator1 = "Home#ERROR_MESSAGE_EXPIRED_SESSION",

@@ -14,12 +14,12 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddThemeSite {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "WesterosTheme#AddThemeSite";
@@ -27,7 +27,7 @@ definition {
 
 		var themeContainsResources = PropsUtil.get("theme.contains.resources");
 
-		if ("${themeContainsResources}" == "true") {
+		if (${themeContainsResources} == "true") {
 			ProductMenu.gotoPortlet(
 				category = "Sites",
 				panel = "Control Panel",
@@ -61,7 +61,7 @@ definition {
 
 			Type(
 				locator1 = "TextInput#SEARCH",
-				value1 = "${appName}");
+				value1 = ${appName});
 
 			Click(locator1 = "Icon#BASIC_SEARCH");
 

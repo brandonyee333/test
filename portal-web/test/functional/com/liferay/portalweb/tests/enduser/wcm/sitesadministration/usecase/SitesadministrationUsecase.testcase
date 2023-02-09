@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -32,7 +32,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddOrganizationSitesAndDeactivate {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "SitesadministrationUsecase#AddOrganizationSitesAndDeactivate";
@@ -209,7 +209,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSiteNameTranslations {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -253,7 +253,7 @@ definition {
 		LanguagePortlet.tearDownLanguagePG();
 	}
 
-	@priority = "3"
+	@priority = 3
 	test MySitesDropDownDoesNotShowUserOrganizationOnTop {
 		for (var siteNameListsCount : list "Site1 Name,Site2 Name,Site3 Name,Site4 Name,Site5 Name,Site6 Name,Site7 Name,Site8 Name,Site9 Name,Site10 Name") {
 			ProductMenu.gotoPortlet(
@@ -261,7 +261,7 @@ definition {
 				panel = "Control Panel",
 				portlet = "Sites");
 
-			Site.addCommunityCP(siteName = "${siteNameListsCount}");
+			Site.addCommunityCP(siteName = ${siteNameListsCount});
 		}
 
 		ProductMenu.gotoPortlet(
@@ -300,9 +300,9 @@ definition {
 		Navigator.openSiteURL(siteName = "Site Organization Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test OnlySiteOwnersCanAssignSiteRolesToUserGroups {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -412,7 +412,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -457,9 +457,9 @@ definition {
 			userLoginFullName = "test test");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test PrivateVirtualHostUrlDoesNotRedirectUserToLoginPage {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.openURL();
 
@@ -517,7 +517,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		User.firstLoginPG(
@@ -534,13 +534,13 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ReturnWrongLayoutForSignedInUserWithVirtualHostsConfigured {
 		property custom.properties = "layout.default.template.id=2_columns_iii${line.separator}layout.user.private.layouts.enabled=false${line.separator}layout.user.private.layouts.auto.create=false${line.separator}layout.user.private.layouts.power.user.required=true${line.separator}layout.user.public.layouts.enabled=false${line.separator}layout.user.public.layouts.auto.create=false${line.separator}layout.user.public.layouts.power.user.required=true";
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "SiteadministrationUsecase#ReturnWrongLayoutForSignedInUserWithVirtualHostsConfigured";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -628,7 +628,7 @@ definition {
 
 		User.signInPG(
 			emailPassword = "password",
-			emailVerification = "${emailVerification}",
+			emailVerification = ${emailVerification},
 			userEmailAddress = PropsUtil.get("email.address.3"));
 
 		User.firstLoginPG(
@@ -663,14 +663,14 @@ definition {
 
 		SelectWindow(locator1 = "title=Verify Email Address - ${siteName}");
 
-		AssertLocation(value1 = "${emailAddressVerificationURL}");
+		AssertLocation(value1 = ${emailAddressVerificationURL});
 
 		Gmail.gotoHtmlMode();
 
 		Gmail.deleteSpecificMail(gmailMessageTitleList = "Email Address Verification,Your New Account,Your New Password");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SiteFriendlyURLLayoutImporter {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -755,7 +755,7 @@ definition {
 		Site.editFriendlyURLCP(siteFriendlyURLEdit = "/guest");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SitesDeactivated {
 		property test.name.skip.portal.instance = "SitesadministrationUsecase#SitesDeactivated";
 
@@ -856,7 +856,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SitesDemoSiteManagement {
 		property portal.release = "false";
 		property test.name.skip.portal.instance = "SitesadministrationUsecase#SitesDemoSiteManagement";
@@ -875,7 +875,7 @@ definition {
 			siteName = "World Cup - Russia 2018");
 
 		for (var tagName : list "World Cup,Russia,2018") {
-			Tag.addViaSiteCP(tagName = "${tagName}");
+			Tag.addViaSiteCP(tagName = ${tagName});
 		}
 
 		Site.addVirtualHostsURLCP(
@@ -887,7 +887,7 @@ definition {
 		Site.editFriendlyURLCP(siteFriendlyURLEdit = "/russia2018");
 
 		for (var publicPageName : list "Home,Arenas") {
-			Page.add(pageName = "${publicPageName}");
+			Page.add(pageName = ${publicPageName});
 		}
 
 		for (var childPageName : list "Arena Baltika,Zenit Arena,Kazan Arena") {
@@ -895,13 +895,13 @@ definition {
 				childSitepageName = "true",
 				page = "Public Pages",
 				pageName = "Arenas",
-				siteChildPageName = "${childPageName}",
+				siteChildPageName = ${childPageName},
 				siteScopeSelected = "true");
 		}
 
 		for (var privatePageName : list "Accomodations,Maps") {
 			Page.add(
-				pageName = "${privatePageName}",
+				pageName = ${privatePageName},
 				sitePagePrivacy = "Private");
 		}
 
@@ -939,7 +939,7 @@ definition {
 
 		for (var childPageName : list "Arena Baltika,Zenit Arena,Kazan Arena") {
 			Page.viewChildPageDropdown(
-				childPageName = "${childPageName}",
+				childPageName = ${childPageName},
 				javaScriptPage = "Welcome to Russia.",
 				pageName = "Arenas",
 				viewChildPageDropdown = "PAGE_2");
@@ -1019,7 +1019,7 @@ definition {
 
 		echo("value name ${valueName}");
 
-		var larFileName = RegexUtil.replace("${valueName}", "http://localhost:8080/documents/portlet_file_entry/[0-9]*/([a-zA-z0-9_.-]*)[(0-9KB)]*", "1");
+		var larFileName = RegexUtil.replace(${valueName}, "http://localhost:8080/documents/portlet_file_entry/[0-9]*/([a-zA-z0-9_.-]*)[(0-9KB)]*", 1);
 
 		echo("import file name ${larFileName}");
 
@@ -1041,7 +1041,7 @@ definition {
 		Site.addBlankCP(siteName = "Site Name");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Site Name");
 
 		Navigator.gotoSitePage(
@@ -1050,13 +1050,13 @@ definition {
 
 		for (var childPageName : list "Arena Baltika,Zenit Arena,Kazan Arena") {
 			Page.viewChildPageDropdown(
-				childPageName = "${childPageName}",
+				childPageName = ${childPageName},
 				pageName = "Arenas",
 				viewChildPageDropdown = "PAGE_2");
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SiteTeamsPermissions {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1169,7 +1169,7 @@ definition {
 
 		for (var permissionsInLineUncheckListsCount : list "CONTENT_PERMISSIONS_ADD_DISCUSSION_CHECKBOX,CONTENT_PERMISSIONS_VIEW_CHECKBOX") {
 			Role.removePermissionPG(
-				permissionDefinitionKey = "${permissionsInLineUncheckListsCount}",
+				permissionDefinitionKey = ${permissionsInLineUncheckListsCount},
 				roleName = "Site Member");
 		}
 
@@ -1181,7 +1181,7 @@ definition {
 
 		for (var permissionsInLineCheckListsCount : list "ACTION_ADD_DISCUSSION,ACTION_ADD_LAYOUT,ACTION_CONFIGURE_PORTLETS,ACTION_CUSTOMIZE,ACTION_DELETE,ACTION_DELETE_DISCUSSION,ACTION_PERMISSIONS,ACTION_UPDATE,ACTION_UPDATE_DISCUSSION,ACTION_VIEW") {
 			Team.definePermissionPG(
-				permissionDefinitionKey = "${permissionsInLineCheckListsCount}",
+				permissionDefinitionKey = ${permissionsInLineCheckListsCount},
 				teamName = "Site Team Name");
 		}
 
@@ -1189,7 +1189,7 @@ definition {
 
 		for (var permissionsInLineCheckListsCount : list "ACTION_ADD_DISCUSSION,ACTION_ADD_LAYOUT,ACTION_CONFIGURE_PORTLETS,ACTION_CUSTOMIZE,ACTION_DELETE,ACTION_DELETE_DISCUSSION,ACTION_PERMISSIONS,ACTION_UPDATE,ACTION_UPDATE_DISCUSSION,ACTION_VIEW") {
 			Team.viewPermissionPG(
-				permissionDefinitionKey = "${permissionsInLineCheckListsCount}",
+				permissionDefinitionKey = ${permissionsInLineCheckListsCount},
 				teamName = "Site Team Name");
 		}
 
@@ -1218,7 +1218,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SiteTeamsXSS {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1250,13 +1250,13 @@ definition {
 		var actualScript = '''<script>alert(123);</script>''';
 		var escapedScript = '''&lt;script&gt;alert(123);&lt;/script&gt;''';
 
-		AssertHTMLSourceTextNotPresent(value1 = "${actualScript}");
+		AssertHTMLSourceTextNotPresent(value1 = ${actualScript});
 
-		AssertHTMLSourceTextPresent(value1 = "${escapedScript}");
+		AssertHTMLSourceTextPresent(value1 = ${escapedScript});
 	}
 
 	@description = "This is a use case for LPS-44550"
-	@priority = "4"
+	@priority = 4
 	test SiteTemplateXSS {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1295,9 +1295,9 @@ definition {
 		var actualScript = '''<script>alert(123);</script>''';
 		var escapedScript = '''&lt;script&gt;alert(123);&lt;/script&gt;''';
 
-		AssertHTMLSourceTextNotPresent(value1 = "${actualScript}");
+		AssertHTMLSourceTextNotPresent(value1 = ${actualScript});
 
-		AssertHTMLSourceTextPresent(value1 = "${escapedScript}");
+		AssertHTMLSourceTextPresent(value1 = ${escapedScript});
 	}
 
 }

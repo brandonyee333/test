@@ -30,7 +30,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -39,7 +39,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-89981."
-	@priority = "5"
+	@priority = 5
 	test ActivateRemoteStagingOnGlobalSiteViaInstance {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -49,7 +49,7 @@ definition {
 		User.logoutPG();
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -69,7 +69,7 @@ definition {
 			value1 = "siteID");
 
 		User.logoutPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -85,14 +85,14 @@ definition {
 			portlet = "Staging");
 
 		Staging.activateStagingCP(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
-			siteID = "${siteID}",
+			siteID = ${siteID},
 			siteName = "Global");
 	}
 
 	@description = "This is a use case for LPS-72088."
-	@priority = "5"
+	@priority = 5
 	test ActivateStagingAfterChangingInstanceLanguageToSpanish {
 		property test.name.skip.portal.instance = "Staging#ActivateStagingAfterChangingInstanceLanguageToSpanish";
 
@@ -120,7 +120,7 @@ definition {
 		Staging.activateStagingCP(siteName = "Site Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ActivateStagingPageVersioningWithCustomDefaultLanguage {
 		property test.name.skip.portal.instance = "Staging#ActivateStagingPageVersioningWithCustomDefaultLanguage";
 
@@ -155,7 +155,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-83187."
-	@priority = "3"
+	@priority = 3
 	test AssertTemplatesTitleOfScheduledStagingPublishes {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -163,7 +163,7 @@ definition {
 		property test.name.skip.portal.instance = "Staging#AssertTemplatesTitleOfScheduledStagingPublishes";
 
 		Staging.remoteStagingSetUp(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
@@ -179,7 +179,7 @@ definition {
 
 		Staging.editPublishTemplateRemoteSiteID(
 			groupName = "Remote Site 2",
-			remotePort = "9080");
+			remotePort = 9080);
 
 		Staging.savePublishTemplate(
 			publishTemplateDescription = "Publish Template Description",
@@ -201,7 +201,7 @@ definition {
 
 	@description = "This will be ignored until LPS-103397 is fixed. This is a use case for LPS-90127."
 	@ignore = "true"
-	@priority = "3"
+	@priority = 3
 	test ConfigureDDMStructureViaAPWhenNotStagedAssets {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -264,7 +264,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-92039 and LPS-92636."
-	@priority = "3"
+	@priority = 3
 	test CreateWidgetTemplateWhenNotStagedADT {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -317,7 +317,7 @@ definition {
 			value1 = "Blogs Test ADT");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeletePublishTemplate {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -365,7 +365,7 @@ definition {
 	}
 
 	@description = "LPS-83795 Disabled content cannot be published in Asset Publisher in Staging."
-	@priority = "4"
+	@priority = 4
 	test DisabledContentCannotBePublishedInStaging {
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
 
@@ -433,7 +433,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-89546"
-	@priority = "3"
+	@priority = 3
 	test EditPageCreatedBasedOnPageTemplateWithPageVersioning {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -477,7 +477,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-100807."
-	@priority = "4"
+	@priority = 4
 	test EditWikiPageInLiveSiteWhenWikiNotStaged {
 		JSONLayout.addWidgetToPublicLayout(
 			groupName = "Site Name",
@@ -557,7 +557,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EnableStagingWithWebContentReferencedFromDeletedSite {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -614,7 +614,7 @@ definition {
 		Staging.activateStagingCP(siteName = "Site B Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ModifyInitalPageVariationSetup {
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -631,7 +631,7 @@ definition {
 		Staging.modifyVariation(enableOnPublicPages = "true");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test NotStagedAssets {
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -686,7 +686,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-88045."
-	@priority = "3"
+	@priority = 3
 	test PublishChildSiteViaRemoteStagingWithParentStructure {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -703,7 +703,7 @@ definition {
 			siteName = "Child SiteName");
 
 		Staging.remoteStagingSetUp(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Child SiteName");
 
@@ -775,7 +775,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-82674."
-	@priority = "4"
+	@priority = 4
 	test PublishDeleteWCFolderWithArticleViaAP {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -856,7 +856,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-91959."
-	@priority = "3"
+	@priority = 3
 	test PublishPageDeletions {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -901,7 +901,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-90924."
-	@priority = "3"
+	@priority = 3
 	test PublishPageRevisionWithPortletSettingsChanges {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1029,7 +1029,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-80492."
-	@priority = "4"
+	@priority = 4
 	test PublishRenamedTags {
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -1108,7 +1108,7 @@ definition {
 			rowEntry = "tag name edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test PublishTemplateWithPages {
 		Page.add(
 			pageName = "Private Staging Page",
@@ -1131,7 +1131,7 @@ definition {
 		Staging.configurePublishToLive(checkPublicPages = "Staging Test Page");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RemoveTagsFromPublishBlogAndDM {
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -1244,7 +1244,7 @@ definition {
 		DMDocument.viewNoTag(tagName = "stagingtag");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test StagingAssetPublisher {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1286,7 +1286,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = "30000");
+		Pause(locator1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -1306,7 +1306,7 @@ definition {
 		AssetPublisherPortlet.viewAssetTypeNotAvailable(assetType = "Page Revision");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingCopyFromLive {
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -1339,7 +1339,7 @@ definition {
 			entrySubtitle = "Nemes Nagy Ágnes",
 			entryTitle = "Tavaszi felhők");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		PortletEntry.publish();
 
@@ -1384,7 +1384,7 @@ definition {
 			entryTitle = "Tavaszi felhők");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test StagingDemoDocumentsAndMedia {
 		property custom.properties = "default.layout.template.id=1_column";
 		property portal.acceptance = "true";
@@ -1401,7 +1401,7 @@ definition {
 		Type(
 			key_fieldName = "dlFileMaxSize",
 			locator1 = "ServerAdministrationFileUploads#FILE_UPLOADS_INPUT_FIELD",
-			value1 = "30000000");
+			value1 = 30000000);
 
 		PortletEntry.save();
 
@@ -1480,7 +1480,7 @@ definition {
 			dmDocumentFile = "Document_1.mp3",
 			dmDocumentTitle = "DM Document Title",
 			dmDocumentTypeName = "DM Document Type Name",
-			numberField = "1234",
+			numberField = 1234,
 			textField = "Text");
 
 		Staging.gotoPublishToLive();
@@ -1513,13 +1513,13 @@ definition {
 
 		DMDocument.viewDocumentTypePG(booleanValue = "Yes");
 
-		DMDocument.viewDocumentTypePG(numberValue = "1234");
+		DMDocument.viewDocumentTypePG(numberValue = 1234);
 
 		DMDocument.viewDocumentTypePG(textContent = "Text");
 	}
 
 	@description = "This is a use case for LPS-82431."
-	@priority = "5"
+	@priority = 5
 	test StagingEditWebContents {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1533,7 +1533,7 @@ definition {
 
 			WebContent.addCP(
 				webContentContent = "WC WebContent Content",
-				webContentTitle = "${webContentTitle}");
+				webContentTitle = ${webContentTitle});
 
 			PortletEntry.publish();
 
@@ -1542,7 +1542,7 @@ definition {
 				panel = "Site Administration",
 				portlet = "Web Content");
 
-			WebContent.viewTitle(webContentTitle = "${webContentTitle}");
+			WebContent.viewTitle(webContentTitle = ${webContentTitle});
 		}
 
 		Navigator.gotoSitePage(
@@ -1566,16 +1566,16 @@ definition {
 				panel = "Site Administration",
 				portlet = "Web Content");
 
-			WebContentNavigator.gotoEditCP(webContentTitle = "${webContentTitle}");
+			WebContentNavigator.gotoEditCP(webContentTitle = ${webContentTitle});
 
 			WebContent.editCP(
 				webContentContentEdit = "WC WebContent Content Edit",
-				webContentTitle = "${webContentTitle}",
+				webContentTitle = ${webContentTitle},
 				webContentTitleEdit = "${webContentTitle} Edit");
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test StagingKaleoPageRevision {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1666,7 +1666,7 @@ definition {
 		Page.viewSpecificPG(pageNameList = "Test Page Name 1,Test Page Name 2,Test Page Name 3");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test StagingKaleoWebContentLinkingUnapprovedContent {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1756,7 +1756,7 @@ definition {
 			value1 = "Web Content Title is not approved.");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test StagingMultipleDM {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -1794,7 +1794,7 @@ definition {
 				pageName = "Staging Test Page",
 				siteName = "Site Name");
 
-			DMDocument.viewPG(dmDocumentTitle = "${dmDocumentTitle}");
+			DMDocument.viewPG(dmDocumentTitle = ${dmDocumentTitle});
 		}
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -1815,7 +1815,7 @@ definition {
 		DMDocument.viewStagingDetailsPG();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test StagingOnlyApprovedPublishToLive {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -1996,7 +1996,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-80494."
-	@priority = "3"
+	@priority = 3
 	test StagingRemoteDMDocumentType {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -2004,7 +2004,7 @@ definition {
 		property test.name.skip.portal.instance = "Staging#StagingRemoteDMDocumentType";
 
 		Staging.remoteStagingSetUp(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
@@ -2046,7 +2046,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -2065,7 +2065,7 @@ definition {
 		DMDocument.viewCP(dmDocumentTitle = "DM Document Type Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test StagingRemoteDocumentSubtypeViaAP {
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
 		property test.name.skip.portal.instance = "Staging#StagingRemoteDocumentSubtypeViaAP";
@@ -2130,7 +2130,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-72461."
-	@priority = "5"
+	@priority = 5
 	test StagingRemoteLiveBlogsPG {
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
 		property test.name.skip.portal.instance = "Staging#StagingRemoteLiveBlogsPG";
@@ -2167,7 +2167,7 @@ definition {
 
 		Staging.publishToLive();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		AssertConsoleTextNotPresent(value1 = "RuntimeException");
 
@@ -2185,7 +2185,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-74206."
-	@priority = "5"
+	@priority = 5
 	test StagingRemoteLiveBlogsWithWorkflow {
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
 		property test.name.skip.portal.instance = "Staging#StagingRemoteLiveBlogsWithWorkflow";
@@ -2254,7 +2254,7 @@ definition {
 
 		Staging.publishToLive();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		AssertConsoleTextNotPresent(value1 = "RuntimeException");
 
@@ -2272,7 +2272,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-72478."
-	@priority = "5"
+	@priority = 5
 	test StagingRemoteLivePolls {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -2280,7 +2280,7 @@ definition {
 		property test.name.skip.portal.instance = "Staging#StagingRemoteLivePolls";
 
 		Staging.remoteStagingSetUp(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
@@ -2314,8 +2314,8 @@ definition {
 
 		Polls.viewVotedPollPG(
 			pollsQuestionChoice = "Yes",
-			pollsQuestionTotalVotes = "1",
-			pollsQuestionVoteCount = "1",
+			pollsQuestionTotalVotes = 1,
+			pollsQuestionVoteCount = 1,
 			pollsQuestionVotePercent = "100%");
 
 		Staging.gotoPublishToLive();
@@ -2327,7 +2327,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -2338,12 +2338,12 @@ definition {
 
 		Polls.viewVotedPollPG(
 			pollsQuestionChoice = "Yes",
-			pollsQuestionTotalVotes = "1",
-			pollsQuestionVoteCount = "1",
+			pollsQuestionTotalVotes = 1,
+			pollsQuestionVoteCount = 1,
 			pollsQuestionVotePercent = "100%");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingRemoteLiveWebContent {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -2351,7 +2351,7 @@ definition {
 		property test.name.skip.portal.instance = "Staging#StagingRemoteLiveWebContent";
 
 		Staging.remoteStagingSetUp(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
@@ -2376,9 +2376,9 @@ definition {
 
 		for (var structureFieldName : list "Text,Text Box") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", ""));
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "Structure Name");
@@ -2433,8 +2433,8 @@ definition {
 		var dateRangeStartDate = '''1/1''';
 
 		Staging.setContentDateRange(
-			dateRangeEndDate = "${dateRangeEndDate}",
-			dateRangeStartDate = "${dateRangeStartDate}");
+			dateRangeEndDate = ${dateRangeEndDate},
+			dateRangeStartDate = ${dateRangeStartDate});
 
 		var key_contentName = "Web Content";
 
@@ -2457,7 +2457,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -2485,7 +2485,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-81953"
-	@priority = "3"
+	@priority = 3
 	test StagingRemoteLiveWebContentWithManualChosenID {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -2493,7 +2493,7 @@ definition {
 		property test.name.skip.portal.instance = "Staging#StagingRemoteLiveWebContentWithManualChosenID";
 
 		Staging.remoteStagingSetUp(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
@@ -2515,7 +2515,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -2533,7 +2533,7 @@ definition {
 		SystemSettings.saveConfiguration();
 
 		User.logoutPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -2552,7 +2552,7 @@ definition {
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentId = "12345",
+			webContentId = 12345,
 			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
@@ -2568,7 +2568,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -2581,10 +2581,10 @@ definition {
 		AssertTextEquals(
 			key_webContentTitle = "WC WebContent Title",
 			locator1 = "WC#ENTRY_LIST_ID",
-			value1 = "12345");
+			value1 = 12345);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingWithPublishTemplate {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2681,7 +2681,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = "30000");
+		Pause(locator1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -2743,7 +2743,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-98473."
-	@priority = "3"
+	@priority = 3
 	test SubscribeWebContentWithStaging {
 		JSONGroup.addGroup(groupName = "Test Site");
 
@@ -2760,7 +2760,7 @@ definition {
 
 		for (var resourceActionIndex : list "VIEW,SUBSCRIBE") {
 			Permissions.definePermissionViaJSONAPI(
-				resourceAction = "${resourceActionIndex}",
+				resourceAction = ${resourceActionIndex},
 				resourceName = "com.liferay.journal",
 				roleName = "Web Content Subscriber Role");
 		}
@@ -2837,7 +2837,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-72474."
-	@priority = "4"
+	@priority = 4
 	test ViewDocumentVersionWithStaging {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2989,7 +2989,7 @@ definition {
 		DMDocument.viewDocumentVersionNumberCmdPG(dmDocumentVersionNumber = "1.0");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewHistoryVersionWithDeletedUser {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -3096,11 +3096,11 @@ definition {
 			pageVariationName = "Main Variation",
 			pageVariationNameMenulistName = "Test Page Variation Name");
 
-		Staging.viewHistoryVersionPG(historyVersion = "${historyVersion}");
+		Staging.viewHistoryVersionPG(historyVersion = ${historyVersion});
 	}
 
 	@description = "This is a use case for LPS-74038."
-	@priority = "5"
+	@priority = 5
 	test ViewInfoMessageAfterShutDownRemoteSite {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -3108,11 +3108,11 @@ definition {
 		property test.name.skip.portal.instance = "Staging#ViewInfoMessageAfterShutDownRemoteSite";
 
 		Staging.remoteStagingSetUp(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
-		Portlet.shutdownSpecificServer(nodePort = "9080");
+		Portlet.shutdownSpecificServer(nodePort = 9080);
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3125,7 +3125,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "SocketTimeoutException");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewPageOrderWithStaging {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3172,7 +3172,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-97827."
-	@priority = "2"
+	@priority = 2
 	test ViewParentPageNameAfterPublishChangesInChildPage {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -3341,7 +3341,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-82355."
-	@priority = "5"
+	@priority = 5
 	test ViewPublishDocumentTypeWithConfiguredAssetType {
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -3444,7 +3444,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "com.liferay.exportimport.kernel.exception.MissingReferenceException");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewPublishedContentAfterStagingUndo {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3494,12 +3494,12 @@ definition {
 			siteName = "Site Name");
 
 		for (var publishedPortlet : list "Calendar,Wiki,Documents and Media") {
-			Portlet.viewPG(portletName = "${publishedPortlet}");
+			Portlet.viewPG(portletName = ${publishedPortlet});
 		}
 	}
 
 	@description = "This is a use case for LPS-82688."
-	@priority = "3"
+	@priority = 3
 	test ViewPublishWCWithConfiguredCategoriesFilter {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3621,7 +3621,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-77935."
-	@priority = "4"
+	@priority = 4
 	test ViewSimplePublicationAfterDeleteDocumentInGlobal {
 		Navigator.openSiteLanding(siteURLKey = "Global");
 

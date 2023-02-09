@@ -6,10 +6,10 @@ definition {
 		if (isSet(larFileName)) {
 			Type(
 				locator1 = "ExportImport#EXPORT_FILE_NAME",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 
-		if ("${exportPermissions}" == "true") {
+		if (${exportPermissions} == "true") {
 			Check(locator1 = "Checkbox#PERMISSIONS");
 		}
 
@@ -17,7 +17,7 @@ definition {
 			locator1 = "Button#EXPORT",
 			value1 = "Export");
 
-		var key_larFileName = "${larFileName}";
+		var key_larFileName = ${larFileName};
 
 		AssertTextEquals(
 			locator1 = "ExportImport#CURRENT_AND_PREVIOUS_STATUS",
@@ -25,7 +25,7 @@ definition {
 
 		Click(locator1 = "ExportImport#CURRENT_AND_PREVIOUS_DOWNLOAD");
 
-		DownloadTempFile(locator1 = "${larFileName}");
+		DownloadTempFile(locator1 = ${larFileName});
 
 		SelectFrame(value1 = "relative=top");
 	}
@@ -34,7 +34,7 @@ definition {
 		if (isSet(larFileName)) {
 			Type(
 				locator1 = "SitePagesExport#EXPORT_PROCESS_NAME",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 
 		LAR.exportSuccess();
@@ -42,17 +42,17 @@ definition {
 
 	macro _gotoExportImport {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Export / Import");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 	}
 
 	macro _gotoImportSite {
 		if (isSet(siteName)) {
 			Navigator.openSiteLanding(
-				baseURL = "${baseURL}",
-				siteURLKey = "${siteName}");
+				baseURL = ${baseURL},
+				siteURLKey = ${siteName});
 		}
 
 		ProductMenu.gotoPortlet(
@@ -62,17 +62,17 @@ definition {
 	}
 
 	macro _importSite {
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Click(locator1 = "Button#CONTINUE");
 
-		if ("${importPermissions}" == "true") {
+		if (${importPermissions} == "true") {
 			Click(locator1 = "ExportImport#PERMISSIONS_TITLE");
 
 			Check.checkToggleSwitch(locator1 = "Checkbox#PERMISSIONS");
 		}
 
-		if ("${privateLayout}" == "true") {
+		if (${privateLayout} == "true") {
 			Click(locator1 = "ExportImport#PRIVATE_LAYOUT");
 		}
 
@@ -83,20 +83,20 @@ definition {
 				locator1 = "Select#EXPORT_IMPORT_CONTENT",
 				value1 = "Choose Content");
 
-			for (var contentName : list "${checkContentNameList}") {
-				var key_contentName = "${contentName}";
+			for (var contentName : list ${checkContentNameList}) {
+				var key_contentName = ${contentName};
 
 				Click(locator1 = "SitePagesExport#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX");
 			}
 		}
 
-		if ("${contentDeletion}" == "true") {
+		if (${contentDeletion} == "true") {
 			Panel.expandPanel(panelHeading = "Deletions");
 
 			Check.checkToggleSwitch(locator1 = "ToggleSwitch#DELETE_PORTLET_DATA");
 		}
 
-		if ("${mirrorWithOverwriting}" == "true") {
+		if (${mirrorWithOverwriting} == "true") {
 			LAR._mirrorWithOverwriting();
 		}
 
@@ -106,7 +106,7 @@ definition {
 			locator1 = "SitePagesImport#IMPORT_BUTTON",
 			value1 = "Import");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		AssertTextEquals(
 			locator1 = "SitePagesImport#CURRENT_AND_PREVIOUS_STATUS_1",
@@ -130,20 +130,20 @@ definition {
 
 		AssertElementPresent(locator1 = "Button#SELECT_FILE");
 
-		if ("${uploadFrom}" == "dependencies") {
+		if (${uploadFrom} == "dependencies") {
 			UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
 				locator1 = "TextInput#FILE",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 		else {
 			UploadTempFile.uploadTempFileHiddenNoMouseOver(
 				locator1 = "TextInput#FILE",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
-		if ("${cannotImport}" == "true") {
+		if (${cannotImport} == "true") {
 			AssertTextEquals(
 				locator1 = "Message#VALIDATION_ERROR_MESSAGE_HEADER",
 				value1 = "The file ${larFileName} cannot be imported.");
@@ -162,13 +162,13 @@ definition {
 				locator1 = "Button#CONTINUE",
 				value1 = "Continue");
 
-			Pause(locator1 = "5000");
+			Pause(locator1 = 5000);
 
-			if ("${mirrorWithOverwriting}" == "true") {
+			if (${mirrorWithOverwriting} == "true") {
 				LAR._mirrorWithOverwriting();
 			}
 
-			if ("${importPermissions}" == "true") {
+			if (${importPermissions} == "true") {
 				Click(locator1 = "ExportImport#PERMISSIONS_TITLE");
 
 				Check.checkToggleSwitch(locator1 = "Checkbox#PERMISSIONS");
@@ -198,24 +198,24 @@ definition {
 	macro _selectImportFileSite {
 		LexiconEntry.gotoAdd();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		AssertElementPresent(locator1 = "Button#SELECT_FILE");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
-		if ("${uploadFrom}" == "dependencies") {
+		if (${uploadFrom} == "dependencies") {
 			UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
 				locator1 = "TextInput#FILE",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 		else {
 			UploadTempFile.uploadTempFileHiddenNoMouseOver(
 				locator1 = "TextInput#FILE",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 
-		Pause(locator1 = "180000");
+		Pause(locator1 = 180000);
 
 		if (isSet(importValidationMissingItem)) {
 			AssertTextEquals.assertPartialText(
@@ -228,7 +228,7 @@ definition {
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "SitePagesImport#VALIDATION_ERROR_LIST_ITEM",
-				value1 = "${importValidationMissingItem}");
+				value1 = ${importValidationMissingItem});
 		}
 
 		if ("importCampaignValidationError" == "true") {
@@ -259,9 +259,9 @@ definition {
 
 		LexiconEntry.gotoAdd();
 
-		PortletEntry.inputName(name = "${exportTemplateName}");
+		PortletEntry.inputName(name = ${exportTemplateName});
 
-		PortletEntry.inputDescription(description = "${exportTemplateDescription}");
+		PortletEntry.inputDescription(description = ${exportTemplateDescription});
 	}
 
 	macro configureExportSiteCP {
@@ -270,40 +270,40 @@ definition {
 		LexiconEntry.gotoAdd();
 
 		LAR.configureExportSiteOptions(
-			checkContentNameList = "${checkContentNameList}",
-			checkPageName = "${checkPageName}",
-			contentDeletion = "${contentDeletion}",
-			contentName = "${contentName}",
-			deleteMissingPages = "${deleteMissingPages}",
-			exportPermissions = "${exportPermissions}",
-			larFileName = "${larFileName}",
-			lastDateRange = "${lastDateRange}",
-			mainContent = "${mainContent}",
-			subContent = "${subContent}",
-			uncheckContentNameList = "${uncheckContentNameList}",
-			uncheckLogo = "${uncheckLogo}",
-			uncheckSubContent = "${uncheckSubContent}",
-			uncheckSubSubContent = "${uncheckSubSubContent}");
+			checkContentNameList = ${checkContentNameList},
+			checkPageName = ${checkPageName},
+			contentDeletion = ${contentDeletion},
+			contentName = ${contentName},
+			deleteMissingPages = ${deleteMissingPages},
+			exportPermissions = ${exportPermissions},
+			larFileName = ${larFileName},
+			lastDateRange = ${lastDateRange},
+			mainContent = ${mainContent},
+			subContent = ${subContent},
+			uncheckContentNameList = ${uncheckContentNameList},
+			uncheckLogo = ${uncheckLogo},
+			uncheckSubContent = ${uncheckSubContent},
+			uncheckSubSubContent = ${uncheckSubSubContent});
 	}
 
 	macro configureExportSiteOptions {
 		if (isSet(larFileName)) {
 			Type(
 				locator1 = "SitePagesExport#EXPORT_PROCESS_NAME",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 
-		if ("${exportPermissions}" == "true") {
+		if (${exportPermissions} == "true") {
 			Check.checkToggleSwitch(locator1 = "ExportImport#PERMISSIONS");
 		}
 
-		if ("${deleteMissingPages}" == "true") {
+		if (${deleteMissingPages} == "true") {
 			Panel.expandPanel(panelHeading = "Deletions");
 
 			Check.checkToggleSwitch(locator1 = "ToggleSwitch#EXPORT_INDIVIDUAL_DELETIONS");
 		}
 
-		if ("${uncheckLogo}" == "true") {
+		if (${uncheckLogo} == "true") {
 			Uncheck(locator1 = "PagesConfiguration#PAGES_LOGO_CHECKBOX");
 		}
 
@@ -312,18 +312,18 @@ definition {
 
 			Click(locator1 = "ExportImport#PAGES_ALL_PUBLIC_PAGES_CHECKBOX");
 
-			for (var pageName : list "${checkPageName}") {
-				var key_pageName = "${pageName}";
+			for (var pageName : list ${checkPageName}) {
+				var key_pageName = ${pageName};
 
 				if (IsElementNotPresent(locator1 = "PagesConfiguration#PAGES_SPECIFIC_PAGE_CHECKED")) {
-					var key_pageName = "${pageName}";
+					var key_pageName = ${pageName};
 
 					Click(locator1 = "PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME");
 				}
 			}
 		}
 
-		if ("${contentDeletion}" == "true") {
+		if (${contentDeletion} == "true") {
 			Panel.expandPanel(panelHeading = "Deletions");
 
 			Check.checkToggleSwitch(locator1 = "ToggleSwitch#EXPORT_INDIVIDUAL_DELETIONS");
@@ -336,8 +336,8 @@ definition {
 				locator1 = "Select#EXPORT_IMPORT_CONTENT",
 				value1 = "Choose Content");
 
-			for (var contentName : list "${checkContentNameList}") {
-				var key_contentName = "${contentName}";
+			for (var contentName : list ${checkContentNameList}) {
+				var key_contentName = ${contentName};
 
 				Check(locator1 = "PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX");
 			}
@@ -350,8 +350,8 @@ definition {
 				locator1 = "Select#EXPORT_IMPORT_CONTENT",
 				value1 = "Choose Content");
 
-			for (var contentName : list "${uncheckContentNameList}") {
-				var key_contentName = "${contentName}";
+			for (var contentName : list ${uncheckContentNameList}) {
+				var key_contentName = ${contentName};
 
 				Uncheck(locator1 = "PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX");
 			}
@@ -360,7 +360,7 @@ definition {
 		if (isSet(uncheckSubContent)) {
 			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
-			var key_contentName = "${mainContent}";
+			var key_contentName = ${mainContent};
 
 			Check(locator1 = "PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX");
 
@@ -368,7 +368,7 @@ definition {
 				locator1 = "ExportImport#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK",
 				value1 = "Change");
 
-			var key_subContent = "${uncheckSubContent}";
+			var key_subContent = ${uncheckSubContent};
 
 			Uncheck(locator1 = "ExportImport#CONTENT_CHOOSE_CONTENT_SUBCONTENT_CHECKBOX");
 
@@ -380,7 +380,7 @@ definition {
 		if (isSet(uncheckSubSubContent)) {
 			Click.clickNoMouseOver(locator1 = "Select#CONTENT_CHOOSE_CONTENT");
 
-			var key_contentName = "${contentName}";
+			var key_contentName = ${contentName};
 
 			Check(locator1 = "PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX");
 
@@ -388,8 +388,8 @@ definition {
 				locator1 = "ExportImport#CONTENT_CHOOSE_CONTENT_CONTENT_CHANGE_LINK",
 				value1 = "Change");
 
-			var key_subContent = "${subContent}";
-			var key_subSubContent = "${uncheckSubSubContent}";
+			var key_subContent = ${subContent};
+			var key_subSubContent = ${uncheckSubSubContent};
 
 			Uncheck(locator1 = "ExportImport#CONTENT_CHOOSE_CONTENT_SUB_SUBCONTENT_CHECKBOX");
 
@@ -403,15 +403,15 @@ definition {
 
 			Click(locator1 = "Radio#CHOOSE_CONTENT_DATE_RANGE_CHANGE");
 
-			var key_contentDateRange = "${contentDateRange}";
+			var key_contentDateRange = ${contentDateRange};
 
 			Type(
 				locator1 = "Select#DATE_RANGE_START_DATE",
-				value1 = "${dateRangeStartDate}");
+				value1 = ${dateRangeStartDate});
 
 			Type(
 				locator1 = "Select#DATE_RANGE_END_DATE",
-				value1 = "${dateRangeEndDate}");
+				value1 = ${dateRangeEndDate});
 
 			Click(locator1 = "Link#REFRESH_COUNTS");
 		}
@@ -421,7 +421,7 @@ definition {
 
 			Click(locator1 = "Radio#RANGE_LAST");
 
-			var key_lastDateRange = "${lastDateRange}";
+			var key_lastDateRange = ${lastDateRange};
 
 			Click(locator1 = "Select#LAST_TIME");
 
@@ -440,7 +440,7 @@ definition {
 
 		LexiconEntry.gotoEntryMenuItemNoWaitNoError(
 			menuItem = "Clear",
-			rowEntry = "${larFileName}");
+			rowEntry = ${larFileName});
 
 		Confirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 
@@ -454,23 +454,23 @@ definition {
 	}
 
 	macro editExportTemplateCP {
-		var key_exportTemplateName = "${exportTemplateName}";
+		var key_exportTemplateName = ${exportTemplateName};
 
 		AssertClick(
 			locator1 = "SitePagesExport#EXPORT_TEMPLATES_TABLE_NAME",
-			value1 = "${exportTemplateName}");
+			value1 = ${exportTemplateName});
 
-		PortletEntry.inputName(name = "${exportTemplateNameEdit}");
+		PortletEntry.inputName(name = ${exportTemplateNameEdit});
 
-		PortletEntry.inputDescription(description = "${exportTemplateDescriptionEdit}");
+		PortletEntry.inputDescription(description = ${exportTemplateDescriptionEdit});
 	}
 
 	macro exportDDL {
 		LAR._gotoExportImport();
 
 		LAR._export(
-			exportPermissions = "${exportPermissions}",
-			larFileName = "${larFileName}");
+			exportPermissions = ${exportPermissions},
+			larFileName = ${larFileName});
 	}
 
 	macro exportExportTemplateCP {
@@ -479,7 +479,7 @@ definition {
 		if (isSet(larFileName)) {
 			Type(
 				locator1 = "SitePagesExport#EXPORT_PROCESS_NAME",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 
 		LAR.exportSuccess();
@@ -487,12 +487,12 @@ definition {
 		if (isSet(larFileName)) {
 			AssertTextEquals.assertPartialText(
 				locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_NAME",
-				value1 = "${larFileName}");
+				value1 = ${larFileName});
 		}
 		else {
 			AssertTextEquals.assertPartialText(
 				locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_NAME",
-				value1 = "${exportTemplateName}");
+				value1 = ${exportTemplateName});
 		}
 
 		AssertElementPresent(locator1 = "SitePagesExport#CURRENT_AND_PREVIOUS_DOWNLOAD");
@@ -504,22 +504,22 @@ definition {
 		AssertElementPresent(locator1 = "IFrame#DIALOG");
 
 		LAR._export(
-			exportPermissions = "${exportPermissions}",
-			larFileName = "${larFileName}");
+			exportPermissions = ${exportPermissions},
+			larFileName = ${larFileName});
 
 		Click(locator1 = "Icon#CLOSE");
 	}
 
 	macro exportSiteCP {
-		LAR.gotoExportSite(siteScopeName = "${siteScopeName}");
+		LAR.gotoExportSite(siteScopeName = ${siteScopeName});
 
 		Click(locator1 = "SitePagesExport#CUSTOM_EXPORT_BUTTON");
 
-		if ("${privateLayout}" == "true") {
+		if (${privateLayout} == "true") {
 			Click(locator1 = "SitePagesExport#CHANGE_TO_PRIVATE_PAGES");
 		}
 
-		LAR._exportSite(larFileName = "${larFileName}");
+		LAR._exportSite(larFileName = ${larFileName});
 	}
 
 	macro exportSuccess {
@@ -536,12 +536,12 @@ definition {
 		LAR._gotoExportImport();
 
 		LAR._export(
-			exportPermissions = "${exportPermissions}",
-			larFileName = "${larFileName}");
+			exportPermissions = ${exportPermissions},
+			larFileName = ${larFileName});
 	}
 
 	macro filterCompletedProcesses {
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Click(locator1 = "Dropdown#FILTER");
 
@@ -559,16 +559,16 @@ definition {
 
 		var portalURL = PropsUtil.get("portal.url");
 
-		var larFileName = RegexUtil.replace("${valueName}", "${portalURL}/documents/portlet_file_entry/[0-9]*/([a-zA-z0-9_.-]*)[(0-9KB)]*", "1");
+		var larFileName = RegexUtil.replace(${valueName}, "${portalURL}/documents/portlet_file_entry/[0-9]*/([a-zA-z0-9_.-]*)[(0-9KB)]*", 1);
 
 		echo("lar file name ${larFileName}");
 
-		return "${larFileName}";
+		return ${larFileName};
 	}
 
 	macro gotoExportSite {
 		if (isSet(siteScopeName)) {
-			Navigator.openSiteURL(siteName = "${siteScopeName}");
+			Navigator.openSiteURL(siteName = ${siteScopeName});
 		}
 
 		ProductMenu.gotoPortlet(
@@ -581,12 +581,12 @@ definition {
 		LAR._gotoExportImport();
 
 		LAR._selectImportFile(
-			cannotImport = "${cannotImport}",
-			failureExpected = "${failureExpected}",
-			importPermissions = "${importPermissions}",
-			larFileName = "${larFileName}",
-			mirrorWithOverwriting = "${mirrorWithOverwriting}",
-			uploadFrom = "${uploadFrom}");
+			cannotImport = ${cannotImport},
+			failureExpected = ${failureExpected},
+			importPermissions = ${importPermissions},
+			larFileName = ${larFileName},
+			mirrorWithOverwriting = ${mirrorWithOverwriting},
+			uploadFrom = ${uploadFrom});
 
 		SelectFrame(value1 = "relative=top");
 
@@ -595,28 +595,28 @@ definition {
 
 	macro importSiteCP {
 		LAR._gotoImportSite(
-			baseURL = "${baseURL}",
-			siteName = "${siteName}");
+			baseURL = ${baseURL},
+			siteName = ${siteName});
 
 		LAR._selectImportFileSite(
-			importCampaignValidationError = "${importCampaignValidationError}",
-			importValidationMissingItem = "${importValidationMissingItem}",
-			larFileName = "${larFileName}",
-			uploadFrom = "${uploadFrom}");
+			importCampaignValidationError = ${importCampaignValidationError},
+			importValidationMissingItem = ${importValidationMissingItem},
+			larFileName = ${larFileName},
+			uploadFrom = ${uploadFrom});
 
 		if (!(isSet(importValidationMissingItem) || isSet(importFail))) {
 			LAR._importSite(
-				checkContentNameList = "${checkContentNameList}",
-				contentDeletion = "${contentDeletion}",
-				contentName = "${contentName}",
-				importPermissions = "${importPermissions}",
-				larFileName = "${larFileName}",
-				privateLayout = "${privateLayout}");
+				checkContentNameList = ${checkContentNameList},
+				contentDeletion = ${contentDeletion},
+				contentName = ${contentName},
+				importPermissions = ${importPermissions},
+				larFileName = ${larFileName},
+				privateLayout = ${privateLayout});
 		}
 	}
 
 	macro moveToTheRecycleBinExportTemplate {
-		var key_exportTemplateName = "${exportTemplateName}";
+		var key_exportTemplateName = ${exportTemplateName};
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Move to the Recycle Bin");
 
@@ -626,33 +626,33 @@ definition {
 	macro saveExportTemplateCP {
 		Button.clickSave();
 
-		var key_exportTemplateName = "${exportTemplateName}";
+		var key_exportTemplateName = ${exportTemplateName};
 
 		AssertTextEquals(
 			locator1 = "SitePagesExport#EXPORT_TEMPLATES_TABLE_NAME",
-			value1 = "${exportTemplateName}");
+			value1 = ${exportTemplateName});
 
 		AssertTextEquals(
 			locator1 = "SitePagesExport#EXPORT_TEMPLATES_TABLE_DESCRIPTION",
-			value1 = "${exportTemplateDescription}");
+			value1 = ${exportTemplateDescription});
 	}
 
 	macro searchTemplate {
-		Search.searchCP(searchTerm = "${exportTemplateName}");
+		Search.searchCP(searchTerm = ${exportTemplateName});
 
-		var key_exportTemplateName = "${exportTemplateName}";
+		var key_exportTemplateName = ${exportTemplateName};
 
 		AssertTextEquals(
 			locator1 = "SitePagesExport#EXPORT_TEMPLATES_TABLE_NAME",
-			value1 = "${exportTemplateName}");
+			value1 = ${exportTemplateName});
 
 		AssertTextEquals(
 			locator1 = "SitePagesExport#EXPORT_TEMPLATES_TABLE_DESCRIPTION",
-			value1 = "${exportTemplateDescription}");
+			value1 = ${exportTemplateDescription});
 	}
 
 	macro setupContentTargeting {
-		if ("${stagingSetup}" == "true") {
+		if (${stagingSetup} == "true") {
 			Navigator.openSiteURL(siteName = "Site Name");
 
 			Navigator.gotoStagedView();
@@ -674,7 +674,7 @@ definition {
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
-		if ("${stagingSetup}" == "true") {
+		if (${stagingSetup} == "true") {
 			Navigator.openSiteURL(siteName = "Site Name");
 
 			Navigator.gotoStagedView();
@@ -692,16 +692,16 @@ definition {
 			campaignDescription = "Campaign Description",
 			campaignEndDate = "1/1/2099",
 			campaignEndTime = "12:00 PM",
-			campaignInactive = "${campaignInactive}",
+			campaignInactive = ${campaignInactive},
 			campaignName = "Campaign Name",
-			campaignPriorityField = "3",
+			campaignPriorityField = 3,
 			campaignStartDate = "1/1/2015",
 			campaignStartTime = "12:00 AM",
-			userSegmentSelect = "${userSegmentSelect}");
+			userSegmentSelect = ${userSegmentSelect});
 
 		ContentTargetingCampaign.saveCP();
 
-		if ("${stagingSetup}" == "true") {
+		if (${stagingSetup} == "true") {
 			Navigator.openSiteURL(siteName = "Site Name");
 
 			Navigator.gotoStagedView();
@@ -719,12 +719,12 @@ definition {
 
 		WebContent.addWithCategoryCP(
 			categoryName = "User Segment Name",
-			userSegmentDetailTitle = "${userSegmentDetailTitle}",
+			userSegmentDetailTitle = ${userSegmentDetailTitle},
 			vocabularyName = "User Segment",
 			webContentContent = "Web Content Content",
 			webContentTitle = "Web Content Title");
 
-		if ("${stagingSetup}" == "true") {
+		if (${stagingSetup} == "true") {
 			Navigator.gotoStagedSitePage(
 				pageName = "Test Page Name",
 				siteName = "Site Name");
@@ -736,7 +736,7 @@ definition {
 		}
 
 		Portlet.addPG(
-			i = "${i}",
+			i = ${i},
 			portletName = "User Segment Content Display");
 
 		Portlet.gotoPortletOptions(
@@ -747,17 +747,17 @@ definition {
 			belongs = "true",
 			contentTitle = "Web Content Title",
 			contentType = "Basic Web Content",
-			doesNotBelong = "${doesNotBelong}",
-			rowIndexNumber = "${rowIndexNumber}",
-			rowNumber = "1",
-			siteScope = "${siteScope}",
+			doesNotBelong = ${doesNotBelong},
+			rowIndexNumber = ${rowIndexNumber},
+			rowNumber = 1,
+			siteScope = ${siteScope},
 			toAll = "true",
-			toAny = "${toAny}",
+			toAny = ${toAny},
 			userSegmentName = "User Segment Name");
 
 		UserSegmentContentDisplayPortlet.savePG();
 
-		if ("${stagingSetup}" == "true") {
+		if (${stagingSetup} == "true") {
 			Navigator.gotoStagedSitePage(
 				pageName = "Test Page Name",
 				siteName = "Site Name");
@@ -769,7 +769,7 @@ definition {
 		}
 
 		Portlet.addPG(
-			i = "${i}",
+			i = ${i},
 			portletName = "Campaign Content Display");
 
 		Portlet.gotoPortletOptions(
@@ -780,11 +780,11 @@ definition {
 			campaignName = "Campaign Name",
 			contentTitle = "Web Content Title",
 			contentType = "Basic Web Content",
-			rowNumber = "1");
+			rowNumber = 1);
 
 		CampaignDisplayPortlet.savePG();
 
-		if ("${stagingSetup}" == "true") {
+		if (${stagingSetup} == "true") {
 			Navigator.gotoStagedSitePage(
 				pageName = "Test Page Name",
 				siteName = "Site Name");
@@ -796,20 +796,20 @@ definition {
 		}
 
 		Portlet.addPG(
-			i = "${i}",
+			i = ${i},
 			portletName = "User Segment Content List");
 	}
 
 	macro viewExportTemplateCP {
-		var key_exportTemplateName = "${exportTemplateName}";
+		var key_exportTemplateName = ${exportTemplateName};
 
 		AssertTextEquals(
 			locator1 = "SitePagesExport#EXPORT_TEMPLATES_TABLE_NAME",
-			value1 = "${exportTemplateName}");
+			value1 = ${exportTemplateName});
 
 		AssertTextEquals(
 			locator1 = "SitePagesExport#EXPORT_TEMPLATES_TABLE_DESCRIPTION",
-			value1 = "${exportTemplateDescription}");
+			value1 = ${exportTemplateDescription});
 	}
 
 	macro viewProcessesInDescendingOrder {

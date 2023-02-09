@@ -3,7 +3,7 @@ definition {
 	macro search15Results {
 		var browserType = PropsUtil.get("browser.type");
 
-		if ("${browserType}" == "firefox") {
+		if (${browserType} == "firefox") {
 			MouseDown(locator1 = "xpath=(//select//option[2])");
 
 			MouseUp(locator1 = "xpath=(//select//option[17])");
@@ -22,9 +22,9 @@ definition {
 
 		Click(locator1 = "Button#ITEMS_PER_PAGE");
 
-		var key_itemsPerPage = "${itemsPerPage}";
+		var key_itemsPerPage = ${itemsPerPage};
 
-		MenuItem.click(menuItem = "${itemsPerPage}");
+		MenuItem.click(menuItem = ${itemsPerPage});
 
 		AssertTextEquals(
 			locator1 = "TestSearchPagination#SEARCH_RESULTS",

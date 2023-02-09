@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -34,7 +34,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCategorywithLocalization {
 		Navigator.openURL();
 
@@ -160,7 +160,7 @@ definition {
 			searchAssetType = "Webcontent");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddCategorywithSiteRole {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -332,7 +332,7 @@ definition {
 			userLoginFullName = "Test Test");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddPageWithRequiredVocabulary {
 		Navigator.openURL();
 
@@ -376,7 +376,7 @@ definition {
 		Page.viewSpecificPG(pageNameList = "Page Category");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddSubcategoryProperty {
 		Navigator.openURL();
 
@@ -420,7 +420,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddVocabularyWithMultipleAssetTypes {
 		Navigator.openURL();
 
@@ -442,7 +442,7 @@ definition {
 		Vocabulary.addAssociatedAssetType(
 			assetType = "Web Content Article",
 			required = "true",
-			rowNumber = "2");
+			rowNumber = 2);
 
 		Button.clickSave();
 
@@ -479,7 +479,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddWCFailWithRequiredVocabularyAssetType {
 		Navigator.openURL();
 
@@ -537,7 +537,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddWCWithOptionalVocabularyAssetType {
 		Navigator.openURL();
 
@@ -592,7 +592,7 @@ definition {
 		Bookmark.viewNoCategoryCP(vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeletePartialCategory {
 		Navigator.openURL();
 
@@ -728,7 +728,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DisableMultipleCategories {
 		Navigator.openURL();
 
@@ -750,7 +750,7 @@ definition {
 				portlet = "Categories");
 
 			Category.addCP(
-				categoryName = "${categoryName}",
+				categoryName = ${categoryName},
 				vocabularyName = "Vocabulary Name");
 		}
 
@@ -835,7 +835,7 @@ definition {
 			webContentTitle = "Web Content Title Multiple Categories");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DuplicateCategoriesViaWebContentCopy {
 		Navigator.openURL();
 
@@ -896,7 +896,7 @@ definition {
 		WebContent.viewCategorizationCategoryCP(categoryNameList = "Category Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ExportImportWCWithCategoryViaAP {
 		property testray.component.names = "Training";
 
@@ -1036,7 +1036,7 @@ definition {
 		Site.addBlankCP(siteName = "Import Site Name");
 
 		LAR.importSiteCP(
-			larFileName = "${larFileName}",
+			larFileName = ${larFileName},
 			siteName = "Import Site Name",
 			siteScopeName = "Import Site Name");
 
@@ -1087,7 +1087,7 @@ definition {
 			webContentTitle = "Subcategory WC Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportLAR {
 		property testray.component.names = "Training";
 
@@ -1101,7 +1101,7 @@ definition {
 			uploadFrom = "dependencies");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test MoveSubcategory {
 		Navigator.openURL();
 
@@ -1121,7 +1121,7 @@ definition {
 				portlet = "Categories");
 
 			Category.addCP(
-				categoryName = "${categoryName}",
+				categoryName = ${categoryName},
 				vocabularyName = "Vocabulary Name");
 		}
 
@@ -1135,7 +1135,7 @@ definition {
 
 			Subcategory.addCP(
 				categoryName = "dog",
-				subcategoryName = "${subcategoryName}",
+				subcategoryName = ${subcategoryName},
 				vocabularyName = "Vocabulary Name");
 		}
 
@@ -1165,7 +1165,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchCategory {
 		Navigator.openURL();
 
@@ -1209,10 +1209,10 @@ definition {
 				portlet = "Categories");
 
 			Category.searchCP(
-				categorySearchEntry = "${categoryName}",
+				categorySearchEntry = ${categoryName},
 				vocabularyName = "Vocabulary Name");
 
-			Category.viewSearchResultsCP(categoryNameList = "${categoryName}");
+			Category.viewSearchResultsCP(categoryNameList = ${categoryName});
 		}
 
 		for (var categoryDescription : list "brown,black") {
@@ -1224,10 +1224,10 @@ definition {
 				portlet = "Categories");
 
 			Category.searchCP(
-				categorySearchEntry = "${categoryDescription}",
+				categorySearchEntry = ${categoryDescription},
 				vocabularyName = "Vocabulary Name");
 
-			Category.viewSearchResultsCP(categoryDefinitionList = "${categoryDescription}");
+			Category.viewSearchResultsCP(categoryDefinitionList = ${categoryDescription});
 		}
 
 		Navigator.openURL();
@@ -1246,7 +1246,7 @@ definition {
 			categoryNameList = "llama,panda");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchCategoryWithNullResult {
 		Navigator.openURL();
 
@@ -1282,7 +1282,7 @@ definition {
 		Category.viewSearchResultsCP(nullResult = "true");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchEditedCategory {
 		Navigator.openURL();
 
@@ -1332,7 +1332,7 @@ definition {
 			searchAssetType = "Document");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchSubcategory {
 		Navigator.openURL();
 
@@ -1383,10 +1383,10 @@ definition {
 
 			Subcategory.searchCP(
 				categoryName = "Category Name",
-				subcategorySearchEntry = "${subcategoryName}",
+				subcategorySearchEntry = ${subcategoryName},
 				vocabularyName = "Vocabulary Name");
 
-			Subcategory.viewSearchResultsCP(categoryNameList = "${categoryName}");
+			Subcategory.viewSearchResultsCP(categoryNameList = ${categoryName});
 		}
 
 		for (var categoryDescription : list "friendly chops,handlebar") {
@@ -1399,10 +1399,10 @@ definition {
 
 			Subcategory.searchCP(
 				categoryName = "Category Name",
-				categorySearchEntry = "${subcategoryDescription}",
+				categorySearchEntry = ${subcategoryDescription},
 				vocabularyName = "Vocabulary Name");
 
-			Subcategory.viewSearchResultsCP(subcategoryDefinitionList = "${subcategoryDescription}");
+			Subcategory.viewSearchResultsCP(subcategoryDefinitionList = ${subcategoryDescription});
 		}
 
 		Navigator.openURL();
@@ -1422,7 +1422,7 @@ definition {
 			subcategoryNameList = "mustache,beard");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchSubcategoryWithNullResult {
 		Navigator.openURL();
 
@@ -1464,7 +1464,7 @@ definition {
 		Subcategory.viewSearchResultsCP(nullResult = "true");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchVocabulary {
 		Navigator.openURL();
 
@@ -1496,7 +1496,7 @@ definition {
 				panel = "Site Administration",
 				portlet = "Categories");
 
-			Vocabulary.searchCP(vocabularySearchEntry = "${vocabularyName}");
+			Vocabulary.searchCP(vocabularySearchEntry = ${vocabularyName});
 
 			Vocabulary.viewSearchResultsCP(vocabularyNameList = "${vocabularyName} Vocab");
 		}
@@ -1509,9 +1509,9 @@ definition {
 				panel = "Site Administration",
 				portlet = "Categories");
 
-			Vocabulary.searchCP(vocabularySearchEntry = "${vocabularyDescription}");
+			Vocabulary.searchCP(vocabularySearchEntry = ${vocabularyDescription});
 
-			Vocabulary.viewSearchResultsCP(vocabularyDefinitionList = "${vocabularyDescription}");
+			Vocabulary.viewSearchResultsCP(vocabularyDefinitionList = ${vocabularyDescription});
 		}
 
 		Navigator.openURL();
@@ -1528,7 +1528,7 @@ definition {
 			vocabularyNameList = "Food Vocab,Sport Vocab");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchVocabularyWithNullResult {
 		Navigator.openURL();
 
@@ -1553,9 +1553,9 @@ definition {
 		Vocabulary.viewSearchResultsCP(nullResult = "true");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test UseCategoryFromParentSiteViaSiteHierarchy {
-		var parentSiteName = TestCase.getSiteName(siteName = "${siteName}");
+		var parentSiteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1579,7 +1579,7 @@ definition {
 			portlet = "Sites");
 
 		Site.addBlankCP(
-			parentSiteName = "${parentSiteName}",
+			parentSiteName = ${parentSiteName},
 			siteName = "Child SiteName");
 
 		ProductMenu.gotoPortlet(
@@ -1607,7 +1607,7 @@ definition {
 		WebContent.viewCategorizationCategoryCP(categoryNameList = "Category Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewCannotAddDuplicateSubCategory {
 		Navigator.openURL();
 
@@ -1654,7 +1654,7 @@ definition {
 			vocabularyName = "Vocabulary Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewNavigation {
 		Navigator.openURL();
 

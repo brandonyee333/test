@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -22,7 +22,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddChildChildSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -63,7 +63,7 @@ definition {
 			siteName = "Child SiteName");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddChildSite {
 		property testray.component.names = "Training";
 
@@ -93,7 +93,7 @@ definition {
 			siteName = "Site Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddPublicVirtualHostsSiteURL {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -121,7 +121,7 @@ definition {
 	}
 
 	@description = "Ensure that the super admin can add a Blank Site"
-	@priority = "4"
+	@priority = 4
 	test AddSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -138,7 +138,7 @@ definition {
 		Site.viewCP(siteName = "Site Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddSitesMultiple {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -183,7 +183,7 @@ definition {
 		Site.viewCP(siteName = "Site3 Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddSiteWithCommaInName {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -200,7 +200,7 @@ definition {
 		Site.viewCP(siteName = "Site Name,");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddSiteWithInvalidDuplicateName {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -219,7 +219,7 @@ definition {
 			siteNameInvalid = "Duplicate");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddSiteWithInvalidName {
 		for (var siteName : list "Site Name*,22222") {
 			ProductMenu.gotoPortlet(
@@ -228,12 +228,12 @@ definition {
 				portlet = "Sites");
 
 			Site.viewCannotAdd(
-				siteName = "${siteName}",
+				siteName = ${siteName},
 				siteNameInvalid = "Invalid");
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddSiteWithNullName {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -245,7 +245,7 @@ definition {
 			siteNameInvalid = "Null");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -262,7 +262,7 @@ definition {
 		Site.deleteCP(siteName = "Site Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -290,7 +290,7 @@ definition {
 		Site.viewCP(siteName = "Site Name Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditSiteFriendlyURL {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -337,7 +337,7 @@ definition {
 			sitePageURL = "${portalURL}/group/alpha");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test EditSiteFriendlyURLInvalid {
 		property test.name.skip.portal.instance = "CPSites#EditSiteFriendlyURLInvalid";
 
@@ -371,7 +371,7 @@ definition {
 			siteFriendlyURL = "/site-name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -388,7 +388,7 @@ definition {
 		Site.searchCP(siteName = "Site Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SiteCannotBeItsOwnParent {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -409,7 +409,7 @@ definition {
 			parentSiteName = "Site Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SiteCannotBeItsOwnParentStaging {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -447,7 +447,7 @@ definition {
 			parentSiteName = "Site Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewDisplayParentSiteViaSitesDirectory {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -533,7 +533,7 @@ definition {
 		SitesDirectory.viewDescriptivePG(siteName = "Site Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewSiteHierarchiesViaSitesDirectory {
 		ProductMenu.gotoPortlet(
 			category = "Sites",

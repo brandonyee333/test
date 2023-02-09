@@ -19,7 +19,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -37,7 +37,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchAssetsScopeEverythingAcrossMultipleSites {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -151,7 +151,7 @@ definition {
 			searchAssetType = "User");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchByPermission {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -210,7 +210,7 @@ definition {
 	// LPS-77299
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test SearchByUserFacet {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -271,7 +271,7 @@ definition {
 		Search.searchPG(searchTerm = "Entry");
 
 		Search.viewUserFacetPG(
-			facetFrequency = "1",
+			facetFrequency = 1,
 			searchAssetSummary = "Blogs Super Admin Entry Content",
 			searchAssetTitle = "Blogs Super Admin Entry Title",
 			searchAssetType = "Blogs Entry",
@@ -287,7 +287,7 @@ definition {
 			value1 = "Any User");
 
 		Search.viewUserFacetPG(
-			facetFrequency = "1",
+			facetFrequency = 1,
 			searchAssetSummary = "Blogs User Entry Content",
 			searchAssetTitle = "Blogs User Entry Title",
 			searchAssetType = "Blogs Entry",
@@ -311,7 +311,7 @@ definition {
 			value1 = "Any User");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchDeletedWebContent {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -344,7 +344,7 @@ definition {
 			value1 = "No results were found that matched the keywords");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchEntriesByPortletsAndModifiedRangeFacet {
 		Navigator.openURL();
 
@@ -456,23 +456,23 @@ definition {
 		Search.searchPG(searchTerm = '''"AssetContent"''');
 
 		for (var searchAssetTitle : list "Blogs Entry1 Title,WC WebContent2 Title,Wiki Page2 Title,DM Document Title") {
-			var key_searchAssetTitle = "${searchAssetTitle}";
+			var key_searchAssetTitle = ${searchAssetTitle};
 
 			AssertTextEquals(
 				locator1 = "SearchResults#ASSET_ENTRY_TABLE_TITLE",
-				value1 = "${searchAssetTitle}");
+				value1 = ${searchAssetTitle});
 		}
 
 		for (var searchAssetTitle : list "Blogs Entry2 Title,WC WebContent1 Title,Wiki Page1 Title") {
-			var key_searchAssetTitle = "${searchAssetTitle}";
+			var key_searchAssetTitle = ${searchAssetTitle};
 
 			AssertTextNotPresent(
 				locator1 = "SearchResults#ASSET_ENTRY_TABLE_TITLE",
-				value1 = "${searchAssetTitle}");
+				value1 = ${searchAssetTitle});
 		}
 
 		Search.viewAssetTypeFacetPG(
-			facetFrequency = "1",
+			facetFrequency = 1,
 			searchAssetTitle = "Wiki Page2 Title",
 			searchAssetType = "Wiki Page");
 
@@ -481,24 +481,24 @@ definition {
 		Search.gotoModifiedRangeFacetPG(searchModifiedRange = "Past Month");
 
 		for (var searchAssetTitle : list "Blogs Entry1 Title,WC WebContent2 Title,Wiki Page2 Title,DM Document Title") {
-			var key_searchAssetTitle = "${searchAssetTitle}";
+			var key_searchAssetTitle = ${searchAssetTitle};
 
 			AssertTextEquals(
 				locator1 = "SearchResults#ASSET_ENTRY_TABLE_TITLE",
-				value1 = "${searchAssetTitle}");
+				value1 = ${searchAssetTitle});
 		}
 
 		for (var searchAssetTitle : list "Blogs Entry2 Title,WC WebContent1 Title,Wiki Page1 Title") {
-			var key_searchAssetTitle = "${searchAssetTitle}";
+			var key_searchAssetTitle = ${searchAssetTitle};
 
 			AssertTextNotPresent(
 				locator1 = "SearchResults#ASSET_ENTRY_TABLE_TITLE",
-				value1 = "${searchAssetTitle}");
+				value1 = ${searchAssetTitle});
 		}
 	}
 
 	@description = "This is a use case for LPS-25877."
-	@priority = "5"
+	@priority = 5
 	test SearchPortletIdAfterLogout {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -522,7 +522,7 @@ definition {
 			searchAssetType = "Organization");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchTwiceHideSitesFacet {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -619,7 +619,7 @@ definition {
 			searchAssetType = "User");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchTwiceScopeEverything {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -720,7 +720,7 @@ definition {
 			searchAssetType = "User");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchTwiceScopeLetUserChoose {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -825,7 +825,7 @@ definition {
 			searchAssetType = "User");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SearchTwiceScopeThisSite {
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -926,7 +926,7 @@ definition {
 			searchAssetType = "User");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchXSSAsset {
 		Page.add(pageName = "Message Boards Page");
 
@@ -950,12 +950,12 @@ definition {
 		var actualScript = '''<script>alert(123);</script>''';
 		var escapedScript = '''&lt;script&gt;<span class="highlight">alert</span>(123);&lt;/script&gt;''';
 
-		AssertHTMLSourceTextNotPresent(value1 = "${actualScript}");
+		AssertHTMLSourceTextNotPresent(value1 = ${actualScript});
 
-		AssertHTMLSourceTextPresent(value1 = "${escapedScript}");
+		AssertHTMLSourceTextPresent(value1 = ${escapedScript});
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewStagedAndLiveContentInSearchResults {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -1038,7 +1038,7 @@ definition {
 			searchAssetType = "Web Content Article");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewUserSearchResult {
 		property test.name.skip.portal.instance = "SearchUsecase#ViewUserSearchResult";
 

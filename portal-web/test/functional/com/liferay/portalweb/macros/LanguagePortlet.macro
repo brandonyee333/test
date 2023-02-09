@@ -5,10 +5,10 @@ definition {
 
 		Panel.expandPanel(panelHeading = "Languages");
 
-		for (var currentLanguage : list "${currentLanguages}") {
+		for (var currentLanguage : list ${currentLanguages}) {
 			AssertTextEquals.assertPartialText(
 				locator1 = "LanguageConfiguration#LANGUAGES_CURRENT",
-				value1 = "${currentLanguage}");
+				value1 = ${currentLanguage});
 		}
 
 		SelectFrame(value1 = "relative=top");
@@ -27,18 +27,18 @@ definition {
 	}
 
 	macro moveLanguagesToCurrent {
-		for (var currentLanguage : list "${currentLanguages}") {
-			var key_currentLanguage = "${currentLanguage}";
+		for (var currentLanguage : list ${currentLanguages}) {
+			var key_currentLanguage = ${currentLanguage};
 
 			Select(
 				locator1 = "LanguageConfiguration#LANGUAGES_AVAILABLE",
-				value1 = "${currentLanguage}");
+				value1 = ${currentLanguage});
 
 			Click(locator1 = "Button#MOVE_AVAILABLE_TO_CURRENT");
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "LanguageConfiguration#LANGUAGES_CURRENT",
-				value1 = "${currentLanguage}");
+				value1 = ${currentLanguage});
 		}
 
 		PortletEntry.save();
@@ -47,43 +47,43 @@ definition {
 	}
 
 	macro selectLanguagePG {
-		if ("${language}" == "Arabic (Saudi Arabia)") {
+		if (${language} == "Arabic (Saudi Arabia)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_ARABIC");
 		}
-		else if ("${language}" == "Chinese (China)") {
+		else if (${language} == "Chinese (China)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_CHINESE");
 		}
-		else if ("${language}" == "English (United States)") {
+		else if (${language} == "English (United States)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_ENGLISH");
 		}
-		else if ("${language}" == "French (Canada)") {
+		else if (${language} == "French (Canada)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_FRENCH_CANADA");
 		}
-		else if ("${language}" == "French (France)") {
+		else if (${language} == "French (France)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_FRENCH");
 		}
-		else if ("${language}" == "French (France) contrast") {
+		else if (${language} == "French (France) contrast") {
 			Click(locator1 = "Language#LANGUAGE_MENU_FRENCH_FRANCE");
 		}
-		else if ("${language}" == "Finnish (Finland)") {
+		else if (${language} == "Finnish (Finland)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_FINNISH");
 		}
-		else if ("${language}" == "German (Germany)") {
+		else if (${language} == "German (Germany)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_GERMAN");
 		}
-		else if ("${language}" == "Hebrew (Israel)") {
+		else if (${language} == "Hebrew (Israel)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_HEBREW");
 		}
-		else if ("${language}" == "Hungarian (Hungary)") {
+		else if (${language} == "Hungarian (Hungary)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_HUNGARIAN");
 		}
-		else if ("${language}" == "Japanese (Japan)") {
+		else if (${language} == "Japanese (Japan)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_JAPANESE");
 		}
-		else if ("${language}" == "Portuguese (Brazil)") {
+		else if (${language} == "Portuguese (Brazil)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_PORTUGUESE");
 		}
-		else if ("${language}" == "Spanish (Spain)") {
+		else if (${language} == "Spanish (Spain)") {
 			Click(locator1 = "Language#LANGUAGE_MENU_SPANISH");
 		}
 		else {
@@ -102,7 +102,7 @@ definition {
 
 		Select(
 			locator1 = "Configuration#SETUP_DISPLAY_SETTINGS_DISPLAY_TEMPLATE_SELECT",
-			value1 = "${displayStyle}");
+			value1 = ${displayStyle});
 
 		Button.clickSave();
 
@@ -110,48 +110,48 @@ definition {
 	}
 
 	macro viewDisplayTemplateIconMenu {
-		var key_language = "${language}";
+		var key_language = ${language};
 
 		Click(locator1 = "Language#ICON_MENU_DROPDOWN");
 
 		AssertTextEquals(
 			locator1 = "Language#ICON_MENU_LANGUAGE",
-			value1 = "${language}");
+			value1 = ${language});
 	}
 
 	macro viewDisplayTemplateLongText {
-		var key_language = "${language}";
+		var key_language = ${language};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Language#LONG_TEXT_LINK",
-			value1 = "${language}");
+			value1 = ${language});
 	}
 
 	macro viewDisplayTemplateSelectBox {
 		AssertTextEquals.assertPartialText(
 			locator1 = "Language#LANGUAGE_MENU_SELECT",
-			value1 = "${language}");
+			value1 = ${language});
 	}
 
 	macro viewDisplayTemplateShortText {
-		var key_languageKey = "${languageKey}";
+		var key_languageKey = ${languageKey};
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Language#SHORT_TEXT_LINK",
-			value1 = "${languageKey}");
+			value1 = ${languageKey});
 	}
 
 	macro viewLanguagesAbsent {
-		for (var missingLanguage : list "${missingLanguages}") {
-			var missingLanguage = "${missingLanguage}";
+		for (var missingLanguage : list ${missingLanguages}) {
+			var missingLanguage = ${missingLanguage};
 
 			AssertElementNotPresent(locator1 = "Language#LANGUAGE_MENU_${missingLanguage}");
 		}
 	}
 
 	macro viewLanguagesPresent {
-		for (var currentLanguage : list "${currentLanguages}") {
-			var currentLanguage = "${currentLanguage}";
+		for (var currentLanguage : list ${currentLanguages}) {
+			var currentLanguage = ${currentLanguage};
 
 			AssertElementPresent(locator1 = "Language#LANGUAGE_MENU_${currentLanguage}");
 		}

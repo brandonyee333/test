@@ -38,47 +38,47 @@ definition {
 		Type(
 			key_text = "name",
 			locator1 = "TextArea#ANY",
-			value1 = "${configurationName}");
+			value1 = ${configurationName});
 
 		Type(
 			key_text = "authorizationGrantEndpoint",
 			locator1 = "TextArea#ANY",
-			value1 = "${authorizationGrantEndpoint}");
+			value1 = ${authorizationGrantEndpoint});
 
 		Type(
 			key_text = "authorizationTokenEndpoint",
 			locator1 = "TextArea#ANY",
-			value1 = "${authorizationTokenEndpoint}");
+			value1 = ${authorizationTokenEndpoint});
 
 		Type(
 			key_text = "clientId",
 			locator1 = "TextArea#ANY",
-			value1 = "${clientId}");
+			value1 = ${clientId});
 
 		Type(
 			key_text = "clientSecret",
 			locator1 = "TextArea#ANY",
-			value1 = "${clientSecret}");
+			value1 = ${clientSecret});
 
 		Type(
 			key_text = "scope",
 			locator1 = "TextArea#ANY",
-			value1 = "${configurationScope}");
+			value1 = ${configurationScope});
 
 		Type(
 			key_text = "tenantId",
 			locator1 = "TextArea#ANY",
-			value1 = "${tenantId}");
+			value1 = ${tenantId});
 
 		Type(
 			key_text = "siteDomain",
 			locator1 = "TextArea#ANY",
-			value1 = "${siteDomain}");
+			value1 = ${siteDomain});
 
 		Type(
 			key_text = "resource",
 			locator1 = "TextArea#ANY",
-			value1 = "${configurationResource}");
+			value1 = ${configurationResource});
 
 		Button.clickSave();
 
@@ -96,7 +96,7 @@ definition {
 		Type(
 			key_fieldLabel = "Name",
 			locator1 = "TextInput#GENERIC_TEXT_INPUT",
-			value1 = "${configurationName}");
+			value1 = ${configurationName});
 
 		DMRepository.addSharepoint(
 			dmRepositoryLibraryPath = "Documentos compartidos",
@@ -115,13 +115,13 @@ definition {
 		DMPortlet.setDescriptiveView();
 
 		AssertClick(
-			key_dmRepositoryName = "${configurationName}",
+			key_dmRepositoryName = ${configurationName},
 			locator1 = "DocumentsAndMedia#REPOSITORY_FOLDER_NAME_DESCRIPTIVE_VIEW",
-			value1 = "${configurationName}");
+			value1 = ${configurationName});
 
 		MicrosoftLogin.accountSignIn();
 
-		MicrosoftLogin.confirmSharepointApp(dmRepositoryName = "${configurationName}");
+		MicrosoftLogin.confirmSharepointApp(dmRepositoryName = ${configurationName});
 
 		Navigator.openSpecificURL(url = "https://localhost:8443");
 
@@ -134,18 +134,18 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
 
 	// LPS-87107
 
-	@priority = "5"
+	@priority = 5
 	test ViewRepository {
-		DMRepository.gotoCP(dmRepositoryName = "${configurationName}");
+		DMRepository.gotoCP(dmRepositoryName = ${configurationName});
 
-		DMRepository.viewBreadcrumb(dmRepositoryName = "${configurationName}");
+		DMRepository.viewBreadcrumb(dmRepositoryName = ${configurationName});
 	}
 
 }

@@ -1,41 +1,41 @@
 definition {
 
 	macro gotoAssignees {
-		LexiconEntry.gotoEntry(rowEntry = "${roleTitle}");
+		LexiconEntry.gotoEntry(rowEntry = ${roleTitle});
 
 		Navigator.gotoNavItem(navItem = "Assignees");
 	}
 
 	macro gotoAssigneeType {
-		Navigator.gotoNavItem(navItem = "${assigneeType}");
+		Navigator.gotoNavItem(navItem = ${assigneeType});
 	}
 
 	macro gotoPermissionSectionViaDropdown {
-		var key_navItem = "${contentTitle}";
+		var key_navItem = ${contentTitle};
 
 		if (IsNotVisible(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM")) {
-			var key_navItem = "${sectionTitle}";
+			var key_navItem = ${sectionTitle};
 
 			AssertClick(
 				locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM",
-				value1 = "${sectionTitle}");
+				value1 = ${sectionTitle});
 		}
 
 		if (IsNotVisible(locator1 = "RolesPermissionsNavigation#${permissionName}")) {
-			var key_navItem = "${contentTitle}";
+			var key_navItem = ${contentTitle};
 
 			AssertClick(
 				locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM",
-				value1 = "${contentTitle}");
+				value1 = ${contentTitle});
 		}
 
 		Click(locator1 = "RolesPermissionsNavigation#${permissionName}");
 	}
 
 	macro gotoViewNotHaveRolePermissions {
-		var key_roleName = "${roleName}";
+		var key_roleName = ${roleName};
 
-		if (contains("Organization,Site", "${roleType}")) {
+		if (contains("Organization,Site", ${roleType})) {
 			Navigator.gotoNavItem(navItem = "${roleType} Roles");
 		}
 		else {
@@ -44,23 +44,23 @@ definition {
 
 		Type.sendKeys(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "${roleName}");
+			value1 = ${roleName});
 
 		Click(locator1 = "Button#SUBMIT");
 
 		if (isSet(roleUser)) {
-			var key_roleUser = "${roleUser}";
+			var key_roleUser = ${roleUser};
 
 			AssertTextEquals(
 				locator1 = "Roles#ROLE_TABLE_USER_TITLE",
-				value1 = "${roleUser}");
+				value1 = ${roleUser});
 
 			Click(locator1 = "Roles#ROLE_TABLE_ACTIONS");
 		}
 		else {
 			AssertTextEquals(
 				locator1 = "Roles#ROLE_TABLE_TITLE",
-				value1 = "${roleName}");
+				value1 = ${roleName});
 
 			Click(locator1 = "Roles#ROLE_TABLE_ACTIONS");
 		}

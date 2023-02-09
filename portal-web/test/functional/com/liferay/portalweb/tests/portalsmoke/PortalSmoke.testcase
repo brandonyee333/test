@@ -16,7 +16,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -27,7 +27,7 @@ definition {
 	}
 
 	@description = "Ensure that the super admin can add pages, add portlets, navigate to the product menu, use the WYSIWYG editor, and view alert messages."
-	@priority = "5"
+	@priority = 5
 	test Smoke {
 		property app.server.types = "jboss,resin,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.bare.enabled = "true";
@@ -51,7 +51,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "log4j:ERROR");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SmokeWithDeveloperProperties {
 		property custom.properties = "include-and-override=portal-developer.properties";
 		property portal.acceptance = "true";
@@ -62,7 +62,7 @@ definition {
 		Smoke.runSmoke();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SmokeWithRuntimeJSPCompile {
 		property delete.precompiled.jsps = "true";
 		property portal.smoke = "false";
@@ -72,7 +72,7 @@ definition {
 		Smoke.runSmoke();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test SmokeWithSPADisabled {
 		property custom.properties = "javascript.single.page.application.enabled=false";
 		property portal.smoke = "false";

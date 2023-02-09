@@ -12,7 +12,7 @@ definition {
 		PortletEntry.inputName(name = "${portletName} Test ADT");
 
 		Click(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "DDMEditTemplate#SCRIPT_FIELD");
 
 		PortletEntry.save();
@@ -21,7 +21,7 @@ definition {
 	}
 
 	macro addCP {
-		var key_adtType = "${adtType}";
+		var key_adtType = ${adtType};
 
 		Portlet.viewEmptyMessage();
 
@@ -35,7 +35,7 @@ definition {
 
 		UploadCommonFile(
 			locator1 = "DDMEditTemplate#SCRIPT_FILE_FIELD",
-			value1 = "${adtFile}");
+			value1 = ${adtFile});
 
 		PortletEntry.save();
 
@@ -47,7 +47,7 @@ definition {
 	macro addManualViaRSS {
 		IFrame.selectDialogFrame();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		if (IsElementPresent(locator1 = "Configuration#SETUP_DISPLAY_SETTINGS")) {
 			AssertClick(
@@ -80,12 +80,12 @@ definition {
 
 	macro addPG {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectConfigurationFrame();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		if (IsElementPresent(locator1 = "Configuration#SETUP_DISPLAY_SETTINGS")) {
 			AssertClick(
@@ -100,7 +100,7 @@ definition {
 			locator1 = "ApplicationDisplayTemplatesConfiguration#MANAGE_DISPLAY_TEMPLATES_LINK",
 			value1 = "Manage Display Templates for ${siteName}");
 
-		var key_adtType = "${adtType}";
+		var key_adtType = ${adtType};
 
 		SelectFrameTop();
 
@@ -108,7 +108,7 @@ definition {
 
 		LexiconEntry.gotoAdd();
 
-		var key_adtType = "${adtType}";
+		var key_adtType = ${adtType};
 
 		AssertVisible(locator1 = "ApplicationDisplayTemplates#PORTLET_PREFERENCES");
 
@@ -118,7 +118,7 @@ definition {
 
 		UploadCommonFile(
 			locator1 = "DDMEditTemplate#SCRIPT_FILE_FIELD",
-			value1 = "${adtFile}");
+			value1 = ${adtFile});
 
 		PortletEntry.save();
 
@@ -131,12 +131,12 @@ definition {
 
 	macro addPGWithScript {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectConfigurationFrame();
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		if (IsElementPresent(locator1 = "Configuration#SETUP_DISPLAY_SETTINGS")) {
 			AssertClick(
@@ -151,7 +151,7 @@ definition {
 			locator1 = "ApplicationDisplayTemplatesConfiguration#MANAGE_DISPLAY_TEMPLATES_LINK",
 			value1 = "Manage Display Templates for ${siteName}");
 
-		var key_adtType = "${adtType}";
+		var key_adtType = ${adtType};
 
 		SelectFrameTop();
 
@@ -159,7 +159,7 @@ definition {
 
 		LexiconEntry.gotoAdd();
 
-		var key_adtType = "${adtType}";
+		var key_adtType = ${adtType};
 
 		AssertVisible(locator1 = "ApplicationDisplayTemplates#PORTLET_PREFERENCES");
 
@@ -167,7 +167,7 @@ definition {
 
 		PortletEntry.inputName(name = "${adtType} Test ADT");
 
-		ApplicationDisplayTemplates.editADTScript(adtScript = "${script}");
+		ApplicationDisplayTemplates.editADTScript(adtScript = ${script});
 
 		AssertTextEquals(
 			locator1 = "ApplicationDisplayTemplates#ADT_TABLE_NAME_1",
@@ -178,12 +178,12 @@ definition {
 
 	macro addPortletADTWithFieldEntry {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectConfigurationFrame();
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		AssertClick.assertPartialTextClickAt(
 			locator1 = "ApplicationDisplayTemplatesConfiguration#MANAGE_DISPLAY_TEMPLATES_LINK",
@@ -198,7 +198,7 @@ definition {
 		PortletEntry.inputName(name = "${portletName} Test ADT");
 
 		Click(
-			key_fieldName = "${fieldName}",
+			key_fieldName = ${fieldName},
 			locator1 = "DDMEditTemplate#SCRIPT_FIELD");
 
 		PortletEntry.save();
@@ -209,17 +209,17 @@ definition {
 	macro editADTScript {
 		Type.sendKeysAceEditor(
 			locator1 = "TextArea#ACE_EDITOR",
-			value1 = "${adtScript}");
+			value1 = ${adtScript});
 
 		PortletEntry.save();
 	}
 
 	macro gotoWidgetTemplatesEllipsisItem {
 		Click.waitForMenuToggleJSClick(
-			key_tableEntry = "${widgetTemplateName}",
+			key_tableEntry = ${widgetTemplateName},
 			locator1 = "LexiconTable#TABLE_ENTRY_ELLIPSIS_LINK");
 
-		MenuItem.clickNoError(menuItem = "${item}");
+		MenuItem.clickNoError(menuItem = ${item});
 	}
 
 	macro searchGlobalADT {
@@ -229,7 +229,7 @@ definition {
 
 		Type(
 			locator1 = "Search#SEARCH_FIELD",
-			value1 = "${templateName}");
+			value1 = ${templateName});
 
 		KeyPress(
 			locator1 = "Search#SEARCH_FIELD",
@@ -237,12 +237,12 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "ApplicationDisplayTemplates#ADT_TABLE_NAME_1",
-			value1 = "${templateName}");
+			value1 = ${templateName});
 	}
 
 	macro selectPortletADT {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectConfigurationFrame();
@@ -255,7 +255,7 @@ definition {
 
 		Select(
 			locator1 = "Select#DISPLAY_TEMPLATE",
-			value1 = "${templateName}");
+			value1 = ${templateName});
 
 		PortletEntry.save();
 

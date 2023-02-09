@@ -10,7 +10,7 @@ definition {
 		User.firstLoginPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test MBSubscriptionManagerPortletSmoke {
 		property portlet.plugins.includes = "mb-subscription-manager-portlet";
 

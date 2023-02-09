@@ -15,7 +15,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewJSR {
 		Page.add(pageName = "Test JSR 286 PLT.26.6 Page");
 

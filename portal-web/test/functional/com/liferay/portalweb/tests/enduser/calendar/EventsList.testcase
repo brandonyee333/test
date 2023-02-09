@@ -33,12 +33,12 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewEventTime {
 		property portal.release = "true";
 
@@ -59,9 +59,9 @@ definition {
 		EventsListPortlet.gotoEventToday(eventTitle = "Calendar Event Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewRepeatingEventLinks {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
 
@@ -78,22 +78,22 @@ definition {
 		EventsListPortlet.gotoEventToday(eventTitle = "Repeating Event Title");
 
 		CalendarEvent.viewDetailsInPortlet(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Repeating Event Title");
 
-		var startDate = CalendarEvent.getEventStartDateViaDetails(startDate = "${startDate}");
+		var startDate = CalendarEvent.getEventStartDateViaDetails(startDate = ${startDate});
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
 		EventsListPortlet.gotoEventUpcoming(eventTitle = "Repeating Event Title");
 
 		CalendarEvent.viewDetailsInPortlet(
-			calendarName = "${siteName}",
+			calendarName = ${siteName},
 			eventTitle = "Repeating Event Title");
 
 		AssertTextNotEquals(
 			locator1 = "CalendarViewEventDetails#START_DATE_FIELD",
-			value1 = "${startDate}");
+			value1 = ${startDate});
 	}
 
 }

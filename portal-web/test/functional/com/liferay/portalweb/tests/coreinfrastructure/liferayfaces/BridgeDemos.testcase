@@ -20,7 +20,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -28,7 +28,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AlloyApplicantPortletSmoke {
 		Page.add(pageName = "alloy-applicant");
 
@@ -52,14 +52,14 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Button.click(button = "Submit");
 
 		for (var fieldName : list "firstName,lastName,emailAddress,phoneNumber,city,postalCode,provinceId") {
 			BridgeDemos.viewFieldErrorMessage(
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -87,7 +87,7 @@ definition {
 
 		BridgeDemos.autoPopulateCityState(
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -107,12 +107,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test BootsFacesApplicantPortletSmoke {
 		Page.add(pageName = "bootsfaces-applicant");
 
@@ -136,7 +136,7 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Button.click(button = "Submit");
 
@@ -144,7 +144,7 @@ definition {
 			BridgeDemos.viewFieldErrorMessage(
 				applicantName = "Boots Faces",
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -175,7 +175,7 @@ definition {
 
 		BridgeDemos.autoPopulateCityState(
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -195,12 +195,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ButterFacesApplicantPortletSmoke {
 		Page.add(pageName = "bootsfaces-applicant");
 
@@ -224,7 +224,7 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
@@ -232,7 +232,7 @@ definition {
 			BridgeDemos.viewFieldErrorMessage(
 				applicantName = "Butter Faces",
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -263,7 +263,7 @@ definition {
 
 		BridgeDemos.autoPopulateCityState(
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -283,12 +283,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSF_IPCEventsPortletsSmoke {
 		Page.add(pageName = "jsf-events");
 
@@ -309,35 +309,35 @@ definition {
 		var currentDate = DateUtil.getFormattedCurrentDate("MM/dd/yyyy");
 
 		BridgeDemos.viewNames(
-			customerId = "1",
+			customerId = 1,
 			firstName = "Brian",
 			lastName = "Green",
 			lastNameEdit = "Greeny");
 
 		BridgeDemos.viewStartDate(
-			customerId = "1",
-			startDate = "${currentDate}",
+			customerId = 1,
+			startDate = ${currentDate},
 			startDateEdit = "12/25/1999");
 
 		BridgeDemos.viewNames(
-			customerId = "2",
+			customerId = 2,
 			firstName = "Liz",
 			firstNameEdit = "Lizy",
 			lastName = "Kessler");
 
 		BridgeDemos.viewNames(
-			customerId = "3",
+			customerId = 3,
 			firstName = "Rich",
 			firstNameEdit = "Richy",
 			lastName = "Shearer");
 
 		BridgeDemos.viewStartDate(
-			customerId = "1",
+			customerId = 1,
 			startDate = "12/25/1999",
-			startDateEdit = "${currentDate}");
+			startDateEdit = ${currentDate});
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSF_IPCPublicRenderParamsPortletsSmoke {
 		Page.add(pageName = "jsf-prp");
 
@@ -358,35 +358,35 @@ definition {
 		var currentDate = DateUtil.getFormattedCurrentDate("MM/dd/yyyy");
 
 		BridgeDemos.viewNames(
-			customerId = "1",
+			customerId = 1,
 			firstName = "Brian",
 			lastName = "Green",
 			lastNameEdit = "Greeny");
 
 		BridgeDemos.viewStartDate(
-			customerId = "1",
-			startDate = "${currentDate}",
+			customerId = 1,
+			startDate = ${currentDate},
 			startDateEdit = "12/25/1999");
 
 		BridgeDemos.viewNames(
-			customerId = "2",
+			customerId = 2,
 			firstName = "Liz",
 			firstNameEdit = "Lizy",
 			lastName = "Kessler");
 
 		BridgeDemos.viewNames(
-			customerId = "3",
+			customerId = 3,
 			firstName = "Rich",
 			firstNameEdit = "Richy",
 			lastName = "Shearer");
 
 		BridgeDemos.viewStartDate(
-			customerId = "1",
+			customerId = 1,
 			startDate = "12/25/1999",
-			startDateEdit = "${currentDate}");
+			startDateEdit = ${currentDate});
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSFApplicantPortletSmoke {
 		Page.add(pageName = "jsf-applicant");
 
@@ -410,14 +410,14 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
 		for (var fieldName : list "firstName,lastName,emailAddress,phoneNumber,city,postalCode,provinceId") {
 			BridgeDemos.viewFieldErrorMessage(
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -445,7 +445,7 @@ definition {
 
 		BridgeDemos.autoPopulateCityState(
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -465,12 +465,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSFCDIApplicantPortletSmoke {
 		Page.add(pageName = "jsf-cdi-applicant");
 
@@ -494,14 +494,14 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
 		for (var fieldName : list "firstName,lastName,emailAddress,phoneNumber,city,postalCode,provinceId") {
 			BridgeDemos.viewFieldErrorMessage(
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -529,7 +529,7 @@ definition {
 
 		BridgeDemos.autoPopulateCityState(
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -549,12 +549,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSFExportPDFPortletSmoke {
 		Page.add(pageName = "jsf-pdf");
 
@@ -573,7 +573,7 @@ definition {
 		BridgeDemos.exportFile(lastName = "Green,Kessler,Shearer");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSFFlowsPortletSmoke {
 		Page.add(pageName = "jsf flows");
 
@@ -630,16 +630,16 @@ definition {
 			departure = "Los Angeles: Los Angeles International Airport (LAX)");
 
 		BridgeDemos.bookFlight(
-			accountNumber = "12345678901234567890",
+			accountNumber = 12345678901234567890,
 			addressLine1 = "123 Gilgod Ave",
 			city = "Hollywood",
-			cvv = "123",
+			cvv = 123,
 			emailAddress = "John@Adams.org",
 			expirationMonth = "01/10",
 			firstName = "John",
 			lastName = "Adams",
 			paymentType = "Visa",
-			phoneNumber = "1234567890",
+			phoneNumber = 1234567890,
 			province = "California",
 			title = "Mr.");
 
@@ -650,7 +650,7 @@ definition {
 		BridgeDemos.viewLibraries(libraryName = "bookingFlowModelBeanInScope=false,cartModelBeanInScope=false,flightSearchModelBeanInScope=false,surveyFlowModelBeanInScope=false");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSFHTML5ApplicantPortletSmoke {
 		Page.add(pageName = "jsf-html5-applicant");
 
@@ -674,14 +674,14 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
 		for (var fieldName : list "firstName,lastName,emailAddress,phoneNumber,city,postalCode,provinceId") {
 			BridgeDemos.viewFieldErrorMessage(
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -709,7 +709,7 @@ definition {
 
 		BridgeDemos.autoPopulateCityState(
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -729,12 +729,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSFJSPApplicantPortletSmoke {
 		Page.add(pageName = "jsf-jsp-applicant");
 
@@ -758,14 +758,14 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
 		BridgeDemos.viewFieldErrorMessage(
 			applicantName = "JSF JSP",
 			errorMessage = "Value is required",
-			fieldName = "${fieldName}");
+			fieldName = ${fieldName});
 
 		BridgeDemos.validateField(
 			applicantName = "JSF JSP",
@@ -805,12 +805,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test JSFSpringApplicantPortletSmoke {
 		Page.add(pageName = "jsf-spring-applicant");
 
@@ -834,14 +834,14 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
 		for (var fieldName : list "firstName,lastName,emailAddress,phoneNumber,city,postalCode,provinceId") {
 			BridgeDemos.viewFieldErrorMessage(
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -869,7 +869,7 @@ definition {
 
 		BridgeDemos.autoPopulateCityState(
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -889,12 +889,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test PrimeFacesCDIApplicantPortletSmoke {
 		Page.add(pageName = "primefaces-applicant");
 
@@ -918,14 +918,14 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
 		for (var fieldName : list "firstName,lastName,emailAddress,phoneNumber,city,postalCode,provinceId") {
 			BridgeDemos.viewFieldErrorMessage(
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -957,7 +957,7 @@ definition {
 		BridgeDemos.autoPopulateCityState(
 			applicantName = "Prime Faces",
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -980,12 +980,12 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test RichFacesCDIApplicantPortletSmoke {
 		Page.add(pageName = "richfaces-applicant");
 
@@ -1009,14 +1009,14 @@ definition {
 
 		BridgeDemos.viewDateFormat(
 			dateFormat = "MM/dd/yyyy",
-			displayDate = "${displayDate}");
+			displayDate = ${displayDate});
 
 		Click(locator1 = "BridgeDemos#SUBMIT_BUTTON");
 
 		for (var fieldName : list "firstName,lastName,emailAddress,phoneNumber,city,postalCode,provinceId") {
 			BridgeDemos.viewFieldErrorMessage(
 				errorMessage = "Value is required",
-				fieldName = "${fieldName}");
+				fieldName = ${fieldName});
 		}
 
 		BridgeDemos.validateField(
@@ -1044,7 +1044,7 @@ definition {
 
 		BridgeDemos.autoPopulateCityState(
 			city = "Orlando",
-			postalCode = "32801",
+			postalCode = 32801,
 			state = "FL");
 
 		BridgeDemos.addComment(comments = "testing 1, 2, 3");
@@ -1066,8 +1066,8 @@ definition {
 			emailAddress = "no_need@just.pray",
 			firstName = "David",
 			lastName = "Samuel",
-			phoneNumber = "1112223333",
-			postalCode = "32801",
+			phoneNumber = 1112223333,
+			postalCode = 32801,
 			state = "FL");
 	}
 

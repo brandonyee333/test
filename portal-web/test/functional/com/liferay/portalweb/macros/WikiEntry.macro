@@ -3,13 +3,13 @@ definition {
 	macro addMediaWikiDescription {
 		Type(
 			locator1 = "TextArea#WEB_EDITOR",
-			value1 = "${wikiPageContent}");
+			value1 = ${wikiPageContent});
 	}
 
 	macro addPageTitle {
 		Type.typeEditor(
 			locator1 = "AlloyEditor#TITLE_FIELD",
-			value1 = "${wikiPageTitle}");
+			value1 = ${wikiPageTitle});
 	}
 
 	macro cancel {
@@ -40,19 +40,19 @@ definition {
 
 			SelectNoError(
 				locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN",
-				value1 = "${pageFormat}");
+				value1 = ${pageFormat});
 		}
 		else if (IsVisible(locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN")) {
 			SelectNoError(
 				locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN",
-				value1 = "${pageFormat}");
+				value1 = ${pageFormat});
 		}
 	}
 
 	macro viewPageContentBody {
 		AssertTextEquals(
 			locator1 = "WikiEntry#BODY",
-			value1 = "${wikiPageContent}");
+			value1 = ${wikiPageContent});
 	}
 
 	macro viewPageFormat {
@@ -62,7 +62,7 @@ definition {
 
 		AssertSelectedLabel(
 			locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN",
-			value1 = "${pageFormat}");
+			value1 = ${pageFormat});
 	}
 
 }

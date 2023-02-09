@@ -14,7 +14,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewCacheConfiguration {
 		Page.add(pageName = "Test Cache Configuration Page");
 

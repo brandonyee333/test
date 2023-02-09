@@ -45,7 +45,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -53,7 +53,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEventRepeatDaily {
 		Staging.addRepeatEvent(
 			frequency = "Daily",
@@ -66,7 +66,7 @@ definition {
 			siteName = "site-name-staging");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddPageVariation {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -98,7 +98,7 @@ definition {
 			pageName = "german");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddPageWithPageVersioningEnabled {
 		property portal.acceptance = "true";
 
@@ -135,7 +135,7 @@ definition {
 		Portlet.viewSpecificPG(portletName = "Hello World");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddSitePagesVariation {
 		property portal.acceptance = "true";
 

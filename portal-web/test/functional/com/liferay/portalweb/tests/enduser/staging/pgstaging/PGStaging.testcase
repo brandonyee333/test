@@ -30,7 +30,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -38,7 +38,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ActivateDeactivateRemoteStaging {
 		property app.server.types = "tomcat";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -97,7 +97,7 @@ definition {
 			dmDocumentTitle = "DM Document Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ActivateDeactivateStagingLocalLiveDM {
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -131,7 +131,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = "30000");
+		Pause(locator1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -167,7 +167,7 @@ definition {
 			pageStaging = "true");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ActivateRemoteStaging {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -175,12 +175,12 @@ definition {
 		property portal.acceptance = "true";
 
 		Staging.remoteStagingSetUp(
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -192,7 +192,7 @@ definition {
 		Site.deleteAllCP();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddDMDocumentWCArticleStagingLocalLive {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -264,7 +264,7 @@ definition {
 			pageStaging = "true");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AssertEditWebContentStaging {
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -317,7 +317,7 @@ definition {
 			webContentTitle = "Web Content Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AssertNoEditLink {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -414,7 +414,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeactivateStaging {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -429,7 +429,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = "30000");
+		Pause(locator1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -439,7 +439,7 @@ definition {
 		Staging.deactivateStagingCP(siteName = "Site Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteDMDocument {
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -528,7 +528,7 @@ definition {
 		AssertElementNotPresent(locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_ICON");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test LayoutScope {
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -553,7 +553,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -563,7 +563,7 @@ definition {
 		Staging.deactivateStagingCP(siteName = "Site Name");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ModifyInitalPageVariationSetup {
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -581,7 +581,7 @@ definition {
 	}
 
 	@description = "This test covers LPS-72893."
-	@priority = "4"
+	@priority = 4
 	test PublishLayoutIconDeletion {
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -623,7 +623,7 @@ definition {
 		Page.viewLayoutLogoPG();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test PublishPrivatePage {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -665,7 +665,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-80367."
-	@priority = "5"
+	@priority = 5
 	test PublishWCIncludingTextsAndImages {
 		Navigator.openURL();
 
@@ -715,7 +715,7 @@ definition {
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
 
-		DMDocument.linkImage(dmDocumentURL = "${dmDocumentURL}");
+		DMDocument.linkImage(dmDocumentURL = ${dmDocumentURL});
 
 		PortletEntry.publish();
 
@@ -770,7 +770,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-62869."
-	@priority = "3"
+	@priority = 3
 	test PublishWCViaRemoteStaging {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -778,7 +778,7 @@ definition {
 
 		Staging.remoteStagingSetUp(
 			pageVersioningEnabled = "true",
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
@@ -805,7 +805,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -819,7 +819,7 @@ definition {
 		WebContent.viewNoEditWCViaWCD(webContentContent = "Web Content Content");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test PublishWCWithPagesVariationViaRemoteStaging {
 		property app.server.bundles.size = "1";
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
@@ -828,7 +828,7 @@ definition {
 
 		Staging.remoteStagingSetUp(
 			pageVersioningEnabled = "true",
-			remotePort = "9080",
+			remotePort = 9080,
 			remoteStaging = "true",
 			siteName = "Site Name");
 
@@ -914,7 +914,7 @@ definition {
 			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
@@ -946,7 +946,7 @@ definition {
 		Site.deleteAllCP();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test StagingPublishPortlet {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";

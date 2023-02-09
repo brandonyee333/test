@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -24,7 +24,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddAutoAssertionTagViaBlogs {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -50,7 +50,7 @@ definition {
 				panel = "Site Administration",
 				portlet = "Tags");
 
-			Tag.addCP(tagName = "${tagName}");
+			Tag.addCP(tagName = ${tagName});
 		}
 
 		Navigator.gotoSitePage(
@@ -78,7 +78,7 @@ definition {
 			tagName = "tag name 3");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddFrontPageTag {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -108,7 +108,7 @@ definition {
 			wikiPageContent = "Wiki FrontPage Content");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddMultipleTagsViaBlogs {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -149,11 +149,11 @@ definition {
 			BlogsEntry.viewTagPG(
 				entryContent = "Entry Content",
 				entryTitle = "Entry Title",
-				tagName = "${tagName}");
+				tagName = ${tagName});
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddSelectTagViaBlogs {
 		property portal.acceptance = "true";
 
@@ -181,7 +181,7 @@ definition {
 				panel = "Site Administration",
 				portlet = "Tags");
 
-			Tag.addCP(tagName = "${tagName}");
+			Tag.addCP(tagName = ${tagName});
 		}
 
 		Navigator.gotoSitePage(
@@ -219,11 +219,11 @@ definition {
 
 			BlogsEntry.viewTagPG(
 				entryTitle = "Entry Title",
-				tagName = "${tagName}");
+				tagName = ${tagName});
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddTagViaBlogs {
 		property portal.acceptance = "true";
 
@@ -269,7 +269,7 @@ definition {
 			tagName = "tag name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DisplayTagCloud {
 		Page.add(pageName = "Tags Navigation Page");
 
@@ -297,7 +297,7 @@ definition {
 				panel = "Site Administration",
 				portlet = "Tags");
 
-			Tag.addCP(tagName = "${tagName}");
+			Tag.addCP(tagName = ${tagName});
 		}
 
 		Navigator.openURL();
@@ -330,18 +330,18 @@ definition {
 
 		TagsNavigationPortlet.viewTagCloud(
 			tagName = "first tag (2)",
-			tagPopularityLevel = "6");
+			tagPopularityLevel = 6);
 
 		TagsNavigationPortlet.viewTagCloud(
 			tagName = "second tag (1)",
-			tagPopularityLevel = "3");
+			tagPopularityLevel = 3);
 
 		TagsNavigationPortlet.viewTagCloud(
 			tagName = "third tag (0)",
-			tagPopularityLevel = "1");
+			tagPopularityLevel = 1);
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DisplayTagUsageStatistics {
 		Page.add(pageName = "Tags Navigation Page");
 
@@ -367,7 +367,7 @@ definition {
 				panel = "Site Administration",
 				portlet = "Tags");
 
-			Tag.addCP(tagName = "${tagName}");
+			Tag.addCP(tagName = ${tagName});
 		}
 
 		Navigator.openURL();
@@ -409,7 +409,7 @@ definition {
 			tagName = "second tag");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test DisplayUnusedTags {
 		Page.add(pageName = "Tags Navigation Page");
 
@@ -425,7 +425,7 @@ definition {
 				panel = "Site Administration",
 				portlet = "Tags");
 
-			Tag.addCP(tagName = "${tagName}");
+			Tag.addCP(tagName = ${tagName});
 		}
 
 		Navigator.gotoPage(pageName = "Tags Navigation Page");
@@ -437,7 +437,7 @@ definition {
 		TagsNavigationPortlet.viewDefaultPG(tagNameList = "tag name 1,tag name 2,tag name 3");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test RemoveSelectTagViaBlogs {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -482,7 +482,7 @@ definition {
 			BlogsEntry.viewTagPG(
 				entryContent = "Entry Content",
 				entryTitle = "Entry Title",
-				tagName = "${tagName}");
+				tagName = ${tagName});
 		}
 
 		Navigator.gotoSitePage(
@@ -494,7 +494,7 @@ definition {
 		Panel.expandPanel(panelHeading = "Categorization");
 
 		for (var tagName : list "tag name 1,tag name 3") {
-			AssetCategorization.removeTag(tagName = "${tagName}");
+			AssetCategorization.removeTag(tagName = ${tagName});
 		}
 
 		PortletEntry.publish();
@@ -512,7 +512,7 @@ definition {
 		AssertTextNotPresent(value1 = "tag name 3");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test RemoveTagViaBlogs {
 		property portal.acceptance = "true";
 
@@ -555,7 +555,7 @@ definition {
 			BlogsEntry.viewTagPG(
 				entryContent = "Entry Content",
 				entryTitle = "Entry Title",
-				tagName = "${tagName}");
+				tagName = ${tagName});
 		}
 
 		Navigator.gotoSitePage(
@@ -581,7 +581,7 @@ definition {
 		AssertTextNotPresent(value1 = "tag name 1");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchMultipleTagsViaBlogs {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -645,7 +645,7 @@ definition {
 			searchAssetTitle = "Entry Title 3");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewTagCloudDisplayConfiguration {
 		Page.add(pageName = "Tag Cloud Page");
 
@@ -658,7 +658,7 @@ definition {
 		TagsNavigationPortlet.viewTagCloudConfiguration(displayTemplate = "Cloud");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewTagCloudIncrease {
 		property portal.acceptance = "true";
 
@@ -688,7 +688,7 @@ definition {
 				panel = "Site Administration",
 				portlet = "Tags");
 
-			Tag.addCP(tagName = "${tagName}");
+			Tag.addCP(tagName = ${tagName});
 		}
 
 		Navigator.openURL();
@@ -721,11 +721,11 @@ definition {
 
 		TagsNavigationPortlet.viewTagCloud(
 			tagName = "first tag (2)",
-			tagPopularityLevel = "6");
+			tagPopularityLevel = 6);
 
 		TagsNavigationPortlet.viewTagCloud(
 			tagName = "second tag (1)",
-			tagPopularityLevel = "3");
+			tagPopularityLevel = 3);
 
 		Navigator.openURL();
 
@@ -745,11 +745,11 @@ definition {
 
 		TagsNavigationPortlet.viewTagCloud(
 			tagName = "first tag (3)",
-			tagPopularityLevel = "6");
+			tagPopularityLevel = 6);
 
 		TagsNavigationPortlet.viewTagCloud(
 			tagName = "second tag (2)",
-			tagPopularityLevel = "4");
+			tagPopularityLevel = 4);
 	}
 
 }

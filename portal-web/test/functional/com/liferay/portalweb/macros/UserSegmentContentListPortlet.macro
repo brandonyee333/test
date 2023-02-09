@@ -2,7 +2,7 @@ definition {
 
 	macro configureDisplayFilter {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectConfigurationFrame();
@@ -12,7 +12,7 @@ definition {
 		if (isSet(assetTypeFilter)) {
 			Select(
 				locator1 = "UserSegmentContentList#SELECT_ASSET_TYPE",
-				value1 = "${assetTypeFilter}");
+				value1 = ${assetTypeFilter});
 		}
 
 		if (isSet(selectMultipleAssetTypes)) {
@@ -26,8 +26,8 @@ definition {
 				Click(locator1 = "UserSegmentContentList#MOVE_SELECTED_TO_AVAILABLE_BUTTON");
 			}
 
-			for (var assetType : list "${selectMultipleAssetTypes}") {
-				var key_assetType = "${assetType}";
+			for (var assetType : list ${selectMultipleAssetTypes}) {
+				var key_assetType = ${assetType};
 
 				Click(locator1 = "UserSegmentContentList#AVAILABLE_ASSET_TYPE");
 
@@ -35,7 +35,7 @@ definition {
 
 				AssertTextEquals(
 					locator1 = "UserSegmentContentList#SELECTED_ASSETS",
-					value1 = "${assetType}");
+					value1 = ${assetType});
 			}
 
 			PortletEntry.save();
@@ -44,12 +44,12 @@ definition {
 				locator1 = "UserSegmentContentList#SELECT_ASSET_TYPE",
 				value1 = "Select More Than One...");
 
-			for (var assetType : list "${selectMultipleAssetTypes}") {
-				var key_assetType = "${assetType}";
+			for (var assetType : list ${selectMultipleAssetTypes}) {
+				var key_assetType = ${assetType};
 
 				AssertTextEquals(
 					locator1 = "UserSegmentContentList#SELECTED_ASSETS",
-					value1 = "${assetType}");
+					value1 = ${assetType});
 			}
 		}
 
@@ -57,12 +57,12 @@ definition {
 	}
 
 	macro viewContent {
-		for (var entryContent : list "${viewEntryContentList}") {
-			var key_entryContent = "${entryContent}";
+		for (var entryContent : list ${viewEntryContentList}) {
+			var key_entryContent = ${entryContent};
 
 			AssertTextEquals(
 				locator1 = "UserSegmentContentList#VIEW_ENTRY_CONTENT",
-				value1 = "${entryContent}");
+				value1 = ${entryContent});
 		}
 	}
 

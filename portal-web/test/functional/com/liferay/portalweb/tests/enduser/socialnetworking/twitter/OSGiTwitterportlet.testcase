@@ -19,7 +19,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test TwitterPortletSmoke {
 		var appName = "Twitter";
 
@@ -34,7 +34,7 @@ definition {
 			value1 = "remove-plugin -Dplugin.name=twitter-portlet");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewEntry {
 		property test.name.skip.portal.instance = "OSGiTwitterportlet#ViewEntry";
 
@@ -44,7 +44,7 @@ definition {
 
 		Twitter.configureUserProfile(twitterProfileName = "liferayqa3");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		Refresh();
 
@@ -63,13 +63,13 @@ definition {
 
 		Type(
 			locator1 = "TextInput#TWITTER",
-			value1 = "1");
+			value1 = 1);
 
 		SystemSettings.saveConfiguration();
 
 		UserBar.gotoProfile();
 
-		Pause(locator1 = "60000");
+		Pause(locator1 = 60000);
 
 		Refresh();
 

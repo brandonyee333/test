@@ -24,7 +24,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -46,7 +46,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchBlogsEntry {
 		Navigator.openURL();
 
@@ -150,7 +150,7 @@ definition {
 			searchTerm = "Title1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchBlogsEntryCategory {
 		Navigator.openURL();
 
@@ -219,7 +219,7 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test SearchBlogsEntryCategoryQuotes {
 		Navigator.openURL();
 
@@ -295,7 +295,7 @@ definition {
 			searchTerm = "\"Name1\"");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchBlogsEntryQuotes {
 		Navigator.openURL();
 
@@ -430,7 +430,7 @@ definition {
 			searchTerm = "\"Blogs Entry Content1\"");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchBlogsEntryTag {
 		Navigator.openURL();
 
@@ -484,7 +484,7 @@ definition {
 			searchTerm = "name1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchBlogsEntryTagQuotes {
 		Navigator.openURL();
 
@@ -547,7 +547,7 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "5"
+	@priority = 5
 	test SearchDocumentsAndMediaDocument {
 		property testray.component.names = "Training";
 
@@ -643,7 +643,7 @@ definition {
 			searchTerm = "Title1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchMessageBoardsThread {
 		Page.add(pageName = "Message Boards Page");
 
@@ -749,9 +749,9 @@ definition {
 			searchTerm = "Body1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchUser {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -770,7 +770,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		Navigator.gotoPage(pageName = "Test Page");
@@ -818,9 +818,9 @@ definition {
 			searchTerm = "usersn1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchUserWildcard {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -839,7 +839,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		Navigator.gotoPage(pageName = "Test Page");
@@ -857,7 +857,7 @@ definition {
 			searchAssetType = "User");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchWebContent {
 		Navigator.openURL();
 
@@ -953,7 +953,7 @@ definition {
 			searchTerm = "Content1");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchWikiPage {
 		Page.add(pageName = "Wiki Test Page");
 

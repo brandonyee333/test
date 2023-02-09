@@ -1,68 +1,68 @@
 definition {
 
 	macro populateFieldCheckBox {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_CHECKBOX_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_CHECKBOX_FIELD");
 
-		if ("${wfFieldValue}" == "true") {
+		if (${wfFieldValue} == "true") {
 			Check(locator1 = "WebForm#FORM_FIELDS_CHECKBOX_FIELD");
 		}
-		else if ("${wfFieldValue}" == "false") {
+		else if (${wfFieldValue} == "false") {
 			Uncheck(locator1 = "WebForm#FORM_FIELDS_CHECKBOX_FIELD");
 		}
 	}
 
 	macro populateFieldOptions {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		Select(
 			locator1 = "WebForm#FORM_FIELDS_OPTIONS_FIELD",
-			value1 = "${wfFieldValue}");
+			value1 = ${wfFieldValue});
 	}
 
 	macro populateFieldRadio {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
-		var key_wfRadioFieldOption = "${wfFieldValue}";
+		var key_wfRadioFieldOption = ${wfFieldValue};
 
 		Click(locator1 = "WebForm#FORM_FIELDS_RADIO_FIELD_OPTION");
 	}
 
 	macro populateFieldText {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		Type(
 			locator1 = "WebForm#FORM_FIELDS_TEXT_FIELD",
-			value1 = "${wfFieldValue}");
+			value1 = ${wfFieldValue});
 	}
 
 	macro populateFieldTextBox {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		Type(
 			locator1 = "WebForm#FORM_FIELDS_TEXT_BOX_FIELD",
-			value1 = "${wfFieldValue}");
+			value1 = ${wfFieldValue});
 	}
 
 	macro sendBlankPG {
@@ -88,21 +88,21 @@ definition {
 	}
 
 	macro viewFormFieldCheckBox {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_CHECKBOX_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_CHECKBOX_FIELD");
 	}
 
 	macro viewFormFieldOptions {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_OPTIONS_FIELD");
 	}
@@ -110,41 +110,41 @@ definition {
 	macro viewFormFieldParagraph {
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_PARAGRAPH_FIELD",
-			value1 = "${wfParagraphFieldText}");
+			value1 = ${wfParagraphFieldText});
 	}
 
 	macro viewFormFieldRadio {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
-		for (var wfRadioFieldOption : list "${optionsList}") {
-			var key_wfRadioFieldOption = "${wfRadioFieldOption}";
+		for (var wfRadioFieldOption : list ${optionsList}) {
+			var key_wfRadioFieldOption = ${wfRadioFieldOption};
 
 			AssertTextEquals(
 				locator1 = "WebForm#FORM_FIELDS_RADIO_FIELD_OPTION_LABEL",
-				value1 = "${wfRadioFieldOption}");
+				value1 = ${wfRadioFieldOption});
 		}
 	}
 
 	macro viewFormFieldText {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_TEXT_FIELD");
 	}
 
 	macro viewFormFieldTextBox {
-		var key_wfFieldName = "${wfFieldName}";
+		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_FIELD_HEADER",
-			value1 = "${wfFieldName}");
+			value1 = ${wfFieldName});
 
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_TEXT_BOX_FIELD");
 	}
@@ -152,11 +152,11 @@ definition {
 	macro viewPG {
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_INFORMATION_TITLE",
-			value1 = "${wfInformationTitle}");
+			value1 = ${wfInformationTitle});
 
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_INFORMATION_DESCRIPTION",
-			value1 = "${wfInformationDescription}");
+			value1 = ${wfInformationDescription});
 	}
 
 }

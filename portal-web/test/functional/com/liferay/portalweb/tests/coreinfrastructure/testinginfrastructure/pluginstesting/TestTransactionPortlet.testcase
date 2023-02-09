@@ -14,7 +14,7 @@ definition {
 		Page.tearDownPG();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewTransaction {
 		Page.add(pageName = "Test Transaction Page");
 

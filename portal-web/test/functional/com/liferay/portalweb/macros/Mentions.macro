@@ -1,12 +1,12 @@
 definition {
 
 	macro addMentionViaBlogsEntry {
-		var key_entryContent = "${entryContent}";
-		var key_mentionsUserScreenName = "${mentionsUserScreenName}";
+		var key_entryContent = ${entryContent};
+		var key_mentionsUserScreenName = ${mentionsUserScreenName};
 
 		BlogsNavigator.gotoAddEntry();
 
-		AlloyEditor.addTitle(title = "${entryTitle}");
+		AlloyEditor.addTitle(title = ${entryTitle});
 
 		Type.sendKeys(
 			locator1 = "AlloyEditor#CONTENT_FIELD",
@@ -18,8 +18,8 @@ definition {
 	}
 
 	macro addMentionViaComments {
-		var key_entryComment = "${entryComment}";
-		var key_mentionsUserScreenName = "${mentionsUserScreenName}";
+		var key_entryComment = ${entryComment};
+		var key_mentionsUserScreenName = ${mentionsUserScreenName};
 
 		Type.sendKeys(
 			locator1 = "Comments#COMMENT_FIELD",
@@ -35,12 +35,12 @@ definition {
 	}
 
 	macro addMentionViaMessageBoardsReply {
-		var key_mentionsUserScreenName = "${mentionsUserScreenName}";
-		var key_threadSubject = "${threadSubject}";
+		var key_mentionsUserScreenName = ${mentionsUserScreenName};
+		var key_threadSubject = ${threadSubject};
 
 		AssertClick(
 			locator1 = "MessageBoards#THREAD_LIST_THREAD",
-			value1 = "${threadSubject}");
+			value1 = ${threadSubject});
 
 		AssertElementPresent(locator1 = "MessageBoardsThread#MESSAGE_REPLY_1");
 
@@ -64,23 +64,23 @@ definition {
 	}
 
 	macro addMentionViaMessageBoardThread {
-		if ("${editMBThread}" == "True") {
+		if (${editMBThread} == "True") {
 			LexiconEntry.gotoEllipsisMenuItem(menuItem = "Edit");
 		}
 		else {
 			LexiconEntry.gotoAddMenuItem(menuItem = "Thread");
 		}
 
-		var key_mentionsUserScreenName = "${mentionsUserScreenName}";
+		var key_mentionsUserScreenName = ${mentionsUserScreenName};
 
 		Click(locator1 = "TextInput#SUBJECT");
 
 		Type(
 			locator1 = "TextInput#SUBJECT",
-			value1 = "${threadSubject}");
+			value1 = ${threadSubject});
 
 		if (isSet(multipleMentions)) {
-			for (var mentionsUserScreenName : list "${mentionsUserScreenNameList}") {
+			for (var mentionsUserScreenName : list ${mentionsUserScreenNameList}) {
 				SelectFrame(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
 				Type.sendKeys(
@@ -90,7 +90,7 @@ definition {
 				SelectFrame.selectFrameTop();
 
 				Click.clickNoMouseOver(
-					key_mentionsUserScreenName = "${mentionsUserScreenName}",
+					key_mentionsUserScreenName = ${mentionsUserScreenName},
 					locator1 = "Mentions#MENTIONS_USER_DISPLAY_OPTION");
 			}
 		}
@@ -112,9 +112,9 @@ definition {
 	}
 
 	macro viewCommentMentionTagLink {
-		var key_mentionsUserFullName = "${mentionsUserFullName}";
-		var key_mentionsUserScreenName = "${mentionsUserScreenName}";
-		var key_siteName = "${mentionsUserFullName}";
+		var key_mentionsUserFullName = ${mentionsUserFullName};
+		var key_mentionsUserScreenName = ${mentionsUserScreenName};
+		var key_siteName = ${mentionsUserFullName};
 
 		AssertClick(
 			locator1 = "Mentions#MENTIONS_COMMENT_TAG_LINK",
@@ -122,12 +122,12 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "SitePages#SITE_NAME",
-			value1 = "${mentionsUserFullName}");
+			value1 = ${mentionsUserFullName});
 	}
 
 	macro viewMentionTagLink {
-		var key_mentionsUserScreenName = "${mentionsUserScreenName}";
-		var key_siteName = "${mentionsUserFullName}";
+		var key_mentionsUserScreenName = ${mentionsUserScreenName};
+		var key_siteName = ${mentionsUserFullName};
 
 		AssertClick(
 			locator1 = "Mentions#MENTIONS_TAG_LINK",
@@ -135,7 +135,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "SitePages#SITE_NAME",
-			value1 = "${mentionsUserFullName}");
+			value1 = ${mentionsUserFullName});
 	}
 
 }

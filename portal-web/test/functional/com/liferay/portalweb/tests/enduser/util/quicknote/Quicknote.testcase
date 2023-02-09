@@ -18,12 +18,12 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
 
-	@priority = "2"
+	@priority = 2
 	test AddQuickNote {
 		var portletName = "Quick Note";
 
@@ -33,12 +33,12 @@ definition {
 
 		Type.sendKeysApplicationSearch(
 			locator1 = "NavBar#APPLICATION_SEARCH_FIELD",
-			value1 = "${portletName}");
+			value1 = ${portletName});
 
 		var portletLocator = "//span[@data-title=\"${portletName}\" and contains(@class,'add-content-item')]";
 
 		AssertClick.pauseMakeVisibleAssertTextEqualsClickAt(
-			locator1 = "${portletLocator}",
+			locator1 = ${portletLocator},
 			value1 = "Add");
 
 		Navigator.gotoPage(pageName = "Quick Note Page");

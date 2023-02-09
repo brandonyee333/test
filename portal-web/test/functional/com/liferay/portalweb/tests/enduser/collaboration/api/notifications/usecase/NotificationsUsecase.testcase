@@ -15,7 +15,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -29,7 +29,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test MarkNotificationAsReadAndAcceptRequest {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -122,7 +122,7 @@ definition {
 			password = "test",
 			userEmailAddress = "userea@liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "2");
+		Notifications.viewBadgeCount(notificationCount = 2);
 
 		Notifications.gotoNotifications();
 
@@ -149,7 +149,7 @@ definition {
 	}
 
 	@description = "This test covers LPS-102749. It views a notification of the edited Web Content Article when staging is turned on."
-	@priority = "4"
+	@priority = 4
 	test StagingViewEditedArticleNotification {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -261,7 +261,7 @@ definition {
 			userLoginEmailAddress = "userea@liferay.com",
 			userLoginFullName = "userfn userln");
 
-		Notifications.viewBadgeCount(notificationCount = "2");
+		Notifications.viewBadgeCount(notificationCount = 2);
 
 		Notifications.gotoNotifications();
 
@@ -279,7 +279,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "java.lang.IllegalArgumentException");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewDefaultNotificationsPortletDeliveryOptions {
 		Page.gotoMyAccount(portletName = "Notifications");
 
@@ -291,7 +291,7 @@ definition {
 	}
 
 	@description = "This test covers LPS-104398. It views a notification of a web content article created in a folder."
-	@priority = "4"
+	@priority = 4
 	test ViewFolderArticleNotification {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -384,7 +384,7 @@ definition {
 			userLoginEmailAddress = "userea@liferay.com",
 			userLoginFullName = "userfn userln");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = 1);
 
 		Notifications.gotoNotifications();
 
@@ -398,7 +398,7 @@ definition {
 		WebContent.viewTitle(webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewNoNotification {
 		Notifications.viewNoNotifications(activePanel = "Profile");
 

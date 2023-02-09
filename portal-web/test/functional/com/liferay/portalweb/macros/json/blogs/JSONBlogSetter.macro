@@ -1,9 +1,9 @@
 definition {
 
 	macro setServiceContext {
-		var serviceContext = JSONServiceContextUtil.setServiceContext(groupName = "${groupName}");
+		var serviceContext = JSONServiceContextUtil.setServiceContext(groupName = ${groupName});
 
-		return "${serviceContext}";
+		return ${serviceContext};
 	}
 
 }

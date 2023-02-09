@@ -45,7 +45,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -59,7 +59,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewMentionViaDMComment {
 		Page.add(pageName = "Documents and Media Page");
 
@@ -103,7 +103,7 @@ definition {
 			mentionsUserScreenName = "test");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewReplyMentionViaDMComment {
 		Page.add(pageName = "Documents and Media Page");
 

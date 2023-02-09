@@ -1,13 +1,13 @@
 definition {
 
-	var columnSize = "12";
+	var columnSize = 12;
 	var formDescription = "Created Form Description";
 	var formName = "Created Form Name";
-	var rowNumber = "1";
+	var rowNumber = 1;
 
 	macro addColumn {
-		var key_columnLineNumber = "${columnLineNumber}";
-		var key_rowNumber = "${rowNumber}";
+		var key_columnLineNumber = ${columnLineNumber};
+		var key_rowNumber = ${rowNumber};
 
 		MouseOver.mouseOverNotVisible(locator1 = "Form#ADD_COLUMN_RIGHT");
 
@@ -20,91 +20,91 @@ definition {
 	macro addFieldOption {
 		if (isSet(optionFieldLabel)) {
 			Type(
-				index = "${index}",
-				key_optionFieldLabel = "${optionFieldLabel}",
+				index = ${index},
+				key_optionFieldLabel = ${optionFieldLabel},
 				locator1 = "Sidebar#OPTION_INPUT",
-				value1 = "${optionValue}");
+				value1 = ${optionValue});
 		}
 		else {
 			Type(
-				index = "${index}",
+				index = ${index},
 				locator1 = "Sidebar#OPTION_INPUT_WITHOUT_LABEL",
-				value1 = "${optionValue}");
+				value1 = ${optionValue});
 		}
 	}
 
 	macro addFields {
 		Navigator.gotoNavTab(navTab = "Elements");
 
-		for (var fieldName : list "${fieldNameList}") {
-			var key_fieldName = "${fieldName}";
+		for (var fieldName : list ${fieldNameList}) {
+			var key_fieldName = ${fieldName};
 
 			if (isSet(fieldLocation)) {
 				DragAndDrop.javaScriptDragAndDropToObject(
-					key_fieldLocation = "${fieldLocation}",
+					key_fieldLocation = ${fieldLocation},
 					locator1 = "Sidebar#ADD_FIELD_NAME",
 					locator2 = "Sidebar#ADD_FIELD_POSITION",
-					value1 = "${fieldName}");
+					value1 = ${fieldName});
 			}
 			else {
 				DragAndDrop.javaScriptDragAndDropToObject(
 					locator1 = "Sidebar#ADD_FIELD_NAME",
 					locator2 = "Sidebar#ADD_FIELD_TARGET",
-					value1 = "${fieldName}");
+					value1 = ${fieldName});
 			}
 
 			WaitForVisible(locator1 = "Sidebar#BACK");
 
-			if ("${fieldName}" == "Grid") {
-				var index = "1";
+			if (${fieldName} == "Grid") {
+				var index = 1;
 
 				for (var optionValue : list "R1,R2") {
 					Form.addFieldOption(
-						index = "${index}",
+						index = ${index},
 						optionFieldLabel = "Rows",
 						optionValue = "Row ${index}");
 
 					var index = ${index} + 1;
 				}
 
-				var index = "1";
+				var index = 1;
 
 				for (var optionValue : list "C1,C2") {
 					Form.addFieldOption(
-						index = "${index}",
+						index = ${index},
 						optionFieldLabel = "Columns",
 						optionValue = "Column ${index}");
 
 					var index = ${index} + 1;
 				}
 			}
-			else if ("${fieldName}" == "Multiple Selection") {
+			else if (${fieldName} == "Multiple Selection") {
 				Form.addFieldOption(
-					index = "1",
+					index = 1,
 					optionFieldLabel = "Options",
 					optionValue = "Option 1");
 
 				Form.addFieldOption(
-					index = "2",
+					index = 2,
 					optionFieldLabel = "Options",
 					optionValue = "Option 2");
 			}
-			else if ("${fieldName}" == "Select from List") {
+			else if (${fieldName} == "Select from List") {
 				Form.addFieldOption(
-					index = "1",
+					index = 1,
 					optionValue = "Option 2");
 
 				Form.addFieldOption(
-					index = "2",
+					index = 2,
 					optionValue = "Option 1");
 			}
-			else if ("${fieldName}" == "Single Selection") {
+			else if (${fieldName} == "Single Selection") {
 				Form.addFieldOption(
-					index = "1",
+					index = 1,
 					optionValue = "Option 3");
 
 				Form.addFieldOption(
-					index = "2",
+					index = 2,
 					optionValue = "Option 4");
 			}
 
@@ -124,13 +124,13 @@ definition {
 		if (isSet(formPageNumber)) {
 			Form.gotoAddField(
 				fieldType = "Text Field",
-				formPageNumber = "${formPageNumber}",
-				key_fieldPositionNumber = "${fieldPositionNumber}");
+				formPageNumber = ${formPageNumber},
+				key_fieldPositionNumber = ${fieldPositionNumber});
 		}
 		else {
 			Form.gotoAddField(
 				fieldType = "Text Field",
-				key_fieldPositionNumber = "${fieldPositionNumber}");
+				key_fieldPositionNumber = ${fieldPositionNumber});
 		}
 	}
 
@@ -139,11 +139,11 @@ definition {
 	}
 
 	macro closeSidebar {
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		Click(locator1 = "Form#SIDEBAR_CLOSE");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		AssertElementNotPresent(locator1 = "Form#SIDEBAR_CLOSE");
 	}
@@ -157,19 +157,19 @@ definition {
 
 		FormFields.editText(
 			fieldName = "emailFromName",
-			fieldValue = "${fromName}");
+			fieldValue = ${fromName});
 
 		FormFields.editText(
 			fieldName = "emailFromAddress",
-			fieldValue = "${fromAddress}");
+			fieldValue = ${fromAddress});
 
 		FormFields.editText(
 			fieldName = "emailToAddress",
-			fieldValue = "${toAddress}");
+			fieldValue = ${toAddress});
 
 		FormFields.editText(
 			fieldName = "emailSubject",
-			fieldValue = "${subject}");
+			fieldValue = ${subject});
 
 		Button.clickDone();
 	}
@@ -183,7 +183,7 @@ definition {
 	macro configureWorkflow {
 		Select(
 			locator1 = "AssetWorkflow#ALL_STRUCTURES_WORKFLOW_SELECT",
-			value1 = "${workflowDefinition}");
+			value1 = ${workflowDefinition});
 
 		Button.clickDone();
 	}
@@ -193,7 +193,7 @@ definition {
 
 		Type(
 			locator1 = "Form#DESCRIPTION_FIELD",
-			value1 = "${formDescription}");
+			value1 = ${formDescription});
 	}
 
 	macro editFieldDataProvider {
@@ -203,21 +203,21 @@ definition {
 
 		FormFields.selectSelectOption(
 			fieldName = "ddmDataProviderInstanceId",
-			selectOption = "${dataProvider}");
+			selectOption = ${dataProvider});
 	}
 
 	macro editFieldLabel {
 		FormFields.editText(
 			fieldName = "label",
-			fieldValue = "${fieldValue}");
+			fieldValue = ${fieldValue});
 
-		var fieldName = StringUtil.replace("${fieldValue}", " ", "");
+		var fieldName = StringUtil.replace(${fieldValue}, " ", "");
 
-		FormFields.viewFieldName(fieldName = "${fieldName}");
+		FormFields.viewFieldName(fieldName = ${fieldName});
 	}
 
 	macro editName {
-		var key_columnSize = "${columnSize}";
+		var key_columnSize = ${columnSize};
 
 		AssertVisible(locator1 = "Form#ADD_FIELD");
 
@@ -225,23 +225,23 @@ definition {
 
 		AssertVisible(locator1 = "Form#DESCRIPTION_FIELD");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Click(locator1 = "Form#NAME_FIELD");
 
 		Type.typeEditor(
 			locator1 = "AlloyEditor#NAME_FIELD",
-			value1 = "${formName}");
+			value1 = ${formName});
 	}
 
 	macro editPageTitle {
 		Type(
 			locator1 = "Form#PAGE_TITLE_FIELD",
-			value1 = "${formPageName}");
+			value1 = ${formPageName});
 	}
 
 	macro editTitle {
-		var key_columnSize = "${columnSize}";
+		var key_columnSize = ${columnSize};
 
 		AssertVisible(locator1 = "Form#ADD_FIELD");
 
@@ -249,53 +249,53 @@ definition {
 
 		AssertVisible(locator1 = "Form#DESCRIPTION_FIELD");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Click(locator1 = "Form#NAME_FIELD");
 
 		Type(
 			locator1 = "Form#NAME_FIELD",
-			value1 = "${formName}");
+			value1 = ${formName});
 	}
 
 	macro getPublishedFormPublicURL {
 		var publicURL = selenium.getElementValue("Form#PUBLISH_FORM_PUBLIC_URL");
 
-		return "${publicURL}";
+		return ${publicURL};
 	}
 
 	macro gotoAddField {
-		var key_columnSize = "${columnSize}";
+		var key_columnSize = ${columnSize};
 
 		Click.makeVisibleClickAt(locator1 = "Form#ADD_FIELD");
 
-		var key_fieldType = "${fieldType}";
+		var key_fieldType = ${fieldType};
 
 		AssertClick(
 			locator1 = "Form#ADD_FIELD_TYPE",
-			value1 = "${fieldType}");
+			value1 = ${fieldType});
 	}
 
 	macro previewForm {
 		Navigator.selectSpecificWindow(windowTitle = "Form - Forms");
 
-		var key_formName = "${formName}";
+		var key_formName = ${formName};
 
 		AssertTextEquals(
 			locator1 = "Form#PUBLISH_FORM_NAME_FIELD",
-			value1 = "${formName}");
+			value1 = ${formName});
 
 		FormFields.viewTextLabel(
-			fieldLabel = "${fieldLabel}",
-			fieldName = "${fieldName}");
+			fieldLabel = ${fieldLabel},
+			fieldName = ${fieldName});
 
 		FormFields.editText(
-			fieldName = "${fieldName}",
-			fieldValue = "${fieldValue}");
+			fieldName = ${fieldName},
+			fieldValue = ${fieldValue});
 
 		FormFields.viewTextValue(
-			fieldName = "${fieldName}",
-			fieldValue = "${fieldValue}");
+			fieldName = ${fieldName},
+			fieldValue = ${fieldValue});
 
 		AssertElementNotPresent(locator1 = "FormPortlet#SUBMIT_BUTTON");
 	}
@@ -318,13 +318,13 @@ definition {
 
 	macro submitFormPublish {
 		Form.viewFormPublish(
-			fieldLabel = "${fieldLabel}",
-			fieldName = "${fieldName}");
+			fieldLabel = ${fieldLabel},
+			fieldName = ${fieldName});
 
 		FormFields.editText(
-			fieldLabel = "${fieldLabel}",
-			fieldName = "${fieldName}",
-			fieldValue = "${fieldValue}");
+			fieldLabel = ${fieldLabel},
+			fieldName = ${fieldName},
+			fieldValue = ${fieldValue});
 
 		AssertClick(
 			locator1 = "Button#SUBMIT_1",
@@ -336,7 +336,7 @@ definition {
 	macro viewFormName {
 		AssertTextEquals(
 			locator1 = "Form#NAME_FIELD",
-			value1 = "${formName}");
+			value1 = ${formName});
 	}
 
 	macro viewFormNotPublished {
@@ -350,15 +350,15 @@ definition {
 	macro viewFormPublish {
 		FormsAdminNavigator.openPublishURL();
 
-		var key_formName = "${formName}";
+		var key_formName = ${formName};
 
 		AssertTextEquals(
 			locator1 = "Form#PUBLISH_FORM_NAME_FIELD",
-			value1 = "${formName}");
+			value1 = ${formName});
 
 		FormFields.viewTextLabel(
-			fieldLabel = "${fieldLabel}",
-			fieldName = "${fieldName}");
+			fieldLabel = ${fieldLabel},
+			fieldName = ${fieldName});
 	}
 
 	macro viewPublishFormSuccessMessage {

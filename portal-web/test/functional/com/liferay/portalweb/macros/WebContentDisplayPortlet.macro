@@ -2,7 +2,7 @@ definition {
 
 	macro changeWebContent {
 		Portlet.gotoPortletOptions(
-			order = "${order}",
+			order = ${order},
 			portletName = "Web Content Display",
 			portletOption = "Configuration");
 
@@ -15,9 +15,9 @@ definition {
 		IFrame.selectDialogFrame();
 
 		AssertClick(
-			key_webContentTitle = "${webContentTitle}",
+			key_webContentTitle = ${webContentTitle},
 			locator1 = "Link#WEB_CONTENT_ARTICLE",
-			value1 = "${webContentTitle}");
+			value1 = ${webContentTitle});
 
 		SelectFrame(value1 = "relative=top");
 
@@ -30,7 +30,7 @@ definition {
 
 	macro configureScopePG {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectDialogFrame();
@@ -52,7 +52,7 @@ definition {
 
 			SelectFrameTop();
 
-			for (var key_toggleCardLabel : list "${userToolNameList}") {
+			for (var key_toggleCardLabel : list ${userToolNameList}) {
 				if (IsNotChecked(locator1 = "WCDConfiguration#TOGGLE_CARD_CHECKBOX")) {
 					Click.clickNoWaitForVisible(locator1 = "WCDConfiguration#TOGGLE_CARD_CHECKBOX");
 				}
@@ -66,8 +66,8 @@ definition {
 
 			Click(locator1 = "WCDConfiguration#CONTENT_METADATA_SELECT");
 
-			for (var key_toggleCardLabel : list "${metadataNameList}") {
-				Pause(locator1 = "1000");
+			for (var key_toggleCardLabel : list ${metadataNameList}) {
+				Pause(locator1 = 1000);
 
 				SelectFrameTop();
 
@@ -79,7 +79,7 @@ definition {
 			Click(locator1 = "Button#DONE");
 		}
 
-		if ("${enableViewCountIncrement}" == "true") {
+		if (${enableViewCountIncrement} == "true") {
 			IFrame.selectDialogFrame();
 
 			Check.checkToggleSwitch(locator1 = "WCDConfiguration#ENABLE_VIEW_COUNT_INCREMENT_CHECKBOX");
@@ -89,7 +89,7 @@ definition {
 	}
 
 	macro editTemplate {
-		if ("${editTemplateButton}" == "true") {
+		if (${editTemplateButton} == "true") {
 			WebContentNavigator.gotoLocalizedEditPGViaWCD(localizedPortletOption = "Edit Template");
 		}
 		else {
@@ -99,7 +99,7 @@ definition {
 
 			AssertTextEquals(
 				locator1 = "WCEditWebContent#SELECTED_STRUCTURE",
-				value1 = "${structureName}");
+				value1 = ${structureName});
 
 			ClickNoError(locator1 = "WCEditWebContent#EDIT_TEMPLATE");
 
@@ -117,16 +117,16 @@ definition {
 		if (isSet(templateScript)) {
 			Type.typeAceEditor(
 				locator1 = "DDMEditTemplate#SCRIPT_CONTENT_FIELD_TEXT_AREA",
-				value1 = "${templateScript}");
+				value1 = ${templateScript});
 		}
 
 		Button.clickSave();
 
-		if ("${editTemplateButton}" == "true") {
+		if (${editTemplateButton} == "true") {
 			SelectFrame(value1 = "relative=top");
 		}
 		else {
-			Pause(locator1 = "2000");
+			Pause(locator1 = 2000);
 
 			Click(locator1 = "Button#CLOSE_IFRAME");
 
@@ -138,7 +138,7 @@ definition {
 
 			AssertTextEquals(
 				locator1 = "WCEditWebContent#SELECTED_TEMPLATE",
-				value1 = "${templateName}");
+				value1 = ${templateName});
 
 			AssertClick.pauseAssertTextClickAt(
 				locator1 = "Button#PUBLISH",
@@ -150,12 +150,12 @@ definition {
 		if (isSet(templateScript)) {
 			AssertTextEquals(
 				locator1 = "WCD#WEB_CONTENT_CONTENT",
-				value1 = "${templateScript}");
+				value1 = ${templateScript});
 		}
 		else {
 			AssertTextEquals(
 				locator1 = "WCD#WEB_CONTENT_CONTENT",
-				value1 = "${webContentContent}");
+				value1 = ${webContentContent});
 		}
 	}
 
@@ -169,7 +169,7 @@ definition {
 
 	macro searchWebContent {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectDialogFrame();
@@ -185,7 +185,7 @@ definition {
 
 			Type(
 				locator1 = "NavBar#BASIC_SEARCH_FIELD",
-				value1 = "${webContentSearchValue}");
+				value1 = ${webContentSearchValue});
 		}
 		else {
 			AssertClick(
@@ -198,18 +198,18 @@ definition {
 
 			Type(
 				locator1 = "NavBar#BASIC_SEARCH_FIELD",
-				value1 = "${webContentTitle}");
+				value1 = ${webContentTitle});
 		}
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 
-		var key_webContentTitle = "${webContentTitle}";
+		var key_webContentTitle = ${webContentTitle};
 
 		AssertTextEquals(
 			locator1 = "WCDConfiguration#WEB_CONTENT_TABLE_TITLE",
-			value1 = "${webContentTitle}");
+			value1 = ${webContentTitle});
 
-		if ("${addSearchedContent}" == "true") {
+		if (${addSearchedContent} == "true") {
 			AssertClick(
 				locator1 = "Button#WEB_CONTENT_CHOOSE",
 				value1 = "Choose");
@@ -230,7 +230,7 @@ definition {
 
 	macro searchWebContentNo {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectDialogFrame();
@@ -245,12 +245,12 @@ definition {
 
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
-			value1 = "${webContentTitle}");
+			value1 = ${webContentTitle});
 
 		Click(locator1 = "Icon#BASIC_SEARCH");
 
 		AssertElementNotPresent(
-			key_webContentTitle = "${webContentTitle}",
+			key_webContentTitle = ${webContentTitle},
 			locator1 = "WCDConfiguration#WEB_CONTENT_TABLE_TITLE");
 
 		SelectFrame(value1 = "relative=top");
@@ -274,14 +274,14 @@ definition {
 		Click(locator1 = "Dropdown#FILTER");
 
 		AssertClick(
-			key_filterValue = "${otherSiteName}",
+			key_filterValue = ${otherSiteName},
 			locator1 = "Dropdown#FILTER_VALUES",
-			value1 = "${otherSiteName}");
+			value1 = ${otherSiteName});
 
 		AssertClick(
-			key_webContentTitle = "${webContentTitle}",
+			key_webContentTitle = ${webContentTitle},
 			locator1 = "Link#WEB_CONTENT_ARTICLE",
-			value1 = "${webContentTitle}");
+			value1 = ${webContentTitle});
 
 		SelectFrame(value1 = "relative=top");
 
@@ -296,7 +296,7 @@ definition {
 
 	macro selectWebContent {
 		Portlet.gotoPortletOptions(
-			order = "${order}",
+			order = ${order},
 			portletName = "Web Content Display",
 			portletOption = "Configuration");
 
@@ -311,9 +311,9 @@ definition {
 		IFrame.selectDialogFrame();
 
 		AssertClick(
-			key_webContentTitle = "${webContentTitle}",
+			key_webContentTitle = ${webContentTitle},
 			locator1 = "Link#WEB_CONTENT_ARTICLE",
-			value1 = "${webContentTitle}");
+			value1 = ${webContentTitle});
 
 		SelectFrame(value1 = "relative=top");
 
@@ -334,9 +334,9 @@ definition {
 			value1 = "Subscribe to Comments");
 
 		AssertTextEquals.assertPartialText(
-			key_assetTitle = "${relatedAssetTitle}",
+			key_assetTitle = ${relatedAssetTitle},
 			locator1 = "WCD#RELATED_ASSETS",
-			value1 = "${relatedAssetTitle}");
+			value1 = ${relatedAssetTitle});
 
 		Type.typeEditor(
 			locator1 = "Comments#COMMENT_FIELD",
@@ -354,7 +354,7 @@ definition {
 	macro viewConfigureScopePG {
 		var key_portletName = "Web Content Display";
 
-		if ("${scopeSelectionDefault}" == "true") {
+		if (${scopeSelectionDefault} == "true") {
 			AssertTextEquals(
 				locator1 = "Portlet#TITLE",
 				value1 = "Web Content Display");
@@ -366,7 +366,7 @@ definition {
 		}
 
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectDialogFrame();
@@ -375,17 +375,17 @@ definition {
 
 		AssertSelectedLabel(
 			locator1 = "Select#SCOPE",
-			value1 = "${scopeSelection}");
+			value1 = ${scopeSelection});
 	}
 
 	macro viewContentPageBreak {
 		AssertClick(
 			locator1 = "Pagination#PAGE_2",
-			value1 = "2");
+			value1 = 2);
 
 		AssertTextEquals(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "${webContentContent}");
+			value1 = ${webContentContent});
 
 		AssertClick(
 			locator1 = "Pagination#PREVIOUS_LINK",
@@ -399,12 +399,12 @@ definition {
 	}
 
 	macro viewEnabledFileTypesPGViaWCD {
-		for (var fileType : list "${fileTypes}") {
-			var key_fileType = "${fileType}";
+		for (var fileType : list ${fileTypes}) {
+			var key_fileType = ${fileType};
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "WCD#DOCUMENT_CONVERSION_TYPE",
-				value1 = "${fileType}");
+				value1 = ${fileType});
 
 			AssertElementPresent(locator1 = "WCD#DOCUMENT_CONVERSION_TYPE_ICON");
 		}

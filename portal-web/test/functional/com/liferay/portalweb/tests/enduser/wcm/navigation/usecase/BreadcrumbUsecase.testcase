@@ -14,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -24,7 +24,7 @@ definition {
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test BreadcrumbConfiguration {
 		property test.name.skip.portal.instance = "BreadcrumbUsecase#BreadcrumbConfiguration";
 
@@ -73,11 +73,11 @@ definition {
 			checkSetupName = "Show Guest Site,Show Application Breadcrumb",
 			uncheckSetupName = "Show Current Site,Show Page,Show Parent Sites");
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Breadcrumb.viewConfigurationPreview(
 			breadcrumbListNotVisible = "Site Name,Parent Page Name,Child Page Name",
-			breadcrumbListVisible = "${siteName}");
+			breadcrumbListVisible = ${siteName});
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -87,7 +87,7 @@ definition {
 
 		Breadcrumb.viewPG(
 			breadcrumbListNotVisible = "Site Name,Parent Page Name,Child Page Name",
-			breadcrumbListVisible = "${siteName}",
+			breadcrumbListVisible = ${siteName},
 			pathLocator = "PAGE");
 
 		Portlet.gotoPortletOptions(portletOption = "Configuration");
@@ -125,7 +125,7 @@ definition {
 			pathLocator = "PAGE");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test BreadcrumbLinkPointsToLocalhost {
 		property test.name.skip.portal.instance = "BreadcrumbUsecase#BreadcrumbLinkPointsToLocalhost";
 
@@ -163,22 +163,22 @@ definition {
 
 		AssertLocation(value1 = "http://127.0.0.1:8080/web/site-name");
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Breadcrumb.viewPG(
 			breadcrumbListVisible = "${siteName},Site Name,Site Page Name",
 			pathLocator = "PAGE");
 
-		var key_URL = "${portalURL}";
+		var key_URL = ${portalURL};
 
 		AssertElementNotPresent(locator1 = "BreadcrumbPortlet#BREADCRUMB_PAGE_LINK");
 
 		var key_URL = "/web/guest";
-		var siteName = StringUtil.toUpperCase("${siteName}");
+		var siteName = StringUtil.toUpperCase(${siteName});
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "BreadcrumbPortlet#BREADCRUMB_PAGE_LINK",
-			value1 = "${siteName}");
+			value1 = ${siteName});
 	}
 
 }

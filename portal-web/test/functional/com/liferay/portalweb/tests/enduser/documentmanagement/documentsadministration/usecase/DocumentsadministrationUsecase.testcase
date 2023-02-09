@@ -15,7 +15,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -37,7 +37,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddAndRemoveMetadataSets {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -78,7 +78,7 @@ definition {
 			removeMetadataSet = "true");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddDocumentTypeAndMetadata {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -132,7 +132,7 @@ definition {
 		DMDocument.viewCP(dmDocumentTitle = "DM Document Type Contract Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AllowMultiplePortletConfigurationsPerSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -171,7 +171,7 @@ definition {
 		DMPortlet.configureDisplaySettingsPG(
 			enableDisplaySettingsRelatedAssets = "false",
 			enableDisplaySettingsShowSearch = "false",
-			entriesToDisplayCount = "75");
+			entriesToDisplayCount = 75);
 
 		Navigator.gotoSitePage(
 			pageName = "Site Page 2",
@@ -180,7 +180,7 @@ definition {
 		DMPortlet.viewDefaultConfigurationDisplaySettingsPG();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test CannotViewFolderAsSiteMember {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.acceptance = "false";
@@ -272,7 +272,7 @@ definition {
 
 		for (var permissionsInLineUncheckListsCount : list "INLINE_PERMISSIONS_ADD_SUBFOLDER_CHECKBOX,INLINE_PERMISSIONS_ADD_SHORTCUT_CHECKBOX,INLINE_PERMISSIONS_ADD_DOCUMENT_CHECKBOX,INLINE_PERMISSIONS_SUBSCRIBE_CHECKBOX,INLINE_PERMISSIONS_VIEW_CHECKBOX") {
 			Role.removePermissionPG(
-				permissionDefinitionKey = "${permissionsInLineUncheckListsCount}",
+				permissionDefinitionKey = ${permissionsInLineUncheckListsCount},
 				roleName = "Site Member");
 		}
 
@@ -293,7 +293,7 @@ definition {
 		DMPortlet.viewDefaultPG();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test CannotViewMultipleDocumentsAsSiteMember {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.acceptance = "false";
@@ -348,7 +348,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test CheckoutAndCheckin {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -442,7 +442,7 @@ definition {
 				locator1 = "Button#SAVE",
 				value1 = "Save");
 
-			Pause(locator1 = "10000");
+			Pause(locator1 = 10000);
 
 			Navigator.gotoPage(pageName = "Documents and Media Page");
 		}
@@ -526,7 +526,7 @@ definition {
 			value1 = "Approved");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test CheckValidationForFileEntries {
 		property test.name.skip.portal.instance = "DocumentsadministrationUsecase#CheckValidationForFileEntries";
 
@@ -577,13 +577,13 @@ definition {
 				portlet = "Documents and Media");
 
 			DMDocument.addCP(
-				dmDocumentFile = "${dmDocumentTitle}",
-				dmDocumentTitle = "${dmDocumentTitle}",
+				dmDocumentFile = ${dmDocumentTitle},
+				dmDocumentTitle = ${dmDocumentTitle},
 				validationError = "Please enter a file with a valid extension (.doc).");
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test Comments {
 		Navigator.openURL();
 
@@ -693,7 +693,7 @@ definition {
 			dmDocumentTitle = "Zero Document File");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ConfigureXugglerVideoPreviewSizePG {
 		property custom.properties = "xuggler.enabled=true${line.separator}dl.file.entry.preview.video.width=0${line.separator}dl.file.entry.preview.video.height=0";
 		property dummy.socket.proxy.disabled = "true";
@@ -738,21 +738,21 @@ definition {
 			dmDocumentFile = "Document_1.mp4",
 			dmDocumentTitle = "Document_1.mp4");
 
-		Pause(locator1 = "180000");
+		Pause(locator1 = 180000);
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
 		DMNavigator.gotoDocumentPG(dmDocumentTitle = "Document_1.mp4");
 
-		Pause(locator1 = "30000");
+		Pause(locator1 = 30000);
 
-		var videoGenerationTimeCounter = "0";
-		var videoGenerationTimeMaxWaitTime = "6";
+		var videoGenerationTimeCounter = 0;
+		var videoGenerationTimeMaxWaitTime = 6;
 
-		while (("${videoGenerationTimeCounter}" != "${videoGenerationTimeMaxWaitTime}") && (IsElementPresent(locator1 = "Message#INFO"))) {
+		while ((${videoGenerationTimeCounter} != ${videoGenerationTimeMaxWaitTime}) && (IsElementPresent(locator1 = "Message#INFO"))) {
 			var videoGenerationTimeCounter = ${videoGenerationTimeCounter} + 1;
 
-			Pause(locator1 = "30000");
+			Pause(locator1 = 30000);
 
 			Navigator.gotoPage(pageName = "Documents and Media Page");
 
@@ -761,29 +761,29 @@ definition {
 
 		var videoPreviewThumbnailLink = selenium.getAttribute("//video@poster");
 
-		Navigator.openSpecificURL(url = "${videoPreviewThumbnailLink}");
+		Navigator.openSpecificURL(url = ${videoPreviewThumbnailLink});
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		AssertElementNotPresent(
-			key_videoGenerationThumbnailResolution = "640",
+			key_videoGenerationThumbnailResolution = 640,
 			locator1 = "DocumentsAndMediaDocument#VIDEO_GENERATION_THUMBNAIL_RESOLUTION");
 
 		AssertElementNotPresent(
-			key_videoGenerationThumbnailResolution = "360",
+			key_videoGenerationThumbnailResolution = 360,
 			locator1 = "DocumentsAndMediaDocument#VIDEO_GENERATION_THUMBNAIL_RESOLUTION");
 
 		AssertElementPresent.assertElementPresent(
-			key_videoGenerationThumbnailResolution = "854",
+			key_videoGenerationThumbnailResolution = 854,
 			locator1 = "DocumentsAndMediaDocument#VIDEO_GENERATION_THUMBNAIL_RESOLUTION");
 
 		AssertElementPresent.assertElementPresent(
-			key_videoGenerationThumbnailResolution = "480",
+			key_videoGenerationThumbnailResolution = 480,
 			locator1 = "DocumentsAndMediaDocument#VIDEO_GENERATION_THUMBNAIL_RESOLUTION");
 	}
 
 	@description = "This test covers LPS-100096. It ensures that a document type cannot be edited without permissions."
-	@priority = "4"
+	@priority = 4
 	test EntryCanNotBeEditedWithoutPermissions {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -806,7 +806,7 @@ definition {
 
 		Permissions.definePermissionViaJSONAPI(
 			resourceAction = "VIEW_CONTROL_PANEL",
-			resourceName = "90",
+			resourceName = 90,
 			roleName = "Test Regrole Name");
 
 		Permissions.definePermissionViaJSONAPI(
@@ -827,7 +827,7 @@ definition {
 			menuItem = "Edit",
 			rowEntry = "DM Document Type Name");
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		var documentTypeURL = selenium.getLocation();
 
@@ -843,14 +843,14 @@ definition {
 			key_rowEntry = "DM Document Type Name",
 			locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
 
-		Navigator.openSpecificURL(url = "${documentTypeURL}");
+		Navigator.openSpecificURL(url = ${documentTypeURL});
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR_2",
 			value1 = "You do not have the required permissions.");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportAudioAndLimitPermissionsToSubfolder {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.acceptance = "false";
@@ -979,7 +979,7 @@ definition {
 			uploadFrom = "dependencies");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ImportDocumentWithDBStore {
 		property custom.properties = "dl.store.impl=com.liferay.portal.store.db.DBStore";
 
@@ -1034,7 +1034,7 @@ definition {
 		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test RemoveCurrentDisplayStyleViews {
 		Page.add(pageName = "Documents and Media Page");
 
@@ -1048,12 +1048,12 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-98669."
-	@priority = "4"
+	@priority = 4
 	test SelectLinkToPagePage {
 		for (var pageName : list "P1,P2,P3,P4,P5,P6,P7,P8,P9,P10,P11,P12") {
 			JSONLayout.addPublicLayout(
 				groupName = "Guest",
-				layoutName = "${pageName}");
+				layoutName = ${pageName});
 		}
 
 		ProductMenu.gotoPortlet(
@@ -1093,7 +1093,7 @@ definition {
 			value1 = "P11");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SelectMultipleDocumentsAndDeleteViaActionsButton {
 		Page.add(pageName = "Documents and Media Page");
 
@@ -1125,14 +1125,14 @@ definition {
 		DMDocument.viewDefaultCP();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test UpdateDocumentTypeWithPermissions {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.acceptance = "false";
 		property test.name.skip.portal.instance = "DocumentsadministrationUsecase#UpdateDocumentTypeWithPermissions";
 		property testray.component.names = "Training";
 
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1234,7 +1234,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		Site.assignUserSitesCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
@@ -1263,7 +1263,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		Site.assignUserSitesCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn2");
 
 		Page.add(pageName = "Documents and Media Page");
@@ -1318,7 +1318,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-53009"
-	@priority = "5"
+	@priority = 5
 	test ViewDateFieldRequiredInContract {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1351,7 +1351,7 @@ definition {
 			locator1 = "Icon#ASTERISK_DATE_FIELD");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewDocumentWithGlobalScope {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
@@ -1483,7 +1483,7 @@ definition {
 			dmDocumentTitle = "DM Document Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewFileCategoryAndTags {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -1535,11 +1535,11 @@ definition {
 			value1 = "Category Name");
 
 		for (var tagName : list "tag1,tag2") {
-			var key_tagName = "${tagName}";
+			var key_tagName = ${tagName};
 
 			AssertTextEquals(
 				locator1 = "AssetCategorization#TAG",
-				value1 = "${tagName}");
+				value1 = ${tagName});
 		}
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
@@ -1551,7 +1551,7 @@ definition {
 			tagNameList = "tag1,tag2");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ViewFolderAsOrganizationUser {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.acceptance = "false";
@@ -1648,7 +1648,7 @@ definition {
 
 		for (var permissionsInLineUncheckListsCount : list "INLINE_PERMISSIONS_ADD_SUBFOLDER_CHECKBOX,INLINE_PERMISSIONS_ADD_SHORTCUT_CHECKBOX,INLINE_PERMISSIONS_ADD_DOCUMENT_CHECKBOX,INLINE_PERMISSIONS_SUBSCRIBE_CHECKBOX,INLINE_PERMISSIONS_VIEW_CHECKBOX") {
 			Role.removePermissionPG(
-				permissionDefinitionKey = "${permissionsInLineUncheckListsCount}",
+				permissionDefinitionKey = ${permissionsInLineUncheckListsCount},
 				roleName = "Site Member");
 		}
 
@@ -1685,7 +1685,7 @@ definition {
 
 		for (var permissionsInLineUncheckListsCount : list "INLINE_PERMISSIONS_ADD_DOCUMENT_CHECKBOX,INLINE_PERMISSIONS_VIEW_CHECKBOX,CONTENT_PERMISSIONS_ACCESS_CHECKBOX") {
 			Role.definePermissionPG(
-				permissionDefinitionKey = "${permissionsInLineUncheckListsCount}",
+				permissionDefinitionKey = ${permissionsInLineUncheckListsCount},
 				roleName = "Organization User");
 		}
 
@@ -1708,7 +1708,7 @@ definition {
 			dmDocumentTitle = "Document_1.doc");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewPortletAfterRenamingDocumentWithDuplicateTitlePG {
 		Page.add(pageName = "Documents and Media Page");
 
@@ -1737,13 +1737,13 @@ definition {
 
 		PortletEntry.publish();
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		AssertTextNotPresent(value1 = "Documents and Media is temporarily unavailable.");
 
 		Navigator.gotoPage(pageName = "Documents and Media Page");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		AssertTextNotPresent(value1 = "Documents and Media is temporarily unavailable.");
 
@@ -1752,7 +1752,7 @@ definition {
 			dmDocumentTitle = "DM Document 2 Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewSingleDocumentSelectionDoesNotCheckAllFileSelectionCP {
 		Navigator.openURL();
 

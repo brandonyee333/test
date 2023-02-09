@@ -3,7 +3,7 @@ definition {
 	macro addContent {
 		Type.typeEditor(
 			locator1 = "AlloyEditor#CONTENT_FIELD",
-			value1 = "${content}");
+			value1 = ${content});
 	}
 
 	macro addEntryExternalURL {
@@ -13,7 +13,7 @@ definition {
 
 		Type(
 			locator1 = "AlloyEditor#TEXT_FORMATTING_LINK_INPUT",
-			value1 = "${entryExternalURL}");
+			value1 = ${entryExternalURL});
 
 		Click(locator1 = "AlloyEditor#TEXT_FORMATTING_LINK_INPUT_CONFIRM");
 	}
@@ -21,7 +21,7 @@ definition {
 	macro addLocalizedContent {
 		Type.typeEditor(
 			locator1 = "AlloyEditor#CONTENT_FIELD_LOCALIZED_1",
-			value1 = "${content}");
+			value1 = ${content});
 	}
 
 	macro addSourceContent {
@@ -31,19 +31,19 @@ definition {
 
 		Type.typeAceEditor(
 			locator1 = "TextArea#ACE_EDITOR",
-			value1 = "${content}");
+			value1 = ${content});
 	}
 
 	macro addTitle {
 		Type.typeEditor(
 			locator1 = "AlloyEditor#TITLE_FIELD",
-			value1 = "${title}");
+			value1 = ${title});
 	}
 
 	macro addTitleAndContent {
-		AlloyEditor.addTitle(title = "${title}");
+		AlloyEditor.addTitle(title = ${title});
 
-		AlloyEditor.addContent(content = "${content}");
+		AlloyEditor.addContent(content = ${content});
 	}
 
 	macro clickContentField {
@@ -71,19 +71,19 @@ definition {
 
 		if (isSet(boldContent)) {
 			AssertElementNotPresent(
-				key_boldContent = "${boldContent}",
+				key_boldContent = ${boldContent},
 				locator1 = "AlloyEditor#CONTENT_FIELD_BOLD");
 		}
 
 		if (isSet(italicContent)) {
 			AssertElementNotPresent(
-				key_italicContent = "${italicContent}",
+				key_italicContent = ${italicContent},
 				locator1 = "AlloyEditor#CONTENT_FIELD_ITALIC");
 		}
 
 		if (isSet(underlineContent)) {
 			AssertElementNotPresent(
-				key_underlineContent = "${underlineContent}",
+				key_underlineContent = ${underlineContent},
 				locator1 = "AlloyEditor#CONTENT_FIELD_UNDERLINE");
 		}
 	}
@@ -93,19 +93,19 @@ definition {
 
 		if (isSet(boldContent)) {
 			AssertElementPresent(
-				key_boldContent = "${boldContent}",
+				key_boldContent = ${boldContent},
 				locator1 = "AlloyEditor#CONTENT_FIELD_BOLD");
 		}
 
 		if (isSet(italicContent)) {
 			AssertElementPresent(
-				key_italicContent = "${italicContent}",
+				key_italicContent = ${italicContent},
 				locator1 = "AlloyEditor#CONTENT_FIELD_ITALIC");
 		}
 
 		if (isSet(underlineContent)) {
 			AssertElementPresent(
-				key_underlineContent = "${underlineContent}",
+				key_underlineContent = ${underlineContent},
 				locator1 = "AlloyEditor#CONTENT_FIELD_UNDERLINE");
 		}
 	}

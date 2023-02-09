@@ -44,7 +44,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -62,7 +62,7 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test FilterByReadAndUnread {
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -94,7 +94,7 @@ definition {
 
 		Notifications.viewBadgeCount(
 			activePanel = "Notifications",
-			notificationCount = "2");
+			notificationCount = 2);
 
 		Notifications.gotoNotifications();
 
@@ -130,10 +130,10 @@ definition {
 
 		Navigator.openURL();
 
-		Notifications.viewBadgeCount(notificationCount = "2");
+		Notifications.viewBadgeCount(notificationCount = 2);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewNoWebsiteNotificationForNewThreadInCategory {
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -152,7 +152,7 @@ definition {
 
 		MessageboardsCategory.subscribePG(categoryName = "MB Category Name");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -168,7 +168,7 @@ definition {
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -176,10 +176,10 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewNoWebsiteNotificationForUpdatedThreadInCategory {
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -204,7 +204,7 @@ definition {
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -218,7 +218,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -226,7 +226,7 @@ definition {
 			threadBodyEdit = "MB Thread Message Body Edit",
 			threadSubjectEdit = "MB Thread Message Subject Edit");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -234,10 +234,10 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewWebsiteNotificationForNewThreadInCategory {
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -245,7 +245,7 @@ definition {
 
 		MessageboardsCategory.subscribePG(categoryName = "MB Category Name");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -261,7 +261,7 @@ definition {
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -269,7 +269,7 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = 1);
 
 		Notifications.gotoNotifications();
 
@@ -285,10 +285,10 @@ definition {
 			threadSubject = "MB Thread Message Subject",
 			userName = "userfn userln");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewWebsiteNotificationForUpdatedThreadInCategory {
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -302,7 +302,7 @@ definition {
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -316,7 +316,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -324,7 +324,7 @@ definition {
 			threadBodyEdit = "MB Thread Message Body Edit",
 			threadSubjectEdit = "MB Thread Message Subject Edit");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 
 		User.logoutPG();
 
@@ -332,7 +332,7 @@ definition {
 			password = "test",
 			userEmailAddress = "test@liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = 1);
 
 		Notifications.gotoNotifications();
 
@@ -347,7 +347,7 @@ definition {
 			threadBody = "MB Thread Message Body Edit",
 			threadSubject = "MB Thread Message Subject Edit");
 
-		Notifications.viewBadgeCount(notificationCount = "0");
+		Notifications.viewBadgeCount(notificationCount = 0);
 	}
 
 }

@@ -6,7 +6,7 @@ definition {
 
 	macro configureScopePG {
 		Portlet.gotoPortletOptions(
-			portletName = "${portletName}",
+			portletName = ${portletName},
 			portletOption = "Configuration");
 
 		IFrame.selectConfigurationFrame();
@@ -15,13 +15,13 @@ definition {
 
 		Select(
 			locator1 = "Select#SCOPE",
-			value1 = "${scopeSelection}");
+			value1 = ${scopeSelection});
 
 		PortletEntry.save();
 	}
 
 	macro enableSocialBookmarkSites {
-		var key_socialBookmarkSite = "${socialBookmarkSite}";
+		var key_socialBookmarkSite = ${socialBookmarkSite};
 
 		Check(locator1 = "SocialBookmarks#SOCIAL_BOOKMARKS_CONFIGURATION_CHECKBOX");
 	}
@@ -35,46 +35,46 @@ definition {
 	macro selectDisplayTemplate {
 		Select(
 			locator1 = "Configuration#SETUP_DISPLAY_SETTINGS_DISPLAY_TEMPLATE_SELECT",
-			value1 = "${displayTemplate}");
+			value1 = ${displayTemplate});
 	}
 
 	macro selectMaximumItemstoDisplay {
 		Select(
 			locator1 = "Select#MAXIMUM_ITEMS_TO_DISPLAY",
-			value1 = "${maximumItemsToDisplay}");
+			value1 = ${maximumItemsToDisplay});
 	}
 
 	macro selectScopeCP {
-		var key_scopeDefault = "${scopeDefault}";
+		var key_scopeDefault = ${scopeDefault};
 
 		Click.pauseClickAt(locator1 = "ProductMenu#PRODUCT_MENU_PANEL_SCOPE_COG");
 
-		var key_scopeSelection = "${scopeSelection}";
+		var key_scopeSelection = ${scopeSelection};
 
 		AssertClick.assertPartialTextClickAt(
-			key_menuItem = "${scopeSelection}",
+			key_menuItem = ${scopeSelection},
 			locator1 = "MenuItem#ANY_MENU_ITEM",
-			value1 = "${scopeSelection}");
+			value1 = ${scopeSelection});
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "ProductMenu#PRODUCT_MENU_PANEL_SCOPE",
-			value1 = "${scopeSelection}");
+			value1 = ${scopeSelection});
 	}
 
 	macro selectScopePG {
-		var key_scopeSelection = "${scopeSelection}";
+		var key_scopeSelection = ${scopeSelection};
 
 		Select(
 			locator1 = "Select#SCOPE",
 			value1 = "regexp:.*${scopeSelection}.*");
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		Click(locator1 = "Button#SAVE");
 
 		Alert.viewSuccessMessageText(successMessage = "You have successfully updated the setup.");
 
-		BlogsConfiguration.viewScopeSelection(scopeSelection = "${scopeSelection}");
+		BlogsConfiguration.viewScopeSelection(scopeSelection = ${scopeSelection});
 	}
 
 	macro uncheckComments {
@@ -118,7 +118,7 @@ definition {
 	macro viewDefaultConfiguration {
 		AssertTextEquals.assertValue(
 			locator1 = "Select#MAXIMUM_ITEMS_TO_DISPLAY",
-			value1 = "20");
+			value1 = 20);
 
 		AssertTextEquals.assertValue(
 			locator1 = "Configuration#SETUP_DISPLAY_SETTINGS_DISPLAY_TEMPLATE_SELECT",
@@ -154,7 +154,7 @@ definition {
 
 		AssertTextEquals.assertValue(
 			locator1 = "Configuration#SETUP_RSS_MAXIMUM_ITEMS_TO_DISPLAY_SELECT",
-			value1 = "20");
+			value1 = 20);
 
 		AssertTextEquals.assertValue(
 			locator1 = "Configuration#SETUP_RSS_DISPLAY_STYLE_SELECT",
@@ -231,7 +231,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "ProductMenu#PRODUCT_MENU_PANEL_SCOPE",
-			value1 = "${contentScopeName}");
+			value1 = ${contentScopeName});
 
 		AssertTextEquals(
 			locator1 = "Message#EMPTY_INFO",
@@ -241,7 +241,7 @@ definition {
 	macro viewScopeSelection {
 		AssertSelectedLabel(
 			locator1 = "Select#SCOPE",
-			value1 = "${scopeSelection}");
+			value1 = ${scopeSelection});
 	}
 
 	macro viewSubscribePG {

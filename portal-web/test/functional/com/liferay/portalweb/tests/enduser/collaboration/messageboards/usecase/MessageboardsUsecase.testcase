@@ -18,7 +18,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -34,7 +34,7 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test CopyAndPasteTextInCKEditor {
 		Page.add(pageName = "Message Boards Page");
 
@@ -72,7 +72,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			threadBody = "Message Boards Subject",
 			threadSubject = "Message Boards Subject");
 
@@ -82,7 +82,7 @@ definition {
 			userName = "Test Test");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test DeleteMessageboardsThread {
 		property portal.acceptance = "false";
 
@@ -140,7 +140,7 @@ definition {
 		MessageboardsThread.viewDefaultCP(threadSubject = "MB Thread Message Subject");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportLAR {
 		property portal.acceptance = "false";
 		property testray.component.names = "Training";
@@ -179,11 +179,11 @@ definition {
 
 		MessageboardsCategory.viewCP(
 			categoryName = "General Discussion",
-			subcategoriesNumber = "0",
-			threadsNumber = "1");
+			subcategoriesNumber = 0,
+			threadsNumber = 1);
 
 		MessageboardsThread.viewReplyWithUpvote(
-			postCount = "5",
+			postCount = 5,
 			threadBody = "Super embarrassing, but does anybody know what to do when the Anti-Gravity Chamber door gets stuck and maintenance has gone for the day? Yesterday was the second time I’ve been in there all night, and I have to say, not liking the ambience.",
 			threadReplyBodyList = "Couldn’t you just call somebody?,lol Jonny never has his cell,dude seriously creepy,As the Anti-Gravity Chamber handbook",
 			threadSubject = "Stuck in the Anti-Gravity Chamber");
@@ -197,17 +197,17 @@ definition {
 
 		MessageboardsCategory.viewCP(
 			categoryName = "Homework Discussion",
-			subcategoriesNumber = "0",
-			threadsNumber = "1");
+			subcategoriesNumber = 0,
+			threadsNumber = 1);
 
 		MessageboardsThread.viewReplyWithUpvote(
-			postCount = "4",
+			postCount = 4,
 			threadBody = "I’m writing a paper called Mars on a Budget, and I’d be curious to hear from other departments about their thoughts on reducing overall costs of missions and how that can happen at every level without compromising safety or efficiency. After the economic downturn of 2062, budgetary restrictions remain an important concern. Thanks!",
 			threadReplyBodyList = "dr novola has some thoughts,one barrier is the inflated cost of materials combined with worker compensation,Are you factoring in environmental impact?",
 			threadSubject = "Cost Reduction for Mars");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test RestoreMessageboardsThread {
 		Navigator.openURL();
 
@@ -260,12 +260,12 @@ definition {
 			portlet = "Message Boards");
 
 		MessageboardsThread.viewCP(
-			postsNumber = "1",
+			postsNumber = 1,
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SearchMessageBoardsAttachment {
 		Page.add(pageName = "Message Boards Page");
 
@@ -298,7 +298,7 @@ definition {
 			userName = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test SplitMBThread {
 		var threadBody = "MB Thread Message Body";
 		var threadReplyBody = "MB Thread Reply Body";
@@ -307,60 +307,60 @@ definition {
 		var threadSplitSubject = "MB Thread Split Subject";
 		var threadSubject = "MB Thread Message Subject";
 
-		Page.add(pageName = "${pageName}");
+		Page.add(pageName = ${pageName});
 
-		SitePageNavigator.gotoEditPage(page = "${pageName}");
+		SitePageNavigator.gotoEditPage(page = ${pageName});
 
 		Page.editPageLayoutColumn(columnName = "1 Column");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
-		Portlet.addPG(portletName = "${portletName}");
+		Portlet.addPG(portletName = ${portletName});
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.addPG(
-			threadBody = "${threadBody}",
-			threadSubject = "${threadSubject}");
+			threadBody = ${threadBody},
+			threadSubject = ${threadSubject});
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.replyPG(
-			threadBody = "${threadBody}",
-			threadReplyBody = "${threadReplyBody}",
-			threadSubject = "${threadSubject}");
+			threadBody = ${threadBody},
+			threadReplyBody = ${threadReplyBody},
+			threadSubject = ${threadSubject});
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "2",
+			postCount = 2,
 			threadSubject = "MB Thread Message Subject");
 
 		MessageboardsThread.splitThreadPG(
-			threadBody = "${threadBody}",
-			threadReplyBody = "${threadReplyBody}",
-			threadReplySubject = "${threadReplySubject}",
-			threadSplitReplyBody = "${threadSplitReplyBody}",
-			threadSplitReplySubject = "${threadSplitReplySubject}",
-			threadSplitSubject = "${threadSplitSubject}",
-			threadSubject = "${threadSubject}");
+			threadBody = ${threadBody},
+			threadReplyBody = ${threadReplyBody},
+			threadReplySubject = ${threadReplySubject},
+			threadSplitReplyBody = ${threadSplitReplyBody},
+			threadSplitReplySubject = ${threadSplitReplySubject},
+			threadSplitSubject = ${threadSplitSubject},
+			threadSubject = ${threadSubject});
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.viewSplitThreadPG(
-			pageName = "${pageName}",
-			threadBody = "${threadBody}",
-			threadReplyBody = "${threadReplyBody}",
-			threadReplySubject = "${threadReplySubject}",
-			threadSplitReplyBody = "${threadSplitReplyBody}",
-			threadSplitReplySubject = "${threadSplitReplySubject}",
-			threadSplitSubject = "${threadSplitSubject}",
-			threadSubject = "${threadSubject}");
+			pageName = ${pageName},
+			threadBody = ${threadBody},
+			threadReplyBody = ${threadReplyBody},
+			threadReplySubject = ${threadReplySubject},
+			threadSplitReplyBody = ${threadSplitReplyBody},
+			threadSplitReplySubject = ${threadSplitReplySubject},
+			threadSplitSubject = ${threadSplitSubject},
+			threadSubject = ${threadSubject});
 	}
 
 	@description = "This is a use case for LPS-65368."
-	@priority = "5"
+	@priority = 5
 	test ViewBBCodeNoXSSWithRemoteServices {
 		property custom.properties = "message.boards.message.formats.default=bbcode";
 
@@ -388,7 +388,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Anonymous",
-			postCount = "2",
+			postCount = 2,
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -398,7 +398,7 @@ definition {
 			userName = "Anonymous");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewCorrectViewPermissionsInMessageBoardsQuickReplyInPrivateSite {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -455,7 +455,7 @@ definition {
 		for (var roleName : list "Power User,User") {
 			PermissionsInline.viewPermissionsRemoved(
 				permissionDefinitionKey = "CONFIGURATION_PERMISSIONS_VIEW_CHECKBOX",
-				roleName = "${roleName}");
+				roleName = ${roleName});
 		}
 
 		PermissionsInline.viewPermissionsChecked(
@@ -464,14 +464,14 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ViewMBThreadAndReplyThreadInGmail {
 		property custom.properties = "message.boards.message.formats.default=html${line.separator}pop.server.notifications.enabled=true${line.separator}pop.server.subdomain=${line.separator}mail.session.mail.smtp.auth=true${line.separator}mail.session.mail.store.protocol=pop3${line.separator}mail.session.mail.transport.protocol=smtp${line.separator}jsonws.web.service.paths.excludes=";
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "MessageboardsUsecase#ViewMBThreadAndReplyThreadInGmail";
 
 		var portalURL = PropsUtil.get("portal.url");
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -517,7 +517,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editUserSiteCP(
-			siteName = "${siteName}",
+			siteName = ${siteName},
 			userScreenName = "usersn");
 
 		User.editEmailViaMyAccount(userEmailAddress = PropsUtil.get("email.address.3"));
@@ -566,7 +566,7 @@ definition {
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject G7MB1");
 
-		Pause(locator1 = "30000");
+		Pause(locator1 = 30000);
 
 		Gmail.login(
 			userEmailAddress = PropsUtil.get("email.address.4"),
@@ -582,9 +582,9 @@ definition {
 
 		Gmail.replyMail(gmailReplyMessage = "MB Thread Message Subject G7MB1 Reply");
 
-		Navigator.openSpecificURL(url = "${portalURL}");
+		Navigator.openSpecificURL(url = ${portalURL});
 
-		Pause(locator1 = "60000");
+		Pause(locator1 = 60000);
 
 		Refresh();
 
@@ -595,7 +595,7 @@ definition {
 		MessageboardsCategory.gotoPG(categoryName = "MB Category Name");
 
 		MessageboardsThread.viewReplyPG(
-			postCount = "2",
+			postCount = 2,
 			threadBody = "MB Thread Message Body",
 			threadReplyBody = "MB Thread Message Subject G7MB1 Reply",
 			threadSubject = "MB Thread Message Subject G7MB1",
@@ -606,7 +606,7 @@ definition {
 		Gmail.deleteSpecificMail(gmailMessageTitleList = "MB Category Name New Message: MB Thread Message Subject G7MB1,Your New Account,Your New Password,G7MB1");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewMessageBoardsBannedUsers {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 
@@ -648,7 +648,7 @@ definition {
 
 		for (var permissionDefinitionKey : list "INLINE_PERMISSIONS_REPLY_TO_MESSAGE_CHECKBOX,INLINE_PERMISSIONS_VIEW_CHECKBOX") {
 			Role.definePermissionPG(
-				permissionDefinitionKey = "${permissionDefinitionKey}",
+				permissionDefinitionKey = ${permissionDefinitionKey},
 				roleName = "User");
 		}
 
@@ -690,7 +690,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "userfn2 userln2",
-			postCount = "3",
+			postCount = 3,
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -702,7 +702,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "userfn2 userln2",
-			postCount = "3",
+			postCount = 3,
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
@@ -719,9 +719,9 @@ definition {
 		MessageboardsPortlet.viewBannedUserPG(userScreenName = "userfn2 userln2");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewMessageBoardsRSS {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Page.add(
 			columnName = "1 Column",
@@ -769,7 +769,7 @@ definition {
 			entryTitle = "MB Thread Message Subject 1,MB Thread Message Subject 2");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewMessageBoardsThreadStatistics {
 		Page.add(pageName = "Message Boards Page");
 
@@ -790,14 +790,14 @@ definition {
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
 		MessageboardsThread.viewStatisticsPostsCountPG(
-			threadPostNumber = "1",
+			threadPostNumber = 1,
 			userName = "Test Test");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "1",
+			postCount = 1,
 			threadBody = "MB Thread1 Message Body",
 			threadSubject = "MB Thread1 Message Subject");
 
@@ -820,7 +820,7 @@ definition {
 		MessageboardsThread.viewStatisticsPostsCountPG(
 			lastPostUserName = "Test Test",
 			startedByUserName = "Test Test",
-			threadPostNumber = "1");
+			threadPostNumber = 1);
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -833,19 +833,19 @@ definition {
 		MessageboardsThread.viewStatisticsPostsCountPG(
 			lastPostUserName = "Test Test",
 			startedByUserName = "Test Test",
-			threadPostNumber = "2");
+			threadPostNumber = 2);
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
 		MessageboardsThread.deletePG(threadSubject = "MB Thread2 Message Subject");
 
 		MessageboardsThread.viewStatisticsPostsCountPG(
-			threadPostNumber = "1",
+			threadPostNumber = 1,
 			userName = "Test Test");
 	}
 
 	@description = "This is a use case for LPS-65365."
-	@priority = "5"
+	@priority = 5
 	test ViewNoHTMLXSS {
 		property custom.properties = "message.boards.message.formats.default=html";
 
@@ -870,7 +870,7 @@ definition {
 			threadSubject = '''<script>alert(123);</script>''');
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewNoMBThreadXSS {
 		Page.add(pageName = "Message Boards Page");
 
@@ -894,7 +894,7 @@ definition {
 			threadSubject = "MB Thread Message Subject");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewNoSubscribeLinksNoWithEmailNotificationsDisabled {
 		Page.add(pageName = "Message Boards Page");
 
@@ -987,25 +987,25 @@ definition {
 		AssertElementNotPresent(locator1 = "MessageBoardsThread#THREAD_ACTIONS_UNSUBSCRIBE");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewQuestionOnSplitThread {
-		Page.add(pageName = "${pageName}");
+		Page.add(pageName = ${pageName});
 
-		SitePageNavigator.gotoEditPage(page = "${pageName}");
+		SitePageNavigator.gotoEditPage(page = ${pageName});
 
 		Page.editPageLayoutColumn(columnName = "1 Column");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
-		Portlet.addPG(portletName = "${portletName}");
+		Portlet.addPG(portletName = ${portletName});
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.addPGAsQuestion(
 			threadBody = "MB Thread Message Body",
 			threadSubject = "MB Thread Message Subject");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.viewMarkedAsQuestionPG(threadSubject = "MB Thread Message Subject");
 
@@ -1017,7 +1017,7 @@ definition {
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "Test Test",
-			postCount = "2",
+			postCount = 2,
 			threadSubject = "MB Thread Message Subject");
 
 		MessageboardsThread.splitThreadPG(
@@ -1027,10 +1027,10 @@ definition {
 			threadSplitSubject = "MB Thread Split Subject",
 			threadSubject = "MB Thread Message Subject");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.viewSplitThreadPG(
-			pageName = "${pageName}",
+			pageName = ${pageName},
 			threadBody = "MB Thread Message Body",
 			threadReplyBody = "MB Thread Split Reply Body",
 			threadSplitReplyBody = "Split Reply Thread Body",
@@ -1038,12 +1038,12 @@ definition {
 			threadSplitSubject = "MB Thread Split Subject",
 			threadSubject = "MB Thread Message Subject");
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
 		MessageboardsThread.viewMarkedAsQuestionPG(threadSubject = "MB Thread Message Subject");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewThreadDefaultQuestion {
 		Page.add(pageName = "Message Boards Page");
 
