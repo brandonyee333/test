@@ -352,6 +352,19 @@ gradle.beforeProject {
 		}
 
 		pluginManager.withPlugin("com.liferay.jsdoc") {
+			if (gradle.startParameter.taskNames.any { it =~ /jsdoc$/ }) {
+				downloadNode {
+					doFirst {
+						delete file("build")
+						delete file("node_modules")
+					}
+
+					outputs.upToDateWhen {
+						false
+					}
+				}
+			}
+
 			downloadJSDoc {
 				moduleVersion = "3.5.5"
 			}
