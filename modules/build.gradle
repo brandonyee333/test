@@ -367,6 +367,20 @@ gradle.beforeProject {
 
 			downloadJSDoc {
 				moduleVersion = "3.5.5"
+
+				onlyIf {
+					true
+				}
+
+				outputs.upToDateWhen {
+					false
+				}
+			}
+
+			jsdoc {
+				outputs.upToDateWhen {
+					false
+				}
 			}
 		}
 
