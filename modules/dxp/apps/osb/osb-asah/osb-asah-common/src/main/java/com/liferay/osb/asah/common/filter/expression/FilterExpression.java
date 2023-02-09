@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.filter.expression;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionLexer;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -73,6 +74,8 @@ public class FilterExpression {
 
 			_condition = (Condition)expressionContext.accept(
 				filterExpressionVisitor);
+			_referencedObjectIds =
+				filterExpressionVisitor.getReferencedObjectIds();
 			_referencedTableNames =
 				filterExpressionVisitor.getReferencedTableNames();
 		}
@@ -85,6 +88,10 @@ public class FilterExpression {
 
 	public Condition getCondition() {
 		return _condition;
+	}
+
+	public Map<String, Set<String>> getReferencedObjectIds() {
+		return _referencedObjectIds;
 	}
 
 	public Set<String> getReferencedTableNames() {
@@ -138,6 +145,7 @@ public class FilterExpression {
 
 	private Condition _condition;
 	private final String _filterType;
+	private Map<String, Set<String>> _referencedObjectIds;
 	private final Set<String> _referencedTableNames;
 
 	private static class ErrorListener extends BaseErrorListener {

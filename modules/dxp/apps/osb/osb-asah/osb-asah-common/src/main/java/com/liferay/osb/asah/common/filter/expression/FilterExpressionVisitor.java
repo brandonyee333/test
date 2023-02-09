@@ -72,6 +72,10 @@ public class FilterExpressionVisitor
 		_fieldMappers.put("individuals.givenName", "Individual.firstName");
 	}
 
+	public Map<String, Set<String>> getReferencedObjectIds() {
+		return _referencedObjectIds;
+	}
+
 	public Set<String> getReferencedTableNames() {
 		return _referencedTableNames;
 	}
@@ -1009,6 +1013,8 @@ public class FilterExpressionVisitor
 
 	private final Map<String, String> _fieldMappers = new HashMap<>();
 	private final String _filterType;
+	private final Map<String, Set<String>> _referencedObjectIds =
+		new HashMap<>();
 	private final Set<String> _referencedTableNames = new HashSet<>();
 	private final Map<String, String> _tableReferences =
 		new HashMap<String, String>() {
