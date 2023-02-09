@@ -16,7 +16,7 @@ package com.liferay.osb.asah.common.repository.util;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
 import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,10 @@ public class ConditionUtil {
 			return DSL.noCondition();
 		}
 
-		Condition condition = FilterStringToConditionConverter.convert(
-			filterString, filterStringConverterHelper);
+		FilterExpression filterExpression = new FilterExpression(
+			filterString, filterStringConverterHelper.getFilterType());
+
+		Condition condition = filterExpression.getCondition();
 
 		if (condition == null) {
 			return DSL.noCondition();

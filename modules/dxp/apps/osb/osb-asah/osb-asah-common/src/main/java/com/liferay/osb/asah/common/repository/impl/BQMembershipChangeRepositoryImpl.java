@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
-import com.liferay.osb.asah.common.postgresql.converter.FilterStringToConditionConverter;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,7 +120,7 @@ public class BQMembershipChangeRepositoryImpl
 					segmentIdField
 				)
 			).and(
-				FilterStringToConditionConverter.convert(filterString)
+				ConditionUtil.toCondition(filterString)
 			)
 		).fetch(
 			0, Long.class
