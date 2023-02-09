@@ -10,7 +10,7 @@ CREATE OR REPLACE VIEW BQAsset AS  (
 			event.title,
 			CASE
 				WHEN
-					assetTitle IS NOT NULL
+					assetTitle.value IS NOT NULL
 				THEN
 				    assetTitle.value
 				WHEN
@@ -20,7 +20,7 @@ CREATE OR REPLACE VIEW BQAsset AS  (
 			END AS assetTitle,
 			CASE
 				WHEN
-				    assetId IS NOT NULL
+				    assetId.value IS NOT NULL
 				THEN
 					assetId.value
 				WHEN
