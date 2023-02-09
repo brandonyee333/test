@@ -128,13 +128,13 @@ public class UpgradeProcessConfiguration {
 	private JobRunMigrationUpgradeStep _jobRunMigrationUpgradeStep;
 
 	@Autowired
+	private SegmentFilterUpgradeStep _segmentFilterUpgradeStep;
+
+	@Autowired
 	private SequenceUpgradeStep _sequenceUpgradeStep;
 
 	@Autowired
 	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
-
-	@Autowired
-	private SegmentFilterUpgradeStep _segmentFilterUpgradeStep;
 
 	@Autowired
 	private SuppressionMigrationUpgradeStep _suppressionMigrationUpgradeStep;
