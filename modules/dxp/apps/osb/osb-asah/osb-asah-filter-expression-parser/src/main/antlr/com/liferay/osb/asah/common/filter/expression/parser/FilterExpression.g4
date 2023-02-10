@@ -33,16 +33,16 @@ booleanUnaryExpression
 	;
 
 comparisonExpression
-    : VARIABLE_IDENTIFIER GT booleanOperandExpression # GreaterThanExpression
-    | VARIABLE_IDENTIFIER GE booleanOperandExpression # GreaterThanOrEqualsExpression
-    | VARIABLE_IDENTIFIER LT booleanOperandExpression # LessThanExpression
-	| VARIABLE_IDENTIFIER LE booleanOperandExpression # LessThanOrEqualsExpression
+    : identifier GT booleanOperandExpression # GreaterThanExpression
+    | identifier GE booleanOperandExpression # GreaterThanOrEqualsExpression
+    | identifier LT booleanOperandExpression # LessThanExpression
+	| identifier LE booleanOperandExpression # LessThanOrEqualsExpression
 	| booleanUnaryExpression #ToBooleanUnaryExpression
 	;
 
 equalityExpression
-    : VARIABLE_IDENTIFIER EQ comparisonExpression # EqualsExpression
-    | VARIABLE_IDENTIFIER NEQ comparisonExpression # NotEqualsExpression
+    : identifier EQ comparisonExpression # EqualsExpression
+    | identifier NEQ comparisonExpression # NotEqualsExpression
     | comparisonExpression #ToComparisonExpression
 	;
 
@@ -51,19 +51,24 @@ expression
 	;
 
 filterExpression
-	: filterType=VARIABLE_IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')'
+	: filterType=VARIABLE_SIMPLE_IDENTIFIER '.filter(filter=' filter=STRING_LITERAL ')'
 	;
 
 filterByCountExpression
-	: filterType=VARIABLE_IDENTIFIER '.filterByCount(filter=' filter=STRING_LITERAL COMMA 'operator=' operator=STRING_LITERAL COMMA 'value=' value=INTEGER_LITERAL ')'
+	: filterType=VARIABLE_SIMPLE_IDENTIFIER '.filterByCount(filter=' filter=STRING_LITERAL COMMA 'operator=' operator=STRING_LITERAL COMMA 'value=' value=INTEGER_LITERAL ')'
 	;
 
 functionCallExpression
-	: functionName=VARIABLE_IDENTIFIER LPAREN functionParameters RPAREN
+	: functionName=VARIABLE_SIMPLE_IDENTIFIER LPAREN functionParameters RPAREN
 	;
 
 functionParameters
-	: VARIABLE_IDENTIFIER COMMA literal
+	: identifier (COMMA literal)*
+	;
+
+identifier
+	: VARIABLE_SIMPLE_IDENTIFIER
+    | VARIABLE_QUALIFIED_IDENTIFIER
 	;
 
 literal
@@ -161,9 +166,12 @@ STRING_LITERAL
 	| '\'' ( '\'\'' | ~['] )* '\''
 	;
 
-VARIABLE_IDENTIFIER
+VARIABLE_SIMPLE_IDENTIFIER
 	: NAME_START_CHAR NAME_CHAR*
-    | NAME_START_CHAR NAME_CHAR* '/' NAME_START_CHAR NAME_CHAR*
+	;
+
+VARIABLE_QUALIFIED_IDENTIFIER
+    : NAME_START_CHAR NAME_CHAR* '/' NAME_START_CHAR NAME_CHAR*
 	| NAME_START_CHAR NAME_CHAR* '/' NAME_START_CHAR NAME_CHAR* '/value'
 	;
 
