@@ -42,8 +42,9 @@
 						'documentDownloaded',
 						'Document',
 						{
-							groupId: match[1],
+							fileEntryId: uri.getParameterValue('fileEntryId'),
 							fileEntryUUID: match[4],
+							groupId: match[1],
 							preview: !!window.<%= DocumentLibraryAnalyticsConstants.JS_PREFIX %>isViewFileEntry,
 							title: decodeURIComponent(match[3].replace(/\+/ig, ' ')),
 							version: uri.getParameterValue('version')
