@@ -197,7 +197,8 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMemberships() {
 		_bqMembershipDog.updateBQMemberships(
-			"contains(demographics/email/value, 'delta.com')", 1L);
+			"individuals.filter(filter='contains(demographics/email/value, " +
+				"''delta.com'')')", 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}

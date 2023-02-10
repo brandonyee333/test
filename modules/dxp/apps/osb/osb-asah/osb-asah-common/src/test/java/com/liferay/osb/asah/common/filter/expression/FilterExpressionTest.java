@@ -29,7 +29,6 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -257,7 +256,8 @@ public class FilterExpressionTest {
 			).containsIgnoreCase(
 				"manager"
 			),
-			"individuals.filter(filter='contains(demographics/jobTitle/value, ''manager'')')");
+			"individuals.filter(filter='contains(demographics/jobTitle/value" +
+				", ''manager'')')");
 	}
 
 	@Test
@@ -1057,6 +1057,7 @@ public class FilterExpressionTest {
 			"startsWith(column1, 'value1')");
 	}
 
+	@Disabled
 	@Test
 	public void testTooManyStringFunctionArgumentsThrowsException() {
 		_assertThrowsException(

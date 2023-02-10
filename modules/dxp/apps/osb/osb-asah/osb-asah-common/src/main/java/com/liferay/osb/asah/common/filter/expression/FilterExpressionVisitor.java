@@ -53,9 +53,9 @@ public class FilterExpressionVisitor
 	extends FilterExpressionBaseVisitor<Object> {
 
 	public FilterExpressionVisitor(String filterType) {
-		if (filterType != null) {
-			_filterType = filterType;
+		_filterType = filterType;
 
+		if (filterType != null) {
 			_referencedTableNames.add(_tableReferences.get(filterType));
 		}
 
@@ -503,7 +503,7 @@ public class FilterExpressionVisitor
 		"yesterday");
 
 	private final Map<String, String> _fieldMappers = new HashMap<>();
-	private String _filterType;
+	private final String _filterType;
 	private final Set<String> _referencedTableNames = new HashSet<>();
 	private final Map<String, String> _tableReferences =
 		new HashMap<String, String>() {
