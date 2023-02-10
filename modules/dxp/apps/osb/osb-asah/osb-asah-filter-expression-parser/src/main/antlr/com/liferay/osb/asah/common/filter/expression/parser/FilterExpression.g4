@@ -33,16 +33,16 @@ booleanUnaryExpression
 	;
 
 comparisonExpression
-    : identifier GT booleanOperandExpression # GreaterThanExpression
-    | identifier GE booleanOperandExpression # GreaterThanOrEqualsExpression
-    | identifier LT booleanOperandExpression # LessThanExpression
-	| identifier LE booleanOperandExpression # LessThanOrEqualsExpression
+    : comparisonExpression GT booleanOperandExpression # GreaterThanExpression
+    | comparisonExpression GE booleanOperandExpression # GreaterThanOrEqualsExpression
+    | comparisonExpression LT booleanOperandExpression # LessThanExpression
+	| comparisonExpression LE booleanOperandExpression # LessThanOrEqualsExpression
 	| booleanUnaryExpression #ToBooleanUnaryExpression
 	;
 
 equalityExpression
-    : identifier EQ comparisonExpression # EqualsExpression
-    | identifier NEQ comparisonExpression # NotEqualsExpression
+    : equalityExpression EQ comparisonExpression # EqualsExpression
+    | equalityExpression NEQ comparisonExpression # NotEqualsExpression
     | comparisonExpression #ToComparisonExpression
 	;
 
@@ -90,7 +90,8 @@ logicalOrExpression
 	;
 
 logicalTerm
-	: literal # ToLiteral
+	: identifier # ToIdentifier
+	| literal # ToLiteral
 	| functionCallExpression # ToFunctionCallExpression
 	| filterExpression # ToFilterExpression
 	| filterByCountExpression # ToFilterByCountExpression
