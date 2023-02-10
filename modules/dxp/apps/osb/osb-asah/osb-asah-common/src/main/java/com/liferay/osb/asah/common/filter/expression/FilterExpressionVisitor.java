@@ -14,16 +14,15 @@
 
 package com.liferay.osb.asah.common.filter.expression;
 
-import com.liferay.osb.asah.common.converter.helper.FilterStringConverterHelper;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionBaseVisitor;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
-import com.liferay.osb.asah.common.postgresql.converter.helper.ActivitiesFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.AssetFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
-import com.liferay.osb.asah.common.postgresql.converter.helper.SessionsFilterStringConverter;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +38,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import org.jooq.Condition;
 import org.jooq.Field;
@@ -55,15 +53,15 @@ public class FilterExpressionVisitor
 	extends FilterExpressionBaseVisitor<Object> {
 
 	public FilterExpressionVisitor(String filterType) {
-		_filterType = filterType;
+		if (filterType != null) {
+			_filterType = filterType;
 
-		FilterStringConverterHelper filterStringConverterHelper =
-			_filterTypeFilterStringConverterHelpers.get(filterType);
-
-		if (filterStringConverterHelper != null) {
-			_referencedTableNames.add(
-				filterStringConverterHelper.getTableName());
+			_referencedTableNames.add(_tableReferences.get(filterType));
 		}
+
+		_fieldMappers.put("activities.day", "Event.eventDate");
+		_fieldMappers.put("custom.name", "ExpandoValue.columnId");
+		_fieldMappers.put("individuals.email", "Individual.emailAddress");
 	}
 
 	public Set<String> getReferencedTableNames() {
@@ -100,21 +98,12 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.EqualsExpressionContext
 			equalsExpressionContext) {
 
-		Field rightField = _visitChild(equalsExpressionContext, 2);
+		Field rightField = _getRightField(equalsExpressionContext);
 
 		Field leftField = _getLeftField(equalsExpressionContext, rightField);
 
 		if (rightField == null) {
 			return leftField.isNull();
-		}
-
-		rightField = _checkRightField(leftField, rightField);
-
-		Condition condition = _getLogicFunctionCondition(
-			leftField, rightField, "eq");
-
-		if (condition != null) {
-			return condition;
 		}
 
 		return leftField.eq(rightField);
@@ -134,21 +123,21 @@ public class FilterExpressionVisitor
 	@Override
 	public Object visitFilterByCountExpression(
 		FilterExpressionParser.FilterByCountExpressionContext
-			filterExpressionContext) {
+			filterByCountExpressionContext) {
 
 		String filterString = _parseFilterStringExpression(
-			filterExpressionContext.filter);
+			filterByCountExpressionContext.filter);
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString.substring(1, filterString.length() - 1),
-			filterExpressionContext.filterType.getText());
+			filterByCountExpressionContext.filterType.getText());
 
 		_referencedTableNames.addAll(
 			filterExpression.getReferencedTableNames());
 
-		String operator = filterExpressionContext.operator.getText();
+		String operator = filterByCountExpressionContext.operator.getText();
 		Integer value = Integer.parseInt(
-			filterExpressionContext.value.getText());
+			filterByCountExpressionContext.value.getText());
 		Field userIdField = DSL.field("Event.userId");
 
 		Condition havingCondition = null;
@@ -261,15 +250,15 @@ public class FilterExpressionVisitor
 
 		List<Object> parameters = new ArrayList<>();
 
-		ParseTree childIdentifierParseTree = functionParametersContext.getChild(
-			0);
+		for (int i = 0; i < functionParametersContext.getChildCount(); i++) {
+			ParseTree childParseTree = functionParametersContext.getChild(i);
 
-		ParseTree childLiteralParseTree = functionParametersContext.getChild(2);
+			if (childParseTree instanceof TerminalNode) {
+				continue;
+			}
 
-		Object value = childLiteralParseTree.accept(this);
-
-		parameters.add(_getField(childIdentifierParseTree.getText(), value));
-		parameters.add(value);
+			parameters.add(childParseTree.accept(this));
+		}
 
 		return parameters;
 	}
@@ -279,17 +268,10 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.GreaterThanExpressionContext
 			greaterThanExpressionContext) {
 
-		Field rightField = _visitChild(greaterThanExpressionContext, 2);
+		Field rightField = _getRightField(greaterThanExpressionContext);
 
 		Field leftField = _getLeftField(
 			greaterThanExpressionContext, rightField);
-
-		Condition condition = _getLogicFunctionCondition(
-			leftField, rightField, "gt");
-
-		if (condition != null) {
-			return condition;
-		}
 
 		return leftField.gt(rightField);
 	}
@@ -299,19 +281,40 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.GreaterThanOrEqualsExpressionContext
 			greaterThanOrEqualsExpressionContext) {
 
-		Field rightField = _visitChild(greaterThanOrEqualsExpressionContext, 2);
+		Field rightField = _getRightField(greaterThanOrEqualsExpressionContext);
 
 		Field leftField = _getLeftField(
 			greaterThanOrEqualsExpressionContext, rightField);
 
-		Condition condition = _getLogicFunctionCondition(
-			leftField, rightField, "ge");
+		return leftField.ge(rightField);
+	}
 
-		if (condition != null) {
-			return condition;
+	@Override
+	public Object visitIdentifier(
+		FilterExpressionParser.IdentifierContext identifierContext) {
+
+		String fieldName = identifierContext.getText();
+
+		if (StringUtils.contains(fieldName, "/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			if (Objects.equals(identifierParts[0], "custom")) {
+				_referencedTableNames.add("ExpandoValue");
+
+				String qualifiedFieldName = _fieldMappers.getOrDefault(
+					"custom." + identifierParts[1],
+					"ExpandoValue." + identifierParts[1]);
+
+				return DSL.field(qualifiedFieldName);
+			}
+
+			fieldName = identifierParts[1];
 		}
 
-		return leftField.ge(rightField);
+		String qualifiedFieldName = _fieldMappers.getOrDefault(
+			_filterType + "." + fieldName, _getTableNamespace() + fieldName);
+
+		return DSL.field(qualifiedFieldName);
 	}
 
 	@Override
@@ -328,16 +331,9 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.LessThanExpressionContext
 			lessThanExpressionContext) {
 
-		Field rightField = _visitChild(lessThanExpressionContext, 2);
+		Field rightField = _getRightField(lessThanExpressionContext);
 
 		Field leftField = _getLeftField(lessThanExpressionContext, rightField);
-
-		Condition condition = _getLogicFunctionCondition(
-			leftField, rightField, "lt");
-
-		if (condition != null) {
-			return condition;
-		}
 
 		return leftField.lt(rightField);
 	}
@@ -347,17 +343,10 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.LessThanOrEqualsExpressionContext
 			lessThanOrEqualsExpressionContext) {
 
-		Field rightField = _visitChild(lessThanOrEqualsExpressionContext, 2);
+		Field rightField = _getRightField(lessThanOrEqualsExpressionContext);
 
 		Field leftField = _getLeftField(
 			lessThanOrEqualsExpressionContext, rightField);
-
-		Condition condition = _getLogicFunctionCondition(
-			leftField, rightField, "le");
-
-		if (condition != null) {
-			return condition;
-		}
 
 		return leftField.le(rightField);
 	}
@@ -367,19 +356,12 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.NotEqualsExpressionContext
 			notEqualsExpressionContext) {
 
-		Field rightField = _visitChild(notEqualsExpressionContext, 2);
+		Field rightField = _getRightField(notEqualsExpressionContext);
 
 		Field leftField = _getLeftField(notEqualsExpressionContext, rightField);
 
 		if (rightField == null) {
 			return leftField.isNotNull();
-		}
-
-		Condition condition = _getLogicFunctionCondition(
-			leftField, rightField, "ne");
-
-		if (condition != null) {
-			return condition;
 		}
 
 		return leftField.ne(rightField);
@@ -420,148 +402,82 @@ public class FilterExpressionVisitor
 		return DSL.val(StringUtil.unquoteAndDecodeInnerQuotes(string));
 	}
 
-	private Field _checkRightField(Field leftField, Field rightField) {
-		if (!(rightField instanceof Param)) {
-			return rightField;
+	private Field _getLeftField(
+		ParserRuleContext parserRuleContext, Field rightField) {
+
+		Field leftField = _visitChild(parserRuleContext, 0);
+
+		if (rightField == null) {
+			return leftField;
 		}
 
-		Param rightFieldParam = (Param)rightField;
+		Class<?> rightFieldType = rightField.getType();
 
-		Object paramValue = rightFieldParam.getValue();
-
-		if (!(paramValue instanceof String)) {
-			return rightField;
+		if (rightFieldType.isAssignableFrom(Long.class)) {
+			return DSL.cast(leftField, Long.class);
 		}
 
-		FilterStringConverterHelper filterStringConverterHelper =
-			_filterTypeFilterStringConverterHelpers.get(_filterType);
+		return leftField;
+	}
 
-		if (filterStringConverterHelper == null) {
-			return rightField;
+	private Field _getRightField(ParserRuleContext parserRuleContext) {
+		Field rightField = _visitChild(parserRuleContext, 2);
+
+		if (rightField == null) {
+			return null;
 		}
 
-		String valueString = (String)paramValue;
+		Class<?> rightFieldType = rightField.getType();
 
-		String newValueString = StringUtil.unquote(valueString);
+		if ((rightField instanceof Param) &&
+			rightFieldType.isAssignableFrom(String.class)) {
 
-		Object value = null;
+			Param<String> rightParam = (Param<String>)rightField;
 
-		Object processedValue = filterStringConverterHelper.processValue(
-			leftField.getName(), newValueString);
+			String value = rightParam.getValue();
 
-		if ((processedValue == null) &&
-			NumberUtils.isCreatable(newValueString) &&
-			!newValueString.contains(".")) {
-
-			value = Long.valueOf(newValueString);
-		}
-		else if (processedValue != null) {
-			value = processedValue;
-		}
-
-		if (value != null) {
-			return DSL.val(value);
+			if (_timeFrameParameterNames.contains(value)) {
+				return _getTimeFrameParam(value);
+			}
 		}
 
 		return rightField;
 	}
 
-	private Field<?> _getField(String fieldName, Object value) {
-		if (fieldName.contains("/")) {
-			String[] fieldNames = fieldName.split("/");
+	private String _getTableNamespace() {
+		String tableReference = _tableReferences.get(_filterType);
 
-			if (Objects.equals("demographics", fieldNames[0])) {
-				_filterType = "individual";
-			}
-
-			fieldName = fieldNames[1];
+		if (tableReference == null) {
+			return "";
 		}
 
-		FilterStringConverterHelper filterStringConverterHelper =
-			_filterTypeFilterStringConverterHelpers.get(_filterType);
+		return tableReference + ".";
+	}
 
-		if (filterStringConverterHelper != null) {
-			Map<String, String> fieldNameConversionMap =
-				filterStringConverterHelper.getFieldNameConversionMap();
+	private Param<LocalDateTime> _getTimeFrameParam(String value) {
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
-			if (fieldNameConversionMap.containsKey(fieldName)) {
-				fieldName = fieldNameConversionMap.get(fieldName);
-			}
-
-			if ((_referencedTableNames != null) &&
-				StringUtils.isNotEmpty(
-					filterStringConverterHelper.getTableName())) {
-
-				String tableName = filterStringConverterHelper.getTableName();
-
-				_referencedTableNames.add(tableName);
-
-				if (!StringUtils.startsWithIgnoreCase(fieldName, tableName)) {
-					fieldName = tableName + "." + fieldName;
-				}
-			}
+		if (value.equalsIgnoreCase("last24Hours")) {
+			localDateTime = localDateTime.minusHours(24);
 		}
-
-		Field field = null;
-
-		if (value instanceof Long) {
-			field = DSL.cast(DSL.field(fieldName), Long.class);
+		else if (value.equalsIgnoreCase("last28Days")) {
+			localDateTime = localDateTime.minusDays(28);
+		}
+		else if (value.equalsIgnoreCase("last30Days")) {
+			localDateTime = localDateTime.minusDays(30);
+		}
+		else if (value.equalsIgnoreCase("last7Days")) {
+			localDateTime = localDateTime.minusDays(7);
+		}
+		else if (value.equalsIgnoreCase("last90Days")) {
+			localDateTime = localDateTime.minusDays(90);
 		}
 		else {
-			field = DSL.field(fieldName);
+			localDateTime = localDateTime.minusDays(1);
 		}
 
-		return field;
-	}
-
-	private Field _getLeftField(
-		ParserRuleContext parserRuleContext, Field rightField) {
-
-		if (parserRuleContext.getChild(0) instanceof TerminalNode) {
-			TerminalNode terminalNode =
-				(TerminalNode)parserRuleContext.getChild(0);
-
-			Object value = null;
-
-			if (rightField instanceof Param) {
-				Param rightFieldParma = (Param)rightField;
-
-				value = rightFieldParma.getValue();
-			}
-
-			return _getField(terminalNode.getText(), value);
-		}
-
-		return _visitChild(parserRuleContext, 0);
-	}
-
-	private Condition _getLogicFunctionCondition(
-		Field leftField, Field rightField, String operator) {
-
-		if (!(rightField instanceof Param)) {
-			return null;
-		}
-
-		Param<?> param = (Param<?>)rightField;
-
-		if (!(param.getValue() instanceof String)) {
-			return null;
-		}
-
-		FilterStringConverterHelper filterStringConverterHelper =
-			_filterTypeFilterStringConverterHelpers.get(_filterType);
-
-		if (filterStringConverterHelper == null) {
-			return null;
-		}
-
-		try {
-			return filterStringConverterHelper.getLogicFunctionCondition(
-				leftField.getName(), operator, false, (String)param.getValue());
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
+		return DSL.val(localDateTime);
 	}
 
 	private String _parseFilterStringExpression(Token filterToken) {
@@ -582,27 +498,21 @@ public class FilterExpressionVisitor
 		return (T)parseTree.accept(this);
 	}
 
+	private static final Set<String> _timeFrameParameterNames = SetUtil.of(
+		"last24Hours", "last28Days", "last30Days", "last7Days", "last90Days",
+		"yesterday");
+
+	private final Map<String, String> _fieldMappers = new HashMap<>();
 	private String _filterType;
-	private final Map<String, FilterStringConverterHelper>
-		_filterTypeFilterStringConverterHelpers =
-			new HashMap<String, FilterStringConverterHelper>() {
-				{
-					put(
-						"activities",
-						new ActivitiesFilterStringConverterHelper());
-					put("assets", new AssetFilterStringConverterHelper());
-					put(
-						"dataSourceAccountPKs",
-						new DataSourceFilterStringConverterHelper());
-					put(
-						"individual",
-						new IndividualsFilterStringConverterHelper());
-					put(
-						"organizations",
-						new OrganizationsFilterStringConverterHelper());
-					put("sessions", new SessionsFilterStringConverter());
-				}
-			};
 	private final Set<String> _referencedTableNames = new HashSet<>();
+	private final Map<String, String> _tableReferences =
+		new HashMap<String, String>() {
+			{
+				put("activities", "Event");
+				put("individuals", "Individual");
+				put("organizations", "Organization");
+				put("sessions", "Session");
+			}
+		};
 
 }
