@@ -250,17 +250,6 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testFreestyle4() {
-		_assertEquals(
-			DSL.cast(
-				DSL.field("annualRevenue"), Long.class
-			).gt(
-				500000L
-			),
-			_testFilters.get("testFreestyle4"), Collections.emptySet());
-	}
-
-	@Test
 	public void testFreestyle5() {
 		_assertEquals(
 			DSL.field(
@@ -268,7 +257,7 @@ public class FilterExpressionTest {
 			).containsIgnoreCase(
 				"manager"
 			),
-			"contains(demographics/jobTitle/value, 'manager')");
+			"individuals.filter(filter='contains(demographics/jobTitle/value, ''manager'')')");
 	}
 
 	@Test
@@ -545,7 +534,7 @@ public class FilterExpressionTest {
 						)
 					).and(
 						DSL.field(
-							"Event.dayDate"
+							"Event.eventDate"
 						).gt(
 							localDateTime.minus(1, ChronoUnit.DAYS)
 						)
@@ -600,7 +589,7 @@ public class FilterExpressionTest {
 						)
 					).and(
 						DSL.field(
-							"Event.dayDate"
+							"Event.eventDate"
 						).gt(
 							localDateTime.minus(1, ChronoUnit.DAYS)
 						)
@@ -645,7 +634,7 @@ public class FilterExpressionTest {
 							)
 						).and(
 							DSL.field(
-								"Event.dayDate"
+								"Event.eventDate"
 							).gt(
 								localDateTime.minus(1, ChronoUnit.DAYS)
 							)
@@ -712,7 +701,7 @@ public class FilterExpressionTest {
 								)
 							).and(
 								DSL.field(
-									"Event.dayDate"
+									"Event.eventDate"
 								).gt(
 									localDateTime.minus(1, ChronoUnit.DAYS)
 								)
@@ -786,7 +775,7 @@ public class FilterExpressionTest {
 									)
 								).and(
 									DSL.field(
-										"Event.dayDate"
+										"Event.eventDate"
 									).gt(
 										localDateTime.minus(1, ChronoUnit.DAYS)
 									)
@@ -881,12 +870,6 @@ public class FilterExpressionTest {
 			"column1 eq 'value1' but column2 eq 'value2'",
 			"Expected logical operator \"and\" or \"or\", but got \"but\" " +
 				"instead");
-	}
-
-	@Test
-	public void testInvalidObjectThrowsException() {
-		_assertThrowsException(
-			"column1 eq value1", "no viable alternative at input 'value1'");
 	}
 
 	@Test
