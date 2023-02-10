@@ -12,9 +12,13 @@
  *
  */
 
-package com.liferay.osb.asah.common.postgresql.converter;
+package com.liferay.osb.asah.common.util;
 
+import com.liferay.osb.asah.common.filter.expression.FilterExpressionParserException;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+
+import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
@@ -25,10 +29,10 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Rachael Koestartyo
  */
-public class FilterStringToConditionConverterTest {
+public class ConditionUtilTest {
 
 	@Test
-	public void testAndOperator() throws Exception {
+	public void testAndOperator() {
 		_assertEquals(
 			DSL.and(
 				DSL.field(
@@ -45,7 +49,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testBooleanFalseValue() throws Exception {
+	public void testBooleanFalseValue() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -56,7 +60,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testBooleanTrueValue() throws Exception {
+	public void testBooleanTrueValue() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -67,26 +71,23 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testContainsOperator() throws Exception {
+	public void testContainsOperator() {
 		_assertEquals(
-			DSL.lower(
-				DSL.field("column1", String.class)
-			).like(
-				DSL.lower("%value1%")
+			DSL.field(
+				"column1"
+			).containsIgnoreCase(
+				"value1"
 			),
 			"contains(column1, 'value1')");
 	}
 
 	@Test
 	public void testDanglingLogicalOperatorThrowsException() {
-		_assertThrowsException(
-			"column1 eq 'value1' and",
-			"Parsed 'and' as a logical operator, but no operand was found " +
-				"after it");
+		_assertThrowsException("column1 eq 'value1' and");
 	}
 
 	@Test
-	public void testDoubleValue() throws Exception {
+	public void testDoubleValue() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -97,7 +98,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testEndsWithOperator() throws Exception {
+	public void testEndsWithOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -108,7 +109,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testEqOperator() throws Exception {
+	public void testEqOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -119,7 +120,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testEscapeOperator() throws Exception {
+	public void testEscapeOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -130,7 +131,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testFreestyle1() throws Exception {
+	public void testFreestyle1() {
 		_assertEquals(
 			DSL.and(
 				DSL.or(
@@ -140,10 +141,10 @@ public class FilterStringToConditionConverterTest {
 						42L
 					),
 					DSL.or(
-						DSL.lower(
-							DSL.field("column2", String.class)
-						).like(
-							DSL.lower("%escaped'quote)%")
+						DSL.field(
+							"column2"
+						).containsIgnoreCase(
+							"escaped'quote)"
 						),
 						DSL.and(
 							DSL.field(
@@ -159,13 +160,13 @@ public class FilterStringToConditionConverterTest {
 				DSL.field(
 					"column5"
 				).isNotNull()),
-			"((column1 gt 42 or ((contains(column2, 'escaped''quote)')) or " +
+			"(column1 gt 42 or contains(column2, 'escaped''quote)') or " +
 				"(column3 ne true and column4 le 97531.8642)) and column5 ne " +
-					"null))");
+					"null");
 	}
 
 	@Test
-	public void testFreestyle2() throws Exception {
+	public void testFreestyle2() {
 		_assertEquals(
 			DSL.or(
 				DSL.and(
@@ -206,7 +207,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testFreestyle3() throws Exception {
+	public void testFreestyle3() {
 		_assertEquals(
 			DSL.and(
 				DSL.or(
@@ -230,7 +231,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testGeOperator() throws Exception {
+	public void testGeOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -241,7 +242,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testGtOperator() throws Exception {
+	public void testGtOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -253,8 +254,7 @@ public class FilterStringToConditionConverterTest {
 
 	@Test
 	public void testIncompleteExpressionThrowsException() {
-		_assertThrowsException(
-			"column1 eq ", "Expression terminated unexpectedly: column1 eq ");
+		_assertThrowsException("column1 eq ");
 	}
 
 	@Test
@@ -262,21 +262,14 @@ public class FilterStringToConditionConverterTest {
 		Condition expectedCondition = DSL.and(
 			DSL.field(
 				"IdentityActivity.channelId"
-			).cast(
-				Long.class
 			).eq(
 				506297979389450553L
 			),
 			DSL.field(
-				"field.name"
-			).eq(
-				"email"
-			),
-			DSL.field(
-				"field.value"
+				"Individual.emailAddress"
 			).isNotNull());
 
-		Condition actualCondition = FilterStringToConditionConverter.convert(
+		Condition actualCondition = ConditionUtil.toCondition(
 			"(channelIds eq '506297979389450553' and " +
 				"(demographics/email/value ne null))",
 			new IndividualsFilterStringConverterHelper());
@@ -286,7 +279,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testIntegerValue() throws Exception {
+	public void testIntegerValue() {
 		_assertEquals(
 			DSL.field(
 				DSL.cast(DSL.field("column1"), Long.class)
@@ -298,31 +291,39 @@ public class FilterStringToConditionConverterTest {
 
 	@Test
 	public void testInvalidLogicalOperatorThrowsException() {
-		_assertThrowsException(
-			"column1 eq 'value1' but column2 eq 'value2'",
-			"Expected logical operator \"and\" or \"or\", but got \"but\" " +
-				"instead");
+		_assertThrowsException("column1 eq 'value1' but column2 eq 'value2'");
 	}
 
 	@Test
 	public void testInvalidObjectThrowsException() {
-		_assertThrowsException(
-			"column1 eq value1", "Unknown object value1 used in filter");
+		_assertThrowsException("column1 eq value1");
 	}
 
 	@Test
 	public void testInvalidOperatorThrowsException() {
-		_assertThrowsException("column1 is 'value1'", "Invalid operator: is");
+		_assertThrowsException("column1 is 'value1'");
 	}
 
 	@Test
 	public void testInvalidStringFunctionArgumentThrowsException() {
-		_assertThrowsException(
-			"matches(column1, 'value1')", "Invalid string function: matches");
+		try {
+			ConditionUtil.toCondition("matches(column1, 'value1')");
+
+			Assertions.fail(
+				"matches(column1, 'value1') did not throw an instance of " +
+					"FilterExpressionParserException");
+		}
+		catch (Exception exception) {
+			Assertions.assertTrue(
+				exception instanceof FilterExpressionParserException);
+
+			Assertions.assertEquals(
+				exception.getMessage(), "Invalid string function: matches");
+		}
 	}
 
 	@Test
-	public void testLeOperator() throws Exception {
+	public void testLeOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -333,7 +334,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testLtOperator() throws Exception {
+	public void testLtOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -344,7 +345,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testNeNull() throws Exception {
+	public void testNeNull() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -353,7 +354,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testNeOperator() throws Exception {
+	public void testNeOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -364,19 +365,19 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testNotContainsOperator() throws Exception {
+	public void testNotContainsOperator() {
 		_assertEquals(
 			DSL.not(
-				DSL.lower(
-					DSL.field("column1", String.class)
-				).like(
-					DSL.lower("%value1%")
+				DSL.field(
+					"column1"
+				).containsIgnoreCase(
+					"value1"
 				)),
 			"not contains(column1, 'value1')");
 	}
 
 	@Test
-	public void testNotEndsWithOperator() throws Exception {
+	public void testNotEndsWithOperator() {
 		_assertEquals(
 			DSL.not(
 				DSL.field(
@@ -388,7 +389,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testNotStartsWithOperator() throws Exception {
+	public void testNotStartsWithOperator() {
 		_assertEquals(
 			DSL.not(
 				DSL.field(
@@ -400,7 +401,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testNullValue() throws Exception {
+	public void testNullValue() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -409,7 +410,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testOrderOfOperations1() throws Exception {
+	public void testOrderOfOperations1() {
 		_assertEquals(
 			DSL.or(
 				DSL.field(
@@ -433,7 +434,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testOrderOfOperations2() throws Exception {
+	public void testOrderOfOperations2() {
 		_assertEquals(
 			DSL.and(
 				DSL.or(
@@ -457,7 +458,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testOrOperator() throws Exception {
+	public void testOrOperator() {
 		_assertEquals(
 			DSL.or(
 				DSL.field(
@@ -474,7 +475,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testParentheses() throws Exception {
+	public void testParentheses() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -485,7 +486,7 @@ public class FilterStringToConditionConverterTest {
 	}
 
 	@Test
-	public void testStartsWithOperator() throws Exception {
+	public void testStartsWithOperator() {
 		_assertEquals(
 			DSL.field(
 				"column1"
@@ -497,51 +498,41 @@ public class FilterStringToConditionConverterTest {
 
 	@Test
 	public void testTooManyStringFunctionArgumentsThrowsException() {
-		_assertThrowsException(
-			"contains(column1, 'value1', 'value2')",
-			"Expected 2 arguments for contains function, got 3 instead: " +
-				"[column1, 'value1', 'value2']");
+		_assertThrowsException("contains(column1, 'value1', 'value2')");
 	}
 
 	@Test
 	public void testUnclosedParenthesisThrowsException() {
-		_assertThrowsException(
-			"(column1 eq ')'",
-			"Unclosed parenthetical statement: (column1 eq ')'");
+		_assertThrowsException("(column1 eq ')'");
 	}
 
 	@Test
 	public void testUnclosedStringLiteralThrowsException() {
-		_assertThrowsException(
-			"column1 eq 'escaped quote: ''",
-			"Unclosed string literal: 'escaped quote: ''");
+		_assertThrowsException("column1 eq 'escaped quote: ''");
 	}
 
 	private void _assertEquals(
-			Condition expectedCondition, String actualFilterString)
-		throws Exception {
+		Condition expectedCondition, String actualFilterString) {
 
-		Condition actualCondition = FilterStringToConditionConverter.convert(
+		Condition actualCondition = ConditionUtil.toCondition(
 			actualFilterString);
 
 		Assertions.assertEquals(
 			expectedCondition.toString(), actualCondition.toString());
 	}
 
-	private void _assertThrowsException(String filterString, String message) {
+	private void _assertThrowsException(String filterString) {
 		try {
-			FilterStringToConditionConverter.convert(filterString);
+			ConditionUtil.toCondition(filterString);
 
 			Assertions.fail(
-				filterString +
-					" did not throw an instance of IllegalArgumentException");
+				filterString + " did not throw an instance of " +
+					"ParseCancellationException");
 		}
 		catch (Exception exception) {
 			Throwable cause = exception.getCause();
 
-			Assertions.assertTrue(cause instanceof IllegalArgumentException);
-
-			Assertions.assertEquals(cause.getMessage(), message);
+			Assertions.assertTrue(cause instanceof ParseCancellationException);
 		}
 	}
 
