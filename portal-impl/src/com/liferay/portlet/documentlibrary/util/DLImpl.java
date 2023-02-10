@@ -287,7 +287,11 @@ public class DLImpl implements DL {
 			fileEntry, fileVersion, themeDisplay, queryString, appendVersion,
 			absoluteURL);
 
-		return HttpUtil.addParameter(previewURL, "download", true);
+		String addParameter = HttpUtil.addParameter(
+			previewURL, "download", true);
+
+		return HttpUtil.addParameter(
+			addParameter, "fileEntryId", fileEntry.getFileEntryId());
 	}
 
 	@Override
