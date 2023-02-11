@@ -18,6 +18,11 @@ import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage;
 import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.Order;
 
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Riccardo Ferrari
  */
@@ -33,6 +38,18 @@ public class OrderParserPTransform extends BaseParserPTransform<Order> {
 		DXPEntityPubsubMessage.Attributes attributes =
 			dxpEntityPubsubMessage.getAttributes();
 
+		Map<Long, Long> channelIds =
+			attributes.getCommerceChannelIdChannelIds();
+
+		if (_logger.isDebugEnabled()) {
+			_logger.debug(
+				String.format(
+					"Commerce Channel ID: %s. Analytics Cloud Channel: %s",
+					order.commerceChannelId,
+					channelIds.get(order.commerceChannelId)));
+		}
+
+		order.channelId = channelIds.get(order.commerceChannelId);
 		order.dataSourceId = attributes.getDataSourceId();
 		order.projectId = attributes.getProjectId();
 		order.uploadDate = attributes.getUploadTime();
@@ -40,5 +57,8 @@ public class OrderParserPTransform extends BaseParserPTransform<Order> {
 
 		return order;
 	}
+
+	private static final Logger _logger = LoggerFactory.getLogger(
+		OrderParserPTransform.class);
 
 }

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -28,6 +30,11 @@ import org.apache.beam.sdk.schemas.annotations.DefaultSchema;
 public class Order extends BaseDXPEntity {
 
 	public long accountId;
+
+	@JsonProperty("channelId")
+	@Nullable
+	public Long commerceChannelId;
+
 	public String createDate;
 
 	@Nullable

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +32,10 @@ public class Product extends BaseDXPEntity {
 
 	public long catalogId;
 	public List<Long> categoryIds;
+
+	@JsonProperty("channelId")
+	@Nullable
+	public Long commerceChannelId;
 
 	@Nullable
 	public String createDate;

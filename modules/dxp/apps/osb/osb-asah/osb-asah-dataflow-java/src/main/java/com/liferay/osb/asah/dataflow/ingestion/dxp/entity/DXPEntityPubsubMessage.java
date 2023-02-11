@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 
+import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
+
 import java.io.Serializable;
 
 import java.nio.charset.StandardCharsets;
@@ -55,6 +57,32 @@ public class DXPEntityPubsubMessage implements Serializable {
 			if (attributes != null) {
 				putAll(attributes);
 			}
+		}
+
+		public Map<Long, Long> getCommerceChannelIdChannelIds()
+			throws Exception {
+
+			String commerceChannelIdChannelIdsString = getOrDefault(
+				"commerceChannelIdChannelIds", null);
+
+			if (commerceChannelIdChannelIdsString == null) {
+				return null;
+			}
+
+			Map<String, Long> commerceChannelIdChannelIdsJSONFormatted =
+				ObjectMapperUtil.readValue(
+					Map.class, commerceChannelIdChannelIdsString);
+
+			Map<Long, Long> commerceChannelIdChannelIds = new HashMap<>();
+
+			for (Entry<String, Long> entry :
+					commerceChannelIdChannelIdsJSONFormatted.entrySet()) {
+
+				commerceChannelIdChannelIds.put(
+					Long.parseLong(entry.getKey()), entry.getValue());
+			}
+
+			return commerceChannelIdChannelIds;
 		}
 
 		public long getCount() {
