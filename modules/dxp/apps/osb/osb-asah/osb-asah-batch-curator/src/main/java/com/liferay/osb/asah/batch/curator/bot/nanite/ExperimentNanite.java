@@ -177,9 +177,7 @@ public class ExperimentNanite extends BaseNanite {
 		LocalDate newProcessedLocalDate =
 			newProcessedLocalDateTime.toLocalDate();
 
-		Stream<ExperimentMetric> stream = experimentMetrics.stream();
-
-		stream.map(
+		experimentMetrics.removeIf(
 			experimentMetric -> {
 				LocalDateTime processedLocalDateTime =
 					experimentMetric.getProcessedLocalDateTime();
@@ -188,11 +186,13 @@ public class ExperimentNanite extends BaseNanite {
 					processedLocalDateTime.toLocalDate();
 
 				if (processedLocalDate.isEqual(newProcessedLocalDate)) {
-					return newExperimentMetric;
+					return true;
 				}
 
-				return experimentMetric;
+				return false;
 			});
+
+		experimentMetrics.add(newExperimentMetric);
 	}
 
 	private void _updateExperiment(Experiment experiment) {
