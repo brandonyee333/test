@@ -14,15 +14,21 @@
 
 package com.liferay.osb.asah.publisher.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.common.antivirus.ClamAVScanner;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.ChannelDog;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.storage.Storage;
 import com.liferay.osb.asah.common.storage.StorageConfiguration;
 import com.liferay.osb.asah.common.storage.StorageFactory;
+import com.liferay.osb.asah.common.util.ArrayUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.publisher.messaging.DXPEntitiesChannels;
 
@@ -138,13 +144,18 @@ public class DXPBatchEntitiesRestController {
 				_clamAVScanner.scan(multipartFile.getInputStream());
 			}
 
+			Map<Long, Long> commerceChannelIdChannelIds =
+				_getCommerceChannelIdChannelIds(
+					Long.parseLong(dataSourceId), name);
+
 			ZipInputStream zipInputStream = new ZipInputStream(
 				multipartFile.getInputStream());
 
 			zipInputStream.getNextEntry();
 
 			boolean success = _publishMessages(
-				dataSourceId, name, zipInputStream, uploadType);
+				commerceChannelIdChannelIds, dataSourceId, name, zipInputStream,
+				uploadType);
 
 			_messageBus.sendMessage(
 				Channel.COMPOSER,
@@ -169,6 +180,37 @@ public class DXPBatchEntitiesRestController {
 		}
 
 		return ResponseEntity.ok(Collections.emptyList());
+	}
+
+	private Map<Long, Long> _getCommerceChannelIdChannelIds(
+		long dataSourceId, String resourceName) {
+
+		if (!ArrayUtil.contains(
+				_REQUIRE_COMMERCE_CHANNEL_ID_CHANNEL_ID_RESOURCE_NAMES,
+				resourceName)) {
+
+			return null;
+		}
+
+		List<com.liferay.osb.asah.common.entity.Channel> channels =
+			_channelDog.getChannels(dataSourceId);
+
+		Map<Long, Long> commerceChanelIdChannelIds = new HashMap<>();
+
+		for (com.liferay.osb.asah.common.entity.Channel channel : channels) {
+			for (ChannelDataSource channelDataSource :
+					channel.getChannelDataSources()) {
+
+				for (Long commerceChannelId :
+						channelDataSource.getCommerceChannelIds()) {
+
+					commerceChanelIdChannelIds.put(
+						commerceChannelId, channel.getId());
+				}
+			}
+		}
+
+		return commerceChanelIdChannelIds;
 	}
 
 	private StorageConfiguration _getStorageConfiguration(
@@ -218,12 +260,19 @@ public class DXPBatchEntitiesRestController {
 	}
 
 	private boolean _publishMessages(
-		String dataSourceId, String resourceName, InputStream inputStream,
-		String uploadType) {
+			Map<Long, Long> commerceChannelIdChannelIds, String dataSourceId,
+			String resourceName, InputStream inputStream, String uploadType)
+		throws Exception {
 
 		Channel channel = _dxpEntitiesChannels.getChannel(resourceName);
 
 		Map<String, String> messageAttributes = new HashMap<>();
+
+		if (commerceChannelIdChannelIds != null) {
+			messageAttributes.put(
+				"commerceChannelIdChannelIds",
+				_objectMapper.writeValueAsString(commerceChannelIdChannelIds));
+		}
 
 		messageAttributes.put("dataSourceId", dataSourceId);
 		messageAttributes.put("projectId", ProjectIdThreadLocal.getProjectId());
@@ -264,14 +313,26 @@ public class DXPBatchEntitiesRestController {
 		return status;
 	}
 
+	private static final String[]
+		_REQUIRE_COMMERCE_CHANNEL_ID_CHANNEL_ID_RESOURCE_NAMES = {
+			"com.liferay.headless.commerce.machine.learning.dto.v1_0.Order",
+			"com.liferay.headless.commerce.machine.learning.dto.v1_0.Product"
+		};
+
 	private static final Log _log = LogFactory.getLog(
 		DXPBatchEntitiesRestController.class);
 
 	private static final DateTimeFormatter _dateTimeFormatter =
 		DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz");
 
+	@Autowired
+	private ChannelDog _channelDog;
+
 	@Autowired(required = false)
 	private ClamAVScanner _clamAVScanner;
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@Value(
 		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities-{region}}"
@@ -288,6 +349,9 @@ public class DXPBatchEntitiesRestController {
 
 	@Autowired
 	private MessageBus _messageBus;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private StorageFactory _storageFactory;
