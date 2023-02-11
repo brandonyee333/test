@@ -184,6 +184,7 @@ CREATE TABLE IF NOT EXISTS BQMembershipChange (
 CREATE TABLE IF NOT EXISTS BQOrder(
 	accountId BIGINT,
 	channelId BIGINT,
+	commerceChannelId BIGINT,
 	createDate TIMESTAMP,
 	currencyCode TEXT,
 	dataSourceId BIGINT,
