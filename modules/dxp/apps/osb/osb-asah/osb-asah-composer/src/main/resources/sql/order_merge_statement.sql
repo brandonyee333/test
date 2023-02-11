@@ -75,6 +75,7 @@ WHEN MATCHED AND staging.deleted IS NULL AND staging.modifiedDate > replica.modi
 	UPDATE SET
 		replica.accountId = staging.accountId,
 		replica.channelId = staging.channelId,
+		replica.commerceChannelId = staging.commerceChannelId,
 		replica.currencyCode = staging.currencyCode,
 		replica.externalReferenceCode = staging.externalReferenceCode,
 		replica.modifiedDate = staging.modifiedDate,
@@ -93,6 +94,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 	INSERT (
 		`accountId`,
 		`channelId`,
+		`commerceChannelId`,
 		`createDate`,
 		`currencyCode`,
 		`dataSourceId`,
@@ -113,6 +115,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 	VALUES (
 		staging.accountId,
 		staging.channelId,
+		staging.commerceChannelId,
 		staging.createDate,
 		staging.currencyCode,
 		staging.dataSourceId,
