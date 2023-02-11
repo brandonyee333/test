@@ -188,7 +188,8 @@ public class DXPBatchEntitiesRestControllerTest
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 
-		httpHeaders.add(HeaderConstants.DATA_SOURCE_ID, "test-data-source-id");
+		httpHeaders.add(
+			HeaderConstants.DATA_SOURCE_ID, RandomTestUtil.randomId());
 		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
 		httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
 
