@@ -52,10 +52,10 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 
 	@Override
 	public Map<String, BigDecimal> getOrderAccountAverageCurrencyValues(
-		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
+		if (channelId == null) {
 			return Collections.emptyMap();
 		}
 
@@ -80,7 +80,7 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 						"orderAccountAverageCurrencyValue"
 					)),
 				_getConditions(
-					dataSourceIds, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
+					channelId, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
 					rangeEndLocalDateTime, rangeStartLocalDateTime,
 					timeZoneId)),
 			GetterUtil::getBigDecimal);
@@ -88,10 +88,10 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 
 	@Override
 	public Map<String, BigDecimal> getOrderAverageCurrencyValues(
-		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
+		if (channelId == null) {
 			return Collections.emptyMap();
 		}
 
@@ -110,7 +110,7 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 						"orderAverageCurrencyValue"
 					)),
 				_getConditions(
-					dataSourceIds, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
+					channelId, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
 					rangeEndLocalDateTime, rangeStartLocalDateTime,
 					timeZoneId)),
 			GetterUtil::getBigDecimal);
@@ -118,10 +118,10 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 
 	@Override
 	public Map<String, BigDecimal> getOrderIncompleteCurrencyValues(
-		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
+		if (channelId == null) {
 			return Collections.emptyMap();
 		}
 
@@ -140,17 +140,17 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 						"orderIncompleteCurrencyValue"
 					)),
 				_getConditions(
-					dataSourceIds, Arrays.asList(2L, 6L), rangeEndLocalDateTime,
+					channelId, Arrays.asList(2L, 6L), rangeEndLocalDateTime,
 					rangeStartLocalDateTime, timeZoneId)),
 			GetterUtil::getBigDecimal);
 	}
 
 	@Override
 	public Map<String, BigDecimal> getOrderTotalCurrencyValues(
-		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
-		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
+		if (channelId == null) {
 			return Collections.emptyMap();
 		}
 
@@ -169,14 +169,14 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 						"orderTotalCurrencyValue"
 					)),
 				_getConditions(
-					dataSourceIds, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
+					channelId, Arrays.asList(0L, 1L, 10L, 14L, 15L, 20L),
 					rangeEndLocalDateTime, rangeStartLocalDateTime,
 					timeZoneId)),
 			GetterUtil::getBigDecimal);
 	}
 
 	private List<Condition> _getConditions(
-		List<Long> dataSourceIds, List<Long> orderStatuses,
+		Long channelId, List<Long> orderStatuses,
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId) {
 
@@ -184,9 +184,11 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 
 		conditions.add(
 			DSL.field(
-				"dataSourceId"
-			).in(
-				dataSourceIds
+				"channelId"
+			).cast(
+				Long.class
+			).eq(
+				channelId
 			));
 		conditions.add(
 			DSL.field(

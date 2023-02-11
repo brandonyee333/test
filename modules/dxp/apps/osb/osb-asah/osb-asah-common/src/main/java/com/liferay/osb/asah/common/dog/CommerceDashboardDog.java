@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.repository.BQOrderRepository;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,15 +43,9 @@ public class CommerceDashboardDog {
 	public Map<String, CurrencyValue> getOrderAccountAverageCurrencyValues(
 		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
 
-		List<Long> dataSourceIds = _getDataSourceIds(channelId);
-
-		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
-			return Collections.emptyMap();
-		}
-
 		Map<String, BigDecimal> currentOrderAccountAverageCurrencyValues =
 			_bqOrderRepository.getOrderAccountAverageCurrencyValues(
-				dataSourceIds, timeRange.getEndLocalDateTime(),
+				channelId, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
@@ -64,7 +57,7 @@ public class CommerceDashboardDog {
 
 			previousOrderAccountAverageCurrencyValues =
 				_bqOrderRepository.getOrderAccountAverageCurrencyValues(
-					dataSourceIds, previousTimeRange.getEndLocalDateTime(),
+					channelId, previousTimeRange.getEndLocalDateTime(),
 					previousTimeRange.getStartLocalDateTime(),
 					_timeZoneDog.getTimeZoneId());
 		}
@@ -103,15 +96,9 @@ public class CommerceDashboardDog {
 	public Map<String, CurrencyValue> getOrderAverageCurrencyValues(
 		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
 
-		List<Long> dataSourceIds = _getDataSourceIds(channelId);
-
-		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
-			return Collections.emptyMap();
-		}
-
 		Map<String, BigDecimal> currentOrderAverageCurrencyValues =
 			_bqOrderRepository.getOrderAverageCurrencyValues(
-				dataSourceIds, timeRange.getEndLocalDateTime(),
+				channelId, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
@@ -122,7 +109,7 @@ public class CommerceDashboardDog {
 
 			previousOrderAverageCurrencyValues =
 				_bqOrderRepository.getOrderAverageCurrencyValues(
-					dataSourceIds, previousTimeRange.getEndLocalDateTime(),
+					channelId, previousTimeRange.getEndLocalDateTime(),
 					previousTimeRange.getStartLocalDateTime(),
 					_timeZoneDog.getTimeZoneId());
 		}
@@ -158,15 +145,9 @@ public class CommerceDashboardDog {
 	public Map<String, CurrencyValue> getOrderIncompleteCurrencyValues(
 		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
 
-		List<Long> dataSourceIds = _getDataSourceIds(channelId);
-
-		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
-			return Collections.emptyMap();
-		}
-
 		Map<String, BigDecimal> currentOrderIncompleteCurrencyValues =
 			_bqOrderRepository.getOrderIncompleteCurrencyValues(
-				dataSourceIds, timeRange.getEndLocalDateTime(),
+				channelId, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
@@ -177,7 +158,7 @@ public class CommerceDashboardDog {
 
 			previousOrderIncompleteCurrencyValues =
 				_bqOrderRepository.getOrderIncompleteCurrencyValues(
-					dataSourceIds, previousTimeRange.getEndLocalDateTime(),
+					channelId, previousTimeRange.getEndLocalDateTime(),
 					previousTimeRange.getStartLocalDateTime(),
 					_timeZoneDog.getTimeZoneId());
 		}
@@ -214,15 +195,9 @@ public class CommerceDashboardDog {
 	public Map<String, CurrencyValue> getOrderTotalCurrencyValues(
 		Long channelId, boolean compareToPrevious, TimeRange timeRange) {
 
-		List<Long> dataSourceIds = _getDataSourceIds(channelId);
-
-		if ((dataSourceIds == null) || dataSourceIds.isEmpty()) {
-			return Collections.emptyMap();
-		}
-
 		Map<String, BigDecimal> currentOrderTotalCurrencyValues =
 			_bqOrderRepository.getOrderTotalCurrencyValues(
-				dataSourceIds, timeRange.getEndLocalDateTime(),
+				channelId, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
@@ -233,7 +208,7 @@ public class CommerceDashboardDog {
 
 			previousOrderTotalCurrencyValues =
 				_bqOrderRepository.getOrderTotalCurrencyValues(
-					dataSourceIds, previousTimeRange.getEndLocalDateTime(),
+					channelId, previousTimeRange.getEndLocalDateTime(),
 					previousTimeRange.getStartLocalDateTime(),
 					_timeZoneDog.getTimeZoneId());
 		}

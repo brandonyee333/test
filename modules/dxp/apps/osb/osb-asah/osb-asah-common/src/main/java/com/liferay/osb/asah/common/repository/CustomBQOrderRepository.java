@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,19 +26,19 @@ import java.util.Map;
 public interface CustomBQOrderRepository {
 
 	public Map<String, BigDecimal> getOrderAccountAverageCurrencyValues(
-		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelIds, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	public Map<String, BigDecimal> getOrderAverageCurrencyValues(
-		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	public Map<String, BigDecimal> getOrderIncompleteCurrencyValues(
-		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	public Map<String, BigDecimal> getOrderTotalCurrencyValues(
-		List<Long> dataSourceIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 }
