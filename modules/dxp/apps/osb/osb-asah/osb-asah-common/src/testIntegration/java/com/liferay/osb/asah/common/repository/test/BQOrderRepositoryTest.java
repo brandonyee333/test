@@ -24,7 +24,6 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.math.BigDecimal;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
@@ -49,7 +48,7 @@ public class BQOrderRepositoryTest
 
 		Map<String, BigDecimal> orderAccountAverageCurrencyValues =
 			_bqOrderRepository.getOrderAccountAverageCurrencyValues(
-				Arrays.asList(123L), timeRange.getEndLocalDateTime(),
+				123L, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
@@ -94,7 +93,7 @@ public class BQOrderRepositoryTest
 
 		Map<String, BigDecimal> orderAverageCurrencyValues =
 			_bqOrderRepository.getOrderAverageCurrencyValues(
-				Arrays.asList(123L), timeRange.getEndLocalDateTime(),
+				123L, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
@@ -139,7 +138,7 @@ public class BQOrderRepositoryTest
 
 		Map<String, BigDecimal> orderIncompleteCurrencyValues =
 			_bqOrderRepository.getOrderIncompleteCurrencyValues(
-				Arrays.asList(123L), timeRange.getEndLocalDateTime(),
+				123L, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 
@@ -157,7 +156,7 @@ public class BQOrderRepositoryTest
 		Assertions.assertNotNull(orderIncompleteCurrencyValues.get("EUR"));
 
 		actualValue = orderIncompleteCurrencyValues.get("EUR");
-		expectedValue = new BigDecimal("20.0");
+		expectedValue = new BigDecimal("10.0");
 
 		Assertions.assertEquals(
 			expectedValue.stripTrailingZeros(),
@@ -184,7 +183,7 @@ public class BQOrderRepositoryTest
 
 		Map<String, BigDecimal> orderTotalCurrencyValues =
 			_bqOrderRepository.getOrderTotalCurrencyValues(
-				Arrays.asList(123L), timeRange.getEndLocalDateTime(),
+				123L, timeRange.getEndLocalDateTime(),
 				timeRange.getStartLocalDateTime(),
 				_timeZoneDog.getTimeZoneId());
 

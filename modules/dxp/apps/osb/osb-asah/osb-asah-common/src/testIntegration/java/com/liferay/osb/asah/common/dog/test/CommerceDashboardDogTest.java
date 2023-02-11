@@ -73,7 +73,7 @@ public class CommerceDashboardDogTest
 	public void testGetOrderAccountAverageCurrencyValues() {
 		Map<String, CurrencyValue> orderAccountAverageCurrencyValues =
 			_commerceDashboardDog.getOrderAccountAverageCurrencyValues(
-				11L, false, TimeRange.LAST_7_DAYS);
+				123L, false, TimeRange.LAST_7_DAYS);
 
 		Assertions.assertNotNull(orderAccountAverageCurrencyValues);
 
@@ -90,7 +90,7 @@ public class CommerceDashboardDogTest
 	public void testGetOrderAccountAverageCurrencyValuesWithPreviousPeriodComparison() {
 		Map<String, CurrencyValue> orderAccountAverageCurrencyValues =
 			_commerceDashboardDog.getOrderAccountAverageCurrencyValues(
-				11L, true, TimeRange.LAST_7_DAYS);
+				123L, true, TimeRange.LAST_7_DAYS);
 
 		Assertions.assertNotNull(orderAccountAverageCurrencyValues);
 
@@ -108,7 +108,7 @@ public class CommerceDashboardDogTest
 	public void testGetOrderAverageCurrencyValues() {
 		Map<String, CurrencyValue> orderAverageCurrencyValues =
 			_commerceDashboardDog.getOrderAverageCurrencyValues(
-				11L, false, TimeRange.LAST_7_DAYS);
+				123L, false, TimeRange.LAST_7_DAYS);
 
 		Assertions.assertNotNull(orderAverageCurrencyValues);
 
@@ -124,7 +124,7 @@ public class CommerceDashboardDogTest
 	public void testGetOrderAverageCurrencyValuesWithPreviousPeriodComparison() {
 		Map<String, CurrencyValue> orderAverageCurrencyValues =
 			_commerceDashboardDog.getOrderAverageCurrencyValues(
-				11L, true, TimeRange.LAST_7_DAYS);
+				123L, true, TimeRange.LAST_7_DAYS);
 
 		Assertions.assertNotNull(orderAverageCurrencyValues);
 
@@ -141,7 +141,7 @@ public class CommerceDashboardDogTest
 	public void testGetOrderIncompleteCurrencyValues() {
 		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
 			_commerceDashboardDog.getOrderIncompleteCurrencyValues(
-				11L, false, TimeRange.LAST_7_DAYS);
+				123L, false, TimeRange.LAST_7_DAYS);
 
 		Assertions.assertNotNull(orderIncompleteCurrencyValues);
 
@@ -157,7 +157,7 @@ public class CommerceDashboardDogTest
 	public void testGetOrderIncompleteCurrencyValuesWithPreviousPeriodComparison() {
 		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
 			_commerceDashboardDog.getOrderIncompleteCurrencyValues(
-				11L, true, TimeRange.LAST_7_DAYS);
+				123L, true, TimeRange.LAST_7_DAYS);
 
 		Assertions.assertNotNull(orderIncompleteCurrencyValues);
 
@@ -174,7 +174,7 @@ public class CommerceDashboardDogTest
 	public void testGetOrderTotalCurrencyValues() {
 		Map<String, CurrencyValue> orderTotalCurrencyValues =
 			_commerceDashboardDog.getOrderTotalCurrencyValues(
-				11L, false, TimeRange.LAST_7_DAYS);
+				123L, false, TimeRange.LAST_7_DAYS);
 
 		Assertions.assertNotNull(orderTotalCurrencyValues);
 
@@ -190,7 +190,7 @@ public class CommerceDashboardDogTest
 	public void testGetOrderTotalCurrencyValuesWithPreviousPeriodComparison() {
 		Map<String, CurrencyValue> orderTotalCurrencyValues =
 			_commerceDashboardDog.getOrderTotalCurrencyValues(
-				11L, true, TimeRange.LAST_7_DAYS);
+				123L, true, TimeRange.LAST_7_DAYS);
 
 		Assertions.assertNotNull(orderTotalCurrencyValues);
 
