@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -42,6 +44,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.Param;
+import org.jooq.Record1;
+import org.jooq.SelectConditionStep;
 import org.jooq.impl.DSL;
 
 /**
@@ -177,7 +181,6 @@ public class FilterExpressionVisitor
 			));
 	}
 
-	@Override
 	public Object visitFilterExpression(
 		FilterExpressionParser.FilterExpressionContext
 			filterExpressionContext) {
@@ -185,14 +188,68 @@ public class FilterExpressionVisitor
 		String filterString = _parseFilterStringExpression(
 			filterExpressionContext.filter);
 
-		FilterExpression filterExpression = new FilterExpression(
-			filterString.substring(1, filterString.length() - 1),
-			filterExpressionContext.filterType.getText());
+		String filterType = filterExpressionContext.filterType.getText();
 
-		_referencedTableNames.addAll(
-			filterExpression.getReferencedTableNames());
+		if (!filterType.equals("interests")) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString.substring(1, filterString.length() - 1),
+				filterExpressionContext.filterType.getText());
 
-		return filterExpression.getCondition();
+			_referencedTableNames.addAll(
+				filterExpression.getReferencedTableNames());
+
+			return filterExpression.getCondition();
+		}
+
+		Matcher matcher = _pattern.matcher(filterString);
+
+		if (!matcher.matches()) {
+			throw new FilterExpressionParserException(
+				"Unable to parse filter expression: " + filterString);
+		}
+
+		SelectConditionStep<Record1<String>> selectConditionStep =
+			DSL.selectDistinct(
+				DSL.field("Identity.id", String.class)
+			).from(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
+			).join(
+				DSL.table(
+					"BQIdentityInterestScore"
+				).as(
+					"Interest"
+				)
+			).on(
+				DSL.field(
+					"Identity.id", String.class
+				).eq(
+					DSL.field("Interest.identityId", String.class)
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"Interest.keyword", String.class
+					).eq(
+						matcher.group("keyword")
+					),
+					DSL.field(
+						"Interest.interested", Boolean.class
+					).eq(
+						true
+					))
+			);
+
+		Field<String> field = DSL.field("Identity.id", String.class);
+
+		if (Boolean.parseBoolean(matcher.group("interested"))) {
+			return field.in(selectConditionStep);
+		}
+
+		return field.notIn(selectConditionStep);
 	}
 
 	@Override
@@ -498,6 +555,9 @@ public class FilterExpressionVisitor
 		return (T)parseTree.accept(this);
 	}
 
+	private static final Pattern _pattern = Pattern.compile(
+		"'\\(name eq '(?<keyword>[^']+)' and score eq " +
+			"'(?<interested>true|false)'\\)'");
 	private static final Set<String> _timeFrameParameterNames = SetUtil.of(
 		"last24Hours", "last28Days", "last30Days", "last7Days", "last90Days",
 		"yesterday");
