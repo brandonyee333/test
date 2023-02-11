@@ -198,7 +198,19 @@ public class BQMembershipDogTest
 	public void testUpdateBQMemberships() {
 		_bqMembershipDog.updateBQMemberships(
 			"individuals.filter(filter='contains(demographics/email/value, " +
-				"''delta.com'')')", 1L);
+				"''delta.com'')')",
+			1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+	}
+
+	@SQLResource(resourcePath = "test_bq_memberships_custom_fields.sql")
+	@Test
+	public void testUpdateBQMembershipsWithCustomFields() {
+		_bqMembershipDog.updateBQMemberships(
+			"individuals.filter(filter='(custom/name eq ''Organization'' and " +
+				"custom/value eq ''Engineer'')')",
+			1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
