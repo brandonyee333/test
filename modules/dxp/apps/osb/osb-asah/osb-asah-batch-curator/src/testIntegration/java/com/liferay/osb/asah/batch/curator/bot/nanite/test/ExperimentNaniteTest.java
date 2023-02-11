@@ -18,6 +18,7 @@ import com.liferay.osb.asah.batch.curator.bot.nanite.ExperimentNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
@@ -28,6 +29,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListe
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.json.JSONObject;
 
@@ -201,6 +203,11 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 			_experimentRepository.findById(1L);
 
 		Experiment experiment = experimentOptional.get();
+
+		Set<ExperimentMetric> experimentMetrics =
+			experiment.getExperimentMetrics();
+
+		Assertions.assertNotEquals(experimentMetrics.size(), 0);
 
 		Assertions.assertEquals(
 			expectedStatus, experiment.getExperimentStatus());
