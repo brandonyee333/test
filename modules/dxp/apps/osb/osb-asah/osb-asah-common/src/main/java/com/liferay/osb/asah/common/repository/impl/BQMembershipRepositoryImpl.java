@@ -449,6 +449,30 @@ public class BQMembershipRepositoryImpl
 					DSL.field("Individual.id")
 				)
 			);
+
+			if (referencedTableNames.contains("ExpandoValue")) {
+				selectJoinStep = selectJoinStep.join(
+					DSL.table(
+						"BQExpandoValue"
+					).as(
+						"ExpandoValue"
+					)
+				).on(
+					DSL.and(
+						DSL.field(
+							"ExpandoValue.classPK"
+						).eq(
+							DSL.field("(Individual.fields->>'classPK')::bigint")
+						),
+						DSL.field(
+							"ExpandoValue.dataSourceId"
+						).eq(
+							DSL.field(
+								"(Individual.fields->>'osbAsahDataSourceId'" +
+									")::bigint")
+						))
+				);
+			}
 		}
 
 		if (referencedTableNames.contains("Session")) {
