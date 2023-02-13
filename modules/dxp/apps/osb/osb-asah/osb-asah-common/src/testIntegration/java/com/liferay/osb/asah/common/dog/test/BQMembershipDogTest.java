@@ -32,7 +32,9 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.hamcrest.MatcherAssert;
@@ -47,6 +49,7 @@ import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Michael Bowerman
@@ -213,6 +216,72 @@ public class BQMembershipDogTest
 			1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+	}
+
+	@SQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
+	@Test
+	public void testUpdateBQMembershipsWithInterest() {
+		_bqMembershipDog.updateBQMemberships(
+			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
+				"''true'')'))",
+			2L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(2L));
+
+		Page<BQMembership> bqMembershipPage =
+			_bqMembershipDog.getBQMembershipPage(
+				2L, null, 0, 20, new String[0]);
+
+		List<BQMembership> bqMemberships = bqMembershipPage.getContent();
+
+		Map<String, String> expectedIndividuals = new HashMap<>();
+
+		expectedIndividuals.put(
+			"abc-123",
+			"761319ac0d9f6e0f3467ad26bc8c63989d06c5f491849d6aa12fabdbd6c6b7bb");
+
+		_assertBQMemberships(bqMemberships, expectedIndividuals);
+
+		_bqMembershipDog.updateBQMemberships(
+			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
+				"''false'')'))",
+			2L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(2L));
+
+		bqMembershipPage = _bqMembershipDog.getBQMembershipPage(
+			2L, null, 0, 20, new String[0]);
+
+		bqMemberships = bqMembershipPage.getContent();
+
+		expectedIndividuals = new HashMap<>();
+
+		expectedIndividuals.put(
+			"bcd-456",
+			"5970d88ec4ed505177361de1b17a3f2debf7c4f630c14f075a823ec97942692a");
+		expectedIndividuals.put(
+			"efg-789",
+			"5f20f61b2cfaa86c4f3cb3557751a702776af029deabed8e943fb55cfa604e34");
+		expectedIndividuals.put(
+			"ghi-101",
+			"def73c7b1d2934d8bcdc8080a221c39df40e7ccfa499ad49d862138f5bc055f9");
+
+		_assertBQMemberships(bqMemberships, expectedIndividuals);
+	}
+
+	private void _assertBQMemberships(
+		List<BQMembership> bqMemberships,
+		Map<String, String> expectedIndividuals) {
+
+		for (BQMembership bqMembership : bqMemberships) {
+			Assertions.assertEquals(
+				expectedIndividuals.get(bqMembership.getIdentityId()),
+				bqMembership.getIndividualId());
+
+			expectedIndividuals.remove(bqMembership.getIdentityId());
+		}
+
+		Assertions.assertEquals(0, expectedIndividuals.size());
 	}
 
 	@Autowired

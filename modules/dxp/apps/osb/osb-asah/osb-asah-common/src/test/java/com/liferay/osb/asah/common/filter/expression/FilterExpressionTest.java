@@ -865,6 +865,94 @@ public class FilterExpressionTest {
 	}
 
 	@Test
+	public void testInterestFilterExpressionFalse() {
+		_assertEquals(
+			DSL.field(
+				"Identity.id", String.class
+			).notIn(
+				DSL.selectDistinct(
+					DSL.field("Identity.id", String.class)
+				).from(
+					DSL.table(
+						"BQIdentity"
+					).as(
+						"Identity"
+					)
+				).join(
+					DSL.table(
+						"BQIdentityInterestScore"
+					).as(
+						"Interest"
+					)
+				).on(
+					DSL.field(
+						"Identity.id", String.class
+					).eq(
+						DSL.field("Interest.identityId", String.class)
+					)
+				).where(
+					DSL.and(
+						DSL.field(
+							"Interest.keyword", String.class
+						).eq(
+							"analytics"
+						),
+						DSL.field(
+							"Interest.interested", Boolean.class
+						).eq(
+							true
+						))
+				)
+			),
+			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
+				"''false'')'))");
+	}
+
+	@Test
+	public void testInterestFilterExpressionTrue() {
+		_assertEquals(
+			DSL.field(
+				"Identity.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Identity.id", String.class)
+				).from(
+					DSL.table(
+						"BQIdentity"
+					).as(
+						"Identity"
+					)
+				).join(
+					DSL.table(
+						"BQIdentityInterestScore"
+					).as(
+						"Interest"
+					)
+				).on(
+					DSL.field(
+						"Identity.id", String.class
+					).eq(
+						DSL.field("Interest.identityId", String.class)
+					)
+				).where(
+					DSL.and(
+						DSL.field(
+							"Interest.keyword", String.class
+						).eq(
+							"analytics"
+						),
+						DSL.field(
+							"Interest.interested", Boolean.class
+						).eq(
+							true
+						))
+				)
+			),
+			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
+				"''true'')'))");
+	}
+
+	@Test
 	public void testInvalidLogicalOperatorThrowsException() {
 		_assertThrowsException(
 			"column1 eq 'value1' but column2 eq 'value2'",
