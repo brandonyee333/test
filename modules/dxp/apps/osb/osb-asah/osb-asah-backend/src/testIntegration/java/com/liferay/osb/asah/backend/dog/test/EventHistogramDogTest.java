@@ -182,8 +182,8 @@ public class EventHistogramDogTest
 			_eventHistogramDog.getEventsCountHistogram(
 				new SearchQueryContext() {
 					{
-						setEntityId("1");
 						setChannelId("1");
+						setEntityId("1");
 						setInterval(interval.getKey());
 						setTimeRange(timeRange);
 					}
@@ -199,8 +199,8 @@ public class EventHistogramDogTest
 			_eventHistogramDog.getSessionsCountHistogram(
 				new SearchQueryContext() {
 					{
-						setEntityId("1");
 						setChannelId("1");
+						setEntityId("1");
 						setInterval(interval.getKey());
 						setTimeRange(timeRange);
 					}
