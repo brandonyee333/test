@@ -29,12 +29,14 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -77,6 +79,20 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 
 			_addTableField(
 				field, ProjectIdThreadLocal.getProjectId(), "session");
+
+			_updateTableField(
+				Arrays.asList(
+					Field.newBuilder(
+						"status", LegacySQLTypeName.INTEGER
+					).setMode(
+						Field.Mode.NULLABLE
+					).build(),
+					Field.newBuilder(
+						"type", LegacySQLTypeName.STRING
+					).setMode(
+						Field.Mode.NULLABLE
+					).build()),
+				ProjectIdThreadLocal.getProjectId(), "accountentry");
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Databases successfully upgraded to schema 4.0.0");
@@ -129,6 +145,36 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
 
 		_bigQuery = bigQueryOptions.getService();
+	}
+
+	private void _updateTableField(
+		List<Field> newFields, String projectId, String tableName) {
+
+		List<Field> fields = new ArrayList<>();
+
+		Table table = _bigQuery.getTable(
+			ProjectIdThreadLocal.getProjectId(), tableName);
+
+		for (Field field : _getTableFields(table)) {
+			for (Field newField : newFields) {
+				if (StringUtils.equals(newField.getName(), field.getName())) {
+					fields.add(newField);
+
+					continue;
+				}
+
+				fields.add(field);
+			}
+		}
+
+		Table.Builder builder = table.toBuilder();
+
+		builder = builder.setDefinition(
+			StandardTableDefinition.of(Schema.of(newFields)));
+
+		table = builder.build();
+
+		table.update();
 	}
 
 	private static final Log _log = LogFactory.getLog(
