@@ -32,7 +32,6 @@ import net.sf.ehcache.bootstrap.BootstrapCacheLoaderFactory;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
@@ -42,8 +41,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.portal.cache.ehcache.multiple.configuration.EhcacheMultipleConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
-	service = PortalCacheBootstrapLoaderFactory.class
+	immediate = true, service = PortalCacheBootstrapLoaderFactory.class
 )
 public class EhcachePortalCacheBootstrapLoaderFactory
 	implements PortalCacheBootstrapLoaderFactory {

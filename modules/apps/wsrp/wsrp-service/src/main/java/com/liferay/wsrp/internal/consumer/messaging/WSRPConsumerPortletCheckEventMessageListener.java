@@ -32,7 +32,6 @@ import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -41,8 +40,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.wsrp.configuration.WSRPGroupServiceConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
-	property = "destination.name=" + DestinationNames.WSRP,
+	immediate = true, property = "destination.name=" + DestinationNames.WSRP,
 	service = MessageListener.class
 )
 public class WSRPConsumerPortletCheckEventMessageListener

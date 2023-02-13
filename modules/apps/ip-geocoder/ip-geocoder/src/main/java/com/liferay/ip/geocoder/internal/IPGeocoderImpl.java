@@ -38,7 +38,6 @@ import org.apache.log4j.Logger;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 
@@ -50,8 +49,7 @@ import org.tukaani.xz.XZInputStream;
  */
 @Component(
 	configurationPid = "com.liferay.ip.geocoder.internal.IPGeocoderConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, name = "IPGeocoder",
-	service = IPGeocoder.class
+	name = "IPGeocoder", service = IPGeocoder.class
 )
 public class IPGeocoderImpl implements IPGeocoder {
 

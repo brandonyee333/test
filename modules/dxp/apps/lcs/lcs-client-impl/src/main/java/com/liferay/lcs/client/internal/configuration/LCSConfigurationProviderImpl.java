@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
@@ -30,8 +29,7 @@ import org.osgi.service.component.annotations.Deactivate;
  */
 @Component(
 	configurationPid = "com.liferay.lcs.client.configuration.LCSConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
-	service = LCSConfigurationProvider.class
+	immediate = true, service = LCSConfigurationProvider.class
 )
 public class LCSConfigurationProviderImpl implements LCSConfigurationProvider {
 
