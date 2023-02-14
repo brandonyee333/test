@@ -1,0 +1,66 @@
+[
+	{
+		"assetType": "Page",
+		"canonicalUrl": "http://192.168.109.238:8089/web/guest/home",
+		"channelIds": [
+			"562083992420987928"
+		],
+		"dataSourceAssetPK": "http://192.168.109.238:8089/web/guest/home",
+		"dataSourceId": "562087837573509556",
+		"description": "",
+		"id": "562088009867349328",
+		"keywords": [
+			{
+				"keyword": "liferay dxp",
+				"type": "title"
+			},
+			{
+				"keyword": "home",
+				"type": "title"
+			}
+		],
+		"name": "Home - Liferay DXP",
+		"url": "http://192.168.109.238:8089/web/guest/home?p_p_state=maximized&p_p_mode=view&refererPlid=1&saveLastPath=false&_com_liferay_login_web_portlet_LoginPortlet_mvcRenderCommandName=%2Flogin%2Flogin&p_p_id=com_liferay_login_web_portlet_LoginPortlet&p_p_lifecycle=0&_com_liferay_login_web_portlet_LoginPortlet_redirect=%2Fgroup%2Fcontrol_panel%2Fmanage%3Fp_p_id%3Dcom_liferay_configuration_admin_web_portlet_InstanceSettingsPortlet%26p_p_lifecycle%3D0%26p_p_state%3Dmaximized%26p_p_mode%3Dview%26_com_liferay_configuration_admin_web_portlet_InstanceSettingsPortlet_mvcRenderCommandName%3D%252Fconfiguration_admin%252Fview_configuration_screen%26_com_liferay_configuration_admin_web_portlet_InstanceSettingsPortlet_configurationScreenKey%3D2-synced-contact-data"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://analytics-uat.liferay.com/web/guest/home",
+		"channelIds": [
+			"8"
+		],
+		"dataSourceAssetPK": "https://analytics-uat.liferay.com/web/guest/home",
+		"dataSourceId": "537769075636983399",
+		"description": "",
+		"id": "537799805779889974",
+		"keywords": [
+			{
+				"keyword": "analytics",
+				"type": "title"
+			},
+			{
+				"keyword": "analytics cloud",
+				"type": "title"
+			},
+			{
+				"keyword": "cloud",
+				"type": "title"
+			}
+		],
+		"name": "Analytics Cloud",
+		"url": "https://analytics-uat.liferay.com/web/guest/home?p_p_state=maximized&p_p_mode=view&refererPlid=20120&saveLastPath=false&_com_liferay_login_web_portlet_LoginPortlet_mvcRenderCommandName=%2Flogin%2Flogin&p_p_id=com_liferay_login_web_portlet_LoginPortlet&p_p_lifecycle=0&_com_liferay_login_web_portlet_LoginPortlet_redirect=%2Fgroup%2Fcontrol_panel%2Fmanage%3Fp_p_id%3Dcom_liferay_portal_settings_web_portlet_PortalSettingsPortlet%26p_p_lifecycle%3D0%26p_p_state%3Dmaximized"
+	},
+	{
+		"assetType": "WebContent",
+		"canonicalUrl": "http://192.168.109.238:8089",
+		"channelIds": [
+			"562087884027999120"
+		],
+		"dataSourceAssetPK": "38283",
+		"dataSourceId": "562087837573509556",
+		"description": "",
+		"id": "562090627547503004",
+		"keywords": null,
+		"name": "test",
+		"url": "http://192.168.109.238:8089/"
+	}
+]

@@ -14,18 +14,25 @@
 
 package com.liferay.osb.asah.upgrade.v4_0_0.test;
 
-import com.liferay.osb.asah.common.entity.BQEvent;
-import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
-import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchIndexManager;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.upgrade.v4_0_0.SegmentFilterUpgradeStep;
 
 import java.util.Date;
 import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.elasticsearch.index.query.QueryBuilders;
+
+import org.json.JSONArray;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -44,56 +51,18 @@ public class SegmentFilterUpgradeStepTest
 	public void setUp() throws Exception {
 		ProjectIdThreadLocal.setProjectId("test");
 
-		BQEvent bqEvent = new BQEvent();
-
-		bqEvent.setApplicationId("Blog");
-		bqEvent.setDataSourceId(370994124094927024L);
-		bqEvent.setEventId("blogViewed");
-		bqEvent.setId("1");
-
-		_bqEventRepository.save(bqEvent);
-
-		bqEvent.setApplicationId("Blog");
-		bqEvent.setDataSourceId(370994124094927024L);
-		bqEvent.setEventId("blogViewed");
-		bqEvent.setId("2");
-
-		_bqEventRepository.save(bqEvent);
-
-		BQEventProperty bqEventProperty = new BQEventProperty();
-
-		bqEventProperty.setId("1");
-		bqEventProperty.setName("classPK");
-		bqEventProperty.setValue("id");
-
-		_bqEventPropertyRepository.save(bqEventProperty);
-
-		bqEventProperty.setId("1");
-		bqEventProperty.setName("title");
-		bqEventProperty.setValue("title");
-
-		_bqEventPropertyRepository.save(bqEventProperty);
-
-		bqEventProperty = new BQEventProperty();
-
-		bqEventProperty.setId("2");
-		bqEventProperty.setName("classPK");
-		bqEventProperty.setValue("id");
-
-		_bqEventPropertyRepository.save(bqEventProperty);
-
-		bqEventProperty.setId("2");
-		bqEventProperty.setName("title");
-		bqEventProperty.setValue("title");
-
-		_bqEventPropertyRepository.save(bqEventProperty);
+		_createIndexTemplate("assets", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		Segment segment = new Segment();
 
 		segment.setFilter(
 			"(activities.filterByCount(filter='(activityKey eq " +
-				"''Blog#blogViewed#370994124094927024'' and day gt " +
-					"''last24Hours'')',operator='ge',value=1))");
+				"''WebContent#webContentViewed#562090627547503004'' and day " +
+					"gt ''last24Hours'')', operator='ge', value=1)) and " +
+						"(activities.filterByCount(filter='(activityKey eq " +
+							"''Page#pageViewed#562088009867349328'' and day " +
+								"gt ''last24Hours'')', operator='ge', value=" +
+									"1))");
 		segment.setId(1L);
 		segment.setIncludeAnonymousUsers(Boolean.FALSE);
 		segment.setIsNew(true);
@@ -105,14 +74,20 @@ public class SegmentFilterUpgradeStepTest
 	}
 
 	@AfterEach
-	public void tearDown() throws Exception {
-		_bqEventRepository.deleteAll();
-		_bqEventPropertyRepository.deleteAll();
+	public void tearDown() {
+		_faroInfoElasticsearchInvoker.delete(
+			"assets", QueryBuilders.matchAllQuery());
+
 		_segmentRepository.deleteAll();
 	}
 
 	@Test
 	public void testUpgrade() throws Exception {
+		_faroInfoElasticsearchInvoker.add(
+			"assets",
+			_getJSONArray(
+				"assets", WeDeployDataService.OSB_ASAH_FARO_INFO.toString()));
+
 		_segmentFilterUpgradeStep.upgrade("");
 
 		Optional<Segment> segmentOptional = _segmentRepository.findById(1L);
@@ -120,18 +95,60 @@ public class SegmentFilterUpgradeStepTest
 		Segment segment = segmentOptional.get();
 
 		Assertions.assertEquals(
-			"(activities.filterByCount(filter='(activityKey eq " +
-				"''1829cd6956423819a16105ccbbdc9b351da4bef547ecd46c1c" +
-					"183fb293732aaa'' and day gt ''last24Hours'')'," +
-						"operator='ge',value=1))",
+			"(activities.filterByCount(filter='(applicationId eq " +
+				"''WebContent'' and eventId eq ''webContentViewed'' and " +
+					"assetId eq ''4bbc36e2819ac0d4b638e4eda149d2ff26e1cc9cfa" +
+						"6f4f0e85bcad1ade10542c'' and day gt ''last24Hours''" +
+							")', operator='ge', value=1)) and (activities." +
+								"filterByCount(filter='(applicationId eq " +
+									"''Page'' and eventId eq ''pageViewed'' " +
+										"and assetId eq ''5c5db277986449c8e0a" +
+											"80f8172a6b4cf7aecd8dd94374a5cdb2" +
+												"47d0d70ca155e'' and day gt " +
+													"''last24Hours'')', " +
+														"operator='ge', value" +
+															"=1))",
 			segment.getFilter());
 	}
 
-	@Autowired
-	private BQEventPropertyRepository _bqEventPropertyRepository;
+	private void _createIndexTemplate(
+			String collection, WeDeployDataService weDeployDataService)
+		throws Exception {
+
+		_elasticsearchIndexManager.delete(
+			String.format("test_%s_%s", weDeployDataService, collection));
+
+		_elasticsearchIndexManager.create(
+			ResourceUtil.readResourceToString(
+				String.format(
+					"dependencies/%s_index_configuration.json",
+					StringUtils.replace(collection, "-", "_")),
+				this),
+			String.format("test_%s_%s", weDeployDataService, collection));
+
+		_elasticsearchIndexManager.addAlias(
+			String.format("test_%s_%s_alias", weDeployDataService, collection),
+			String.format("test_%s_%s", weDeployDataService, collection));
+	}
+
+	private JSONArray _getJSONArray(
+			String collectionName, String weDeployDataServiceName)
+		throws Exception {
+
+		return new JSONArray(
+			TestExecutionListenerUtil.replaceVariables(
+				ResourceUtil.readResourceToString(
+					String.format(
+						"dependencies/%s/%s.json", weDeployDataServiceName,
+						collectionName),
+					this)));
+	}
 
 	@Autowired
-	private BQEventRepository _bqEventRepository;
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	@Autowired
 	private SegmentFilterUpgradeStep _segmentFilterUpgradeStep;
