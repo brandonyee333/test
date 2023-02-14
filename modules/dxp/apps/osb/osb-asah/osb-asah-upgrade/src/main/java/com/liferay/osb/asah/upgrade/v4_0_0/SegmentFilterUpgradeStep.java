@@ -16,10 +16,11 @@ package com.liferay.osb.asah.upgrade.v4_0_0;
 
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
-import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
+import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
 
-import java.util.HashMap;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,11 +28,13 @@ import javax.annotation.PostConstruct;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -46,50 +49,58 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 	}
 
 	@Override
-	public void upgrade(String version) throws Exception {
-		String query = ResourceUtil.readResourceToString(
-			new ClassPathResource("query-asset-event-4.0.0.sql"));
-
+	public void upgrade(String version) {
 		for (Segment segment : _segmentRepository.findAll()) {
 			String filterString = segment.getFilter();
 
-			Matcher matcher = _activityKeyPattern.matcher(segment.getFilter());
+			Matcher matcher = _activityKeyPattern.matcher(filterString);
 
 			while (matcher.find()) {
-				String activityKey = filterString.substring(
-					matcher.start(), matcher.end());
+				String activityKey = matcher.group(1);
 
 				String[] values = activityKey.split("#");
 
-				String id = _namedParameterJdbcTemplate.queryForObject(
-					query,
-					new HashMap<String, Object>() {
-						{
-							put("applicationId", values[0]);
-							put("dataSourceId", Long.parseLong(values[2]));
-							put("eventId", values[1]);
-						}
-					},
-					String.class);
+				String assetId = values[2];
 
-				if (id == null) {
-					throw new IllegalStateException(
-						String.format("Asset %s does not exist", activityKey));
+				JSONObject assetJSONObject =
+					_faroInfoElasticsearchInvoker.fetch("assets", assetId);
+
+				if ((assetJSONObject == null) && _log.isWarnEnabled()) {
+					_log.warn(
+						String.format(
+							"Unable to upgrade segment filter %s. Segment " +
+								"ID: %s",
+							filterString, segment.getId()));
+
+					continue;
 				}
 
-				filterString = filterString.replace(activityKey, id);
+				String dataSourceAssetPK = assetJSONObject.getString(
+					"dataSourceAssetPK");
+				String assetTitle = assetJSONObject.getString("name");
 
+				String newFilterString = String.format(
+					"applicationId eq ''%s'' and eventId eq ''%s'' and " +
+						"assetId eq ''%s''",
+					values[0], values[1],
+					DigestUtils.sha256Hex(dataSourceAssetPK + assetTitle));
+
+				filterString = filterString.replace(
+					matcher.group(), newFilterString);
+			}
+
+			if (!Objects.equals(filterString, segment.getFilter())) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						String.format(
-							"Activity key %s replaced with %s", activityKey,
-							id));
+							"Upgrading segment filter from {%s} to {%s}",
+							segment.getFilter(), filterString));
 				}
+
+				segment.setFilter(filterString);
+
+				_segmentRepository.save(segment);
 			}
-
-			segment.setFilter(filterString);
-
-			_segmentRepository.save(segment);
 		}
 	}
 
@@ -103,10 +114,13 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 		SegmentFilterUpgradeStep.class);
 
 	private static final Pattern _activityKeyPattern = Pattern.compile(
-		"([a-zA-z])+#([a-zA-z])+#([0-9])+");
+		"activityKey eq ''([a-zA-z]+#[a-zA-z]+#[0-9]+)''");
 
 	@Autowired
 	private DataSource _dataSource;
+
+	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 	private NamedParameterJdbcTemplate _namedParameterJdbcTemplate;
 	private final SegmentRepository _segmentRepository;
