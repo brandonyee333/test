@@ -20,6 +20,7 @@ import java.io.Serializable;
 
 import java.nio.charset.StandardCharsets;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class DXPEntityPubsubMessage implements Serializable {
 				"commerceChannelIdChannelIds", null);
 
 			if (commerceChannelIdChannelIdsString == null) {
-				return null;
+				return Collections.emptyMap();
 			}
 
 			Map<String, Long> commerceChannelIdChannelIdsJSONFormatted =
