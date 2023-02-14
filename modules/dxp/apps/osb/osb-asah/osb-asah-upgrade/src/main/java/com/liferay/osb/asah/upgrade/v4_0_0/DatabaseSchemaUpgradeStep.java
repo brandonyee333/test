@@ -30,6 +30,7 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -77,10 +78,9 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 				Field.Mode.REPEATED
 			).build();
 
-			_addTableField(
-				field, ProjectIdThreadLocal.getProjectId(), "session");
+			_addTableFields(Collections.singletonList(field), "session");
 
-			_updateTableField(
+			_updateTableFields(
 				Arrays.asList(
 					Field.newBuilder(
 						"status", LegacySQLTypeName.INTEGER
@@ -92,7 +92,7 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 					).setMode(
 						Field.Mode.NULLABLE
 					).build()),
-				ProjectIdThreadLocal.getProjectId(), "accountentry");
+				"accountentry");
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Databases successfully upgraded to schema 4.0.0");
@@ -113,14 +113,15 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 		}
 	}
 
-	private void _addTableField(
-		Field field, String projectId, String tableName) {
-
-		Table table = _bigQuery.getTable(projectId, tableName);
+	private void _addTableFields(List<Field> newFields, String tableName) {
+		Table table = _bigQuery.getTable(
+			ProjectIdThreadLocal.getProjectId(), tableName);
 
 		List<Field> fields = _getTableFields(table);
 
-		fields.add(field);
+		for (Field newField : newFields) {
+			fields.add(newField);
+		}
 
 		Table.Builder builder = table.toBuilder();
 
@@ -147,9 +148,7 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 		_bigQuery = bigQueryOptions.getService();
 	}
 
-	private void _updateTableField(
-		List<Field> newFields, String projectId, String tableName) {
-
+	private void _updateTableFields(List<Field> newFields, String tableName) {
 		List<Field> fields = new ArrayList<>();
 
 		Table table = _bigQuery.getTable(
