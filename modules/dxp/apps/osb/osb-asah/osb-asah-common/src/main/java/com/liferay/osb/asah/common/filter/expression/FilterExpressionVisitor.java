@@ -228,9 +228,7 @@ public class FilterExpressionVisitor
 			return field.similarTo("%" + param.getValue());
 		}
 		else if (functionName.equalsIgnoreCase("isInterested")) {
-			Param<String> param = (Param<String>)parameters.get(1);
-
-			return _getIsInterestedCondition(param.getValue());
+			return _getIsInterestedCondition(field.toString());
 		}
 		else if (functionName.equalsIgnoreCase("similarTo")) {
 			Param param = (Param)parameters.get(1);

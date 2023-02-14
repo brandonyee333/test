@@ -99,8 +99,8 @@ public class FilterExpression {
 
 		while (matcher.find()) {
 			String expression =
-				"interests.filter(filter='(isInterested(keyword, \"" +
-					matcher.group("keyword") + "\"))')";
+				"interests.filter(filter='(isInterested(" +
+					matcher.group("keyword") + "))')";
 
 			if (!Boolean.parseBoolean(matcher.group("interested"))) {
 				expression = "not(" + expression + ")";
