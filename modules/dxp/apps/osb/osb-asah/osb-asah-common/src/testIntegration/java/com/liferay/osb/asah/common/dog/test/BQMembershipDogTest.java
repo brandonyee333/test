@@ -274,8 +274,8 @@ public class BQMembershipDogTest
 	public void testUpdateBQMembershipsWithInterest2() {
 		_bqMembershipDog.updateBQMemberships(
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
-				"''true'')') and interests.filter(filter='(name eq " +
-				"''cloud'' and score eq ''true'')'))",
+				"''true'')') and interests.filter(filter='(name eq ''cloud'' " +
+					"and score eq ''true'')'))",
 			2L);
 
 		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(2L));
@@ -283,7 +283,7 @@ public class BQMembershipDogTest
 		_bqMembershipDog.updateBQMemberships(
 			"(interests.filter(filter='(name eq ''metrics'' and score eq " +
 				"''true'')') and interests.filter(filter='(name eq " +
-				"''quality'' and score eq ''true'')'))",
+					"''quality'' and score eq ''true'')'))",
 			3L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(3L));
@@ -304,15 +304,14 @@ public class BQMembershipDogTest
 
 		_bqMembershipDog.updateBQMemberships(
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
-				"''true'')') and interests.filter(filter='(name eq " +
-				"''cloud'' and score eq ''false'')'))",
+				"''true'')') and interests.filter(filter='(name eq ''cloud'' " +
+					"and score eq ''false'')'))",
 			4L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(4L));
 
-		bqMembershipPage =
-			_bqMembershipDog.getBQMembershipPage(
-				4L, null, 0, 20, new String[0]);
+		bqMembershipPage = _bqMembershipDog.getBQMembershipPage(
+			4L, null, 0, 20, new String[0]);
 
 		bqMemberships = bqMembershipPage.getContent();
 
@@ -330,8 +329,8 @@ public class BQMembershipDogTest
 	public void testUpdateBQMembershipsWithInterest3() {
 		_bqMembershipDog.updateBQMemberships(
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
-				"''true'')') or interests.filter(filter='(name eq " +
-				"''cloud'' and score eq ''true'')'))",
+				"''true'')') or interests.filter(filter='(name eq ''cloud'' " +
+					"and score eq ''true'')'))",
 			2L);
 
 		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(2L));
@@ -355,15 +354,14 @@ public class BQMembershipDogTest
 
 		_bqMembershipDog.updateBQMemberships(
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
-				"''true'')') or interests.filter(filter='(name eq " +
-				"''cloud'' and score eq ''false'')'))",
+				"''true'')') or interests.filter(filter='(name eq ''cloud'' " +
+					"and score eq ''false'')'))",
 			3L);
 
 		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(3L));
 
-		bqMembershipPage =
-			_bqMembershipDog.getBQMembershipPage(
-				3L, null, 0, 20, new String[0]);
+		bqMembershipPage = _bqMembershipDog.getBQMembershipPage(
+			3L, null, 0, 20, new String[0]);
 
 		bqMemberships = bqMembershipPage.getContent();
 
@@ -386,9 +384,9 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithInterest4() {
 		_bqMembershipDog.updateBQMemberships(
-			"(individuals.filter(filter='not contains(demographics/email/" +
-				"value, ''gamma.com'')') and (interests.filter(filter='(name " +
-					"eq ''analytics'' and score eq ''true'')') or " +
+			"(individuals.filter(filter='not contains(demographics/email" +
+				"/value, ''gamma.com'')') and (interests.filter(filter='(" +
+					"name eq ''analytics'' and score eq ''true'')') or " +
 						"interests.filter(filter='(name eq ''cloud'' and " +
 							"score eq ''false'')')))",
 			2L);
