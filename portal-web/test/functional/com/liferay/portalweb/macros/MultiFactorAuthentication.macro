@@ -332,6 +332,10 @@ definition {
 			AssertElementNotPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
 		}
 		else {
+			if (contains(${portalURL}, "080") && !(contains(${portalURL}, "/liferay"))) {
+				var baseURL = StringUtil.replace(${portalURL}, "080", "8/liferay");
+			}
+
 			var bodySpecificText = MockMock.getBodySpecificText(
 				asset = "${portalURL}: Your One-Time Password",
 				content = "Your one-time password is:",

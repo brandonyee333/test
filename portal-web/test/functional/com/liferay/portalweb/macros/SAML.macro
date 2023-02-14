@@ -559,6 +559,10 @@ definition {
 
 		WaitForPageLoad();
 
+		if (contains("${spURL}", "080") && !(contains("${spURL}", "/liferay"))) {
+			var spURL = StringUtil.replace("${spURL}", "080", "8/liferay");
+		}
+
 		AssertLocation.assertPartialLocation(value1 = ${spURL});
 	}
 
@@ -587,6 +591,10 @@ definition {
 		}
 
 		WaitForPageLoad();
+
+		if (contains("${spURL}", "080") && !(contains("${spURL}", "/liferay"))) {
+			var spURL = StringUtil.replace("${spURL}", "080", "8/liferay");
+		}
 
 		AssertLocation.assertPartialLocation(value1 = ${spURL});
 	}
