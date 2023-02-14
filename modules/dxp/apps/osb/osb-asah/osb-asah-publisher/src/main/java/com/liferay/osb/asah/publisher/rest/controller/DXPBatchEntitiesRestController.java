@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.antivirus.ClamAVScanner;
 import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -330,9 +329,6 @@ public class DXPBatchEntitiesRestController {
 
 	@Autowired(required = false)
 	private ClamAVScanner _clamAVScanner;
-
-	@Autowired
-	private DataSourceDog _dataSourceDog;
 
 	@Value(
 		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities-{region}}"
