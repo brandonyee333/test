@@ -13,3 +13,5 @@ INSERT INTO BQIdentityInterestScore (id, identityId, interested, keyword, record
 INSERT INTO BQIdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (3, 'bcd-456', true, 'cloud', timestamp '${now}');
 INSERT INTO BQIdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (4, 'bcd-456', false, 'analytics', timestamp '${now}');
 INSERT INTO BQIdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (5, 'efg-789', false, 'dev', timestamp '${now}');
+INSERT INTO BQIdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (6, 'efg-789', true, 'metrics', timestamp '${now}');
+INSERT INTO BQIdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (7, 'efg-789', true, 'quality', timestamp '${now}');
