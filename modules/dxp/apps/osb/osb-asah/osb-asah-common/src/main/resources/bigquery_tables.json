@@ -612,6 +612,16 @@
 			},
 			{
 				"mode": "NULLABLE",
+				"name": "assetId",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "assetTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
 				"name": "browserName",
 				"type": "STRING"
 			},

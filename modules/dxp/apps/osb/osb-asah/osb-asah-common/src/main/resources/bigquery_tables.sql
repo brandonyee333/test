@@ -66,6 +66,8 @@ CREATE TABLE IF NOT EXISTS BQDataSourceUser (
 
 CREATE TABLE IF NOT EXISTS BQEvent (
 	applicationId TEXT,
+	assetId TEXT,
+	assetTitle TEXT,
 	browserName TEXT,
 	canonicalUrl TEXT,
 	channelId BIGINT,
