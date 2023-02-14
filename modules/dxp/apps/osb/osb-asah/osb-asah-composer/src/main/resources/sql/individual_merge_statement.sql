@@ -35,10 +35,219 @@ USING
 			FROM
 				`{{ dag.default_args['ac_project_id'] }}.user`,
 				UNNEST(fields)
+		),
+		BQUserMemberships AS (
+			SELECT
+				dataSourceId,
+				dxpUserId,
+				(
+					SELECT
+						value
+					FROM
+						UNNEST(fields)
+					WHERE
+						name = 'groupIds'
+				) AS groupIds,
+				individualId,
+				(
+					SELECT
+						value
+					FROM
+						UNNEST(fields)
+					WHERE
+						name = 'organizationIds'
+				) AS organizationIds,
+				(
+					SELECT
+						value
+					FROM
+						UNNEST(fields)
+					WHERE
+						name = 'roleIds'
+				) AS roleIds,
+				(
+					SELECT
+						value
+					FROM
+						UNNEST(fields)
+					WHERE
+						name = 'teamIds'
+				) AS teamIds,
+				(
+					SELECT
+						value
+					FROM
+						UNNEST(fields)
+					WHERE
+						name = 'userGroupIds'
+				) AS userGroupIds
+			FROM
+				`{{ dag.default_args['ac_project_id'] }}.user`
+		),
+		BQGroupIds AS (
+			SELECT
+				BQGroup.* EXCEPT(groupIds),
+				Group_.id AS bqGroupId,
+				groupId
+			FROM (
+				SELECT
+					* EXCEPT(groupIds),
+					JSON_EXTRACT_ARRAY(groupIds, '$') AS groupIds
+				FROM
+					BQUserMemberships
+			) AS BQGroup,
+			UNNEST(groupIds) groupId
+			JOIN
+				`{{ dag.default_args['ac_project_id'] }}.group`AS Group_
+			ON
+				CAST(groupId AS STRING) = CAST(Group_.groupId AS STRING) AND
+				BQGroup.dataSourceId = Group_.dataSourceId
+		),
+		BQOrganizationIds AS (
+			SELECT
+				BQOrganization.* EXCEPT(organizationIds),
+				Organization.id AS bqOrganizationId,
+				organizationId
+			FROM (
+				SELECT
+					* EXCEPT(organizationIds),
+					JSON_EXTRACT_ARRAY(organizationIds, '$') AS organizationIds
+				FROM
+					BQUserMemberships
+			) AS BQOrganization,
+			UNNEST(organizationIds) organizationId
+			JOIN
+				`{{ dag.default_args['ac_project_id'] }}.organization` AS Organization
+			ON
+				CAST(organizationId AS STRING) = CAST(Organization.organizationId AS STRING) AND
+				BQOrganization.dataSourceId = Organization.dataSourceId
+		),
+		BQRoleIds AS (
+			SELECT
+				BQRole.* EXCEPT(roleIds),
+				Role.id AS bqRoleId,
+				roleId
+			FROM (
+				SELECT
+					* EXCEPT(roleIds),
+					JSON_EXTRACT_ARRAY(roleIds, '$') AS roleIds
+				FROM
+					BQUserMemberships
+			) AS BQRole,
+			UNNEST(roleIds) roleId
+			JOIN
+				`{{ dag.default_args['ac_project_id'] }}.role` AS Role
+			ON
+				CAST(roleId AS STRING) = CAST(Role.roleId AS STRING) AND
+				BQRole.dataSourceId = Role.dataSourceId
+		),
+		BQTeamIds AS (
+			SELECT
+				BQTeam.* EXCEPT(teamIds),
+				Team.id AS bqTeamId,
+				teamId
+			FROM (
+				SELECT
+					* EXCEPT(teamIds),
+					JSON_EXTRACT_ARRAY(teamIds, '$') AS teamIds
+				FROM
+					BQUserMemberships
+			) AS BQTeam,
+			UNNEST(teamIds) teamId
+			JOIN
+				`{{ dag.default_args['ac_project_id'] }}.team` AS Team
+			ON
+				CAST(teamId AS STRING) = CAST(Team.teamId AS STRING) AND
+				BQTeam.dataSourceId = Team.dataSourceId
+		),
+		BQUserGroupIds AS (
+			SELECT
+				BQUserGroup.* EXCEPT(userGroupIds),
+				UserGroup.id AS bqUserGroupId,
+				userGroupId
+			FROM (
+				SELECT
+					* EXCEPT(userGroupIds),
+					JSON_EXTRACT_ARRAY(userGroupIds, '$') AS userGroupIds
+				FROM
+					BQUserMemberships
+			) AS BQUserGroup,
+			UNNEST(userGroupIds) userGroupId
+			JOIN
+				`{{ dag.default_args['ac_project_id'] }}.usergroup` AS UserGroup
+			ON
+				CAST(userGroupId AS STRING) = CAST(UserGroup.userGroupId AS STRING) AND
+				BQUserGroup.dataSourceId = UserGroup.dataSourceId
+		),
+		BQMemberships AS (
+			SELECT
+				User.emailAddress,
+				ARRAY_AGG(
+					STRUCT(MembershipIds.name, MembershipIds.ids)
+				) AS memberships
+			FROM
+				`{{ dag.default_args['ac_project_id'] }}.user` AS User
+			LEFT JOIN
+			(
+				SELECT
+					dataSourceId,
+					dxpUserId,
+					ARRAY_AGG(DISTINCT BQGroupIds.bqGroupId) AS ids,
+					'groupIds' AS name
+				FROM
+					BQGroupIds
+				GROUP BY
+					BQGroupIds.dataSourceId, BQGroupIds.dxpUserId
+				UNION ALL
+				SELECT
+					dataSourceId,
+					dxpUserId,
+					ARRAY_AGG(DISTINCT BQOrganizationIds.bqOrganizationId) AS ids,
+					'organizationIds' AS name
+				FROM
+					BQOrganizationIds
+				GROUP BY
+					BQOrganizationIds.dataSourceId, BQOrganizationIds.dxpUserId
+				UNION ALL
+				SELECT
+					dataSourceId,
+					dxpUserId,
+					ARRAY_AGG(DISTINCT BQRoleIds.bqRoleId) AS ids,
+					'roleIds' AS name
+				FROM
+					BQRoleIds
+				GROUP BY
+					BQRoleIds.dataSourceId, BQRoleIds.dxpUserId
+				UNION ALL
+				SELECT
+					dataSourceId,
+					dxpUserId,
+					ARRAY_AGG(DISTINCT BQTeamIds.bqTeamId) AS ids,
+					'teamIds' AS name
+				FROM
+					BQTeamIds
+				GROUP BY
+					BQTeamIds.dataSourceId, BQTeamIds.dxpUserId
+				UNION ALL
+				SELECT
+					dataSourceId,
+					dxpUserId,
+					ARRAY_AGG(DISTINCT BQUserGroupIds.bqUserGroupId) AS ids,
+					'userGroupIds' AS name
+				FROM
+					BQUserGroupIds
+				GROUP BY
+					BQUserGroupIds.dataSourceId, BQUserGroupIds.dxpUserId
+			) AS MembershipIds
+			ON
+				MembershipIds.dataSourceId = User.dataSourceId AND
+				MembershipIds.dxpUserId = User.dxpUserId
+			GROUP BY
+				User.emailAddress
 		)
 
 		SELECT
-			emailAddress,
+			BQStagingFields.emailAddress,
 			(
 				SELECT
 					SAFE_CAST(value AS STRING)
@@ -63,6 +272,7 @@ USING
 				WHERE
 					name = 'lastName'
 			) AS lastName,
+			BQMemberships.memberships,
 			(
 				SELECT
 					SAFE_CAST(value AS STRING)
@@ -133,7 +343,11 @@ USING
 				rowNumber = 1
 			GROUP BY
 				emailAddress
-		)
+		) AS BQStagingFields
+		LEFT JOIN
+			BQMemberships
+		ON
+			BQStagingFields.emailAddress = BQMemberships.emailAddress
 	) AS staging
 ON
 	LOWER(replica.emailAddress) = staging.emailAddress
@@ -143,6 +357,7 @@ WHEN MATCHED THEN
 		replica.fields = staging.stagingFields,
 		replica.jobTitle = staging.jobTitle,
 		replica.lastName = staging.lastName,
+		replica.memberships = staging.memberships,
 		replica.middleName = staging.middleName,
 		replica.modifiedDate = staging.modifiedDate,
 		replica.screenName = staging.screenName
@@ -155,6 +370,7 @@ WHEN NOT MATCHED BY TARGET THEN
 		`id`,
 		`jobTitle`,
 		`lastName`,
+		`memberships`,
 		`middleName`,
 		`modifiedDate`,
 		`screenName`
@@ -167,6 +383,7 @@ WHEN NOT MATCHED BY TARGET THEN
 		TO_HEX(SHA256(LOWER(staging.emailAddress))),
 		staging.jobTitle,
 		staging.lastName,
+		staging.memberships,
 		staging.middleName,
 		staging.modifiedDate,
 		staging.screenName
