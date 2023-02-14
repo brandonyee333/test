@@ -208,6 +208,15 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			)
 		)
 
+		session_data_frame = analytics_events_with_keywords_data_frame.select(
+			F.col('event_date'), F.col('userId'), F.col('sessionId')
+		).distinct()
+
+		daily_logscores_data_frame = daily_logscores_data_frame.join(
+			session_data_frame,
+			['event_date', 'userId']
+		)
+
 		threshold_data_frame = keyword_count_with_totals_data_frame.select(
 			'event_date', 'keyword', 'keyword_count', 'total_keywords_count'
 		).fillna(
