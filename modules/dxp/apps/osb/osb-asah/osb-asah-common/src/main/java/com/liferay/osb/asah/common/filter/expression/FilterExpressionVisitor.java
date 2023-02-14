@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
@@ -188,68 +186,14 @@ public class FilterExpressionVisitor
 		String filterString = _parseFilterStringExpression(
 			filterExpressionContext.filter);
 
-		String filterType = filterExpressionContext.filterType.getText();
+		FilterExpression filterExpression = new FilterExpression(
+			filterString.substring(1, filterString.length() - 1),
+			filterExpressionContext.filterType.getText());
 
-		if (!filterType.equals("interests")) {
-			FilterExpression filterExpression = new FilterExpression(
-				filterString.substring(1, filterString.length() - 1),
-				filterExpressionContext.filterType.getText());
+		_referencedTableNames.addAll(
+			filterExpression.getReferencedTableNames());
 
-			_referencedTableNames.addAll(
-				filterExpression.getReferencedTableNames());
-
-			return filterExpression.getCondition();
-		}
-
-		Matcher matcher = _pattern.matcher(filterString);
-
-		if (!matcher.matches()) {
-			throw new FilterExpressionParserException(
-				"Unable to parse filter expression: " + filterString);
-		}
-
-		SelectConditionStep<Record1<String>> selectConditionStep =
-			DSL.selectDistinct(
-				DSL.field("Identity.id", String.class)
-			).from(
-				DSL.table(
-					"BQIdentity"
-				).as(
-					"Identity"
-				)
-			).join(
-				DSL.table(
-					"BQIdentityInterestScore"
-				).as(
-					"Interest"
-				)
-			).on(
-				DSL.field(
-					"Identity.id", String.class
-				).eq(
-					DSL.field("Interest.identityId", String.class)
-				)
-			).where(
-				DSL.and(
-					DSL.field(
-						"Interest.keyword", String.class
-					).eq(
-						matcher.group("keyword")
-					),
-					DSL.field(
-						"Interest.interested", Boolean.class
-					).eq(
-						true
-					))
-			);
-
-		Field<String> field = DSL.field("Identity.id", String.class);
-
-		if (Boolean.parseBoolean(matcher.group("interested"))) {
-			return field.in(selectConditionStep);
-		}
-
-		return field.notIn(selectConditionStep);
+		return filterExpression.getCondition();
 	}
 
 	@Override
@@ -282,6 +226,11 @@ public class FilterExpressionVisitor
 			Param param = (Param)parameters.get(1);
 
 			return field.similarTo("%" + param.getValue());
+		}
+		else if (functionName.equalsIgnoreCase("isInterested")) {
+			Param<String> param = (Param<String>)parameters.get(1);
+
+			return _getIsInterestedCondition(param.getValue());
 		}
 		else if (functionName.equalsIgnoreCase("similarTo")) {
 			Param param = (Param)parameters.get(1);
@@ -459,6 +408,47 @@ public class FilterExpressionVisitor
 		return DSL.val(StringUtil.unquoteAndDecodeInnerQuotes(string));
 	}
 
+	private Condition _getIsInterestedCondition(String keyword) {
+		SelectConditionStep<Record1<String>> selectConditionStep =
+			DSL.selectDistinct(
+				DSL.field("Identity.id", String.class)
+			).from(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
+			).join(
+				DSL.table(
+					"BQIdentityInterestScore"
+				).as(
+					"Interest"
+				)
+			).on(
+				DSL.field(
+					"Identity.id", String.class
+				).eq(
+					DSL.field("Interest.identityId", String.class)
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"Interest.keyword", String.class
+					).eq(
+						keyword
+					),
+					DSL.field(
+						"Interest.interested", Boolean.class
+					).eq(
+						true
+					))
+			);
+
+		Field<String> field = DSL.field("Identity.id", String.class);
+
+		return field.in(selectConditionStep);
+	}
+
 	private Field _getLeftField(
 		ParserRuleContext parserRuleContext, Field rightField) {
 
@@ -555,9 +545,6 @@ public class FilterExpressionVisitor
 		return (T)parseTree.accept(this);
 	}
 
-	private static final Pattern _pattern = Pattern.compile(
-		"'\\(name eq '(?<keyword>[^']+)' and score eq " +
-			"'(?<interested>true|false)'\\)'");
 	private static final Set<String> _timeFrameParameterNames = SetUtil.of(
 		"last24Hours", "last28Days", "last30Days", "last7Days", "last90Days",
 		"yesterday");

@@ -18,6 +18,8 @@ import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionLexe
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.BailErrorStrategy;
@@ -52,7 +54,9 @@ public class FilterExpression {
 
 			FilterExpressionLexer filterExpressionLexer =
 				new FilterExpressionLexer(
-					new ANTLRInputStream(filterExpressionString));
+					new ANTLRInputStream(
+						_rewriteInterestFilterExpression(
+							filterExpressionString)));
 
 			filterExpressionLexer.addErrorListener(errorListener);
 
@@ -87,6 +91,32 @@ public class FilterExpression {
 	public Set<String> getReferencedTableNames() {
 		return _referencedTableNames;
 	}
+
+	private String _rewriteInterestFilterExpression(
+		String filterExpressionString) {
+
+		Matcher matcher = _interestPattern.matcher(filterExpressionString);
+
+		while (matcher.find()) {
+			String expression =
+				"interests.filter(filter='(isInterested(keyword, \"" +
+					matcher.group("keyword") + "\"))')";
+
+			if (!Boolean.parseBoolean(matcher.group("interested"))) {
+				expression = "not(" + expression + ")";
+			}
+
+			filterExpressionString = matcher.replaceFirst(expression);
+
+			matcher = _interestPattern.matcher(filterExpressionString);
+		}
+
+		return filterExpressionString;
+	}
+
+	private static final Pattern _interestPattern = Pattern.compile(
+		"interests.filter\\(filter='\\(name eq ''(?<keyword>[^']+)'' and " +
+			"score eq ''(?<interested>true|false)''\\)'\\)");
 
 	private Condition _condition;
 	private final String _filterType;
