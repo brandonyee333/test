@@ -169,7 +169,7 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 		Table.Builder builder = table.toBuilder();
 
 		builder = builder.setDefinition(
-			StandardTableDefinition.of(Schema.of(newFields)));
+			StandardTableDefinition.of(Schema.of(fields)));
 
 		table = builder.build();
 
