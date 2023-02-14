@@ -411,10 +411,10 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 		return finisher
 
-	def _create_language_detector_stage(self, column_names):
+	def _create_language_detector_stage(self, column_name):
 		language_detector = self._language_detector
 
-		language_detector.setInputCols(column_names)
+		language_detector.setInputCols(column_name)
 		language_detector.setThreshold(
 			self.spark_application.configuration.get(
 				'interest.models.language-detector.threshold'))
@@ -458,23 +458,18 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 	def _generate_language_detector_pipeline(self):
 		pipeline = Pipeline()
 
-		title_document_assembler = self._create_document_assembler_stage(
-			'title')
-
-		description_document_assembler = self._create_document_assembler_stage(
-			'description')
+		document_assembler = self._create_document_assembler_stage(
+			'title_and_description')
 
 		language_detector = self._create_language_detector_stage([
-			title_document_assembler.getOutputCol(),
-			description_document_assembler.getOutputCol()
+			document_assembler.getOutputCol()
 		])
 
 		finisher_stage = self._create_finisher_stage(
 			language_detector.getOutputCol(), 'detected_language')
 
 		pipeline.setStages([
-			title_document_assembler,
-			description_document_assembler,
+			document_assembler,
 			language_detector,
 			finisher_stage
 		])
@@ -555,6 +550,10 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		nlp_data_frame = nlp_data_frame.withColumn(
 			'description', F.col('description')
 		).fillna('')
+
+		nlp_data_frame = nlp_data_frame.withColumn(
+			'title_and_description',
+			F.concat_ws('.\n', F.col('title'), F.col('description')))
 
 		language_detection_pipeline = \
 			self._generate_language_detector_pipeline()
