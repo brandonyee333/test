@@ -1217,6 +1217,23 @@
 				"type": "STRING"
 			},
 			{
+				"fields": [
+					{
+						"mode": "REPEATED",
+						"name": "ids",
+						"type": "STRING"
+					},
+					{
+						"mode": "REQUIRED",
+						"name": "name",
+						"type": "STRING"
+					}
+				],
+				"mode": "NULLABLE",
+				"name": "memberships",
+				"type": "RECORD"
+			},
+			{
 				"mode": "NULLABLE",
 				"name": "middleName",
 				"type": "STRING"
