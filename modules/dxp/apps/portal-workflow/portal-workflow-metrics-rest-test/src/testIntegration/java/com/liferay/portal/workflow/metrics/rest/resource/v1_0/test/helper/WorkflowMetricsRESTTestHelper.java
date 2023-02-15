@@ -1301,7 +1301,6 @@ public class WorkflowMetricsRESTTestHelper {
 		searchSearchRequest.setQuery(booleanQuery);
 
 		searchSearchRequest.setSize(10000);
-		searchSearchRequest.setTypes(indexType);
 
 		SearchSearchResponse searchSearchResponse =
 			_searchEngineAdapter.execute(searchSearchRequest);
@@ -1331,7 +1330,6 @@ public class WorkflowMetricsRESTTestHelper {
 						indexName, document.getString("uid"), document);
 
 				updateDocumentRequest.setRefresh(true);
-				updateDocumentRequest.setType(indexType);
 				updateDocumentRequest.setUpsert(true);
 
 				_searchEngineAdapter.execute(updateDocumentRequest);
