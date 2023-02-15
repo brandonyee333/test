@@ -1331,11 +1331,6 @@
 				"type": "TIMESTAMP"
 			},
 			{
-				"mode": "REQUIRED",
-				"name": "id",
-				"type": "INT64"
-			},
-			{
 				"mode": "NULLABLE",
 				"name": "individualId",
 				"type": "STRING"
@@ -1351,17 +1346,12 @@
 				"type": "TIMESTAMP"
 			},
 			{
-				"mode": "NULLABLE",
-				"name": "removedDate",
-				"type": "TIMESTAMP"
-			},
-			{
 				"mode": "REQUIRED",
 				"name": "segmentId",
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "status",
 				"type": "STRING"
 			}

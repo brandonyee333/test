@@ -83,8 +83,6 @@ public class BQMembershipDog {
 
 		_bqMembershipRepository.saveBQMemberships(bqMemberships);
 
-		_membershipChangeDog.addBQMembershipChange(bqMemberships);
-
 		return bqMemberships;
 	}
 
