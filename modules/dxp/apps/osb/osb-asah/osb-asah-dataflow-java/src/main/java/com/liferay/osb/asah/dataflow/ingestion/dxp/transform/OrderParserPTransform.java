@@ -44,9 +44,9 @@ public class OrderParserPTransform extends BaseParserPTransform<Order> {
 		if (_logger.isDebugEnabled()) {
 			_logger.debug(
 				String.format(
-					"Commerce Channel ID: %s. Analytics Cloud Channel ID: %s",
-					order.commerceChannelId,
-					channelIds.get(order.commerceChannelId)));
+					"Analytics Cloud channel ID %s and commerce channel ID %s",
+					channelIds.get(order.commerceChannelId),
+					order.commerceChannelId));
 		}
 
 		order.channelId = channelIds.get(order.commerceChannelId);
