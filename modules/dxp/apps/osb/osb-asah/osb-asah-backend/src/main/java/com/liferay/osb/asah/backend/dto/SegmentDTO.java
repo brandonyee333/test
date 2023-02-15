@@ -93,19 +93,9 @@ public class SegmentDTO {
 		_type = StringUtil.get(segment.getType(), null);
 	}
 
-	public SegmentDTO(
-		Map<Long, BQMembershipChange> bqMembershipChanges,
-		Map<Long, Date> lastActivityDateMap, List<Segment> segments) {
-
+	public SegmentDTO(List<Segment> segments) {
 		_segmentDTOs = SetUtil.map(
-			segments,
-			segment -> {
-				Long segmentId = segment.getId();
-
-				return new SegmentDTO(
-					bqMembershipChanges.getOrDefault(segmentId, null),
-					lastActivityDateMap.get(segmentId), segment);
-			});
+			segments, segment -> new SegmentDTO(null, null, segment));
 	}
 
 	public SegmentDTO(Set<SegmentDTO> segmentDTOs) {

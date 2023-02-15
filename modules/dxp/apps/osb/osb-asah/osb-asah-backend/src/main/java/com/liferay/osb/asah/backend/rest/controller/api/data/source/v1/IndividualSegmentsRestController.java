@@ -339,12 +339,9 @@ public class IndividualSegmentsRestController {
 		List<Segment> segments = segmentsPage.getContent();
 
 		return new PageDTO<>(
-			"_embedded",
-			new SegmentDTO(
-				_bqMembershipChangeDog.getBQMembershipChanges(segments),
-				segmentDog.getLastActivityDates(segments), segments),
-			segmentsPage.getNumber(), segmentsPage.getSize(),
-			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
+			"_embedded", new SegmentDTO(segments), segmentsPage.getNumber(),
+			segmentsPage.getSize(), segmentsPage.getTotalElements(),
+			segmentsPage.getTotalPages());
 	}
 
 	@Autowired

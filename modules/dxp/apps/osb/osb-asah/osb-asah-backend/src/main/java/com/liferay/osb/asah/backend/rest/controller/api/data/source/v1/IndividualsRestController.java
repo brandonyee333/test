@@ -232,9 +232,7 @@ public class IndividualsRestController extends BaseRestController {
 
 		List<Segment> segments = segmentsPage.getContent();
 
-		SegmentDTO segmentDTO1 = new SegmentDTO(
-			_bqMembershipChangeDog.getBQMembershipChanges(segments),
-			_segmentDog.getLastActivityDates(segments), segments);
+		SegmentDTO segmentDTO1 = new SegmentDTO(segments);
 
 		Set<SegmentDTO> segmentDTOs = segmentDTO1.getSegmentDTOs();
 
@@ -298,12 +296,9 @@ public class IndividualsRestController extends BaseRestController {
 		List<Segment> segments = segmentsPage.getContent();
 
 		return new PageDTO<>(
-			"_embedded",
-			new SegmentDTO(
-				_bqMembershipChangeDog.getBQMembershipChanges(segments),
-				_segmentDog.getLastActivityDates(segments), segments),
-			segmentsPage.getNumber(), segmentsPage.getSize(),
-			segmentsPage.getTotalElements(), segmentsPage.getTotalPages());
+			"_embedded", new SegmentDTO(segments), segmentsPage.getNumber(),
+			segmentsPage.getSize(), segmentsPage.getTotalElements(),
+			segmentsPage.getTotalPages());
 	}
 
 	private PageDTO<SegmentDTO> _toSegmentDTOPageDTO(
