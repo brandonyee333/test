@@ -230,6 +230,12 @@ public class FilterExpressionVisitor
 		else if (functionName.equalsIgnoreCase("isInterested")) {
 			return _getIsInterestedCondition(field.toString());
 		}
+		else if (functionName.equalsIgnoreCase("isMember")) {
+			Param param = (Param)parameters.get(1);
+
+			return _getIsMemberCondition(
+				(String)param.getValue(), field.getName());
+		}
 		else if (functionName.equalsIgnoreCase("similarTo")) {
 			Param param = (Param)parameters.get(1);
 
@@ -443,6 +449,45 @@ public class FilterExpressionVisitor
 			);
 
 		Field<String> field = DSL.field("Identity.id", String.class);
+
+		return field.in(selectConditionStep);
+	}
+
+	private Condition _getIsMemberCondition(String id, String type) {
+		_referencedTableNames.add("Individual");
+
+		SelectConditionStep<Record1<String>> selectConditionStep =
+			DSL.selectDistinct(
+				DSL.field("Individual.id", String.class)
+			).from(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).crossJoin(
+				DSL.unnest(
+					DSL.field("Individual.memberships", String[].class)
+				).as(
+					"IndividualMemberships"
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						type
+					),
+					DSL.val(
+						id
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					))
+			);
+
+		Field<String> field = DSL.field("Individual.id", String.class);
 
 		return field.in(selectConditionStep);
 	}
