@@ -44,11 +44,11 @@ public class KeyLocalizedLabelPairCommaSeparatedLabelsInfoTextFormatter
 				keyLocalizedLabelPair -> {
 					String title = keyLocalizedLabelPair.getLabel(locale);
 
-					if (Validator.isNull(title)) {
-						return keyLocalizedLabelPair.getKey();
+					if (Validator.isNotNull(title)) {
+						return title;
 					}
 
-					return title;
+					return keyLocalizedLabelPair.getKey();
 				}),
 			StringPool.COMMA_AND_SPACE);
 	}

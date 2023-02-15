@@ -143,8 +143,7 @@ public class AssetEntriesCheckerHelper {
 
 		ListUtil.distinct(assetEntries);
 
-		assetEntries = ListUtil.filter(
-			assetEntries, assetEntry -> assetEntry.isVisible());
+		assetEntries = ListUtil.filter(assetEntries, AssetEntry::isVisible);
 
 		long[] notifiedAssetEntryIds = GetterUtil.getLongValues(
 			portletPreferences.getValues("notifiedAssetEntryIds", null));
