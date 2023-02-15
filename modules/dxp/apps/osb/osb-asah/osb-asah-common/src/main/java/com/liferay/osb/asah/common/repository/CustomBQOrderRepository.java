@@ -26,7 +26,7 @@ import java.util.Map;
 public interface CustomBQOrderRepository {
 
 	public Map<String, BigDecimal> getOrderAccountAverageCurrencyValues(
-		Long channelIds, LocalDateTime rangeEndLocalDateTime,
+		Long channelId, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
 	public Map<String, BigDecimal> getOrderAverageCurrencyValues(
