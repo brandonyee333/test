@@ -180,6 +180,50 @@ public class AnalyticsEventsIngestionNanite {
 		}
 	}
 
+	private String _getAssetId(AnalyticsEvent analyticsEvent) {
+		if (_applicationIds.contains(analyticsEvent.getApplicationId())) {
+			Map<String, String> eventProperties =
+				analyticsEvent.getEventProperties();
+
+			for (String assetIdKey : _ASSET_ID_KEYS) {
+				if (eventProperties.containsKey(assetIdKey)) {
+					return eventProperties.get(assetIdKey);
+				}
+			}
+
+			String eventId = analyticsEvent.getEventId();
+
+			if (eventId.equals("pageViewed")) {
+				Map<String, String> context = analyticsEvent.getContext();
+
+				return context.get("canonicalUrl");
+			}
+		}
+
+		return null;
+	}
+
+	private String _getAssetTitle(AnalyticsEvent analyticsEvent) {
+		if (_applicationIds.contains(analyticsEvent.getApplicationId())) {
+			Map<String, String> eventProperties =
+				analyticsEvent.getEventProperties();
+
+			if (eventProperties.containsKey("title")) {
+				return eventProperties.get("title");
+			}
+
+			String eventId = analyticsEvent.getEventId();
+
+			if (eventId.equals("pageViewed")) {
+				Map<String, String> context = analyticsEvent.getContext();
+
+				return context.getOrDefault("title", null);
+			}
+		}
+
+		return null;
+	}
+
 	private Map<String, String> _getContext(AnalyticsEvent analyticsEvent) {
 		Map<String, String> context = new HashMap<>();
 
@@ -410,6 +454,8 @@ public class AnalyticsEventsIngestionNanite {
 
 		Map<String, String> context = analyticsEvent.getContext();
 
+		bqEvent.setAssetId(_getAssetId(analyticsEvent));
+		bqEvent.setAssetTitle(_getAssetTitle(analyticsEvent));
 		bqEvent.setApplicationId(analyticsEvent.getApplicationId());
 		bqEvent.setBrowserName(context.get("browserName"));
 		bqEvent.setCanonicalUrl(context.get("canonicalUrl"));
@@ -562,9 +608,25 @@ public class AnalyticsEventsIngestionNanite {
 		_bqSessionRepository.save(bqSession);
 	}
 
+	private static final String[] _ASSET_ID_KEYS = {
+		"articleId", "assetId", "classPK", "entryId", "fileEntryId", "formId"
+	};
+
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsIngestionNanite.class);
 
+	private static final Set<String> _applicationIds = new HashSet<String>() {
+		{
+			add("Blog");
+			add("Comment");
+			add("Custom");
+			add("Document");
+			add("Form");
+			add("Page");
+			add("Ratings");
+			add("WebContent");
+		}
+	};
 	private static final Set<String> _noninteractionEvents =
 		new HashSet<String>() {
 			{

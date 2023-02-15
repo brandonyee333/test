@@ -526,6 +526,50 @@ public class EventIngestionPipeline {
 		return withKeys.withKeyType(TypeDescriptor.of(String.class));
 	}
 
+	private static String _getAssetId(AnalyticsEvent analyticsEvent) {
+		if (_applicationIds.contains(analyticsEvent.applicationId)) {
+			Map<String, String> eventProperties =
+				analyticsEvent.eventProperties;
+
+			for (String assetIdKey : _ASSET_ID_KEYS) {
+				if (eventProperties.containsKey(assetIdKey)) {
+					return eventProperties.get(assetIdKey);
+				}
+			}
+
+			String eventId = analyticsEvent.eventId;
+
+			if (eventId.equals("pageViewed")) {
+				Map<String, String> context = analyticsEvent.context;
+
+				return context.get("canonicalUrl");
+			}
+		}
+
+		return null;
+	}
+
+	private static String _getAssetTitle(AnalyticsEvent analyticsEvent) {
+		if (_applicationIds.contains(analyticsEvent.applicationId)) {
+			Map<String, String> eventProperties =
+				analyticsEvent.eventProperties;
+
+			if (eventProperties.containsKey("title")) {
+				return eventProperties.get("title");
+			}
+
+			String eventId = analyticsEvent.eventId;
+
+			if (eventId.equals("pageViewed")) {
+				Map<String, String> context = analyticsEvent.context;
+
+				return context.get("title");
+			}
+		}
+
+		return null;
+	}
+
 	private static void _outputEventPropertyTableRows(
 		AnalyticsEvent analyticsEvent, DoFn.ProcessContext processContext) {
 
@@ -552,6 +596,8 @@ public class EventIngestionPipeline {
 		TableRow tableRow = new TableRow();
 
 		tableRow.set("applicationId", analyticsEvent.applicationId);
+		tableRow.set("assetId", _getAssetId(analyticsEvent));
+		tableRow.set("assetTitle", _getAssetTitle(analyticsEvent));
 
 		Map<String, String> context = analyticsEvent.context;
 
@@ -705,5 +751,22 @@ public class EventIngestionPipeline {
 
 		processContext.output(tableRow);
 	}
+
+	private static final String[] _ASSET_ID_KEYS = {
+		"articleId", "assetId", "classPK", "entryId", "fileEntryId", "formId"
+	};
+
+	private static final Set<String> _applicationIds = new HashSet<String>() {
+		{
+			add("Blog");
+			add("Comment");
+			add("Custom");
+			add("Document");
+			add("Form");
+			add("Page");
+			add("Ratings");
+			add("WebContent");
+		}
+	};
 
 }
