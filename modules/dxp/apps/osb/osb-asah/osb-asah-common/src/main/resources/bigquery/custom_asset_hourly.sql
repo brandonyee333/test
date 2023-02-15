@@ -1,11 +1,10 @@
 WITH CustomAssetEvent AS (
 	SELECT
 		Event.*,
-		assetId.value AS assetId,
 		TO_HEX(
 			SHA256(
 				CONCAT(
-					assetId.value ||
+					Event.assetId ||
 					COALESCE(category.value, 'default') ||
 					Event.channelId
 				)
@@ -15,18 +14,6 @@ WITH CustomAssetEvent AS (
 		formEnabled.value AS formEnabled
 	FROM
 		`$[AC_PROJECT_ID].event` Event
-	LEFT JOIN (
-		SELECT
-			id,
-			value
-		FROM
-			`$[AC_PROJECT_ID].eventproperty`
-		WHERE
-			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			name = 'assetId'
-	) AS assetId ON (
-		Event.id = assetid.id
-	)
 	LEFT JOIN (
 		SELECT
 			id,
@@ -52,9 +39,9 @@ WITH CustomAssetEvent AS (
 		Event.id = formEnabled.id
 	)
 	WHERE
-		Event.applicationid = 'Custom' AND
-		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-		assetId.value IS NOT NULL
+		Event.applicationId = 'Custom' AND
+		Event.assetId IS NOT NULL AND
+		Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 ),
 CustomAssetFinalizedEvent AS (
 	SELECT

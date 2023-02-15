@@ -1,24 +1,14 @@
 WITH
 	WebContentEvent AS (
 		SELECT
-			Event.*,
-			articleId.value AS assetId,
-			articleTitle.value AS assetTitle
+			Event.*
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
-			LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS articleId ON (
-				Event.id = articleId.id AND articleId.name = 'articleId'
-			)
-			LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS articleTitle ON (
-				Event.id = articleTitle.id AND articleTitle.name = 'title'
-			)
 		WHERE
 			Event.applicationId = 'WebContent' AND
+			Event.assetId IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			Event.eventId = 'webContentViewed' AND
-			articleId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			articleId.value IS NOT NULL AND
-			articleTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			Event.eventId = 'webContentViewed'
 	)
 SELECT
 	assetId,

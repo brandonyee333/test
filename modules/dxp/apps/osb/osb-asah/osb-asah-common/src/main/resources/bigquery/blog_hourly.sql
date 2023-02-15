@@ -1,17 +1,9 @@
 WITH
 	BlogEvent AS (
 		SELECT
-			Event.*,
-			entryId.value AS assetId,
-			blogTitle.value as assetTitle
+			Event.*
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
-		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS entryId ON (
-			Event.id = entryId.id AND entryId.name IN ('classPK', 'entryId')
-		)
-		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS blogTitle ON (
-			Event.id = blogTitle.id AND blogTitle.name = 'title'
-		)
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
 			className.id = Event.id AND
 			className.name = 'className' AND
@@ -28,10 +20,8 @@ WITH
 					className.value IS NOT NULL
 				)
 			) AND
-			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			blogTitle.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			entryId.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			entryId.value IS NOT NULL
+			Event.assetId IS NOT NULL AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 	),
 	BlogFinalizedEvent AS (
 		SELECT
@@ -45,24 +35,19 @@ WITH
 	),
 	CommentEvent AS (
 		SELECT
-			Event.*,
-			classPK.value as assetId
+			Event.*
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
 			Event.id = className.id AND className.name = 'className'
 		)
-		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS classPK ON (
-			Event.id = classPK.id AND classPK.name = 'classPK'
-		)
 		WHERE
 			Event.applicationId = 'Comment' AND
+			Event.assetId IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'posted' AND
 			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			className.value = 'com.liferay.blogs.model.BlogsEntry' AND
-			classPK.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			classPK.value IS NOT NULL
+			className.value = 'com.liferay.blogs.model.BlogsEntry'
 	),
 	BlogComments AS (
 		SELECT
@@ -81,15 +66,11 @@ WITH
 	RatingsEvent AS (
 		SELECT
 			Event.*,
-			classPK.value as assetId,
 			CAST(score.value AS FLOAT64) as score
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
 			Event.id = className.id AND className.name = 'className'
-		)
-		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS classPK ON (
-			Event.id = classPK.id AND classPK.name = 'classPK'
 		)
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS ratingType ON (
 			Event.id = ratingType.id AND ratingType.name = 'ratingType'
@@ -99,12 +80,11 @@ WITH
 		)
 		WHERE
 			Event.applicationId = 'Ratings' AND
+			Event.assetId IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			Event.eventId = 'VOTE' AND
 			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			className.value = 'com.liferay.blogs.model.BlogsEntry' AND
-			classPK.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			classPK.value IS NOT NULL AND
 			ratingType.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			ratingType.value = 'stars' AND
 			score.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
