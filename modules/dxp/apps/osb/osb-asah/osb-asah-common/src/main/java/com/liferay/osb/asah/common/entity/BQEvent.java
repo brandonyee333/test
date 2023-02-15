@@ -97,6 +97,8 @@ public class BQEvent implements Persistable<String> {
 		BQEvent bqEvent = (BQEvent)obj;
 
 		if (Objects.equals(_applicationId, bqEvent._applicationId) &&
+			Objects.equals(_assetId, bqEvent._assetId) &&
+			Objects.equals(_assetTitle, bqEvent._assetTitle) &&
 			Objects.equals(_browserName, bqEvent._browserName) &&
 			Objects.equals(_canonicalUrl, bqEvent._canonicalUrl) &&
 			Objects.equals(_channelId, bqEvent._channelId) &&
@@ -135,6 +137,16 @@ public class BQEvent implements Persistable<String> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getApplicationId() {
 		return _applicationId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAssetId() {
+		return _assetId;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getAssetTitle() {
+		return _assetTitle;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -290,12 +302,12 @@ public class BQEvent implements Persistable<String> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_applicationId, _browserName, _canonicalUrl, _channelId, _city,
-			_contentLanguageId, _context, _country, _createDate, _dataSourceId,
-			_description, _deviceType, _eventDate, _eventId, _eventProperties,
-			_experienceId, _id, _keywords, _languageId, _platformName,
-			_projectTimeZoneId, _referrer, _region, _sessionId, _timezoneOffset,
-			_title, _url, _userId, _variantId);
+			_applicationId, _assetId, _assetTitle, _browserName, _canonicalUrl,
+			_channelId, _city, _contentLanguageId, _context, _country,
+			_createDate, _dataSourceId, _description, _deviceType, _eventDate,
+			_eventId, _eventProperties, _experienceId, _id, _keywords,
+			_languageId, _platformName, _projectTimeZoneId, _referrer, _region,
+			_sessionId, _timezoneOffset, _title, _url, _userId, _variantId);
 	}
 
 	@Override
@@ -305,6 +317,14 @@ public class BQEvent implements Persistable<String> {
 
 	public void setApplicationId(String applicationId) {
 		_applicationId = applicationId;
+	}
+
+	public void setAssetId(String assetId) {
+		_assetId = assetId;
+	}
+
+	public void setAssetTitle(String assetTitle) {
+		_assetTitle = assetTitle;
 	}
 
 	public void setBrowserName(String browserName) {
@@ -431,6 +451,12 @@ public class BQEvent implements Persistable<String> {
 
 	@Transient
 	private String _applicationId;
+
+	@Transient
+	private String _assetId;
+
+	@Transient
+	private String _assetTitle;
 
 	@Transient
 	private String _browserName;
