@@ -973,6 +973,85 @@ public class FilterExpressionTest {
 	}
 
 	@Test
+	public void testIsMemberFilterExpressionEq() {
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).where(
+					DSL.and(
+						DSL.field(
+							"IndividualMemberships.name"
+						).eq(
+							"userGroupIds"
+						),
+						DSL.val(
+							"1234"
+						).in(
+							DSL.function(
+								"unnest", String[].class,
+								DSL.field("IndividualMemberships.ids"))
+						))
+				)
+			),
+			"userGroupIds eq '1234'");
+	}
+
+	@Test
+	public void testIsMemberFilterExpressionNe() {
+		_assertEquals(
+			DSL.not(
+				DSL.field(
+					"Individual.id", String.class
+				).in(
+					DSL.selectDistinct(
+						DSL.field("Individual.id", String.class)
+					).from(
+						DSL.table(
+							"BQIndividual"
+						).as(
+							"Individual"
+						)
+					).crossJoin(
+						DSL.unnest(
+							DSL.field("Individual.memberships", String[].class)
+						).as(
+							"IndividualMemberships"
+						)
+					).where(
+						DSL.and(
+							DSL.field(
+								"IndividualMemberships.name"
+							).eq(
+								"userGroupIds"
+							),
+							DSL.val(
+								"1234"
+							).in(
+								DSL.function(
+									"unnest", String[].class,
+									DSL.field("IndividualMemberships.ids"))
+							))
+					)
+				)),
+			"userGroupIds ne '1234'");
+	}
+
+	@Test
 	public void testLeOperator() {
 		_assertEquals(
 			DSL.field(
