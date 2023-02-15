@@ -55,8 +55,7 @@ public class FilterExpression {
 			FilterExpressionLexer filterExpressionLexer =
 				new FilterExpressionLexer(
 					new ANTLRInputStream(
-						_rewriteInterestFilterExpression(
-							filterExpressionString)));
+						_rewriteFilterExpression(filterExpressionString)));
 
 			filterExpressionLexer.addErrorListener(errorListener);
 
@@ -92,9 +91,7 @@ public class FilterExpression {
 		return _referencedTableNames;
 	}
 
-	private String _rewriteInterestFilterExpression(
-		String filterExpressionString) {
-
+	private String _rewriteFilterExpression(String filterExpressionString) {
 		Matcher matcher = _interestPattern.matcher(filterExpressionString);
 
 		while (matcher.find()) {
@@ -111,12 +108,33 @@ public class FilterExpression {
 			matcher = _interestPattern.matcher(filterExpressionString);
 		}
 
+		matcher = _membershipPattern.matcher(filterExpressionString);
+
+		while (matcher.find()) {
+			String expression =
+				"isMember(" + matcher.group("type") + ", '" +
+					matcher.group("id") + "')";
+
+			String operator = matcher.group("operator");
+
+			if (operator.equals("ne")) {
+				expression = "not(" + expression + ")";
+			}
+
+			filterExpressionString = matcher.replaceFirst(expression);
+
+			matcher = _membershipPattern.matcher(filterExpressionString);
+		}
+
 		return filterExpressionString;
 	}
 
 	private static final Pattern _interestPattern = Pattern.compile(
 		"interests.filter\\(filter='\\(name eq ''(?<keyword>[^']+)'' and " +
 			"score eq ''(?<interested>true|false)''\\)'\\)");
+	private static final Pattern _membershipPattern = Pattern.compile(
+		"(?<type>groupIds|roleIds|teamIds|userGroupIds) (?<operator>eq|ne) '" +
+			"(?<id>[\\d]+)'");
 
 	private Condition _condition;
 	private final String _filterType;
