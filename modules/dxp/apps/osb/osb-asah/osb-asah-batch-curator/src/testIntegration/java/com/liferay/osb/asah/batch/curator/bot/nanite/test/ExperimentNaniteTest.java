@@ -211,9 +211,9 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 		Assertions.assertEquals(
 			expectedStatus, experiment.getExperimentStatus());
+		Assertions.assertNotNull(experiment.getFinishedDate());
 		Assertions.assertEquals(
 			winnerDXPVariantId, experiment.getWinnerDXPVariantId());
-		Assertions.assertNotNull(experiment.getFinishedDate());
 	}
 
 	@MockBean
