@@ -29,16 +29,16 @@ class InterestScoreApplication(BaseSparkApplication):
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
 			usage='{} liferay.interest_score.InterestScoreApplication '
+			'-ac-project-id <AC Project ID> '
 			'-configuration <Configuration Path> '
-		  	'-job-parameters <Job Parameters> '
-			'-ac-project-id <AC Project ID>'.format(sys.argv[0])
+		  	'-job-parameters <Job Parameters>'.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
+		argument_parser.add_argument('-ac-project-id', required=True)
 		argument_parser.add_argument('-configuration', required=True)
 		argument_parser.add_argument(
 			'-job-parameters', default='[]', required=False)
-		argument_parser.add_argument('-ac-project-id', required=True)
 
 		return argument_parser
 
