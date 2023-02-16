@@ -63,7 +63,13 @@ public class FilterExpressionVisitor
 
 		_fieldMappers.put("activities.day", "Event.eventDate");
 		_fieldMappers.put("custom.name", "ExpandoValue.columnId");
+		_fieldMappers.put(
+			"individuals.additionalName", "Individual.middleName");
+		_fieldMappers.put("individuals.address", "Individual.addresses");
+		_fieldMappers.put("individuals.birthDate", "Individual.birthday");
 		_fieldMappers.put("individuals.email", "Individual.emailAddress");
+		_fieldMappers.put("individuals.familyName", "Individual.lastName");
+		_fieldMappers.put("individuals.givenName", "Individual.firstName");
 	}
 
 	public Set<String> getReferencedTableNames() {
