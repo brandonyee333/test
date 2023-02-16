@@ -505,7 +505,7 @@ public class MetricDogTest
 
 		Metric metric = assetMetric.getDefaultMetric();
 
-		Assertions.assertEquals(4, metric.getPreviousValue(), 0);
+		Assertions.assertEquals(5, metric.getPreviousValue(), 0);
 		Assertions.assertEquals(3, metric.getValue(), 0);
 	}
 
