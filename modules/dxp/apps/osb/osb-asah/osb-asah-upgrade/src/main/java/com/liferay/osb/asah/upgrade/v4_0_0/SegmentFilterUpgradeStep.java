@@ -65,28 +65,29 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 				JSONObject assetJSONObject =
 					_faroInfoElasticsearchInvoker.fetch("assets", assetId);
 
-				if ((assetJSONObject == null) && _log.isWarnEnabled()) {
-					_log.warn(
-						String.format(
-							"Unable to upgrade segment filter %s. Segment " +
-								"ID: %s",
-							filterString, segment.getId()));
-
-					continue;
+				if (assetJSONObject == null) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							String.format(
+								"Unable to upgrade segment filter %s. " +
+									"Segment ID: %s",
+								filterString, segment.getId()));
+					}
 				}
+				else {
+					String dataSourceAssetPK = assetJSONObject.getString(
+						"dataSourceAssetPK");
+					String assetTitle = assetJSONObject.getString("name");
 
-				String dataSourceAssetPK = assetJSONObject.getString(
-					"dataSourceAssetPK");
-				String assetTitle = assetJSONObject.getString("name");
+					String newFilterString = String.format(
+						"applicationId eq ''%s'' and eventId eq ''%s'' and " +
+							"assetId eq ''%s''",
+						values[0], values[1],
+						DigestUtils.sha256Hex(dataSourceAssetPK + assetTitle));
 
-				String newFilterString = String.format(
-					"applicationId eq ''%s'' and eventId eq ''%s'' and " +
-						"assetId eq ''%s''",
-					values[0], values[1],
-					DigestUtils.sha256Hex(dataSourceAssetPK + assetTitle));
-
-				filterString = filterString.replace(
-					matcher.group(), newFilterString);
+					filterString = filterString.replace(
+						matcher.group(), newFilterString);
+				}
 			}
 
 			if (!Objects.equals(filterString, segment.getFilter())) {
