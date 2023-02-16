@@ -46,6 +46,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -189,6 +190,12 @@ public class ChannelDog {
 
 	public Page<Channel> getChannelPage(
 		@Nullable String name, int page, int size, String[] sorts) {
+
+		if (size == -1) {
+			return new PageImpl<>(
+				_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
+					StringUtil.get(name), null, "IN_PROGRESS_DELETING"));
+		}
 
 		return PageableExecutionUtils.getPage(
 			_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
