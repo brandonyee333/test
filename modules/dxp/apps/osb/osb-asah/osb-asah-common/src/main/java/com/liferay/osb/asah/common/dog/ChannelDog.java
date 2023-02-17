@@ -188,14 +188,14 @@ public class ChannelDog {
 		return channelNamesByGroupIds;
 	}
 
+	public Page<Channel> getChannelPage(@Nullable String name) {
+		return new PageImpl<>(
+			_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
+				StringUtil.get(name), null, "IN_PROGRESS_DELETING"));
+	}
+
 	public Page<Channel> getChannelPage(
 		@Nullable String name, int page, int size, String[] sorts) {
-
-		if (size == -1) {
-			return new PageImpl<>(
-				_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
-					StringUtil.get(name), null, "IN_PROGRESS_DELETING"));
-		}
 
 		return PageableExecutionUtils.getPage(
 			_channelRepository.findByNameContainingIgnoreCaseAndStateNot(
