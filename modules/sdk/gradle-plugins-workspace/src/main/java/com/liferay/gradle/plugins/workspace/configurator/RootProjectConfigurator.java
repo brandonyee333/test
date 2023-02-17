@@ -429,9 +429,10 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		dockerRemoveImage.setDescription("Removes the Docker image.");
 		dockerRemoveImage.setGroup(DOCKER_GROUP);
 
-		Property<Boolean> forceProperty = dockerRemoveImage.getForce();
+		Property<Boolean> removeImageForceProperty =
+			dockerRemoveImage.getForce();
 
-		forceProperty.set(true);
+		removeImageForceProperty.set(true);
 
 		dockerRemoveImage.onError(
 			new Action<Throwable>() {
@@ -454,10 +455,6 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 		dockerPruneImage.setDescription("Prunes the Docker image.");
 		dockerPruneImage.setGroup(DOCKER_GROUP);
-
-		Property<Boolean> force = dockerPruneImage.getForce();
-
-		force.set(true);
 
 		dockerBuildImage.finalizedBy(PRUNE_DOCKER_IMAGE_TASK_NAME);
 
