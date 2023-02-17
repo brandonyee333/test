@@ -84,7 +84,9 @@ DemographicsFieldMapping AS (
 			('gender', 'gender', 'text'),
 			('givenName', 'firstName', 'text'),
 			('jobTitle', 'jobTitle', 'text'),
-			('telephone', 'phones', 'text')
+			('languageId', 'languageId', 'text'),
+			('screenName', 'screenName', 'text'),
+			('timeZoneId', 'timeZoneId', 'text')
 		])
 )
 
