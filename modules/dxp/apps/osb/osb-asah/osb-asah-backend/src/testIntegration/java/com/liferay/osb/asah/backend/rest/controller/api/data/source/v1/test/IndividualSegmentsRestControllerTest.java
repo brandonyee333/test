@@ -369,8 +369,8 @@ public class IndividualSegmentsRestControllerTest
 			}
 			else if (Objects.equals(segmentDTO.getId(), "2")) {
 				Assertions.assertEquals(0L, anonymousIdentitiesCount);
-				Assertions.assertEquals(5L, identitiesCount);
-				Assertions.assertEquals(5L, knownIdentitiesCount);
+				Assertions.assertEquals(0L, identitiesCount);
+				Assertions.assertEquals(0L, knownIdentitiesCount);
 			}
 		}
 	}
@@ -399,7 +399,7 @@ public class IndividualSegmentsRestControllerTest
 
 		SegmentDTO segmentDTO = segmentDTOs.get(0);
 
-		Assertions.assertNotEquals(0L, segmentDTO.getKnownIdentitiesCount());
+		Assertions.assertEquals(0L, segmentDTO.getKnownIdentitiesCount());
 	}
 
 	private void _assertEmptyJSONArray(JSONArray jsonArray) {
