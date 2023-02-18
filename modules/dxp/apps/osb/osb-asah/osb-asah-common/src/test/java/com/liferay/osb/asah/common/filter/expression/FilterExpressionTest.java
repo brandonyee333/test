@@ -1187,6 +1187,311 @@ public class FilterExpressionTest {
 	}
 
 	@Test
+	public void testOrganizationFilterExpression() {
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).where(
+					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
+					DSL.val(
+						"1234"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				)
+			),
+			"organizations.filter(filter='(id eq ''1234'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"ParentOrganization"
+					)
+				).on(
+					DSL.and(
+						DSL.field(
+							"Organization.parentOrganizationId"
+						).eq(
+							DSL.field("ParentOrganization.organizationId")
+						),
+						DSL.field(
+							"Organization.dataSourceId"
+						).eq(
+							DSL.field("ParentOrganization.dataSourceId")
+						))
+				).where(
+					DSL.field(
+						"ParentOrganization.id"
+					).eq(
+						"1234"
+					)
+				)
+			),
+			"organizations.filter(filter='(parentId eq ''1234'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).where(
+					DSL.field(
+						"Organization.type"
+					).eq(
+						"org"
+					)
+				)
+			),
+			"organizations.filter(filter='(type eq ''org'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).where(
+					DSL.field(
+						"Organization.type"
+					).isNull()
+				)
+			),
+			"organizations.filter(filter='(type eq null)')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).where(
+					DSL.field(
+						"Organization.type"
+					).ne(
+						"org"
+					)
+				)
+			),
+			"organizations.filter(filter='(type ne ''org'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).where(
+					DSL.field(
+						"Organization.type"
+					).isNotNull()
+				)
+			),
+			"organizations.filter(filter='(type ne null)')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).where(
+					DSL.field(
+						"Organization.hierarchyPath"
+					).containsIgnoreCase(
+						"test"
+					)
+				)
+			),
+			"organizations.filter(filter='(contains(hierarchyPath, ''test''))" +
+				"')");
+	}
+
+	@Test
 	public void testOrOperator() {
 		_assertEquals(
 			DSL.or(
