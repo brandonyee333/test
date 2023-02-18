@@ -250,7 +250,15 @@ public class FilterExpressionVisitor
 		Condition condition = null;
 
 		if (functionName.equalsIgnoreCase("contains")) {
-			condition = field.containsIgnoreCase(parameters.get(1));
+			Param param = (Param)parameters.get(1);
+
+			condition = DSL.lower(
+				field
+			).like(
+				StringUtils.wrap(
+					StringUtils.lowerCase(String.valueOf(param.getValue())),
+					"%")
+			);
 		}
 		else if (functionName.equalsIgnoreCase("endsWith")) {
 			Param param = (Param)parameters.get(1);
