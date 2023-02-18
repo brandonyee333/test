@@ -234,6 +234,19 @@ public class FilterExpressionVisitor
 
 		Field field = (Field)parameters.get(0);
 
+		if (functionName.equalsIgnoreCase("cast")) {
+			Param param = (Param)parameters.get(1);
+
+			String type = String.valueOf(param.getValue());
+
+			if (type.equalsIgnoreCase("number")) {
+				type = "NUMERIC";
+			}
+
+			return DSL.field(
+				String.format("SAFE_CAST({0} AS %s)", type), field);
+		}
+
 		Condition condition = null;
 
 		if (functionName.equalsIgnoreCase("contains")) {
