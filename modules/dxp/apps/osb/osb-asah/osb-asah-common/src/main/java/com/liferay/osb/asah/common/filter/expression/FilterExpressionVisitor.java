@@ -229,38 +229,83 @@ public class FilterExpressionVisitor
 
 		Field field = (Field)parameters.get(0);
 
+		Condition condition = null;
+
 		if (functionName.equalsIgnoreCase("contains")) {
-			return field.containsIgnoreCase(parameters.get(1));
+			condition = field.containsIgnoreCase(parameters.get(1));
 		}
 		else if (functionName.equalsIgnoreCase("endsWith")) {
 			Param param = (Param)parameters.get(1);
 
-			return field.similarTo("%" + param.getValue());
+			condition = field.similarTo("%" + param.getValue());
 		}
 		else if (functionName.equalsIgnoreCase("isInterested")) {
-			return _getIsInterestedCondition(field.toString());
+			condition = _getIsInterestedCondition(field.toString());
 		}
 		else if (functionName.equalsIgnoreCase("isMember")) {
 			Param param = (Param)parameters.get(1);
 
-			return _getIsMemberCondition(
+			condition = _getIsMemberCondition(
 				(String)param.getValue(), field.getName());
 		}
 		else if (functionName.equalsIgnoreCase("similarTo")) {
 			Param param = (Param)parameters.get(1);
 
-			return field.similarTo(
+			condition = field.similarTo(
 				StringUtils.replaceChars(
 					String.valueOf(param.getValue()), ".*", "_%"));
 		}
 		else if (functionName.equalsIgnoreCase("startsWith")) {
 			Param param = (Param)parameters.get(1);
 
-			return field.similarTo(param.getValue() + "%");
+			condition = field.similarTo(param.getValue() + "%");
+		}
+		else {
+			throw new FilterExpressionParserException(
+				"Invalid string function: " + functionName);
 		}
 
-		throw new FilterExpressionParserException(
-			"Invalid string function: " + functionName);
+		if (_filterType.equals("organizations")) {
+			_referencedTableNames.add("Individual");
+
+			return DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).where(
+					condition
+				)
+			);
+		}
+
+		return condition;
 	}
 
 	@Override
