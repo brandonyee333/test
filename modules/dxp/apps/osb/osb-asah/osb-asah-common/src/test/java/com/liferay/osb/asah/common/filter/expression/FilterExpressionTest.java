@@ -329,17 +329,85 @@ public class FilterExpressionTest {
 		_assertEquals(
 			DSL.and(
 				DSL.field(
-					"Organization.name"
-				).eq(
-					"name1"
+					"Individual.id", String.class
+				).in(
+					DSL.selectDistinct(
+						DSL.field("Individual.id", String.class)
+					).from(
+						DSL.table(
+							"BQIndividual"
+						).as(
+							"Individual"
+						)
+					).crossJoin(
+						DSL.unnest(
+							DSL.field("Individual.memberships", String[].class)
+						).as(
+							"IndividualMemberships"
+						)
+					).join(
+						DSL.table(
+							"BQOrganization"
+						).as(
+							"Organization"
+						)
+					).on(
+						DSL.field(
+							"Organization.id"
+						).in(
+							DSL.function(
+								"unnest", String[].class,
+								DSL.field("IndividualMemberships.ids"))
+						)
+					).where(
+						DSL.field(
+							"Organization.name"
+						).eq(
+							"name1"
+						)
+					)
 				),
 				DSL.field(
-					"Organization.type"
-				).eq(
-					"type1"
+					"Individual.id", String.class
+				).in(
+					DSL.selectDistinct(
+						DSL.field("Individual.id", String.class)
+					).from(
+						DSL.table(
+							"BQIndividual"
+						).as(
+							"Individual"
+						)
+					).crossJoin(
+						DSL.unnest(
+							DSL.field("Individual.memberships", String[].class)
+						).as(
+							"IndividualMemberships"
+						)
+					).join(
+						DSL.table(
+							"BQOrganization"
+						).as(
+							"Organization"
+						)
+					).on(
+						DSL.field(
+							"Organization.id"
+						).in(
+							DSL.function(
+								"unnest", String[].class,
+								DSL.field("IndividualMemberships.ids"))
+						)
+					).where(
+						DSL.field(
+							"Organization.type"
+						).eq(
+							"type1"
+						)
+					)
 				)),
 			_testFilters.get("testFreestyle8"),
-			new HashSet<>(Arrays.asList("Organization")));
+			new HashSet<>(Arrays.asList("Individual", "Organization")));
 	}
 
 	@Test
@@ -405,9 +473,43 @@ public class FilterExpressionTest {
 					localDateTime.minusHours(24)
 				),
 				DSL.field(
-					"Organization.name"
-				).eq(
-					"name1"
+					"Individual.id", String.class
+				).in(
+					DSL.selectDistinct(
+						DSL.field("Individual.id", String.class)
+					).from(
+						DSL.table(
+							"BQIndividual"
+						).as(
+							"Individual"
+						)
+					).crossJoin(
+						DSL.unnest(
+							DSL.field("Individual.memberships", String[].class)
+						).as(
+							"IndividualMemberships"
+						)
+					).join(
+						DSL.table(
+							"BQOrganization"
+						).as(
+							"Organization"
+						)
+					).on(
+						DSL.field(
+							"Organization.id"
+						).in(
+							DSL.function(
+								"unnest", String[].class,
+								DSL.field("IndividualMemberships.ids"))
+						)
+					).where(
+						DSL.field(
+							"Organization.name"
+						).eq(
+							"name1"
+						)
+					)
 				)),
 			_testFilters.get("testFreestyle9"),
 			new HashSet<>(
@@ -479,9 +581,43 @@ public class FilterExpressionTest {
 					localDateTime.minusHours(24)
 				),
 				DSL.field(
-					"Organization.name"
-				).eq(
-					"name1"
+					"Individual.id", String.class
+				).in(
+					DSL.selectDistinct(
+						DSL.field("Individual.id", String.class)
+					).from(
+						DSL.table(
+							"BQIndividual"
+						).as(
+							"Individual"
+						)
+					).crossJoin(
+						DSL.unnest(
+							DSL.field("Individual.memberships", String[].class)
+						).as(
+							"IndividualMemberships"
+						)
+					).join(
+						DSL.table(
+							"BQOrganization"
+						).as(
+							"Organization"
+						)
+					).on(
+						DSL.field(
+							"Organization.id"
+						).in(
+							DSL.function(
+								"unnest", String[].class,
+								DSL.field("IndividualMemberships.ids"))
+						)
+					).where(
+						DSL.field(
+							"Organization.name"
+						).eq(
+							"name1"
+						)
+					)
 				)),
 			_testFilters.get("testFreestyle10"),
 			new HashSet<>(
