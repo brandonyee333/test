@@ -100,6 +100,16 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.EqualsExpressionContext
 			equalsExpressionContext) {
 
+		if (_filterType.equals("organizations")) {
+			_referencedTableNames.add("Individual");
+
+			String fieldName = equalsExpressionContext.start.getText();
+			String value = StringUtil.unquoteAndDecodeInnerQuotes(
+				equalsExpressionContext.stop.getText());
+
+			return _visitOrganizationExpression(fieldName, "eq", value);
+		}
+
 		Field rightField = _getRightField(equalsExpressionContext);
 
 		Field leftField = _getLeftField(equalsExpressionContext, rightField);
@@ -366,6 +376,16 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.NotEqualsExpressionContext
 			notEqualsExpressionContext) {
 
+		if (_filterType.equals("organizations")) {
+			_referencedTableNames.add("Individual");
+
+			String fieldName = notEqualsExpressionContext.start.getText();
+			String value = StringUtil.unquoteAndDecodeInnerQuotes(
+				notEqualsExpressionContext.stop.getText());
+
+			return _visitOrganizationExpression(fieldName, "ne", value);
+		}
+
 		Field rightField = _getRightField(notEqualsExpressionContext);
 
 		Field leftField = _getLeftField(notEqualsExpressionContext, rightField);
@@ -586,6 +606,175 @@ public class FilterExpressionVisitor
 		ParseTree parseTree = parserRuleContext.getChild(childIndex);
 
 		return (T)parseTree.accept(this);
+	}
+
+	private Object _visitOrganizationExpression(
+		String fieldName, String operator, String value) {
+
+		if (fieldName.equalsIgnoreCase("id")) {
+			return DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).where(
+					DSL.and(
+						DSL.field(
+							"IndividualMemberships.name"
+						).eq(
+							"organizationIds"
+						),
+						DSL.val(
+							value
+						).in(
+							DSL.function(
+								"unnest", String[].class,
+								DSL.field("IndividualMemberships.ids"))
+						))
+				)
+			);
+		}
+
+		if (fieldName.equalsIgnoreCase("parentId") ||
+			fieldName.equalsIgnoreCase("parentOrganizationId")) {
+
+			return DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"ParentOrganization"
+					)
+				).on(
+					DSL.and(
+						DSL.field(
+							"Organization.parentOrganizationId"
+						).eq(
+							DSL.field("ParentOrganization.organizationId")
+						),
+						DSL.field(
+							"Organization.dataSourceId"
+						).eq(
+							DSL.field("ParentOrganization.dataSourceId")
+						))
+				).where(
+					DSL.field(
+						"ParentOrganization.id"
+					).eq(
+						value
+					)
+				)
+			);
+		}
+
+		Condition condition = null;
+
+		if (operator.equalsIgnoreCase("eq")) {
+			if (StringUtil.isNull(value)) {
+				condition = DSL.field(
+					"Organization." + fieldName
+				).isNull();
+			}
+			else {
+				condition = DSL.field(
+					"Organization." + fieldName
+				).eq(
+					value
+				);
+			}
+		}
+		else if (operator.equalsIgnoreCase("ne")) {
+			if (StringUtil.isNull(value)) {
+				condition = DSL.field(
+					"Organization." + fieldName
+				).isNotNull();
+			}
+			else {
+				condition = DSL.field(
+					"Organization." + fieldName
+				).ne(
+					value
+				);
+			}
+		}
+
+		return DSL.field(
+			"Individual.id", String.class
+		).in(
+			DSL.selectDistinct(
+				DSL.field("Individual.id", String.class)
+			).from(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).crossJoin(
+				DSL.unnest(
+					DSL.field("Individual.memberships", String[].class)
+				).as(
+					"IndividualMemberships"
+				)
+			).join(
+				DSL.table(
+					"BQOrganization"
+				).as(
+					"Organization"
+				)
+			).on(
+				DSL.field(
+					"Organization.id"
+				).in(
+					DSL.function(
+						"unnest", String[].class,
+						DSL.field("IndividualMemberships.ids"))
+				)
+			).where(
+				condition
+			)
+		);
 	}
 
 	private static final Set<String> _timeFrameParameterNames = SetUtil.of(
