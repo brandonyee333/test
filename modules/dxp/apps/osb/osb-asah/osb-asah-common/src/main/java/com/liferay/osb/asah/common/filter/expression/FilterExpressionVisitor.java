@@ -100,7 +100,7 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.EqualsExpressionContext
 			equalsExpressionContext) {
 
-		if (_filterType.equals("organizations")) {
+		if (Objects.equals(_filterType, "organizations")) {
 			_referencedTableNames.add("Individual");
 
 			String fieldName = equalsExpressionContext.start.getText();
@@ -265,7 +265,7 @@ public class FilterExpressionVisitor
 				"Invalid string function: " + functionName);
 		}
 
-		if (_filterType.equals("organizations")) {
+		if (Objects.equals(_filterType, "organizations")) {
 			_referencedTableNames.add("Individual");
 
 			return DSL.field(
@@ -421,7 +421,7 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.NotEqualsExpressionContext
 			notEqualsExpressionContext) {
 
-		if (_filterType.equals("organizations")) {
+		if (Objects.equals(_filterType, "organizations")) {
 			_referencedTableNames.add("Individual");
 
 			String fieldName = notEqualsExpressionContext.start.getText();
