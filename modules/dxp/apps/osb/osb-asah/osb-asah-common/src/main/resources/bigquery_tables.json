@@ -1175,6 +1175,16 @@
 		],
 		"fields": [
 			{
+				"mode": "NULLABLE",
+				"name": "addresses",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "birthday",
+				"type": "TIMESTAMP"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "createDate",
 				"type": "TIMESTAMP"
@@ -1212,6 +1222,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "NULLABLE",
+				"name": "gender",
+				"type": "STRING"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "id",
 				"type": "STRING"
@@ -1219,6 +1234,11 @@
 			{
 				"mode": "NULLABLE",
 				"name": "jobTitle",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "languageId",
 				"type": "STRING"
 			},
 			{
@@ -1256,6 +1276,11 @@
 			{
 				"mode": "NULLABLE",
 				"name": "screenName",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "timeZoneId",
 				"type": "STRING"
 			}
 		],
