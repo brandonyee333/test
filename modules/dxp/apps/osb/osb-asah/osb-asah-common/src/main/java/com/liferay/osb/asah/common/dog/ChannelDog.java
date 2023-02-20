@@ -367,7 +367,8 @@ public class ChannelDog {
 
 		for (Map.Entry<Long, Set<Long>> entry : dataSources.entrySet()) {
 			channelDataSources.add(
-				new ChannelDataSource(null, entry.getKey(), entry.getValue()));
+				new ChannelDataSource(
+					Collections.emptySet(), entry.getKey(), entry.getValue()));
 		}
 
 		return channelDataSources;
