@@ -200,6 +200,10 @@ public class DXPBatchEntitiesRestController {
 			for (ChannelDataSource channelDataSource :
 					channel.getChannelDataSources()) {
 
+				if (channelDataSource.getCommerceChannelIds() == null) {
+					continue;
+				}
+
 				for (Long commerceChannelId :
 						channelDataSource.getCommerceChannelIds()) {
 
