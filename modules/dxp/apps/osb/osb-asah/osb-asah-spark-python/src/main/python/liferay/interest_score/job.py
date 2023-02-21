@@ -328,7 +328,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		data_frame_writer.format(
 			'bigquery'
 		).mode(
-			"overwrite"
+			"append"
 		).save(
 			'{}.individualinterestscore'.format(
 				self.spark_application_args.ac_project_id
@@ -352,7 +352,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		data_frame_writer.format(
 			'bigquery'
 		).mode(
-			"overwrite"
+			"append"
 		).save(
 			'{}.sessioninterestscore'.format(
 				self.spark_application_args.ac_project_id
