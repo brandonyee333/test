@@ -101,13 +101,12 @@ public class FilterExpressionVisitor
 			equalsExpressionContext) {
 
 		if (Objects.equals(_filterType, "organizations")) {
-			_referencedTableNames.add("Individual");
+			Token startToken = equalsExpressionContext.start;
+			Token stopToken = equalsExpressionContext.stop;
 
-			String fieldName = equalsExpressionContext.start.getText();
-			String value = StringUtil.unquoteAndDecodeInnerQuotes(
-				equalsExpressionContext.stop.getText());
-
-			return _visitOrganizationExpression(fieldName, "eq", value);
+			return _visitOrganizationExpression(
+				startToken.getText(), "eq",
+				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
 		}
 
 		Field rightField = _getRightField(equalsExpressionContext);
@@ -266,43 +265,7 @@ public class FilterExpressionVisitor
 		}
 
 		if (Objects.equals(_filterType, "organizations")) {
-			_referencedTableNames.add("Individual");
-
-			return DSL.field(
-				"Individual.id", String.class
-			).in(
-				DSL.selectDistinct(
-					DSL.field("Individual.id", String.class)
-				).from(
-					DSL.table(
-						"BQIndividual"
-					).as(
-						"Individual"
-					)
-				).crossJoin(
-					DSL.unnest(
-						DSL.field("Individual.memberships", String[].class)
-					).as(
-						"IndividualMemberships"
-					)
-				).join(
-					DSL.table(
-						"BQOrganization"
-					).as(
-						"Organization"
-					)
-				).on(
-					DSL.field(
-						"Organization.id"
-					).in(
-						DSL.function(
-							"unnest", String[].class,
-							DSL.field("IndividualMemberships.ids"))
-					)
-				).where(
-					condition
-				)
-			);
+			return _getIndividualIdsInOrganizationCondition(condition);
 		}
 
 		return condition;
@@ -422,13 +385,12 @@ public class FilterExpressionVisitor
 			notEqualsExpressionContext) {
 
 		if (Objects.equals(_filterType, "organizations")) {
-			_referencedTableNames.add("Individual");
+			Token startToken = notEqualsExpressionContext.start;
+			Token stopToken = notEqualsExpressionContext.stop;
 
-			String fieldName = notEqualsExpressionContext.start.getText();
-			String value = StringUtil.unquoteAndDecodeInnerQuotes(
-				notEqualsExpressionContext.stop.getText());
-
-			return _visitOrganizationExpression(fieldName, "ne", value);
+			return _visitOrganizationExpression(
+				startToken.getText(), "ne",
+				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
 		}
 
 		Field rightField = _getRightField(notEqualsExpressionContext);
@@ -475,6 +437,48 @@ public class FilterExpressionVisitor
 		String string = stringLiteralContext.getText();
 
 		return DSL.val(StringUtil.unquoteAndDecodeInnerQuotes(string));
+	}
+
+	private Object _getIndividualIdsInOrganizationCondition(
+		Condition condition) {
+
+		_referencedTableNames.add("Individual");
+
+		return DSL.field(
+			"Individual.id", String.class
+		).in(
+			DSL.selectDistinct(
+				DSL.field("Individual.id", String.class)
+			).from(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).crossJoin(
+				DSL.unnest(
+					DSL.field("Individual.memberships", String[].class)
+				).as(
+					"IndividualMemberships"
+				)
+			).join(
+				DSL.table(
+					"BQOrganization"
+				).as(
+					"Organization"
+				)
+			).on(
+				DSL.field(
+					"Organization.id"
+				).in(
+					DSL.function(
+						"unnest", String[].class,
+						DSL.field("IndividualMemberships.ids"))
+				)
+			).where(
+				condition
+			)
+		);
 	}
 
 	private Condition _getIsInterestedCondition(String keyword) {
@@ -656,6 +660,8 @@ public class FilterExpressionVisitor
 	private Object _visitOrganizationExpression(
 		String fieldName, String operator, String value) {
 
+		_referencedTableNames.add("Individual");
+
 		if (fieldName.equalsIgnoreCase("id")) {
 			return DSL.field(
 				"Individual.id", String.class
@@ -785,41 +791,7 @@ public class FilterExpressionVisitor
 			}
 		}
 
-		return DSL.field(
-			"Individual.id", String.class
-		).in(
-			DSL.selectDistinct(
-				DSL.field("Individual.id", String.class)
-			).from(
-				DSL.table(
-					"BQIndividual"
-				).as(
-					"Individual"
-				)
-			).crossJoin(
-				DSL.unnest(
-					DSL.field("Individual.memberships", String[].class)
-				).as(
-					"IndividualMemberships"
-				)
-			).join(
-				DSL.table(
-					"BQOrganization"
-				).as(
-					"Organization"
-				)
-			).on(
-				DSL.field(
-					"Organization.id"
-				).in(
-					DSL.function(
-						"unnest", String[].class,
-						DSL.field("IndividualMemberships.ids"))
-				)
-			).where(
-				condition
-			)
-		);
+		return _getIndividualIdsInOrganizationCondition(condition);
 	}
 
 	private static final Set<String> _timeFrameParameterNames = SetUtil.of(
