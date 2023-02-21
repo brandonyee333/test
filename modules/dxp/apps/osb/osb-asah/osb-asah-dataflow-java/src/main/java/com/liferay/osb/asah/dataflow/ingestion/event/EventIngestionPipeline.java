@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.apache.beam.sdk.Pipeline;
@@ -527,44 +528,39 @@ public class EventIngestionPipeline {
 	}
 
 	private static String _getAssetId(AnalyticsEvent analyticsEvent) {
-		if (_applicationIds.contains(analyticsEvent.applicationId)) {
+		if (Objects.equals(analyticsEvent.applicationId, "Page")) {
+			Map<String, String> context = analyticsEvent.context;
+
+			return context.get("canonicalUrl");
+		}
+
+		String assetIdFieldName = _applicationAssetIdFieldNames.get(
+			analyticsEvent.applicationId);
+
+		if (assetIdFieldName != null) {
 			Map<String, String> eventProperties =
 				analyticsEvent.eventProperties;
 
-			for (String assetIdKey : _ASSET_ID_KEYS) {
-				if (eventProperties.containsKey(assetIdKey)) {
-					return eventProperties.get(assetIdKey);
-				}
-			}
-
-			String eventId = analyticsEvent.eventId;
-
-			if (eventId.equals("pageViewed")) {
-				Map<String, String> context = analyticsEvent.context;
-
-				return context.get("canonicalUrl");
-			}
+			return eventProperties.get(assetIdFieldName);
 		}
 
 		return null;
 	}
 
 	private static String _getAssetTitle(AnalyticsEvent analyticsEvent) {
-		if (_applicationIds.contains(analyticsEvent.applicationId)) {
+		if (Objects.equals(analyticsEvent.applicationId, "Page")) {
+			Map<String, String> context = analyticsEvent.context;
+
+			return context.get("title");
+		}
+
+		if (_applicationAssetIdFieldNames.containsKey(
+				analyticsEvent.applicationId)) {
+
 			Map<String, String> eventProperties =
 				analyticsEvent.eventProperties;
 
-			if (eventProperties.containsKey("title")) {
-				return eventProperties.get("title");
-			}
-
-			String eventId = analyticsEvent.eventId;
-
-			if (eventId.equals("pageViewed")) {
-				Map<String, String> context = analyticsEvent.context;
-
-				return context.get("title");
-			}
+			return eventProperties.get("title");
 		}
 
 		return null;
@@ -752,21 +748,17 @@ public class EventIngestionPipeline {
 		processContext.output(tableRow);
 	}
 
-	private static final String[] _ASSET_ID_KEYS = {
-		"articleId", "assetId", "classPK", "entryId", "fileEntryId", "formId"
-	};
-
-	private static final Set<String> _applicationIds = new HashSet<String>() {
-		{
-			add("Blog");
-			add("Comment");
-			add("Custom");
-			add("Document");
-			add("Form");
-			add("Page");
-			add("Ratings");
-			add("WebContent");
-		}
-	};
+	private static final Map<String, String> _applicationAssetIdFieldNames =
+		new HashMap<String, String>() {
+			{
+				put("Blog", "entryId");
+				put("Comment", "classPK");
+				put("Custom", "assetId");
+				put("Document", "fileEntryId");
+				put("Form", "formId");
+				put("Ratings", "classPK");
+				put("WebContent", "articleId");
+			}
+		};
 
 }

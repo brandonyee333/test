@@ -181,44 +181,39 @@ public class AnalyticsEventsIngestionNanite {
 	}
 
 	private String _getAssetId(AnalyticsEvent analyticsEvent) {
-		if (_applicationIds.contains(analyticsEvent.getApplicationId())) {
+		if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
+			Map<String, String> context = analyticsEvent.getContext();
+
+			return context.get("canonicalUrl");
+		}
+
+		String assetIdFieldName = _applicationAssetIdFieldNames.get(
+			analyticsEvent.getApplicationId());
+
+		if (assetIdFieldName != null) {
 			Map<String, String> eventProperties =
 				analyticsEvent.getEventProperties();
 
-			for (String assetIdKey : _ASSET_ID_KEYS) {
-				if (eventProperties.containsKey(assetIdKey)) {
-					return eventProperties.get(assetIdKey);
-				}
-			}
-
-			String eventId = analyticsEvent.getEventId();
-
-			if (eventId.equals("pageViewed")) {
-				Map<String, String> context = analyticsEvent.getContext();
-
-				return context.get("canonicalUrl");
-			}
+			return eventProperties.get(assetIdFieldName);
 		}
 
 		return null;
 	}
 
 	private String _getAssetTitle(AnalyticsEvent analyticsEvent) {
-		if (_applicationIds.contains(analyticsEvent.getApplicationId())) {
+		if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
+			Map<String, String> context = analyticsEvent.getContext();
+
+			return context.get("title");
+		}
+
+		if (_applicationAssetIdFieldNames.containsKey(
+				analyticsEvent.getApplicationId())) {
+
 			Map<String, String> eventProperties =
 				analyticsEvent.getEventProperties();
 
-			if (eventProperties.containsKey("title")) {
-				return eventProperties.get("title");
-			}
-
-			String eventId = analyticsEvent.getEventId();
-
-			if (eventId.equals("pageViewed")) {
-				Map<String, String> context = analyticsEvent.getContext();
-
-				return context.getOrDefault("title", null);
-			}
+			return eventProperties.get("title");
 		}
 
 		return null;
@@ -608,25 +603,21 @@ public class AnalyticsEventsIngestionNanite {
 		_bqSessionRepository.save(bqSession);
 	}
 
-	private static final String[] _ASSET_ID_KEYS = {
-		"articleId", "assetId", "classPK", "entryId", "fileEntryId", "formId"
-	};
-
 	private static final Log _log = LogFactory.getLog(
 		AnalyticsEventsIngestionNanite.class);
 
-	private static final Set<String> _applicationIds = new HashSet<String>() {
-		{
-			add("Blog");
-			add("Comment");
-			add("Custom");
-			add("Document");
-			add("Form");
-			add("Page");
-			add("Ratings");
-			add("WebContent");
-		}
-	};
+	private static final Map<String, String> _applicationAssetIdFieldNames =
+		new HashMap<String, String>() {
+			{
+				put("Blog", "entryId");
+				put("Comment", "classPK");
+				put("Custom", "assetId");
+				put("Document", "fileEntryId");
+				put("Form", "formId");
+				put("Ratings", "classPK");
+				put("WebContent", "articleId");
+			}
+		};
 	private static final Set<String> _noninteractionEvents =
 		new HashSet<String>() {
 			{
