@@ -91,12 +91,120 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testContainsOperator() {
+	public void testCastOperatorBoolean() {
 		_assertEquals(
 			DSL.field(
-				"column1"
-			).containsIgnoreCase(
-				"value1"
+				"SAFE_CAST(Individual.defaultUser AS BOOLEAN)"
+			).eq(
+				true
+			),
+			"individuals.filter(filter='(cast(demographics/defaultUser/value" +
+				", ''BOOLEAN'') eq true)')");
+
+		_assertEquals(
+			DSL.field(
+				"SAFE_CAST(Individual.defaultUser AS BOOLEAN)"
+			).eq(
+				false
+			),
+			"individuals.filter(filter='(cast(demographics/defaultUser/value" +
+				", ''BOOLEAN'') eq false)')");
+	}
+
+	@Test
+	public void testCastOperatorDate() {
+		_assertEquals(
+			DSL.field(
+				"SAFE_CAST(Individual.birthday AS DATE)"
+			).eq(
+				"2023-02-16"
+			),
+			"individuals.filter(filter='(cast(demographics/birthDate/value, " +
+				"''DATE'') eq ''2023-02-16'')')");
+
+		_assertEquals(
+			DSL.field(
+				"SAFE_CAST(Individual.birthday AS DATE)"
+			).gt(
+				"2023-02-16"
+			),
+			"individuals.filter(filter='(cast(demographics/birthDate/value, " +
+				"''DATE'') gt ''2023-02-16'')')");
+
+		_assertEquals(
+			DSL.field(
+				"SAFE_CAST(Individual.birthday AS DATE)"
+			).lt(
+				"2023-02-16"
+			),
+			"individuals.filter(filter='(cast(demographics/birthDate/value, " +
+				"''DATE'') lt ''2023-02-16'')')");
+	}
+
+	@Test
+	public void testCastOperatorNumeric() {
+		_assertEquals(
+			DSL.cast(
+				DSL.field("SAFE_CAST(Individual.contactId AS NUMERIC)"),
+				Long.class
+			).eq(
+				0L
+			),
+			"individuals.filter(filter='(cast(demographics/contactId/value, " +
+				"''NUMBER'') eq 0)')");
+
+		_assertEquals(
+			DSL.cast(
+				DSL.field("SAFE_CAST(Individual.contactId AS NUMERIC)"),
+				Long.class
+			).ne(
+				0L
+			),
+			"individuals.filter(filter='cast(demographics/contactId/value, " +
+				"''NUMBER'') ne 0')");
+
+		_assertEquals(
+			DSL.cast(
+				DSL.field("SAFE_CAST(Individual.contactId AS NUMERIC)"),
+				Long.class
+			).gt(
+				0L
+			),
+			"individuals.filter(filter='cast(demographics/contactId/value, " +
+				"''NUMBER'') gt 0')");
+
+		_assertEquals(
+			DSL.cast(
+				DSL.field("SAFE_CAST(Individual.contactId AS NUMERIC)"),
+				Long.class
+			).lt(
+				0L
+			),
+			"individuals.filter(filter='cast(demographics/contactId/value, " +
+				"''NUMBER'') lt 0')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.contactId"
+			).isNull(),
+			"individuals.filter(filter='demographics/contactId/value eq " +
+				"null')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.contactId"
+			).isNotNull(),
+			"individuals.filter(filter='demographics/contactId/value ne " +
+				"null')");
+	}
+
+	@Test
+	public void testContainsOperator() {
+		_assertEquals(
+			DSL.lower(
+				DSL.field("column1", String.class)
+			).like(
+				"%value1%"
 			),
 			"contains(column1, 'value1')");
 	}
@@ -164,10 +272,10 @@ public class FilterExpressionTest {
 				),
 				DSL.and(
 					DSL.or(
-						DSL.field(
-							"column2"
-						).containsIgnoreCase(
-							"escaped'quote)"
+						DSL.lower(
+							DSL.field("column2", String.class)
+						).like(
+							"%escaped'quote)%"
 						),
 						DSL.and(
 							DSL.field(
@@ -251,10 +359,10 @@ public class FilterExpressionTest {
 	@Test
 	public void testFreestyle5() {
 		_assertEquals(
-			DSL.field(
-				"Individual.jobTitle"
-			).containsIgnoreCase(
-				"manager"
+			DSL.lower(
+				DSL.field("Individual.jobTitle", String.class)
+			).like(
+				"%manager%"
 			),
 			"individuals.filter(filter='contains(demographics/jobTitle/value" +
 				", ''manager'')')");
@@ -799,7 +907,7 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.field(
-				"Individual.address"
+				"Individual.addresses"
 			).eq(
 				"address"
 			).and(
@@ -872,7 +980,7 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.field(
-				"Individual.address"
+				"Individual.addresses"
 			).eq(
 				"address"
 			).and(
@@ -958,6 +1066,129 @@ public class FilterExpressionTest {
 				"value1"
 			),
 			"column1 gt 'value1'");
+	}
+
+	@Test
+	public void testIdentifierDemographicsDate() {
+		_assertEquals(
+			DSL.field(
+				"Individual.birthday"
+			).eq(
+				"2023-01-01"
+			),
+			"individuals.filter(filter='(demographics/birthDate/value eq " +
+				"''2023-01-01'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.birthday"
+			).gt(
+				"2023-01-01"
+			),
+			"individuals.filter(filter='(demographics/birthDate/value gt " +
+				"''2023-01-01'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.birthday"
+			).lt(
+				"2023-01-01"
+			),
+			"individuals.filter(filter='(demographics/birthDate/value lt " +
+				"''2023-01-01'')')");
+	}
+
+	@Test
+	public void testIdentifierDemographicsFieldMappings() {
+		_assertEquals(
+			DSL.field(
+				"Individual.addresses"
+			).eq(
+				"Test"
+			),
+			"individuals.filter(filter='(demographics/address/value eq " +
+				"''Test'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.emailAddress"
+			).ne(
+				"Test"
+			),
+			"individuals.filter(filter='(demographics/email/value ne " +
+				"''Test'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.lastName"
+			).ne(
+				"Test"
+			),
+			"individuals.filter(filter='(demographics/familyName/value ne " +
+				"''Test'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.firstName"
+			).ne(
+				"Test"
+			),
+			"individuals.filter(filter='(demographics/givenName/value ne " +
+				"''Test'')')");
+	}
+
+	@Test
+	public void testIdentifierDemographicsText() {
+		_assertEquals(
+			DSL.field(
+				"Individual.firstName"
+			).eq(
+				"Test"
+			),
+			"individuals.filter(filter='(demographics/givenName/value eq " +
+				"''Test'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.firstName"
+			).ne(
+				"Test"
+			),
+			"individuals.filter(filter='(demographics/givenName/value ne " +
+				"''Test'')')");
+
+		_assertEquals(
+			DSL.lower(
+				DSL.field("Individual.firstName", String.class)
+			).like(
+				"%liferay.com%"
+			),
+			"individuals.filter(filter='contains(demographics/givenName" +
+				"/value, ''liferay.com'')')");
+
+		_assertEquals(
+			DSL.not(
+				DSL.lower(
+					DSL.field("Individual.firstName", String.class)
+				).like(
+					"%liferay.com%"
+				)),
+			"not individuals.filter(filter='contains(demographics/givenName" +
+				"/value, ''liferay.com'')')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.firstName"
+			).isNull(),
+			"individuals.filter(filter='demographics/givenName/value eq " +
+				"null')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.firstName"
+			).isNotNull(),
+			"individuals.filter(filter='demographics/givenName/value ne " +
+				"null')");
 	}
 
 	@Test
@@ -1233,10 +1464,10 @@ public class FilterExpressionTest {
 	public void testNotContainsOperator() {
 		_assertEquals(
 			DSL.not(
-				DSL.field(
-					"column1"
-				).containsIgnoreCase(
-					"value1"
+				DSL.lower(
+					DSL.field("column1", String.class)
+				).like(
+					"%value1%"
 				)),
 			"not contains(column1, 'value1')");
 	}
@@ -1616,10 +1847,10 @@ public class FilterExpressionTest {
 							DSL.field("IndividualMemberships.ids"))
 					)
 				).where(
-					DSL.field(
-						"Organization.hierarchyPath"
-					).containsIgnoreCase(
-						"test"
+					DSL.lower(
+						DSL.field("Organization.hierarchyPath", String.class)
+					).like(
+						"%test%"
 					)
 				)
 			),
