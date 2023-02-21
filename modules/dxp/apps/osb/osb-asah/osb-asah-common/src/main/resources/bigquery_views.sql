@@ -527,21 +527,40 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 	WITH
 		CommentEvent AS (
 			SELECT
-				Event.*
+				Event.assetId,
+				Event.canonicalUrl,
+				Event.channelId,
+				Event.eventDate,
+				Event.title,
+				Event.userId
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
-				Event.id = className.id AND className.name = 'className'
+				className.id  = Event.id AND
+				className.name = 'className' AND
+				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry'
 			)
 			WHERE
 				Event.applicationId = 'Comment' AND
 				Event.assetId IS NOT NULL AND
-				Event.eventId = 'posted' AND
-				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry'
+				Event.eventId = 'posted'
 		),
 		DocumentEvent AS (
 			SELECT
-				Event.*
+				Event.assetId,
+				Event.assetTitle,
+				Event.browserName,
+				Event.canonicalUrl,
+				Event.channelId,
+				Event.city,
+				Event.country,
+				Event.deviceType,
+				Event.eventDate,
+				Event.eventId,
+				Event.platformName,
+				Event.region,
+				Event.title,
+				Event.userId
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
@@ -550,17 +569,9 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry'
 			)
 			WHERE
-				(
-					(
-						Event.applicationId = 'Document' AND
-						Event.eventId IN ('documentDownloaded', 'documentPreviewed')
-					) OR
-					(
-						Event.applicationId = 'Ratings' AND
-						className.value IS NOT NULL
-					)
-				) AND
-				Event.assetId IS NOT NULL
+				Event.applicationId = 'Document' AND
+				Event.assetId IS NOT NULL AND
+				Event.eventId IN ('documentDownloaded', 'documentPreviewed')
 		),
 		DocumentComments AS (
 			SELECT
@@ -621,25 +632,33 @@ CREATE OR REPLACE VIEW BQDocumentLibrary AS (
 		),
 		RatingsEvent AS (
 			SELECT
-				Event.*,
-				CAST(score.value AS FLOAT) AS score
+				Event.assetId,
+				Event.canonicalUrl,
+				Event.channelId,
+				Event.eventDate,
+				Event.title,
+				CAST(score.value AS FLOAT) as score,
+				Event.userId
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
-				Event.id = className.id AND className.name = 'className'
+				className.id = Event.id AND
+				className.name = 'className' AND
+				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry'
 			)
 			LEFT JOIN BQEventProperty AS ratingType ON (
-				Event.id = ratingType.id AND ratingType.name = 'ratingType'
+				ratingType.id = Event.id AND
+				ratingType.name = 'ratingType' AND
+				ratingtype.value = 'stars'
 			)
 			LEFT JOIN BQEventProperty AS score ON (
-				Event.id = score.id AND score.name = 'score'
+				score.id = Event.id AND
+				score.name = 'score'
 			)
 			WHERE
 				Event.applicationId = 'Ratings' AND
 				Event.assetId IS NOT NULL AND
-				Event.eventId = 'VOTE' AND
-				className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
-				ratingtype.value = 'stars'
+				Event.eventId = 'VOTE'
 		),
 		DocumentRatings AS (
 			SELECT
