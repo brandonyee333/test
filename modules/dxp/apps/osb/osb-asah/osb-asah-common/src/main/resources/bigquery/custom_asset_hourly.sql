@@ -1,6 +1,6 @@
 WITH CustomAssetEvent AS (
 	SELECT
-		Event.*,
+		Event.assetId,
 		TO_HEX(
 			SHA256(
 				CONCAT(
@@ -10,10 +10,24 @@ WITH CustomAssetEvent AS (
 				)
 			)
 		) AS assetPrimaryKey,
+		Event.assetTitle,
+		Event.browserName,
+		Event.canonicalUrl,
 		COALESCE(category.value, 'default') AS category,
+		Event.channelId,
+		Event.city,
+		Event.country,
+		Event.deviceType,
+		Event.eventDate,
+		Event.eventId,
+		Event.platformName,
+		Event.region,
+		Event.sessionId,
+		Event.title,
+		Event.userId,
 		formEnabled.value AS formEnabled
 	FROM
-		`$[AC_PROJECT_ID].event` Event
+		`$[AC_PROJECT_ID].event` AS Event
 	LEFT JOIN (
 		SELECT
 			id,
@@ -47,7 +61,8 @@ CustomAssetFinalizedEvent AS (
 	SELECT
 		CustomAssetEvent.*
 	FROM
-		CustomAssetEvent INNER JOIN `$[AC_PROJECT_ID].session` Session ON
+		CustomAssetEvent
+	INNER JOIN `$[AC_PROJECT_ID].session` Session ON
 		CustomAssetEvent.sessionId = Session.id
 	WHERE
 		Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)

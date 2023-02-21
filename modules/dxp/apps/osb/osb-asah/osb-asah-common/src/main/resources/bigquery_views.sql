@@ -315,31 +315,46 @@ CREATE OR REPLACE VIEW BQCustomAsset AS (
 	WITH
 		CustomAssetEvent AS (
 			SELECT
-				BQEvent.*,
+				Event.assetId,
 				ENCODE(
 					SHA256(
 						(
-							BQEvent.assetId ||
+							Event.assetId ||
 							COALESCE(category.value, 'default') ||
-							BQEvent.channelId
+							Event.channelId
 						)::BYTEA
 					),
 					'hex'
 				) AS assetPrimaryKey,
+				Event.assetTitle,
+				Event.browserName,
+				Event.canonicalUrl,
 				COALESCE(category.value, 'default') AS category,
+				Event.channelId,
+				Event.city,
+				Event.country,
+				Event.deviceType,
+				Event.eventDate,
+				Event.eventId,
+				Event.platformName,
+				Event.region,
+				Event.sessionId,
+				Event.title,
+				Event.userId,
 				formEnabled.value AS formEnabled
 			FROM
-				BQEvent
-				LEFT JOIN BQEventProperty AS formEnabled ON (
-					BQEvent.id = formEnabled.id AND
-					formEnabled.name = 'formEnabled'
-				)
-				LEFT JOIN BQEventProperty AS category ON (
-					BQEvent.id = category.id AND category.name = 'category'
-				)
+				BQEvent AS Event
+			LEFT JOIN BQEventProperty AS formEnabled ON (
+				formEnabled.id = Event.id AND
+				formEnabled.name = 'formEnabled'
+			)
+			LEFT JOIN BQEventProperty AS category ON (
+				category.id = Event.id AND
+				category.name = 'category'
+			)
 			WHERE
-				BQEvent.applicationId = 'Custom' AND
-				BQEvent.assetId IS NOT NULL
+				Event.applicationId = 'Custom' AND
+				Event.assetId IS NOT NULL
 		),
 		CustomAssetFinalizedEvent AS (
 			SELECT
