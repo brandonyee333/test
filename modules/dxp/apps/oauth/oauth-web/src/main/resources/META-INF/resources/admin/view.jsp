@@ -67,8 +67,9 @@
 
 			<liferay-ui:search-container-column-text
 				href="<%= rowHREF %>"
+				name="name"
 				orderable="<%= true %>"
-				property="name"
+				value="<%= HtmlUtil.escape(oAuthApplication.getName()) %>"
 			/>
 
 			<liferay-ui:search-container-column-text
