@@ -49,7 +49,21 @@ CREATE OR REPLACE VIEW BQBlog AS (
 	WITH
 		BlogEvent AS (
 			SELECT
-				Event.*
+				Event.assetId,
+				Event.assetTitle,
+				Event.browserName,
+				Event.canonicalUrl,
+				Event.channelId,
+				Event.city,
+				Event.country,
+				Event.deviceType,
+				Event.eventId,
+				Event.eventDate,
+				Event.platformName,
+				Event.region,
+				Event.sessionId,
+				Event.title,
+				Event.userId
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
@@ -80,17 +94,23 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		),
 		CommentEvent AS (
 			SELECT
-				Event.*
+				Event.assetId,
+				Event.canonicalUrl,
+				Event.channelId,
+				Event.eventDate,
+				Event.title,
+				Event.userId
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
-				Event.id = className.id AND className.name = 'className'
+				Event.id = className.id AND
+				className.name = 'className' AND
+				className.value = 'com.liferay.blogs.model.BlogsEntry'
 			)
 			WHERE
 				Event.applicationId = 'Comment' AND
-				Event.eventId = 'posted' AND
-				className.value = 'com.liferay.blogs.model.BlogsEntry' AND
-				Event.assetId IS NOT NULL
+				Event.assetId IS NOT NULL AND
+				Event.eventId = 'posted'
 		),
 		BlogComments AS (
 			SELECT
@@ -109,25 +129,33 @@ CREATE OR REPLACE VIEW BQBlog AS (
 		),
 		RatingsEvent AS (
 			SELECT
-				Event.*,
-				CAST(score.value AS FLOAT) AS score
+				Event.assetId,
+				Event.canonicalUrl,
+				Event.channelId,
+				Event.eventDate,
+				Event.title,
+				CAST(score.value AS FLOAT) as score,
+				Event.userId
 			FROM
 				BQEvent AS Event
 			LEFT JOIN BQEventProperty AS className ON (
-				Event.id = className.id AND className.name = 'className'
+				className.id = Event.id AND
+				className.value = 'com.liferay.blogs.model.BlogsEntry' AND
+				className.name = 'className'
 			)
 			LEFT JOIN BQEventProperty AS ratingType ON (
-				Event.id = ratingType.id AND ratingType.name = 'ratingType'
+				ratingType.id = Event.id AND
+				ratingType.value = 'stars' AND
+				ratingType.name = 'ratingType'
 			)
 			LEFT JOIN BQEventProperty AS score ON (
-				Event.id = score.id AND score.name = 'score'
+				score.id = Event.id AND
+				score.name = 'score'
 			)
 			WHERE
 				Event.applicationId = 'Ratings' AND
 				Event.assetId IS NOT NULL AND
-				Event.eventId = 'VOTE' AND
-				className.value = 'com.liferay.blogs.model.BlogsEntry' AND
-				ratingtype.value = 'stars'
+				Event.eventId = 'VOTE'
 		),
 		BlogRatings AS (
 			SELECT

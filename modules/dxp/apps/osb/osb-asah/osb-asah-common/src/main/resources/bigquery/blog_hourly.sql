@@ -1,11 +1,26 @@
 WITH
 	BlogEvent AS (
 		SELECT
-			Event.*
+			Event.assetId,
+			Event.assetTitle,
+			Event.browserName,
+			Event.canonicalUrl,
+			Event.channelId,
+			Event.city,
+			Event.country,
+			Event.deviceType,
+			Event.eventDate,
+			Event.eventId,
+			Event.platformName,
+			Event.region,
+		    Event.sessionId,
+			Event.title,
+			Event.userId
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-			className.id = Event.id AND
+			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+		    className.id = Event.id AND
 			className.name = 'className' AND
 			className.value = 'com.liferay.blogs.model.BlogsEntry'
 		)
@@ -35,19 +50,25 @@ WITH
 	),
 	CommentEvent AS (
 		SELECT
-			Event.*
+			Event.assetId,
+			Event.canonicalUrl,
+			Event.channelId,
+			Event.eventDate,
+			Event.title,
+			Event.userId
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-			Event.id = className.id AND className.name = 'className'
+			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			className.id = Event.id AND
+			className.name = 'className' AND
+			className.value = 'com.liferay.blogs.model.BlogsEntry'
 		)
 		WHERE
 			Event.applicationId = 'Comment' AND
 			Event.assetId IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			Event.eventId = 'posted' AND
-			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			className.value = 'com.liferay.blogs.model.BlogsEntry'
+			Event.eventId = 'posted'
 	),
 	BlogComments AS (
 		SELECT
@@ -65,29 +86,37 @@ WITH
 	),
 	RatingsEvent AS (
 		SELECT
-			Event.*,
-			CAST(score.value AS FLOAT64) as score
+			Event.assetId,
+			Event.canonicalUrl,
+			Event.channelId,
+			Event.eventDate,
+			Event.title,
+			CAST(score.value AS FLOAT64) as score,
+			Event.userId
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-			Event.id = className.id AND className.name = 'className'
+			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			className.id = Event.id AND
+			className.value = 'com.liferay.blogs.model.BlogsEntry' AND
+		    className.name = 'className'
 		)
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS ratingType ON (
-			Event.id = ratingType.id AND ratingType.name = 'ratingType'
+			ratingType.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			ratingType.id = Event.id AND
+			ratingType.value = 'stars' AND
+		    ratingType.name = 'ratingType'
 		)
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS score ON (
-			Event.id = score.id AND score.name = 'score'
+			score.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			score.id = Event.id AND
+		    score.name = 'score'
 		)
 		WHERE
 			Event.applicationId = 'Ratings' AND
 			Event.assetId IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			Event.eventId = 'VOTE' AND
-			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			className.value = 'com.liferay.blogs.model.BlogsEntry' AND
-			ratingType.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			ratingType.value = 'stars' AND
-			score.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			Event.eventId = 'VOTE'
 	),
 	BlogRatings AS (
 		SELECT
