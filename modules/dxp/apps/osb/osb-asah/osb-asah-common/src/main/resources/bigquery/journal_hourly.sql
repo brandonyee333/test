@@ -1,7 +1,19 @@
 WITH
 	WebContentEvent AS (
 		SELECT
-			Event.*
+			Event.assetId,
+			Event.assetTitle,
+			Event.browserName,
+			Event.canonicalUrl,
+			Event.channelId,
+			Event.city,
+			Event.country,
+			Event.deviceType,
+			Event.eventDate,
+			Event.platformName,
+			Event.region,
+			Event.title,
+			Event.userId
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		WHERE
