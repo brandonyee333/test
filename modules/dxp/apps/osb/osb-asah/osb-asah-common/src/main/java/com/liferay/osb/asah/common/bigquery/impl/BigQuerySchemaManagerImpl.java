@@ -66,6 +66,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 
 /**
@@ -317,7 +319,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 		TableDefinition tableDefinition = null;
 
-		if (materialized) {
+		if (materialized && _environment.acceptsProfiles(Profiles.of("prod"))) {
 			tableDefinition = MaterializedViewDefinition.newBuilder(
 				StringUtils.replace(query, "$[AC_PROJECT_ID]", _getProjectId())
 			).build();
@@ -388,6 +390,10 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 	private final BigQuery _bigQuery;
 	private final BigQueryOptions _bigQueryOptions;
+
+	@Autowired
+	private Environment _environment;
+
 	private JSONObject _functionsJSONObject;
 	private JSONObject _tablesJSONObject;
 	private JSONObject _viewsJSONObject;
