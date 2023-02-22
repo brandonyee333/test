@@ -124,11 +124,43 @@ public class IndividualNanite {
 		);
 	}
 
+	private Object _getFieldValueByName(List<Field> fields, String name) {
+		for (Field field : fields) {
+			if (Objects.equals(field.getName(), name)) {
+				return field.getValue();
+			}
+		}
+
+		return null;
+	}
+
+	private Date _getFieldValueDateByName(List<Field> fields, String name) {
+		String valueString = _getFieldValueStringByName(fields, name);
+
+		if (valueString == null) {
+			return null;
+		}
+
+		return new Date(Long.parseLong(valueString));
+	}
+
+	private String _getFieldValueStringByName(List<Field> fields, String name) {
+		Object value = _getFieldValueByName(fields, name);
+
+		if (value == null) {
+			return null;
+		}
+
+		return String.valueOf(value);
+	}
+
 	private BQIndividual _mergeBQIndividual(
 		BQIndividual bqIndividual1, BQIndividual bqIndividual2) {
 
 		BQIndividual mergedBQIndividual = new BQIndividual();
 
+		mergedBQIndividual.setAddresses(bqIndividual2.getAddresses());
+		mergedBQIndividual.setBirthday(bqIndividual2.getBirthday());
 		mergedBQIndividual.setCreateDate(bqIndividual2.getCreateDate());
 		mergedBQIndividual.setEmailAddress(bqIndividual2.getEmailAddress());
 
@@ -140,12 +172,15 @@ public class IndividualNanite {
 				mergedBQIndividualFields, JSONArray.class));
 
 		mergedBQIndividual.setFirstName(bqIndividual2.getFirstName());
+		mergedBQIndividual.setGender(bqIndividual2.getGender());
 		mergedBQIndividual.setId(bqIndividual2.getId());
 		mergedBQIndividual.setIsNew(Boolean.TRUE);
+		mergedBQIndividual.setLanguageId(bqIndividual2.getLanguageId());
 		mergedBQIndividual.setLastName(bqIndividual2.getLastName());
 		mergedBQIndividual.setMiddleName(bqIndividual2.getMiddleName());
 		mergedBQIndividual.setModifiedDate(bqIndividual2.getModifiedDate());
 		mergedBQIndividual.setScreenName(bqIndividual2.getScreenName());
+		mergedBQIndividual.setTimeZoneId(bqIndividual2.getTimeZoneId());
 
 		return mergedBQIndividual;
 	}
@@ -245,14 +280,24 @@ public class IndividualNanite {
 				CollectionUtils.union(defaultFields, customFields),
 				JSONArray.class));
 
+		bqIndividual.setAddresses(
+			_getFieldValueStringByName(defaultFields, "addresses"));
+		bqIndividual.setBirthday(
+			_getFieldValueDateByName(defaultFields, "birthday"));
 		bqIndividual.setFirstName(bqUser.getFirstName());
+		bqIndividual.setGender(
+			_getFieldValueStringByName(defaultFields, "gender"));
 		bqIndividual.setId(bqUser.getEmailAddressHashed());
 		bqIndividual.setIsNew(Boolean.TRUE);
 		bqIndividual.setJobTitle(bqUser.getJobTitle());
+		bqIndividual.setLanguageId(
+			_getFieldValueStringByName(defaultFields, "languageId"));
 		bqIndividual.setLastName(bqUser.getLastName());
 		bqIndividual.setMiddleName(bqUser.getMiddleName());
 		bqIndividual.setModifiedDate(bqUser.getModifiedDate());
 		bqIndividual.setScreenName(bqUser.getScreenName());
+		bqIndividual.setTimeZoneId(
+			_getFieldValueStringByName(defaultFields, "timeZoneId"));
 
 		return bqIndividual;
 	}

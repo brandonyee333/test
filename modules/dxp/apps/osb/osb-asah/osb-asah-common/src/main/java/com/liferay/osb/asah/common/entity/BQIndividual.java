@@ -62,6 +62,20 @@ public class BQIndividual implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getAddresses() {
+		return _addresses;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Date getBirthday() {
+		if (_birthday == null) {
+			return null;
+		}
+
+		return new Date(_birthday.getTime());
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -87,6 +101,11 @@ public class BQIndividual implements Persistable<String> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public String getGender() {
+		return _gender;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@Override
 	public String getId() {
@@ -96,6 +115,11 @@ public class BQIndividual implements Persistable<String> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getJobTitle() {
 		return _jobTitle;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getLanguageId() {
+		return _languageId;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -122,6 +146,11 @@ public class BQIndividual implements Persistable<String> {
 		return _screenName;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getTimeZoneId() {
+		return _timeZoneId;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(_emailAddress);
@@ -134,6 +163,16 @@ public class BQIndividual implements Persistable<String> {
 		}
 
 		return false;
+	}
+
+	public void setAddresses(String addresses) {
+		_addresses = addresses;
+	}
+
+	public void setBirthday(Date birthday) {
+		if (birthday != null) {
+			_birthday = new Date(birthday.getTime());
+		}
 	}
 
 	public void setCreateDate(Date createDate) {
@@ -154,6 +193,10 @@ public class BQIndividual implements Persistable<String> {
 		_firstName = firstName;
 	}
 
+	public void setGender(String gender) {
+		_gender = gender;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
@@ -164,6 +207,10 @@ public class BQIndividual implements Persistable<String> {
 
 	public void setJobTitle(String jobTitle) {
 		_jobTitle = jobTitle;
+	}
+
+	public void setLanguageId(String languageId) {
+		_languageId = languageId;
 	}
 
 	public void setLastName(String lastName) {
@@ -184,6 +231,16 @@ public class BQIndividual implements Persistable<String> {
 		_screenName = screenName;
 	}
 
+	public void setTimeZoneId(String timeZoneId) {
+		_timeZoneId = timeZoneId;
+	}
+
+	@Transient
+	private String _addresses;
+
+	@Transient
+	private Date _birthday;
+
 	@Transient
 	private Date _createDate;
 
@@ -197,6 +254,9 @@ public class BQIndividual implements Persistable<String> {
 	private String _firstName;
 
 	@Transient
+	private String _gender;
+
+	@Transient
 	private String _id;
 
 	@Transient
@@ -204,6 +264,9 @@ public class BQIndividual implements Persistable<String> {
 
 	@Transient
 	private String _jobTitle;
+
+	@Transient
+	private String _languageId;
 
 	@Transient
 	private String _lastName;
@@ -216,5 +279,8 @@ public class BQIndividual implements Persistable<String> {
 
 	@Transient
 	private String _screenName;
+
+	@Transient
+	private String _timeZoneId;
 
 }
