@@ -51,7 +51,7 @@ import org.springframework.stereotype.Component;
 public class BQMembershipDog {
 
 	public BQMembership addBQMembership(BQMembership bqMembership) {
-		return _bqMembershipRepository.save(bqMembership);
+		return _bqMembershipRepository.insert(bqMembership);
 	}
 
 	public void addBQMemberships(

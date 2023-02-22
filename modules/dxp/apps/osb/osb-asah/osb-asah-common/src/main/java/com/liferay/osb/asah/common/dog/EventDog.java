@@ -14,11 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
-import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.entity.Preference;
@@ -29,7 +26,6 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
-import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.ArrayList;

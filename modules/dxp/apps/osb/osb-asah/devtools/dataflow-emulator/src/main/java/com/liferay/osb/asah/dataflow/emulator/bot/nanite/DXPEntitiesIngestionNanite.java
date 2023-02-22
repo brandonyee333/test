@@ -48,7 +48,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -142,20 +141,12 @@ public class DXPEntitiesIngestionNanite {
 					_generateBQExpandoValueId(
 						String.valueOf(jsonObject.get("columnId")), classPK,
 						dataSourceId, projectId));
-				bqExpandoValue.setIsNew(
-					_isNew(_bqExpandoValueRepository, bqExpandoValue.getId()));
 				bqExpandoValue.setValue(jsonObject.optString("value"));
 
 				bqExpandoValues.add(bqExpandoValue);
 			});
 
 		return bqExpandoValues;
-	}
-
-	private boolean _isNew(CrudRepository crudRepository, String id) {
-		Optional<Object> optional = crudRepository.findById(id);
-
-		return !optional.isPresent();
 	}
 
 	private Map<String, Object> _parseFields(JSONArray fieldsJSONArray) {
@@ -201,10 +192,7 @@ public class DXPEntitiesIngestionNanite {
 				_generateDXPEntityId(
 					accountEntry.getAccountEntryId(), dataSourceId, projectId));
 
-			accountEntry.setIsNew(
-				_isNew(_bqAccountEntryRepository, accountEntry.getId()));
-
-			_bqAccountEntryRepository.save(accountEntry);
+			_bqAccountEntryRepository.insert(accountEntry);
 		}
 		else if (StringUtils.equals(
 					type, "com.liferay.account.model.AccountGroup")) {
@@ -218,10 +206,7 @@ public class DXPEntitiesIngestionNanite {
 					bqAccountGroup.getAccountGroupId(), dataSourceId,
 					projectId));
 
-			bqAccountGroup.setIsNew(
-				_isNew(_bqAccountGroupRepository, bqAccountGroup.getId()));
-
-			_bqAccountGroupRepository.save(bqAccountGroup);
+			_bqAccountGroupRepository.insert(bqAccountGroup);
 		}
 		else if (StringUtils.equals(
 					type,
@@ -262,10 +247,8 @@ public class DXPEntitiesIngestionNanite {
 			bqExpandoColumn.setId(
 				_generateDXPEntityId(
 					bqExpandoColumn.getColumnId(), dataSourceId, projectId));
-			bqExpandoColumn.setIsNew(
-				_isNew(_bqExpandoColumnRepository, bqExpandoColumn.getId()));
 
-			_bqExpandoColumnRepository.save(bqExpandoColumn);
+			_bqExpandoColumnRepository.insert(bqExpandoColumn);
 		}
 		else if (StringUtils.equals(
 					type, "com.liferay.portal.kernel.model.Group")) {
@@ -276,9 +259,8 @@ public class DXPEntitiesIngestionNanite {
 			bqGroup.setId(
 				_generateDXPEntityId(
 					bqGroup.getGroupId(), dataSourceId, projectId));
-			bqGroup.setIsNew(_isNew(_bqGroupRepository, bqGroup.getId()));
 
-			_bqGroupRepository.save(bqGroup);
+			_bqGroupRepository.insert(bqGroup);
 		}
 		else if (StringUtils.equals(
 					type, "com.liferay.portal.kernel.model.Organization")) {
@@ -292,21 +274,20 @@ public class DXPEntitiesIngestionNanite {
 				"expandoFields");
 
 			if (expandFieldsJSONArray != null) {
-				_bqExpandoValueRepository.saveAll(
-					_getExpandoValues(
-						bqOrganization.getOrganizationId(),
-						DXPEntity.Type.CLASS_NAME_ORGANIZATION, dataSourceId,
-						expandFieldsJSONArray, projectId));
+				Set<BQExpandoValue> bqExpandoValues = _getExpandoValues(
+					bqOrganization.getOrganizationId(),
+					DXPEntity.Type.CLASS_NAME_ORGANIZATION, dataSourceId,
+					expandFieldsJSONArray, projectId);
+
+				bqExpandoValues.forEach(_bqExpandoValueRepository::insert);
 			}
 
 			bqOrganization.setId(
 				_generateDXPEntityId(
 					bqOrganization.getOrganizationId(), dataSourceId,
 					projectId));
-			bqOrganization.setIsNew(
-				_isNew(_bqOrganizationRepository, bqOrganization.getId()));
 
-			_bqOrganizationRepository.save(bqOrganization);
+			_bqOrganizationRepository.insert(bqOrganization);
 		}
 		else if (StringUtils.equals(
 					type, "com.liferay.portal.kernel.model.Role")) {
@@ -317,9 +298,8 @@ public class DXPEntitiesIngestionNanite {
 			bqRole.setId(
 				_generateDXPEntityId(
 					bqRole.getRoleId(), dataSourceId, projectId));
-			bqRole.setIsNew(_isNew(_bqRoleRepository, bqRole.getId()));
 
-			_bqRoleRepository.save(bqRole);
+			_bqRoleRepository.insert(bqRole);
 		}
 		else if (StringUtils.equals(
 					type, "com.liferay.portal.kernel.model.Team")) {
@@ -330,9 +310,8 @@ public class DXPEntitiesIngestionNanite {
 			bqTeam.setId(
 				_generateDXPEntityId(
 					bqTeam.getTeamId(), dataSourceId, projectId));
-			bqTeam.setIsNew(_isNew(_bqTeamRepository, bqTeam.getId()));
 
-			_bqTeamRepository.save(bqTeam);
+			_bqTeamRepository.insert(bqTeam);
 		}
 		else if (StringUtils.equals(
 					type, "com.liferay.portal.kernel.model.User")) {
@@ -345,10 +324,11 @@ public class DXPEntitiesIngestionNanite {
 				"expandoFields");
 
 			if (expandoFieldsJSONArray != null) {
-				_bqExpandoValueRepository.saveAll(
-					_getExpandoValues(
-						bqUser.getDXPUserId(), DXPEntity.Type.CLASS_NAME_USER,
-						dataSourceId, expandoFieldsJSONArray, projectId));
+				Set<BQExpandoValue> bqExpandoValues = _getExpandoValues(
+					bqUser.getDXPUserId(), DXPEntity.Type.CLASS_NAME_USER,
+					dataSourceId, expandoFieldsJSONArray, projectId);
+
+				bqExpandoValues.forEach(_bqExpandoValueRepository::insert);
 			}
 
 			String emailAddressHashed = DigestUtils.sha256Hex(
@@ -361,9 +341,8 @@ public class DXPEntitiesIngestionNanite {
 			bqUser.setId(
 				_generateDXPEntityId(
 					bqUser.getDXPUserId(), dataSourceId, projectId));
-			bqUser.setIsNew(_isNew(_bqUserRepository, bqUser.getId()));
 
-			_bqUserRepository.save(bqUser);
+			_bqUserRepository.insert(bqUser);
 		}
 		else if (StringUtils.equals(
 					type, "com.liferay.portal.kernel.model.UserGroup")) {
@@ -375,10 +354,8 @@ public class DXPEntitiesIngestionNanite {
 			bqUserGroup.setId(
 				_generateDXPEntityId(
 					bqUserGroup.getUserGroupId(), dataSourceId, projectId));
-			bqUserGroup.setIsNew(
-				_isNew(_bqUserGroupRepository, bqUserGroup.getId()));
 
-			_bqUserGroupRepository.save(bqUserGroup);
+			_bqUserGroupRepository.insert(bqUserGroup);
 		}
 	}
 

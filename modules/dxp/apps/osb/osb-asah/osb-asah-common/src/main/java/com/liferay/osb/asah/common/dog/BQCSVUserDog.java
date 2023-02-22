@@ -37,7 +37,7 @@ public class BQCSVUserDog {
 			return;
 		}
 
-		_bqCSVUserRepository.saveAll(bqCSVUsers);
+		_bqCSVUserRepository.insertAll(bqCSVUsers);
 
 		BQCSVUser bqCSVUser = bqCSVUsers.get(0);
 

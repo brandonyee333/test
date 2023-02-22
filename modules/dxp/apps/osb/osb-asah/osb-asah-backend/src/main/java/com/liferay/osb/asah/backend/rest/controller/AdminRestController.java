@@ -17,8 +17,6 @@ package com.liferay.osb.asah.backend.rest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
-import com.liferay.osb.asah.common.entity.BQMembership;
-import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
@@ -119,10 +117,8 @@ public class AdminRestController extends BaseRestController {
 			_segmentRepository.deleteAll();
 		}
 		else if (collectionName.equals("membership-changes")) {
-			_bqMembershipChangeRepository.deleteAll();
 		}
 		else if (collectionName.equals("memberships")) {
-			_bqMembershipRepository.deleteAll();
 		}
 		else if (collectionName.equals("preferences")) {
 			_preferenceRepository.deleteAll();
@@ -195,11 +191,8 @@ public class AdminRestController extends BaseRestController {
 			_addEntities(_segmentRepository, json, Segment.class);
 		}
 		else if (collectionName.equals("membership-changes")) {
-			_addEntities(
-				_bqMembershipChangeRepository, json, BQMembershipChange.class);
 		}
 		else if (collectionName.equals("memberships")) {
-			_addEntities(_bqMembershipRepository, json, BQMembership.class);
 		}
 		else if (collectionName.equals("preferences")) {
 			_addPreferences(new JSONArray(json));

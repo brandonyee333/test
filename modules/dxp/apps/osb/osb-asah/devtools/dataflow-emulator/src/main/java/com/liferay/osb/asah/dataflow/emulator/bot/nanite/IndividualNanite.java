@@ -241,9 +241,11 @@ public class IndividualNanite {
 	}
 
 	private String _resolveFieldName(BQExpandoValue bqExpandoValue) {
-		BQExpandoColumn bqExpandoColumn =
+		Optional<BQExpandoColumn> bqExpandoColumnOptional =
 			_bqExpandoColumnRepository.findByColumnIdAndDataSourceId(
 				bqExpandoValue.getColumnId(), bqExpandoValue.getDataSourceId());
+
+		BQExpandoColumn bqExpandoColumn = bqExpandoColumnOptional.get();
 
 		String fieldName =
 			bqExpandoColumn.getName() + "_" + bqExpandoColumn.getDataType();
