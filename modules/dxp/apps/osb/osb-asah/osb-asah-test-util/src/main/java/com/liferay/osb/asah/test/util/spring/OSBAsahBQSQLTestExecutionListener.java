@@ -129,7 +129,7 @@ public class OSBAsahBQSQLTestExecutionListener
 		Dataset testDataset = _bigQuery.getDataset("test");
 
 		if (testDataset == null) {
-			_bigQuerySchemaManager.createTables("test");
+			_bigQuerySchemaManager.createSchema("test");
 		}
 	}
 
@@ -169,6 +169,8 @@ public class OSBAsahBQSQLTestExecutionListener
 			QueryJobConfiguration queryJobConfiguration =
 				QueryJobConfiguration.newBuilder(
 					replaceSQLVariables
+				).setDefaultDataset(
+					"test"
 				).build();
 
 			_bigQuery.query(queryJobConfiguration);
