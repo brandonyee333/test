@@ -54,6 +54,19 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		self._decay_threshold_weight = self._interest_score_decay_rate ** 14
 
+	def _get_date_range_sql_command(self, start_date=None, end_date=None):
+		if start_date and end_date:
+			start_date_sql_string = f"date_add(to_date('{start_date}'), -{self._max_days_delta})"
+			end_date_sql_string = f"to_date('{end_date}')"
+		else:
+			start_date_sql_string = f"date_add(current_date(),-{self._max_days_delta + self._initial_run_day_range})"
+			end_date_sql_string = 'CURRENT_DATE()'
+
+		sql_command = f"SELECT sequence({start_date_sql_string}, {end_date_sql_string}, interval 1 day) " \
+					  f"as event_date"
+
+		return sql_command
+
 	def _get_identity_interest_pages_data_frame(
 			self, analytics_events_data_frame, extracted_keywords_data_frame):
 
@@ -74,6 +87,31 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			F.col('title'),
 			F.col('views')
 		)
+
+	def _get_individual_interest_score_sql_command(self, start_date=None, end_date=None):
+
+		if start_date and end_date:
+			start_date_sql_string = f'"{start_date}"'
+			end_date_sql_string = f'"{end_date}"'
+		else:
+			start_date_sql_string = f'DATE_SUB(CURRENT_DATE(), {self._initial_run_day_range})'
+			end_date_sql_string = 'CURRENT_DATE()'
+
+		sql_command = f"""
+			SELECT
+				userId as identityId,
+				interested,
+				interest_score as interestScore,
+				keyword,
+				event_date as recordedDate
+			FROM
+				individual_interest_score
+			WHERE
+				event_date >= TIMESTAMP({start_date_sql_string}) AND
+				event_date < TIMESTAMP({end_date_sql_string})
+		"""
+
+		return sql_command
 
 	def _get_job_parameter(self, parameter_name, default_value=None):
 		job_parameters = json.loads(self.spark_application_args.job_parameters)
@@ -109,6 +147,31 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			how='left',
 			on=['event_date']
 		)
+
+	def _get_session_interest_score_sql_command(self, start_date=None, end_date=None):
+		if start_date and end_date:
+			start_date_sql_string = f'"{start_date}"'
+			end_date_sql_string = f'"{end_date}"'
+		else:
+			start_date_sql_string = f'DATE_SUB(CURRENT_DATE(), {self._initial_run_day_range})'
+			end_date_sql_string = 'CURRENT_DATE()'
+
+		sql_command = f"""
+			SELECT
+				userId as identityId,
+				interested,
+				interest_score as interestScore,
+				keyword,
+				event_date as recordedDate,
+				sessionId
+			FROM 
+				individual_interest_score
+			WHERE
+				event_date >= TIMESTAMP({start_date_sql_string}) AND
+				event_date < TIMESTAMP({end_date_sql_string})
+		"""
+
+		return sql_command
 
 	def _get_user_keyword_count_with_totals_data_frame(
 		self, analytics_events_with_keywords_data_frame):
@@ -246,28 +309,16 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			) * self._decay_threshold_weight
 		)
 
-		startDate = self._get_job_parameter('startDate')
-		endDate = self._get_job_parameter('endDate')
+		start_date = self._get_job_parameter('startDate')
+		end_date = self._get_job_parameter('endDate')
 
-		if startDate and endDate:
-			date_range_data_frame = self.spark_session.sql(
-				"SELECT sequence(date_add(to_date('{}'), -{}), to_date('{}'), interval 1 day) "
-				"as event_date".format(
-					startDate,
-					self._max_days_delta,
-					endDate)
-			).withColumn(
-				'event_date', F.explode(F.col('event_date'))
-			)
-		else:
-			date_range_data_frame = self.spark_session.sql(
-				"SELECT sequence(date_add(current_date(),-{}), current_date(), interval 1 day) "
-				"as event_date".format(
-					self._max_days_delta + self._initial_run_day_range
-				)
-			).withColumn(
-				'event_date', F.explode(F.col('event_date'))
-			)
+		sql_command = self._get_date_range_sql_command(start_date, end_date)
+
+		date_range_data_frame = self.spark_session.sql(
+			sql_command
+		).withColumn(
+			'event_date', F.explode(F.col('event_date'))
+		)
 
 		distinct_user_id_keyword_data_frame = \
 			daily_logscores_data_frame.select(
@@ -327,34 +378,10 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		interest_score_data_frame.createOrReplaceTempView(
 			'individual_interest_score')
 
-		if startDate and endDate:
-			individual_interest_score_data_frame = self.spark_session.sql(f"""
-				SELECT
-					userId as identityId,
-					interested,
-					interest_score as interestScore,
-					keyword,
-					event_date as recordedDate
-				FROM
-					individual_interest_score
-				WHERE
-					event_date >= TIMESTAMP("{startDate}") AND
-					event_date < TIMESTAMP("{endDate}")
-			""")
-		else:
-			individual_interest_score_data_frame = self.spark_session.sql(f"""
-				SELECT
-					userId as identityId,
-					interested,
-					interest_score as interestScore,
-					keyword,
-					event_date as recordedDate
-				FROM
-					individual_interest_score
-				WHERE
-					event_date >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), {self._initial_run_day_range})) AND
-					event_date < CURRENT_DATE()
-			""")
+		sql_command = self._get_individual_interest_score_sql_command(
+			start_date, end_date)
+
+		individual_interest_score_data_frame = self.spark_session.sql(sql_command)
 
 		data_frame_writer = individual_interest_score_data_frame.write
 
@@ -368,17 +395,11 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			)
 		)
 
-		session_interest_score_data_frame = self.spark_session.sql("""
-			SELECT
-				userId as identityId,
-				interested,
-				interest_score as interestScore,
-				keyword,
-				event_date as recordedDate,
-				sessionId
-			FROM 
-				individual_interest_score
-		""")
+		sql_command = self._get_session_interest_score_sql_command(
+			start_date, end_date)
+
+		session_interest_score_data_frame = self.spark_session.sql(
+			sql_command)
 
 		data_frame_writer = session_interest_score_data_frame.write
 
@@ -647,6 +668,69 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		self._minimum_interactions_threshold = 5
 		self._minimum_view_duration_threshold = 5000
 
+	def _get_event_data_sql_command(self, start_date=None, end_date=None):
+		if start_date and end_date:
+			sql_start_date_string = \
+				f'DATE_SUB("{start_date}", INTERVAL {self._max_days_delta} DAY)'
+
+			sql_end_date_string = \
+				f'"{end_date}"'
+
+		else:
+			sql_start_date_string = \
+				f"DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta + self._initial_run_day_range} DAY)"
+
+			sql_end_date_string = \
+				"CURRENT_DATE()"
+
+		sql_command = f"""
+			WITH FilteredEvent AS ( 
+				SELECT 
+					event.canonicalUrl, 
+					DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta,
+					event.description, 
+					DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
+					event.id,
+					COUNT(event.userId) OVER (PARTITION BY event.userId) AS interactions,  
+					event.keywords,
+					event.sessionId,
+					event.title, 
+					event.userId, 
+					eventproperty.name, 
+					eventproperty.value
+				FROM 
+					`{self.spark_application_args.ac_project_id}`.event 
+				JOIN `{self.spark_application_args.ac_project_id}`.eventproperty ON 
+					event.id = eventproperty.id
+				WHERE 
+					event.eventDate >= TIMESTAMP({sql_start_date_string}) AND
+					event.eventDate < TIMESTAMP({sql_end_date_string}) AND
+					eventproperty.eventDate >= TIMESTAMP({sql_start_date_string}) AND
+					eventproperty.eventDate < TIMESTAMP({sql_end_date_string}) AND
+					eventproperty.name = "viewDuration" AND
+					STARTS_WITH(event.contentLanguageId, 'en') AND
+					CAST(eventproperty.value AS INTEGER) >= {self._minimum_view_duration_threshold}
+				)
+				SELECT
+					canonicalUrl,
+					days_delta,
+					description, 
+					event_date,
+					id,
+					keywords,  
+					name, 
+					sessionId,
+					title, 
+					userId, 
+					value
+				FROM 
+					FilteredEvent
+				WHERE 
+					interactions >= {self._minimum_interactions_threshold}
+			"""
+
+		return sql_command
+
 	def _get_job_parameter(self, parameter_name, default_value=None):
 		job_parameters = json.loads(self.spark_application_args.job_parameters)
 
@@ -657,101 +741,12 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		return default_value
 
 	def run(self):
-
 		start_date = self._get_job_parameter('startDate', None)
 		end_date = self._get_job_parameter('endDate', None)
-		sql_command = ""
 
-		if start_date and end_date:
-			sql_command = f"""
-				WITH FilteredEvent AS ( 
-					SELECT 
-						event.canonicalUrl, 
-						DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta,
-						event.description, 
-						DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
-						event.id,
-						COUNT(event.userId) OVER (PARTITION BY event.userId) AS interactions,  
-						event.keywords,
-						event.sessionId,
-						event.title, 
-						event.userId, 
-						eventproperty.name, 
-						eventproperty.value
-					FROM 
-						`{self.spark_application_args.ac_project_id}`.event 
-					JOIN `{self.spark_application_args.ac_project_id}`.eventproperty ON 
-						event.id = eventproperty.id
-					WHERE 
-						event.eventDate >= TIMESTAMP(DATE_SUB("{start_date}", INTERVAL {self._max_days_delta} DAY)) AND
-						event.eventDate < TIMESTAMP("{end_date}") AND
-						eventproperty.eventDate >= TIMESTAMP(DATE_SUB("{start_date}", INTERVAL {self._max_days_delta} DAY)) AND
-						eventproperty.eventDate < TIMESTAMP("{end_date}") AND
-						eventproperty.name = "viewDuration" AND
-						STARTS_WITH(event.contentLanguageId, 'en') AND
-						CAST(eventproperty.value AS INTEGER) >= {self._minimum_view_duration_threshold}
-					)
-					SELECT
-						canonicalUrl,
-						days_delta,
-						description, 
-						event_date,
-						id,
-						keywords,  
-						name, 
-						sessionId,
-						title, 
-						userId, 
-						value
-					FROM 
-						FilteredEvent
-					WHERE 
-						interactions >= {self._minimum_interactions_threshold}
-				"""
-		else:
-			sql_command = f"""
-				WITH FilteredEvent AS ( 
-					SELECT 
-						event.canonicalUrl, 
-						DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta,
-						event.description, 
-						DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
-						event.id,
-						COUNT(event.userId) OVER (PARTITION BY event.userId) AS interactions,  
-						event.keywords,
-						event.sessionId,
-						event.title, 
-						event.userId, 
-						eventproperty.name, 
-						eventproperty.value
-					FROM 
-						`{self.spark_application_args.ac_project_id}`.event 
-					JOIN `{self.spark_application_args.ac_project_id}`.eventproperty ON 
-						event.id = eventproperty.id
-					WHERE 
-						event.eventDate >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta + self._initial_run_day_range} DAY)) AND
-						eventproperty.eventDate >= TIMESTAMP(DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta + self._initial_run_day_range} DAY)) AND
-						eventproperty.name = "viewDuration" AND
-						STARTS_WITH(event.contentLanguageId, 'en') AND
-						CAST(eventproperty.value AS INTEGER) >= {self._minimum_view_duration_threshold}
-					)
-					SELECT
-						canonicalUrl,
-						days_delta,
-						description, 
-						event_date,
-						id,
-						keywords,  
-						name, 
-						sessionId,
-						title, 
-						userId, 
-						value
-					FROM 
-						FilteredEvent
-					WHERE 
-						interactions >= {self._minimum_interactions_threshold}
-				"""
+		sql_command = self._get_event_data_sql_command(
+			start_date, end_date
+		)
 
 		event_data_frame = self.spark_session.read.format(
 			"bigquery"
