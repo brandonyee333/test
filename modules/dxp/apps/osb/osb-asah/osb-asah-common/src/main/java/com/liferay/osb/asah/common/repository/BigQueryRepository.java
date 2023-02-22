@@ -14,10 +14,6 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import java.util.Optional;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;
 
@@ -26,15 +22,4 @@ import org.springframework.data.repository.Repository;
  */
 @NoRepositoryBean
 public interface BigQueryRepository<T, ID> extends Repository<T, ID> {
-
-	public long count();
-
-	public Iterable<T> findAll();
-
-	public Iterable<T> findAll(Pageable pageable);
-
-	public Iterable<T> findAll(Sort sort);
-
-	public Optional<T> findById(ID id);
-
 }
