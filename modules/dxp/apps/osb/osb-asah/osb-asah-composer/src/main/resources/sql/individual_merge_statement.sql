@@ -254,6 +254,22 @@ USING
 				FROM
 					UNNEST(stagingFields)
 				WHERE
+					name = 'addresses'
+			) AS addresses,
+			(
+				SELECT
+					TIMESTAMP_MILLIS(SAFE_CAST(value AS INT64))
+				FROM
+					UNNEST(stagingFields)
+				WHERE
+					name = 'birthday'
+			) AS birthday,
+			(
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
 					name = 'firstName'
 			) AS firstName,
 			(
@@ -262,8 +278,24 @@ USING
 				FROM
 					UNNEST(stagingFields)
 				WHERE
+					name = 'gender'
+			) AS gender,
+			(
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
 					name = 'jobTitle'
 			) AS jobTitle,
+			(
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
+					name = 'languageId'
+			) AS languageId,
 			(
 				SELECT
 					SAFE_CAST(value AS STRING)
@@ -297,7 +329,15 @@ USING
 					value
 				FROM
 					UNNEST(stagingFields)
-			) AS stagingFields
+			) AS stagingFields,
+			(
+				SELECT
+					SAFE_CAST(value AS STRING)
+				FROM
+					UNNEST(stagingFields)
+				WHERE
+					name = 'timeZoneId'
+			) AS timeZoneId
 		FROM (
 			SELECT
 				emailAddress,
