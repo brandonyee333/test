@@ -360,8 +360,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	private String _getProjectId() {
-		return _bigQueryOptions.getProjectId() + "." +
-			ProjectIdThreadLocal.getProjectId();
+		return ProjectIdThreadLocal.getProjectId();
 	}
 
 	@PostConstruct
