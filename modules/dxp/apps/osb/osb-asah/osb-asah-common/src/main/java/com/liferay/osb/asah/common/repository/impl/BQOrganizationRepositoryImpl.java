@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.repository.CustomBQOrganizationRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collection;
@@ -40,13 +41,20 @@ import org.springframework.lang.Nullable;
 public class BQOrganizationRepositoryImpl
 	extends BaseRepository implements CustomBQOrganizationRepository {
 
-	public BQOrganizationRepositoryImpl(DSLContext dslContext) {
+	public BQOrganizationRepositoryImpl(
+		DSLContext dslContext, QueryExecutor queryExecutor) {
+
 		_dslContext = dslContext;
+		_queryExecutor = queryExecutor;
 	}
 
 	@Override
 	public long count() {
-		return 0;
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				DSL.table("BQOrganization")
+			));
 	}
 
 	@Override
@@ -110,7 +118,28 @@ public class BQOrganizationRepositoryImpl
 
 	@Override
 	public BQOrganization insert(BQOrganization bqOrganization) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQOrganization")
+			).columns(
+				DSL.field("createDate"), DSL.field("dataSourceId"),
+				DSL.field("dataSourceName"), DSL.field("expandoFields"),
+				DSL.field("id"), DSL.field("modifiedDate"), DSL.field("name"),
+				DSL.field("organizationId"), DSL.field("parentOrganizationId"),
+				DSL.field("parentOrganizationName"), DSL.field("treePath"),
+				DSL.field("type")
+			).values(
+				bqOrganization.getCreateDate(),
+				bqOrganization.getDataSourceId(),
+				bqOrganization.getDataSourceName(), null,
+				bqOrganization.getId(), bqOrganization.getModifiedDate(),
+				bqOrganization.getName(), bqOrganization.getOrganizationId(),
+				bqOrganization.getParentOrganizationId(),
+				bqOrganization.getParentOrganizationName(),
+				bqOrganization.getTreePath(), bqOrganization.getType()
+			));
+
+		return bqOrganization;
 	}
 
 	@Override
@@ -145,5 +174,6 @@ public class BQOrganizationRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+	private final QueryExecutor _queryExecutor;
 
 }

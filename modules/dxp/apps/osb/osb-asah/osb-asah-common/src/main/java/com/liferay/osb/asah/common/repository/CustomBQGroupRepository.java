@@ -35,8 +35,6 @@ public interface CustomBQGroupRepository {
 
 	public BQGroup insert(BQGroup bqGroup);
 
-	public void insertAll(List<BQGroup> bqGroups);
-
 	public List<BQGroup> searchByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, @Nullable String keywords, Pageable pageable);
 

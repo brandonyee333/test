@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQRole;
 import com.liferay.osb.asah.common.repository.CustomBQRoleRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
 
@@ -33,13 +35,20 @@ import org.springframework.data.domain.Pageable;
 public class BQRoleRepositoryImpl
 	extends BaseRepository implements CustomBQRoleRepository {
 
-	public BQRoleRepositoryImpl(DSLContext dslContext) {
+	public BQRoleRepositoryImpl(
+		DSLContext dslContext, QueryExecutor queryExecutor) {
+
 		_dslContext = dslContext;
+		_queryExecutor = queryExecutor;
 	}
 
 	@Override
 	public long count() {
-		return 0;
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				DSL.table("BQRole")
+			));
 	}
 
 	@Override
@@ -63,7 +72,20 @@ public class BQRoleRepositoryImpl
 
 	@Override
 	public BQRole insert(BQRole bqRole) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQExpandoColumn")
+			).columns(
+				DSL.field("dataSourceId"), DSL.field("dataSourceName"),
+				DSL.field("id"), DSL.field("modifiedDate"), DSL.field("name"),
+				DSL.field("roleId")
+			).values(
+				bqRole.getDataSourceId(), bqRole.getDataSourceName(),
+				bqRole.getId(), bqRole.getModifiedDate(), bqRole.getName(),
+				bqRole.getRoleId()
+			));
+
+		return bqRole;
 	}
 
 	@Override
@@ -89,5 +111,6 @@ public class BQRoleRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+	private final QueryExecutor _queryExecutor;
 
 }

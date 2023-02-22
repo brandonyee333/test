@@ -25,10 +25,10 @@ public interface CustomBQExpandoColumnRepository {
 
 	public long count();
 
-	public BQExpandoColumn findByColumnIdAndDataSourceId(
+	public Optional<BQExpandoColumn> findByColumnIdAndDataSourceId(
 		String expandoColumnId, Long dataSourceId);
 
-	public Optional<BQExpandoColumn> findById(String expandoColumnId);
+	public Optional<BQExpandoColumn> findById(String id);
 
 	public BQExpandoColumn insert(BQExpandoColumn bqExpandoColumn);
 

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQUserGroup;
 import com.liferay.osb.asah.common.repository.CustomBQUserGroupRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
 
@@ -34,13 +36,20 @@ import org.springframework.data.domain.Pageable;
 public class BQUserGroupRepositoryImpl
 	extends BaseRepository implements CustomBQUserGroupRepository {
 
-	public BQUserGroupRepositoryImpl(DSLContext dslContext) {
+	public BQUserGroupRepositoryImpl(
+		DSLContext dslContext, QueryExecutor queryExecutor) {
+
 		_dslContext = dslContext;
+		_queryExecutor = queryExecutor;
 	}
 
 	@Override
 	public long count() {
-		return 0;
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				DSL.table("BQUserGroup")
+			));
 	}
 
 	@Override
@@ -63,13 +72,37 @@ public class BQUserGroupRepositoryImpl
 	}
 
 	@Override
-	public Optional<BQUserGroup> findById(String bqUserGroupId) {
-		return Optional.empty();
+	public Optional<BQUserGroup> findById(String id) {
+		return _queryExecutor.queryForObject(
+			BQUserGroup::new,
+			_dslContext.select(
+			).from(
+				DSL.table("BQUserGroup")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
 	}
 
 	@Override
 	public BQUserGroup insert(BQUserGroup bqUserGroup) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQExpandoColumn")
+			).columns(
+				DSL.field("dataSourceId"), DSL.field("dataSourceName"),
+				DSL.field("id"), DSL.field("modifiedDate"), DSL.field("name"),
+				DSL.field("userGroupId")
+			).values(
+				bqUserGroup.getDataSourceId(), bqUserGroup.getDataSourceName(),
+				bqUserGroup.getId(), bqUserGroup.getModifiedDate(),
+				bqUserGroup.getName(), bqUserGroup.getUserGroupId()
+			));
+
+		return bqUserGroup;
 	}
 
 	@Override
@@ -95,5 +128,6 @@ public class BQUserGroupRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+	private final QueryExecutor _queryExecutor;
 
 }

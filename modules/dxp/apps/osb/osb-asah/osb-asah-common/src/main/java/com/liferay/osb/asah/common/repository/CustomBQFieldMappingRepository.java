@@ -34,7 +34,7 @@ public interface CustomBQFieldMappingRepository {
 	public List<BQFieldMapping> findByFieldNameIn(
 		Collection<String> fieldNames);
 
-	public Optional<BQFieldMapping> findById(String fieldMappingId);
+	public Optional<BQFieldMapping> findById(String id);
 
 	public List<BQFieldMapping> searchByFilterString(
 		String filterString, Pageable pageable);

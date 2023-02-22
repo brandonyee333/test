@@ -33,7 +33,7 @@ public interface CustomBQUserGroupRepository {
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords);
 
-	public Optional<BQUserGroup> findById(String bqUserGroupId);
+	public Optional<BQUserGroup> findById(String id);
 
 	public BQUserGroup insert(BQUserGroup bqUserGroup);
 

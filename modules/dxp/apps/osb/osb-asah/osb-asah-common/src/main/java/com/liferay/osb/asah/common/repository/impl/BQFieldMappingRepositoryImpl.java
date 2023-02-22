@@ -45,7 +45,11 @@ public class BQFieldMappingRepositoryImpl
 
 	@Override
 	public long count() {
-		return 0;
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				DSL.table("BQFieldMapping")
+			));
 	}
 
 	@Override
@@ -88,8 +92,19 @@ public class BQFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public Optional<BQFieldMapping> findById(String fieldMappingId) {
-		return Optional.empty();
+	public Optional<BQFieldMapping> findById(String id) {
+		return _queryExecutor.queryForObject(
+			BQFieldMapping::new,
+			_dslContext.select(
+			).from(
+				DSL.table("BQFieldMapping")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
 	}
 
 	@Override

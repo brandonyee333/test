@@ -18,8 +18,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.BQDXPEntity;
+import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.Map;
 
 import org.json.JSONObject;
 
@@ -29,6 +31,10 @@ import org.json.JSONObject;
 public class BQExpandoColumn implements BQDXPEntity {
 
 	public BQExpandoColumn() {
+	}
+
+	public BQExpandoColumn(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
 	}
 
 	public String getClassName() {

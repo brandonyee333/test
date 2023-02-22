@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQTeam;
 import com.liferay.osb.asah.common.repository.CustomBQTeamRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
 
@@ -33,13 +35,20 @@ import org.springframework.data.domain.Pageable;
 public class BQTeamRepositoryImpl
 	extends BaseRepository implements CustomBQTeamRepository {
 
-	public BQTeamRepositoryImpl(DSLContext dslContext) {
+	public BQTeamRepositoryImpl(
+		DSLContext dslContext, QueryExecutor queryExecutor) {
+
 		_dslContext = dslContext;
+		_queryExecutor = queryExecutor;
 	}
 
 	@Override
 	public long count() {
-		return 0;
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				DSL.table("BQTeam")
+			));
 	}
 
 	@Override
@@ -63,7 +72,21 @@ public class BQTeamRepositoryImpl
 
 	@Override
 	public BQTeam insert(BQTeam bqTeam) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQExpandoColumn")
+			).columns(
+				DSL.field("dataSourceId"), DSL.field("dataSourceName"),
+				DSL.field("groupId"), DSL.field("id"),
+				DSL.field("modifiedDate"), DSL.field("name"),
+				DSL.field("teamId")
+			).values(
+				bqTeam.getDataSourceId(), bqTeam.getDataSourceName(),
+				bqTeam.getGroupId(), bqTeam.getId(), bqTeam.getModifiedDate(),
+				bqTeam.getName(), bqTeam.getTeamId()
+			));
+
+		return bqTeam;
 	}
 
 	@Override
@@ -89,5 +112,6 @@ public class BQTeamRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+	private final QueryExecutor _queryExecutor;
 
 }

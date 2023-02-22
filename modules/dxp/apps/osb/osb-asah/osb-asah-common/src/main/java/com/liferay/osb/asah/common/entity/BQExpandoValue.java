@@ -14,7 +14,10 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Marcos Martins
@@ -22,6 +25,10 @@ import java.util.Date;
 public class BQExpandoValue {
 
 	public BQExpandoValue() {
+	}
+
+	public BQExpandoValue(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
 	}
 
 	public Long getClassPK() {

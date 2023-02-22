@@ -23,6 +23,6 @@ public interface CustomBQAccountEntryRepository {
 
 	public long count();
 
-	public BQAccountEntry insert(BQAccountEntry accountEntry);
+	public BQAccountEntry insert(BQAccountEntry bqAccountEntry);
 
 }
