@@ -21,5 +21,5 @@ import com.liferay.osb.asah.common.entity.BQFieldMapping;
  */
 public interface BQFieldMappingRepository
 	extends CustomBQFieldMappingRepository,
-			ReadOnlyRepository<BQFieldMapping, String> {
+	BigQueryRepository<BQFieldMapping, String> {
 }

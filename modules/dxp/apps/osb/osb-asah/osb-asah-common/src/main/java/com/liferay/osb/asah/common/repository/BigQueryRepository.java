@@ -25,7 +25,7 @@ import org.springframework.data.repository.Repository;
  * @author Marcellus Tavares
  */
 @NoRepositoryBean
-public interface ReadOnlyRepository<T, ID> extends Repository<T, ID> {
+public interface BigQueryRepository<T, ID> extends Repository<T, ID> {
 
 	public long count();
 
