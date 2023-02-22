@@ -20,5 +20,5 @@ import com.liferay.osb.asah.common.entity.BQIdentity;
  * @author Marcellus Tavares
  */
 public interface BQIdentityRepository
-	extends CustomBQIdentityRepository, Repository<BQIdentity, String> {
+	extends BigQueryRepository<BQIdentity, String>, CustomBQIdentityRepository {
 }

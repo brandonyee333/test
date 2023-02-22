@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQAccountEntry;
 
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -24,5 +23,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQAccountEntryRepository
-	extends CrudRepository<BQAccountEntry, String> {
+	extends BigQueryRepository<BQAccountEntry, String> {
 }

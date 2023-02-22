@@ -23,7 +23,8 @@ import java.util.List;
  * @author Marcos Martins
  */
 public interface BQOrganizationRepository
-	extends CustomBQOrganizationRepository, Repository<BQOrganization, String> {
+	extends BigQueryRepository<BQOrganization, String>,
+			CustomBQOrganizationRepository {
 
 	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
 		Long dataSourceId, Long organizationId);

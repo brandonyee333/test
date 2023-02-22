@@ -20,8 +20,8 @@ import com.liferay.osb.asah.common.entity.BQMembershipChange;
  * @author Marcellus Tavares
  */
 public interface BQMembershipChangeRepository
-	extends CustomBQMembershipChangeRepository,
-			Repository<BQMembershipChange, Long> {
+	extends BigQueryRepository<BQMembershipChange, Long>,
+			CustomBQMembershipChangeRepository {
 
 	public long countBySegmentId(Long segmentId);
 

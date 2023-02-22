@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -24,7 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQExpandoColumnRepository
-	extends PagingAndSortingRepository<BQExpandoColumn, String> {
+	extends BigQueryRepository<BQExpandoColumn, String> {
 
 	public BQExpandoColumn findByColumnIdAndDataSourceId(
 		String expandoColumnId, Long dataSourceId);

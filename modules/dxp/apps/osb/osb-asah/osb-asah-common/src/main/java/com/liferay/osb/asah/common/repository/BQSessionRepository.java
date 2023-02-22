@@ -16,12 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQSession;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 /**
  * @author Marcellus Tavares
  */
 public interface BQSessionRepository
-	extends CustomBQSessionRepository,
-			PagingAndSortingRepository<BQSession, String> {
+	extends BigQueryRepository<BQSession, String>, CustomBQSessionRepository {
 }

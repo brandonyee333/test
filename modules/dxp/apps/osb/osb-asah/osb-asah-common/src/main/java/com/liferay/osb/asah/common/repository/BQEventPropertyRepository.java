@@ -16,20 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 
-import java.util.Date;
-import java.util.Map;
-
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 /**
  * @author Marcellus Tavares
  */
 public interface BQEventPropertyRepository
-	extends CustomBQEventPropertyRepository,
-			PagingAndSortingRepository<BQEventProperty, String> {
-
-	public Map<String, Date>
-		findBQEventPropertyValuesByEventAttributeDefinitionName(
-			String eventAttributeDefinitionName, int size);
-
+	extends BigQueryRepository<BQEventProperty, String>,
+			CustomBQEventPropertyRepository {
 }

@@ -16,11 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQEvent;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 /**
  * @author Leslie Wong
  */
 public interface BQEventRepository
-	extends CustomBQEventRepository, PagingAndSortingRepository<BQEvent, Long> {
+	extends BigQueryRepository<BQEvent, Long>, CustomBQEventRepository {
 }

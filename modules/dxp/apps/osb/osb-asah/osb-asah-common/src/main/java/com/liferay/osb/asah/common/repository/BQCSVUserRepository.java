@@ -22,7 +22,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +30,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQCSVUserRepository
-	extends PagingAndSortingRepository<BQCSVUser, Long> {
+	extends BigQueryRepository<BQCSVUser, Long> {
 
 	@Cacheable
 	public long countByDataSourceId(Long dataSourceId);

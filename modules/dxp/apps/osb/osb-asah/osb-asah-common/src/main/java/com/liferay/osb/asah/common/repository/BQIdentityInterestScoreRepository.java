@@ -19,15 +19,14 @@ import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import java.util.Date;
 
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 /**
  * @author Robson Pastor
  */
 public interface BQIdentityInterestScoreRepository
-	extends CustomBQIdentityInterestScoreRepository,
-			PagingAndSortingRepository<BQIdentityInterestScore, Long> {
+	extends BigQueryRepository<BQIdentityInterestScore, Long>,
+			CustomBQIdentityInterestScoreRepository {
 
 	@Modifying
 	public void deleteByKeywordAndRecordedDateGreaterThanEqual(

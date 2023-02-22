@@ -20,6 +20,6 @@ import com.liferay.osb.asah.common.entity.BQFieldMapping;
  * @author Marcellus Tavares
  */
 public interface BQFieldMappingRepository
-	extends CustomBQFieldMappingRepository,
-	BigQueryRepository<BQFieldMapping, String> {
+	extends BigQueryRepository<BQFieldMapping, String>,
+			CustomBQFieldMappingRepository {
 }

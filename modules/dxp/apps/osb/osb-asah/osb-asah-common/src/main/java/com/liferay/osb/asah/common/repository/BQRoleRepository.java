@@ -16,11 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQRole;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 /**
  * @author Marcos Martins
  */
 public interface BQRoleRepository
-	extends CustomBQRoleRepository, PagingAndSortingRepository<BQRole, String> {
+	extends BigQueryRepository<BQRole, String>, CustomBQRoleRepository {
 }

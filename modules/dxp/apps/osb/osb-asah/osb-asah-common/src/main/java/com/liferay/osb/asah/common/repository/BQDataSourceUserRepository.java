@@ -16,12 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 /**
  * @author Ivica Cardic
  */
 public interface BQDataSourceUserRepository
-	extends CustomBQDataSourceUserRepository,
-			PagingAndSortingRepository<BQDataSourceUser, Long> {
+	extends BigQueryRepository<BQDataSourceUser, Long>,
+			CustomBQDataSourceUserRepository {
 }

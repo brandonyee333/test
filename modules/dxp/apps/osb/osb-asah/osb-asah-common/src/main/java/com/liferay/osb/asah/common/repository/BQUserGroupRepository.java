@@ -16,12 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQUserGroup;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 /**
  * @author Marcos Martins
  */
 public interface BQUserGroupRepository
-	extends CustomBQUserGroupRepository,
-			PagingAndSortingRepository<BQUserGroup, String> {
+	extends BigQueryRepository<BQUserGroup, String>,
+			CustomBQUserGroupRepository {
 }

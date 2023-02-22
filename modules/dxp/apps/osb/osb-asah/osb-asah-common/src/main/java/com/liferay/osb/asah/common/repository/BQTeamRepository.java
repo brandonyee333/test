@@ -16,11 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQTeam;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 /**
  * @author Marcos Martins
  */
 public interface BQTeamRepository
-	extends CustomBQTeamRepository, PagingAndSortingRepository<BQTeam, String> {
+	extends BigQueryRepository<BQTeam, String>, CustomBQTeamRepository {
 }

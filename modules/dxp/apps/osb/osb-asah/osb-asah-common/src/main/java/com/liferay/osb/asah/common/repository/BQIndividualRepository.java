@@ -22,7 +22,8 @@ import java.util.Optional;
  * @author Marcellus Tavares
  */
 public interface BQIndividualRepository
-	extends CustomBQIndividualRepository, Repository<BQIndividual, String> {
+	extends BigQueryRepository<BQIndividual, String>,
+			CustomBQIndividualRepository {
 
 	public Optional<BQIndividual> findByEmailAddress(String emailAddresses);
 

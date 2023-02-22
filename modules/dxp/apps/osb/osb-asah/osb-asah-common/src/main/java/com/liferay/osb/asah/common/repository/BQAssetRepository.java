@@ -20,5 +20,5 @@ import com.liferay.osb.asah.common.entity.BQAsset;
  * @author Ivica Cardic
  */
 public interface BQAssetRepository
-	extends CustomBQAssetRepository, BigQueryRepository<BQAsset, Long> {
+	extends BigQueryRepository<BQAsset, Long>, CustomBQAssetRepository {
 }

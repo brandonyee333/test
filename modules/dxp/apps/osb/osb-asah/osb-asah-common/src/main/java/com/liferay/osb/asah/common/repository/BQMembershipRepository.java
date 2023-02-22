@@ -25,7 +25,8 @@ import org.springframework.data.domain.Pageable;
  * @author Inácio Nery
  */
 public interface BQMembershipRepository
-	extends CustomBQMembershipRepository, Repository<BQMembership, Long> {
+	extends BigQueryRepository<BQMembership, Long>,
+			CustomBQMembershipRepository {
 
 	@Cacheable
 	public long countByIdentityIdAndSegmentId(
