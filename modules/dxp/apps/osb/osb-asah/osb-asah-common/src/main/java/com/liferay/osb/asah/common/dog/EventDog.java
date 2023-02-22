@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -119,15 +118,6 @@ public class EventDog {
 		return bqEvent;
 	}
 
-	public long countBQEvents(Long eventDefinitionId) {
-		if (eventDefinitionId != null) {
-			return _bqEventRepository.countByEventDefinitionId(
-				eventDefinitionId);
-		}
-
-		return _bqEventRepository.count();
-	}
-
 	public Integer countBQEvents(
 		Long channelId, @Nullable String individualId,
 		@Nullable String keywords, TimeRange timeRange) {
@@ -135,12 +125,6 @@ public class EventDog {
 		return _bqEventRepository.countBQEvents(
 			channelId, individualId, keywords, timeRange.getEndLocalDateTime(),
 			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId());
-	}
-
-	public BQEvent fetchBQEvent(Long id) {
-		Optional<BQEvent> eventOptional = _bqEventRepository.findById(id);
-
-		return eventOptional.orElse(null);
 	}
 
 	public List<BQEventPropertyValue> getRecentBQEventPropertyValues(
