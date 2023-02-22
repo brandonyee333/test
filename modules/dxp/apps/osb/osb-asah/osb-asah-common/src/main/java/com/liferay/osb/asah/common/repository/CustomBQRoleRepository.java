@@ -27,8 +27,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomBQRoleRepository {
 
+	public long count();
+
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords);
+
+	public BQRole insert(BQRole bqRole);
 
 	public List<BQRole> searchByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords, Pageable pageable);

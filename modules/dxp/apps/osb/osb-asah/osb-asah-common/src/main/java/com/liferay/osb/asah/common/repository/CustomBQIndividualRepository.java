@@ -35,6 +35,8 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		@Nullable String query, @Nullable Long segmentId);
 
+	public void deleteAll();
+
 	public Optional<Individual> findByChannelIdAndId(
 		@Nullable Long channelId, String id);
 
@@ -43,6 +45,10 @@ public interface CustomBQIndividualRepository {
 	public List<Distribution> getIndividualDistributions(
 		@Nullable Long channelId, String fieldName,
 		@Nullable Long individualSegmentId, Pageable pageable);
+
+	public BQIndividual insert(BQIndividual bqIndividual);
+
+	public void insertAll(List<BQIndividual> bqIndividuals);
 
 	public List<Individual> searchBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,

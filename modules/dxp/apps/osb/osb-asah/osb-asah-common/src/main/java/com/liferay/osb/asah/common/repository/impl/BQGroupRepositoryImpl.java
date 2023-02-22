@@ -39,6 +39,11 @@ public class BQGroupRepositoryImpl
 	}
 
 	@Override
+	public long count() {
+		return 0;
+	}
+
+	@Override
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, @Nullable String keywords) {
 
@@ -55,6 +60,15 @@ public class BQGroupRepositoryImpl
 		).orElse(
 			0L
 		);
+	}
+
+	@Override
+	public BQGroup insert(BQGroup bqGroup) {
+		return null;
+	}
+
+	@Override
+	public void insertAll(List<BQGroup> bqGroups) {
 	}
 
 	@Override

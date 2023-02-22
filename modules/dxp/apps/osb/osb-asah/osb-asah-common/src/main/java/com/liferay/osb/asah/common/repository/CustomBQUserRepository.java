@@ -28,11 +28,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomBQUserRepository {
 
+	public long count();
+
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords);
 
+	public List<BQUser> findAll();
+
 	public List<BQUser> findByFields(
 		Map<String, Object> fields, Pageable pageable);
+
+	public BQUser insert(BQUser bqUser);
+
+	public void insertAll(List<BQUser> bqUsers);
 
 	public List<BQUser> searchByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords, Pageable pageable);

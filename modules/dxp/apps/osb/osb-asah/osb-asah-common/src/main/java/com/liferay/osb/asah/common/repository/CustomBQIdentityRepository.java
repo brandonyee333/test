@@ -14,12 +14,14 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.model.MetricType;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.lang.Nullable;
 
@@ -29,6 +31,10 @@ import org.springframework.lang.Nullable;
 public interface CustomBQIdentityRepository {
 
 	public long countIndividuals(boolean includeAnonymousUsers);
+
+	public List<BQIdentity> findAll();
+
+	public Optional<BQIdentity> findById(String identityId);
 
 	public List<String> getIdentityIds(String individualId);
 
@@ -40,6 +46,8 @@ public interface CustomBQIdentityRepository {
 		@Nullable Boolean active, @Nullable Long channelId,
 		List<LocalDate> localDates, List<MetricType> metricTypes,
 		ZoneId zoneId);
+
+	public BQIdentity insert(BQIdentity bqIdentity);
 
 	public List<Long> searchSegmentBQIdentityIds(String filterString);
 

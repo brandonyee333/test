@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.repository.CustomBQUserGroupRepository;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -38,6 +39,11 @@ public class BQUserGroupRepositoryImpl
 	}
 
 	@Override
+	public long count() {
+		return 0;
+	}
+
+	@Override
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords) {
 
@@ -54,6 +60,16 @@ public class BQUserGroupRepositoryImpl
 		).orElse(
 			0L
 		);
+	}
+
+	@Override
+	public Optional<BQUserGroup> findById(String bqUserGroupId) {
+		return Optional.empty();
+	}
+
+	@Override
+	public BQUserGroup insert(BQUserGroup bqUserGroup) {
+		return null;
 	}
 
 	@Override

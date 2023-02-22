@@ -18,7 +18,9 @@ import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.repository.CustomBQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.jetty.util.StringUtil;
 
@@ -43,6 +45,11 @@ public class BQOrganizationRepositoryImpl
 	}
 
 	@Override
+	public long count() {
+		return 0;
+	}
+
+	@Override
 	public long countByName(@Nullable String name) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -56,6 +63,30 @@ public class BQOrganizationRepositoryImpl
 		).orElse(
 			0L
 		);
+	}
+
+	@Override
+	public List<BQOrganization> findAll() {
+		return null;
+	}
+
+	@Override
+	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
+		Long dataSourceId, Long organizationId) {
+
+		return null;
+	}
+
+	@Override
+	public List<BQOrganization> findByDataSourceIdAndOrganizationIdIn(
+		Long dataSourceId, Collection<Long> organizationIds) {
+
+		return null;
+	}
+
+	@Override
+	public Optional<BQOrganization> findById(String organizationId) {
+		return Optional.empty();
 	}
 
 	@Override
@@ -75,6 +106,11 @@ public class BQOrganizationRepositoryImpl
 		).fetch(
 			record -> new BQOrganization(record.intoMap())
 		);
+	}
+
+	@Override
+	public BQOrganization insert(BQOrganization bqOrganization) {
+		return null;
 	}
 
 	@Override

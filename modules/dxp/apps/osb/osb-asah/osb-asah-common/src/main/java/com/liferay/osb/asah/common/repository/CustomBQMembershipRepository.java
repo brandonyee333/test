@@ -57,6 +57,8 @@ public interface CustomBQMembershipRepository {
 	public boolean existsByIdentityIdAndSegmentIdAndStatus(
 		String identityId, Long segmentId, String status);
 
+	public List<BQMembership> findAll();
+
 	@Cacheable
 	public List<BQMembership> findByIdentityIdAndSegmentIdInAndStatus(
 		String identityId, List<Long> segmentIds, String status);
@@ -97,6 +99,10 @@ public interface CustomBQMembershipRepository {
 
 	@Cacheable
 	public List<Long> findTop20SegmentIdByIdentityId(String identityId);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public BQMembership insert(BQMembership bqMembership);
 
 	@CacheEvict(allEntries = true)
 	@Modifying

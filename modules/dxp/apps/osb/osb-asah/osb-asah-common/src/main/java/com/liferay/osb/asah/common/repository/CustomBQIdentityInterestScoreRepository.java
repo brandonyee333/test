@@ -34,6 +34,8 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomBQIdentityInterestScoreRepository {
 
+	public long count();
+
 	public long countByFilterString(FilterHelper filterHelper);
 
 	public long countByIndividualId(String individualId);
@@ -88,5 +90,8 @@ public interface CustomBQIdentityInterestScoreRepository {
 	public List<Map<String, Object>> getTransformations(
 		Date fromDate, @Nullable FilterHelper filterHelper, String period,
 		Date toDate);
+
+	public BQIdentityInterestScore insert(
+		BQIdentityInterestScore bqIdentityInterestScore);
 
 }

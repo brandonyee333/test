@@ -105,6 +105,10 @@ public class BQIndividualRepositoryImpl
 	}
 
 	@Override
+	public void deleteAll() {
+	}
+
+	@Override
 	public Optional<Individual> findByChannelIdAndId(
 		@Nullable Long channelId, String id) {
 
@@ -175,6 +179,11 @@ public class BQIndividualRepositoryImpl
 	}
 
 	@Override
+	public Optional<BQIndividual> findByEmailAddress(String emailAddresses) {
+		return Optional.empty();
+	}
+
+	@Override
 	public List<Distribution> getIndividualDistributions(
 		@Nullable Long channelId, String fieldName,
 		@Nullable Long individualSegmentId, Pageable pageable) {
@@ -227,6 +236,15 @@ public class BQIndividualRepositoryImpl
 			).offset(
 				pageable.getOffset()
 			));
+	}
+
+	@Override
+	public BQIndividual insert(BQIndividual bqIndividual) {
+		return null;
+	}
+
+	@Override
+	public void insertAll(List<BQIndividual> bqIndividuals) {
 	}
 
 	@Override

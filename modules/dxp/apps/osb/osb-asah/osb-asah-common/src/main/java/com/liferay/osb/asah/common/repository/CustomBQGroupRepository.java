@@ -28,8 +28,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomBQGroupRepository {
 
+	public long count();
+
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, @Nullable String keywords);
+
+	public BQGroup insert(BQGroup bqGroup);
+
+	public void insertAll(List<BQGroup> bqGroups);
 
 	public List<BQGroup> searchByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, @Nullable String keywords, Pageable pageable);

@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.constants.EventPropertyConstants;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
@@ -104,6 +105,11 @@ public class BQEventPropertyRepositoryImpl
 				size
 			),
 			value -> (Date)value);
+	}
+
+	@Override
+	public BQEventProperty insert(BQEventProperty bqEventProperty) {
+		return null;
 	}
 
 	@Override

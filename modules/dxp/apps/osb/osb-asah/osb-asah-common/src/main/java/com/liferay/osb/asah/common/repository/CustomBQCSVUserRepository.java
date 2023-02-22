@@ -29,8 +29,12 @@ import org.springframework.data.repository.query.Param;
  */
 public interface CustomBQCSVUserRepository {
 
+	public long count();
+
 	@Cacheable
 	public long countByDataSourceId(Long dataSourceId);
+
+	public void deleteAll();
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -42,8 +46,18 @@ public interface CustomBQCSVUserRepository {
 		@Param("dataSourceId") Long dataSourceId,
 		@Param("dataSourceUserPKs") List<String> dataSourceUserPKs);
 
+	public List<BQCSVUser> findAll();
+
 	@Cacheable
 	public List<BQCSVUser> findByDataSourceId(
 		Long dataSourceId, Pageable pageable);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void insert(BQCSVUser bqCSVUser);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void insertAll(List<BQCSVUser> bqCSVUsers);
 
 }

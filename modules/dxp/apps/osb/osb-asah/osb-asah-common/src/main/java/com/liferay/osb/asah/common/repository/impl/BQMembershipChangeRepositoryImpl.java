@@ -69,6 +69,11 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	@Override
+	public long countBySegmentId(Long segmentId) {
+		return 0;
+	}
+
+	@Override
 	public void deleteBySegmentIdIn(List<Long> segmentIds) {
 		Field<Object> segmentIdField = DSL.field("segmentId");
 
@@ -78,6 +83,16 @@ public class BQMembershipChangeRepositoryImpl
 		deleteUsingStep.where(
 			segmentIdField.in(segmentIds)
 		).execute();
+	}
+
+	@Override
+	public List<BQMembershipChange> findAll() {
+		return null;
+	}
+
+	@Override
+	public BQMembershipChange findBySegmentId(long segmentId) {
+		return null;
 	}
 
 	@Override
@@ -110,6 +125,11 @@ public class BQMembershipChangeRepositoryImpl
 		).fetch(
 			0, Long.class
 		);
+	}
+
+	@Override
+	public BQMembershipChange insert(BQMembershipChange bqMembershipChange) {
+		return null;
 	}
 
 	@Override

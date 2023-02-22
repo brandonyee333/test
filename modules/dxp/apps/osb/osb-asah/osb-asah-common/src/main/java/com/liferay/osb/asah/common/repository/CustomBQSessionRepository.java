@@ -73,6 +73,8 @@ public interface CustomBQSessionRepository {
 	public List<Map<String, BigDecimal>> getVisitorsCountGroupedByDayAndTime(
 		Long channelId, TimeRange timeRange, ZoneId zoneId);
 
+	public BQSession insert(BQSession bqSession);
+
 	public List<String> searchSessionFieldValues(
 		String fieldName, FilterHelper filterHelper, Pageable pageable,
 		String value);

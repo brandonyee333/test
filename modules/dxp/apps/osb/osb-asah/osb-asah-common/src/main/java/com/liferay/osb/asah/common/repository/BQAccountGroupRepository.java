@@ -23,5 +23,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQAccountGroupRepository
-	extends BigQueryRepository<BQAccountGroup, String> {
+	extends BigQueryRepository<BQAccountGroup, String>,
+			CustomBQAccountGroupRepository {
 }

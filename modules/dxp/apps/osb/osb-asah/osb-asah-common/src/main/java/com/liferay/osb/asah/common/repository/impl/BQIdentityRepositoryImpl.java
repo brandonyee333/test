@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -93,6 +94,16 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
+	public List<BQIdentity> findAll() {
+		return null;
+	}
+
+	@Override
+	public Optional<BQIdentity> findById(String identityId) {
+		return Optional.empty();
+	}
+
+	@Override
 	public List<String> getIdentityIds(String individualId) {
 		return _queryExecutor.queryForList(
 			record -> (String)record.get("id"),
@@ -165,6 +176,11 @@ public class BQIdentityRepositoryImpl
 				return count.longValue();
 			},
 			selectConditionStep.orderBy(DSL.field("unionOrder")));
+	}
+
+	@Override
+	public BQIdentity insert(BQIdentity bqIdentity) {
+		return null;
 	}
 
 	@Override

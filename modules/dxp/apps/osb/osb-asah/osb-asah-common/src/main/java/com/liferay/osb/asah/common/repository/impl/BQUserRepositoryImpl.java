@@ -40,6 +40,11 @@ public class BQUserRepositoryImpl
 	}
 
 	@Override
+	public long count() {
+		return 0;
+	}
+
+	@Override
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords) {
 
@@ -56,6 +61,11 @@ public class BQUserRepositoryImpl
 		).orElse(
 			0L
 		);
+	}
+
+	@Override
+	public List<BQUser> findAll() {
+		return null;
 	}
 
 	@Override
@@ -77,6 +87,15 @@ public class BQUserRepositoryImpl
 		).fetch(
 			record -> new BQUser(record.intoMap())
 		);
+	}
+
+	@Override
+	public BQUser insert(BQUser bqUser) {
+		return null;
+	}
+
+	@Override
+	public void insertAll(List<BQUser> bqUsers) {
 	}
 
 	public List<BQUser> searchByDataSourceIdsAndKeywords(

@@ -692,6 +692,11 @@ public class BQEventRepositoryImpl
 	}
 
 	@Override
+	public BQEvent insert(BQEvent bqEvent) {
+		return null;
+	}
+
+	@Override
 	public List<BQEvent> searchBQEvents(
 		Long channelId, String individualId, @Nullable String keywords,
 		Pageable pageable, LocalDateTime rangeEndLocalDateTime,

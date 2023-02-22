@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.BQEventProperty;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,8 @@ public interface CustomBQEventPropertyRepository {
 	public Map<String, Date>
 		findBQEventPropertyValuesByEventAttributeDefinitionName(
 			String eventAttributeDefinitionName, int size);
+
+	public BQEventProperty insert(BQEventProperty bqEventProperty);
 
 	public List<String> searchValues(
 		Long channelId, String eventAttributeDefinitionName,

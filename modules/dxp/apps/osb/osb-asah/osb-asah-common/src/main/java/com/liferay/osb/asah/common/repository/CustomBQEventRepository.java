@@ -114,6 +114,8 @@ public interface CustomBQEventRepository {
 		Long channelId, String[] searchQueryParams, TimeRange timeRange,
 		String timeZoneId);
 
+	public BQEvent insert(BQEvent bqEvent);
+
 	public List<BQEvent> searchBQEvents(
 		Long channelId, String individualId, @Nullable String keywords,
 		Pageable pageable, LocalDateTime rangeEndLocalDateTime,

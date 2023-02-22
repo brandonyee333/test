@@ -558,6 +558,11 @@ public class BQSessionRepositoryImpl
 	}
 
 	@Override
+	public BQSession insert(BQSession bqSession) {
+		return null;
+	}
+
+	@Override
 	public List<String> searchSessionFieldValues(
 		String fieldName, FilterHelper filterHelper, Pageable pageable,
 		String value) {

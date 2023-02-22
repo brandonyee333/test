@@ -43,6 +43,7 @@ import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
 /**
@@ -53,6 +54,30 @@ public class BQMembershipRepositoryImpl
 
 	public BQMembershipRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	@Override
+	public long countByIdentityIdAndSegmentId(
+		String identityId, Long segmentId) {
+
+		return 0;
+	}
+
+	@Override
+	public long countByIdentityIdInAndSegmentIdAndStatus(
+		List<String> identityIds, Long segmentId, String status) {
+
+		return 0;
+	}
+
+	@Override
+	public long countBySegmentId(Long segmentId) {
+		return 0;
+	}
+
+	@Override
+	public long countBySegmentIdAndStatus(Long segmentId, String status) {
+		return 0;
 	}
 
 	@Override
@@ -82,6 +107,47 @@ public class BQMembershipRepositoryImpl
 		deleteUsingStep.where(
 			segmentIdField.in(segmentIds)
 		).execute();
+	}
+
+	@Override
+	public boolean existsByIdentityIdAndSegmentIdAndStatus(
+		String identityId, Long segmentId, String status) {
+
+		return false;
+	}
+
+	@Override
+	public List<BQMembership> findAll() {
+		return null;
+	}
+
+	@Override
+	public List<BQMembership> findByIdentityIdAndSegmentIdInAndStatus(
+		String identityId, List<Long> segmentIds, String status) {
+
+		return null;
+	}
+
+	@Override
+	public List<BQMembership> findByIdentityIdAndStatus(
+		String identityId, String status) {
+
+		return null;
+	}
+
+	@Override
+	public List<BQMembership> findByIdentityIdInAndSegmentIdAndStatus(
+		List<String> identityIds, Long segmentId, String status,
+		Pageable pageable) {
+
+		return null;
+	}
+
+	@Override
+	public List<BQMembership> findBySegmentIdAndStatus(
+		Long segmentId, String status, Pageable pageable) {
+
+		return null;
 	}
 
 	@Override
@@ -258,6 +324,11 @@ public class BQMembershipRepositoryImpl
 		).fetch(
 			0, Long.class
 		);
+	}
+
+	@Override
+	public BQMembership insert(BQMembership bqMembership) {
+		return bqMembership;
 	}
 
 	@Override

@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,11 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomBQOrganizationRepository {
 
+	public long count();
+
 	public long countByName(@Nullable String name);
+
+	public List<BQOrganization> findAll();
 
 	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
 		Long dataSourceId, Long organizationId);
@@ -37,9 +42,13 @@ public interface CustomBQOrganizationRepository {
 	public List<BQOrganization> findByDataSourceIdAndOrganizationIdIn(
 		Long dataSourceId, Collection<Long> organizationIds);
 
+	public Optional<BQOrganization> findById(String bqOrganizationId);
+
 	@Cacheable
 	public List<BQOrganization> findByName(
 		@Nullable String name, Pageable pageable);
+
+	public BQOrganization insert(BQOrganization bqOrganization);
 
 	@Cacheable
 	public List<BQOrganization> searchBQOrganizations(

@@ -38,6 +38,11 @@ public class BQTeamRepositoryImpl
 	}
 
 	@Override
+	public long count() {
+		return 0;
+	}
+
+	@Override
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords) {
 
@@ -54,6 +59,11 @@ public class BQTeamRepositoryImpl
 		).orElse(
 			0L
 		);
+	}
+
+	@Override
+	public BQTeam insert(BQTeam bqTeam) {
+		return null;
 	}
 
 	@Override

@@ -16,12 +16,20 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 
+import java.util.Optional;
+
 /**
  * @author Marcellus Tavares
  */
 public interface CustomBQExpandoColumnRepository {
 
+	public long count();
+
 	public BQExpandoColumn findByColumnIdAndDataSourceId(
 		String expandoColumnId, Long dataSourceId);
+
+	public Optional<BQExpandoColumn> findById(String expandoColumnId);
+
+	public BQExpandoColumn insert(BQExpandoColumn bqExpandoColumn);
 
 }

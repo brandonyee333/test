@@ -23,7 +23,11 @@ import java.util.List;
  */
 public interface CustomBQExpandoValueRepository {
 
+	public long count();
+
 	public List<BQExpandoValue> findByClassPKAndClassTypeAndDataSourceId(
 		Long classPK, String classType, Long dataSourceId);
+
+	public BQExpandoValue insert(BQExpandoValue bqExpandoValue);
 
 }

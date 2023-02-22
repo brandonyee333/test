@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -40,6 +41,11 @@ public class BQFieldMappingRepositoryImpl
 
 	public BQFieldMappingRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	@Override
+	public long count() {
+		return 0;
 	}
 
 	@Override
@@ -79,6 +85,11 @@ public class BQFieldMappingRepositoryImpl
 			).where(
 				condition
 			));
+	}
+
+	@Override
+	public Optional<BQFieldMapping> findById(String fieldMappingId) {
+		return Optional.empty();
 	}
 
 	@Override

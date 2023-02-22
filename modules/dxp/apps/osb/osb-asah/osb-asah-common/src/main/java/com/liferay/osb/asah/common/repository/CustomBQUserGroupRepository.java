@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.BQUserGroup;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -27,8 +28,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomBQUserGroupRepository {
 
+	public long count();
+
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords);
+
+	public Optional<BQUserGroup> findById(String bqUserGroupId);
+
+	public BQUserGroup insert(BQUserGroup bqUserGroup);
 
 	public List<BQUserGroup> searchByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords, Pageable pageable);

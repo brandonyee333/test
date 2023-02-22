@@ -38,6 +38,11 @@ public class BQRoleRepositoryImpl
 	}
 
 	@Override
+	public long count() {
+		return 0;
+	}
+
+	@Override
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords) {
 
@@ -54,6 +59,11 @@ public class BQRoleRepositoryImpl
 		).orElse(
 			0L
 		);
+	}
+
+	@Override
+	public BQRole insert(BQRole bqRole) {
+		return null;
 	}
 
 	@Override

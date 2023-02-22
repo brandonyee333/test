@@ -83,6 +83,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
+	public long count() {
+		return 0;
+	}
+
+	@Override
 	public long countByFilterString(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -136,6 +141,19 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).where(
 				_getConditions(null, null, null, null, keywords, null)
 			));
+	}
+
+	@Override
+	public void deleteByKeywordAndRecordedDateGreaterThanEqual(
+		String keyword, Date recordedDate) {
+	}
+
+	@Override
+	public void deleteByRecordedDate(Date recordedDate) {
+	}
+
+	@Override
+	public void deleteByRecordedDateLessThanEqual(Date recordedDate) {
 	}
 
 	@Override
@@ -785,6 +803,13 @@ public class BQIdentityInterestScoreRepositoryImpl
 				}
 			}
 		);
+	}
+
+	@Override
+	public BQIdentityInterestScore insert(
+		BQIdentityInterestScore bqIdentityInterestScore) {
+
+		return null;
 	}
 
 	private double _getAggregationValue(Double value) {

@@ -41,10 +41,14 @@ public interface CustomBQMembershipChangeRepository {
 	@Modifying
 	public void deleteBySegmentIdIn(List<Long> segmentIds);
 
+	public List<BQMembershipChange> findAll();
+
 	public BQMembershipChange findBySegmentId(long segmentId);
 
 	@Cacheable
 	public List<Long> findSegmentIdByFilterString(String filterString);
+
+	public BQMembershipChange insert(BQMembershipChange bqMembershipChange);
 
 	@Cacheable
 	public List<BQMembershipChange> searchBQMembershipChanges(
