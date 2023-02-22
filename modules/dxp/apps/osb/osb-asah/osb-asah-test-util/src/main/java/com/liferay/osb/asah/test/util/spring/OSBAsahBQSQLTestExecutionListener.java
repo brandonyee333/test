@@ -19,6 +19,7 @@ import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.Dataset;
 import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.Table;
+import com.google.cloud.bigquery.TableDefinition;
 import com.google.cloud.bigquery.TableId;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
@@ -61,6 +62,12 @@ public class OSBAsahBQSQLTestExecutionListener
 			Page<Table> tablePage = _bigQuery.listTables("test");
 
 			for (Table table : tablePage.iterateAll()) {
+				TableDefinition tableDefinition = table.getDefinition();
+
+				if (tableDefinition.getType() == TableDefinition.Type.VIEW) {
+					continue;
+				}
+
 				TableId tableId = table.getTableId();
 
 				sb.append(
