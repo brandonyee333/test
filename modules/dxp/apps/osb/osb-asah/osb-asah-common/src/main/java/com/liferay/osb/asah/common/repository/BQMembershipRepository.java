@@ -16,51 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQMembership;
 
-import java.util.List;
-
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Pageable;
-
 /**
  * @author Inácio Nery
  */
 public interface BQMembershipRepository
 	extends BigQueryRepository<BQMembership, Long>,
 			CustomBQMembershipRepository {
-
-	@Cacheable
-	public long countByIdentityIdAndSegmentId(
-		String identityId, Long segmentId);
-
-	@Cacheable
-	public long countByIdentityIdInAndSegmentIdAndStatus(
-		List<String> identityIds, Long segmentId, String status);
-
-	@Cacheable
-	public long countBySegmentId(Long segmentId);
-
-	@Cacheable
-	public long countBySegmentIdAndStatus(Long segmentId, String status);
-
-	@Cacheable
-	public boolean existsByIdentityIdAndSegmentIdAndStatus(
-		String identityId, Long segmentId, String status);
-
-	@Cacheable
-	public List<BQMembership> findByIdentityIdAndSegmentIdInAndStatus(
-		String identityId, List<Long> segmentIds, String status);
-
-	@Cacheable
-	public List<BQMembership> findByIdentityIdAndStatus(
-		String identityId, String status);
-
-	@Cacheable
-	public List<BQMembership> findByIdentityIdInAndSegmentIdAndStatus(
-		List<String> identityIds, Long segmentId, String status,
-		Pageable pageable);
-
-	@Cacheable
-	public List<BQMembership> findBySegmentIdAndStatus(
-		Long segmentId, String status, Pageable pageable);
-
 }

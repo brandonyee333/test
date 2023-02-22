@@ -16,13 +16,12 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 
-import org.springframework.stereotype.Repository;
-
 /**
- * @author Marcos Martins
+ * @author Marcellus Tavares
  */
-@Repository
-public interface BQExpandoColumnRepository
-	extends BigQueryRepository<BQExpandoColumn, String>,
-			CustomBQExpandoColumnRepository {
+public interface CustomBQExpandoColumnRepository {
+
+	public BQExpandoColumn findByColumnIdAndDataSourceId(
+		String expandoColumnId, Long dataSourceId);
+
 }

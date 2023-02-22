@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.lang.Nullable;
 
@@ -28,6 +29,20 @@ import org.springframework.lang.Nullable;
  * @author Ivica Cardic
  */
 public interface CustomBQMembershipRepository {
+
+	@Cacheable
+	public long countByIdentityIdAndSegmentId(
+		String identityId, Long segmentId);
+
+	@Cacheable
+	public long countByIdentityIdInAndSegmentIdAndStatus(
+		List<String> identityIds, Long segmentId, String status);
+
+	@Cacheable
+	public long countBySegmentId(Long segmentId);
+
+	@Cacheable
+	public long countBySegmentIdAndStatus(Long segmentId, String status);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
@@ -37,6 +52,27 @@ public interface CustomBQMembershipRepository {
 	@CacheEvict(allEntries = true)
 	@Modifying
 	public void deleteBySegmentIdIn(List<Long> segmentIds);
+
+	@Cacheable
+	public boolean existsByIdentityIdAndSegmentIdAndStatus(
+		String identityId, Long segmentId, String status);
+
+	@Cacheable
+	public List<BQMembership> findByIdentityIdAndSegmentIdInAndStatus(
+		String identityId, List<Long> segmentIds, String status);
+
+	@Cacheable
+	public List<BQMembership> findByIdentityIdAndStatus(
+		String identityId, String status);
+
+	@Cacheable
+	public List<BQMembership> findByIdentityIdInAndSegmentIdAndStatus(
+		List<String> identityIds, Long segmentId, String status,
+		Pageable pageable);
+
+	@Cacheable
+	public List<BQMembership> findBySegmentIdAndStatus(
+		Long segmentId, String status, Pageable pageable);
 
 	@Cacheable
 	public List<String> findIdentityIdBySegmentIdAndStatus(

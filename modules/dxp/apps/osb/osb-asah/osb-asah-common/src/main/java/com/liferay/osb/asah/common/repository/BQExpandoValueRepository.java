@@ -16,8 +16,6 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 
-import java.util.List;
-
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,9 +23,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BQExpandoValueRepository
-	extends BigQueryRepository<BQExpandoValue, String> {
-
-	public List<BQExpandoValue> findByClassPKAndClassTypeAndDataSourceId(
-		Long classPK, String classType, Long dataSourceId);
-
+	extends BigQueryRepository<BQExpandoValue, String>,
+			CustomBQExpandoValueRepository {
 }

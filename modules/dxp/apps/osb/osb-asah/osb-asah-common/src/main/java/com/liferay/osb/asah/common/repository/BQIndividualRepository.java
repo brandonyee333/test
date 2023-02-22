@@ -16,15 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQIndividual;
 
-import java.util.Optional;
-
 /**
  * @author Marcellus Tavares
  */
 public interface BQIndividualRepository
 	extends BigQueryRepository<BQIndividual, String>,
 			CustomBQIndividualRepository {
-
-	public Optional<BQIndividual> findByEmailAddress(String emailAddresses);
-
 }

@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.Nullable;
 
 /**
@@ -37,6 +39,18 @@ public interface CustomBQIdentityInterestScoreRepository {
 	public long countByIndividualId(String individualId);
 
 	public long countKeywords(@Nullable String keywords);
+
+	@Modifying
+	public void deleteByKeywordAndRecordedDateGreaterThanEqual(
+		@Param("keyword") String keyword,
+		@Param("recordedDate") Date recordedDate);
+
+	@Modifying
+	public void deleteByRecordedDate(@Param("recordedDate") Date recordedDate);
+
+	@Modifying
+	public void deleteByRecordedDateLessThanEqual(
+		@Param("recordedDate") Date recordedDate);
 
 	public List<IdentityInterestScore> findByFilterString(
 		@Nullable FilterHelper filterHelper, Pageable pageable);

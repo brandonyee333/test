@@ -16,28 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 
-import java.util.Date;
-
-import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.data.repository.query.Param;
-
 /**
  * @author Robson Pastor
  */
 public interface BQIdentityInterestScoreRepository
 	extends BigQueryRepository<BQIdentityInterestScore, Long>,
 			CustomBQIdentityInterestScoreRepository {
-
-	@Modifying
-	public void deleteByKeywordAndRecordedDateGreaterThanEqual(
-		@Param("keyword") String keyword,
-		@Param("recordedDate") Date recordedDate);
-
-	@Modifying
-	public void deleteByRecordedDate(@Param("recordedDate") Date recordedDate);
-
-	@Modifying
-	public void deleteByRecordedDateLessThanEqual(
-		@Param("recordedDate") Date recordedDate);
-
 }

@@ -14,45 +14,36 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.entity.BQMembershipChange;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.entity.BQCSVUser;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.lang.Nullable;
+import org.springframework.data.repository.query.Param;
 
 /**
- * @author Ivica Cardic
+ * @author Marcellus Tavares
  */
-public interface CustomBQMembershipChangeRepository {
+public interface CustomBQCSVUserRepository {
 
 	@Cacheable
-	public long countBQMembershipChanges(
-		FilterHelper filterHelper, Long segmentId);
-
-	public long countBySegmentId(Long segmentId);
+	public long countByDataSourceId(Long dataSourceId);
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void deleteBySegmentIdIn(List<Long> segmentIds);
+	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
 
-	public BQMembershipChange findBySegmentId(long segmentId);
-
-	@Cacheable
-	public List<Long> findSegmentIdByFilterString(String filterString);
-
-	@Cacheable
-	public List<BQMembershipChange> searchBQMembershipChanges(
-		FilterHelper filterHelper, Long segmentId, Pageable pageable);
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void deleteByDataSourceIdAndDataSourceUserPKIn(
+		@Param("dataSourceId") Long dataSourceId,
+		@Param("dataSourceUserPKs") List<String> dataSourceUserPKs);
 
 	@Cacheable
-	public List<BQMembershipChange> searchLastByCreateDateAndSegmentId(
-		@Nullable Date fromCreateDate, List<Long> segmentIds,
-		Date toCreateDate);
+	public List<BQCSVUser> findByDataSourceId(
+		Long dataSourceId, Pageable pageable);
 
 }

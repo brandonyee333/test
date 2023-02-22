@@ -16,20 +16,10 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
 
-import java.util.Collection;
-import java.util.List;
-
 /**
  * @author Marcos Martins
  */
 public interface BQOrganizationRepository
 	extends BigQueryRepository<BQOrganization, String>,
 			CustomBQOrganizationRepository {
-
-	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
-		Long dataSourceId, Long organizationId);
-
-	public List<BQOrganization> findByDataSourceIdAndOrganizationIdIn(
-		Long dataSourceId, Collection<Long> organizationIds);
-
 }

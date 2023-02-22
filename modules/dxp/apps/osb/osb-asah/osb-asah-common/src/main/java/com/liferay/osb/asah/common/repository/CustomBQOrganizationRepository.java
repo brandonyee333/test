@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
@@ -29,6 +30,12 @@ import org.springframework.lang.Nullable;
 public interface CustomBQOrganizationRepository {
 
 	public long countByName(@Nullable String name);
+
+	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
+		Long dataSourceId, Long organizationId);
+
+	public List<BQOrganization> findByDataSourceIdAndOrganizationIdIn(
+		Long dataSourceId, Collection<Long> organizationIds);
 
 	@Cacheable
 	public List<BQOrganization> findByName(

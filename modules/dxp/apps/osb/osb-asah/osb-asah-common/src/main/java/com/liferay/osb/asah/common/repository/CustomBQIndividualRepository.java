@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
 
@@ -36,6 +37,8 @@ public interface CustomBQIndividualRepository {
 
 	public Optional<Individual> findByChannelIdAndId(
 		@Nullable Long channelId, String id);
+
+	public Optional<BQIndividual> findByEmailAddress(String emailAddresses);
 
 	public List<Distribution> getIndividualDistributions(
 		@Nullable Long channelId, String fieldName,
