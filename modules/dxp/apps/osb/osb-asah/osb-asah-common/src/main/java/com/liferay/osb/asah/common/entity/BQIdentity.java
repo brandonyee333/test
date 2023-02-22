@@ -19,15 +19,9 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import java.util.Date;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcos Martins
  */
-@Table
 public class BQIdentity {
 
 	@Override
@@ -49,7 +43,6 @@ public class BQIdentity {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -58,13 +51,10 @@ public class BQIdentity {
 		return new Date(_createDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public String getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("emailAddressHashed")
 	public String getIndividualId() {
 		return _individualId;
@@ -89,13 +79,8 @@ public class BQIdentity {
 		_individualId = individualId;
 	}
 
-	@Transient
 	private Date _createDate;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private String _individualId;
 
 }

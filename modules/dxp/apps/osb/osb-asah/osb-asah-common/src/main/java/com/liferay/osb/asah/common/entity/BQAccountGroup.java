@@ -17,15 +17,9 @@ package com.liferay.osb.asah.common.entity;
 import java.util.Date;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcos Martins
  */
-@Table
 public class BQAccountGroup {
 
 	@Override
@@ -56,12 +50,10 @@ public class BQAccountGroup {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getAccountGroupId() {
 		return _accountGroupId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -70,28 +62,22 @@ public class BQAccountGroup {
 		return new Date(_createDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getDefaultAccountGroup() {
 		return _defaultAccountGroup;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getDescription() {
 		return _description;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public String getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -100,12 +86,10 @@ public class BQAccountGroup {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getType() {
 		return _type;
 	}
@@ -161,31 +145,14 @@ public class BQAccountGroup {
 		_type = type;
 	}
 
-	@Transient
 	private Long _accountGroupId;
-
-	@Transient
 	private Date _createDate;
-
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private Boolean _defaultAccountGroup;
-
-	@Transient
 	private String _description;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private String _name;
-
-	@Transient
 	private String _type;
 
 }

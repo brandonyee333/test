@@ -27,15 +27,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Inácio Nery
  */
-@Table
 public class BQMembership {
 
 	public BQMembership() {
@@ -72,7 +66,6 @@ public class BQMembership {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("createDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
@@ -87,24 +80,19 @@ public class BQMembership {
 		return new Date(_createDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getIdentityId() {
 		return _identityId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getIndividualId() {
 		return _individualId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("modifiedDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
@@ -119,7 +107,6 @@ public class BQMembership {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("removedDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
@@ -134,7 +121,6 @@ public class BQMembership {
 		return new Date(_removedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("segmentId")
 	@JsonProperty("individualSegmentId")
 	@JsonSerialize(using = ToStringSerializer.class)
@@ -142,7 +128,6 @@ public class BQMembership {
 		return _segmentId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getStatus() {
 		return _status;
 	}
@@ -192,28 +177,13 @@ public class BQMembership {
 		_status = status;
 	}
 
-	@Transient
 	private Date _createDate;
-
-	@Transient
 	private Long _id;
-
-	@Transient
 	private String _identityId;
-
-	@Transient
 	private String _individualId;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private Date _removedDate;
-
-	@Transient
 	private Long _segmentId;
-
-	@Transient
 	private String _status;
 
 }

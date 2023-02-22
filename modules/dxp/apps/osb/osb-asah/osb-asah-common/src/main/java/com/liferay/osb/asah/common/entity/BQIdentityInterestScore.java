@@ -27,15 +27,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcellus Tavares
  */
-@Table
 public class BQIdentityInterestScore {
 
 	public BQIdentityInterestScore() {
@@ -65,34 +59,27 @@ public class BQIdentityInterestScore {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getIdentityId() {
 		return _identityId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getInterested() {
 		return _interested;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Double getInterestScore() {
 		return _interestScore;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getKeyword() {
 		return _keyword;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("recordedDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
@@ -144,22 +131,11 @@ public class BQIdentityInterestScore {
 		}
 	}
 
-	@Transient
 	private Long _id;
-
-	@Transient
 	private String _identityId;
-
-	@Transient
 	private Boolean _interested;
-
-	@Transient
 	private Double _interestScore;
-
-	@Transient
 	private String _keyword;
-
-	@Transient
 	private Date _recordedDate;
 
 }

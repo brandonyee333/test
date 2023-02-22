@@ -20,15 +20,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Leslie Wong
  */
-@Table
 public class BQEventProperty {
 
 	public BQEventProperty() {
@@ -72,12 +66,10 @@ public class BQEventProperty {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getChannelId() {
 		return _channelId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getEventDate() {
 		if (_eventDate == null) {
 			return null;
@@ -86,23 +78,18 @@ public class BQEventProperty {
 		return new Date(_eventDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public String getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getProjectId() {
 		return _projectId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getValue() {
 		return _value;
 	}
@@ -142,22 +129,11 @@ public class BQEventProperty {
 		_value = value;
 	}
 
-	@Transient
 	private Long _channelId;
-
-	@Transient
 	private Date _eventDate;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private String _name;
-
-	@Transient
 	private String _projectId;
-
-	@Transient
 	private String _value;
 
 }

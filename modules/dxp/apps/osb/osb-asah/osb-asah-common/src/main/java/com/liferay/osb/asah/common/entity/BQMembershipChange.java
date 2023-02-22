@@ -20,15 +20,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcellus Tavares
  */
-@Table
 public class BQMembershipChange {
 
 	public BQMembershipChange() {
@@ -65,7 +59,6 @@ public class BQMembershipChange {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -74,23 +67,18 @@ public class BQMembershipChange {
 		return new Date(_createDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public Long getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getIdentitiesCount() {
 		return _identitiesCount;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getKnownIdentitiesCount() {
 		return _knownIdentitiesCount;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getSegmentId() {
 		return _segmentId;
 	}
@@ -124,19 +112,10 @@ public class BQMembershipChange {
 		_segmentId = segmentId;
 	}
 
-	@Transient
 	private Date _createDate;
-
-	@Transient
 	private Long _id;
-
-	@Transient
 	private Long _identitiesCount;
-
-	@Transient
 	private Long _knownIdentitiesCount;
-
-	@Transient
 	private Long _segmentId;
 
 }

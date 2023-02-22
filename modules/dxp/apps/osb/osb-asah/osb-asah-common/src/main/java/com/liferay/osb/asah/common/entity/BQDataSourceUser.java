@@ -23,14 +23,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Rachael Koestartyo
  */
-@Table
 public class BQDataSourceUser {
 
 	public BQDataSourceUser() {
@@ -73,24 +68,20 @@ public class BQDataSourceUser {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<String> getAccountPKs() {
 		return _accountPKs;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getUserId() {
 		return _userId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<String> getUserPKs() {
 		return _userPKs;
 	}
@@ -116,16 +107,9 @@ public class BQDataSourceUser {
 		_userPKs = userPKs;
 	}
 
-	@Transient
 	private Set<String> _accountPKs;
-
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private Long _userId;
-
-	@Transient
 	private Set<String> _userPKs;
 
 }

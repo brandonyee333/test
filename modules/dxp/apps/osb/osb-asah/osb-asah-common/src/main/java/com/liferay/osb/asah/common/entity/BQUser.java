@@ -26,16 +26,9 @@ import java.util.Map;
 
 import org.json.JSONArray;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcos Martins
  */
-@Table
 public class BQUser implements BQDXPEntity {
 
 	public BQUser() {
@@ -45,7 +38,6 @@ public class BQUser implements BQDXPEntity {
 		BeanUtils.copyProperties(source, this);
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -59,18 +51,15 @@ public class BQUser implements BQDXPEntity {
 		return DXPEntity.Type.USER.name();
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonProperty("userId")
 	public Long getDXPUserId() {
 		return _dxpUserId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddress() {
 		return _emailAddress;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddressHashed() {
 		return _emailAddressHashed;
 	}
@@ -79,20 +68,15 @@ public class BQUser implements BQDXPEntity {
 		return _expandoFields;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Column("fields")
 	@JsonProperty("fields")
 	public JSONArray getFieldsJSONArray() {
 		return _fieldsJSONArray;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getFirstName() {
 		return _firstName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	@Override
 	public String getId() {
 		return _id;
@@ -106,22 +90,18 @@ public class BQUser implements BQDXPEntity {
 		return _dxpUserId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getJobTitle() {
 		return _jobTitle;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getLastName() {
 		return _lastName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getMiddleName() {
 		return _middleName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -135,17 +115,14 @@ public class BQUser implements BQDXPEntity {
 		return _firstName + " " + _lastName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getScreenName() {
 		return _screenName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getUserName() {
 		return _userName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getUuid() {
 		return _uuid;
 	}
@@ -216,52 +193,21 @@ public class BQUser implements BQDXPEntity {
 		_uuid = uuid;
 	}
 
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private String _dataSourceName;
-
-	@Transient
 	private Long _dxpUserId;
-
-	@Transient
 	private String _emailAddress;
-
-	@Transient
 	private String _emailAddressHashed;
-
-	@Transient
 	private List<ExpandoField> _expandoFields;
-
-	@Transient
 	private JSONArray _fieldsJSONArray;
-
-	@Transient
 	private String _firstName;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private String _jobTitle;
-
-	@Transient
 	private String _lastName;
-
-	@Transient
 	private String _middleName;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private String _screenName;
-
-	@Transient
 	private String _userName;
-
-	@Transient
 	private String _uuid;
 
 }

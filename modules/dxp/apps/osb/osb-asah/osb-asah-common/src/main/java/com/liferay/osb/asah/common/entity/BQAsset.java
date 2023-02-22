@@ -20,14 +20,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Ivica Cardic
  */
-@Table
 public class BQAsset {
 
 	public BQAsset() {
@@ -64,43 +59,34 @@ public class BQAsset {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getAssetId() {
 		return _assetId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getAssetTitle() {
 		return _assetTitle;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getAssetType() {
 		return _assetType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getChannelId() {
 		return _channelId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public String getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public long getViews() {
 		return _views;
 	}

@@ -20,15 +20,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Matthew Kong
  */
-@Table
 public class BQEvent {
 
 	public BQEvent() {
@@ -133,57 +127,46 @@ public class BQEvent {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getApplicationId() {
 		return _applicationId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getAssetId() {
 		return _assetId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getAssetTitle() {
 		return _assetTitle;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getBrowserName() {
 		return _browserName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getCanonicalUrl() {
 		return _canonicalUrl;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getChannelId() {
 		return _channelId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getCity() {
 		return _city;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getContentLanguageId() {
 		return _contentLanguageId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getContext() {
 		return _context;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getCountry() {
 		return _country;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -192,22 +175,18 @@ public class BQEvent {
 		return new Date(_createDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getDescription() {
 		return _description;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getDeviceType() {
 		return _deviceType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getEventDate() {
 		if (_eventDate == null) {
 			return null;
@@ -216,83 +195,66 @@ public class BQEvent {
 		return new Date(_eventDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getEventId() {
 		return _eventId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getEventProperties() {
 		return _eventProperties;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getExperienceId() {
 		return _experienceId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public String getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getKeywords() {
 		return _keywords;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getLanguageId() {
 		return _languageId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getPlatformName() {
 		return _platformName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getProjectTimeZoneId() {
 		return _projectTimeZoneId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getReferrer() {
 		return _referrer;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getRegion() {
 		return _region;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getSessionId() {
 		return _sessionId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getTimezoneOffset() {
 		return _timezoneOffset;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getTitle() {
 		return _title;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getUrl() {
 		return _url;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getUserId() {
 		return _userId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getVariantId() {
 		return _variantId;
 	}
@@ -442,97 +404,36 @@ public class BQEvent {
 		_variantId = variantId;
 	}
 
-	@Transient
 	private String _applicationId;
-
-	@Transient
 	private String _assetId;
-
-	@Transient
 	private String _assetTitle;
-
-	@Transient
 	private String _browserName;
-
-	@Transient
 	private String _canonicalUrl;
-
-	@Transient
 	private Long _channelId;
-
-	@Transient
 	private String _city;
-
-	@Transient
 	private String _contentLanguageId;
-
-	@Transient
 	private String _context;
-
-	@Transient
 	private String _country;
-
-	@Transient
 	private Date _createDate;
-
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private String _description;
-
-	@Transient
 	private String _deviceType;
-
-	@Transient
 	private Date _eventDate;
-
-	@Transient
 	private String _eventId;
-
-	@Transient
 	private String _eventProperties;
-
-	@Transient
 	private String _experienceId;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private String _keywords;
-
-	@Transient
 	private String _languageId;
-
-	@Transient
 	private String _platformName;
-
-	@Transient
 	private String _projectTimeZoneId;
-
-	@Transient
 	private String _referrer;
-
-	@Transient
 	private String _region;
-
-	@Transient
 	private String _sessionId;
-
-	@Transient
 	private String _timezoneOffset;
-
-	@Transient
 	private String _title;
-
-	@Transient
 	private String _url;
-
-	@Transient
 	private String _userId;
-
-	@Transient
 	private String _variantId;
 
 }

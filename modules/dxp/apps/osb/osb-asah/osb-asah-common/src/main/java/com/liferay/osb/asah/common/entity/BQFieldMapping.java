@@ -21,16 +21,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcellus Tavares
  */
-@Table
 public class BQFieldMapping {
 
 	public BQFieldMapping() {
@@ -68,38 +61,30 @@ public class BQFieldMapping {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getContext() {
 		return _context;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Set<Long> getDataSourceIds() {
 		return _dataSourceIds;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getDisplayName() {
 		return _displayName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getDisplayType() {
 		return _displayType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public String getFieldName() {
 		return _fieldName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getFieldType() {
 		return _fieldType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -108,13 +93,10 @@ public class BQFieldMapping {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getOwnerType() {
 		return _ownerType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Column("repeatable_")
 	public Boolean getRepeatable() {
 		return _repeatable;
 	}
@@ -164,31 +146,14 @@ public class BQFieldMapping {
 		_repeatable = repeatable;
 	}
 
-	@Transient
 	private String _context;
-
-	@Transient
 	private Set<Long> _dataSourceIds;
-
-	@Transient
 	private String _displayName;
-
-	@Transient
 	private String _displayType;
-
-	@Transient
 	private String _fieldName;
-
-	@Transient
 	private String _fieldType;
-
-	@Transient
 	private Date _modifiedDate = new Date();
-
-	@Transient
 	private String _ownerType;
-
-	@Transient
 	private Boolean _repeatable;
 
 }

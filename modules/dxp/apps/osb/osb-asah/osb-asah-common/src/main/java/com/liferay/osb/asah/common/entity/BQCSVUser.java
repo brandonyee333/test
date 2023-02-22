@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -31,18 +30,10 @@ import java.util.Objects;
 
 import org.json.JSONArray;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcellus Tavares
  */
-@Table
-public class BQCSVUser implements Persistable<Long> {
+public class BQCSVUser {
 
 	public BQCSVUser() {
 	}
@@ -87,40 +78,31 @@ public class BQCSVUser implements Persistable<Long> {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonAlias("dataSourceUserPK")
 	@JsonProperty("dataSourceIndividualPK")
 	public String getDataSourceUserPK() {
 		return _dataSourceUserPK;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddress() {
 		return _emailAddress;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Column("fields")
 	@JsonProperty("fields")
 	public JSONArray getFieldsJSONArray() {
 		return _fieldsJSONArray;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	@JsonSerialize(using = ToStringSerializer.class)
-	@Override
 	public Long getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -138,16 +120,6 @@ public class BQCSVUser implements Persistable<Long> {
 		return Objects.hash(
 			_dataSourceId, _dataSourceUserPK, _emailAddress, _fieldsJSONArray,
 			_id);
-	}
-
-	@JsonIgnore
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public void setDataSourceId(Long dataSourceId) {
@@ -170,35 +142,17 @@ public class BQCSVUser implements Persistable<Long> {
 		_id = id;
 	}
 
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
-	}
-
 	public void setModifiedDate(Date modifiedDate) {
 		if (modifiedDate != null) {
 			_modifiedDate = new Date(modifiedDate.getTime());
 		}
 	}
 
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private String _dataSourceUserPK;
-
-	@Transient
 	private String _emailAddress;
-
-	@Transient
 	private JSONArray _fieldsJSONArray;
-
-	@Transient
 	private Long _id;
-
-	@Transient
-	private Boolean _isNew;
-
-	@Transient
 	private Date _modifiedDate;
 
 }

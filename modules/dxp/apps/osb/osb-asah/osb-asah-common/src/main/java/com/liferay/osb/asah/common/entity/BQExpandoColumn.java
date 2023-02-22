@@ -23,31 +23,22 @@ import java.util.Date;
 
 import org.json.JSONObject;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcos Martins
  */
-@Table
 public class BQExpandoColumn implements BQDXPEntity {
 
 	public BQExpandoColumn() {
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getClassName() {
 		return _className;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getColumnId() {
 		return _columnId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -57,12 +48,10 @@ public class BQExpandoColumn implements BQDXPEntity {
 		return _dataSourceName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getDataType() {
 		return _dataType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getDisplayType() {
 		return _displayType;
 	}
@@ -82,14 +71,11 @@ public class BQExpandoColumn implements BQDXPEntity {
 		);
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	@Override
 	public String getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -98,7 +84,6 @@ public class BQExpandoColumn implements BQDXPEntity {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
@@ -141,31 +126,14 @@ public class BQExpandoColumn implements BQDXPEntity {
 		_name = name;
 	}
 
-	@Transient
 	private String _className;
-
-	@Transient
 	private String _columnId;
-
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private String _dataSourceName;
-
-	@Transient
 	private String _dataType;
-
-	@Transient
 	private String _displayType;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private String _name;
 
 }

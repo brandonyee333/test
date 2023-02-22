@@ -25,15 +25,9 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcos Martins
  */
-@Table
 public class BQTeam implements BQDXPEntity {
 
 	public BQTeam() {
@@ -43,7 +37,6 @@ public class BQTeam implements BQDXPEntity {
 		BeanUtils.copyProperties(source, this);
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -68,13 +61,10 @@ public class BQTeam implements BQDXPEntity {
 		);
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getGroupId() {
 		return _groupId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	@Override
 	public String getId() {
 		return _id;
@@ -88,7 +78,6 @@ public class BQTeam implements BQDXPEntity {
 		return _teamId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -97,12 +86,10 @@ public class BQTeam implements BQDXPEntity {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getTeamId() {
 		return _teamId;
 	}
@@ -137,25 +124,12 @@ public class BQTeam implements BQDXPEntity {
 		_teamId = teamId;
 	}
 
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private String _dataSourceName;
-
-	@Transient
 	private Long _groupId;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private String _name;
-
-	@Transient
 	private Long _teamId;
 
 }

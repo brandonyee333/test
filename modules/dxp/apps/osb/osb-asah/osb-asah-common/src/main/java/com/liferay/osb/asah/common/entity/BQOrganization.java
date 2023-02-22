@@ -29,16 +29,9 @@ import java.util.Objects;
 
 import org.json.JSONObject;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcos Martins
  */
-@Table
 public class BQOrganization implements BQDXPEntity {
 
 	public BQOrganization() {
@@ -81,7 +74,6 @@ public class BQOrganization implements BQDXPEntity {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -90,7 +82,6 @@ public class BQOrganization implements BQDXPEntity {
 		return new Date(_createDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -125,8 +116,6 @@ public class BQOrganization implements BQDXPEntity {
 		);
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	@Override
 	public String getId() {
 		return _id;
@@ -140,7 +129,6 @@ public class BQOrganization implements BQDXPEntity {
 		return _organizationId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -149,33 +137,26 @@ public class BQOrganization implements BQDXPEntity {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getName() {
 		return _name;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getOrganizationId() {
 		return _organizationId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getParentOrganizationId() {
 		return _parentOrganizationId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getParentOrganizationName() {
 		return _parentOrganizationName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getTreePath() {
 		return _treePath;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Column("organizationtype")
 	public String getType() {
 		return _type;
 	}
@@ -242,40 +223,17 @@ public class BQOrganization implements BQDXPEntity {
 		_type = type;
 	}
 
-	@Transient
 	private Date _createDate;
-
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private String _dataSourceName;
-
-	@Transient
 	private List<ExpandoField> _expandoFields;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private String _name;
-
-	@Transient
 	private Long _organizationId;
-
-	@Transient
 	private Long _parentOrganizationId;
-
-	@Transient
 	private String _parentOrganizationName;
-
-	@Transient
 	private String _treePath;
-
-	@Transient
 	private String _type;
 
 }

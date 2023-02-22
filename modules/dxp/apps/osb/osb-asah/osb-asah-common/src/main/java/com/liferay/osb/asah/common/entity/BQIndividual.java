@@ -22,16 +22,9 @@ import java.util.Objects;
 
 import org.json.JSONArray;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Rachael Koestartyo
  */
-@Table
 public class BQIndividual {
 
 	public BQIndividual() {
@@ -60,12 +53,10 @@ public class BQIndividual {
 		return false;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getAddresses() {
 		return _addresses;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getBirthday() {
 		if (_birthday == null) {
 			return null;
@@ -74,7 +65,6 @@ public class BQIndividual {
 		return new Date(_birthday.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -83,54 +73,42 @@ public class BQIndividual {
 		return new Date(_createDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getEmailAddress() {
 		return _emailAddress;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Column("fields")
 	public JSONArray getFieldsJSONArray() {
 		return _fieldsJSONArray;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getFirstName() {
 		return _firstName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getGender() {
 		return _gender;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public String getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getJobTitle() {
 		return _jobTitle;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getLanguageId() {
 		return _languageId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getLastName() {
 		return _lastName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getMiddleName() {
 		return _middleName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -139,12 +117,10 @@ public class BQIndividual {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getScreenName() {
 		return _screenName;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getTimeZoneId() {
 		return _timeZoneId;
 	}
@@ -220,49 +196,20 @@ public class BQIndividual {
 		_timeZoneId = timeZoneId;
 	}
 
-	@Transient
 	private String _addresses;
-
-	@Transient
 	private Date _birthday;
-
-	@Transient
 	private Date _createDate;
-
-	@Transient
 	private String _emailAddress;
-
-	@Transient
 	private JSONArray _fieldsJSONArray;
-
-	@Transient
 	private String _firstName;
-
-	@Transient
 	private String _gender;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private String _jobTitle;
-
-	@Transient
 	private String _languageId;
-
-	@Transient
 	private String _lastName;
-
-	@Transient
 	private String _middleName;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private String _screenName;
-
-	@Transient
 	private String _timeZoneId;
 
 }

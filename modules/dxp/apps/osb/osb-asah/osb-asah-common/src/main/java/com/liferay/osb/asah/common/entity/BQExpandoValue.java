@@ -16,47 +16,34 @@ package com.liferay.osb.asah.common.entity;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.AccessType;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.relational.core.mapping.Table;
-
 /**
  * @author Marcos Martins
  */
-@Table
 public class BQExpandoValue {
 
 	public BQExpandoValue() {
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getClassPK() {
 		return _classPK;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getClassType() {
 		return _classType;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getColumnId() {
 		return _columnId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
-	@Id
 	public String getId() {
 		return _id;
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -65,7 +52,6 @@ public class BQExpandoValue {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	@AccessType(AccessType.Type.PROPERTY)
 	public String getValue() {
 		return _value;
 	}
@@ -100,25 +86,12 @@ public class BQExpandoValue {
 		_value = value;
 	}
 
-	@Transient
 	private Long _classPK;
-
-	@Transient
 	private String _classType;
-
-	@Transient
 	private String _columnId;
-
-	@Transient
 	private Long _dataSourceId;
-
-	@Transient
 	private String _id;
-
-	@Transient
 	private Date _modifiedDate;
-
-	@Transient
 	private String _value;
 
 }
