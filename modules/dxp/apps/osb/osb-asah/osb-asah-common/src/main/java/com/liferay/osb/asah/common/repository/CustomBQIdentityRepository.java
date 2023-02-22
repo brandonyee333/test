@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.lang.Nullable;
 
@@ -33,8 +32,6 @@ public interface CustomBQIdentityRepository {
 	public long countIndividuals(boolean includeAnonymousUsers);
 
 	public List<BQIdentity> findAll();
-
-	public Optional<BQIdentity> findById(String identityId);
 
 	public List<String> getIdentityIds(String individualId);
 

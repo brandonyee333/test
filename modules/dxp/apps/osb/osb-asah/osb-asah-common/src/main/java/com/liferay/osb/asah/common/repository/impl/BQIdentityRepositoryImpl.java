@@ -99,11 +99,6 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public Optional<BQIdentity> findById(String identityId) {
-		return Optional.empty();
-	}
-
-	@Override
 	public List<String> getIdentityIds(String individualId) {
 		return _queryExecutor.queryForList(
 			record -> (String)record.get("id"),
@@ -180,7 +175,18 @@ public class BQIdentityRepositoryImpl
 
 	@Override
 	public BQIdentity insert(BQIdentity bqIdentity) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQIdentity")
+			).columns(
+				DSL.field("createDate"), DSL.field("id"),
+				DSL.field("individualId")
+			).values(
+				bqIdentity.getCreateDate(), bqIdentity.getId(),
+				bqIdentity.getIndividualId()
+			));
+
+		return bqIdentity;
 	}
 
 	@Override
