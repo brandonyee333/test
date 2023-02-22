@@ -497,7 +497,7 @@ public class AnalyticsEventsIngestionNanite {
 		bqEvent.setUserId(analyticsEvent.getUserId());
 		bqEvent.setVariantId(context.get("variantId"));
 
-		_bqEventRepository.save(bqEvent);
+		_bqEventRepository.insert(bqEvent);
 	}
 
 	private void _writeBQEventProperties(AnalyticsEvent analyticsEvent) {
@@ -515,7 +515,7 @@ public class AnalyticsEventsIngestionNanite {
 			bqEventProperty.setProjectId(analyticsEvent.getProjectId());
 			bqEventProperty.setValue(entry.getValue());
 
-			_bqEventPropertyRepository.save(bqEventProperty);
+			_bqEventPropertyRepository.insert(bqEventProperty);
 		}
 	}
 
@@ -600,7 +600,7 @@ public class AnalyticsEventsIngestionNanite {
 		bqSession.setUrls(urls);
 		bqSession.setUserId(sessionContext.userId);
 
-		_bqSessionRepository.save(bqSession);
+		_bqSessionRepository.insert(bqSession);
 	}
 
 	private static final Log _log = LogFactory.getLog(

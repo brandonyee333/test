@@ -109,7 +109,19 @@ public class BQEventPropertyRepositoryImpl
 
 	@Override
 	public BQEventProperty insert(BQEventProperty bqEventProperty) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQEventProperty")
+			).columns(
+				DSL.field("channelId"), DSL.field("eventDate"), DSL.field("id"),
+				DSL.field("name"), DSL.field("value")
+			).values(
+				bqEventProperty.getChannelId(), bqEventProperty.getEventDate(),
+				bqEventProperty.getId(), bqEventProperty.getName(),
+				bqEventProperty.getValue()
+			));
+
+		return bqEventProperty;
 	}
 
 	@Override

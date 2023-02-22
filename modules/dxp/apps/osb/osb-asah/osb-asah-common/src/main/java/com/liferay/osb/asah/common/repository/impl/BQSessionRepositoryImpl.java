@@ -559,7 +559,38 @@ public class BQSessionRepositoryImpl
 
 	@Override
 	public BQSession insert(BQSession bqSession) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQSession")
+			).columns(
+				DSL.field("acquisitionCampaign"),
+				DSL.field("acquisitionChannel"),
+				DSL.field("acquisitionContent"), DSL.field("acquisitionMedium"),
+				DSL.field("acquisitionSource"), DSL.field("acquisitionTerm"),
+				DSL.field("bounce"), DSL.field("browserName"),
+				DSL.field("channelId"), DSL.field("city"), DSL.field("country"),
+				DSL.field("deviceType"), DSL.field("duration"), DSL.field("id"),
+				DSL.field("platformName"), DSL.field("referrers"),
+				DSL.field("region"), DSL.field("sessionEnd"),
+				DSL.field("sessionStart"), DSL.field("urls"),
+				DSL.field("userId")
+			).values(
+				bqSession.getAcquisitionCampaign(),
+				bqSession.getAcquisitionChannel(),
+				bqSession.getAcquisitionContent(),
+				bqSession.getAcquisitionMedium(),
+				bqSession.getAcquisitionSource(),
+				bqSession.getAcquisitionTerm(), bqSession.getBounce(),
+				bqSession.getBrowserName(), bqSession.getChannelId(),
+				bqSession.getCity(), bqSession.getCountry(),
+				bqSession.getDeviceType(), bqSession.getDuration(),
+				bqSession.getId(), bqSession.getPlatformName(),
+				bqSession.getReferrers(), bqSession.getRegion(),
+				bqSession.getSessionEnd(), bqSession.getSessionStart(),
+				bqSession.getUrls(), bqSession.getUserId()
+			));
+
+		return bqSession;
 	}
 
 	@Override

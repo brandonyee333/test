@@ -693,7 +693,44 @@ public class BQEventRepositoryImpl
 
 	@Override
 	public BQEvent insert(BQEvent bqEvent) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQEvent")
+			).columns(
+				DSL.field("assetId"), DSL.field("assetTitle"),
+				DSL.field("applicationId"), DSL.field("browserName"),
+				DSL.field("canonicalUrl"), DSL.field("channelId"),
+				DSL.field("city"), DSL.field("contentLanguageId"),
+				DSL.field("context"), DSL.field("country"),
+				DSL.field("createDate"), DSL.field("dataSourceId"),
+				DSL.field("description"), DSL.field("deviceType"),
+				DSL.field("eventDate"), DSL.field("eventId"),
+				DSL.field("eventProperties"), DSL.field("experienceId"),
+				DSL.field("id"), DSL.field("keywords"), DSL.field("languageId"),
+				DSL.field("platformName"), DSL.field("projectTimeZoneId"),
+				DSL.field("referrer"), DSL.field("region"),
+				DSL.field("sessionId"), DSL.field("timezoneOffset"),
+				DSL.field("title"), DSL.field("url"), DSL.field("userId"),
+				DSL.field("variantId")
+			).values(
+				bqEvent.getAssetId(), bqEvent.getAssetTitle(),
+				bqEvent.getApplicationId(), bqEvent.getBrowserName(),
+				bqEvent.getCanonicalUrl(), bqEvent.getChannelId(),
+				bqEvent.getCity(), bqEvent.getContentLanguageId(),
+				bqEvent.getContext(), bqEvent.getCountry(),
+				bqEvent.getCreateDate(), bqEvent.getDataSourceId(),
+				bqEvent.getDescription(), bqEvent.getDeviceType(),
+				bqEvent.getEventDate(), bqEvent.getEventId(),
+				bqEvent.getEventProperties(), bqEvent.getExperienceId(),
+				bqEvent.getId(), bqEvent.getKeywords(), bqEvent.getLanguageId(),
+				bqEvent.getPlatformName(), bqEvent.getProjectTimeZoneId(),
+				bqEvent.getReferrer(), bqEvent.getRegion(),
+				bqEvent.getSessionId(), bqEvent.getTimezoneOffset(),
+				bqEvent.getTitle(), bqEvent.getUrl(), bqEvent.getUserId(),
+				bqEvent.getVariantId()
+			));
+
+		return bqEvent;
 	}
 
 	@Override
