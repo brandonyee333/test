@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.repository.CustomBQUserRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.HashMap;
@@ -26,7 +27,9 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
+import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -65,7 +68,13 @@ public class BQUserRepositoryImpl
 
 	@Override
 	public List<BQUser> findAll() {
-		return null;
+		return _queryExecutor.queryForList(
+			BQUser::new,
+			_dslContext.select(
+				DSL.asterisk()
+			).from(
+				"BQUser"
+			));
 	}
 
 	@Override
@@ -129,5 +138,8 @@ public class BQUserRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private QueryExecutor _queryExecutor;
 
 }

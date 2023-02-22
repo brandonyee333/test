@@ -48,8 +48,6 @@ public interface CustomBQIndividualRepository {
 
 	public BQIndividual insert(BQIndividual bqIndividual);
 
-	public void insertAll(List<BQIndividual> bqIndividuals);
-
 	public List<Individual> searchBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,

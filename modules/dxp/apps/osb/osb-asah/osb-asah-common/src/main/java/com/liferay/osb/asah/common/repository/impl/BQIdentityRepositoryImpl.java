@@ -95,7 +95,13 @@ public class BQIdentityRepositoryImpl
 
 	@Override
 	public List<BQIdentity> findAll() {
-		return null;
+		return _queryExecutor.queryForList(
+			BQIdentity::new,
+			_dslContext.select(
+				DSL.asterisk()
+			).from(
+				"BQIdentity"
+			));
 	}
 
 	@Override

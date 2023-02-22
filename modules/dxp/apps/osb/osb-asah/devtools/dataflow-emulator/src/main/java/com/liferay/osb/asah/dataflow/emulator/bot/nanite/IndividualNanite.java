@@ -45,7 +45,6 @@ import java.util.stream.Stream;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.IterableUtils;
 
 import org.json.JSONArray;
 
@@ -67,14 +66,13 @@ public class IndividualNanite {
 		}
 
 		_bqIndividualRepository.deleteAll();
-		_bqIndividualRepository.saveAll(bqIndividuals);
+
+		bqIndividuals.forEach(_bqIndividualRepository::insert);
 	}
 
 	private List<BQIndividual> _fetchBQUsersBQIndividuals() {
-		List<BQIdentity> bqIdentities = IterableUtils.toList(
-			_bqIdentityRepository.findAll());
-		List<BQUser> bqUsers = IterableUtils.toList(
-			_bqUserRepository.findAll());
+		List<BQIdentity> bqIdentities = _bqIdentityRepository.findAll();
+		List<BQUser> bqUsers = _bqUserRepository.findAll();
 
 		Stream<BQIdentity> bqIdentityStream = bqIdentities.stream();
 
@@ -174,7 +172,6 @@ public class IndividualNanite {
 		mergedBQIndividual.setFirstName(bqIndividual2.getFirstName());
 		mergedBQIndividual.setGender(bqIndividual2.getGender());
 		mergedBQIndividual.setId(bqIndividual2.getId());
-		mergedBQIndividual.setIsNew(Boolean.TRUE);
 		mergedBQIndividual.setLanguageId(bqIndividual2.getLanguageId());
 		mergedBQIndividual.setLastName(bqIndividual2.getLastName());
 		mergedBQIndividual.setMiddleName(bqIndividual2.getMiddleName());
@@ -288,7 +285,6 @@ public class IndividualNanite {
 		bqIndividual.setGender(
 			_getFieldValueStringByName(defaultFields, "gender"));
 		bqIndividual.setId(bqUser.getEmailAddressHashed());
-		bqIndividual.setIsNew(Boolean.TRUE);
 		bqIndividual.setJobTitle(bqUser.getJobTitle());
 		bqIndividual.setLanguageId(
 			_getFieldValueStringByName(defaultFields, "languageId"));

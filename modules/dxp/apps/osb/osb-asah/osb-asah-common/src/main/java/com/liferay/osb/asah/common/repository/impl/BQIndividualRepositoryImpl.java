@@ -106,6 +106,12 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public void deleteAll() {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQIndividual")
+			).where(
+				DSL.trueCondition()
+			));
 	}
 
 	@Override
@@ -240,11 +246,28 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public BQIndividual insert(BQIndividual bqIndividual) {
-		return null;
-	}
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQIndividual")
+			).columns(
+				DSL.field("addresses"), DSL.field("birthday"),
+				DSL.field("createDate"), DSL.field("emailAddress"),
+				DSL.field("fields"), DSL.field("firstName"),
+				DSL.field("gender"), DSL.field("id"), DSL.field("jobTitle"),
+				DSL.field("languageId"), DSL.field("lastName"),
+				DSL.field("middleName"), DSL.field("modifiedDate"),
+				DSL.field("screenName"), DSL.field("timeZoneId")
+			).values(
+				bqIndividual.getAddresses(), bqIndividual.getBirthday(),
+				bqIndividual.getCreateDate(), bqIndividual.getEmailAddress(),
+				null, bqIndividual.getFirstName(), bqIndividual.getGender(),
+				bqIndividual.getId(), bqIndividual.getJobTitle(),
+				bqIndividual.getLanguageId(), bqIndividual.getLastName(),
+				bqIndividual.getMiddleName(), bqIndividual.getModifiedDate(),
+				bqIndividual.getScreenName(), bqIndividual.getTimeZoneId()
+			));
 
-	@Override
-	public void insertAll(List<BQIndividual> bqIndividuals) {
+		return bqIndividual;
 	}
 
 	@Override

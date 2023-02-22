@@ -16,13 +16,23 @@ package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 
+import com.liferay.osb.asah.common.util.BeanUtils;
+
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * @author Marcos Martins
  */
 public class BQIdentity {
+
+	public BQIdentity() {
+	}
+
+	public BQIdentity(Map<String, Object> source) {
+		BeanUtils.copyProperties(source, this);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
