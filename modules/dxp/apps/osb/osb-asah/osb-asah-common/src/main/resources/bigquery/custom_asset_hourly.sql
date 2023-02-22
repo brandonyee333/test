@@ -28,29 +28,15 @@ WITH CustomAssetEvent AS (
 		formEnabled.value AS formEnabled
 	FROM
 		`$[AC_PROJECT_ID].event` AS Event
-	LEFT JOIN (
-		SELECT
-			id,
-			value
-		FROM
-			`$[AC_PROJECT_ID].eventproperty`
-		WHERE
-			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			name = 'category'
-	) AS category ON (
-		Event.id = category.id
+	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS category ON (
+		category.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+		category.id = Event.id AND
+		category.name = 'category'
 	)
-	LEFT JOIN (
-		SELECT
-			id,
-			value
-		FROM
-			`$[AC_PROJECT_ID].eventproperty`
-		WHERE
-			eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			name = 'formEnabled'
-	) AS formEnabled ON (
-		Event.id = formEnabled.id
+	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS formEnabled ON (
+		formEnabled.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+		formEnabled.id = Event.id AND
+		formEnabled.name = 'formEnabled'
 	)
 	WHERE
 		Event.applicationId = 'Custom' AND
