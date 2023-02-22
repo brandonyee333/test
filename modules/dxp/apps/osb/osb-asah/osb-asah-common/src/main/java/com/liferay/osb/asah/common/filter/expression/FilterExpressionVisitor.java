@@ -239,12 +239,16 @@ public class FilterExpressionVisitor
 
 			String type = String.valueOf(param.getValue());
 
-			if (type.equalsIgnoreCase("number")) {
-				type = "NUMERIC";
+			String attributeType = _attributeTypes.get(
+				StringUtils.lowerCase(type));
+
+			if (attributeType == null) {
+				return new FilterExpressionParserException(
+					"Invalid type " + type);
 			}
 
 			return DSL.field(
-				String.format("SAFE_CAST({0} AS %s)", type), field);
+				String.format("SAFE_CAST({0} AS %s)", attributeType), field);
 		}
 
 		Condition condition = null;
@@ -821,6 +825,15 @@ public class FilterExpressionVisitor
 		return _getIndividualIdsInOrganizationCondition(condition);
 	}
 
+	private static final Map<String, String> _attributeTypes =
+		new HashMap<String, String>() {
+			{
+				put("boolean", "BOOLEAN");
+				put("date", "DATE");
+				put("number", "NUMERIC");
+				put("text", "STRING");
+			}
+		};
 	private static final Set<String> _timeFrameParameterNames = SetUtil.of(
 		"last24Hours", "last28Days", "last30Days", "last7Days", "last90Days",
 		"yesterday");
