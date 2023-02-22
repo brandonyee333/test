@@ -105,6 +105,7 @@ import com.liferay.portal.util.RobotsUtil;
 import com.liferay.site.display.context.GroupDisplayContextHelper;
 import com.liferay.site.navigation.model.SiteNavigationMenu;
 import com.liferay.site.navigation.service.SiteNavigationMenuLocalServiceUtil;
+import com.liferay.sites.kernel.util.SitesUtil;
 import com.liferay.staging.StagingGroupHelper;
 import com.liferay.taglib.security.PermissionsURLTag;
 
@@ -652,6 +653,20 @@ public class LayoutsAdminDisplayContext {
 		}
 
 		return _layoutId;
+	}
+
+	public List<Layout> getLayoutSetPrototypeFriendlyURLConflictSitesLayouts()
+		throws PortalException {
+
+		if (_conflictLayouts != null) {
+			return _conflictLayouts;
+		}
+
+		_conflictLayouts =
+			SitesUtil.getLayoutSetPrototypeFriendlyURLConflictSitesLayouts(
+				getSelLayout());
+
+		return _conflictLayouts;
 	}
 
 	public SearchContainer<Layout> getLayoutsSearchContainer()
@@ -1758,6 +1773,15 @@ public class LayoutsAdminDisplayContext {
 		return true;
 	}
 
+	public boolean isShowLayoutSetPrototypeFriendlyURLConflictSitesLayouts()
+		throws PortalException {
+
+		List<Layout> layouts =
+			getLayoutSetPrototypeFriendlyURLConflictSitesLayouts();
+
+		return !layouts.isEmpty();
+	}
+
 	public boolean isShowOrphanPortletsAction(Layout layout)
 		throws PortalException {
 
@@ -2258,6 +2282,7 @@ public class LayoutsAdminDisplayContext {
 	private Long _activeLayoutSetBranchId;
 	private String _backURL;
 	private final CETManager _cetManager;
+	private List<Layout> _conflictLayouts;
 	private String _displayStyle;
 	private Boolean _firstColumn;
 	private final GroupDisplayContextHelper _groupDisplayContextHelper;
