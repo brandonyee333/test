@@ -23,14 +23,13 @@ import java.util.Objects;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Leslie Wong
  */
 @Table
-public class BQEventProperty implements Persistable<String> {
+public class BQEventProperty {
 
 	public BQEventProperty() {
 	}
@@ -89,7 +88,6 @@ public class BQEventProperty implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
-	@Override
 	public String getId() {
 		return _id;
 	}
@@ -113,11 +111,6 @@ public class BQEventProperty implements Persistable<String> {
 	public int hashCode() {
 		return Objects.hash(
 			_channelId, _eventDate, _id, _name, _projectId, _value);
-	}
-
-	@Override
-	public boolean isNew() {
-		return true;
 	}
 
 	public void setChannelId(Long channelId) {

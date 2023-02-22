@@ -25,7 +25,6 @@ import org.json.JSONArray;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -33,7 +32,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Rachael Koestartyo
  */
 @Table
-public class BQIndividual implements Persistable<String> {
+public class BQIndividual {
 
 	public BQIndividual() {
 	}
@@ -107,7 +106,6 @@ public class BQIndividual implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
-	@Override
 	public String getId() {
 		return _id;
 	}
@@ -156,15 +154,6 @@ public class BQIndividual implements Persistable<String> {
 		return Objects.hash(_emailAddress);
 	}
 
-	@Override
-	public boolean isNew() {
-		if ((_isNew != null) && _isNew) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public void setAddresses(String addresses) {
 		_addresses = addresses;
 	}
@@ -199,10 +188,6 @@ public class BQIndividual implements Persistable<String> {
 
 	public void setId(String id) {
 		_id = id;
-	}
-
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setJobTitle(String jobTitle) {
@@ -258,9 +243,6 @@ public class BQIndividual implements Persistable<String> {
 
 	@Transient
 	private String _id;
-
-	@Transient
-	private Boolean _isNew;
 
 	@Transient
 	private String _jobTitle;

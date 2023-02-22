@@ -22,14 +22,13 @@ import java.util.Objects;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcos Martins
  */
 @Table
-public class BQIdentity implements Persistable<String> {
+public class BQIdentity {
 
 	@Override
 	public boolean equals(Object obj) {
@@ -61,7 +60,6 @@ public class BQIdentity implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
-	@Override
 	public String getId() {
 		return _id;
 	}
@@ -75,15 +73,6 @@ public class BQIdentity implements Persistable<String> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(_id);
-	}
-
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public void setCreateDate(Date createDate) {
@@ -100,10 +89,6 @@ public class BQIdentity implements Persistable<String> {
 		_individualId = individualId;
 	}
 
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
-	}
-
 	@Transient
 	private Date _createDate;
 
@@ -112,8 +97,5 @@ public class BQIdentity implements Persistable<String> {
 
 	@Transient
 	private String _individualId;
-
-	@Transient
-	private Boolean _isNew;
 
 }

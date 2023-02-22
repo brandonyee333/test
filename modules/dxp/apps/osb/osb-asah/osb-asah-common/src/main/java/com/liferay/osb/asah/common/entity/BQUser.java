@@ -29,7 +29,6 @@ import org.json.JSONArray;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -37,7 +36,7 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author Marcos Martins
  */
 @Table
-public class BQUser implements BQDXPEntity, Persistable<String> {
+public class BQUser implements BQDXPEntity {
 
 	public BQUser() {
 	}
@@ -151,15 +150,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 		return _uuid;
 	}
 
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
@@ -194,10 +184,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	public void setId(String id) {
 		_id = id;
-	}
-
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setJobTitle(String jobTitle) {
@@ -256,9 +242,6 @@ public class BQUser implements BQDXPEntity, Persistable<String> {
 
 	@Transient
 	private String _id;
-
-	@Transient
-	private Boolean _isNew;
 
 	@Transient
 	private String _jobTitle;

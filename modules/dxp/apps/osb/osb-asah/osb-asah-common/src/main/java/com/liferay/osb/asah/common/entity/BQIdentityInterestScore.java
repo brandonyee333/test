@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -31,14 +30,13 @@ import java.util.Objects;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcellus Tavares
  */
 @Table
-public class BQIdentityInterestScore implements Persistable<Long> {
+public class BQIdentityInterestScore {
 
 	public BQIdentityInterestScore() {
 	}
@@ -70,7 +68,6 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@JsonSerialize(using = ToStringSerializer.class)
-	@Override
 	public Long getId() {
 		return _id;
 	}
@@ -121,16 +118,6 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 		return _interested;
 	}
 
-	@JsonIgnore
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public void setId(Long id) {
 		_id = id;
 	}
@@ -145,10 +132,6 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 
 	public void setInterestScore(Double interestScore) {
 		_interestScore = interestScore;
-	}
-
-	public void setIsNew(boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setKeyword(String keyword) {
@@ -172,9 +155,6 @@ public class BQIdentityInterestScore implements Persistable<Long> {
 
 	@Transient
 	private Double _interestScore;
-
-	@Transient
-	private Boolean _isNew;
 
 	@Transient
 	private String _keyword;

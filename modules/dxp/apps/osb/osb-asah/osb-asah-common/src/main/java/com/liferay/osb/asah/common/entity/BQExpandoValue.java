@@ -19,14 +19,13 @@ import java.util.Date;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcos Martins
  */
 @Table
-public class BQExpandoValue implements Persistable<String> {
+public class BQExpandoValue {
 
 	public BQExpandoValue() {
 	}
@@ -53,7 +52,6 @@ public class BQExpandoValue implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
-	@Override
 	public String getId() {
 		return _id;
 	}
@@ -70,15 +68,6 @@ public class BQExpandoValue implements Persistable<String> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public String getValue() {
 		return _value;
-	}
-
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public void setClassPK(Long classPK) {
@@ -99,10 +88,6 @@ public class BQExpandoValue implements Persistable<String> {
 
 	public void setId(String id) {
 		_id = id;
-	}
-
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -129,9 +114,6 @@ public class BQExpandoValue implements Persistable<String> {
 
 	@Transient
 	private String _id;
-
-	@Transient
-	private Boolean _isNew;
 
 	@Transient
 	private Date _modifiedDate;

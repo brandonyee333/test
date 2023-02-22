@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -25,14 +23,13 @@ import java.util.Objects;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Marcellus Tavares
  */
 @Table
-public class BQMembershipChange implements Persistable<Long> {
+public class BQMembershipChange {
 
 	public BQMembershipChange() {
 	}
@@ -79,7 +76,6 @@ public class BQMembershipChange implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
-	@Override
 	public Long getId() {
 		return _id;
 	}
@@ -106,16 +102,6 @@ public class BQMembershipChange implements Persistable<Long> {
 			_segmentId);
 	}
 
-	@JsonIgnore
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public void setCreateDate(Date createDate) {
 		if (createDate != null) {
 			_createDate = new Date(createDate.getTime());
@@ -128,10 +114,6 @@ public class BQMembershipChange implements Persistable<Long> {
 
 	public void setIdentitiesCount(Long identitiesCount) {
 		_identitiesCount = identitiesCount;
-	}
-
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setKnownIdentitiesCount(Long knownIdentitiesCount) {
@@ -150,9 +132,6 @@ public class BQMembershipChange implements Persistable<Long> {
 
 	@Transient
 	private Long _identitiesCount;
-
-	@Transient
-	private Boolean _isNew;
 
 	@Transient
 	private Long _knownIdentitiesCount;

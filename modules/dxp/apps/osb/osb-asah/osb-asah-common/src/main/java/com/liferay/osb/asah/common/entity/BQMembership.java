@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -31,14 +30,13 @@ import java.util.Objects;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Inácio Nery
  */
 @Table
-public class BQMembership implements Persistable<Long> {
+public class BQMembership {
 
 	public BQMembership() {
 	}
@@ -92,7 +90,6 @@ public class BQMembership implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
 	@JsonSerialize(using = ToStringSerializer.class)
-	@Override
 	public Long getId() {
 		return _id;
 	}
@@ -157,16 +154,6 @@ public class BQMembership implements Persistable<Long> {
 			_removedDate, _segmentId, _status);
 	}
 
-	@JsonIgnore
-	@Override
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public void setCreateDate(Date createDate) {
 		if (createDate != null) {
 			_createDate = new Date(createDate.getTime());
@@ -183,10 +170,6 @@ public class BQMembership implements Persistable<Long> {
 
 	public void setIndividualId(String individualId) {
 		_individualId = individualId;
-	}
-
-	public void setIsNew(Boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
@@ -220,9 +203,6 @@ public class BQMembership implements Persistable<Long> {
 
 	@Transient
 	private String _individualId;
-
-	@Transient
-	private Boolean _isNew;
 
 	@Transient
 	private Date _modifiedDate;

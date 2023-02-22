@@ -24,14 +24,13 @@ import java.util.Set;
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
  * @author Leslie Wong
  */
 @Table
-public class BQSession implements Persistable<String> {
+public class BQSession {
 
 	public BQSession() {
 	}
@@ -149,7 +148,6 @@ public class BQSession implements Persistable<String> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@Id
-	@Override
 	public String getId() {
 		return _id;
 	}
@@ -205,11 +203,6 @@ public class BQSession implements Persistable<String> {
 			_browserName, _channelId, _city, _country, _deviceType, _duration,
 			_id, _platformName, _referrers, _region, _sessionEnd, _sessionStart,
 			_userId);
-	}
-
-	@Override
-	public boolean isNew() {
-		return true;
 	}
 
 	public void setAcquisitionCampaign(String acquisitionCampaign) {
