@@ -152,16 +152,21 @@ CREATE TABLE IF NOT EXISTS BQIdentityInterestScore (
 );
 
 CREATE TABLE IF NOT EXISTS BQIndividual (
+	addresses TEXT,
+	birthday TIMESTAMP,
 	createDate TIMESTAMP,
 	emailAddress TEXT,
 	fields JSON,
 	firstName TEXT,
+	gender TEXT,
 	id TEXT PRIMARY KEY,
 	jobTitle TEXT,
+	languageId TEXT,
 	lastName TEXT,
 	middleName TEXT,
 	modifiedDate TIMESTAMPTZ,
-	screenName TEXT
+	screenName TEXT,
+	timeZoneId TEXT
 );
 
 CREATE TABLE IF NOT EXISTS BQMembership (

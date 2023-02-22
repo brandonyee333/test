@@ -831,7 +831,9 @@ CREATE OR REPLACE VIEW BQFieldMapping AS (
 				('jobTitle', 'jobTitle', 'text'),
 				('familyName', 'lastName', 'text'),
 				('additionalName', 'middleName', 'text'),
-				('telephone', 'phones', 'text')
+				('languageId', 'languageId', 'text'),
+				('screenName', 'screenName', 'text'),
+				('timeZoneId', 'timeZoneId', 'text')
 			) AS TMP (
 				displayName,
 				fieldName,
