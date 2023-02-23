@@ -148,18 +148,8 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 				new ClassPathResource("functions.sql")),
 			pgSimpleDataSource);
 
-		ResourceDatabasePopulator resourceDatabasePopulator =
-			new ResourceDatabasePopulator(
-				new ClassPathResource("bigquery_functions.sql"));
-
-		resourceDatabasePopulator.setSeparator("COMMIT;");
-
-		DatabasePopulatorUtils.execute(
-			resourceDatabasePopulator, pgSimpleDataSource);
-
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
-				new ClassPathResource("bigquery_tables.sql"),
 				new ClassPathResource("tables.sql"),
 				new ClassPathResource("tables_global.sql")),
 			pgSimpleDataSource);
@@ -167,11 +157,6 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
 				new ClassPathResource("sequences.sql")),
-			pgSimpleDataSource);
-
-		DatabasePopulatorUtils.execute(
-			new ResourceDatabasePopulator(
-				new ClassPathResource("bigquery_views.sql")),
 			pgSimpleDataSource);
 
 		DatabasePopulatorUtils.execute(
