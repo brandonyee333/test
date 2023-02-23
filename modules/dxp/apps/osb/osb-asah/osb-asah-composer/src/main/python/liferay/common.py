@@ -44,7 +44,14 @@ class BaseOperator(PythonOperator):
 		) as yaml_file:
 			configuration = yaml.safe_load(yaml_file)
 
-			dag_configuration = configuration.get(self.dag.dag_id)
+			dag_configuration_key = self.dag.default_args.get(
+				'dag_configuration_key'
+			)
+
+			if dag_configuration_key:
+				dag_configuration = configuration.get(dag_configuration_key)
+			else:
+				dag_configuration = configuration.get(self.dag.dag_id)
 
 			render_configuration = self._flatten_dict(dag_configuration)
 
