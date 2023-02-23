@@ -344,7 +344,7 @@ public class BQIndividualRepositoryImpl
 		}
 
 		Collection<SortField<?>> sortFields = getSortFields(
-			_sortFieldNameConversionMap, pageable.getSort(), null);
+			_fieldNameConversionMap, pageable.getSort(), null);
 
 		SelectForUpdateStep
 			<Record11
@@ -632,6 +632,16 @@ public class BQIndividualRepositoryImpl
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
 
+	private final Map<String, String> _fieldNameConversionMap =
+		new HashMap<String, String>() {
+			{
+				put("additionalName", "middlename");
+				put("address", "addresses");
+				put("birthdate", "birthday");
+				put("familyName", "lastname");
+				put("givenName", "firstname");
+			}
+		};
 	private final List<Field<Object>> _identiyChannelFields = Arrays.asList(
 		DSL.field("activitiesCount"), DSL.field("channelId"),
 		DSL.field("createDate"), DSL.field("id"), DSL.field("identityId"),
@@ -643,13 +653,5 @@ public class BQIndividualRepositoryImpl
 
 	@Autowired
 	private QueryExecutor _queryExecutor;
-
-	private final Map<String, String> _sortFieldNameConversionMap =
-		new HashMap<String, String>() {
-			{
-				put("demographics/familyName/value", "lastname");
-				put("demographics/givenName/value", "firstname");
-			}
-		};
 
 }
