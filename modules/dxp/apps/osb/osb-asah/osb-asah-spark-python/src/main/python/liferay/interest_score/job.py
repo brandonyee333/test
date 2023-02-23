@@ -54,18 +54,21 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		self._decay_threshold_weight = self._interest_score_decay_rate ** 14
 
-	def _get_date_range_sql_command(self, start_date=None, end_date=None):
-		if start_date and end_date:
-			start_date_sql_string = f"date_add(to_date('{start_date}'), -{self._max_days_delta})"
-			end_date_sql_string = f"to_date('{end_date}')"
+	def _get_date_range_sql_command(self, end_date=None, start_date=None):
+		if end_date and start_date:
+			end_date_sql_string = "TO_DATE('{}')".format(end_date)
+			start_date_sql_string = "DATE_ADD(to_date('{}'), -{})".format(
+				start_date, self._max_days_delta
+			)
 		else:
-			start_date_sql_string = f"date_add(current_date(),-{self._max_days_delta + self._initial_run_day_range})"
 			end_date_sql_string = 'CURRENT_DATE()'
+			start_date_sql_string ="DATE_ADD(CURRENT_DATE(), -{})".format(
+				self._max_days_delta + self._initial_run_day_range
+			)
 
-		sql_command = f"SELECT sequence({start_date_sql_string}, {end_date_sql_string}, interval 1 day) " \
-					  f"as event_date"
-
-		return sql_command
+		return "SELECT SEQUENCE({}, {}, INTERVAL 1 DAY) AS event_date".format(
+			start_date_sql_string, end_date_sql_string
+		)
 
 	def _get_identity_interest_pages_data_frame(
 			self, analytics_events_data_frame, extracted_keywords_data_frame):
@@ -88,16 +91,19 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			F.col('views')
 		)
 
-	def _get_individual_interest_score_sql_command(self, start_date=None, end_date=None):
+	def _get_individual_interest_score_sql_command(
+		self, end_date=None, start_date=None):
 
-		if start_date and end_date:
-			start_date_sql_string = f'"{start_date}"'
+		if end_date and start_date:
 			end_date_sql_string = f'"{end_date}"'
+			start_date_sql_string = f'"{start_date}"'
 		else:
-			start_date_sql_string = f'DATE_SUB(CURRENT_DATE(), {self._initial_run_day_range})'
 			end_date_sql_string = 'CURRENT_DATE()'
+			start_date_sql_string = 'date_sub(CURRENT_DATE(), {})'.format(
+				self._initial_run_day_range
+			)
 
-		sql_command = f"""
+		return f"""
 			SELECT
 				userId as identityId,
 				interested,
@@ -110,8 +116,6 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 				event_date >= TIMESTAMP({start_date_sql_string}) AND
 				event_date < TIMESTAMP({end_date_sql_string})
 		"""
-
-		return sql_command
 
 	def _get_job_parameter(self, parameter_name, default_value=None):
 		job_parameters = json.loads(self.spark_application_args.job_parameters)
@@ -148,15 +152,19 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			on=['event_date']
 		)
 
-	def _get_session_interest_score_sql_command(self, start_date=None, end_date=None):
-		if start_date and end_date:
-			start_date_sql_string = f'"{start_date}"'
-			end_date_sql_string = f'"{end_date}"'
-		else:
-			start_date_sql_string = f'DATE_SUB(CURRENT_DATE(), {self._initial_run_day_range})'
-			end_date_sql_string = 'CURRENT_DATE()'
+	def _get_session_interest_score_sql_command(
+		self, end_date=None, start_date=None):
 
-		sql_command = f"""
+		if end_date and start_date:
+			end_date_sql_string = f'"{end_date}"'
+			start_date_sql_string = f'"{start_date}"'
+		else:
+			end_date_sql_string = 'CURRENT_DATE()'
+			start_date_sql_string = 'DATE_SUB(CURRENT_DATE(), {})'.format(
+				self._initial_run_day_range
+			)
+
+		return f"""
 			SELECT
 				userId as identityId,
 				interested,
@@ -170,8 +178,6 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 				event_date >= TIMESTAMP({start_date_sql_string}) AND
 				event_date < TIMESTAMP({end_date_sql_string})
 		"""
-
-		return sql_command
 
 	def _get_user_keyword_count_with_totals_data_frame(
 		self, analytics_events_with_keywords_data_frame):
@@ -309,10 +315,10 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			) * self._decay_threshold_weight
 		)
 
-		start_date = self._get_job_parameter('startDate')
 		end_date = self._get_job_parameter('endDate')
+		start_date = self._get_job_parameter('startDate')
 
-		sql_command = self._get_date_range_sql_command(start_date, end_date)
+		sql_command = self._get_date_range_sql_command(end_date, start_date)
 
 		date_range_data_frame = self.spark_session.sql(
 			sql_command
@@ -379,7 +385,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			'individual_interest_score')
 
 		sql_command = self._get_individual_interest_score_sql_command(
-			start_date, end_date)
+			end_date, start_date)
 
 		individual_interest_score_data_frame = self.spark_session.sql(sql_command)
 
@@ -396,7 +402,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		)
 
 		sql_command = self._get_session_interest_score_sql_command(
-			start_date, end_date)
+			end_date, start_date)
 
 		session_interest_score_data_frame = self.spark_session.sql(
 			sql_command)
@@ -668,20 +674,17 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		self._minimum_interactions_threshold = 5
 		self._minimum_view_duration_threshold = 5000
 
-	def _get_event_data_sql_command(self, start_date=None, end_date=None):
-		if start_date and end_date:
+	def _get_event_data_sql_command(self, end_date=None, start_date=None):
+		if end_date and start_date:
+			sql_end_date_string = f'"{end_date}"'
 			sql_start_date_string = \
 				f'DATE_SUB("{start_date}", INTERVAL {self._max_days_delta} DAY)'
-
-			sql_end_date_string = \
-				f'"{end_date}"'
-
 		else:
-			sql_start_date_string = \
-				f"DATE_SUB(CURRENT_DATE(), INTERVAL {self._max_days_delta + self._initial_run_day_range} DAY)"
-
-			sql_end_date_string = \
-				"CURRENT_DATE()"
+			sql_end_date_string = "CURRENT_DATE()"
+			sql_start_date_string =
+				"DATE_SUB(CURRENT_DATE(), INTERVAL {} DAY)".format(
+					self._max_days_delta + self._initial_run_day_range
+				)
 
 		sql_command = f"""
 			WITH FilteredEvent AS ( 
@@ -744,9 +747,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		start_date = self._get_job_parameter('startDate', None)
 		end_date = self._get_job_parameter('endDate', None)
 
-		sql_command = self._get_event_data_sql_command(
-			start_date, end_date
-		)
+		sql_command = self._get_event_data_sql_command(end_date, start_date)
 
 		event_data_frame = self.spark_session.read.format(
 			"bigquery"
