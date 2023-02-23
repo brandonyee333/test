@@ -67,7 +67,6 @@ public class BigQueryDataExporter implements DataExporter {
 		_exportPath = exportPath;
 		_tableName = tableName;
 
-
 		StorageOptions storageOptions = StorageOptions.getDefaultInstance();
 
 		_storage = storageOptions.getService();

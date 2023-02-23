@@ -20,9 +20,11 @@ import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.Faro
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,7 @@ public class UserSessionDog {
 		bqSession.setSessionEnd(sessionEndDate);
 		bqSession.setSessionStart(sessionStartDate);
 
-		return _bqSessionRepository.save(bqSession);
+		return _bqSessionRepository.insert(bqSession);
 	}
 
 	public List<BQSession> findByIds(Collection<String> ids) {
