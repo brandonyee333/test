@@ -13,7 +13,9 @@ commerce_dataproc_trigger:
                 {
                     "MINICONDA_VARIANT": "3"
                 }
+            name: "commerce-{{ dag_run.conf['datasourceId'] }}-{{ ds_nodash }}"
             name_prefix: commerce
+            properties:
             worker:
                 count: 0
                 disk_size:
@@ -32,6 +34,40 @@ commerce_dataproc_trigger:
                     "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
                     "spark.yarn.appMasterEnv.DATASOURCEID": "{{ dag_run.conf['datasourceId'] }}",
                     "spark.yarn.appMasterEnv.GOOGLE_STORAGE_BUCKET": "{{ dag.default_args['project_id'] }}-dataflow"
+                }
+interest_score_dag_trigger:
+    dataproc:
+        bucket: "{{ dag.default_args['project_id'] }}-dataproc-{{ dag.default_args['region'] }}"
+        cluster:
+            idle_delete_ttl: 900
+            image_version: '2.0'
+            master:
+                count: 1
+                disk_size:
+                disk_type: pd-standard
+                machine_type: n1-standard-4
+            metadata: !!str >
+                {
+                    "MINICONDA_VARIANT": "3",
+                    "MINICONDA_VERSION": "latest"
+                }
+            name: "interest-score-{{ dag.default_args['ac_project_id'] | truncate(20, True, '') }}-{{ ds_nodash }}"
+            properties: !!str >
+                {
+                    "dataproc:pip.packages": "spark-nlp==4.1.0,google-cloud-bigquery==3.3.5"
+                }
+            worker:
+                count: 2
+                disk_size:
+                disk_type: pd-ssd
+                machine_type: n1-standard-8
+        pyspark:
+            configuration: interest_score.yaml
+            properties: !!str >
+                {
+                    "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
+                    "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:4.1.0",
+                    "spark.jars": "gs://spark-lib/bigquery/spark-bigquery-with-dependencies_2.12-0.27.0.jar"
                 }
 pubsub_dag_trigger:
     dag:
