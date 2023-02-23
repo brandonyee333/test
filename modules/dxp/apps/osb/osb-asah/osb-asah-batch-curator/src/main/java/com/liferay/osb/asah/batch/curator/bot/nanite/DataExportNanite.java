@@ -16,6 +16,8 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
+import com.google.cloud.bigquery.BigQuery;
+
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.BigQueryDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SegmentDataExporter;
@@ -53,9 +55,10 @@ public class DataExportNanite extends BaseNanite {
 
 	@Autowired
 	public DataExportNanite(
-		DataExportTaskDog dataExportTaskDog, DSLContext dslContext,
-		ReportHttp reportHttp) {
+		BigQuery bigQuery, DataExportTaskDog dataExportTaskDog,
+		DSLContext dslContext, ReportHttp reportHttp) {
 
+		_bigQuery = bigQuery;
 		_dataExportTaskDog = dataExportTaskDog;
 		_dslContext = dslContext;
 		_reportHttp = reportHttp;
@@ -87,13 +90,13 @@ public class DataExportNanite extends BaseNanite {
 
 		if (dataExportTask.getType() == DataExportTask.Type.INDIVIDUAL) {
 			dataExporter = new BigQueryDataExporter(
-				dataExportTask, "createDate", _dslContext, _exportPath,
-				"Individual");
+				_bigQuery, dataExportTask, "createDate", _dslContext,
+				_exportPath, "Individual");
 		}
 		else if (dataExportTask.getType() == DataExportTask.Type.PAGE) {
 			dataExporter = new BigQueryDataExporter(
-				dataExportTask, "eventDate", _dslContext, _exportPath,
-				"PageDaily");
+				_bigQuery, dataExportTask, "eventDate", _dslContext,
+				_exportPath, "PageDaily");
 		}
 		else {
 			throw new IllegalArgumentException(
@@ -153,6 +156,7 @@ public class DataExportNanite extends BaseNanite {
 
 	private static final Log _log = LogFactory.getLog(DataExportNanite.class);
 
+	private final BigQuery _bigQuery;
 	private final DataExportTaskDog _dataExportTaskDog;
 	private final DSLContext _dslContext;
 

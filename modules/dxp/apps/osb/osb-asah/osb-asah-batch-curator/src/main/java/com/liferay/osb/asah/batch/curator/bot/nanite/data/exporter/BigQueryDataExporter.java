@@ -54,8 +54,12 @@ import org.jooq.impl.DSL;
 public class BigQueryDataExporter implements DataExporter {
 
 	public BigQueryDataExporter(
-		DataExportTask dataExportTask, String dateFieldName,
+		BigQuery bigQuery, DataExportTask dataExportTask, String dateFieldName,
 		DSLContext dslContext, String exportPath, String tableName) {
+
+		_bigQuery = bigQuery;
+
+		_bigQueryOptions = bigQuery.getOptions();
 
 		_dataExportTask = dataExportTask;
 		_dateFieldName = dateFieldName;
@@ -63,10 +67,6 @@ public class BigQueryDataExporter implements DataExporter {
 		_exportPath = exportPath;
 		_tableName = tableName;
 
-		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
-
-		_bigQuery = bigQueryOptions.getService();
-		_googleProjectId = bigQueryOptions.getProjectId();
 
 		StorageOptions storageOptions = StorageOptions.getDefaultInstance();
 
@@ -77,7 +77,7 @@ public class BigQueryDataExporter implements DataExporter {
 	public void export() throws Exception {
 		String exportBucket = StringUtils.replace(
 			_DATA_EXPORTER_BUCKET_TEMPLATE, "{googleProjectId}",
-			_googleProjectId);
+			_bigQueryOptions.getProjectId());
 
 		String exportBucketFolder =
 			ProjectIdThreadLocal.getProjectId() + "/" + _dataExportTask.getId();
@@ -130,7 +130,7 @@ public class BigQueryDataExporter implements DataExporter {
 	}
 
 	private String _getBigQueryTableName(String tableName) {
-		return "`" + _googleProjectId + "." +
+		return "`" + _bigQueryOptions.getProjectId() + "." +
 			ProjectIdThreadLocal.getProjectId() + "." +
 				StringUtils.lowerCase(tableName + "`");
 	}
@@ -191,11 +191,11 @@ public class BigQueryDataExporter implements DataExporter {
 		BigQueryDataExporter.class);
 
 	private final BigQuery _bigQuery;
+	private final BigQueryOptions _bigQueryOptions;
 	private final DataExportTask _dataExportTask;
 	private final String _dateFieldName;
 	private final DSLContext _dslContext;
 	private final String _exportPath;
-	private final String _googleProjectId;
 	private final Storage _storage;
 	private final String _tableName;
 

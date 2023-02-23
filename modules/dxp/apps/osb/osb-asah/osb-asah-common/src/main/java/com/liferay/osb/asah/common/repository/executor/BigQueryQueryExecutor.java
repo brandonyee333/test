@@ -26,7 +26,6 @@ import com.google.cloud.bigquery.QueryJobConfiguration;
 import com.google.cloud.bigquery.Schema;
 import com.google.cloud.bigquery.TableResult;
 
-import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.math.BigDecimal;
@@ -56,14 +55,11 @@ import org.springframework.stereotype.Component;
  * @author Matthew Kong
  */
 @Component
-@ConditionalOnGoogleApplicationCredentials
 public class BigQueryQueryExecutor implements QueryExecutor {
 
 	@Autowired
 	public BigQueryQueryExecutor(BigQuery bigQuery) {
 		_bigQuery = bigQuery;
-
-		_bigQueryOptions = bigQuery.getOptions();
 	}
 
 	@Override
@@ -187,7 +183,9 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private String _getBigQueryTableName(String tableName) {
-		return "`" + _bigQueryOptions.getProjectId() + "." +
+		BigQueryOptions bigQueryOptions = _bigQuery.getOptions();
+
+		return "`" + bigQueryOptions.getProjectId() + "." +
 			ProjectIdThreadLocal.getProjectId() + "." +
 				StringUtils.lowerCase(tableName.replace("BQ", "") + "`");
 	}
@@ -329,6 +327,5 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		BigQueryQueryExecutor.class);
 
 	private final BigQuery _bigQuery;
-	private final BigQueryOptions _bigQueryOptions;
 
 }
