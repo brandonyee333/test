@@ -669,8 +669,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
 		super(ReadAnalyticsEventsSparkJob, self).__init__(spark_application)
 
-		self._max_days_delta = 60
 		self._initial_run_day_range = 7
+		self._max_days_delta = 60
 		self._minimum_interactions_threshold = 5
 		self._minimum_view_duration_threshold = 5000
 
@@ -744,8 +744,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		return default_value
 
 	def run(self):
-		start_date = self._get_job_parameter('startDate', None)
 		end_date = self._get_job_parameter('endDate', None)
+		start_date = self._get_job_parameter('startDate', None)
 
 		sql_command = self._get_event_data_sql_command(end_date, start_date)
 
