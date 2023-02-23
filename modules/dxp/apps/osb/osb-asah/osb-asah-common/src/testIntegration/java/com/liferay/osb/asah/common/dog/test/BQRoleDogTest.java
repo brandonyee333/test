@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.BQRole;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQRoleRepository;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -44,7 +43,6 @@ public class BQRoleDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqRole1.setDataSourceId(dataSource.getId());
 		bqRole1.setId("1");
-		bqRole1.setIsNew(Boolean.TRUE);
 		bqRole1.setModifiedDate(DateUtil.newDate());
 		bqRole1.setName("Test");
 		bqRole1.setRoleId(1L);
@@ -53,12 +51,12 @@ public class BQRoleDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqRole2.setDataSourceId(dataSource.getId());
 		bqRole2.setId("2");
-		bqRole2.setIsNew(Boolean.TRUE);
 		bqRole2.setModifiedDate(DateUtil.newDate());
 		bqRole2.setName("Liferay");
 		bqRole2.setRoleId(2L);
 
-		_bqRoleRepository.saveAll(Arrays.asList(bqRole1, bqRole2));
+		_bqRoleRepository.insert(bqRole1);
+		_bqRoleRepository.insert(bqRole2);
 	}
 
 	@Test

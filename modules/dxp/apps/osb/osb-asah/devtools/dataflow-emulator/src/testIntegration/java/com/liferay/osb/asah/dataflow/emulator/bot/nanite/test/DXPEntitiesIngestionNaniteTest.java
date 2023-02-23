@@ -78,17 +78,13 @@ public class DXPEntitiesIngestionNaniteTest
 		Assertions.assertEquals(1, _bqAccountEntryRepository.count());
 		Assertions.assertEquals(1, _bqAccountGroupRepository.count());
 		Assertions.assertEquals(1, _bqExpandoColumnRepository.count());
-		Assertions.assertEquals(2, _bqExpandoValueRepository.count());
 		Assertions.assertEquals(1, _bqGroupRepository.count());
-
-		Assertions.assertEquals(1, _bqOrganizationRepository.count());
-
 		Assertions.assertEquals(1, _bqOrganizationRepository.count());
 		Assertions.assertEquals(1, _bqRoleRepository.count());
 		Assertions.assertEquals(1, _bqTeamRepository.count());
 		Assertions.assertEquals(1, _bqUserGroupRepository.count());
-
 		Assertions.assertEquals(1, _bqUserRepository.count());
+		Assertions.assertEquals(2, _bqExpandoValueRepository.count());
 	}
 
 	@Test
@@ -112,10 +108,9 @@ public class DXPEntitiesIngestionNaniteTest
 
 		bqUserGroup.setId(
 			DigestUtils.sha256Hex(String.join("#", "test", "1", "123")));
-		bqUserGroup.setIsNew(Boolean.TRUE);
 		bqUserGroup.setName("test");
 
-		_bqUserGroupRepository.save(bqUserGroup);
+		_bqUserGroupRepository.insert(bqUserGroup);
 
 		_dxpEntitiesIngestionNanite.run();
 
@@ -148,7 +143,6 @@ public class DXPEntitiesIngestionNaniteTest
 		bqOrganization.setId(
 			DigestUtils.sha256Hex(String.join("#", "test", "1", "123")));
 
-		bqOrganization.setIsNew(Boolean.TRUE);
 		bqOrganization.setName("Test");
 
 		BQExpandoValue bqExpandoValue = new BQExpandoValue();
@@ -160,12 +154,11 @@ public class DXPEntitiesIngestionNaniteTest
 		bqExpandoValue.setId(
 			DigestUtils.sha256Hex(String.join("#", "test", "1", "1", "123")));
 
-		bqExpandoValue.setIsNew(Boolean.TRUE);
 		bqExpandoValue.setValue("1234");
 
-		_bqExpandoValueRepository.save(bqExpandoValue);
+		_bqExpandoValueRepository.insert(bqExpandoValue);
 
-		_bqOrganizationRepository.save(bqOrganization);
+		_bqOrganizationRepository.insert(bqOrganization);
 
 		_dxpEntitiesIngestionNanite.run();
 

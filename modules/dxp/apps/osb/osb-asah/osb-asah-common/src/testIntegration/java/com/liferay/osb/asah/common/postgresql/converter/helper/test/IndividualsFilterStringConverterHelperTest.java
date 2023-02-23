@@ -922,9 +922,7 @@ public class IndividualsFilterStringConverterHelperTest
 			BQMembershipChange bqMembershipChange = _objectMapper.convertValue(
 				jsonArray.getJSONObject(i), BQMembershipChange.class);
 
-			bqMembershipChange.setIsNew(Boolean.TRUE);
-
-			_bqMembershipChangeRepository.save(bqMembershipChange);
+			_bqMembershipChangeRepository.insert(bqMembershipChange);
 		}
 	}
 
@@ -938,9 +936,7 @@ public class IndividualsFilterStringConverterHelperTest
 			BQMembership bqMembership = _objectMapper.convertValue(
 				jsonArray.getJSONObject(i), BQMembership.class);
 
-			bqMembership.setIsNew(Boolean.TRUE);
-
-			_bqMembershipRepository.save(bqMembership);
+			_bqMembershipRepository.insert(bqMembership);
 		}
 	}
 
@@ -954,9 +950,7 @@ public class IndividualsFilterStringConverterHelperTest
 			BQOrganization bqOrganization = _objectMapper.convertValue(
 				jsonArray.getJSONObject(i), BQOrganization.class);
 
-			bqOrganization.setIsNew(Boolean.TRUE);
-
-			_bqOrganizationRepository.save(bqOrganization);
+			_bqOrganizationRepository.insert(bqOrganization);
 		}
 	}
 

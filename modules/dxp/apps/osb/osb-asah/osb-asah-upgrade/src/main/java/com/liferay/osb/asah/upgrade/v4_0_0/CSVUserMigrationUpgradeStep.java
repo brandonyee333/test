@@ -44,9 +44,8 @@ public class CSVUserMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 				Long.valueOf(jsonObject.getString("dataSourceId")));
 			bqCSVUser.setFieldsJSONArray(
 				_toFieldsJSONArray(jsonObject.getJSONObject("fields")));
-			bqCSVUser.setIsNew(Boolean.TRUE);
 
-			_bqCSVUserRepository.save(bqCSVUser);
+			_bqCSVUserRepository.insert(bqCSVUser);
 		};
 	}
 

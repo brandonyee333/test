@@ -52,7 +52,6 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 		bqUser1.setDXPUserId(1L);
 		bqUser1.setFirstName("Test");
 		bqUser1.setId("1");
-		bqUser1.setIsNew(Boolean.TRUE);
 		bqUser1.setModifiedDate(DateUtil.newDate());
 
 		BQUser bqUser2 = new BQUser();
@@ -61,10 +60,9 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 		bqUser2.setDXPUserId(2L);
 		bqUser2.setFirstName("Liferay");
 		bqUser2.setId("2");
-		bqUser2.setIsNew(Boolean.TRUE);
 		bqUser2.setModifiedDate(DateUtil.newDate());
 
-		_bqUserRepository.saveAll(Arrays.asList(bqUser1, bqUser2));
+		_bqUserRepository.insertAll(Arrays.asList(bqUser1, bqUser2));
 
 		bqExpandoValue = new BQExpandoValue();
 
@@ -73,10 +71,9 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 		bqExpandoValue.setColumnId(bqExpandoColumn.getColumnId());
 		bqExpandoValue.setDataSourceId(dataSource.getId());
 		bqExpandoValue.setId("1");
-		bqExpandoValue.setIsNew(Boolean.TRUE);
 		bqExpandoValue.setValue("test");
 
-		bqExpandoValue = _bqExpandoValueRepository.save(bqExpandoValue);
+		bqExpandoValue = _bqExpandoValueRepository.insert(bqExpandoValue);
 	}
 
 	@Test

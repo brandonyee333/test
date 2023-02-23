@@ -48,7 +48,9 @@ import org.springframework.stereotype.Component;
 public class BQMembershipChangeDog {
 
 	public void addBQMembershipChange(BQMembershipChange bqMembershipChange) {
+
 		// TODO
+
 	}
 
 	public void addBQMembershipChange(List<BQMembership> bqMemberships) {

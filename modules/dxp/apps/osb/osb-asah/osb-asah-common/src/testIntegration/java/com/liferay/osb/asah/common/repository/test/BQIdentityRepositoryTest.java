@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,45 +34,33 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Ivica Cardic
  */
 @Import(JDBCTestConfiguration.class)
-public class BQIdentityRepositoryTest
-	extends BaseRepositoryTestCase<BQIdentity, String> {
+public class BQIdentityRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
 		List<BQIdentity> bqIdentities = _addBQIdentities();
 
-		setUpRepository(bqIdentities.toArray(new BQIdentity[0]));
+		bqIdentities.forEach(_bqIdentityRepository::insert);
 
 		_addBQEvents();
 		_addBQIndividuals();
 		_addBQSessions();
-	}
-
-	@AfterEach
-	public void tearDown() {
-		super.tearDown();
-
-		_bqEventRepository.deleteAll();
-		_bqIndividualRepository.deleteAll();
 	}
 
 	@Test
@@ -106,25 +93,6 @@ public class BQIdentityRepositoryTest
 				_timeZoneDog.getZoneId());
 
 		Assertions.assertEquals(4, totalActiveIndividualsCount, 0);
-	}
-
-	@Override
-	@Test
-	public void testSave() {
-		BQIdentity bqIdentity = _randomBQIdentity();
-
-		Assertions.assertEquals(
-			bqIdentity, _bqIdentityRepository.save(bqIdentity));
-	}
-
-	@Override
-	@Test
-	public void testSaveAll() {
-		BQIdentity bqIdentity = _randomBQIdentity();
-
-		Assertions.assertEquals(
-			Arrays.asList(bqIdentity),
-			_bqIdentityRepository.saveAll(Arrays.asList(bqIdentity)));
 	}
 
 	@Test
@@ -169,13 +137,6 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(0, identityIds.size());
 	}
 
-	@Override
-	protected PagingAndSortingRepository<BQIdentity, String>
-		getPagingAndSortingRepository() {
-
-		return _bqIdentityRepository;
-	}
-
 	private void _addBQEvents() {
 		BQEvent bqEvent = new BQEvent();
 
@@ -187,7 +148,7 @@ public class BQIdentityRepositoryTest
 		bqEvent.setId("1");
 		bqEvent.setUserId("1");
 
-		_bqEventRepository.save(bqEvent);
+		_bqEventRepository.insert(bqEvent);
 
 		bqEvent = new BQEvent();
 
@@ -199,7 +160,7 @@ public class BQIdentityRepositoryTest
 		bqEvent.setId("2");
 		bqEvent.setUserId("2");
 
-		_bqEventRepository.save(bqEvent);
+		_bqEventRepository.insert(bqEvent);
 
 		bqEvent = new BQEvent();
 
@@ -211,7 +172,7 @@ public class BQIdentityRepositoryTest
 		bqEvent.setId("3");
 		bqEvent.setUserId("3");
 
-		_bqEventRepository.save(bqEvent);
+		_bqEventRepository.insert(bqEvent);
 
 		bqEvent = new BQEvent();
 
@@ -223,7 +184,7 @@ public class BQIdentityRepositoryTest
 		bqEvent.setId("4");
 		bqEvent.setUserId("4");
 
-		_bqEventRepository.save(bqEvent);
+		_bqEventRepository.insert(bqEvent);
 
 		bqEvent = new BQEvent();
 
@@ -235,7 +196,7 @@ public class BQIdentityRepositoryTest
 		bqEvent.setId("5");
 		bqEvent.setUserId("5");
 
-		_bqEventRepository.save(bqEvent);
+		_bqEventRepository.insert(bqEvent);
 	}
 
 	private List<BQIdentity> _addBQIdentities() {
@@ -246,7 +207,6 @@ public class BQIdentityRepositoryTest
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -3));
 		bqIdentity.setId("1");
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("test1@liferay.com"));
-		bqIdentity.setIsNew(Boolean.TRUE);
 
 		bqIdentities.add(bqIdentity);
 
@@ -255,7 +215,6 @@ public class BQIdentityRepositoryTest
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -5));
 		bqIdentity.setId("2");
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("test2@liferay.com"));
-		bqIdentity.setIsNew(Boolean.TRUE);
 
 		bqIdentities.add(bqIdentity);
 
@@ -264,7 +223,6 @@ public class BQIdentityRepositoryTest
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqIdentity.setId("3");
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("test3@liferay.com"));
-		bqIdentity.setIsNew(Boolean.TRUE);
 
 		bqIdentities.add(bqIdentity);
 
@@ -273,7 +231,6 @@ public class BQIdentityRepositoryTest
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -36));
 		bqIdentity.setId("4");
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("test4@liferay.com"));
-		bqIdentity.setIsNew(Boolean.TRUE);
 
 		bqIdentities.add(bqIdentity);
 
@@ -281,7 +238,6 @@ public class BQIdentityRepositoryTest
 
 		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
 		bqIdentity.setId("5");
-		bqIdentity.setIsNew(Boolean.TRUE);
 
 		bqIdentities.add(bqIdentity);
 
@@ -295,36 +251,32 @@ public class BQIdentityRepositoryTest
 		bqIndividual.setEmailAddress("test1@liferay.com");
 		bqIndividual.setFirstName("Test1");
 		bqIndividual.setId(DigestUtils.sha256Hex("test1@liferay.com"));
-		bqIndividual.setIsNew(Boolean.TRUE);
 
-		_bqIndividualRepository.save(bqIndividual);
+		_bqIndividualRepository.insert(bqIndividual);
 
 		bqIndividual = new BQIndividual();
 
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -4));
 		bqIndividual.setEmailAddress("test2@liferay.com");
 		bqIndividual.setId(DigestUtils.sha256Hex("test2@liferay.com"));
-		bqIndividual.setIsNew(Boolean.TRUE);
 
-		_bqIndividualRepository.save(bqIndividual);
+		_bqIndividualRepository.insert(bqIndividual);
 
 		bqIndividual = new BQIndividual();
 
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -10));
 		bqIndividual.setEmailAddress("test3@liferay.com");
 		bqIndividual.setId(DigestUtils.sha256Hex("test3@liferay.com"));
-		bqIndividual.setIsNew(Boolean.TRUE);
 
-		_bqIndividualRepository.save(bqIndividual);
+		_bqIndividualRepository.insert(bqIndividual);
 
 		bqIndividual = new BQIndividual();
 
 		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -35));
 		bqIndividual.setEmailAddress("test4@liferay.com");
 		bqIndividual.setId(DigestUtils.sha256Hex("test4@liferay.com"));
-		bqIndividual.setIsNew(Boolean.TRUE);
 
-		_bqIndividualRepository.save(bqIndividual);
+		_bqIndividualRepository.insert(bqIndividual);
 	}
 
 	private void _addBQSessions() {
@@ -342,18 +294,7 @@ public class BQIdentityRepositoryTest
 				ZoneId.systemDefault()));
 		bqSession.setUserId("1");
 
-		_bqSessionRepository.save(bqSession);
-	}
-
-	private BQIdentity _randomBQIdentity() {
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(new Date());
-		bqIdentity.setId(RandomTestUtil.randomUUID());
-		bqIdentity.setIndividualId(RandomTestUtil.randomEmailAddress());
-		bqIdentity.setIsNew(Boolean.TRUE);
-
-		return bqIdentity;
+		_bqSessionRepository.insert(bqSession);
 	}
 
 	@Autowired

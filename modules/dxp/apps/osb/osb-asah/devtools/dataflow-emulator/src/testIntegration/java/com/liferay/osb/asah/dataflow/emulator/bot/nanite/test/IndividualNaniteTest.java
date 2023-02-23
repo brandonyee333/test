@@ -58,9 +58,8 @@ public class IndividualNaniteTest
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
-		bqIdentity.setIsNew(Boolean.TRUE);
 
-		_bqIdentityRepository.save(bqIdentity);
+		_bqIdentityRepository.insert(bqIdentity);
 
 		// BQUser 1
 
@@ -72,10 +71,9 @@ public class IndividualNaniteTest
 		bqUser1.setEmailAddressHashed(
 			DigestUtils.sha256Hex(bqUser1.getEmailAddress()));
 		bqUser1.setId(RandomTestUtil.randomString());
-		bqUser1.setIsNew(Boolean.TRUE);
 		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
 
-		_bqUserRepository.save(bqUser1);
+		_bqUserRepository.insert(bqUser1);
 
 		BQExpandoColumn bqExpandoColumn1 = new BQExpandoColumn();
 
@@ -85,10 +83,9 @@ public class IndividualNaniteTest
 		bqExpandoColumn1.setDataType("string");
 		bqExpandoColumn1.setDisplayType("selection-list");
 		bqExpandoColumn1.setId(RandomTestUtil.randomString());
-		bqExpandoColumn1.setIsNew(Boolean.TRUE);
 		bqExpandoColumn1.setName("age");
 
-		_bqExpandoColumnRepository.save(bqExpandoColumn1);
+		_bqExpandoColumnRepository.insert(bqExpandoColumn1);
 
 		BQExpandoValue bqExpandoValue1 = new BQExpandoValue();
 
@@ -97,11 +94,10 @@ public class IndividualNaniteTest
 		bqExpandoValue1.setColumnId(bqExpandoColumn1.getColumnId());
 		bqExpandoValue1.setDataSourceId(bqUser1.getDataSourceId());
 		bqExpandoValue1.setId(RandomTestUtil.randomString());
-		bqExpandoValue1.setIsNew(Boolean.TRUE);
 		bqExpandoValue1.setValue("[18]");
 		bqExpandoValue1.setModifiedDate(bqUser1.getModifiedDate());
 
-		_bqExpandoValueRepository.save(bqExpandoValue1);
+		_bqExpandoValueRepository.insert(bqExpandoValue1);
 
 		// BQUser 2
 
@@ -113,10 +109,9 @@ public class IndividualNaniteTest
 		bqUser2.setEmailAddressHashed(
 			DigestUtils.sha256Hex(bqUser2.getEmailAddress()));
 		bqUser2.setId(RandomTestUtil.randomString());
-		bqUser2.setIsNew(Boolean.TRUE);
 		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-05T12:00:00.000Z"));
 
-		_bqUserRepository.save(bqUser2);
+		_bqUserRepository.insert(bqUser2);
 
 		BQExpandoColumn bqExpandoColumn2 = new BQExpandoColumn();
 
@@ -126,10 +121,9 @@ public class IndividualNaniteTest
 		bqExpandoColumn2.setDataType("string");
 		bqExpandoColumn2.setDisplayType("input-field");
 		bqExpandoColumn2.setId(RandomTestUtil.randomString());
-		bqExpandoColumn2.setIsNew(Boolean.TRUE);
 		bqExpandoColumn2.setName("age");
 
-		_bqExpandoColumnRepository.save(bqExpandoColumn2);
+		_bqExpandoColumnRepository.insert(bqExpandoColumn2);
 
 		BQExpandoValue bqExpandoValue2 = new BQExpandoValue();
 
@@ -138,11 +132,10 @@ public class IndividualNaniteTest
 		bqExpandoValue2.setColumnId(bqExpandoColumn2.getColumnId());
 		bqExpandoValue2.setDataSourceId(bqUser2.getDataSourceId());
 		bqExpandoValue2.setId(RandomTestUtil.randomString());
-		bqExpandoValue2.setIsNew(Boolean.TRUE);
 		bqExpandoValue2.setValue("20");
 		bqExpandoValue2.setModifiedDate(bqUser2.getModifiedDate());
 
-		_bqExpandoValueRepository.save(bqExpandoValue2);
+		_bqExpandoValueRepository.insert(bqExpandoValue2);
 
 		_individualNanite.run();
 
@@ -188,9 +181,8 @@ public class IndividualNaniteTest
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
-		bqIdentity.setIsNew(Boolean.TRUE);
 
-		_bqIdentityRepository.save(bqIdentity);
+		_bqIdentityRepository.insert(bqIdentity);
 
 		// BQUser 1
 
@@ -202,10 +194,9 @@ public class IndividualNaniteTest
 		bqUser1.setEmailAddressHashed(
 			DigestUtils.sha256Hex(bqUser1.getEmailAddress()));
 		bqUser1.setId(RandomTestUtil.randomString());
-		bqUser1.setIsNew(Boolean.TRUE);
 		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
 
-		_bqUserRepository.save(bqUser1);
+		_bqUserRepository.insert(bqUser1);
 
 		BQExpandoColumn bqExpandoColumn1 = new BQExpandoColumn();
 
@@ -215,10 +206,9 @@ public class IndividualNaniteTest
 		bqExpandoColumn1.setDataType("string");
 		bqExpandoColumn1.setDisplayType("input-field");
 		bqExpandoColumn1.setId(RandomTestUtil.randomString());
-		bqExpandoColumn1.setIsNew(Boolean.TRUE);
 		bqExpandoColumn1.setName("age");
 
-		_bqExpandoColumnRepository.save(bqExpandoColumn1);
+		_bqExpandoColumnRepository.insert(bqExpandoColumn1);
 
 		BQExpandoValue bqExpandoValue1 = new BQExpandoValue();
 
@@ -227,11 +217,10 @@ public class IndividualNaniteTest
 		bqExpandoValue1.setColumnId(bqExpandoColumn1.getColumnId());
 		bqExpandoValue1.setDataSourceId(bqUser1.getDataSourceId());
 		bqExpandoValue1.setId(RandomTestUtil.randomString());
-		bqExpandoValue1.setIsNew(Boolean.TRUE);
 		bqExpandoValue1.setValue("18");
 		bqExpandoValue1.setModifiedDate(bqUser1.getModifiedDate());
 
-		_bqExpandoValueRepository.save(bqExpandoValue1);
+		_bqExpandoValueRepository.insert(bqExpandoValue1);
 
 		// BQUser 2
 
@@ -243,10 +232,9 @@ public class IndividualNaniteTest
 		bqUser2.setEmailAddressHashed(
 			DigestUtils.sha256Hex(bqUser2.getEmailAddress()));
 		bqUser2.setId(RandomTestUtil.randomString());
-		bqUser2.setIsNew(Boolean.TRUE);
 		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-05T12:00:00.000Z"));
 
-		_bqUserRepository.save(bqUser2);
+		_bqUserRepository.insert(bqUser2);
 
 		BQExpandoColumn bqExpandoColumn2 = new BQExpandoColumn();
 
@@ -256,10 +244,9 @@ public class IndividualNaniteTest
 		bqExpandoColumn2.setDataType("string");
 		bqExpandoColumn2.setDisplayType("input-field");
 		bqExpandoColumn2.setId(RandomTestUtil.randomString());
-		bqExpandoColumn2.setIsNew(Boolean.TRUE);
 		bqExpandoColumn2.setName("age");
 
-		_bqExpandoColumnRepository.save(bqExpandoColumn2);
+		_bqExpandoColumnRepository.insert(bqExpandoColumn2);
 
 		BQExpandoValue bqExpandoValue2 = new BQExpandoValue();
 
@@ -268,11 +255,10 @@ public class IndividualNaniteTest
 		bqExpandoValue2.setColumnId(bqExpandoColumn2.getColumnId());
 		bqExpandoValue2.setDataSourceId(bqUser2.getDataSourceId());
 		bqExpandoValue2.setId(RandomTestUtil.randomString());
-		bqExpandoValue2.setIsNew(Boolean.TRUE);
 		bqExpandoValue2.setValue("20");
 		bqExpandoValue2.setModifiedDate(bqUser2.getModifiedDate());
 
-		_bqExpandoValueRepository.save(bqExpandoValue2);
+		_bqExpandoValueRepository.insert(bqExpandoValue2);
 
 		_individualNanite.run();
 
@@ -308,9 +294,8 @@ public class IndividualNaniteTest
 		bqIdentity.setCreateDate(new Date());
 		bqIdentity.setId(RandomTestUtil.randomUUID());
 		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
-		bqIdentity.setIsNew(Boolean.TRUE);
 
-		_bqIdentityRepository.save(bqIdentity);
+		_bqIdentityRepository.insert(bqIdentity);
 
 		BQUser bqUser1 = new BQUser();
 
@@ -327,10 +312,9 @@ public class IndividualNaniteTest
 				)));
 		bqUser1.setFirstName("Joe");
 		bqUser1.setId(RandomTestUtil.randomString());
-		bqUser1.setIsNew(Boolean.TRUE);
 		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
 
-		_bqUserRepository.save(bqUser1);
+		_bqUserRepository.insert(bqUser1);
 
 		BQUser bqUser2 = new BQUser();
 
@@ -352,10 +336,9 @@ public class IndividualNaniteTest
 					"value", "Liferay"
 				)));
 		bqUser2.setId(RandomTestUtil.randomString());
-		bqUser2.setIsNew(Boolean.TRUE);
 		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-03T12:00:00.000Z"));
 
-		_bqUserRepository.save(bqUser2);
+		_bqUserRepository.insert(bqUser2);
 
 		_individualNanite.run();
 

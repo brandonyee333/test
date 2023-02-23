@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -36,14 +35,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Rachael Koestartyo
  */
 @Import(JDBCTestConfiguration.class)
-public class BQOrganizationRepositoryTest
-	extends BaseRepositoryTestCase<BQOrganization, String> {
+public class BQOrganizationRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
@@ -75,24 +72,18 @@ public class BQOrganizationRepositoryTest
 
 		bqOrganization.setDataSourceId(dataSource1.getId());
 		bqOrganization.setId(RandomTestUtil.randomUUID());
-		bqOrganization.setIsNew(Boolean.TRUE);
 		bqOrganization.setModifiedDate(new Date());
 		bqOrganization.setName("Organization 1");
 		bqOrganization.setOrganizationId(123L);
 		bqOrganization.setParentOrganizationId(0L);
 
-		setUpRepository(bqOrganization);
+		_bqOrganizationRepository.insert(bqOrganization);
 	}
 
 	@AfterEach
-	@Override
 	public void tearDown() {
-		super.tearDown();
-
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
-
-		_bqOrganizationRepository.deleteAll();
 	}
 
 	@Test
@@ -123,47 +114,6 @@ public class BQOrganizationRepositoryTest
 			_bqOrganizationRepository.findByName("Org", PageRequest.of(0, 10));
 
 		Assertions.assertEquals(1, bqOrganizations.size());
-	}
-
-	@Override
-	@Test
-	public void testSave() {
-		BQOrganization bqOrganization = _randomBQOrganization();
-
-		Assertions.assertEquals(
-			bqOrganization, _bqOrganizationRepository.save(bqOrganization));
-	}
-
-	@Override
-	@Test
-	public void testSaveAll() {
-		BQOrganization bqOrganization = _randomBQOrganization();
-
-		Assertions.assertEquals(
-			Arrays.asList(bqOrganization),
-			_bqOrganizationRepository.saveAll(Arrays.asList(bqOrganization)));
-	}
-
-	@Override
-	protected PagingAndSortingRepository<BQOrganization, String>
-		getPagingAndSortingRepository() {
-
-		return _bqOrganizationRepository;
-	}
-
-	private BQOrganization _randomBQOrganization() {
-		BQOrganization bqOrganization = new BQOrganization();
-
-		bqOrganization.setCreateDate(new Date());
-		bqOrganization.setDataSourceId(RandomTestUtil.randomNumber());
-		bqOrganization.setId(RandomTestUtil.randomUUID());
-		bqOrganization.setIsNew(Boolean.TRUE);
-		bqOrganization.setModifiedDate(new Date());
-		bqOrganization.setName(RandomTestUtil.randomString());
-		bqOrganization.setOrganizationId(RandomTestUtil.randomNumber());
-		bqOrganization.setParentOrganizationId(RandomTestUtil.randomNumber());
-
-		return bqOrganization;
 	}
 
 	@Autowired

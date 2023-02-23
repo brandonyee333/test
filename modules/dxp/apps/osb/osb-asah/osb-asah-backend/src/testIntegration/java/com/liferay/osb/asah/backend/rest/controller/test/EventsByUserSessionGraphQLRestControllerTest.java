@@ -19,16 +19,13 @@ import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Collections;
 import java.util.Date;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,12 +67,6 @@ public class EventsByUserSessionGraphQLRestControllerTest
 			"2021-10-08T01:00:00.000Z");
 	}
 
-	@AfterEach
-	public void tearDown() {
-		_bqEventRepository.deleteAll();
-		_bqSessionRepository.deleteAll();
-	}
-
 	private void _createBQEvent(
 			Date eventDate, String eventDefinitionName, String sessionId)
 		throws Exception {
@@ -103,9 +94,8 @@ public class EventsByUserSessionGraphQLRestControllerTest
 
 		bqIdentity.setId("1");
 		bqIdentity.setIndividualId("1");
-		bqIdentity.setIsNew(Boolean.TRUE);
 
-		_bqIdentityRepository.save(bqIdentity);
+		_bqIdentityRepository.insert(bqIdentity);
 	}
 
 	private void _createUserSession(
@@ -118,13 +108,7 @@ public class EventsByUserSessionGraphQLRestControllerTest
 	}
 
 	@Autowired
-	private BQEventRepository _bqEventRepository;
-
-	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
-	private BQSessionRepository _bqSessionRepository;
 
 	@Autowired
 	private EventDog _eventDog;

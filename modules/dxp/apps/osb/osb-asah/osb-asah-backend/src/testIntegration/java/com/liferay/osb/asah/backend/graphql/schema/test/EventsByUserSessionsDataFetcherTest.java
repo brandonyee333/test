@@ -25,9 +25,7 @@ import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -41,7 +39,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,12 +63,6 @@ public class EventsByUserSessionsDataFetcherTest
 		_createEvent("assetDownloaded");
 
 		_userSessionDog.addBQSession(1L, "sessionId", new Date(), new Date());
-	}
-
-	@AfterEach
-	public void tearDown() {
-		_bqEventRepository.deleteAll();
-		_bqSessionRepository.deleteAll();
 	}
 
 	@Test
@@ -111,9 +102,8 @@ public class EventsByUserSessionsDataFetcherTest
 
 		bqIdentity.setId("1");
 		bqIdentity.setIndividualId("1");
-		bqIdentity.setIsNew(Boolean.TRUE);
 
-		_bqIdentityRepository.save(bqIdentity);
+		_bqIdentityRepository.insert(bqIdentity);
 	}
 
 	private void _createEvent(String eventDefinitionName) throws Exception {
@@ -151,13 +141,7 @@ public class EventsByUserSessionsDataFetcherTest
 	}
 
 	@Autowired
-	private BQEventRepository _bqEventRepository;
-
-	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
-	private BQSessionRepository _bqSessionRepository;
 
 	@Autowired
 	private EventDog _eventDog;

@@ -98,7 +98,6 @@ public class BQOrganizationDogTest
 		bqOrganization.setCreateDate(new Date());
 		bqOrganization.setDataSourceId(dataSource.getId());
 		bqOrganization.setId(RandomTestUtil.randomUUID());
-		bqOrganization.setIsNew(Boolean.TRUE);
 		bqOrganization.setModifiedDate(
 			new Date(dataJSONObject.getLong("modifiedDate")));
 		bqOrganization.setName(dataJSONObject.getString("name"));
@@ -110,7 +109,7 @@ public class BQOrganizationDogTest
 			dataJSONObject.optLong("parentOrganizationId"));
 		bqOrganization.setType(dataJSONObject.optString("type"));
 
-		return _bqOrganizationRepository.save(bqOrganization);
+		return _bqOrganizationRepository.insert(bqOrganization);
 	}
 
 	@Autowired

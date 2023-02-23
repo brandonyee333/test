@@ -34,14 +34,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Marcellus Tavares
  */
 @Import(JDBCTestConfiguration.class)
-public class BQCSVUserRepositoryTest
-	extends BaseRepositoryTestCase<BQCSVUser, Long> {
+public class BQCSVUserRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
@@ -94,16 +92,11 @@ public class BQCSVUserRepositoryTest
 
 		bqCSVUser2.setDataSourceUserPK("2");
 
-		setUpRepository(bqCSVUser1, bqCSVUser2);
-
-		_bqCSVUser1 = entityModels.get(0);
-		_bqCSVUser2 = entityModels.get(1);
+		_bqCSVUserRepository.insertAll(Arrays.asList(bqCSVUser1, bqCSVUser2));
 	}
 
 	@AfterEach
 	public void tearDown() {
-		super.tearDown();
-
 		_channelRepository.deleteAll();
 		_dataSourceRepository.deleteAll();
 	}
@@ -137,13 +130,6 @@ public class BQCSVUserRepositoryTest
 			_bqCSVUserRepository.findByDataSourceId(1L, PageRequest.of(0, 10));
 
 		Assertions.assertEquals(2L, bqCSVIdentitiesById.size());
-	}
-
-	@Override
-	protected PagingAndSortingRepository<BQCSVUser, Long>
-		getPagingAndSortingRepository() {
-
-		return _bqCSVUserRepository;
 	}
 
 	private BQCSVUser _bqCSVUser1;

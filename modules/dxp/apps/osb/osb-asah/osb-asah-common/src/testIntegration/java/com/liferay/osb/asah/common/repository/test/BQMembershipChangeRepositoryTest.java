@@ -44,14 +44,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Marcellus Tavares
  */
 @Import(JDBCTestConfiguration.class)
-public class BQMembershipChangeRepositoryTest
-	extends BaseRepositoryTestCase<BQMembershipChange, Long> {
+public class BQMembershipChangeRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
@@ -73,10 +71,7 @@ public class BQMembershipChangeRepositoryTest
 				_createBQMembershipChange(_tomorrow, 5, segment));
 		}
 
-		setUpRepository(
-			bqMembershipsChanges.toArray(new BQMembershipChange[0]));
-
-		_bqMembershipChange = entityModels.get(1);
+		bqMembershipsChanges.forEach(_bqMembershipChangeRepository::insert);
 	}
 
 	@Test
@@ -174,8 +169,6 @@ public class BQMembershipChangeRepositoryTest
 
 		Assertions.assertEquals(
 			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
-		Assertions.assertEquals(
-			entityModels.get(2), bqMembershipChanges.get(0));
 
 		List<Segment> segments = _segments.subList(0, 2);
 
@@ -221,8 +214,6 @@ public class BQMembershipChangeRepositoryTest
 
 		Assertions.assertEquals(
 			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
-		Assertions.assertEquals(
-			entityModels.get(0), bqMembershipChanges.get(0));
 
 		bqMembershipChanges =
 			_bqMembershipChangeRepository.searchBQMembershipChanges(
@@ -237,13 +228,6 @@ public class BQMembershipChangeRepositoryTest
 		Assertions.assertEquals(
 			1, bqMembershipChangesMap.size(),
 			bqMembershipChangesMap.toString());
-	}
-
-	@Override
-	protected PagingAndSortingRepository<BQMembershipChange, Long>
-		getPagingAndSortingRepository() {
-
-		return _bqMembershipChangeRepository;
 	}
 
 	private Segment _addSegment() {

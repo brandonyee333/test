@@ -16,12 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -95,8 +93,6 @@ public class EventHistogramGraphQLRestControllerTest
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		_bqEventRepository.deleteAll();
-
 		TimeZone.setDefault(_timeZone);
 	}
 
@@ -105,9 +101,8 @@ public class EventHistogramGraphQLRestControllerTest
 
 		bqIdentity.setId("1");
 		bqIdentity.setIndividualId("1");
-		bqIdentity.setIsNew(Boolean.TRUE);
 
-		_bqIdentityRepository.save(bqIdentity);
+		_bqIdentityRepository.insert(bqIdentity);
 	}
 
 	private void _createEvent(
@@ -132,16 +127,10 @@ public class EventHistogramGraphQLRestControllerTest
 	}
 
 	@Autowired
-	private BQEventRepository _bqEventRepository;
-
-	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
 
 	@Autowired
 	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
-
-	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
 	private EventDog _eventDog;

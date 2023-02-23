@@ -166,7 +166,6 @@ public class FaroInfoTestUtil {
 		bqCSVUser.setDataSourceUserPK(dataSourceUserPK);
 		bqCSVUser.setDataSourceId(dataSourceId);
 		bqCSVUser.setId(Long.valueOf(_timeOrderedUuidGenerator.generateId()));
-		bqCSVUser.setIsNew(Boolean.TRUE);
 
 		return bqCSVUser;
 	}
@@ -184,7 +183,6 @@ public class FaroInfoTestUtil {
 				new BQIdentityInterestScore();
 
 			bqIdentityInterestScore.setIdentityId(identityId);
-			bqIdentityInterestScore.setIsNew(Boolean.TRUE);
 			bqIdentityInterestScore.setKeyword(
 				keywordJSONObject.getString("keyword"));
 			bqIdentityInterestScore.setRecordedDate(recordedDate);

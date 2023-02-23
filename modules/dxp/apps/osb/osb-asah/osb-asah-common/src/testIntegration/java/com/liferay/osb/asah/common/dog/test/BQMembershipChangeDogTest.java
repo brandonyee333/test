@@ -138,7 +138,7 @@ public class BQMembershipChangeDogTest
 		BQMembershipChange bqMembershipChange = _addMembershipChange(
 			DateUtils.addDays(date, -1), 1, segment);
 
-		_bqMembershipChangeRepository.save(bqMembershipChange);
+		_bqMembershipChangeRepository.insert(bqMembershipChange);
 
 		List<BQMembershipChange> bqMembershipChanges =
 			_bqMembershipChangeDog.getLastBeforeTodayBySegmentIds(
@@ -158,7 +158,7 @@ public class BQMembershipChangeDogTest
 		bqMembershipChange.setKnownIdentitiesCount((long)index);
 		bqMembershipChange.setSegmentId(segment.getId());
 
-		return _bqMembershipChangeRepository.save(bqMembershipChange);
+		return _bqMembershipChangeRepository.insert(bqMembershipChange);
 	}
 
 	private Segment _addSegment(Channel channel, Date createDate) {

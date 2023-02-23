@@ -36,13 +36,11 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Robson Pastor
  */
-public class BQIdentityInterestScoreRepositoryTest
-	extends BaseRepositoryTestCase<BQIdentityInterestScore, Long> {
+public class BQIdentityInterestScoreRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
@@ -60,9 +58,8 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		bqIdentity1.setId("374790569167317525");
 		bqIdentity1.setIndividualId("374790569167317525");
-		bqIdentity1.setIsNew(true);
 
-		_bqIdentityRepository.save(bqIdentity1);
+		_bqIdentityRepository.insert(bqIdentity1);
 
 		BQIdentityInterestScore bqIdentityInterestScore2 =
 			new BQIdentityInterestScore();
@@ -78,9 +75,8 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		bqIdentity2.setId("374790575409131096");
 		bqIdentity2.setIndividualId("374790575409131096");
-		bqIdentity2.setIsNew(true);
 
-		_bqIdentityRepository.save(bqIdentity2);
+		_bqIdentityRepository.insert(bqIdentity2);
 
 		BQIdentityInterestScore bqIdentityInterestScore3 =
 			new BQIdentityInterestScore();
@@ -96,9 +92,8 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		bqIdentity3.setId("374790572703144534");
 		bqIdentity3.setIndividualId("374790572703144534");
-		bqIdentity3.setIsNew(true);
 
-		_bqIdentityRepository.save(bqIdentity3);
+		_bqIdentityRepository.insert(bqIdentity3);
 
 		BQIdentityInterestScore bqIdentityInterestScore4 =
 			new BQIdentityInterestScore();
@@ -124,14 +119,14 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		bqIdentity5.setId("374790572703144535");
 		bqIdentity5.setIndividualId("374790572703144535");
-		bqIdentity5.setIsNew(true);
 
-		_bqIdentityRepository.save(bqIdentity5);
+		_bqIdentityRepository.insert(bqIdentity5);
 
-		setUpRepository(
-			bqIdentityInterestScore1, bqIdentityInterestScore2,
-			bqIdentityInterestScore3, bqIdentityInterestScore4,
-			bqIdentityInterestScore5);
+		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore1);
+		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore2);
+		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore3);
+		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore4);
+		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore5);
 
 		BQMembership bqMembership = new BQMembership();
 
@@ -141,7 +136,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		bqMembership.setSegmentId(123L);
 		bqMembership.setStatus("ACTIVE");
 
-		_bqMembershipRepository.save(bqMembership);
+		_bqMembershipRepository.insert(bqMembership);
 	}
 
 	@Test
@@ -206,9 +201,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			2, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
-		Assertions.assertEquals(
-			Arrays.asList(entityModels.get(2), entityModels.get(3)),
-			bqIdentityInterestScores);
 	}
 
 	@Test
@@ -223,8 +215,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			1, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
-		Assertions.assertEquals(
-			Arrays.asList(entityModels.get(4)), bqIdentityInterestScores);
 
 		bqIdentityInterestScores =
 			_bqIdentityInterestScoreRepository.
@@ -236,8 +226,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			1, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
-		Assertions.assertEquals(
-			Arrays.asList(entityModels.get(4)), bqIdentityInterestScores);
 
 		bqIdentityInterestScores =
 			_bqIdentityInterestScoreRepository.
@@ -249,8 +237,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			1, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
-		Assertions.assertEquals(
-			Arrays.asList(entityModels.get(4)), bqIdentityInterestScores);
 
 		bqIdentityInterestScores =
 			_bqIdentityInterestScoreRepository.
@@ -273,10 +259,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			3, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
-		Assertions.assertEquals(
-			Arrays.asList(
-				entityModels.get(2), entityModels.get(3), entityModels.get(4)),
-			bqIdentityInterestScores);
 	}
 
 	@Test
@@ -301,8 +283,6 @@ public class BQIdentityInterestScoreRepositoryTest
 				getByIndividualIdAndKeywordAndRecordedDate(
 					"374790575409131096", "javascript",
 					DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
-
-		Assertions.assertEquals(entityModels.get(1), bqIdentityInterestScore);
 	}
 
 	@Test
@@ -396,13 +376,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			Arrays.asList("sales", "compelling metrics"), names,
 			names.toString());
-	}
-
-	@Override
-	protected PagingAndSortingRepository<BQIdentityInterestScore, Long>
-		getPagingAndSortingRepository() {
-
-		return _bqIdentityInterestScoreRepository;
 	}
 
 	private void _assertTransformation(

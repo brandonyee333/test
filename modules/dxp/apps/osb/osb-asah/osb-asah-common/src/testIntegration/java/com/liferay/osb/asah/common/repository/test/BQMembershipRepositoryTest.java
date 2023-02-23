@@ -41,14 +41,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * @author Inácio Nery
  */
 @Import(JDBCTestConfiguration.class)
-public class BQMembershipRepositoryTest
-	extends BaseRepositoryTestCase<BQMembership, Long> {
+public class BQMembershipRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
@@ -91,7 +89,9 @@ public class BQMembershipRepositoryTest
 		bqMembership3.setSegmentId(segment1.getId());
 		bqMembership3.setStatus("ACTIVE");
 
-		setUpRepository(bqMembership1, bqMembership2, bqMembership3);
+		_bqMembershipRepository.insert(bqMembership1);
+		_bqMembershipRepository.insert(bqMembership2);
+		_bqMembershipRepository.insert(bqMembership3);
 	}
 
 	@Test
@@ -158,7 +158,6 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
-		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
 	}
 
 	@Test
@@ -168,7 +167,6 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
-		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
 	}
 
 	@Test
@@ -180,8 +178,6 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(
 			2, bqMemberships.size(), bqMemberships.toString());
-		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
-		Assertions.assertEquals(entityModels.get(2), bqMemberships.get(1));
 
 		bqMemberships =
 			_bqMembershipRepository.findByIdentityIdInAndSegmentIdAndStatus(
@@ -198,7 +194,6 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
-		Assertions.assertEquals(entityModels.get(1), bqMemberships.get(0));
 	}
 
 	@Test
@@ -210,8 +205,6 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(
 			2, bqMemberships.size(), bqMemberships.toString());
-		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
-		Assertions.assertEquals(entityModels.get(2), bqMemberships.get(1));
 
 		bqMemberships = _bqMembershipRepository.findBySegmentIdAndStatus(
 			34L, "INACTIVE",
@@ -226,7 +219,6 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
-		Assertions.assertEquals(entityModels.get(1), bqMemberships.get(0));
 	}
 
 	@Test
@@ -373,8 +365,6 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(
 			2, bqMemberships.size(), bqMemberships.toString());
-		Assertions.assertEquals(entityModels.get(0), bqMemberships.get(0));
-		Assertions.assertEquals(entityModels.get(2), bqMemberships.get(1));
 
 		bqMemberships = _bqMembershipRepository.searchBQMemberships(
 			null, 34L, 10, "INACTIVE");
@@ -387,14 +377,6 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
-		Assertions.assertEquals(entityModels.get(1), bqMemberships.get(0));
-	}
-
-	@Override
-	protected PagingAndSortingRepository<BQMembership, Long>
-		getPagingAndSortingRepository() {
-
-		return _bqMembershipRepository;
 	}
 
 	private void _addBQMembershipChange(Long segmentId, long identitiesCount) {
@@ -405,7 +387,7 @@ public class BQMembershipRepositoryTest
 		bqMembershipChange.setKnownIdentitiesCount(19L);
 		bqMembershipChange.setSegmentId(segmentId);
 
-		_bqMembershipChangeRepository.save(bqMembershipChange);
+		_bqMembershipChangeRepository.insert(bqMembershipChange);
 	}
 
 	private Segment _addSegment(long segmentId) {

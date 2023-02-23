@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.BQUserGroup;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQUserGroupRepository;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -44,7 +43,6 @@ public class BQUserGroupDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqUserGroup1.setDataSourceId(dataSource.getId());
 		bqUserGroup1.setId("1");
-		bqUserGroup1.setIsNew(Boolean.TRUE);
 		bqUserGroup1.setModifiedDate(DateUtil.newDate());
 		bqUserGroup1.setName("Test");
 		bqUserGroup1.setUserGroupId(1L);
@@ -53,13 +51,12 @@ public class BQUserGroupDogTest extends BaseBQDXPEntityDogTestCase {
 
 		bqUserGroup2.setDataSourceId(dataSource.getId());
 		bqUserGroup2.setId("2");
-		bqUserGroup2.setIsNew(Boolean.TRUE);
 		bqUserGroup2.setModifiedDate(DateUtil.newDate());
 		bqUserGroup2.setName("Liferay");
 		bqUserGroup2.setUserGroupId(2L);
 
-		_bqUserGroupRepository.saveAll(
-			Arrays.asList(bqUserGroup1, bqUserGroup2));
+		_bqUserGroupRepository.insert(bqUserGroup1);
+		_bqUserGroupRepository.insert(bqUserGroup2);
 	}
 
 	@Test

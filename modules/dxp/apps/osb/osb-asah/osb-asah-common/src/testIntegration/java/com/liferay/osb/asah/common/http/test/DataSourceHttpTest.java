@@ -114,11 +114,11 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_dataSourceRepository.save(dataSource2);
 
-		_bqCSVUserRepository.save(
+		_bqCSVUserRepository.insert(
 			FaroInfoTestUtil.buildBQCSVUser(
 				RandomTestUtil.randomUUID(), dataSource1.getId()));
 
-		_bqCSVUserRepository.save(
+		_bqCSVUserRepository.insert(
 			FaroInfoTestUtil.buildBQCSVUser(
 				RandomTestUtil.randomUUID(), dataSource2.getId()));
 
