@@ -35,6 +35,8 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		@Nullable String query, @Nullable Long segmentId);
 
+	public long countIndividualFieldValues(String fieldName);
+
 	public void deleteAll();
 
 	public Optional<Individual> findByChannelIdAndId(
@@ -52,5 +54,8 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		Pageable pageable, @Nullable String query, @Nullable Long segmentId);
+
+	public List<String> searchIndividualFieldValues(
+		String groupByField, Pageable pageable);
 
 }

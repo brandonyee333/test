@@ -106,6 +106,15 @@ public class BQIndividualRepositoryImpl
 		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
 	}
 
+	public long countIndividualFieldValues(String fieldName) {
+		return _queryExecutor.queryForLong(
+			_dslContext.select(
+				DSL.countDistinct(
+					DSL.field(
+						_fieldNameConversionMap.getOrDefault(
+							fieldName, fieldName)))));
+	}
+
 	@Override
 	public void deleteAll() {
 		_queryExecutor.queryExecute(
@@ -380,6 +389,29 @@ public class BQIndividualRepositoryImpl
 					(Date)record.get("lastactivitydate"), _objectMapper);
 			},
 			_getIndividualSelectOnConditionStep(selectFinalStep, sortFields));
+	}
+
+	public List<String> searchIndividualFieldValues(
+		String fieldName, Pageable pageable) {
+
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(recordMap.get("fieldName")),
+			_dslContext.selectDistinct(
+				DSL.field(
+					_fieldNameConversionMap.getOrDefault(fieldName, fieldName),
+					String.class
+				).as(
+					"fieldValue"
+				)
+			).from(
+				"BQIndividual"
+			).orderBy(
+				DSL.field("fieldValue")
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	private Condition _getChannelIdCondition(Long channelId) {
