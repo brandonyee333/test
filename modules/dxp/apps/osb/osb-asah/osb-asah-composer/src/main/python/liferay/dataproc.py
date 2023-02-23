@@ -18,6 +18,12 @@ from airflow.providers.google.cloud.operators.dataproc import \
 	DataprocCreateClusterOperator, \
 	DataprocSubmitPySparkJobOperator
 from airflow.utils.context import Context
+from airflow.utils.state import DagRunState
+
+from datetime import date, \
+	datetime, \
+	timedelta, \
+	timezone
 
 from liferay.common import BaseOperator
 
@@ -32,15 +38,9 @@ class DataprocClusterGetOrCreateOperator(BaseOperator):
 		self.dataproc_hook = DataprocHook()
 
 	def do_execute(self, dag: DAG, dag_run: DagRun, **kwargs):
-		datasource_id = dag_run.conf['datasourceId']
-
 		dag_configuration = kwargs[dag.dag_id]
 
-		cluster_name = '{}-{}-{}'.format(
-			dag_configuration['dataproc.cluster.name_prefix'],
-			datasource_id,
-			kwargs['ds_nodash']
-		)
+		cluster_name = dag_configuration['dataproc.cluster.name']
 
 		self.log.info("cluster_name: {}".format(cluster_name))
 
@@ -61,7 +61,12 @@ class DataprocClusterGetOrCreateOperator(BaseOperator):
 			master_machine_type=dag_configuration[
 				'dataproc.cluster.master.machine_type'
 			],
-			metadata=json.loads(dag_configuration['dataproc.cluster.metadata']),
+			metadata=json.loads(
+				dag_configuration['dataproc.cluster.metadata']
+			),
+			properties=json.loads(
+				dag_configuration['dataproc.cluster.properties']
+			),
 			worker_disk_size=dag_configuration[
 				'dataproc.cluster.worker.disk_size'
 			],
@@ -124,6 +129,22 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 
 		self._cluster_name = cluster_name
 
+	def _get_application_name(
+		self, datasource_id: str, lcp_project_id: str, resource_name: str
+	):
+
+		application_name = self.RESOURCE_NAME_APPLICATION_MAP.get(resource_name)
+
+		if application_name is not None:
+			application_name = application_name.split('.')[-1]
+
+		return '{}-{}-{}-{}'.format(
+			lcp_project_id,
+			application_name.lower(),
+			datasource_id,
+			int(time.time())
+		)
+
 	def do_execute(self, dag: DAG, dag_run: DagRun, **kwargs):
 		cluster_name = self.render_template(
 			content=self._cluster_name, context=Context(kwargs)
@@ -171,18 +192,114 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 
 		dataproc_submit_pyspark_job_operator.execute(Context(kwargs))
 
-	def _get_application_name(
-		self, datasource_id: str, lcp_project_id: str, resource_name: str
-	):
+class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 
-		application_name = self.RESOURCE_NAME_APPLICATION_MAP.get(resource_name)
+	def __init__(self, cluster_name: str, **kwargs):
+		super().__init__(**kwargs)
 
-		if application_name is not None:
-			application_name = application_name.split('.')[-1]
+		self.log.warning(cluster_name)
 
-		return '{}-{}-{}-{}'.format(
-			lcp_project_id,
-			application_name.lower(),
-			datasource_id,
+		self._cluster_name = cluster_name
+
+	def do_execute(self, dag: DAG, dag_run: DagRun, **kwargs):
+		cluster_name = self.render_template(
+			content=self._cluster_name, context=Context(kwargs)
+		)
+
+		dag_configuration = kwargs[dag.dag_id]
+
+		dataproc_submit_pyspark_job_operator = DataprocSubmitPySparkJobOperator(
+			task_id='dataproc_submit_pyspark_job',
+			project_id=dag.default_args['project_id'],
+			cluster_name=cluster_name,
+			region=dag.default_args['region'],
+			job_name=self._get_application_name(
+				ac_project_id=dag.default_args['ac_project_id']
+			),
+			main='gs://{}/osb-asah-spark-python-driver.py'.format(
+				dag_configuration['dataproc.bucket']
+			),
+			arguments=[
+				'liferay.interest_score.InterestScoreApplication',
+				'--ac-project-id',
+				dag.default_args['ac_project_id'],
+				'--configuration',
+				dag_configuration['dataproc.pyspark.configuration'],
+				'--job-parameters',
+				self._get_job_parameters(dag, dag_run)
+			],
+			archives=[
+				'gs://{}/resources/{}'.format(
+					dag_configuration['dataproc.bucket'],
+					dag_configuration['dataproc.pyspark.configuration']
+				)
+			],
+			dataproc_properties=json.loads(
+				dag_configuration['dataproc.pyspark.properties']
+			),
+			pyfiles=[
+				'gs://{}/osb-asah-spark-python.zip'.format(
+					dag_configuration['dataproc.bucket']
+				)
+			]
+		)
+
+		dataproc_submit_pyspark_job_operator.execute(Context(kwargs))
+
+	def _get_application_name(self, ac_project_id: str):
+
+		return 'interest-score-{}-{}'.format(
+			ac_project_id,
 			int(time.time())
 		)
+
+	def _get_job_parameters(self, dag: DAG, dag_run: DagRun) -> str:
+		parameters = list()
+
+		today = date.today()
+
+		end_date = dag_run.conf.get("endDate", today.isoformat())
+
+		start_date = dag_run.conf.get("startDate", None)
+
+		if start_date is None:
+			dag_runs = dag_run.find(
+				dag_id=dag.dag_id,
+				execution_start_date=datetime.now(timezone.utc) - timedelta(days=30),
+				state=DagRunState.SUCCESS
+			)
+
+			if dag_runs is not None and len(dag_runs) > 0:
+				dag_run = dag_runs[-1]
+
+				execution_date = dag_run.execution_date
+
+				start_date = execution_date.date()
+
+				start_date = start_date.isoformat()
+
+		if start_date:
+			parameters.append(
+				{
+					"name": "endDate",
+					"value": end_date
+				}
+			)
+
+			parameters.append(
+				{
+					"name": "startDate",
+					"value": start_date
+				}
+			)
+
+		parameters.append(
+			{
+				"name": "timeZone",
+				"value": dag.default_args['ac_project_time_zone_id']
+			}
+		)
+
+		self.log.info(json.dumps(parameters))
+
+		return json.dumps(parameters)
