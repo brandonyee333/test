@@ -89,6 +89,19 @@ public class BQIndividualDog {
 		return individual;
 	}
 
+	public Page<String> getBQIndividualFieldValuePage(
+		String fieldName, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		return PageableExecutionUtils.getPage(
+			_bqIndividualRepository.searchIndividualFieldValues(
+				fieldName, pageRequest),
+			pageRequest,
+			() -> _bqIndividualRepository.countIndividualFieldValues(
+				fieldName));
+	}
+
 	public Page<Distribution> getDistributionPage(
 		@Nullable Long channelId, String fieldName,
 		@Nullable Long individualSegmentId, int size, String[] sorts) {
