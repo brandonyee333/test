@@ -144,7 +144,8 @@ WHEN MATCHED AND staging.deleted IS NULL THEN
 		replica.middleName = staging.middleName,
 		replica.modifiedDate = staging.modifiedDate,
 		replica.screenName = staging.screenName,
-		replica.userName = staging.userName
+		replica.userName = staging.userName,
+		replica.uuid = COALESCE(staging.uuid, '')
 WHEN MATCHED AND staging.deleted = true THEN
 	DELETE
 WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
@@ -178,5 +179,5 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		staging.projectId,
 		staging.screenName,
 		staging.userName,
-		staging.uuid
+		COALESCE(staging.uuid, '')
 	)
