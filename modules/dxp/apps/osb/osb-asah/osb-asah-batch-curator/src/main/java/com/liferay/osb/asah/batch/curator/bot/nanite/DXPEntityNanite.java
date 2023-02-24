@@ -114,6 +114,24 @@ public class DXPEntityNanite extends BaseNanite {
 			Map<String, Object> map = expandoJSONObject.toMap();
 
 			for (Map.Entry<String, Object> entry : map.entrySet()) {
+				String dataType = StringUtils.substringAfterLast(
+					entry.getKey(), "-");
+				String value = GetterUtil.getString(entry.getValue());
+
+				if (dataType.equalsIgnoreCase("Text") &&
+					value.startsWith("[") && value.endsWith("]")) {
+
+					value = value.substring(1, value.length() - 1);
+
+					JSONArray valuesJSONArray = new JSONArray();
+
+					for (String curValue : value.split(",")) {
+						valuesJSONArray.put(curValue);
+					}
+
+					value = valuesJSONArray.toString();
+				}
+
 				jsonArray.put(
 					JSONUtil.put(
 						"columnId", entry.getKey()
@@ -121,7 +139,7 @@ public class DXPEntityNanite extends BaseNanite {
 						"name",
 						StringUtils.substringBeforeLast(entry.getKey(), "-")
 					).put(
-						"value", GetterUtil.getString(entry.getValue())
+						"value", value
 					));
 			}
 		}
