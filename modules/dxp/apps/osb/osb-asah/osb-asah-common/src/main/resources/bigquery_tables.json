@@ -2817,7 +2817,7 @@
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
+				"mode": "NULLABLE",
 				"name": "uuid",
 				"type": "STRING"
 			}
