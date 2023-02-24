@@ -681,7 +681,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 				f'DATE_SUB("{start_date}", INTERVAL {self._max_days_delta} DAY)'
 		else:
 			sql_end_date_string = "CURRENT_DATE()"
-			sql_start_date_string =
+			sql_start_date_string = \
 				"DATE_SUB(CURRENT_DATE(), INTERVAL {} DAY)".format(
 					self._max_days_delta + self._initial_run_day_range
 				)
