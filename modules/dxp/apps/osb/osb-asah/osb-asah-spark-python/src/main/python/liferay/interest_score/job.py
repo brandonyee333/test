@@ -674,25 +674,26 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		self._minimum_interactions_threshold = 5
 		self._minimum_view_duration_threshold = 5000
 
-	def _get_event_data_sql_command(self, end_date=None, start_date=None):
+	def _get_event_data_sql_command(self, end_date=None, start_date=None, time_zone=None):
 		if end_date and start_date:
 			sql_end_date_string = f'"{end_date}"'
 			sql_start_date_string = \
 				f'DATE_SUB("{start_date}", INTERVAL {self._max_days_delta} DAY)'
 		else:
-			sql_end_date_string = "CURRENT_DATE()"
+			sql_end_date_string = f'CURRENT_DATE("{time_zone}")'
 			sql_start_date_string = \
-				"DATE_SUB(CURRENT_DATE(), INTERVAL {} DAY)".format(
+				'DATE_SUB(CURRENT_DATE("{}"), INTERVAL {} DAY)'.format(
+					time_zone,
 					self._max_days_delta + self._initial_run_day_range
 				)
 
 		sql_command = f"""
 			WITH FilteredEvent AS ( 
 				SELECT 
-					event.canonicalUrl, 
-					DATE_DIFF(CURRENT_DATE(), DATE(event.eventDate), DAY) as days_delta,
+					event.canonicalUrl,
+					DATE_DIFF(CURRENT_DATE("{time_zone}"), DATE(event.eventDate, "{time_zone}"), DAY) as days_delta,
 					event.description, 
-					DATE(timestamp_trunc(event.eventDate, DAY)) as event_date,
+					DATE(event.eventDate, "{time_zone}") as event_date,
 					event.id,
 					COUNT(event.userId) OVER (PARTITION BY event.userId) AS interactions,  
 					event.keywords,
@@ -706,10 +707,10 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 				JOIN `{self.spark_application_args.ac_project_id}`.eventproperty ON 
 					event.id = eventproperty.id
 				WHERE 
-					event.eventDate >= TIMESTAMP({sql_start_date_string}) AND
-					event.eventDate < TIMESTAMP({sql_end_date_string}) AND
-					eventproperty.eventDate >= TIMESTAMP({sql_start_date_string}) AND
-					eventproperty.eventDate < TIMESTAMP({sql_end_date_string}) AND
+					DATE(event.eventDate, "{time_zone}") >= {sql_start_date_string} AND
+					DATE(event.eventDate, "{time_zone}") < {sql_end_date_string} AND
+					DATE(eventproperty.eventDate, "{time_zone}") >= {sql_start_date_string} AND
+					DATE(eventproperty.eventDate, "{time_zone}") < {sql_end_date_string} AND
 					eventproperty.name = "viewDuration" AND
 					STARTS_WITH(event.contentLanguageId, 'en') AND
 					CAST(eventproperty.value AS INTEGER) >= {self._minimum_view_duration_threshold}
@@ -746,8 +747,9 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 	def run(self):
 		end_date = self._get_job_parameter('endDate', None)
 		start_date = self._get_job_parameter('startDate', None)
+		time_zone = self._get_job_parameter('timeZone', None)
 
-		sql_command = self._get_event_data_sql_command(end_date, start_date)
+		sql_command = self._get_event_data_sql_command(end_date, start_date, time_zone)
 
 		event_data_frame = self.spark_session.read.format(
 			"bigquery"
