@@ -136,10 +136,10 @@ ON
 	staging.projectId = replica.projectId
 WHEN MATCHED AND staging.deleted IS NULL THEN
 	UPDATE SET
-		replica.emailAddress = staging.emailAddress,
+		replica.emailAddress = LOWER(staging.emailAddress),
 		replica.fields = staging.fields,
 		replica.firstName = staging.firstName,
-		replica.individualId = TO_HEX(SHA256(staging.emailAddress)),
+		replica.individualId = TO_HEX(SHA256(LOWER(staging.emailAddress))),
 		replica.lastName = staging.lastName,
 		replica.middleName = staging.middleName,
 		replica.modifiedDate = staging.modifiedDate,
@@ -168,11 +168,11 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 	VALUES (
 		staging.dataSourceId,
 		staging.dxpUserId,
-		staging.emailAddress,
+		LOWER(staging.emailAddress),
 		staging.fields,
 		staging.firstName,
 		staging.sha256HexId,
-		TO_HEX(SHA256(staging.emailAddress)),
+		TO_HEX(SHA256(LOWER(staging.emailAddress))),
 		staging.lastName,
 		staging.middleName,
 		staging.modifiedDate,
