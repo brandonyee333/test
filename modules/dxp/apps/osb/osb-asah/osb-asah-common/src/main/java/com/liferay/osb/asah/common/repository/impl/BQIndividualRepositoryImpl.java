@@ -54,6 +54,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record11;
+import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectForStep;
 import org.jooq.SelectForUpdateStep;
@@ -124,10 +125,12 @@ public class BQIndividualRepositoryImpl
 		BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
 
 		if (bqFieldMapping.getRepeatable()) {
-			return _countIndividualRepeatableFieldValuesCustom(fieldName);
+			return _countIndividualFieldValuesCustomRepeatable(
+				channelId, fieldName, filterString);
 		}
 
-		return _countIndividualFieldValuesCustom(fieldName);
+		return _countIndividualFieldValuesCustom(
+			channelId, fieldName, filterString);
 	}
 
 	public long countIndividualFieldValuesDemographics(
@@ -510,101 +513,34 @@ public class BQIndividualRepositoryImpl
 			));
 	}
 
-	private long _countIndividualFieldValuesCustom(String fieldName) {
+	private long _countIndividualFieldValuesCustom(
+		Long channelId, String fieldName, String filterString) {
+
 		return _queryExecutor.queryForLong(
-			_dslContext.select(
-				DSL.countDistinct(
-					DSL.field("individualFieldValues.value")
-				).as(
-					"totalElements"
-				)
-			).from(
-				"BQIndividual"
-			).crossJoin(
-				DSL.unnest(
-					DSL.field("fields")
-				).as(
-					"individualFields"
-				)
-			).join(
-				"BQFieldMapping"
-			).on(
-				DSL.field(
-					"BQFieldMapping.fieldName"
-				).eq(
-					DSL.field("individualFields.name")
-				)
-			).where(
-				DSL.and(
-					DSL.field(
-						"BQFieldMapping.context"
-					).eq(
-						"custom"
-					),
-					DSL.field(
-						"individualFields.name"
-					).eq(
-						fieldName
-					))
-			));
+			_getIndividualFieldsSelectConditionStep(
+				channelId, fieldName, filterString,
+				_dslContext.select(
+					DSL.countDistinct(
+						DSL.field("individualFields.value")
+					).as(
+						"totalElements"
+					))));
 	}
 
-	private long _countIndividualRepeatableFieldValuesCustom(String fieldName) {
+	private long _countIndividualFieldValuesCustomRepeatable(
+		Long channelId, String fieldName, String filterString) {
+
 		return _queryExecutor.queryForLong(
-			_dslContext.select(
-				DSL.countDistinct(
-					DSL.field(
-						"JSON_EXTRACT_SCALAR(fieldValueItem, '$')",
-						String.class)
-				).as(
-					"totalElements"
-				)
-			).from(
+			_getIndividualFieldValuesCustomRepeatableSelectJoinStep(
+				channelId, fieldName, filterString,
 				_dslContext.select(
-					DSL.field(
-						"JSON_EXTRACT_ARRAY(individualFields.value)",
-						String.class
-					).as(
-						"fieldValueArray"
-					)
-				).from(
-					"BQIndividual"
-				).crossJoin(
-					DSL.unnest(
-						DSL.field("fields")
-					).as(
-						"individualFields"
-					)
-				).join(
-					"BQFieldMapping"
-				).on(
-					DSL.field(
-						"BQFieldMapping.fieldName"
-					).eq(
-						DSL.field("individualFields.name")
-					)
-				).where(
-					DSL.and(
+					DSL.countDistinct(
 						DSL.field(
-							"BQFieldMapping.context"
-						).eq(
-							DSL.val("custom")
-						),
-						DSL.field(
-							"individualFields.name"
-						).eq(
-							fieldName
-						))
-				).asTable(
-					"individualFieldValues"
-				)
-			).crossJoin(
-				DSL.unnest(
-					DSL.field("fieldValueArray")
-				).as(
-					"fieldValueItem"
-				)
-			));
+							"JSON_EXTRACT_SCALAR(fieldValueItem, '$')",
+							String.class)
+					).as(
+						"totalElements"
+					))));
 	}
 
 	private Condition _getChannelIdCondition(Long channelId) {
@@ -627,9 +563,19 @@ public class BQIndividualRepositoryImpl
 			));
 	}
 
-	private List<String> _getIndividualFieldValuesCustom(
-		Long channelId, String fieldName, String filterString,
-		Pageable pageable) {
+	private <T extends Record> SelectConditionStep<T>
+		_getIndividualFieldsSelectConditionStep(
+			Long channelId, String fieldName, String filterString,
+			SelectSelectStep<T> selectSelectStep) {
+
+		SelectJoinStep<T> selectJoinStep;
+
+		if (channelId != null) {
+			selectJoinStep = _getSelectJoinStep(null, selectSelectStep);
+		}
+		else {
+			selectJoinStep = selectSelectStep.from("BQIndividual");
+		}
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -656,33 +602,44 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		return _queryExecutor.queryForList(
-			recordMap -> String.valueOf(recordMap.get("individualFieldValue")),
+		return selectJoinStep.crossJoin(
+			DSL.table(
+				"UNNEST(fields)"
+			).as(
+				"individualFields"
+			)
+		).join(
+			"BQFieldMapping"
+		).on(
+			DSL.field(
+				"BQFieldMapping.displayName"
+			).eq(
+				DSL.field("individualFields.name")
+			)
+		).where(
+			conditions
+		);
+	}
+
+	private List<String> _getIndividualFieldValuesCustom(
+		Long channelId, String fieldName, String filterString,
+		Pageable pageable) {
+
+		SelectSelectStep<Record1<String>> selectSelectStep =
 			_dslContext.selectDistinct(
 				DSL.field(
-					"individualFieldValues.value"
+					"individualFields.value", String.class
 				).as(
 					"individualFieldValue"
-				)
-			).from(
-				"BQIndividual"
-			).crossJoin(
-				DSL.unnest(
-					DSL.field("fields")
-				).as(
-					"individualFields"
-				)
-			).join(
-				"BQFieldMapping"
-			).on(
-				DSL.field(
-					"BQFieldMapping.fieldName"
-				).eq(
-					DSL.field("individualFields.name")
-				)
-			).where(
-				conditions
-			).limit(
+				));
+
+		SelectConditionStep<Record1<String>> selectConditionStep =
+			_getIndividualFieldsSelectConditionStep(
+				channelId, fieldName, filterString, selectSelectStep);
+
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(recordMap.get("individualFieldValue")),
+			selectConditionStep.limit(
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
@@ -693,79 +650,51 @@ public class BQIndividualRepositoryImpl
 		Long channelId, String fieldName, String filterString,
 		Pageable pageable) {
 
-		List<Condition> conditions = new ArrayList<>();
-
-		conditions.add(
-			DSL.field(
-				"BQFieldMapping.context"
-			).eq(
-				DSL.val("custom")
-			));
-		conditions.add(
-			DSL.field(
-				"individualFields.name"
-			).eq(
-				fieldName
-			));
-		conditions.add(ConditionUtil.toCondition(filterString));
-
-		if (channelId != null) {
-			conditions.add(
-				DSL.field(
-					"BQIdentityActivity.channelId"
-				).eq(
-					channelId
-				));
-		}
+		SelectJoinStep selectJoinStep =
+			_getIndividualFieldValuesCustomRepeatableSelectJoinStep(
+				channelId, fieldName, filterString,
+				_dslContext.selectDistinct(
+					DSL.field(
+						"JSON_EXTRACT_SCALAR(fieldValueItem, '$')"
+					).as(
+						"individualFieldValue"
+					)));
 
 		return _queryExecutor.queryForList(
 			recordMap -> String.valueOf(recordMap.get("individualFieldValue")),
-			_dslContext.selectDistinct(
-				DSL.field(
-					"JSON_EXTRACT_SCALAR(fieldValueItem, '$')", String.class
-				).as(
-					"individualFieldValue"
-				)
-			).from(
-				_dslContext.select(
-					DSL.field(
-						"JSON_EXTRACT_ARRAY(individualFields.value)",
-						String.class
-					).as(
-						"fieldValueArray"
-					)
-				).from(
-					"BQIndividual"
-				).crossJoin(
-					DSL.unnest(
-						DSL.field("fields")
-					).as(
-						"individualFields"
-					)
-				).join(
-					"BQFieldMapping"
-				).on(
-					DSL.field(
-						"BQFieldMapping.fieldName"
-					).eq(
-						DSL.field("individualFields.name")
-					)
-				).where(
-					conditions
-				).asTable(
-					"individualFieldValues"
-				)
-			).crossJoin(
-				DSL.unnest(
-					DSL.field("fieldValueArray")
-				).as(
-					"fieldValueItem"
-				)
-			).limit(
+			selectJoinStep.limit(
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
 			));
+	}
+
+	private SelectJoinStep
+		_getIndividualFieldValuesCustomRepeatableSelectJoinStep(
+			Long channelId, String fieldName, String filterString,
+			SelectSelectStep selectSelectStep) {
+
+		SelectSelectStep jsonExtractSelectSelectStep = _dslContext.select(
+			DSL.field(
+				"JSON_EXTRACT_ARRAY(individualFields.value)"
+			).as(
+				"fieldValueArray"
+			));
+
+		SelectConditionStep selectConditionStep =
+			_getIndividualFieldsSelectConditionStep(
+				channelId, fieldName, filterString,
+				jsonExtractSelectSelectStep);
+
+		return selectSelectStep.from(
+			selectConditionStep.asTable("individualFieldsValues")
+		).crossJoin(
+			DSL.table(
+				"UNNEST(fieldValueArray)"
+			).as(
+				"fieldValueItem"
+			)
+		);
 	}
 
 	private Condition _getIndividualSegmentIdCondition(
