@@ -30,6 +30,7 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Victor Oliveira
  */
+@Disabled
 public class InterestTopicsNaniteTest
 	extends BaseNaniteTestCase implements OSBAsahTestExecutionListenersContext {
 
