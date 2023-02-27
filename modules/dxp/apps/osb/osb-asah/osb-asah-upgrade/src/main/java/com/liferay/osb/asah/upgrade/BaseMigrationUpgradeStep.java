@@ -71,7 +71,7 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 			)
 		).iterate();
 
-		_syncSequenceStart();
+		syncSequenceStart();
 	}
 
 	protected abstract Consumer<JSONObject> getConsumer();
@@ -81,6 +81,20 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 	protected abstract String getSelectLatestIdSQL();
 
 	protected abstract String getSequenceName();
+
+	protected void syncSequenceStart() {
+		Long currentValue = _getLatestId(true) + 1;
+
+		_namedParameterJdbcTemplate.queryForObject(
+			"SELECT setval(:sequenceName, :currentValue, true)",
+			new HashMap<String, Object>() {
+				{
+					put("currentValue", currentValue);
+					put("sequenceName", getSequenceName());
+				}
+			},
+			Long.class);
+	}
 
 	private Long _getLatestId(boolean retry) {
 		try {
@@ -130,20 +144,6 @@ public abstract class BaseMigrationUpgradeStep implements UpgradeStep {
 	private void _init() {
 		_namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 			_dataSource);
-	}
-
-	private void _syncSequenceStart() {
-		Long currentValue = _getLatestId(true) + 1;
-
-		_namedParameterJdbcTemplate.queryForObject(
-			"SELECT setval(:sequenceName, :currentValue, true)",
-			new HashMap<String, Object>() {
-				{
-					put("currentValue", currentValue);
-					put("sequenceName", getSequenceName());
-				}
-			},
-			Long.class);
 	}
 
 	private static final Log _log = LogFactory.getLog(

@@ -14,16 +14,14 @@
 
 package com.liferay.osb.asah.upgrade.v4_0_0;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.entity.BQCSVUser;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.upgrade.BaseMigrationUpgradeStep;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +40,7 @@ public class CSVUserMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 
 			bqCSVUser.setDataSourceId(
 				Long.valueOf(jsonObject.getString("dataSourceId")));
-			bqCSVUser.setFieldsJSONArray(
-				_toFieldsJSONArray(jsonObject.getJSONObject("fields")));
+			bqCSVUser.setFields(_toFields(jsonObject.getJSONObject("fields")));
 
 			_bqCSVUserRepository.insert(bqCSVUser);
 		};
@@ -56,33 +53,30 @@ public class CSVUserMigrationUpgradeStep extends BaseMigrationUpgradeStep {
 
 	@Override
 	protected String getSelectLatestIdSQL() {
-		return "SELECT id FROM bqcsvuser ORDER BY id DESC LIMIT 1";
+		return null;
 	}
 
 	@Override
 	protected String getSequenceName() {
-		return "bqcsvuser_id_seq";
+		return null;
 	}
 
-	private JSONArray _toFieldsJSONArray(JSONObject fieldsJSONObject) {
-		JSONArray fieldsJSONArray = new JSONArray();
+	@Override
+	protected void syncSequenceStart() {
+	}
+
+	private List<BQCSVUser.Field> _toFields(JSONObject fieldsJSONObject) {
+		List<BQCSVUser.Field> fields = new ArrayList<>();
 
 		for (String key : fieldsJSONObject.keySet()) {
-			fieldsJSONArray.put(
-				JSONUtil.put(
-					"name", key
-				).put(
-					"value", fieldsJSONObject.getString(key)
-				));
+			fields.add(
+				new BQCSVUser.Field(key, fieldsJSONObject.getString(key)));
 		}
 
-		return fieldsJSONArray;
+		return fields;
 	}
 
 	@Autowired
 	private BQCSVUserRepository _bqCSVUserRepository;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }
