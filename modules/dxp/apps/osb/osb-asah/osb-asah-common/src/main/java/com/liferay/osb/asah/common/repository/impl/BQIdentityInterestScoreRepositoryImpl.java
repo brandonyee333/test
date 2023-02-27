@@ -52,7 +52,6 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Record3;
-import org.jooq.SelectFinalStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
@@ -339,7 +338,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 	@Override
 	public List<BQIdentityInterestScore> findByRecordedDate(
-		@Nullable Long interestId, @Nullable Date recordedDate, int size) {
+		@Nullable Date recordedDate, int size) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -353,64 +352,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field("id")
 			).limit(
 				size
-			));
-	}
-
-	@Override
-	public Optional<IdentityInterestScore> findIdentityInterestScoreById(
-		String id) {
-
-		return _queryExecutor.queryForObject(
-			record -> new IdentityInterestScore(
-				new BQIdentityInterestScore(record),
-				(String)record.get("individualId")),
-			(SelectFinalStep)_dslContext.select(
-				DSL.field(
-					"BQIdentityInterestScore.id"
-				).as(
-					"id"
-				),
-				DSL.field(
-					"BQIdentityInterestScore.identityId"
-				).as(
-					"identityId"
-				),
-				DSL.field(
-					"BQIdentityInterestScore.interestScore"
-				).as(
-					"interestScore"
-				),
-				DSL.field(
-					"BQIdentityInterestScore.keyword"
-				).as(
-					"keyword"
-				),
-				DSL.field(
-					"BQIdentityInterestScore.recordedDate"
-				).as(
-					"recordedDate"
-				),
-				DSL.field(
-					"BQIdentity.individualId"
-				).as(
-					"individualId"
-				)
-			).from(
-				"BQIdentityInterestScore"
-			).join(
-				"BQIdentity"
-			).on(
-				DSL.field(
-					"BQIdentityInterestScore.identityId"
-				).eq(
-					DSL.field("BQIdentity.id")
-				)
-			).where(
-				DSL.field(
-					"BQIdentityInterestScore.id"
-				).eq(
-					id
-				)
 			));
 	}
 
@@ -814,12 +755,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQIdentityInterestScore")
 			).columns(
-				DSL.field("id"), DSL.field("identityId"),
+				DSL.field("identityId"),
 				DSL.field("interested", Boolean.class),
 				DSL.field("interestScore", Double.class), DSL.field("keyword"),
 				DSL.field("recordedDate", Date.class)
 			).values(
-				bqIdentityInterestScore.getId(),
 				bqIdentityInterestScore.getIdentityId(),
 				bqIdentityInterestScore.getInterested(),
 				bqIdentityInterestScore.getInterestScore(),

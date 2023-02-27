@@ -22,7 +22,6 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
@@ -66,10 +65,7 @@ public interface CustomBQIdentityInterestScoreRepository {
 			Date recordedDate2);
 
 	public List<BQIdentityInterestScore> findByRecordedDate(
-		@Nullable Long interestId, @Nullable Date recordedDate, int size);
-
-	public Optional<IdentityInterestScore> findIdentityInterestScoreById(
-		String id);
+		@Nullable Date recordedDate, int size);
 
 	public List<String> findIndividualIdsByFilterStringAndIndividualId(
 		FilterHelper filterHelper, @Nullable String individualId);
