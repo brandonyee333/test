@@ -53,36 +53,7 @@ public class OSBAsahBQSQLTestExecutionListener
 			return;
 		}
 
-		BQSQLResource bqSQLResource = AnnotatedElementUtils.getMergedAnnotation(
-			testContext.getTestMethod(), BQSQLResource.class);
-
-		if (bqSQLResource != null) {
-			StringBuilder sb = new StringBuilder();
-
-			Page<Table> tablePage = _bigQuery.listTables("test");
-
-			for (Table table : tablePage.iterateAll()) {
-				TableDefinition tableDefinition = table.getDefinition();
-
-				if (tableDefinition.getType() == TableDefinition.Type.VIEW) {
-					continue;
-				}
-
-				TableId tableId = table.getTableId();
-
-				sb.append(
-					String.format(
-						"DELETE FROM `%s.%s` WHERE TRUE;", tableId.getDataset(),
-						tableId.getTable()));
-			}
-
-			QueryJobConfiguration queryJobConfiguration =
-				QueryJobConfiguration.newBuilder(
-					sb.toString()
-				).build();
-
-			_bigQuery.query(queryJobConfiguration);
-		}
+		_cleanTables();
 
 		for (String cacheName : _cacheManager.getCacheNames()) {
 			Cache cache = _cacheManager.getCache(cacheName);
@@ -100,6 +71,8 @@ public class OSBAsahBQSQLTestExecutionListener
 		if (!_isTestExecutionListenerEnabled()) {
 			return;
 		}
+
+		_createSchema();
 
 		Class<?> clazz = testContext.getTestClass();
 
@@ -130,6 +103,34 @@ public class OSBAsahBQSQLTestExecutionListener
 		if (bqSQLResource != null) {
 			_prepareTables(testContext.getTestClass(), bqSQLResource);
 		}
+	}
+
+	private void _cleanTables() throws Exception {
+		StringBuilder sb = new StringBuilder();
+
+		Page<Table> tablePage = _bigQuery.listTables("test");
+
+		for (Table table : tablePage.iterateAll()) {
+			TableDefinition tableDefinition = table.getDefinition();
+
+			if (tableDefinition.getType() == TableDefinition.Type.VIEW) {
+				continue;
+			}
+
+			TableId tableId = table.getTableId();
+
+			sb.append(
+				String.format(
+					"DELETE FROM `%s.%s` WHERE TRUE;", tableId.getDataset(),
+					tableId.getTable()));
+		}
+
+		QueryJobConfiguration queryJobConfiguration =
+			QueryJobConfiguration.newBuilder(
+				sb.toString()
+			).build();
+
+		_bigQuery.query(queryJobConfiguration);
 	}
 
 	private void _createSchema() {
@@ -170,8 +171,6 @@ public class OSBAsahBQSQLTestExecutionListener
 					new String(
 						Files.readAllBytes(file.toPath()),
 						StandardCharsets.UTF_8));
-
-			_createSchema();
 
 			QueryJobConfiguration queryJobConfiguration =
 				QueryJobConfiguration.newBuilder(
