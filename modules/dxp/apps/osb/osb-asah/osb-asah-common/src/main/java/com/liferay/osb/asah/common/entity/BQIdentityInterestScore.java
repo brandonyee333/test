@@ -50,15 +50,18 @@ public class BQIdentityInterestScore {
 		BQIdentityInterestScore bqIdentityInterestScore =
 			(BQIdentityInterestScore)obj;
 
-		if (Objects.equals(_id, bqIdentityInterestScore._id)) {
+		if (Objects.equals(_identityId, bqIdentityInterestScore._identityId) &&
+			Objects.equals(_interested, bqIdentityInterestScore._interested) &&
+			Objects.equals(
+				_interestScore, bqIdentityInterestScore._interestScore) &&
+			Objects.equals(_keyword, bqIdentityInterestScore._keyword) &&
+			Objects.equals(
+				_recordedDate, bqIdentityInterestScore._recordedDate)) {
+
 			return true;
 		}
 
 		return false;
-	}
-
-	public String getId() {
-		return _id;
 	}
 
 	public String getIdentityId() {
@@ -94,16 +97,11 @@ public class BQIdentityInterestScore {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _identityId, _interested, _interestScore, _keyword,
-			_recordedDate);
+			_identityId, _interested, _interestScore, _keyword, _recordedDate);
 	}
 
 	public Boolean isInterested() {
 		return _interested;
-	}
-
-	public void setId(String id) {
-		_id = id;
 	}
 
 	public void setIdentityId(String identityId) {
@@ -128,7 +126,6 @@ public class BQIdentityInterestScore {
 		}
 	}
 
-	private String _id;
 	private String _identityId;
 	private Boolean _interested;
 	private Double _interestScore;

@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.IdentityInterestScore;
-import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
 import java.util.Map;
@@ -38,7 +37,6 @@ public class InterestDTO {
 	}
 
 	public InterestDTO(IdentityInterestScore identityInterestScore) {
-		_id = StringUtil.get(identityInterestScore.getId(), null);
 		_name = identityInterestScore.getKeyword();
 		_ownerId = identityInterestScore.getIndividualId();
 		_ownerType = "individual";
@@ -54,11 +52,6 @@ public class InterestDTO {
 	@JsonProperty("_embedded")
 	public Map<String, Object> getEmbedded() {
 		return _embedded;
-	}
-
-	@JsonProperty("id")
-	public String getId() {
-		return _id;
 	}
 
 	@JsonProperty("interests")
@@ -108,10 +101,6 @@ public class InterestDTO {
 		_embedded = embedded;
 	}
 
-	public void setId(String id) {
-		_id = id;
-	}
-
 	public void setName(String name) {
 		_name = name;
 	}
@@ -142,7 +131,6 @@ public class InterestDTO {
 	}
 
 	private Map<String, Object> _embedded;
-	private String _id;
 	private Set<InterestDTO> _interestDTOs;
 	private String _name;
 	private String _ownerId;

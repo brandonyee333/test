@@ -29,7 +29,6 @@ public class IdentityInterestScore {
 
 		_individualId = individualId;
 
-		_id = bqIdentityInterestScore.getId();
 		_identityId = bqIdentityInterestScore.getIdentityId();
 		_interestScore = bqIdentityInterestScore.getInterestScore();
 		_keyword = bqIdentityInterestScore.getKeyword();
@@ -49,15 +48,18 @@ public class IdentityInterestScore {
 		IdentityInterestScore identityInterestScore =
 			(IdentityInterestScore)obj;
 
-		if (Objects.equals(_id, identityInterestScore._id)) {
+		if (Objects.equals(_identityId, identityInterestScore._identityId) &&
+			Objects.equals(_individualId, identityInterestScore._identityId) &&
+			Objects.equals(
+				_interestScore, identityInterestScore._interestScore) &&
+			Objects.equals(_keyword, identityInterestScore._keyword) &&
+			Objects.equals(
+				_recordedDate, identityInterestScore._recordedDate)) {
+
 			return true;
 		}
 
 		return false;
-	}
-
-	public String getId() {
-		return _id;
 	}
 
 	public String getIdentityId() {
@@ -86,10 +88,11 @@ public class IdentityInterestScore {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_id);
+		return Objects.hash(
+			_identityId, _individualId, _interestScore, _keyword,
+			_recordedDate);
 	}
 
-	private final String _id;
 	private final String _identityId;
 	private final String _individualId;
 	private final Double _interestScore;
