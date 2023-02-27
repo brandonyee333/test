@@ -4,8 +4,8 @@ WITH CustomAssetEvent AS (
 		TO_HEX(
 			SHA256(
 				CONCAT(
-					Event.assetId ||
-					COALESCE(category.value, 'default') ||
+					Event.assetId,
+					COALESCE(category.value, 'default'),
 					Event.channelId
 				)
 			)
