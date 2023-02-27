@@ -68,6 +68,11 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	@Override
+	public void queryExecute(String queryString) {
+		_query(queryString);
+	}
+
+	@Override
 	public BigDecimal queryForBigDecimal(
 		SelectFinalStep<Record1<Number>> selectFinalStep) {
 
@@ -226,7 +231,11 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private TableResult _query(Query query) {
-		String translatedQuery = _translate(String.valueOf(query));
+		return _query(String.valueOf(query));
+	}
+
+	private TableResult _query(String queryString) {
+		String translatedQuery = _translate(queryString);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Executing query: " + translatedQuery);

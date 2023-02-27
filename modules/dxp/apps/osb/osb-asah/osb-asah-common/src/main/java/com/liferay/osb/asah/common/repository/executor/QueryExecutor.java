@@ -33,6 +33,8 @@ public interface QueryExecutor {
 
 	public void queryExecute(Query query);
 
+	public void queryExecute(String queryString);
+
 	public BigDecimal queryForBigDecimal(
 		SelectFinalStep<Record1<Number>> selectFinalStep);
 
