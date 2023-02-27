@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.IdentityInterestScore;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -38,42 +37,6 @@ import org.springframework.data.domain.Page;
 public class BQIdentityInterestScoreDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
-
-	@RepositoryResource(
-		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_info.json"
-	)
-	@Test
-	public void testGetBQIdentityInterestScore() {
-		IdentityInterestScore identityInterestScore =
-			_bqIdentityInterestScoreDog.getIdentityInterestScore(
-				"635452168436521350");
-
-		Assertions.assertEquals(
-			"635452168436521350", identityInterestScore.getId());
-
-		Assertions.assertEquals("sales", identityInterestScore.getKeyword());
-	}
-
-	@RepositoryResource(
-		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_info.json"
-	)
-	@Test
-	public void testGetBQIdentityInterestScoreBadRequest() {
-		Assertions.assertThrows(
-			OSBAsahException.class,
-			() -> _bqIdentityInterestScoreDog.getIdentityInterestScore(
-				"374790572703144534"));
-	}
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,

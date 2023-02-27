@@ -30,7 +30,6 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.repository.CrudBQVisitedPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
@@ -61,35 +60,6 @@ import org.springframework.http.HttpStatus;
 public class InterestsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
-
-	@RepositoryResource(
-		repositoryClass = BQIdentityRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
-	)
-	@Test
-	public void testGetInterestDTO() {
-		InterestDTO interestDTO = _interestsRestController.getInterestDTO(
-			"123456", null);
-
-		Assertions.assertEquals(
-			"123456", interestDTO.getId(), interestDTO.toString());
-		Assertions.assertEquals(
-			"My Javascript title", interestDTO.getName(),
-			interestDTO.toString());
-		Assertions.assertEquals(
-			"337984659206412898", interestDTO.getOwnerId(),
-			interestDTO.toString());
-		Assertions.assertEquals(
-			"individual", interestDTO.getOwnerType(), interestDTO.toString());
-
-		Map<String, Object> embeddedMap = interestDTO.getEmbedded();
-
-		Assertions.assertEquals(0, embeddedMap.size(), interestDTO.toString());
-	}
 
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
@@ -150,47 +120,6 @@ public class InterestsRestControllerTest
 			"clicks-and-mortar e-tailers", firstInterestDTO.getName());
 
 		Assertions.assertEquals("web", lastInterestDTO.getName());
-	}
-
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = CrudBQVisitedPageRepository.class,
-		resourcePath = "osbasahfaroinfo/visited_pages_1.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
-	)
-	@Test
-	public void testGetInterestDTOWithEmbedded() {
-		InterestDTO interestDTO = _interestsRestController.getInterestDTO(
-			"123456", "interest-aggregation-last-30-days,pages-visited");
-
-		Assertions.assertEquals(
-			"123456", interestDTO.getId(), interestDTO.toString());
-		Assertions.assertEquals(
-			"My Javascript title", interestDTO.getName(),
-			interestDTO.toString());
-		Assertions.assertEquals(
-			"337984659206412898", interestDTO.getOwnerId(),
-			interestDTO.toString());
-		Assertions.assertEquals(
-			"individual", interestDTO.getOwnerType(), interestDTO.toString());
-
-		Map<String, Object> embeddedMap = interestDTO.getEmbedded();
-
-		Assertions.assertEquals(2, embeddedMap.size(), embeddedMap.toString());
-
-		List<String> interestAggregations = (List)embeddedMap.get(
-			"interest-aggregation-last-30-days");
-
-		Assertions.assertEquals(
-			30, interestAggregations.size(), interestAggregations.toString());
-
-		List<String> visitedPages = (List)embeddedMap.get("pages-visited");
-
-		Assertions.assertEquals(
-			5, visitedPages.size(), visitedPages.toString());
 	}
 
 	@BQSQLResource(resourcePath = "test_get_interest_keywords.sql")

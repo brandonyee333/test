@@ -265,7 +265,7 @@ public class BQIdentityInterestScoreRepositoryTest {
 	public void testFindByRecordedDate() {
 		List<BQIdentityInterestScore> bqIdentityInterestScores =
 			_bqIdentityInterestScoreRepository.findByRecordedDate(
-				null, DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), 10);
+				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), 10);
 
 		Assertions.assertEquals(
 			3, bqIdentityInterestScores.size(),

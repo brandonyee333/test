@@ -120,7 +120,6 @@
 		"_embedded": {
 		},
 		"dateRecorded": "2019-05-15T07:00:00.000Z",
-		"id": "123456",
 		"name": "My Javascript title",
 		"ownerId": "337984659206412898",
 		"ownerType": "individual",
