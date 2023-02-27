@@ -14,6 +14,10 @@
 
 package com.liferay.osb.asah.common.servlet.util;
 
+import java.io.UnsupportedEncodingException;
+
+import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -71,9 +75,14 @@ public class ServletRequestUtil {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(scheme);
-		sb.append("://");
-		sb.append(serverName);
+		try {
+			sb.append(URLEncoder.encode(scheme, "UTF-8"));
+			sb.append("://");
+			sb.append(URLEncoder.encode(serverName, "UTF-8"));
+		}
+		catch (UnsupportedEncodingException unsupportedEncodingException) {
+			throw new RuntimeException(unsupportedEncodingException);
+		}
 
 		if ((serverPort > 0) && (serverPort != 80) && (serverPort != 443)) {
 			sb.append(":");
