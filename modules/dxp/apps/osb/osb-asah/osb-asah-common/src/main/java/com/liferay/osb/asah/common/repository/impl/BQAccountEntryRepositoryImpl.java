@@ -18,6 +18,8 @@ import com.liferay.osb.asah.common.entity.BQAccountEntry;
 import com.liferay.osb.asah.common.repository.CustomBQAccountEntryRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
+import java.util.Date;
+
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 
@@ -44,19 +46,35 @@ public class BQAccountEntryRepositoryImpl
 	}
 
 	@Override
+	public void deleteById(String id) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQAccountEntry")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
+	}
+
+	@Override
 	public BQAccountEntry insert(BQAccountEntry bqAccountEntry) {
 		_queryExecutor.queryExecute(
 			_dslContext.insertInto(
 				DSL.table("BQAccountEntry")
 			).columns(
-				DSL.field("accountEntryId"), DSL.field("createDate"),
-				DSL.field("dataSourceId"),
+				DSL.field("accountEntryId", Long.class),
+				DSL.field("createDate", Date.class),
+				DSL.field("dataSourceId", Long.class),
 				DSL.field("defaultCPaymentMethodKey"), DSL.field("description"),
 				DSL.field("domains"), DSL.field("emailAddress"),
-				DSL.field("id"), DSL.field("logoId"), DSL.field("modifiedDate"),
-				DSL.field("name"), DSL.field("parentAccountEntryId"),
-				DSL.field("status"), DSL.field("taxExemptionCode"),
-				DSL.field("taxIdNumber"), DSL.field("type")
+				DSL.field("id"), DSL.field("logoId"),
+				DSL.field("modifiedDate", Date.class), DSL.field("name"),
+				DSL.field("parentAccountEntryId"), DSL.field("status"),
+				DSL.field("taxExemptionCode"), DSL.field("taxIdNumber"),
+				DSL.field("type")
 			).values(
 				bqAccountEntry.getAccountEntryId(),
 				bqAccountEntry.getCreateDate(),

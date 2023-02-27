@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,20 @@ public class BQOrganizationRepositoryImpl
 	}
 
 	@Override
+	public void deleteById(String id) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQOrganization")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
+	}
+
+	@Override
 	public List<BQOrganization> findAll() {
 		return null;
 	}
@@ -122,20 +137,18 @@ public class BQOrganizationRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQOrganization")
 			).columns(
-				DSL.field("createDate"), DSL.field("dataSourceId"),
-				DSL.field("dataSourceName"), DSL.field("expandoFields"),
-				DSL.field("id"), DSL.field("modifiedDate"), DSL.field("name"),
-				DSL.field("organizationId"), DSL.field("parentOrganizationId"),
-				DSL.field("parentOrganizationName"), DSL.field("treePath"),
-				DSL.field("type")
+				DSL.field("createDate", Date.class),
+				DSL.field("dataSourceId", Long.class), DSL.field("id"),
+				DSL.field("modifiedDate", Date.class), DSL.field("name"),
+				DSL.field("organizationId", Long.class),
+				DSL.field("parentOrganizationId", Long.class),
+				DSL.field("treePath"), DSL.field("type")
 			).values(
 				bqOrganization.getCreateDate(),
-				bqOrganization.getDataSourceId(),
-				bqOrganization.getDataSourceName(), null,
-				bqOrganization.getId(), bqOrganization.getModifiedDate(),
-				bqOrganization.getName(), bqOrganization.getOrganizationId(),
+				bqOrganization.getDataSourceId(), bqOrganization.getId(),
+				bqOrganization.getModifiedDate(), bqOrganization.getName(),
+				bqOrganization.getOrganizationId(),
 				bqOrganization.getParentOrganizationId(),
-				bqOrganization.getParentOrganizationName(),
 				bqOrganization.getTreePath(), bqOrganization.getType()
 			));
 

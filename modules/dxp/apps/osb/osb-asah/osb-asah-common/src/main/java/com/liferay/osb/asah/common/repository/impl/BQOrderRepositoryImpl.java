@@ -184,9 +184,7 @@ public class BQOrderRepositoryImpl implements BQOrderRepository {
 
 		conditions.add(
 			DSL.field(
-				"channelId"
-			).cast(
-				Long.class
+				"channelId", Long.class
 			).eq(
 				channelId
 			));

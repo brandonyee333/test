@@ -32,6 +32,7 @@ import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -183,9 +184,9 @@ public class BQIdentityRepositoryImpl
 	public BQIdentity insert(BQIdentity bqIdentity) {
 		_queryExecutor.queryExecute(
 			_dslContext.insertInto(
-				DSL.table("BQIdentity")
+				DSL.table("Identity_Raw")
 			).columns(
-				DSL.field("createDate"), DSL.field("id"),
+				DSL.field("createDate", Date.class), DSL.field("id"),
 				DSL.field("individualId")
 			).values(
 				bqIdentity.getCreateDate(), bqIdentity.getId(),

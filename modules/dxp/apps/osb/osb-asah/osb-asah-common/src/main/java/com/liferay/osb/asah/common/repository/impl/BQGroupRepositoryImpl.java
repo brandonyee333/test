@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.repository.CustomBQGroupRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
+import java.util.Date;
 import java.util.List;
 
 import org.jooq.DSLContext;
@@ -72,18 +73,31 @@ public class BQGroupRepositoryImpl
 	}
 
 	@Override
+	public void deleteById(String id) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQGroup")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
+	}
+
+	@Override
 	public BQGroup insert(BQGroup bqGroup) {
 		_queryExecutor.queryExecute(
 			_dslContext.insertInto(
 				DSL.table("BQGroup")
 			).columns(
-				DSL.field("dataSourceId"), DSL.field("dataSourceName"),
-				DSL.field("groupId"), DSL.field("id"),
-				DSL.field("modifiedDate"), DSL.field("name")
+				DSL.field("dataSourceId", Long.class),
+				DSL.field("groupId", Long.class), DSL.field("id"),
+				DSL.field("modifiedDate", Date.class), DSL.field("name")
 			).values(
-				bqGroup.getDataSourceId(), bqGroup.getDataSourceName(),
-				bqGroup.getGroupId(), bqGroup.getId(),
-				bqGroup.getModifiedDate(), bqGroup.getName()
+				bqGroup.getDataSourceId(), bqGroup.getGroupId(),
+				bqGroup.getId(), bqGroup.getModifiedDate(), bqGroup.getName()
 			));
 
 		return bqGroup;

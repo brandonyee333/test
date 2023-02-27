@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.repository.CustomBQRoleRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
+import java.util.Date;
 import java.util.List;
 
 import org.jooq.DSLContext;
@@ -71,18 +72,31 @@ public class BQRoleRepositoryImpl
 	}
 
 	@Override
+	public void deleteById(String id) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQRole")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
+	}
+
+	@Override
 	public BQRole insert(BQRole bqRole) {
 		_queryExecutor.queryExecute(
 			_dslContext.insertInto(
-				DSL.table("BQExpandoColumn")
+				DSL.table("BQRole")
 			).columns(
-				DSL.field("dataSourceId"), DSL.field("dataSourceName"),
-				DSL.field("id"), DSL.field("modifiedDate"), DSL.field("name"),
-				DSL.field("roleId")
+				DSL.field("dataSourceId", Long.class), DSL.field("id"),
+				DSL.field("modifiedDate", Date.class), DSL.field("name"),
+				DSL.field("roleId", Long.class)
 			).values(
-				bqRole.getDataSourceId(), bqRole.getDataSourceName(),
-				bqRole.getId(), bqRole.getModifiedDate(), bqRole.getName(),
-				bqRole.getRoleId()
+				bqRole.getDataSourceId(), bqRole.getId(),
+				bqRole.getModifiedDate(), bqRole.getName(), bqRole.getRoleId()
 			));
 
 		return bqRole;

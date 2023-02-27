@@ -328,6 +328,21 @@ public class BQMembershipRepositoryImpl
 
 	@Override
 	public BQMembership insert(BQMembership bqMembership) {
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQMembership")
+			).columns(
+				DSL.field("createDate", Date.class),
+				DSL.field("individualId", String.class),
+				DSL.field("identityId", String.class),
+				DSL.field("modifiedDate", Date.class),
+				DSL.field("segmentId", Long.class)
+			).values(
+				bqMembership.getCreateDate(), bqMembership.getIndividualId(),
+				bqMembership.getIdentityId(), bqMembership.getModifiedDate(),
+				bqMembership.getSegmentId()
+			));
+
 		return bqMembership;
 	}
 

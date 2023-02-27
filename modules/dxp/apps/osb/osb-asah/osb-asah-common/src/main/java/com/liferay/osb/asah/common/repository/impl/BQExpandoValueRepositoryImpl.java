@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.repository.CustomBQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
+import java.util.Date;
 import java.util.List;
 
 import org.jooq.DSLContext;
@@ -46,6 +47,20 @@ public class BQExpandoValueRepositoryImpl
 	}
 
 	@Override
+	public void deleteById(String id) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQExpandoValue")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
+	}
+
+	@Override
 	public List<BQExpandoValue> findByClassPKAndClassTypeAndDataSourceId(
 		Long classPK, String classType, Long dataSourceId) {
 
@@ -59,7 +74,7 @@ public class BQExpandoValueRepositoryImpl
 					DSL.field(
 						"classPK"
 					).eq(
-						classPK
+						String.valueOf(classPK)
 					),
 					DSL.field(
 						"classType"
@@ -67,7 +82,7 @@ public class BQExpandoValueRepositoryImpl
 						classType
 					),
 					DSL.field(
-						"dataSourceId"
+						"dataSourceId", Long.class
 					).eq(
 						dataSourceId
 					))
@@ -81,8 +96,9 @@ public class BQExpandoValueRepositoryImpl
 				DSL.table("BQExpandoValue")
 			).columns(
 				DSL.field("classPK"), DSL.field("classType"),
-				DSL.field("columnId"), DSL.field("dataSourceId"),
-				DSL.field("id"), DSL.field("modifiedDate"), DSL.field("value")
+				DSL.field("columnId"), DSL.field("dataSourceId", Long.class),
+				DSL.field("id"), DSL.field("modifiedDate", Date.class),
+				DSL.field("value")
 			).values(
 				bqExpandoValue.getClassPK(), bqExpandoValue.getClassType(),
 				bqExpandoValue.getColumnId(), bqExpandoValue.getDataSourceId(),

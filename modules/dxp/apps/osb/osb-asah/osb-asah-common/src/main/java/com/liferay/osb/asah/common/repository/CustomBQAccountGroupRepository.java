@@ -23,6 +23,8 @@ public interface CustomBQAccountGroupRepository {
 
 	public long count();
 
+	public void deleteById(String id);
+
 	public BQAccountGroup insert(BQAccountGroup bqAccountGroup);
 
 }

@@ -23,6 +23,8 @@ public interface CustomBQAccountEntryRepository {
 
 	public long count();
 
+	public void deleteById(String id);
+
 	public BQAccountEntry insert(BQAccountEntry bqAccountEntry);
 
 }

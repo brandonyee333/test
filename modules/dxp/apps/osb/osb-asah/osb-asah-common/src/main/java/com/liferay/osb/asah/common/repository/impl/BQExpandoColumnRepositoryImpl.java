@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 import com.liferay.osb.asah.common.repository.CustomBQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.jooq.DSLContext;
@@ -42,6 +43,20 @@ public class BQExpandoColumnRepositoryImpl
 			_dslContext.selectCount(
 			).from(
 				DSL.table("BQExpandoColumn")
+			));
+	}
+
+	@Override
+	public void deleteById(String id) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQExpandoColumn")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
 			));
 	}
 
@@ -92,13 +107,12 @@ public class BQExpandoColumnRepositoryImpl
 				DSL.table("BQExpandoColumn")
 			).columns(
 				DSL.field("className"), DSL.field("columnId"),
-				DSL.field("dataSourceId"), DSL.field("dataSourceName"),
-				DSL.field("dataType"), DSL.field("displayType"),
-				DSL.field("id"), DSL.field("modifiedDate"), DSL.field("name")
+				DSL.field("dataSourceId", Long.class), DSL.field("dataType"),
+				DSL.field("displayType"), DSL.field("id"),
+				DSL.field("modifiedDate", Date.class), DSL.field("name")
 			).values(
 				bqExpandoColumn.getClassName(), bqExpandoColumn.getColumnId(),
 				bqExpandoColumn.getDataSourceId(),
-				bqExpandoColumn.getDataSourceName(),
 				bqExpandoColumn.getDataType(), bqExpandoColumn.getDisplayType(),
 				bqExpandoColumn.getId(), bqExpandoColumn.getModifiedDate(),
 				bqExpandoColumn.getName()

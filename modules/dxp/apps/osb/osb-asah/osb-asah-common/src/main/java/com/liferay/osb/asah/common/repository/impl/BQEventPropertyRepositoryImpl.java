@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.repository.CustomBQEventPropertyRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+import com.liferay.osb.asah.common.util.BQSQLUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Date;
@@ -110,16 +111,7 @@ public class BQEventPropertyRepositoryImpl
 	@Override
 	public BQEventProperty insert(BQEventProperty bqEventProperty) {
 		_queryExecutor.queryExecute(
-			_dslContext.insertInto(
-				DSL.table("BQEventProperty")
-			).columns(
-				DSL.field("channelId"), DSL.field("eventDate"), DSL.field("id"),
-				DSL.field("name"), DSL.field("value")
-			).values(
-				bqEventProperty.getChannelId(), bqEventProperty.getEventDate(),
-				bqEventProperty.getId(), bqEventProperty.getName(),
-				bqEventProperty.getValue()
-			));
+			BQSQLUtil.createInsertStatement(bqEventProperty));
 
 		return bqEventProperty;
 	}

@@ -69,7 +69,7 @@ public interface CustomBQIdentityInterestScoreRepository {
 		@Nullable Long interestId, @Nullable Date recordedDate, int size);
 
 	public Optional<IdentityInterestScore> findIdentityInterestScoreById(
-		Long id);
+		String id);
 
 	public List<String> findIndividualIdsByFilterStringAndIndividualId(
 		FilterHelper filterHelper, @Nullable String individualId);

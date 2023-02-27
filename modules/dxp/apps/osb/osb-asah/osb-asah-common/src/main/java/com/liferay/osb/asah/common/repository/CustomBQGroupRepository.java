@@ -33,6 +33,8 @@ public interface CustomBQGroupRepository {
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, @Nullable String keywords);
 
+	public void deleteById(String id);
+
 	public BQGroup insert(BQGroup bqGroup);
 
 	public List<BQGroup> searchByDataSourceIdsAndKeywords(

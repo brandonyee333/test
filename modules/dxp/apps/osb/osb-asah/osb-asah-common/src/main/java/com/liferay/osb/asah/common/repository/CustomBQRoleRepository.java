@@ -32,6 +32,8 @@ public interface CustomBQRoleRepository {
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords);
 
+	public void deleteById(String id);
+
 	public BQRole insert(BQRole bqRole);
 
 	public List<BQRole> searchByDataSourceIdsAndKeywords(

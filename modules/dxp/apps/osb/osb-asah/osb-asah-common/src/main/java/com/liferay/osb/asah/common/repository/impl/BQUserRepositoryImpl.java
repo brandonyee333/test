@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.repository.CustomBQUserRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.BQSQLUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +45,11 @@ public class BQUserRepositoryImpl
 
 	@Override
 	public long count() {
-		return 0;
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				DSL.table("BQUser")
+			));
 	}
 
 	@Override
@@ -64,6 +69,20 @@ public class BQUserRepositoryImpl
 		).orElse(
 			0L
 		);
+	}
+
+	@Override
+	public void deleteById(String id) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQUser")
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
 	}
 
 	@Override
@@ -100,11 +119,9 @@ public class BQUserRepositoryImpl
 
 	@Override
 	public BQUser insert(BQUser bqUser) {
-		return null;
-	}
+		_queryExecutor.queryExecute(BQSQLUtil.createInsertStatement(bqUser));
 
-	@Override
-	public void insertAll(List<BQUser> bqUsers) {
+		return bqUser;
 	}
 
 	public List<BQUser> searchByDataSourceIdsAndKeywords(

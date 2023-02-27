@@ -32,6 +32,8 @@ public interface CustomBQTeamRepository {
 	public long countByDataSourceIdsAndKeywords(
 		List<Long> dataSourceIds, String keywords);
 
+	public void deleteById(String id);
+
 	public BQTeam insert(BQTeam bqTeam);
 
 	public List<BQTeam> searchByDataSourceIdsAndKeywords(

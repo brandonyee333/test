@@ -23,11 +23,10 @@ import com.liferay.osb.asah.common.repository.CustomBQSessionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.util.BQSQLUtil;
 import com.liferay.osb.asah.common.util.GetterUtil;
 
 import java.math.BigDecimal;
-
-import java.sql.Date;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -35,6 +34,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -559,36 +559,7 @@ public class BQSessionRepositoryImpl
 
 	@Override
 	public BQSession insert(BQSession bqSession) {
-		_queryExecutor.queryExecute(
-			_dslContext.insertInto(
-				DSL.table("BQSession")
-			).columns(
-				DSL.field("acquisitionCampaign"),
-				DSL.field("acquisitionChannel"),
-				DSL.field("acquisitionContent"), DSL.field("acquisitionMedium"),
-				DSL.field("acquisitionSource"), DSL.field("acquisitionTerm"),
-				DSL.field("bounce"), DSL.field("browserName"),
-				DSL.field("channelId"), DSL.field("city"), DSL.field("country"),
-				DSL.field("deviceType"), DSL.field("duration"), DSL.field("id"),
-				DSL.field("platformName"), DSL.field("referrers"),
-				DSL.field("region"), DSL.field("sessionEnd"),
-				DSL.field("sessionStart"), DSL.field("urls"),
-				DSL.field("userId")
-			).values(
-				bqSession.getAcquisitionCampaign(),
-				bqSession.getAcquisitionChannel(),
-				bqSession.getAcquisitionContent(),
-				bqSession.getAcquisitionMedium(),
-				bqSession.getAcquisitionSource(),
-				bqSession.getAcquisitionTerm(), bqSession.getBounce(),
-				bqSession.getBrowserName(), bqSession.getChannelId(),
-				bqSession.getCity(), bqSession.getCountry(),
-				bqSession.getDeviceType(), bqSession.getDuration(),
-				bqSession.getId(), bqSession.getPlatformName(),
-				bqSession.getReferrers(), bqSession.getRegion(),
-				bqSession.getSessionEnd(), bqSession.getSessionStart(),
-				bqSession.getUrls(), bqSession.getUserId()
-			));
+		_queryExecutor.queryExecute(BQSQLUtil.createInsertStatement(bqSession));
 
 		return bqSession;
 	}

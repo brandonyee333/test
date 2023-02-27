@@ -25,6 +25,8 @@ public interface CustomBQExpandoValueRepository {
 
 	public long count();
 
+	public void deleteById(String id);
+
 	public List<BQExpandoValue> findByClassPKAndClassTypeAndDataSourceId(
 		Long classPK, String classType, Long dataSourceId);
 

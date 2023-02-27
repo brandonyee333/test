@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+import com.liferay.osb.asah.common.util.BQSQLUtil;
 import com.liferay.osb.asah.common.util.FieldValueListUtil;
 
 import java.math.BigDecimal;
@@ -186,7 +187,18 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public Optional<BQIndividual> findByEmailAddress(String emailAddresses) {
-		return Optional.empty();
+		return _queryExecutor.queryForObject(
+			BQIndividual::new,
+			_dslContext.select(
+			).from(
+				DSL.table("BQIndividual")
+			).where(
+				DSL.field(
+					"emailAddress"
+				).eq(
+					emailAddresses
+				)
+			));
 	}
 
 	@Override
@@ -247,25 +259,7 @@ public class BQIndividualRepositoryImpl
 	@Override
 	public BQIndividual insert(BQIndividual bqIndividual) {
 		_queryExecutor.queryExecute(
-			_dslContext.insertInto(
-				DSL.table("BQIndividual")
-			).columns(
-				DSL.field("addresses"), DSL.field("birthday"),
-				DSL.field("createDate"), DSL.field("emailAddress"),
-				DSL.field("fields"), DSL.field("firstName"),
-				DSL.field("gender"), DSL.field("id"), DSL.field("jobTitle"),
-				DSL.field("languageId"), DSL.field("lastName"),
-				DSL.field("middleName"), DSL.field("modifiedDate"),
-				DSL.field("screenName"), DSL.field("timeZoneId")
-			).values(
-				bqIndividual.getAddresses(), bqIndividual.getBirthday(),
-				bqIndividual.getCreateDate(), bqIndividual.getEmailAddress(),
-				null, bqIndividual.getFirstName(), bqIndividual.getGender(),
-				bqIndividual.getId(), bqIndividual.getJobTitle(),
-				bqIndividual.getLanguageId(), bqIndividual.getLastName(),
-				bqIndividual.getMiddleName(), bqIndividual.getModifiedDate(),
-				bqIndividual.getScreenName(), bqIndividual.getTimeZoneId()
-			));
+			BQSQLUtil.createInsertStatement(bqIndividual));
 
 		return bqIndividual;
 	}

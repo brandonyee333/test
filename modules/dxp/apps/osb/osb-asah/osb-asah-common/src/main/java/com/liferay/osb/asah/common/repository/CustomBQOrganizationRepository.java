@@ -34,6 +34,8 @@ public interface CustomBQOrganizationRepository {
 
 	public long countByName(@Nullable String name);
 
+	public void deleteById(String id);
+
 	public List<BQOrganization> findAll();
 
 	public List<BQOrganization> findByDataSourceIdAndOrganizationId(

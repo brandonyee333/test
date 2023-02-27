@@ -358,7 +358,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 	@Override
 	public Optional<IdentityInterestScore> findIdentityInterestScoreById(
-		Long id) {
+		String id) {
 
 		return _queryExecutor.queryForObject(
 			record -> new IdentityInterestScore(
@@ -612,6 +612,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"maxCount"
 				),
 				DSL.count(
+					DSL.field("keyword")
 				).over(
 				).as(
 					"total"
@@ -809,7 +810,24 @@ public class BQIdentityInterestScoreRepositoryImpl
 	public BQIdentityInterestScore insert(
 		BQIdentityInterestScore bqIdentityInterestScore) {
 
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQIdentityInterestScore")
+			).columns(
+				DSL.field("id"), DSL.field("identityId"),
+				DSL.field("interested", Boolean.class),
+				DSL.field("interestScore", Double.class), DSL.field("keyword"),
+				DSL.field("recordedDate", Date.class)
+			).values(
+				bqIdentityInterestScore.getId(),
+				bqIdentityInterestScore.getIdentityId(),
+				bqIdentityInterestScore.getInterested(),
+				bqIdentityInterestScore.getInterestScore(),
+				bqIdentityInterestScore.getKeyword(),
+				bqIdentityInterestScore.getRecordedDate()
+			));
+
+		return bqIdentityInterestScore;
 	}
 
 	private double _getAggregationValue(Double value) {

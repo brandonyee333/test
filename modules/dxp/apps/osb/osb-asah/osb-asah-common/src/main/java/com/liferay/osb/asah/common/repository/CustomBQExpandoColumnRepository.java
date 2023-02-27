@@ -25,6 +25,8 @@ public interface CustomBQExpandoColumnRepository {
 
 	public long count();
 
+	public void deleteById(String id);
+
 	public Optional<BQExpandoColumn> findByColumnIdAndDataSourceId(
 		String expandoColumnId, Long dataSourceId);
 
