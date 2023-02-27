@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -127,46 +128,57 @@ public class BQEvent {
 		return false;
 	}
 
+	@BigQueryColumn
 	public String getApplicationId() {
 		return _applicationId;
 	}
 
+	@BigQueryColumn
 	public String getAssetId() {
 		return _assetId;
 	}
 
+	@BigQueryColumn
 	public String getAssetTitle() {
 		return _assetTitle;
 	}
 
+	@BigQueryColumn
 	public String getBrowserName() {
 		return _browserName;
 	}
 
+	@BigQueryColumn
 	public String getCanonicalUrl() {
 		return _canonicalUrl;
 	}
 
+	@BigQueryColumn
 	public Long getChannelId() {
 		return _channelId;
 	}
 
+	@BigQueryColumn
 	public String getCity() {
 		return _city;
 	}
 
+	@BigQueryColumn
 	public String getContentLanguageId() {
 		return _contentLanguageId;
 	}
 
+	@BigQueryColumn
 	public String getContext() {
 		return _context;
 	}
 
+	@BigQueryColumn
 	public String getCountry() {
 		return _country;
 	}
 
+	@BigQueryColumn
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -175,18 +187,22 @@ public class BQEvent {
 		return new Date(_createDate.getTime());
 	}
 
+	@BigQueryColumn
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
+	@BigQueryColumn
 	public String getDescription() {
 		return _description;
 	}
 
+	@BigQueryColumn
 	public String getDeviceType() {
 		return _deviceType;
 	}
 
+	@BigQueryColumn
 	public Date getEventDate() {
 		if (_eventDate == null) {
 			return null;
@@ -195,66 +211,82 @@ public class BQEvent {
 		return new Date(_eventDate.getTime());
 	}
 
+	@BigQueryColumn
 	public String getEventId() {
 		return _eventId;
 	}
 
+	@BigQueryColumn
 	public String getEventProperties() {
 		return _eventProperties;
 	}
 
+	@BigQueryColumn
 	public String getExperienceId() {
 		return _experienceId;
 	}
 
+	@BigQueryColumn
 	public String getId() {
 		return _id;
 	}
 
+	@BigQueryColumn
 	public String getKeywords() {
 		return _keywords;
 	}
 
+	@BigQueryColumn
 	public String getLanguageId() {
 		return _languageId;
 	}
 
+	@BigQueryColumn
 	public String getPlatformName() {
 		return _platformName;
 	}
 
+	@BigQueryColumn
 	public String getProjectTimeZoneId() {
 		return _projectTimeZoneId;
 	}
 
+	@BigQueryColumn
 	public String getReferrer() {
 		return _referrer;
 	}
 
+	@BigQueryColumn
 	public String getRegion() {
 		return _region;
 	}
 
+	@BigQueryColumn
 	public String getSessionId() {
 		return _sessionId;
 	}
 
+	@BigQueryColumn
 	public String getTimezoneOffset() {
 		return _timezoneOffset;
 	}
 
+	@BigQueryColumn
 	public String getTitle() {
 		return _title;
 	}
 
+	@BigQueryColumn
 	public String getUrl() {
 		return _url;
 	}
 
+	@BigQueryColumn
 	public String getUserId() {
 		return _userId;
 	}
 
+	@BigQueryColumn
 	public String getVariantId() {
 		return _variantId;
 	}

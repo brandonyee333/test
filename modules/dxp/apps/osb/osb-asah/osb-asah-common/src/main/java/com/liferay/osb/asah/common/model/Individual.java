@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.model;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.constants.FieldMappingConstants;
@@ -58,16 +57,30 @@ public class Individual {
 
 		_createDate = bqIndividual.getCreateDate();
 
-		Set<Field> fields = objectMapper.convertValue(
-			bqIndividual.getFieldsJSONArray(),
-			new TypeReference<Set<Field>>() {
-			});
+		List<BQIndividual.Field> bqIndividualFields = bqIndividual.getFields();
+
+		Stream<BQIndividual.Field> stream1 = bqIndividualFields.stream();
+
+		Set<Field> fields = stream1.map(
+			bqIndividualField -> {
+				Field field = new Field();
+
+				field.setDataSourceId(bqIndividualField.getDataSourceId());
+				field.setName(bqIndividualField.getName());
+				field.setValue(bqIndividualField.getValue());
+
+				return field;
+			}
+		).collect(
+			Collectors.toSet()
+		);
 
 		if (fields != null) {
-			Stream<Field> fieldsStream = fields.stream();
+			Stream<Field> stream2 = fields.stream();
 
-			_customFields = fieldsStream.filter(
-				field -> StringUtils.contains(field.getName(), "-")
+			_customFields = stream2.filter(
+				bqIndividualField -> StringUtils.contains(
+					bqIndividualField.getName(), "-")
 			).collect(
 				Collectors.toSet()
 			);
@@ -80,9 +93,9 @@ public class Individual {
 					customField.setSourceName(customField.getName());
 				});
 
-			fieldsStream = fields.stream();
+			stream2 = fields.stream();
 
-			fieldsStream.forEach(
+			stream2.forEach(
 				field -> {
 					field.setModifiedDate(bqIndividual.getModifiedDate());
 

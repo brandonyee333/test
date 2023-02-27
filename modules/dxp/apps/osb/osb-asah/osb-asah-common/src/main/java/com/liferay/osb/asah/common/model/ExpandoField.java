@@ -39,7 +39,7 @@ public class ExpandoField {
 		_value = bqExpandoValue.getValue();
 	}
 
-	public Long getClassPK() {
+	public String getClassPK() {
 		return _classPK;
 	}
 
@@ -83,7 +83,7 @@ public class ExpandoField {
 		return _value;
 	}
 
-	private final Long _classPK;
+	private final String _classPK;
 	private final String _classType;
 	private final String _columnId;
 	private final Long _dataSourceId;

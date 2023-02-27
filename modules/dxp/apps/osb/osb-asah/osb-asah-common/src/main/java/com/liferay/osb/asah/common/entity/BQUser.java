@@ -18,13 +18,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.model.ExpandoField;
+import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import org.json.JSONArray;
 
 /**
  * @author Marcos Martins
@@ -38,6 +37,7 @@ public class BQUser implements BQDXPEntity {
 		BeanUtils.copyProperties(source, this);
 	}
 
+	@BigQueryColumn
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -51,32 +51,33 @@ public class BQUser implements BQDXPEntity {
 		return DXPEntity.Type.USER.name();
 	}
 
+	@BigQueryColumn("dxpUserId")
 	@JsonProperty("userId")
 	public Long getDXPUserId() {
 		return _dxpUserId;
 	}
 
+	@BigQueryColumn
 	public String getEmailAddress() {
 		return _emailAddress;
-	}
-
-	public String getEmailAddressHashed() {
-		return _emailAddressHashed;
 	}
 
 	public List<ExpandoField> getExpandoFields() {
 		return _expandoFields;
 	}
 
+	@BigQueryColumn
 	@JsonProperty("fields")
-	public JSONArray getFieldsJSONArray() {
-		return _fieldsJSONArray;
+	public List<Field> getFields() {
+		return _fields;
 	}
 
+	@BigQueryColumn
 	public String getFirstName() {
 		return _firstName;
 	}
 
+	@BigQueryColumn
 	@Override
 	public String getId() {
 		return _id;
@@ -90,18 +91,27 @@ public class BQUser implements BQDXPEntity {
 		return _dxpUserId;
 	}
 
+	@BigQueryColumn
+	public String getIndividualId() {
+		return _individualId;
+	}
+
+	@BigQueryColumn
 	public String getJobTitle() {
 		return _jobTitle;
 	}
 
+	@BigQueryColumn
 	public String getLastName() {
 		return _lastName;
 	}
 
+	@BigQueryColumn
 	public String getMiddleName() {
 		return _middleName;
 	}
 
+	@BigQueryColumn
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -115,14 +125,17 @@ public class BQUser implements BQDXPEntity {
 		return _firstName + " " + _lastName;
 	}
 
+	@BigQueryColumn
 	public String getScreenName() {
 		return _screenName;
 	}
 
+	@BigQueryColumn
 	public String getUserName() {
 		return _userName;
 	}
 
+	@BigQueryColumn
 	public String getUuid() {
 		return _uuid;
 	}
@@ -143,16 +156,12 @@ public class BQUser implements BQDXPEntity {
 		_emailAddress = emailAddress;
 	}
 
-	public void setEmailAddressHashed(String emailAddressHashed) {
-		_emailAddressHashed = emailAddressHashed;
-	}
-
 	public void setExpandoFields(List<ExpandoField> expandoFields) {
 		_expandoFields = expandoFields;
 	}
 
-	public void setFieldsJSONArray(JSONArray fieldsJSONArray) {
-		_fieldsJSONArray = fieldsJSONArray;
+	public void setFields(List<Field> fields) {
+		_fields = fields;
 	}
 
 	public void setFirstName(String firstName) {
@@ -161,6 +170,10 @@ public class BQUser implements BQDXPEntity {
 
 	public void setId(String id) {
 		_id = id;
+	}
+
+	public void setIndividualId(String individualId) {
+		_individualId = individualId;
 	}
 
 	public void setJobTitle(String jobTitle) {
@@ -193,15 +206,48 @@ public class BQUser implements BQDXPEntity {
 		_uuid = uuid;
 	}
 
+	public static class Field {
+
+		public Field() {
+		}
+
+		public Field(String name, String value) {
+			_name = name;
+			_value = value;
+		}
+
+		@BigQueryColumn
+		public String getName() {
+			return _name;
+		}
+
+		@BigQueryColumn
+		public String getValue() {
+			return _value;
+		}
+
+		public void setName(String name) {
+			_name = name;
+		}
+
+		public void setValue(String value) {
+			_value = value;
+		}
+
+		private String _name;
+		private String _value;
+
+	}
+
 	private Long _dataSourceId;
 	private String _dataSourceName;
 	private Long _dxpUserId;
 	private String _emailAddress;
-	private String _emailAddressHashed;
 	private List<ExpandoField> _expandoFields;
-	private JSONArray _fieldsJSONArray;
+	private List<Field> _fields;
 	private String _firstName;
 	private String _id;
+	private String _individualId;
 	private String _jobTitle;
 	private String _lastName;
 	private String _middleName;

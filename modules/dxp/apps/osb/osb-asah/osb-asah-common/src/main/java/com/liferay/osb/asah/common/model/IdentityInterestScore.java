@@ -56,7 +56,7 @@ public class IdentityInterestScore {
 		return false;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return _id;
 	}
 
@@ -89,7 +89,7 @@ public class IdentityInterestScore {
 		return Objects.hash(_id);
 	}
 
-	private final Long _id;
+	private final String _id;
 	private final String _identityId;
 	private final String _individualId;
 	private final Double _interestScore;

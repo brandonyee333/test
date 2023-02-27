@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -75,74 +76,92 @@ public class BQSession {
 		return false;
 	}
 
+	@BigQueryColumn
 	public String getAcquisitionCampaign() {
 		return _acquisitionCampaign;
 	}
 
+	@BigQueryColumn
 	public String getAcquisitionChannel() {
 		return _acquisitionChannel;
 	}
 
+	@BigQueryColumn
 	public String getAcquisitionContent() {
 		return _acquisitionContent;
 	}
 
+	@BigQueryColumn
 	public String getAcquisitionMedium() {
 		return _acquisitionMedium;
 	}
 
+	@BigQueryColumn
 	public String getAcquisitionSource() {
 		return _acquisitionSource;
 	}
 
+	@BigQueryColumn
 	public String getAcquisitionTerm() {
 		return _acquisitionTerm;
 	}
 
+	@BigQueryColumn
 	public Integer getBounce() {
 		return _bounce;
 	}
 
+	@BigQueryColumn
 	public String getBrowserName() {
 		return _browserName;
 	}
 
+	@BigQueryColumn
 	public Long getChannelId() {
 		return _channelId;
 	}
 
+	@BigQueryColumn
 	public String getCity() {
 		return _city;
 	}
 
+	@BigQueryColumn
 	public String getCountry() {
 		return _country;
 	}
 
+	@BigQueryColumn
 	public String getDeviceType() {
 		return _deviceType;
 	}
 
+	@BigQueryColumn
 	public Long getDuration() {
 		return _duration;
 	}
 
+	@BigQueryColumn
 	public String getId() {
 		return _id;
 	}
 
+	@BigQueryColumn
 	public String getPlatformName() {
 		return _platformName;
 	}
 
+	@BigQueryColumn
 	public Set<String> getReferrers() {
 		return _referrers;
 	}
 
+	@BigQueryColumn
 	public String getRegion() {
 		return _region;
 	}
 
+	@BigQueryColumn
 	public Date getSessionEnd() {
 		if (_sessionEnd == null) {
 			return null;
@@ -151,6 +170,7 @@ public class BQSession {
 		return new Date(_sessionEnd.getTime());
 	}
 
+	@BigQueryColumn
 	public Date getSessionStart() {
 		if (_sessionStart == null) {
 			return null;
@@ -159,10 +179,12 @@ public class BQSession {
 		return new Date(_sessionStart.getTime());
 	}
 
+	@BigQueryColumn
 	public Set<String> getUrls() {
 		return _urls;
 	}
 
+	@BigQueryColumn
 	public String getUserId() {
 		return _userId;
 	}

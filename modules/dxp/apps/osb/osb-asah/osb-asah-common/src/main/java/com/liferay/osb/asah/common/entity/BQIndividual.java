@@ -14,13 +14,13 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import org.json.JSONArray;
 
 /**
  * @author Rachael Koestartyo
@@ -53,10 +53,12 @@ public class BQIndividual {
 		return false;
 	}
 
+	@BigQueryColumn
 	public String getAddresses() {
 		return _addresses;
 	}
 
+	@BigQueryColumn
 	public Date getBirthday() {
 		if (_birthday == null) {
 			return null;
@@ -65,6 +67,7 @@ public class BQIndividual {
 		return new Date(_birthday.getTime());
 	}
 
+	@BigQueryColumn
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -73,42 +76,52 @@ public class BQIndividual {
 		return new Date(_createDate.getTime());
 	}
 
+	@BigQueryColumn
 	public String getEmailAddress() {
 		return _emailAddress;
 	}
 
-	public JSONArray getFieldsJSONArray() {
-		return _fieldsJSONArray;
+	@BigQueryColumn
+	public List<Field> getFields() {
+		return _fields;
 	}
 
+	@BigQueryColumn
 	public String getFirstName() {
 		return _firstName;
 	}
 
+	@BigQueryColumn
 	public String getGender() {
 		return _gender;
 	}
 
+	@BigQueryColumn
 	public String getId() {
 		return _id;
 	}
 
+	@BigQueryColumn
 	public String getJobTitle() {
 		return _jobTitle;
 	}
 
+	@BigQueryColumn
 	public String getLanguageId() {
 		return _languageId;
 	}
 
+	@BigQueryColumn
 	public String getLastName() {
 		return _lastName;
 	}
 
+	@BigQueryColumn
 	public String getMiddleName() {
 		return _middleName;
 	}
 
+	@BigQueryColumn
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -117,10 +130,12 @@ public class BQIndividual {
 		return new Date(_modifiedDate.getTime());
 	}
 
+	@BigQueryColumn
 	public String getScreenName() {
 		return _screenName;
 	}
 
+	@BigQueryColumn
 	public String getTimeZoneId() {
 		return _timeZoneId;
 	}
@@ -150,8 +165,8 @@ public class BQIndividual {
 		_emailAddress = emailAddress;
 	}
 
-	public void setFieldsJSONArray(JSONArray fieldsJSONArray) {
-		_fieldsJSONArray = fieldsJSONArray;
+	public void setFields(List<Field> fields) {
+		_fields = fields;
 	}
 
 	public void setFirstName(String firstName) {
@@ -196,11 +211,70 @@ public class BQIndividual {
 		_timeZoneId = timeZoneId;
 	}
 
+	public static class Field {
+
+		public Field() {
+		}
+
+		public Field(Long dataSourceId, String name, String value) {
+			_dataSourceId = dataSourceId;
+			_name = name;
+			_value = value;
+		}
+
+		@BigQueryColumn
+		public Long getDataSourceId() {
+			return _dataSourceId;
+		}
+
+		public Date getModifiedDate() {
+			if (_modifiedDate == null) {
+				return null;
+			}
+
+			return new Date(_modifiedDate.getTime());
+		}
+
+		@BigQueryColumn
+		public String getName() {
+			return _name;
+		}
+
+		@BigQueryColumn
+		public String getValue() {
+			return _value;
+		}
+
+		public void setDataSourceId(Long dataSourceId) {
+			_dataSourceId = dataSourceId;
+		}
+
+		public void setModifiedDate(Date modifiedDate) {
+			if (modifiedDate != null) {
+				_modifiedDate = new Date(modifiedDate.getTime());
+			}
+		}
+
+		public void setName(String name) {
+			_name = name;
+		}
+
+		public void setValue(String value) {
+			_value = value;
+		}
+
+		private Long _dataSourceId;
+		private Date _modifiedDate;
+		private String _name;
+		private String _value;
+
+	}
+
 	private String _addresses;
 	private Date _birthday;
 	private Date _createDate;
 	private String _emailAddress;
-	private JSONArray _fieldsJSONArray;
+	private List<Field> _fields;
 	private String _firstName;
 	private String _gender;
 	private String _id;

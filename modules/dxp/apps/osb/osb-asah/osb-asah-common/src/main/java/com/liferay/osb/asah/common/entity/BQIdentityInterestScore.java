@@ -17,8 +17,6 @@ package com.liferay.osb.asah.common.entity;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
@@ -59,8 +57,7 @@ public class BQIdentityInterestScore {
 		return false;
 	}
 
-	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getId() {
+	public String getId() {
 		return _id;
 	}
 
@@ -105,7 +102,7 @@ public class BQIdentityInterestScore {
 		return _interested;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		_id = id;
 	}
 
@@ -131,7 +128,7 @@ public class BQIdentityInterestScore {
 		}
 	}
 
-	private Long _id;
+	private String _id;
 	private String _identityId;
 	private Boolean _interested;
 	private Double _interestScore;

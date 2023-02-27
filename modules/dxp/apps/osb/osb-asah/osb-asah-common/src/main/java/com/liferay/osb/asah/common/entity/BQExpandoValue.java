@@ -31,7 +31,7 @@ public class BQExpandoValue {
 		BeanUtils.copyProperties(source, this);
 	}
 
-	public Long getClassPK() {
+	public String getClassPK() {
 		return _classPK;
 	}
 
@@ -63,7 +63,7 @@ public class BQExpandoValue {
 		return _value;
 	}
 
-	public void setClassPK(Long classPK) {
+	public void setClassPK(String classPK) {
 		_classPK = classPK;
 	}
 
@@ -93,7 +93,7 @@ public class BQExpandoValue {
 		_value = value;
 	}
 
-	private Long _classPK;
+	private String _classPK;
 	private String _classType;
 	private String _columnId;
 	private Long _dataSourceId;

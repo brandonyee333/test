@@ -21,14 +21,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import org.json.JSONArray;
 
 /**
  * @author Marcellus Tavares
@@ -42,9 +41,9 @@ public class BQCSVUser {
 		this(dataSourceId, null);
 	}
 
-	public BQCSVUser(Long dataSourceId, JSONArray fieldsJSONArray) {
+	public BQCSVUser(Long dataSourceId, List<Field> fields) {
 		_dataSourceId = dataSourceId;
-		_fieldsJSONArray = fieldsJSONArray;
+		_fields = fields;
 	}
 
 	public BQCSVUser(Map<String, Object> source) {
@@ -66,10 +65,7 @@ public class BQCSVUser {
 		if (Objects.equals(_dataSourceId, bqCSVUser._dataSourceId) &&
 			Objects.equals(_dataSourceUserPK, bqCSVUser._dataSourceUserPK) &&
 			Objects.equals(_emailAddress, bqCSVUser._emailAddress) &&
-			Objects.equals(
-				JSONUtil.toSafeList(_fieldsJSONArray, JSONUtil::toMap),
-				JSONUtil.toSafeList(
-					bqCSVUser._fieldsJSONArray, JSONUtil::toMap)) &&
+			Objects.equals(_fields, bqCSVUser._fields) &&
 			Objects.equals(_id, bqCSVUser._id)) {
 
 			return true;
@@ -78,31 +74,37 @@ public class BQCSVUser {
 		return false;
 	}
 
+	@BigQueryColumn
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
 
+	@BigQueryColumn
 	@JsonAlias("dataSourceUserPK")
 	@JsonProperty("dataSourceIndividualPK")
 	public String getDataSourceUserPK() {
 		return _dataSourceUserPK;
 	}
 
+	@BigQueryColumn
 	public String getEmailAddress() {
 		return _emailAddress;
 	}
 
+	@BigQueryColumn
 	@JsonProperty("fields")
-	public JSONArray getFieldsJSONArray() {
-		return _fieldsJSONArray;
+	public List<Field> getFields() {
+		return _fields;
 	}
 
+	@BigQueryColumn
 	@JsonSerialize(using = ToStringSerializer.class)
 	public Long getId() {
 		return _id;
 	}
 
+	@BigQueryColumn
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
 		timezone = "UTC"
@@ -118,8 +120,7 @@ public class BQCSVUser {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_dataSourceId, _dataSourceUserPK, _emailAddress, _fieldsJSONArray,
-			_id);
+			_dataSourceId, _dataSourceUserPK, _emailAddress, _fields, _id);
 	}
 
 	public void setDataSourceId(Long dataSourceId) {
@@ -134,8 +135,8 @@ public class BQCSVUser {
 		_emailAddress = emailAddress;
 	}
 
-	public void setFieldsJSONArray(JSONArray fieldsJSONArray) {
-		_fieldsJSONArray = fieldsJSONArray;
+	public void setFields(List<Field> fields) {
+		_fields = fields;
 	}
 
 	public void setId(Long id) {
@@ -148,10 +149,43 @@ public class BQCSVUser {
 		}
 	}
 
+	public static class Field {
+
+		public Field() {
+		}
+
+		public Field(String name, String value) {
+			_name = name;
+			_value = value;
+		}
+
+		@BigQueryColumn
+		public String getName() {
+			return _name;
+		}
+
+		@BigQueryColumn
+		public String getValue() {
+			return _value;
+		}
+
+		public void setName(String name) {
+			_name = name;
+		}
+
+		public void setValue(String value) {
+			_value = value;
+		}
+
+		private String _name;
+		private String _value;
+
+	}
+
 	private Long _dataSourceId;
 	private String _dataSourceUserPK;
 	private String _emailAddress;
-	private JSONArray _fieldsJSONArray;
+	private List<Field> _fields;
 	private Long _id;
 	private Date _modifiedDate;
 

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -66,10 +67,12 @@ public class BQEventProperty {
 		return false;
 	}
 
+	@BigQueryColumn
 	public Long getChannelId() {
 		return _channelId;
 	}
 
+	@BigQueryColumn
 	public Date getEventDate() {
 		if (_eventDate == null) {
 			return null;
@@ -78,18 +81,22 @@ public class BQEventProperty {
 		return new Date(_eventDate.getTime());
 	}
 
+	@BigQueryColumn
 	public String getId() {
 		return _id;
 	}
 
+	@BigQueryColumn
 	public String getName() {
 		return _name;
 	}
 
+	@BigQueryColumn
 	public String getProjectId() {
 		return _projectId;
 	}
 
+	@BigQueryColumn
 	public String getValue() {
 		return _value;
 	}
