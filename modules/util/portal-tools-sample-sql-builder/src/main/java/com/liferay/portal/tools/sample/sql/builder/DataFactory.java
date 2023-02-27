@@ -607,15 +607,16 @@ public class DataFactory {
 		return sb.toString();
 	}
 
-        public String getLanguageLayoutColumn(String portletPrefix) {
-
+	public String getLanguageLayoutColumn() {
 		StringBundler sb = new StringBundler(
-				2 * BenchmarksPropsValues.MAX_LANGUAGE_PORTLET_COUNT);
+			2 * BenchmarksPropsValues.MAX_LANGUAGE_PORTLET_COUNT);
 
-		for(int i = 0; i < BenchmarksPropsValues.MAX_LANGUAGE_PORTLET_COUNT; i++){
+		for (int i = 0; i < BenchmarksPropsValues.MAX_LANGUAGE_PORTLET_COUNT;
+			 i++) {
 
-				sb.append(portletPrefix);
-				sb.append(StringPool.COMMA);
+			sb.append(
+				SiteNavigationLanguagePortletKeys.SITE_NAVIGATION_LANGUAGE);
+			sb.append(StringPool.COMMA);
 		}
 
 		return sb.toString();
@@ -680,13 +681,13 @@ public class DataFactory {
 		return BenchmarksPropsValues.MAX_JOURNAL_ARTICLE_VERSION_COUNT;
 	}
 
-        public int getMaxLanguagePageCount() {
-                return BenchmarksPropsValues.MAX_LANGUAGE_PAGE_COUNT;
-        }
+	public int getMaxLanguagePageCount() {
+		return BenchmarksPropsValues.MAX_LANGUAGE_PAGE_COUNT;
+	}
 
-        public int getMaxLanguagePortletCount() {
-                return BenchmarksPropsValues.MAX_LANGUAGE_PORTLET_COUNT;
-        }
+	public int getMaxLanguagePortletCount() {
+		return BenchmarksPropsValues.MAX_LANGUAGE_PORTLET_COUNT;
+	}
 
 	public int getMaxSegmentsEntryCount() {
 		return BenchmarksPropsValues.MAX_SEGMENTS_ENTRY_COUNT;
