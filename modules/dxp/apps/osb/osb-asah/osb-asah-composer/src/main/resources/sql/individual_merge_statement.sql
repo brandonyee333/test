@@ -7,14 +7,7 @@ USING
 				expandoValue.dataSourceId,
 				user.emailAddress,
 				user.modifiedDate,
-				CASE
-					WHEN
-						expandoColumn.displayType IN ('checkbox', 'radio', 'selection-list')
-					THEN
-						CONCAT(expandoColumn.name, '_', expandoColumn.dataType, '_array')
-					ELSE
-						CONCAT(expandoColumn.name, '_', expandoColumn.dataType)
-				END name,
+				expandoValue.fieldName AS name,
 				expandoValue.value
 			FROM
 				`{{ dag.default_args['ac_project_id'] }}.expandovalue` AS expandoValue
