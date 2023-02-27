@@ -47,6 +47,10 @@ public class BQExpandoValue {
 		return _dataSourceId;
 	}
 
+	public String getFieldName() {
+		return _fieldName;
+	}
+
 	public String getId() {
 		return _id;
 	}
@@ -79,6 +83,10 @@ public class BQExpandoValue {
 		_dataSourceId = dataSourceId;
 	}
 
+	public void setFieldName(String fieldName) {
+		_fieldName = fieldName;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
@@ -97,6 +105,7 @@ public class BQExpandoValue {
 	private String _classType;
 	private String _columnId;
 	private Long _dataSourceId;
+	private String _fieldName;
 	private String _id;
 	private Date _modifiedDate;
 	private String _value;

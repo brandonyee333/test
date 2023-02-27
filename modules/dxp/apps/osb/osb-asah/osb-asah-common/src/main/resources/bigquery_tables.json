@@ -901,6 +901,11 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "fieldName",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "id",
 				"type": "STRING"
 			},
