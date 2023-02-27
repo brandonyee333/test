@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.BQAccountEntry;
 import com.liferay.osb.asah.common.entity.BQAccountGroup;
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
+import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.BQGroup;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.BQRole;
@@ -34,6 +35,7 @@ import com.liferay.osb.asah.common.repository.BQAccountEntryRepository;
 import com.liferay.osb.asah.common.repository.BQAccountGroupRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
+import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.BQGroupRepository;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.BQRoleRepository;
@@ -51,6 +53,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,6 +62,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -175,14 +179,14 @@ public class DXPEntitiesIngestionNanite {
 
 			bqOrganization.setDataSourceId(dataSourceId);
 
-			JSONArray expandFieldsJSONArray = jsonObject.optJSONArray(
+			JSONArray expandoFieldsJSONArray = jsonObject.optJSONArray(
 				"expandoFields");
 
-			if (expandFieldsJSONArray != null) {
+			if (expandoFieldsJSONArray != null) {
 				Set<BQExpandoValue> bqExpandoValues = _getExpandoValues(
 					bqOrganization.getOrganizationId(),
 					DXPEntity.Type.CLASS_NAME_ORGANIZATION, dataSourceId,
-					expandFieldsJSONArray, projectId);
+					expandoFieldsJSONArray, projectId);
 
 				bqExpandoValues.forEach(_bqExpandoValueRepository::insert);
 			}
@@ -327,6 +331,10 @@ public class DXPEntitiesIngestionNanite {
 				bqExpandoValue.setColumnId(
 					String.valueOf(jsonObject.get("columnId")));
 				bqExpandoValue.setDataSourceId(dataSourceId);
+				bqExpandoValue.setFieldName(
+					_getFieldName(
+						String.valueOf(jsonObject.get("columnId")),
+						dataSourceId, jsonObject.optString("name")));
 				bqExpandoValue.setId(
 					_generateBQExpandoValueId(
 						String.valueOf(jsonObject.get("columnId")), classPK,
@@ -337,6 +345,40 @@ public class DXPEntitiesIngestionNanite {
 			});
 
 		return bqExpandoValues;
+	}
+
+	private String _getFieldName(
+		String columnId, Long dataSourceId, String fieldName) {
+
+		Optional<BQExpandoColumn> bqExpandoColumnOptional =
+			_bqExpandoColumnRepository.findByColumnIdAndDataSourceId(
+				columnId, dataSourceId);
+
+		if (bqExpandoColumnOptional.isPresent()) {
+			BQExpandoColumn bqExpandoColumn = bqExpandoColumnOptional.get();
+
+			Optional<BQFieldMapping> bqFieldMappingOptional =
+				_bqFieldMappingRepository.findByDisplayName(
+					bqExpandoColumn.getName());
+
+			if (bqFieldMappingOptional.isPresent()) {
+				BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
+
+				return bqFieldMapping.getFieldName();
+			}
+		}
+
+		if (NumberUtils.isCreatable(columnId)) {
+			return fieldName;
+		}
+
+		int index = columnId.lastIndexOf("-");
+
+		if (index > 0) {
+			columnId = columnId.substring(0, index);
+		}
+
+		return columnId.replaceAll("[\\W]", "_");
 	}
 
 	private Map<String, Object> _parseFields(JSONArray fieldsJSONArray) {
@@ -427,6 +469,9 @@ public class DXPEntitiesIngestionNanite {
 
 	@Autowired
 	private BQExpandoValueRepository _bqExpandoValueRepository;
+
+	@Autowired
+	private BQFieldMappingRepository _bqFieldMappingRepository;
 
 	@Autowired
 	private BQGroupRepository _bqGroupRepository;

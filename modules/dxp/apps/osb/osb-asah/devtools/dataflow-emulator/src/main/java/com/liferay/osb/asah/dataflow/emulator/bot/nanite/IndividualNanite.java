@@ -16,7 +16,6 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.entity.BQExpandoColumn;
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
@@ -104,8 +103,7 @@ public class IndividualNanite {
 			bqExpandoValue -> {
 				BQIndividual.Field field = new BQIndividual.Field(
 					bqExpandoValue.getDataSourceId(),
-					_resolveFieldName(bqExpandoValue),
-					bqExpandoValue.getValue());
+					bqExpandoValue.getFieldName(), bqExpandoValue.getValue());
 
 				field.setModifiedDate(bqUser.getModifiedDate());
 
@@ -219,28 +217,6 @@ public class IndividualNanite {
 		).collect(
 			Collectors.toList()
 		);
-	}
-
-	private String _resolveFieldName(BQExpandoValue bqExpandoValue) {
-		Optional<BQExpandoColumn> bqExpandoColumnOptional =
-			_bqExpandoColumnRepository.findByColumnIdAndDataSourceId(
-				bqExpandoValue.getColumnId(), bqExpandoValue.getDataSourceId());
-
-		BQExpandoColumn bqExpandoColumn = bqExpandoColumnOptional.get();
-
-		String fieldName =
-			bqExpandoColumn.getName() + "_" + bqExpandoColumn.getDataType();
-
-		String displayType = bqExpandoColumn.getDisplayType();
-
-		if (Objects.equals(displayType, "checkbox") ||
-			Objects.equals(displayType, "radio") ||
-			Objects.equals(displayType, "selection-list")) {
-
-			return fieldName + "_array";
-		}
-
-		return fieldName;
 	}
 
 	private BQIndividual _toBQIndividual(BQUser bqUser) {
