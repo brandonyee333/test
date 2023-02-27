@@ -396,7 +396,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		).mode(
 			"append"
 		).save(
-			'{}.individualinterestscore'.format(
+			'{}.identityinterestscore'.format(
 				self.spark_application_args.ac_project_id
 			)
 		)
