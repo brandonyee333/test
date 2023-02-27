@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.util;
 
+import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
+
 import java.beans.PropertyDescriptor;
 
 import java.lang.reflect.Method;
@@ -32,6 +34,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -97,6 +100,15 @@ public class BeanUtils {
 
 		if (propertyReadMethod == null) {
 			return propertyName;
+		}
+
+		BigQueryColumn bigQueryColumn = propertyReadMethod.getAnnotation(
+			BigQueryColumn.class);
+
+		if ((bigQueryColumn != null) &&
+			StringUtils.isNotBlank(bigQueryColumn.value())) {
+
+			propertyName = bigQueryColumn.value();
 		}
 
 		Column column = propertyReadMethod.getAnnotation(Column.class);
@@ -224,6 +236,30 @@ public class BeanUtils {
 
 						if (clazz == null) {
 							return;
+						}
+
+						if ((targetPropertyValue instanceof ArrayList<?>) &&
+							targetPropertyClass.isAssignableFrom(List.class)) {
+
+							ArrayList<?> targetPropertyValueList =
+								(ArrayList<?>)targetPropertyValue;
+
+							if (targetPropertyValueList.get(0) instanceof Map) {
+								List<Object> records = new ArrayList<>();
+
+								for (Map<String, Object> sourceMap :
+										(ArrayList<Map<String, Object>>)
+											targetPropertyValue) {
+
+									Object object = clazz.newInstance();
+
+									copyProperties(sourceMap, object);
+
+									records.add(object);
+								}
+
+								targetPropertyValue = records;
+							}
 						}
 
 						if ((targetPropertyValue instanceof ArrayList<?>) &&
