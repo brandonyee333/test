@@ -39,7 +39,6 @@ import com.google.cloud.bigquery.ViewDefinition;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.io.InputStream;
 import java.io.Serializable;
@@ -95,13 +94,13 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 				_executeQuery(
 					StringUtils.replace(
 						_readFile("/bigquery/" + jsonObject.getString("path")),
-						"$[AC_PROJECT_ID]", _getProjectId()));
+						"$[AC_PROJECT_ID]", projectId));
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
 						String.format(
-							"Function %s.%s created successfully",
-							_getProjectId(), functionName));
+							"Function %s.%s created successfully", projectId,
+							functionName));
 				}
 			}
 
@@ -134,7 +133,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 					_createView(
 						dataset.getDatasetId(),
 						_readFile("/bigquery/" + jsonObject.getString("path")),
-						materialized, entry.getKey());
+						materialized, projectId, entry.getKey());
 				}
 			);
 		}
@@ -313,7 +312,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 	private Table _createView(
 		DatasetId datasetId, String query, boolean materialized,
-		String viewName) {
+		String projectId, String viewName) {
 
 		TableId tableId = TableId.of(datasetId.getDataset(), viewName);
 
@@ -321,12 +320,12 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 		if (materialized && _environment.acceptsProfiles(Profiles.of("prod"))) {
 			tableDefinition = MaterializedViewDefinition.newBuilder(
-				StringUtils.replace(query, "$[AC_PROJECT_ID]", _getProjectId())
+				StringUtils.replace(query, "$[AC_PROJECT_ID]", projectId)
 			).build();
 		}
 		else {
 			tableDefinition = ViewDefinition.newBuilder(
-				StringUtils.replace(query, "$[AC_PROJECT_ID]", _getProjectId())
+				StringUtils.replace(query, "$[AC_PROJECT_ID]", projectId)
 			).setUseLegacySql(
 				false
 			).build();
@@ -357,10 +356,6 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		catch (InterruptedException interruptedException) {
 			throw new RuntimeException(interruptedException);
 		}
-	}
-
-	private String _getProjectId() {
-		return ProjectIdThreadLocal.getProjectId();
 	}
 
 	@PostConstruct
