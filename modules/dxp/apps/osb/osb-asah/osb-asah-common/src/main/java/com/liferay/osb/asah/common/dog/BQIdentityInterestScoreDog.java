@@ -21,11 +21,9 @@ import com.liferay.osb.asah.common.model.IdentityInterestScore;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -62,17 +59,6 @@ public class BQIdentityInterestScoreDog {
 		return _bqIdentityInterestScoreRepository.
 			findByIndividualIdAndKeywordAndRecordedDateBetween(
 				individualId, keyword, fromRecordedDate, toRecordedDate);
-	}
-
-	public IdentityInterestScore getIdentityInterestScore(String id) {
-		Optional<IdentityInterestScore> identityInterestScoreOptional =
-			_bqIdentityInterestScoreRepository.findIdentityInterestScoreById(
-				id);
-
-		return identityInterestScoreOptional.orElseThrow(
-			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"There is no identity interest score with ID " + id));
 	}
 
 	public Page<IdentityInterestScore> getIdentityInterestScorePage(

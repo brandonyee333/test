@@ -165,11 +165,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 				(String)record.get("individualId")),
 			_dslContext.select(
 				DSL.field(
-					"BQIdentityInterestScore.id"
-				).as(
-					"id"
-				),
-				DSL.field(
 					"BQIdentityInterestScore.identityId"
 				).as(
 					"identityId"
@@ -755,8 +750,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQIdentityInterestScore")
 			).columns(
-				DSL.field("identityId"),
-				DSL.field("interested", Boolean.class),
+				DSL.field("identityId"), DSL.field("interested", Boolean.class),
 				DSL.field("interestScore", Double.class), DSL.field("keyword"),
 				DSL.field("recordedDate", Date.class)
 			).values(

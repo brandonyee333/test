@@ -45,7 +45,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,16 +61,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class InterestsRestController
 	extends com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.
 				InterestsRestController {
-
-	@GetMapping("/{id}")
-	public InterestDTO getInterestDTO(
-		@PathVariable String id,
-		@RequestParam(required = false) String expand) {
-
-		return _createInterestDTO(
-			_containsPageVisited(expand), _getDaysRange(expand),
-			bqIdentityInterestScoreDog.getIdentityInterestScore(id));
-	}
 
 	@Cacheable
 	@GetMapping(params = "!apply")
