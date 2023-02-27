@@ -1,6 +1,9 @@
 WITH CustomAssetEvent AS (
 	SELECT
-		Event.assetId,
+		Event.channelId,
+		Event.eventDate,
+		Event.eventId,
+		Event.sessionId,
 		TO_HEX(
 			SHA256(
 				CONCAT(
@@ -10,21 +13,6 @@ WITH CustomAssetEvent AS (
 				)
 			)
 		) AS assetPrimaryKey,
-		Event.assetTitle,
-		Event.browserName,
-		Event.canonicalUrl,
-		COALESCE(category.value, 'default') AS category,
-		Event.channelId,
-		Event.city,
-		Event.country,
-		Event.deviceType,
-		Event.eventDate,
-		Event.eventId,
-		Event.platformName,
-		Event.region,
-		Event.sessionId,
-		Event.title,
-		Event.userId,
 		formEnabled.value AS formEnabled
 	FROM
 		`$[AC_PROJECT_ID].event` AS Event
@@ -45,7 +33,11 @@ WITH CustomAssetEvent AS (
 ),
 CustomAssetFinalizedEvent AS (
 	SELECT
-		CustomAssetEvent.*
+		CustomAssetEvent.assetPrimaryKey,
+		CustomAssetEvent.eventDate,
+		CustomAssetEvent.eventId,
+		CustomAssetEvent.formEnabled,
+		CustomAssetEvent.sessionId
 	FROM
 		CustomAssetEvent
 	INNER JOIN `$[AC_PROJECT_ID].session` Session ON
@@ -57,48 +49,12 @@ Metrics AS (
 	SELECT
 		assetPrimaryKey,
 		channelId,
-		SUM(
-			CASE
-				WHEN
-					eventId = 'assetClicked'
-				THEN
-					1
-				ELSE
-					0
-			END
-			) AS clicks,
-		SUM(
-			CASE
-				WHEN
-					eventId = 'assetDownloaded'
-				THEN
-					1
-				ELSE
-					0
-				END
-		) AS downloads,
+		COUNTIF(eventId = 'assetClicked') AS clicks,
+		COUNTIF(eventId = 'assetDownloaded') AS downloads,
 		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
-		SUM(
-			CASE
-				WHEN
-					eventId = 'assetSubmitted'
-				THEN
-					1
-				ELSE
-					0
-				END
-		) AS submissions,
-		SUM(
-			CASE
-				WHEN
-					eventId = 'assetViewed'
-				THEN
-					1
-				ELSE
-					0
-				END
-		) AS views,
-		COUNT(DISTINCT(sessionId)) AS sessions
+		COUNT(DISTINCT(sessionId)) AS sessions,
+		COUNTIF(eventId = 'assetSubmitted') AS submissions,
+		COUNTIF(eventId = 'assetViewed') AS views
 	FROM
 		CustomAssetEvent
 	GROUP BY
@@ -110,26 +66,8 @@ Abandoments AS (
 	SELECT
 		GREATEST(
 			0,
-			SUM(
-				CASE
-					WHEN
-						eventId = 'assetViewed' AND formEnabled = 'true'
-					THEN
-						1
-					ELSE
-						0
-				END
-			) -
-			SUM(
-				CASE
-					WHEN
-						eventId = 'assetSubmitted'
-					THEN
-						1
-					ELSE
-						0
-				END
-			)
+			COUNTIF(eventId = 'assetViewed' AND formEnabled = 'true') -
+			COUNTIF(eventId = 'assetSubmitted')
 		) AS abandonments,
 		assetPrimaryKey,
 		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate
@@ -197,8 +135,8 @@ SELECT
 	metrics.submissions,
 	metrics.views,
 	metrics.sessions,
-	COALESCE (readTime.readtime, 0) * 1000 AS readTime,
-	COALESCE (submissionTime.submissionstime, 0) * 1000 AS submissionsTime
+	COALESCE (readTime.readTime, 0) * 1000 AS readTime,
+	COALESCE (submissionTime.submissionsTime, 0) * 1000 AS submissionsTime
 FROM
 	Metrics metrics
 LEFT JOIN Abandoments abandonments ON (

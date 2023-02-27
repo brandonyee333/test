@@ -41,7 +41,19 @@ WITH
 			SUM(UNIX_SECONDS(eventDate) - UNIX_SECONDS(previousFormViewedEventDate)) * 1000 submissionsTime
 		FROM (
 			SELECT
-				*,
+				FormEvent.assetId,
+				FormEvent.browserName,
+				FormEvent.canonicalUrl,
+				FormEvent.channelId,
+				FormEvent.city,
+				FormEvent.country,
+				FormEvent.deviceType,
+				FormEvent.eventDate,
+				FormEvent.eventId,
+				FormEvent.platformName,
+				FormEvent.region,
+				FormEvent.title,
+				FormEvent.userId,
 				MAX(CASE WHEN eventId = 'formViewed' THEN eventDate END)
 				OVER (
 					PARTITION BY
@@ -52,7 +64,7 @@ WITH
 				) AS previousFormViewedEventDate
 			FROM
 				FormEvent
-		 ) AS TMP
+		) AS TMP
 		WHERE
 			eventId = 'formSubmitted'
 		GROUP BY
@@ -63,26 +75,8 @@ WITH
 SELECT
 	GREATEST(
 		0,
-		SUM(
-			CASE
-				WHEN
-					eventId = 'formViewed' AND Session.id IS NOT NULL
-				THEN
-					1
-				ELSE
-					0
-			END
-		) -
-		SUM(
-			CASE
-				WHEN
-					eventId = 'formSubmitted' AND Session.id IS NOT NULL
-				THEN
-					1
-				ELSE
-					0
-			END
-		)
+		COUNTIF(eventId = 'formViewed' AND Session.id IS NOT NULL) -
+		COUNTIF(eventId = 'formSubmitted' AND Session.id IS NOT NULL)
 	) AS abandonments,
 	FormEvent.assetId,
 	COALESCE(MAX(FormEvent.assetTitle), '') AS assetTitle,
@@ -93,24 +87,15 @@ SELECT
 	FormEvent.country,
 	FormEvent.deviceType,
 	TIMESTAMP_TRUNC(eventDate, HOUR) AS eventDate,
-	SUM(
-		CASE
-			WHEN
-				eventId = 'formViewed' AND
-				Session.id IS NOT NULL
-			THEN
-				1
-			ELSE
-				0
-		END
+	COUNTIF(eventId = 'formViewed' AND Session.id IS NOT NULL
 	) AS finalizedFormViews,
 	FormEvent.platformName,
 	FormEvent.region,
 	FormEvent.title AS pageTitle,
-	SUM(CASE WHEN eventId = 'formSubmitted' THEN 1 END) AS submissions,
+	COUNTIF(eventId = 'formSubmitted') AS submissions,
 	MAX(FormSubmissionTimes.submissionsTime) AS submissionsTime,
 	FormEvent.userId,
-	SUM(CASE WHEN eventId = 'formViewed' THEN 1 END) AS views
+	COUNTIF(eventId = 'formViewed') AS views
 FROM
 	FormEvent
 LEFT JOIN FormSubmissionTimes ON (

@@ -13,7 +13,7 @@ WITH
 			Event.eventId,
 			Event.platformName,
 			Event.region,
-		    Event.sessionId,
+			Event.sessionId,
 			Event.title,
 			Event.userId
 		FROM
@@ -40,7 +40,15 @@ WITH
 	),
 	BlogFinalizedEvent AS (
 		SELECT
-			BlogEvent.*
+			BlogEvent.assetId,
+			BlogEvent.assetTitle,
+			BlogEvent.canonicalUrl,
+			BlogEvent.channelId,
+			BlogEvent.eventDate,
+			BlogEvent.eventId,
+			BlogEvent.sessionId,
+			BlogEvent.title,
+			BlogEvent.userId
 		FROM
 			BlogEvent
 		INNER JOIN `$[AC_PROJECT_ID].session` AS Session ON
@@ -74,10 +82,10 @@ WITH
 		SELECT
 			assetId,
 			canonicalUrl,
-			SUM(1) as comments,
+			SUM(1) AS comments,
 			channelId,
-			TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
-			title as pageTitle,
+			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+			title AS pageTitle,
 			userId
 		FROM
 			CommentEvent
@@ -90,8 +98,8 @@ WITH
 			Event.canonicalUrl,
 			Event.channelId,
 			Event.eventDate,
+			CAST(score.value AS FLOAT64) AS score,
 			Event.title,
-			CAST(score.value AS FLOAT64) as score,
 			Event.userId
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
@@ -152,7 +160,7 @@ WITH
 			channelId,
 			TIMESTAMP_TRUNC(maxEventDate, HOUR) AS normalizedEventDate,
 			title AS pageTitle,
-			SUM(readtime) AS readTime,
+			SUM(readTime) AS readTime,
 			userId
 		FROM
 			(
@@ -188,16 +196,7 @@ WITH
 			browserName,
 			canonicalUrl,
 			channelId,
-			SUM(
-				CASE
-					WHEN
-						eventId = 'blogClicked'
-					THEN
-						1
-					ELSE
-						0
-					END
-			) AS clicks,
+			COUNTIF(eventId = 'blogClicked') AS clicks,
 			city,
 			country,
 			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
@@ -207,16 +206,7 @@ WITH
 			COUNT(DISTINCT(sessionId)) AS sessions,
 			title AS pageTitle,
 			userId,
-			SUM(
-				CASE
-					WHEN
-						eventId = 'blogViewed'
-					THEN
-						1
-					ELSE
-						0
-					END
-			) AS views
+			COUNTIF(eventId = 'blogViewed') AS views
 		FROM
 			BlogEvent
 		GROUP BY

@@ -40,6 +40,7 @@ WITH
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event
 		LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
+			className.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
 			className.id = Event.id AND
 			className.name = 'className' AND
 			className.value = 'com.liferay.document.library.kernel.model.DLFileEntry'
@@ -72,30 +73,12 @@ WITH
 			canonicalUrl,
 			channelId,
 			city,
-			SUM(
-				CASE
-					WHEN
-						eventId = 'documentDownloaded'
-					THEN
-						1
-					ELSE
-					0
-				END
-			) AS downloads,
+			COUNTIF(eventId = 'documentDownloaded') AS downloads,
 			country,
 			deviceType,
 			TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 			platformName,
-			SUM(
-				CASE
-					WHEN
-						eventId = 'documentPreviewed'
-					THEN
-						1
-					ELSE
-						0
-				END
-			) AS previews,
+			COUNTIF(eventId = 'documentPreviewed') AS previews,
 			region,
 			title AS pageTitle,
 			userId
@@ -113,7 +96,7 @@ WITH
 			Event.channelId,
 			Event.eventDate,
 			Event.title,
-			CAST(score.value AS FLOAT64) as score,
+			CAST(score.value AS FLOAT64) AS score,
 			Event.userId
 		FROM
 			`$[AC_PROJECT_ID].event` AS Event

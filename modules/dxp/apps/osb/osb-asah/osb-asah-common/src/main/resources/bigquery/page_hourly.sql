@@ -25,14 +25,9 @@ PageBounces AS (
 	SELECT
 		PageEvent.channelId,
 		COUNT(*) AS count,
-		SUM(
-			CASE
-				WHEN PageEvent.applicationId = 'Page' AND PageEvent.eventId = 'pageViewed'
-			THEN
-				1
-			ELSE
-				0
-			END
+		COUNTIF(
+			PageEvent.applicationId = 'Page' AND
+			PageEvent.eventId = 'pageViewed'
 		) AS pageViews,
 		PageEvent.sessionId,
 		PageEvent.userId
@@ -180,26 +175,8 @@ PageViews AS (
 		country,
 		deviceType,
 		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
-		SUM(
-			CASE
-				WHEN
-					referrer = ''
-				THEN
-					1
-				ELSE
-					0
-			END
-		) AS directAccess,
-		SUM(
-			CASE
-				WHEN
-					referrer != ''
-				THEN
-					1
-				ELSE
-					0
-			END
-		) AS indirectAccess,
+		COUNTIF(referrer = '') AS directAccess,
+		COUNTIF(referrer != '') AS indirectAccess,
 		SUM(1) AS views,
 		platformName,
 		region,
