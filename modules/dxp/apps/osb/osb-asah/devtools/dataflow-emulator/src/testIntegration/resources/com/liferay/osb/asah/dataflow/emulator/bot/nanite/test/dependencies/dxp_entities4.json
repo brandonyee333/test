@@ -1,0 +1,322 @@
+[
+	{
+		"fields": [
+			{
+				"name": "className",
+				"value": "com.liferay.portal.kernel.model.User"
+			},
+			{
+				"name": "columnId",
+				"value": "1"
+			},
+			{
+				"name": "dataType",
+				"value": "Number"
+			},
+			{
+				"name": "displayType",
+				"value": "selection-list"
+			},
+			{
+				"name": "name",
+				"value": "age-Number"
+			}
+		],
+		"id": "18237",
+		"modifiedDate": "2022-03-16T12:00:00.000",
+		"type": "com.liferay.expando.kernel.model.ExpandoColumn"
+	},
+	{
+		"fields": [
+			{
+				"name": "className",
+				"value": "com.liferay.portal.kernel.model.User"
+			},
+			{
+				"name": "columnId",
+				"value": "2"
+			},
+			{
+				"name": "dataType",
+				"value": "Text"
+			},
+			{
+				"name": "displayType",
+				"value": "input-field"
+			},
+			{
+				"name": "name",
+				"value": "age-Text"
+			}
+		],
+		"id": "18238",
+		"modifiedDate": "2022-03-16T13:00:00.000",
+		"type": "com.liferay.expando.kernel.model.ExpandoColumn"
+	},
+	{
+		"expandoFields": [
+			{
+				"columnId": "1",
+				"name": "age",
+				"value": "[18]"
+			}
+		],
+		"fields": [
+			{
+				"name": "accountId",
+				"value": "1"
+			},
+			{
+				"name": "birthday",
+				"value": "1678178040829"
+			},
+			{
+				"name": "classNameId",
+				"value": "1"
+			},
+			{
+				"name": "classPK",
+				"value": "1"
+			},
+			{
+				"name": "contactId",
+				"value": "1"
+			},
+			{
+				"name": "createDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "emailAddress",
+				"value": "joe@liferay.com"
+			},
+			{
+				"name": "firstName",
+				"value": "joe"
+			},
+			{
+				"name": "groupIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "jobTitle",
+				"value": "test"
+			},
+			{
+				"name": "languageId",
+				"value": "en-US"
+			},
+			{
+				"name": "lastName",
+				"value": "blogg"
+			},
+			{
+				"name": "male",
+				"value": "true"
+			},
+			{
+				"name": "middleName",
+				"value": "test"
+			},
+			{
+				"name": "organizationIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "parentContactId",
+				"value": "343"
+			},
+			{
+				"name": "prefixId",
+				"value": "test"
+			},
+			{
+				"name": "roleIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "screenName",
+				"value": "test"
+			},
+			{
+				"name": "suffixId",
+				"value": "test"
+			},
+			{
+				"name": "teamIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "timeZoneId",
+				"value": "America/Recife"
+			},
+			{
+				"name": "userGroupIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "userId",
+				"value": "343"
+			},
+			{
+				"name": "userName",
+				"value": "test"
+			},
+			{
+				"name": "uuid",
+				"value": "test"
+			}
+		],
+		"id": "343",
+		"modifiedDate": "2022-03-16T12:00:00.000",
+		"type": "com.liferay.portal.kernel.model.User"
+	},
+	{
+		"expandoFields": [
+			{
+				"columnId": "2",
+				"name": "age",
+				"value": "20"
+			}
+		],
+		"fields": [
+			{
+				"name": "accountId",
+				"value": "1"
+			},
+			{
+				"name": "birthday",
+				"value": "1678178040829"
+			},
+			{
+				"name": "classNameId",
+				"value": "1"
+			},
+			{
+				"name": "classPK",
+				"value": "1"
+			},
+			{
+				"name": "contactId",
+				"value": "1"
+			},
+			{
+				"name": "createDate",
+				"value": "2022-03-16T12:00:00.000"
+			},
+			{
+				"name": "emailAddress",
+				"value": "joe@liferay.com"
+			},
+			{
+				"name": "firstName",
+				"value": "joe"
+			},
+			{
+				"name": "groupIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "jobTitle",
+				"value": "test"
+			},
+			{
+				"name": "languageId",
+				"value": "en-US"
+			},
+			{
+				"name": "lastName",
+				"value": "blogg"
+			},
+			{
+				"name": "male",
+				"value": "true"
+			},
+			{
+				"name": "middleName",
+				"value": "test"
+			},
+			{
+				"name": "organizationIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "parentContactId",
+				"value": "343"
+			},
+			{
+				"name": "prefixId",
+				"value": "test"
+			},
+			{
+				"name": "roleIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "screenName",
+				"value": "test"
+			},
+			{
+				"name": "suffixId",
+				"value": "test"
+			},
+			{
+				"name": "teamIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "timeZoneId",
+				"value": "America/Recife"
+			},
+			{
+				"name": "userGroupIds",
+				"value": [
+					12,
+					23
+				]
+			},
+			{
+				"name": "userId",
+				"value": "343"
+			},
+			{
+				"name": "userName",
+				"value": "test"
+			},
+			{
+				"name": "uuid",
+				"value": "test"
+			}
+		],
+		"id": "343",
+		"modifiedDate": "2022-03-16T12:00:00.000",
+		"type": "com.liferay.portal.kernel.model.User"
+	}
+]

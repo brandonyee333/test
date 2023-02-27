@@ -78,7 +78,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		Assertions.assertEquals(1, _bqAccountEntryRepository.count());
 		Assertions.assertEquals(1, _bqAccountGroupRepository.count());
-		Assertions.assertEquals(1, _bqExpandoColumnRepository.count());
+		Assertions.assertEquals(2, _bqExpandoColumnRepository.count());
 		Assertions.assertEquals(2, _bqExpandoValueRepository.count());
 		Assertions.assertEquals(1, _bqGroupRepository.count());
 		Assertions.assertEquals(1, _bqOrganizationRepository.count());
@@ -90,21 +90,6 @@ public class DXPEntitiesIngestionNaniteTest
 
 	@Test
 	public void testRunAnalyticsDeleteMessage() throws Exception {
-		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
-			"dependencies/dxp_entities3.json", this);
-
-		for (int i = 0; i < jsonArray.length(); i++) {
-			_messageBus.sendMessage(
-				Channel.DXP_ENTITIES_DEFAULT,
-				String.valueOf(jsonArray.getJSONObject(i)),
-				new HashMap<String, String>() {
-					{
-						put("dataSourceId", "1");
-						put("projectId", "test");
-					}
-				});
-		}
-
 		BQUserGroup bqUserGroup = new BQUserGroup();
 
 		bqUserGroup.setId(
@@ -113,7 +98,21 @@ public class DXPEntitiesIngestionNaniteTest
 
 		_bqUserGroupRepository.insert(bqUserGroup);
 
-		_dxpEntitiesIngestionNanite.run();
+		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
+			"dependencies/dxp_entities3.json", this);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			_dxpEntitiesIngestionNanite.processMessage(
+				new Message<>(
+					null,
+					new HashMap<String, String>() {
+						{
+							put("dataSourceId", "1");
+							put("projectId", "test");
+						}
+					},
+					null, String.valueOf(jsonArray.getJSONObject(i))));
+		}
 
 		Optional<BQUserGroup> bqUserGroupOptional =
 			_bqUserGroupRepository.findById(
@@ -152,6 +151,7 @@ public class DXPEntitiesIngestionNaniteTest
 		bqExpandoValue.setClassPK("123");
 		bqExpandoValue.setColumnId("1");
 		bqExpandoValue.setClassType(DXPEntity.Type.CLASS_NAME_ORGANIZATION);
+		bqExpandoValue.setFieldName("custom_field_1");
 
 		bqExpandoValue.setId(
 			DigestUtils.sha256Hex(String.join("#", "test", "1", "1", "123")));

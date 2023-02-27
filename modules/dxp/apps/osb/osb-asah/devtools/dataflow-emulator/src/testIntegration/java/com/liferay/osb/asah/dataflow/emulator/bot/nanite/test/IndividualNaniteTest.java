@@ -16,36 +16,34 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.BQExpandoColumn;
-import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
-import com.liferay.osb.asah.common.entity.BQUser;
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
+import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.dataflow.emulator.bot.nanite.DXPEntitiesIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IndividualNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.OSBAsahDataflowEmulatorSpringTestContext;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,7 +55,7 @@ public class IndividualNaniteTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@Test
-	public void testMergeCustomFieldNameDifferentType() {
+	public void testMergeCustomFieldNameDifferentType() throws Exception {
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
@@ -66,81 +64,21 @@ public class IndividualNaniteTest
 
 		_bqIdentityRepository.insert(bqIdentity);
 
-		// BQUser 1
+		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
+			"dependencies/dxp_entities4.json", this);
 
-		BQUser bqUser1 = new BQUser();
-
-		bqUser1.setDXPUserId(RandomTestUtil.randomNumber());
-		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
-		bqUser1.setEmailAddress("joe@liferay.com");
-		bqUser1.setId(RandomTestUtil.randomString());
-		bqUser1.setIndividualId(
-			DigestUtils.sha256Hex(bqUser1.getEmailAddress()));
-		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
-
-		_bqUserRepository.insert(bqUser1);
-
-		BQExpandoColumn bqExpandoColumn1 = new BQExpandoColumn();
-
-		bqExpandoColumn1.setColumnId(RandomTestUtil.randomString());
-		bqExpandoColumn1.setClassName(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoColumn1.setDataSourceId(bqUser1.getDataSourceId());
-		bqExpandoColumn1.setDataType("string");
-		bqExpandoColumn1.setDisplayType("selection-list");
-		bqExpandoColumn1.setId(RandomTestUtil.randomString());
-		bqExpandoColumn1.setName("age");
-
-		_bqExpandoColumnRepository.insert(bqExpandoColumn1);
-
-		BQExpandoValue bqExpandoValue1 = new BQExpandoValue();
-
-		bqExpandoValue1.setClassPK(String.valueOf(bqUser1.getDXPUserId()));
-		bqExpandoValue1.setClassType(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoValue1.setColumnId(bqExpandoColumn1.getColumnId());
-		bqExpandoValue1.setDataSourceId(bqUser1.getDataSourceId());
-		bqExpandoValue1.setId(RandomTestUtil.randomString());
-		bqExpandoValue1.setValue("[18]");
-		bqExpandoValue1.setModifiedDate(bqUser1.getModifiedDate());
-
-		_bqExpandoValueRepository.insert(bqExpandoValue1);
-
-		// BQUser 2
-
-		BQUser bqUser2 = new BQUser();
-
-		bqUser2.setDXPUserId(RandomTestUtil.randomNumber());
-		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
-		bqUser2.setEmailAddress("joe@liferay.com");
-		bqUser2.setId(RandomTestUtil.randomString());
-		bqUser2.setIndividualId(
-			DigestUtils.sha256Hex(bqUser2.getEmailAddress()));
-		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-05T12:00:00.000Z"));
-
-		_bqUserRepository.insert(bqUser2);
-
-		BQExpandoColumn bqExpandoColumn2 = new BQExpandoColumn();
-
-		bqExpandoColumn2.setColumnId(RandomTestUtil.randomString());
-		bqExpandoColumn2.setClassName(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoColumn2.setDataSourceId(bqUser2.getDataSourceId());
-		bqExpandoColumn2.setDataType("string");
-		bqExpandoColumn2.setDisplayType("input-field");
-		bqExpandoColumn2.setId(RandomTestUtil.randomString());
-		bqExpandoColumn2.setName("age");
-
-		_bqExpandoColumnRepository.insert(bqExpandoColumn2);
-
-		BQExpandoValue bqExpandoValue2 = new BQExpandoValue();
-
-		bqExpandoValue2.setClassPK(String.valueOf(bqUser2.getDXPUserId()));
-		bqExpandoValue2.setClassType(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoValue2.setColumnId(bqExpandoColumn2.getColumnId());
-		bqExpandoValue2.setDataSourceId(bqUser2.getDataSourceId());
-		bqExpandoValue2.setId(RandomTestUtil.randomString());
-		bqExpandoValue2.setValue("20");
-		bqExpandoValue2.setModifiedDate(bqUser2.getModifiedDate());
-
-		_bqExpandoValueRepository.insert(bqExpandoValue2);
+		for (int i = 0; i < jsonArray.length(); i++) {
+			_dxpEntitiesIngestionNanite.processMessage(
+				new Message<>(
+					null,
+					new HashMap<String, String>() {
+						{
+							put("dataSourceId", "1");
+							put("projectId", "test");
+						}
+					},
+					null, String.valueOf(jsonArray.getJSONObject(i))));
+		}
 
 		_individualNanite.run();
 
@@ -153,28 +91,23 @@ public class IndividualNaniteTest
 
 		Assertions.assertEquals(
 			"joe@liferay.com", bqIndividual.getEmailAddress());
-		Assertions.assertEquals(
-			bqUser2.getModifiedDate(), bqIndividual.getModifiedDate());
 
-		JSONAssert.assertEquals(
-			JSONUtil.putAll(
-				JSONUtil.put(
-					"name", "age_string_array"
-				).put(
-					"value", "[18]"
-				),
-				JSONUtil.put(
-					"name", "age_string"
-				).put(
-					"value", "20"
-				)),
+		Map<String, JSONObject> jsonObjectMap = JSONUtil.toJSONObjectMap(
 			_objectMapper.convertValue(
 				bqIndividual.getFields(), JSONArray.class),
-			false);
+			"name");
+
+		JSONObject jsonObject = jsonObjectMap.get("age");
+
+		Assertions.assertEquals("[18]", jsonObject.getString("value"));
+
+		jsonObject = jsonObjectMap.get("age_1");
+
+		Assertions.assertEquals("20", jsonObject.getString("value"));
 	}
 
 	@Test
-	public void testMergeCustomFieldNameSameType() {
+	public void testMergeCustomFieldNameSameType() throws Exception {
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
@@ -183,81 +116,21 @@ public class IndividualNaniteTest
 
 		_bqIdentityRepository.insert(bqIdentity);
 
-		// BQUser 1
+		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
+			"dependencies/dxp_entities5.json", this);
 
-		BQUser bqUser1 = new BQUser();
-
-		bqUser1.setDXPUserId(RandomTestUtil.randomNumber());
-		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
-		bqUser1.setEmailAddress("joe@liferay.com");
-		bqUser1.setId(RandomTestUtil.randomString());
-		bqUser1.setIndividualId(
-			DigestUtils.sha256Hex(bqUser1.getEmailAddress()));
-		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
-
-		_bqUserRepository.insert(bqUser1);
-
-		BQExpandoColumn bqExpandoColumn1 = new BQExpandoColumn();
-
-		bqExpandoColumn1.setColumnId(RandomTestUtil.randomString());
-		bqExpandoColumn1.setClassName(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoColumn1.setDataSourceId(bqUser1.getDataSourceId());
-		bqExpandoColumn1.setDataType("string");
-		bqExpandoColumn1.setDisplayType("input-field");
-		bqExpandoColumn1.setId(RandomTestUtil.randomString());
-		bqExpandoColumn1.setName("age");
-
-		_bqExpandoColumnRepository.insert(bqExpandoColumn1);
-
-		BQExpandoValue bqExpandoValue1 = new BQExpandoValue();
-
-		bqExpandoValue1.setClassPK(String.valueOf(bqUser1.getDXPUserId()));
-		bqExpandoValue1.setClassType(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoValue1.setColumnId(bqExpandoColumn1.getColumnId());
-		bqExpandoValue1.setDataSourceId(bqUser1.getDataSourceId());
-		bqExpandoValue1.setId(RandomTestUtil.randomString());
-		bqExpandoValue1.setValue("18");
-		bqExpandoValue1.setModifiedDate(bqUser1.getModifiedDate());
-
-		_bqExpandoValueRepository.insert(bqExpandoValue1);
-
-		// BQUser 2
-
-		BQUser bqUser2 = new BQUser();
-
-		bqUser2.setDXPUserId(RandomTestUtil.randomNumber());
-		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
-		bqUser2.setEmailAddress("joe@liferay.com");
-		bqUser2.setId(RandomTestUtil.randomString());
-		bqUser2.setIndividualId(
-			DigestUtils.sha256Hex(bqUser2.getEmailAddress()));
-		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-05T12:00:00.000Z"));
-
-		_bqUserRepository.insert(bqUser2);
-
-		BQExpandoColumn bqExpandoColumn2 = new BQExpandoColumn();
-
-		bqExpandoColumn2.setColumnId(RandomTestUtil.randomString());
-		bqExpandoColumn2.setClassName(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoColumn2.setDataSourceId(bqUser2.getDataSourceId());
-		bqExpandoColumn2.setDataType("string");
-		bqExpandoColumn2.setDisplayType("input-field");
-		bqExpandoColumn2.setId(RandomTestUtil.randomString());
-		bqExpandoColumn2.setName("age");
-
-		_bqExpandoColumnRepository.insert(bqExpandoColumn2);
-
-		BQExpandoValue bqExpandoValue2 = new BQExpandoValue();
-
-		bqExpandoValue2.setClassPK(String.valueOf(bqUser2.getDXPUserId()));
-		bqExpandoValue2.setClassType(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoValue2.setColumnId(bqExpandoColumn2.getColumnId());
-		bqExpandoValue2.setDataSourceId(bqUser2.getDataSourceId());
-		bqExpandoValue2.setId(RandomTestUtil.randomString());
-		bqExpandoValue2.setValue("20");
-		bqExpandoValue2.setModifiedDate(bqUser2.getModifiedDate());
-
-		_bqExpandoValueRepository.insert(bqExpandoValue2);
+		for (int i = 0; i < jsonArray.length(); i++) {
+			_dxpEntitiesIngestionNanite.processMessage(
+				new Message<>(
+					null,
+					new HashMap<String, String>() {
+						{
+							put("dataSourceId", "1");
+							put("projectId", "test");
+						}
+					},
+					null, String.valueOf(jsonArray.getJSONObject(i))));
+		}
 
 		_individualNanite.run();
 
@@ -268,23 +141,19 @@ public class IndividualNaniteTest
 
 		Assertions.assertEquals(
 			"joe@liferay.com", bqIndividual.getEmailAddress());
-		Assertions.assertEquals(
-			bqUser2.getModifiedDate(), bqIndividual.getModifiedDate());
 
-		JSONAssert.assertEquals(
-			JSONUtil.putAll(
-				JSONUtil.put(
-					"name", "age_string"
-				).put(
-					"value", "20"
-				)),
+		Map<String, JSONObject> jsonObjectMap = JSONUtil.toJSONObjectMap(
 			_objectMapper.convertValue(
 				bqIndividual.getFields(), JSONArray.class),
-			false);
+			"name");
+
+		JSONObject jsonObject = jsonObjectMap.get("age");
+
+		Assertions.assertEquals("20", jsonObject.getString("value"));
 	}
 
 	@Test
-	public void testMergeDefaultField() {
+	public void testMergeDefaultField() throws Exception {
 		BQIdentity bqIdentity = new BQIdentity();
 
 		bqIdentity.setCreateDate(new Date());
@@ -293,36 +162,21 @@ public class IndividualNaniteTest
 
 		_bqIdentityRepository.insert(bqIdentity);
 
-		BQUser bqUser1 = new BQUser();
+		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
+			"dependencies/dxp_entities6.json", this);
 
-		bqUser1.setDXPUserId(RandomTestUtil.randomNumber());
-		bqUser1.setDataSourceId(RandomTestUtil.randomNumber());
-		bqUser1.setEmailAddress("joe@liferay.com");
-		bqUser1.setFields(Arrays.asList(new BQUser.Field("country", "Brazil")));
-		bqUser1.setFirstName("Joe");
-		bqUser1.setId(RandomTestUtil.randomString());
-		bqUser1.setIndividualId(
-			DigestUtils.sha256Hex(bqUser1.getEmailAddress()));
-		bqUser1.setModifiedDate(DateUtil.toUTCDate("2022-08-04T12:00:00.000Z"));
-
-		_bqUserRepository.insert(bqUser1);
-
-		BQUser bqUser2 = new BQUser();
-
-		bqUser2.setDXPUserId(RandomTestUtil.randomNumber());
-		bqUser2.setDataSourceId(RandomTestUtil.randomNumber());
-		bqUser2.setEmailAddress("joe@liferay.com");
-		bqUser2.setFirstName("Joseph");
-		bqUser2.setFields(
-			Arrays.asList(
-				new BQUser.Field("country", "Argentina"),
-				new BQUser.Field("company", "Liferay")));
-		bqUser2.setId(RandomTestUtil.randomString());
-		bqUser2.setIndividualId(
-			DigestUtils.sha256Hex(bqUser2.getEmailAddress()));
-		bqUser2.setModifiedDate(DateUtil.toUTCDate("2022-08-03T12:00:00.000Z"));
-
-		_bqUserRepository.insert(bqUser2);
+		for (int i = 0; i < jsonArray.length(); i++) {
+			_dxpEntitiesIngestionNanite.processMessage(
+				new Message<>(
+					null,
+					new HashMap<String, String>() {
+						{
+							put("dataSourceId", "1");
+							put("projectId", "test");
+						}
+					},
+					null, String.valueOf(jsonArray.getJSONObject(i))));
+		}
 
 		_individualNanite.run();
 
@@ -333,25 +187,20 @@ public class IndividualNaniteTest
 
 		Assertions.assertEquals(
 			"joe@liferay.com", bqIndividual.getEmailAddress());
-		Assertions.assertEquals("Joe", bqIndividual.getFirstName());
-		Assertions.assertEquals(
-			bqUser1.getModifiedDate(), bqIndividual.getModifiedDate());
+		Assertions.assertEquals("Joseph", bqIndividual.getFirstName());
 
-		JSONAssert.assertEquals(
-			JSONUtil.putAll(
-				JSONUtil.put(
-					"name", "country"
-				).put(
-					"value", "Brazil"
-				),
-				JSONUtil.put(
-					"name", "company"
-				).put(
-					"value", "Liferay"
-				)),
+		Map<String, JSONObject> jsonObjectMap = JSONUtil.toJSONObjectMap(
 			_objectMapper.convertValue(
 				bqIndividual.getFields(), JSONArray.class),
-			false);
+			"name");
+
+		JSONObject jsonObject = jsonObjectMap.get("country");
+
+		Assertions.assertEquals("Brazil", jsonObject.getString("value"));
+
+		jsonObject = jsonObjectMap.get("company");
+
+		Assertions.assertEquals("Liferay", jsonObject.getString("value"));
 	}
 
 	@Autowired
@@ -368,6 +217,9 @@ public class IndividualNaniteTest
 
 	@Autowired
 	private BQUserRepository _bqUserRepository;
+
+	@Autowired
+	private DXPEntitiesIngestionNanite _dxpEntitiesIngestionNanite;
 
 	@Autowired
 	private IndividualNanite _individualNanite;

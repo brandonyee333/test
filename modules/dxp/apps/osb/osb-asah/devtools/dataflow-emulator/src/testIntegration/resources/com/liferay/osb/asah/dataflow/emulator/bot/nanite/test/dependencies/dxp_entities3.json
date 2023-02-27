@@ -1,12 +1,5 @@
 [
 	{
-		"expandoFields": [
-			{
-				"columnId": "1",
-				"name": "custom_field_1",
-				"value": "123"
-			}
-		],
 		"fields": [
 			{
 				"name": "className",
