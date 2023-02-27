@@ -67,6 +67,26 @@ public class BQFieldMappingRepositoryImpl
 	}
 
 	@Override
+	public Optional<BQFieldMapping> findByDisplayName(String displayName) {
+		return _queryExecutor.queryForObject(
+			BQFieldMapping::new,
+			_dslContext.select(
+				DSL.field("context"), DSL.field("displayName"),
+				DSL.field("displayType"), DSL.field("fieldName"),
+				DSL.field("fieldType"), DSL.field("modifiedDate", Date.class),
+				DSL.field("ownerType")
+			).from(
+				DSL.table("BQFieldMapping")
+			).where(
+				DSL.field(
+					"displayName"
+				).eq(
+					displayName
+				)
+			));
+	}
+
+	@Override
 	public Optional<BQFieldMapping> findByFieldName(String fieldName) {
 		return _queryExecutor.queryForObject(
 			BQFieldMapping::new,

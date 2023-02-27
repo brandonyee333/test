@@ -31,6 +31,8 @@ public interface CustomBQFieldMappingRepository {
 
 	public long countByFilterString(String filterString);
 
+	public Optional<BQFieldMapping> findByDisplayName(String displayName);
+
 	public Optional<BQFieldMapping> findByFieldName(String id);
 
 	public List<BQFieldMapping> findByFieldNameIn(
