@@ -16,6 +16,7 @@ USING
 				dxpEntity.uploadDate,
 				expandoField.columnId,
 				expandoField.value,
+				fieldMapping.fieldName,
 				ROW_NUMBER() OVER (
 					PARTITION BY
 						dxpEntity.projectId, dxpEntity.dataSourceId, expandoField.columnId, dxpEntity.classPK
@@ -29,6 +30,14 @@ USING
 				) AS sha256HexId
 			FROM
 				`{{ dag.default_args['ac_project_id'] }}.dxpentity` AS dxpEntity, UNNEST(expandoFields) AS expandoField
+			LEFT JOIN
+				`{{ dag.default_args['ac_project_id'] }}.expandocolumn` AS expandoColumn
+			ON
+				expandoField.columnId = expandoColumn.columnId
+			LEFT JOIN
+				`{{ dag.default_args['ac_project_id'] }}.fieldmapping` AS fieldMapping
+			ON
+				expandoColumn.name = fieldMapping.displayName
 			LEFT JOIN (
 				SELECT
 					*,
@@ -81,6 +90,7 @@ ON
 	staging.classPK = replica.classPK AND
 	staging.dataSourceId = replica.dataSourceId AND
 	staging.columnId = replica.columnId AND
+	staging.fieldName = replica.fieldName AND
 	staging.projectId = replica.projectId
 WHEN MATCHED AND staging.deleted IS NULL THEN
 	UPDATE SET
@@ -93,6 +103,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		`classType`,
 		`columnId`,
 		`dataSourceId`,
+		`fieldName`,
 		`id`,
 		`projectId`,
 		`value`
@@ -102,6 +113,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		staging.type,
 		staging.columnId,
 		staging.dataSourceId,
+		staging.fieldName,
 		staging.sha256HexId,
 		staging.projectId,
 		staging.value
