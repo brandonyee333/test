@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.entity.BQExpandoColumn;
@@ -23,7 +22,6 @@ import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
@@ -43,10 +41,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.collections4.CollectionUtils;
-
-import org.json.JSONArray;
+import org.apache.commons.collections4.ListUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -87,8 +82,7 @@ public class IndividualNanite {
 		Stream<BQUser> stream = bqUsers.stream();
 
 		return stream.filter(
-			bqUser -> individualIdsSet.contains(
-				DigestUtils.sha256Hex(bqUser.getEmailAddress()))
+			bqUser -> individualIdsSet.contains(bqUser.getIndividualId())
 		).map(
 			this::_toBQIndividual
 		).sorted(
@@ -98,7 +92,7 @@ public class IndividualNanite {
 		);
 	}
 
-	private List<Field> _fetchCustomFields(BQUser bqUser) {
+	private List<BQIndividual.Field> _fetchCustomFields(BQUser bqUser) {
 		List<BQExpandoValue> bqExpandoValues =
 			_bqExpandoValueRepository.findByClassPKAndClassTypeAndDataSourceId(
 				bqUser.getDXPUserId(), DXPEntity.Type.CLASS_NAME_USER,
@@ -108,12 +102,12 @@ public class IndividualNanite {
 
 		return stream.map(
 			bqExpandoValue -> {
-				Field field = new Field();
+				BQIndividual.Field field = new BQIndividual.Field(
+					bqExpandoValue.getDataSourceId(),
+					_resolveFieldName(bqExpandoValue),
+					bqExpandoValue.getValue());
 
-				field.setDataSourceId(bqExpandoValue.getDataSourceId());
-				field.setModifiedDate(bqExpandoValue.getModifiedDate());
-				field.setName(_resolveFieldName(bqExpandoValue));
-				field.setValue(bqExpandoValue.getValue());
+				field.setModifiedDate(bqUser.getModifiedDate());
 
 				return field;
 			}
@@ -122,8 +116,10 @@ public class IndividualNanite {
 		);
 	}
 
-	private Object _getFieldValueByName(List<Field> fields, String name) {
-		for (Field field : fields) {
+	private Object _getFieldValueByName(
+		List<BQIndividual.Field> fields, String name) {
+
+		for (BQIndividual.Field field : fields) {
 			if (Objects.equals(field.getName(), name)) {
 				return field.getValue();
 			}
@@ -132,7 +128,9 @@ public class IndividualNanite {
 		return null;
 	}
 
-	private Date _getFieldValueDateByName(List<Field> fields, String name) {
+	private Date _getFieldValueDateByName(
+		List<BQIndividual.Field> fields, String name) {
+
 		String valueString = _getFieldValueStringByName(fields, name);
 
 		if (valueString == null) {
@@ -142,7 +140,9 @@ public class IndividualNanite {
 		return new Date(Long.parseLong(valueString));
 	}
 
-	private String _getFieldValueStringByName(List<Field> fields, String name) {
+	private String _getFieldValueStringByName(
+		List<BQIndividual.Field> fields, String name) {
+
 		Object value = _getFieldValueByName(fields, name);
 
 		if (value == null) {
@@ -161,14 +161,8 @@ public class IndividualNanite {
 		mergedBQIndividual.setBirthday(bqIndividual2.getBirthday());
 		mergedBQIndividual.setCreateDate(bqIndividual2.getCreateDate());
 		mergedBQIndividual.setEmailAddress(bqIndividual2.getEmailAddress());
-
-		Collection<Field> mergedBQIndividualFields = _mergeBQIndividualFields(
-			bqIndividual1, bqIndividual2);
-
-		mergedBQIndividual.setFieldsJSONArray(
-			_objectMapper.convertValue(
-				mergedBQIndividualFields, JSONArray.class));
-
+		mergedBQIndividual.setFields(
+			_mergeBQIndividualFields(bqIndividual1, bqIndividual2));
 		mergedBQIndividual.setFirstName(bqIndividual2.getFirstName());
 		mergedBQIndividual.setGender(bqIndividual2.getGender());
 		mergedBQIndividual.setId(bqIndividual2.getId());
@@ -182,35 +176,25 @@ public class IndividualNanite {
 		return mergedBQIndividual;
 	}
 
-	private Collection<Field> _mergeBQIndividualFields(
+	private List<BQIndividual.Field> _mergeBQIndividualFields(
 		BQIndividual bqIndividual1, BQIndividual bqIndividual2) {
 
-		List<Field> fields = new ArrayList<>();
+		List<BQIndividual.Field> fields = ListUtils.union(
+			bqIndividual1.getFields(), bqIndividual2.getFields());
 
-		fields.addAll(
-			_objectMapper.convertValue(
-				bqIndividual1.getFieldsJSONArray(),
-				new TypeReference<List<Field>>() {
-				}));
-		fields.addAll(
-			_objectMapper.convertValue(
-				bqIndividual2.getFieldsJSONArray(),
-				new TypeReference<List<Field>>() {
-				}));
+		Stream<BQIndividual.Field> stream = fields.stream();
 
-		Stream<Field> stream1 = fields.stream();
+		Comparator<BQIndividual.Field> fieldModifiedDateComparator =
+			Comparator.comparing(BQIndividual.Field::getModifiedDate);
 
-		Comparator<Field> fieldModifiedDateComparator = Comparator.comparing(
-			Field::getModifiedDate);
-
-		Map<String, Field> mergedFieldsMap = stream1.collect(
+		Map<String, BQIndividual.Field> mergedFieldsMap = stream.collect(
 			Collectors.groupingBy(
-				Field::getName,
+				BQIndividual.Field::getName,
 				Collectors.collectingAndThen(
 					Collectors.maxBy(fieldModifiedDateComparator),
 					Optional::get)));
 
-		return mergedFieldsMap.values();
+		return new ArrayList<>(mergedFieldsMap.values());
 	}
 
 	private List<BQIndividual> _mergeBQIndividuals(
@@ -268,25 +252,22 @@ public class IndividualNanite {
 		bqIndividual.setCreateDate(new Date());
 		bqIndividual.setEmailAddress(bqUser.getEmailAddress());
 
-		List<Field> defaultFields = _toFields(
-			bqUser.getDataSourceId(), bqUser.getFieldsJSONArray(),
+		List<BQIndividual.Field> defaultFields = _toFields(
+			bqUser.getDataSourceId(), bqUser.getFields(),
 			bqUser.getModifiedDate());
 
-		List<Field> customFields = _fetchCustomFields(bqUser);
-
-		bqIndividual.setFieldsJSONArray(
-			_objectMapper.convertValue(
-				CollectionUtils.union(defaultFields, customFields),
-				JSONArray.class));
+		bqIndividual.setFields(
+			ListUtils.union(defaultFields, _fetchCustomFields(bqUser)));
 
 		bqIndividual.setAddresses(
 			_getFieldValueStringByName(defaultFields, "addresses"));
 		bqIndividual.setBirthday(
 			_getFieldValueDateByName(defaultFields, "birthday"));
+
 		bqIndividual.setFirstName(bqUser.getFirstName());
 		bqIndividual.setGender(
 			_getFieldValueStringByName(defaultFields, "gender"));
-		bqIndividual.setId(bqUser.getEmailAddressHashed());
+		bqIndividual.setId(bqUser.getIndividualId());
 		bqIndividual.setJobTitle(bqUser.getJobTitle());
 		bqIndividual.setLanguageId(
 			_getFieldValueStringByName(defaultFields, "languageId"));
@@ -300,21 +281,22 @@ public class IndividualNanite {
 		return bqIndividual;
 	}
 
-	private List<Field> _toFields(
-		Long dataSourceId, JSONArray fieldsJSONArray, Date modifiedDate) {
+	private List<BQIndividual.Field> _toFields(
+		Long dataSourceId, List<BQUser.Field> bqUserFields, Date modifiedDate) {
 
-		List<Field> fields = _objectMapper.convertValue(
-			fieldsJSONArray,
-			new TypeReference<List<Field>>() {
-			});
-
-		if (fields == null) {
+		if (bqUserFields == null) {
 			return Collections.emptyList();
 		}
 
-		for (Field field : fields) {
-			field.setDataSourceId(dataSourceId);
+		List<BQIndividual.Field> fields = new ArrayList<>();
+
+		for (BQUser.Field bqUserField : bqUserFields) {
+			BQIndividual.Field field = new BQIndividual.Field(
+				dataSourceId, bqUserField.getName(), bqUserField.getValue());
+
 			field.setModifiedDate(modifiedDate);
+
+			fields.add(field);
 		}
 
 		return fields;

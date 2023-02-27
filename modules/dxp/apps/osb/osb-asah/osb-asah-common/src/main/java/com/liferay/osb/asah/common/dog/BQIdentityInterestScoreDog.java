@@ -64,7 +64,7 @@ public class BQIdentityInterestScoreDog {
 				individualId, keyword, fromRecordedDate, toRecordedDate);
 	}
 
-	public IdentityInterestScore getIdentityInterestScore(Long id) {
+	public IdentityInterestScore getIdentityInterestScore(String id) {
 		Optional<IdentityInterestScore> identityInterestScoreOptional =
 			_bqIdentityInterestScoreRepository.findIdentityInterestScoreById(
 				id);

@@ -19,6 +19,8 @@ import com.liferay.osb.asah.common.dog.BQCSVUserDog;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -51,8 +53,8 @@ public class CSVIndividualsRestController extends BaseRestController {
 					Long.valueOf(jsonObject.getString("dataSourceId")));
 				bqCSVUser.setDataSourceUserPK(
 					jsonObject.getString("dataSourceIndividualPK"));
-				bqCSVUser.setFieldsJSONArray(
-					_toFieldsJSONArray(jsonObject.optJSONObject("fields")));
+				bqCSVUser.setFields(
+					_toFields(jsonObject.optJSONObject("fields")));
 				bqCSVUser.setModifiedDate(date);
 
 				return bqCSVUser;
@@ -61,21 +63,19 @@ public class CSVIndividualsRestController extends BaseRestController {
 		_bqCSVUserDog.addBQCSVUsers(bqCSVUsers);
 	}
 
-	private JSONArray _toFieldsJSONArray(JSONObject fieldsJSONObject) {
-		JSONArray fieldsJSONArray = new JSONArray();
-
-		if (fieldsJSONObject != null) {
-			for (String key : fieldsJSONObject.keySet()) {
-				fieldsJSONArray.put(
-					JSONUtil.put(
-						"name", key
-					).put(
-						"value", fieldsJSONObject.getString(key)
-					));
-			}
+	private List<BQCSVUser.Field> _toFields(JSONObject fieldsJSONObject) {
+		if (fieldsJSONObject == null) {
+			return Collections.emptyList();
 		}
 
-		return fieldsJSONArray;
+		List<BQCSVUser.Field> fields = new ArrayList<>();
+
+		for (String key : fieldsJSONObject.keySet()) {
+			fields.add(
+				new BQCSVUser.Field(key, fieldsJSONObject.getString(key)));
+		}
+
+		return fields;
 	}
 
 	@Autowired

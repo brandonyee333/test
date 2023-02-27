@@ -44,10 +44,13 @@ import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.dataflow.emulator.model.AnalyticsDeleteMessage;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -65,7 +68,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -132,7 +134,7 @@ public class DXPEntitiesIngestionNanite {
 
 				BQExpandoValue bqExpandoValue = new BQExpandoValue();
 
-				bqExpandoValue.setClassPK(classPK);
+				bqExpandoValue.setClassPK(String.valueOf(classPK));
 				bqExpandoValue.setClassType(classType);
 				bqExpandoValue.setColumnId(
 					String.valueOf(jsonObject.get("columnId")));
@@ -161,6 +163,44 @@ public class DXPEntitiesIngestionNanite {
 			});
 
 		return fields;
+	}
+
+	private void _processDeleteMessage(String className, String classPK) {
+		String entityName = StringUtils.substringAfterLast(className, ".");
+
+		if (Objects.equals(entityName, "AccountEntry")) {
+			_bqAccountEntryRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "AccountGroup")) {
+			_bqAccountGroupRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "ExpandoColumn")) {
+			_bqExpandoColumnRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "ExpandoValue")) {
+			_bqExpandoValueRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "Group")) {
+			_bqGroupRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "Organization")) {
+			_bqOrganizationRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "Role")) {
+			_bqRoleRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "Team")) {
+			_bqTeamRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "User")) {
+			_bqUserRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "UserGroup")) {
+			_bqUserGroupRepository.deleteById(classPK);
+		}
+		else {
+			throw new IllegalStateException("Unsupported entity " + entityName);
+		}
 	}
 
 	private void _processMessage(Message<String> message) {
@@ -218,20 +258,12 @@ public class DXPEntitiesIngestionNanite {
 					_objectMapper.convertValue(
 						fields, AnalyticsDeleteMessage.class);
 
-				CrudRepository crudRepository =
-					(CrudRepository)_applicationContext.getBean(
-						Class.forName(
-							String.format(
-								"com.liferay.osb.asah.common.repository." +
-									"BQ%sRepository",
-								StringUtils.substringAfterLast(
-									analyticsDeleteMessage.getClassName(),
-									"."))));
+				String dxpEntityId = _generateDXPEntityId(
+					analyticsDeleteMessage.getClassPK(), dataSourceId,
+					projectId);
 
-				crudRepository.deleteById(
-					_generateDXPEntityId(
-						analyticsDeleteMessage.getClassPK(), dataSourceId,
-						projectId));
+				_processDeleteMessage(
+					analyticsDeleteMessage.getClassName(), dxpEntityId);
 			}
 			catch (Exception exception) {
 				_log.error(exception, exception);
@@ -331,16 +363,14 @@ public class DXPEntitiesIngestionNanite {
 				bqExpandoValues.forEach(_bqExpandoValueRepository::insert);
 			}
 
-			String emailAddressHashed = DigestUtils.sha256Hex(
-				StringUtils.lowerCase(bqUser.getEmailAddress()));
-
-			bqUser.setEmailAddressHashed(emailAddressHashed);
-
-			bqUser.setFieldsJSONArray(jsonObject.optJSONArray("fields"));
+			bqUser.setFields(_toFields(jsonObject.optJSONArray("fields")));
 
 			bqUser.setId(
 				_generateDXPEntityId(
 					bqUser.getDXPUserId(), dataSourceId, projectId));
+			bqUser.setIndividualId(
+				DigestUtils.sha256Hex(
+					StringUtils.lowerCase(bqUser.getEmailAddress())));
 
 			_bqUserRepository.insert(bqUser);
 		}
@@ -357,6 +387,25 @@ public class DXPEntitiesIngestionNanite {
 
 			_bqUserGroupRepository.insert(bqUserGroup);
 		}
+	}
+
+	private List<BQUser.Field> _toFields(JSONArray jsonArray) {
+		if (jsonArray == null) {
+			return Collections.emptyList();
+		}
+
+		List<BQUser.Field> fields = new ArrayList<>();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			fields.add(
+				new BQUser.Field(
+					jsonObject.getString("name"),
+					String.valueOf(jsonObject.get("value"))));
+		}
+
+		return fields;
 	}
 
 	private static final Log _log = LogFactory.getLog(

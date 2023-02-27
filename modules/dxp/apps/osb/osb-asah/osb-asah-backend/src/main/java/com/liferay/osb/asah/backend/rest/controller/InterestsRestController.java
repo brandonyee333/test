@@ -65,7 +65,8 @@ public class InterestsRestController
 
 	@GetMapping("/{id}")
 	public InterestDTO getInterestDTO(
-		@PathVariable Long id, @RequestParam(required = false) String expand) {
+		@PathVariable String id,
+		@RequestParam(required = false) String expand) {
 
 		return _createInterestDTO(
 			_containsPageVisited(expand), _getDaysRange(expand),

@@ -47,7 +47,7 @@ public class FieldDTO {
 		_id = StringUtil.get(expandoField.getId(), null);
 		_modifiedDate = expandoField.getModifiedDate();
 		_name = expandoField.getName();
-		_ownerId = StringUtil.get(expandoField.getClassPK(), null);
+		_ownerId = expandoField.getClassPK();
 		_ownerType = expandoField.getClassType();
 		_sourceName = expandoField.getColumnId();
 		_value = expandoField.getValue();
