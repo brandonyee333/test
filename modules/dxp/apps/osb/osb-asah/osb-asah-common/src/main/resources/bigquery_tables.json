@@ -906,6 +906,11 @@
 			},
 			{
 				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "value",
 				"type": "STRING"
 			},
