@@ -32,6 +32,7 @@ import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -196,6 +197,23 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private Object _getField(FieldValue fieldValue, Field field) {
+		if (fieldValue.getAttribute() == FieldValue.Attribute.RECORD) {
+			Map<String, Object> recordMap = new HashMap<>();
+
+			FieldList subFields = field.getSubFields();
+			FieldValueList fieldValueList = fieldValue.getRecordValue();
+
+			for (int i = 0; i < subFields.size(); i++) {
+				Field subField = subFields.get(i);
+				FieldValue subfieldValue = fieldValueList.get(i);
+
+				recordMap.put(
+					subField.getName(), _getField(subfieldValue, subField));
+			}
+
+			return recordMap;
+		}
+
 		if (fieldValue.getAttribute() == FieldValue.Attribute.REPEATED) {
 			List<Object> objects = new ArrayList<>();
 
