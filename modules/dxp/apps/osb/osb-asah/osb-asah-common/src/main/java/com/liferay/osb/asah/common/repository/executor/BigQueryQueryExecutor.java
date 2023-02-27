@@ -341,13 +341,16 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private static final String[] _FUNCTION_AND_TABLE_NAMES = {
-		"BlogDaily", "BlogHourly", "BQEvent", "BQEventProperty",
-		"BQFieldMapping", "BQIdentity", "BQIdentityActivity",
-		"BQIdentityChannel", "BQIdentityInterestScore", "BQIndividual",
-		"BQMembership", "BQOrder", "BQPageReferrers", "BQSession",
-		"CustomAssetDaily", "CustomAssetHourly", "DocumentLibraryDaily",
-		"DocumentLibraryHourly", "FormDaily", "FormHourly", "JournalDaily",
-		"JournalHourly", "PageDaily", "PageHourly", "SEARCH_TERM"
+		"BlogDaily", "BlogHourly", "BQAccountEntry", "BQAccountGroup",
+		"BQCSVUser", "BQEvent", "BQEventProperty", "BQExpandoColumn",
+		"BQExpandoValue", "BQFieldMapping", "BQGroup", "BQIdentity",
+		"BQIdentityActivity", "BQIdentityChannel", "BQIdentityInterestScore",
+		"BQIndividual", "BQMembership", "BQOrder", "BQOrganization",
+		"BQPageReferrers", "BQRole", "BQSession", "BQTeam", "BQUser",
+		"BQUserGroup", "CustomAssetDaily", "CustomAssetHourly",
+		"DocumentLibraryDaily", "DocumentLibraryHourly", "FormDaily",
+		"FormHourly", "Identity_Raw", "JournalDaily", "JournalHourly",
+		"PageDaily", "PageHourly"
 	};
 
 	private static final Log _log = LogFactory.getLog(
