@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Wiki Service
 Bundle-SymbolicName: com.liferay.wiki.service
-Bundle-Version: 1.11.14
+Bundle-Version: 1.11.15
 Export-Package:\
 	com.liferay.wiki.asset,\
 	com.liferay.wiki.engine.impl,\
