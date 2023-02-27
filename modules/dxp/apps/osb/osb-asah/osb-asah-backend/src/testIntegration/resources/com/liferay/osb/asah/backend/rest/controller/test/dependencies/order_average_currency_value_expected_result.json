@@ -3,11 +3,11 @@
 		"orderAverageCurrencyValues": [
 			{
 				"currencyCode": "EUR",
-				"value": "10.0000000000000000"
+				"value": "10"
 			},
 			{
 				"currencyCode": "USD",
-				"value": "10.0000000000000000"
+				"value": "10"
 			}
 		]
 	}

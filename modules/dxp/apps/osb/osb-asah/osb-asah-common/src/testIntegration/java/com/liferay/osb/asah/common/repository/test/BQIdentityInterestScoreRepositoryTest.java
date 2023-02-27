@@ -44,15 +44,16 @@ public class BQIdentityInterestScoreRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
-		BQIdentityInterestScore bqIdentityInterestScore1 =
-			new BQIdentityInterestScore();
+		_bqIdentityInterestScore1 = new BQIdentityInterestScore();
 
-		bqIdentityInterestScore1.setIdentityId("374790569167317525");
-		bqIdentityInterestScore1.setInterested(Boolean.TRUE);
-		bqIdentityInterestScore1.setInterestScore(1.767661917648994);
-		bqIdentityInterestScore1.setKeyword("clicks-and-mortar e-tailers");
-		bqIdentityInterestScore1.setRecordedDate(
+		_bqIdentityInterestScore1.setIdentityId("374790569167317525");
+		_bqIdentityInterestScore1.setInterested(Boolean.TRUE);
+		_bqIdentityInterestScore1.setInterestScore(1.767661917648994);
+		_bqIdentityInterestScore1.setKeyword("clicks-and-mortar e-tailers");
+		_bqIdentityInterestScore1.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-12T00:00:00.000Z"));
+
+		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore1);
 
 		BQIdentity bqIdentity1 = new BQIdentity();
 
@@ -61,15 +62,16 @@ public class BQIdentityInterestScoreRepositoryTest {
 
 		_bqIdentityRepository.insert(bqIdentity1);
 
-		BQIdentityInterestScore bqIdentityInterestScore2 =
-			new BQIdentityInterestScore();
+		_bqIdentityInterestScore2 = new BQIdentityInterestScore();
 
-		bqIdentityInterestScore2.setIdentityId("374790575409131096");
-		bqIdentityInterestScore2.setInterested(Boolean.TRUE);
-		bqIdentityInterestScore2.setInterestScore(2.61495977803619);
-		bqIdentityInterestScore2.setKeyword("javascript");
-		bqIdentityInterestScore2.setRecordedDate(
+		_bqIdentityInterestScore2.setIdentityId("374790575409131096");
+		_bqIdentityInterestScore2.setInterested(Boolean.TRUE);
+		_bqIdentityInterestScore2.setInterestScore(2.61495977803619);
+		_bqIdentityInterestScore2.setKeyword("javascript");
+		_bqIdentityInterestScore2.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
+
+		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore2);
 
 		BQIdentity bqIdentity2 = new BQIdentity();
 
@@ -78,15 +80,16 @@ public class BQIdentityInterestScoreRepositoryTest {
 
 		_bqIdentityRepository.insert(bqIdentity2);
 
-		BQIdentityInterestScore bqIdentityInterestScore3 =
-			new BQIdentityInterestScore();
+		_bqIdentityInterestScore3 = new BQIdentityInterestScore();
 
-		bqIdentityInterestScore3.setIdentityId("374790572703144534");
-		bqIdentityInterestScore3.setInterested(Boolean.FALSE);
-		bqIdentityInterestScore3.setInterestScore(0.770222520473574);
-		bqIdentityInterestScore3.setKeyword("compelling metrics");
-		bqIdentityInterestScore3.setRecordedDate(
+		_bqIdentityInterestScore3.setIdentityId("374790572703144534");
+		_bqIdentityInterestScore3.setInterested(Boolean.FALSE);
+		_bqIdentityInterestScore3.setInterestScore(0.770222520473574);
+		_bqIdentityInterestScore3.setKeyword("compelling metrics");
+		_bqIdentityInterestScore3.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+
+		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore3);
 
 		BQIdentity bqIdentity3 = new BQIdentity();
 
@@ -95,25 +98,27 @@ public class BQIdentityInterestScoreRepositoryTest {
 
 		_bqIdentityRepository.insert(bqIdentity3);
 
-		BQIdentityInterestScore bqIdentityInterestScore4 =
-			new BQIdentityInterestScore();
+		_bqIdentityInterestScore4 = new BQIdentityInterestScore();
 
-		bqIdentityInterestScore4.setIdentityId("374790572703144534");
-		bqIdentityInterestScore4.setInterested(Boolean.TRUE);
-		bqIdentityInterestScore4.setInterestScore(1.454684984987494);
-		bqIdentityInterestScore4.setKeyword("sales");
-		bqIdentityInterestScore4.setRecordedDate(
+		_bqIdentityInterestScore4.setIdentityId("374790572703144534");
+		_bqIdentityInterestScore4.setInterested(Boolean.TRUE);
+		_bqIdentityInterestScore4.setInterestScore(1.454684984987494);
+		_bqIdentityInterestScore4.setKeyword("sales");
+		_bqIdentityInterestScore4.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
 
-		BQIdentityInterestScore bqIdentityInterestScore5 =
-			new BQIdentityInterestScore();
+		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore4);
 
-		bqIdentityInterestScore5.setIdentityId("374790572703144535");
-		bqIdentityInterestScore5.setInterested(Boolean.TRUE);
-		bqIdentityInterestScore5.setInterestScore(1.454684984987494);
-		bqIdentityInterestScore5.setKeyword("sales");
-		bqIdentityInterestScore5.setRecordedDate(
+		_bqIdentityInterestScore5 = new BQIdentityInterestScore();
+
+		_bqIdentityInterestScore5.setIdentityId("374790572703144535");
+		_bqIdentityInterestScore5.setInterested(Boolean.TRUE);
+		_bqIdentityInterestScore5.setInterestScore(1.454684984987494);
+		_bqIdentityInterestScore5.setKeyword("sales");
+		_bqIdentityInterestScore5.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+
+		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore5);
 
 		BQIdentity bqIdentity5 = new BQIdentity();
 
@@ -121,12 +126,6 @@ public class BQIdentityInterestScoreRepositoryTest {
 		bqIdentity5.setIndividualId("374790572703144535");
 
 		_bqIdentityRepository.insert(bqIdentity5);
-
-		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore1);
-		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore2);
-		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore3);
-		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore4);
-		_bqIdentityInterestScoreRepository.insert(bqIdentityInterestScore5);
 
 		BQMembership bqMembership = new BQMembership();
 
@@ -201,6 +200,9 @@ public class BQIdentityInterestScoreRepositoryTest {
 		Assertions.assertEquals(
 			2, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
+		Assertions.assertEquals(
+			Arrays.asList(_bqIdentityInterestScore3, _bqIdentityInterestScore4),
+			bqIdentityInterestScores);
 	}
 
 	@Test
@@ -215,6 +217,8 @@ public class BQIdentityInterestScoreRepositoryTest {
 		Assertions.assertEquals(
 			1, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
+		Assertions.assertEquals(
+			Arrays.asList(_bqIdentityInterestScore5), bqIdentityInterestScores);
 
 		bqIdentityInterestScores =
 			_bqIdentityInterestScoreRepository.
@@ -226,6 +230,8 @@ public class BQIdentityInterestScoreRepositoryTest {
 		Assertions.assertEquals(
 			1, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
+		Assertions.assertEquals(
+			Arrays.asList(_bqIdentityInterestScore5), bqIdentityInterestScores);
 
 		bqIdentityInterestScores =
 			_bqIdentityInterestScoreRepository.
@@ -248,6 +254,11 @@ public class BQIdentityInterestScoreRepositoryTest {
 		Assertions.assertEquals(
 			0, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
+		Assertions.assertEquals(
+			Arrays.asList(
+				_bqIdentityInterestScore3, _bqIdentityInterestScore4,
+				_bqIdentityInterestScore5),
+			bqIdentityInterestScores);
 	}
 
 	@Test
@@ -283,6 +294,9 @@ public class BQIdentityInterestScoreRepositoryTest {
 				getByIndividualIdAndKeywordAndRecordedDate(
 					"374790575409131096", "javascript",
 					DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
+
+		Assertions.assertEquals(
+			_bqIdentityInterestScore2, bqIdentityInterestScore);
 	}
 
 	@Test
@@ -388,6 +402,12 @@ public class BQIdentityInterestScoreRepositoryTest {
 		Assertions.assertEquals(
 			totalElements, transformation.get("totalElements"));
 	}
+
+	private BQIdentityInterestScore _bqIdentityInterestScore1;
+	private BQIdentityInterestScore _bqIdentityInterestScore2;
+	private BQIdentityInterestScore _bqIdentityInterestScore3;
+	private BQIdentityInterestScore _bqIdentityInterestScore4;
+	private BQIdentityInterestScore _bqIdentityInterestScore5;
 
 	@Autowired
 	private BQIdentityInterestScoreRepository

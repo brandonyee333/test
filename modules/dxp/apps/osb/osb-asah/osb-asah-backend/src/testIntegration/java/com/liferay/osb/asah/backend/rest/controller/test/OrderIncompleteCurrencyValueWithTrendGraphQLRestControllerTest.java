@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 /**
  * @author Riccardo Ferrari
  */
-@SQLResource(resourcePath = "currency_value_graphql_rest_controller_test.sql")
+@BQSQLResource(resourcePath = "currency_value_graphql_rest_controller_test.sql")
 public class OrderIncompleteCurrencyValueWithTrendGraphQLRestControllerTest
 	extends BaseCurrencyValueGraphQLRestControllerTestCase {
 

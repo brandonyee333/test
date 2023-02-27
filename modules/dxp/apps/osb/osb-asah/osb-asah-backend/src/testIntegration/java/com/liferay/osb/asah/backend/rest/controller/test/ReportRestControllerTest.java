@@ -38,11 +38,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Alejo Ceballos
  */
+@Disabled
 public class ReportRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_3.json"

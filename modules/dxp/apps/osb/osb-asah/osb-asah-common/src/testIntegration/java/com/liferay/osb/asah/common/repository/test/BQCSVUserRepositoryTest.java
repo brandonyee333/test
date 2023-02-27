@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -67,28 +66,14 @@ public class BQCSVUserRepositoryTest {
 
 		BQCSVUser bqCSVUser1 = new BQCSVUser(
 			1L,
-			JSONUtil.putAll(
-				JSONUtil.put(
-					"name", "givenName"
-				).put(
-					"value", "Bennie"
-				),
-				JSONUtil.put(
-					"name", "age"
-				).put(
-					"value", "20"
-				)));
+			Arrays.asList(
+				new BQCSVUser.Field("givenName", "Bennie"),
+				new BQCSVUser.Field("age", "20")));
 
 		bqCSVUser1.setDataSourceUserPK("1");
 
 		BQCSVUser bqCSVUser2 = new BQCSVUser(
-			1L,
-			JSONUtil.putAll(
-				JSONUtil.put(
-					"name", "givenName"
-				).put(
-					"value", "Ellie"
-				)));
+			1L, Arrays.asList(new BQCSVUser.Field("givenName", "Ellie")));
 
 		bqCSVUser2.setDataSourceUserPK("2");
 

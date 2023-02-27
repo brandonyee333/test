@@ -1,3 +1,3 @@
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('Document', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}' ), 'documentPreviewed', '1');
-INSERT INTO BQEvent (applicationId, assetId,channelId, eventDate, eventId, id) VALUES ('Document', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'documentPreviewed', '2' );
-INSERT INTO BQEvent (applicationId, assetId,channelId, eventDate, eventId, id) VALUES ('Document', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'documentPreviewed', '3');
+INSERT INTO DocumentLibraryDaily (assetId, channelId, eventDate, previews) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, eventDate, previews) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, eventDate, previews) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);

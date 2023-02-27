@@ -20,6 +20,7 @@ import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.Mock;
@@ -46,6 +48,11 @@ import org.mockito.Mock;
  * @author Marcellus Tavares
  */
 public class MetricHelperTest {
+
+	@BeforeEach
+	public void setUp() {
+		ProjectIdThreadLocal.setProjectId("test");
+	}
 
 	@Test
 	public void testCreateHistogramMetricBagAsymmetricComparison() {

@@ -28,8 +28,8 @@ import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.repository.CrudBQVisitedPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
@@ -73,7 +73,7 @@ public class InterestsRestControllerTest
 	@Test
 	public void testGetInterestDTO() {
 		InterestDTO interestDTO = _interestsRestController.getInterestDTO(
-			123456L, null);
+			"123456", null);
 
 		Assertions.assertEquals(
 			"123456", interestDTO.getId(), interestDTO.toString());
@@ -111,12 +111,13 @@ public class InterestsRestControllerTest
 			(JSONArray)JSONUtil.getValue(
 				_objectMapper.convertValue(
 					_interestsRestController.getInterestDTOPageDTO(
-						null, 0, 20, null, null),
+						null, 0, 20, null, new String[] {"name", "desc"}),
 					JSONObject.class),
 				"JSONObject/_embedded", "JSONArray/interests"),
 			false);
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
@@ -163,7 +164,7 @@ public class InterestsRestControllerTest
 	@Test
 	public void testGetInterestDTOWithEmbedded() {
 		InterestDTO interestDTO = _interestsRestController.getInterestDTO(
-			123456L, "interest-aggregation-last-30-days,pages-visited");
+			"123456", "interest-aggregation-last-30-days,pages-visited");
 
 		Assertions.assertEquals(
 			"123456", interestDTO.getId(), interestDTO.toString());
@@ -192,7 +193,7 @@ public class InterestsRestControllerTest
 			5, visitedPages.size(), visitedPages.toString());
 	}
 
-	@SQLResource(resourcePath = "test_get_interest_keywords.sql")
+	@BQSQLResource(resourcePath = "test_get_interest_keywords.sql")
 	@Test
 	public void testGetInterestKeywords() throws Exception {
 

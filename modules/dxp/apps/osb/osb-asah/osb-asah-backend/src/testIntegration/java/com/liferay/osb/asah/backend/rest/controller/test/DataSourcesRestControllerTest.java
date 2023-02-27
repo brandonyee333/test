@@ -42,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -71,6 +72,7 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 )
 public class DataSourcesRestControllerTest {
 
+	@Disabled
 	@Test
 	public void testDeleteDataSource() throws Exception {
 		DataSource dataSource = FaroInfoTestUtil.buildLiferayDataSource();

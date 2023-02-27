@@ -26,8 +26,8 @@ import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahBQSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
-import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -59,7 +59,7 @@ import org.springframework.test.context.TestExecutionListeners;
 	mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS,
 	value = {
 		OSBAsahRepositoryTestExecutionListener.class,
-		OSBAsahSQLTestExecutionListener.class
+		OSBAsahBQSQLTestExecutionListener.class
 	}
 )
 public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>

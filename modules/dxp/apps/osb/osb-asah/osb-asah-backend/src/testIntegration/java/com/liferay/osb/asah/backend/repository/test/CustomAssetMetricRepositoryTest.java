@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.model.CustomAssetMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -35,7 +35,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class CustomAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase {
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "custom_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -48,7 +48,7 @@ public class CustomAssetMetricRepositoryTest
 				TimeRange.LAST_24_HOURS));
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "custom_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test

@@ -3,11 +3,11 @@
 		"orderTotalCurrencyValues": [
 			{
 				"currencyCode": "EUR",
-				"value": "40.0"
+				"value": "40"
 			},
 			{
 				"currencyCode": "USD",
-				"value": "70.0"
+				"value": "70"
 			}
 		]
 	}

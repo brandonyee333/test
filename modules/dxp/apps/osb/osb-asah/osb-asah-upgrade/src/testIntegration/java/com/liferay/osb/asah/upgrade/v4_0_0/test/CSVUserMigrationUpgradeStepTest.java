@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade.v4_0_0.test;
 
+import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.BQCSVUserRepository;
@@ -21,6 +22,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchIndexManager;
@@ -32,7 +34,6 @@ import java.util.List;
 import org.apache.commons.collections4.IterableUtils;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -45,7 +46,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Leilany Ulisses
  */
 public class CSVUserMigrationUpgradeStepTest
-	implements OSBAsahUpgradeSpringTestContext {
+	implements OSBAsahTestExecutionListenersContext,
+			   OSBAsahUpgradeSpringTestContext {
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -112,15 +114,18 @@ public class CSVUserMigrationUpgradeStepTest
 		Assertions.assertEquals(
 			337984445922213329L, bqCSVUser.getDataSourceId());
 
-		JSONArray fieldsJSONArray = bqCSVUser.getFieldsJSONArray();
+		List<BQCSVUser.Field> fields = bqCSVUser.getFields();
 
-		Assertions.assertEquals(1, fieldsJSONArray.length());
+		Assertions.assertEquals(1, fields.size());
 
-		JSONObject fieldJSONObject = fieldsJSONArray.getJSONObject(0);
+		BQCSVUser.Field field = fields.get(0);
 
-		Assertions.assertEquals("name", fieldJSONObject.getString("name"));
-		Assertions.assertEquals("Guest", fieldJSONObject.getString("value"));
+		Assertions.assertEquals("name", field.getName());
+		Assertions.assertEquals("Guest", field.getValue());
 	}
+
+	@Autowired
+	private BigQuerySchemaManager _bigQuerySchemaManager;
 
 	@Autowired
 	private BQCSVUserRepository _bqCSVUserRepository;

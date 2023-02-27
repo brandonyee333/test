@@ -1,5 +1,5 @@
-INSERT INTO BQEvent(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 1, timestamp '${now-2d}', 'pageViewed', '1', 'https://www.cedric-rodriguez.net?q=International%20Trade%20and%20Development');
-INSERT INTO BQEvent(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 2, timestamp '${now-2d}', 'pageViewed', '2', 'https://www.cherelle-ullrich.org?q=Plastics');
-INSERT INTO BQEvent(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 1, timestamp '${now-2d}', 'pageViewed', '3', 'https://www.dino-boyer.com?q=Automotive');
-INSERT INTO BQEvent(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 1, timestamp '${now-2d}', 'pageViewed', '4', 'https://www.debra-huel.name');
-INSERT INTO BQEvent(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 1, timestamp '${now-2d}', 'pageViewed', '5', 'https://www.debra-huel.name?q=75%%20Discount');
+INSERT INTO Event(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 1, timestamp '${now-2d}', 'pageViewed', '1', 'https://www.cedric-rodriguez.net?q=International%20Trade%20and%20Development');
+INSERT INTO Event(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 2, timestamp '${now-2d}', 'pageViewed', '2', 'https://www.cherelle-ullrich.org?q=Plastics');
+INSERT INTO Event(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 1, timestamp '${now-2d}', 'pageViewed', '3', 'https://www.dino-boyer.com?q=Automotive');
+INSERT INTO Event(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 1, timestamp '${now-2d}', 'pageViewed', '4', 'https://www.debra-huel.name');
+INSERT INTO Event(applicationId, channelId, eventDate, eventId, id, url) VALUES ('Page', 1, timestamp '${now-2d}', 'pageViewed', '5', 'https://www.debra-huel.name?q=75%%20Discount');

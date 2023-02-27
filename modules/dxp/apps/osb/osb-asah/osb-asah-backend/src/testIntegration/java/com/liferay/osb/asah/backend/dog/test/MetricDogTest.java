@@ -32,8 +32,8 @@ import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
 import com.liferay.osb.asah.test.util.repository.CrudBQDocumentLibraryRepository;
 import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
@@ -489,7 +489,7 @@ public class MetricDogTest
 		Assertions.assertEquals(6, viewsMetric.getValue(), 0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test
@@ -509,7 +509,7 @@ public class MetricDogTest
 		Assertions.assertEquals(3, metric.getValue(), 0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test
@@ -538,7 +538,7 @@ public class MetricDogTest
 		Assertions.assertNull(metric.getPreviousValue());
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test

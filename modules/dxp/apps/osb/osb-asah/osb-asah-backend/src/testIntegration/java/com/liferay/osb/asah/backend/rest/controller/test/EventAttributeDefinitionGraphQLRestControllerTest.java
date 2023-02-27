@@ -14,13 +14,17 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 /**
  * @author Leslie Wong
  */
+@BQSQLResource(
+	resourcePath = "event_attribute_definition_graphql_rest_controller_test_2.sql"
+)
 @SQLResource(
-	resourcePath = "event_attribute_definition_graphql_rest_controller_test.sql"
+	resourcePath = "event_attribute_definition_graphql_rest_controller_test_1.sql"
 )
 public class EventAttributeDefinitionGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {

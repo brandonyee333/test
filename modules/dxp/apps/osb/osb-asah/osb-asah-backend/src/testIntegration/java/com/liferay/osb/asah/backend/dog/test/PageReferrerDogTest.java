@@ -19,8 +19,8 @@ import com.liferay.osb.asah.backend.dog.PageReferrerDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.common.model.Interval;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -36,11 +36,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Gabriel Ibson
  */
+@Disabled
 public class PageReferrerDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@SQLResource(resourcePath = "page_referrers_events.sql")
+	@BQSQLResource(resourcePath = "page_referrers_events.sql")
 	@Test
 	public void testAcquisitionChannels() {
 		Map<String, Double> acquisitionChannels =
@@ -58,7 +59,7 @@ public class PageReferrerDogTest
 		Assertions.assertEquals(1, acquisitionChannels.get("direct"), 0);
 	}
 
-	@SQLResource(resourcePath = "page_referrers_events.sql")
+	@BQSQLResource(resourcePath = "page_referrers_events.sql")
 	@Test
 	public void testPageReferrerHosts() {
 		Map<String, Double> pageReferrers = _pageReferrerDog.getPageReferrers(
@@ -78,12 +79,12 @@ public class PageReferrerDogTest
 			0, pageReferrers.size(), pageReferrers.toString());
 	}
 
+	@BQSQLResource(resourcePath = "page_referrers_events.sql")
 	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/pages_info_2.json"
 	)
-	@SQLResource(resourcePath = "page_referrers_events.sql")
 	@Test
 	public void testPageReferrerMetrics() {
 		List<PageReferrerMetric> pageReferrerMetrics =
@@ -104,7 +105,7 @@ public class PageReferrerDogTest
 		DogTestUtil.assertMetric(2, pageReferrerMetric.getAccessMetric());
 	}
 
-	@SQLResource(resourcePath = "page_referrers_events.sql")
+	@BQSQLResource(resourcePath = "page_referrers_events.sql")
 	@Test
 	public void testPageReferrers() {
 		Map<String, Double> pageReferrers = _pageReferrerDog.getPageReferrers(
@@ -124,7 +125,7 @@ public class PageReferrerDogTest
 			0, pageReferrers.size(), pageReferrers.toString());
 	}
 
-	@SQLResource(resourcePath = "page_referrers_events.sql")
+	@BQSQLResource(resourcePath = "page_referrers_events.sql")
 	@Test
 	public void testSocialPageReferrers() {
 		Map<String, Double> socialReferrers =

@@ -24,7 +24,7 @@ import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.SiteMetricType;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -51,7 +51,7 @@ public class SiteHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@SQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
+	@BQSQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
 	@Test
 	public void testGetHistogramMetricBagBounceRate() {
 		SearchQueryContext searchQueryContext = _getSearchQueryContext();
@@ -79,7 +79,7 @@ public class SiteHistogramDogTest
 			1);
 	}
 
-	@SQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
+	@BQSQLResource(resourcePath = "test_bq_events_site_histogram_1.sql")
 	@Test
 	public void testGetHistogramMetricBagSessionDuration() {
 		SearchQueryContext searchQueryContext = _getSearchQueryContext();
@@ -121,7 +121,7 @@ public class SiteHistogramDogTest
 			_getPreviousValues(histogramMetricBag), 1);
 	}
 
-	@SQLResource(resourcePath = "test_bq_events_site_histogram.sql")
+	@BQSQLResource(resourcePath = "test_bq_events_site_histogram.sql")
 	@Test
 	public void testGetHistogramMetricBagSessionsPerVisitor() {
 		SearchQueryContext searchQueryContext = _getSearchQueryContext();
@@ -140,7 +140,7 @@ public class SiteHistogramDogTest
 			1);
 	}
 
-	@SQLResource(resourcePath = "test_bq_events_site_histogram.sql")
+	@BQSQLResource(resourcePath = "test_bq_events_site_histogram.sql")
 	@Test
 	public void testGetHistogramMetricBagVisitors() {
 		Assertions.assertArrayEquals(

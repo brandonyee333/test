@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.Arrays;
 
@@ -41,7 +41,7 @@ import org.springframework.data.domain.PageRequest;
 public class BlogAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<BlogMetric> {
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_canonical_urls_last_7_days.sql"
 	)
 	@Test
@@ -50,10 +50,10 @@ public class BlogAssetMetricRepositoryTest
 			BlogMetricType.VIEWS, TimeRange.LAST_7_DAYS);
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_browser_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetBrowserMetricsLast30Days() {
 		assertMetrics(
@@ -65,10 +65,10 @@ public class BlogAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_device_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetDeviceMetricsLast30Days() {
 		assertMetrics(
@@ -80,10 +80,10 @@ public class BlogAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_geolocation_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetGeolocationMetricsLast30Days() {
 		assertMetrics(
@@ -95,35 +95,35 @@ public class BlogAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_individuals_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetIndividualsCountLast30Days() {
 		assertGetIndividualsCount(BlogMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_segments_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetSegmentedCountLast30Days() {
 		assertGetSegmentedIndividualsCount(
 			BlogMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_segments_last_7_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetSegmentMetrics7Days() {
 		assertGetSegmentMetrics(BlogMetricType.VIEWS, TimeRange.LAST_7_DAYS);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -139,7 +139,7 @@ public class BlogAssetMetricRepositoryTest
 		Assertions.assertEquals(7D, viewsMetric.getValue(), 0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -153,7 +153,7 @@ public class BlogAssetMetricRepositoryTest
 			BlogMetric::getViewsMetric);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_histogram_last_7_days.sql"
 	)
 	@Test
@@ -165,7 +165,7 @@ public class BlogAssetMetricRepositoryTest
 				TimeRange.LAST_7_DAYS));
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -177,7 +177,7 @@ public class BlogAssetMetricRepositoryTest
 				BlogMetricType.VIEWS, TimeRange.LAST_24_HOURS));
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test

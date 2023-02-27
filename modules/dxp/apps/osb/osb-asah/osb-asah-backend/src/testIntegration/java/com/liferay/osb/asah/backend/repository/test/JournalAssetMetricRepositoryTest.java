@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.Arrays;
 
@@ -41,7 +41,7 @@ import org.springframework.data.domain.PageRequest;
 public class JournalAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<JournalMetric> {
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_canonical_urls_last_7_days.sql"
 	)
 	@Test
@@ -50,7 +50,7 @@ public class JournalAssetMetricRepositoryTest
 			JournalMetricType.VIEWS, TimeRange.LAST_7_DAYS);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_browser_last_30_days.sql"
 	)
 	@Test
@@ -64,10 +64,10 @@ public class JournalAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_device_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetDeviceMetricsLast30Days() {
 		assertMetrics(
@@ -78,10 +78,10 @@ public class JournalAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_geolocation_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetGeolocationMetricsLast30Days() {
 		assertMetrics(
@@ -93,36 +93,36 @@ public class JournalAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_individuals_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetIndividualsCountLast30Days() {
 		assertGetIndividualsCount(
 			JournalMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_segments_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetSegmentedCountLast30Days() {
 		assertGetSegmentedIndividualsCount(
 			JournalMetricType.VIEWS, TimeRange.LAST_30_DAYS);
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_segments_last_7_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetSegmentMetrics7Days() {
 		assertGetSegmentMetrics(JournalMetricType.VIEWS, TimeRange.LAST_7_DAYS);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -138,7 +138,7 @@ public class JournalAssetMetricRepositoryTest
 		Assertions.assertEquals(7D, viewsMetric.getValue(), 0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -152,7 +152,7 @@ public class JournalAssetMetricRepositoryTest
 			JournalMetric::getViewsMetric);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_7_days.sql"
 	)
 	@Test
@@ -164,7 +164,7 @@ public class JournalAssetMetricRepositoryTest
 				JournalMetricType.VIEWS, TimeRange.LAST_7_DAYS));
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -176,7 +176,7 @@ public class JournalAssetMetricRepositoryTest
 				JournalMetricType.VIEWS, TimeRange.LAST_24_HOURS));
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test

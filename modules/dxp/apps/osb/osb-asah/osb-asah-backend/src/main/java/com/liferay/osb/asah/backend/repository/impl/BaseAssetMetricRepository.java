@@ -178,7 +178,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).gt(
 				dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(),
-					String.valueOf(_timeZoneDog.getZoneId()))
+					_timeZoneDog.getTimeZoneId())
 			),
 			false
 		).otherwise(
@@ -451,7 +451,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslHelper.dateTrunc(
 				DatePart.valueOf(interval.name()),
 				dslHelper.getDateAtTimeZoneField(
-					"eventdate", String.valueOf(_timeZoneDog.getZoneId()))));
+					"eventdate", _timeZoneDog.getTimeZoneId())));
 
 		field = field.as("key");
 

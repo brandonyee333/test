@@ -1,4 +1,4 @@
-INSERT INTO BQEvent (applicationId, assetId, canonicalUrl, channelId, eventDate, eventId, id) VALUES ('Form', 'e131fabc', 'https://www.beryl.com/products/commercial/irrigation/FF-2100', 1, date_trunc('HOUR', timestamp '${now-5d}' ), 'formViewed', '1');
-INSERT INTO BQEvent (applicationId, assetId,canonicalUrl, channelId, eventDate, eventId, id) VALUES ('Form', 'e131fabc', 'https://should.not.return.com', 1, date_trunc('HOUR', timestamp '${now-8d}'), 'formViewed', '2' );
-INSERT INTO BQEvent (applicationId, assetId,canonicalUrl, channelId, eventDate, eventId, id) VALUES ('Form', 'e131fabc', 'https://www.beryl.com/products/commercial/irrigation', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'formViewed', '3');
-INSERT INTO BQEvent (applicationId, assetId,canonicalUrl, channelId, eventDate, eventId, id) VALUES ('Form', 'e131fabc', 'https://www.beryl.com/delivery', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'formViewed', '4');
+INSERT INTO FormDaily (assetId, canonicalUrl, channelId, eventDate, views) VALUES ('e131fabc', 'https://www.beryl.com/products/commercial/irrigation/FF-2100', 1, DATETIME_TRUNC(timestamp '${now-5d}', HOUR), 1);
+INSERT INTO FormDaily (assetId, canonicalUrl, channelId, eventDate, views) VALUES ('e131fabc', 'https://should.not.return.com', 1, DATETIME_TRUNC(timestamp '${now-8d}', HOUR), 1);
+INSERT INTO FormDaily (assetId, canonicalUrl, channelId, eventDate, views) VALUES ('e131fabc', 'https://www.beryl.com/products/commercial/irrigation', 1, DATETIME_TRUNC(timestamp '${today-4d}', HOUR), 1);
+INSERT INTO FormDaily (assetId, canonicalUrl, channelId, eventDate, views) VALUES ('e131fabc', 'https://www.beryl.com/delivery', 1, DATETIME_TRUNC(timestamp '${today-6d}', HOUR), 1);

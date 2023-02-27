@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.model;
 
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -23,12 +24,18 @@ import java.time.LocalTime;
 import java.time.ZoneOffset;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author Inácio Nery
  */
 public class TimeRangeTest {
+
+	@BeforeEach
+	public void setUp() {
+		ProjectIdThreadLocal.setProjectId("test");
+	}
 
 	@Test
 	public void testGetEndLocalDateTime() {

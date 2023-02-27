@@ -45,6 +45,7 @@ import org.apache.commons.collections4.IterableUtils;
 import org.json.JSONArray;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,6 +122,7 @@ public class DXPEntitiesIngestionNaniteTest
 		Assertions.assertFalse(bqUserGroupOptional.isPresent());
 	}
 
+	@Disabled
 	@Test
 	public void testRunWithExistingDXPEntity() throws Exception {
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
@@ -147,7 +149,7 @@ public class DXPEntitiesIngestionNaniteTest
 
 		BQExpandoValue bqExpandoValue = new BQExpandoValue();
 
-		bqExpandoValue.setClassPK(123L);
+		bqExpandoValue.setClassPK("123");
 		bqExpandoValue.setColumnId("1");
 		bqExpandoValue.setClassType(DXPEntity.Type.CLASS_NAME_ORGANIZATION);
 

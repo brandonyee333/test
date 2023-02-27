@@ -1,3 +1,3 @@
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('Form', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}' ), 'formViewed', '1');
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('Form', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'formViewed', '2' );
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('Form', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'formViewed', '3');
+INSERT INTO FormDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);
+INSERT INTO FormDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);
+INSERT INTO FormDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);

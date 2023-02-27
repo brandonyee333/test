@@ -1,3 +1,3 @@
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('Blog', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}' ), 'blogViewed', '1');
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('Blog', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'blogViewed', '2' );
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('Blog', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'blogViewed', '3');
+INSERT INTO BlogDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);
+INSERT INTO BlogDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);
+INSERT INTO BlogDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);

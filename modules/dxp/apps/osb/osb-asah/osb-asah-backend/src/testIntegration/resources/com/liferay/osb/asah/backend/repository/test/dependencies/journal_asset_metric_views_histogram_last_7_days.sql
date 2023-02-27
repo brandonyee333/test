@@ -1,3 +1,3 @@
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('WebContent', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}' ), 'webContentViewed', '1');
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('WebContent', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-4h}'), 'webContentViewed', '2' );
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id) VALUES ('WebContent', 'e131fabc', 1, date_trunc('HOUR', timestamp '${today-6h}'), 'webContentViewed', '3');
+INSERT INTO JournalDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);
+INSERT INTO JournalDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);
+INSERT INTO JournalDaily (assetId, channelId, eventDate, views) VALUES ('e131fabc', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 1);

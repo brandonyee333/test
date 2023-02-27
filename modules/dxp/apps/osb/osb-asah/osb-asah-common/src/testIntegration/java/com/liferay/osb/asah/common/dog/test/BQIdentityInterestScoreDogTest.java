@@ -51,10 +51,10 @@ public class BQIdentityInterestScoreDogTest
 	public void testGetBQIdentityInterestScore() {
 		IdentityInterestScore identityInterestScore =
 			_bqIdentityInterestScoreDog.getIdentityInterestScore(
-				635452168436521350L);
+				"635452168436521350");
 
 		Assertions.assertEquals(
-			635452168436521350L, identityInterestScore.getId());
+			"635452168436521350", identityInterestScore.getId());
 
 		Assertions.assertEquals("sales", identityInterestScore.getKeyword());
 	}
@@ -72,7 +72,7 @@ public class BQIdentityInterestScoreDogTest
 		Assertions.assertThrows(
 			OSBAsahException.class,
 			() -> _bqIdentityInterestScoreDog.getIdentityInterestScore(
-				374790572703144534L));
+				"374790572703144534"));
 	}
 
 	@RepositoryResource(

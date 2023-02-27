@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.Tuple2;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.Arrays;
 
@@ -41,7 +41,7 @@ import org.springframework.data.domain.PageRequest;
 public class DocumentLibraryAssetMetricRepositoryTest
 	extends BaseAssetMetricRepositoryTestCase<DocumentLibraryMetric> {
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_canonical_urls_last_7_days.sql"
 	)
 	@Test
@@ -50,10 +50,10 @@ public class DocumentLibraryAssetMetricRepositoryTest
 			DocumentLibraryMetricType.DOWNLOADS, TimeRange.LAST_7_DAYS);
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_browser_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetBrowserMetricsLast30Days() {
 		assertMetrics(
@@ -65,10 +65,10 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_device_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetDeviceMetricsLast30Days() {
 		assertMetrics(
@@ -79,10 +79,10 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_geolocation_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetGeolocationMetricsLast30Days() {
 		assertMetrics(
@@ -94,17 +94,17 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				TimeRange.LAST_30_DAYS));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_views_individuals_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetIndividualsCountLast30Days() {
 		assertGetIndividualsCount(
 			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_30_DAYS);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -122,7 +122,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 		Assertions.assertEquals(7D, previewsMetric.getValue(), 0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -136,7 +136,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 			DocumentLibraryMetric::getPreviewsMetric);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_histogram_last_7_days.sql"
 	)
 	@Test
@@ -148,7 +148,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_7_DAYS));
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -160,7 +160,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 				DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_24_HOURS));
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -170,10 +170,10 @@ public class DocumentLibraryAssetMetricRepositoryTest
 			"America/Fortaleza");
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_ratings_histogram_last_24_hours.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetRatingsAssetMetric() {
 		DocumentLibraryMetric documentLibraryMetric =
@@ -189,20 +189,20 @@ public class DocumentLibraryAssetMetricRepositoryTest
 		Assertions.assertEquals(2.33, ratingsMetric.getValue(), 0.01);
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_views_segments_last_30_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetSegmentedCountLast30Days() {
 		assertGetSegmentedIndividualsCount(
 			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_30_DAYS);
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_views_segments_last_7_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetSegmentMetrics7Days() {
 		assertGetSegmentMetrics(

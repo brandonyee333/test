@@ -31,8 +31,8 @@ import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.model.TrendClassification;
 import com.liferay.osb.asah.common.repository.PreferenceRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.repository.CrudBQJournalRepository;
 import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringExtension;
@@ -65,7 +65,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 )
 public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test
@@ -94,7 +94,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		Assertions.assertEquals(1, lastHistogramMetric.getValue());
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "custom_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test
@@ -123,7 +123,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		Assertions.assertEquals(2, lastHistogramMetric.getValue());
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_histogram_last_14_days.sql"
 	)
 	@Test
@@ -152,7 +152,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		Assertions.assertEquals(1, lastHistogramMetric.getValue());
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "form_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test
@@ -181,7 +181,7 @@ public class HistogramDogTest implements OSBAsahTestExecutionListenersContext {
 		Assertions.assertEquals(1, lastHistogramMetric.getValue());
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "journal_asset_metric_views_histogram_last_14_days.sql"
 	)
 	@Test

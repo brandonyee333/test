@@ -7,7 +7,7 @@
 					"percentage": 0.0,
 					"trendClassification": "NEUTRAL"
 				},
-				"value": "40.0"
+				"value": "40"
 			},
 			{
 				"currencyCode": "USD",
@@ -15,7 +15,7 @@
 					"percentage": 75.0,
 					"trendClassification": "POSITIVE"
 				},
-				"value": "70.0"
+				"value": "70"
 			}
 		]
 	}

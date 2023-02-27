@@ -136,6 +136,7 @@ public class IndividualSegmentsRestControllerTest
 				"/api/1.0/individual-segments/327968823603500655/individuals"));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"

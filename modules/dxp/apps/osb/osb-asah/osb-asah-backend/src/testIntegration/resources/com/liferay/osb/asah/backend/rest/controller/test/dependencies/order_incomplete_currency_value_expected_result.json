@@ -3,11 +3,11 @@
 		"orderIncompleteCurrencyValues": [
 			{
 				"currencyCode": "EUR",
-				"value": "20.0"
+				"value": "20"
 			},
 			{
 				"currencyCode": "USD",
-				"value": "20.0"
+				"value": "20"
 			}
 		]
 	}

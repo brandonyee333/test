@@ -14,12 +14,12 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 /**
  * @author Leslie Wong
  */
-@SQLResource(resourcePath = "site_metric_graphql_rest_controller_test.sql")
+@BQSQLResource(resourcePath = "site_metric_graphql_rest_controller_test.sql")
 public class SiteMetricGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 

@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.graphql.schema.OrderTotalCurrencyValuesDataF
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import graphql.language.Field;
 
@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class OrderTotalCurrencyValuesDataFetcherTest
 	extends BaseOrderDataFetcherTestCase {
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGet() {
 		List<CurrencyValueDTO> currencyValueDTOs =
@@ -54,7 +54,7 @@ public class OrderTotalCurrencyValuesDataFetcherTest
 		assertCurrencyValueDTO(currencyValueDTOs, 2, false);
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetWithTrend() {
 		List<CurrencyValueDTO> currencyValueDTOs =

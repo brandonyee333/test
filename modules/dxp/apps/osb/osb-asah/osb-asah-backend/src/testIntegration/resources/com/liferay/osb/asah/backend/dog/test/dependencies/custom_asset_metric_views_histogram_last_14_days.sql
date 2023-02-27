@@ -1,3 +1,3 @@
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id, sessionId) VALUES ('Custom', 'A', 1, timestamp '${now}', 'assetViewed', '1', 'session-1');
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id, sessionId) VALUES ('Custom', 'A', 1, timestamp '${now-1d}', 'assetViewed', '2', 'session-2');
-INSERT INTO BQEvent (applicationId, assetId, channelId, eventDate, eventId, id, sessionId) VALUES ('Custom', 'A', 1, timestamp '${now-1d}', 'assetViewed', '3', 'session-3');
+INSERT INTO CustomAssetDaily (assetPrimaryKey, channelId, eventDate, views) VALUES ('77c27102e79cd05d7cd602b2b1d5c6f399fdcf2ed9a6b044388483b1cb122b32', 1, timestamp '${now}', 1);
+INSERT INTO CustomAssetDaily (assetPrimaryKey, channelId, eventDate, views) VALUES ('77c27102e79cd05d7cd602b2b1d5c6f399fdcf2ed9a6b044388483b1cb122b32', 1, timestamp '${now-1d}', 1);
+INSERT INTO CustomAssetDaily (assetPrimaryKey, channelId, eventDate, views) VALUES ('77c27102e79cd05d7cd602b2b1d5c6f399fdcf2ed9a6b044388483b1cb122b32', 1, timestamp '${now-1d}', 1);

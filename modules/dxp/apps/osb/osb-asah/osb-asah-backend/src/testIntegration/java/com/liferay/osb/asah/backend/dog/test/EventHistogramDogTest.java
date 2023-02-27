@@ -21,7 +21,7 @@ import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
@@ -41,7 +41,9 @@ public class EventHistogramDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@SQLResource(resourcePath = "test_events_count_histogram_last_24_hours.sql")
+	@BQSQLResource(
+		resourcePath = "test_events_count_histogram_last_24_hours.sql"
+	)
 	@Test
 	public void testTotalEventHistogramMetricsLast24Hours() {
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
@@ -59,7 +61,9 @@ public class EventHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@SQLResource(resourcePath = "test_events_count_histogram_last_30_days.sql")
+	@BQSQLResource(
+		resourcePath = "test_events_count_histogram_last_30_days.sql"
+	)
 	@Test
 	public void testTotalEventHistogramMetricsLast30Days() {
 		List<HistogramMetric> histogramMetrics = _getEventsCountHistogram(
@@ -77,7 +81,7 @@ public class EventHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_events_count_histogram_grouped_by_week.sql"
 	)
 	@Test
@@ -100,7 +104,7 @@ public class EventHistogramDogTest
 			0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_events_count_histogram_grouped_by_month.sql"
 	)
 	@Test
@@ -123,7 +127,7 @@ public class EventHistogramDogTest
 			0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_event_sessions_count_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -143,7 +147,7 @@ public class EventHistogramDogTest
 			expectedValues, _getActualValues(histogramMetrics), 0);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_event_sessions_count_histogram_last_30_days.sql"
 	)
 	@Test

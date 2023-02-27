@@ -1,0 +1,11 @@
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-12 01:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-12 03:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-12 10:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-12 11:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-12 13:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-12 15:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-12 16:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-12 16:30:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-13 04:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-13 08:00:00.000Z', 'testName');
+INSERT INTO Event (applicationId, channelId, eventDate, eventId) VALUES ('CustomEvent', 2468, timestamp '2021-05-13 18:00:00.000Z', 'testName');
