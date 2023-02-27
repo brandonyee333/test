@@ -20,14 +20,10 @@ from airflow.providers.google.cloud.operators.dataproc import \
 from airflow.utils.context import Context
 from airflow.utils.state import DagRunState
 
-from datetime import date, \
-	datetime, \
-	timedelta, \
-	timezone
-
 from liferay.common import BaseOperator
 
 import json
+import pendulum
 import time
 
 class DataprocClusterGetOrCreateOperator(BaseOperator):
@@ -256,7 +252,11 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 	def _get_job_parameters(self, dag: DAG, dag_run: DagRun) -> str:
 		parameters = list()
 
-		today = date.today()
+		time_zone_id = dag.default_args['ac_project_time_zone_id']
+
+		now = pendulum.now(tz=time_zone_id)
+
+		today = now.date()
 
 		end_date = dag_run.conf.get("endDate", today.isoformat())
 
@@ -265,7 +265,7 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 		if start_date is None:
 			dag_runs = dag_run.find(
 				dag_id=dag.dag_id,
-				execution_start_date=datetime.now(timezone.utc) - timedelta(days=30),
+				execution_start_date=pendulum.now(tz=time_zone_id) - pendulum.duration(days=30),
 				state=DagRunState.SUCCESS
 			)
 
@@ -296,10 +296,14 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 		parameters.append(
 			{
 				"name": "timeZone",
-				"value": dag.default_args['ac_project_time_zone_id']
+				"value": time_zone_id
 			}
 		)
 
-		self.log.info(json.dumps(parameters))
+		self.log.info(
+			"Using parameters: {}".format(
+				json.dumps(parameters)
+			)
+		)
 
 		return json.dumps(parameters)
