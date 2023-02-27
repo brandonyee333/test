@@ -2,29 +2,22 @@ WITH CustomFieldMapping AS (
 	SELECT
 		'custom' AS context,
 		dataSourceIds,
+		name AS displayName,
+		displayType,
 		CASE
 			WHEN
 				rowNumber = 1
 			THEN
-				name
+				REGEXP_REPLACE(REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), ''), r'\s', '_')
 			ELSE
-				name || (rowNumber - 1)
-		END displayName,
-		displayType,
-		CASE
-			WHEN
-				displaytype IN ('checkbox', 'radio', 'selection-list')
-			THEN
-				CONCAT(name, '_', datatype, '_array')
-			ELSE
-				CONCAT(name, '_', datatype)
+				REGEXP_REPLACE(REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), ''), r'\s', '_') || '_' || (rowNumber - 1)
 		END fieldName,
-		datatype as fieldType,
+		dataType AS fieldType,
 		modifiedDate,
 		ownerType,
 		CASE
 			WHEN
-				displaytype IN ('checkbox', 'radio', 'selection-list')
+				displayType IN ('checkbox', 'radio', 'selection-list')
 			THEN
 				TRUE
 			ELSE
@@ -42,18 +35,18 @@ WITH CustomFieldMapping AS (
 			) AS rowNumber
 		FROM (
 			SELECT
-				ARRAY_AGG(datasourceid) AS dataSourceIds,
+				ARRAY_AGG(dataSourceId) AS dataSourceIds,
 				displayType,
 				dataType,
-				MAX(modifieddate) AS modifiedDate,
+				MAX(modifieDdate) AS modifiedDate,
 				name,
 				CASE
 					WHEN
-						classname = 'com.liferay.portal.kernel.model.User'
+						className = 'com.liferay.portal.kernel.model.User'
 					THEN
 						'individual'
 					WHEN
-						classname = 'com.liferay.portal.kernel.model.Organization'
+						className = 'com.liferay.portal.kernel.model.Organization'
 					THEN
 						'organization'
 				END ownerType
@@ -65,7 +58,8 @@ WITH CustomFieldMapping AS (
 	) AS TMP2
 ),
 DemographicsFieldMapping AS (
-	SELECT 'demographics' context,
+	SELECT
+		'demographics' context,
 		ARRAY<INT64>[] dataSourceIds,
 		displayName,
 		'input-field' displayType,
