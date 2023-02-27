@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.DatePart;
 import org.jooq.Field;
@@ -74,7 +76,9 @@ public class DSLHelper {
 	public Condition containsSubstring(String fieldName, String value) {
 		if (isBigQueryDialect()) {
 			return DSL.condition(
-				String.format("CONTAINS_SUBSTR(%s, '%s')", fieldName, value));
+				String.format(
+					"lower(%s) like '%s'", fieldName,
+					"%" + StringUtils.lowerCase(value) + "%"));
 		}
 
 		return DSL.field(
@@ -118,6 +122,12 @@ public class DSLHelper {
 		DatePart datePart, Field<OffsetDateTime> field) {
 
 		if (isBigQueryDialect()) {
+			if ((datePart == DatePart.HOUR) || (datePart == DatePart.DAY)) {
+				return DSL.field(
+					"datetime_trunc({0}, {1})", field.getDataType(), field,
+					datePart.toName());
+			}
+
 			return DSL.field(
 				"date_trunc({0}, {1})", field.getDataType(), field,
 				datePart.toName());
@@ -294,14 +304,7 @@ public class DSLHelper {
 	}
 
 	public boolean isBigQueryDialect() {
-		String googleApplicationCredentials = _environment.getProperty(
-			"GOOGLE_APPLICATION_CREDENTIALS");
-
-		if (googleApplicationCredentials != null) {
-			return true;
-		}
-
-		return false;
+		return true;
 	}
 
 	public Field<Object> jsonExtractScalar(String fieldName, String key) {
