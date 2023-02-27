@@ -16,10 +16,12 @@ package com.liferay.osb.asah.test.util.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.repository.BigQueryRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -36,6 +38,7 @@ import org.springframework.boot.test.context.TestComponent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.Repository;
 import org.springframework.test.context.TestContext;
 
 /**
@@ -128,11 +131,15 @@ public class OSBAsahRepositoryTestExecutionListener
 	private void _clearRepository(
 		ApplicationContext applicationContext, Class<?> repositoryClass) {
 
-		PagingAndSortingRepository pagingAndSortingRepository =
-			(PagingAndSortingRepository)applicationContext.getBean(
-				repositoryClass);
+		Repository repository = (Repository)applicationContext.getBean(
+			repositoryClass);
 
-		pagingAndSortingRepository.deleteAll();
+		if (repository instanceof PagingAndSortingRepository) {
+			PagingAndSortingRepository pagingAndSortingRepository =
+				(PagingAndSortingRepository)repository;
+
+			pagingAndSortingRepository.deleteAll();
+		}
 	}
 
 	private Class<?> _getEntityClass(Class<?> repositoryClass) {
@@ -160,9 +167,8 @@ public class OSBAsahRepositoryTestExecutionListener
 			RepositoryResource repositoryResource)
 		throws Exception {
 
-		PagingAndSortingRepository pagingAndSortingRepository =
-			(PagingAndSortingRepository)applicationContext.getBean(
-				repositoryResource.repositoryClass());
+		Repository repository = (Repository)applicationContext.getBean(
+			repositoryResource.repositoryClass());
 
 		JSONArray jsonArray = new JSONArray(
 			TestExecutionListenerUtil.replaceVariables(
@@ -186,12 +192,34 @@ public class OSBAsahRepositoryTestExecutionListener
 		Class<?> entityClass = _getEntityClass(
 			repositoryResource.repositoryClass());
 
-		pagingAndSortingRepository.saveAll(
-			stream.map(
-				object -> _objectMapper.convertValue(object, entityClass)
-			).collect(
-				Collectors.toList()
-			));
+		List<?> entities = stream.map(
+			object -> _objectMapper.convertValue(object, entityClass)
+		).collect(
+			Collectors.toList()
+		);
+
+		if (repository instanceof PagingAndSortingRepository) {
+			PagingAndSortingRepository pagingAndSortingRepository =
+				(PagingAndSortingRepository)repository;
+
+			pagingAndSortingRepository.saveAll(entities);
+		}
+		else if (repository instanceof BigQueryRepository) {
+			Class<? extends Repository> repositoryClass = repository.getClass();
+
+			Method insertMethod = repositoryClass.getMethod(
+				"insert", entityClass);
+
+			entities.forEach(
+				entity -> {
+					try {
+						insertMethod.invoke(repository, entity);
+					}
+					catch (Exception exception) {
+						exception.printStackTrace();
+					}
+				});
+		}
 	}
 
 	@Autowired
