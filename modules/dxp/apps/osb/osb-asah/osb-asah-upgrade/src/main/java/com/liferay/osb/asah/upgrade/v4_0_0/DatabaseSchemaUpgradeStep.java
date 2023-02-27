@@ -72,13 +72,28 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 
 			// BigQuery
 
-			Field field = Field.newBuilder(
-				"urls", LegacySQLTypeName.STRING
-			).setMode(
-				Field.Mode.REPEATED
-			).build();
+			_addTableFields(
+				Arrays.asList(
+					Field.newBuilder(
+						"assetId", LegacySQLTypeName.STRING
+					).setMode(
+						Field.Mode.NULLABLE
+					).build(),
+					Field.newBuilder(
+						"assetTitle", LegacySQLTypeName.STRING
+					).setMode(
+						Field.Mode.NULLABLE
+					).build()),
+				"event");
 
-			_addTableFields(Collections.singletonList(field), "session");
+			_addTableFields(
+				Collections.singletonList(
+					Field.newBuilder(
+						"urls", LegacySQLTypeName.STRING
+					).setMode(
+						Field.Mode.REPEATED
+					).build()),
+				"session");
 
 			_updateTableFields(
 				Arrays.asList(
