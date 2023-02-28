@@ -65,22 +65,22 @@ public class FilterOperatorTest {
 				}
 			});
 
-		LocalDate startLocalDate = LocalDate.parse("2021-06-01");
 		LocalDate endLocalDate = LocalDate.parse("2021-06-23");
+		LocalDate startLocalDate = LocalDate.parse("2021-06-01");
 
 		Assertions.assertEquals(
 			DSL.and(
 				DSL.field(
 					"testField"
 				).ge(
-					DSL.date(
+					DSL.timestamp(
 						DateUtil.toDate(
 							startLocalDate.atStartOfDay(), ZoneOffset.UTC))
 				),
 				DSL.field(
 					"testField"
 				).le(
-					DSL.date(
+					DSL.timestamp(
 						DateUtil.toDate(
 							endLocalDate.atStartOfDay(), ZoneOffset.UTC))
 				)),
@@ -269,7 +269,7 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).ge(
-				DSL.date(
+				DSL.timestamp(
 					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
@@ -319,7 +319,7 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).gt(
-				DSL.date(
+				DSL.timestamp(
 					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
@@ -369,7 +369,7 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).le(
-				DSL.date(
+				DSL.timestamp(
 					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
@@ -419,7 +419,7 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).lt(
-				DSL.date(
+				DSL.timestamp(
 					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
