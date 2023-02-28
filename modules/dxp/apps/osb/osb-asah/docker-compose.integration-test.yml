@@ -2,7 +2,7 @@ services:
     test_bigqueryemulator:
         command: --log-level=debug --project=osbasah
         container_name: test_bigqueryemulator
-        image: ghcr.io/goccy/bigquery-emulator:latest
+        image: ghcr.io/goccy/bigquery-emulator:0.2.14
         mem_limit: 1g
         ports:
             - "9050:9050"
