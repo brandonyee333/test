@@ -76,134 +76,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DXPEntitiesIngestionNanite {
 
-	public void run() throws Exception {
-		while (true) {
-			List<Message<String>> messages = _messageSubscriber.pullMessages(
-				100, String::valueOf);
-
-			if (messages.isEmpty()) {
-				break;
-			}
-
-			Stream<Message<String>> stream = messages.stream();
-
-			stream.forEach(this::_processMessage);
-
-			_acknowledgeMessages(messages);
-		}
-	}
-
-	private void _acknowledgeMessages(List<Message<String>> messages) {
-		Stream<Message<String>> stream = messages.stream();
-
-		_messageSubscriber.sendAckIds(
-			stream.map(
-				Message::getAckId
-			).collect(
-				Collectors.toList()
-			));
-	}
-
-	private String _generateBQExpandoValueId(
-		String columnId, Long classPK, Long dataSourceId, String projectId) {
-
-		return DigestUtils.sha256Hex(
-			String.join(
-				"#", projectId, String.valueOf(dataSourceId), columnId,
-				String.valueOf(classPK)));
-	}
-
-	private String _generateDXPEntityId(
-		Object classPK, Long dataSourceId, String projectId) {
-
-		return DigestUtils.sha256Hex(
-			String.join(
-				"#", projectId, String.valueOf(dataSourceId),
-				String.valueOf(classPK)));
-	}
-
-	private Set<BQExpandoValue> _getExpandoValues(
-		Long classPK, String classType, Long dataSourceId,
-		JSONArray expandoFieldsJSONArray, String projectId) {
-
-		Set<BQExpandoValue> bqExpandoValues = new HashSet<>();
-
-		expandoFieldsJSONArray.forEach(
-			object -> {
-				JSONObject jsonObject = (JSONObject)object;
-
-				BQExpandoValue bqExpandoValue = new BQExpandoValue();
-
-				bqExpandoValue.setClassPK(String.valueOf(classPK));
-				bqExpandoValue.setClassType(classType);
-				bqExpandoValue.setColumnId(
-					String.valueOf(jsonObject.get("columnId")));
-				bqExpandoValue.setDataSourceId(dataSourceId);
-				bqExpandoValue.setId(
-					_generateBQExpandoValueId(
-						String.valueOf(jsonObject.get("columnId")), classPK,
-						dataSourceId, projectId));
-				bqExpandoValue.setValue(jsonObject.optString("value"));
-
-				bqExpandoValues.add(bqExpandoValue);
-			});
-
-		return bqExpandoValues;
-	}
-
-	private Map<String, Object> _parseFields(JSONArray fieldsJSONArray) {
-		Map<String, Object> fields = new HashMap<>();
-
-		fieldsJSONArray.forEach(
-			object -> {
-				JSONObject jsonObject = (JSONObject)object;
-
-				fields.put(
-					jsonObject.getString("name"), jsonObject.opt("value"));
-			});
-
-		return fields;
-	}
-
-	private void _processDeleteMessage(String className, String classPK) {
-		String entityName = StringUtils.substringAfterLast(className, ".");
-
-		if (Objects.equals(entityName, "AccountEntry")) {
-			_bqAccountEntryRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "AccountGroup")) {
-			_bqAccountGroupRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "ExpandoColumn")) {
-			_bqExpandoColumnRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "ExpandoValue")) {
-			_bqExpandoValueRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "Group")) {
-			_bqGroupRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "Organization")) {
-			_bqOrganizationRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "Role")) {
-			_bqRoleRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "Team")) {
-			_bqTeamRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "User")) {
-			_bqUserRepository.deleteById(classPK);
-		}
-		else if (Objects.equals(entityName, "UserGroup")) {
-			_bqUserGroupRepository.deleteById(classPK);
-		}
-		else {
-			throw new IllegalStateException("Unsupported entity " + entityName);
-		}
-	}
-
-	private void _processMessage(Message<String> message) {
+	public void processMessage(Message<String> message) {
 		Map<String, String> attributes = message.getAttributes();
 
 		Long dataSourceId = MapUtil.getLong(attributes, "dataSourceId");
@@ -386,6 +259,135 @@ public class DXPEntitiesIngestionNanite {
 					bqUserGroup.getUserGroupId(), dataSourceId, projectId));
 
 			_bqUserGroupRepository.insert(bqUserGroup);
+		}
+	}
+
+	public void run() throws Exception {
+		while (true) {
+			List<Message<String>> messages = _messageSubscriber.pullMessages(
+				100, String::valueOf);
+
+			if (messages.isEmpty()) {
+				break;
+			}
+
+			Stream<Message<String>> stream = messages.stream();
+
+			stream.forEach(this::processMessage);
+
+			_acknowledgeMessages(messages);
+		}
+	}
+
+	private void _acknowledgeMessages(List<Message<String>> messages) {
+		Stream<Message<String>> stream = messages.stream();
+
+		_messageSubscriber.sendAckIds(
+			stream.map(
+				Message::getAckId
+			).filter(
+				Objects::nonNull
+			).collect(
+				Collectors.toList()
+			));
+	}
+
+	private String _generateBQExpandoValueId(
+		String columnId, Long classPK, Long dataSourceId, String projectId) {
+
+		return DigestUtils.sha256Hex(
+			String.join(
+				"#", projectId, String.valueOf(dataSourceId), columnId,
+				String.valueOf(classPK)));
+	}
+
+	private String _generateDXPEntityId(
+		Object classPK, Long dataSourceId, String projectId) {
+
+		return DigestUtils.sha256Hex(
+			String.join(
+				"#", projectId, String.valueOf(dataSourceId),
+				String.valueOf(classPK)));
+	}
+
+	private Set<BQExpandoValue> _getExpandoValues(
+		Long classPK, String classType, Long dataSourceId,
+		JSONArray expandoFieldsJSONArray, String projectId) {
+
+		Set<BQExpandoValue> bqExpandoValues = new HashSet<>();
+
+		expandoFieldsJSONArray.forEach(
+			object -> {
+				JSONObject jsonObject = (JSONObject)object;
+
+				BQExpandoValue bqExpandoValue = new BQExpandoValue();
+
+				bqExpandoValue.setClassPK(String.valueOf(classPK));
+				bqExpandoValue.setClassType(classType);
+				bqExpandoValue.setColumnId(
+					String.valueOf(jsonObject.get("columnId")));
+				bqExpandoValue.setDataSourceId(dataSourceId);
+				bqExpandoValue.setId(
+					_generateBQExpandoValueId(
+						String.valueOf(jsonObject.get("columnId")), classPK,
+						dataSourceId, projectId));
+				bqExpandoValue.setValue(jsonObject.optString("value"));
+
+				bqExpandoValues.add(bqExpandoValue);
+			});
+
+		return bqExpandoValues;
+	}
+
+	private Map<String, Object> _parseFields(JSONArray fieldsJSONArray) {
+		Map<String, Object> fields = new HashMap<>();
+
+		fieldsJSONArray.forEach(
+			object -> {
+				JSONObject jsonObject = (JSONObject)object;
+
+				fields.put(
+					jsonObject.getString("name"), jsonObject.opt("value"));
+			});
+
+		return fields;
+	}
+
+	private void _processDeleteMessage(String className, String classPK) {
+		String entityName = StringUtils.substringAfterLast(className, ".");
+
+		if (Objects.equals(entityName, "AccountEntry")) {
+			_bqAccountEntryRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "AccountGroup")) {
+			_bqAccountGroupRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "ExpandoColumn")) {
+			_bqExpandoColumnRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "ExpandoValue")) {
+			_bqExpandoValueRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "Group")) {
+			_bqGroupRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "Organization")) {
+			_bqOrganizationRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "Role")) {
+			_bqRoleRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "Team")) {
+			_bqTeamRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "User")) {
+			_bqUserRepository.deleteById(classPK);
+		}
+		else if (Objects.equals(entityName, "UserGroup")) {
+			_bqUserGroupRepository.deleteById(classPK);
+		}
+		else {
+			throw new IllegalStateException("Unsupported entity " + entityName);
 		}
 	}
 

@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.BQUserGroup;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.repository.BQAccountEntryRepository;
 import com.liferay.osb.asah.common.repository.BQAccountGroupRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
@@ -63,18 +64,17 @@ public class DXPEntitiesIngestionNaniteTest
 			"dependencies/dxp_entities1.json", this);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			_messageBus.sendMessage(
-				Channel.DXP_ENTITIES_DEFAULT,
-				String.valueOf(jsonArray.getJSONObject(i)),
-				new HashMap<String, String>() {
-					{
-						put("dataSourceId", "1");
-						put("projectId", "test");
-					}
-				});
+			_dxpEntitiesIngestionNanite.processMessage(
+				new Message<>(
+					null,
+					new HashMap<String, String>() {
+						{
+							put("dataSourceId", "1");
+							put("projectId", "test");
+						}
+					},
+					null, String.valueOf(jsonArray.getJSONObject(i))));
 		}
-
-		_dxpEntitiesIngestionNanite.run();
 
 		Assertions.assertEquals(1, _bqAccountEntryRepository.count());
 		Assertions.assertEquals(1, _bqAccountGroupRepository.count());
