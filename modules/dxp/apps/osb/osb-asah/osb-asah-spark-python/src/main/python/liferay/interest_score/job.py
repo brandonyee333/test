@@ -667,9 +667,10 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 	def __init__(self, spark_application):
-		super(ReadAnalyticsEventsSparkJob, self).__init__(spark_application)
+		BaseSparkJob.__init__(self, spark_application)
 
 		self._initial_run_day_range = 7
+		self._log = logging.getLogger(self.__class__.__name__)
 		self._max_days_delta = 60
 		self._minimum_interactions_threshold = 5
 		self._minimum_view_duration_threshold = 5000
@@ -732,6 +733,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 				WHERE 
 					interactions >= {self._minimum_interactions_threshold}
 			"""
+
+		self._log.info(sql_command)
 
 		return sql_command
 
