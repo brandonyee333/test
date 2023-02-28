@@ -28,7 +28,7 @@ public interface CustomBQExpandoColumnRepository {
 	public void deleteById(String id);
 
 	public Optional<BQExpandoColumn> findByColumnIdAndDataSourceId(
-		String expandoColumnId, Long dataSourceId);
+		String columnId, Long dataSourceId);
 
 	public Optional<BQExpandoColumn> findById(String id);
 
