@@ -23,12 +23,12 @@ runGradleTest {
 
 		File sample2APIJarFile = sample2APIProject.file("build/libs/sample-2-api-1.0.0.jar")
 
-		assert sample2APIJarFile.exists()
+		assert !sample2APIJarFile.exists()
 
 		Project sample2ServiceProject = project(":modules:sample-2:sample-2-service")
 
 		File sample2ServiceJarFile = sample2ServiceProject.file("build/libs/sample-2-service-1.0.0.jar")
 
-		assert sample2ServiceJarFile.exists()
+		assert !sample2ServiceJarFile.exists()
 	}
 }
