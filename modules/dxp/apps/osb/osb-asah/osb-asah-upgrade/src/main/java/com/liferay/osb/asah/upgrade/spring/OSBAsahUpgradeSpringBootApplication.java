@@ -17,6 +17,7 @@ package com.liferay.osb.asah.upgrade.spring;
 import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -57,6 +58,7 @@ import org.springframework.context.annotation.FilterType;
 )
 @SpringBootApplication(
 	exclude = {
+		DataSourceHealthContributorAutoConfiguration.class,
 		JooqAutoConfiguration.class,
 		ManagementWebSecurityAutoConfiguration.class,
 		MetricsAutoConfiguration.class,
