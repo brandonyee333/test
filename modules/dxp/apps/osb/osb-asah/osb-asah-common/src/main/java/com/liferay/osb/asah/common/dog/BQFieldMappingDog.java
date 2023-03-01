@@ -16,10 +16,12 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -37,6 +39,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BQFieldMappingDog {
+
+	public long countIndividualFieldMappings(String name) {
+		return _bqFieldMappingRepository.countIndividualFieldMappings(name);
+	}
 
 	public BQFieldMapping getBQFieldMapping(String fieldName) {
 		Optional<BQFieldMapping> fieldMappingOptional =
@@ -67,7 +73,47 @@ public class BQFieldMappingDog {
 			() -> _bqFieldMappingRepository.countByFilterString(filterString));
 	}
 
+	public Page<BQFieldMapping> searchIndividualFieldMappingPage(
+		@Nullable String name, int page, int size, String[] sorts) {
+
+		PageRequest pageRequest = PageRequest.of(
+			page, size, SortUtil.getSort(sorts));
+
+		List<BQFieldMapping> fieldMappings =
+			_bqFieldMappingRepository.searchIndividualFieldMappings(
+				name, pageRequest);
+
+		_setDemographicFieldsDataSourceIds(fieldMappings);
+
+		return PageableExecutionUtils.getPage(
+			fieldMappings, pageRequest,
+			() -> _bqFieldMappingRepository.countIndividualFieldMappings(name));
+	}
+
+	private void _setDemographicFieldsDataSourceIds(
+		List<BQFieldMapping> fieldMappings) {
+
+		List<DataSource> dataSources = _dataSourceDog.getDataSources();
+
+		Set<Long> dataSourceIds = new HashSet<>();
+
+		for (DataSource dataSource : dataSources) {
+			dataSourceIds.add(dataSource.getId());
+		}
+
+		for (BQFieldMapping bqFieldMapping : fieldMappings) {
+			String context = bqFieldMapping.getContext();
+
+			if (context.equals("demographics")) {
+				bqFieldMapping.setDataSourceIds(dataSourceIds);
+			}
+		}
+	}
+
 	@Autowired
 	private BQFieldMappingRepository _bqFieldMappingRepository;
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 }
