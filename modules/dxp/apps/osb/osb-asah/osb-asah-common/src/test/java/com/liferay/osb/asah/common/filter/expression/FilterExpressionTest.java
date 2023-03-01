@@ -1197,6 +1197,41 @@ public class FilterExpressionTest {
 			"column1 eq ", "Expression terminated unexpectedly: column1 eq ");
 	}
 
+	@Test
+	public void testIndividualsCustomFieldFilterExpression() {
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"Fields.name"
+				).eq(
+					"custom_field"
+				),
+				DSL.field(
+					"Fields.value"
+				).eq(
+					"test"
+				)),
+			"individuals.filter(filter='(custom/custom_field/value eq " +
+				"''test'')')",
+			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")));
+
+		_assertEquals(
+			DSL.and(
+				DSL.lower(
+					DSL.field("Fields.value", String.class)
+				).like(
+					"%test%"
+				),
+				DSL.field(
+					"Fields.name"
+				).eq(
+					"custom_field"
+				)),
+			"individuals.filter(filter='contains(custom/custom_field/value, " +
+				"''test'')')",
+			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")));
+	}
+
 	@Disabled
 	@Test
 	public void testIndividualsEqAndNull() {
@@ -1856,6 +1891,152 @@ public class FilterExpressionTest {
 			),
 			"organizations.filter(filter='(contains(hierarchyPath, ''test''))" +
 				"')");
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).join(
+					DSL.table(
+						"BQExpandoValue"
+					).as(
+						"ExpandoValue"
+					)
+				).on(
+					DSL.and(
+						DSL.field(
+							"ExpandoValue.classType"
+						).eq(
+							"com.liferay.portal.kernel.model.Organization"
+						),
+						DSL.field(
+							"ExpandoValue.dataSourceId"
+						).eq(
+							DSL.field("Organization.dataSourceId")
+						),
+						DSL.field(
+							"ExpandoValue.classPK"
+						).eq(
+							DSL.field("Organization.organizationId")
+						))
+				).where(
+					DSL.and(
+						DSL.field(
+							"ExpandoValue.fieldName"
+						).eq(
+							"custom_field"
+						),
+						DSL.field(
+							"ExpandoValue.value"
+						).eq(
+							"test"
+						))
+				)
+			),
+			"organizations.filter(filter='(custom/custom_field/value eq " +
+				"''test'')')",
+			new HashSet<>(Arrays.asList("Individual", "Organization")));
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.memberships", String[].class)
+					).as(
+						"IndividualMemberships"
+					)
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.field(
+						"Organization.id"
+					).in(
+						DSL.function(
+							"unnest", String[].class,
+							DSL.field("IndividualMemberships.ids"))
+					)
+				).join(
+					DSL.table(
+						"BQExpandoValue"
+					).as(
+						"ExpandoValue"
+					)
+				).on(
+					DSL.and(
+						DSL.field(
+							"ExpandoValue.classType"
+						).eq(
+							"com.liferay.portal.kernel.model.Organization"
+						),
+						DSL.field(
+							"ExpandoValue.dataSourceId"
+						).eq(
+							DSL.field("Organization.dataSourceId")
+						),
+						DSL.field(
+							"ExpandoValue.classPK"
+						).eq(
+							DSL.field("Organization.organizationId")
+						))
+				).where(
+					DSL.and(
+						DSL.lower(
+							DSL.field("ExpandoValue.value", String.class)
+						).like(
+							"%test%"
+						),
+						DSL.field(
+							"ExpandoValue.fieldName"
+						).eq(
+							"custom_field"
+						))
+				)
+			),
+			"organizations.filter(filter='(contains(custom/custom_field" +
+				"/value, ''test''))')",
+			new HashSet<>(Arrays.asList("Individual", "Organization")));
 	}
 
 	@Test
