@@ -1,0 +1,34 @@
+task runGradleTest
+
+runGradleTest {
+	dependsOn ":modules:sample-1:sample-1-service:buildService"
+	dependsOn ":modules:sample-1:sample-1-service:jar"
+	dependsOn ":modules:sample-2:sample-2-service:buildService"
+	dependsOn ":modules:sample-2:sample-2-service:jar"
+
+	doLast {
+		Project sample1APIProject = project(":modules:sample-1:sample-1-api")
+
+		File sample1APIJarFile = sample1APIProject.file("build/libs/sample-1-api-1.0.0.jar")
+
+		assert !sample1APIJarFile.exists()
+
+		Project sample1ServiceProject = project(":modules:sample-1:sample-1-service")
+
+		File sample1ServiceJarFile = sample1ServiceProject.file("build/libs/sample-1-service-1.0.0.jar")
+
+		assert !sample1ServiceJarFile.exists()
+
+		Project sample2APIProject = project(":modules:sample-2:sample-2-api")
+
+		File sample2APIJarFile = sample2APIProject.file("build/libs/sample-2-api-1.0.0.jar")
+
+		assert !sample2APIJarFile.exists()
+
+		Project sample2ServiceProject = project(":modules:sample-2:sample-2-service")
+
+		File sample2ServiceJarFile = sample2ServiceProject.file("build/libs/sample-2-service-1.0.0.jar")
+
+		assert !sample2ServiceJarFile.exists()
+	}
+}
