@@ -63,7 +63,6 @@ public class FilterExpressionVisitor
 		}
 
 		_fieldMappers.put("activities.day", "Event.eventDate");
-		_fieldMappers.put("custom.name", "ExpandoValue.columnId");
 		_fieldMappers.put(
 			"individuals.additionalName", "Individual.middleName");
 		_fieldMappers.put("individuals.address", "Individual.addresses");
@@ -387,13 +386,7 @@ public class FilterExpressionVisitor
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
 			if (Objects.equals(identifierParts[0], "custom")) {
-				_referencedTableNames.add("ExpandoValue");
-
-				String qualifiedFieldName = _fieldMappers.getOrDefault(
-					"custom." + identifierParts[1],
-					"ExpandoValue." + identifierParts[1]);
-
-				return DSL.field(qualifiedFieldName);
+				return DSL.field("ExpandoValue." + identifierParts[1]);
 			}
 
 			fieldName = identifierParts[1];
