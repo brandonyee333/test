@@ -44,6 +44,7 @@ import org.jooq.Field;
 import org.jooq.Param;
 import org.jooq.Record1;
 import org.jooq.SelectConditionStep;
+import org.jooq.SelectJoinStep;
 import org.jooq.impl.DSL;
 
 /**
@@ -251,6 +252,20 @@ public class FilterExpressionVisitor
 				String.format("SAFE_CAST({0} AS %s)", attributeType), field);
 		}
 
+		String fieldName = field.getName();
+
+		String qualifiedFieldName = fieldName;
+
+		if (StringUtils.startsWith(fieldName, "ExpandoValue.")) {
+			String[] parts = fieldName.split("\\.", 2);
+
+			qualifiedFieldName = parts[1];
+
+			if (Objects.equals(_filterType, "organizations")) {
+				field = DSL.field("ExpandoValue.value");
+			}
+		}
+
 		Condition condition = null;
 
 		if (functionName.equalsIgnoreCase("contains")) {
@@ -295,8 +310,22 @@ public class FilterExpressionVisitor
 				"Invalid string function: " + functionName);
 		}
 
+		if (StringUtils.startsWith(field.getName(), "ExpandoValue.")) {
+			condition = condition.and(
+				DSL.field(
+					"ExpandoValue.fieldName"
+				).eq(
+					qualifiedFieldName
+				));
+		}
+
 		if (Objects.equals(_filterType, "organizations")) {
-			return _getIndividualIdsInOrganizationCondition(condition);
+			if (StringUtils.startsWith(fieldName, "ExpandoValue.")) {
+				return _getIndividualIdsInOrganizationCondition(
+					condition, true);
+			}
+
+			return _getIndividualIdsInOrganizationCondition(condition, false);
 		}
 
 		return condition;
@@ -471,44 +500,71 @@ public class FilterExpressionVisitor
 	}
 
 	private Object _getIndividualIdsInOrganizationCondition(
-		Condition condition) {
+		Condition condition, boolean joinExpandoValue) {
 
 		_referencedTableNames.add("Individual");
+
+		SelectJoinStep selectJoinStep = DSL.selectDistinct(
+			DSL.field("Individual.id", String.class)
+		).from(
+			DSL.table(
+				"BQIndividual"
+			).as(
+				"Individual"
+			)
+		).crossJoin(
+			DSL.unnest(
+				DSL.field("Individual.memberships", String[].class)
+			).as(
+				"IndividualMemberships"
+			)
+		).join(
+			DSL.table(
+				"BQOrganization"
+			).as(
+				"Organization"
+			)
+		).on(
+			DSL.field(
+				"Organization.id"
+			).in(
+				DSL.function(
+					"unnest", String[].class,
+					DSL.field("IndividualMemberships.ids"))
+			)
+		);
+
+		if (joinExpandoValue) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQExpandoValue"
+				).as(
+					"ExpandoValue"
+				)
+			).on(
+				DSL.and(
+					DSL.field(
+						"ExpandoValue.classPK"
+					).eq(
+						DSL.field("Organization.organizationId")
+					),
+					DSL.field(
+						"ExpandoValue.classType"
+					).eq(
+						"com.liferay.portal.kernel.model.Organization"
+					),
+					DSL.field(
+						"ExpandoValue.dataSourceId"
+					).eq(
+						DSL.field("Organization.dataSourceId")
+					))
+			);
+		}
 
 		return DSL.field(
 			"Individual.id", String.class
 		).in(
-			DSL.selectDistinct(
-				DSL.field("Individual.id", String.class)
-			).from(
-				DSL.table(
-					"BQIndividual"
-				).as(
-					"Individual"
-				)
-			).crossJoin(
-				DSL.unnest(
-					DSL.field("Individual.memberships", String[].class)
-				).as(
-					"IndividualMemberships"
-				)
-			).join(
-				DSL.table(
-					"BQOrganization"
-				).as(
-					"Organization"
-				)
-			).on(
-				DSL.field(
-					"Organization.id"
-				).in(
-					DSL.function(
-						"unnest", String[].class,
-						DSL.field("IndividualMemberships.ids"))
-				)
-			).where(
-				condition
-			)
+			selectJoinStep.where(condition)
 		);
 	}
 
@@ -822,7 +878,7 @@ public class FilterExpressionVisitor
 			}
 		}
 
-		return _getIndividualIdsInOrganizationCondition(condition);
+		return _getIndividualIdsInOrganizationCondition(condition, false);
 	}
 
 	private static final Map<String, String> _attributeTypes =
