@@ -121,6 +121,15 @@ definition {
 		WaitForElementPresent(locator1 = "CookieConsentPanel#ACCEPT_ALL_BUTTON");
 	}
 
+	@description = "Verify that cookies for cookie categories are not exist"
+	macro verifyCookiesForCookieCategoriesAreNotPresent {
+		CookieHelper.checkSelectedCookieIsNotExist(cookieName = "CONSENT_TYPE_PERFORMANCE");
+
+		CookieHelper.checkSelectedCookieIsNotExist(cookieName = "CONSENT_TYPE_FUNCTIONAL");
+
+		CookieHelper.checkSelectedCookieIsNotExist(cookieName = "CONSENT_TYPE_PERSONALIZATION");
+	}
+
 	@description = "Verify that cookies are not present with true as value"
 	macro verifyCookiesAreNotPresent {
 		CookieHelper.checkSelectedCookieIsNotPresent(
