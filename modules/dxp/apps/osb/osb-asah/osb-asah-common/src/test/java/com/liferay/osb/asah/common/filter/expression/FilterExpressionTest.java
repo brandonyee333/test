@@ -1933,6 +1933,11 @@ public class FilterExpressionTest {
 				).on(
 					DSL.and(
 						DSL.field(
+							"ExpandoValue.classPK"
+						).eq(
+							DSL.field("Organization.organizationId")
+						),
+						DSL.field(
 							"ExpandoValue.classType"
 						).eq(
 							"com.liferay.portal.kernel.model.Organization"
@@ -1941,11 +1946,6 @@ public class FilterExpressionTest {
 							"ExpandoValue.dataSourceId"
 						).eq(
 							DSL.field("Organization.dataSourceId")
-						),
-						DSL.field(
-							"ExpandoValue.classPK"
-						).eq(
-							DSL.field("Organization.organizationId")
 						))
 				).where(
 					DSL.and(
@@ -2006,6 +2006,11 @@ public class FilterExpressionTest {
 				).on(
 					DSL.and(
 						DSL.field(
+							"ExpandoValue.classPK"
+						).eq(
+							DSL.field("Organization.organizationId")
+						),
+						DSL.field(
 							"ExpandoValue.classType"
 						).eq(
 							"com.liferay.portal.kernel.model.Organization"
@@ -2014,11 +2019,6 @@ public class FilterExpressionTest {
 							"ExpandoValue.dataSourceId"
 						).eq(
 							DSL.field("Organization.dataSourceId")
-						),
-						DSL.field(
-							"ExpandoValue.classPK"
-						).eq(
-							DSL.field("Organization.organizationId")
 						))
 				).where(
 					DSL.and(

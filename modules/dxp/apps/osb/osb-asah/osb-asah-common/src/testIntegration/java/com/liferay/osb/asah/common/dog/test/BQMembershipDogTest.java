@@ -211,8 +211,8 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithCustomFields() {
 		_bqMembershipDog.updateBQMemberships(
-			"individuals.filter(filter='(custom/name eq ''Organization'' and " +
-				"custom/value eq ''Engineer'')')",
+			"individuals.filter(filter='(custom/Organization/value eq " +
+				"''Engineer'')')",
 			1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
