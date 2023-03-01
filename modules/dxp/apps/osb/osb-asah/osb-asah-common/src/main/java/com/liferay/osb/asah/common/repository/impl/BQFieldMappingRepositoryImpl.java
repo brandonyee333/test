@@ -29,6 +29,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
+import org.jooq.tools.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -62,6 +63,32 @@ public class BQFieldMappingRepositoryImpl
 				"BQFieldMapping"
 			).where(
 				ConditionUtil.toCondition(filterString)
+			));
+	}
+
+	public long countIndividualFieldMappings(String fieldName) {
+		Condition condition = DSL.field(
+			"ownerType"
+		).eq(
+			"individual"
+		);
+
+		if (!StringUtils.isBlank(fieldName)) {
+			condition = DSL.and(
+				condition,
+				DSL.lower(
+					DSL.field("fieldName", String.class)
+				).like(
+					"%" + fieldName.toLowerCase() + "%"
+				));
+		}
+
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				"BQFieldMapping"
+			).where(
+				condition
 			));
 	}
 
@@ -149,6 +176,42 @@ public class BQFieldMappingRepositoryImpl
 				"BQFieldMapping"
 			).where(
 				ConditionUtil.toCondition(filterString)
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	@Override
+	public List<BQFieldMapping> searchIndividualFieldMappings(
+		String name, Pageable pageable) {
+
+		Condition condition = DSL.field(
+			"ownerType"
+		).eq(
+			"individual"
+		);
+
+		if (!StringUtils.isBlank(name)) {
+			condition = DSL.and(
+				condition,
+				DSL.lower(
+					DSL.field("fieldName", String.class)
+				).like(
+					"%" + name.toLowerCase() + "%"
+				));
+		}
+
+		return _queryExecutor.queryForList(
+			BQFieldMapping::new,
+			_dslContext.select(
+			).from(
+				"BQFieldMapping"
+			).where(
+				condition
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(

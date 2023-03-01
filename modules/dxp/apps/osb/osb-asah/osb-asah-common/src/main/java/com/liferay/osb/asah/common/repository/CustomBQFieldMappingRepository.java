@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Robson Pastor
@@ -31,6 +32,8 @@ public interface CustomBQFieldMappingRepository {
 
 	public long countByFilterString(String filterString);
 
+	public long countIndividualFieldMappings(@Nullable String name);
+
 	public Optional<BQFieldMapping> findByDisplayName(String displayName);
 
 	public Optional<BQFieldMapping> findByFieldName(String id);
@@ -40,5 +43,8 @@ public interface CustomBQFieldMappingRepository {
 
 	public List<BQFieldMapping> searchByFilterString(
 		String filterString, Pageable pageable);
+
+	public List<BQFieldMapping> searchIndividualFieldMappings(
+		@Nullable String name, Pageable pageable);
 
 }
