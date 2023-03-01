@@ -16,22 +16,25 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.common.dog.BQFieldMappingDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
+import com.liferay.osb.asah.common.entity.DataSource;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.apache.commons.math3.util.Pair;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,16 +51,31 @@ public class DefinitionsRestController extends BaseRestController {
 	public PageDTO<FieldMappingDTO> getIndividualFieldMappingDTOPageDTO(
 		@RequestParam(required = false) String name) {
 
-		// TODO Implement operation
+		Page<BQFieldMapping> fieldMappingPage =
+			_bqFieldMappingDog.searchIndividualFieldMappingPage(
+				name, 0,
+				Math.max(
+					1,
+					(int)_bqFieldMappingDog.countIndividualFieldMappings(name)),
+				new String[] {"fieldName", "asc"});
 
-		Map<String, FieldMappingDTO> fieldMappingDTOs = Collections.emptyMap();
+		Map<String, FieldMappingDTO> fieldMappingDTOs = Stream.of(
+			fieldMappingPage.getContent()
+		).flatMap(
+			List::stream
+		).map(
+			this::_toFieldMappingDTO
+		).collect(
+			LinkedHashMap::new,
+			(map, fieldMappingDTO) -> map.put(
+				fieldMappingDTO.getFieldName(), fieldMappingDTO),
+			Map::putAll
+		);
 
 		_addDataSources(fieldMappingDTOs);
 
 		return _toPageDTO(
-			new FieldMappingDTO(fieldMappingDTOs.values()),
-			PageableExecutionUtils.getPage(
-				Collections.emptyList(), PageRequest.of(0, 1), () -> 0));
+			new FieldMappingDTO(fieldMappingDTOs.values()), fieldMappingPage);
 	}
 
 	private void _addDataSources(
@@ -101,6 +119,25 @@ public class DefinitionsRestController extends BaseRestController {
 		}
 	}
 
+	@NotNull
+	private FieldMappingDTO _toFieldMappingDTO(BQFieldMapping bqFieldMapping) {
+		FieldMappingDTO fieldMappingDTO = new FieldMappingDTO(bqFieldMapping);
+
+		List<DataSource> dataSources = _dataSourceDog.getDataSources(
+			new ArrayList<>(bqFieldMapping.getDataSourceIds()));
+
+		Map<String, String> dataSourceFieldNames = new HashMap<>();
+
+		for (DataSource dataSource : dataSources) {
+			dataSourceFieldNames.put(
+				"" + dataSource.getId(), bqFieldMapping.getFieldName());
+		}
+
+		fieldMappingDTO.setDataSourceFieldNames(dataSourceFieldNames);
+
+		return fieldMappingDTO;
+	}
+
 	private PageDTO<FieldMappingDTO> _toPageDTO(
 		FieldMappingDTO fieldMappingDTO,
 		Page<BQFieldMapping> fieldMappingsPage) {
@@ -110,6 +147,9 @@ public class DefinitionsRestController extends BaseRestController {
 			fieldMappingsPage.getSize(), fieldMappingsPage.getTotalElements(),
 			fieldMappingsPage.getTotalPages());
 	}
+
+	@Autowired
+	private BQFieldMappingDog _bqFieldMappingDog;
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
