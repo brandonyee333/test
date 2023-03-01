@@ -740,7 +740,52 @@ public class FilterExpressionVisitor
 	private Object _visitOrganizationExpression(
 		String fieldName, String operator, String value) {
 
-		_referencedTableNames.add("Individual");
+		if (fieldName.startsWith("custom/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			String qualifiedFieldName = identifierParts[1];
+
+			Condition condition = DSL.field(
+				"ExpandoValue.fieldName"
+			).eq(
+				qualifiedFieldName
+			);
+
+			if (operator.equalsIgnoreCase("eq")) {
+				if (StringUtil.isNull(value)) {
+					condition = condition.and(
+						DSL.field(
+							"ExpandoValue.value"
+						).isNull());
+				}
+				else {
+					condition = condition.and(
+						DSL.field(
+							"ExpandoValue.value"
+						).eq(
+							value
+						));
+				}
+			}
+			else if (operator.equalsIgnoreCase("ne")) {
+				if (StringUtil.isNull(value)) {
+					condition = condition.and(
+						DSL.field(
+							"ExpandoValue.value"
+						).isNotNull());
+				}
+				else {
+					condition = condition.and(
+						DSL.field(
+							"ExpandoValue.value"
+						).ne(
+							value
+						));
+				}
+			}
+
+			return _getIndividualIdsInOrganizationCondition(condition, true);
+		}
 
 		if (fieldName.equalsIgnoreCase("id")) {
 			return DSL.field(
