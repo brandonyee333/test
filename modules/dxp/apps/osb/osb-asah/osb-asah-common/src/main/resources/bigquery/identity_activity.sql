@@ -19,7 +19,7 @@ WITH IdentityActivity AS (
 		Event.userId = Identity.id
 	)
 	WHERE
-		Event.eventDate >  TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY)
+		Event.eventDate >= TIMESTAMP_TRUNC(CURRENT_TIMESTAMP(), DAY)
 	GROUP BY
 		Event.channelId,
 		Event.dataSourceId,
