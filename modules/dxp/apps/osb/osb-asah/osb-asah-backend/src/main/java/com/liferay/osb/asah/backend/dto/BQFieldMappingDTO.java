@@ -37,12 +37,12 @@ import java.util.Set;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonRootName("field-mappings")
-public class FieldMappingDTO {
+public class BQFieldMappingDTO {
 
-	public FieldMappingDTO() {
+	public BQFieldMappingDTO() {
 	}
 
-	public FieldMappingDTO(BQFieldMapping bqFieldMapping) {
+	public BQFieldMappingDTO(BQFieldMapping bqFieldMapping) {
 		_context = bqFieldMapping.getContext();
 		_displayName = bqFieldMapping.getDisplayName();
 		_displayType = bqFieldMapping.getDisplayType();
@@ -53,12 +53,13 @@ public class FieldMappingDTO {
 		_repeatable = bqFieldMapping.getRepeatable();
 	}
 
-	public FieldMappingDTO(Collection<FieldMappingDTO> fieldMappingDTOs) {
-		_fieldMappingDTOs = new LinkedHashSet<>(fieldMappingDTOs);
+	public BQFieldMappingDTO(Collection<BQFieldMappingDTO> bqFieldMappingDTOS) {
+		_bqFieldMappingDTOS = new LinkedHashSet<>(bqFieldMappingDTOS);
 	}
 
-	public FieldMappingDTO(List<BQFieldMapping> bqFieldMappings) {
-		_fieldMappingDTOs = SetUtil.map(bqFieldMappings, FieldMappingDTO::new);
+	public BQFieldMappingDTO(List<BQFieldMapping> bqFieldMappings) {
+		_bqFieldMappingDTOS = SetUtil.map(
+			bqFieldMappings, BQFieldMappingDTO::new);
 	}
 
 	@JsonProperty("context")
@@ -87,8 +88,8 @@ public class FieldMappingDTO {
 	}
 
 	@JsonProperty("field-mappings")
-	public Set<FieldMappingDTO> getFieldMappingDTOs() {
-		return _fieldMappingDTOs;
+	public Set<BQFieldMappingDTO> getFieldMappingDTOs() {
+		return _bqFieldMappingDTOS;
 	}
 
 	@JsonProperty("fieldName")
@@ -172,13 +173,13 @@ public class FieldMappingDTO {
 		_repeatable = repeatable;
 	}
 
+	private Set<BQFieldMappingDTO> _bqFieldMappingDTOS;
 	private String _context;
 	private Set<DataSourceFieldMapping> _dataSourceFieldMappings;
 	private Map<String, String> _dataSourceFieldNames;
 	private List<Map<String, String>> _dataSources;
 	private String _displayName;
 	private String _displayType;
-	private Set<FieldMappingDTO> _fieldMappingDTOs;
 	private String _fieldName;
 	private String _fieldType;
 	private Date _modifiedDate;

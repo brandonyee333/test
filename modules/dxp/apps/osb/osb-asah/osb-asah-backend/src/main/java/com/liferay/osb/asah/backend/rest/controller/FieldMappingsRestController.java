@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.dto.FieldMappingDTO;
+import com.liferay.osb.asah.backend.dto.BQFieldMappingDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.BQFieldMappingDog;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
@@ -36,12 +36,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class FieldMappingsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
-	public FieldMappingDTO getFieldMappingDTO(@PathVariable String id) {
-		return new FieldMappingDTO(_bqFieldMappingDog.getBQFieldMapping(id));
+	public BQFieldMappingDTO getFieldMappingDTO(@PathVariable String id) {
+		return new BQFieldMappingDTO(_bqFieldMappingDog.getBQFieldMapping(id));
 	}
 
 	@GetMapping(params = "!apply")
-	public PageDTO<FieldMappingDTO> getFieldMappingDTOPageDTO(
+	public PageDTO<BQFieldMappingDTO> getFieldMappingDTOPageDTO(
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
@@ -52,11 +52,11 @@ public class FieldMappingsRestController extends BaseRestController {
 				filterString, page, size, sorts));
 	}
 
-	private PageDTO<FieldMappingDTO> _toPageDTO(
+	private PageDTO<BQFieldMappingDTO> _toPageDTO(
 		Page<BQFieldMapping> bqFieldMappingPage) {
 
 		return new PageDTO<>(
-			"_embedded", new FieldMappingDTO(bqFieldMappingPage.getContent()),
+			"_embedded", new BQFieldMappingDTO(bqFieldMappingPage.getContent()),
 			bqFieldMappingPage.getNumber(), bqFieldMappingPage.getSize(),
 			bqFieldMappingPage.getTotalElements(),
 			bqFieldMappingPage.getTotalPages());
