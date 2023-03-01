@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.entity;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -63,6 +64,10 @@ public class BQFieldMapping {
 
 	public String getContext() {
 		return _context;
+	}
+
+	public Map<String, String> getDataSourceFieldNames() {
+		return _dataSourceFieldNames;
 	}
 
 	public Set<Long> getDataSourceIds() {
@@ -112,6 +117,12 @@ public class BQFieldMapping {
 		_context = context;
 	}
 
+	public void setDataSourceFieldNames(
+		Map<String, String> dataSourceFieldNames) {
+
+		_dataSourceFieldNames = dataSourceFieldNames;
+	}
+
 	public void setDataSourceIds(Set<Long> dataSourceIds) {
 		_dataSourceIds = dataSourceIds;
 	}
@@ -147,6 +158,7 @@ public class BQFieldMapping {
 	}
 
 	private String _context;
+	private Map<String, String> _dataSourceFieldNames = new HashMap<>();
 	private Set<Long> _dataSourceIds;
 	private String _displayName;
 	private String _displayType;
