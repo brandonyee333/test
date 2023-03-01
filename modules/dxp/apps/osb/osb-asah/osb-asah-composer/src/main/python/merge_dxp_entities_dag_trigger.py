@@ -11,8 +11,7 @@
 
 import airflow
 import datetime
-
-from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
+import requests
 
 from liferay.bigquery import BigQueryInsertJobFromTemplateOperator
 
@@ -46,14 +45,20 @@ def create_dag(ac_project_id, dag_id, dag_description):
 
 		return dag
 
-bigquery_hook = BigQueryHook(gcp_conn_id='google_cloud_default')
+response = requests.get(
+	Variable.get('osb.asah.backend.url'),
+	headers={
+		'OSB-Asah-Faro-Backend-Security-Signature': Variable.get('osb.asah.faro.backend.security.signature'),
+		'User-Agent': 'LiferayAnalyticsCloud'
+	}
+)
 
-client = bigquery_hook.get_client()
+projects_json = response.json()
 
-for dataset in client.list_datasets():
-	dag_id = 'merge_dxp_entity_{}'.format(dataset.dataset_id)
+for ac_project_id, ac_project_time_zone_id in projects_json.items():
+	dag_id = 'merge_dxp_entity_{}'.format(ac_project_id)
 
 	globals()[dag_id] = create_dag(
-		dataset.dataset_id, dag_id,
-		'DXP Entity Merge DAG For {}'.format(dataset.dataset_id)
+		ac_project_id, dag_id,
+		'DXP Entity Merge DAG For {}'.format(ac_project_id)
 	)
