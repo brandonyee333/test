@@ -106,13 +106,44 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.EqualsExpressionContext
 			equalsExpressionContext) {
 
-		if (Objects.equals(_filterType, "organizations")) {
-			Token startToken = equalsExpressionContext.start;
-			Token stopToken = equalsExpressionContext.stop;
+		Token startToken = equalsExpressionContext.start;
+		Token stopToken = equalsExpressionContext.stop;
 
-			return _visitOrganizationExpression(
-				startToken.getText(), "eq",
-				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+		String fieldName = startToken.getText();
+		String value = StringUtil.unquoteAndDecodeInnerQuotes(
+			stopToken.getText());
+
+		if (Objects.equals(_filterType, "organizations")) {
+			return _visitOrganizationExpression(fieldName, "eq", value);
+		}
+
+		if (fieldName.startsWith("custom/")) {
+			_referencedTableNames.add("ExpandoValue");
+
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			Condition condition = DSL.field(
+				"Fields.name"
+			).eq(
+				identifierParts[1]
+			);
+
+			if (StringUtil.isNull(value)) {
+				condition = condition.and(
+					DSL.field(
+						"Fields.value"
+					).isNull());
+			}
+			else {
+				condition = condition.and(
+					DSL.field(
+						"Fields.value"
+					).eq(
+						value
+					));
+			}
+
+			return condition;
 		}
 
 		Field rightField = _getRightField(equalsExpressionContext);
@@ -263,6 +294,9 @@ public class FilterExpressionVisitor
 			if (Objects.equals(_filterType, "organizations")) {
 				field = DSL.field("ExpandoValue.value");
 			}
+			else {
+				field = DSL.field("Fields.value");
+			}
 		}
 
 		Condition condition = null;
@@ -313,6 +347,16 @@ public class FilterExpressionVisitor
 			condition = condition.and(
 				DSL.field(
 					"ExpandoValue.fieldName"
+				).eq(
+					qualifiedFieldName
+				));
+		}
+		else if (StringUtils.startsWith(field.getName(), "Fields.")) {
+			_referencedTableNames.add("ExpandoValue");
+
+			condition = condition.and(
+				DSL.field(
+					"Fields.name"
 				).eq(
 					qualifiedFieldName
 				));
@@ -437,13 +481,44 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.NotEqualsExpressionContext
 			notEqualsExpressionContext) {
 
-		if (Objects.equals(_filterType, "organizations")) {
-			Token startToken = notEqualsExpressionContext.start;
-			Token stopToken = notEqualsExpressionContext.stop;
+		Token startToken = notEqualsExpressionContext.start;
+		Token stopToken = notEqualsExpressionContext.stop;
 
-			return _visitOrganizationExpression(
-				startToken.getText(), "ne",
-				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+		String fieldName = startToken.getText();
+		String value = StringUtil.unquoteAndDecodeInnerQuotes(
+			stopToken.getText());
+
+		if (Objects.equals(_filterType, "organizations")) {
+			return _visitOrganizationExpression(fieldName, "ne", value);
+		}
+
+		if (fieldName.startsWith("custom/")) {
+			_referencedTableNames.add("ExpandoValue");
+
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			Condition condition = DSL.field(
+				"Fields.name"
+			).eq(
+				identifierParts[1]
+			);
+
+			if (StringUtil.isNull(value)) {
+				condition = condition.and(
+					DSL.field(
+						"Fields.value"
+					).isNotNull());
+			}
+			else {
+				condition = condition.and(
+					DSL.field(
+						"Fields.value"
+					).ne(
+						value
+					));
+			}
+
+			return condition;
 		}
 
 		Field rightField = _getRightField(notEqualsExpressionContext);
