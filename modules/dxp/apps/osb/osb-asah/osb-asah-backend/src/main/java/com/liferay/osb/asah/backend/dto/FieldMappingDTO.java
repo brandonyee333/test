@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -25,14 +24,12 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.common.util.StringUtil;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -46,21 +43,14 @@ public class FieldMappingDTO {
 	}
 
 	public FieldMappingDTO(BQFieldMapping bqFieldMapping) {
-		AuthorDTO authorDTO = new AuthorDTO();
-
-		if (!authorDTO.isEmpty()) {
-			_authorDTO = authorDTO;
-		}
-
 		_context = bqFieldMapping.getContext();
-
 		_displayName = bqFieldMapping.getDisplayName();
 		_displayType = bqFieldMapping.getDisplayType();
 		_fieldName = bqFieldMapping.getFieldName();
 		_fieldType = bqFieldMapping.getFieldType();
-		_id = StringUtil.get(bqFieldMapping.getFieldName(), null);
 		_modifiedDate = bqFieldMapping.getModifiedDate();
 		_ownerType = bqFieldMapping.getOwnerType();
+		_repeatable = bqFieldMapping.getRepeatable();
 	}
 
 	public FieldMappingDTO(Collection<FieldMappingDTO> fieldMappingDTOs) {
@@ -71,28 +61,9 @@ public class FieldMappingDTO {
 		_fieldMappingDTOs = SetUtil.map(bqFieldMappings, FieldMappingDTO::new);
 	}
 
-	@JsonProperty("author")
-	public AuthorDTO getAuthorDTO() {
-		return _authorDTO;
-	}
-
 	@JsonProperty("context")
 	public String getContext() {
 		return _context;
-	}
-
-	@JsonAlias("createDate")
-	@JsonFormat(
-		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
-		timezone = "UTC"
-	)
-	@JsonProperty("dateCreated")
-	public Date getCreateDate() {
-		if (_createDate == null) {
-			return null;
-		}
-
-		return new Date(_createDate.getTime());
 	}
 
 	@JsonProperty("dataSourceFieldNames")
@@ -130,11 +101,6 @@ public class FieldMappingDTO {
 		return _fieldType;
 	}
 
-	@JsonProperty("id")
-	public String getId() {
-		return _id;
-	}
-
 	@JsonAlias("modifiedDate")
 	@JsonFormat(
 		pattern = DateUtil.PATTERN_ISO_8601, shape = JsonFormat.Shape.STRING,
@@ -154,21 +120,13 @@ public class FieldMappingDTO {
 		return _ownerType;
 	}
 
-	public void setAuthorDTO(AuthorDTO authorDTO) {
-		_authorDTO = authorDTO;
+	@JsonProperty("repeatable")
+	public Boolean getRepeatable() {
+		return _repeatable;
 	}
 
 	public void setContext(String context) {
 		_context = context;
-	}
-
-	public void setCreateDate(Date createDate) {
-		if (createDate != null) {
-			_createDate = new Date(createDate.getTime());
-		}
-		else {
-			_createDate = null;
-		}
 	}
 
 	public void setDataSourceFieldNames(
@@ -197,10 +155,6 @@ public class FieldMappingDTO {
 		_fieldType = fieldType;
 	}
 
-	public void setId(String id) {
-		_id = id;
-	}
-
 	public void setModifiedDate(Date modifiedDate) {
 		if (modifiedDate != null) {
 			_modifiedDate = new Date(modifiedDate.getTime());
@@ -214,69 +168,11 @@ public class FieldMappingDTO {
 		_ownerType = ownerType;
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class AuthorDTO {
-
-		public AuthorDTO() {
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj) {
-				return true;
-			}
-
-			if (!(obj instanceof AuthorDTO)) {
-				return false;
-			}
-
-			AuthorDTO authorDTO = (AuthorDTO)obj;
-
-			if (Objects.equals(_id, authorDTO._id) &&
-				Objects.equals(_name, authorDTO._name)) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		@JsonProperty("id")
-		public String getId() {
-			return _id;
-		}
-
-		@JsonProperty("name")
-		public String getName() {
-			return _name;
-		}
-
-		@Override
-		public int hashCode() {
-			return Objects.hash(_id, _name);
-		}
-
-		@JsonIgnore
-		public boolean isEmpty() {
-			return equals(new AuthorDTO());
-		}
-
-		public void setId(String id) {
-			_id = id;
-		}
-
-		public void setName(String name) {
-			_name = name;
-		}
-
-		private String _id;
-		private String _name;
-
+	public void setRepeatable(Boolean repeatable) {
+		_repeatable = repeatable;
 	}
 
-	private AuthorDTO _authorDTO;
 	private String _context;
-	private Date _createDate;
 	private Set<DataSourceFieldMapping> _dataSourceFieldMappings;
 	private Map<String, String> _dataSourceFieldNames;
 	private List<Map<String, String>> _dataSources;
@@ -285,8 +181,8 @@ public class FieldMappingDTO {
 	private Set<FieldMappingDTO> _fieldMappingDTOs;
 	private String _fieldName;
 	private String _fieldType;
-	private String _id;
 	private Date _modifiedDate;
 	private String _ownerType;
+	private Boolean _repeatable;
 
 }
