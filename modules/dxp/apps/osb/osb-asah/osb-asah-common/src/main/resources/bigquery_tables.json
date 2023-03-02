@@ -2678,6 +2678,44 @@
 			"type": "DAY"
 		}
 	},
+	"sessioninterestscore": {
+		"fields": [
+			{
+				"mode": "NULLABLE",
+				"name": "identityId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "interested",
+				"type": "BOOL"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "interestScore",
+				"type": "FLOAT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "keyword",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "recordedDate",
+				"type": "DATE"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "sessionId",
+				"type": "STRING"
+			}
+		],
+		"timePartitioning": {
+			"field": "recordedDate",
+			"type": "DAY"
+		}
+	},
 	"team": {
 		"clusteringFields": [
 			"dataSourceId"
