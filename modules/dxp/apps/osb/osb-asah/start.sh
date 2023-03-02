@@ -2,7 +2,7 @@
 
 set -e
 
-docker pull liferay/com-liferay-osb-faro:latest
+docker pull liferay/com-liferay-osb-faro:master
 
 ./gradlew clean assemble
 
