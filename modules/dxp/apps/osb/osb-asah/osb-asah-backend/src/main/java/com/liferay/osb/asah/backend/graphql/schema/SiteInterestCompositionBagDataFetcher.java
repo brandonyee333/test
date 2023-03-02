@@ -21,6 +21,8 @@ import com.liferay.osb.asah.common.model.CompositionResultBag;
 
 import graphql.schema.DataFetchingEnvironment;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,8 +40,7 @@ public class SiteInterestCompositionBagDataFetcher
 		SearchQueryContext searchQueryContext) {
 
 		return _siteInterestCompositionDog.getCompositionResultBag(
-			searchQueryContext.getChannelId(),
-			searchQueryContext.getDataSourceId(),
+			NumberUtils.createLong(searchQueryContext.getChannelId()),
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("start"),
 			searchQueryContext.getTimeRange());

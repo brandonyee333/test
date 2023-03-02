@@ -16,7 +16,10 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.BQSessionInterestScoreRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,12 +29,14 @@ import org.springframework.stereotype.Component;
 public class SiteInterestCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
-		String channelId, String dataSourceId, int size, int start,
-		TimeRange timeRange) {
+		Long channelId, int size, int start, TimeRange timeRange) {
 
-		// TODO Implement interest composition
-
-		return null;
+		return _bqSessionInterestScoreRepository.
+			getInterestCompositionResultBag(
+				channelId, PageRequest.of(start / size, size), timeRange);
 	}
+
+	@Autowired
+	private BQSessionInterestScoreRepository _bqSessionInterestScoreRepository;
 
 }
