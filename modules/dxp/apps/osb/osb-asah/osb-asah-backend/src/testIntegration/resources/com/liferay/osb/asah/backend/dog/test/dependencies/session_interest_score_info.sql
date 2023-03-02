@@ -1,0 +1,20 @@
+INSERT INTO Session (channelId, id, sessionEnd, sessionStart) VALUES (1, '1', TIMESTAMP '${now-400d}', TIMESTAMP '${now-400d}');
+INSERT INTO Session (channelId, id, sessionEnd, sessionStart) VALUES (1, '2', TIMESTAMP '${now-387d}', TIMESTAMP '${now-387d}');
+INSERT INTO Session (channelId, id, sessionEnd, sessionStart) VALUES (1, '3', TIMESTAMP '${now-366d}', TIMESTAMP '${now-366d}');
+INSERT INTO Session (channelId, id, sessionEnd, sessionStart) VALUES (1, '4', TIMESTAMP '${now-364d}', TIMESTAMP '${now-364d}');
+INSERT INTO Session (channelId, id, sessionEnd, sessionStart) VALUES (1, '5', TIMESTAMP '${now-100d}', TIMESTAMP '${now-100d}');
+INSERT INTO Session (channelId, id, sessionEnd, sessionStart) VALUES (1, '6', TIMESTAMP '${now-20d}', TIMESTAMP '${now-20d}');
+INSERT INTO Session (channelId, id, sessionEnd, sessionStart) VALUES (1, '7', TIMESTAMP '${now-1d}', TIMESTAMP '${now-1d}');
+INSERT INTO Session (channelId, id, sessionEnd, sessionStart) VALUES (1, '8', TIMESTAMP '${now}', TIMESTAMP '${now}');
+
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'compelling action-items', CAST(TIMESTAMP  '${today-400d}' AS DATE), '1');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'compelling action-items', CAST(TIMESTAMP '${today-387d}' AS DATE), '2');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'compelling action-items', CAST(TIMESTAMP '${today-366d}' AS DATE), '3');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'compelling action-items', CAST(TIMESTAMP '${today-364d}' AS DATE), '4');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'compelling action-items', CAST(TIMESTAMP '${today-333d}' AS DATE), '5');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'compelling action-items', CAST(TIMESTAMP '${today-3d}' AS DATE), '6');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'holistic roi', CAST(TIMESTAMP '${today}' AS DATE), '7');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'engineer', CAST(TIMESTAMP '${today}' AS DATE), '8');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (FALSE, 'error', CAST(TIMESTAMP '${today}' AS DATE), '8');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'intuitive', CAST(TIMESTAMP '${today}' AS DATE), '8');
+INSERT INTO SessionInterestScore(interested, keyword, recordedDate, sessionId) VALUES (TRUE, 'models', CAST(TIMESTAMP '${today}' AS DATE), '8');
