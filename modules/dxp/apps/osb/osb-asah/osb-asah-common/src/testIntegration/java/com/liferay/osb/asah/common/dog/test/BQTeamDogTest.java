@@ -48,6 +48,8 @@ public class BQTeamDogTest extends BaseBQDXPEntityDogTestCase {
 		bqTeam1.setName("Test");
 		bqTeam1.setTeamId(1L);
 
+		_bqTeamRepository.insert(bqTeam1);
+
 		BQTeam bqTeam2 = new BQTeam();
 
 		bqTeam2.setDataSourceId(dataSource.getId());
@@ -57,7 +59,6 @@ public class BQTeamDogTest extends BaseBQDXPEntityDogTestCase {
 		bqTeam2.setName("Liferay");
 		bqTeam2.setTeamId(2L);
 
-		_bqTeamRepository.insert(bqTeam1);
 		_bqTeamRepository.insert(bqTeam2);
 	}
 

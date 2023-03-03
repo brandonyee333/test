@@ -47,6 +47,8 @@ public class BQUserGroupDogTest extends BaseBQDXPEntityDogTestCase {
 		bqUserGroup1.setName("Test");
 		bqUserGroup1.setUserGroupId(1L);
 
+		_bqUserGroupRepository.insert(bqUserGroup1);
+
 		BQUserGroup bqUserGroup2 = new BQUserGroup();
 
 		bqUserGroup2.setDataSourceId(dataSource.getId());
@@ -55,7 +57,6 @@ public class BQUserGroupDogTest extends BaseBQDXPEntityDogTestCase {
 		bqUserGroup2.setName("Liferay");
 		bqUserGroup2.setUserGroupId(2L);
 
-		_bqUserGroupRepository.insert(bqUserGroup1);
 		_bqUserGroupRepository.insert(bqUserGroup2);
 	}
 
