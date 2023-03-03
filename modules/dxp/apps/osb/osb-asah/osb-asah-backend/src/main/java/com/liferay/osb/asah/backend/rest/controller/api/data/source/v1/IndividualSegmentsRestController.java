@@ -55,7 +55,14 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Vishal Reddy
@@ -311,8 +318,6 @@ public class IndividualSegmentsRestController {
 
 	@PostMapping
 	public SegmentDTO postSegment(@RequestBody SegmentDTO segmentDTO) {
-		System.out.println("POST");
-
 		segmentDTO.setActivitiesCount(0L);
 
 		Date date = DateUtil.newDate();
@@ -329,9 +334,9 @@ public class IndividualSegmentsRestController {
 			SegmentDTO.class);
 	}
 
-	@PutMapping
+	@PutMapping("/{id}")
 	public SegmentDTO putSegment(
-			@PathVariable Long id, @RequestBody SegmentDTO segmentDTO) {
+		@PathVariable Long id, @RequestBody SegmentDTO segmentDTO) {
 
 		segmentDTO.setActiveIdentitiesCount(null);
 		segmentDTO.setActivitiesCount(null);
@@ -342,9 +347,9 @@ public class IndividualSegmentsRestController {
 		segmentDTO.setModifiedDate(new Date());
 
 		return objectMapper.convertValue(
-				segmentDog.updateSegment(
-						objectMapper.convertValue(segmentDTO, Segment.class), id),
-				SegmentDTO.class);
+			segmentDog.updateSegment(
+				objectMapper.convertValue(segmentDTO, Segment.class), id),
+			SegmentDTO.class);
 	}
 
 	protected PageDTO<SegmentDTO> toSegmentDTOPageDTO(
