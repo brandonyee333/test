@@ -16,16 +16,12 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
-
-import java.util.Date;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,24 +71,6 @@ public class IndividualSegmentsRestController
 		return toSegmentDTOPageDTO(
 			segmentDog.searchPreviewDisabledSegmentPage(
 				dataSourceId, filterString, page, Math.max(1, size), sorts));
-	}
-
-	@PutMapping("/{id}")
-	public SegmentDTO putSegment(
-		@PathVariable Long id, @RequestBody SegmentDTO segmentDTO) {
-
-		segmentDTO.setActiveIdentitiesCount(null);
-		segmentDTO.setActivitiesCount(null);
-		segmentDTO.setAnonymousIdentitiesCount(null);
-		segmentDTO.setCreateDate(null);
-		segmentDTO.setIdentitiesCount(null);
-		segmentDTO.setKnownIdentitiesCount(null);
-		segmentDTO.setModifiedDate(new Date());
-
-		return objectMapper.convertValue(
-			segmentDog.updateSegment(
-				objectMapper.convertValue(segmentDTO, Segment.class), id),
-			SegmentDTO.class);
 	}
 
 }
