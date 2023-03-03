@@ -54,11 +54,6 @@ public class BQIndividual {
 	}
 
 	@BigQueryColumn
-	public String getAddresses() {
-		return _addresses;
-	}
-
-	@BigQueryColumn
 	public Date getBirthday() {
 		if (_birthday == null) {
 			return null;
@@ -89,11 +84,6 @@ public class BQIndividual {
 	@BigQueryColumn
 	public String getFirstName() {
 		return _firstName;
-	}
-
-	@BigQueryColumn
-	public String getGender() {
-		return _gender;
 	}
 
 	@BigQueryColumn
@@ -135,18 +125,9 @@ public class BQIndividual {
 		return _screenName;
 	}
 
-	@BigQueryColumn
-	public String getTimeZoneId() {
-		return _timeZoneId;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(_emailAddress);
-	}
-
-	public void setAddresses(String addresses) {
-		_addresses = addresses;
 	}
 
 	public void setBirthday(Date birthday) {
@@ -171,10 +152,6 @@ public class BQIndividual {
 
 	public void setFirstName(String firstName) {
 		_firstName = firstName;
-	}
-
-	public void setGender(String gender) {
-		_gender = gender;
 	}
 
 	public void setId(String id) {
@@ -205,10 +182,6 @@ public class BQIndividual {
 
 	public void setScreenName(String screenName) {
 		_screenName = screenName;
-	}
-
-	public void setTimeZoneId(String timeZoneId) {
-		_timeZoneId = timeZoneId;
 	}
 
 	public static class Field {
@@ -270,13 +243,11 @@ public class BQIndividual {
 
 	}
 
-	private String _addresses;
 	private Date _birthday;
 	private Date _createDate;
 	private String _emailAddress;
 	private List<Field> _fields;
 	private String _firstName;
-	private String _gender;
 	private String _id;
 	private String _jobTitle;
 	private String _languageId;
@@ -284,6 +255,5 @@ public class BQIndividual {
 	private String _middleName;
 	private Date _modifiedDate;
 	private String _screenName;
-	private String _timeZoneId;
 
 }

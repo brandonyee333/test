@@ -250,14 +250,6 @@ USING
 			BQStagingFields.emailAddress,
 			(
 				SELECT
-					SAFE_CAST(value AS STRING)
-				FROM
-					UNNEST(stagingFields)
-				WHERE
-					name = 'addresses'
-			) AS addresses,
-			(
-				SELECT
 					TIMESTAMP_MILLIS(SAFE_CAST(value AS INT64))
 				FROM
 					UNNEST(stagingFields)
@@ -272,14 +264,6 @@ USING
 				WHERE
 					name = 'firstName'
 			) AS firstName,
-			(
-				SELECT
-					SAFE_CAST(value AS STRING)
-				FROM
-					UNNEST(stagingFields)
-				WHERE
-					name = 'gender'
-			) AS gender,
 			(
 				SELECT
 					SAFE_CAST(value AS STRING)
@@ -329,15 +313,7 @@ USING
 					value
 				FROM
 					UNNEST(stagingFields)
-			) AS stagingFields,
-			(
-				SELECT
-					SAFE_CAST(value AS STRING)
-				FROM
-					UNNEST(stagingFields)
-				WHERE
-					name = 'timeZoneId'
-			) AS timeZoneId
+			) AS stagingFields
 		FROM (
 			SELECT
 				emailAddress,
@@ -393,9 +369,11 @@ ON
 	LOWER(replica.emailAddress) = staging.emailAddress
 WHEN MATCHED THEN
 	UPDATE SET
+		replica.birthday = staging.birthday,
 		replica.firstName = staging.firstName,
 		replica.fields = staging.stagingFields,
 		replica.jobTitle = staging.jobTitle,
+		replica.languageId = staging.languageId,
 		replica.lastName = staging.lastName,
 		replica.memberships = staging.memberships,
 		replica.middleName = staging.middleName,
@@ -403,12 +381,14 @@ WHEN MATCHED THEN
 		replica.screenName = staging.screenName
 WHEN NOT MATCHED BY TARGET THEN
 	INSERT(
+		`birthday`,
 		`createDate`,
 		`emailAddress`,
 		`firstName`,
 		`fields`,
 		`id`,
 		`jobTitle`,
+		`languageId`,
 		`lastName`,
 		`memberships`,
 		`middleName`,
@@ -416,12 +396,14 @@ WHEN NOT MATCHED BY TARGET THEN
 		`screenName`
 	)
 	VALUES (
+		staging.birthday,
 		staging.modifiedDate,
 		LOWER(staging.emailAddress),
 		staging.firstName,
 		staging.stagingFields,
 		TO_HEX(SHA256(LOWER(staging.emailAddress))),
 		staging.jobTitle,
+		staging.languageId,
 		staging.lastName,
 		staging.memberships,
 		staging.middleName,

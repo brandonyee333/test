@@ -1181,11 +1181,6 @@
 		"fields": [
 			{
 				"mode": "NULLABLE",
-				"name": "addresses",
-				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
 				"name": "birthday",
 				"type": "TIMESTAMP"
 			},
@@ -1281,11 +1276,6 @@
 			{
 				"mode": "NULLABLE",
 				"name": "screenName",
-				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "timeZoneId",
 				"type": "STRING"
 			}
 		],

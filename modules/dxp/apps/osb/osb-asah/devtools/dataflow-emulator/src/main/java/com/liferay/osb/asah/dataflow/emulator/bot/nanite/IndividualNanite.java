@@ -157,21 +157,18 @@ public class IndividualNanite {
 
 		BQIndividual mergedBQIndividual = new BQIndividual();
 
-		mergedBQIndividual.setAddresses(bqIndividual2.getAddresses());
 		mergedBQIndividual.setBirthday(bqIndividual2.getBirthday());
 		mergedBQIndividual.setCreateDate(bqIndividual2.getCreateDate());
 		mergedBQIndividual.setEmailAddress(bqIndividual2.getEmailAddress());
 		mergedBQIndividual.setFields(
 			_mergeBQIndividualFields(bqIndividual1, bqIndividual2));
 		mergedBQIndividual.setFirstName(bqIndividual2.getFirstName());
-		mergedBQIndividual.setGender(bqIndividual2.getGender());
 		mergedBQIndividual.setId(bqIndividual2.getId());
 		mergedBQIndividual.setLanguageId(bqIndividual2.getLanguageId());
 		mergedBQIndividual.setLastName(bqIndividual2.getLastName());
 		mergedBQIndividual.setMiddleName(bqIndividual2.getMiddleName());
 		mergedBQIndividual.setModifiedDate(bqIndividual2.getModifiedDate());
 		mergedBQIndividual.setScreenName(bqIndividual2.getScreenName());
-		mergedBQIndividual.setTimeZoneId(bqIndividual2.getTimeZoneId());
 
 		return mergedBQIndividual;
 	}
@@ -253,8 +250,6 @@ public class IndividualNanite {
 			bqUser.getDataSourceId(), bqUser.getFields(),
 			bqUser.getModifiedDate());
 
-		bqIndividual.setAddresses(
-			_getFieldValueStringByName(defaultFields, "addresses"));
 		bqIndividual.setBirthday(
 			_getFieldValueDateByName(defaultFields, "birthday"));
 
@@ -263,8 +258,6 @@ public class IndividualNanite {
 		bqIndividual.setFields(
 			ListUtils.union(defaultFields, _fetchCustomFields(bqUser)));
 		bqIndividual.setFirstName(bqUser.getFirstName());
-		bqIndividual.setGender(
-			_getFieldValueStringByName(defaultFields, "gender"));
 		bqIndividual.setId(bqUser.getIndividualId());
 		bqIndividual.setJobTitle(bqUser.getJobTitle());
 		bqIndividual.setLanguageId(
@@ -273,8 +266,6 @@ public class IndividualNanite {
 		bqIndividual.setMiddleName(bqUser.getMiddleName());
 		bqIndividual.setModifiedDate(bqUser.getModifiedDate());
 		bqIndividual.setScreenName(bqUser.getScreenName());
-		bqIndividual.setTimeZoneId(
-			_getFieldValueStringByName(defaultFields, "timeZoneId"));
 
 		return bqIndividual;
 	}
