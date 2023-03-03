@@ -79,13 +79,13 @@ public class DXPEntitiesIngestionNaniteTest
 		Assertions.assertEquals(1, _bqAccountEntryRepository.count());
 		Assertions.assertEquals(1, _bqAccountGroupRepository.count());
 		Assertions.assertEquals(1, _bqExpandoColumnRepository.count());
+		Assertions.assertEquals(2, _bqExpandoValueRepository.count());
 		Assertions.assertEquals(1, _bqGroupRepository.count());
 		Assertions.assertEquals(1, _bqOrganizationRepository.count());
 		Assertions.assertEquals(1, _bqRoleRepository.count());
 		Assertions.assertEquals(1, _bqTeamRepository.count());
 		Assertions.assertEquals(1, _bqUserGroupRepository.count());
 		Assertions.assertEquals(1, _bqUserRepository.count());
-		Assertions.assertEquals(2, _bqExpandoValueRepository.count());
 	}
 
 	@Test
