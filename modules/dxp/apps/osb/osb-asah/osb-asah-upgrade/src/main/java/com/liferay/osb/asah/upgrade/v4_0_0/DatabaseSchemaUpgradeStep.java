@@ -73,6 +73,11 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 
 			// BigQuery
 
+			_bigQuerySchemaManager.createTable(
+				ProjectIdThreadLocal.getProjectId(), "identityinterestscore");
+			_bigQuerySchemaManager.createTable(
+				ProjectIdThreadLocal.getProjectId(), "sessioninterestscore");
+
 			_addTableFields(
 				Arrays.asList(
 					Field.newBuilder(
