@@ -32,8 +32,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -123,23 +121,6 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 					new ClassPathResource("indexes.sql")),
 				_dataSource);
 
-			if (_environment.acceptsProfiles(Profiles.of("dev"))) {
-				ResourceDatabasePopulator resourceDatabasePopulator =
-					new ResourceDatabasePopulator(
-						new ClassPathResource("bigquery_functions.sql"));
-
-				resourceDatabasePopulator.setSeparator("COMMIT;");
-
-				DatabasePopulatorUtils.execute(
-					resourceDatabasePopulator, _dataSource);
-
-				DatabasePopulatorUtils.execute(
-					new ResourceDatabasePopulator(
-						new ClassPathResource("bigquery_tables.sql"),
-						new ClassPathResource("bigquery_views.sql")),
-					_dataSource);
-			}
-
 			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource("data.sql")),
@@ -225,8 +206,5 @@ public class PostgreSQLSchemaManagerImpl implements PostgreSQLSchemaManager {
 	@Autowired
 	@Qualifier("postgreSQLDataSource")
 	private DataSource _dataSource;
-
-	@Autowired
-	private Environment _environment;
 
 }
