@@ -23,6 +23,7 @@ import com.google.cloud.bigquery.StandardTableDefinition;
 import com.google.cloud.bigquery.Table;
 import com.google.cloud.bigquery.TableDefinition;
 
+import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -65,10 +66,10 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 					new ClassPathResource("tables_4.0.0.sql")),
 				_postgreSQLDataSource);
 
-			DatabasePopulatorUtils.execute(
+			/*DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource("constraints_4.0.0.sql")),
-				_postgreSQLDataSource);
+				_postgreSQLDataSource);*/
 
 			// BigQuery
 
@@ -108,6 +109,27 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 						Field.Mode.NULLABLE
 					).build()),
 				"accountentry");
+
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "asset");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "bloghourly");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "customassethourly");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "documentlibraryhourly");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "fieldmapping");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "formhourly");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "identityactivity");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "journalhourly");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "pagehourly");
+			_bigQuerySchemaManager.createOrReplaceView(
+				ProjectIdThreadLocal.getProjectId(), "pagereferrers");
 
 			if (_log.isInfoEnabled()) {
 				_log.info("Databases successfully upgraded to schema 4.0.0");
@@ -195,6 +217,9 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 		DatabaseSchemaUpgradeStep.class);
 
 	private BigQuery _bigQuery;
+
+	@Autowired
+	private BigQuerySchemaManager _bigQuerySchemaManager;
 
 	@Autowired
 	@Qualifier("postgreSQLDataSource")
