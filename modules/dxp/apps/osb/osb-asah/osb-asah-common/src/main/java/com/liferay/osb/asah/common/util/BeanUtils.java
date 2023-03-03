@@ -244,8 +244,8 @@ public class BeanUtils {
 							ArrayList<?> targetPropertyValueArrayList =
 								(ArrayList<?>)targetPropertyValue;
 
-							if (targetPropertyValueArrayList.get(0)
-									instanceof Map) {
+							if (targetPropertyValueArrayList.get(0) instanceof
+									Map) {
 
 								List<Object> records = new ArrayList<>();
 
