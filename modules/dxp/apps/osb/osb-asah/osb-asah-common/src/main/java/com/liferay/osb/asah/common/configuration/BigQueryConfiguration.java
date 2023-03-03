@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 
 /**
  * @author Marcellus Tavares
@@ -31,9 +32,26 @@ import org.springframework.context.annotation.Primary;
 public class BigQueryConfiguration {
 
 	@Bean
+	@ConditionalOnGoogleApplicationCredentials(matchIfMissing = true)
+	@Profile("dev")
+	public BigQuery devBigQuery() {
+		BigQueryOptions.Builder builder = BigQueryOptions.newBuilder();
+
+		BigQueryOptions bigQueryOptions = builder.setCredentials(
+			NoCredentials.getInstance()
+		).setHost(
+			"http://bigqueryemulator:9050"
+		).setProjectId(
+			"osbasahdev"
+		).build();
+
+		return bigQueryOptions.getService();
+	}
+
+	@Bean
 	@ConditionalOnGoogleApplicationCredentials
 	@Primary
-	public BigQuery computeEngineBigQuery() {
+	public BigQuery prodBigQuery() {
 		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
 
 		return bigQueryOptions.getService();
@@ -41,7 +59,8 @@ public class BigQueryConfiguration {
 
 	@Bean
 	@ConditionalOnGoogleApplicationCredentials(matchIfMissing = true)
-	public BigQuery emulatorBigQuery() {
+	@Profile("test")
+	public BigQuery testBigQuery() {
 		BigQueryOptions.Builder builder = BigQueryOptions.newBuilder();
 
 		BigQueryOptions bigQueryOptions = builder.setCredentials(
