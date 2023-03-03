@@ -241,10 +241,12 @@ public class BeanUtils {
 						if ((targetPropertyValue instanceof ArrayList<?>) &&
 							targetPropertyClass.isAssignableFrom(List.class)) {
 
-							ArrayList<?> targetPropertyValueList =
+							ArrayList<?> targetPropertyValueArrayList =
 								(ArrayList<?>)targetPropertyValue;
 
-							if (targetPropertyValueList.get(0) instanceof Map) {
+							if (targetPropertyValueArrayList.get(0)
+									instanceof Map) {
+
 								List<Object> records = new ArrayList<>();
 
 								for (Map<String, Object> sourceMap :
