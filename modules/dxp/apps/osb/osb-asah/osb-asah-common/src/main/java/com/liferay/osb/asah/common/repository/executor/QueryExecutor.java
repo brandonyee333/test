@@ -54,6 +54,6 @@ public interface QueryExecutor {
 
 	public <T> Optional<T> queryForObject(
 		Function<Map<String, Object>, T> rowMapperFunction,
-		SelectFinalStep<Record> selectFinalStep);
+		SelectFinalStep<? extends Record> selectFinalStep);
 
 }

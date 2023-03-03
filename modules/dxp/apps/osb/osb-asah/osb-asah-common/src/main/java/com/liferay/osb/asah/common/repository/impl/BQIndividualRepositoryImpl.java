@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.google.cloud.bigquery.FieldValueList;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
@@ -121,7 +122,7 @@ public class BQIndividualRepositoryImpl
 
 		SelectJoinStep
 			<Record11
-				<Long, Object, Object, Object, Object, Object, Object, Object,
+				<Object, Object, Object, Object, Object, Object, Object, Object,
 				 Object, Object, Object>> selectJoinStep1 = _getSelectJoinStep(
 					null, _getIndividualSelectJoinStep());
 
@@ -142,7 +143,7 @@ public class BQIndividualRepositoryImpl
 
 		SelectSeekStep1
 			<Record11
-				<Long, Object, Object, Object, Object, Object, Object, Object,
+				<Object, Object, Object, Object, Object, Object, Object, Object,
 				 Object, Object, Object>,
 			 Object> selectSeekStep1 = selectJoinStep1.where(
 				conditions
@@ -206,8 +207,7 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, String fieldName,
 		@Nullable Long individualSegmentId, Pageable pageable) {
 
-		Field<String> nestedField = _dslHelper.getNestedField(
-			"name", fieldName, "value", "fields");
+		Field groupByField = DSL.field(fieldName);
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -220,21 +220,29 @@ public class BQIndividualRepositoryImpl
 				_getIndividualSegmentIdCondition(individualSegmentId));
 		}
 
-		conditions.add(nestedField.isNotNull());
+		conditions.add(groupByField.isNotNull());
 
 		SelectSelectStep<Record> modifiedDateSelectSelectStep =
 			_dslContext.select();
 
 		return _queryExecutor.queryForList(
 			record -> {
-				BigDecimal count = (BigDecimal)record.get("count");
+				BigDecimal count = new BigDecimal(
+					String.valueOf(record.get("count")));
+
+				Object groupByFieldValue = record.get("groupByField");
+
+				if (groupByFieldValue instanceof Date) {
+					groupByFieldValue = DateUtil.toUTCString(
+						(Date)groupByFieldValue);
+				}
 
 				return new Distribution(
 					count.intValue(),
-					Collections.singletonList(record.get("nestedField")));
+					Collections.singletonList(groupByFieldValue));
 			},
 			modifiedDateSelectSelectStep.select(
-				nestedField.as("nestedField"),
+				groupByField.as("groupByField"),
 				DSL.count(
 				).as(
 					"count"
@@ -244,7 +252,7 @@ public class BQIndividualRepositoryImpl
 			).where(
 				conditions
 			).groupBy(
-				nestedField.as("nestedField")
+				groupByField
 			).orderBy(
 				getSortFields(
 					Collections.singletonMap("name", "values"),
@@ -272,7 +280,7 @@ public class BQIndividualRepositoryImpl
 
 		SelectJoinStep
 			<Record11
-				<Long, Object, Object, Object, Object, Object, Object, Object,
+				<Object, Object, Object, Object, Object, Object, Object, Object,
 				 Object, Object, Object>> selectJoinStep = _getSelectJoinStep(
 					segmentId, _getIndividualSelectJoinStep());
 
@@ -340,7 +348,7 @@ public class BQIndividualRepositoryImpl
 
 		SelectForUpdateStep
 			<Record11
-				<Long, Object, Object, Object, Object, Object, Object, Object,
+				<Object, Object, Object, Object, Object, Object, Object, Object,
 				 Object, Object, Object>> selectFinalStep =
 					selectJoinStep.where(
 						condition
@@ -364,21 +372,12 @@ public class BQIndividualRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			record -> {
-				Map<String, Object> map = new HashedMap<>(record);
-
-				if (_dslHelper.isBigQueryDialect()) {
-					map.put(
-						"fields",
-						FieldValueListUtil.toJSONArray(
-							(List<FieldValueList>)map.get("fields")));
-				}
-
 				BigDecimal activitiesCount = new BigDecimal(
-					String.valueOf(map.get("activitiescount")));
+					String.valueOf(record.get("activitiescount")));
 
 				return new Individual(
-					activitiesCount.longValue(), new BQIndividual(map),
-					(Date)map.get("lastactivitydate"), _objectMapper);
+					activitiesCount.longValue(), new BQIndividual(record),
+					(Date)record.get("lastactivitydate"), _objectMapper);
 			},
 			_getIndividualSelectOnConditionStep(selectFinalStep, sortFields));
 	}

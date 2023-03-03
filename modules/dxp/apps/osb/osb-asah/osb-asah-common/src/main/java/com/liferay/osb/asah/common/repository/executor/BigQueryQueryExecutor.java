@@ -173,7 +173,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	@Override
 	public <T> Optional<T> queryForObject(
 		Function<Map<String, Object>, T> rowMapperFunction,
-		SelectFinalStep<Record> selectFinalStep) {
+		SelectFinalStep<? extends Record> selectFinalStep) {
 
 		TableResult tableResult = _query(selectFinalStep);
 
