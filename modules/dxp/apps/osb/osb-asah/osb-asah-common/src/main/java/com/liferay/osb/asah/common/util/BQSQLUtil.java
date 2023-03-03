@@ -167,7 +167,7 @@ public class BQSQLUtil {
 			else if (value instanceof String) {
 				sb.append(_getValueString((String)value));
 			}
-			else if ((value instanceof Boolean) || (value instanceof Number)) {
+			else if (value instanceof Boolean || value instanceof Number) {
 				sb.append(value);
 			}
 			else {
