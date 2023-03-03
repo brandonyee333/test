@@ -116,11 +116,14 @@ public class BQFieldMappingRepositoryImpl
 	public List<BQFieldMapping> searchByFilterString(
 		String filterString, Pageable pageable) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
 		return _queryExecutor.queryForList(
 			BQFieldMapping::new,
-			selectSelectStep.from(
+			_dslContext.select(
+				DSL.field("context"), DSL.field("displayName"),
+				DSL.field("displayType"), DSL.field("fieldName"),
+				DSL.field("fieldType"), DSL.field("modifiedDate", Date.class),
+				DSL.field("ownerType")
+			).from(
 				"BQFieldMapping"
 			).where(
 				ConditionUtil.toCondition(filterString)
