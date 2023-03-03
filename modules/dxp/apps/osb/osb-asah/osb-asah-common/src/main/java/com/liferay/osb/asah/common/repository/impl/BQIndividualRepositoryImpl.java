@@ -426,16 +426,16 @@ public class BQIndividualRepositoryImpl
 
 	private SelectSelectStep
 		<Record11
-			<Long, Object, Object, Object, Object, Object, Object, Object,
+			<Object, Object, Object, Object, Object, Object, Object, Object,
 			 Object, Object, Object>> _getIndividualSelectJoinStep() {
 
 		return _dslContext.select(
 			DSL.coalesce(
-				DSL.cast(
+				DSL.field(
+					"SAFE_CAST({0} as INT64)",
 					DSL.sum(
 						DSL.field(
-							"IdentityActivity.activitiescount", Long.class)),
-					Long.class),
+							"IdentityActivity.activitiescount", Long.class))),
 				0L
 			).as(
 				"activitiescount"
