@@ -58,14 +58,13 @@ public class BigQueryDataExporter implements DataExporter {
 		DSLContext dslContext, String exportPath, String tableName) {
 
 		_bigQuery = bigQuery;
-
-		_bigQueryOptions = bigQuery.getOptions();
-
 		_dataExportTask = dataExportTask;
 		_dateFieldName = dateFieldName;
 		_dslContext = dslContext;
 		_exportPath = exportPath;
 		_tableName = tableName;
+
+		_bigQueryOptions = bigQuery.getOptions();
 
 		StorageOptions storageOptions = StorageOptions.getDefaultInstance();
 
