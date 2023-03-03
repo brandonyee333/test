@@ -83,6 +83,41 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	@Override
+	public void createOrReplaceView(String projectId, String viewName) {
+		JSONObject jsonObject = _viewsJSONObject.getJSONObject(viewName);
+		Dataset dataset = _bigQuery.getDataset(projectId);
+		boolean materialized = false;
+
+		if (Objects.equals(jsonObject.optString("type"), "materialized")) {
+			materialized = true;
+		}
+
+		Table table = _bigQuery.getTable(TableId.of(projectId, viewName));
+
+		if ((table != null) && table.exists()) {
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format(
+						"View %s.%s already exists", projectId, viewName));
+			}
+
+			_bigQuery.delete(table.getTableId());
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format(
+						"View %s.%s deleted successfully", projectId,
+						viewName));
+			}
+		}
+
+		_createView(
+			dataset.getDatasetId(),
+			_readFile("/bigquery/" + jsonObject.getString("path")),
+			materialized, projectId, viewName);
+	}
+
+	@Override
 	public void createSchema(String projectId) {
 		try {
 			Dataset dataset = _createDataset(projectId);

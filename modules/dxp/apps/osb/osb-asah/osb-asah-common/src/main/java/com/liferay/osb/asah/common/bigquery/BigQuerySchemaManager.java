@@ -19,6 +19,8 @@ package com.liferay.osb.asah.common.bigquery;
  */
 public interface BigQuerySchemaManager {
 
+	public void createOrReplaceView(String projectId, String viewName);
+
 	public void createSchema(String projectId);
 
 	public void createTable(String projectId, String tableName);
