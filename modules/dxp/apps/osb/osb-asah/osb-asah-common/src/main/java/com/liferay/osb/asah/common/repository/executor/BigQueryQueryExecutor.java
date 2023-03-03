@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.executor;
 
 import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQueryException;
 import com.google.cloud.bigquery.BigQueryOptions;
 import com.google.cloud.bigquery.Field;
 import com.google.cloud.bigquery.FieldList;
@@ -265,6 +266,11 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 		try {
 			return _bigQuery.query(queryConfig);
+		}
+		catch (BigQueryException bigQueryException) {
+			_log.error("Failed Query " + translatedQuery);
+
+			throw new RuntimeException(bigQueryException);
 		}
 		catch (JobException jobException) {
 			throw new RuntimeException(jobException);
