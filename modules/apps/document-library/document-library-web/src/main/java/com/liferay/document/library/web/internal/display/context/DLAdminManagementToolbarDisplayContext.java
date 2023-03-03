@@ -44,9 +44,11 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.ViewTypeItemList;
 import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.item.selector.criteria.file.criterion.FileExtensionItemSelectorCriterion;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -616,6 +618,11 @@ public class DLAdminManagementToolbarDisplayContext
 		sortingURL.setParameter("folderId", String.valueOf(folderId));
 		sortingURL.setParameter(
 			"fileEntryTypeId", String.valueOf(_getFileEntryTypeId()));
+		sortingURL.setParameter(
+			"fileExtensions",
+			JSONUtil.putAll(
+				_getFileExtensions()
+			).toString());
 
 		return sortingURL;
 	}
@@ -635,8 +642,6 @@ public class DLAdminManagementToolbarDisplayContext
 		return ParamUtil.getLong(_httpServletRequest, "fileEntryTypeId", -1);
 	}
 
-<<<<<<< HEAD
-=======
 	private String[] _getFileExtensions() {
 		return ParamUtil.getStringValues(_httpServletRequest, "fileExtensions");
 	}
@@ -670,7 +675,6 @@ public class DLAdminManagementToolbarDisplayContext
 		).buildString();
 	}
 
->>>>>>> 405f25ec5fd5 (LPS-154977 Create item selector url for search filter)
 	private List<DropdownItem> _getFilterNavigationDropdownItems() {
 		long fileEntryTypeId = _getFileEntryTypeId();
 		String navigation = ParamUtil.getString(
@@ -758,12 +762,13 @@ public class DLAdminManagementToolbarDisplayContext
 				dropdownItem.setLabel(label);
 			}
 		).add(
+			() -> FeatureFlagManagerUtil.isEnabled("LPS-84424"),
 			dropdownItem -> {
 				dropdownItem.putData("action", "openExtensionSelector");
 				dropdownItem.putData(
 					"extensionsFilterURL", _getFileExtensionsItemSelectorURL());
 				dropdownItem.setLabel(
-					LanguageUtil.get(_httpServletRequest, "Extensions..."));
+					LanguageUtil.get(_httpServletRequest, "extensions") + StringPool.TRIPLE_PERIOD);
 			}
 		).build();
 	}
