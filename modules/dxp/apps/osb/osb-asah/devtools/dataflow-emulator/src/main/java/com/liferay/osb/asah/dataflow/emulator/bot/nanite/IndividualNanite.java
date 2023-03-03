@@ -249,21 +249,19 @@ public class IndividualNanite {
 	private BQIndividual _toBQIndividual(BQUser bqUser) {
 		BQIndividual bqIndividual = new BQIndividual();
 
-		bqIndividual.setCreateDate(new Date());
-		bqIndividual.setEmailAddress(bqUser.getEmailAddress());
-
 		List<BQIndividual.Field> defaultFields = _toFields(
 			bqUser.getDataSourceId(), bqUser.getFields(),
 			bqUser.getModifiedDate());
-
-		bqIndividual.setFields(
-			ListUtils.union(defaultFields, _fetchCustomFields(bqUser)));
 
 		bqIndividual.setAddresses(
 			_getFieldValueStringByName(defaultFields, "addresses"));
 		bqIndividual.setBirthday(
 			_getFieldValueDateByName(defaultFields, "birthday"));
 
+		bqIndividual.setCreateDate(new Date());
+		bqIndividual.setEmailAddress(bqUser.getEmailAddress());
+		bqIndividual.setFields(
+			ListUtils.union(defaultFields, _fetchCustomFields(bqUser)));
 		bqIndividual.setFirstName(bqUser.getFirstName());
 		bqIndividual.setGender(
 			_getFieldValueStringByName(defaultFields, "gender"));
