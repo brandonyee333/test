@@ -74,19 +74,17 @@ DemographicsFieldMapping AS (
 		CURRENT_TIMESTAMP() modifiedDate,
 		'individual' ownerType,
 		false repeatable_
-	FROM UNNEST(ARRAY<STRUCT<displayName STRING, fieldName STRING,fieldType STRING>>
+	FROM UNNEST(ARRAY<STRUCT<displayName STRING, fieldName STRING, fieldType STRING>>
 		[
 			('additionalName', 'middleName', 'text'),
-			('address', 'addresses', 'text'),
 			('birthDate', 'birthday', 'date'),
 			('email', 'emailAddress', 'text'),
 			('familyName', 'lastName', 'text'),
-			('gender', 'gender', 'text'),
 			('givenName', 'firstName', 'text'),
 			('jobTitle', 'jobTitle', 'text'),
 			('languageId', 'languageId', 'text'),
-			('screenName', 'screenName', 'text'),
-			('timeZoneId', 'timeZoneId', 'text')
+			('modifiedDate', 'modifiedDate', 'date'),
+			('screenName', 'screenName', 'text')
 		])
 )
 
