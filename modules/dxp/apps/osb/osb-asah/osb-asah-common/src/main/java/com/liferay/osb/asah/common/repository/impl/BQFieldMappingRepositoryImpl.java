@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +67,26 @@ public class BQFieldMappingRepositoryImpl
 	}
 
 	@Override
+	public Optional<BQFieldMapping> findByFieldName(String fieldName) {
+		return _queryExecutor.queryForObject(
+			BQFieldMapping::new,
+			_dslContext.select(
+				DSL.field("context"), DSL.field("displayName"),
+				DSL.field("displayType"), DSL.field("fieldName"),
+				DSL.field("fieldType"), DSL.field("modifiedDate", Date.class),
+				DSL.field("ownerType")
+			).from(
+				DSL.table("BQFieldMapping")
+			).where(
+				DSL.field(
+					"fieldName"
+				).eq(
+					fieldName
+				)
+			));
+	}
+
+	@Override
 	public List<BQFieldMapping> findByFieldNameIn(
 		Collection<String> fieldNames) {
 
@@ -88,22 +109,6 @@ public class BQFieldMappingRepositoryImpl
 				"BQFieldMapping"
 			).where(
 				condition
-			));
-	}
-
-	@Override
-	public Optional<BQFieldMapping> findById(String id) {
-		return _queryExecutor.queryForObject(
-			BQFieldMapping::new,
-			_dslContext.select(
-			).from(
-				DSL.table("BQFieldMapping")
-			).where(
-				DSL.field(
-					"id"
-				).eq(
-					id
-				)
 			));
 	}
 

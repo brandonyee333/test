@@ -38,14 +38,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BQFieldMappingDog {
 
-	public BQFieldMapping getBQFieldMapping(String id) {
+	public BQFieldMapping getBQFieldMapping(String fieldName) {
 		Optional<BQFieldMapping> fieldMappingOptional =
-			_bqFieldMappingRepository.findById(id);
+			_bqFieldMappingRepository.findByFieldName(fieldName);
 
 		return fieldMappingOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
-				"There is no field mapping with ID " + id));
+				"There is no field mapping with field name " + fieldName));
 	}
 
 	public List<BQFieldMapping> getBQFieldMappings(Set<String> ids) {

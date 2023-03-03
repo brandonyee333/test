@@ -31,10 +31,10 @@ public interface CustomBQFieldMappingRepository {
 
 	public long countByFilterString(String filterString);
 
+	public Optional<BQFieldMapping> findByFieldName(String id);
+
 	public List<BQFieldMapping> findByFieldNameIn(
 		Collection<String> fieldNames);
-
-	public Optional<BQFieldMapping> findById(String id);
 
 	public List<BQFieldMapping> searchByFilterString(
 		String filterString, Pageable pageable);
