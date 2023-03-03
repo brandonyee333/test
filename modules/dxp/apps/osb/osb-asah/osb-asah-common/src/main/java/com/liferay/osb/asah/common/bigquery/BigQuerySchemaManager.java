@@ -21,6 +21,8 @@ public interface BigQuerySchemaManager {
 
 	public void createSchema(String projectId);
 
+	public void createTable(String projectId, String tableName);
+
 	public void createTables(String projectId);
 
 	public void deleteSchema(String projectId);

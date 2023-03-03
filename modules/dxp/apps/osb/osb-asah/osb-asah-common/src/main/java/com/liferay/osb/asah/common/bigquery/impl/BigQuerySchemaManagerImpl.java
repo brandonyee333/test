@@ -144,6 +144,24 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 	}
 
 	@Override
+	public void createTable(String projectId, String tableName) {
+		Table table = _bigQuery.getTable(TableId.of(projectId, tableName));
+
+		if ((table != null) && table.exists()) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					String.format(
+						"Table %s.%s already exists", projectId, tableName));
+			}
+
+			return;
+		}
+
+		_createTable(
+			projectId, _tablesJSONObject.getJSONObject(tableName), tableName);
+	}
+
+	@Override
 	public void createTables(String projectId) {
 		Dataset dataset = _bigQuery.getDataset(projectId);
 
