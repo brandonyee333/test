@@ -22,8 +22,10 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -74,8 +76,8 @@ public class BQSQLUtil {
 			if (value instanceof Date) {
 				sb.append(_getValueString((Date)value));
 			}
-			else if (value instanceof List) {
-				sb.append(_getValueString((List)value));
+			else if (value instanceof Collection) {
+				sb.append(_getValueString((Collection)value));
 			}
 			else if (value instanceof String) {
 				sb.append(_getValueString((String)value));
@@ -145,15 +147,7 @@ public class BQSQLUtil {
 		return columns;
 	}
 
-	private static String _getValueString(Date value) {
-		if (value == null) {
-			return null;
-		}
-
-		return "TIMESTAMP '" + DateUtil.toUTCString(value) + "'";
-	}
-
-	private static String _getValueString(List<?> values) {
+	private static String _getValueString(Collection<?> values) {
 		if (values.isEmpty()) {
 			return "[]";
 		}
@@ -162,10 +156,25 @@ public class BQSQLUtil {
 
 		sb.append("[");
 
-		for (int i = 0; i < values.size(); i++) {
-			sb.append(_createInsertValues(_getColumns(values.get(i))));
+		Iterator<?> iterator = values.iterator();
 
-			if ((i + 1) < values.size()) {
+		while (iterator.hasNext()) {
+			Object value = iterator.next();
+
+			if (value instanceof Date) {
+				sb.append(_getValueString((Date)value));
+			}
+			else if (value instanceof String) {
+				sb.append(_getValueString((String)value));
+			}
+			else if ((value instanceof Boolean) || (value instanceof Number)) {
+				sb.append(value);
+			}
+			else {
+				sb.append(_createInsertValues(_getColumns(value)));
+			}
+
+			if (iterator.hasNext()) {
 				sb.append(", ");
 			}
 		}
@@ -173,6 +182,14 @@ public class BQSQLUtil {
 		sb.append("]");
 
 		return sb.toString();
+	}
+
+	private static String _getValueString(Date value) {
+		if (value == null) {
+			return null;
+		}
+
+		return "TIMESTAMP '" + DateUtil.toUTCString(value) + "'";
 	}
 
 	private static String _getValueString(String value) {
