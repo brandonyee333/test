@@ -19,13 +19,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.bigquery.FieldValueList;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.BQIndividual;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
+import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
+import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.BQSQLUtil;
 import com.liferay.osb.asah.common.util.FieldValueListUtil;
 
@@ -106,13 +110,59 @@ public class BQIndividualRepositoryImpl
 		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
 	}
 
-	public long countIndividualFieldValues(String fieldName) {
-		return _queryExecutor.queryForLong(
+	public long countIndividualFieldValuesCustom(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString) {
+
+		Optional<BQFieldMapping> bqFieldMappingOptional =
+			_bqFieldMappingRepository.findByDisplayName(fieldName);
+
+		if (!bqFieldMappingOptional.isPresent()) {
+			return 0;
+		}
+
+		BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
+
+		if (bqFieldMapping.getRepeatable()) {
+			return _countIndividualRepeatableFieldValuesCustom(fieldName);
+		}
+
+		return _countIndividualFieldValuesCustom(fieldName);
+	}
+
+	public long countIndividualFieldValuesDemographics(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.select(
 				DSL.countDistinct(
 					DSL.field(
 						_fieldNameConversionMap.getOrDefault(
-							fieldName, fieldName)))));
+							fieldName, fieldName))));
+
+		SelectJoinStep<Record1<Integer>> selectJoinStep;
+
+		if (channelId != null) {
+			selectJoinStep = _getSelectJoinStep(null, selectSelectStep);
+		}
+		else {
+			selectJoinStep = selectSelectStep.from("BQIndividual");
+		}
+
+		Condition condition;
+
+		if (StringUtils.isNotBlank(filterString)) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString);
+
+			condition = filterExpression.getCondition();
+		}
+		else {
+			condition = DSL.noCondition();
+		}
+
+		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
 	}
 
 	@Override
@@ -391,26 +441,169 @@ public class BQIndividualRepositoryImpl
 			_getIndividualSelectOnConditionStep(selectFinalStep, sortFields));
 	}
 
-	public List<String> searchIndividualFieldValues(
-		String fieldName, Pageable pageable) {
+	public List<String> searchIndividualFieldValuesCustom(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString, Pageable pageable) {
 
-		return _queryExecutor.queryForList(
-			recordMap -> String.valueOf(recordMap.get("fieldName")),
+		Optional<BQFieldMapping> bqFieldMappingOptional =
+			_bqFieldMappingRepository.findByDisplayName(fieldName);
+
+		if (!bqFieldMappingOptional.isPresent()) {
+			return Collections.emptyList();
+		}
+
+		BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
+
+		if (bqFieldMapping.getRepeatable()) {
+			return _getIndividualFieldValuesCustomRepeatable(
+				channelId, fieldName, filterString, pageable);
+		}
+
+		return _getIndividualFieldValuesCustom(
+			channelId, fieldName, filterString, pageable);
+	}
+
+	public List<String> searchIndividualFieldValuesDemographics(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString, Pageable pageable) {
+
+		SelectSelectStep<Record1<String>> selectSelectStep =
 			_dslContext.selectDistinct(
 				DSL.field(
 					_fieldNameConversionMap.getOrDefault(fieldName, fieldName),
 					String.class
 				).as(
 					"fieldValue"
-				)
-			).from(
-				"BQIndividual"
+				));
+
+		SelectJoinStep<Record1<String>> selectJoinStep;
+
+		if (channelId != null) {
+			selectJoinStep = _getSelectJoinStep(null, selectSelectStep);
+		}
+		else {
+			selectJoinStep = selectSelectStep.from("BQIndividual");
+		}
+
+		Condition condition;
+
+		if (StringUtils.isNotBlank(filterString)) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString);
+
+			condition = filterExpression.getCondition();
+		}
+		else {
+			condition = DSL.noCondition();
+		}
+
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(recordMap.get("fieldValue")),
+			selectJoinStep.where(
+				condition
 			).orderBy(
 				DSL.field("fieldValue")
 			).limit(
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
+			));
+	}
+
+	private long _countIndividualFieldValuesCustom(String fieldName) {
+		return _queryExecutor.queryForLong(
+			_dslContext.select(
+				DSL.countDistinct(
+					DSL.field("individualFieldValues.value")
+				).as(
+					"totalElements"
+				)
+			).from(
+				"BQIndividual"
+			).crossJoin(
+				DSL.unnest(
+					DSL.field("fields")
+				).as(
+					"individualFields"
+				)
+			).join(
+				"BQFieldMapping"
+			).on(
+				DSL.field(
+					"BQFieldMapping.fieldName"
+				).eq(
+					DSL.field("individualFields.name")
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"BQFieldMapping.context"
+					).eq(
+						"custom"
+					),
+					DSL.field(
+						"individualFields.name"
+					).eq(
+						fieldName
+					))
+			));
+	}
+
+	private long _countIndividualRepeatableFieldValuesCustom(String fieldName) {
+		return _queryExecutor.queryForLong(
+			_dslContext.select(
+				DSL.countDistinct(
+					DSL.field(
+						"JSON_EXTRACT_SCALAR(fieldValueItem, '$')",
+						String.class)
+				).as(
+					"totalElements"
+				)
+			).from(
+				_dslContext.select(
+					DSL.field(
+						"JSON_EXTRACT_ARRAY(individualFields.value)",
+						String.class
+					).as(
+						"fieldValueArray"
+					)
+				).from(
+					"BQIndividual"
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("fields")
+					).as(
+						"individualFields"
+					)
+				).join(
+					"BQFieldMapping"
+				).on(
+					DSL.field(
+						"BQFieldMapping.fieldName"
+					).eq(
+						DSL.field("individualFields.name")
+					)
+				).where(
+					DSL.and(
+						DSL.field(
+							"BQFieldMapping.context"
+						).eq(
+							DSL.val("custom")
+						),
+						DSL.field(
+							"individualFields.name"
+						).eq(
+							fieldName
+						))
+				).asTable(
+					"individualFieldValues"
+				)
+			).crossJoin(
+				DSL.unnest(
+					DSL.field("fieldValueArray")
+				).as(
+					"fieldValueItem"
+				)
 			));
 	}
 
@@ -431,6 +624,147 @@ public class BQIndividualRepositoryImpl
 					).eq(
 						DSL.field("BQIndividual.id")
 					))
+			));
+	}
+
+	private List<String> _getIndividualFieldValuesCustom(
+		Long channelId, String fieldName, String filterString,
+		Pageable pageable) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"BQFieldMapping.context"
+			).eq(
+				DSL.val("custom")
+			));
+		conditions.add(
+			DSL.field(
+				"individualFields.name"
+			).eq(
+				fieldName
+			));
+		conditions.add(ConditionUtil.toCondition(filterString));
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"BQIdentityActivity.channelId"
+				).eq(
+					channelId
+				));
+		}
+
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(recordMap.get("individualFieldValue")),
+			_dslContext.selectDistinct(
+				DSL.field(
+					"individualFieldValues.value"
+				).as(
+					"individualFieldValue"
+				)
+			).from(
+				"BQIndividual"
+			).crossJoin(
+				DSL.unnest(
+					DSL.field("fields")
+				).as(
+					"individualFields"
+				)
+			).join(
+				"BQFieldMapping"
+			).on(
+				DSL.field(
+					"BQFieldMapping.fieldName"
+				).eq(
+					DSL.field("individualFields.name")
+				)
+			).where(
+				conditions
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	private List<String> _getIndividualFieldValuesCustomRepeatable(
+		Long channelId, String fieldName, String filterString,
+		Pageable pageable) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"BQFieldMapping.context"
+			).eq(
+				DSL.val("custom")
+			));
+		conditions.add(
+			DSL.field(
+				"individualFields.name"
+			).eq(
+				fieldName
+			));
+		conditions.add(ConditionUtil.toCondition(filterString));
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"BQIdentityActivity.channelId"
+				).eq(
+					channelId
+				));
+		}
+
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(recordMap.get("individualFieldValue")),
+			_dslContext.selectDistinct(
+				DSL.field(
+					"JSON_EXTRACT_SCALAR(fieldValueItem, '$')", String.class
+				).as(
+					"individualFieldValue"
+				)
+			).from(
+				_dslContext.select(
+					DSL.field(
+						"JSON_EXTRACT_ARRAY(individualFields.value)",
+						String.class
+					).as(
+						"fieldValueArray"
+					)
+				).from(
+					"BQIndividual"
+				).crossJoin(
+					DSL.unnest(
+						DSL.field("fields")
+					).as(
+						"individualFields"
+					)
+				).join(
+					"BQFieldMapping"
+				).on(
+					DSL.field(
+						"BQFieldMapping.fieldName"
+					).eq(
+						DSL.field("individualFields.name")
+					)
+				).where(
+					conditions
+				).asTable(
+					"individualFieldValues"
+				)
+			).crossJoin(
+				DSL.unnest(
+					DSL.field("fieldValueArray")
+				).as(
+					"fieldValueItem"
+				)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
 			));
 	}
 
@@ -652,6 +986,9 @@ public class BQIndividualRepositoryImpl
 	private static final String[] _SEARCH_COLUMNS = {
 		"emailAddress", "firstName", "jobTitle", "lastName", "middleName"
 	};
+
+	@Autowired
+	private BQFieldMappingRepository _bqFieldMappingRepository;
 
 	private final DSLContext _dslContext;
 

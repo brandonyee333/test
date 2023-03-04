@@ -35,7 +35,13 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		@Nullable String query, @Nullable Long segmentId);
 
-	public long countIndividualFieldValues(String fieldName);
+	public long countIndividualFieldValuesCustom(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString);
+
+	public long countIndividualFieldValuesDemographics(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString);
 
 	public void deleteAll();
 
@@ -55,7 +61,12 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		Pageable pageable, @Nullable String query, @Nullable Long segmentId);
 
-	public List<String> searchIndividualFieldValues(
-		String groupByField, Pageable pageable);
+	public List<String> searchIndividualFieldValuesCustom(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString, Pageable pageable);
+
+	public List<String> searchIndividualFieldValuesDemographics(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString, Pageable pageable);
 
 }

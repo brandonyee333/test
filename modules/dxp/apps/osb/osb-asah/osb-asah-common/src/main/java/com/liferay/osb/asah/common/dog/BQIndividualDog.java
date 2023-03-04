@@ -32,6 +32,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -90,16 +91,35 @@ public class BQIndividualDog {
 	}
 
 	public Page<String> getBQIndividualFieldValuePage(
-		String fieldName, int page, int size) {
+		Long channelId, String filterString, String groupByField, int page,
+		int size) {
+
+		String[] fields = StringUtils.split(groupByField, "/");
+
+		String attributeType = fields[0];
 
 		PageRequest pageRequest = PageRequest.of(page, size);
 
-		return PageableExecutionUtils.getPage(
-			_bqIndividualRepository.searchIndividualFieldValues(
-				fieldName, pageRequest),
-			pageRequest,
-			() -> _bqIndividualRepository.countIndividualFieldValues(
-				fieldName));
+		if (attributeType.equals("custom")) {
+			return PageableExecutionUtils.getPage(
+				_bqIndividualRepository.searchIndividualFieldValuesCustom(
+					channelId, fields[1], filterString, pageRequest),
+				pageRequest,
+				() -> _bqIndividualRepository.countIndividualFieldValuesCustom(
+					channelId, fields[1], filterString));
+		}
+		else if (attributeType.equals("demographics")) {
+			return PageableExecutionUtils.getPage(
+				_bqIndividualRepository.searchIndividualFieldValuesDemographics(
+					channelId, fields[1], filterString, pageRequest),
+				pageRequest,
+				() ->
+					_bqIndividualRepository.
+						countIndividualFieldValuesDemographics(
+							channelId, fields[1], filterString));
+		}
+
+		return null;
 	}
 
 	public Page<Distribution> getDistributionPage(
