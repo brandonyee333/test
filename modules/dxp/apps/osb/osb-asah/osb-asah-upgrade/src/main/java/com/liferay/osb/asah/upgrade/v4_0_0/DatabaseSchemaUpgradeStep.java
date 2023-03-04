@@ -66,10 +66,10 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 					new ClassPathResource("tables_4.0.0.sql")),
 				_postgreSQLDataSource);
 
-			/*DatabasePopulatorUtils.execute(
+			DatabasePopulatorUtils.execute(
 				new ResourceDatabasePopulator(
 					new ClassPathResource("constraints_4.0.0.sql")),
-				_postgreSQLDataSource);*/
+				_postgreSQLDataSource);
 
 			// BigQuery
 
