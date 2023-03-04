@@ -26,7 +26,8 @@ USING (
 			'WebContent'
 		) AND
 		Event.assetId IS NULL AND
-		Event.assetTitle IS NULL
+		Event.assetTitle IS NULL AND
+		Event.eventId != 'pageViewed'
 ) AS staging
 ON (replica.id = staging.id)
 WHEN MATCHED THEN
