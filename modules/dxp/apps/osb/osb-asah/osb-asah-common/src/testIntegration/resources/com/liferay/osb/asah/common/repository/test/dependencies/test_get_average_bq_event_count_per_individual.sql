@@ -1,9 +1,3 @@
-INSERT INTO Channel (id, createDate) VALUES (1, '2021-05-31');
-
-INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('DATE', 'TEST_DATE', 56789, 'testDate', 'LOCAL');
-
-INSERT INTO EventDefinition (applicationId, id, blocked, description, displayName, name, type) VALUES ('CustomEvent', 246810, false, 'Test Description 1', 'Test Display Name 1', 'testEvent1', 'CUSTOM');
-
 INSERT INTO BQEvent (applicationId, channelId, eventDate, eventId, id, userId) VALUES ('CustomEvent', 1, '2021-05-14', 'testEvent1', 1, '9');
 INSERT INTO BQEvent (applicationId, channelId, eventDate, eventId, id, userId) VALUES ('CustomEvent', 1, '2021-05-17', 'testEvent1', 6, '4');
 INSERT INTO BQEvent (applicationId, channelId, eventDate, eventId, id, userId) VALUES ('CustomEvent', 1, '2021-05-17', 'testEvent1', 7, '5');
@@ -33,3 +27,9 @@ INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-13 10:00:00', 16, 'testDate', '2021-01-13 03:30:00');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-13 10:00:00', 32, 'testDate', '2021-01-14 03:30:00');
 INSERT INTO BQEventProperty (channelId, eventDate, id, name, value) VALUES (1, '2021-05-13 10:00:00', 33, 'testDate', '2021-05-13 05:30:00');
+
+INSERT INTO Channel (id, createDate) VALUES (1, '2021-05-31');
+
+INSERT INTO EventAttributeDefinition (dataType, displayName, id, name, type) VALUES ('DATE', 'TEST_DATE', 56789, 'testDate', 'LOCAL');
+
+INSERT INTO EventDefinition (applicationId, id, blocked, description, displayName, name, type) VALUES ('CustomEvent', 246810, false, 'Test Description 1', 'Test Display Name 1', 'testEvent1', 'CUSTOM');

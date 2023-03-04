@@ -1,9 +1,3 @@
-INSERT INTO EventDefinition(description, displayName, id, name, type) VALUES('Test Custom Event Definition', 'Test Event Definition', 3002, 'test', 'CUSTOM');
-
-INSERT INTO EventAttributeDefinition(dataType, description, displayName, id, name, type) VALUES('STRING', 'Event Attribute Definition Description', 'Event Attribute Definition Name', 3001, 'test', 'LOCAL');
-
-INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES(3001, 3002, 'Test');
-
 INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, title, userId) VALUES (2001, 1, timestamp '${now-18d}', 'test', '1', 'Test', '1');
 INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, title, userId) VALUES (2002, 1, timestamp '${now-17d}', 'test', '2', 'Test', '1');
 INSERT INTO BQEvent (id, channelId, eventDate, eventId, sessionId, title, userId) VALUES (2003, 1, timestamp '${now-16d}', 'test', '3', 'Test', '1');
@@ -23,3 +17,9 @@ INSERT INTO BQEventProperty(eventDate, id, name, value) VALUES(timestamp '${now-
 INSERT INTO BQEventProperty(eventDate, id, name, value) VALUES(timestamp '${now-12d}', 2007, 'test', 'EvEnT AtTrIbUtE Value 3');
 INSERT INTO BQEventProperty(eventDate, id, name, value) VALUES(timestamp '${now-11d}', 2008, 'test', 'EvEnT AtTrIbUtE Value 4');
 INSERT INTO BQEventProperty(eventDate, id, name, value) VALUES(timestamp '${now-10d}', 2009, 'test', 'A totally different value');
+
+INSERT INTO EventDefinition(description, displayName, id, name, type) VALUES('Test Custom Event Definition', 'Test Event Definition', 3002, 'test', 'CUSTOM');
+
+INSERT INTO EventAttributeDefinition(dataType, description, displayName, id, name, type) VALUES('STRING', 'Event Attribute Definition Description', 'Event Attribute Definition Name', 3001, 'test', 'LOCAL');
+
+INSERT INTO EventDefinitionEventAttributeDefinition(eventAttributeDefinitionId, eventDefinitionId, sampleValue) VALUES(3001, 3002, 'Test');

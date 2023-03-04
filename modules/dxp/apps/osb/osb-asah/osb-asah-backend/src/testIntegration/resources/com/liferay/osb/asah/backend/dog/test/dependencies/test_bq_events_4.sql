@@ -14,7 +14,6 @@ INSERT INTO Session (channelId, id, sessionStart, sessionEnd, userId) VALUES (1,
 INSERT INTO Session (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '6', timestamp '${now-8d}', timestamp '${now-8d}', '2');
 INSERT INTO Session (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '7', timestamp '${now-8d}', timestamp '${now-8d}', '3');
 INSERT INTO Session (channelId, id, sessionStart, sessionEnd, userId) VALUES (1, '8', timestamp '${now-10d}', timestamp '${now-10d}', '4');
-
 INSERT INTO Session (channelId, id, sessionStart, sessionEnd, userId) VALUES (2, '9', timestamp '${now-12d}', timestamp '${now-12d}', '1');
 INSERT INTO Session (channelId, id, sessionStart, sessionEnd, userId) VALUES (2, '10', timestamp '${now-3d}', timestamp '${now-3d}', '2');
 INSERT INTO Session (channelId, id, sessionStart, sessionEnd, userId) VALUES (2, '11', timestamp '${now-3d}', timestamp '${now-3d}', '3');
