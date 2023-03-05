@@ -1,0 +1,11 @@
+buildService {
+	apiDir = "../dsServiceBuilder-api/src/main/java"
+}
+
+dependencies {
+	compile project(":modules:dsServiceBuilder:dsServiceBuilder-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+group = "dsservicebuilder"

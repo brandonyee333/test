@@ -1,0 +1,10 @@
+Bundle-Name: dsServiceBuilder-api
+Bundle-SymbolicName: dsservicebuilder.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	dsservicebuilder.exception,\
+	dsservicebuilder.model,\
+	dsservicebuilder.service,\
+	dsservicebuilder.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../dsServiceBuilder-service/service.xml

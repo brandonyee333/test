@@ -12,13 +12,13 @@ allprojects {
 }
 
 runGradleTest {
-	dependsOn ":modules:sample:sample-service:buildService"
-	dependsOn ":modules:sample:sample-service:jar"
+	dependsOn ":modules:springServiceBuilder:springServiceBuilder-service:buildService"
+	dependsOn ":modules:springServiceBuilder:springServiceBuilder-service:jar"
 
 	doLast {
-		Project serviceProject = project(":modules:sample:sample-service")
+		Project serviceProject = project(":modules:springServiceBuilder:springServiceBuilder-service")
 
-		File jarFile = serviceProject.file("build/libs/sample.service-1.0.0.jar")
+		File jarFile = serviceProject.file("build/libs/springservicebuilder.service-1.0.0.jar")
 
 		assert jarFile.exists()
 
@@ -35,5 +35,7 @@ runGradleTest {
 
 			assert inputStream.text.normalize().contains("Liferay-Spring-Context: META-INF/spring")
 		}
+		
+		
 	}
 }

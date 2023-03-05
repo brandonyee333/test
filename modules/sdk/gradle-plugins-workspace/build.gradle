@@ -18,6 +18,7 @@ task downloadHotFixZip(type: Download)
 task downloadPluginsSdk(type: Download)
 task downloadProductInfo(type: Download)
 
+
 String bundleUrl = "https://releases-cdn.liferay.com/portal/7.1.2-ga3/liferay-ce-portal-tomcat-7.1.2-ga3-20190107144105508.tar.gz"
 File gradleTestDependenciesDir = new File(buildDir, "gradle-test-dependencies")
 String gradleVersion = "6.9.2"
@@ -111,6 +112,17 @@ copyWorkspacesSamples {
 			from new File(GradleUtil.getRootDir(project.getRootProject(), "portal-impl"), "workspaces/sample-workspace/client-extensions/sample-theme-favicon")
 			into "src/gradleTest/clientExtensionSamples/sample-theme-favicon"
 		}
+
+		copy {
+			from new File(GradleUtil.getRootDir(project.getRootProject(), "portal-impl"), "workspaces/sample-workspace/client-extensions/sample-theme-favicon")
+			into "src/gradleTest/clientExtensionSamples/sample-theme-favicon"
+		}
+		
+		copy {
+			from new File(project.getProjectDir() ,"samples/springServiceBuilder/")
+			into "src/gradleTest/springContext/modules/springServiceBuilder"
+			includeEmptyDirs true
+		}		
 	}
 }
 
@@ -202,6 +214,11 @@ gradleTest {
 	gradleArguments "--project-prop", "pluginClasspathDir=${uri(gradleTestDependenciesDir)}"
 
 	versions "5.6.4", gradleVersion
+	
+	
+	doLast {
+        delete 'src/gradleTest/springContext/modules/'
+    }
 }
 
 liferayOSGi {
