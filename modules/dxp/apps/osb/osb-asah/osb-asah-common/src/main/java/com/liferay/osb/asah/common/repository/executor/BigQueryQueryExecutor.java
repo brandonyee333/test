@@ -268,7 +268,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 			return _bigQuery.query(queryConfig);
 		}
 		catch (BigQueryException bigQueryException) {
-			_log.error("Failed Query " + translatedQuery);
+			_log.error("Failed query: " + translatedQuery);
 
 			throw new RuntimeException(bigQueryException);
 		}
