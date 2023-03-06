@@ -161,14 +161,14 @@ public class BQSQLUtil {
 		while (iterator.hasNext()) {
 			Object value = iterator.next();
 
-			if (value instanceof Date) {
+			if (value instanceof Boolean || value instanceof Number) {
+				sb.append(value);
+			}
+			else if (value instanceof Date) {
 				sb.append(_getValueString((Date)value));
 			}
 			else if (value instanceof String) {
 				sb.append(_getValueString((String)value));
-			}
-			else if (value instanceof Boolean || value instanceof Number) {
-				sb.append(value);
 			}
 			else {
 				sb.append(_createInsertValues(_getColumns(value)));
