@@ -1,0 +1,10 @@
+Bundle-Name: liferay-sample-spring-service-builder-api
+Bundle-SymbolicName: com.liferay.sample.spring.service.builder.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	sample.spring.service.builder.exception,\
+	sample.spring.service.builder.model,\
+	sample.spring.service.builder.service,\
+	sample.spring.service.builder.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../sample-spring-service-builder-service/service.xml

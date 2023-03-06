@@ -18,7 +18,6 @@ task downloadHotFixZip(type: Download)
 task downloadPluginsSdk(type: Download)
 task downloadProductInfo(type: Download)
 
-
 String bundleUrl = "https://releases-cdn.liferay.com/portal/7.1.2-ga3/liferay-ce-portal-tomcat-7.1.2-ga3-20190107144105508.tar.gz"
 File gradleTestDependenciesDir = new File(buildDir, "gradle-test-dependencies")
 String gradleVersion = "6.9.2"
@@ -117,12 +116,46 @@ copyWorkspacesSamples {
 			from new File(GradleUtil.getRootDir(project.getRootProject(), "portal-impl"), "workspaces/sample-workspace/client-extensions/sample-theme-favicon")
 			into "src/gradleTest/clientExtensionSamples/sample-theme-favicon"
 		}
-		
+
 		copy {
-			from new File(project.getProjectDir() ,"samples/springServiceBuilder/")
-			into "src/gradleTest/springContext/modules/springServiceBuilder"
+			from new File(project.getProjectDir() ,"samples/sample-ds-service-builder/")
+			into "src/gradleTest/flexibleLayout/modules/sample-ds-service-builder"
 			includeEmptyDirs true
-		}		
+			exclude 'sample-ds-service-builder-test'
+		}
+
+		copy {
+			from new File(project.getProjectDir() ,"samples/sample-ds-service-builder/")
+			into "src/gradleTest/flexibleLayoutLegacy/modules/sample-ds-service-builder"
+			includeEmptyDirs true
+			exclude 'sample-ds-service-builder-test'
+		}
+
+		copy {
+			from new File(project.getProjectDir() ,"samples/sample-ds-service-builder/")
+			into "src/gradleTest/flexibleLayoutWildcard/modules/sample-ds-service-builder"
+			includeEmptyDirs true
+			exclude 'sample-ds-service-builder-test'
+		}
+
+		copy {
+			from new File(project.getProjectDir() ,"samples/sample-ds-service-builder/")
+			into "src/gradleTest/excludeModuleDirs/modules/sample-ds-service-builder"
+			includeEmptyDirs true
+			exclude 'sample-ds-service-builder-test'
+		}
+
+		copy {
+			from new File(project.getProjectDir() ,"samples/sample-spring-service-builder/")
+			into "src/gradleTest/springContext/modules/sample-spring-service-builder"
+			includeEmptyDirs true
+		}
+
+		copy {
+			from new File(project.getProjectDir() ,"samples/sample-ds-service-builder/")
+			into "src/gradleTest/testIntegrationClasses/modules/sample-ds-service-builder"
+			includeEmptyDirs true
+		}
 	}
 }
 
@@ -214,11 +247,16 @@ gradleTest {
 	gradleArguments "--project-prop", "pluginClasspathDir=${uri(gradleTestDependenciesDir)}"
 
 	versions "5.6.4", gradleVersion
-	
-	
+
 	doLast {
-        delete 'src/gradleTest/springContext/modules/'
-    }
+		delete 'src/gradleTest/excludeModuleDirs/modules/'
+		delete 'src/gradleTest/flexibleLayout/modules/sample-ds-service-builder'
+		delete 'src/gradleTest/flexibleLayoutLegacy/modules/sample-ds-service-builder'
+		delete 'src/gradleTest/flexibleLayoutWildcard/modules/sample-ds-service-builder'
+		delete 'src/gradleTest/springContext/modules/'
+		delete 'src/gradleTest/testIntegrationClasses/modules/'
+
+	}
 }
 
 liferayOSGi {

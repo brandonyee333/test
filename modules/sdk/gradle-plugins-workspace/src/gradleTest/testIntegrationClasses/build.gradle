@@ -9,15 +9,16 @@ allprojects {
 }
 
 runGradleTest {
-	dependsOn ":modules:foo:foo-service:buildService", ":modules:foo:foo-test:testIntegrationClasses"
+	dependsOn ":modules:sample-ds-service-builder:sample-ds-service-builder-service:buildService"
+	dependsOn ":modules:sample-ds-service-builder:sample-ds-service-builder-test:testIntegrationClasses"
 
 	doLast {
-		Project fooTestProject = project(":modules:foo:foo-test")
+		Project sampledsServiceBuilderTestProject = project(":modules:sample-ds-service-builder:sample-ds-service-builder-test")
 
-		File testClassesIntegrationDir = fooTestProject.file("test-classes/integration")
+		File testClassesIntegrationDir = sampledsServiceBuilderTestProject.file("test-classes/integration")
 
 		assert testClassesIntegrationDir.exists()
 
-		assert fooTestProject.clean.targetFiles.asPath.contains("test-classes")
+		assert sampledsServiceBuilderTestProject.clean.targetFiles.asPath.contains("test-classes")
 	}
 }

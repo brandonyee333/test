@@ -1,0 +1,12 @@
+buildService {
+	apiDir = "../sample-ds-service-builder-api/src/main/java"
+	testDir = "../sample-ds-service-builder-test/src/testIntegration/java"
+}
+
+dependencies {
+	compile project(":modules:sample-ds-service-builder:sample-ds-service-builder-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+group = "sample.ds.service.builder"

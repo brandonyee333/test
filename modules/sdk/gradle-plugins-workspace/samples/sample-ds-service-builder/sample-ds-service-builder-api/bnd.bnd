@@ -1,0 +1,10 @@
+Bundle-Name: liferay-sample-ds-service-builder-api
+Bundle-SymbolicName: com.liferay.sample.ds.service.builder.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	sample.ds.service.builder.exception,\
+	sample.ds.service.builder.model,\
+	sample.ds.service.builder.service,\
+	sample.ds.service.builder.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../sample-ds-service-builder-service/service.xml

@@ -12,17 +12,17 @@ allprojects {
 }
 
 runGradleTest {
-	dependsOn ":modules:springServiceBuilder:springServiceBuilder-service:buildService"
-	dependsOn ":modules:springServiceBuilder:springServiceBuilder-service:jar"
+	dependsOn ":modules:sample-spring-service-builder:sample-spring-service-builder-service:buildService"
+	dependsOn ":modules:sample-spring-service-builder:sample-spring-service-builder-service:jar"
 
 	doLast {
-		Project serviceProject = project(":modules:springServiceBuilder:springServiceBuilder-service")
+		Project sampleSpringServiceBuilderServiceProject = project(":modules:sample-spring-service-builder:sample-spring-service-builder-service")
 
-		File jarFile = serviceProject.file("build/libs/springservicebuilder.service-1.0.0.jar")
+		File sampleSpringServiceBuilderServiceJarFile = sampleSpringServiceBuilderServiceProject.file("build/libs/com.liferay.sample.spring.service.builder.service-1.0.0.jar")
 
-		assert jarFile.exists()
+		assert sampleSpringServiceBuilderServiceJarFile.exists()
 
-		ZipFile zipFile = new ZipFile(jarFile)
+		ZipFile zipFile = new ZipFile(sampleSpringServiceBuilderServiceJarFile)
 
 		String zipEntryName = "META-INF/MANIFEST.MF"
 
@@ -35,7 +35,5 @@ runGradleTest {
 
 			assert inputStream.text.normalize().contains("Liferay-Spring-Context: META-INF/spring")
 		}
-		
-		
 	}
 }

@@ -1,0 +1,11 @@
+buildService {
+	apiDir = "../sample-spring-service-builder-api/src/main/java"
+}
+
+dependencies {
+	compile project(":modules:sample-spring-service-builder:sample-spring-service-builder-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+}
+
+group = "sample.spring.service.builder"
