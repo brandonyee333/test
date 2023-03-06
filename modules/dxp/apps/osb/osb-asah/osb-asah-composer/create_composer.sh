@@ -8,8 +8,8 @@ SERVICE_ACCOUNT=ac-composer-admin@${PROJECT_ID}.iam.gserviceaccount.com
 COMPOSER_ENVIRONMENT_NAME=ac-composer-${LCP_PROJECT_ID}
 
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
---member serviceAccount:${SERVICE_ACCOUNT} \
---role roles/composer.ServiceAgentV2Ext
+	--member serviceAccount:${SERVICE_ACCOUNT} \
+	--role roles/composer.ServiceAgentV2Ext
 
 gcloud composer environments create ${COMPOSER_ENVIRONMENT_NAME} \
 	--airflow-configs=core-dagbag_import_timeout=120 \
