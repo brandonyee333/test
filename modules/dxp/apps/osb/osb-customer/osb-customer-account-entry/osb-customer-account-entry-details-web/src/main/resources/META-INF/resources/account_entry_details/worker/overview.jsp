@@ -20,6 +20,8 @@
 Account koroneikiAccount = accountEntryViewDisplayContext.getAccount();
 %>
 
+<liferay-util:include page="/account_entry_details/customer_portal_banner.jsp" servletContext="<%= application %>" />
+
 <aui:row>
 	<aui:col width="<%= 25 %>">
 		<div class="card">

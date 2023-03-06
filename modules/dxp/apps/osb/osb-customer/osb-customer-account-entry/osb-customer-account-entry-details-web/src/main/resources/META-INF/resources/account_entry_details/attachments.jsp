@@ -16,6 +16,8 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
+<liferay-util:include page="/account_entry_details/customer_portal_banner.jsp" servletContext="<%= application %>" />
+
 <liferay-ui:search-container
 	headerNames="ticket,file-name,file-size,attached,does-not-contain-personal-data"
 	searchContainer="<%= accountEntryViewDisplayContext.getTicketAttachmentsSearchContainer() %>"

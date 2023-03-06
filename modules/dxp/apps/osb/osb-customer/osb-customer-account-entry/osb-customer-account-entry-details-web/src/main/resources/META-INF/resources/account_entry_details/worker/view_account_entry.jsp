@@ -29,10 +29,10 @@ portletURL.setParameter("koroneikiAccountKey", String.valueOf(koroneikiAccount.g
 
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project-details"), portletURL.toString(), null, false);
 
-String tabNames = "overview,team-members,liferay-contacts,offerings,attachments,history";
+String tabNames = "overview,attachments,history";
 
 if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
-	tabNames = "overview,team-members,liferay-contacts,offerings,attachments,source-code-access,history";
+	tabNames = "overview,attachments,source-code-access,history";
 }
 %>
 
@@ -52,19 +52,10 @@ if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
 	<c:when test='<%= tabs1.equals("history") %>'>
 		<liferay-util:include page="/account_entry_details/worker/history.jsp" servletContext="<%= application %>" />
 	</c:when>
-	<c:when test='<%= tabs1.equals("liferay-contacts") %>'>
-		<liferay-util:include page="/account_entry_details/liferay_contacts.jsp" servletContext="<%= application %>" />
-	</c:when>
-	<c:when test='<%= tabs1.equals("offerings") %>'>
-		<liferay-util:include page="/account_entry_details/offerings.jsp" servletContext="<%= application %>" />
-	</c:when>
 	<c:when test='<%= tabs1.equals("source-code-access") && GitHubConfigurationValues.GITHUB_FEATURE_ENABLED %>'>
 		<liferay-util:include page="/account_entry_details/source_code_access.jsp" servletContext="<%= application %>" />
 	</c:when>
-	<c:when test='<%= tabs1.equals("team-members") %>'>
-		<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />
-	</c:when>
 	<c:otherwise>
-		<liferay-util:include page="/account_entry_details/customer_portal_banner.jsp" servletContext="<%= application %>" />
+		<liferay-util:include page="/account_entry_details/worker/overview.jsp" servletContext="<%= application %>" />
 	</c:otherwise>
 </c:choose>

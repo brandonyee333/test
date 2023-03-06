@@ -16,6 +16,8 @@
 
 <%@ include file="/init.jsp" %>
 
+<div id="<portlet:namespace />customerPortalBanner"></div>
+
 <aui:script>
 	AccountDetails.render(
 		AccountDetails.CustomerPortalBanner,

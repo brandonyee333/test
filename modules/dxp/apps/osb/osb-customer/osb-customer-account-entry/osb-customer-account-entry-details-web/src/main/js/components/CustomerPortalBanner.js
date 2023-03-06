@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from "prop-types";
 
-import {langSub} from '../helpers/language';
 import Alert from './Alert';
+import {langSub} from '../helpers/language';
 
 export default class CustomerPortalBanner extends React.Component {
 	static propTypes = {
@@ -11,7 +11,7 @@ export default class CustomerPortalBanner extends React.Component {
 
 	render() {
 		return (
-			<div className="customer-portal-banner container-fluid-max-md">
+			<div>
 				<Alert type="info">
 					{langSub(
 						Liferay.Language.get(

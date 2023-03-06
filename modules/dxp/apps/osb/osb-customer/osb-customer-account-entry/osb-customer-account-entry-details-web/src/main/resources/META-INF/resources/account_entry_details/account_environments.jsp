@@ -36,6 +36,8 @@ if ((accountEntry != null) && (!accountEntryViewDisplayContext.hasOnlyLXC() || p
 }
 %>
 
+<liferay-util:include page="/account_entry_details/customer_portal_banner.jsp" servletContext="<%= application %>" />
+
 <c:if test="<%= !accountEntryViewDisplayContext.hasOnlyLXC() || permissionChecker.isOmniadmin() %>">
 	<div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
 

@@ -23,6 +23,8 @@ PortletURL portletURL = renderResponse.createRenderURL();
 %>
 
 <div class="col-md-8 col-md-offset-2">
+	<liferay-util:include page="/account_entry_details/customer_portal_banner.jsp" servletContext="<%= application %>" />
+
 	<h1>
 		<liferay-ui:message key="select-an-account" />
 	</h1>

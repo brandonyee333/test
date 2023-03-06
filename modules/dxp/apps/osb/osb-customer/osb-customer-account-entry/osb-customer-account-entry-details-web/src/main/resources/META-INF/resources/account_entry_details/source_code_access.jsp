@@ -16,6 +16,8 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
+<liferay-util:include page="/account_entry_details/customer_portal_banner.jsp" servletContext="<%= application %>" />
+
 <div class="card source-code-access" id="<portlet:namespace />sourceCodeAccess"></div>
 
 <aui:script>
