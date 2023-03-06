@@ -346,33 +346,6 @@ public class IndividualsRestController extends BaseRestController {
 			segmentsPage.getTotalPages());
 	}
 
-	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
-		Page<Transformation> transformationsPage) {
-
-		return _toTransformationDTOPageDTO(
-			"individual-transformations", transformationsPage);
-	}
-
-	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
-		String transformationKey, Page<Transformation> transformationsPage) {
-
-		return _toTransformationDTOPageDTO(
-			new TransformationDTO(
-				transformationKey, transformationsPage.getContent()),
-			transformationsPage);
-	}
-
-	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
-		TransformationDTO transformationDTO,
-		Page<Transformation> transformationsPage) {
-
-		return new PageDTO<>(
-			"_embedded", transformationDTO, transformationsPage.getNumber(),
-			transformationsPage.getSize(),
-			transformationsPage.getTotalElements(),
-			transformationsPage.getTotalPages());
-	}
-
 	private static final Log _log = LogFactory.getLog(
 		IndividualsRestController.class);
 
