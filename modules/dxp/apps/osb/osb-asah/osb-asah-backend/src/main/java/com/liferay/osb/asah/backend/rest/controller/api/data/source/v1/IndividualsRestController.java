@@ -27,13 +27,17 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.MatcherUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +48,7 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -266,9 +271,40 @@ public class IndividualsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		// TODO Implement operation
+		Matcher matcher = MatcherUtil.getMatcher(apply);
 
-		return _toTransformationDTOPageDTO(Page.empty());
+		if (!matcher.matches()) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "Invalid apply string " + apply);
+		}
+
+		String groupByField = matcher.group("groupByField");
+
+		Page<String> bqIndividualFieldValuePage =
+			_bqIndividualDog.getBQIndividualFieldValuePage(
+				channelId, filterString, groupByField, page, size);
+
+		List<Transformation> transformations = new ArrayList<>();
+
+		for (String fieldValue : bqIndividualFieldValuePage.getContent()) {
+			Transformation transformation = new Transformation();
+
+			transformation.setTerm(
+				new Transformation.Term(
+					Collections.singletonMap(groupByField, fieldValue)));
+			transformation.setTotalElements(0);
+
+			transformations.add(transformation);
+		}
+
+		return new PageDTO<>(
+			"_embedded",
+			new TransformationDTO(
+				"individual-transformations", transformations),
+			bqIndividualFieldValuePage.getNumber(),
+			bqIndividualFieldValuePage.getSize(),
+			bqIndividualFieldValuePage.getTotalElements(),
+			bqIndividualFieldValuePage.getTotalPages());
 	}
 
 	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
