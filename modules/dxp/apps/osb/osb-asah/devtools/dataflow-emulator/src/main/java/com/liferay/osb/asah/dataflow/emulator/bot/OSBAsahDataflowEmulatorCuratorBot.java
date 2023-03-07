@@ -27,6 +27,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -37,6 +38,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @EnableScheduling
+@Profile("!test")
 public class OSBAsahDataflowEmulatorCuratorBot {
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE)
