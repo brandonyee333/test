@@ -248,15 +248,11 @@ public class ZendeskCategoryModelImpl
 
 	private static final Map<String, Function<ZendeskCategory, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ZendeskCategory, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ZendeskCategory, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<ZendeskCategory, Object>>();
-		Map<String, BiConsumer<ZendeskCategory, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ZendeskCategory, ?>>();
 
 		attributeGetterFunctions.put(
 			"zendeskCategoryId",
@@ -268,6 +264,68 @@ public class ZendeskCategoryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"documentationKey",
+			new Function<ZendeskCategory, Object>() {
+
+				@Override
+				public Object apply(ZendeskCategory zendeskCategory) {
+					return zendeskCategory.getDocumentationKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"documentationOriginalURL",
+			new Function<ZendeskCategory, Object>() {
+
+				@Override
+				public Object apply(ZendeskCategory zendeskCategory) {
+					return zendeskCategory.getDocumentationOriginalURL();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"articleLabels",
+			new Function<ZendeskCategory, Object>() {
+
+				@Override
+				public Object apply(ZendeskCategory zendeskCategory) {
+					return zendeskCategory.getArticleLabels();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteId",
+			new Function<ZendeskCategory, Object>() {
+
+				@Override
+				public Object apply(ZendeskCategory zendeskCategory) {
+					return zendeskCategory.getRemoteId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteUserSegmentId",
+			new Function<ZendeskCategory, Object>() {
+
+				@Override
+				public Object apply(ZendeskCategory zendeskCategory) {
+					return zendeskCategory.getRemoteUserSegmentId();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ZendeskCategory, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ZendeskCategory, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ZendeskCategory, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"zendeskCategoryId",
 			new BiConsumer<ZendeskCategory, Object>() {
@@ -279,16 +337,6 @@ public class ZendeskCategoryModelImpl
 
 					zendeskCategory.setZendeskCategoryId(
 						(Long)zendeskCategoryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"documentationKey",
-			new Function<ZendeskCategory, Object>() {
-
-				@Override
-				public Object apply(ZendeskCategory zendeskCategory) {
-					return zendeskCategory.getDocumentationKey();
 				}
 
 			});
@@ -306,16 +354,6 @@ public class ZendeskCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"documentationOriginalURL",
-			new Function<ZendeskCategory, Object>() {
-
-				@Override
-				public Object apply(ZendeskCategory zendeskCategory) {
-					return zendeskCategory.getDocumentationOriginalURL();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"documentationOriginalURL",
 			new BiConsumer<ZendeskCategory, Object>() {
@@ -327,16 +365,6 @@ public class ZendeskCategoryModelImpl
 
 					zendeskCategory.setDocumentationOriginalURL(
 						(String)documentationOriginalURLObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"articleLabels",
-			new Function<ZendeskCategory, Object>() {
-
-				@Override
-				public Object apply(ZendeskCategory zendeskCategory) {
-					return zendeskCategory.getArticleLabels();
 				}
 
 			});
@@ -354,16 +382,6 @@ public class ZendeskCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"remoteId",
-			new Function<ZendeskCategory, Object>() {
-
-				@Override
-				public Object apply(ZendeskCategory zendeskCategory) {
-					return zendeskCategory.getRemoteId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"remoteId",
 			new BiConsumer<ZendeskCategory, Object>() {
@@ -373,16 +391,6 @@ public class ZendeskCategoryModelImpl
 					ZendeskCategory zendeskCategory, Object remoteIdObject) {
 
 					zendeskCategory.setRemoteId((Long)remoteIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"remoteUserSegmentId",
-			new Function<ZendeskCategory, Object>() {
-
-				@Override
-				public Object apply(ZendeskCategory zendeskCategory) {
-					return zendeskCategory.getRemoteUserSegmentId();
 				}
 
 			});
@@ -401,8 +409,6 @@ public class ZendeskCategoryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

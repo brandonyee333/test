@@ -252,19 +252,12 @@ public class ZendeskArticleAttachmentModelImpl
 
 	private static final Map<String, Function<ZendeskArticleAttachment, Object>>
 		_attributeGetterFunctions;
-	private static final Map
-		<String, BiConsumer<ZendeskArticleAttachment, Object>>
-			_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ZendeskArticleAttachment, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<ZendeskArticleAttachment, Object>>();
-		Map<String, BiConsumer<ZendeskArticleAttachment, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<ZendeskArticleAttachment, ?>>();
 
 		attributeGetterFunctions.put(
 			"zendeskArticleAttachmentId",
@@ -279,6 +272,81 @@ public class ZendeskArticleAttachmentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"zendeskArticleId",
+			new Function<ZendeskArticleAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					ZendeskArticleAttachment zendeskArticleAttachment) {
+
+					return zendeskArticleAttachment.getZendeskArticleId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"filePath",
+			new Function<ZendeskArticleAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					ZendeskArticleAttachment zendeskArticleAttachment) {
+
+					return zendeskArticleAttachment.getFilePath();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"checksum",
+			new Function<ZendeskArticleAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					ZendeskArticleAttachment zendeskArticleAttachment) {
+
+					return zendeskArticleAttachment.getChecksum();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteId",
+			new Function<ZendeskArticleAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					ZendeskArticleAttachment zendeskArticleAttachment) {
+
+					return zendeskArticleAttachment.getRemoteId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteContentURL",
+			new Function<ZendeskArticleAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					ZendeskArticleAttachment zendeskArticleAttachment) {
+
+					return zendeskArticleAttachment.getRemoteContentURL();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map
+		<String, BiConsumer<ZendeskArticleAttachment, Object>>
+			_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ZendeskArticleAttachment, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<ZendeskArticleAttachment, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"zendeskArticleAttachmentId",
 			new BiConsumer<ZendeskArticleAttachment, Object>() {
@@ -290,18 +358,6 @@ public class ZendeskArticleAttachmentModelImpl
 
 					zendeskArticleAttachment.setZendeskArticleAttachmentId(
 						(Long)zendeskArticleAttachmentIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"zendeskArticleId",
-			new Function<ZendeskArticleAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					ZendeskArticleAttachment zendeskArticleAttachment) {
-
-					return zendeskArticleAttachment.getZendeskArticleId();
 				}
 
 			});
@@ -319,18 +375,6 @@ public class ZendeskArticleAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"filePath",
-			new Function<ZendeskArticleAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					ZendeskArticleAttachment zendeskArticleAttachment) {
-
-					return zendeskArticleAttachment.getFilePath();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"filePath",
 			new BiConsumer<ZendeskArticleAttachment, Object>() {
@@ -342,18 +386,6 @@ public class ZendeskArticleAttachmentModelImpl
 
 					zendeskArticleAttachment.setFilePath(
 						(String)filePathObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"checksum",
-			new Function<ZendeskArticleAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					ZendeskArticleAttachment zendeskArticleAttachment) {
-
-					return zendeskArticleAttachment.getChecksum();
 				}
 
 			});
@@ -371,18 +403,6 @@ public class ZendeskArticleAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"remoteId",
-			new Function<ZendeskArticleAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					ZendeskArticleAttachment zendeskArticleAttachment) {
-
-					return zendeskArticleAttachment.getRemoteId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"remoteId",
 			new BiConsumer<ZendeskArticleAttachment, Object>() {
@@ -393,18 +413,6 @@ public class ZendeskArticleAttachmentModelImpl
 					Object remoteIdObject) {
 
 					zendeskArticleAttachment.setRemoteId((Long)remoteIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"remoteContentURL",
-			new Function<ZendeskArticleAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					ZendeskArticleAttachment zendeskArticleAttachment) {
-
-					return zendeskArticleAttachment.getRemoteContentURL();
 				}
 
 			});
@@ -423,8 +431,6 @@ public class ZendeskArticleAttachmentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -237,14 +237,10 @@ public class JIRAIssueModelImpl
 
 	private static final Map<String, Function<JIRAIssue, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<JIRAIssue, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<JIRAIssue, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<JIRAIssue, Object>>();
-		Map<String, BiConsumer<JIRAIssue, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<JIRAIssue, ?>>();
 
 		attributeGetterFunctions.put(
 			"jiraIssueId",
@@ -256,6 +252,78 @@ public class JIRAIssueModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"jiraProjectId",
+			new Function<JIRAIssue, Object>() {
+
+				@Override
+				public Object apply(JIRAIssue jiraIssue) {
+					return jiraIssue.getJiraProjectId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"issueNumber",
+			new Function<JIRAIssue, Object>() {
+
+				@Override
+				public Object apply(JIRAIssue jiraIssue) {
+					return jiraIssue.getIssueNumber();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<JIRAIssue, Object>() {
+
+				@Override
+				public Object apply(JIRAIssue jiraIssue) {
+					return jiraIssue.getType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"summary",
+			new Function<JIRAIssue, Object>() {
+
+				@Override
+				public Object apply(JIRAIssue jiraIssue) {
+					return jiraIssue.getSummary();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<JIRAIssue, Object>() {
+
+				@Override
+				public Object apply(JIRAIssue jiraIssue) {
+					return jiraIssue.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"priority",
+			new Function<JIRAIssue, Object>() {
+
+				@Override
+				public Object apply(JIRAIssue jiraIssue) {
+					return jiraIssue.getPriority();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<JIRAIssue, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<JIRAIssue, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<JIRAIssue, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"jiraIssueId",
 			new BiConsumer<JIRAIssue, Object>() {
@@ -265,16 +333,6 @@ public class JIRAIssueModelImpl
 					JIRAIssue jiraIssue, Object jiraIssueIdObject) {
 
 					jiraIssue.setJiraIssueId((Long)jiraIssueIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"jiraProjectId",
-			new Function<JIRAIssue, Object>() {
-
-				@Override
-				public Object apply(JIRAIssue jiraIssue) {
-					return jiraIssue.getJiraProjectId();
 				}
 
 			});
@@ -290,16 +348,6 @@ public class JIRAIssueModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"issueNumber",
-			new Function<JIRAIssue, Object>() {
-
-				@Override
-				public Object apply(JIRAIssue jiraIssue) {
-					return jiraIssue.getIssueNumber();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"issueNumber",
 			new BiConsumer<JIRAIssue, Object>() {
@@ -309,16 +357,6 @@ public class JIRAIssueModelImpl
 					JIRAIssue jiraIssue, Object issueNumberObject) {
 
 					jiraIssue.setIssueNumber((Long)issueNumberObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<JIRAIssue, Object>() {
-
-				@Override
-				public Object apply(JIRAIssue jiraIssue) {
-					return jiraIssue.getType();
 				}
 
 			});
@@ -332,16 +370,6 @@ public class JIRAIssueModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"summary",
-			new Function<JIRAIssue, Object>() {
-
-				@Override
-				public Object apply(JIRAIssue jiraIssue) {
-					return jiraIssue.getSummary();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"summary",
 			new BiConsumer<JIRAIssue, Object>() {
@@ -349,16 +377,6 @@ public class JIRAIssueModelImpl
 				@Override
 				public void accept(JIRAIssue jiraIssue, Object summaryObject) {
 					jiraIssue.setSummary((String)summaryObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<JIRAIssue, Object>() {
-
-				@Override
-				public Object apply(JIRAIssue jiraIssue) {
-					return jiraIssue.getDescription();
 				}
 
 			});
@@ -374,16 +392,6 @@ public class JIRAIssueModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"priority",
-			new Function<JIRAIssue, Object>() {
-
-				@Override
-				public Object apply(JIRAIssue jiraIssue) {
-					return jiraIssue.getPriority();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"priority",
 			new BiConsumer<JIRAIssue, Object>() {
@@ -395,8 +403,6 @@ public class JIRAIssueModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

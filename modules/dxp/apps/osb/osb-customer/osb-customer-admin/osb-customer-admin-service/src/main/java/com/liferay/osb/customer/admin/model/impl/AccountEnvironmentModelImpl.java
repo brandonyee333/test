@@ -329,17 +329,12 @@ public class AccountEnvironmentModelImpl
 
 	private static final Map<String, Function<AccountEnvironment, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AccountEnvironment, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AccountEnvironment, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<AccountEnvironment, Object>>();
-		Map<String, BiConsumer<AccountEnvironment, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<AccountEnvironment, ?>>();
 
 		attributeGetterFunctions.put(
 			"accountEnvironmentId",
@@ -351,6 +346,189 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountEntryId",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getAccountEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"productEntryId",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getProductEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envOS",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvOS();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envOSCustom",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvOSCustom();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envDB",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvDB();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envJVM",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvJVM();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envAS",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvAS();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envLFR",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvLFR();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envCommerce",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvCommerce();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envBrowser",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvBrowser();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envCS",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvCS();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"envSearch",
+			new Function<AccountEnvironment, Object>() {
+
+				@Override
+				public Object apply(AccountEnvironment accountEnvironment) {
+					return accountEnvironment.getEnvSearch();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AccountEnvironment, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AccountEnvironment, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<AccountEnvironment, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"accountEnvironmentId",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -362,16 +540,6 @@ public class AccountEnvironmentModelImpl
 
 					accountEnvironment.setAccountEnvironmentId(
 						(Long)accountEnvironmentIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getUserId();
 				}
 
 			});
@@ -388,16 +556,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -411,16 +569,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -431,16 +579,6 @@ public class AccountEnvironmentModelImpl
 					Object createDateObject) {
 
 					accountEnvironment.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getModifiedDate();
 				}
 
 			});
@@ -458,16 +596,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"accountEntryId",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getAccountEntryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"accountEntryId",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -479,16 +607,6 @@ public class AccountEnvironmentModelImpl
 
 					accountEnvironment.setAccountEntryId(
 						(Long)accountEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"productEntryId",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getProductEntryId();
 				}
 
 			});
@@ -506,16 +624,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -528,16 +636,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"envOS",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvOS();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"envOS",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -547,16 +645,6 @@ public class AccountEnvironmentModelImpl
 					AccountEnvironment accountEnvironment, Object envOSObject) {
 
 					accountEnvironment.setEnvOS((Integer)envOSObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"envOSCustom",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvOSCustom();
 				}
 
 			});
@@ -574,16 +662,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"envDB",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvDB();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"envDB",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -593,16 +671,6 @@ public class AccountEnvironmentModelImpl
 					AccountEnvironment accountEnvironment, Object envDBObject) {
 
 					accountEnvironment.setEnvDB((Integer)envDBObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"envJVM",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvJVM();
 				}
 
 			});
@@ -619,16 +687,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"envAS",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvAS();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"envAS",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -638,16 +696,6 @@ public class AccountEnvironmentModelImpl
 					AccountEnvironment accountEnvironment, Object envASObject) {
 
 					accountEnvironment.setEnvAS((Integer)envASObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"envLFR",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvLFR();
 				}
 
 			});
@@ -661,16 +709,6 @@ public class AccountEnvironmentModelImpl
 					Object envLFRObject) {
 
 					accountEnvironment.setEnvLFR((Integer)envLFRObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"envCommerce",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvCommerce();
 				}
 
 			});
@@ -688,16 +726,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"envBrowser",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvBrowser();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"envBrowser",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -711,16 +739,6 @@ public class AccountEnvironmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"envCS",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvCS();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"envCS",
 			new BiConsumer<AccountEnvironment, Object>() {
@@ -730,16 +748,6 @@ public class AccountEnvironmentModelImpl
 					AccountEnvironment accountEnvironment, Object envCSObject) {
 
 					accountEnvironment.setEnvCS((Integer)envCSObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"envSearch",
-			new Function<AccountEnvironment, Object>() {
-
-				@Override
-				public Object apply(AccountEnvironment accountEnvironment) {
-					return accountEnvironment.getEnvSearch();
 				}
 
 			});
@@ -757,8 +765,6 @@ public class AccountEnvironmentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

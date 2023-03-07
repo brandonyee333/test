@@ -251,14 +251,10 @@ public class ReleaseNotesModelImpl
 
 	private static final Map<String, Function<ReleaseNotes, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ReleaseNotes, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ReleaseNotes, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<ReleaseNotes, Object>>();
-		Map<String, BiConsumer<ReleaseNotes, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ReleaseNotes, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -270,6 +266,88 @@ public class ReleaseNotesModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"releaseNotesId",
+			new Function<ReleaseNotes, Object>() {
+
+				@Override
+				public Object apply(ReleaseNotes releaseNotes) {
+					return releaseNotes.getReleaseNotesId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<ReleaseNotes, Object>() {
+
+				@Override
+				public Object apply(ReleaseNotes releaseNotes) {
+					return releaseNotes.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<ReleaseNotes, Object>() {
+
+				@Override
+				public Object apply(ReleaseNotes releaseNotes) {
+					return releaseNotes.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<ReleaseNotes, Object>() {
+
+				@Override
+				public Object apply(ReleaseNotes releaseNotes) {
+					return releaseNotes.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<ReleaseNotes, Object>() {
+
+				@Override
+				public Object apply(ReleaseNotes releaseNotes) {
+					return releaseNotes.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<ReleaseNotes, Object>() {
+
+				@Override
+				public Object apply(ReleaseNotes releaseNotes) {
+					return releaseNotes.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"jiraIssueKeys",
+			new Function<ReleaseNotes, Object>() {
+
+				@Override
+				public Object apply(ReleaseNotes releaseNotes) {
+					return releaseNotes.getJiraIssueKeys();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ReleaseNotes, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ReleaseNotes, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ReleaseNotes, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"uuid",
 			new BiConsumer<ReleaseNotes, Object>() {
@@ -279,16 +357,6 @@ public class ReleaseNotesModelImpl
 					ReleaseNotes releaseNotes, Object uuidObject) {
 
 					releaseNotes.setUuid((String)uuidObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"releaseNotesId",
-			new Function<ReleaseNotes, Object>() {
-
-				@Override
-				public Object apply(ReleaseNotes releaseNotes) {
-					return releaseNotes.getReleaseNotesId();
 				}
 
 			});
@@ -304,16 +372,6 @@ public class ReleaseNotesModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<ReleaseNotes, Object>() {
-
-				@Override
-				public Object apply(ReleaseNotes releaseNotes) {
-					return releaseNotes.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<ReleaseNotes, Object>() {
@@ -323,16 +381,6 @@ public class ReleaseNotesModelImpl
 					ReleaseNotes releaseNotes, Object userIdObject) {
 
 					releaseNotes.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<ReleaseNotes, Object>() {
-
-				@Override
-				public Object apply(ReleaseNotes releaseNotes) {
-					return releaseNotes.getUserName();
 				}
 
 			});
@@ -348,16 +396,6 @@ public class ReleaseNotesModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<ReleaseNotes, Object>() {
-
-				@Override
-				public Object apply(ReleaseNotes releaseNotes) {
-					return releaseNotes.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<ReleaseNotes, Object>() {
@@ -367,16 +405,6 @@ public class ReleaseNotesModelImpl
 					ReleaseNotes releaseNotes, Object createDateObject) {
 
 					releaseNotes.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<ReleaseNotes, Object>() {
-
-				@Override
-				public Object apply(ReleaseNotes releaseNotes) {
-					return releaseNotes.getModifiedDate();
 				}
 
 			});
@@ -392,16 +420,6 @@ public class ReleaseNotesModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<ReleaseNotes, Object>() {
-
-				@Override
-				public Object apply(ReleaseNotes releaseNotes) {
-					return releaseNotes.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<ReleaseNotes, Object>() {
@@ -411,16 +429,6 @@ public class ReleaseNotesModelImpl
 					ReleaseNotes releaseNotes, Object nameObject) {
 
 					releaseNotes.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"jiraIssueKeys",
-			new Function<ReleaseNotes, Object>() {
-
-				@Override
-				public Object apply(ReleaseNotes releaseNotes) {
-					return releaseNotes.getJiraIssueKeys();
 				}
 
 			});
@@ -437,8 +445,6 @@ public class ReleaseNotesModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

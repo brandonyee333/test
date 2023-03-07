@@ -270,14 +270,10 @@ public class ZendeskArticleModelImpl
 
 	private static final Map<String, Function<ZendeskArticle, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ZendeskArticle, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ZendeskArticle, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<ZendeskArticle, Object>>();
-		Map<String, BiConsumer<ZendeskArticle, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ZendeskArticle, ?>>();
 
 		attributeGetterFunctions.put(
 			"zendeskArticleId",
@@ -289,6 +285,118 @@ public class ZendeskArticleModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"zendeskCategoryId",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getZendeskCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"zendeskSectionId",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getZendeskSectionId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"documentationKey",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getDocumentationKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"documentationOriginalURL",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getDocumentationOriginalURL();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"previousArticleDocumentationKey",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getPreviousArticleDocumentationKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"nextArticleDocumentationKey",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getNextArticleDocumentationKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteId",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getRemoteId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteHtmlURL",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getRemoteHtmlURL();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteTitle",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getRemoteTitle();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ZendeskArticle, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ZendeskArticle, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ZendeskArticle, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"zendeskArticleId",
 			new BiConsumer<ZendeskArticle, Object>() {
@@ -303,16 +411,6 @@ public class ZendeskArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<ZendeskArticle, Object>() {
@@ -322,16 +420,6 @@ public class ZendeskArticleModelImpl
 					ZendeskArticle zendeskArticle, Object modifiedDateObject) {
 
 					zendeskArticle.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"zendeskCategoryId",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getZendeskCategoryId();
 				}
 
 			});
@@ -349,16 +437,6 @@ public class ZendeskArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"zendeskSectionId",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getZendeskSectionId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"zendeskSectionId",
 			new BiConsumer<ZendeskArticle, Object>() {
@@ -370,16 +448,6 @@ public class ZendeskArticleModelImpl
 
 					zendeskArticle.setZendeskSectionId(
 						(Long)zendeskSectionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"documentationKey",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getDocumentationKey();
 				}
 
 			});
@@ -397,16 +465,6 @@ public class ZendeskArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"documentationOriginalURL",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getDocumentationOriginalURL();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"documentationOriginalURL",
 			new BiConsumer<ZendeskArticle, Object>() {
@@ -418,16 +476,6 @@ public class ZendeskArticleModelImpl
 
 					zendeskArticle.setDocumentationOriginalURL(
 						(String)documentationOriginalURLObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"previousArticleDocumentationKey",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getPreviousArticleDocumentationKey();
 				}
 
 			});
@@ -445,16 +493,6 @@ public class ZendeskArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"nextArticleDocumentationKey",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getNextArticleDocumentationKey();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"nextArticleDocumentationKey",
 			new BiConsumer<ZendeskArticle, Object>() {
@@ -469,16 +507,6 @@ public class ZendeskArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"remoteId",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getRemoteId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"remoteId",
 			new BiConsumer<ZendeskArticle, Object>() {
@@ -488,16 +516,6 @@ public class ZendeskArticleModelImpl
 					ZendeskArticle zendeskArticle, Object remoteIdObject) {
 
 					zendeskArticle.setRemoteId((Long)remoteIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"remoteHtmlURL",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getRemoteHtmlURL();
 				}
 
 			});
@@ -514,16 +532,6 @@ public class ZendeskArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"remoteTitle",
-			new Function<ZendeskArticle, Object>() {
-
-				@Override
-				public Object apply(ZendeskArticle zendeskArticle) {
-					return zendeskArticle.getRemoteTitle();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"remoteTitle",
 			new BiConsumer<ZendeskArticle, Object>() {
@@ -537,8 +545,6 @@ public class ZendeskArticleModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

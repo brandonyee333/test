@@ -344,14 +344,10 @@ public class AccountEntryModelImpl
 
 	private static final Map<String, Function<AccountEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AccountEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AccountEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<AccountEntry, Object>>();
-		Map<String, BiConsumer<AccountEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<AccountEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"accountEntryId",
@@ -363,6 +359,228 @@ public class AccountEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedUserId",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getModifiedUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedUserName",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getModifiedUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"koroneikiAccountKey",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getKoroneikiAccountKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"dossieraAccountKey",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getDossieraAccountKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"corpProjectUuid",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCorpProjectUuid();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"corpProjectId",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCorpProjectId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"code",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCode();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"instructions",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getInstructions();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"supportEndDate",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getSupportEndDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"activeSupport",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getActiveSupport();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"ticketSupportEndDate",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getTicketSupportEndDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"activeTicketSupport",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getActiveTicketSupport();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastZendeskAuditDate",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getLastZendeskAuditDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getStatus();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"corpEntryName",
+			new Function<AccountEntry, Object>() {
+
+				@Override
+				public Object apply(AccountEntry accountEntry) {
+					return accountEntry.getCorpEntryName();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AccountEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AccountEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<AccountEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"accountEntryId",
 			new BiConsumer<AccountEntry, Object>() {
@@ -372,16 +590,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object accountEntryIdObject) {
 
 					accountEntry.setAccountEntryId((Long)accountEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getCompanyId();
 				}
 
 			});
@@ -397,16 +605,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<AccountEntry, Object>() {
@@ -416,16 +614,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object userIdObject) {
 
 					accountEntry.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getUserName();
 				}
 
 			});
@@ -441,16 +629,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<AccountEntry, Object>() {
@@ -463,16 +641,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedUserId",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getModifiedUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedUserId",
 			new BiConsumer<AccountEntry, Object>() {
@@ -482,16 +650,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object modifiedUserIdObject) {
 
 					accountEntry.setModifiedUserId((Long)modifiedUserIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedUserName",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getModifiedUserName();
 				}
 
 			});
@@ -508,16 +666,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<AccountEntry, Object>() {
@@ -527,16 +675,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object modifiedDateObject) {
 
 					accountEntry.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"koroneikiAccountKey",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getKoroneikiAccountKey();
 				}
 
 			});
@@ -554,16 +692,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"dossieraAccountKey",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getDossieraAccountKey();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"dossieraAccountKey",
 			new BiConsumer<AccountEntry, Object>() {
@@ -575,16 +703,6 @@ public class AccountEntryModelImpl
 
 					accountEntry.setDossieraAccountKey(
 						(String)dossieraAccountKeyObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"corpProjectUuid",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getCorpProjectUuid();
 				}
 
 			});
@@ -601,16 +719,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"corpProjectId",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getCorpProjectId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"corpProjectId",
 			new BiConsumer<AccountEntry, Object>() {
@@ -620,16 +728,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object corpProjectIdObject) {
 
 					accountEntry.setCorpProjectId((Long)corpProjectIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getName();
 				}
 
 			});
@@ -645,16 +743,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"code",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getCode();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"code",
 			new BiConsumer<AccountEntry, Object>() {
@@ -664,16 +752,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object codeObject) {
 
 					accountEntry.setCode((String)codeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"instructions",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getInstructions();
 				}
 
 			});
@@ -689,16 +767,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"supportEndDate",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getSupportEndDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"supportEndDate",
 			new BiConsumer<AccountEntry, Object>() {
@@ -711,16 +779,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"activeSupport",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getActiveSupport();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"activeSupport",
 			new BiConsumer<AccountEntry, Object>() {
@@ -730,16 +788,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object activeSupportObject) {
 
 					accountEntry.setActiveSupport((Boolean)activeSupportObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"ticketSupportEndDate",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getTicketSupportEndDate();
 				}
 
 			});
@@ -757,16 +805,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"activeTicketSupport",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getActiveTicketSupport();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"activeTicketSupport",
 			new BiConsumer<AccountEntry, Object>() {
@@ -778,16 +816,6 @@ public class AccountEntryModelImpl
 
 					accountEntry.setActiveTicketSupport(
 						(Boolean)activeTicketSupportObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastZendeskAuditDate",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getLastZendeskAuditDate();
 				}
 
 			});
@@ -805,16 +833,6 @@ public class AccountEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getStatus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"status",
 			new BiConsumer<AccountEntry, Object>() {
@@ -824,16 +842,6 @@ public class AccountEntryModelImpl
 					AccountEntry accountEntry, Object statusObject) {
 
 					accountEntry.setStatus((Integer)statusObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"corpEntryName",
-			new Function<AccountEntry, Object>() {
-
-				@Override
-				public Object apply(AccountEntry accountEntry) {
-					return accountEntry.getCorpEntryName();
 				}
 
 			});
@@ -850,8 +858,6 @@ public class AccountEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

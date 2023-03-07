@@ -307,14 +307,10 @@ public class LicenseEntryModelImpl
 
 	private static final Map<String, Function<LicenseEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LicenseEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LicenseEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LicenseEntry, Object>>();
-		Map<String, BiConsumer<LicenseEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LicenseEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"licenseEntryId",
@@ -326,6 +322,108 @@ public class LicenseEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"productEntryId",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getProductEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"versionMin",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getVersionMin();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"versionMax",
+			new Function<LicenseEntry, Object>() {
+
+				@Override
+				public Object apply(LicenseEntry licenseEntry) {
+					return licenseEntry.getVersionMax();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LicenseEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LicenseEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LicenseEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"licenseEntryId",
 			new BiConsumer<LicenseEntry, Object>() {
@@ -335,16 +433,6 @@ public class LicenseEntryModelImpl
 					LicenseEntry licenseEntry, Object licenseEntryIdObject) {
 
 					licenseEntry.setLicenseEntryId((Long)licenseEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getUserId();
 				}
 
 			});
@@ -360,16 +448,6 @@ public class LicenseEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<LicenseEntry, Object>() {
@@ -379,16 +457,6 @@ public class LicenseEntryModelImpl
 					LicenseEntry licenseEntry, Object userNameObject) {
 
 					licenseEntry.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getCreateDate();
 				}
 
 			});
@@ -404,16 +472,6 @@ public class LicenseEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<LicenseEntry, Object>() {
@@ -423,16 +481,6 @@ public class LicenseEntryModelImpl
 					LicenseEntry licenseEntry, Object modifiedDateObject) {
 
 					licenseEntry.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"productEntryId",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getProductEntryId();
 				}
 
 			});
@@ -448,16 +496,6 @@ public class LicenseEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<LicenseEntry, Object>() {
@@ -467,16 +505,6 @@ public class LicenseEntryModelImpl
 					LicenseEntry licenseEntry, Object nameObject) {
 
 					licenseEntry.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getType();
 				}
 
 			});
@@ -492,16 +520,6 @@ public class LicenseEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"versionMin",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getVersionMin();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"versionMin",
 			new BiConsumer<LicenseEntry, Object>() {
@@ -511,16 +529,6 @@ public class LicenseEntryModelImpl
 					LicenseEntry licenseEntry, Object versionMinObject) {
 
 					licenseEntry.setVersionMin((Integer)versionMinObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"versionMax",
-			new Function<LicenseEntry, Object>() {
-
-				@Override
-				public Object apply(LicenseEntry licenseEntry) {
-					return licenseEntry.getVersionMax();
 				}
 
 			});
@@ -537,8 +545,6 @@ public class LicenseEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

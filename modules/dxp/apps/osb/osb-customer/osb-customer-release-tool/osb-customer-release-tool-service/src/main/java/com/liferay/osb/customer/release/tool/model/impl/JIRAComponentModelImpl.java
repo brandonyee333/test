@@ -245,14 +245,10 @@ public class JIRAComponentModelImpl
 
 	private static final Map<String, Function<JIRAComponent, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<JIRAComponent, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<JIRAComponent, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<JIRAComponent, Object>>();
-		Map<String, BiConsumer<JIRAComponent, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<JIRAComponent, ?>>();
 
 		attributeGetterFunctions.put(
 			"jiraComponentId",
@@ -264,6 +260,58 @@ public class JIRAComponentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"remoteId",
+			new Function<JIRAComponent, Object>() {
+
+				@Override
+				public Object apply(JIRAComponent jiraComponent) {
+					return jiraComponent.getRemoteId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteProject",
+			new Function<JIRAComponent, Object>() {
+
+				@Override
+				public Object apply(JIRAComponent jiraComponent) {
+					return jiraComponent.getRemoteProject();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<JIRAComponent, Object>() {
+
+				@Override
+				public Object apply(JIRAComponent jiraComponent) {
+					return jiraComponent.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"visible",
+			new Function<JIRAComponent, Object>() {
+
+				@Override
+				public Object apply(JIRAComponent jiraComponent) {
+					return jiraComponent.getVisible();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<JIRAComponent, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<JIRAComponent, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<JIRAComponent, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"jiraComponentId",
 			new BiConsumer<JIRAComponent, Object>() {
@@ -274,16 +322,6 @@ public class JIRAComponentModelImpl
 
 					jiraComponent.setJiraComponentId(
 						(Long)jiraComponentIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"remoteId",
-			new Function<JIRAComponent, Object>() {
-
-				@Override
-				public Object apply(JIRAComponent jiraComponent) {
-					return jiraComponent.getRemoteId();
 				}
 
 			});
@@ -299,16 +337,6 @@ public class JIRAComponentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"remoteProject",
-			new Function<JIRAComponent, Object>() {
-
-				@Override
-				public Object apply(JIRAComponent jiraComponent) {
-					return jiraComponent.getRemoteProject();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"remoteProject",
 			new BiConsumer<JIRAComponent, Object>() {
@@ -321,16 +349,6 @@ public class JIRAComponentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<JIRAComponent, Object>() {
-
-				@Override
-				public Object apply(JIRAComponent jiraComponent) {
-					return jiraComponent.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<JIRAComponent, Object>() {
@@ -340,16 +358,6 @@ public class JIRAComponentModelImpl
 					JIRAComponent jiraComponent, Object nameObject) {
 
 					jiraComponent.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"visible",
-			new Function<JIRAComponent, Object>() {
-
-				@Override
-				public Object apply(JIRAComponent jiraComponent) {
-					return jiraComponent.getVisible();
 				}
 
 			});
@@ -366,8 +374,6 @@ public class JIRAComponentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

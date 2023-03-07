@@ -316,19 +316,12 @@ public class AccountEnvironmentAttachmentModelImpl
 	private static final Map
 		<String, Function<AccountEnvironmentAttachment, Object>>
 			_attributeGetterFunctions;
-	private static final Map
-		<String, BiConsumer<AccountEnvironmentAttachment, Object>>
-			_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AccountEnvironmentAttachment, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<AccountEnvironmentAttachment, Object>>();
-		Map<String, BiConsumer<AccountEnvironmentAttachment, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<AccountEnvironmentAttachment, ?>>();
 
 		attributeGetterFunctions.put(
 			"accountEnvironmentAttachmentId",
@@ -340,21 +333,6 @@ public class AccountEnvironmentAttachmentModelImpl
 
 					return accountEnvironmentAttachment.
 						getAccountEnvironmentAttachmentId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"accountEnvironmentAttachmentId",
-			new BiConsumer<AccountEnvironmentAttachment, Object>() {
-
-				@Override
-				public void accept(
-					AccountEnvironmentAttachment accountEnvironmentAttachment,
-					Object accountEnvironmentAttachmentIdObject) {
-
-					accountEnvironmentAttachment.
-						setAccountEnvironmentAttachmentId(
-							(Long)accountEnvironmentAttachmentIdObject);
 				}
 
 			});
@@ -370,6 +348,121 @@ public class AccountEnvironmentAttachmentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<AccountEnvironmentAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					AccountEnvironmentAttachment accountEnvironmentAttachment) {
+
+					return accountEnvironmentAttachment.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<AccountEnvironmentAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					AccountEnvironmentAttachment accountEnvironmentAttachment) {
+
+					return accountEnvironmentAttachment.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<AccountEnvironmentAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					AccountEnvironmentAttachment accountEnvironmentAttachment) {
+
+					return accountEnvironmentAttachment.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountEnvironmentId",
+			new Function<AccountEnvironmentAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					AccountEnvironmentAttachment accountEnvironmentAttachment) {
+
+					return accountEnvironmentAttachment.
+						getAccountEnvironmentId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fileName",
+			new Function<AccountEnvironmentAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					AccountEnvironmentAttachment accountEnvironmentAttachment) {
+
+					return accountEnvironmentAttachment.getFileName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fileSize",
+			new Function<AccountEnvironmentAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					AccountEnvironmentAttachment accountEnvironmentAttachment) {
+
+					return accountEnvironmentAttachment.getFileSize();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<AccountEnvironmentAttachment, Object>() {
+
+				@Override
+				public Object apply(
+					AccountEnvironmentAttachment accountEnvironmentAttachment) {
+
+					return accountEnvironmentAttachment.getType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map
+		<String, BiConsumer<AccountEnvironmentAttachment, Object>>
+			_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AccountEnvironmentAttachment, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<AccountEnvironmentAttachment, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"accountEnvironmentAttachmentId",
+			new BiConsumer<AccountEnvironmentAttachment, Object>() {
+
+				@Override
+				public void accept(
+					AccountEnvironmentAttachment accountEnvironmentAttachment,
+					Object accountEnvironmentAttachmentIdObject) {
+
+					accountEnvironmentAttachment.
+						setAccountEnvironmentAttachmentId(
+							(Long)accountEnvironmentAttachmentIdObject);
+				}
+
+			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<AccountEnvironmentAttachment, Object>() {
@@ -380,18 +473,6 @@ public class AccountEnvironmentAttachmentModelImpl
 					Object userIdObject) {
 
 					accountEnvironmentAttachment.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<AccountEnvironmentAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					AccountEnvironmentAttachment accountEnvironmentAttachment) {
-
-					return accountEnvironmentAttachment.getUserName();
 				}
 
 			});
@@ -409,18 +490,6 @@ public class AccountEnvironmentAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<AccountEnvironmentAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					AccountEnvironmentAttachment accountEnvironmentAttachment) {
-
-					return accountEnvironmentAttachment.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<AccountEnvironmentAttachment, Object>() {
@@ -432,18 +501,6 @@ public class AccountEnvironmentAttachmentModelImpl
 
 					accountEnvironmentAttachment.setCreateDate(
 						(Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<AccountEnvironmentAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					AccountEnvironmentAttachment accountEnvironmentAttachment) {
-
-					return accountEnvironmentAttachment.getModifiedDate();
 				}
 
 			});
@@ -461,19 +518,6 @@ public class AccountEnvironmentAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"accountEnvironmentId",
-			new Function<AccountEnvironmentAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					AccountEnvironmentAttachment accountEnvironmentAttachment) {
-
-					return accountEnvironmentAttachment.
-						getAccountEnvironmentId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"accountEnvironmentId",
 			new BiConsumer<AccountEnvironmentAttachment, Object>() {
@@ -485,18 +529,6 @@ public class AccountEnvironmentAttachmentModelImpl
 
 					accountEnvironmentAttachment.setAccountEnvironmentId(
 						(Long)accountEnvironmentIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"fileName",
-			new Function<AccountEnvironmentAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					AccountEnvironmentAttachment accountEnvironmentAttachment) {
-
-					return accountEnvironmentAttachment.getFileName();
 				}
 
 			});
@@ -514,18 +546,6 @@ public class AccountEnvironmentAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"fileSize",
-			new Function<AccountEnvironmentAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					AccountEnvironmentAttachment accountEnvironmentAttachment) {
-
-					return accountEnvironmentAttachment.getFileSize();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"fileSize",
 			new BiConsumer<AccountEnvironmentAttachment, Object>() {
@@ -537,18 +557,6 @@ public class AccountEnvironmentAttachmentModelImpl
 
 					accountEnvironmentAttachment.setFileSize(
 						(Long)fileSizeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<AccountEnvironmentAttachment, Object>() {
-
-				@Override
-				public Object apply(
-					AccountEnvironmentAttachment accountEnvironmentAttachment) {
-
-					return accountEnvironmentAttachment.getType();
 				}
 
 			});
@@ -566,8 +574,6 @@ public class AccountEnvironmentAttachmentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

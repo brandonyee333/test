@@ -315,16 +315,11 @@ public class TicketAttachmentModelImpl
 
 	private static final Map<String, Function<TicketAttachment, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TicketAttachment, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TicketAttachment, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<TicketAttachment, Object>>();
-		Map<String, BiConsumer<TicketAttachment, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<TicketAttachment, ?>>();
 
 		attributeGetterFunctions.put(
 			"ticketAttachmentId",
@@ -336,6 +331,129 @@ public class TicketAttachmentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountEntryId",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getAccountEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"zendeskTicketId",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getZendeskTicketId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userRole",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getUserRole();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fileRepositoryId",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getFileRepositoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fileName",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getFileName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fileSize",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getFileSize();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"regionRestricted",
+			new Function<TicketAttachment, Object>() {
+
+				@Override
+				public Object apply(TicketAttachment ticketAttachment) {
+					return ticketAttachment.getRegionRestricted();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TicketAttachment, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TicketAttachment, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<TicketAttachment, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"ticketAttachmentId",
 			new BiConsumer<TicketAttachment, Object>() {
@@ -347,16 +465,6 @@ public class TicketAttachmentModelImpl
 
 					ticketAttachment.setTicketAttachmentId(
 						(Long)ticketAttachmentIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getUserId();
 				}
 
 			});
@@ -372,16 +480,6 @@ public class TicketAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<TicketAttachment, Object>() {
@@ -391,16 +489,6 @@ public class TicketAttachmentModelImpl
 					TicketAttachment ticketAttachment, Object userNameObject) {
 
 					ticketAttachment.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getCreateDate();
 				}
 
 			});
@@ -414,16 +502,6 @@ public class TicketAttachmentModelImpl
 					Object createDateObject) {
 
 					ticketAttachment.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"accountEntryId",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getAccountEntryId();
 				}
 
 			});
@@ -441,16 +519,6 @@ public class TicketAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"zendeskTicketId",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getZendeskTicketId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"zendeskTicketId",
 			new BiConsumer<TicketAttachment, Object>() {
@@ -465,16 +533,6 @@ public class TicketAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userRole",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getUserRole();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userRole",
 			new BiConsumer<TicketAttachment, Object>() {
@@ -484,16 +542,6 @@ public class TicketAttachmentModelImpl
 					TicketAttachment ticketAttachment, Object userRoleObject) {
 
 					ticketAttachment.setUserRole((Integer)userRoleObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"fileRepositoryId",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getFileRepositoryId();
 				}
 
 			});
@@ -511,16 +559,6 @@ public class TicketAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"fileName",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getFileName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"fileName",
 			new BiConsumer<TicketAttachment, Object>() {
@@ -530,16 +568,6 @@ public class TicketAttachmentModelImpl
 					TicketAttachment ticketAttachment, Object fileNameObject) {
 
 					ticketAttachment.setFileName((String)fileNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"fileSize",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getFileSize();
 				}
 
 			});
@@ -555,16 +583,6 @@ public class TicketAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"type",
 			new BiConsumer<TicketAttachment, Object>() {
@@ -574,16 +592,6 @@ public class TicketAttachmentModelImpl
 					TicketAttachment ticketAttachment, Object typeObject) {
 
 					ticketAttachment.setType((Integer)typeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"regionRestricted",
-			new Function<TicketAttachment, Object>() {
-
-				@Override
-				public Object apply(TicketAttachment ticketAttachment) {
-					return ticketAttachment.getRegionRestricted();
 				}
 
 			});
@@ -602,8 +610,6 @@ public class TicketAttachmentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

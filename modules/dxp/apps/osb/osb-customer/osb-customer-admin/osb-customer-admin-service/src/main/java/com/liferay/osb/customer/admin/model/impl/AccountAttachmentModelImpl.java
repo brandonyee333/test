@@ -311,17 +311,12 @@ public class AccountAttachmentModelImpl
 
 	private static final Map<String, Function<AccountAttachment, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AccountAttachment, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AccountAttachment, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<AccountAttachment, Object>>();
-		Map<String, BiConsumer<AccountAttachment, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<AccountAttachment, ?>>();
 
 		attributeGetterFunctions.put(
 			"accountAttachmentId",
@@ -333,6 +328,99 @@ public class AccountAttachmentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<AccountAttachment, Object>() {
+
+				@Override
+				public Object apply(AccountAttachment accountAttachment) {
+					return accountAttachment.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<AccountAttachment, Object>() {
+
+				@Override
+				public Object apply(AccountAttachment accountAttachment) {
+					return accountAttachment.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<AccountAttachment, Object>() {
+
+				@Override
+				public Object apply(AccountAttachment accountAttachment) {
+					return accountAttachment.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountEntryId",
+			new Function<AccountAttachment, Object>() {
+
+				@Override
+				public Object apply(AccountAttachment accountAttachment) {
+					return accountAttachment.getAccountEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountProjectId",
+			new Function<AccountAttachment, Object>() {
+
+				@Override
+				public Object apply(AccountAttachment accountAttachment) {
+					return accountAttachment.getAccountProjectId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fileName",
+			new Function<AccountAttachment, Object>() {
+
+				@Override
+				public Object apply(AccountAttachment accountAttachment) {
+					return accountAttachment.getFileName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fileSize",
+			new Function<AccountAttachment, Object>() {
+
+				@Override
+				public Object apply(AccountAttachment accountAttachment) {
+					return accountAttachment.getFileSize();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<AccountAttachment, Object>() {
+
+				@Override
+				public Object apply(AccountAttachment accountAttachment) {
+					return accountAttachment.getType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AccountAttachment, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AccountAttachment, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<AccountAttachment, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"accountAttachmentId",
 			new BiConsumer<AccountAttachment, Object>() {
@@ -347,16 +435,6 @@ public class AccountAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<AccountAttachment, Object>() {
-
-				@Override
-				public Object apply(AccountAttachment accountAttachment) {
-					return accountAttachment.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<AccountAttachment, Object>() {
@@ -366,16 +444,6 @@ public class AccountAttachmentModelImpl
 					AccountAttachment accountAttachment, Object userIdObject) {
 
 					accountAttachment.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<AccountAttachment, Object>() {
-
-				@Override
-				public Object apply(AccountAttachment accountAttachment) {
-					return accountAttachment.getUserName();
 				}
 
 			});
@@ -392,16 +460,6 @@ public class AccountAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<AccountAttachment, Object>() {
-
-				@Override
-				public Object apply(AccountAttachment accountAttachment) {
-					return accountAttachment.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<AccountAttachment, Object>() {
@@ -412,16 +470,6 @@ public class AccountAttachmentModelImpl
 					Object createDateObject) {
 
 					accountAttachment.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"accountEntryId",
-			new Function<AccountAttachment, Object>() {
-
-				@Override
-				public Object apply(AccountAttachment accountAttachment) {
-					return accountAttachment.getAccountEntryId();
 				}
 
 			});
@@ -439,16 +487,6 @@ public class AccountAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"accountProjectId",
-			new Function<AccountAttachment, Object>() {
-
-				@Override
-				public Object apply(AccountAttachment accountAttachment) {
-					return accountAttachment.getAccountProjectId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"accountProjectId",
 			new BiConsumer<AccountAttachment, Object>() {
@@ -460,16 +498,6 @@ public class AccountAttachmentModelImpl
 
 					accountAttachment.setAccountProjectId(
 						(Long)accountProjectIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"fileName",
-			new Function<AccountAttachment, Object>() {
-
-				@Override
-				public Object apply(AccountAttachment accountAttachment) {
-					return accountAttachment.getFileName();
 				}
 
 			});
@@ -486,16 +514,6 @@ public class AccountAttachmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"fileSize",
-			new Function<AccountAttachment, Object>() {
-
-				@Override
-				public Object apply(AccountAttachment accountAttachment) {
-					return accountAttachment.getFileSize();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"fileSize",
 			new BiConsumer<AccountAttachment, Object>() {
@@ -506,16 +524,6 @@ public class AccountAttachmentModelImpl
 					Object fileSizeObject) {
 
 					accountAttachment.setFileSize((Long)fileSizeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<AccountAttachment, Object>() {
-
-				@Override
-				public Object apply(AccountAttachment accountAttachment) {
-					return accountAttachment.getType();
 				}
 
 			});
@@ -532,8 +540,6 @@ public class AccountAttachmentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

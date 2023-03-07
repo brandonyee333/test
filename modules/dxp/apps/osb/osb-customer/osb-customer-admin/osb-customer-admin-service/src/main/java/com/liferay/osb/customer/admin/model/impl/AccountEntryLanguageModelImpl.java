@@ -289,18 +289,12 @@ public class AccountEntryLanguageModelImpl
 
 	private static final Map<String, Function<AccountEntryLanguage, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AccountEntryLanguage, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AccountEntryLanguage, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<AccountEntryLanguage, Object>>();
-		Map<String, BiConsumer<AccountEntryLanguage, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<AccountEntryLanguage, ?>>();
 
 		attributeGetterFunctions.put(
 			"accountEntryLanguageId",
@@ -312,6 +306,40 @@ public class AccountEntryLanguageModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"accountEntryId",
+			new Function<AccountEntryLanguage, Object>() {
+
+				@Override
+				public Object apply(AccountEntryLanguage accountEntryLanguage) {
+					return accountEntryLanguage.getAccountEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"languageId",
+			new Function<AccountEntryLanguage, Object>() {
+
+				@Override
+				public Object apply(AccountEntryLanguage accountEntryLanguage) {
+					return accountEntryLanguage.getLanguageId();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AccountEntryLanguage, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AccountEntryLanguage, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<AccountEntryLanguage, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"accountEntryLanguageId",
 			new BiConsumer<AccountEntryLanguage, Object>() {
@@ -326,16 +354,6 @@ public class AccountEntryLanguageModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"accountEntryId",
-			new Function<AccountEntryLanguage, Object>() {
-
-				@Override
-				public Object apply(AccountEntryLanguage accountEntryLanguage) {
-					return accountEntryLanguage.getAccountEntryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"accountEntryId",
 			new BiConsumer<AccountEntryLanguage, Object>() {
@@ -347,16 +365,6 @@ public class AccountEntryLanguageModelImpl
 
 					accountEntryLanguage.setAccountEntryId(
 						(Long)accountEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"languageId",
-			new Function<AccountEntryLanguage, Object>() {
-
-				@Override
-				public Object apply(AccountEntryLanguage accountEntryLanguage) {
-					return accountEntryLanguage.getLanguageId();
 				}
 
 			});
@@ -375,8 +383,6 @@ public class AccountEntryLanguageModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

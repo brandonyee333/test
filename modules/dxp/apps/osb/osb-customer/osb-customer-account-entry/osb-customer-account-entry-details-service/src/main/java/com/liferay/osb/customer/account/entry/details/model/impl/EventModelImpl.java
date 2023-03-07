@@ -265,14 +265,10 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 	private static final Map<String, Function<Event, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<Event, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<Event, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<Event, Object>>();
-		Map<String, BiConsumer<Event, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<Event, ?>>();
 
 		attributeGetterFunctions.put(
 			"eventId",
@@ -281,16 +277,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				@Override
 				public Object apply(Event event) {
 					return event.getEventId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"eventId",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object eventIdObject) {
-					event.setEventId((Long)eventIdObject);
 				}
 
 			});
@@ -304,16 +290,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"userId",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object userIdObject) {
-					event.setUserId((Long)userIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"userName",
 			new Function<Event, Object>() {
@@ -321,16 +297,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				@Override
 				public Object apply(Event event) {
 					return event.getUserName();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"userName",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object userNameObject) {
-					event.setUserName((String)userNameObject);
 				}
 
 			});
@@ -344,16 +310,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"createDate",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object createDateObject) {
-					event.setCreateDate((Date)createDateObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"occurDate",
 			new Function<Event, Object>() {
@@ -361,16 +317,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				@Override
 				public Object apply(Event event) {
 					return event.getOccurDate();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"occurDate",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object occurDateObject) {
-					event.setOccurDate((Date)occurDateObject);
 				}
 
 			});
@@ -384,16 +330,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"accountEntryId",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object accountEntryIdObject) {
-					event.setAccountEntryId((Long)accountEntryIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"classNameId",
 			new Function<Event, Object>() {
@@ -401,16 +337,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				@Override
 				public Object apply(Event event) {
 					return event.getClassNameId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"classNameId",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object classNameIdObject) {
-					event.setClassNameId((Long)classNameIdObject);
 				}
 
 			});
@@ -424,16 +350,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"classPK",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object classPKObject) {
-					event.setClassPK((Long)classPKObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"type",
 			new Function<Event, Object>() {
@@ -441,16 +357,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				@Override
 				public Object apply(Event event) {
 					return event.getType();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"type",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object typeObject) {
-					event.setType((Integer)typeObject);
 				}
 
 			});
@@ -464,16 +370,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"typeClassNameId",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object typeClassNameIdObject) {
-					event.setTypeClassNameId((Long)typeClassNameIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"typeClassPK",
 			new Function<Event, Object>() {
@@ -481,16 +377,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				@Override
 				public Object apply(Event event) {
 					return event.getTypeClassPK();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"typeClassPK",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object typeClassPKObject) {
-					event.setTypeClassPK((Long)typeClassPKObject);
 				}
 
 			});
@@ -504,16 +390,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"title",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object titleObject) {
-					event.setTitle((String)titleObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"summary",
 			new Function<Event, Object>() {
@@ -524,16 +400,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"summary",
-			new BiConsumer<Event, Object>() {
-
-				@Override
-				public void accept(Event event, Object summaryObject) {
-					event.setSummary((String)summaryObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"additionalInfo",
 			new Function<Event, Object>() {
@@ -541,6 +407,148 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 				@Override
 				public Object apply(Event event) {
 					return event.getAdditionalInfo();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<Event, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<Event, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<Event, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"eventId",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object eventIdObject) {
+					event.setEventId((Long)eventIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object userIdObject) {
+					event.setUserId((Long)userIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object userNameObject) {
+					event.setUserName((String)userNameObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object createDateObject) {
+					event.setCreateDate((Date)createDateObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"occurDate",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object occurDateObject) {
+					event.setOccurDate((Date)occurDateObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"accountEntryId",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object accountEntryIdObject) {
+					event.setAccountEntryId((Long)accountEntryIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classNameId",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object classNameIdObject) {
+					event.setClassNameId((Long)classNameIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"classPK",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object classPKObject) {
+					event.setClassPK((Long)classPKObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"type",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object typeObject) {
+					event.setType((Integer)typeObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"typeClassNameId",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object typeClassNameIdObject) {
+					event.setTypeClassNameId((Long)typeClassNameIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"typeClassPK",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object typeClassPKObject) {
+					event.setTypeClassPK((Long)typeClassPKObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"title",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object titleObject) {
+					event.setTitle((String)titleObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"summary",
+			new BiConsumer<Event, Object>() {
+
+				@Override
+				public void accept(Event event, Object summaryObject) {
+					event.setSummary((String)summaryObject);
 				}
 
 			});
@@ -555,8 +563,6 @@ public class EventModelImpl extends BaseModelImpl<Event> implements EventModel {
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -248,15 +248,11 @@ public class ArtifactVersionModelImpl
 
 	private static final Map<String, Function<ArtifactVersion, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ArtifactVersion, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ArtifactVersion, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<ArtifactVersion, Object>>();
-		Map<String, BiConsumer<ArtifactVersion, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ArtifactVersion, ?>>();
 
 		attributeGetterFunctions.put(
 			"artifactVersionId",
@@ -268,6 +264,88 @@ public class ArtifactVersionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"releaseAssetCategoryId",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getReleaseAssetCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"owner",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getOwner();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"repository",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getRepository();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"group",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getGroup();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"version",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getVersion();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"packaging",
+			new Function<ArtifactVersion, Object>() {
+
+				@Override
+				public Object apply(ArtifactVersion artifactVersion) {
+					return artifactVersion.getPackaging();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ArtifactVersion, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ArtifactVersion, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ArtifactVersion, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"artifactVersionId",
 			new BiConsumer<ArtifactVersion, Object>() {
@@ -279,16 +357,6 @@ public class ArtifactVersionModelImpl
 
 					artifactVersion.setArtifactVersionId(
 						(Long)artifactVersionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"releaseAssetCategoryId",
-			new Function<ArtifactVersion, Object>() {
-
-				@Override
-				public Object apply(ArtifactVersion artifactVersion) {
-					return artifactVersion.getReleaseAssetCategoryId();
 				}
 
 			});
@@ -306,16 +374,6 @@ public class ArtifactVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"owner",
-			new Function<ArtifactVersion, Object>() {
-
-				@Override
-				public Object apply(ArtifactVersion artifactVersion) {
-					return artifactVersion.getOwner();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"owner",
 			new BiConsumer<ArtifactVersion, Object>() {
@@ -325,16 +383,6 @@ public class ArtifactVersionModelImpl
 					ArtifactVersion artifactVersion, Object ownerObject) {
 
 					artifactVersion.setOwner((Integer)ownerObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"repository",
-			new Function<ArtifactVersion, Object>() {
-
-				@Override
-				public Object apply(ArtifactVersion artifactVersion) {
-					return artifactVersion.getRepository();
 				}
 
 			});
@@ -350,16 +398,6 @@ public class ArtifactVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"group",
-			new Function<ArtifactVersion, Object>() {
-
-				@Override
-				public Object apply(ArtifactVersion artifactVersion) {
-					return artifactVersion.getGroup();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"group",
 			new BiConsumer<ArtifactVersion, Object>() {
@@ -369,16 +407,6 @@ public class ArtifactVersionModelImpl
 					ArtifactVersion artifactVersion, Object groupObject) {
 
 					artifactVersion.setGroup((String)groupObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<ArtifactVersion, Object>() {
-
-				@Override
-				public Object apply(ArtifactVersion artifactVersion) {
-					return artifactVersion.getName();
 				}
 
 			});
@@ -394,16 +422,6 @@ public class ArtifactVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"version",
-			new Function<ArtifactVersion, Object>() {
-
-				@Override
-				public Object apply(ArtifactVersion artifactVersion) {
-					return artifactVersion.getVersion();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"version",
 			new BiConsumer<ArtifactVersion, Object>() {
@@ -413,16 +431,6 @@ public class ArtifactVersionModelImpl
 					ArtifactVersion artifactVersion, Object versionObject) {
 
 					artifactVersion.setVersion((String)versionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"packaging",
-			new Function<ArtifactVersion, Object>() {
-
-				@Override
-				public Object apply(ArtifactVersion artifactVersion) {
-					return artifactVersion.getPackaging();
 				}
 
 			});
@@ -439,8 +447,6 @@ public class ArtifactVersionModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -237,14 +237,10 @@ public class SyncStateModelImpl
 
 	private static final Map<String, Function<SyncState, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<SyncState, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<SyncState, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<SyncState, Object>>();
-		Map<String, BiConsumer<SyncState, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<SyncState, ?>>();
 
 		attributeGetterFunctions.put(
 			"syncStateId",
@@ -253,18 +249,6 @@ public class SyncStateModelImpl
 				@Override
 				public Object apply(SyncState syncState) {
 					return syncState.getSyncStateId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"syncStateId",
-			new BiConsumer<SyncState, Object>() {
-
-				@Override
-				public void accept(
-					SyncState syncState, Object syncStateIdObject) {
-
-					syncState.setSyncStateId((Long)syncStateIdObject);
 				}
 
 			});
@@ -278,6 +262,40 @@ public class SyncStateModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"lastRunTime",
+			new Function<SyncState, Object>() {
+
+				@Override
+				public Object apply(SyncState syncState) {
+					return syncState.getLastRunTime();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<SyncState, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<SyncState, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<SyncState, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"syncStateId",
+			new BiConsumer<SyncState, Object>() {
+
+				@Override
+				public void accept(
+					SyncState syncState, Object syncStateIdObject) {
+
+					syncState.setSyncStateId((Long)syncStateIdObject);
+				}
+
+			});
 		attributeSetterBiConsumers.put(
 			"modelName",
 			new BiConsumer<SyncState, Object>() {
@@ -287,16 +305,6 @@ public class SyncStateModelImpl
 					SyncState syncState, Object modelNameObject) {
 
 					syncState.setModelName((String)modelNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastRunTime",
-			new Function<SyncState, Object>() {
-
-				@Override
-				public Object apply(SyncState syncState) {
-					return syncState.getLastRunTime();
 				}
 
 			});
@@ -313,8 +321,6 @@ public class SyncStateModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

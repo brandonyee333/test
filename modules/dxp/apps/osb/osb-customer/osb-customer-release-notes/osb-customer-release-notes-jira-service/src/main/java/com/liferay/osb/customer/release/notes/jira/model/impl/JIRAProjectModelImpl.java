@@ -239,14 +239,10 @@ public class JIRAProjectModelImpl
 
 	private static final Map<String, Function<JIRAProject, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<JIRAProject, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<JIRAProject, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<JIRAProject, Object>>();
-		Map<String, BiConsumer<JIRAProject, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<JIRAProject, ?>>();
 
 		attributeGetterFunctions.put(
 			"jiraProjectId",
@@ -255,18 +251,6 @@ public class JIRAProjectModelImpl
 				@Override
 				public Object apply(JIRAProject jiraProject) {
 					return jiraProject.getJiraProjectId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"jiraProjectId",
-			new BiConsumer<JIRAProject, Object>() {
-
-				@Override
-				public void accept(
-					JIRAProject jiraProject, Object jiraProjectIdObject) {
-
-					jiraProject.setJiraProjectId((Long)jiraProjectIdObject);
 				}
 
 			});
@@ -280,16 +264,6 @@ public class JIRAProjectModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"key",
-			new BiConsumer<JIRAProject, Object>() {
-
-				@Override
-				public void accept(JIRAProject jiraProject, Object keyObject) {
-					jiraProject.setKey((String)keyObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"name",
 			new Function<JIRAProject, Object>() {
@@ -297,6 +271,40 @@ public class JIRAProjectModelImpl
 				@Override
 				public Object apply(JIRAProject jiraProject) {
 					return jiraProject.getName();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<JIRAProject, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<JIRAProject, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<JIRAProject, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"jiraProjectId",
+			new BiConsumer<JIRAProject, Object>() {
+
+				@Override
+				public void accept(
+					JIRAProject jiraProject, Object jiraProjectIdObject) {
+
+					jiraProject.setJiraProjectId((Long)jiraProjectIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"key",
+			new BiConsumer<JIRAProject, Object>() {
+
+				@Override
+				public void accept(JIRAProject jiraProject, Object keyObject) {
+					jiraProject.setKey((String)keyObject);
 				}
 
 			});
@@ -311,8 +319,6 @@ public class JIRAProjectModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

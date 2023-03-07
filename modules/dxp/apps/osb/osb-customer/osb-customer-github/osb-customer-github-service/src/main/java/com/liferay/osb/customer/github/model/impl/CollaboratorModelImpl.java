@@ -304,14 +304,10 @@ public class CollaboratorModelImpl
 
 	private static final Map<String, Function<Collaborator, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<Collaborator, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<Collaborator, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<Collaborator, Object>>();
-		Map<String, BiConsumer<Collaborator, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<Collaborator, ?>>();
 
 		attributeGetterFunctions.put(
 			"collaboratorId",
@@ -323,6 +319,88 @@ public class CollaboratorModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<Collaborator, Object>() {
+
+				@Override
+				public Object apply(Collaborator collaborator) {
+					return collaborator.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<Collaborator, Object>() {
+
+				@Override
+				public Object apply(Collaborator collaborator) {
+					return collaborator.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountEntryId",
+			new Function<Collaborator, Object>() {
+
+				@Override
+				public Object apply(Collaborator collaborator) {
+					return collaborator.getAccountEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"emailAddress",
+			new Function<Collaborator, Object>() {
+
+				@Override
+				public Object apply(Collaborator collaborator) {
+					return collaborator.getEmailAddress();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fullName",
+			new Function<Collaborator, Object>() {
+
+				@Override
+				public Object apply(Collaborator collaborator) {
+					return collaborator.getFullName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"gitHubUserName",
+			new Function<Collaborator, Object>() {
+
+				@Override
+				public Object apply(Collaborator collaborator) {
+					return collaborator.getGitHubUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<Collaborator, Object>() {
+
+				@Override
+				public Object apply(Collaborator collaborator) {
+					return collaborator.getStatus();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<Collaborator, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<Collaborator, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<Collaborator, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"collaboratorId",
 			new BiConsumer<Collaborator, Object>() {
@@ -332,16 +410,6 @@ public class CollaboratorModelImpl
 					Collaborator collaborator, Object collaboratorIdObject) {
 
 					collaborator.setCollaboratorId((Long)collaboratorIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<Collaborator, Object>() {
-
-				@Override
-				public Object apply(Collaborator collaborator) {
-					return collaborator.getUserId();
 				}
 
 			});
@@ -357,16 +425,6 @@ public class CollaboratorModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<Collaborator, Object>() {
-
-				@Override
-				public Object apply(Collaborator collaborator) {
-					return collaborator.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<Collaborator, Object>() {
@@ -376,16 +434,6 @@ public class CollaboratorModelImpl
 					Collaborator collaborator, Object createDateObject) {
 
 					collaborator.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"accountEntryId",
-			new Function<Collaborator, Object>() {
-
-				@Override
-				public Object apply(Collaborator collaborator) {
-					return collaborator.getAccountEntryId();
 				}
 
 			});
@@ -401,16 +449,6 @@ public class CollaboratorModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"emailAddress",
-			new Function<Collaborator, Object>() {
-
-				@Override
-				public Object apply(Collaborator collaborator) {
-					return collaborator.getEmailAddress();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"emailAddress",
 			new BiConsumer<Collaborator, Object>() {
@@ -423,16 +461,6 @@ public class CollaboratorModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"fullName",
-			new Function<Collaborator, Object>() {
-
-				@Override
-				public Object apply(Collaborator collaborator) {
-					return collaborator.getFullName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"fullName",
 			new BiConsumer<Collaborator, Object>() {
@@ -442,16 +470,6 @@ public class CollaboratorModelImpl
 					Collaborator collaborator, Object fullNameObject) {
 
 					collaborator.setFullName((String)fullNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"gitHubUserName",
-			new Function<Collaborator, Object>() {
-
-				@Override
-				public Object apply(Collaborator collaborator) {
-					return collaborator.getGitHubUserName();
 				}
 
 			});
@@ -468,16 +486,6 @@ public class CollaboratorModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<Collaborator, Object>() {
-
-				@Override
-				public Object apply(Collaborator collaborator) {
-					return collaborator.getStatus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"status",
 			new BiConsumer<Collaborator, Object>() {
@@ -491,8 +499,6 @@ public class CollaboratorModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

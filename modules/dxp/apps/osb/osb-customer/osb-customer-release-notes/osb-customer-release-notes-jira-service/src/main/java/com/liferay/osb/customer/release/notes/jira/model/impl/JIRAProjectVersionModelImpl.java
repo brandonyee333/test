@@ -236,17 +236,12 @@ public class JIRAProjectVersionModelImpl
 
 	private static final Map<String, Function<JIRAProjectVersion, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<JIRAProjectVersion, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<JIRAProjectVersion, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<JIRAProjectVersion, Object>>();
-		Map<String, BiConsumer<JIRAProjectVersion, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<JIRAProjectVersion, ?>>();
 
 		attributeGetterFunctions.put(
 			"jiraProjectVersionId",
@@ -258,6 +253,59 @@ public class JIRAProjectVersionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"jiraProjectId",
+			new Function<JIRAProjectVersion, Object>() {
+
+				@Override
+				public Object apply(JIRAProjectVersion jiraProjectVersion) {
+					return jiraProjectVersion.getJiraProjectId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<JIRAProjectVersion, Object>() {
+
+				@Override
+				public Object apply(JIRAProjectVersion jiraProjectVersion) {
+					return jiraProjectVersion.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"released",
+			new Function<JIRAProjectVersion, Object>() {
+
+				@Override
+				public Object apply(JIRAProjectVersion jiraProjectVersion) {
+					return jiraProjectVersion.getReleased();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"archived",
+			new Function<JIRAProjectVersion, Object>() {
+
+				@Override
+				public Object apply(JIRAProjectVersion jiraProjectVersion) {
+					return jiraProjectVersion.getArchived();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<JIRAProjectVersion, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<JIRAProjectVersion, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<JIRAProjectVersion, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"jiraProjectVersionId",
 			new BiConsumer<JIRAProjectVersion, Object>() {
@@ -269,16 +317,6 @@ public class JIRAProjectVersionModelImpl
 
 					jiraProjectVersion.setJiraProjectVersionId(
 						(Long)jiraProjectVersionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"jiraProjectId",
-			new Function<JIRAProjectVersion, Object>() {
-
-				@Override
-				public Object apply(JIRAProjectVersion jiraProjectVersion) {
-					return jiraProjectVersion.getJiraProjectId();
 				}
 
 			});
@@ -296,16 +334,6 @@ public class JIRAProjectVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<JIRAProjectVersion, Object>() {
-
-				@Override
-				public Object apply(JIRAProjectVersion jiraProjectVersion) {
-					return jiraProjectVersion.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<JIRAProjectVersion, Object>() {
@@ -315,16 +343,6 @@ public class JIRAProjectVersionModelImpl
 					JIRAProjectVersion jiraProjectVersion, Object nameObject) {
 
 					jiraProjectVersion.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"released",
-			new Function<JIRAProjectVersion, Object>() {
-
-				@Override
-				public Object apply(JIRAProjectVersion jiraProjectVersion) {
-					return jiraProjectVersion.getReleased();
 				}
 
 			});
@@ -338,16 +356,6 @@ public class JIRAProjectVersionModelImpl
 					Object releasedObject) {
 
 					jiraProjectVersion.setReleased((String)releasedObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"archived",
-			new Function<JIRAProjectVersion, Object>() {
-
-				@Override
-				public Object apply(JIRAProjectVersion jiraProjectVersion) {
-					return jiraProjectVersion.getArchived();
 				}
 
 			});
@@ -365,8 +373,6 @@ public class JIRAProjectVersionModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

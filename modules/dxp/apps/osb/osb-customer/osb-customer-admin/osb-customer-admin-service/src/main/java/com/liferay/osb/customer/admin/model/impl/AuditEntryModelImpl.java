@@ -339,14 +339,10 @@ public class AuditEntryModelImpl
 
 	private static final Map<String, Function<AuditEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AuditEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AuditEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<AuditEntry, Object>>();
-		Map<String, BiConsumer<AuditEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<AuditEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"auditEntryId",
@@ -355,18 +351,6 @@ public class AuditEntryModelImpl
 				@Override
 				public Object apply(AuditEntry auditEntry) {
 					return auditEntry.getAuditEntryId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"auditEntryId",
-			new BiConsumer<AuditEntry, Object>() {
-
-				@Override
-				public void accept(
-					AuditEntry auditEntry, Object auditEntryIdObject) {
-
-					auditEntry.setAuditEntryId((Long)auditEntryIdObject);
 				}
 
 			});
@@ -380,16 +364,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"userId",
-			new BiConsumer<AuditEntry, Object>() {
-
-				@Override
-				public void accept(AuditEntry auditEntry, Object userIdObject) {
-					auditEntry.setUserId((Long)userIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"userName",
 			new Function<AuditEntry, Object>() {
@@ -397,6 +371,200 @@ public class AuditEntryModelImpl
 				@Override
 				public Object apply(AuditEntry auditEntry) {
 					return auditEntry.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"previousAuditEntryId",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getPreviousAuditEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"auditSetId",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getAuditSetId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fieldClassNameId",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getFieldClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fieldClassPK",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getFieldClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"action",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getAction();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"field",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getField();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"visibility",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getVisibility();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"oldLabel",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getOldLabel();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"oldValue",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getOldValue();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"newLabel",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getNewLabel();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"newValue",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getNewValue();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"i18n",
+			new Function<AuditEntry, Object>() {
+
+				@Override
+				public Object apply(AuditEntry auditEntry) {
+					return auditEntry.getI18n();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AuditEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AuditEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<AuditEntry, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"auditEntryId",
+			new BiConsumer<AuditEntry, Object>() {
+
+				@Override
+				public void accept(
+					AuditEntry auditEntry, Object auditEntryIdObject) {
+
+					auditEntry.setAuditEntryId((Long)auditEntryIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<AuditEntry, Object>() {
+
+				@Override
+				public void accept(AuditEntry auditEntry, Object userIdObject) {
+					auditEntry.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -412,16 +580,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<AuditEntry, Object>() {
@@ -431,16 +589,6 @@ public class AuditEntryModelImpl
 					AuditEntry auditEntry, Object createDateObject) {
 
 					auditEntry.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getClassNameId();
 				}
 
 			});
@@ -456,16 +604,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<AuditEntry, Object>() {
@@ -475,16 +613,6 @@ public class AuditEntryModelImpl
 					AuditEntry auditEntry, Object classPKObject) {
 
 					auditEntry.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"previousAuditEntryId",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getPreviousAuditEntryId();
 				}
 
 			});
@@ -501,16 +629,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"auditSetId",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getAuditSetId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"auditSetId",
 			new BiConsumer<AuditEntry, Object>() {
@@ -520,16 +638,6 @@ public class AuditEntryModelImpl
 					AuditEntry auditEntry, Object auditSetIdObject) {
 
 					auditEntry.setAuditSetId((Long)auditSetIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"fieldClassNameId",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getFieldClassNameId();
 				}
 
 			});
@@ -546,16 +654,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"fieldClassPK",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getFieldClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"fieldClassPK",
 			new BiConsumer<AuditEntry, Object>() {
@@ -565,16 +663,6 @@ public class AuditEntryModelImpl
 					AuditEntry auditEntry, Object fieldClassPKObject) {
 
 					auditEntry.setFieldClassPK((Long)fieldClassPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"action",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getAction();
 				}
 
 			});
@@ -588,16 +676,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"field",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getField();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"field",
 			new BiConsumer<AuditEntry, Object>() {
@@ -605,16 +683,6 @@ public class AuditEntryModelImpl
 				@Override
 				public void accept(AuditEntry auditEntry, Object fieldObject) {
 					auditEntry.setField((Integer)fieldObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"visibility",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getVisibility();
 				}
 
 			});
@@ -630,16 +698,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"oldLabel",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getOldLabel();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"oldLabel",
 			new BiConsumer<AuditEntry, Object>() {
@@ -649,16 +707,6 @@ public class AuditEntryModelImpl
 					AuditEntry auditEntry, Object oldLabelObject) {
 
 					auditEntry.setOldLabel((String)oldLabelObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"oldValue",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getOldValue();
 				}
 
 			});
@@ -674,16 +722,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"newLabel",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getNewLabel();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"newLabel",
 			new BiConsumer<AuditEntry, Object>() {
@@ -693,16 +731,6 @@ public class AuditEntryModelImpl
 					AuditEntry auditEntry, Object newLabelObject) {
 
 					auditEntry.setNewLabel((String)newLabelObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"newValue",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getNewValue();
 				}
 
 			});
@@ -718,16 +746,6 @@ public class AuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getDescription();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"description",
 			new BiConsumer<AuditEntry, Object>() {
@@ -737,16 +755,6 @@ public class AuditEntryModelImpl
 					AuditEntry auditEntry, Object descriptionObject) {
 
 					auditEntry.setDescription((String)descriptionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"i18n",
-			new Function<AuditEntry, Object>() {
-
-				@Override
-				public Object apply(AuditEntry auditEntry) {
-					return auditEntry.getI18n();
 				}
 
 			});
@@ -761,8 +769,6 @@ public class AuditEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

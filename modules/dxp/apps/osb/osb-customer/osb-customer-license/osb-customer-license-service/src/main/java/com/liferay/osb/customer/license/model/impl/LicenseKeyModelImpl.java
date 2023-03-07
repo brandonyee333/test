@@ -422,14 +422,10 @@ public class LicenseKeyModelImpl
 
 	private static final Map<String, Function<LicenseKey, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LicenseKey, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LicenseKey, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LicenseKey, Object>>();
-		Map<String, BiConsumer<LicenseKey, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LicenseKey, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -441,16 +437,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"uuid",
-			new BiConsumer<LicenseKey, Object>() {
-
-				@Override
-				public void accept(LicenseKey licenseKey, Object uuidObject) {
-					licenseKey.setUuid((String)uuidObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"licenseKeyId",
 			new Function<LicenseKey, Object>() {
@@ -458,6 +444,448 @@ public class LicenseKeyModelImpl
 				@Override
 				public Object apply(LicenseKey licenseKey) {
 					return licenseKey.getLicenseKeyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedUserId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getModifiedUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedUserName",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getModifiedUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"licenseKeySetId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getLicenseKeySetId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"assetReceiptLicenseUuid",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getAssetReceiptLicenseUuid();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"koroneikiAccountKey",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getKoroneikiAccountKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"koroneikiProductPurchaseKey",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getKoroneikiProductPurchaseKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountEntryId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getAccountEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"orderEntryId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getOrderEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"offeringEntryId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getOfferingEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"licenseEntryId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getLicenseEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"productEntryId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getProductEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"supportResponseId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getSupportResponseId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountEntryName",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getAccountEntryName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"licenseEntryName",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getLicenseEntryName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"licenseEntryType",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getLicenseEntryType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"licenseVersion",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getLicenseVersion();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"productEntryName",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getProductEntryName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"productId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getProductId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"productVersion",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getProductVersion();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"productVersionLabel",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getProductVersionLabel();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"clusterId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getClusterId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"owner",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getOwner();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"maxServers",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getMaxServers();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"maxConcurrentUsers",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getMaxConcurrentUsers();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"maxUsers",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getMaxUsers();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"maxHttpSessions",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getMaxHttpSessions();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"sizing",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getSizing();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"hostName",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getHostName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"ipAddresses",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getIpAddresses();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"macAddresses",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getMacAddresses();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"serverId",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getServerId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"key",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"startDate",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getStartDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"expirationDate",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getExpirationDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"additionalInfo",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getAdditionalInfo();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"complimentary",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getComplimentary();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"active",
+			new Function<LicenseKey, Object>() {
+
+				@Override
+				public Object apply(LicenseKey licenseKey) {
+					return licenseKey.getActive();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LicenseKey, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LicenseKey, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LicenseKey, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"uuid",
+			new BiConsumer<LicenseKey, Object>() {
+
+				@Override
+				public void accept(LicenseKey licenseKey, Object uuidObject) {
+					licenseKey.setUuid((String)uuidObject);
 				}
 
 			});
@@ -473,16 +901,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<LicenseKey, Object>() {
@@ -490,16 +908,6 @@ public class LicenseKeyModelImpl
 				@Override
 				public void accept(LicenseKey licenseKey, Object userIdObject) {
 					licenseKey.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getUserName();
 				}
 
 			});
@@ -515,16 +923,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<LicenseKey, Object>() {
@@ -537,16 +935,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedUserId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getModifiedUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedUserId",
 			new BiConsumer<LicenseKey, Object>() {
@@ -556,16 +944,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object modifiedUserIdObject) {
 
 					licenseKey.setModifiedUserId((Long)modifiedUserIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedUserName",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getModifiedUserName();
 				}
 
 			});
@@ -582,16 +960,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<LicenseKey, Object>() {
@@ -604,16 +972,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"licenseKeySetId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getLicenseKeySetId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"licenseKeySetId",
 			new BiConsumer<LicenseKey, Object>() {
@@ -623,16 +981,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object licenseKeySetIdObject) {
 
 					licenseKey.setLicenseKeySetId((Long)licenseKeySetIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"assetReceiptLicenseUuid",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getAssetReceiptLicenseUuid();
 				}
 
 			});
@@ -650,16 +998,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"koroneikiAccountKey",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getKoroneikiAccountKey();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"koroneikiAccountKey",
 			new BiConsumer<LicenseKey, Object>() {
@@ -670,16 +1008,6 @@ public class LicenseKeyModelImpl
 
 					licenseKey.setKoroneikiAccountKey(
 						(String)koroneikiAccountKeyObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"koroneikiProductPurchaseKey",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getKoroneikiProductPurchaseKey();
 				}
 
 			});
@@ -697,16 +1025,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"accountEntryId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getAccountEntryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"accountEntryId",
 			new BiConsumer<LicenseKey, Object>() {
@@ -716,16 +1034,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object accountEntryIdObject) {
 
 					licenseKey.setAccountEntryId((Long)accountEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"orderEntryId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getOrderEntryId();
 				}
 
 			});
@@ -741,16 +1049,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"offeringEntryId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getOfferingEntryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"offeringEntryId",
 			new BiConsumer<LicenseKey, Object>() {
@@ -760,16 +1058,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object offeringEntryIdObject) {
 
 					licenseKey.setOfferingEntryId((Long)offeringEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"licenseEntryId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getLicenseEntryId();
 				}
 
 			});
@@ -785,16 +1073,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"productEntryId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getProductEntryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"productEntryId",
 			new BiConsumer<LicenseKey, Object>() {
@@ -804,16 +1082,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object productEntryIdObject) {
 
 					licenseKey.setProductEntryId((Long)productEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"supportResponseId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getSupportResponseId();
 				}
 
 			});
@@ -830,16 +1098,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"accountEntryName",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getAccountEntryName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"accountEntryName",
 			new BiConsumer<LicenseKey, Object>() {
@@ -850,16 +1108,6 @@ public class LicenseKeyModelImpl
 
 					licenseKey.setAccountEntryName(
 						(String)accountEntryNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"licenseEntryName",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getLicenseEntryName();
 				}
 
 			});
@@ -876,16 +1124,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"licenseEntryType",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getLicenseEntryType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"licenseEntryType",
 			new BiConsumer<LicenseKey, Object>() {
@@ -899,16 +1137,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"licenseVersion",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getLicenseVersion();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"licenseVersion",
 			new BiConsumer<LicenseKey, Object>() {
@@ -918,16 +1146,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object licenseVersionObject) {
 
 					licenseKey.setLicenseVersion((Integer)licenseVersionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"productEntryName",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getProductEntryName();
 				}
 
 			});
@@ -944,16 +1162,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"productId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getProductId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"productId",
 			new BiConsumer<LicenseKey, Object>() {
@@ -966,16 +1174,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"productVersion",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getProductVersion();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"productVersion",
 			new BiConsumer<LicenseKey, Object>() {
@@ -985,16 +1183,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object productVersionObject) {
 
 					licenseKey.setProductVersion((Integer)productVersionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"productVersionLabel",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getProductVersionLabel();
 				}
 
 			});
@@ -1011,16 +1199,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"clusterId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getClusterId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"clusterId",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1030,16 +1208,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object clusterIdObject) {
 
 					licenseKey.setClusterId((Long)clusterIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"owner",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getOwner();
 				}
 
 			});
@@ -1053,16 +1221,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"maxServers",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getMaxServers();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"maxServers",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1072,16 +1230,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object maxServersObject) {
 
 					licenseKey.setMaxServers((Integer)maxServersObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"maxConcurrentUsers",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getMaxConcurrentUsers();
 				}
 
 			});
@@ -1098,16 +1246,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"maxUsers",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getMaxUsers();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"maxUsers",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1117,16 +1255,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object maxUsersObject) {
 
 					licenseKey.setMaxUsers((Long)maxUsersObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"maxHttpSessions",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getMaxHttpSessions();
 				}
 
 			});
@@ -1143,16 +1271,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"sizing",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getSizing();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"sizing",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1160,16 +1278,6 @@ public class LicenseKeyModelImpl
 				@Override
 				public void accept(LicenseKey licenseKey, Object sizingObject) {
 					licenseKey.setSizing((Integer)sizingObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getDescription();
 				}
 
 			});
@@ -1185,16 +1293,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"hostName",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getHostName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"hostName",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1204,16 +1302,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object hostNameObject) {
 
 					licenseKey.setHostName((String)hostNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"ipAddresses",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getIpAddresses();
 				}
 
 			});
@@ -1229,16 +1317,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"macAddresses",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getMacAddresses();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"macAddresses",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1248,16 +1326,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object macAddressesObject) {
 
 					licenseKey.setMacAddresses((String)macAddressesObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"serverId",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getServerId();
 				}
 
 			});
@@ -1273,16 +1341,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"key",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getKey();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"key",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1290,16 +1348,6 @@ public class LicenseKeyModelImpl
 				@Override
 				public void accept(LicenseKey licenseKey, Object keyObject) {
 					licenseKey.setKey((String)keyObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"startDate",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getStartDate();
 				}
 
 			});
@@ -1315,16 +1363,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"expirationDate",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getExpirationDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"expirationDate",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1334,16 +1372,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object expirationDateObject) {
 
 					licenseKey.setExpirationDate((Date)expirationDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"additionalInfo",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getAdditionalInfo();
 				}
 
 			});
@@ -1359,16 +1387,6 @@ public class LicenseKeyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"complimentary",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getComplimentary();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"complimentary",
 			new BiConsumer<LicenseKey, Object>() {
@@ -1378,16 +1396,6 @@ public class LicenseKeyModelImpl
 					LicenseKey licenseKey, Object complimentaryObject) {
 
 					licenseKey.setComplimentary((Boolean)complimentaryObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"active",
-			new Function<LicenseKey, Object>() {
-
-				@Override
-				public Object apply(LicenseKey licenseKey) {
-					return licenseKey.getActive();
 				}
 
 			});
@@ -1402,8 +1410,6 @@ public class LicenseKeyModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

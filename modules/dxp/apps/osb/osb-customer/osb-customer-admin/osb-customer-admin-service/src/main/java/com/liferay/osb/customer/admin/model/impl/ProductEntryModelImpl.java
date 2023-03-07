@@ -310,14 +310,10 @@ public class ProductEntryModelImpl
 
 	private static final Map<String, Function<ProductEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ProductEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ProductEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<ProductEntry, Object>>();
-		Map<String, BiConsumer<ProductEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ProductEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"productEntryId",
@@ -329,6 +325,118 @@ public class ProductEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"koroneikiProductKey",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getKoroneikiProductKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"environment",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getEnvironment();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"accountEnvironments",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getAccountEnvironments();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"licenses",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getLicenses();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"versionsListType",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getVersionsListType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ProductEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ProductEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ProductEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"productEntryId",
 			new BiConsumer<ProductEntry, Object>() {
@@ -338,16 +446,6 @@ public class ProductEntryModelImpl
 					ProductEntry productEntry, Object productEntryIdObject) {
 
 					productEntry.setProductEntryId((Long)productEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getUserId();
 				}
 
 			});
@@ -363,16 +461,6 @@ public class ProductEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<ProductEntry, Object>() {
@@ -382,16 +470,6 @@ public class ProductEntryModelImpl
 					ProductEntry productEntry, Object userNameObject) {
 
 					productEntry.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getCreateDate();
 				}
 
 			});
@@ -407,16 +485,6 @@ public class ProductEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<ProductEntry, Object>() {
@@ -426,16 +494,6 @@ public class ProductEntryModelImpl
 					ProductEntry productEntry, Object modifiedDateObject) {
 
 					productEntry.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"koroneikiProductKey",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getKoroneikiProductKey();
 				}
 
 			});
@@ -453,16 +511,6 @@ public class ProductEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<ProductEntry, Object>() {
@@ -475,16 +523,6 @@ public class ProductEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"environment",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getEnvironment();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"environment",
 			new BiConsumer<ProductEntry, Object>() {
@@ -494,16 +532,6 @@ public class ProductEntryModelImpl
 					ProductEntry productEntry, Object environmentObject) {
 
 					productEntry.setEnvironment((Integer)environmentObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"accountEnvironments",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getAccountEnvironments();
 				}
 
 			});
@@ -521,16 +549,6 @@ public class ProductEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"licenses",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getLicenses();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"licenses",
 			new BiConsumer<ProductEntry, Object>() {
@@ -540,16 +558,6 @@ public class ProductEntryModelImpl
 					ProductEntry productEntry, Object licensesObject) {
 
 					productEntry.setLicenses((Boolean)licensesObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"versionsListType",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getVersionsListType();
 				}
 
 			});
@@ -567,8 +575,6 @@ public class ProductEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

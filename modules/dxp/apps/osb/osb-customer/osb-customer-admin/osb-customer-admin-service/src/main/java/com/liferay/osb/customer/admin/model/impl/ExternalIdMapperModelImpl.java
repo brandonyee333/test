@@ -252,16 +252,11 @@ public class ExternalIdMapperModelImpl
 
 	private static final Map<String, Function<ExternalIdMapper, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ExternalIdMapper, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ExternalIdMapper, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<ExternalIdMapper, Object>>();
-		Map<String, BiConsumer<ExternalIdMapper, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<ExternalIdMapper, ?>>();
 
 		attributeGetterFunctions.put(
 			"externalIdMapperId",
@@ -273,6 +268,79 @@ public class ExternalIdMapperModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<ExternalIdMapper, Object>() {
+
+				@Override
+				public Object apply(ExternalIdMapper externalIdMapper) {
+					return externalIdMapper.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<ExternalIdMapper, Object>() {
+
+				@Override
+				public Object apply(ExternalIdMapper externalIdMapper) {
+					return externalIdMapper.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<ExternalIdMapper, Object>() {
+
+				@Override
+				public Object apply(ExternalIdMapper externalIdMapper) {
+					return externalIdMapper.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<ExternalIdMapper, Object>() {
+
+				@Override
+				public Object apply(ExternalIdMapper externalIdMapper) {
+					return externalIdMapper.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<ExternalIdMapper, Object>() {
+
+				@Override
+				public Object apply(ExternalIdMapper externalIdMapper) {
+					return externalIdMapper.getType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"externalId",
+			new Function<ExternalIdMapper, Object>() {
+
+				@Override
+				public Object apply(ExternalIdMapper externalIdMapper) {
+					return externalIdMapper.getExternalId();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ExternalIdMapper, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ExternalIdMapper, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<ExternalIdMapper, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"externalIdMapperId",
 			new BiConsumer<ExternalIdMapper, Object>() {
@@ -284,16 +352,6 @@ public class ExternalIdMapperModelImpl
 
 					externalIdMapper.setExternalIdMapperId(
 						(Long)externalIdMapperIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<ExternalIdMapper, Object>() {
-
-				@Override
-				public Object apply(ExternalIdMapper externalIdMapper) {
-					return externalIdMapper.getCreateDate();
 				}
 
 			});
@@ -310,16 +368,6 @@ public class ExternalIdMapperModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<ExternalIdMapper, Object>() {
-
-				@Override
-				public Object apply(ExternalIdMapper externalIdMapper) {
-					return externalIdMapper.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<ExternalIdMapper, Object>() {
@@ -330,16 +378,6 @@ public class ExternalIdMapperModelImpl
 					Object modifiedDateObject) {
 
 					externalIdMapper.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<ExternalIdMapper, Object>() {
-
-				@Override
-				public Object apply(ExternalIdMapper externalIdMapper) {
-					return externalIdMapper.getClassNameId();
 				}
 
 			});
@@ -356,16 +394,6 @@ public class ExternalIdMapperModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<ExternalIdMapper, Object>() {
-
-				@Override
-				public Object apply(ExternalIdMapper externalIdMapper) {
-					return externalIdMapper.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<ExternalIdMapper, Object>() {
@@ -378,16 +406,6 @@ public class ExternalIdMapperModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<ExternalIdMapper, Object>() {
-
-				@Override
-				public Object apply(ExternalIdMapper externalIdMapper) {
-					return externalIdMapper.getType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"type",
 			new BiConsumer<ExternalIdMapper, Object>() {
@@ -397,16 +415,6 @@ public class ExternalIdMapperModelImpl
 					ExternalIdMapper externalIdMapper, Object typeObject) {
 
 					externalIdMapper.setType((Integer)typeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"externalId",
-			new Function<ExternalIdMapper, Object>() {
-
-				@Override
-				public Object apply(ExternalIdMapper externalIdMapper) {
-					return externalIdMapper.getExternalId();
 				}
 
 			});
@@ -424,8 +432,6 @@ public class ExternalIdMapperModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}
