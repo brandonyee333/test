@@ -46,6 +46,10 @@ public interface CustomBQMembershipChangeRepository {
 	public BQMembershipChange findBySegmentId(long segmentId);
 
 	@Cacheable
+	public List<BQMembershipChange> findLastBQMembershipChangeBySegmentIds(
+		List<Long> segmentIds);
+
+	@Cacheable
 	public List<Long> findSegmentIdByFilterString(String filterString);
 
 	public BQMembershipChange insert(BQMembershipChange bqMembershipChange);
@@ -53,10 +57,5 @@ public interface CustomBQMembershipChangeRepository {
 	@Cacheable
 	public List<BQMembershipChange> searchBQMembershipChanges(
 		FilterHelper filterHelper, Long segmentId, Pageable pageable);
-
-	@Cacheable
-	public List<BQMembershipChange> searchLastByCreateDateAndSegmentId(
-		@Nullable Date fromCreateDate, List<Long> segmentIds,
-		Date toCreateDate);
 
 }

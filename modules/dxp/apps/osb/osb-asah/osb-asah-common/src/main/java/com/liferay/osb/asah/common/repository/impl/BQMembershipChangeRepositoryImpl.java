@@ -96,6 +96,54 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	@Override
+	public List<BQMembershipChange> findLastBQMembershipChangeBySegmentIds(
+		List<Long> segmentIds) {
+
+		if (segmentIds.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		SelectConditionStep<Record> tempTableSelectConditionStep =
+			_dslContext.select(
+				DSL.asterisk(),
+				DSL.rowNumber(
+				).over(
+				).partitionBy(
+					DSL.field("segmentId")
+				).orderBy(
+					DSL.field(
+						"createDate"
+					).desc()
+				).as(
+					"rowNumber"
+				)
+			).from(
+				"BQMembershipChange"
+			).where(
+				DSL.field(
+					"segmentId", Long.class
+				).in(
+					segmentIds
+				)
+			);
+
+		return _queryExecutor.queryForList(
+			BQMembershipChange::new,
+			_dslContext.select(
+				DSL.field("createDate"), DSL.field("identitiesCount"),
+				DSL.field("individualsCount"), DSL.field("segmentId")
+			).from(
+				tempTableSelectConditionStep
+			).where(
+				DSL.field(
+					"rowNumber", Integer.class
+				).eq(
+					1
+				)
+			));
+	}
+
+	@Override
 	public List<Long> findSegmentIdByFilterString(String filterString) {
 		Field<Object> createDateField = DSL.field("createDate");
 
@@ -146,53 +194,6 @@ public class BQMembershipChangeRepositoryImpl
 			pageable.getPageSize()
 		).offset(
 			pageable.getOffset()
-		).fetch(
-			record -> new BQMembershipChange(record.intoMap())
-		);
-	}
-
-	@Override
-	public List<BQMembershipChange> searchLastByCreateDateAndSegmentId(
-		@Nullable Date fromCreateDate, List<Long> segmentIds,
-		Date toCreateDate) {
-
-		if (segmentIds.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		Field<Object> createDateField = DSL.field("createDate");
-
-		Field<Object> segmentIdField = DSL.field("segmentId");
-
-		Condition condition = segmentIdField.in(segmentIds);
-
-		if (fromCreateDate == null) {
-			condition = condition.and(createDateField.le(toCreateDate));
-		}
-		else {
-			condition = condition.and(
-				createDateField.between(fromCreateDate, toCreateDate));
-		}
-
-		Table<Record> bqMembershipChangeTable = DSL.table("BQMembershipChange");
-
-		SelectWhereStep<Record> selectWhereStep = _dslContext.selectFrom(
-			bqMembershipChangeTable);
-
-		return selectWhereStep.where(
-			DSL.row(
-				createDateField, segmentIdField
-			).in(
-				DSL.select(
-					DSL.max(createDateField), segmentIdField
-				).from(
-					bqMembershipChangeTable
-				).where(
-					condition
-				).groupBy(
-					segmentIdField
-				)
-			)
 		).fetch(
 			record -> new BQMembershipChange(record.intoMap())
 		);
