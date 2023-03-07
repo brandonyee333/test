@@ -16,8 +16,6 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.google.cloud.bigquery.FieldValueList;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.BQIndividual;
@@ -31,7 +29,6 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.BQSQLUtil;
-import com.liferay.osb.asah.common.util.FieldValueListUtil;
 
 import java.math.BigDecimal;
 
@@ -225,13 +222,6 @@ public class BQIndividualRepositoryImpl
 		return _queryExecutor.queryForObject(
 			record -> {
 				Map<String, Object> map = new HashedMap<>(record);
-
-				if (_dslHelper.isBigQueryDialect()) {
-					map.put(
-						"fields",
-						FieldValueListUtil.toJSONArray(
-							(List<FieldValueList>)map.get("fields")));
-				}
 
 				BigDecimal activitiesCount = new BigDecimal(
 					String.valueOf(map.get("activitiescount")));
