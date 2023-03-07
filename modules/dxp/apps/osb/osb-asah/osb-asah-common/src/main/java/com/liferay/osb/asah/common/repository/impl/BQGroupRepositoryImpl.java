@@ -49,7 +49,7 @@ public class BQGroupRepositoryImpl
 		return _queryExecutor.queryForLong(
 			_dslContext.selectCount(
 			).from(
-				DSL.table("BQExpandoColumn")
+				DSL.table("BQGroup")
 			));
 	}
 

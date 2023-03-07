@@ -105,7 +105,7 @@ public class IndividualNanite {
 					bqExpandoValue.getDataSourceId(),
 					bqExpandoValue.getFieldName(), bqExpandoValue.getValue());
 
-				field.setModifiedDate(bqUser.getModifiedDate());
+				field.setModifiedDate(bqExpandoValue.getModifiedDate());
 
 				return field;
 			}
