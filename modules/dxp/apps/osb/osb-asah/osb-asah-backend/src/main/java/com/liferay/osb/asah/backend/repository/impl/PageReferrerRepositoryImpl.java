@@ -107,7 +107,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			).groupBy(
 				referrerField
 			).orderBy(
-				accessesField
+				accessesField.desc()
 			).limit(
 				3
 			),
