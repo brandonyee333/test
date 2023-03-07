@@ -1416,17 +1416,12 @@
 			},
 			{
 				"mode": "REQUIRED",
-				"name": "id",
+				"name": "identitiesCount",
 				"type": "INT64"
 			},
 			{
 				"mode": "REQUIRED",
 				"name": "individualsCount",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "knownIndividualsCount",
 				"type": "INT64"
 			},
 			{

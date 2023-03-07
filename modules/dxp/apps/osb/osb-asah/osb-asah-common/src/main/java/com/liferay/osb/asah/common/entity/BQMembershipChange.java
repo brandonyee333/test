@@ -45,12 +45,10 @@ public class BQMembershipChange {
 		BQMembershipChange bqMembershipChange = (BQMembershipChange)obj;
 
 		if (Objects.equals(_createDate, bqMembershipChange._createDate) &&
-			Objects.equals(_id, bqMembershipChange._id) &&
 			Objects.equals(
 				_identitiesCount, bqMembershipChange._identitiesCount) &&
 			Objects.equals(
-				_knownIdentitiesCount,
-				bqMembershipChange._knownIdentitiesCount) &&
+				_individualsCount, bqMembershipChange._individualsCount) &&
 			Objects.equals(_segmentId, bqMembershipChange._segmentId)) {
 
 			return true;
@@ -67,16 +65,12 @@ public class BQMembershipChange {
 		return new Date(_createDate.getTime());
 	}
 
-	public Long getId() {
-		return _id;
-	}
-
 	public Long getIdentitiesCount() {
 		return _identitiesCount;
 	}
 
-	public Long getKnownIdentitiesCount() {
-		return _knownIdentitiesCount;
+	public Long getIndividualsCount() {
+		return _individualsCount;
 	}
 
 	public Long getSegmentId() {
@@ -86,8 +80,7 @@ public class BQMembershipChange {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _identitiesCount, _knownIdentitiesCount, _createDate,
-			_segmentId);
+			_identitiesCount, _individualsCount, _createDate, _segmentId);
 	}
 
 	public void setCreateDate(Date createDate) {
@@ -96,16 +89,12 @@ public class BQMembershipChange {
 		}
 	}
 
-	public void setId(Long id) {
-		_id = id;
-	}
-
 	public void setIdentitiesCount(Long identitiesCount) {
 		_identitiesCount = identitiesCount;
 	}
 
-	public void setKnownIdentitiesCount(Long knownIdentitiesCount) {
-		_knownIdentitiesCount = knownIdentitiesCount;
+	public void setIndividualsCount(Long individualsCount) {
+		_individualsCount = individualsCount;
 	}
 
 	public void setSegmentId(Long segmentId) {
@@ -113,9 +102,8 @@ public class BQMembershipChange {
 	}
 
 	private Date _createDate;
-	private Long _id;
 	private Long _identitiesCount;
-	private Long _knownIdentitiesCount;
+	private Long _individualsCount;
 	private Long _segmentId;
 
 }
