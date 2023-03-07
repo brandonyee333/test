@@ -8,6 +8,7 @@ function upgrade_asset_events {
 	sed -e "s/\${ASAH_PROJECT_ID}/$ASAH_PROJECT_ID/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_asset_events_statement.sql > new_upgrade_event_update_statement.sql
 
 	echo "Upgrade Asset Evnets for Project ID: ${PROJECT_ID}, Asah Project ID: ${ASAH_PROJECT_ID}"
+
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_event_update_statement.sql
 }
 
@@ -17,6 +18,7 @@ function upgrade_page_events {
 	sed -e "s/\${ASAH_PROJECT_ID}/$ASAH_PROJECT_ID/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_page_events_statement.sql > new_upgrade_event_merge_statement.sql
 
 	echo "Upgrade Page Events for Project ID: ${PROJECT_ID}, Asah Project ID: ${ASAH_PROJECT_ID}"
+
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_event_merge_statement.sql
 }
 
@@ -26,6 +28,7 @@ function upgrade_session {
 	sed -e "s/\${ASAH_PROJECT_ID}/$ASAH_PROJECT_ID/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_session_merge_statement.sql > new_upgrade_session_merge_statement.sql
 
 	echo "Upgrade Session for Project ID: ${PROJECT_ID}, Asah Project ID: ${ASAH_PROJECT_ID}"
+
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_session_merge_statement.sql
 }
 
