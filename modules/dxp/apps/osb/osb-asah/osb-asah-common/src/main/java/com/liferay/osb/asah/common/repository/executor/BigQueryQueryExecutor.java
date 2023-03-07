@@ -351,12 +351,12 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		"BQCSVUser", "BQEvent", "BQEventProperty", "BQExpandoColumn",
 		"BQExpandoValue", "BQFieldMapping", "BQGroup", "BQIdentity",
 		"BQIdentityActivity", "BQIdentityChannel", "BQIdentityInterestScore",
-		"BQIndividual", "BQMembership", "BQOrder", "BQOrganization",
-		"BQPageReferrers", "BQRole", "BQSession", "BQSessionInterestScore",
-		"BQTeam", "BQUser", "BQUserGroup", "CustomAssetDaily",
-		"CustomAssetHourly", "DocumentLibraryDaily", "DocumentLibraryHourly",
-		"FormDaily", "FormHourly", "Identity_Raw", "JournalDaily",
-		"JournalHourly", "PageDaily", "PageHourly"
+		"BQIndividual", "BQMembership", "BQMembershipChange", "BQOrder",
+		"BQOrganization", "BQPageReferrers", "BQRole", "BQSession",
+		"BQSessionInterestScore", "BQTeam", "BQUser", "BQUserGroup",
+		"CustomAssetDaily", "CustomAssetHourly", "DocumentLibraryDaily",
+		"DocumentLibraryHourly", "FormDaily", "FormHourly", "Identity_Raw",
+		"JournalDaily", "JournalHourly", "PageDaily", "PageHourly"
 	};
 
 	private static final Log _log = LogFactory.getLog(
