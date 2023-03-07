@@ -94,8 +94,8 @@ public interface CustomBQMembershipRepository {
 
 	@Cacheable
 	public List<Map<String, Long>>
-		findSegmentIdIdentitiesCountByIdentityIdAndStatusAnd(
-			String identityId, String status);
+		findSegmentIdIdentitiesCountByIndividualIdAndStatus(
+			String individualId, String status);
 
 	@Cacheable
 	public List<Long> findTop20SegmentIdByIdentityId(String identityId);

@@ -33,7 +33,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
-import org.jooq.InsertValuesStep5;
+import org.jooq.InsertValuesStep6;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
@@ -42,7 +42,6 @@ import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -52,8 +51,11 @@ import org.springframework.lang.Nullable;
 public class BQMembershipRepositoryImpl
 	implements CustomBQMembershipRepository {
 
-	public BQMembershipRepositoryImpl(DSLContext dslContext) {
+	public BQMembershipRepositoryImpl(
+		DSLContext dslContext, QueryExecutor queryExecutor) {
+
 		_dslContext = dslContext;
+		_queryExecutor = queryExecutor;
 	}
 
 	@Override
@@ -250,8 +252,8 @@ public class BQMembershipRepositoryImpl
 
 	@Override
 	public List<Map<String, Long>>
-		findSegmentIdIdentitiesCountByIdentityIdAndStatusAnd(
-			String identityId, String status) {
+		findSegmentIdIdentitiesCountByIndividualIdAndStatus(
+			String individualId, String status) {
 
 		Field<Long> segmentIdField = DSL.field(
 			"BQMembership.segmentId", Long.class);
@@ -268,36 +270,39 @@ public class BQMembershipRepositoryImpl
 				));
 
 		Field<String> statusField = DSL.field("status", String.class);
-		Field<String> identityIdField = DSL.field("identityId", String.class);
+		Field<String> individualIdField = DSL.field(
+			"individualId", String.class);
 
-		return selectSelectStep.from(
-			"BQMembership"
-		).join(
-			"BQMembershipChange"
-		).on(
-			DSL.field(
-				"BQMembership.segmentId"
-			).eq(
-				DSL.field("BQMembershipChange.segmentId")
-			)
-		).where(
-			statusField.eq(status)
-		).and(
-			identityIdField.eq(identityId)
-		).groupBy(
-			DSL.field("BQMembership.segmentId")
-		).fetch(
+		return _queryExecutor.queryForList(
 			record -> {
-				BigDecimal identitiesCount = record.get(identitiesCountField);
+				BigDecimal identitiesCount = (BigDecimal)record.get(
+					"identitiesCount");
+				BigDecimal segmentId = (BigDecimal)record.get("segmentId");
 
 				return new HashMap<String, Long>() {
 					{
 						put("identitiesCount", identitiesCount.longValue());
-						put("segmentId", record.get(segmentIdField));
+						put("segmentId", segmentId.longValue());
 					}
 				};
-			}
-		);
+			},
+			selectSelectStep.from(
+				"BQMembership"
+			).join(
+				"BQMembershipChange"
+			).on(
+				DSL.field(
+					"BQMembership.segmentId"
+				).eq(
+					DSL.field("BQMembershipChange.segmentId")
+				)
+			).where(
+				statusField.eq(status)
+			).and(
+				individualIdField.eq(individualId)
+			).groupBy(
+				DSL.field("BQMembership.segmentId")
+			));
 	}
 
 	@Override
@@ -568,8 +573,6 @@ public class BQMembershipRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private QueryExecutor _queryExecutor;
+	private final QueryExecutor _queryExecutor;
 
 }

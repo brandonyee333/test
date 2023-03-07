@@ -107,10 +107,10 @@ public class BQMembershipDog {
 			segmentId, "ACTIVE");
 	}
 
-	public List<Map<String, Long>> getActiveSegmentIds(String identityId) {
+	public List<Map<String, Long>> getActiveSegmentIds(String individualId) {
 		return _bqMembershipRepository.
-			findSegmentIdIdentitiesCountByIdentityIdAndStatusAnd(
-				identityId, "ACTIVE");
+			findSegmentIdIdentitiesCountByIndividualIdAndStatus(
+				individualId, "ACTIVE");
 	}
 
 	public Page<BQMembership> getBQMembershipPage(
