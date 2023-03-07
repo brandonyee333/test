@@ -14,15 +14,20 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+
+import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,13 +37,12 @@ import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.SelectConditionStep;
 import org.jooq.SelectSelectStep;
-import org.jooq.SelectWhereStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Rachael Koestartyo
@@ -53,6 +57,47 @@ public class BQMembershipChangeRepositoryImpl
 		_queryExecutor = queryExecutor;
 	}
 
+	@Override
+	public void addBQMembershipChange(Long segmentId) {
+		Map<String, Object> membershipSnapshot = _queryExecutor.queryForMap(
+			_dslContext.select(
+				DSL.countDistinct(
+					DSL.field("identityId")
+				).as(
+					"identitiesCount"
+				),
+				DSL.countDistinct(
+					DSL.field("individualId")
+				).as(
+					"individualsCount"
+				)
+			).from(
+				"BQMembership"
+			).where(
+				DSL.field(
+					"segmentId", Long.class
+				).eq(
+					segmentId
+				)
+			));
+
+		BigDecimal identitiesCountBigDecimal =
+			(BigDecimal)membershipSnapshot.get("identitiesCount");
+		BigDecimal individualsCountBigDecimal =
+			(BigDecimal)membershipSnapshot.get("individualsCount");
+
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQMembershipChange")
+			).columns(
+				DSL.field("createDate"),
+				DSL.field("identitiesCount", Long.class),
+				DSL.field("individualsCount", Long.class),
+				DSL.field("segmentId", Long.class)
+			).values(
+				DateUtil.newDateString(), identitiesCountBigDecimal.longValue(),
+				individualsCountBigDecimal.longValue(), segmentId
+			));
 	}
 
 	@Override

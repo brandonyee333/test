@@ -83,12 +83,16 @@ public class BQMembershipDog {
 
 		_bqMembershipRepository.insertAll(bqMemberships);
 
+		_membershipChangeDog.addBQMembershipChange(bqMemberships);
+
 		return bqMemberships;
 	}
 
 	public void deleteBQMembership(String individualId, Long segmentId) {
 		_bqMembershipRepository.deleteByIndividualIdAndSegmentId(
 			individualId, segmentId);
+
+		_membershipChangeDog.addMembershipChange(segmentId);
 	}
 
 	public void deleteBQMemberships(List<Long> segmentIds) {

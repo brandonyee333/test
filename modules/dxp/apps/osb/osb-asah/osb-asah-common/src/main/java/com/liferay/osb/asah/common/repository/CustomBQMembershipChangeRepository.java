@@ -17,19 +17,21 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
-import org.springframework.lang.Nullable;
 
 /**
  * @author Ivica Cardic
  */
 public interface CustomBQMembershipChangeRepository {
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void addBQMembershipChange(Long segmentId);
 
 	@Cacheable
 	public long countBQMembershipChanges(
