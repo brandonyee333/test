@@ -46,8 +46,13 @@ import org.springframework.lang.Nullable;
 public class BQMembershipChangeRepositoryImpl
 	implements CustomBQMembershipChangeRepository {
 
-	public BQMembershipChangeRepositoryImpl(DSLContext dslContext) {
+	public BQMembershipChangeRepositoryImpl(
+		DSLContext dslContext, QueryExecutor queryExecutor) {
+
 		_dslContext = dslContext;
+		_queryExecutor = queryExecutor;
+	}
+
 	}
 
 	@Override
@@ -177,7 +182,22 @@ public class BQMembershipChangeRepositoryImpl
 
 	@Override
 	public BQMembershipChange insert(BQMembershipChange bqMembershipChange) {
-		return null;
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQMembershipChange")
+			).columns(
+				DSL.field("createDate", Date.class),
+				DSL.field("identitiesCount", Long.class),
+				DSL.field("individualsCount", Long.class),
+				DSL.field("segmentId", Long.class)
+			).values(
+				bqMembershipChange.getCreateDate(),
+				bqMembershipChange.getIdentitiesCount(),
+				bqMembershipChange.getIndividualsCount(),
+				bqMembershipChange.getSegmentId()
+			));
+
+		return bqMembershipChange;
 	}
 
 	@Override
@@ -225,5 +245,6 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+	private final QueryExecutor _queryExecutor;
 
 }
