@@ -26,7 +26,6 @@ import java.util.Optional;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -110,8 +109,6 @@ public class BQFieldMappingRepositoryImpl
 	public List<BQFieldMapping> findByFieldNameIn(
 		Collection<String> fieldNames) {
 
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
 		Condition condition = DSL.noCondition();
 
 		if (!fieldNames.isEmpty()) {
@@ -125,7 +122,12 @@ public class BQFieldMappingRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			BQFieldMapping::new,
-			selectSelectStep.from(
+			_dslContext.select(
+				DSL.field("context"), DSL.field("displayName"),
+				DSL.field("displayType"), DSL.field("fieldName"),
+				DSL.field("fieldType"), DSL.field("modifiedDate", Date.class),
+				DSL.field("ownerType")
+			).from(
 				"BQFieldMapping"
 			).where(
 				condition
