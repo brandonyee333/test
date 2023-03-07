@@ -92,7 +92,7 @@ public class ReportRestController extends BaseRestController {
 		List<Segment> segments = segmentPage.toList();
 
 		Map<Long, BQMembershipChange> bqMembershipChanges =
-			_bqMembershipChangeDog.getBQMembershipChanges(segments);
+			_bqMembershipChangeDog.getLastBQMembershipChanges(segments);
 
 		return new PageDTO<>(
 			ListUtil.map(

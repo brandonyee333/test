@@ -703,7 +703,7 @@ public class ReportRestController extends BaseRestController {
 		List<Segment> segments = segmentPage.getContent();
 
 		Map<Long, BQMembershipChange> bqMembershipChanges =
-			_bqMembershipChangeDog.getBQMembershipChanges(segments);
+			_bqMembershipChangeDog.getLastBQMembershipChanges(segments);
 
 		return _toResultBagEntityModel(
 			_getSegmentResultBagEntityModel(page + 1), page,

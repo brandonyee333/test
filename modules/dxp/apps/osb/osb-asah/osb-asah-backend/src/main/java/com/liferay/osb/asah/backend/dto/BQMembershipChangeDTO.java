@@ -38,9 +38,8 @@ public class BQMembershipChangeDTO {
 	}
 
 	public BQMembershipChangeDTO(BQMembershipChange bqMembershipChange) {
-		_id = StringUtil.get(bqMembershipChange.getId(), null);
 		_identitiesCount = bqMembershipChange.getIdentitiesCount();
-		_knownIdentitiesCount = bqMembershipChange.getKnownIdentitiesCount();
+		_knownIdentitiesCount = bqMembershipChange.getIndividualsCount();
 		_segmentId = StringUtil.get(bqMembershipChange.getSegmentId(), null);
 	}
 

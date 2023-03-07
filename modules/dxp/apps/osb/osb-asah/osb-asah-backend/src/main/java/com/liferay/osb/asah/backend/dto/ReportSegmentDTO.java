@@ -42,8 +42,7 @@ public class ReportSegmentDTO {
 
 		if (bqMembershipChange != null) {
 			_identitiesCount = bqMembershipChange.getIdentitiesCount();
-			_knownIdentitiesCount =
-				bqMembershipChange.getKnownIdentitiesCount();
+			_knownIdentitiesCount = bqMembershipChange.getIndividualsCount();
 		}
 		else {
 			_identitiesCount = 0L;
