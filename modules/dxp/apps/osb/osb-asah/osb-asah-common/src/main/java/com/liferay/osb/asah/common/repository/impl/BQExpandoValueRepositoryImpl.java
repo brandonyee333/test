@@ -97,13 +97,13 @@ public class BQExpandoValueRepositoryImpl
 			).columns(
 				DSL.field("classPK"), DSL.field("classType"),
 				DSL.field("columnId"), DSL.field("dataSourceId", Long.class),
-				DSL.field("id"), DSL.field("modifiedDate", Date.class),
-				DSL.field("value")
+				DSL.field("fieldName"), DSL.field("id"),
+				DSL.field("modifiedDate", Date.class), DSL.field("value")
 			).values(
 				bqExpandoValue.getClassPK(), bqExpandoValue.getClassType(),
 				bqExpandoValue.getColumnId(), bqExpandoValue.getDataSourceId(),
-				bqExpandoValue.getId(), bqExpandoValue.getModifiedDate(),
-				bqExpandoValue.getValue()
+				bqExpandoValue.getFieldName(), bqExpandoValue.getId(),
+				bqExpandoValue.getModifiedDate(), bqExpandoValue.getValue()
 			));
 
 		return bqExpandoValue;
