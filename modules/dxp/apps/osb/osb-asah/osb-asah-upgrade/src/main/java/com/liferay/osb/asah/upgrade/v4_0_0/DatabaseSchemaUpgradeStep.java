@@ -135,6 +135,9 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 				_log.info("Databases successfully upgraded to schema 4.0.0");
 			}
 		}
+		catch (RuntimeException runtimeException) {
+			throw runtimeException;
+		}
 		catch (Exception exception) {
 			String projectId = ProjectIdThreadLocal.getProjectId();
 
