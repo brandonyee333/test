@@ -125,9 +125,30 @@ public class BQMembershipRepositoryImpl
 
 	@Override
 	public List<BQMembership> findByIdentityIdAndSegmentIdInAndStatus(
-		String identityId, List<Long> segmentIds, String status) {
+		String individualId, List<Long> segmentIds, String status) {
 
-		return null;
+		return _queryExecutor.queryForList(
+			BQMembership::new,
+			_dslContext.selectFrom(
+				"BQMembership"
+			).where(
+				DSL.and(
+					DSL.field(
+						"individualId"
+					).eq(
+						individualId
+					),
+					DSL.field(
+						"segmentId", Long.class
+					).in(
+						segmentIds
+					),
+					DSL.field(
+						"status"
+					).in(
+						status
+					))
+			));
 	}
 
 	@Override
