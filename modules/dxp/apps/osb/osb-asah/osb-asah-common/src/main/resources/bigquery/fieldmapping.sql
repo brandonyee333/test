@@ -1,43 +1,52 @@
 WITH CustomFieldMapping AS (
 	SELECT
-		'custom' AS context,
+		context,
 		dataSourceIds,
-		name AS displayName,
+		displayName,
 		displayType,
 		CASE
 			WHEN
 				rowNumber = 1
 			THEN
-				REGEXP_REPLACE(REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), ''), r'\s', '_')
+				fieldName
 			ELSE
-				REGEXP_REPLACE(REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), ''), r'\s', '_') || '_' || (rowNumber - 1)
+				CONCAT(fieldName, '_', (rowNumber - 1))
 		END fieldName,
-		dataType AS fieldType,
+		fieldType,
 		modifiedDate,
 		ownerType,
-		CASE
-			WHEN
-				displayType IN ('checkbox', 'radio', 'selection-list')
-			THEN
-				TRUE
-			ELSE
-				FALSE
-		END repeatable_
+		repeatable_
 	FROM (
 		SELECT
-			*,
+			'custom' AS context,
+			dataSourceIds,
+			name AS displayName,
+			displayType,
+			fieldName,
+			dataType AS fieldType,
+			modifiedDate,
+			ownerType,
+			CASE
+				WHEN
+					displayType IN ('checkbox', 'radio', 'selection-list')
+				THEN
+					TRUE
+				ELSE
+					FALSE
+			END repeatable_,
 			ROW_NUMBER() OVER (
 				PARTITION BY
-					name,
+					fieldName,
 					ownerType
 				ORDER BY
 					modifiedDate ASC
 			) AS rowNumber
 		FROM (
 			SELECT
-				ARRAY_AGG(dataSourceId) AS dataSourceIds,
+				ARRAY_AGG(DISTINCT dataSourceId) AS dataSourceIds,
 				displayType,
 				dataType,
+				REGEXP_REPLACE(REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), ''), r'\s', '_') AS fieldName,
 				MAX(modifieDdate) AS modifiedDate,
 				name,
 				CASE
