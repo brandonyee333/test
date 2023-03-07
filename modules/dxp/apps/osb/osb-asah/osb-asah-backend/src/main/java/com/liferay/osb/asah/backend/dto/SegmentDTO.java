@@ -58,16 +58,14 @@ public class SegmentDTO {
 
 		if (bqMembershipChange != null) {
 			_identitiesCount = bqMembershipChange.getIdentitiesCount();
-			_knownIdentitiesCount =
-				bqMembershipChange.getKnownIdentitiesCount();
+			_individualsCount = bqMembershipChange.getIndividualsCount();
 
-			_anonymousIdentitiesCount =
-				_identitiesCount - _knownIdentitiesCount;
+			_anonymousIdentitiesCount = _identitiesCount - _individualsCount;
 		}
 		else {
 			_anonymousIdentitiesCount = 0L;
 			_identitiesCount = 0L;
-			_knownIdentitiesCount = 0L;
+			_individualsCount = 0L;
 		}
 
 		_channelId = StringUtil.get(segment.getChannelId(), null);
@@ -93,9 +91,19 @@ public class SegmentDTO {
 		_type = StringUtil.get(segment.getType(), null);
 	}
 
-	public SegmentDTO(List<Segment> segments) {
+	public SegmentDTO(
+		Map<Long, BQMembershipChange> bqMembershipChanges,
+		List<Segment> segments) {
+
 		_segmentDTOs = SetUtil.map(
-			segments, segment -> new SegmentDTO(null, null, segment));
+			segments,
+			segment -> {
+				Long segmentId = segment.getId();
+
+				return new SegmentDTO(
+					bqMembershipChanges.getOrDefault(segmentId, null), null,
+					segment);
+			});
 	}
 
 	public SegmentDTO(Set<SegmentDTO> segmentDTOs) {
@@ -177,7 +185,7 @@ public class SegmentDTO {
 	@JsonAlias("knownIdentitiesCount")
 	@JsonProperty("knownIndividualCount")
 	public Long getKnownIdentitiesCount() {
-		return _knownIdentitiesCount;
+		return _individualsCount;
 	}
 
 	@JsonFormat(
@@ -299,7 +307,7 @@ public class SegmentDTO {
 	}
 
 	public void setKnownIdentitiesCount(Long knownIdentitiesCount) {
-		_knownIdentitiesCount = knownIdentitiesCount;
+		_individualsCount = knownIdentitiesCount;
 	}
 
 	public void setLastActivityDate(Date lastActivityDate) {
@@ -423,7 +431,7 @@ public class SegmentDTO {
 	private String _id;
 	private Long _identitiesCount;
 	private Boolean _includeAnonymousUsers;
-	private Long _knownIdentitiesCount;
+	private Long _individualsCount;
 	private Date _lastActivityDate;
 	private Date _modifiedDate;
 	private String _name;
