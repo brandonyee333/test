@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
@@ -22,23 +21,17 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
-import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.time.DateUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -48,38 +41,17 @@ import org.springframework.stereotype.Component;
 public class BQMembershipChangeDog {
 
 	public void addBQMembershipChange(BQMembershipChange bqMembershipChange) {
-
-		// TODO
-
+		_bqMembershipChangeRepository.insert(bqMembershipChange);
 	}
 
 	public void addBQMembershipChange(List<BQMembership> bqMemberships) {
 		BQMembership bqMembership = bqMemberships.get(0);
 
-		Optional<Segment> segmentOptional = _segmentRepository.findById(
-			bqMembership.getSegmentId());
+		addMembershipChange(bqMembership.getSegmentId());
+	}
 
-		Segment segment = segmentOptional.orElseThrow(
-			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"There is no Segment with ID " + bqMembership.getSegmentId()));
-
-		long knownIdentitiesCount = bqMemberships.size();
-
-		if (BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers())) {
-
-			// TODO Set knownIdentitiesCount with known identities count
-
-		}
-
-		BQMembershipChange bqMembershipChange = new BQMembershipChange();
-
-		bqMembershipChange.setCreateDate(bqMembership.getCreateDate());
-		bqMembershipChange.setIdentitiesCount((long)bqMemberships.size());
-		bqMembershipChange.setKnownIdentitiesCount(knownIdentitiesCount);
-		bqMembershipChange.setSegmentId(bqMembership.getSegmentId());
-
-		addBQMembershipChange(bqMembershipChange);
+	public void addMembershipChange(Long segmentId) {
+		_bqMembershipChangeRepository.addBQMembershipChange(segmentId);
 	}
 
 	public void deleteBQMembershipChanges(List<Long> segmentIds) {
@@ -91,7 +63,20 @@ public class BQMembershipChangeDog {
 			filterString);
 	}
 
-	public Map<Long, BQMembershipChange> getBQMembershipChanges(
+	public BQMembershipChange getLastBeforeTodayBySegmentId(Long segmentId) {
+		List<BQMembershipChange> bqMembershipChanges =
+			_bqMembershipChangeRepository.
+				findLastBQMembershipChangeBySegmentIds(
+					Collections.singletonList(segmentId));
+
+		if (bqMembershipChanges.isEmpty()) {
+			return null;
+		}
+
+		return bqMembershipChanges.get(0);
+	}
+
+	public Map<Long, BQMembershipChange> getLastBQMembershipChanges(
 		List<Segment> segments) {
 
 		Map<Long, BQMembershipChange> bqMembershipChanges = new HashMap<>();
@@ -103,34 +88,14 @@ public class BQMembershipChangeDog {
 		}
 
 		for (BQMembershipChange bqMembershipChange :
-				getLastBeforeTodayBySegmentIds(segmentIds)) {
+				_bqMembershipChangeRepository.
+					findLastBQMembershipChangeBySegmentIds(segmentIds)) {
 
 			bqMembershipChanges.put(
 				bqMembershipChange.getSegmentId(), bqMembershipChange);
 		}
 
 		return bqMembershipChanges;
-	}
-
-	public BQMembershipChange getLastBeforeTodayBySegmentId(Long segmentId) {
-		List<BQMembershipChange> bqMembershipChanges =
-			getLastBeforeTodayBySegmentIds(
-				Collections.singletonList(segmentId));
-
-		if (bqMembershipChanges.isEmpty()) {
-			return null;
-		}
-
-		return bqMembershipChanges.get(0);
-	}
-
-	public List<BQMembershipChange> getLastBeforeTodayBySegmentIds(
-		List<Long> segmentIds) {
-
-		return _bqMembershipChangeRepository.searchLastByCreateDateAndSegmentId(
-			null, segmentIds,
-			DateUtil.newEndOfDayDate(
-				DateUtils.addDays(DateUtil.newDayDate(), -1)));
 	}
 
 	public Page<BQMembershipChange> searchBQMembershipChangePages(
