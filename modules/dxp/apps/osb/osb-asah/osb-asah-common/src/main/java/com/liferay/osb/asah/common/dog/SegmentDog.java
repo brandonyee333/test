@@ -425,11 +425,11 @@ public class SegmentDog {
 	}
 
 	public Page<Segment> searchSegmentPage(
-		String filterString, String identityId, int page, int size,
+		String filterString, String individualId, int page, int size,
 		String[] sorts) {
 
 		List<Map<String, Long>> segmentIdIdentityCounts =
-			_bqMembershipDog.getActiveSegmentIds(identityId);
+			_bqMembershipDog.getActiveSegmentIds(individualId);
 
 		FilterHelper filterHelper = new FilterHelper(filterString);
 
