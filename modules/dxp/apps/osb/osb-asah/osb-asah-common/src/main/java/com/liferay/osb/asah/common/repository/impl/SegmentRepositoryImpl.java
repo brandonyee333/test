@@ -536,7 +536,7 @@ public class SegmentRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if (CollectionUtils.isNotEmpty(segmentIds)) {
+		if (segmentIds != null) {
 			conditions.add(
 				DSL.field(
 					"id"
