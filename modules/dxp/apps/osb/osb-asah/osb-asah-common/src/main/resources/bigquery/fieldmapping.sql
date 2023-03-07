@@ -15,7 +15,7 @@ WITH CustomFieldMapping AS (
 		fieldType,
 		modifiedDate,
 		ownerType,
-		repeatable_
+		repeatable
 	FROM (
 		SELECT
 			'custom' AS context,
@@ -33,7 +33,7 @@ WITH CustomFieldMapping AS (
 					TRUE
 				ELSE
 					FALSE
-			END repeatable_,
+			END repeatable,
 			ROW_NUMBER() OVER (
 				PARTITION BY
 					fieldName,
@@ -76,7 +76,7 @@ DemographicsFieldMapping AS (
 		fieldType,
 		CURRENT_TIMESTAMP() modifiedDate,
 		'individual' ownerType,
-		false repeatable_
+		false repeatable
 	FROM UNNEST(ARRAY<STRUCT<displayName STRING, fieldName STRING, fieldType STRING>>
 		[
 			('additionalName', 'middleName', 'text'),
