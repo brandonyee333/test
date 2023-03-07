@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LCP_PROJECT_ID=${1:=asahdev}
+LCP_PROJECT_ID=${1:-asahdev}
 PROJECT_ID=$(gcloud config get-value project)
 REGION=$(gcloud config get-value compute/region)
 SERVICE_ACCOUNT=ac-composer-admin@${PROJECT_ID}.iam.gserviceaccount.com
@@ -12,7 +12,7 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 	--role roles/composer.ServiceAgentV2Ext
 
 gcloud composer environments create ${COMPOSER_ENVIRONMENT_NAME} \
-	--airflow-configs=core-dagbag_import_timeout=120 \
+	--airflow-configs=core-dagbag_import_timeout=120,scheduler-min_file_process_interval=1800 \
 	--airflow-version=2 \
 	--async \
 	--enable-master-authorized-networks \
