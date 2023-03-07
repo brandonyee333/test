@@ -9,15 +9,20 @@
 # distribution rights of the Software.
 #
 
-import airflow
-import pendulum
-import requests
-
 from airflow.models import Variable
 
 from liferay.bigquery import BigQueryInsertJobFromTemplateOperator
 
-def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
+import airflow
+import pendulum
+import requests
+
+def create_dag(
+		ac_project_id,
+		ac_project_time_zone_id,
+		dag_id,
+		dag_description
+):
 	with airflow.DAG(
 			dag_id=dag_id,
 			default_args={
@@ -50,12 +55,10 @@ response = requests.get(
 	}
 )
 
-projects_json = response.json()
-
-for ac_project_id, ac_project_time_zone_id in projects_json.items():
-	dag_id = 'merge_daily_metrics_{}'.format(ac_project_id)
+for project in response.json():
+	dag_id = 'merge_daily_metrics_{}'.format(project.get('id'))
 
 	globals()[dag_id] = create_dag(
-		ac_project_id, ac_project_time_zone_id, dag_id,
-		'Daily Merge DAG For {}'.format(ac_project_id)
+		project.get('id'), project.get('timeZone'), dag_id,
+		'Daily Merge DAG For {}'.format(project.get('id'))
 	)

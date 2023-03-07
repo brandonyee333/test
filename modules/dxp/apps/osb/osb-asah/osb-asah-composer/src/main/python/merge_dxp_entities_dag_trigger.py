@@ -9,13 +9,20 @@
 # distribution rights of the Software.
 #
 
+from airflow.models import Variable
+
+from liferay.bigquery import BigQueryInsertJobFromTemplateOperator
+
 import airflow
 import datetime
 import requests
 
-from liferay.bigquery import BigQueryInsertJobFromTemplateOperator
-
-def create_dag(ac_project_id, dag_id, dag_description):
+def create_dag(
+		ac_project_id,
+		commerce_channels_selected,
+		dag_id,
+		dag_description
+):
 	with airflow.DAG(
 			dag_id=dag_id,
 			default_args={
@@ -27,21 +34,27 @@ def create_dag(ac_project_id, dag_id, dag_description):
 			schedule_interval='@hourly',
 			start_date=datetime.datetime.now() - datetime.timedelta(hours=1)
 	) as dag:
-		[
+		big_query_jobs = [
 			BigQueryInsertJobFromTemplateOperator(task_id='account_entry_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='account_group_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='expando_column_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='expando_value_delete'),
 			BigQueryInsertJobFromTemplateOperator(task_id='expando_value_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='group_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='order_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='organization_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='product_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='role_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='team_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='user_group_merge'),
 			BigQueryInsertJobFromTemplateOperator(task_id='user_merge')
-		] >> BigQueryInsertJobFromTemplateOperator(task_id='individual_merge')
+		]
+
+		if commerce_channels_selected:
+			big_query_jobs += [
+				BigQueryInsertJobFromTemplateOperator(task_id='order_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='product_merge')
+			]
+
+		big_query_jobs >> BigQueryInsertJobFromTemplateOperator(task_id='individual_merge')
 
 		return dag
 
@@ -53,12 +66,10 @@ response = requests.get(
 	}
 )
 
-projects_json = response.json()
-
-for ac_project_id, ac_project_time_zone_id in projects_json.items():
-	dag_id = 'merge_dxp_entity_{}'.format(ac_project_id)
+for project in response.json():
+	dag_id = 'merge_dxp_entity_{}'.format(project.get('id'))
 
 	globals()[dag_id] = create_dag(
-		ac_project_id, dag_id,
-		'DXP Entity Merge DAG For {}'.format(ac_project_id)
+		project.get('id'), project.get('commerceChannelsSelected'), dag_id,
+		'DXP Entity Merge DAG For {}'.format(project.get('id'))
 	)
