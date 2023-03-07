@@ -16,10 +16,7 @@ package com.liferay.osb.asah.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
@@ -53,16 +50,19 @@ public class BQSessionInterestScore {
 		BQSessionInterestScore bqIdentityInterestScore =
 			(BQSessionInterestScore)obj;
 
-		if (Objects.equals(_id, bqIdentityInterestScore._id)) {
+		if (Objects.equals(_identityId, bqIdentityInterestScore._identityId) &&
+			Objects.equals(_interested, bqIdentityInterestScore._interested) &&
+			Objects.equals(
+				_interestScore, bqIdentityInterestScore._interestScore) &&
+			Objects.equals(_keyword, bqIdentityInterestScore._keyword) &&
+			Objects.equals(
+				_recordedDate, bqIdentityInterestScore._recordedDate) &&
+			Objects.equals(_sessionId, bqIdentityInterestScore._sessionId)) {
+
 			return true;
 		}
 
 		return false;
-	}
-
-	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getId() {
-		return _id;
 	}
 
 	public String getIdentityId() {
@@ -102,25 +102,12 @@ public class BQSessionInterestScore {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_id, _identityId, _interested, _interestScore, _keyword,
-			_recordedDate, _sessionId);
+			_identityId, _interested, _interestScore, _keyword, _recordedDate,
+			_sessionId);
 	}
 
 	public Boolean isInterested() {
 		return _interested;
-	}
-
-	@JsonIgnore
-	public boolean isNew() {
-		if ((_id == null) || ((_isNew != null) && _isNew)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public void setId(Long id) {
-		_id = id;
 	}
 
 	public void setIdentityId(String identityId) {
@@ -133,10 +120,6 @@ public class BQSessionInterestScore {
 
 	public void setInterestScore(Double interestScore) {
 		_interestScore = interestScore;
-	}
-
-	public void setIsNew(boolean isNew) {
-		_isNew = isNew;
 	}
 
 	public void setKeyword(String keyword) {
@@ -153,11 +136,9 @@ public class BQSessionInterestScore {
 		_sessionId = sessionId;
 	}
 
-	private Long _id;
 	private String _identityId;
 	private Boolean _interested;
 	private Double _interestScore;
-	private Boolean _isNew;
 	private String _keyword;
 	private Date _recordedDate;
 	private String _sessionId;
