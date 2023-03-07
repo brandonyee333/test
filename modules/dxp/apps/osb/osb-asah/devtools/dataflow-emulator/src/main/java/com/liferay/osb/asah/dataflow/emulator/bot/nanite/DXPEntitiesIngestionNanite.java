@@ -48,6 +48,7 @@ import com.liferay.osb.asah.dataflow.emulator.model.AnalyticsDeleteMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -186,7 +187,8 @@ public class DXPEntitiesIngestionNanite {
 				Set<BQExpandoValue> bqExpandoValues = _getExpandoValues(
 					bqOrganization.getOrganizationId(),
 					DXPEntity.Type.CLASS_NAME_ORGANIZATION, dataSourceId,
-					expandoFieldsJSONArray, projectId);
+					expandoFieldsJSONArray, bqOrganization.getModifiedDate(),
+					projectId);
 
 				bqExpandoValues.forEach(_bqExpandoValueRepository::insert);
 			}
@@ -235,7 +237,8 @@ public class DXPEntitiesIngestionNanite {
 			if (expandoFieldsJSONArray != null) {
 				Set<BQExpandoValue> bqExpandoValues = _getExpandoValues(
 					bqUser.getDXPUserId(), DXPEntity.Type.CLASS_NAME_USER,
-					dataSourceId, expandoFieldsJSONArray, projectId);
+					dataSourceId, expandoFieldsJSONArray,
+					bqUser.getModifiedDate(), projectId);
 
 				bqExpandoValues.forEach(_bqExpandoValueRepository::insert);
 			}
@@ -316,7 +319,7 @@ public class DXPEntitiesIngestionNanite {
 
 	private Set<BQExpandoValue> _getExpandoValues(
 		Long classPK, String classType, Long dataSourceId,
-		JSONArray expandoFieldsJSONArray, String projectId) {
+		JSONArray expandoFieldsJSONArray, Date modifiedDate, String projectId) {
 
 		Set<BQExpandoValue> bqExpandoValues = new HashSet<>();
 
@@ -339,6 +342,7 @@ public class DXPEntitiesIngestionNanite {
 					_generateBQExpandoValueId(
 						String.valueOf(jsonObject.get("columnId")), classPK,
 						dataSourceId, projectId));
+				bqExpandoValue.setModifiedDate(modifiedDate);
 				bqExpandoValue.setValue(jsonObject.optString("value"));
 
 				bqExpandoValues.add(bqExpandoValue);
