@@ -85,7 +85,7 @@ public class BQMembershipChangeDogTest
 	public void testGetBQMembershipChanges() {
 		Assertions.assertEquals(
 			_bqMembershipChangeBySegmentId,
-			_bqMembershipChangeDog.getBQMembershipChanges(_segments));
+			_bqMembershipChangeDog.getLastBQMembershipChanges(_segments));
 	}
 
 	@Test
@@ -108,7 +108,8 @@ public class BQMembershipChangeDogTest
 			_bqMembershipChangeBySegmentId.keySet());
 
 		List<BQMembershipChange> bqMembershipChanges =
-			_bqMembershipChangeDog.getLastBeforeTodayBySegmentIds(segmentIds);
+			_bqMembershipChangeDog.getLastBQMembershipChangeBySegmentIds(
+				segmentIds);
 
 		Assertions.assertEquals(
 			2, bqMembershipChanges.size(), bqMembershipChanges.toString());
@@ -141,7 +142,7 @@ public class BQMembershipChangeDogTest
 		_bqMembershipChangeRepository.insert(bqMembershipChange);
 
 		List<BQMembershipChange> bqMembershipChanges =
-			_bqMembershipChangeDog.getLastBeforeTodayBySegmentIds(
+			_bqMembershipChangeDog.getLastBQMembershipChangeBySegmentIds(
 				Arrays.asList(segment.getId()));
 
 		Assertions.assertEquals(
@@ -155,7 +156,7 @@ public class BQMembershipChangeDogTest
 
 		bqMembershipChange.setCreateDate(createDate);
 		bqMembershipChange.setIdentitiesCount((long)index);
-		bqMembershipChange.setKnownIdentitiesCount((long)index);
+		bqMembershipChange.setIndividualsCount((long)index);
 		bqMembershipChange.setSegmentId(segment.getId());
 
 		return _bqMembershipChangeRepository.insert(bqMembershipChange);

@@ -311,7 +311,7 @@ public class BQMembershipRepositoryTest {
 	public void testFindSegmentIdIdentitiesCountByIdentityIdAndStatus() {
 		List<Map<String, Long>> segmentIdIdentitiesCounts =
 			_bqMembershipRepository.
-				findSegmentIdIdentitiesCountByIdentityIdAndStatusAnd(
+				findSegmentIdIdentitiesCountByIndividualIdAndStatus(
 					"12", "ACTIVE");
 
 		Assertions.assertEquals(
@@ -327,7 +327,7 @@ public class BQMembershipRepositoryTest {
 
 		segmentIdIdentitiesCounts =
 			_bqMembershipRepository.
-				findSegmentIdIdentitiesCountByIdentityIdAndStatusAnd(
+				findSegmentIdIdentitiesCountByIndividualIdAndStatus(
 					"12", "INACTIVE");
 
 		Assertions.assertEquals(
@@ -384,7 +384,7 @@ public class BQMembershipRepositoryTest {
 
 		bqMembershipChange.setCreateDate(new Date());
 		bqMembershipChange.setIdentitiesCount(identitiesCount);
-		bqMembershipChange.setKnownIdentitiesCount(19L);
+		bqMembershipChange.setIndividualsCount(19L);
 		bqMembershipChange.setSegmentId(segmentId);
 
 		_bqMembershipChangeRepository.insert(bqMembershipChange);
