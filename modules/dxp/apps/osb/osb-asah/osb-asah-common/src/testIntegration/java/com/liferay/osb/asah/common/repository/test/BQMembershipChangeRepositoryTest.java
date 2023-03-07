@@ -237,7 +237,7 @@ public class BQMembershipChangeRepositoryTest {
 		segment.setFilter(String.format("(channelId eq '%d')", channelId));
 		segment.setName(String.format("Segment %d", channelId));
 		segment.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
-		segment.setReferencedFieldMappingIds(SetUtil.of("7", "8"));
+		segment.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
 		segment.setState("READY");
 		segment.setStatus("STARTED");
 		segment.setType(Segment.Type.DYNAMIC);

@@ -37,8 +37,8 @@ public class DataSourceFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public List<DataSourceFieldMapping> findByFieldMappingIds(
-		Collection<Long> fieldMappingIds) {
+	public List<DataSourceFieldMapping> findByFieldMappingFieldNames(
+		Collection<Long> fieldMappingFieldNames) {
 
 		return _dslContext.select(
 			DSL.asterisk()
@@ -46,9 +46,9 @@ public class DataSourceFieldMappingRepositoryImpl
 			"DataSourceFieldMapping"
 		).where(
 			DSL.field(
-				"fieldMappingId"
+				"fieldMappingFieldName"
 			).in(
-				fieldMappingIds
+				fieldMappingFieldNames
 			)
 		).fetch(
 			record -> new DataSourceFieldMapping(record.intoMap())

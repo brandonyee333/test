@@ -11,7 +11,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 		],
 		"scope": "PROJECT",
 		"segmentType": "DYNAMIC",
@@ -30,7 +30,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 		],
 		"scope": "PROJECT",
 		"segmentType": "DYNAMIC",
@@ -49,7 +49,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 		],
 		"scope": "PROJECT",
 		"segmentType": "DYNAMIC",
@@ -68,7 +68,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 		],
 		"scope": "PROJECT",
 		"segmentType": "DYNAMIC",
@@ -87,7 +87,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 		],
 		"scope": "PROJECT",
 		"segmentType": "DYNAMIC",

@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS Segment (
 	modifiedDate TIMESTAMPTZ,
 	name TEXT,
 	referencedAssetDataSourceIds BIGINT[],
-	referencedFieldMappingIds BIGINT[],
+	referencedFieldMappingFieldNames BIGINT[],
 	scope TEXT,
 	state TEXT,
 	status TEXT,

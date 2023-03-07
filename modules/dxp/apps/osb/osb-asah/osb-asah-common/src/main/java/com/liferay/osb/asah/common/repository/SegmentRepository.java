@@ -72,18 +72,19 @@ public interface SegmentRepository
 
 	@Cacheable
 	public List<Segment>
-		findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
+		findByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
 			@Param("referencedAssetDataSourceId") Long
 				referencedAssetDataSourceId,
-			@Param("referencedFieldMappingIds") List<String>
-				referencedFieldMappingIds,
+			@Param("referencedFieldMappingFieldNames") List<String>
+				referencedFieldMappingFieldNames,
 			@Param("state") String state, @Param("type") Segment.Type type);
 
 	@Cacheable
-	public List<Segment> findByReferencedFieldMappingIdInAndStateNotAndType(
-		@Param("referencedFieldMappingIds") List<String>
-			referencedFieldMappingIds,
-		@Param("state") String state, @Param("type") Segment.Type type);
+	public List<Segment>
+		findByReferencedFieldMappingFieldNameInAndStateNotAndType(
+			@Param("referencedFieldMappingFieldNames") List<String>
+				referencedFieldMappingFieldNames,
+			@Param("state") String state, @Param("type") Segment.Type type);
 
 	@Cacheable
 	public List<Segment> findByStateNotAndType(String state, Segment.Type type);

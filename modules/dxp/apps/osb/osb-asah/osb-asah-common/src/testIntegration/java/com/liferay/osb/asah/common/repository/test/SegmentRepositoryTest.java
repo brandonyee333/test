@@ -63,7 +63,7 @@ public class SegmentRepositoryTest
 		segment1.setFilter("(channelId eq '1')");
 		segment1.setName("Segment 1");
 		segment1.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
-		segment1.setReferencedFieldMappingIds(SetUtil.of("7", "8"));
+		segment1.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
 		segment1.setState("READY");
 		segment1.setStatus("STARTED");
 		segment1.setType(Segment.Type.DYNAMIC);
@@ -79,7 +79,7 @@ public class SegmentRepositoryTest
 		segment2.setFilter("(channelId eq '2')");
 		segment2.setName("Segment 2");
 		segment2.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
-		segment2.setReferencedFieldMappingIds(SetUtil.of("7", "8"));
+		segment2.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
 		segment2.setState("READY");
 		segment2.setStatus("STARTED");
 		segment2.setType(Segment.Type.DYNAMIC);
@@ -243,20 +243,20 @@ public class SegmentRepositoryTest
 	}
 
 	@Test
-	public void testFindByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType() {
+	public void testFindByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType() {
 		Assertions.assertEquals(
 			Arrays.asList(entityModels.get(0), entityModels.get(1)),
 			_segmentRepository.
-				findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
+				findByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
 					5L, Arrays.asList("7"), "INACTIVE", Segment.Type.DYNAMIC));
 	}
 
 	@Test
-	public void testFindByReferencedFieldMappingIdInAndStateNotAndType() {
+	public void testFindByReferencedFieldMappingFieldNameInAndStateNotAndType() {
 		Assertions.assertEquals(
 			Arrays.asList(entityModels.get(0), entityModels.get(1)),
 			_segmentRepository.
-				findByReferencedFieldMappingIdInAndStateNotAndType(
+				findByReferencedFieldMappingFieldNameInAndStateNotAndType(
 					Arrays.asList("7"), "INACTIVE", Segment.Type.DYNAMIC));
 	}
 

@@ -115,7 +115,7 @@ public class SegmentDogTest
 	public void testAddAnd() {
 		_assertAddSetsReferencedObjectIds(
 			new String[0],
-			_convertFieldNamesToFieldMappingIds(
+			_convertFieldNamesToFieldMappingFieldNames(
 				"favoriteColor", "favoriteGenre"),
 			"demographics/favoriteColor/value eq 'blue' and " +
 				"demographics/favoriteGenre/value eq 'Science Fiction'");
@@ -342,28 +342,30 @@ public class SegmentDogTest
 	@Test
 	public void testAddContainsFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("jobTitle"),
+			new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("jobTitle"),
 			"contains(demographics/jobTitle/value, 'Engineer')");
 	}
 
 	@Test
 	public void testAddEndsWithFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("email"),
+			new String[0], _convertFieldNamesToFieldMappingFieldNames("email"),
 			"endsWith(demographics/email/value, '@liferay.com')");
 	}
 
 	@Test
 	public void testAddEqOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("address"),
+			new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("address"),
 			"demographics/address/value eq '221B Baker Street'");
 	}
 
 	@Test
 	public void testAddGeOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("age"),
+			new String[0], _convertFieldNamesToFieldMappingFieldNames("age"),
 			"demographics/age/value ge 18");
 	}
 
@@ -387,21 +389,24 @@ public class SegmentDogTest
 	@Test
 	public void testAddGtOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("birthDate"),
+			new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("birthDate"),
 			"demographics/birthDate/value gt '1989-11-09T00:00:00.000Z'");
 	}
 
 	@Test
 	public void testAddLeOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("postalCode"),
+			new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("postalCode"),
 			"demographics/postalCode/value le '09999'");
 	}
 
 	@Test
 	public void testAddLtOperator() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("familyName"),
+			new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("familyName"),
 			"demographics/familyName/value lt 'N'");
 	}
 
@@ -409,14 +414,15 @@ public class SegmentDogTest
 	public void testAddNeOperator() {
 		_assertAddSetsReferencedObjectIds(
 			new String[0],
-			_convertFieldNamesToFieldMappingIds("favoritePokemon"),
+			_convertFieldNamesToFieldMappingFieldNames("favoritePokemon"),
 			"demographics/favoritePokemon/value ne 'Thundurus'");
 	}
 
 	@Test
 	public void testAddNotStringFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("telephone"),
+			new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("telephone"),
 			"not contains(demographics/telephone/value, '909')");
 	}
 
@@ -424,7 +430,8 @@ public class SegmentDogTest
 	public void testAddOr() {
 		_assertAddSetsReferencedObjectIds(
 			new String[0],
-			_convertFieldNamesToFieldMappingIds("country", "favoriteArtist"),
+			_convertFieldNamesToFieldMappingFieldNames(
+				"country", "favoriteArtist"),
 			"demographics/country/value eq 'France' or " +
 				"demographics/favoriteArtist/value eq 'Laurice Deauxnim'");
 	}
@@ -544,7 +551,8 @@ public class SegmentDogTest
 	@Test
 	public void testAddParentheses() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("worksFor"),
+			new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("worksFor"),
 			"(((demographics/worksFor/value eq 'Bluecorp')))");
 	}
 
@@ -568,7 +576,7 @@ public class SegmentDogTest
 	@Test
 	public void testAddSameFieldMappingReferencedMultipleTimesOnlyAppearsOnce() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("state"),
+			new String[0], _convertFieldNamesToFieldMappingFieldNames("state"),
 			"demographics/state/value eq 'Alaska' or " +
 				"demographics/state/value eq 'Hawaii'");
 	}
@@ -593,7 +601,8 @@ public class SegmentDogTest
 	@Test
 	public void testAddStartsWithFunction() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("givenName"),
+			new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("givenName"),
 			"startsWith(demographics/givenName/value, 'B')");
 	}
 
@@ -650,14 +659,14 @@ public class SegmentDogTest
 	}
 
 	@Test
-	public void testFieldNameDoesNotNeedValueSuffixToAddReferencedFieldMappingId() {
+	public void testFieldNameDoesNotNeedValueSuffixToAddReferencedFieldMappingFieldName() {
 		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingIds("image"),
+			new String[0], _convertFieldNamesToFieldMappingFieldNames("image"),
 			"demographics/image ne null");
 	}
 
 	@Test
-	public void testFieldNameMustBePrefixedWithDemographicsToAddReferencedFieldMappingId() {
+	public void testFieldNameMustBePrefixedWithDemographicsToAddReferencedFieldMappingFieldName() {
 		_assertAddSetsReferencedObjectIds(
 			new String[0], new String[0], "street eq 'Broadway'");
 	}
@@ -762,27 +771,27 @@ public class SegmentDogTest
 	}
 
 	@Test
-	public void testReferencedFieldMappingIdsAddedOnUpdate() {
+	public void testReferencedFieldMappingFieldNamesAddedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
 			"", new String[0], new String[0], new String[0],
-			_convertFieldNamesToFieldMappingIds("additionalName"),
+			_convertFieldNamesToFieldMappingFieldNames("additionalName"),
 			"demographics/additionalName/value eq 'Miles'");
 	}
 
 	@Test
-	public void testReferencedFieldMappingIdsEmptiedOnUpdate() {
+	public void testReferencedFieldMappingFieldNamesEmptiedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
 			"demographics/city/value eq 'Los Angeles'", new String[0],
-			_convertFieldNamesToFieldMappingIds("city"), new String[0],
+			_convertFieldNamesToFieldMappingFieldNames("city"), new String[0],
 			new String[0], "");
 	}
 
 	@Test
-	public void testReferencedFieldMappingIdsModifiedOnUpdate() {
+	public void testReferencedFieldMappingFieldNamesModifiedOnUpdate() {
 		_assertUpdateSetsReferencedObjectIds(
 			"demographics/honorificPrefix/value eq 'Mrs.'", new String[0],
-			_convertFieldNamesToFieldMappingIds("honorificPrefix"),
-			new String[0], _convertFieldNamesToFieldMappingIds("gender"),
+			_convertFieldNamesToFieldMappingFieldNames("honorificPrefix"),
+			new String[0], _convertFieldNamesToFieldMappingFieldNames("gender"),
 			"demographics/gender/value eq 'Female'");
 	}
 
@@ -898,10 +907,10 @@ public class SegmentDogTest
 
 		_assertUpdateSetsReferencedObjectIds(
 			addFilterSB.toString(), new String[] {addDataSourceId},
-			_convertFieldNamesToFieldMappingIds(
+			_convertFieldNamesToFieldMappingFieldNames(
 				"additionalName", "age", "favoritePokemon", "image"),
 			new String[] {updateDataSourceId},
-			_convertFieldNamesToFieldMappingIds(
+			_convertFieldNamesToFieldMappingFieldNames(
 				"age", "gender", "telephone", "worksFor"),
 			updateFilterSB.toString());
 	}
@@ -931,10 +940,10 @@ public class SegmentDogTest
 
 		Assertions.assertTrue(
 			CollectionUtils.isNotEmpty(
-				partialSegment.getReferencedFieldMappingIds()));
+				partialSegment.getReferencedFieldMappingFieldNames()));
 		Assertions.assertEquals(
-			segment.getReferencedFieldMappingIds(),
-			partialSegment.getReferencedFieldMappingIds());
+			segment.getReferencedFieldMappingFieldNames(),
+			partialSegment.getReferencedFieldMappingFieldNames());
 
 		segment = _segmentDog.getSegment(segment.getId());
 
@@ -968,7 +977,8 @@ public class SegmentDogTest
 
 	private JSONObject _assertAddSetsReferencedObjectIds(
 		String[] expectedReferencedAssetDataSourceIds,
-		String[] expectedReferencedFieldMappingIds, String filterString) {
+		String[] expectedReferencedFieldMappingFieldNames,
+		String filterString) {
 
 		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
 			_segmentDog.addSegment(
@@ -981,8 +991,8 @@ public class SegmentDogTest
 			expectedReferencedAssetDataSourceIds);
 		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(
-				"referencedFieldMappingIds"),
-			expectedReferencedFieldMappingIds);
+				"referencedFieldMappingFieldNames"),
+			expectedReferencedFieldMappingFieldNames);
 
 		return individualSegmentJSONObject;
 	}
@@ -1009,14 +1019,15 @@ public class SegmentDogTest
 
 	private void _assertUpdateSetsReferencedObjectIds(
 		String addFilter, String[] expectedAddReferencedAssetDataSourceIds,
-		String[] expectedAddReferencedFieldMappingIds,
+		String[] expectedAddReferencedFieldMappingFieldNames,
 		String[] expectedUpdateReferencedAssetDataSourceIds,
-		String[] expectedUpdateReferencedFieldMappingIds, String updateFilter) {
+		String[] expectedUpdateReferencedFieldMappingFieldNames,
+		String updateFilter) {
 
 		JSONObject individualSegmentJSONObject =
 			_assertAddSetsReferencedObjectIds(
 				expectedAddReferencedAssetDataSourceIds,
-				expectedAddReferencedFieldMappingIds, addFilter);
+				expectedAddReferencedFieldMappingFieldNames, addFilter);
 
 		Segment segment = new Segment();
 
@@ -1033,18 +1044,21 @@ public class SegmentDogTest
 			expectedUpdateReferencedAssetDataSourceIds);
 		_assertSameContents(
 			individualSegmentJSONObject.getJSONArray(
-				"referencedFieldMappingIds"),
-			expectedUpdateReferencedFieldMappingIds);
+				"referencedFieldMappingFieldNames"),
+			expectedUpdateReferencedFieldMappingFieldNames);
 	}
 
-	private String[] _convertFieldNamesToFieldMappingIds(String... fieldNames) {
-		String[] fieldMappingIds = new String[fieldNames.length];
+	private String[] _convertFieldNamesToFieldMappingFieldNames(
+		String... fieldNames) {
+
+		String[] fieldMappingFieldNames = new String[fieldNames.length];
 
 		for (int i = 0; i < fieldNames.length; i++) {
-			fieldMappingIds[i] = _fieldMappingNameIds.getString(fieldNames[i]);
+			fieldMappingFieldNames[i] = _fieldMappingNameIds.getString(
+				fieldNames[i]);
 		}
 
-		return fieldMappingIds;
+		return fieldMappingFieldNames;
 	}
 
 	private static final String[] _FIELD_NAMES = {

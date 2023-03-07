@@ -62,7 +62,7 @@
 				"referencedAssetIds": {
 					"type": "keyword"
 				},
-				"referencedFieldMappingIds": {
+				"referencedFieldMappingFieldNames": {
 					"type": "keyword"
 				},
 				"referencedGroupIds": {

@@ -24,7 +24,7 @@ import java.util.List;
  */
 public interface DataSourceFieldMappingRepository {
 
-	public List<DataSourceFieldMapping> findByFieldMappingIds(
-		Collection<Long> fieldMappingIds);
+	public List<DataSourceFieldMapping> findByFieldMappingFieldNames(
+		Collection<Long> fieldMappingFieldNames);
 
 }

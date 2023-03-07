@@ -390,7 +390,7 @@ public class IndividualSegmentsRestController {
 			"field-mappings",
 			JSONUtil.toJSONArray(
 				_bqFieldMappingDog.getBQFieldMappings(
-					segment.getReferencedFieldMappingIds()),
+					segment.getReferencedFieldMappingFieldNames()),
 				fieldMapping -> objectMapper.convertValue(
 					fieldMapping, JSONObject.class)));
 		jsonObject.put("groups", Collections.emptyList());

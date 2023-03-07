@@ -81,8 +81,8 @@ public class Segment implements Persistable<Long> {
 				_referencedAssetDataSourceIds,
 				segment._referencedAssetDataSourceIds) &&
 			Objects.equals(
-				_referencedFieldMappingIds,
-				segment._referencedFieldMappingIds) &&
+				_referencedFieldMappingFieldNames,
+				segment._referencedFieldMappingFieldNames) &&
 			Objects.equals(_scope, segment._scope) &&
 			Objects.equals(_state, segment._state) &&
 			Objects.equals(_status, segment._status) &&
@@ -202,8 +202,8 @@ public class Segment implements Persistable<Long> {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<String> getReferencedFieldMappingIds() {
-		return _referencedFieldMappingIds;
+	public Set<String> getReferencedFieldMappingFieldNames() {
+		return _referencedFieldMappingFieldNames;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -233,8 +233,8 @@ public class Segment implements Persistable<Long> {
 		return Objects.hash(
 			_author, _channelId, _createDate, _filterString, _filterMetadata,
 			_id, _includeAnonymousUsers, _modifiedDate, _name,
-			_referencedAssetDataSourceIds, _referencedFieldMappingIds, _scope,
-			_state, _status, _type);
+			_referencedAssetDataSourceIds, _referencedFieldMappingFieldNames,
+			_scope, _state, _status, _type);
 	}
 
 	@JsonIgnore
@@ -317,10 +317,10 @@ public class Segment implements Persistable<Long> {
 		_referencedAssetDataSourceIds = referencedAssetDataSourceIds;
 	}
 
-	public void setReferencedFieldMappingIds(
-		Set<String> referencedFieldMappingIds) {
+	public void setReferencedFieldMappingFieldNames(
+		Set<String> referencedFieldMappingFieldNames) {
 
-		_referencedFieldMappingIds = referencedFieldMappingIds;
+		_referencedFieldMappingFieldNames = referencedFieldMappingFieldNames;
 	}
 
 	public void setScope(String scope) {
@@ -391,7 +391,7 @@ public class Segment implements Persistable<Long> {
 	private Set<Long> _referencedAssetDataSourceIds = new HashSet<>();
 
 	@Transient
-	private Set<String> _referencedFieldMappingIds = new HashSet<>();
+	private Set<String> _referencedFieldMappingFieldNames = new HashSet<>();
 
 	@Transient
 	private String _scope;

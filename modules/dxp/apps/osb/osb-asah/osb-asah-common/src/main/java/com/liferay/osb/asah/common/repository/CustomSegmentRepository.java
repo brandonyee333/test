@@ -34,7 +34,7 @@ public interface CustomSegmentRepository {
 
 	@Cacheable
 	public long countPreviewDisabledSegments(
-		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
 		FilterHelper filterHelper);
 
 	@Cacheable
@@ -61,7 +61,7 @@ public interface CustomSegmentRepository {
 
 	@Cacheable
 	public List<Segment> searchPreviewDisabledSegments(
-		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
 		FilterHelper filterHelper, Pageable pageable);
 
 	@Cacheable

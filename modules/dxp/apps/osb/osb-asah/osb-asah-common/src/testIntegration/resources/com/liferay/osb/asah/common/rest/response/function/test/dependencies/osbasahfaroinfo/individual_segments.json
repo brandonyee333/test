@@ -15,7 +15,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 		],
 		"scope": "PROJECT",
 		"segmentType": "DYNAMIC",
@@ -43,7 +43,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 			"386700258482326346"
 		],
 		"scope": "PROJECT",

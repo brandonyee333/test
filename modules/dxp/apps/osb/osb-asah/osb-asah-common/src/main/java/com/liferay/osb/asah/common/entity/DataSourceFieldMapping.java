@@ -36,16 +36,10 @@ public class DataSourceFieldMapping {
 	}
 
 	public DataSourceFieldMapping(
-		Long dataSourceId, Long fieldMappingId, String fieldName) {
+		Long dataSourceId, Long fieldMappingFieldName) {
 
 		_dataSourceId = dataSourceId;
-		_fieldMappingId = fieldMappingId;
-		_fieldName = fieldName;
-	}
-
-	public DataSourceFieldMapping(Long dataSourceId, String fieldName) {
-		_dataSourceId = dataSourceId;
-		_fieldName = fieldName;
+		_fieldMappingFieldName = fieldMappingFieldName;
 	}
 
 	public DataSourceFieldMapping(Map<String, Object> source) {
@@ -68,8 +62,8 @@ public class DataSourceFieldMapping {
 		if (Objects.equals(
 				_dataSourceId, dataSourceFieldMapping._dataSourceId) &&
 			Objects.equals(
-				_fieldMappingId, dataSourceFieldMapping._fieldMappingId) &&
-			Objects.equals(_fieldName, dataSourceFieldMapping._fieldName)) {
+				_fieldMappingFieldName,
+				dataSourceFieldMapping._fieldMappingFieldName)) {
 
 			return true;
 		}
@@ -85,39 +79,27 @@ public class DataSourceFieldMapping {
 
 	@AccessType(AccessType.Type.PROPERTY)
 	@JsonSerialize(using = ToStringSerializer.class)
-	public Long getFieldMappingId() {
-		return _fieldMappingId;
-	}
-
-	@AccessType(AccessType.Type.PROPERTY)
-	public String getFieldName() {
-		return _fieldName;
+	public Long getFieldMappingFieldName() {
+		return _fieldMappingFieldName;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_dataSourceId, _fieldMappingId, _fieldName);
+		return Objects.hash(_dataSourceId, _fieldMappingFieldName);
 	}
 
 	public void setDataSourceId(Long dataSourceId) {
 		_dataSourceId = dataSourceId;
 	}
 
-	public void setFieldMappingId(Long fieldMappingId) {
-		_fieldMappingId = fieldMappingId;
-	}
-
-	public void setFieldName(String fieldName) {
-		_fieldName = fieldName;
+	public void setFieldMappingFieldName(Long fieldMappingFieldName) {
+		_fieldMappingFieldName = fieldMappingFieldName;
 	}
 
 	@Transient
 	private Long _dataSourceId;
 
 	@Transient
-	private Long _fieldMappingId;
-
-	@Transient
-	private String _fieldName;
+	private Long _fieldMappingFieldName;
 
 }

@@ -85,7 +85,7 @@
 			"templated": true
 		},
 		"field-mapping": {
-			"href": "{url}/field-mappings/{id}",
+			"href": "{url}/field-mappings/{fieldName}",
 			"templated": true
 		},
 		"field-mappings": {
@@ -145,7 +145,7 @@
 			"templated": true
 		},
 		"individuals-distribution": {
-			"href": "{url}/individuals/distribution{?channelId,fieldMappingId,individualSegmentId,numberOfBins,size,sort*}",
+			"href": "{url}/individuals/distribution{?channelId,fieldMappingFieldName,individualSegmentId,numberOfBins,size,sort*}",
 			"templated": true
 		},
 		"interest": {

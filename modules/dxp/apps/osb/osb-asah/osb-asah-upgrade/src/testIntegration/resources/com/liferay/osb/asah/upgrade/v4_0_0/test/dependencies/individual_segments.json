@@ -15,7 +15,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 			"340477857996688156"
 		],
 		"scope": "PROJECT",
@@ -40,7 +40,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 			"340477857996688157"
 		],
 		"scope": "PROJECT",
@@ -65,7 +65,7 @@
 		],
 		"referencedAssetIds": [
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 			"340477857996688156",
 			"340477857996688157"
 		],
@@ -93,7 +93,7 @@
 		"referencedAssetIds": [
 			"340477857996688443"
 		],
-		"referencedFieldMappingIds": [
+		"referencedFieldMappingFieldNames": [
 		],
 		"scope": "PROJECT",
 		"segmentType": "DYNAMIC",

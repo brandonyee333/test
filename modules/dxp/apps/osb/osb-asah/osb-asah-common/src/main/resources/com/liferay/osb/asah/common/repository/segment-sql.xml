@@ -29,7 +29,7 @@
 				Segment.id
 		]]>
 	</entry>
-	<entry key="Segment.findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType">
+	<entry key="Segment.findByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType">
 		<![CDATA[
 			SELECT
 				Segment.*
@@ -51,9 +51,9 @@
 						SELECT
 							1
 						FROM
-							UNNEST(Segment.referencedFieldMappingIds) AS referencedFieldMappingId
+							UNNEST(Segment.referencedFieldMappingFieldNames) AS referencedFieldMappingFieldName
 						WHERE
-							referencedFieldMappingId IN (:referencedFieldMappingIds)
+							referencedFieldMappingFieldName IN (:referencedFieldMappingFieldNames)
 					)
 				) AND
 				Segment.state <> :state AND
@@ -62,7 +62,7 @@
 				Segment.id
 		]]>
 	</entry>
-	<entry key="Segment.findByReferencedFieldMappingIdInAndStateNotAndType">
+	<entry key="Segment.findByReferencedFieldMappingFieldNameInAndStateNotAndType">
 		<![CDATA[
 			SELECT
 				Segment.*
@@ -74,9 +74,9 @@
 					SELECT
 						1
 					FROM
-						UNNEST(Segment.referencedFieldMappingIds) AS referencedFieldMappingId
+						UNNEST(Segment.referencedFieldMappingFieldNames) AS referencedFieldMappingFieldName
 					WHERE
-						referencedFieldMappingId IN (:referencedFieldMappingIds)
+						referencedFieldMappingFieldName IN (:referencedFieldMappingFieldNames)
 				) AND
 				Segment.state <> :state AND
 				Segment.type = :type

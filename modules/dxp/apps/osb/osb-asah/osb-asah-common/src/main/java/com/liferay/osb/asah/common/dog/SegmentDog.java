@@ -134,19 +134,19 @@ public class SegmentDog {
 	}
 
 	public void disableDynamicSegments(
-		Long dataSourceId, List<String> fieldMappingIds) {
+		Long dataSourceId, List<String> fieldMappingFieldNames) {
 
-		if ((dataSourceId == null) && fieldMappingIds.isEmpty()) {
+		if ((dataSourceId == null) && fieldMappingFieldNames.isEmpty()) {
 			return;
 		}
 
 		List<Segment> segments;
 
-		if ((dataSourceId != null) && !fieldMappingIds.isEmpty()) {
+		if ((dataSourceId != null) && !fieldMappingFieldNames.isEmpty()) {
 			segments =
 				_segmentRepository.
-					findByReferencedAssetDataSourceIdsOrReferencedFieldMappingIdInAndStateNotAndType(
-						dataSourceId, fieldMappingIds, "DISABLED",
+					findByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
+						dataSourceId, fieldMappingFieldNames, "DISABLED",
 						Segment.Type.DYNAMIC);
 		}
 		else if (dataSourceId != null) {
@@ -155,11 +155,12 @@ public class SegmentDog {
 					findByReferencedAssetDataSourceIdsAndStateNotAndType(
 						dataSourceId, "DISABLED", Segment.Type.DYNAMIC);
 		}
-		else if (!fieldMappingIds.isEmpty()) {
+		else if (!fieldMappingFieldNames.isEmpty()) {
 			segments =
 				_segmentRepository.
-					findByReferencedFieldMappingIdInAndStateNotAndType(
-						fieldMappingIds, "DISABLED", Segment.Type.DYNAMIC);
+					findByReferencedFieldMappingFieldNameInAndStateNotAndType(
+						fieldMappingFieldNames, "DISABLED",
+						Segment.Type.DYNAMIC);
 		}
 		else {
 			segments = _segmentRepository.findByStateNotAndType(
@@ -358,7 +359,7 @@ public class SegmentDog {
 		Long dataSourceId, String filterString, int page, int size,
 		String[] sorts) {
 
-		List<Long> fieldMappingIds = Collections.emptyList();
+		List<Long> fieldMappingFieldNames = Collections.emptyList();
 
 		FilterHelper filterHelper = new FilterHelper(filterString);
 
@@ -367,10 +368,11 @@ public class SegmentDog {
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchPreviewDisabledSegments(
-				fieldMappingIds, dataSourceId, filterHelper, pageRequest),
+				fieldMappingFieldNames, dataSourceId, filterHelper,
+				pageRequest),
 			pageRequest,
 			() -> _segmentRepository.countPreviewDisabledSegments(
-				fieldMappingIds, dataSourceId, filterHelper));
+				fieldMappingFieldNames, dataSourceId, filterHelper));
 	}
 
 	public Page<Segment> searchSegmentPage(
@@ -432,9 +434,9 @@ public class SegmentDog {
 			SetUtil.map(
 				referencedObjectIds.get("referencedAssetDataSourceIds"),
 				Long::valueOf));
-		segment.setReferencedFieldMappingIds(
+		segment.setReferencedFieldMappingFieldNames(
 			SetUtil.map(
-				referencedObjectIds.get("referencedFieldMappingIds"),
+				referencedObjectIds.get("referencedFieldMappingFieldNames"),
 				String::valueOf));
 	}
 

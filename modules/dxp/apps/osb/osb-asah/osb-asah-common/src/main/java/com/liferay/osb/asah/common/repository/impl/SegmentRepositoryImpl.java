@@ -60,7 +60,7 @@ public class SegmentRepositoryImpl
 
 	@Override
 	public long countPreviewDisabledSegments(
-		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
 		FilterHelper filterHelper) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
@@ -70,7 +70,7 @@ public class SegmentRepositoryImpl
 			"Segment"
 		).where(
 			_getPreviewDisabledSegmentsConditions(
-				dataSourceFieldMappingIds, dataSourceId, filterHelper)
+				dataSourceFieldMappingFieldNames, dataSourceId, filterHelper)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
@@ -350,10 +350,10 @@ public class SegmentRepositoryImpl
 
 	@Override
 	public List<Segment> searchPreviewDisabledSegments(
-		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
 		FilterHelper filterHelper, Pageable pageable) {
 
-		if (CollectionUtils.isEmpty(dataSourceFieldMappingIds)) {
+		if (CollectionUtils.isEmpty(dataSourceFieldMappingFieldNames)) {
 			return new ArrayList<>();
 		}
 
@@ -363,7 +363,7 @@ public class SegmentRepositoryImpl
 			"Segment"
 		).where(
 			_getPreviewDisabledSegmentsConditions(
-				dataSourceFieldMappingIds, dataSourceId, filterHelper)
+				dataSourceFieldMappingFieldNames, dataSourceId, filterHelper)
 		).orderBy(
 			getSortFields(
 				_getSortFieldNameConversionMap(), pageable.getSort(), null)
@@ -638,7 +638,7 @@ public class SegmentRepositoryImpl
 	}
 
 	private List<Condition> _getPreviewDisabledSegmentsConditions(
-		List<Long> dataSourceFieldMappingIds, Long dataSourceId,
+		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
 		FilterHelper filterHelper) {
 
 		List<Condition> conditions = new ArrayList<>();
@@ -660,13 +660,13 @@ public class SegmentRepositoryImpl
 				DSL.exists(
 					DSL.selectOne(
 					).from(
-						"UNNEST(referencedFieldMappingIds) AS " +
-							"referencedFieldMappingId"
+						"UNNEST(referencedFieldMappingFieldNames) AS " +
+							"referencedFieldMappingFieldName"
 					).where(
 						DSL.field(
-							"referencedFieldMappingId"
+							"referencedFieldMappingFieldName"
 						).in(
-							dataSourceFieldMappingIds
+							dataSourceFieldMappingFieldNames
 						)
 					))));
 

@@ -433,10 +433,10 @@ public class DataSourceDog {
 
 		// TODO Disable segments referencing fields from data source
 
-		List<String> disabledFieldMappingIds = new ArrayList<>();
+		List<String> disabledFieldMappingFieldNames = new ArrayList<>();
 
 		_segmentDog.disableDynamicSegments(
-			dataSourceId, disabledFieldMappingIds);
+			dataSourceId, disabledFieldMappingFieldNames);
 	}
 
 	private void _deleteIndividualReferences(Long dataSourceId)

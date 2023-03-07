@@ -77,7 +77,7 @@ public class IndividualSegmentsRestControllerTest
 
 		Segment segment = new Segment();
 
-		segment.setReferencedFieldMappingIds(null);
+		segment.setReferencedFieldMappingFieldNames(null);
 
 		segment = _segmentRepository.save(segment);
 
@@ -244,10 +244,10 @@ public class IndividualSegmentsRestControllerTest
 
 		Assertions.assertTrue(referencedAssetDataSourceIds.isEmpty());
 
-		Set<String> referencedFieldMappingIds =
-			segmentDTO.getReferencedFieldMappingIds();
+		Set<String> referencedFieldMappingFieldNames =
+			segmentDTO.getReferencedFieldMappingFieldNames();
 
-		Assertions.assertTrue(referencedFieldMappingIds.isEmpty());
+		Assertions.assertTrue(referencedFieldMappingFieldNames.isEmpty());
 	}
 
 	@RepositoryResource(
