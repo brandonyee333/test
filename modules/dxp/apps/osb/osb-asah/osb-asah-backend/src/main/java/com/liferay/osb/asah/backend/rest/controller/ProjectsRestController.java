@@ -14,15 +14,22 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.ProjectDetailsDTO;
+import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Preference;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,6 +58,43 @@ public class ProjectsRestController extends BaseRestController {
 		_projectDog.deleteProject(deleteData, id);
 	}
 
+	@GetMapping("/details")
+	public List<ProjectDetailsDTO> getProjectDetails() {
+		List<ProjectDetailsDTO> projectDetails = new ArrayList<>();
+
+		ProjectIdThreadLocal.forProjects(
+			_projectDog.getProjects(),
+			() -> {
+				boolean commerceChannelsSelected = false;
+
+				try {
+					for (DataSource dataSource :
+							_dataSourceDog.getDataSources()) {
+
+						if (dataSource.getCommerceChannelsSelected()) {
+							commerceChannelsSelected = true;
+
+							break;
+						}
+					}
+				}
+				catch (Exception exception) {
+					_log.error(exception, exception);
+				}
+
+				Preference preference = _preferenceDog.getPreference(
+					"time-zone-id");
+
+				projectDetails.add(
+					new ProjectDetailsDTO(
+						commerceChannelsSelected,
+						ProjectIdThreadLocal.getProjectId(),
+						preference.getValue()));
+			});
+
+		return projectDetails;
+	}
+
 	@GetMapping
 	public List<Project> getProjects() {
 		return _projectDog.getProjects();
@@ -77,6 +121,12 @@ public class ProjectsRestController extends BaseRestController {
 	public void postProject(@RequestBody Project project) {
 		_projectDog.addProject(project);
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		ProjectsRestController.class);
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 	@Autowired
 	private PreferenceDog _preferenceDog;
