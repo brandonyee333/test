@@ -8204,7 +8204,7 @@ public class PortalImpl implements Portal {
 			themeDisplay.getCompanyId(),
 			PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
 
-		if ((languageIds.contains(locale.toString()) &&
+		if ((languageIds.contains(CharPool.SLASH + locale.toString()) &&
 			 (localePrependFriendlyURLStyle == 1) &&
 			 !locale.equals(LocaleUtil.getDefault())) ||
 			(localePrependFriendlyURLStyle == 2)) {

@@ -21,6 +21,7 @@ import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.layout.display.page.LayoutDisplayPageObjectProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
 import com.liferay.layout.display.page.LayoutDisplayPageProviderRegistry;
+import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -170,7 +171,7 @@ public class AssetDisplayPageFriendlyURLProviderImpl
 			themeDisplay.getCompanyId(),
 			PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
 
-		if ((languageIds.contains(locale.toString()) &&
+		if ((languageIds.contains(CharPool.SLASH + locale.toString()) &&
 			 (localePrependFriendlyURLStyle == 1) &&
 			 !locale.equals(LocaleUtil.getDefault())) ||
 			(localePrependFriendlyURLStyle == 2)) {
