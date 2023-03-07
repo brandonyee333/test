@@ -336,37 +336,39 @@ public class BQMembershipRepositoryImpl
 				DSL.field("individualId", String.class),
 				DSL.field("identityId", String.class),
 				DSL.field("modifiedDate", Date.class),
-				DSL.field("segmentId", Long.class)
+				DSL.field("segmentId", Long.class),
+				DSL.field("status", String.class)
 			).values(
 				bqMembership.getCreateDate(), bqMembership.getIndividualId(),
 				bqMembership.getIdentityId(), bqMembership.getModifiedDate(),
-				bqMembership.getSegmentId()
+				bqMembership.getSegmentId(), bqMembership.getStatus()
 			));
 
 		return bqMembership;
 	}
 
 	@Override
-	public void saveBQMemberships(List<BQMembership> bqMemberships) {
-		InsertValuesStep5<Record, Date, String, String, Date, Long>
-			insertValuesStep5 = _dslContext.insertInto(
+	public void insertAll(List<BQMembership> bqMemberships) {
+		InsertValuesStep6<Record, Date, String, String, Date, Long, String>
+			insertValuesStep6 = _dslContext.insertInto(
 				DSL.table("BQMembership")
 			).columns(
 				DSL.field("createDate", Date.class),
 				DSL.field("individualId", String.class),
 				DSL.field("identityId", String.class),
 				DSL.field("modifiedDate", Date.class),
-				DSL.field("segmentId", Long.class)
+				DSL.field("segmentId", Long.class),
+				DSL.field("status", String.class)
 			);
 
 		for (BQMembership bqMembership : bqMemberships) {
-			insertValuesStep5 = insertValuesStep5.values(
+			insertValuesStep6 = insertValuesStep6.values(
 				bqMembership.getCreateDate(), bqMembership.getIndividualId(),
 				bqMembership.getIdentityId(), bqMembership.getModifiedDate(),
-				bqMembership.getSegmentId());
+				bqMembership.getSegmentId(), bqMembership.getStatus());
 		}
 
-		_queryExecutor.queryExecute(insertValuesStep5);
+		_queryExecutor.queryExecute(insertValuesStep6);
 	}
 
 	@Override

@@ -71,7 +71,7 @@ public class BQMembershipDog {
 			bqMemberships.add(bqMembership);
 		}
 
-		_bqMembershipRepository.saveBQMemberships(bqMemberships);
+		_bqMembershipRepository.insertAll(bqMemberships);
 	}
 
 	public List<BQMembership> addBQMemberships(
@@ -81,7 +81,7 @@ public class BQMembershipDog {
 			return bqMemberships;
 		}
 
-		_bqMembershipRepository.saveBQMemberships(bqMemberships);
+		_bqMembershipRepository.insertAll(bqMemberships);
 
 		return bqMemberships;
 	}

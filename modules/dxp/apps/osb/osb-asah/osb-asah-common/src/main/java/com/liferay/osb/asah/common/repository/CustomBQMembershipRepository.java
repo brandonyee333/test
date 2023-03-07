@@ -106,7 +106,7 @@ public interface CustomBQMembershipRepository {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void saveBQMemberships(List<BQMembership> bqMemberships);
+	public void insertAll(List<BQMembership> bqMemberships);
 
 	@Cacheable
 	public List<BQMembership> searchBQMemberships(
