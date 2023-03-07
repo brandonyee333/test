@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -53,11 +54,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Leslie Wong
  */
-@Disabled
 public class IndividualsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
@@ -101,6 +102,7 @@ public class IndividualsRestControllerTest
 			"ACTIVE", activeMembershipJSONObject.getString("status"));
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = DataSourceRepository.class,
 		resourcePath = "osbasahfaroinfo/data_sources_2.json"
@@ -123,6 +125,7 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(2, dataSourcesJSONArray.length());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
@@ -149,6 +152,7 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(2, individualSegmentsJSONArray.length());
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
@@ -257,6 +261,21 @@ public class IndividualsRestControllerTest
 			CoreMatchers.containsString("Invalid field mapping ID"));
 	}
 
+	@BQSQLResource(resourcePath = "test_transformation_dto_page_dto.sql")
+	@Test
+	public void testGetTransformationDTOPageDTO() throws Exception {
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_transformation_dto_page_dto.json", this),
+			_objectMapper.convertValue(
+				_individualsRestController.getTransformationDTOPageDTO(
+					"groupby((demographics/givenName/value))", null, null,
+					false, 0, 10),
+				JSONObject.class),
+			false);
+	}
+
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"

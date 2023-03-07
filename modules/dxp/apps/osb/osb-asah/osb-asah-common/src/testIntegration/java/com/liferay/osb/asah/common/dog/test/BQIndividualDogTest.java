@@ -45,12 +45,14 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -345,6 +347,129 @@ public class BQIndividualDogTest
 		Assertions.assertEquals(
 			"joe.bloggs@liferay.com",
 			FaroInfoIndividualUtil.getIndividualEmail(individual));
+	}
+
+	@BQSQLResource(
+		resourcePath = "test_get_bq_individual_field_value_page_custom.sql"
+	)
+	@Test
+	public void testGetBQIndividualFieldValuePageCustom() {
+		Page<String> fieldValuePage =
+			_bqIndividualDog.getBQIndividualFieldValuePage(
+				null, null, "custom/Custom_Greeting/value", 0, 5);
+
+		List<String> fieldValues = fieldValuePage.getContent();
+
+		Assertions.assertEquals(5, fieldValues.size());
+
+		List<String> expectedFieldValues = new ArrayList<String>() {
+			{
+				add("Aloha!");
+				add("Good Day!");
+				add("Greetings!");
+				add("Hello!");
+				add("Oh Hi There!");
+			}
+		};
+
+		for (String fieldValue : fieldValues) {
+			Assertions.assertTrue(expectedFieldValues.remove(fieldValue));
+		}
+
+		Assertions.assertEquals(7, fieldValuePage.getTotalElements());
+	}
+
+	@BQSQLResource(
+		resourcePath = "test_get_bq_individual_field_value_page_custom.sql"
+	)
+	@Test
+	public void testGetBQIndividualFieldValuePageCustomCheckbox() {
+		Page<String> fieldValuePage =
+			_bqIndividualDog.getBQIndividualFieldValuePage(
+				null, null, "custom/Preferred_Snacks/value", 0, 10);
+
+		List<String> fieldValues = fieldValuePage.getContent();
+
+		Assertions.assertEquals(7, fieldValues.size());
+
+		List<String> expectedFieldValues = new ArrayList<String>() {
+			{
+				add("Bread");
+				add("Candy");
+				add("Cheese String");
+				add("Chips");
+				add("Chocolate");
+				add("Fruits");
+				add("Peanuts");
+			}
+		};
+
+		for (String fieldValue : fieldValues) {
+			Assertions.assertTrue(expectedFieldValues.remove(fieldValue));
+		}
+
+		Assertions.assertEquals(7, fieldValuePage.getTotalElements());
+	}
+
+	@BQSQLResource(
+		resourcePath = "test_get_bq_individual_field_value_page_custom.sql"
+	)
+	@Test
+	public void testGetBQIndividualFieldValuePageCustomSelectionList() {
+		Page<String> fieldValuePage =
+			_bqIndividualDog.getBQIndividualFieldValuePage(
+				null, null, "custom/Department/value", 0, 5);
+
+		List<String> fieldValues = fieldValuePage.getContent();
+
+		Assertions.assertEquals(4, fieldValues.size());
+
+		List<String> expectedFieldValues = new ArrayList<String>() {
+			{
+				add("Customer Support");
+				add("Marketing");
+				add("Product");
+				add("Sales");
+			}
+		};
+
+		for (String fieldValue : fieldValues) {
+			Assertions.assertTrue(expectedFieldValues.remove(fieldValue));
+		}
+
+		Assertions.assertEquals(4, fieldValuePage.getTotalElements());
+	}
+
+	@BQSQLResource(
+		resourcePath = "test_get_bq_individual_field_value_page_demographics.sql"
+	)
+	@Test
+	public void testGetBQIndividualFieldValuePageDemographics() {
+		Page<String> fieldValuePage =
+			_bqIndividualDog.getBQIndividualFieldValuePage(
+				null, null, "demographics/givenName/value", 0, 7);
+
+		List<String> fieldValues = fieldValuePage.getContent();
+
+		Assertions.assertEquals(7, fieldValues.size());
+
+		List<String> expectedFieldValues = new ArrayList<String>() {
+			{
+				add("test1");
+				add("test10");
+				add("test2");
+				add("test3");
+				add("test4");
+				add("test5");
+				add("test6");
+			}
+		};
+
+		for (String fieldValue : fieldValues) {
+			Assertions.assertTrue(expectedFieldValues.remove(fieldValue));
+		}
+
+		Assertions.assertEquals(10, fieldValuePage.getTotalElements());
 	}
 
 	@Disabled
