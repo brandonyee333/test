@@ -111,42 +111,19 @@ public class BQMembershipChangeRepositoryTest {
 	}
 
 	@Test
-	public void testFindSegmentIdByFilterString() {
-		List<Long> segmentIds =
-			_bqMembershipChangeRepository.findSegmentIdByFilterString(
-				"identitiesCount eq 1");
-
-		Assertions.assertEquals(0, segmentIds.size());
-
-		segmentIds = _bqMembershipChangeRepository.findSegmentIdByFilterString(
-			"identitiesCount eq 7");
-
-		Assertions.assertEquals(3, segmentIds.size());
-
-		segmentIds = _bqMembershipChangeRepository.findSegmentIdByFilterString(
-			"knownIdentitiesCount ge 3");
-
-		Assertions.assertEquals(3, segmentIds.size());
-	}
-
-	@Test
-	public void testSearchLastByDateChangedPeriodAndSegmentId() {
+	public void testFindLastBQMembershipChangeBySegmentIds() {
 		List<Long> segmentIds1 = Collections.singletonList(
 			_bqMembershipChange.getSegmentId());
 
 		List<BQMembershipChange> bqMembershipChanges =
-			_bqMembershipChangeRepository.searchLastByCreateDateAndSegmentId(
-				DateUtil.newBeginningOfDayDate(
-					DateUtils.addDays(_yesterday, -3)),
-				segmentIds1,
-				DateUtil.newEndOfDayDate(DateUtils.addDays(_yesterday, -2)));
+			_bqMembershipChangeRepository.
+				findLastBQMembershipChangeBySegmentIds(segmentIds1);
 
 		Assertions.assertTrue(bqMembershipChanges.isEmpty());
 
 		bqMembershipChanges =
-			_bqMembershipChangeRepository.searchLastByCreateDateAndSegmentId(
-				DateUtil.newBeginningOfDayDate(_yesterday), segmentIds1,
-				DateUtil.newEndOfDayDate(_newDayDate));
+			_bqMembershipChangeRepository.
+				findLastBQMembershipChangeBySegmentIds(segmentIds1);
 
 		Assertions.assertEquals(
 			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
@@ -154,8 +131,8 @@ public class BQMembershipChangeRepositoryTest {
 			_bqMembershipChange, bqMembershipChanges.get(0));
 
 		bqMembershipChanges =
-			_bqMembershipChangeRepository.searchLastByCreateDateAndSegmentId(
-				null, segmentIds1, DateUtil.newEndOfDayDate(_newDayDate));
+			_bqMembershipChangeRepository.
+				findLastBQMembershipChangeBySegmentIds(segmentIds1);
 
 		Assertions.assertEquals(
 			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
@@ -163,9 +140,8 @@ public class BQMembershipChangeRepositoryTest {
 			_bqMembershipChange, bqMembershipChanges.get(0));
 
 		bqMembershipChanges =
-			_bqMembershipChangeRepository.searchLastByCreateDateAndSegmentId(
-				DateUtil.newBeginningOfDayDate(_yesterday), segmentIds1,
-				DateUtil.newEndOfDayDate(_tomorrow));
+			_bqMembershipChangeRepository.
+				findLastBQMembershipChangeBySegmentIds(segmentIds1);
 
 		Assertions.assertEquals(
 			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
@@ -181,9 +157,8 @@ public class BQMembershipChangeRepositoryTest {
 		);
 
 		bqMembershipChanges =
-			_bqMembershipChangeRepository.searchLastByCreateDateAndSegmentId(
-				DateUtil.newBeginningOfDayDate(_yesterday), segmentIds2,
-				DateUtil.newEndOfDayDate(_tomorrow));
+			_bqMembershipChangeRepository.
+				findLastBQMembershipChangeBySegmentIds(segmentIds2);
 
 		Assertions.assertEquals(
 			2, bqMembershipChanges.size(), bqMembershipChanges.toString());
@@ -202,6 +177,25 @@ public class BQMembershipChangeRepositoryTest {
 			Assertions.assertEquals(
 				7L, bqMembershipChange.getIdentitiesCount());
 		}
+	}
+
+	@Test
+	public void testFindSegmentIdByFilterString() {
+		List<Long> segmentIds =
+			_bqMembershipChangeRepository.findSegmentIdByFilterString(
+				"identitiesCount eq 1");
+
+		Assertions.assertEquals(0, segmentIds.size());
+
+		segmentIds = _bqMembershipChangeRepository.findSegmentIdByFilterString(
+			"identitiesCount eq 7");
+
+		Assertions.assertEquals(3, segmentIds.size());
+
+		segmentIds = _bqMembershipChangeRepository.findSegmentIdByFilterString(
+			"knownIdentitiesCount ge 3");
+
+		Assertions.assertEquals(3, segmentIds.size());
 	}
 
 	@Test

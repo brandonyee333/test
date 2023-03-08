@@ -89,21 +89,22 @@ public class BQMembershipChangeDogTest
 	}
 
 	@Test
-	public void testGetLastBeforeTodayBySegmentId() {
+	public void testGetLastBQMembershipChangeBySegmentId() {
 		List<Long> segmentIds = new ArrayList<>(
 			_bqMembershipChangeBySegmentId.keySet());
 
 		Long segmentId = segmentIds.get(0);
 
 		BQMembershipChange bqMembershipChange =
-			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(segmentId);
+			_bqMembershipChangeDog.getLastBQMembershipChangeBySegmentId(
+				segmentId);
 
 		Assertions.assertEquals(
 			_bqMembershipChangeBySegmentId.get(segmentId), bqMembershipChange);
 	}
 
 	@Test
-	public void testGetLastBeforeTodayBySegmentIds1() {
+	public void testGetLastBQMembershipChangeBySegmentIds1() {
 		List<Long> segmentIds = new ArrayList<>(
 			_bqMembershipChangeBySegmentId.keySet());
 
@@ -125,7 +126,7 @@ public class BQMembershipChangeDogTest
 	}
 
 	@Test
-	public void testGetLastBeforeTodayBySegmentIds2() {
+	public void testGetLastBQMembershipChangeBySegmentIds2() {
 		Date date = DateUtil.newDayDate();
 
 		Segment segment = _addSegment(

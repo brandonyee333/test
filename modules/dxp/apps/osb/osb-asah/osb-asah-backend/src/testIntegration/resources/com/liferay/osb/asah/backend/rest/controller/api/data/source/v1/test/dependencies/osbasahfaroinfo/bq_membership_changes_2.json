@@ -3,50 +3,49 @@
 		"createDate": "${now}",
 		"id": "1",
 		"identitiesCount": 6,
-		"knownIdentitiesCount": 6,
+		"individualsCount": 6,
 		"segmentId": "1"
 	},
 	{
 		"createDate": "${now-10dT00:00:00.000Z}",
 		"id": "7",
 		"identitiesCount": 1,
-		"knownIdentitiesCount": 1,
-		"operation": "ADDED",
+		"individualsCount": 1,
 		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-8dT00:00:00.000Z}",
 		"id": "8",
 		"identitiesCount": 2,
-		"knownIdentitiesCount": 2,
+		"individualsCount": 2,
 		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-1dT00:00:00.000Z}",
 		"id": "9",
 		"identitiesCount": 3,
-		"knownIdentitiesCount": 3,
+		"individualsCount": 3,
 		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-1dT12:00:00.000Z}",
 		"id": "10",
 		"identitiesCount": 4,
-		"knownIdentitiesCount": 4,
+		"individualsCount": 4,
 		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-1dT23:00:00.000Z}",
 		"id": "11",
 		"identitiesCount": 5,
-		"knownIdentitiesCount": 5,
+		"individualsCount": 5,
 		"segmentId": "2"
 	},
 	{
 		"createDate": "${now-0dT12:00:00.000Z}",
 		"id": "12",
 		"identitiesCount": 6,
-		"knownIdentitiesCount": 6,
+		"individualsCount": 6,
 		"segmentId": "2"
 	}
 ]

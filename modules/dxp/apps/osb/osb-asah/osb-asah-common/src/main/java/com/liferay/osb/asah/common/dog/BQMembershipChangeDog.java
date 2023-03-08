@@ -63,17 +63,25 @@ public class BQMembershipChangeDog {
 			filterString);
 	}
 
-	public BQMembershipChange getLastBeforeTodayBySegmentId(Long segmentId) {
+	public BQMembershipChange getLastBQMembershipChangeBySegmentId(
+		Long segmentId) {
+
 		List<BQMembershipChange> bqMembershipChanges =
-			_bqMembershipChangeRepository.
-				findLastBQMembershipChangeBySegmentIds(
-					Collections.singletonList(segmentId));
+			getLastBQMembershipChangeBySegmentIds(
+				Collections.singletonList(segmentId));
 
 		if (bqMembershipChanges.isEmpty()) {
 			return null;
 		}
 
 		return bqMembershipChanges.get(0);
+	}
+
+	public List<BQMembershipChange> getLastBQMembershipChangeBySegmentIds(
+		List<Long> segmentIds) {
+
+		return _bqMembershipChangeRepository.
+			findLastBQMembershipChangeBySegmentIds(segmentIds);
 	}
 
 	public Map<Long, BQMembershipChange> getLastBQMembershipChanges(

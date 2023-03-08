@@ -365,13 +365,13 @@ public class IndividualSegmentsRestControllerTest
 
 			if (Objects.equals(segmentDTO.getId(), "1")) {
 				Assertions.assertEquals(0L, anonymousIdentitiesCount);
-				Assertions.assertEquals(0L, identitiesCount);
-				Assertions.assertEquals(0L, knownIdentitiesCount);
+				Assertions.assertEquals(6L, identitiesCount);
+				Assertions.assertEquals(6L, knownIdentitiesCount);
 			}
 			else if (Objects.equals(segmentDTO.getId(), "2")) {
 				Assertions.assertEquals(0L, anonymousIdentitiesCount);
-				Assertions.assertEquals(0L, identitiesCount);
-				Assertions.assertEquals(0L, knownIdentitiesCount);
+				Assertions.assertEquals(6L, identitiesCount);
+				Assertions.assertEquals(6L, knownIdentitiesCount);
 			}
 		}
 	}

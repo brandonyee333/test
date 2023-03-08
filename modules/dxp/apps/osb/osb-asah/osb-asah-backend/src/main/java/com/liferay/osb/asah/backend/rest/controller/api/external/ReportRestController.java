@@ -688,7 +688,8 @@ public class ReportRestController extends BaseRestController {
 		@PathVariable Long segmentId) {
 
 		return _toReportSegmentDTOEntityModel(
-			_bqMembershipChangeDog.getLastBeforeTodayBySegmentId(segmentId),
+			_bqMembershipChangeDog.getLastBQMembershipChangeBySegmentId(
+				segmentId),
 			_segmentDog.getSegment(segmentId));
 	}
 
