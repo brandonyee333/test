@@ -20,9 +20,12 @@ import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.http.ChannelHttp;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
@@ -116,7 +119,32 @@ public class ChannelDog {
 		_deleteIndividualReferences(
 			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
 
-		_segmentDog.deleteSegments(new HashSet<>(channelIds));
+		List<Segment> segments = new ArrayList<>();
+
+		int page = 0;
+
+		while (true) {
+			List<Segment> curSegments = _segmentRepository.findByChannelIdIn(
+				new HashSet<>(channelIds), PageRequest.of(page++, 500));
+
+			if (curSegments.isEmpty()) {
+				break;
+			}
+
+			segments.addAll(curSegments);
+		}
+
+		if (segments.isEmpty()) {
+			return;
+		}
+
+		_segmentRepository.deleteAll(segments);
+
+		_asahTaskDog.scheduleAsahTask(
+			"DeleteIndividualSegmentTasksNanite",
+			JSONUtil.put(
+				"individualSegmentIds",
+				JSONUtil.toJSONArray(segments, Segment::getId)));
 	}
 
 	public void deleteChannels(
@@ -480,6 +508,9 @@ public class ChannelDog {
 	private static final Log _log = LogFactory.getLog(ChannelDog.class);
 
 	@Autowired
+	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
 	private AssetDog _assetDog;
 
 	@Autowired
@@ -492,7 +523,7 @@ public class ChannelDog {
 	private DataSourceRepository _dataSourceRepository;
 
 	@Autowired
-	private SegmentDog _segmentDog;
+	private SegmentRepository _segmentRepository;
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();

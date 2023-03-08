@@ -133,35 +133,6 @@ public class SegmentDog {
 			JSONUtil.put("individualSegmentIds", JSONUtil.put(segmentId)));
 	}
 
-	public void deleteSegments(Set<Long> channelIds) throws Exception {
-		List<Segment> segments = new ArrayList<>();
-
-		int page = 0;
-
-		while (true) {
-			List<Segment> curSegments = _segmentRepository.findByChannelIdIn(
-				channelIds, PageRequest.of(page++, 500));
-
-			if (curSegments.isEmpty()) {
-				break;
-			}
-
-			segments.addAll(curSegments);
-		}
-
-		if (segments.isEmpty()) {
-			return;
-		}
-
-		_segmentRepository.deleteAll(segments);
-
-		_asahTaskDog.scheduleAsahTask(
-			"DeleteIndividualSegmentTasksNanite",
-			JSONUtil.put(
-				"individualSegmentIds",
-				JSONUtil.toJSONArray(segments, Segment::getId)));
-	}
-
 	public void disableDynamicSegments(
 		Long dataSourceId, List<String> fieldMappingIds) {
 
@@ -580,22 +551,13 @@ public class SegmentDog {
 	private AsahTaskDog _asahTaskDog;
 
 	@Autowired
-	private AssetDog _assetDog;
-
-	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;
 
 	@Autowired
-	private BQOrganizationDog _bqOrganizationDog;
-
-	@Autowired
 	private ChannelRepository _channelRepository;
-
-	@Autowired
-	private DXPEntityDog _dxpEntityDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
