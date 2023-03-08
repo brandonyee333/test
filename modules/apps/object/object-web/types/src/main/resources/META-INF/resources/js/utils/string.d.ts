@@ -13,11 +13,6 @@
  */
 
 /**
- * Transform first letter in lowercase
- */
-export declare function firstLetterLowercase(str: string): string;
-
-/**
  * Transform first letter in uppercase
  */
 export declare function firstLetterUppercase(str: string): string;
