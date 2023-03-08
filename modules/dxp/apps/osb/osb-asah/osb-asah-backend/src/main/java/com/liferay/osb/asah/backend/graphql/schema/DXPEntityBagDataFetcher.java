@@ -15,12 +15,15 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dto.DXPEntityDTO;
+import com.liferay.osb.asah.backend.dto.DXPOrganizationDTO;
 import com.liferay.osb.asah.backend.dto.DXPUserDTO;
 import com.liferay.osb.asah.common.dog.BQGroupDog;
+import com.liferay.osb.asah.common.dog.BQOrganizationDog;
 import com.liferay.osb.asah.common.dog.BQRoleDog;
 import com.liferay.osb.asah.common.dog.BQTeamDog;
 import com.liferay.osb.asah.common.dog.BQUserDog;
 import com.liferay.osb.asah.common.dog.BQUserGroupDog;
+import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.model.BQDXPEntity;
@@ -46,6 +49,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @GraphQLTypeWiring(fieldName = "groups", typeName = "QueryType")
+@GraphQLTypeWiring(fieldName = "organizations", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "roles", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "teams", typeName = "QueryType")
 @GraphQLTypeWiring(fieldName = "userGroups", typeName = "QueryType")
@@ -70,7 +74,11 @@ public class DXPEntityBagDataFetcher
 			ListUtil.map(
 				bqDXPEntityPage.getContent(),
 				bqDXPEntity -> {
-					if (bqDXPEntity instanceof BQUser) {
+					if (bqDXPEntity instanceof BQOrganization) {
+						return new DXPOrganizationDTO(
+							(BQOrganization)bqDXPEntity);
+					}
+					else if (bqDXPEntity instanceof BQUser) {
 						return new DXPUserDTO((BQUser)bqDXPEntity);
 					}
 
@@ -85,6 +93,12 @@ public class DXPEntityBagDataFetcher
 
 		if (StringUtils.equals(graphQLFieldDefinitionName, "groups")) {
 			return _bqGroupDog.getBQGroupPage(
+				channelId, keywords, size, sort, start);
+		}
+		else if (StringUtils.equals(
+					graphQLFieldDefinitionName, "organizations")) {
+
+			return _bqOrganizationDog.getBQOrganizationPage(
 				channelId, keywords, size, sort, start);
 		}
 		else if (StringUtils.equals(graphQLFieldDefinitionName, "roles")) {
@@ -122,6 +136,9 @@ public class DXPEntityBagDataFetcher
 
 	@Autowired
 	private BQGroupDog _bqGroupDog;
+
+	@Autowired
+	private BQOrganizationDog _bqOrganizationDog;
 
 	@Autowired
 	private BQRoleDog _bqRoleDog;
