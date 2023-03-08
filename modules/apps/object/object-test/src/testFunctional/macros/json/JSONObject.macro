@@ -460,6 +460,7 @@ definition {
 
 		var objectId = JSONObject.getObjectId(
 			objectName = ${objectName},
+			token = ${token},
 			userEmailAddress = ${userEmailAddress},
 			userPassword = ${userPassword});
 
@@ -475,6 +476,10 @@ definition {
 			${portalURL}/o/object-admin/v1.0/object-definitions/${objectId} \
 				-u ${userEmailAddress}:${userPassword}
 		''';
+
+		if (isSet(token)) {
+			var curl = StringUtil.add(${curl}, " -H 'Authorization: Bearer ${token}'", "");
+		}
 
 		JSONCurlUtil.delete(${curl});
 	}
@@ -698,6 +703,10 @@ definition {
 				-u ${userEmailAddress}:${userPassword}
 		''';
 
+		if (isSet(token)) {
+			var curl = StringUtil.add(${curl}, " -H 'Authorization: Bearer ${token}'", "");
+		}
+
 		var objectId = JSONCurlUtil.get(${curl}, "$.items[?(@['name'] == '${objectName}')]['id']");
 
 		return ${objectId};
@@ -727,6 +736,29 @@ definition {
 		var relationshipIdList = JSONCurlUtil.get(${curl}, "$.items..id");
 
 		return ${relationshipIdList};
+	}
+
+	macro getObjectSortedEntry {
+		var portalURL = JSONCompany.getPortalURL();
+
+		if (!(isSet(userEmailAddress))) {
+			var userEmailAddress = "test@liferay.com";
+		}
+
+		if (!(isSet(userPassword))) {
+			var userPassword = "test";
+		}
+
+		var objectName = StringUtil.toLowerCase(${objectName});
+
+		var curl = '''
+			${portalURL}/o/c/${objectName}s/?sort=${sortString} \
+				-u ${userEmailAddress}:${userPassword}
+		''';
+
+		var sortEntry = JSONCurlUtil.get(${curl});
+
+		return ${sortEntry};
 	}
 
 	macro getPicklistId {

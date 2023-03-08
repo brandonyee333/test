@@ -12,22 +12,30 @@
  * details.
  */
 
-package com.liferay.portal.search.elasticsearch7.settings;
+package com.liferay.commerce.exception;
 
-import org.osgi.annotation.versioning.ProviderType;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author André de Oliveira
+ * @author Alessio Antonio Rendina
  */
-@ProviderType
-public interface IndexSettingsContributor
-	extends Comparable<IndexSettingsContributor> {
+public class CommerceOrderShippingAndBillingException extends PortalException {
 
-	public void contribute(
-		String indexName, TypeMappingsHelper typeMappingsHelper);
+	public CommerceOrderShippingAndBillingException() {
+	}
 
-	public int getPriority();
+	public CommerceOrderShippingAndBillingException(String msg) {
+		super(msg);
+	}
 
-	public void populate(IndexSettingsHelper indexSettingsHelper);
+	public CommerceOrderShippingAndBillingException(
+		String msg, Throwable throwable) {
+
+		super(msg, throwable);
+	}
+
+	public CommerceOrderShippingAndBillingException(Throwable throwable) {
+		super(throwable);
+	}
 
 }

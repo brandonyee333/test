@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.commerce.checkout.web.internal.util;
+package com.liferay.commerce.checkout.web.internal.display.context;
 
 import com.liferay.account.model.AccountEntry;
 import com.liferay.commerce.account.constants.CommerceAccountConstants;
@@ -25,11 +25,14 @@ import com.liferay.commerce.constants.CommerceWebKeys;
 import com.liferay.commerce.context.CommerceContext;
 import com.liferay.commerce.exception.CommerceOrderBillingAddressException;
 import com.liferay.commerce.exception.CommerceOrderShippingAddressException;
+import com.liferay.commerce.exception.CommerceOrderShippingAndBillingException;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.service.CommerceOrderService;
+import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
+import com.liferay.portal.kernel.service.CountryLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -43,12 +46,13 @@ import javax.portlet.ActionRequest;
 /**
  * @author Luca Pellizzon
  */
-public class AddressCommerceCheckoutStepUtil {
+public class AddressCommerceCheckoutStepDisplayContext {
 
-	public AddressCommerceCheckoutStepUtil(
+	public AddressCommerceCheckoutStepDisplayContext(
 		CommerceAccountLocalService commerceAccountLocalService,
 		int commerceAddressType, CommerceOrderService commerceOrderService,
 		CommerceAddressService commerceAddressService,
+		CountryLocalService countryLocalService,
 		ModelResourcePermission<CommerceOrder>
 			commerceOrderModelResourcePermission) {
 
@@ -56,11 +60,12 @@ public class AddressCommerceCheckoutStepUtil {
 		_commerceAddressType = commerceAddressType;
 		_commerceOrderService = commerceOrderService;
 		_commerceAddressService = commerceAddressService;
+		_countryLocalService = countryLocalService;
 		_commerceOrderModelResourcePermission =
 			commerceOrderModelResourcePermission;
 	}
 
-	protected CommerceOrder updateCommerceOrderAddress(
+	public CommerceOrder updateCommerceOrderAddress(
 			ActionRequest actionRequest, String paramName)
 		throws Exception {
 
@@ -96,7 +101,16 @@ public class AddressCommerceCheckoutStepUtil {
 		boolean useAsBilling = ParamUtil.getBoolean(
 			actionRequest, "use-as-billing");
 
+		CommerceAddress commerceAddress =
+			_commerceAddressService.getCommerceAddress(commerceAddressId);
+
 		if (useAsBilling) {
+			Country country = commerceAddress.getCountry();
+
+			if (!country.isBillingAllowed()) {
+				throw new CommerceOrderShippingAndBillingException();
+			}
+
 			_commerceAddressType =
 				CommerceAddressConstants.ADDRESS_TYPE_BILLING_AND_SHIPPING;
 		}
@@ -109,9 +123,6 @@ public class AddressCommerceCheckoutStepUtil {
 			if (commerceAddressId < 1) {
 				throw new CommerceOrderShippingAddressException();
 			}
-
-			CommerceAddress commerceAddress =
-				_commerceAddressService.getCommerceAddress(commerceAddressId);
 
 			_commerceAddressService.updateCommerceAddress(
 				commerceAddressId, commerceAddress.getName(),
@@ -201,6 +212,22 @@ public class AddressCommerceCheckoutStepUtil {
 			CommerceOrder commerceOrder, ActionRequest actionRequest)
 		throws Exception {
 
+		long countryId = ParamUtil.getLong(actionRequest, "countryId");
+
+		boolean useAsBilling = ParamUtil.getBoolean(
+			actionRequest, "use-as-billing");
+
+		if (useAsBilling) {
+			Country country = _countryLocalService.getCountry(countryId);
+
+			if (!country.isBillingAllowed()) {
+				throw new CommerceOrderShippingAndBillingException();
+			}
+
+			_commerceAddressType =
+				CommerceAddressConstants.ADDRESS_TYPE_BILLING_AND_SHIPPING;
+		}
+
 		String name = ParamUtil.getString(actionRequest, "name");
 		String description = ParamUtil.getString(actionRequest, "description");
 		String street1 = ParamUtil.getString(actionRequest, "street1");
@@ -209,21 +236,12 @@ public class AddressCommerceCheckoutStepUtil {
 		String city = ParamUtil.getString(actionRequest, "city");
 		String zip = ParamUtil.getString(actionRequest, "zip");
 		long regionId = ParamUtil.getLong(actionRequest, "regionId");
-		long countryId = ParamUtil.getLong(actionRequest, "countryId");
 		String phoneNumber = ParamUtil.getString(actionRequest, "phoneNumber");
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			CommerceAddress.class.getName(), actionRequest);
 
 		serviceContext.setScopeGroupId(commerceOrder.getGroupId());
-
-		boolean useAsBilling = ParamUtil.getBoolean(
-			actionRequest, "use-as-billing");
-
-		if (useAsBilling) {
-			_commerceAddressType =
-				CommerceAddressConstants.ADDRESS_TYPE_BILLING_AND_SHIPPING;
-		}
 
 		if (commerceOrder.isGuestOrder()) {
 			String email = ParamUtil.getString(actionRequest, "email");
@@ -253,5 +271,6 @@ public class AddressCommerceCheckoutStepUtil {
 	private final ModelResourcePermission<CommerceOrder>
 		_commerceOrderModelResourcePermission;
 	private final CommerceOrderService _commerceOrderService;
+	private final CountryLocalService _countryLocalService;
 
 }
