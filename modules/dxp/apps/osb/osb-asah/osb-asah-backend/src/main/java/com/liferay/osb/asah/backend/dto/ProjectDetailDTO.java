@@ -25,14 +25,14 @@ public class ProjectDetailDTO {
 	public ProjectDetailDTO(
 		Boolean accountsSelected, Boolean commerceChannelsSelected,
 		Boolean contactsSelected, String id, Boolean sitesSelected,
-		String timeZone) {
+		String timeZoneId) {
 
 		_accountsSelected = accountsSelected;
 		_commerceChannelsSelected = commerceChannelsSelected;
 		_contactsSelected = contactsSelected;
 		_id = id;
 		_sitesSelected = sitesSelected;
-		_timeZone = timeZone;
+		_timeZoneId = timeZoneId;
 	}
 
 	public Boolean getAccountsSelected() {
@@ -55,8 +55,8 @@ public class ProjectDetailDTO {
 		return _sitesSelected;
 	}
 
-	public String getTimeZone() {
-		return _timeZone;
+	public String getTimeZoneId() {
+		return _timeZoneId;
 	}
 
 	private final Boolean _accountsSelected;
@@ -64,6 +64,6 @@ public class ProjectDetailDTO {
 	private final Boolean _contactsSelected;
 	private final String _id;
 	private final Boolean _sitesSelected;
-	private final String _timeZone;
+	private final String _timeZoneId;
 
 }

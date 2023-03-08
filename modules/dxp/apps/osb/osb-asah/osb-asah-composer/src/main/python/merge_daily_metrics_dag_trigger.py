@@ -55,6 +55,6 @@ for project in response.json():
 
 	if project.get('sitesSelected'):
 		globals()[dag_id] = create_dag(
-			project.get('id'), project.get('timeZone'), dag_id,
+			project.get('id'), project.get('timeZoneId'), dag_id,
 			'Daily Merge DAG For {}'.format(project.get('id'))
 		)

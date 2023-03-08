@@ -61,7 +61,7 @@ for project in response.json():
 
 	globals()[dag_id] = create_dag(
 		project.get('id'),
-		project.get('timeZone'),
+		project.get('timeZoneId'),
 		dag_id,
 		'Interest Score DAG For {}'.format(project.get('id'))
 	)
