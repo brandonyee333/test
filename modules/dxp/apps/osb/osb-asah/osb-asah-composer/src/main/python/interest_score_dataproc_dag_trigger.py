@@ -21,28 +21,29 @@ import requests
 
 def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 	with airflow.DAG(
-			dag_id=dag_id,
-			default_args={
-				'ac_project_id': ac_project_id,
-				'ac_project_time_zone_id': ac_project_time_zone_id,
-				'dag_configuration_key': 'interest_score_dag_trigger',
-				'owner': 'Liferay',
-				'project_id': os.environ['GOOGLE_PROJECT_ID'],
-				'region': 'us-west1'
-	},
-			description=dag_description,
-			max_active_runs=1,
-			schedule_interval='0 1 * * *',
-			start_date=pendulum.now(ac_project_time_zone_id) - pendulum.duration(days=2)
+		dag_id=dag_id,
+		default_args={
+			'ac_project_id': ac_project_id,
+			'ac_project_time_zone_id': ac_project_time_zone_id,
+			'dag_configuration_key': 'interest_score_dag_trigger',
+			'owner': 'Liferay',
+			'project_id': os.environ['GOOGLE_PROJECT_ID'],
+			'region': 'us-west1'
+		},
+		description=dag_description,
+		max_active_runs=1,
+		schedule_interval='0 1 * * *',
+		start_date=pendulum.now(ac_project_time_zone_id) - pendulum.duration(days=2)
 	) as dag:
 		cluster_get_or_create = DataprocClusterGetOrCreateOperator(
 			task_id='dataproc_cluster_get_or_create'
 		)
 
-		submit_interest_score_pyspark_job = DataprocSubmitInterestScorePySparkJobOperator(
-			task_id='dataproc_submit_interest_score_pyspark_job',
-			cluster_name="{{ ti.xcom_pull(task_ids='dataproc_cluster_get_or_create')['cluster_name'] }}"
-		)
+		submit_interest_score_pyspark_job =
+			DataprocSubmitInterestScorePySparkJobOperator(
+				task_id='dataproc_submit_interest_score_pyspark_job',
+				cluster_name="{{ ti.xcom_pull(task_ids='dataproc_cluster_get_or_create')['cluster_name'] }}"
+			)
 
 		cluster_get_or_create >> submit_interest_score_pyspark_job
 
@@ -60,8 +61,6 @@ for project in response.json():
 	dag_id = 'interest_score_{}'.format(project.get('id'))
 
 	globals()[dag_id] = create_dag(
-		project.get('id'),
-		project.get('timeZoneId'),
-		dag_id,
+		project.get('id'), project.get('timeZoneId'), dag_id,
 		'Interest Score DAG For {}'.format(project.get('id'))
 	)

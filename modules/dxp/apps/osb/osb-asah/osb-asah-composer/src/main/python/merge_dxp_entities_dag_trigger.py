@@ -17,17 +17,21 @@ import airflow
 import datetime
 import requests
 
-def create_dag(ac_project_id, accounts_selected, commerce_channels_selected, contacts_selected, dag_id, dag_description):
+def create_dag(
+	ac_project_id, accounts_selected, commerce_channels_selected,
+	contacts_selected, dag_id, dag_description
+):
+
 	with airflow.DAG(
-			dag_id=dag_id,
-			default_args={
-				'ac_project_id': ac_project_id,
-				'owner': 'Liferay'
-			},
-			description=dag_description,
-			max_active_runs=1,
-			schedule_interval='@hourly',
-			start_date=datetime.datetime.now() - datetime.timedelta(hours=1)
+		dag_id=dag_id,
+		default_args={
+			'ac_project_id': ac_project_id,
+			'owner': 'Liferay'
+		},
+		description=dag_description,
+		max_active_runs=1,
+		schedule_interval='@hourly',
+		start_date=datetime.datetime.now() - datetime.timedelta(hours=1)
 	) as dag:
 		big_query_jobs = []
 
@@ -73,12 +77,13 @@ response = requests.get(
 for project in response.json():
 	dag_id = 'merge_dxp_entity_{}'.format(project.get('id'))
 
-	if project.get('accountsSelected') or project.get('commerceChannelsSelected') or project.get('contactsSelected'):
+	accounts_selected = project.get('accountsSelected')
+	commerce_channels_selected = project.get('commerceChannelsSelected')
+	contacts_selected = project.get('contactsSelected')
+
+	if accounts_selected or commerce_channels_selected or contacts_selected:
 		globals()[dag_id] = create_dag(
-			project.get('id'),
-			project.get('accountsSelected'),
-			project.get('commerceChannelsSelected'),
-			project.get('contactsSelected'),
-			dag_id,
+			project.get('id'), accounts_selected, commerce_channels_selected,
+			contacts_selected, dag_id,
 			'DXP Entity Merge DAG For {}'.format(project.get('id'))
 		)
