@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.json.JSONObject;
 
@@ -136,14 +135,6 @@ public class BQOrganization implements BQDXPEntity {
 	@BigQueryColumn
 	public String getType() {
 		return _type;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(
-			_createDate, _dataSourceId, _dataSourceName, _id, _modifiedDate,
-			_name, _organizationId, _parentOrganizationId,
-			_parentOrganizationName, _treePath, _type);
 	}
 
 	public void setCreateDate(Date createDate) {
