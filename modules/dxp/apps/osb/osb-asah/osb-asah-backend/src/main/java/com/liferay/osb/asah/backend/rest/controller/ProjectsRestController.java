@@ -24,9 +24,7 @@ import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -117,23 +115,6 @@ public class ProjectsRestController extends BaseRestController {
 	@GetMapping
 	public List<Project> getProjects() {
 		return _projectDog.getProjects();
-	}
-
-	@GetMapping("/timezones")
-	public Map<String, String> getTimeZones() {
-		Map<String, String> timeZones = new HashMap<>();
-
-		ProjectIdThreadLocal.forProjects(
-			_projectDog.getProjects(),
-			() -> {
-				Preference preference = _preferenceDog.getPreference(
-					"time-zone-id");
-
-				timeZones.put(
-					ProjectIdThreadLocal.getProjectId(), preference.getValue());
-			});
-
-		return timeZones;
 	}
 
 	@PostMapping
