@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.repository.CustomBQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.Collection;
 import java.util.Date;
@@ -59,19 +60,32 @@ public class BQOrganizationRepositoryImpl
 	}
 
 	@Override
+	public long countByDataSourceIdsAndName(
+		List<Long> dataSourceIds, @Nullable String name) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQOrganization"
+			).where(
+				ConditionUtil.toConditions(
+					dataSourceIds, name, new String[] {"name"})
+			));
+	}
+
+	@Override
 	public long countByName(@Nullable String name) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectSelectStep.from(
-			"BQOrganization"
-		).where(
-			_getCondition(name)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQOrganization"
+			).where(
+				_getCondition(name)
+			));
 	}
 
 	@Override
@@ -90,26 +104,77 @@ public class BQOrganizationRepositoryImpl
 
 	@Override
 	public List<BQOrganization> findAll() {
-		return null;
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return _queryExecutor.queryForList(
+			BQOrganization::new, selectSelectStep.from("BQOrganization"));
 	}
 
 	@Override
-	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
+	public Optional<BQOrganization> findByDataSourceIdAndOrganizationId(
 		Long dataSourceId, Long organizationId) {
 
-		return null;
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return _queryExecutor.queryForObject(
+			BQOrganization::new,
+			selectSelectStep.from(
+				"BQOrganization"
+			).where(
+				DSL.and(
+					DSL.field(
+						"dataSourceId"
+					).eq(
+						dataSourceId
+					),
+					DSL.field(
+						"organizationId"
+					).eq(
+						organizationId
+					))
+			));
 	}
 
 	@Override
 	public List<BQOrganization> findByDataSourceIdAndOrganizationIdIn(
 		Long dataSourceId, Collection<Long> organizationIds) {
 
-		return null;
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return _queryExecutor.queryForList(
+			BQOrganization::new,
+			selectSelectStep.from(
+				"BQOrganization"
+			).where(
+				DSL.and(
+					DSL.field(
+						"dataSourceId"
+					).eq(
+						dataSourceId
+					),
+					DSL.field(
+						"organizationId"
+					).in(
+						organizationIds
+					))
+			));
 	}
 
 	@Override
-	public Optional<BQOrganization> findById(String organizationId) {
-		return Optional.empty();
+	public Optional<BQOrganization> findById(String bqOrganizationId) {
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return _queryExecutor.queryForObject(
+			BQOrganization::new,
+			selectSelectStep.from(
+				"BQOrganization"
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					bqOrganizationId
+				)
+			));
 	}
 
 	@Override
@@ -118,17 +183,17 @@ public class BQOrganizationRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"BQOrganization"
-		).where(
-			_getCondition(name)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new BQOrganization(record.intoMap())
-		);
+		return _queryExecutor.queryForList(
+			BQOrganization::new,
+			selectSelectStep.from(
+				"BQOrganization"
+			).where(
+				_getCondition(name)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	@Override
@@ -161,17 +226,39 @@ public class BQOrganizationRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"BQOrganization"
-		).where(
-			filterHelper.getCondition()
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new BQOrganization(record.intoMap())
-		);
+		return _queryExecutor.queryForList(
+			BQOrganization::new,
+			selectSelectStep.from(
+				"BQOrganization"
+			).where(
+				filterHelper.getCondition()
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	@Override
+	public List<BQOrganization> searchByDataSourceIdsAndName(
+		List<Long> dataSourceIds, @Nullable String name, Pageable pageable) {
+
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return _queryExecutor.queryForList(
+			BQOrganization::new,
+			selectSelectStep.from(
+				"BQOrganization"
+			).where(
+				ConditionUtil.toConditions(
+					dataSourceIds, name, new String[] {"name"})
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	private Condition _getCondition(String name) {

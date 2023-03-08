@@ -32,13 +32,16 @@ public interface CustomBQOrganizationRepository {
 
 	public long count();
 
+	public long countByDataSourceIdsAndName(
+		List<Long> dataSourceIds, @Nullable String name);
+
 	public long countByName(@Nullable String name);
 
 	public void deleteById(String id);
 
 	public List<BQOrganization> findAll();
 
-	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
+	public Optional<BQOrganization> findByDataSourceIdAndOrganizationId(
 		Long dataSourceId, Long organizationId);
 
 	public List<BQOrganization> findByDataSourceIdAndOrganizationIdIn(
@@ -55,5 +58,9 @@ public interface CustomBQOrganizationRepository {
 	@Cacheable
 	public List<BQOrganization> searchBQOrganizations(
 		FilterHelper filterHelper, Pageable pageable);
+
+	@Cacheable
+	public List<BQOrganization> searchByDataSourceIdsAndName(
+		List<Long> dataSourceIds, @Nullable String name, Pageable pageable);
 
 }
