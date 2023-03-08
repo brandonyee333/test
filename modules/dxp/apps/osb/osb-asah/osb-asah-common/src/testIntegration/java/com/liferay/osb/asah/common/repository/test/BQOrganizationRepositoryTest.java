@@ -14,14 +14,11 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.entity.BQOrganization;
-import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
 import java.util.Date;
@@ -40,38 +37,18 @@ import org.springframework.data.domain.PageRequest;
  * @author Rachael Koestartyo
  */
 @Import(JDBCTestConfiguration.class)
-public class BQOrganizationRepositoryTest {
+public class BQOrganizationRepositoryTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {
-		DataSource dataSource1 = new DataSource("Liferay Brazil");
-
-		dataSource1.setCredentialType("Token Authentication");
-
-		Channel channel1 = new Channel("channel1");
-
-		channel1.setId(11L);
-		channel1.setIsNew(Boolean.TRUE);
-
-		_channelRepository.save(channel1);
-
-		dataSource1.setFaroBackendSecuritySignature(
-			"faroBackendSecuritySignature");
-		dataSource1.setId(1L);
-		dataSource1.setIsNew(Boolean.TRUE);
-		dataSource1.setProviderType("LIFERAY");
-		dataSource1.setState("READY");
-		dataSource1.setStatus("STARTED");
-		dataSource1.setURL("");
-
-		_dataSourceRepository.save(dataSource1);
-
 		BQOrganization bqOrganization = new BQOrganization();
 
 		bqOrganization.setCreateDate(new Date());
 
-		bqOrganization.setDataSourceId(dataSource1.getId());
-		bqOrganization.setId(RandomTestUtil.randomUUID());
+		bqOrganization.setDataSourceId(1L);
+		bqOrganization.setId("12345");
 		bqOrganization.setModifiedDate(new Date());
 		bqOrganization.setName("Organization 1");
 		bqOrganization.setOrganizationId(123L);
@@ -82,14 +59,21 @@ public class BQOrganizationRepositoryTest {
 
 	@AfterEach
 	public void tearDown() {
-		_channelRepository.deleteAll();
-		_dataSourceRepository.deleteAll();
+		_bqOrganizationRepository.deleteById("12345");
 	}
 
 	@Test
 	public void testCountByName() {
 		Assertions.assertEquals(
 			1, _bqOrganizationRepository.countByName("Org"));
+	}
+
+	@Test
+	public void testCountyByDataSourceIdsAndName() {
+		Assertions.assertEquals(
+			1,
+			_bqOrganizationRepository.countByDataSourceIdsAndName(
+				Collections.singletonList(1L), "Org"));
 	}
 
 	@Test
@@ -116,13 +100,16 @@ public class BQOrganizationRepositoryTest {
 		Assertions.assertEquals(1, bqOrganizations.size());
 	}
 
+	@Test
+	public void testSearchByDataSourceIdsAndName() {
+		List<BQOrganization> bqOrganizations =
+			_bqOrganizationRepository.searchByDataSourceIdsAndName(
+				Collections.singletonList(1L), "Org", PageRequest.of(0, 10));
+
+		Assertions.assertEquals(1, bqOrganizations.size());
+	}
+
 	@Autowired
 	private BQOrganizationRepository _bqOrganizationRepository;
-
-	@Autowired
-	private ChannelRepository _channelRepository;
-
-	@Autowired
-	private DataSourceRepository _dataSourceRepository;
 
 }

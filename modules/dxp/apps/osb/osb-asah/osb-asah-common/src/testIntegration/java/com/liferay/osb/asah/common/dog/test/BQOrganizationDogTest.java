@@ -85,7 +85,7 @@ public class BQOrganizationDogTest
 
 		Page<BQOrganization> bqOrganizationPage =
 			_bqOrganizationDog.getBQOrganizationPage(
-				name.substring(3), 10, new Sort("name", "asc"), 0);
+				null, name.substring(3), 10, new Sort("name", "asc"), 0);
 
 		Assertions.assertEquals(bqOrganizationPage.getTotalElements(), 1);
 	}
