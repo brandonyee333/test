@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
-import com.liferay.osb.asah.common.postgresql.converter.helper.OrganizationsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -37,34 +36,55 @@ import org.springframework.stereotype.Component;
  * @author Matthew Kong
  */
 @Component
-public class BQOrganizationDog {
+public class BQOrganizationDog extends BaseBQDXPEntityDog {
 
 	public List<BQOrganization> findByDataSourceIdAndOrganizationIdIn(
 		Long dataSourceId, Collection<Long> organizationIds) {
 
-		return _bqOrganizationRepository.findByDataSourceIdAndOrganizationIdIn(
-			dataSourceId, organizationIds);
+		List<BQOrganization> bqOrganizations =
+			_bqOrganizationRepository.findByDataSourceIdAndOrganizationIdIn(
+				dataSourceId, organizationIds);
+
+		for (BQOrganization bqOrganization : bqOrganizations) {
+			_populateParentOrganizationName(bqOrganization);
+		}
+
+		return bqOrganizations;
 	}
 
 	public BQOrganization getBQOrganization(String bqOrganizationId) {
 		Optional<BQOrganization> bqOrganizationOptional =
 			_bqOrganizationRepository.findById(bqOrganizationId);
 
-		return bqOrganizationOptional.orElseThrow(
+		BQOrganization bqOrganization = bqOrganizationOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no organization with ID " + bqOrganizationId));
+
+		_populateParentOrganizationName(bqOrganization);
+
+		return bqOrganization;
 	}
 
 	public Page<BQOrganization> getBQOrganizationPage(
-		@Nullable String name, int size,
-		com.liferay.osb.asah.common.model.Sort sort, int start) {
+		@Nullable Long channelId, @Nullable String name, int size, Sort sort,
+		int start) {
 
+		List<Long> dataSourceIds = getDataSourceIds(channelId);
 		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
 
+		List<BQOrganization> bqOrganizations =
+			_bqOrganizationRepository.searchByDataSourceIdsAndName(
+				dataSourceIds, name, pageRequest);
+
+		for (BQOrganization bqOrganization : bqOrganizations) {
+			_populateParentOrganizationName(bqOrganization);
+		}
+
 		return PageableExecutionUtils.getPage(
-			_bqOrganizationRepository.findByName(name, pageRequest),
-			pageRequest, () -> _bqOrganizationRepository.countByName(name));
+			bqOrganizations, pageRequest,
+			() -> _bqOrganizationRepository.countByDataSourceIdsAndName(
+				dataSourceIds, name));
 	}
 
 	public List<BQOrganization> searchBQOrganizations(
@@ -72,17 +92,47 @@ public class BQOrganizationDog {
 
 		PageRequest pageRequest = PageRequest.of(page, size);
 
-		return _bqOrganizationRepository.searchBQOrganizations(
-			new FilterHelper(
-				null, filterString, _organizationsFilterStringConverterHelper),
-			pageRequest);
+		List<BQOrganization> bqOrganizations =
+			_bqOrganizationRepository.searchBQOrganizations(
+				new FilterHelper(filterString), pageRequest);
+
+		for (BQOrganization bqOrganization : bqOrganizations) {
+			_populateParentOrganizationName(bqOrganization);
+		}
+
+		return bqOrganizations;
+	}
+
+	private void _populateParentOrganizationName(
+		BQOrganization bqOrganization) {
+
+		if (bqOrganization == null) {
+			return;
+		}
+
+		if ((bqOrganization.getParentOrganizationId() == null) ||
+			(bqOrganization.getParentOrganizationId() == 0)) {
+
+			return;
+		}
+
+		if (bqOrganization.getParentOrganizationId() != null) {
+			Optional<BQOrganization> parentBQOrganizationOptional =
+				_bqOrganizationRepository.findByDataSourceIdAndOrganizationId(
+					bqOrganization.getDataSourceId(),
+					bqOrganization.getParentOrganizationId());
+
+			BQOrganization parentBQOrganization =
+				parentBQOrganizationOptional.orElse(null);
+
+			if (parentBQOrganization != null) {
+				bqOrganization.setParentOrganizationName(
+					parentBQOrganization.getName());
+			}
+		}
 	}
 
 	@Autowired
 	private BQOrganizationRepository _bqOrganizationRepository;
-
-	@Autowired
-	private OrganizationsFilterStringConverterHelper
-		_organizationsFilterStringConverterHelper;
 
 }
