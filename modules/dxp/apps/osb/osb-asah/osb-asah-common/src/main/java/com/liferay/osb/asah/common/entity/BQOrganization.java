@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.BQDXPEntity;
 import com.liferay.osb.asah.common.model.ExpandoField;
+import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.ArrayList;
@@ -41,39 +42,7 @@ public class BQOrganization implements BQDXPEntity {
 		BeanUtils.copyProperties(source, this);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-
-		if (!(obj instanceof BQOrganization)) {
-			return false;
-		}
-
-		BQOrganization bqOrganization = (BQOrganization)obj;
-
-		if (Objects.equals(_createDate, bqOrganization._createDate) &&
-			Objects.equals(_dataSourceId, bqOrganization._dataSourceId) &&
-			Objects.equals(_dataSourceName, bqOrganization._dataSourceName) &&
-			Objects.equals(_id, bqOrganization._id) &&
-			Objects.equals(_modifiedDate, bqOrganization._modifiedDate) &&
-			Objects.equals(_name, bqOrganization._name) &&
-			Objects.equals(_organizationId, bqOrganization._organizationId) &&
-			Objects.equals(
-				_parentOrganizationId, bqOrganization._parentOrganizationId) &&
-			Objects.equals(
-				_parentOrganizationName,
-				bqOrganization._parentOrganizationName) &&
-			Objects.equals(_treePath, bqOrganization._treePath) &&
-			Objects.equals(_type, bqOrganization._type)) {
-
-			return true;
-		}
-
-		return false;
-	}
-
+	@BigQueryColumn
 	public Date getCreateDate() {
 		if (_createDate == null) {
 			return null;
@@ -82,6 +51,7 @@ public class BQOrganization implements BQDXPEntity {
 		return new Date(_createDate.getTime());
 	}
 
+	@BigQueryColumn
 	public Long getDataSourceId() {
 		return _dataSourceId;
 	}
@@ -116,6 +86,7 @@ public class BQOrganization implements BQDXPEntity {
 		);
 	}
 
+	@BigQueryColumn
 	@Override
 	public String getId() {
 		return _id;
@@ -129,6 +100,7 @@ public class BQOrganization implements BQDXPEntity {
 		return _organizationId;
 	}
 
+	@BigQueryColumn
 	public Date getModifiedDate() {
 		if (_modifiedDate == null) {
 			return null;
@@ -137,14 +109,17 @@ public class BQOrganization implements BQDXPEntity {
 		return new Date(_modifiedDate.getTime());
 	}
 
+	@BigQueryColumn
 	public String getName() {
 		return _name;
 	}
 
+	@BigQueryColumn
 	public Long getOrganizationId() {
 		return _organizationId;
 	}
 
+	@BigQueryColumn
 	public Long getParentOrganizationId() {
 		return _parentOrganizationId;
 	}
@@ -153,10 +128,12 @@ public class BQOrganization implements BQDXPEntity {
 		return _parentOrganizationName;
 	}
 
+	@BigQueryColumn
 	public String getTreePath() {
 		return _treePath;
 	}
 
+	@BigQueryColumn
 	public String getType() {
 		return _type;
 	}
