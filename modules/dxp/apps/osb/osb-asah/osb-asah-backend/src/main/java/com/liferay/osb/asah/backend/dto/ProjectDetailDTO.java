@@ -20,30 +20,50 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author Riccardo Ferrari
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProjectDetailsDTO {
+public class ProjectDetailDTO {
 
-	public ProjectDetailsDTO(
-		Boolean commerceChannelsSelected, String id, String timeZone) {
+	public ProjectDetailDTO(
+		Boolean accountsSelected, Boolean commerceChannelsSelected,
+		Boolean contactsSelected, String id, Boolean sitesSelected,
+		String timeZone) {
 
+		_accountsSelected = accountsSelected;
 		_commerceChannelsSelected = commerceChannelsSelected;
+		_contactsSelected = contactsSelected;
 		_id = id;
+		_sitesSelected = sitesSelected;
 		_timeZone = timeZone;
+	}
+
+	public Boolean getAccountsSelected() {
+		return _accountsSelected;
 	}
 
 	public Boolean getCommerceChannelsSelected() {
 		return _commerceChannelsSelected;
 	}
 
+	public Boolean getContactsSelected() {
+		return _contactsSelected;
+	}
+
 	public String getId() {
 		return _id;
+	}
+
+	public Boolean getSitesSelected() {
+		return _sitesSelected;
 	}
 
 	public String getTimeZone() {
 		return _timeZone;
 	}
 
+	private final Boolean _accountsSelected;
 	private final Boolean _commerceChannelsSelected;
+	private final Boolean _contactsSelected;
 	private final String _id;
+	private final Boolean _sitesSelected;
 	private final String _timeZone;
 
 }

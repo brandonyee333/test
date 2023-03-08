@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.dto.ProjectDetailsDTO;
+import com.liferay.osb.asah.backend.dto.ProjectDetailDTO;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
@@ -59,20 +59,39 @@ public class ProjectsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/details")
-	public List<ProjectDetailsDTO> getProjectDetails() {
-		List<ProjectDetailsDTO> projectDetails = new ArrayList<>();
+	public List<ProjectDetailDTO> getProjectDetails() {
+		List<ProjectDetailDTO> projectDetailDTOs = new ArrayList<>();
 
 		ProjectIdThreadLocal.forProjects(
 			_projectDog.getProjects(),
 			() -> {
+				boolean accountsSelected = false;
 				boolean commerceChannelsSelected = false;
+				boolean contactsSelected = false;
+				boolean sitesSelected = false;
 
 				try {
 					for (DataSource dataSource :
 							_dataSourceDog.getDataSources()) {
 
+						if (dataSource.getAccountsSelected()) {
+							accountsSelected = true;
+						}
+
 						if (dataSource.getCommerceChannelsSelected()) {
 							commerceChannelsSelected = true;
+						}
+
+						if (dataSource.getContactsSelected()) {
+							contactsSelected = true;
+						}
+
+						if (dataSource.getSitesSelected()) {
+							sitesSelected = true;
+						}
+
+						if (accountsSelected && commerceChannelsSelected &&
+							contactsSelected && sitesSelected) {
 
 							break;
 						}
@@ -85,14 +104,14 @@ public class ProjectsRestController extends BaseRestController {
 				Preference preference = _preferenceDog.getPreference(
 					"time-zone-id");
 
-				projectDetails.add(
-					new ProjectDetailsDTO(
-						commerceChannelsSelected,
-						ProjectIdThreadLocal.getProjectId(),
-						preference.getValue()));
+				projectDetailDTOs.add(
+					new ProjectDetailDTO(
+						accountsSelected, commerceChannelsSelected,
+						contactsSelected, ProjectIdThreadLocal.getProjectId(),
+						sitesSelected, preference.getValue()));
 			});
 
-		return projectDetails;
+		return projectDetailDTOs;
 	}
 
 	@GetMapping
