@@ -266,11 +266,7 @@ public class BQOrganizationRepositoryImpl
 			return DSL.noCondition();
 		}
 
-		return DSL.field(
-			"name"
-		).contains(
-			name
-		);
+		return DSL.condition(String.format("name like '%s'", "%" + name + "%"));
 	}
 
 	private final DSLContext _dslContext;

@@ -64,23 +64,24 @@ public class ConditionUtil {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		conditions.add(
-			DSL.field(
-				"dataSourceId"
-			).in(
-				dataSourceIds
-			));
+		if (!dataSourceIds.isEmpty()) {
+			conditions.add(
+				DSL.field(
+					"dataSourceId"
+				).in(
+					dataSourceIds
+				));
+		}
 
 		if (keywords != null) {
 			List<Condition> orConditions = new ArrayList<>();
 
 			for (String keywordsFieldName : keywordsFieldNames) {
 				orConditions.add(
-					DSL.field(
-						keywordsFieldName, String.class
-					).containsIgnoreCase(
-						keywords
-					));
+					DSL.condition(
+						String.format(
+							"lower(%s) like '%s'", keywordsFieldName,
+							"%" + StringUtils.lowerCase(keywords) + "%")));
 			}
 
 			conditions.add(DSL.or(orConditions));
