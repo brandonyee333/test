@@ -17,12 +17,7 @@ import airflow
 import datetime
 import requests
 
-def create_dag(
-		ac_project_id,
-		commerce_channels_selected,
-		dag_id,
-		dag_description
-):
+def create_dag(ac_project_id, accounts_selected, commerce_channels_selected, contacts_selected, dag_id, dag_description):
 	with airflow.DAG(
 			dag_id=dag_id,
 			default_args={
@@ -34,19 +29,13 @@ def create_dag(
 			schedule_interval='@hourly',
 			start_date=datetime.datetime.now() - datetime.timedelta(hours=1)
 	) as dag:
-		big_query_jobs = [
-			BigQueryInsertJobFromTemplateOperator(task_id='account_entry_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='account_group_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='expando_column_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='expando_value_delete'),
-			BigQueryInsertJobFromTemplateOperator(task_id='expando_value_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='group_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='organization_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='role_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='team_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='user_group_merge'),
-			BigQueryInsertJobFromTemplateOperator(task_id='user_merge')
-		]
+		big_query_jobs = []
+
+		if accounts_selected:
+			big_query_jobs += [
+				BigQueryInsertJobFromTemplateOperator(task_id='account_entry_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='account_group_merge')
+			]
 
 		if commerce_channels_selected:
 			big_query_jobs += [
@@ -54,7 +43,22 @@ def create_dag(
 				BigQueryInsertJobFromTemplateOperator(task_id='product_merge')
 			]
 
-		big_query_jobs >> BigQueryInsertJobFromTemplateOperator(task_id='individual_merge')
+		if contacts_selected:
+			big_query_jobs += [
+				BigQueryInsertJobFromTemplateOperator(task_id='expando_column_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='expando_value_delete'),
+				BigQueryInsertJobFromTemplateOperator(task_id='expando_value_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='group_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='organization_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='role_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='team_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='user_group_merge'),
+				BigQueryInsertJobFromTemplateOperator(task_id='user_merge')
+			]
+
+			big_query_jobs >> BigQueryInsertJobFromTemplateOperator(task_id='individual_merge')
+		else:
+			big_query_jobs
 
 		return dag
 
@@ -69,7 +73,12 @@ response = requests.get(
 for project in response.json():
 	dag_id = 'merge_dxp_entity_{}'.format(project.get('id'))
 
-	globals()[dag_id] = create_dag(
-		project.get('id'), project.get('commerceChannelsSelected'), dag_id,
-		'DXP Entity Merge DAG For {}'.format(project.get('id'))
-	)
+	if project.get('accountsSelected') or project.get('commerceChannelsSelected') or project.get('contactsSelected'):
+		globals()[dag_id] = create_dag(
+			project.get('id'),
+			project.get('accountsSelected'),
+			project.get('commerceChannelsSelected'),
+			project.get('contactsSelected'),
+			dag_id,
+			'DXP Entity Merge DAG For {}'.format(project.get('id'))
+		)

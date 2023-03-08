@@ -19,9 +19,7 @@ import os
 import pendulum
 import requests
 
-def create_dag(
-	ac_project_id, ac_project_time_zone_id, dag_id,	dag_description
-):
+def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 	with airflow.DAG(
 			dag_id=dag_id,
 			default_args={
@@ -62,6 +60,8 @@ for project in response.json():
 	dag_id = 'interest_score_{}'.format(project.get('id'))
 
 	globals()[dag_id] = create_dag(
-		project.get('id'), project.get('timeZone'), dag_id,
+		project.get('id'),
+		project.get('timeZone'),
+		dag_id,
 		'Interest Score DAG For {}'.format(project.get('id'))
 	)

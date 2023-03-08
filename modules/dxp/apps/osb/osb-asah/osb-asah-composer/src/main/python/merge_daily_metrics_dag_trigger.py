@@ -17,12 +17,7 @@ import airflow
 import pendulum
 import requests
 
-def create_dag(
-		ac_project_id,
-		ac_project_time_zone_id,
-		dag_id,
-		dag_description
-):
+def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 	with airflow.DAG(
 			dag_id=dag_id,
 			default_args={
@@ -58,7 +53,8 @@ response = requests.get(
 for project in response.json():
 	dag_id = 'merge_daily_metrics_{}'.format(project.get('id'))
 
-	globals()[dag_id] = create_dag(
-		project.get('id'), project.get('timeZone'), dag_id,
-		'Daily Merge DAG For {}'.format(project.get('id'))
-	)
+	if project.get('sitesSelected'):
+		globals()[dag_id] = create_dag(
+			project.get('id'), project.get('timeZone'), dag_id,
+			'Daily Merge DAG For {}'.format(project.get('id'))
+		)
