@@ -1084,6 +1084,60 @@ definition {
 		}
 	}
 
+	@description = "LPS-164948 - Verify that the Label, Output and Formula Builder can be edited after the System Object be saved"
+	@priority = 4
+	test CanEditFormulaFieldOnSystemObject {
+		property custom.properties = "feature.flag.LPS-164948=true";
+
+		task ("Given: A System Object with a formula field") {
+			ObjectAdmin.openObjectAdmin();
+
+			ObjectPortlet.selectSystemObject(label = "Commerce Order");
+
+			ObjectAdmin.goToFieldsTab();
+
+			ObjectAdmin.addObjectFieldViaUI(
+				fieldLabel = "Custom Formula Field",
+				fieldType = "Formula",
+				formulaFieldOption = "Decimal");
+		}
+
+		task ("When: The Formula Field is edited (Only Label, Output, and Formula Builder)") {
+			ObjectAdmin.goToFieldsDetails(label = "Custom Formula Field");
+
+			ObjectField.typeLabel(content = "Custom Formula Field Update");
+
+			Click(
+				key_filterLabel = "Output",
+				locator1 = "ObjectCustomViews#SELECT_FILTER_GENERIC");
+
+			Click(
+				key_dropdownItem = "Integer",
+				locator1 = "ObjectField#SELECT_FORMULA_FIELD_OPTION");
+
+			Type(
+				key_labelName = "Formula Builder",
+				locator1 = "TextInput#SPECIFIC_LABEL_TEXT_INPUT",
+				value1 = "field_name / field_name2");
+
+			Button.clickSave();
+		}
+
+		task ("Then: The Formula fields have been edited") {
+			ObjectAdmin.goToFieldsDetails(label = "Custom Formula Field Update");
+
+			AssertElementPresent(
+				key_labelName = "Output",
+				locator1 = "TextInput#SPECIFIC_LABEL_TEXT_INPUT",
+				value1 = "Integer");
+
+			AssertValue(
+				key_labelName = "Formula Builder",
+				locator1 = "TextInput#SPECIFIC_LABEL_TEXT_INPUT",
+				value1 = "field_name / field_name2");
+		}
+	}
+
 	@description = "LPS-148112 - Verify that admin can edit the Storage Folder path in Published objects"
 	@priority = 4
 	test CanEditPublishedObjectStorageFolder {
