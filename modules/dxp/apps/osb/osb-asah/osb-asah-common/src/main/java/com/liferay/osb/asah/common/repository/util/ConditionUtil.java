@@ -73,7 +73,7 @@ public class ConditionUtil {
 				));
 		}
 
-		if (keywords != null) {
+		if (StringUtils.isNotBlank(keywords)) {
 			List<Condition> orConditions = new ArrayList<>();
 
 			for (String keywordsFieldName : keywordsFieldNames) {
