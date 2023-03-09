@@ -60,16 +60,13 @@ public class BQGroupRepositoryImpl
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectSelectStep.from(
-			"BQGroup"
-		).where(
-			ConditionUtil.toConditions(
-				dataSourceIds, keywords, new String[] {"name"})
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQGroup"
+			).where(
+				ConditionUtil.toConditions(
+					dataSourceIds, keywords, new String[] {"name"})
+			));
 	}
 
 	@Override
@@ -110,20 +107,20 @@ public class BQGroupRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"BQGroup"
-		).where(
-			ConditionUtil.toConditions(
-				dataSourceIds, keywords, new String[] {"name"})
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new BQGroup(record.intoMap())
-		);
+		return _queryExecutor.queryForList(
+			BQGroup::new,
+			selectSelectStep.from(
+				"BQGroup"
+			).where(
+				ConditionUtil.toConditions(
+					dataSourceIds, keywords, new String[] {"name"})
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	private final DSLContext _dslContext;

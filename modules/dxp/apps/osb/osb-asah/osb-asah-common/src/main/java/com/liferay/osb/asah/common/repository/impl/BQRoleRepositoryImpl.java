@@ -59,16 +59,13 @@ public class BQRoleRepositoryImpl
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectSelectStep.from(
-			"BQRole"
-		).where(
-			ConditionUtil.toConditions(
-				dataSourceIds, keywords, new String[] {"name"})
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQRole"
+			).where(
+				ConditionUtil.toConditions(
+					dataSourceIds, keywords, new String[] {"name"})
+			));
 	}
 
 	@Override
@@ -108,20 +105,20 @@ public class BQRoleRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"BQRole"
-		).where(
-			ConditionUtil.toConditions(
-				dataSourceIds, keywords, new String[] {"name"})
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new BQRole(record.intoMap())
-		);
+		return _queryExecutor.queryForList(
+			BQRole::new,
+			selectSelectStep.from(
+				"BQRole"
+			).where(
+				ConditionUtil.toConditions(
+					dataSourceIds, keywords, new String[] {"name"})
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	private final DSLContext _dslContext;

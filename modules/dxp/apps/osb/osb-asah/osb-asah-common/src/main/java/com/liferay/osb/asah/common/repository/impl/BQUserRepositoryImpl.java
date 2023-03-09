@@ -59,16 +59,14 @@ public class BQUserRepositoryImpl
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectSelectStep.from(
-			"BQUser"
-		).where(
-			ConditionUtil.toConditions(
-				dataSourceIds, keywords, new String[] {"firstName", "lastName"})
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQUser"
+			).where(
+				ConditionUtil.toConditions(
+					dataSourceIds, keywords,
+					new String[] {"firstName", "lastName"})
+			));
 	}
 
 	@Override
@@ -102,19 +100,19 @@ public class BQUserRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"BQUser"
-		).where(
-			ConditionUtil.toConditions(fields)
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new BQUser(record.intoMap())
-		);
+		return _queryExecutor.queryForList(
+			BQUser::new,
+			selectSelectStep.from(
+				"BQUser"
+			).where(
+				ConditionUtil.toConditions(fields)
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	@Override
@@ -129,21 +127,22 @@ public class BQUserRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"BQUser"
-		).where(
-			ConditionUtil.toConditions(
-				dataSourceIds, keywords, new String[] {"firstName", "lastName"})
-		).orderBy(
-			getSortFields(
-				_getSortFieldNameConversionMap(), pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new BQUser(record.intoMap())
-		);
+		return _queryExecutor.queryForList(
+			BQUser::new,
+			selectSelectStep.from(
+				"BQUser"
+			).where(
+				ConditionUtil.toConditions(
+					dataSourceIds, keywords,
+					new String[] {"firstName", "lastName"})
+			).orderBy(
+				getSortFields(
+					_getSortFieldNameConversionMap(), pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	private Map<String, String> _getSortFieldNameConversionMap() {
