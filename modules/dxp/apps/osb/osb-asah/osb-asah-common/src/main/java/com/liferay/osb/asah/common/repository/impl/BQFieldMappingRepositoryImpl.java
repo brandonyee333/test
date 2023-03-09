@@ -15,9 +15,9 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.repository.CustomBQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
-import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.Collection;
 import java.util.Date;
@@ -55,6 +55,8 @@ public class BQFieldMappingRepositoryImpl
 
 	@Override
 	public long countByFilterString(String filterString) {
+		FilterExpression filterExpression = new FilterExpression(filterString);
+
 		SelectSelectStep<Record1<Integer>> selectCount =
 			_dslContext.selectCount();
 
@@ -62,7 +64,7 @@ public class BQFieldMappingRepositoryImpl
 			selectCount.from(
 				"BQFieldMapping"
 			).where(
-				ConditionUtil.toCondition(filterString)
+				filterExpression.getCondition()
 			));
 	}
 
@@ -74,13 +76,11 @@ public class BQFieldMappingRepositoryImpl
 		);
 
 		if (!StringUtils.isBlank(fieldName)) {
-			condition = DSL.and(
-				condition,
-				DSL.lower(
-					DSL.field("fieldName", String.class)
-				).like(
-					"%" + fieldName.toLowerCase() + "%"
-				));
+			condition = condition.and(
+				DSL.condition(
+					String.format(
+						"lower(fieldName) like '%s'",
+						"%" + fieldName.toLowerCase() + "%")));
 		}
 
 		return _queryExecutor.queryForLong(
@@ -97,10 +97,11 @@ public class BQFieldMappingRepositoryImpl
 		return _queryExecutor.queryForObject(
 			BQFieldMapping::new,
 			_dslContext.select(
-				DSL.field("context"), DSL.field("displayName"),
-				DSL.field("displayType"), DSL.field("fieldName"),
-				DSL.field("fieldType"), DSL.field("modifiedDate", Date.class),
-				DSL.field("ownerType")
+				DSL.field("context"), DSL.field("dataSourceIds"),
+				DSL.field("displayName"), DSL.field("displayType"),
+				DSL.field("fieldName"), DSL.field("fieldType"),
+				DSL.field("modifiedDate", Date.class), DSL.field("ownerType"),
+				DSL.field("repeatable")
 			).from(
 				DSL.table("BQFieldMapping")
 			).where(
@@ -117,10 +118,11 @@ public class BQFieldMappingRepositoryImpl
 		return _queryExecutor.queryForObject(
 			BQFieldMapping::new,
 			_dslContext.select(
-				DSL.field("context"), DSL.field("displayName"),
-				DSL.field("displayType"), DSL.field("fieldName"),
-				DSL.field("fieldType"), DSL.field("modifiedDate", Date.class),
-				DSL.field("ownerType")
+				DSL.field("context"), DSL.field("dataSourceIds"),
+				DSL.field("displayName"), DSL.field("displayType"),
+				DSL.field("fieldName"), DSL.field("fieldType"),
+				DSL.field("modifiedDate", Date.class), DSL.field("ownerType"),
+				DSL.field("repeatable")
 			).from(
 				DSL.table("BQFieldMapping")
 			).where(
@@ -139,21 +141,21 @@ public class BQFieldMappingRepositoryImpl
 		Condition condition = DSL.noCondition();
 
 		if (!fieldNames.isEmpty()) {
-			condition = condition.and(
-				DSL.field(
-					"fieldName"
-				).in(
-					fieldNames
-				));
+			condition = DSL.field(
+				"fieldName"
+			).in(
+				fieldNames
+			);
 		}
 
 		return _queryExecutor.queryForList(
 			BQFieldMapping::new,
 			_dslContext.select(
-				DSL.field("context"), DSL.field("displayName"),
-				DSL.field("displayType"), DSL.field("fieldName"),
-				DSL.field("fieldType"), DSL.field("modifiedDate", Date.class),
-				DSL.field("ownerType")
+				DSL.field("context"), DSL.field("dataSourceIds"),
+				DSL.field("displayName"), DSL.field("displayType"),
+				DSL.field("fieldName"), DSL.field("fieldType"),
+				DSL.field("modifiedDate", Date.class), DSL.field("ownerType"),
+				DSL.field("repeatable")
 			).from(
 				"BQFieldMapping"
 			).where(
@@ -165,17 +167,20 @@ public class BQFieldMappingRepositoryImpl
 	public List<BQFieldMapping> searchByFilterString(
 		String filterString, Pageable pageable) {
 
+		FilterExpression filterExpression = new FilterExpression(filterString);
+
 		return _queryExecutor.queryForList(
 			BQFieldMapping::new,
 			_dslContext.select(
-				DSL.field("context"), DSL.field("displayName"),
-				DSL.field("displayType"), DSL.field("fieldName"),
-				DSL.field("fieldType"), DSL.field("modifiedDate", Date.class),
-				DSL.field("ownerType")
+				DSL.field("context"), DSL.field("dataSourceIds"),
+				DSL.field("displayName"), DSL.field("displayType"),
+				DSL.field("fieldName"), DSL.field("fieldType"),
+				DSL.field("modifiedDate", Date.class), DSL.field("ownerType"),
+				DSL.field("repeatable")
 			).from(
 				"BQFieldMapping"
 			).where(
-				ConditionUtil.toCondition(filterString)
+				filterExpression.getCondition()
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(
@@ -196,18 +201,21 @@ public class BQFieldMappingRepositoryImpl
 		);
 
 		if (!StringUtils.isBlank(name)) {
-			condition = DSL.and(
-				condition,
-				DSL.lower(
-					DSL.field("fieldName", String.class)
-				).like(
-					"%" + name.toLowerCase() + "%"
-				));
+			condition = condition.and(
+				DSL.condition(
+					String.format(
+						"lower(fieldName) like '%s'",
+						"%" + name.toLowerCase() + "%")));
 		}
 
 		return _queryExecutor.queryForList(
 			BQFieldMapping::new,
 			_dslContext.select(
+				DSL.field("context"), DSL.field("dataSourceIds"),
+				DSL.field("displayName"), DSL.field("displayType"),
+				DSL.field("fieldName"), DSL.field("fieldType"),
+				DSL.field("modifiedDate", Date.class), DSL.field("ownerType"),
+				DSL.field("repeatable")
 			).from(
 				"BQFieldMapping"
 			).where(
