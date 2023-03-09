@@ -29,7 +29,7 @@ definition {
 	}
 
 	@description = "This is a test for LPS-117983. No alert will popup when add a web content based on structure with XSS name."
-	@priority = 4
+	@priority = 4          
 	test AddWebContentBasedOnStructureNameWithXSS {
 		task ("Add a structure with XSS name") {
 			var actualScript = '''<script>alert(123);</script>''';
@@ -58,7 +58,7 @@ definition {
 
 			AssertAlertNotPresent();
 		}
-	}
+	}//问题就是在这一段里,在DataEngine里.
 
 	@description = "Add a web content with a title with escape characters."
 	@priority = 4
