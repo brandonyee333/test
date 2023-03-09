@@ -713,6 +713,11 @@ public class ServletDataImpl implements ServletData {
 							KnowledgeBaseAttachmentResourceImpl.class,
 							"postKnowledgeBaseArticleKnowledgeBaseAttachmentBatch"));
 					put(
+						"mutation#updateKnowledgeBaseAttachmentByExternalReferenceCode",
+						new ObjectValuePair<>(
+							KnowledgeBaseAttachmentResourceImpl.class,
+							"putKnowledgeBaseAttachmentByExternalReferenceCode"));
+					put(
 						"mutation#deleteKnowledgeBaseAttachment",
 						new ObjectValuePair<>(
 							KnowledgeBaseAttachmentResourceImpl.class,
@@ -1735,6 +1740,11 @@ public class ServletDataImpl implements ServletData {
 						new ObjectValuePair<>(
 							KnowledgeBaseAttachmentResourceImpl.class,
 							"getKnowledgeBaseArticleKnowledgeBaseAttachmentsPage"));
+					put(
+						"query#knowledgeBaseAttachmentByExternalReferenceCode",
+						new ObjectValuePair<>(
+							KnowledgeBaseAttachmentResourceImpl.class,
+							"getKnowledgeBaseAttachmentByExternalReferenceCode"));
 					put(
 						"query#knowledgeBaseAttachment",
 						new ObjectValuePair<>(

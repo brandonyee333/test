@@ -193,6 +193,7 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 		knowledgeBaseAttachment.setContentUrl(regex);
 		knowledgeBaseAttachment.setContentValue(regex);
 		knowledgeBaseAttachment.setEncodingFormat(regex);
+		knowledgeBaseAttachment.setExternalReferenceCode(regex);
 		knowledgeBaseAttachment.setFileExtension(regex);
 		knowledgeBaseAttachment.setTitle(regex);
 
@@ -206,6 +207,8 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 		Assert.assertEquals(regex, knowledgeBaseAttachment.getContentUrl());
 		Assert.assertEquals(regex, knowledgeBaseAttachment.getContentValue());
 		Assert.assertEquals(regex, knowledgeBaseAttachment.getEncodingFormat());
+		Assert.assertEquals(
+			regex, knowledgeBaseAttachment.getExternalReferenceCode());
 		Assert.assertEquals(regex, knowledgeBaseAttachment.getFileExtension());
 		Assert.assertEquals(regex, knowledgeBaseAttachment.getTitle());
 	}
@@ -356,6 +359,162 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 			postKnowledgeBaseArticleKnowledgeBaseAttachment(
 				testGetKnowledgeBaseArticleKnowledgeBaseAttachmentsPage_getKnowledgeBaseArticleId(),
 				knowledgeBaseAttachment, multipartFiles);
+	}
+
+	@Test
+	public void testGetKnowledgeBaseAttachmentByExternalReferenceCode()
+		throws Exception {
+
+		KnowledgeBaseAttachment postKnowledgeBaseAttachment =
+			testGetKnowledgeBaseAttachmentByExternalReferenceCode_addKnowledgeBaseAttachment();
+
+		KnowledgeBaseAttachment getKnowledgeBaseAttachment =
+			knowledgeBaseAttachmentResource.
+				getKnowledgeBaseAttachmentByExternalReferenceCode(
+					postKnowledgeBaseAttachment.getExternalReferenceCode());
+
+		assertEquals(postKnowledgeBaseAttachment, getKnowledgeBaseAttachment);
+		assertValid(getKnowledgeBaseAttachment);
+	}
+
+	protected KnowledgeBaseAttachment
+			testGetKnowledgeBaseAttachmentByExternalReferenceCode_addKnowledgeBaseAttachment()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testGraphQLGetKnowledgeBaseAttachmentByExternalReferenceCode()
+		throws Exception {
+
+		KnowledgeBaseAttachment knowledgeBaseAttachment =
+			testGraphQLGetKnowledgeBaseAttachmentByExternalReferenceCode_addKnowledgeBaseAttachment();
+
+		Assert.assertTrue(
+			equals(
+				knowledgeBaseAttachment,
+				KnowledgeBaseAttachmentSerDes.toDTO(
+					JSONUtil.getValueAsString(
+						invokeGraphQLQuery(
+							new GraphQLField(
+								"knowledgeBaseAttachmentByExternalReferenceCode",
+								new HashMap<String, Object>() {
+									{
+										put(
+											"externalReferenceCode",
+											"\"" +
+												knowledgeBaseAttachment.
+													getExternalReferenceCode() +
+														"\"");
+									}
+								},
+								getGraphQLFields())),
+						"JSONObject/data",
+						"Object/knowledgeBaseAttachmentByExternalReferenceCode"))));
+	}
+
+	@Test
+	public void testGraphQLGetKnowledgeBaseAttachmentByExternalReferenceCodeNotFound()
+		throws Exception {
+
+		String irrelevantExternalReferenceCode =
+			"\"" + RandomTestUtil.randomString() + "\"";
+
+		Assert.assertEquals(
+			"Not Found",
+			JSONUtil.getValueAsString(
+				invokeGraphQLQuery(
+					new GraphQLField(
+						"knowledgeBaseAttachmentByExternalReferenceCode",
+						new HashMap<String, Object>() {
+							{
+								put(
+									"externalReferenceCode",
+									irrelevantExternalReferenceCode);
+							}
+						},
+						getGraphQLFields())),
+				"JSONArray/errors", "Object/0", "JSONObject/extensions",
+				"Object/code"));
+	}
+
+	protected KnowledgeBaseAttachment
+			testGraphQLGetKnowledgeBaseAttachmentByExternalReferenceCode_addKnowledgeBaseAttachment()
+		throws Exception {
+
+		return testGraphQLKnowledgeBaseAttachment_addKnowledgeBaseAttachment();
+	}
+
+	@Test
+	public void testPutKnowledgeBaseAttachmentByExternalReferenceCode()
+		throws Exception {
+
+		KnowledgeBaseAttachment postKnowledgeBaseAttachment =
+			testPutKnowledgeBaseAttachmentByExternalReferenceCode_addKnowledgeBaseAttachment();
+
+		KnowledgeBaseAttachment randomKnowledgeBaseAttachment =
+			randomKnowledgeBaseAttachment();
+
+		Map<String, File> multipartFiles = getMultipartFiles();
+
+		KnowledgeBaseAttachment putKnowledgeBaseAttachment =
+			knowledgeBaseAttachmentResource.
+				putKnowledgeBaseAttachmentByExternalReferenceCode(
+					postKnowledgeBaseAttachment.getExternalReferenceCode(),
+					randomKnowledgeBaseAttachment, multipartFiles);
+
+		assertEquals(randomKnowledgeBaseAttachment, putKnowledgeBaseAttachment);
+		assertValid(putKnowledgeBaseAttachment);
+
+		KnowledgeBaseAttachment getKnowledgeBaseAttachment =
+			knowledgeBaseAttachmentResource.
+				getKnowledgeBaseAttachmentByExternalReferenceCode(
+					putKnowledgeBaseAttachment.getExternalReferenceCode());
+
+		assertEquals(randomKnowledgeBaseAttachment, getKnowledgeBaseAttachment);
+		assertValid(getKnowledgeBaseAttachment);
+
+		assertValid(getKnowledgeBaseAttachment, multipartFiles);
+
+		KnowledgeBaseAttachment newKnowledgeBaseAttachment =
+			testPutKnowledgeBaseAttachmentByExternalReferenceCode_createKnowledgeBaseAttachment();
+
+		putKnowledgeBaseAttachment =
+			knowledgeBaseAttachmentResource.
+				putKnowledgeBaseAttachmentByExternalReferenceCode(
+					newKnowledgeBaseAttachment.getExternalReferenceCode(),
+					newKnowledgeBaseAttachment, getMultipartFiles());
+
+		assertEquals(newKnowledgeBaseAttachment, putKnowledgeBaseAttachment);
+		assertValid(putKnowledgeBaseAttachment);
+
+		getKnowledgeBaseAttachment =
+			knowledgeBaseAttachmentResource.
+				getKnowledgeBaseAttachmentByExternalReferenceCode(
+					putKnowledgeBaseAttachment.getExternalReferenceCode());
+
+		assertEquals(newKnowledgeBaseAttachment, getKnowledgeBaseAttachment);
+
+		Assert.assertEquals(
+			newKnowledgeBaseAttachment.getExternalReferenceCode(),
+			putKnowledgeBaseAttachment.getExternalReferenceCode());
+	}
+
+	protected KnowledgeBaseAttachment
+			testPutKnowledgeBaseAttachmentByExternalReferenceCode_createKnowledgeBaseAttachment()
+		throws Exception {
+
+		return randomKnowledgeBaseAttachment();
+	}
+
+	protected KnowledgeBaseAttachment
+			testPutKnowledgeBaseAttachmentByExternalReferenceCode_addKnowledgeBaseAttachment()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test
@@ -638,6 +797,18 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"externalReferenceCode", additionalAssertFieldName)) {
+
+				if (knowledgeBaseAttachment.getExternalReferenceCode() ==
+						null) {
+
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("fileExtension", additionalAssertFieldName)) {
 				if (knowledgeBaseAttachment.getFileExtension() == null) {
 					valid = false;
@@ -820,6 +991,19 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"externalReferenceCode", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						knowledgeBaseAttachment1.getExternalReferenceCode(),
+						knowledgeBaseAttachment2.getExternalReferenceCode())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("fileExtension", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						knowledgeBaseAttachment1.getFileExtension(),
@@ -994,6 +1178,16 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 			return sb.toString();
 		}
 
+		if (entityFieldName.equals("externalReferenceCode")) {
+			sb.append("'");
+			sb.append(
+				String.valueOf(
+					knowledgeBaseAttachment.getExternalReferenceCode()));
+			sb.append("'");
+
+			return sb.toString();
+		}
+
 		if (entityFieldName.equals("fileExtension")) {
 			sb.append("'");
 			sb.append(
@@ -1077,6 +1271,8 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 				contentValue = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				encodingFormat = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				externalReferenceCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				fileExtension = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());

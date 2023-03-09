@@ -71,6 +71,16 @@ public interface KnowledgeBaseAttachmentResource {
 			String callbackURL, Object object)
 		throws Exception;
 
+	public KnowledgeBaseAttachment
+			getKnowledgeBaseAttachmentByExternalReferenceCode(
+				String externalReferenceCode)
+		throws Exception;
+
+	public KnowledgeBaseAttachment
+			putKnowledgeBaseAttachmentByExternalReferenceCode(
+				String externalReferenceCode, MultipartBody multipartBody)
+		throws Exception;
+
 	public void deleteKnowledgeBaseAttachment(Long knowledgeBaseAttachmentId)
 		throws Exception;
 
