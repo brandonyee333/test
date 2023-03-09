@@ -70,7 +70,7 @@ definition {
 			key_fieldLabel = "Field Reference",
 			key_fieldName = "fieldReference",
 			locator1 = "Sidebar#TEXT_INPUT",
-			value1 = ${fieldReference});
+			value1 = ${fieldReference});//这里有问题,就这个Type里.
 
 		AssertTextEquals.assertValue(
 			key_fieldLabel = "Field Reference",
