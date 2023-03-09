@@ -1308,6 +1308,101 @@ definition {
 		}
 	}
 
+	@description = "LPS-164948 - Verify that the user is able to add the Formula Field when managing Custom Validation"
+	@priority = 4
+	test CanManageFormulaFieldWithCustomValidation {
+		property custom.properties = "feature.flag.LPS-164948=true";
+
+		task ("Given an Object with Formula Field") {
+			ObjectAdmin.addObjectViaAPI(
+				labelName = "Custom Object 176853",
+				objectName = "CustomObject176853",
+				pluralLabelName = "Custom Objects 176853");
+
+			ObjectAdmin.openObjectAdmin();
+
+			ObjectPortlet.selectCustomObject(label = "Custom Object 176853");
+
+			ObjectAdmin.goToFieldsTab();
+
+			ObjectAdmin.addObjectFieldViaUI(
+				fieldLabel = "Custom Formula Field Plus",
+				fieldType = "Formula",
+				formulaFieldOption = "Integer");
+
+			for (var labelName : list "A,B") {
+				ObjectAdmin.addObjectFieldViaUI(
+					fieldLabel = "Custom Integer ${labelName}",
+					fieldName = "customInteger${labelName}",
+					fieldType = "Integer");
+			}
+
+			ObjectAdmin.goToFieldsDetails(label = "Custom Formula Field Plus");
+
+			ObjectField.insertScriptOnFormulaField(scriptFormulaField = "customIntegerA + customIntegerB");
+
+			PortletEntry.save();
+		}
+
+		task ("When managing a Custom Validation") {
+			ObjectAdmin.goToValidationsTab();
+
+			ObjectCustomValidation.addObjectValidation(
+				validationName = "Custom Validation Formula Plus",
+				validationType = "Expression Builder");
+
+			ObjectCustomValidation.gotoCustomValidation(validationName = "Custom Validation Formula Plus");
+
+			ObjectCustomValidation.activeValidation();
+
+			ObjectCustomValidation.gotoTab(tabName = "Conditions");
+
+			ObjectCustomValidation.insertScriptOnValidation(scriptValidation = "customFormulaFieldPlus <= 50");
+
+			ObjectCustomValidation.addErrorMessage(errorMessage = "Error not accepted greater than 50");
+
+			PortletEntry.save();
+
+			ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject176853");
+		}
+
+		task ("Then is possible to validate the Formula Field") {
+			ObjectAdmin.goToCustomObject(objectName = "CustomObject176853");
+
+			LexiconEntry.gotoAdd();
+
+			ObjectPortlet.typeCustomField(
+				customField = "Custom Integer A",
+				entry = 25);
+
+			ObjectPortlet.typeCustomField(
+				customField = "Custom Integer B",
+				entry = 25);
+
+			PortletEntry.save();
+
+			Navigator.gotoBack();
+
+			ObjectPortlet.viewEntry(entry = 50);
+
+			LexiconEntry.gotoAdd();
+
+			ObjectPortlet.typeCustomField(
+				customField = "Custom Integer A",
+				entry = 30);
+
+			ObjectPortlet.typeCustomField(
+				customField = "Custom Integer B",
+				entry = 30);
+
+			Button.click(button = "Save");
+
+			AssertTextEquals.assertPartialText(
+				locator1 = "Message#ERROR",
+				value1 = "Error not accepted greater than 50");
+		}
+	}
+
 	@description = "LPS-165995 - Verify that a message is displayed when the user tries to add more than 16 digits to a long integer field"
 	@priority = 4
 	test CanNotAddMoreThan16DigitsToLongIntField {
