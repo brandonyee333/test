@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
+import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
@@ -46,6 +47,7 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 				dataSourceId, organizationIds);
 
 		for (BQOrganization bqOrganization : bqOrganizations) {
+			_populateDataSourceName(bqOrganization);
 			_populateParentOrganizationName(bqOrganization);
 		}
 
@@ -61,6 +63,7 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 				HttpStatus.BAD_REQUEST,
 				"There is no organization with ID " + bqOrganizationId));
 
+		_populateDataSourceName(bqOrganization);
 		_populateParentOrganizationName(bqOrganization);
 
 		return bqOrganization;
@@ -78,6 +81,7 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 				dataSourceIds, name, pageRequest);
 
 		for (BQOrganization bqOrganization : bqOrganizations) {
+			_populateDataSourceName(bqOrganization);
 			_populateParentOrganizationName(bqOrganization);
 		}
 
@@ -97,10 +101,28 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 				new FilterHelper(filterString), pageRequest);
 
 		for (BQOrganization bqOrganization : bqOrganizations) {
+			_populateDataSourceName(bqOrganization);
 			_populateParentOrganizationName(bqOrganization);
 		}
 
 		return bqOrganizations;
+	}
+
+	private void _populateDataSourceName(BQOrganization bqOrganization) {
+		if (bqOrganization == null) {
+			return;
+		}
+
+		if (bqOrganization.getDataSourceId() == null) {
+			return;
+		}
+
+		DataSource dataSource = _dataSourceDog.fetchDataSource(
+			bqOrganization.getDataSourceId());
+
+		if (dataSource != null) {
+			bqOrganization.setDataSourceName(dataSource.getName());
+		}
 	}
 
 	private void _populateParentOrganizationName(
@@ -134,5 +156,8 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 
 	@Autowired
 	private BQOrganizationRepository _bqOrganizationRepository;
+
+	@Autowired
+	private DataSourceDog _dataSourceDog;
 
 }
