@@ -15,15 +15,20 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
+import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
 
 /**
  * @author Marcellus Tavares
@@ -35,7 +40,7 @@ public class BQFieldMappingRepositoryTest
 
 	@Test
 	public void testCount() {
-		Assertions.assertEquals(11, _bqFieldMappingRepository.count());
+		Assertions.assertEquals(9, _bqFieldMappingRepository.count());
 	}
 
 	@Test
@@ -45,9 +50,45 @@ public class BQFieldMappingRepositoryTest
 			_bqFieldMappingRepository.countByFilterString(
 				"(context eq 'custom')"));
 		Assertions.assertEquals(
-			11,
+			9,
 			_bqFieldMappingRepository.countByFilterString(
 				"(context eq 'demographics')"));
+	}
+
+	@Test
+	public void testFindByDisplayName() {
+		Optional<BQFieldMapping> bqFieldMappingOptional =
+			_bqFieldMappingRepository.findByDisplayName("additionalName");
+
+		Assertions.assertNotNull(bqFieldMappingOptional.orElse(null));
+
+		bqFieldMappingOptional = _bqFieldMappingRepository.findByDisplayName(
+			"name");
+
+		Assertions.assertNull(bqFieldMappingOptional.orElse(null));
+	}
+
+	@Test
+	public void testFindByFieldName() {
+		Optional<BQFieldMapping> bqFieldMappingOptional =
+			_bqFieldMappingRepository.findByFieldName("middleName");
+
+		Assertions.assertNotNull(bqFieldMappingOptional.orElse(null));
+
+		bqFieldMappingOptional = _bqFieldMappingRepository.findByFieldName(
+			"name");
+
+		Assertions.assertNull(bqFieldMappingOptional.orElse(null));
+	}
+
+	@Test
+	public void testSearchByFilterString() {
+		List<BQFieldMapping> fieldMappings =
+			_bqFieldMappingRepository.searchByFilterString(
+				"((context eq 'demographics') and (ownerType eq 'individual'))",
+				PageRequest.of(0, 20));
+
+		Assertions.assertEquals(9, fieldMappings.size());
 	}
 
 	@Autowired

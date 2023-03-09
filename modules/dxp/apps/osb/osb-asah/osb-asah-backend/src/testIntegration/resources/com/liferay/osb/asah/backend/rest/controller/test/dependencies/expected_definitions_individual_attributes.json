@@ -4,55 +4,6 @@
 			{
 				"context": "demographics",
 				"dataSourceFieldNames": {
-					"351238757269547424": "addresses",
-					"351238757269547425": "addresses",
-					"351238757269547426": "addresses",
-					"366573382114568984": "addresses",
-					"366588399828298918": "addresses",
-					"366588441118531472": "addresses",
-					"366588489711802687": "addresses"
-				},
-				"dataSources": [
-					{
-						"dataSourceFieldName": "addresses",
-						"dataSourceName": "Test Data Source 1"
-					},
-					{
-						"dataSourceFieldName": "addresses",
-						"dataSourceName": "Test Data Source 2"
-					},
-					{
-						"dataSourceFieldName": "addresses",
-						"dataSourceName": "Test Data Source 3"
-					},
-					{
-						"dataSourceFieldName": "addresses",
-						"dataSourceName": "Test Data Source 4"
-					},
-					{
-						"dataSourceFieldName": "addresses",
-						"dataSourceName": "Test Data Source 5"
-					},
-					{
-						"dataSourceFieldName": "addresses",
-						"dataSourceName": "Test Data Source 6"
-					},
-					{
-						"dataSourceFieldName": "addresses",
-						"dataSourceName": "Test Data Source 7"
-					}
-				],
-				"dateModified": "2023-03-01T20:43:36Z",
-				"displayName": "address",
-				"displayType": "input-field",
-				"fieldName": "addresses",
-				"fieldType": "text",
-				"ownerType": "individual",
-				"repeatable": false
-			},
-			{
-				"context": "demographics",
-				"dataSourceFieldNames": {
 					"351238757269547424": "birthday",
 					"351238757269547425": "birthday",
 					"351238757269547426": "birthday",
@@ -91,7 +42,6 @@
 						"dataSourceName": "Test Data Source 7"
 					}
 				],
-				"dateModified": "2023-03-01T20:43:36Z",
 				"displayName": "birthDate",
 				"displayType": "input-field",
 				"fieldName": "birthday",
@@ -140,7 +90,6 @@
 						"dataSourceName": "Test Data Source 7"
 					}
 				],
-				"dateModified": "2023-03-01T20:43:36Z",
 				"displayName": "email",
 				"displayType": "input-field",
 				"fieldName": "emailAddress",
@@ -189,59 +138,9 @@
 						"dataSourceName": "Test Data Source 7"
 					}
 				],
-				"dateModified": "2023-03-01T20:43:36Z",
 				"displayName": "givenName",
 				"displayType": "input-field",
 				"fieldName": "firstName",
-				"fieldType": "text",
-				"ownerType": "individual",
-				"repeatable": false
-			},
-			{
-				"context": "demographics",
-				"dataSourceFieldNames": {
-					"351238757269547424": "gender",
-					"351238757269547425": "gender",
-					"351238757269547426": "gender",
-					"366573382114568984": "gender",
-					"366588399828298918": "gender",
-					"366588441118531472": "gender",
-					"366588489711802687": "gender"
-				},
-				"dataSources": [
-					{
-						"dataSourceFieldName": "gender",
-						"dataSourceName": "Test Data Source 1"
-					},
-					{
-						"dataSourceFieldName": "gender",
-						"dataSourceName": "Test Data Source 2"
-					},
-					{
-						"dataSourceFieldName": "gender",
-						"dataSourceName": "Test Data Source 3"
-					},
-					{
-						"dataSourceFieldName": "gender",
-						"dataSourceName": "Test Data Source 4"
-					},
-					{
-						"dataSourceFieldName": "gender",
-						"dataSourceName": "Test Data Source 5"
-					},
-					{
-						"dataSourceFieldName": "gender",
-						"dataSourceName": "Test Data Source 6"
-					},
-					{
-						"dataSourceFieldName": "gender",
-						"dataSourceName": "Test Data Source 7"
-					}
-				],
-				"dateModified": "2023-03-01T20:43:36Z",
-				"displayName": "gender",
-				"displayType": "input-field",
-				"fieldName": "gender",
 				"fieldType": "text",
 				"ownerType": "individual",
 				"repeatable": false
@@ -287,7 +186,6 @@
 						"dataSourceName": "Test Data Source 7"
 					}
 				],
-				"dateModified": "2023-03-01T20:43:36Z",
 				"displayName": "jobTitle",
 				"displayType": "input-field",
 				"fieldName": "jobTitle",
@@ -336,7 +234,6 @@
 						"dataSourceName": "Test Data Source 7"
 					}
 				],
-				"dateModified": "2023-03-01T20:43:36Z",
 				"displayName": "languageId",
 				"displayType": "input-field",
 				"fieldName": "languageId",
@@ -385,7 +282,6 @@
 						"dataSourceName": "Test Data Source 7"
 					}
 				],
-				"dateModified": "2023-03-01T20:43:36Z",
 				"displayName": "familyName",
 				"displayType": "input-field",
 				"fieldName": "lastName",
@@ -434,11 +330,58 @@
 						"dataSourceName": "Test Data Source 7"
 					}
 				],
-				"dateModified": "2023-03-01T20:43:36Z",
 				"displayName": "additionalName",
 				"displayType": "input-field",
 				"fieldName": "middleName",
 				"fieldType": "text",
+				"ownerType": "individual",
+				"repeatable": false
+			},
+			{
+				"context": "demographics",
+				"dataSourceFieldNames": {
+					"351238757269547424": "modifiedDate",
+					"351238757269547425": "modifiedDate",
+					"351238757269547426": "modifiedDate",
+					"366573382114568984": "modifiedDate",
+					"366588399828298918": "modifiedDate",
+					"366588441118531472": "modifiedDate",
+					"366588489711802687": "modifiedDate"
+				},
+				"dataSources": [
+					{
+						"dataSourceFieldName": "modifiedDate",
+						"dataSourceName": "Test Data Source 1"
+					},
+					{
+						"dataSourceFieldName": "modifiedDate",
+						"dataSourceName": "Test Data Source 2"
+					},
+					{
+						"dataSourceFieldName": "modifiedDate",
+						"dataSourceName": "Test Data Source 3"
+					},
+					{
+						"dataSourceFieldName": "modifiedDate",
+						"dataSourceName": "Test Data Source 4"
+					},
+					{
+						"dataSourceFieldName": "modifiedDate",
+						"dataSourceName": "Test Data Source 5"
+					},
+					{
+						"dataSourceFieldName": "modifiedDate",
+						"dataSourceName": "Test Data Source 6"
+					},
+					{
+						"dataSourceFieldName": "modifiedDate",
+						"dataSourceName": "Test Data Source 7"
+					}
+				],
+				"displayName": "modifiedDate",
+				"displayType": "input-field",
+				"fieldName": "modifiedDate",
+				"fieldType": "date",
 				"ownerType": "individual",
 				"repeatable": false
 			},
@@ -483,59 +426,9 @@
 						"dataSourceName": "Test Data Source 7"
 					}
 				],
-				"dateModified": "2023-03-01T20:43:36Z",
 				"displayName": "screenName",
 				"displayType": "input-field",
 				"fieldName": "screenName",
-				"fieldType": "text",
-				"ownerType": "individual",
-				"repeatable": false
-			},
-			{
-				"context": "demographics",
-				"dataSourceFieldNames": {
-					"351238757269547424": "timeZoneId",
-					"351238757269547425": "timeZoneId",
-					"351238757269547426": "timeZoneId",
-					"366573382114568984": "timeZoneId",
-					"366588399828298918": "timeZoneId",
-					"366588441118531472": "timeZoneId",
-					"366588489711802687": "timeZoneId"
-				},
-				"dataSources": [
-					{
-						"dataSourceFieldName": "timeZoneId",
-						"dataSourceName": "Test Data Source 1"
-					},
-					{
-						"dataSourceFieldName": "timeZoneId",
-						"dataSourceName": "Test Data Source 2"
-					},
-					{
-						"dataSourceFieldName": "timeZoneId",
-						"dataSourceName": "Test Data Source 3"
-					},
-					{
-						"dataSourceFieldName": "timeZoneId",
-						"dataSourceName": "Test Data Source 4"
-					},
-					{
-						"dataSourceFieldName": "timeZoneId",
-						"dataSourceName": "Test Data Source 5"
-					},
-					{
-						"dataSourceFieldName": "timeZoneId",
-						"dataSourceName": "Test Data Source 6"
-					},
-					{
-						"dataSourceFieldName": "timeZoneId",
-						"dataSourceName": "Test Data Source 7"
-					}
-				],
-				"dateModified": "2023-03-01T20:43:36Z",
-				"displayName": "timeZoneId",
-				"displayType": "input-field",
-				"fieldName": "timeZoneId",
 				"fieldType": "text",
 				"ownerType": "individual",
 				"repeatable": false
@@ -544,8 +437,8 @@
 	},
 	"page": {
 		"number": 0,
-		"size": 11,
-		"totalElements": 11,
+		"size": 9,
+		"totalElements": 9,
 		"totalPages": 1
 	},
 	"total": 0
