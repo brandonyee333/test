@@ -2376,6 +2376,10 @@ components:
                         The file's media type (e.g., application/pdf, etc.).
                     readOnly: true
                     type: string
+                externalReferenceCode:
+                    description:
+                        The attachment's external reference code.
+                    type: string
                 fileExtension:
                     description:
                         The file's extension.
@@ -8701,6 +8705,75 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/KnowledgeBaseArticle"
             tags: ["KnowledgeBaseArticle"]
+    "/knowledge-base-attachments/by-external-reference-code/{externalReferenceCode}":
+        get:
+            # @review
+            description:
+                Retrieves the knowledge base article attachment by external reference code.
+            operationId: getKnowledgeBaseAttachmentByExternalReferenceCode
+            parameters:
+                - in: path
+                  name: externalReferenceCode
+                  required: true
+                  schema:
+                      type: string
+                - in: query
+                  name: fields
+                  schema:
+                      type: string
+                - in: query
+                  name: nestedFields
+                  schema:
+                      type: string
+                - in: query
+                  name: restrictFields
+                  schema:
+                      type: string
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/KnowledgeBaseAttachment"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/KnowledgeBaseAttachment"
+            tags: ["KnowledgeBaseAttachment"]
+        put:
+            # @review
+            description:
+                Replaces the knowledge base article attachment by external reference code with the information sent in
+                the request body, or replaces it if it not exists. Any missing fields are deleted, unless they are
+                required. The request body must be `multipart/form-data` with two parts, the file's bytes (`file`), and
+                an optional JSON string (`attachment`) with the metadata.
+            operationId: putKnowledgeBaseAttachmentByExternalReferenceCode
+            parameters:
+                - in: path
+                  name: externalReferenceCode
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            properties:
+                                file:
+                                    format: binary
+                                    type: string
+                                knowledgeBaseAttachment:
+                                    $ref: "#/components/schemas/KnowledgeBaseAttachment"
+                            type: object
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/KnowledgeBaseAttachment"
+                        application/xml:
+                            schema:
+                                $ref: "#/components/schemas/KnowledgeBaseAttachment"
+            tags: ["KnowledgeBaseAttachment"]
     "/knowledge-base-attachments/{knowledgeBaseAttachmentId}":
         delete:
             description:
