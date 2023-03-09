@@ -83,14 +83,14 @@ public class BQFieldMappingDog {
 			_bqFieldMappingRepository.searchIndividualFieldMappings(
 				name, pageRequest);
 
-		_setDemographicFieldsDataSourceIds(fieldMappings);
+		_setDemographicsFieldsDataSourceIds(fieldMappings);
 
 		return PageableExecutionUtils.getPage(
 			fieldMappings, pageRequest,
 			() -> _bqFieldMappingRepository.countIndividualFieldMappings(name));
 	}
 
-	private void _setDemographicFieldsDataSourceIds(
+	private void _setDemographicsFieldsDataSourceIds(
 		List<BQFieldMapping> fieldMappings) {
 
 		List<DataSource> dataSources = _dataSourceDog.getDataSources();

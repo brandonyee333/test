@@ -51,7 +51,7 @@ public class DefinitionsRestController extends BaseRestController {
 	public PageDTO<BQFieldMappingDTO> getIndividualFieldMappingDTOPageDTO(
 		@RequestParam(required = false) String name) {
 
-		Page<BQFieldMapping> fieldMappingPage =
+		Page<BQFieldMapping> bqFieldMappingPage =
 			_bqFieldMappingDog.searchIndividualFieldMappingPage(
 				name, 0,
 				Math.max(
@@ -60,7 +60,7 @@ public class DefinitionsRestController extends BaseRestController {
 				new String[] {"fieldName", "asc"});
 
 		Map<String, BQFieldMappingDTO> fieldMappingDTOs = Stream.of(
-			fieldMappingPage.getContent()
+			bqFieldMappingPage.getContent()
 		).flatMap(
 			List::stream
 		).map(
@@ -75,7 +75,8 @@ public class DefinitionsRestController extends BaseRestController {
 		_addDataSources(fieldMappingDTOs);
 
 		return _toPageDTO(
-			new BQFieldMappingDTO(fieldMappingDTOs.values()), fieldMappingPage);
+			new BQFieldMappingDTO(fieldMappingDTOs.values()),
+			bqFieldMappingPage);
 	}
 
 	private void _addDataSources(
@@ -133,7 +134,8 @@ public class DefinitionsRestController extends BaseRestController {
 
 		for (DataSource dataSource : dataSources) {
 			dataSourceFieldNames.put(
-				"" + dataSource.getId(), bqFieldMapping.getFieldName());
+				String.valueOf(dataSource.getId()),
+				bqFieldMapping.getFieldName());
 		}
 
 		bqFieldMappingDTO.setDataSourceFieldNames(dataSourceFieldNames);
