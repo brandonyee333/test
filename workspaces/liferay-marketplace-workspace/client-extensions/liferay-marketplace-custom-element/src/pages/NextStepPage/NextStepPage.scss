@@ -1,0 +1,38 @@
+.next-step-page {
+	&-content {
+		margin-top: 10rem;
+		margin-bottom: 12rem;
+		width: 37.5rem;
+	}
+	&-container {
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	&-cards {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+		margin-top: 1.25rem;
+		margin-bottom: 2rem;
+	}
+	&-icon {
+		color: #0b5fff;
+	}
+	&-text {
+		margin-bottom: 2rem;
+	}
+	&-link {
+		a {
+			cursor: pointer;
+		}
+		display: flex;
+		font-family: 'Source Sans Pro', sans-serif;
+		font-size: 16px;
+		justify-content: flex-end;
+		line-height: 24px;
+		margin-top: -2rem;
+		text-decoration: underline;
+	}
+}
