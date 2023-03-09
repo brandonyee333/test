@@ -31,6 +31,7 @@ import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -163,6 +164,10 @@ public class BeanUtils {
 					}
 					else if (targetPropertyClass.isAssignableFrom(Long.class)) {
 						targetPropertyValue = bigDecimal.longValue();
+					}
+					else if (targetPropertyClass.isAssignableFrom(Set.class)) {
+						targetPropertyValue = Collections.singleton(
+							bigDecimal.longValue());
 					}
 				}
 				else if ((targetPropertyClass != null) &&
