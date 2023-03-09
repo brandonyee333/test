@@ -94,6 +94,7 @@ ON
 	staging.projectId = replica.projectId
 WHEN MATCHED AND staging.deleted IS NULL THEN
 	UPDATE SET
+		replica.modifiedDate = staging.modifiedDate,
 		replica.value = staging.value
 WHEN MATCHED AND staging.deleted = true THEN
 	DELETE
@@ -104,6 +105,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		`columnId`,
 		`dataSourceId`,
 		`fieldName`,
+		`modifiedDate`,
 		`id`,
 		`projectId`,
 		`value`
@@ -114,6 +116,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 		staging.columnId,
 		staging.dataSourceId,
 		staging.fieldName,
+		staging.modifiedDate,
 		staging.sha256HexId,
 		staging.projectId,
 		staging.value
