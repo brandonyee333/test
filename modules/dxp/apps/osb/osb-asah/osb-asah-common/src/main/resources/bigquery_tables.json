@@ -1259,7 +1259,7 @@
 						"type": "STRING"
 					}
 				],
-				"mode": "NULLABLE",
+				"mode": "REPEATED",
 				"name": "memberships",
 				"type": "RECORD"
 			},
