@@ -564,7 +564,7 @@ public class SegmentRepositoryImpl
 		if (!channelIds.isEmpty()) {
 			conditions.add(
 				DSL.field(
-					"channelId"
+					"channelId", Long.class
 				).in(
 					channelIds
 				));

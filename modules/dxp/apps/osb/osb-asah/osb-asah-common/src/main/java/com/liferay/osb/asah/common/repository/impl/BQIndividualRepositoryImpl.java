@@ -341,7 +341,7 @@ public class BQIndividualRepositoryImpl
 		if (channelId != null) {
 			condition = condition.and(
 				DSL.field(
-					"IdentityActivity.channelId"
+					"IdentityActivity.channelId", Long.class
 				).eq(
 					channelId
 				));
@@ -350,7 +350,7 @@ public class BQIndividualRepositoryImpl
 		if (dataSourceId != null) {
 			condition = condition.and(
 				DSL.field(
-					"IdentityActivity.dataSourceId"
+					"IdentityActivity.dataSourceId", Long.class
 				).eq(
 					dataSourceId
 				));
