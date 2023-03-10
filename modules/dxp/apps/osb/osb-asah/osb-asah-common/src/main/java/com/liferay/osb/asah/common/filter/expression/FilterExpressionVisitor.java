@@ -434,6 +434,10 @@ public class FilterExpressionVisitor
 
 		String fieldName = identifierContext.getText();
 
+		if (_fieldNameConversions.containsKey(fieldName)) {
+			fieldName = _fieldNameConversions.get(fieldName);
+		}
+
 		if (StringUtils.contains(fieldName, "/")) {
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
@@ -1000,8 +1004,10 @@ public class FilterExpressionVisitor
 		new HashMap<String, String>() {
 			{
 				put("channelIds", "IdentityActivity.channelId");
+				put("credentials/type", "credentialType");
 				put("email", "Individual.emailAddress");
 				put("lastEnrichmentDate", "Individual.modifiedDate");
+				put("provider/type", "providerType");
 			}
 		};
 	private final String _filterType;
