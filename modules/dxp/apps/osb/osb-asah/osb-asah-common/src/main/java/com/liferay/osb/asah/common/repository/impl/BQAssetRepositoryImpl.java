@@ -65,7 +65,6 @@ public class BQAssetRepositoryImpl
 				getSortFields(
 					new HashMap<String, String>() {
 						{
-							put("count", "views");
 							put("desc", "assetTitle");
 						}
 					},

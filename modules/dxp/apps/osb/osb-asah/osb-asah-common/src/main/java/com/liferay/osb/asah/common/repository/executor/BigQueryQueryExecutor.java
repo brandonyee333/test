@@ -348,7 +348,7 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 
 	private static final String[] _FUNCTION_AND_TABLE_NAMES = {
 		"BlogDaily", "BlogHourly", "BQAccountEntry", "BQAccountGroup",
-		"BQCSVUser", "BQEvent", "BQEventProperty", "BQExpandoColumn",
+		"BQAsset", "BQCSVUser", "BQEvent", "BQEventProperty", "BQExpandoColumn",
 		"BQExpandoValue", "BQFieldMapping", "BQGroup", "BQIdentity",
 		"BQIdentityActivity", "BQIdentityChannel", "BQIdentityInterestScore",
 		"BQIndividual", "BQMembership", "BQMembershipChange", "BQOrder",
