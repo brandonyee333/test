@@ -46,19 +46,19 @@ public class InterestScoreIngestionNanite {
 		List<BQSessionInterestScore> bqSessionInterestScores = new ArrayList();
 		Set<String> userIds = new HashSet<>();
 
-		for (Map<String, String> keywordsMap :
+		for (Map<String, String> keywords :
 				_bqEventRepository.getKeywordsGroupedBySessionIdAndUserId()) {
 
-			String userId = keywordsMap.get("userId");
+			String userId = keywords.get("userId");
 
 			if (!userIds.contains(userId)) {
 				bqIdentityInterestScores.addAll(
-					_getBQIdentityInterestScores(keywordsMap, date));
+					_getBQIdentityInterestScores(keywords, date));
 				userIds.add(userId);
 			}
 
 			bqSessionInterestScores.addAll(
-				_getBQSessionInterestScores(keywordsMap, date));
+				_getBQSessionInterestScores(keywords, date));
 		}
 
 		_bqIdentityInterestScoreRepository.deleteAll();
@@ -71,23 +71,23 @@ public class InterestScoreIngestionNanite {
 	}
 
 	private List<BQIdentityInterestScore> _getBQIdentityInterestScores(
-		Map<String, String> keywordsMap, Date recordedDate) {
+		Map<String, String> keywords, Date recordedDate) {
 
 		List<BQIdentityInterestScore> bqIdentityInterestScores =
 			new ArrayList();
 
-		for (String keyword : _getKeywords(keywordsMap.get("keywords"))) {
+		for (String keyword : _getKeywords(keywords.get("keywords"))) {
 			double interestScore = Math.random();
 			boolean interested = false;
 
-			if (interestScore > 0.2) {
+			if (interestScore > _INTEREST_THRESHOLD) {
 				interested = true;
 			}
 
 			BQIdentityInterestScore bqIdentityInterestScore =
 				new BQIdentityInterestScore();
 
-			bqIdentityInterestScore.setIdentityId(keywordsMap.get("userId"));
+			bqIdentityInterestScore.setIdentityId(keywords.get("userId"));
 			bqIdentityInterestScore.setInterestScore(interestScore);
 			bqIdentityInterestScore.setInterested(interested);
 			bqIdentityInterestScore.setKeyword(keyword);
@@ -100,27 +100,27 @@ public class InterestScoreIngestionNanite {
 	}
 
 	private List<BQSessionInterestScore> _getBQSessionInterestScores(
-		Map<String, String> keywordsMap, Date recordedDate) {
+		Map<String, String> keywords, Date recordedDate) {
 
 		List<BQSessionInterestScore> bqSessionInterestScores = new ArrayList();
 
-		for (String keyword : _getKeywords(keywordsMap.get("keywords"))) {
+		for (String keyword : _getKeywords(keywords.get("keywords"))) {
 			double interestScore = Math.random();
 			boolean interested = false;
 
-			if (interestScore > 0.2) {
+			if (interestScore > _INTEREST_THRESHOLD) {
 				interested = true;
 			}
 
 			BQSessionInterestScore bqSessionInterestScore =
 				new BQSessionInterestScore();
 
-			bqSessionInterestScore.setIdentityId(keywordsMap.get("userId"));
+			bqSessionInterestScore.setIdentityId(keywords.get("userId"));
 			bqSessionInterestScore.setInterestScore(interestScore);
 			bqSessionInterestScore.setInterested(interested);
 			bqSessionInterestScore.setKeyword(keyword);
 			bqSessionInterestScore.setRecordedDate(recordedDate);
-			bqSessionInterestScore.setSessionId(keywordsMap.get("sessionId"));
+			bqSessionInterestScore.setSessionId(keywords.get("sessionId"));
 
 			bqSessionInterestScores.add(bqSessionInterestScore);
 		}
@@ -131,6 +131,8 @@ public class InterestScoreIngestionNanite {
 	private Set<String> _getKeywords(String keywords) {
 		return new HashSet<>(Arrays.asList(keywords.split(" ")));
 	}
+
+	private static final double _INTEREST_THRESHOLD = 0.2;
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
