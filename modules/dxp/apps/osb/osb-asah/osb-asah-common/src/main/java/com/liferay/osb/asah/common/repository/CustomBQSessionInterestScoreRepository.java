@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomBQSessionInterestScoreRepository {
 
-	public void deleteByRecordedDate(Date date);
+	public void deleteByRecordedDate(Date recordedDate);
 
 	public CompositionResultBag getInterestCompositionResultBag(
 		@Nullable Long channelId, Pageable pageable, TimeRange timeRange);

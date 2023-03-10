@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.RandomUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +56,7 @@ public class InterestScoreIngestionNanite {
 			if (!userIds.contains(userId)) {
 				bqIdentityInterestScores.addAll(
 					_getBQIdentityInterestScores(keywords, date));
+
 				userIds.add(userId);
 			}
 
@@ -77,7 +80,7 @@ public class InterestScoreIngestionNanite {
 			new ArrayList();
 
 		for (String keyword : _getKeywords(keywords.get("keywords"))) {
-			double interestScore = Math.random();
+			double interestScore = RandomUtils.nextDouble(0, 1);
 			boolean interested = false;
 
 			if (interestScore > _INTEREST_THRESHOLD) {
@@ -105,7 +108,7 @@ public class InterestScoreIngestionNanite {
 		List<BQSessionInterestScore> bqSessionInterestScores = new ArrayList();
 
 		for (String keyword : _getKeywords(keywords.get("keywords"))) {
-			double interestScore = Math.random();
+			double interestScore = RandomUtils.nextDouble(0, 1);
 			boolean interested = false;
 
 			if (interestScore > _INTEREST_THRESHOLD) {
