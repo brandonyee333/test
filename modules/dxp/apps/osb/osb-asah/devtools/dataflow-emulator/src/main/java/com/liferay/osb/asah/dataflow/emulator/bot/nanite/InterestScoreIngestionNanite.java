@@ -63,13 +63,11 @@ public class InterestScoreIngestionNanite {
 
 		_bqIdentityInterestScoreRepository.deleteAll();
 
-		bqIdentityInterestScores.forEach(
-			_bqIdentityInterestScoreRepository::insert);
+		_bqIdentityInterestScoreRepository.insertAll(bqIdentityInterestScores);
 
 		_bqSessionInterestScoreRepository.deleteByRecordedDate(date);
 
-		bqSessionInterestScores.forEach(
-			_bqSessionInterestScoreRepository::insert);
+		_bqSessionInterestScoreRepository.insertAll(bqSessionInterestScores);
 	}
 
 	private List<BQIdentityInterestScore> _getBQIdentityInterestScores(

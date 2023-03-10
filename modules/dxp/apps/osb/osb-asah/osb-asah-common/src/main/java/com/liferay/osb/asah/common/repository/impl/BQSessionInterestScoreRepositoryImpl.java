@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQSessionInterestScore;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -35,6 +36,8 @@ import java.util.function.Function;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.InsertValuesStep6;
+import org.jooq.Record;
 import org.jooq.Record3;
 import org.jooq.SelectOnConditionStep;
 import org.jooq.impl.DSL;
@@ -194,6 +197,40 @@ public class BQSessionInterestScoreRepositoryImpl
 		return new CompositionResultBag(
 			maxCountBigDecimal.longValue(), compositions,
 			totalBigDecimal.longValue(), totalCountBigDecimal.longValue());
+	}
+
+	@Override
+	public void insertAll(
+		List<BQSessionInterestScore> bqSessionInterestScores) {
+
+		InsertValuesStep6
+			<Record, Object, Boolean, Double, Object, Object, String>
+				insertValuesStep6 = _dslContext.insertInto(
+					DSL.table("BQSessionInterestScore")
+				).columns(
+					DSL.field("identityId"),
+					DSL.field("interested", Boolean.class),
+					DSL.field("interestScore", Double.class),
+					DSL.field("keyword"),
+					DSL.field("recordedDate", Object.class),
+					DSL.field("sessionId", String.class)
+				);
+
+		for (BQSessionInterestScore bqSessionInterestScore :
+				bqSessionInterestScores) {
+
+			insertValuesStep6 = insertValuesStep6.values(
+				bqSessionInterestScore.getIdentityId(),
+				bqSessionInterestScore.getInterested(),
+				bqSessionInterestScore.getInterestScore(),
+				bqSessionInterestScore.getKeyword(),
+				DateUtil.toUTCString(
+					bqSessionInterestScore.getRecordedDate(),
+					new SimpleDateFormat("yyyy-MM-dd")),
+				bqSessionInterestScore.getSessionId());
+		}
+
+		_queryExecutor.queryExecute(insertValuesStep6);
 	}
 
 	private final DSLContext _dslContext;

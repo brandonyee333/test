@@ -90,4 +90,7 @@ public interface CustomBQIdentityInterestScoreRepository {
 	public BQIdentityInterestScore insert(
 		BQIdentityInterestScore bqIdentityInterestScore);
 
+	public void insertAll(
+		List<BQIdentityInterestScore> bqIdentityInterestScores);
+
 }

@@ -48,6 +48,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
+import org.jooq.InsertValuesStep5;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
@@ -768,6 +769,33 @@ public class BQIdentityInterestScoreRepositoryImpl
 			));
 
 		return bqIdentityInterestScore;
+	}
+
+	@Override
+	public void insertAll(
+		List<BQIdentityInterestScore> bqIdentityInterestScores) {
+
+		InsertValuesStep5<Record, Object, Boolean, Double, Object, Date>
+			insertValuesStep5 = _dslContext.insertInto(
+				DSL.table("BQIdentityInterestScore")
+			).columns(
+				DSL.field("identityId"), DSL.field("interested", Boolean.class),
+				DSL.field("interestScore", Double.class), DSL.field("keyword"),
+				DSL.field("recordedDate", Date.class)
+			);
+
+		for (BQIdentityInterestScore bqIdentityInterestScore :
+				bqIdentityInterestScores) {
+
+			insertValuesStep5 = insertValuesStep5.values(
+				bqIdentityInterestScore.getIdentityId(),
+				bqIdentityInterestScore.getInterested(),
+				bqIdentityInterestScore.getInterestScore(),
+				bqIdentityInterestScore.getKeyword(),
+				bqIdentityInterestScore.getRecordedDate());
+		}
+
+		_queryExecutor.queryExecute(insertValuesStep5);
 	}
 
 	private double _getAggregationValue(Double value) {
