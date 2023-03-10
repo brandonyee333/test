@@ -26,14 +26,12 @@ import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
-import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.BQSQLUtil;
 
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -62,7 +60,6 @@ import org.jooq.SortField;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -912,12 +909,6 @@ public class BQIndividualRepositoryImpl
 	private final DSLContext _dslContext;
 
 	@Autowired
-	private DSLHelper _dslHelper;
-
-	@Autowired
-	private Environment _environment;
-
-	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
 
 	private final Map<String, String> _fieldNameConversionMap =
@@ -932,11 +923,6 @@ public class BQIndividualRepositoryImpl
 				put("givenName", "firstname");
 			}
 		};
-	private final List<Field<Object>> _identiyChannelFields = Arrays.asList(
-		DSL.field("activitiesCount"), DSL.field("channelId"),
-		DSL.field("createDate"), DSL.field("id"), DSL.field("identityId"),
-		DSL.field("individualId"), DSL.field("lastActivityDate"),
-		DSL.field("modifiedDate"));
 
 	@Autowired
 	private ObjectMapper _objectMapper;
