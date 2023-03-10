@@ -42,6 +42,7 @@ import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Select;
 import org.jooq.SelectJoinStep;
+import org.jooq.SelectOrderByStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -448,10 +449,16 @@ public class SegmentRepositoryImpl
 				));
 		}
 
-		return selectJoinStep.where(
-			_getConditions(
-				filterHelper, _getSegmentIds(segmentIdIdentityCounts))
-		).orderBy(
+		List<Condition> conditions = _getConditions(
+			filterHelper, _getSegmentIds(segmentIdIdentityCounts));
+
+		SelectOrderByStep<Record> selectConditionStep = selectJoinStep;
+
+		if (!conditions.isEmpty()) {
+			selectConditionStep = selectJoinStep.where(conditions);
+		}
+
+		return selectConditionStep.orderBy(
 			getSortFields(sortFieldNameConversionMap, pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
@@ -536,7 +543,7 @@ public class SegmentRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if (segmentIds != null) {
+		if (!CollectionUtils.isEmpty(segmentIds)) {
 			conditions.add(
 				DSL.field(
 					"id"
@@ -547,10 +554,6 @@ public class SegmentRepositoryImpl
 
 		if (StringUtils.isNotEmpty(filterHelper.getFilterString())) {
 			conditions.add(filterHelper.getCondition());
-		}
-
-		if (conditions.isEmpty()) {
-			conditions.add(DSL.noCondition());
 		}
 
 		return conditions;
