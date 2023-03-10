@@ -523,6 +523,11 @@ public class BQEventRepositoryImpl
 			).where(
 				DSL.and(
 					DSL.field(
+						"event.eventId", String.class
+					).eq(
+						"pageUnloaded"
+					),
+					DSL.field(
 						"eventproperty.name", String.class
 					).eq(
 						"viewDuration"
