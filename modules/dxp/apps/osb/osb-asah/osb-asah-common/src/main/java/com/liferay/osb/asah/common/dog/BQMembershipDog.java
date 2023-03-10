@@ -41,6 +41,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -148,6 +149,14 @@ public class BQMembershipDog {
 
 	public long getBQMembershipsCount(Long segmentId) {
 		return _bqMembershipRepository.countBySegmentId(segmentId);
+	}
+
+	public long getBQMembershipsCount(
+		Long channelId, @Nullable String filterString,
+		@Nullable Boolean includeAnonymousUsers) {
+
+		return _bqMembershipRepository.countByChannelIdAndFilterString(
+			channelId, filterString, includeAnonymousUsers);
 	}
 
 	public Map<Long, JSONObject> getMembershipsJSONObjects(

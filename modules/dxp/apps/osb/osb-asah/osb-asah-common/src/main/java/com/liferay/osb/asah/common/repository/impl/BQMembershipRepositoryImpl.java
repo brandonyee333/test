@@ -22,11 +22,15 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.AggregateFunction;
 import org.jooq.Condition;
@@ -56,6 +60,59 @@ public class BQMembershipRepositoryImpl
 
 		_dslContext = dslContext;
 		_queryExecutor = queryExecutor;
+	}
+
+	@Override
+	public long countByChannelIdAndFilterString(
+		Long channelId, @Nullable String filterString,
+		@Nullable Boolean includeAnonymousUsers) {
+
+		Condition condition = DSL.noCondition();
+		Set<String> referencedTableNames = Collections.emptySet();
+
+		if (StringUtils.isNotBlank(filterString)) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString);
+
+			condition = filterExpression.getCondition();
+			referencedTableNames = filterExpression.getReferencedTableNames();
+		}
+
+		if (referencedTableNames.contains("Individual")) {
+			includeAnonymousUsers = Boolean.FALSE;
+		}
+
+		Field<String> selectField = null;
+
+		if (BooleanUtils.isTrue(includeAnonymousUsers)) {
+			selectField = DSL.field("Identity.id", String.class);
+		}
+		else {
+			selectField = DSL.field("Identity.individualId", String.class);
+		}
+
+		SelectJoinStep<Record1<Integer>> selectJoinStep = _dslContext.select(
+			DSL.countDistinct(selectField)
+		).from(
+			DSL.table(
+				"BQIdentity"
+			).as(
+				"Identity"
+			)
+		);
+
+		selectJoinStep = _getSelectJoinStep(
+			channelId, referencedTableNames, selectJoinStep);
+
+		return _queryExecutor.queryForLong(
+			selectJoinStep.where(
+				DSL.and(
+					DSL.field(
+						"IdentityActivity.channelId", Long.class
+					).eq(
+						channelId
+					),
+					condition)));
 	}
 
 	@Override
@@ -481,7 +538,7 @@ public class BQMembershipRepositoryImpl
 		FilterExpression filterExpression = new FilterExpression(filterString);
 
 		selectJoinStep = _getSelectJoinStep(
-			filterExpression.getReferencedTableNames(), selectJoinStep);
+			null, filterExpression.getReferencedTableNames(), selectJoinStep);
 
 		// TODO Replace DELETE/INSERT by BigQuery MERGE Statement
 
@@ -527,11 +584,25 @@ public class BQMembershipRepositoryImpl
 		return conditions;
 	}
 
-	private SelectJoinStep<Record5<Date, String, String, Date, Long>>
-		_getSelectJoinStep(
-			Set<String> referencedTableNames,
-			SelectJoinStep<Record5<Date, String, String, Date, Long>>
-				selectJoinStep) {
+	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
+		Long channelId, Set<String> referencedTableNames,
+		SelectJoinStep<R> selectJoinStep) {
+
+		if (channelId != null) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQIdentityActivity"
+				).as(
+					"IdentityActivity"
+				)
+			).on(
+				DSL.field(
+					"IdentityActivity.identityId"
+				).eq(
+					DSL.field("Identity.id")
+				)
+			);
+		}
 
 		if (referencedTableNames.contains("Event")) {
 			selectJoinStep = selectJoinStep.join(

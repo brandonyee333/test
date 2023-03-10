@@ -48,6 +48,8 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -124,6 +126,9 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(required = false) Long channelId,
 			@RequestParam(required = false) Long dataSourceId,
 			@RequestParam(required = false) String expand,
+			@RequestParam(name = "filter", required = false) String
+				filterString,
+			@RequestParam(required = false) Boolean includeAnonymousUsers,
 			@RequestParam(required = false) Long notSegmentId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(name = "query", required = false) String query,
@@ -131,6 +136,11 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
+
+		if ((page == 0) && (size == 0)) {
+			return getMembershipCountIndividualDTOPageDTO(
+				channelId, filterString, includeAnonymousUsers);
+		}
 
 		Page<Individual> individualPage =
 			_bqIndividualDog.searchBQIndividualPage(
@@ -203,6 +213,17 @@ public class IndividualsRestController extends BaseRestController {
 			includeAnonymousUsers) {
 
 		return _bqIndividualDog.countIndividuals(includeAnonymousUsers);
+	}
+
+	public PageDTO<IndividualDTO> getMembershipCountIndividualDTOPageDTO(
+		Long channelId, String filterString, Boolean includeAnonymousUsers) {
+
+		Page<Individual> individualPage = new PageImpl<>(
+			Collections.emptyList(), Pageable.unpaged(),
+			_bqMembershipDog.getBQMembershipsCount(
+				channelId, filterString, includeAnonymousUsers));
+
+		return _toIndividualDTOPageDTO(individualPage);
 	}
 
 	@GetMapping("/{id}/individual-segments")

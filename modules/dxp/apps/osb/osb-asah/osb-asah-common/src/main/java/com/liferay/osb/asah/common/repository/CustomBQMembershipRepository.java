@@ -30,6 +30,10 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomBQMembershipRepository {
 
+	public long countByChannelIdAndFilterString(
+		Long channelId, @Nullable String filterString,
+		@Nullable Boolean includeAnonymousUsers);
+
 	@Cacheable
 	public long countByIdentityIdAndSegmentId(
 		String identityId, Long segmentId);
