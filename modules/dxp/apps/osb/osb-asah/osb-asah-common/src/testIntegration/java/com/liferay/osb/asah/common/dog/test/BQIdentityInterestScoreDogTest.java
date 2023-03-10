@@ -76,7 +76,7 @@ public class BQIdentityInterestScoreDogTest
 	public void testGetBQIdentityInterestScorePageByFilterString() {
 		Page<IdentityInterestScore> individualInterestScorePage =
 			_bqIdentityInterestScoreDog.getIdentityInterestScorePage(
-				"name eq 'javascript'", 0, 20, null);
+				"keyword eq 'javascript'", 0, 20, null);
 
 		Assertions.assertEquals(
 			2, individualInterestScorePage.getTotalElements());

@@ -260,7 +260,7 @@ public class BQIdentityInterestScoreRepositoryTest
 			_bqIdentityInterestScoreRepository.
 				findIndividualIdsByFilterStringAndIndividualId(
 					new FilterHelper(
-						null, "(name eq 'sales')",
+						null, "(keyword eq 'sales')",
 						_interestFilterStringConverterHelper),
 					"374790572703144534");
 
