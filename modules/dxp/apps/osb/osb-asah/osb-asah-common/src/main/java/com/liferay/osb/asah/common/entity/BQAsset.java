@@ -44,19 +44,23 @@ public class BQAsset {
 
 		BQAsset bqAsset = (BQAsset)obj;
 
-		if (Objects.equals(_assetId, bqAsset._assetId) &&
+		if (Objects.equals(_applicationId, bqAsset._applicationId) &&
+			Objects.equals(_assetId, bqAsset._assetId) &&
 			Objects.equals(_assetTitle, bqAsset._assetTitle) &&
-			Objects.equals(_assetType, bqAsset._assetType) &&
 			Objects.equals(_channelId, bqAsset._channelId) &&
 			Objects.equals(_dataSourceId, bqAsset._dataSourceId) &&
 			Objects.equals(_id, bqAsset._id) &&
 			Objects.equals(_modifiedDate, bqAsset._modifiedDate) &&
-			Objects.equals(_views, bqAsset._views)) {
+			Objects.equals(_count, bqAsset._count)) {
 
 			return true;
 		}
 
 		return false;
+	}
+
+	public String getApplicationId() {
+		return _applicationId;
 	}
 
 	public String getAssetId() {
@@ -67,12 +71,12 @@ public class BQAsset {
 		return _assetTitle;
 	}
 
-	public String getAssetType() {
-		return _assetType;
-	}
-
 	public Long getChannelId() {
 		return _channelId;
+	}
+
+	public Long getCount() {
+		return _count;
 	}
 
 	public Long getDataSourceId() {
@@ -87,15 +91,11 @@ public class BQAsset {
 		return new Date(_modifiedDate.getTime());
 	}
 
-	public long getViews() {
-		return _views;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_assetId, _assetTitle, _assetType, _channelId, _dataSourceId, _id,
-			_modifiedDate, _views);
+			_applicationId, _assetId, _assetTitle, _channelId, _dataSourceId,
+			_id, _modifiedDate, _count);
 	}
 
 	public void setAssetId(String assetId) {
@@ -106,12 +106,12 @@ public class BQAsset {
 		_assetTitle = assetTitle;
 	}
 
-	public void setAssetType(String assetType) {
-		_assetType = assetType;
-	}
-
 	public void setChannelId(Long channelId) {
 		_channelId = channelId;
+	}
+
+	public void setCount(Long count) {
+		_count = count;
 	}
 
 	public void setDataSourceId(Long dataSourceId) {
@@ -126,17 +126,13 @@ public class BQAsset {
 		_modifiedDate = new Date(modifiedDate.getTime());
 	}
 
-	public void setViews(long views) {
-		_views = views;
-	}
-
+	private String _applicationId;
 	private String _assetId;
 	private String _assetTitle;
-	private String _assetType;
 	private Long _channelId;
+	private Long _count;
 	private Long _dataSourceId;
 	private String _id;
 	private Date _modifiedDate;
-	private long _views;
 
 }

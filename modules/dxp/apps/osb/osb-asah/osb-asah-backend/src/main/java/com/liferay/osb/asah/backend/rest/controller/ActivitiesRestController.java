@@ -79,7 +79,7 @@ public class ActivitiesRestController extends BaseRestController {
 		for (BQAsset bqAsset : bqAssets) {
 			JSONObject jsonObject = new JSONObject();
 
-			jsonObject.put("count", bqAsset.getViews());
+			jsonObject.put("count", bqAsset.getCount());
 			jsonObject.put("dataSourceAssetPK", bqAsset.getDataSourceId());
 
 			for (DataSource dataSource : dataSources) {
