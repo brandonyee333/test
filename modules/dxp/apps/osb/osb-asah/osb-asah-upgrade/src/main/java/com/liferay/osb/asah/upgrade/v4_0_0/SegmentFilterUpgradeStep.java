@@ -77,16 +77,9 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 				else {
 					String dataSourceAssetPK = assetJSONObject.getString(
 						"dataSourceAssetPK");
-					String assetTitle = assetJSONObject.getString("name");
-
-					String newFilterString = String.format(
-						"applicationId eq ''%s'' and eventId eq ''%s'' and " +
-							"assetId eq ''%s''",
-						values[0], values[1],
-						DigestUtils.sha256Hex(dataSourceAssetPK + assetTitle));
 
 					filterString = filterString.replace(
-						matcher.group(), newFilterString);
+						assetId, DigestUtils.sha256Hex(dataSourceAssetPK));
 				}
 			}
 

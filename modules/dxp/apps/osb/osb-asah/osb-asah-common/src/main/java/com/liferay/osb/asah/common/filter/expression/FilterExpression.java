@@ -99,7 +99,21 @@ public class FilterExpression {
 	}
 
 	private String _rewriteFilterExpression(String filterExpressionString) {
-		Matcher matcher = _interestPattern.matcher(filterExpressionString);
+		Matcher matcher = _activityKeyPattern.matcher(filterExpressionString);
+
+		while (matcher.find()) {
+			String expression =
+				"applicationId eq ''" + matcher.group("applicationId") + "'' " +
+					"and eventId eq ''" + matcher.group("eventId") + "'' and " +
+						"sha256Hex(assetId) eq ''" +
+							matcher.group("asseIdHashed") + "''";
+
+			filterExpressionString = matcher.replaceFirst(expression);
+
+			matcher = _activityKeyPattern.matcher(filterExpressionString);
+		}
+
+		matcher = _interestPattern.matcher(filterExpressionString);
 
 		while (matcher.find()) {
 			String expression =
@@ -136,6 +150,9 @@ public class FilterExpression {
 		return filterExpressionString;
 	}
 
+	private static final Pattern _activityKeyPattern = Pattern.compile(
+		"activityKey eq ''(?<applicationId>[\\w]+)#(?<eventId>[\\w]+)#" +
+			"(?<asseIdHashed>[\\w]+)''");
 	private static final Pattern _interestPattern = Pattern.compile(
 		"interests.filter\\(filter='\\(name eq ''(?<keyword>[^']+)'' and " +
 			"score eq ''(?<interested>true|false)''\\)'\\)");

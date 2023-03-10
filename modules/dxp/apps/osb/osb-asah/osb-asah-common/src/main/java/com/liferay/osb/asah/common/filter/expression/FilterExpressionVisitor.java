@@ -330,6 +330,9 @@ public class FilterExpressionVisitor
 			condition = _getIsMemberCondition(
 				(String)param.getValue(), field.getName());
 		}
+		else if (functionName.equalsIgnoreCase("sha256Hex")) {
+			return DSL.field(String.format("TO_HEX(SHA256(%s))", fieldName));
+		}
 		else if (functionName.equalsIgnoreCase("similarTo")) {
 			Param param = (Param)parameters.get(1);
 
