@@ -469,6 +469,82 @@ public class BQEventRepositoryImpl
 	}
 
 	@Override
+	public List<Map<String, String>> getKeywordsGroupedBySessionIdAndUserId() {
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				Map<String, String> keywordMap = new HashMap<>();
+
+				keywordMap.put(
+					"keywords", String.valueOf(recordMap.get("keywords")));
+				keywordMap.put(
+					"sessionId", String.valueOf(recordMap.get("sessionId")));
+				keywordMap.put(
+					"userId", String.valueOf(recordMap.get("userId")));
+
+				return keywordMap;
+			},
+			_dslContext.select(
+				DSL.max(
+					_dslHelper.concat(
+						DSL.coalesce(DSL.field("assetTitle"), ""), DSL.val(" "),
+						DSL.coalesce(DSL.field("description"), ""),
+						DSL.val(" "), DSL.coalesce(DSL.field("keywords"), ""))
+				).as(
+					"keywords"
+				),
+				DSL.field(
+					"event.sessionId"
+				).as(
+					"sessionId"
+				),
+				DSL.field(
+					"event.userId"
+				).as(
+					"userId"
+				)
+			).from(
+				DSL.table(
+					"BQEvent"
+				).as(
+					"event"
+				)
+			).join(
+				DSL.table(
+					"BQEventProperty"
+				).as(
+					"eventproperty"
+				)
+			).on(
+				DSL.field(
+					"event.id"
+				).eq(
+					DSL.field("eventproperty.id")
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"eventproperty.name", String.class
+					).eq(
+						"viewDuration"
+					),
+					DSL.or(
+						DSL.field(
+							"assetTitle"
+						).isNotNull(),
+						DSL.field(
+							"description"
+						).isNotNull(),
+						DSL.field(
+							"keywords"
+						).isNotNull()))
+			).groupBy(
+				DSL.field("sessionId"), DSL.field("userId")
+			).orderBy(
+				DSL.field("userId")
+			));
+	}
+
+	@Override
 	public Map<String, Date> getLastSeenDateDateGroupedByColumnName(
 		String columnName, int size) {
 
