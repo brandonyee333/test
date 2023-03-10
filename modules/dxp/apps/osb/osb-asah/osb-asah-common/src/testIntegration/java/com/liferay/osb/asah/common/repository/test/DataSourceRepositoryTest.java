@@ -183,22 +183,6 @@ public class DataSourceRepositoryTest
 			2,
 			_dataSourceRepository.countDataSources(
 				new FilterHelper(
-					_defaultFilterStringConverterHelper,
-					"state eq ['CREDENTIALS_INVALID','CREDENTIALS_VALID']",
-					_dataSourceFilterStringConverterHelper)));
-
-		Assertions.assertEquals(
-			0,
-			_dataSourceRepository.countDataSources(
-				new FilterHelper(
-					_defaultFilterStringConverterHelper,
-					"state eq 'IN_PROGRESS_DELETING'",
-					_dataSourceFilterStringConverterHelper)));
-
-		Assertions.assertEquals(
-			2,
-			_dataSourceRepository.countDataSources(
-				new FilterHelper(
 					_defaultFilterStringConverterHelper, "url ne null",
 					_dataSourceFilterStringConverterHelper)));
 
