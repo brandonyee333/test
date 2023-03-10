@@ -176,14 +176,6 @@ public class BQIdentityInterestScoreRepositoryTest {
 	}
 
 	@Test
-	public void testDeleteByRecordedDate() {
-		_bqIdentityInterestScoreRepository.deleteByRecordedDate(
-			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-
-		Assertions.assertEquals(2, _bqIdentityInterestScoreRepository.count());
-	}
-
-	@Test
 	public void testDeleteByRecordedDateLessThanEqual() {
 		_bqIdentityInterestScoreRepository.deleteByRecordedDateLessThanEqual(
 			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));

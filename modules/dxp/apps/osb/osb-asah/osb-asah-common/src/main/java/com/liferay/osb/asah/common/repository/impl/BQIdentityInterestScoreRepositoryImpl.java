@@ -143,12 +143,18 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public void deleteByKeywordAndRecordedDateGreaterThanEqual(
-		String keyword, Date recordedDate) {
+	public void deleteAll() {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQIdentityInterestScore")
+			).where(
+				DSL.trueCondition()
+			));
 	}
 
 	@Override
-	public void deleteByRecordedDate(Date recordedDate) {
+	public void deleteByKeywordAndRecordedDateGreaterThanEqual(
+		String keyword, Date recordedDate) {
 	}
 
 	@Override

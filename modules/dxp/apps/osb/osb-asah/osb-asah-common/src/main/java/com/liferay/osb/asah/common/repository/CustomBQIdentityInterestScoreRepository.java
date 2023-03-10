@@ -42,12 +42,12 @@ public interface CustomBQIdentityInterestScoreRepository {
 	public long countKeywords(@Nullable String keywords);
 
 	@Modifying
+	public void deleteAll();
+
+	@Modifying
 	public void deleteByKeywordAndRecordedDateGreaterThanEqual(
 		@Param("keyword") String keyword,
 		@Param("recordedDate") Date recordedDate);
-
-	@Modifying
-	public void deleteByRecordedDate(@Param("recordedDate") Date recordedDate);
 
 	@Modifying
 	public void deleteByRecordedDateLessThanEqual(
