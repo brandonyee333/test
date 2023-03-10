@@ -95,19 +95,15 @@ public class SegmentFilterUpgradeStepTest
 		Segment segment = segmentOptional.get();
 
 		Assertions.assertEquals(
-			"(activities.filterByCount(filter='(applicationId eq " +
-				"''WebContent'' and eventId eq ''webContentViewed'' and " +
-					"assetId eq ''4bbc36e2819ac0d4b638e4eda149d2ff26e1cc9cfa" +
-						"6f4f0e85bcad1ade10542c'' and day gt ''last24Hours''" +
-							")', operator='ge', value=1)) and (activities." +
-								"filterByCount(filter='(applicationId eq " +
-									"''Page'' and eventId eq ''pageViewed'' " +
-										"and assetId eq ''5c5db277986449c8e0a" +
-											"80f8172a6b4cf7aecd8dd94374a5cdb2" +
-												"47d0d70ca155e'' and day gt " +
-													"''last24Hours'')', " +
-														"operator='ge', value" +
-															"=1))",
+			"(activities.filterByCount(filter='(activityKey eq ''WebContent#" +
+				"webContentViewed#5d9e83261a59395c78bfb3f7db3096adf964257466" +
+					"f956146ce827c15f5e8d6b'' and day gt ''last24Hours'')', " +
+						"operator='ge', value=1)) and (activities.filterByCo" +
+							"unt(filter='(activityKey eq ''Page#pageViewed#5" +
+								"9ac10dc2253f9d6718642a789ba20adf80f7c74be56" +
+									"f31b14432dc81a19427e'' and day gt ''las" +
+										"t24Hours'')', operator='ge', value=" +
+											"1))",
 			segment.getFilter());
 	}
 
