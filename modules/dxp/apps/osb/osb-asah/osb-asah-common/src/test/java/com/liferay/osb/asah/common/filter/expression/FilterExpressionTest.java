@@ -144,9 +144,8 @@ public class FilterExpressionTest {
 	@Test
 	public void testCastOperatorNumeric() {
 		_assertEquals(
-			DSL.cast(
-				DSL.field("SAFE_CAST(Individual.contactId AS NUMERIC)"),
-				Long.class
+			DSL.field(
+				"SAFE_CAST(Individual.contactId AS NUMERIC)"
 			).eq(
 				0L
 			),
@@ -154,9 +153,8 @@ public class FilterExpressionTest {
 				"''NUMBER'') eq 0)')");
 
 		_assertEquals(
-			DSL.cast(
-				DSL.field("SAFE_CAST(Individual.contactId AS NUMERIC)"),
-				Long.class
+			DSL.field(
+				"SAFE_CAST(Individual.contactId AS NUMERIC)"
 			).ne(
 				0L
 			),
@@ -164,9 +162,8 @@ public class FilterExpressionTest {
 				"''NUMBER'') ne 0')");
 
 		_assertEquals(
-			DSL.cast(
-				DSL.field("SAFE_CAST(Individual.contactId AS NUMERIC)"),
-				Long.class
+			DSL.field(
+				"SAFE_CAST(Individual.contactId AS NUMERIC)"
 			).gt(
 				0L
 			),
@@ -174,9 +171,8 @@ public class FilterExpressionTest {
 				"''NUMBER'') gt 0')");
 
 		_assertEquals(
-			DSL.cast(
-				DSL.field("SAFE_CAST(Individual.contactId AS NUMERIC)"),
-				Long.class
+			DSL.field(
+				"SAFE_CAST(Individual.contactId AS NUMERIC)"
 			).lt(
 				0L
 			),
@@ -266,7 +262,7 @@ public class FilterExpressionTest {
 		_assertEquals(
 			DSL.or(
 				DSL.field(
-					DSL.cast(DSL.field("column1"), Long.class)
+					"column1", Long.class
 				).gt(
 					42L
 				),
@@ -326,7 +322,7 @@ public class FilterExpressionTest {
 							-53.21
 						),
 						DSL.field(
-							DSL.cast(DSL.field("column6"), Long.class)
+							"column6", Long.class
 						).le(
 							-8192L
 						)))),
@@ -1259,7 +1255,7 @@ public class FilterExpressionTest {
 	public void testIntegerValue() {
 		_assertEquals(
 			DSL.field(
-				DSL.cast(DSL.field("column1"), Long.class)
+				"column1", Long.class
 			).eq(
 				123L
 			),

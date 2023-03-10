@@ -150,9 +150,8 @@ public class FilterExpressionVisitor
 			return condition;
 		}
 
+		Field leftField = _getLeftField(equalsExpressionContext);
 		Field rightField = _getRightField(equalsExpressionContext);
-
-		Field leftField = _getLeftField(equalsExpressionContext, rightField);
 
 		if (rightField == null) {
 			return leftField.isNull();
@@ -406,12 +405,9 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.GreaterThanExpressionContext
 			greaterThanExpressionContext) {
 
-		Field rightField = _getRightField(greaterThanExpressionContext);
+		Field leftField = _getLeftField(greaterThanExpressionContext);
 
-		Field leftField = _getLeftField(
-			greaterThanExpressionContext, rightField);
-
-		return leftField.gt(rightField);
+		return leftField.gt(_getRightField(greaterThanExpressionContext));
 	}
 
 	@Override
@@ -419,12 +415,10 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.GreaterThanOrEqualsExpressionContext
 			greaterThanOrEqualsExpressionContext) {
 
-		Field rightField = _getRightField(greaterThanOrEqualsExpressionContext);
+		Field leftField = _getLeftField(greaterThanOrEqualsExpressionContext);
 
-		Field leftField = _getLeftField(
-			greaterThanOrEqualsExpressionContext, rightField);
-
-		return leftField.ge(rightField);
+		return leftField.ge(
+			_getRightField(greaterThanOrEqualsExpressionContext));
 	}
 
 	@Override
@@ -463,11 +457,9 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.LessThanExpressionContext
 			lessThanExpressionContext) {
 
-		Field rightField = _getRightField(lessThanExpressionContext);
+		Field leftField = _getLeftField(lessThanExpressionContext);
 
-		Field leftField = _getLeftField(lessThanExpressionContext, rightField);
-
-		return leftField.lt(rightField);
+		return leftField.lt(_getRightField(lessThanExpressionContext));
 	}
 
 	@Override
@@ -475,12 +467,9 @@ public class FilterExpressionVisitor
 		FilterExpressionParser.LessThanOrEqualsExpressionContext
 			lessThanOrEqualsExpressionContext) {
 
-		Field rightField = _getRightField(lessThanOrEqualsExpressionContext);
+		Field leftField = _getLeftField(lessThanOrEqualsExpressionContext);
 
-		Field leftField = _getLeftField(
-			lessThanOrEqualsExpressionContext, rightField);
-
-		return leftField.le(rightField);
+		return leftField.le(_getRightField(lessThanOrEqualsExpressionContext));
 	}
 
 	@Override
@@ -528,9 +517,8 @@ public class FilterExpressionVisitor
 			return condition;
 		}
 
+		Field leftField = _getLeftField(notEqualsExpressionContext);
 		Field rightField = _getRightField(notEqualsExpressionContext);
-
-		Field leftField = _getLeftField(notEqualsExpressionContext, rightField);
 
 		if (rightField == null) {
 			return leftField.isNotNull();
@@ -723,22 +711,8 @@ public class FilterExpressionVisitor
 		return field.in(selectConditionStep);
 	}
 
-	private Field _getLeftField(
-		ParserRuleContext parserRuleContext, Field rightField) {
-
-		Field leftField = _visitChild(parserRuleContext, 0);
-
-		if (rightField == null) {
-			return leftField;
-		}
-
-		Class<?> rightFieldType = rightField.getType();
-
-		if (rightFieldType.isAssignableFrom(Long.class)) {
-			return DSL.cast(leftField, Long.class);
-		}
-
-		return leftField;
+	private Field _getLeftField(ParserRuleContext parserRuleContext) {
+		return _visitChild(parserRuleContext, 0);
 	}
 
 	private Field _getRightField(ParserRuleContext parserRuleContext) {
