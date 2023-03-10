@@ -48,23 +48,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class DefinitionsRestController extends BaseRestController {
 
 	@GetMapping("/individual-attributes")
-	public PageDTO<BQFieldMappingDTO> getIndividualFieldMappingDTOPageDTO(
+	public PageDTO<BQFieldMappingDTO> getIndividualBQFieldMappingDTOPageDTO(
 		@RequestParam(required = false) String name) {
 
 		Page<BQFieldMapping> bqFieldMappingPage =
-			_bqFieldMappingDog.searchIndividualFieldMappingPage(
+			_bqFieldMappingDog.searchIndividualBQFieldMappingPage(
 				name, 0,
 				Math.max(
 					1,
-					(int)_bqFieldMappingDog.countIndividualFieldMappings(name)),
+					(int)_bqFieldMappingDog.countIndividualBQFieldMappings(
+						name)),
 				new String[] {"fieldName", "asc"});
 
-		Map<String, BQFieldMappingDTO> fieldMappingDTOs = Stream.of(
+		Map<String, BQFieldMappingDTO> bqFieldMappingDTOs = Stream.of(
 			bqFieldMappingPage.getContent()
 		).flatMap(
 			List::stream
 		).map(
-			this::_toFieldMappingDTO
+			this::_toBQFieldMappingDTO
 		).collect(
 			LinkedHashMap::new,
 			(map, bqFieldMappingDTO) -> map.put(
@@ -72,18 +73,18 @@ public class DefinitionsRestController extends BaseRestController {
 			Map::putAll
 		);
 
-		_addDataSources(fieldMappingDTOs);
+		_addDataSources(bqFieldMappingDTOs);
 
 		return _toPageDTO(
-			new BQFieldMappingDTO(fieldMappingDTOs.values()),
+			new BQFieldMappingDTO(bqFieldMappingDTOs.values()),
 			bqFieldMappingPage);
 	}
 
 	private void _addDataSources(
-		Map<String, BQFieldMappingDTO> fieldMappingDTOs) {
+		Map<String, BQFieldMappingDTO> bqFieldMappingDTOs) {
 
 		for (Map.Entry<String, BQFieldMappingDTO> entry :
-				fieldMappingDTOs.entrySet()) {
+				bqFieldMappingDTOs.entrySet()) {
 
 			BQFieldMappingDTO bqFieldMappingDTO = entry.getValue();
 
@@ -121,7 +122,7 @@ public class DefinitionsRestController extends BaseRestController {
 	}
 
 	@NotNull
-	private BQFieldMappingDTO _toFieldMappingDTO(
+	private BQFieldMappingDTO _toBQFieldMappingDTO(
 		BQFieldMapping bqFieldMapping) {
 
 		BQFieldMappingDTO bqFieldMappingDTO = new BQFieldMappingDTO(
@@ -145,12 +146,13 @@ public class DefinitionsRestController extends BaseRestController {
 
 	private PageDTO<BQFieldMappingDTO> _toPageDTO(
 		BQFieldMappingDTO bqFieldMappingDTO,
-		Page<BQFieldMapping> fieldMappingsPage) {
+		Page<BQFieldMapping> bqFieldMappingsPage) {
 
 		return new PageDTO<>(
-			"_embedded", bqFieldMappingDTO, fieldMappingsPage.getNumber(),
-			fieldMappingsPage.getSize(), fieldMappingsPage.getTotalElements(),
-			fieldMappingsPage.getTotalPages());
+			"_embedded", bqFieldMappingDTO, bqFieldMappingsPage.getNumber(),
+			bqFieldMappingsPage.getSize(),
+			bqFieldMappingsPage.getTotalElements(),
+			bqFieldMappingsPage.getTotalPages());
 	}
 
 	@Autowired

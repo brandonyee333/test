@@ -83,12 +83,12 @@ public class BQFieldMappingRepositoryTest
 
 	@Test
 	public void testSearchByFilterString() {
-		List<BQFieldMapping> fieldMappings =
+		List<BQFieldMapping> bqFieldMappings =
 			_bqFieldMappingRepository.searchByFilterString(
 				"((context eq 'demographics') and (ownerType eq 'individual'))",
 				PageRequest.of(0, 20));
 
-		Assertions.assertEquals(9, fieldMappings.size());
+		Assertions.assertEquals(9, bqFieldMappings.size());
 	}
 
 	@Autowired

@@ -40,15 +40,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class BQFieldMappingDog {
 
-	public long countIndividualFieldMappings(String name) {
-		return _bqFieldMappingRepository.countIndividualFieldMappings(name);
+	public long countIndividualBQFieldMappings(String name) {
+		return _bqFieldMappingRepository.countIndividualBQFieldMappings(name);
 	}
 
 	public BQFieldMapping getBQFieldMapping(String fieldName) {
-		Optional<BQFieldMapping> fieldMappingOptional =
+		Optional<BQFieldMapping> bqFieldMappingOptional =
 			_bqFieldMappingRepository.findByFieldName(fieldName);
 
-		return fieldMappingOptional.orElseThrow(
+		return bqFieldMappingOptional.orElseThrow(
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no field mapping with field name " + fieldName));
@@ -73,25 +73,26 @@ public class BQFieldMappingDog {
 			() -> _bqFieldMappingRepository.countByFilterString(filterString));
 	}
 
-	public Page<BQFieldMapping> searchIndividualFieldMappingPage(
+	public Page<BQFieldMapping> searchIndividualBQFieldMappingPage(
 		@Nullable String name, int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
-		List<BQFieldMapping> fieldMappings =
-			_bqFieldMappingRepository.searchIndividualFieldMappings(
+		List<BQFieldMapping> bqFieldMappings =
+			_bqFieldMappingRepository.searchIndividualBQFieldMappings(
 				name, pageRequest);
 
-		_setDemographicsFieldsDataSourceIds(fieldMappings);
+		_setDemographicsFieldsDataSourceIds(bqFieldMappings);
 
 		return PageableExecutionUtils.getPage(
-			fieldMappings, pageRequest,
-			() -> _bqFieldMappingRepository.countIndividualFieldMappings(name));
+			bqFieldMappings, pageRequest,
+			() -> _bqFieldMappingRepository.countIndividualBQFieldMappings(
+				name));
 	}
 
 	private void _setDemographicsFieldsDataSourceIds(
-		List<BQFieldMapping> fieldMappings) {
+		List<BQFieldMapping> bqFieldMappings) {
 
 		List<DataSource> dataSources = _dataSourceDog.getDataSources();
 
@@ -101,7 +102,7 @@ public class BQFieldMappingDog {
 			dataSourceIds.add(dataSource.getId());
 		}
 
-		for (BQFieldMapping bqFieldMapping : fieldMappings) {
+		for (BQFieldMapping bqFieldMapping : bqFieldMappings) {
 			String context = bqFieldMapping.getContext();
 
 			if (context.equals("demographics")) {

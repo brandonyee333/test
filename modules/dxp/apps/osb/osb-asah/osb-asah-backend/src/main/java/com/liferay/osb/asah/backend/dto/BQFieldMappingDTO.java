@@ -62,6 +62,11 @@ public class BQFieldMappingDTO {
 			bqFieldMappings, BQFieldMappingDTO::new);
 	}
 
+	@JsonProperty("field-mappings")
+	public Set<BQFieldMappingDTO> getBQFieldMappingDTOs() {
+		return _bqFieldMappingDTOS;
+	}
+
 	@JsonProperty("context")
 	public String getContext() {
 		return _context;
@@ -85,11 +90,6 @@ public class BQFieldMappingDTO {
 	@JsonProperty("displayType")
 	public String getDisplayType() {
 		return _displayType;
-	}
-
-	@JsonProperty("field-mappings")
-	public Set<BQFieldMappingDTO> getFieldMappingDTOs() {
-		return _bqFieldMappingDTOS;
 	}
 
 	@JsonProperty("fieldName")

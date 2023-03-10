@@ -68,7 +68,7 @@ public class BQFieldMappingRepositoryImpl
 			));
 	}
 
-	public long countIndividualFieldMappings(String fieldName) {
+	public long countIndividualBQFieldMappings(String fieldName) {
 		Condition condition = DSL.field(
 			"ownerType"
 		).eq(
@@ -191,7 +191,7 @@ public class BQFieldMappingRepositoryImpl
 	}
 
 	@Override
-	public List<BQFieldMapping> searchIndividualFieldMappings(
+	public List<BQFieldMapping> searchIndividualBQFieldMappings(
 		String name, Pageable pageable) {
 
 		Condition condition = DSL.field(

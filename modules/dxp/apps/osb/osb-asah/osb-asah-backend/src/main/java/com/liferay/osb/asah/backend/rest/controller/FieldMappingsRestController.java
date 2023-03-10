@@ -36,12 +36,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class FieldMappingsRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
-	public BQFieldMappingDTO getFieldMappingDTO(@PathVariable String id) {
+	public BQFieldMappingDTO getBQFieldMappingDTO(@PathVariable String id) {
 		return new BQFieldMappingDTO(_bqFieldMappingDog.getBQFieldMapping(id));
 	}
 
 	@GetMapping(params = "!apply")
-	public PageDTO<BQFieldMappingDTO> getFieldMappingDTOPageDTO(
+	public PageDTO<BQFieldMappingDTO> getBQFieldMappingDTOPageDTO(
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
