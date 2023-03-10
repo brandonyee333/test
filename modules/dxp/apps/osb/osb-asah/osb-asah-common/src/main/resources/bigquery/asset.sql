@@ -13,29 +13,29 @@ WITH AssetEvent AS (
 		`$[AC_PROJECT_ID].event` event
 	WHERE
 		event.applicationId IN (
-			'Blog', 'Custom', 'Document', 'Form', 'WebContent', 'Page'
+			'Blog', 'Comment', 'Document', 'Form', 'WebContent', 'Page'
 		) AND
 		event.eventId IN (
-			'blogViewed', 'formViewed', 'documentDownloaded',
-			'documentPreviewed', 'webContentViewed', 'pageViewed'
+			'blogViewed', 'formViewed', 'formSubmitted', 'documentDownloaded',
+			'documentPreviewed', 'webContentViewed', 'pageViewed', 'posted'
 		)
 )
 SELECT
-	TO_HEX(
-		SHA256(CONCAT(assetId, assetTitle))
-	) AS id,
+    applicationId,
+	TO_HEX(SHA256(assetId)) AS id,
 	assetId,
 	assetTitle,
-	applicationId AS assetType,
 	channelId,
 	dataSourceId,
+    eventId,
 	MAX(eventDate) as modifiedDate,
-	COUNT(*) as views
+	COUNT(*) as count
 FROM
 	AssetEvent
 GROUP BY
+	applicationId,
 	assetId,
 	assetTitle,
-	assetType,
 	channelId,
-	dataSourceId
+	dataSourceId,
+	eventId
