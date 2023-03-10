@@ -17,6 +17,8 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 
+import java.util.Date;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -24,6 +26,8 @@ import org.springframework.lang.Nullable;
  * @author Robson Pastor
  */
 public interface CustomBQSessionInterestScoreRepository {
+
+	public void deleteByRecordedDate(Date date);
 
 	public CompositionResultBag getInterestCompositionResultBag(
 		@Nullable Long channelId, Pageable pageable, TimeRange timeRange);

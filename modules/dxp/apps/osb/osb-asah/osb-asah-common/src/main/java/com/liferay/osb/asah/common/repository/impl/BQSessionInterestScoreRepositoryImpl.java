@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -23,6 +24,8 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.math.BigDecimal;
+
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,6 +58,21 @@ public class BQSessionInterestScoreRepositoryImpl
 
 		_fieldNames =
 			interestFilterStringConverterHelper.getFieldNameConversionMap();
+	}
+
+	@Override
+	public void deleteByRecordedDate(Date recordedDate) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQSessionInterestScore")
+			).where(
+				DSL.field(
+					"recordedDate", Object.class
+				).eq(
+					DateUtil.toUTCString(
+						recordedDate, new SimpleDateFormat("yyyy-MM-dd"))
+				)
+			));
 	}
 
 	@Override
