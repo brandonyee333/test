@@ -59,10 +59,10 @@ public class SegmentFilterStringConverterHelperTest {
 			null, "((individualCount eq 3))",
 			_segmentFilterStringConverterHelper);
 
-		Condition condition1 = DSL.field(
-			"id"
-		).in(
-			Collections.singletonList(3L)
+		Condition condition1 = DSL.cast(
+			DSL.field("individualCount"), Long.class
+		).eq(
+			3L
 		);
 
 		Assertions.assertEquals(condition1, filterHelper1.getCondition());
@@ -71,10 +71,10 @@ public class SegmentFilterStringConverterHelperTest {
 			null, "((individualCount gt 3))",
 			_segmentFilterStringConverterHelper);
 
-		Condition condition2 = DSL.field(
-			"id"
-		).in(
-			Collections.singletonList(5L)
+		Condition condition2 = DSL.cast(
+			DSL.field("individualCount"), Long.class
+		).gt(
+			3L
 		);
 
 		Assertions.assertEquals(condition2, filterHelper2.getCondition());
@@ -83,10 +83,10 @@ public class SegmentFilterStringConverterHelperTest {
 			null, "((individualCount lt 3))",
 			_segmentFilterStringConverterHelper);
 
-		Condition condition3 = DSL.field(
-			"id"
-		).in(
-			Collections.singletonList(2L)
+		Condition condition3 = DSL.cast(
+			DSL.field("individualCount"), Long.class
+		).lt(
+			3L
 		);
 
 		Assertions.assertEquals(condition3, filterHelper3.getCondition());

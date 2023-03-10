@@ -157,6 +157,14 @@ public class FilterExpressionVisitor
 			return leftField.isNull();
 		}
 
+		if (Objects.equals("IdentityActivity.channelId", leftField.getName()) &&
+			(rightField instanceof Param)) {
+
+			Param<String> param = (Param<String>)rightField;
+
+			rightField = DSL.val(Long.parseLong(param.getValue()));
+		}
+
 		return leftField.eq(rightField);
 	}
 
@@ -988,6 +996,14 @@ public class FilterExpressionVisitor
 		"yesterday");
 
 	private final Map<String, String> _fieldMappers = new HashMap<>();
+	private final Map<String, String> _fieldNameConversions =
+		new HashMap<String, String>() {
+			{
+				put("channelIds", "IdentityActivity.channelId");
+				put("email", "Individual.emailAddress");
+				put("lastEnrichmentDate", "Individual.modifiedDate");
+			}
+		};
 	private final String _filterType;
 	private final Map<String, Set<String>> _referencedObjectIds =
 		new HashMap<>();
