@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.repository.BQEventPropertyRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -45,6 +46,7 @@ public class BQEventPropertyRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@BQSQLResource(resourcePath = "test_bq_event_properties_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_properties.sql")
 	@Test
 	public void testFindBQEventPropertyValuesByEventAttributeDefinitionId() {
@@ -69,6 +71,7 @@ public class BQEventPropertyRepositoryTest
 					"itemName", 5));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_properties_1_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_properties_1.sql")
 	@Test
 	public void testFindBQEventPropertyValuesByEventAttributeDefinitionIdNoMatchingValues() {
@@ -79,6 +82,7 @@ public class BQEventPropertyRepositoryTest
 					"itemName", 10));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_properties_2_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_properties_2.sql")
 	@Test
 	public void testSearchValues() {

@@ -27,8 +27,8 @@ import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
@@ -196,7 +196,7 @@ public class BQMembershipDogTest
 				"338486041327913341", 338511398116723458L));
 	}
 
-	@SQLResource(resourcePath = "test_bq_memberships.sql")
+	@BQSQLResource(resourcePath = "test_bq_memberships.sql")
 	@Test
 	public void testUpdateBQMemberships() {
 		_bqMembershipDog.updateBQMemberships(
@@ -207,7 +207,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
-	@SQLResource(resourcePath = "test_bq_memberships_custom_fields.sql")
+	@BQSQLResource(resourcePath = "test_bq_memberships_custom_fields.sql")
 	@Test
 	public void testUpdateBQMembershipsWithCustomFields() {
 		_bqMembershipDog.updateBQMemberships(
@@ -218,7 +218,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
-	@SQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
+	@BQSQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
 	@Test
 	public void testUpdateBQMembershipsWithInterest1() {
 		_bqMembershipDog.updateBQMemberships(
@@ -269,7 +269,7 @@ public class BQMembershipDogTest
 		_assertBQMemberships(bqMemberships, expectedIndividuals);
 	}
 
-	@SQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
+	@BQSQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
 	@Test
 	public void testUpdateBQMembershipsWithInterest2() {
 		_bqMembershipDog.updateBQMemberships(
@@ -324,7 +324,7 @@ public class BQMembershipDogTest
 		_assertBQMemberships(bqMemberships, expectedIndividuals);
 	}
 
-	@SQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
+	@BQSQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
 	@Test
 	public void testUpdateBQMembershipsWithInterest3() {
 		_bqMembershipDog.updateBQMemberships(
@@ -380,7 +380,7 @@ public class BQMembershipDogTest
 		_assertBQMemberships(bqMemberships, expectedIndividuals);
 	}
 
-	@SQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
+	@BQSQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
 	@Test
 	public void testUpdateBQMembershipsWithInterest4() {
 		_bqMembershipDog.updateBQMemberships(

@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahDuplicateNameExc
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -247,6 +248,7 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(2345L, eventAnalysisIds.get(0));
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis.sql")
 	@Test
 	public void testGetEventAnalysisAverage() {
@@ -267,6 +269,7 @@ public class EventAnalysisDogTest
 			0, value.compareTo((BigDecimal)eventAnalysisResult.getValue()));
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownAverage() throws Exception {
@@ -292,6 +295,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownBoolean() throws Exception {
@@ -327,6 +331,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownDayGrouping() throws Exception {
@@ -363,6 +368,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownDuration() throws Exception {
@@ -386,6 +392,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownMonthGrouping() throws Exception {
@@ -422,6 +429,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownNullValues() throws Exception {
@@ -458,6 +466,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownNumber() throws Exception {
@@ -481,6 +490,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownTotal() throws Exception {
@@ -522,6 +532,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownUnique() throws Exception {
@@ -563,6 +574,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownWhenDataExceedOnePage() {
@@ -613,6 +625,7 @@ public class EventAnalysisDogTest
 			new BigDecimal(8), firstBreakdownItem.getValue());
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownWithDateFilterAfter() {
@@ -635,6 +648,7 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(9L, eventAnalysisResult.getValue());
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownWithDateFilterBefore() {
@@ -657,6 +671,7 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(5L, eventAnalysisResult.getValue());
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownWithDateFilterBetween() {
@@ -679,6 +694,7 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(7L, eventAnalysisResult.getValue());
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownWithDateFilterIs() {
@@ -701,6 +717,7 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(6L, eventAnalysisResult.getValue());
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownWithFilter() throws Exception {
@@ -750,6 +767,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownWithFilterAndDifferentSortingType()
@@ -795,6 +813,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_breakdown_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_breakdown.sql")
 	@Test
 	public void testGetEventAnalysisBreakdownYearGrouping() throws Exception {
@@ -831,6 +850,7 @@ public class EventAnalysisDogTest
 			true);
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_with_filter_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_with_filter.sql")
 	@Test
 	public void testGetEventAnalysisMultipleFilters() {
@@ -875,6 +895,7 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(1L, eventAnalysisResult.getValue());
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_with_filter_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis_with_filter.sql")
 	@Test
 	public void testGetEventAnalysisSingleFilter() {
@@ -900,6 +921,7 @@ public class EventAnalysisDogTest
 			0, value.compareTo((BigDecimal)eventAnalysisResult.getValue()));
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis.sql")
 	@Test
 	public void testGetEventAnalysisTotal() {
@@ -916,6 +938,7 @@ public class EventAnalysisDogTest
 		Assertions.assertEquals(7L, eventAnalysisResult.getValue());
 	}
 
+	@BQSQLResource(resourcePath = "test_get_event_analysis_bq.sql")
 	@SQLResource(resourcePath = "test_get_event_analysis.sql")
 	@Test
 	public void testGetEventAnalysisUnique() {

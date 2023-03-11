@@ -18,7 +18,7 @@ import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQOrderRepository;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -41,7 +41,7 @@ public class BQOrderRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderAccountAverageCurrencyValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -73,7 +73,7 @@ public class BQOrderRepositoryTest
 			actualValue.stripTrailingZeros());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderAccountAverageCurrencyValuesWithEmptyDatasourceIds() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -86,7 +86,7 @@ public class BQOrderRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderAverageCurrencyValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -118,7 +118,7 @@ public class BQOrderRepositoryTest
 			actualValue.stripTrailingZeros());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderAverageCurrencyValuesWithEmptyDatasourceIds() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -131,7 +131,7 @@ public class BQOrderRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderIncompleteCurrencyValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -163,7 +163,7 @@ public class BQOrderRepositoryTest
 			actualValue.stripTrailingZeros());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderIncompleteCurrencyValuesWithEmptyDataSourceIds() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -176,7 +176,7 @@ public class BQOrderRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderTotalCurrencyValues() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;
@@ -208,7 +208,7 @@ public class BQOrderRepositoryTest
 			actualValue.stripTrailingZeros());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderTotalCurrencyValuesWithEmptyDataSourceIds() {
 		TimeRange timeRange = TimeRange.LAST_7_DAYS;

@@ -34,6 +34,7 @@ import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.util.GetterUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -85,7 +86,7 @@ public class BQEventRepositoryTest
 		_preferenceDog.savePreference("time-zone-id", "UTC");
 	}
 
-	@SQLResource(resourcePath = "test_bq_events.sql")
+	@BQSQLResource(resourcePath = "test_bq_events.sql")
 	@Test
 	public void testCountBQEventsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
@@ -98,7 +99,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
-	@SQLResource(resourcePath = "test_bq_events.sql")
+	@BQSQLResource(resourcePath = "test_bq_events.sql")
 	@Test
 	public void testCountBQEventsWithKeywordsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
@@ -111,6 +112,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testCountTotalBQEvents1() {
@@ -130,6 +132,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testCountTotalBQEvents2() {
@@ -162,6 +165,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_global_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_global_property_values.sql")
 	@Test
 	public void testCountTotalBQEventsWithOnlyGlobalAttributes() {
@@ -189,6 +193,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testCountTotalBQEventsWithTimeZone() {
@@ -208,6 +213,7 @@ public class BQEventRepositoryTest
 				"America/Los_Angeles"));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testCountUniqueIndividuals() {
@@ -227,6 +233,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testCountUniqueIndividualsWithTimeZone() {
@@ -246,6 +253,9 @@ public class BQEventRepositoryTest
 				"America/Los_Angeles"));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_get_average_bq_event_count_per_individual_bq.sql"
+	)
 	@SQLResource(
 		resourcePath = "test_get_average_bq_event_count_per_individual.sql"
 	)
@@ -268,6 +278,9 @@ public class BQEventRepositoryTest
 					_timeZoneDog.getTimeZoneId())));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_get_average_bq_event_count_per_individual_bq.sql"
+	)
 	@SQLResource(
 		resourcePath = "test_get_average_bq_event_count_per_individual.sql"
 	)
@@ -290,6 +303,7 @@ public class BQEventRepositoryTest
 					"America/Los_Angeles")));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesAverage() {
@@ -324,6 +338,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesBoolean() {
@@ -352,6 +367,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesCountBoolean() {
@@ -370,6 +386,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesCountDate() {
@@ -388,6 +405,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesCountDateWithTimeZone() {
@@ -412,6 +430,7 @@ public class BQEventRepositoryTest
 				"America/Los_Angeles"));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesCountDuration() {
@@ -430,6 +449,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesCountNumber() {
@@ -448,6 +468,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesDayGroupingWithTimeZone() {
@@ -481,6 +502,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesDuration() {
@@ -512,6 +534,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesMonthGrouping() {
@@ -542,6 +565,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesNullValues() {
@@ -570,6 +594,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesNumber() {
@@ -598,6 +623,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesTotal() {
@@ -628,6 +654,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesUnique() {
@@ -658,6 +685,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesWithBreakdownItem() {
@@ -693,6 +721,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesWithBreakdownItemWithReservedWords1() {
@@ -719,6 +748,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesWithBreakdownItemWithReservedWords2() {
@@ -745,6 +775,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesWithNoBreakdown() {
@@ -772,6 +803,7 @@ public class BQEventRepositoryTest
 		Assertions.assertEquals(20, number.intValue());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetBQEventPropertyValuesYearGrouping() {
@@ -801,7 +833,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_last_7_days.sql"
 	)
 	@Test
@@ -825,10 +857,10 @@ public class BQEventRepositoryTest
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_last_7_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetBQEventsCountGroupByEventDateLast7DaysWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
@@ -866,7 +898,7 @@ public class BQEventRepositoryTest
 			expectedCountGroupByEventDate, bqEventsCountGroupByEventDate);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_last_24_hours.sql"
 	)
 	@Test
@@ -890,7 +922,7 @@ public class BQEventRepositoryTest
 		Assertions.assertEquals(4, iterator.next());
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_last_24_hours.sql"
 	)
 	@Test
@@ -922,6 +954,7 @@ public class BQEventRepositoryTest
 			bqEventsCountGroupByEventDate);
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetEventPropertyValuesCountString() {
@@ -940,6 +973,7 @@ public class BQEventRepositoryTest
 				_timeZoneDog.getTimeZoneId()));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_event_property_values_bq.sql")
 	@SQLResource(resourcePath = "test_bq_event_property_values.sql")
 	@Test
 	public void testGetEventPropertyValuesDayGrouping() {
@@ -972,7 +1006,7 @@ public class BQEventRepositoryTest
 			});
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_last_7_days.sql"
 	)
 	@Test
@@ -997,10 +1031,10 @@ public class BQEventRepositoryTest
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
-	@Disabled
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_last_7_days.sql"
 	)
+	@Disabled
 	@Test
 	public void testGetEventSessionsCountGroupByEventDateLast7DaysWithTimeZone() {
 		_preferenceDog.savePreference("time-zone-id", "America/Los_Angeles");
@@ -1039,7 +1073,7 @@ public class BQEventRepositoryTest
 			eventSessionsCountGroupByEventDate);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_last_24_hours.sql"
 	)
 	@Test
@@ -1064,7 +1098,7 @@ public class BQEventRepositoryTest
 		Assertions.assertEquals(2, iterator.next());
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_last_24_hours.sql"
 	)
 	@Test
@@ -1096,7 +1130,7 @@ public class BQEventRepositoryTest
 			eventSessionsCountGroupByEventDate);
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_custom_range.sql"
 	)
 	@Test
@@ -1122,7 +1156,7 @@ public class BQEventRepositoryTest
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
-	@SQLResource(
+	@BQSQLResource(
 		resourcePath = "test_bq_event_count_grouped_by_event_date_custom_range.sql"
 	)
 	@Test
@@ -1148,7 +1182,7 @@ public class BQEventRepositoryTest
 			Matchers.arrayContainingInAnyOrder(values.toArray(new Integer[0])));
 	}
 
-	@SQLResource(resourcePath = "test_bq_events.sql")
+	@BQSQLResource(resourcePath = "test_bq_events.sql")
 	@Test
 	public void testSearchBQEventsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
@@ -1178,8 +1212,8 @@ public class BQEventRepositoryTest
 			).toArray());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_events.sql")
 	@Disabled
-	@SQLResource(resourcePath = "test_bq_events.sql")
 	@Test
 	public void testSearchBQEventsWithKeywordsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;

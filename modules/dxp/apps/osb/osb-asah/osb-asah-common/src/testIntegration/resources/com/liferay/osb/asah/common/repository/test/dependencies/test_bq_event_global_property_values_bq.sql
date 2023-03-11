@@ -1,0 +1,1 @@
+INSERT INTO Event (applicationId, channelId, eventDate, eventId, id, title, userId) VALUES ('CustomEvent', 1, timestamp '2021-05-14 00:00:00-00', 'testEvent1', '1', 'test', '9');

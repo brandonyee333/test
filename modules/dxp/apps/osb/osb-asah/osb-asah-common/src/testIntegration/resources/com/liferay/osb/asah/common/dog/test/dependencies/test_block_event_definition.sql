@@ -1,7 +1,4 @@
-INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId) VALUES (1000, 'http://localhost:8080/web/guest/home', (SELECT id from Channel WHERE name='testChannelName'), '2021-04-19 00:00:00-00', 'subscribed', 6789);
-INSERT INTO BQEvent (id, canonicalUrl, channelId, eventDate, eventId, sessionId) VALUES (1001, 'http://localhost:8089/web/guest/home', (SELECT id from Channel WHERE name='testChannelName'), '2021-04-19 12:35:00-00', 'subscribed', 6790);
-
-INSERT INTO Channel (createDate, name) VALUES ('2021-04-19 00:00:00-07', 'testChannelName');
+INSERT INTO Channel (createDate, id, name) VALUES ('2021-04-19 00:00:00-07', 12345, 'testChannelName');
 
 INSERT INTO EventDefinition (applicationId, blocked, description, displayName, name, type) VALUES ('CustomEvent', false, 'Subscribed to user', 'Subscribed', 'subscribed', 'CUSTOM');
 

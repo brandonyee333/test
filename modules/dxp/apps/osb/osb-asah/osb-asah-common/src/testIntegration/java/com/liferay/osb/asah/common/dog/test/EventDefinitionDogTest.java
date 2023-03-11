@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.entity.EventDefinition;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
@@ -192,6 +193,7 @@ public class EventDefinitionDogTest
 			"TestEvent (1)", eventDefinition2.getDisplayName());
 	}
 
+	@BQSQLResource(resourcePath = "test_block_event_definition_bq.sql")
 	@SQLResource(resourcePath = "test_block_event_definition.sql")
 	@Test
 	public void testBlockEventDefinition() {
@@ -226,6 +228,7 @@ public class EventDefinitionDogTest
 			eventDefinition.getBlockedLastSeenURL());
 	}
 
+	@BQSQLResource(resourcePath = "test_block_event_definitions_bq.sql")
 	@SQLResource(resourcePath = "test_block_event_definitions.sql")
 	@Test
 	public void testBlockEventDefinitions() {

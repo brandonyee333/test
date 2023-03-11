@@ -23,7 +23,7 @@ import com.liferay.osb.asah.common.model.CurrencyValue;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Map;
@@ -68,7 +68,7 @@ public class CommerceDashboardDogTest
 		_channelRepository.save(channel);
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderAccountAverageCurrencyValues() {
 		Map<String, CurrencyValue> orderAccountAverageCurrencyValues =
@@ -85,7 +85,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertNull(currencyValue.getPercentageVariation());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderAccountAverageCurrencyValuesWithPreviousPeriodComparison() {
 		Map<String, CurrencyValue> orderAccountAverageCurrencyValues =
@@ -103,7 +103,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertEquals(5.0, currencyValue.getPercentageVariation());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderAverageCurrencyValues() {
 		Map<String, CurrencyValue> orderAverageCurrencyValues =
@@ -119,7 +119,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertNull(currencyValue.getPercentageVariation());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderAverageCurrencyValuesWithPreviousPeriodComparison() {
 		Map<String, CurrencyValue> orderAverageCurrencyValues =
@@ -136,7 +136,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertEquals(0.0, currencyValue.getPercentageVariation());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderIncompleteCurrencyValues() {
 		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
@@ -152,7 +152,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertNull(currencyValue.getPercentageVariation());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderIncompleteCurrencyValuesWithPreviousPeriodComparison() {
 		Map<String, CurrencyValue> orderIncompleteCurrencyValues =
@@ -169,7 +169,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertEquals(0.0, currencyValue.getPercentageVariation());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderTotalCurrencyValues() {
 		Map<String, CurrencyValue> orderTotalCurrencyValues =
@@ -185,7 +185,7 @@ public class CommerceDashboardDogTest
 		Assertions.assertNull(currencyValue.getPercentageVariation());
 	}
 
-	@SQLResource(resourcePath = "test_bq_order.sql")
+	@BQSQLResource(resourcePath = "test_bq_order.sql")
 	@Test
 	public void testGetOrderTotalCurrencyValuesWithPreviousPeriodComparison() {
 		Map<String, CurrencyValue> orderTotalCurrencyValues =

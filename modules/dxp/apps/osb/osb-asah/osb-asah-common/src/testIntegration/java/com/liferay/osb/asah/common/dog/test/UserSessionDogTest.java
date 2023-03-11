@@ -18,8 +18,8 @@ import com.liferay.osb.asah.common.dog.UserSessionDog;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public class UserSessionDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
-	@SQLResource(resourcePath = "test_bq_sessions.sql")
+	@BQSQLResource(resourcePath = "test_bq_sessions.sql")
 	@Test
 	public void testFindByIds() {
 		List<BQSession> bqSessions1 = _userSessionDog.findByIds(
@@ -61,7 +61,7 @@ public class UserSessionDogTest
 		Assertions.assertEquals(2, bqSessions3.size());
 	}
 
-	@SQLResource(resourcePath = "test_bq_sessions_field_values.sql")
+	@BQSQLResource(resourcePath = "test_bq_sessions_field_values.sql")
 	@Test
 	public void testGetBQSessionFieldValuePage() {
 		Page<String> bqSessionFieldValuePage =
