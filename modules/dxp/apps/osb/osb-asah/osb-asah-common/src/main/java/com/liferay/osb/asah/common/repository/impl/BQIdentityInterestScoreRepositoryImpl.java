@@ -642,34 +642,34 @@ public class BQIdentityInterestScoreRepositoryImpl
 		SelectSelectStep<Record1<String>> selectSelectStep = _dslContext.select(
 			DSL.field("keyword", String.class));
 
-		return selectSelectStep.from(
-			"BQIdentityInterestScore"
-		).join(
-			"BQIdentity"
-		).on(
-			DSL.field(
-				"BQIdentityInterestScore.identityId"
-			).eq(
-				DSL.field("BQIdentity.id")
-			)
-		).where(
-			DSL.and(
+		return _queryExecutor.queryForList(
+			recordMap -> (String)recordMap.get("keyword"),
+			selectSelectStep.from(
+				"BQIdentityInterestScore"
+			).join(
+				"BQIdentity"
+			).on(
 				DSL.field(
-					"individualId"
-				).equal(
-					individualId
-				))
-		).orderBy(
-			DSL.field(
-				"interestScore"
-			).desc()
-		).limit(
-			size
-		).offset(
-			0
-		).fetch(
-			record -> (String)record.get("keyword")
-		);
+					"BQIdentityInterestScore.identityId"
+				).eq(
+					DSL.field("BQIdentity.id")
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"individualId"
+					).equal(
+						individualId
+					))
+			).orderBy(
+				DSL.field(
+					"interestScore"
+				).desc()
+			).limit(
+				size
+			).offset(
+				0
+			));
 	}
 
 	@Override
@@ -712,41 +712,38 @@ public class BQIdentityInterestScoreRepositoryImpl
 			datePart = DatePart.HOUR;
 		}
 
-		return selectSelectStep.from(
-			"BQIdentityInterestScore"
-		).rightJoin(
-			_dslHelper.getTimeSeriesTable(
-				datePart, new Timestamp(fromDate.getTime()),
-				new Timestamp(toDate.getTime()))
-		).on(
-			conditions.toArray(new Condition[0])
-		).where(
-			DSL.field(
-				"generatedDate"
-			).between(
-				fromDate, toDate
-			)
-		).groupBy(
-			periodField
-		).orderBy(
-			periodField
-		).fetch(
+		return _queryExecutor.queryForList(
 			record -> new HashMap<String, Object>() {
 				{
 					put(
 						"intervalInitDate",
 						DateUtil.toUTCString(
-							record.getValue("intervalInitDate", Date.class)));
+							(Date)record.get("intervalInitDate")));
 					put(
 						"scoreAvg",
-						_getAggregationValue(
-							record.getValue("scoreAvg", Double.class)));
-					put(
-						"totalElements",
-						record.getValue("totalElements", Long.class));
+						_getAggregationValue((Double)record.get("scoreAvg")));
+					put("totalElements", record.get("totalElements"));
 				}
-			}
-		);
+			},
+			selectSelectStep.from(
+				"BQIdentityInterestScore"
+			).rightJoin(
+				_dslHelper.getTimeSeriesTable(
+					datePart, new Timestamp(fromDate.getTime()),
+					new Timestamp(toDate.getTime()))
+			).on(
+				conditions.toArray(new Condition[0])
+			).where(
+				DSL.field(
+					"generatedDate"
+				).between(
+					fromDate, toDate
+				)
+			).groupBy(
+				periodField
+			).orderBy(
+				periodField
+			));
 	}
 
 	@Override

@@ -165,9 +165,8 @@ public class BQMembershipRepositoryImpl
 		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
 			DSL.table("BQMembership"));
 
-		deleteUsingStep.where(
-			segmentIdField.in(segmentIds)
-		).execute();
+		_queryExecutor.queryExecute(
+			deleteUsingStep.where(segmentIdField.in(segmentIds)));
 	}
 
 	@Override
@@ -244,15 +243,15 @@ public class BQMembershipRepositoryImpl
 		Field<Object> segmentIdField = DSL.field("segmentId");
 		Field<Object> statusField = DSL.field("status");
 
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			segmentIdField.eq(segmentId)
-		).and(
-			statusField.eq(status)
-		).fetch(
-			0, String.class
-		);
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(recordMap.get("identityId")),
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				segmentIdField.eq(segmentId)
+			).and(
+				statusField.eq(status)
+			));
 	}
 
 	@Override
@@ -269,19 +268,19 @@ public class BQMembershipRepositoryImpl
 		AggregateFunction<Integer> aggregateFunction = DSL.count(
 			segmentIdField);
 
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			segmentIdField.in(segmentIds)
-		).groupBy(
-			identityIdField
-		).having(
-			_getConditions(max, min, ascending)
-		).orderBy(
-			ascending ? aggregateFunction.asc() : aggregateFunction.desc()
-		).fetch(
-			0, String.class
-		);
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(recordMap.get("identityId")),
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				segmentIdField.in(segmentIds)
+			).groupBy(
+				identityIdField
+			).having(
+				_getConditions(max, min, ascending)
+			).orderBy(
+				ascending ? aggregateFunction.asc() : aggregateFunction.desc()
+			));
 	}
 
 	@Override
@@ -296,15 +295,15 @@ public class BQMembershipRepositoryImpl
 		Field<Object> statusField = DSL.field("status");
 		Field<Object> identityIdField = DSL.field("identityId");
 
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			statusField.eq(status)
-		).and(
-			identityIdField.eq(identityId)
-		).fetch(
-			0, Long.class
-		);
+		return _queryExecutor.queryForList(
+			recordMap -> (Long)recordMap.get("segmentId"),
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				statusField.eq(status)
+			).and(
+				identityIdField.eq(identityId)
+			));
 	}
 
 	@Override
@@ -319,15 +318,15 @@ public class BQMembershipRepositoryImpl
 		Field<Object> statusField = DSL.field("status");
 		Field<Object> identityIdField = DSL.field("identityId");
 
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			statusField.eq(status)
-		).and(
-			identityIdField.in(identityIds)
-		).fetch(
-			0, Long.class
-		);
+		return _queryExecutor.queryForList(
+			recordMap -> (Long)recordMap.get("segmentId"),
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				statusField.eq(status)
+			).and(
+				identityIdField.in(identityIds)
+			));
 	}
 
 	@Override
@@ -394,21 +393,21 @@ public class BQMembershipRepositoryImpl
 
 		Field<Object> identityIdField = DSL.field("identityId");
 
-		return selectSelectStep.from(
-			"BQMembership"
-		).where(
-			identityIdField.eq(identityId)
-		).groupBy(
-			segmentIdField
-		).orderBy(
-			DSL.count(
-				identityIdField
-			).desc()
-		).limit(
-			20
-		).fetch(
-			0, Long.class
-		);
+		return _queryExecutor.queryForList(
+			recordMap -> (Long)recordMap.get("segmentId"),
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				identityIdField.eq(identityId)
+			).groupBy(
+				segmentIdField
+			).orderBy(
+				DSL.count(
+					identityIdField
+				).desc()
+			).limit(
+				20
+			));
 	}
 
 	@Override
@@ -481,20 +480,20 @@ public class BQMembershipRepositoryImpl
 				));
 		}
 
-		return _dslContext.select(
-		).from(
-			"BQMembership"
-		).where(
-			condition
-		).orderBy(
-			DSL.field(
-				"id"
-			).asc()
-		).limit(
-			size
-		).fetch(
-			record -> new BQMembership(record.intoMap())
-		);
+		return _queryExecutor.queryForList(
+			BQMembership::new,
+			_dslContext.select(
+			).from(
+				"BQMembership"
+			).where(
+				condition
+			).orderBy(
+				DSL.field(
+					"id"
+				).asc()
+			).limit(
+				size
+			));
 	}
 
 	@Override
