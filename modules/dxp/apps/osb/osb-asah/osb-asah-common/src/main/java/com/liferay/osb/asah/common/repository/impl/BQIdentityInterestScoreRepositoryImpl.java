@@ -108,8 +108,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("BQIdentity.id")
 				)
 			).where(
-				_getConditions(
-					filterHelper, Boolean.TRUE, null, null, null, null)
+				_getConditions(filterHelper, Boolean.TRUE, null, null, null)
 			));
 	}
 
@@ -143,7 +142,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).from(
 				"BQIdentityInterestScore"
 			).where(
-				_getConditions(null, null, null, null, keywords, null)
+				_getConditions(null, null, null, keywords, null)
 			));
 	}
 
@@ -227,6 +226,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"interestScore"
 				),
 				DSL.field(
+					"BQIdentityInterestScore.interested"
+				).as(
+					"interested"
+				),
+				DSL.field(
 					"BQIdentityInterestScore.keyword"
 				).as(
 					"keyword"
@@ -252,8 +256,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("BQIdentity.id")
 				)
 			).where(
-				_getConditions(
-					filterHelper, Boolean.TRUE, null, null, null, null)
+				_getConditions(filterHelper, Boolean.TRUE, null, null, null)
 			).orderBy(
 				_getSortFields(pageable.getSort(), null)
 			).limit(
@@ -271,11 +274,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 			BQIdentityInterestScore::new,
 			_dslContext.selectDistinct(
 				DSL.field(
-					"BQIdentityInterestScore.id"
-				).as(
-					"id"
-				),
-				DSL.field(
 					"BQIdentityInterestScore.identityId"
 				).as(
 					"identityId"
@@ -284,6 +282,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"BQIdentityInterestScore.interestScore"
 				).as(
 					"interestScore"
+				),
+				DSL.field(
+					"BQIdentityInterestScore.interested"
+				).as(
+					"interested"
 				),
 				DSL.field(
 					"BQIdentityInterestScore.keyword"
@@ -328,11 +331,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 			BQIdentityInterestScore::new,
 			_dslContext.selectDistinct(
 				DSL.field(
-					"BQIdentityInterestScore.id"
-				).as(
-					"id"
-				),
-				DSL.field(
 					"BQIdentityInterestScore.identityId"
 				).as(
 					"identityId"
@@ -341,6 +339,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"BQIdentityInterestScore.interestScore"
 				).as(
 					"interestScore"
+				),
+				DSL.field(
+					"BQIdentityInterestScore.interested"
+				).as(
+					"interested"
 				),
 				DSL.field(
 					"BQIdentityInterestScore.keyword"
@@ -394,9 +397,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 			selectSelectStep.from(
 				"BQIdentityInterestScore"
 			).where(
-				_getConditions(null, null, null, null, null, recordedDate)
+				_getConditions(null, null, null, null, recordedDate)
 			).orderBy(
-				DSL.field("id")
+				DSL.field("keyword")
 			).limit(
 				size
 			));
@@ -426,8 +429,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 		return _queryExecutor.queryForList(
 			record -> (String)record.get("individualId"),
 			selectJoinStep.where(
-				_getConditions(
-					filterHelper, null, null, individualIds, null, null)));
+				_getConditions(filterHelper, null, individualIds, null, null)));
 	}
 
 	@Override
@@ -435,11 +437,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 		String individualId, String keyword, Date recordedDate) {
 
 		SelectSelectStep selectSelectStep = _dslContext.selectDistinct(
-			DSL.field(
-				"BQIdentityInterestScore.id"
-			).as(
-				"id"
-			),
 			DSL.field(
 				"BQIdentityInterestScore.identityId"
 			).as(
@@ -449,6 +446,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 				"BQIdentityInterestScore.interestScore"
 			).as(
 				"interestScore"
+			),
+			DSL.field(
+				"BQIdentityInterestScore.interested"
+			).as(
+				"interested"
 			),
 			DSL.field(
 				"BQIdentityInterestScore.keyword"
@@ -670,7 +672,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			selectSelectStep.from(
 				"BQIdentityInterestScore"
 			).where(
-				_getConditions(null, null, null, null, keywords, null)
+				_getConditions(null, null, null, keywords, null)
 			).orderBy(
 				field.asc()
 			).limit(
@@ -868,8 +870,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 	private List<Condition> _getConditions(
 		@Nullable FilterHelper filterHelper, @Nullable Boolean interested,
-		@Nullable Long interestId, @Nullable List<String> individualIds,
-		@Nullable String keywords, @Nullable Date recordedDate) {
+		@Nullable List<String> individualIds, @Nullable String keywords,
+		@Nullable Date recordedDate) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -894,15 +896,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"interested", Boolean.class
 				).eq(
 					interested
-				));
-		}
-
-		if (interestId != null) {
-			conditions.add(
-				DSL.field(
-					"id"
-				).gt(
-					interestId
 				));
 		}
 
