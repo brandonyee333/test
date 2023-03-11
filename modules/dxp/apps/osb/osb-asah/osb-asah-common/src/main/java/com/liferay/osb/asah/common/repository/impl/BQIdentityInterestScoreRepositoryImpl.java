@@ -84,7 +84,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 	@Override
 	public long count() {
-		return 0;
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from("BQIdentityInterestScore"));
 	}
 
 	@Override
@@ -156,10 +160,51 @@ public class BQIdentityInterestScoreRepositoryImpl
 	@Override
 	public void deleteByKeywordAndRecordedDateGreaterThanEqual(
 		String keyword, Date recordedDate) {
+
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQIdentityInterestScore")
+			).where(
+				DSL.and(
+					DSL.field(
+						"keyword"
+					).eq(
+						keyword
+					),
+					DSL.field(
+						"recordedDate"
+					).ge(
+						_dslHelper.getDateValue(recordedDate)
+					))
+			));
+	}
+
+	@Override
+	public void deleteByRecordedDate(Date recordedDate) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQIdentityInterestScore")
+			).where(
+				DSL.field(
+					"recordedDate"
+				).eq(
+					_dslHelper.getDateValue(recordedDate)
+				)
+			));
 	}
 
 	@Override
 	public void deleteByRecordedDateLessThanEqual(Date recordedDate) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQIdentityInterestScore")
+			).where(
+				DSL.field(
+					"recordedDate"
+				).le(
+					_dslHelper.getDateValue(recordedDate)
+				)
+			));
 	}
 
 	@Override

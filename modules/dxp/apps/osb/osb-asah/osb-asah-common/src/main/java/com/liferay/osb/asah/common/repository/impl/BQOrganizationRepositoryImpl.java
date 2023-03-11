@@ -20,7 +20,9 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -84,7 +86,7 @@ public class BQOrganizationRepositoryImpl
 			selectSelectStep.from(
 				"BQOrganization"
 			).where(
-				_getCondition(name)
+				_getCondition(null, name, null)
 			));
 	}
 
@@ -111,27 +113,19 @@ public class BQOrganizationRepositoryImpl
 	}
 
 	@Override
-	public Optional<BQOrganization> findByDataSourceIdAndOrganizationId(
+	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
 		Long dataSourceId, Long organizationId) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return _queryExecutor.queryForObject(
+		return _queryExecutor.queryForList(
 			BQOrganization::new,
 			selectSelectStep.from(
 				"BQOrganization"
 			).where(
-				DSL.and(
-					DSL.field(
-						"dataSourceId"
-					).eq(
-						dataSourceId
-					),
-					DSL.field(
-						"organizationId"
-					).eq(
-						organizationId
-					))
+				_getCondition(
+					dataSourceId, null,
+					Collections.singletonList(organizationId))
 			));
 	}
 
@@ -146,17 +140,7 @@ public class BQOrganizationRepositoryImpl
 			selectSelectStep.from(
 				"BQOrganization"
 			).where(
-				DSL.and(
-					DSL.field(
-						"dataSourceId"
-					).eq(
-						dataSourceId
-					),
-					DSL.field(
-						"organizationId"
-					).in(
-						organizationIds
-					))
+				_getCondition(dataSourceId, null, organizationIds)
 			));
 	}
 
@@ -188,7 +172,7 @@ public class BQOrganizationRepositoryImpl
 			selectSelectStep.from(
 				"BQOrganization"
 			).where(
-				_getCondition(name)
+				_getCondition(null, name, null)
 			).limit(
 				pageable.getPageSize()
 			).offset(
@@ -261,12 +245,34 @@ public class BQOrganizationRepositoryImpl
 			));
 	}
 
-	private Condition _getCondition(String name) {
-		if (StringUtil.isBlank(name)) {
-			return DSL.noCondition();
+	private List<Condition> _getCondition(
+		Long dataSourceId, String name, Collection<Long> organizationIds) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (dataSourceId != null) {
+			conditions.add(
+				DSL.field(
+					"dataSourceId"
+				).eq(
+					dataSourceId
+				));
 		}
 
-		return DSL.condition(String.format("name like '%s'", "%" + name + "%"));
+		if (StringUtil.isNotBlank(name)) {
+			conditions.add(DSL.condition("name like '%" + name + "%'"));
+		}
+
+		if ((organizationIds != null) && !organizationIds.isEmpty()) {
+			conditions.add(
+				DSL.field(
+					"organizationId"
+				).in(
+					organizationIds
+				));
+		}
+
+		return conditions;
 	}
 
 	private final DSLContext _dslContext;

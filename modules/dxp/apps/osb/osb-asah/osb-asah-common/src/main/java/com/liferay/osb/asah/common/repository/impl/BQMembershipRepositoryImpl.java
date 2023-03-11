@@ -121,24 +121,62 @@ public class BQMembershipRepositoryImpl
 	public long countByIdentityIdAndSegmentId(
 		String identityId, Long segmentId) {
 
-		return 0;
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				_getConditions(
+					Collections.singletonList(identityId),
+					Collections.singletonList(segmentId), null)
+			));
 	}
 
 	@Override
 	public long countByIdentityIdInAndSegmentIdAndStatus(
 		List<String> identityIds, Long segmentId, String status) {
 
-		return 0;
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				_getConditions(
+					identityIds, Collections.singletonList(segmentId), status)
+			));
 	}
 
 	@Override
 	public long countBySegmentId(Long segmentId) {
-		return 0;
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				DSL.table("BQMembership")
+			).where(
+				DSL.field(
+					"segmentId"
+				).eq(
+					segmentId
+				)
+			));
 	}
 
 	@Override
 	public long countBySegmentIdAndStatus(Long segmentId, String status) {
-		return 0;
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				_getConditions(
+					null, Collections.singletonList(segmentId), status)
+			));
 	}
 
 	@Override
@@ -173,12 +211,31 @@ public class BQMembershipRepositoryImpl
 	public boolean existsByIdentityIdAndSegmentIdAndStatus(
 		String identityId, Long segmentId, String status) {
 
-		return false;
+		return _queryExecutor.queryExists(
+			_dslContext.select(
+				DSL.field("identityId")
+			).from(
+				DSL.table("BQMembership")
+			).where(
+				DSL.and(
+					DSL.field(
+						"identityId"
+					).eq(
+						identityId
+					),
+					DSL.field(
+						"segmentId"
+					).eq(
+						segmentId
+					))
+			));
 	}
 
 	@Override
 	public List<BQMembership> findAll() {
-		return null;
+		return _queryExecutor.queryForList(
+			BQMembership::new,
+			_dslContext.selectFrom(DSL.table("BQMembership")));
 	}
 
 	@Override
@@ -213,7 +270,15 @@ public class BQMembershipRepositoryImpl
 	public List<BQMembership> findByIdentityIdAndStatus(
 		String identityId, String status) {
 
-		return null;
+		return _queryExecutor.queryForList(
+			BQMembership::new,
+			_dslContext.select(
+			).from(
+				"BQMembership"
+			).where(
+				_getConditions(
+					Collections.singletonList(identityId), null, status)
+			));
 	}
 
 	@Override
@@ -221,14 +286,37 @@ public class BQMembershipRepositoryImpl
 		List<String> identityIds, Long segmentId, String status,
 		Pageable pageable) {
 
-		return null;
+		return _queryExecutor.queryForList(
+			BQMembership::new,
+			_dslContext.select(
+			).from(
+				"BQMembership"
+			).where(
+				_getConditions(identityIds, null, status)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	@Override
 	public List<BQMembership> findBySegmentIdAndStatus(
 		Long segmentId, String status, Pageable pageable) {
 
-		return null;
+		return _queryExecutor.queryForList(
+			BQMembership::new,
+			_dslContext.select(
+			).from(
+				"BQMembership"
+			).where(
+				_getConditions(
+					null, Collections.singletonList(segmentId), status)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	@Override
@@ -580,6 +668,41 @@ public class BQMembershipRepositoryImpl
 
 		if (ascending) {
 			conditions.add(aggregateFunction.le(max));
+		}
+
+		return conditions;
+	}
+
+		private List<Condition> _getConditions(
+		List<String> identityIds, List<Long> segmentIds, String status) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if ((identityIds != null) && !identityIds.isEmpty()) {
+			conditions.add(
+				DSL.field(
+					"identityId"
+				).in(
+					identityIds
+				));
+		}
+
+		if ((segmentIds != null) && !segmentIds.isEmpty()) {
+			conditions.add(
+				DSL.field(
+					"segmentId"
+				).in(
+					segmentIds
+				));
+		}
+
+		if (StringUtils.isNotBlank(status)) {
+			conditions.add(
+				DSL.field(
+					"status"
+				).eq(
+					status
+				));
 		}
 
 		return conditions;
