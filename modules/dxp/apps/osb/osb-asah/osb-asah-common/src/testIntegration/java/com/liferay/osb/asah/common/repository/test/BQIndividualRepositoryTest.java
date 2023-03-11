@@ -15,25 +15,14 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.entity.BQIdentity;
-import com.liferay.osb.asah.common.entity.BQIndividual;
-import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.model.Individual;
-import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
-import com.liferay.osb.asah.common.repository.BQMembershipRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,79 +36,7 @@ import org.springframework.data.domain.Sort;
 @Import(JDBCTestConfiguration.class)
 public class BQIndividualRepositoryTest {
 
-	@BeforeEach
-	public void setUp() throws Exception {
-		BQIndividual bqIndividual = new BQIndividual();
-
-		Date date = new Date();
-
-		bqIndividual.setCreateDate(date);
-
-		String emailAddress = "test@liferay.com";
-
-		bqIndividual.setEmailAddress(emailAddress);
-		bqIndividual.setId(DigestUtils.sha256Hex(emailAddress));
-
-		bqIndividual.setModifiedDate(date);
-
-		_bqIndividualRepository.insert(bqIndividual);
-
-		BQIdentity bqIdentity1 = new BQIdentity();
-
-		bqIdentity1.setCreateDate(new Date());
-		bqIdentity1.setId(RandomTestUtil.randomString());
-		bqIdentity1.setIndividualId(DigestUtils.sha256Hex(emailAddress));
-
-		_bqIdentityRepository.insert(bqIdentity1);
-
-		BQIdentity bqIdentity2 = new BQIdentity();
-
-		bqIdentity2.setCreateDate(new Date());
-		bqIdentity2.setId(RandomTestUtil.randomString());
-		bqIdentity2.setIndividualId(DigestUtils.sha256Hex(emailAddress));
-
-		_bqIdentityRepository.insert(bqIdentity2);
-
-		_eventDog.addBQEvent(
-			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-14T23:59:59.999Z"), "webContentViewed",
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			bqIdentity1.getId());
-
-		_eventDog.addBQEvent(
-			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-15T23:59:59.999Z"), "webContentViewed",
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			bqIdentity2.getId());
-
-		_eventDog.addBQEvent(
-			"WebContent", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-16T23:59:59.999Z"), "webContentViewed",
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			bqIdentity2.getId());
-
-		_eventDog.addBQEvent(
-			"Page", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-17T23:59:59.999Z"), "pageViewed",
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			bqIdentity2.getId());
-
-		_eventDog.addBQEvent(
-			"Page", Collections.emptySet(), 11L, new Date(), 1L,
-			DateUtil.toUTCDate("2022-12-18T23:59:59.999Z"), "pageLoaded",
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			bqIdentity2.getId());
-
-		BQMembership bqMembership = new BQMembership();
-
-		bqMembership.setCreateDate(new Date());
-		bqMembership.setId(RandomTestUtil.randomNumber());
-		bqMembership.setIndividualId(bqIdentity1.getIndividualId());
-		bqMembership.setSegmentId(_SEGMENT_ID);
-
-		_bqMembershipRepository.insert(bqMembership);
-	}
-
+	@BQSQLResource(resourcePath = "test_bq_individual_repository.sql")
 	@Test
 	public void testCountBQIndividuals() {
 		Assertions.assertEquals(
@@ -128,6 +45,7 @@ public class BQIndividualRepositoryTest {
 				null, 11L, null, null, null, _SEGMENT_ID));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_individual_repository.sql")
 	@Test
 	public void testSearchBQIndividuals() {
 		List<Individual> individuals =
@@ -149,15 +67,6 @@ public class BQIndividualRepositoryTest {
 	private static final Long _SEGMENT_ID = 11L;
 
 	@Autowired
-	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
 	private BQIndividualRepository _bqIndividualRepository;
-
-	@Autowired
-	private BQMembershipRepository _bqMembershipRepository;
-
-	@Autowired
-	private EventDog _eventDog;
 
 }
