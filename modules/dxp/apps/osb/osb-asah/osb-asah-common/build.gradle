@@ -77,7 +77,3 @@ dependencies {
 jar {
 	enabled = true
 }
-
-testIntegration {
-	enabled = false
-}
