@@ -225,10 +225,6 @@ public class DSLHelper {
 			return null;
 		}
 
-		if (isBigQueryDialect()) {
-			return DSL.field("timestamp '" + DateUtil.toUTCString(date) + "'");
-		}
-
 		return DSL.date(date);
 	}
 
@@ -298,12 +294,16 @@ public class DSLHelper {
 		DatePart datePart, Timestamp timestamp1, Timestamp timestamp2) {
 
 		if (isBigQueryDialect()) {
-			return DSL.table(
+			return DSL.selectFrom(
 				String.format(
-					"UNNEST(GENERATE_DATE_ARRAY({1}, {2}, INTERVAL 1 %s)) AS " +
-						"generatedDate",
-					datePart.toSQL()),
-				timestamp1, timestamp2);
+					"UNNEST(GENERATE_DATE_ARRAY(DATE(%s), DATE(%s), INTERVAL " +
+						"1 %s)) AS generatedDate",
+					DSL.field(
+						"timestamp '" + DateUtil.toUTCString(timestamp1) + "'"),
+					DSL.field(
+						"timestamp '" + DateUtil.toUTCString(timestamp2) + "'"),
+					datePart.toSQL())
+			).asTable();
 		}
 
 		return DSL.table(

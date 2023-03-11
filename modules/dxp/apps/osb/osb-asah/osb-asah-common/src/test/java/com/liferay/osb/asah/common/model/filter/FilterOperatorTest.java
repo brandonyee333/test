@@ -73,14 +73,14 @@ public class FilterOperatorTest {
 				DSL.field(
 					"testField"
 				).ge(
-					DSL.timestamp(
+					DSL.date(
 						DateUtil.toDate(
 							startLocalDate.atStartOfDay(), ZoneOffset.UTC))
 				),
 				DSL.field(
 					"testField"
 				).le(
-					DSL.timestamp(
+					DSL.date(
 						DateUtil.toDate(
 							endLocalDate.atStartOfDay(), ZoneOffset.UTC))
 				)),
@@ -269,7 +269,7 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).ge(
-				DSL.timestamp(
+				DSL.date(
 					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
@@ -319,7 +319,7 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).gt(
-				DSL.timestamp(
+				DSL.date(
 					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
@@ -369,7 +369,7 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).le(
-				DSL.timestamp(
+				DSL.date(
 					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
@@ -419,7 +419,7 @@ public class FilterOperatorTest {
 			DSL.field(
 				"testField"
 			).lt(
-				DSL.timestamp(
+				DSL.date(
 					DateUtil.toDate(localDate.atStartOfDay(), ZoneOffset.UTC))
 			),
 			filterOperator.getCondition(DSL.field("testField")));
