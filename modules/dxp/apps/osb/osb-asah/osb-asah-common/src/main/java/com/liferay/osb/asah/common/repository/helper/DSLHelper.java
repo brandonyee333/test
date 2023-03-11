@@ -169,7 +169,7 @@ public class DSLHelper {
 
 	public Field getCastNumberField(Field field) {
 		if (isBigQueryDialect()) {
-			return DSL.field("SAFE_CAST({0} as BIGNUMERIC)", field);
+			return DSL.field("ROUND(SAFE_CAST({0} as BIGNUMERIC))", field);
 		}
 
 		return DSL.round(
