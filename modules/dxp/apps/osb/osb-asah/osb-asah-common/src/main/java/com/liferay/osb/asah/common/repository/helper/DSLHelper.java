@@ -202,7 +202,7 @@ public class DSLHelper {
 
 	public Object getDateParam(Date date) {
 		if (isBigQueryDialect()) {
-			return DateUtil.toUTCString(date);
+			return DSL.field("timestamp '" + DateUtil.toUTCString(date) + "'");
 		}
 
 		return date;
@@ -213,15 +213,20 @@ public class DSLHelper {
 			localDateTime, ZoneId.of(timeZoneId));
 
 		if (isBigQueryDialect()) {
-			return DateUtil.toUTCString(localDateTime);
+			return DSL.field(
+				"timestamp '" + DateUtil.toUTCString(localDateTime) + "'");
 		}
 
 		return localDateTime;
 	}
 
 	public Object getDateValue(Date date) {
+		if (date == null) {
+			return null;
+		}
+
 		if (isBigQueryDialect()) {
-			return DSL.timestamp(date);
+			return DSL.field("timestamp '" + DateUtil.toUTCString(date) + "'");
 		}
 
 		return DSL.date(date);
