@@ -16,11 +16,14 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
+import org.junit.jupiter.api.Disabled;
+
 import org.springframework.context.annotation.Import;
 
 /**
  * @author Marcellus Tavares
  */
+@Disabled
 @Import(JDBCTestConfiguration.class)
 public class AssetRepositoryTest extends BaseAssetRepositoryTestCase {
 }

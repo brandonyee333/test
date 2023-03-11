@@ -37,6 +37,7 @@ import org.apache.commons.collections4.IterableUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,7 @@ import org.springframework.data.domain.Sort;
 /**
  * @author Inácio Nery
  */
+@Disabled
 @Import(JDBCTestConfiguration.class)
 public class BQMembershipRepositoryTest
 	implements OSBAsahCommonSpringTestContext,

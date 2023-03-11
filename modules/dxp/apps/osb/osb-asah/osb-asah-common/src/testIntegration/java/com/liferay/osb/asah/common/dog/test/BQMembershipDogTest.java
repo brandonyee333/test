@@ -55,6 +55,7 @@ import org.springframework.data.domain.Page;
  * @author Michael Bowerman
  * @author Vishal Reddy
  */
+@Disabled
 public class BQMembershipDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {

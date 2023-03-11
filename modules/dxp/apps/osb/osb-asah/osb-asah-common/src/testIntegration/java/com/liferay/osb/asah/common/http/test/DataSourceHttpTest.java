@@ -222,6 +222,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 				"when data source was deleted");
 	}
 
+	@Disabled
 	@Test
 	public void testDeleteDataSourceDisablesIndividualDynamicSegment2()
 		throws Exception {

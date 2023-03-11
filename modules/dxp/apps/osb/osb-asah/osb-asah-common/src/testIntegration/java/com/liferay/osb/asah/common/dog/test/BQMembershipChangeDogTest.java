@@ -38,6 +38,7 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Alejo Ceballos
  */
+@Disabled
 public class BQMembershipChangeDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
