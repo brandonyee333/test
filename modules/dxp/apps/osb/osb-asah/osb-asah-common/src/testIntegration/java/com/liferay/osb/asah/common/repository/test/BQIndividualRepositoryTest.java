@@ -14,11 +14,13 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
@@ -34,7 +36,9 @@ import org.springframework.data.domain.Sort;
  * @author Ivica Cardic
  */
 @Import(JDBCTestConfiguration.class)
-public class BQIndividualRepositoryTest {
+public class BQIndividualRepositoryTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository.sql")
 	@Test
