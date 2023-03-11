@@ -75,6 +75,26 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	@Override
+	public boolean queryExists(
+		SelectFinalStep<? extends Record> selectFinalStep) {
+
+		TableResult tableResult = _query(
+			"SELECT EXISTS(" + _translate(String.valueOf(selectFinalStep)) +
+				")");
+
+		List<FieldValueList> fieldValueLists = IterableUtils.toList(
+			tableResult.iterateAll());
+
+		if (fieldValueLists.isEmpty()) {
+			return false;
+		}
+
+		FieldValueList fieldValueList = fieldValueLists.get(0);
+
+		return _toBooleanValue(fieldValueList.get(0));
+	}
+
+	@Override
 	public BigDecimal queryForBigDecimal(
 		SelectFinalStep<Record1<Number>> selectFinalStep) {
 

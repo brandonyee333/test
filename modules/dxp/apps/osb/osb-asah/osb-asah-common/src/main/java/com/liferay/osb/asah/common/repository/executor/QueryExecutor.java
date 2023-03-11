@@ -35,6 +35,9 @@ public interface QueryExecutor {
 
 	public void queryExecute(String queryString);
 
+	public boolean queryExists(
+		SelectFinalStep<? extends Record> selectFinalStep);
+
 	public BigDecimal queryForBigDecimal(
 		SelectFinalStep<Record1<Number>> selectFinalStep);
 
