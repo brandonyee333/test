@@ -31,6 +31,10 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.math.BigDecimal;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -257,10 +261,14 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		else if (field.getType() == LegacySQLTypeName.BOOLEAN) {
 			return _toBooleanValue(fieldValue);
 		}
-		else if ((field.getType() == LegacySQLTypeName.DATE) ||
-				 (field.getType() == LegacySQLTypeName.TIMESTAMP)) {
-
+		else if (field.getType() == LegacySQLTypeName.DATE) {
 			return _toDateValue(fieldValue);
+		}
+		else if (field.getType() == LegacySQLTypeName.DATETIME) {
+			return _toDateTimeValue(fieldValue);
+		}
+		else if (field.getType() == LegacySQLTypeName.TIMESTAMP) {
+			return _toTimestampValue(fieldValue);
 		}
 		else if (field.getType() == LegacySQLTypeName.STRING) {
 			return _toStringValue(fieldValue);
@@ -316,12 +324,34 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		return fieldValue.getBooleanValue();
 	}
 
+	private Date _toDateTimeValue(FieldValue fieldValue) {
+		if ((fieldValue == null) || (fieldValue.getValue() == null)) {
+			return null;
+		}
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+		try {
+			return dateFormat.parse(fieldValue.getStringValue());
+		}
+		catch (ParseException parseException) {
+			throw new RuntimeException(parseException);
+		}
+	}
+
 	private Date _toDateValue(FieldValue fieldValue) {
 		if ((fieldValue == null) || (fieldValue.getValue() == null)) {
 			return null;
 		}
 
-		return new Date(fieldValue.getTimestampValue() / 1000);
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		try {
+			return dateFormat.parse(fieldValue.getStringValue());
+		}
+		catch (ParseException parseException) {
+			throw new RuntimeException(parseException);
+		}
 	}
 
 	private long _toLongValue(FieldValue fieldValue) {
@@ -354,6 +384,14 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 		}
 
 		return fieldValue.getStringValue();
+	}
+
+	private Date _toTimestampValue(FieldValue fieldValue) {
+		if ((fieldValue == null) || (fieldValue.getValue() == null)) {
+			return null;
+		}
+
+		return new Date(fieldValue.getTimestampValue() / 1000);
 	}
 
 	private String _translate(String query) {
