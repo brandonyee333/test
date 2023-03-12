@@ -197,11 +197,7 @@ public class FilterExpressionTest {
 	@Test
 	public void testContainsOperator() {
 		_assertEquals(
-			DSL.lower(
-				DSL.field("column1", String.class)
-			).like(
-				"%value1%"
-			),
+			DSL.condition("lower(column1) like '%value1%'"),
 			"contains(column1, 'value1')");
 	}
 
@@ -268,11 +264,7 @@ public class FilterExpressionTest {
 				),
 				DSL.and(
 					DSL.or(
-						DSL.lower(
-							DSL.field("column2", String.class)
-						).like(
-							"%escaped'quote)%"
-						),
+						DSL.condition("lower(column2) like '%escaped'quote)%'"),
 						DSL.and(
 							DSL.field(
 								"column3"
@@ -355,11 +347,7 @@ public class FilterExpressionTest {
 	@Test
 	public void testFreestyle5() {
 		_assertEquals(
-			DSL.lower(
-				DSL.field("Individual.jobTitle", String.class)
-			).like(
-				"%manager%"
-			),
+			DSL.condition("lower(Individual.jobTitle) like '%manager%'"),
 			"individuals.filter(filter='contains(demographics/jobTitle/value" +
 				", ''manager'')')");
 	}
@@ -1154,21 +1142,14 @@ public class FilterExpressionTest {
 				"''Test'')')");
 
 		_assertEquals(
-			DSL.lower(
-				DSL.field("Individual.firstName", String.class)
-			).like(
-				"%liferay.com%"
-			),
+			DSL.condition("lower(Individual.firstName) like '%liferay.com%'"),
 			"individuals.filter(filter='contains(demographics/givenName" +
 				"/value, ''liferay.com'')')");
 
 		_assertEquals(
 			DSL.not(
-				DSL.lower(
-					DSL.field("Individual.firstName", String.class)
-				).like(
-					"%liferay.com%"
-				)),
+				DSL.condition(
+					"lower(Individual.firstName) like '%liferay.com%'")),
 			"not individuals.filter(filter='contains(demographics/givenName" +
 				"/value, ''liferay.com'')')");
 
@@ -1213,11 +1194,7 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.and(
-				DSL.lower(
-					DSL.field("Fields.value", String.class)
-				).like(
-					"%test%"
-				),
+				DSL.condition("lower(Fields.value) like '%test%'"),
 				DSL.field(
 					"Fields.name"
 				).eq(
@@ -1494,12 +1471,7 @@ public class FilterExpressionTest {
 	@Test
 	public void testNotContainsOperator() {
 		_assertEquals(
-			DSL.not(
-				DSL.lower(
-					DSL.field("column1", String.class)
-				).like(
-					"%value1%"
-				)),
+			DSL.not(DSL.condition("lower(column1) like '%value1%'")),
 			"not contains(column1, 'value1')");
 	}
 
@@ -1878,11 +1850,8 @@ public class FilterExpressionTest {
 							DSL.field("IndividualMemberships.ids"))
 					)
 				).where(
-					DSL.lower(
-						DSL.field("Organization.hierarchyPath", String.class)
-					).like(
-						"%test%"
-					)
+					DSL.condition(
+						"lower(Organization.hierarchyPath) like '%test%'")
 				)
 			),
 			"organizations.filter(filter='(contains(hierarchyPath, ''test''))" +
@@ -2018,11 +1987,8 @@ public class FilterExpressionTest {
 						))
 				).where(
 					DSL.and(
-						DSL.lower(
-							DSL.field("ExpandoValue.value", String.class)
-						).like(
-							"%test%"
-						),
+						DSL.condition(
+							"lower(ExpandoValue.value) like '%test%'"),
 						DSL.field(
 							"ExpandoValue.fieldName"
 						).eq(

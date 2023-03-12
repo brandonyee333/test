@@ -73,11 +73,7 @@ public class ConditionUtilTest {
 	@Test
 	public void testContainsOperator() {
 		_assertEquals(
-			DSL.field(
-				"column1"
-			).containsIgnoreCase(
-				"value1"
-			),
+			DSL.condition("lower(column1) like '%value1%'"),
 			"contains(column1, 'value1')");
 	}
 
@@ -141,11 +137,7 @@ public class ConditionUtilTest {
 						42L
 					),
 					DSL.or(
-						DSL.field(
-							"column2"
-						).containsIgnoreCase(
-							"escaped'quote)"
-						),
+						DSL.condition("lower(column2) like '%escaped'quote)%'"),
 						DSL.and(
 							DSL.field(
 								"column3"
@@ -367,12 +359,7 @@ public class ConditionUtilTest {
 	@Test
 	public void testNotContainsOperator() {
 		_assertEquals(
-			DSL.not(
-				DSL.field(
-					"column1"
-				).containsIgnoreCase(
-					"value1"
-				)),
+			DSL.not(DSL.condition("lower(column1) like '%value1%'")),
 			"not contains(column1, 'value1')");
 	}
 

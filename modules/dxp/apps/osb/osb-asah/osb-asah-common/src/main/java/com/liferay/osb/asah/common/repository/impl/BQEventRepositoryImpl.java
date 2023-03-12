@@ -960,11 +960,9 @@ public class BQEventRepositoryImpl
 
 			for (String globalAttribute : _globalAttributes.values()) {
 				keywordCondition = keywordCondition.or(
-					DSL.lower(
-						DSL.field("BQEvent." + globalAttribute, String.class)
-					).like(
-						"%" + _getSanitizedKeywords(keyword) + "%"
-					));
+					_dslHelper.containsSubstring(
+						"BQEvent." + globalAttribute,
+						_getSanitizedKeywords(keyword)));
 			}
 
 			condition = condition.and(keywordCondition);

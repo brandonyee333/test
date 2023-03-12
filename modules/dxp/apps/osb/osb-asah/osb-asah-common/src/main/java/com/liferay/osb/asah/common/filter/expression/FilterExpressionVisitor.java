@@ -307,13 +307,12 @@ public class FilterExpressionVisitor
 		if (functionName.equalsIgnoreCase("contains")) {
 			Param param = (Param)parameters.get(1);
 
-			condition = DSL.lower(
-				field
-			).like(
-				StringUtils.wrap(
-					StringUtils.lowerCase(String.valueOf(param.getValue())),
-					"%")
-			);
+			String value = String.valueOf(param.getValue());
+
+			condition = DSL.condition(
+				String.format(
+					"lower(%s) like '%s'", field,
+					"%" + StringUtils.lowerCase(value) + "%"));
 		}
 		else if (functionName.equalsIgnoreCase("endsWith")) {
 			Param param = (Param)parameters.get(1);

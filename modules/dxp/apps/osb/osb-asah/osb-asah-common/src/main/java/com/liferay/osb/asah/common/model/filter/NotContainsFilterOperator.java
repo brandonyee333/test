@@ -20,8 +20,6 @@ import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
@@ -42,12 +40,7 @@ public class NotContainsFilterOperator extends FilterOperator {
 	public Condition getCondition(Field field) {
 		String value = (String)getValue(dataType, values.get(0));
 
-		return DSL.not(
-			DSL.lower(
-				field
-			).like(
-				"%" + StringUtils.lowerCase(value) + "%"
-			));
+		return DSL.not(dslHelper.containsSubstring(field.getName(), value));
 	}
 
 	@Override
