@@ -1445,8 +1445,10 @@ public class BQEventRepositoryImpl
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DATE)) {
-			return _dslHelper.dateTrunc(
-				DatePart.DAY, _dslHelper.getDateValueField(field, timeZoneId));
+			return DSL.field(
+				String.format(
+					"DATE(SAFE_CAST(%s AS TIMESTAMP), '%s')", field.getName(),
+					timeZoneId));
 		}
 
 		if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {

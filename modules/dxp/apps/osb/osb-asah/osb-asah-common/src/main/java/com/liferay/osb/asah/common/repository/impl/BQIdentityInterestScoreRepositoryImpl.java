@@ -381,7 +381,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"BQIdentityInterestScore.recordedDate"
 				).between(
-					recordedDate1, recordedDate2
+					_dslHelper.getDateValue(recordedDate1),
+					_dslHelper.getDateValue(recordedDate2)
 				)
 			));
 	}
@@ -490,7 +491,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field(
 						"BQIdentityInterestScore.recordedDate"
 					).eq(
-						recordedDate
+						_dslHelper.getDateValue(recordedDate)
 					)
 				));
 
@@ -908,7 +909,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).eq(
-					recordedDate
+					_dslHelper.getDateValue(recordedDate)
 				));
 		}
 
