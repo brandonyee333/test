@@ -15,12 +15,9 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
-import com.liferay.osb.asah.common.entity.BQExpandoColumn;
-import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -58,24 +55,9 @@ public abstract class BaseBQDXPEntityDogTestCase
 			new ChannelDataSource(null, dataSource.getId(), null));
 
 		_channelRepository.save(channel);
-
-		bqExpandoColumn = new BQExpandoColumn();
-
-		bqExpandoColumn.setColumnId("1");
-		bqExpandoColumn.setDataSourceId(dataSource.getId());
-		bqExpandoColumn.setDataType("STRING");
-		bqExpandoColumn.setId("1");
-		bqExpandoColumn.setName("column");
-
-		bqExpandoColumn = _bqExpandoColumnRepository.insert(bqExpandoColumn);
 	}
 
-	protected BQExpandoColumn bqExpandoColumn;
-	protected BQExpandoValue bqExpandoValue;
 	protected DataSource dataSource;
-
-	@Autowired
-	private BQExpandoColumnRepository _bqExpandoColumnRepository;
 
 	@Autowired
 	private ChannelRepository _channelRepository;

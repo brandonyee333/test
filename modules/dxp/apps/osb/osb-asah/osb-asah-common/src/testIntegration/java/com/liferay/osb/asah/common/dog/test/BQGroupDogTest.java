@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQGroupDog;
 import com.liferay.osb.asah.common.entity.BQGroup;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQGroupRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.List;
 
@@ -32,32 +32,13 @@ import org.springframework.data.domain.Page;
 /**
  * @author Marcos Martins
  */
+@BQSQLResource(resourcePath = "test_bq_group_dog.sql")
 public class BQGroupDogTest extends BaseBQDXPEntityDogTestCase {
 
 	@BeforeEach
 	@Override
 	public void setUp() {
 		super.setUp();
-
-		BQGroup bqGroup1 = new BQGroup();
-
-		bqGroup1.setDataSourceId(dataSource.getId());
-		bqGroup1.setGroupId(1L);
-		bqGroup1.setId("1");
-		bqGroup1.setModifiedDate(DateUtil.newDate());
-		bqGroup1.setName("Test");
-
-		_bqGroupRepository.insert(bqGroup1);
-
-		BQGroup bqGroup2 = new BQGroup();
-
-		bqGroup2.setDataSourceId(dataSource.getId());
-		bqGroup2.setGroupId(2L);
-		bqGroup2.setId("2");
-		bqGroup2.setModifiedDate(DateUtil.newDate());
-		bqGroup2.setName("Liferay");
-
-		_bqGroupRepository.insert(bqGroup2);
 	}
 
 	@Test

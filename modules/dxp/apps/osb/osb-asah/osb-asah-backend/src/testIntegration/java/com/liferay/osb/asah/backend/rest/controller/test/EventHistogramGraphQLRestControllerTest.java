@@ -14,33 +14,23 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.entity.BQEventProperty;
-import com.liferay.osb.asah.common.entity.BQIdentity;
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
-import com.liferay.osb.asah.common.repository.BQIdentityRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
+@BQSQLResource(
+	resourcePath = "test_event_histogram_graphql_rest_controller_test.sql"
+)
 @Import(JDBCTestConfiguration.class)
 public class EventHistogramGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
@@ -62,78 +52,15 @@ public class EventHistogramGraphQLRestControllerTest
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		_createBQIdentity();
-
-		List<EventAttributeDefinition> eventAttributeDefinitions =
-			Arrays.asList(
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("canonicalUrl"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("pageDescription"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("pageKeywords"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("pageTitle"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("referrer"),
-				_eventAttributeDefinitionDog.
-					fetchEventAttributeDefinitionByName("url"));
-
 		_timeZone = TimeZone.getDefault();
 
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-
-		_createEvent(
-			eventAttributeDefinitions,
-			DateUtil.toUTCDate("2021-07-01T00:00:00.000Z"), "assetClicked");
-		_createEvent(
-			eventAttributeDefinitions,
-			DateUtil.toUTCDate("2021-07-02T00:00:00.000Z"), "assetDownloaded");
 	}
 
 	@AfterEach
 	public void tearDown() throws Exception {
 		TimeZone.setDefault(_timeZone);
 	}
-
-	private void _createBQIdentity() {
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setId("1");
-		bqIdentity.setIndividualId("1");
-
-		_bqIdentityRepository.insert(bqIdentity);
-	}
-
-	private void _createEvent(
-			List<EventAttributeDefinition> eventAttributeDefinitions,
-			Date eventDate, String eventDefinitionName)
-		throws Exception {
-
-		Stream<EventAttributeDefinition> stream =
-			eventAttributeDefinitions.stream();
-
-		_eventDog.addBQEvent(
-			"Page",
-			stream.map(
-				eventAttributeDefinition -> new BQEventProperty(
-					null, eventDefinitionName,
-					eventAttributeDefinition.getName() + "Value")
-			).collect(
-				Collectors.toSet()
-			),
-			1L, eventDate, 1L, eventDate, eventDefinitionName,
-			RandomTestUtil.randomId(), "sessionId", "1");
-	}
-
-	@Autowired
-	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
-	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
-
-	@Autowired
-	private EventDog _eventDog;
 
 	private TimeZone _timeZone;
 

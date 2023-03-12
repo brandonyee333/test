@@ -16,7 +16,6 @@ package com.liferay.osb.asah.dataflow.emulator.bot.nanite.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.model.Message;
@@ -29,15 +28,12 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.DXPEntitiesIngestionNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.IndividualNanite;
 import com.liferay.osb.asah.dataflow.emulator.bot.nanite.OSBAsahDataflowEmulatorSpringTestContext;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import org.apache.commons.codec.digest.DigestUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,16 +50,11 @@ public class IndividualNaniteTest
 	implements OSBAsahDataflowEmulatorSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@BQSQLResource(
+		resourcePath = "test_merge_custom_field_name_different_type.sql"
+	)
 	@Test
 	public void testMergeCustomFieldNameDifferentType() throws Exception {
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(new Date());
-		bqIdentity.setId(RandomTestUtil.randomUUID());
-		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
-
-		_bqIdentityRepository.insert(bqIdentity);
-
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
 			"dependencies/dxp_entities4.json", this);
 
@@ -106,16 +97,9 @@ public class IndividualNaniteTest
 		Assertions.assertEquals("20", jsonObject.getString("value"));
 	}
 
+	@BQSQLResource(resourcePath = "test_merge_field.sql")
 	@Test
 	public void testMergeCustomFieldNameSameType() throws Exception {
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(new Date());
-		bqIdentity.setId(RandomTestUtil.randomUUID());
-		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
-
-		_bqIdentityRepository.insert(bqIdentity);
-
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
 			"dependencies/dxp_entities5.json", this);
 
@@ -152,16 +136,9 @@ public class IndividualNaniteTest
 		Assertions.assertEquals("20", jsonObject.getString("value"));
 	}
 
+	@BQSQLResource(resourcePath = "test_merge_field.sql")
 	@Test
 	public void testMergeDefaultField() throws Exception {
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(new Date());
-		bqIdentity.setId(RandomTestUtil.randomUUID());
-		bqIdentity.setIndividualId(DigestUtils.sha256Hex("joe@liferay.com"));
-
-		_bqIdentityRepository.insert(bqIdentity);
-
 		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
 			"dependencies/dxp_entities6.json", this);
 

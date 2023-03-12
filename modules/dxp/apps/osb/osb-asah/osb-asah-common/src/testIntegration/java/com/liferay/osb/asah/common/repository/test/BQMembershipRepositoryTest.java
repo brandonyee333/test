@@ -16,19 +16,13 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.entity.BQMembership;
-import com.liferay.osb.asah.common.entity.BQMembershipChange;
-import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.SegmentRepository;
-import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -36,7 +30,6 @@ import java.util.stream.Stream;
 import org.apache.commons.collections4.IterableUtils;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -48,57 +41,13 @@ import org.springframework.data.domain.Sort;
 /**
  * @author Inácio Nery
  */
+@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
 @Disabled
 @Import(JDBCTestConfiguration.class)
+@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 public class BQMembershipRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
-
-	@BeforeEach
-	public void setUp() {
-		BQMembership bqMembership1 = new BQMembership();
-
-		bqMembership1.setCreateDate(new Date());
-		bqMembership1.setIdentityId("12");
-		bqMembership1.setModifiedDate(new Date());
-		bqMembership1.setRemovedDate(new Date());
-
-		Segment segment1 = _addSegment(34);
-
-		bqMembership1.setSegmentId(segment1.getId());
-
-		bqMembership1.setStatus("ACTIVE");
-
-		_addBQMembershipChange(segment1.getId(), 37L);
-
-		BQMembership bqMembership2 = new BQMembership();
-
-		bqMembership2.setCreateDate(new Date());
-		bqMembership2.setIdentityId("12");
-		bqMembership2.setModifiedDate(new Date());
-		bqMembership2.setRemovedDate(new Date());
-
-		Segment segment2 = _addSegment(56);
-
-		bqMembership2.setSegmentId(segment2.getId());
-
-		bqMembership2.setStatus("INACTIVE");
-
-		_addBQMembershipChange(segment2.getId(), 27L);
-
-		BQMembership bqMembership3 = new BQMembership();
-
-		bqMembership3.setCreateDate(new Date());
-		bqMembership3.setIdentityId("78");
-		bqMembership3.setModifiedDate(new Date());
-		bqMembership3.setRemovedDate(new Date());
-		bqMembership3.setSegmentId(segment1.getId());
-		bqMembership3.setStatus("ACTIVE");
-
-		_bqMembershipRepository.insert(bqMembership1);
-		_bqMembershipRepository.insert(bqMembership2);
-		_bqMembershipRepository.insert(bqMembership3);
-	}
 
 	@Test
 	public void testCountByIdentityIdInAndSegmentIdAndStatus() {
@@ -385,49 +334,7 @@ public class BQMembershipRepositoryTest
 			1, bqMemberships.size(), bqMemberships.toString());
 	}
 
-	private void _addBQMembershipChange(Long segmentId, long identitiesCount) {
-		BQMembershipChange bqMembershipChange = new BQMembershipChange();
-
-		bqMembershipChange.setCreateDate(new Date());
-		bqMembershipChange.setIdentitiesCount(identitiesCount);
-		bqMembershipChange.setIndividualsCount(19L);
-		bqMembershipChange.setSegmentId(segmentId);
-
-		_bqMembershipChangeRepository.insert(bqMembershipChange);
-	}
-
-	private Segment _addSegment(long segmentId) {
-		Segment segment = new Segment();
-
-		segment.setId(segmentId);
-		segment.setIsNew(Boolean.TRUE);
-
-		Channel channel = _channelRepository.save(new Channel("Channel"));
-
-		segment.setChannelId(channel.getId());
-
-		segment.setCreateDate(new Date());
-		segment.setFilter("(channelId eq '1')");
-		segment.setName("Segment 1");
-		segment.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
-		segment.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
-		segment.setState("READY");
-		segment.setStatus("STARTED");
-		segment.setType(Segment.Type.DYNAMIC);
-
-		return _segmentRepository.save(segment);
-	}
-
-	@Autowired
-	private BQMembershipChangeRepository _bqMembershipChangeRepository;
-
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
-
-	@Autowired
-	private ChannelRepository _channelRepository;
-
-	@Autowired
-	private SegmentRepository _segmentRepository;
 
 }

@@ -1,0 +1,5 @@
+INSERT INTO Event (applicationId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('Page', 12345, timestamp '2023-03-12T00:00:00.000Z', 1, timestamp '2023-03-12T00:00:00.000Z', 'pageUnloaded', 'analyticsEventId1', 'sessionId', 'userId');
+INSERT INTO Event (applicationId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('Page', 12345, timestamp '2023-03-13T00:00:00.000Z', 1, timestamp '2023-03-13T00:00:00.000Z', 'pageUnloaded', 'analyticsEventId2', 'sessionId', 'userId');
+
+INSERT INTO EventProperty (eventDate, id, name, value) VALUES (timestamp '2023-03-12T00:00:00.000Z', 'analyticsEventId1', 'testAttribute1', 'testValue1');
+INSERT INTO EventProperty (eventDate, id, name, value) VALUES (timestamp '2023-03-13T00:00:00.000Z', 'analyticsEventId2', 'testAttribute1', 'testValue2');

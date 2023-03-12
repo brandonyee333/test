@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQTeamDog;
 import com.liferay.osb.asah.common.entity.BQTeam;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQTeamRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.List;
 
@@ -32,34 +32,13 @@ import org.springframework.data.domain.Page;
 /**
  * @author Marcos Martins
  */
+@BQSQLResource(resourcePath = "test_bq_team_dog.sql")
 public class BQTeamDogTest extends BaseBQDXPEntityDogTestCase {
 
 	@BeforeEach
 	@Override
 	public void setUp() {
 		super.setUp();
-
-		BQTeam bqTeam1 = new BQTeam();
-
-		bqTeam1.setDataSourceId(dataSource.getId());
-		bqTeam1.setGroupId(1L);
-		bqTeam1.setId("1");
-		bqTeam1.setModifiedDate(DateUtil.newDate());
-		bqTeam1.setName("Test");
-		bqTeam1.setTeamId(1L);
-
-		_bqTeamRepository.insert(bqTeam1);
-
-		BQTeam bqTeam2 = new BQTeam();
-
-		bqTeam2.setDataSourceId(dataSource.getId());
-		bqTeam2.setGroupId(2L);
-		bqTeam2.setId("2");
-		bqTeam2.setModifiedDate(DateUtil.newDate());
-		bqTeam2.setName("Liferay");
-		bqTeam2.setTeamId(2L);
-
-		_bqTeamRepository.insert(bqTeam2);
 	}
 
 	@Test

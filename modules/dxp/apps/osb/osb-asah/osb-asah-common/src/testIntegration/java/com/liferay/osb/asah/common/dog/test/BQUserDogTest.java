@@ -14,15 +14,13 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQUserDog;
-import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQUser;
-import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,39 +42,9 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 	@Override
 	public void setUp() {
 		super.setUp();
-
-		BQUser bqUser1 = new BQUser();
-
-		bqUser1.setDataSourceId(dataSource.getId());
-		bqUser1.setDXPUserId(1L);
-		bqUser1.setFirstName("Test");
-		bqUser1.setId("1");
-		bqUser1.setModifiedDate(DateUtil.newDate());
-
-		_bqUserRepository.insert(bqUser1);
-
-		BQUser bqUser2 = new BQUser();
-
-		bqUser2.setDataSourceId(dataSource.getId());
-		bqUser2.setDXPUserId(2L);
-		bqUser2.setFirstName("Liferay");
-		bqUser2.setId("2");
-		bqUser2.setModifiedDate(DateUtil.newDate());
-
-		_bqUserRepository.insert(bqUser2);
-
-		bqExpandoValue = new BQExpandoValue();
-
-		bqExpandoValue.setClassPK("2");
-		bqExpandoValue.setClassType(DXPEntity.Type.CLASS_NAME_USER);
-		bqExpandoValue.setColumnId(bqExpandoColumn.getColumnId());
-		bqExpandoValue.setDataSourceId(dataSource.getId());
-		bqExpandoValue.setId("1");
-		bqExpandoValue.setValue("test");
-
-		bqExpandoValue = _bqExpandoValueRepository.insert(bqExpandoValue);
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_user_dog.sql")
 	@Test
 	public void testGetBQUserPage() {
 		Page<BQUser> bqUserPage = _bqUserDog.getBQUserPage(
@@ -98,6 +66,7 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 		Assertions.assertEquals(1, bqUsers.size(), bqUsers.toString());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_user_dog.sql")
 	@Test
 	public void testGetBQUsers() {
 		List<BQUser> bqUsers = _bqUserDog.getBQUsers(

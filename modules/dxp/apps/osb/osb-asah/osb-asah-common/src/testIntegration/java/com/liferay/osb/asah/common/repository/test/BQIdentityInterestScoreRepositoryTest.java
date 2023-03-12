@@ -16,19 +16,15 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
-import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
-import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,96 +48,51 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		_bqIdentityInterestScore1.setIdentityId("374790569167317525");
 		_bqIdentityInterestScore1.setInterested(Boolean.TRUE);
-		_bqIdentityInterestScore1.setInterestScore(1.767661917648994);
+		_bqIdentityInterestScore1.setInterestScore(1.7676619);
 		_bqIdentityInterestScore1.setKeyword("clicks-and-mortar e-tailers");
 		_bqIdentityInterestScore1.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-12T00:00:00.000Z"));
-
-		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore1);
-
-		BQIdentity bqIdentity1 = new BQIdentity();
-
-		bqIdentity1.setId("374790569167317525");
-		bqIdentity1.setIndividualId("374790569167317525");
-
-		_bqIdentityRepository.insert(bqIdentity1);
 
 		_bqIdentityInterestScore2 = new BQIdentityInterestScore();
 
 		_bqIdentityInterestScore2.setIdentityId("374790575409131096");
 		_bqIdentityInterestScore2.setInterested(Boolean.TRUE);
-		_bqIdentityInterestScore2.setInterestScore(2.61495977803619);
+		_bqIdentityInterestScore2.setInterestScore(2.6149597);
 		_bqIdentityInterestScore2.setKeyword("javascript");
 		_bqIdentityInterestScore2.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
-
-		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore2);
-
-		BQIdentity bqIdentity2 = new BQIdentity();
-
-		bqIdentity2.setId("374790575409131096");
-		bqIdentity2.setIndividualId("374790575409131096");
-
-		_bqIdentityRepository.insert(bqIdentity2);
 
 		_bqIdentityInterestScore3 = new BQIdentityInterestScore();
 
 		_bqIdentityInterestScore3.setIdentityId("374790572703144534");
 		_bqIdentityInterestScore3.setInterested(Boolean.FALSE);
-		_bqIdentityInterestScore3.setInterestScore(0.770222520473574);
+		_bqIdentityInterestScore3.setInterestScore(0.77022254);
 		_bqIdentityInterestScore3.setKeyword("compelling metrics");
 		_bqIdentityInterestScore3.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-
-		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore3);
-
-		BQIdentity bqIdentity3 = new BQIdentity();
-
-		bqIdentity3.setId("374790572703144534");
-		bqIdentity3.setIndividualId("374790572703144534");
-
-		_bqIdentityRepository.insert(bqIdentity3);
 
 		_bqIdentityInterestScore4 = new BQIdentityInterestScore();
 
 		_bqIdentityInterestScore4.setIdentityId("374790572703144534");
 		_bqIdentityInterestScore4.setInterested(Boolean.TRUE);
-		_bqIdentityInterestScore4.setInterestScore(1.454684984987494);
+		_bqIdentityInterestScore4.setInterestScore(1.454685);
 		_bqIdentityInterestScore4.setKeyword("sales");
 		_bqIdentityInterestScore4.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-
-		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore4);
 
 		_bqIdentityInterestScore5 = new BQIdentityInterestScore();
 
 		_bqIdentityInterestScore5.setIdentityId("374790572703144535");
 		_bqIdentityInterestScore5.setInterested(Boolean.TRUE);
-		_bqIdentityInterestScore5.setInterestScore(1.454684984987494);
+		_bqIdentityInterestScore5.setInterestScore(1.454685);
 		_bqIdentityInterestScore5.setKeyword("sales");
 		_bqIdentityInterestScore5.setRecordedDate(
 			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-
-		_bqIdentityInterestScoreRepository.insert(_bqIdentityInterestScore5);
-
-		BQIdentity bqIdentity5 = new BQIdentity();
-
-		bqIdentity5.setId("374790572703144535");
-		bqIdentity5.setIndividualId("374790572703144535");
-
-		_bqIdentityRepository.insert(bqIdentity5);
-
-		BQMembership bqMembership = new BQMembership();
-
-		bqMembership.setCreateDate(new Date());
-		bqMembership.setIndividualId("374790569167317525");
-		bqMembership.setModifiedDate(new Date());
-		bqMembership.setSegmentId(123L);
-		bqMembership.setStatus("ACTIVE");
-
-		_bqMembershipRepository.insert(bqMembership);
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testCountByFilterString() {
 		Assertions.assertEquals(
@@ -150,6 +101,9 @@ public class BQIdentityInterestScoreRepositoryTest
 				new FilterHelper(null)));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testCountByIndividualId() {
 		Assertions.assertEquals(
@@ -158,18 +112,27 @@ public class BQIdentityInterestScoreRepositoryTest
 				"374790572703144534"));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testCountKeywords() {
 		Assertions.assertEquals(
 			4, _bqIdentityInterestScoreRepository.countKeywords(null));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testCountKeywordsWithFilter() {
 		Assertions.assertEquals(
 			2, _bqIdentityInterestScoreRepository.countKeywords("le"));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testDeleteByNameAndRecordedDateGreaterThanEqual() {
 		_bqIdentityInterestScoreRepository.
@@ -179,6 +142,20 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(5, _bqIdentityInterestScoreRepository.count());
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
+	@Test
+	public void testDeleteByRecordedDate() {
+		_bqIdentityInterestScoreRepository.deleteByRecordedDate(
+			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
+
+		Assertions.assertEquals(2, _bqIdentityInterestScoreRepository.count());
+	}
+
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testDeleteByRecordedDateLessThanEqual() {
 		_bqIdentityInterestScoreRepository.deleteByRecordedDateLessThanEqual(
@@ -187,6 +164,9 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(3, _bqIdentityInterestScoreRepository.count());
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testFindByIndividualId() {
 		List<BQIdentityInterestScore> bqIdentityInterestScores =
@@ -201,6 +181,9 @@ public class BQIdentityInterestScoreRepositoryTest
 			bqIdentityInterestScores);
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testFindByNameAndIndividualIdAndRecordedDateBetween() {
 		List<BQIdentityInterestScore> bqIdentityInterestScores =
@@ -257,6 +240,9 @@ public class BQIdentityInterestScoreRepositoryTest
 			bqIdentityInterestScores);
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testFindByRecordedDate() {
 		List<BQIdentityInterestScore> bqIdentityInterestScores =
@@ -268,6 +254,9 @@ public class BQIdentityInterestScoreRepositoryTest
 			bqIdentityInterestScores.toString());
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testFindIndividualIdsByFilterStringAndIndividualId() {
 		List<String> individualIds =
@@ -283,6 +272,9 @@ public class BQIdentityInterestScoreRepositoryTest
 			individualIds.toString());
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testGetByNameAndIndividualIdAndRecordedDate() {
 		BQIdentityInterestScore bqIdentityInterestScore =
@@ -295,6 +287,9 @@ public class BQIdentityInterestScoreRepositoryTest
 			_bqIdentityInterestScore2, bqIdentityInterestScore);
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testGetInterestTransformationsByDay() {
 		List<Map<String, Object>> transformations =
@@ -318,6 +313,9 @@ public class BQIdentityInterestScoreRepositoryTest
 			transformations.get(3));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testGetInterestTransformationsByWeek() {
 		List<Map<String, Object>> transformations =
@@ -336,6 +334,9 @@ public class BQIdentityInterestScoreRepositoryTest
 			transformations.get(2));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testGetKeywords() {
 		Assertions.assertEquals(
@@ -351,6 +352,9 @@ public class BQIdentityInterestScoreRepositoryTest
 				null, PageRequest.of(0, 20)));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testGetKeywordsPagination() {
 		Assertions.assertEquals(
@@ -364,6 +368,9 @@ public class BQIdentityInterestScoreRepositoryTest
 				null, PageRequest.of(1, 2)));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testGetKeywordsWithFilter() {
 		Assertions.assertEquals(
@@ -377,6 +384,9 @@ public class BQIdentityInterestScoreRepositoryTest
 				"le", PageRequest.of(0, 20)));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_bq_identity_interest_score_repository.sql"
+	)
 	@Test
 	public void testGetTopNamesByIndividualId() {
 		List<String> names =
@@ -408,12 +418,6 @@ public class BQIdentityInterestScoreRepositoryTest
 	@Autowired
 	private BQIdentityInterestScoreRepository
 		_bqIdentityInterestScoreRepository;
-
-	@Autowired
-	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
-	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
 	private InterestFilterStringConverterHelper

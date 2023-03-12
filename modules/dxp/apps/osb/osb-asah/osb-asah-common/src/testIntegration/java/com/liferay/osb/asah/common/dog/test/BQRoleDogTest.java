@@ -14,11 +14,10 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQRoleDog;
 import com.liferay.osb.asah.common.entity.BQRole;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.BQRoleRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.List;
 
@@ -32,31 +31,13 @@ import org.springframework.data.domain.Page;
 /**
  * @author Marcos Martins
  */
+@BQSQLResource(resourcePath = "test_bq_role_dog.sql")
 public class BQRoleDogTest extends BaseBQDXPEntityDogTestCase {
 
 	@BeforeEach
 	@Override
 	public void setUp() {
 		super.setUp();
-
-		BQRole bqRole1 = new BQRole();
-
-		bqRole1.setDataSourceId(dataSource.getId());
-		bqRole1.setId("1");
-		bqRole1.setModifiedDate(DateUtil.newDate());
-		bqRole1.setName("Test");
-		bqRole1.setRoleId(1L);
-
-		BQRole bqRole2 = new BQRole();
-
-		bqRole2.setDataSourceId(dataSource.getId());
-		bqRole2.setId("2");
-		bqRole2.setModifiedDate(DateUtil.newDate());
-		bqRole2.setName("Liferay");
-		bqRole2.setRoleId(2L);
-
-		_bqRoleRepository.insert(bqRole1);
-		_bqRoleRepository.insert(bqRole2);
 	}
 
 	@Test
@@ -82,8 +63,5 @@ public class BQRoleDogTest extends BaseBQDXPEntityDogTestCase {
 
 	@Autowired
 	private BQRoleDog _bqRoleDog;
-
-	@Autowired
-	private BQRoleRepository _bqRoleRepository;
 
 }

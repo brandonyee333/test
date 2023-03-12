@@ -14,27 +14,18 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.dog.UserSessionDog;
-import com.liferay.osb.asah.common.entity.BQIdentity;
-import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.BQIdentityRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Collections;
-import java.util.Date;
-
-import org.junit.jupiter.api.BeforeEach;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 
 /**
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
+@BQSQLResource(
+	resourcePath = "test_events_by_user_session_graphql_rest_controller_test.sql"
+)
 @Import(JDBCTestConfiguration.class)
 public class EventsByUserSessionGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
@@ -53,67 +44,5 @@ public class EventsByUserSessionGraphQLRestControllerTest
 	public String getQueryPath() {
 		return "events_by_session_query.graphql";
 	}
-
-	@BeforeEach
-	public void setUp() throws Exception {
-		_createBQEvent(new Date(), "assetClicked", "sessionId1");
-		_createBQEvent(new Date(), "assetDownloaded", "sessionId1");
-		_createBQEvent(new Date(), "pageViewed", "sessionId2");
-
-		_createBQIdentity();
-
-		_createUserSession(
-			"2021-10-08T01:30:15.000Z", "sessionId1",
-			"2021-10-08T01:00:00.000Z");
-	}
-
-	private void _createBQEvent(
-			Date eventDate, String eventDefinitionName, String sessionId)
-		throws Exception {
-
-		_eventDog.addBQEvent(
-			"Page", Collections.emptySet(), "Chrome", "canonicalUrlValue", 1L,
-			null, "contentLanguageId",
-			JSONUtil.put(
-				"devicePixelRatio", "1"
-			).put(
-				"screenHeight", "970"
-			).put(
-				"screenWidth", "1920"
-			).put(
-				"userAgent", "UserAgent"
-			).toString(),
-			null, new Date(), 1L, "pageDescriptionValue", "Chrome", eventDate,
-			eventDefinitionName, null, RandomTestUtil.randomId(),
-			"pageKeywordsValue", "pt-BR", null, null, "referrerValue", null,
-			sessionId, "-3", "pageTitleValue", "urlValue", "1", null);
-	}
-
-	private void _createBQIdentity() {
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setId("1");
-		bqIdentity.setIndividualId("1");
-
-		_bqIdentityRepository.insert(bqIdentity);
-	}
-
-	private void _createUserSession(
-		String sessionEndDateString, String sessionId,
-		String sessionStartDateString) {
-
-		_userSessionDog.addBQSession(
-			1L, sessionId, DateUtil.toUTCDate(sessionEndDateString),
-			DateUtil.toUTCDate(sessionStartDateString));
-	}
-
-	@Autowired
-	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
-	private EventDog _eventDog;
-
-	@Autowired
-	private UserSessionDog _userSessionDog;
 
 }

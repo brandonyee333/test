@@ -15,34 +15,18 @@
 package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.entity.BQEvent;
-import com.liferay.osb.asah.common.entity.BQIdentity;
-import com.liferay.osb.asah.common.entity.BQIndividual;
-import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.model.IndividualMetricType;
-import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualRepository;
-import com.liferay.osb.asah.common.repository.BQSessionRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,21 +35,11 @@ import org.springframework.context.annotation.Import;
 /**
  * @author Ivica Cardic
  */
+@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 @Import(JDBCTestConfiguration.class)
 public class BQIdentityRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
-
-	@BeforeEach
-	public void setUp() {
-		List<BQIdentity> bqIdentities = _addBQIdentities();
-
-		bqIdentities.forEach(_bqIdentityRepository::insert);
-
-		_addBQEvents();
-		_addBQIndividuals();
-		_addBQSessions();
-	}
 
 	@Test
 	public void testGetIndividualsCount() {
@@ -141,180 +115,8 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(0, identityIds.size());
 	}
 
-	private void _addBQEvents() {
-		BQEvent bqEvent = new BQEvent();
-
-		bqEvent.setApplicationId("Blog");
-		bqEvent.setChannelId(1L);
-		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -2));
-		bqEvent.setEventDate(DateUtil.addDays(new Date(), -2));
-		bqEvent.setEventId("blogClicked");
-		bqEvent.setId("1");
-		bqEvent.setUserId("1");
-
-		_bqEventRepository.insert(bqEvent);
-
-		bqEvent = new BQEvent();
-
-		bqEvent.setApplicationId("Blog");
-		bqEvent.setChannelId(1L);
-		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -4));
-		bqEvent.setEventDate(DateUtil.addDays(new Date(), -4));
-		bqEvent.setEventId("blogClicked");
-		bqEvent.setId("2");
-		bqEvent.setUserId("2");
-
-		_bqEventRepository.insert(bqEvent);
-
-		bqEvent = new BQEvent();
-
-		bqEvent.setApplicationId("Blog");
-		bqEvent.setChannelId(1L);
-		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -11));
-		bqEvent.setEventDate(DateUtil.addDays(new Date(), -11));
-		bqEvent.setEventId("blogClicked");
-		bqEvent.setId("3");
-		bqEvent.setUserId("3");
-
-		_bqEventRepository.insert(bqEvent);
-
-		bqEvent = new BQEvent();
-
-		bqEvent.setApplicationId("Blog");
-		bqEvent.setChannelId(1L);
-		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -35));
-		bqEvent.setEventDate(DateUtil.addDays(new Date(), -35));
-		bqEvent.setEventId("blogClicked");
-		bqEvent.setId("4");
-		bqEvent.setUserId("4");
-
-		_bqEventRepository.insert(bqEvent);
-
-		bqEvent = new BQEvent();
-
-		bqEvent.setApplicationId("Blog");
-		bqEvent.setChannelId(1L);
-		bqEvent.setCreateDate(DateUtil.addDays(new Date(), -11));
-		bqEvent.setEventDate(DateUtil.addDays(new Date(), -11));
-		bqEvent.setEventId("blogClicked");
-		bqEvent.setId("5");
-		bqEvent.setUserId("5");
-
-		_bqEventRepository.insert(bqEvent);
-	}
-
-	private List<BQIdentity> _addBQIdentities() {
-		List<BQIdentity> bqIdentities = new ArrayList<>();
-
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -3));
-		bqIdentity.setId("1");
-		bqIdentity.setIndividualId(DigestUtils.sha256Hex("test1@liferay.com"));
-
-		bqIdentities.add(bqIdentity);
-
-		bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -5));
-		bqIdentity.setId("2");
-		bqIdentity.setIndividualId(DigestUtils.sha256Hex("test2@liferay.com"));
-
-		bqIdentities.add(bqIdentity);
-
-		bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
-		bqIdentity.setId("3");
-		bqIdentity.setIndividualId(DigestUtils.sha256Hex("test3@liferay.com"));
-
-		bqIdentities.add(bqIdentity);
-
-		bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -36));
-		bqIdentity.setId("4");
-		bqIdentity.setIndividualId(DigestUtils.sha256Hex("test4@liferay.com"));
-
-		bqIdentities.add(bqIdentity);
-
-		bqIdentity = new BQIdentity();
-
-		bqIdentity.setCreateDate(DateUtil.addDays(new Date(), -11));
-		bqIdentity.setId("5");
-
-		bqIdentities.add(bqIdentity);
-
-		return bqIdentities;
-	}
-
-	private void _addBQIndividuals() {
-		BQIndividual bqIndividual = new BQIndividual();
-
-		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -2));
-		bqIndividual.setEmailAddress("test1@liferay.com");
-		bqIndividual.setFirstName("Test1");
-		bqIndividual.setId(DigestUtils.sha256Hex("test1@liferay.com"));
-
-		_bqIndividualRepository.insert(bqIndividual);
-
-		bqIndividual = new BQIndividual();
-
-		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -4));
-		bqIndividual.setEmailAddress("test2@liferay.com");
-		bqIndividual.setId(DigestUtils.sha256Hex("test2@liferay.com"));
-
-		_bqIndividualRepository.insert(bqIndividual);
-
-		bqIndividual = new BQIndividual();
-
-		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -10));
-		bqIndividual.setEmailAddress("test3@liferay.com");
-		bqIndividual.setId(DigestUtils.sha256Hex("test3@liferay.com"));
-
-		_bqIndividualRepository.insert(bqIndividual);
-
-		bqIndividual = new BQIndividual();
-
-		bqIndividual.setCreateDate(DateUtil.addDays(new Date(), -35));
-		bqIndividual.setEmailAddress("test4@liferay.com");
-		bqIndividual.setId(DigestUtils.sha256Hex("test4@liferay.com"));
-
-		_bqIndividualRepository.insert(bqIndividual);
-	}
-
-	private void _addBQSessions() {
-		BQSession bqSession = new BQSession();
-
-		bqSession.setBrowserName("browser1");
-		bqSession.setId("1");
-		bqSession.setSessionEnd(new Date());
-		bqSession.setSessionStart(
-			DateUtil.toDate(
-				LocalDateTime.now(
-				).minus(
-					3, ChronoUnit.HOURS
-				),
-				ZoneId.systemDefault()));
-		bqSession.setUserId("1");
-
-		_bqSessionRepository.insert(bqSession);
-	}
-
-	@Autowired
-	private BQEventRepository _bqEventRepository;
-
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
-	private BQIndividualRepository _bqIndividualRepository;
-
-	@Autowired
-	private BQSessionRepository _bqSessionRepository;
-
-	@Autowired
-	private EventDog _eventDog;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

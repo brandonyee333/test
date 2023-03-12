@@ -1,0 +1,1 @@
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now}', 'abc-123', 'd15821f9b7e5b385b6dc57559b8878773d48d5769ed4ad9c5368e2b785dff800');

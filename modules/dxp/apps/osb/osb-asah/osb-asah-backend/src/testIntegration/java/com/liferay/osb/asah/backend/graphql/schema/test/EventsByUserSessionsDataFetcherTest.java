@@ -20,27 +20,19 @@ import com.liferay.osb.asah.backend.dto.BQEventDTO;
 import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
 import com.liferay.osb.asah.backend.graphql.schema.EventsByUserSessionsDataFetcher;
-import com.liferay.osb.asah.common.dog.EventDog;
-import com.liferay.osb.asah.common.dog.UserSessionDog;
-import com.liferay.osb.asah.common.entity.BQEventProperty;
-import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.BQIdentityRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.DataFetchingEnvironmentBuilder;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,20 +42,11 @@ import org.springframework.context.annotation.Import;
  * @author Alejo Ceballos
  * @author Marcos Martins
  */
+@BQSQLResource(resourcePath = "test_events_by_user_sessions_data_fetcher.sql")
 @Import(JDBCTestConfiguration.class)
 public class EventsByUserSessionsDataFetcherTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
-
-	@BeforeEach
-	public void setUp() throws Exception {
-		_createBQIdentity();
-
-		_createEvent("assetClicked");
-		_createEvent("assetDownloaded");
-
-		_userSessionDog.addBQSession(1L, "sessionId", new Date(), new Date());
-	}
 
 	@Test
 	public void testGet() {
@@ -97,31 +80,6 @@ public class EventsByUserSessionsDataFetcherTest
 				"canonicalUrlValue", bqEventDTO.getCanonicalUrl()));
 	}
 
-	private void _createBQIdentity() {
-		BQIdentity bqIdentity = new BQIdentity();
-
-		bqIdentity.setId("1");
-		bqIdentity.setIndividualId("1");
-
-		_bqIdentityRepository.insert(bqIdentity);
-	}
-
-	private void _createEvent(String eventDefinitionName) throws Exception {
-		_eventDog.addBQEvent(
-			"Page",
-			new HashSet<BQEventProperty>() {
-				{
-					add(
-						new BQEventProperty(
-							null, "viewDuration", "viewDurationValue"));
-				}
-			},
-			null, "canonicalUrlValue", 1L, null, null, "{}", null, new Date(),
-			1L, null, null, new Date(), eventDefinitionName, null,
-			RandomTestUtil.randomId(), null, "pt-BR", null, null, null, null,
-			"sessionId", null, null, null, "1", null);
-	}
-
 	private DataFetchingEnvironment _getDataFetchingEnvironment() {
 		DataFetchingEnvironmentBuilder dataFetchingEnvironmentBuilder =
 			DataFetchingEnvironmentBuilder.newDataFetchingEnvironment();
@@ -141,15 +99,6 @@ public class EventsByUserSessionsDataFetcherTest
 	}
 
 	@Autowired
-	private BQIdentityRepository _bqIdentityRepository;
-
-	@Autowired
-	private EventDog _eventDog;
-
-	@Autowired
 	private EventsByUserSessionsDataFetcher _eventsByUserSessionsDataFetcher;
-
-	@Autowired
-	private UserSessionDog _userSessionDog;
 
 }

@@ -21,22 +21,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.EventAttributeDefinition;
 import com.liferay.osb.asah.common.model.BQEventPropertyValue;
 import com.liferay.osb.asah.common.model.SearchKeyword;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -59,47 +57,26 @@ public class EventDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@BQSQLResource(
+		resourcePath = "test_get_recent_bq_event_property_values_bq.sql"
+	)
+	@SQLResource(resourcePath = "test_get_recent_bq_event_property_values.sql")
 	@Test
 	public void testGetRecentBQEventPropertyValues() throws Exception {
-		Date date1 = DateUtil.newDate();
-
-		EventAttributeDefinition eventAttributeDefinition =
-			_eventAttributeDefinitionDog.fetchEventAttributeDefinitionByName(
-				"viewDuration");
-
-		Channel channel = _channelDog.addChannel("Test Channel");
-
-		BQEventProperty bqEventProperty = new BQEventProperty(
-			null, "viewDuration", "testValue1");
-
-		bqEventProperty.setEventDate(date1);
-
-		_eventDog.addBQEvent(
-			"Page", Collections.singleton(bqEventProperty), channel.getId(),
-			date1, 1L, date1, "pageUnloaded", "analyticsEventId1", "sessionId",
-			"userId");
-
-		Date date2 = DateUtil.newDate();
-
-		bqEventProperty = new BQEventProperty(
-			null, "viewDuration", "testValue2");
-
-		bqEventProperty.setEventDate(date2);
-
-		_eventDog.addBQEvent(
-			"Page", Collections.singleton(bqEventProperty), channel.getId(),
-			date2, 1L, date2, "pageUnloaded", "analyticsEventId2", "sessionId",
-			"userId");
-
 		Assertions.assertEquals(
 			new ArrayList<BQEventPropertyValue>() {
 				{
-					add(new BQEventPropertyValue(date2, "testValue2"));
-					add(new BQEventPropertyValue(date1, "testValue1"));
+					add(
+						new BQEventPropertyValue(
+							DateUtil.toUTCDate("2023-03-13T00:00:00.000Z"),
+							"testValue2"));
+					add(
+						new BQEventPropertyValue(
+							DateUtil.toUTCDate("2023-03-12T00:00:00.000Z"),
+							"testValue1"));
 				}
 			},
-			_eventDog.getRecentBQEventPropertyValues(
-				eventAttributeDefinition.getId(), 2));
+			_eventDog.getRecentBQEventPropertyValues(98765L, 2));
 	}
 
 	@Test
@@ -389,12 +366,6 @@ public class EventDogTest
 
 	@Autowired
 	private ChannelDog _channelDog;
-
-	@Autowired
-	private EventAttributeDefinitionDog _eventAttributeDefinitionDog;
-
-	@Autowired
-	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
 	private EventDog _eventDog;
