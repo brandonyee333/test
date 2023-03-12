@@ -496,8 +496,8 @@ public class BQEventRepositoryTest
 			breakdownRows,
 			new HashMap<String, BigDecimal>() {
 				{
-					put("2021-5-12", BigDecimal.valueOf(5));
-					put("2021-5-13", BigDecimal.valueOf(1));
+					put("2021-05-12", BigDecimal.valueOf(5));
+					put("2021-05-13", BigDecimal.valueOf(1));
 				}
 			});
 	}
@@ -556,10 +556,10 @@ public class BQEventRepositoryTest
 			breakdownRows,
 			new HashMap<String, BigDecimal>() {
 				{
-					put("2019-5", BigDecimal.valueOf(1));
-					put("2020-5", BigDecimal.valueOf(1));
-					put("2021-1", BigDecimal.valueOf(1));
-					put("2021-5", BigDecimal.valueOf(7));
+					put("2019-05", BigDecimal.valueOf(1));
+					put("2020-05", BigDecimal.valueOf(1));
+					put("2021-01", BigDecimal.valueOf(1));
+					put("2021-05", BigDecimal.valueOf(7));
 					put("undefined", BigDecimal.valueOf(1));
 				}
 			});
@@ -995,12 +995,12 @@ public class BQEventRepositoryTest
 			breakdownRows,
 			new HashMap<String, BigDecimal>() {
 				{
-					put("2019-5-10", BigDecimal.valueOf(1));
-					put("2020-5-13", BigDecimal.valueOf(1));
-					put("2021-1-13", BigDecimal.valueOf(1));
-					put("2021-5-1", BigDecimal.valueOf(1));
-					put("2021-5-10", BigDecimal.valueOf(2));
-					put("2021-5-13", BigDecimal.valueOf(4));
+					put("2019-05-10", BigDecimal.valueOf(1));
+					put("2020-05-13", BigDecimal.valueOf(1));
+					put("2021-01-13", BigDecimal.valueOf(1));
+					put("2021-05-01", BigDecimal.valueOf(1));
+					put("2021-05-10", BigDecimal.valueOf(2));
+					put("2021-05-13", BigDecimal.valueOf(4));
 					put("undefined", BigDecimal.valueOf(1));
 				}
 			});

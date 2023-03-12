@@ -1800,28 +1800,30 @@ public class BQEventRepositoryImpl
 			DateGrouping dateGrouping =
 				eventAnalysisBreakdown.getDateGrouping();
 
-			Field<OffsetDateTime> offsetDateTimeField =
-				_dslHelper.getDateValueField(attributeField, timeZoneId);
-
 			if (dateGrouping.equals(DateGrouping.DAY)) {
-				field = _dslHelper.concat(
-					DSL.extract(offsetDateTimeField, DatePart.YEAR),
-					DSL.val("-"),
-					DSL.extract(offsetDateTimeField, DatePart.MONTH),
-					DSL.val("-"),
-					DSL.extract(offsetDateTimeField, DatePart.DAY));
+				field = DSL.field(
+					String.format(
+						"FORMAT_DATE('%%Y-%%m-%%d', DATE(SAFE_CAST(%s AS " +
+							"TIMESTAMP), '%s'))",
+						attributeField, timeZoneId));
 			}
 			else if (dateGrouping.equals(DateGrouping.MONTH)) {
-				field = _dslHelper.concat(
-					DSL.extract(offsetDateTimeField, DatePart.YEAR),
-					DSL.val("-"),
-					DSL.extract(offsetDateTimeField, DatePart.MONTH));
+				field = DSL.field(
+					String.format(
+						"FORMAT_DATE('%%Y-%%m', DATE(SAFE_CAST(%s AS " +
+							"TIMESTAMP), '%s'))",
+						attributeField, timeZoneId));
 			}
 			else if (dateGrouping.equals(DateGrouping.YEAR)) {
-				field = DSL.extract(offsetDateTimeField, DatePart.YEAR);
+				field = DSL.field(
+					String.format(
+						"FORMAT_DATE('%%Y', DATE(SAFE_CAST(%s AS TIMESTAMP), " +
+							"'%s'))",
+						attributeField, timeZoneId));
 			}
 			else {
-				field = offsetDateTimeField;
+				field = _dslHelper.getDateAtTimeZoneField(
+					attributeField.getName(), timeZoneId);
 			}
 		}
 		else if (dataType.equals(EventAttributeDefinition.DataType.DURATION)) {
