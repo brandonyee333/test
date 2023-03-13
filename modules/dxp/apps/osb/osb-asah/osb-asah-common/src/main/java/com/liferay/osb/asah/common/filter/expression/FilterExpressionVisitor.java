@@ -526,6 +526,14 @@ public class FilterExpressionVisitor
 			return leftField.isNotNull();
 		}
 
+		if (Objects.equals("IdentityActivity.channelId", leftField.getName()) &&
+			(rightField instanceof Param)) {
+
+			Param<String> param = (Param<String>)rightField;
+
+			rightField = DSL.val(Long.parseLong(param.getValue()));
+		}
+
 		return leftField.ne(rightField);
 	}
 
