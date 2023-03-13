@@ -485,12 +485,6 @@ public class ConditionUtilTest {
 			"startsWith(column1, 'value1')");
 	}
 
-	@Disabled
-	@Test
-	public void testTooManyStringFunctionArgumentsThrowsException() {
-		_assertThrowsException("contains(column1, 'value1', 'value2')");
-	}
-
 	@Test
 	public void testUnclosedParenthesisThrowsException() {
 		_assertThrowsException("(column1 eq ')'");
