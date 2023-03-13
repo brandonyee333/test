@@ -67,6 +67,9 @@ public class EventIngestionPipelineTest {
 			_createTestAnalyticsEvent(
 				"https://liferay.com", _USER_AGENT_MAC_OS_FIREFOX_DESKTOP,
 				"https://liferay.com/test-page-3/"));
+		testAnalyticsEvents.add(
+			_createTestAnalyticsEvent(
+				"", _USER_AGENT_CRAWLER, "https://liferay.com/test-page-3/"));
 
 		PCollection<AnalyticsEvent> pCollection = testPipeline.apply(
 			"Create Test Batch",
@@ -240,6 +243,8 @@ public class EventIngestionPipelineTest {
 		"Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) " +
 			"AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 " +
 				"Mobile Safari/535.19";
+
+	private static final String _USER_AGENT_CRAWLER = "Googlebot";
 
 	private static final String _USER_AGENT_MAC_OS_CHROME_DESKTOP =
 		"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 " +
