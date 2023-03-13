@@ -133,7 +133,7 @@ public class ConditionUtilTest {
 			DSL.and(
 				DSL.or(
 					DSL.field(
-						DSL.cast(DSL.field("column1"), Long.class)
+						"column1"
 					).gt(
 						42L
 					),
@@ -190,7 +190,7 @@ public class ConditionUtilTest {
 							-53.21
 						),
 						DSL.field(
-							DSL.cast(DSL.field("column6"), Long.class)
+							"column6"
 						).le(
 							-8192L
 						)))),
@@ -275,7 +275,7 @@ public class ConditionUtilTest {
 	public void testIntegerValue() {
 		_assertEquals(
 			DSL.field(
-				DSL.cast(DSL.field("column1"), Long.class)
+				"column1"
 			).eq(
 				123L
 			),

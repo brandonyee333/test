@@ -35,12 +35,12 @@ import org.springframework.context.annotation.Import;
 /**
  * @author Ivica Cardic
  */
-@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 @Import(JDBCTestConfiguration.class)
 public class BQIdentityRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 	@Test
 	public void testGetIndividualsCount() {
 		LocalDate localDate = LocalDate.now();
@@ -73,6 +73,7 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(4, totalActiveIndividualsCount, 0);
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 	@Test
 	public void testSearchSegmentBQIdentityIds1() {
 		List<Long> identityIds =
@@ -88,6 +89,7 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(1, identityIds.get(0));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 	@Test
 	public void testSearchSegmentBQIdentityIds2() {
 		List<Long> identityIds =
@@ -102,6 +104,7 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(1, identityIds.get(0));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 	@Test
 	public void testSearchSegmentBQIdentityIds3() {
 		List<Long> identityIds =

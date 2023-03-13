@@ -59,8 +59,8 @@ public class SegmentFilterStringConverterHelperTest {
 			null, "((individualCount eq 3))",
 			_segmentFilterStringConverterHelper);
 
-		Condition condition1 = DSL.cast(
-			DSL.field("individualCount"), Long.class
+		Condition condition1 = DSL.field(
+			"individualCount"
 		).eq(
 			3L
 		);
@@ -71,8 +71,8 @@ public class SegmentFilterStringConverterHelperTest {
 			null, "((individualCount gt 3))",
 			_segmentFilterStringConverterHelper);
 
-		Condition condition2 = DSL.cast(
-			DSL.field("individualCount"), Long.class
+		Condition condition2 = DSL.field(
+			"individualCount"
 		).gt(
 			3L
 		);
@@ -83,8 +83,8 @@ public class SegmentFilterStringConverterHelperTest {
 			null, "((individualCount lt 3))",
 			_segmentFilterStringConverterHelper);
 
-		Condition condition3 = DSL.cast(
-			DSL.field("individualCount"), Long.class
+		Condition condition3 = DSL.field(
+			"individualCount"
 		).lt(
 			3L
 		);

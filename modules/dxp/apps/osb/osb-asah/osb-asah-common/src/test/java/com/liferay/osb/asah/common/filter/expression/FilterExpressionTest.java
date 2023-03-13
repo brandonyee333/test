@@ -1205,7 +1205,6 @@ public class FilterExpressionTest {
 			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")));
 	}
 
-	@Disabled
 	@Test
 	public void testIndividualsEqAndNull() {
 		Condition expectedCondition = DSL.and(
@@ -1219,8 +1218,8 @@ public class FilterExpressionTest {
 			).isNotNull());
 
 		FilterExpression filterExpression = new FilterExpression(
-			"(channelIds eq '506297979389450553' and " +
-				"(demographics/email/value ne null))");
+			"channelIds eq '506297979389450553' and individuals.filter(" +
+				"filter='(demographics/email/value ne null)')");
 
 		Condition actualCondition = filterExpression.getCondition();
 

@@ -61,15 +61,6 @@ public class FilterExpressionVisitor
 		if (filterType != null) {
 			_referencedTableNames.add(_tableReferences.get(filterType));
 		}
-
-		_fieldMappers.put("activities.day", "Event.eventDate");
-		_fieldMappers.put(
-			"individuals.additionalName", "Individual.middleName");
-		_fieldMappers.put("individuals.address", "Individual.addresses");
-		_fieldMappers.put("individuals.birthDate", "Individual.birthday");
-		_fieldMappers.put("individuals.email", "Individual.emailAddress");
-		_fieldMappers.put("individuals.familyName", "Individual.lastName");
-		_fieldMappers.put("individuals.givenName", "Individual.firstName");
 	}
 
 	public Map<String, Set<String>> getReferencedObjectIds() {
@@ -434,8 +425,8 @@ public class FilterExpressionVisitor
 
 		String fieldName = identifierContext.getText();
 
-		if (_fieldNameConversions.containsKey(fieldName)) {
-			fieldName = _fieldNameConversions.get(fieldName);
+		if (_fieldMappers.containsKey(fieldName)) {
+			fieldName = _fieldMappers.get(fieldName);
 		}
 
 		if (StringUtils.contains(fieldName, "/")) {
@@ -999,13 +990,18 @@ public class FilterExpressionVisitor
 		"last24Hours", "last28Days", "last30Days", "last7Days", "last90Days",
 		"yesterday");
 
-	private final Map<String, String> _fieldMappers = new HashMap<>();
-	private final Map<String, String> _fieldNameConversions =
+	private final Map<String, String> _fieldMappers =
 		new HashMap<String, String>() {
 			{
+				put("activities.day", "Event.eventDate");
 				put("channelIds", "IdentityActivity.channelId");
 				put("credentials/type", "credentialType");
-				put("email", "Individual.emailAddress");
+				put("individuals.additionalName", "Individual.middleName");
+				put("individuals.address", "Individual.addresses");
+				put("individuals.birthDate", "Individual.birthday");
+				put("individuals.email", "Individual.emailAddress");
+				put("individuals.familyName", "Individual.lastName");
+				put("individuals.givenName", "Individual.firstName");
 				put("lastEnrichmentDate", "Individual.modifiedDate");
 				put("provider/type", "providerType");
 			}
