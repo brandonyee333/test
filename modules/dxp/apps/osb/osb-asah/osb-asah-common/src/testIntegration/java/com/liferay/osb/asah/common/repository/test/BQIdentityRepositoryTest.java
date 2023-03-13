@@ -27,7 +27,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +73,6 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(4, totalActiveIndividualsCount, 0);
 	}
 
-	@Disabled
 	@Test
 	public void testSearchSegmentBQIdentityIds1() {
 		List<Long> identityIds =
@@ -90,7 +88,6 @@ public class BQIdentityRepositoryTest
 		Assertions.assertEquals(1, identityIds.get(0));
 	}
 
-	@Disabled
 	@Test
 	public void testSearchSegmentBQIdentityIds2() {
 		List<Long> identityIds =
