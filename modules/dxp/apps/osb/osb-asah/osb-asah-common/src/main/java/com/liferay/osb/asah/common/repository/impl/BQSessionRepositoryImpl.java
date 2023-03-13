@@ -582,11 +582,7 @@ public class BQSessionRepositoryImpl
 
 		if (!StringUtils.isEmpty(value)) {
 			condition = condition.and(
-				DSL.lower(
-					field
-				).like(
-					DSL.lower(StringUtils.wrap(value, "%"))
-				));
+				_dslHelper.containsSubstring(field.getName(), value));
 		}
 
 		SelectJoinStep<Record1<String>> selectJoinStep = _dslContext.select(
@@ -597,9 +593,8 @@ public class BQSessionRepositoryImpl
 
 		if (_nestedFieldNamesMap.containsKey(fieldName)) {
 			selectJoinStep = selectJoinStep.crossJoin(
-				DSL.unnest(
-					DSL.field(
-						_nestedFieldNamesMap.get(fieldName), String[].class)
+				DSL.table(
+					"UNNEST(" + _nestedFieldNamesMap.get(fieldName) + ")"
 				).as(
 					"value"
 				));
