@@ -673,7 +673,7 @@ public class BQMembershipRepositoryImpl
 		return conditions;
 	}
 
-		private List<Condition> _getConditions(
+	private List<Condition> _getConditions(
 		List<String> identityIds, List<Long> segmentIds, String status) {
 
 		List<Condition> conditions = new ArrayList<>();
