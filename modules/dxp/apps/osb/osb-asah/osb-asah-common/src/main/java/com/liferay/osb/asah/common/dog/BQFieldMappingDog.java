@@ -40,8 +40,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class BQFieldMappingDog {
 
-	public long countIndividualBQFieldMappings(String name) {
-		return _bqFieldMappingRepository.countIndividualBQFieldMappings(name);
+	public long countIndividualBQFieldMappings(String displayName) {
+		return _bqFieldMappingRepository.countIndividualBQFieldMappings(
+			displayName);
 	}
 
 	public BQFieldMapping getBQFieldMapping(String fieldName) {
@@ -54,8 +55,8 @@ public class BQFieldMappingDog {
 				"There is no field mapping with field name " + fieldName));
 	}
 
-	public List<BQFieldMapping> getBQFieldMappings(Set<String> ids) {
-		return _bqFieldMappingRepository.findByFieldNameIn(ids);
+	public List<BQFieldMapping> getBQFieldMappings(Set<String> fieldNames) {
+		return _bqFieldMappingRepository.findByFieldNameIn(fieldNames);
 	}
 
 	public Page<BQFieldMapping> searchBQFieldMappingPage(
@@ -64,7 +65,7 @@ public class BQFieldMappingDog {
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size,
-			SortUtil.getSort(Sort.by(Sort.Order.asc("fieldName")), sorts));
+			SortUtil.getSort(Sort.by(Sort.Order.asc("displayName")), sorts));
 
 		return PageableExecutionUtils.getPage(
 			_bqFieldMappingRepository.searchByFilterString(
@@ -74,21 +75,21 @@ public class BQFieldMappingDog {
 	}
 
 	public Page<BQFieldMapping> searchIndividualBQFieldMappingPage(
-		@Nullable String name, int page, int size, String[] sorts) {
+		@Nullable String displayName, int page, int size, String[] sorts) {
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
 
 		List<BQFieldMapping> bqFieldMappings =
 			_bqFieldMappingRepository.searchIndividualBQFieldMappings(
-				name, pageRequest);
+				displayName, pageRequest);
 
 		_setDemographicsFieldsDataSourceIds(bqFieldMappings);
 
 		return PageableExecutionUtils.getPage(
 			bqFieldMappings, pageRequest,
 			() -> _bqFieldMappingRepository.countIndividualBQFieldMappings(
-				name));
+				displayName));
 	}
 
 	private void _setDemographicsFieldsDataSourceIds(

@@ -68,19 +68,19 @@ public class BQFieldMappingRepositoryImpl
 			));
 	}
 
-	public long countIndividualBQFieldMappings(String fieldName) {
+	public long countIndividualBQFieldMappings(String displayName) {
 		Condition condition = DSL.field(
 			"ownerType"
 		).eq(
 			"individual"
 		);
 
-		if (!StringUtils.isBlank(fieldName)) {
+		if (!StringUtils.isBlank(displayName)) {
 			condition = condition.and(
 				DSL.condition(
 					String.format(
-						"lower(fieldName) like '%s'",
-						"%" + fieldName.toLowerCase() + "%")));
+						"lower(displayName) like '%s'",
+						"%" + displayName.toLowerCase() + "%")));
 		}
 
 		return _queryExecutor.queryForLong(
@@ -192,7 +192,7 @@ public class BQFieldMappingRepositoryImpl
 
 	@Override
 	public List<BQFieldMapping> searchIndividualBQFieldMappings(
-		String name, Pageable pageable) {
+		String displayName, Pageable pageable) {
 
 		Condition condition = DSL.field(
 			"ownerType"
@@ -200,12 +200,12 @@ public class BQFieldMappingRepositoryImpl
 			"individual"
 		);
 
-		if (!StringUtils.isBlank(name)) {
+		if (!StringUtils.isBlank(displayName)) {
 			condition = condition.and(
 				DSL.condition(
 					String.format(
-						"lower(fieldName) like '%s'",
-						"%" + name.toLowerCase() + "%")));
+						"lower(displayName) like '%s'",
+						"%" + displayName.toLowerCase() + "%")));
 		}
 
 		return _queryExecutor.queryForList(

@@ -32,11 +32,11 @@ public interface CustomBQFieldMappingRepository {
 
 	public long countByFilterString(String filterString);
 
-	public long countIndividualBQFieldMappings(@Nullable String name);
+	public long countIndividualBQFieldMappings(@Nullable String displayName);
 
 	public Optional<BQFieldMapping> findByDisplayName(String displayName);
 
-	public Optional<BQFieldMapping> findByFieldName(String id);
+	public Optional<BQFieldMapping> findByFieldName(String fieldName);
 
 	public List<BQFieldMapping> findByFieldNameIn(
 		Collection<String> fieldNames);
@@ -45,6 +45,6 @@ public interface CustomBQFieldMappingRepository {
 		String filterString, Pageable pageable);
 
 	public List<BQFieldMapping> searchIndividualBQFieldMappings(
-		@Nullable String name, Pageable pageable);
+		@Nullable String displayName, Pageable pageable);
 
 }

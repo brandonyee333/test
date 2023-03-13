@@ -50,16 +50,16 @@ public class DefinitionsRestController extends BaseRestController {
 
 	@GetMapping("/individual-attributes")
 	public PageDTO<BQFieldMappingDTO> getIndividualBQFieldMappingDTOPageDTO(
-		@RequestParam(required = false) String name) {
+		@RequestParam(required = false) String displayName) {
 
 		Page<BQFieldMapping> bqFieldMappingPage =
 			_bqFieldMappingDog.searchIndividualBQFieldMappingPage(
-				name, 0,
+				displayName, 0,
 				Math.max(
 					1,
 					(int)_bqFieldMappingDog.countIndividualBQFieldMappings(
-						name)),
-				new String[] {"fieldName", "asc"});
+						displayName)),
+				new String[] {"displayName", "asc"});
 
 		Map<String, BQFieldMappingDTO> bqFieldMappingDTOs = Stream.of(
 			bqFieldMappingPage.getContent()

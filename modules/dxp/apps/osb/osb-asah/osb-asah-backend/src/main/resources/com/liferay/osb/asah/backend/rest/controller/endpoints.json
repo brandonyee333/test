@@ -77,7 +77,7 @@
 			"templated": true
 		},
 		"definitions-individual-attributes": {
-			"href": "{url}/definitions/individual-attributes{?name}",
+			"href": "{url}/definitions/individual-attributes{?displayName}",
 			"templated": true
 		},
 		"field": {
@@ -85,7 +85,7 @@
 			"templated": true
 		},
 		"field-mapping": {
-			"href": "{url}/field-mappings/{fieldName}",
+			"href": "{url}/field-mappings/{id}",
 			"templated": true
 		},
 		"field-mappings": {
