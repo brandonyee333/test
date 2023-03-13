@@ -780,11 +780,13 @@ public class BQSessionRepositoryImpl
 		List<Field<?>> fields = new ArrayList<>();
 
 		Field<String> sessionDateField = _dslHelper.getCastStringField(
-			DSL.field(
-				"retentionTable.sessionDate"
-			).cast(
-				Date.class
-			));
+			_dslHelper.formatDate(
+				"%F",
+				DSL.field(
+					"retentionTable.sessionDate"
+				).cast(
+					Date.class
+				)));
 
 		fields.add(sessionDateField.as("cohortDate"));
 

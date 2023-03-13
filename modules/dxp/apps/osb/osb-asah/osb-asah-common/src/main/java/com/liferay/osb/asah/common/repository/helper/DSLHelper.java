@@ -144,6 +144,11 @@ public class DSLHelper {
 			field);
 	}
 
+	public Field formatDate(String dateFormat, Field field) {
+		return DSL.field(
+			"format_date({0}, {1})", field.getDataType(), dateFormat, field);
+	}
+
 	public Field getCastBooleanField(Field field) {
 		if (isBigQueryDialect()) {
 			return DSL.field("SAFE_CAST({0} as BOOL)", field);
