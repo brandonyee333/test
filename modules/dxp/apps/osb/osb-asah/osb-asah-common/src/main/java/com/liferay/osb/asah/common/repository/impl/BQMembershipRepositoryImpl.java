@@ -104,15 +104,17 @@ public class BQMembershipRepositoryImpl
 		selectJoinStep = _getSelectJoinStep(
 			channelId, referencedTableNames, selectJoinStep);
 
-		return _queryExecutor.queryForLong(
-			selectJoinStep.where(
-				DSL.and(
-					DSL.field(
-						"IdentityActivity.channelId", Long.class
-					).eq(
-						channelId
-					),
-					condition)));
+		if (channelId != null) {
+			condition = DSL.and(
+				DSL.field(
+					"IdentityActivity.channelId", Long.class
+				).eq(
+					channelId
+				),
+				condition);
+		}
+
+		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
 	}
 
 	@Override
