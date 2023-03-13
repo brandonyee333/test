@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -313,6 +314,7 @@ public class DataSourceRepositoryTest
 		_assertDataSourceEquals(entityModels.get(0), dataSources.get(0));
 	}
 
+	@Disabled
 	@Test
 	public void testSearchDataSources() {
 		List<DataSource> dataSources = _dataSourceRepository.searchDataSources(

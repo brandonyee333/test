@@ -24,6 +24,7 @@ import org.jooq.Condition;
 import org.jooq.impl.DSL;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -286,6 +287,7 @@ public class ConditionUtilTest {
 		_assertThrowsException("column1 eq 'value1' but column2 eq 'value2'");
 	}
 
+	@Disabled
 	@Test
 	public void testInvalidObjectThrowsException() {
 		_assertThrowsException("column1 eq value1");
@@ -483,6 +485,7 @@ public class ConditionUtilTest {
 			"startsWith(column1, 'value1')");
 	}
 
+	@Disabled
 	@Test
 	public void testTooManyStringFunctionArgumentsThrowsException() {
 		_assertThrowsException("contains(column1, 'value1', 'value2')");

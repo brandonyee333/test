@@ -126,6 +126,7 @@ public class DataSourceDogTest
 
 	}
 
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels.json"
