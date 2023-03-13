@@ -113,12 +113,12 @@ public class BQOrganizationRepositoryImpl
 	}
 
 	@Override
-	public List<BQOrganization> findByDataSourceIdAndOrganizationId(
+	public Optional<BQOrganization> findByDataSourceIdAndOrganizationId(
 		Long dataSourceId, Long organizationId) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return _queryExecutor.queryForList(
+		return _queryExecutor.queryForObject(
 			BQOrganization::new,
 			selectSelectStep.from(
 				"BQOrganization"

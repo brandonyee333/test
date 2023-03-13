@@ -181,22 +181,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public void deleteByRecordedDate(Date recordedDate) {
-		_queryExecutor.queryExecute(
-			_dslContext.delete(
-				DSL.table("BQIdentityInterestScore")
-			).where(
-				DSL.field(
-					"recordedDate"
-				).eq(
-					DSL.field(
-						"timestamp '" + DateUtil.toUTCString(recordedDate) +
-							"'")
-				)
-			));
-	}
-
-	@Override
 	public void deleteByRecordedDateLessThanEqual(Date recordedDate) {
 		_queryExecutor.queryExecute(
 			_dslContext.delete(

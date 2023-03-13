@@ -148,17 +148,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		resourcePath = "test_bq_identity_interest_score_repository.sql"
 	)
 	@Test
-	public void testDeleteByRecordedDate() {
-		_bqIdentityInterestScoreRepository.deleteByRecordedDate(
-			DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"));
-
-		Assertions.assertEquals(2, _bqIdentityInterestScoreRepository.count());
-	}
-
-	@BQSQLResource(
-		resourcePath = "test_bq_identity_interest_score_repository.sql"
-	)
-	@Test
 	public void testDeleteByRecordedDateLessThanEqual() {
 		_bqIdentityInterestScoreRepository.deleteByRecordedDateLessThanEqual(
 			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
