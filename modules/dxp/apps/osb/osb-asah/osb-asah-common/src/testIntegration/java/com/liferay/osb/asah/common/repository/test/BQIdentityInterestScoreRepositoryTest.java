@@ -300,13 +300,11 @@ public class BQIdentityInterestScoreRepositoryTest
 		_assertTransformation(
 			"2021-09-11T00:00:00.000Z", 0, 0, transformations.get(0));
 		_assertTransformation(
-			"2021-09-12T00:00:00.000Z", 1.767661917648994, 1,
-			transformations.get(1));
+			"2021-09-12T00:00:00.000Z", 1.7676619, 1, transformations.get(1));
 		_assertTransformation(
-			"2021-09-13T00:00:00.000Z", 2.61495977803619, 1,
-			transformations.get(2));
+			"2021-09-13T00:00:00.000Z", 2.6149597, 1, transformations.get(2));
 		_assertTransformation(
-			"2021-09-14T00:00:00.000Z", 1.2265308301495208, 3,
+			"2021-09-14T00:00:00.000Z", 1.2265308466666667, 3,
 			transformations.get(3));
 	}
 
@@ -327,8 +325,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		_assertTransformation(
 			"2021-09-05T00:00:00.000Z", 0D, 0, transformations.get(1));
 		_assertTransformation(
-			"2021-09-12T00:00:00.000Z", 1.6124428372267494, 5,
-			transformations.get(2));
+			"2021-09-12T00:00:00.000Z", 1.612442828, 5, transformations.get(2));
 	}
 
 	@BQSQLResource(
