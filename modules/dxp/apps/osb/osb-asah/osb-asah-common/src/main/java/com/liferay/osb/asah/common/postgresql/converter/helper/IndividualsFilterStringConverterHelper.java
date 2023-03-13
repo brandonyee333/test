@@ -56,7 +56,7 @@ public class IndividualsFilterStringConverterHelper
 
 	@Override
 	public String getFilterType() {
-		return "individual";
+		return "individuals";
 	}
 
 	@Override
