@@ -152,7 +152,6 @@ public class SiteMetricDogTest
 	@BQSQLResource(
 		resourcePath = "test_visitor_cohort_heatmap_day_interval.sql"
 	)
-	@Disabled
 	@Test
 	public void testCohortHeatMapMetricsDayInterval() {
 		CohortMetric cohortMetric = _siteMetricDog.getCohortMetric(
@@ -217,7 +216,6 @@ public class SiteMetricDogTest
 	@BQSQLResource(
 		resourcePath = "test_visitor_cohort_heatmap_month_interval.sql"
 	)
-	@Disabled
 	@Test
 	public void testCohortHeatMapMetricsMonthInterval() {
 		CohortMetric cohortMetric = _siteMetricDog.getCohortMetric(
@@ -573,7 +571,6 @@ public class SiteMetricDogTest
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_events_search_terms.sql")
-	@Disabled
 	@Test
 	public void testSearchTerms7Days() {
 		CompositionResultBag compositionResultBag =
@@ -605,7 +602,6 @@ public class SiteMetricDogTest
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_events_search_terms.sql")
-	@Disabled
 	@Test
 	public void testSearchTerms24Hours() {
 		CompositionResultBag compositionResultBag =
@@ -636,7 +632,6 @@ public class SiteMetricDogTest
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_events_search_terms.sql")
-	@Disabled
 	@Test
 	public void testSearchTerms30Days() {
 		CompositionResultBag compositionResultBag =
