@@ -216,7 +216,7 @@ public class BQIdentityRepositoryImpl
 			filterExpression.getReferencedTableNames(), selectJoinStep);
 
 		return _queryExecutor.queryForList(
-			record -> (Long)record.get("id"),
+			record -> Long.parseLong((String)record.get("id")),
 			selectJoinStep.where(filterExpression.getCondition()));
 	}
 
