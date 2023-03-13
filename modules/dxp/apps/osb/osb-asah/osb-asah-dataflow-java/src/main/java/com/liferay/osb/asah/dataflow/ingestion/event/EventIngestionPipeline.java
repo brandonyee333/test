@@ -169,8 +169,14 @@ public class EventIngestionPipeline {
 			AnalyticsEvent extractedAnalyticsEvent = new AnalyticsEvent(
 				analyticsEvent);
 
-			extractedAnalyticsEvent.context = _getExtractedContext(
-				analyticsEvent);
+			Map<String, String> context = _getExtractedContext(analyticsEvent);
+
+			extractedAnalyticsEvent.context = context;
+
+			if (Boolean.parseBoolean(context.getOrDefault("crawler", null))) {
+				return;
+			}
+
 			extractedAnalyticsEvent.eventProperties = _getSafeMap(
 				analyticsEvent.eventProperties);
 
