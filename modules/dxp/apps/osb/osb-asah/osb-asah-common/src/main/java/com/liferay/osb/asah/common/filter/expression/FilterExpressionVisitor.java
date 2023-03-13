@@ -427,6 +427,10 @@ public class FilterExpressionVisitor
 
 		if (_fieldMappers.containsKey(fieldName)) {
 			fieldName = _fieldMappers.get(fieldName);
+
+			if (fieldName.contains(".")) {
+				return DSL.field(fieldName);
+			}
 		}
 
 		if (StringUtils.contains(fieldName, "/")) {
