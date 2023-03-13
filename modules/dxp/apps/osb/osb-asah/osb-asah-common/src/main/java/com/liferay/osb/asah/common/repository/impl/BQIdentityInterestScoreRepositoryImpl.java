@@ -173,7 +173,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field(
 						"recordedDate"
 					).ge(
-						_dslHelper.getDateValue(recordedDate)
+						DSL.field(
+							"timestamp '" + DateUtil.toUTCString(recordedDate) +
+								"'")
 					))
 			));
 	}
@@ -187,7 +189,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).eq(
-					_dslHelper.getDateValue(recordedDate)
+					DSL.field(
+						"timestamp '" + DateUtil.toUTCString(recordedDate) +
+							"'")
 				)
 			));
 	}
@@ -201,7 +205,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).le(
-					_dslHelper.getDateValue(recordedDate)
+					DSL.field(
+						"timestamp '" + DateUtil.toUTCString(recordedDate) +
+							"'")
 				)
 			));
 	}
@@ -381,8 +387,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"BQIdentityInterestScore.recordedDate"
 				).between(
-					_dslHelper.getDateValue(recordedDate1),
-					_dslHelper.getDateValue(recordedDate2)
+					DSL.field(
+						"timestamp '" + DateUtil.toUTCString(recordedDate1) +
+							"'"),
+					DSL.field(
+						"timestamp '" + DateUtil.toUTCString(recordedDate2) +
+							"'")
 				)
 			));
 	}
@@ -491,7 +501,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field(
 						"BQIdentityInterestScore.recordedDate"
 					).eq(
-						_dslHelper.getDateValue(recordedDate)
+						DSL.field(
+							"timestamp '" + DateUtil.toUTCString(recordedDate) +
+								"'")
 					)
 				));
 
@@ -725,18 +737,18 @@ public class BQIdentityInterestScoreRepositoryImpl
 		Date fromDate, @Nullable FilterHelper filterHelper, String period,
 		Date toDate) {
 
-		Field<Date> periodField = _getPeriodField(period);
+		Field<OffsetDateTime> periodField = _getPeriodField(period);
 
-		SelectSelectStep<Record3<Date, BigDecimal, Integer>> selectSelectStep =
-			_dslContext.select(
+		SelectSelectStep<Record3<OffsetDateTime, BigDecimal, Integer>>
+			selectSelectStep = _dslContext.select(
 				periodField,
 				DSL.avg(
 					DSL.field("interestScore", Double.class)
 				).as(
 					"scoreAvg"
 				),
-				DSL.count(
-					DSL.field("id")
+				DSL.field(
+					"COUNTIF(keyword IS NOT NULL)", Integer.class
 				).as(
 					"totalElements"
 				));
@@ -745,7 +757,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 		conditions.add(
 			DSL.field(
-				"recordedDate"
+				"DATE(recordedDate)"
 			).equal(
 				DSL.field("generatedDate")
 			));
@@ -769,24 +781,19 @@ public class BQIdentityInterestScoreRepositoryImpl
 							(Date)record.get("intervalInitDate")));
 					put(
 						"scoreAvg",
-						_getAggregationValue((Double)record.get("scoreAvg")));
+						_getAggregationValue(
+							(BigDecimal)record.get("scoreAvg")));
 					put("totalElements", record.get("totalElements"));
 				}
 			},
 			selectSelectStep.from(
-				"BQIdentityInterestScore"
-			).rightJoin(
 				_dslHelper.getTimeSeriesTable(
 					datePart, new Timestamp(fromDate.getTime()),
 					new Timestamp(toDate.getTime()))
+			).leftOuterJoin(
+				"BQIdentityInterestScore"
 			).on(
 				conditions.toArray(new Condition[0])
-			).where(
-				DSL.field(
-					"generatedDate"
-				).between(
-					fromDate, toDate
-				)
 			).groupBy(
 				periodField
 			).orderBy(
@@ -843,12 +850,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 		_queryExecutor.queryExecute(insertValuesStep5);
 	}
 
-	private double _getAggregationValue(Double value) {
-		if ((value == null) || (value < 0)) {
+	private double _getAggregationValue(BigDecimal value) {
+		if ((value == null) || (value.doubleValue() < 0)) {
 			return 0;
 		}
 
-		return value;
+		return value.doubleValue();
 	}
 
 	private <T extends Record> SelectJoinStep<T> _getBQIdentitySelectJoinStep(
@@ -909,7 +916,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).eq(
-					_dslHelper.getDateValue(recordedDate)
+					DSL.field(
+						"timestamp '" + DateUtil.toUTCString(recordedDate) +
+							"'")
 				));
 		}
 

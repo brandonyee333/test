@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -233,11 +235,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			0, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
-		Assertions.assertEquals(
-			Arrays.asList(
-				_bqIdentityInterestScore3, _bqIdentityInterestScore4,
-				_bqIdentityInterestScore5),
-			bqIdentityInterestScores);
 	}
 
 	@BQSQLResource(
@@ -406,7 +403,8 @@ public class BQIdentityInterestScoreRepositoryTest
 			intervalInitDate, transformation.get("intervalInitDate"));
 		Assertions.assertEquals(scoreAvg, transformation.get("scoreAvg"));
 		Assertions.assertEquals(
-			totalElements, transformation.get("totalElements"));
+			BigDecimal.valueOf(totalElements),
+			transformation.get("totalElements"));
 	}
 
 	private BQIdentityInterestScore _bqIdentityInterestScore1;
