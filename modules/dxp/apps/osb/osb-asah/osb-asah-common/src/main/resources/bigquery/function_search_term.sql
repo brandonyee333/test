@@ -3,7 +3,18 @@ RETURNS STRING
 LANGUAGE js
 AS """
 	try {
-		var decodedUrl = decodeURIComponent(url.replaceAll('+', ' '));
+	
+		var decodedUrl = url;
+		
+		var index = decodedUrl.indexOf('+');
+
+		while (index != -1) {
+			decodedUrl = decodedUrl.replace('+', ' ')
+ 			
+ 			index = decodedUrl.indexOf('+');
+		}
+	
+		decodedUrl = decodeURIComponent(decodedUrl);
 
 		var queryParamSeparatorIndexOf = decodedUrl.indexOf("?");
 
