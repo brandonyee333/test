@@ -70,7 +70,7 @@ public class BQFieldMapping {
 		return _dataSourceFieldNames;
 	}
 
-	public Set<Long> getDataSourceIds() {
+	public Set<String> getDataSourceIds() {
 		return _dataSourceIds;
 	}
 
@@ -123,7 +123,7 @@ public class BQFieldMapping {
 		_dataSourceFieldNames = dataSourceFieldNames;
 	}
 
-	public void setDataSourceIds(Set<Long> dataSourceIds) {
+	public void setDataSourceIds(Set<String> dataSourceIds) {
 		_dataSourceIds = dataSourceIds;
 	}
 
@@ -159,7 +159,7 @@ public class BQFieldMapping {
 
 	private String _context;
 	private Map<String, String> _dataSourceFieldNames = new HashMap<>();
-	private Set<Long> _dataSourceIds;
+	private Set<String> _dataSourceIds;
 	private String _displayName;
 	private String _displayType;
 	private String _fieldName;

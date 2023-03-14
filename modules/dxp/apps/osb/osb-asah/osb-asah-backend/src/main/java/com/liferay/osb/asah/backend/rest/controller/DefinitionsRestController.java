@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.dog.BQFieldMappingDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -129,7 +130,7 @@ public class DefinitionsRestController extends BaseRestController {
 			bqFieldMapping);
 
 		List<DataSource> dataSources = _dataSourceDog.getDataSources(
-			new ArrayList<>(bqFieldMapping.getDataSourceIds()));
+			ListUtil.map(bqFieldMapping.getDataSourceIds(), Long::valueOf));
 
 		Map<String, String> dataSourceFieldNames = new HashMap<>();
 

@@ -96,10 +96,10 @@ public class BQFieldMappingDog {
 
 		List<DataSource> dataSources = _dataSourceDog.getDataSources();
 
-		Set<Long> dataSourceIds = new HashSet<>();
+		Set<String> dataSourceIds = new HashSet<>();
 
 		for (DataSource dataSource : dataSources) {
-			dataSourceIds.add(dataSource.getId());
+			dataSourceIds.add(String.valueOf(dataSource.getId()));
 		}
 
 		for (BQFieldMapping bqFieldMapping : bqFieldMappings) {

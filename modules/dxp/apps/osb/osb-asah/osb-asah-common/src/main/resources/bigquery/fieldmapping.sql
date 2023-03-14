@@ -43,7 +43,7 @@ WITH CustomFieldMapping AS (
 			) AS rowNumber
 		FROM (
 			SELECT
-				ARRAY_AGG(DISTINCT dataSourceId) AS dataSourceIds,
+				ARRAY_AGG(DISTINCT CAST(dataSourceId AS STRING)) AS dataSourceIds,
 				displayType,
 				dataType,
 				REGEXP_REPLACE(REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), ''), r'\s', '_') AS fieldName,
@@ -69,7 +69,7 @@ WITH CustomFieldMapping AS (
 DemographicsFieldMapping AS (
 	SELECT
 		'demographics' context,
-		ARRAY<INT64>[] dataSourceIds,
+		ARRAY<STRING>[] dataSourceIds,
 		displayName,
 		'input-field' displayType,
 		fieldName,
