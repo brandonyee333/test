@@ -501,6 +501,15 @@ DLViewEntriesDisplayContext dlViewEntriesDisplayContext = new DLViewEntriesDispl
 	</liferay-ui:search-container>
 </div>
 
+<div class="frontend-data-set-headless">
+	<frontend-data-set:headless-display
+		apiURL="/o/headless-delivery/v1.0/sites/20119/document-folders"
+		formName="fm"
+		id="DLFDSHeadlessId"
+		style="fluid"
+	/>
+</div>
+
 <%
 request.setAttribute("edit_file_entry.jsp-checkedOut", true);
 %>
