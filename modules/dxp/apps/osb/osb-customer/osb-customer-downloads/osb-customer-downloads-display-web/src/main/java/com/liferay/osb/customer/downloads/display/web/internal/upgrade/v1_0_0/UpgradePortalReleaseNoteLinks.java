@@ -103,16 +103,13 @@ public class UpgradePortalReleaseNoteLinks extends UpgradeProcess {
 			JournalArticle journalArticle, boolean useJIRACloudURL)
 		throws Exception {
 
-		String releaseNoteURL =
-			"https://help.liferay.com/hc/articles/11195039376269";
-
 		Fields ddmFields = _journalConverter.getDDMFields(
 			journalArticle.getDDMStructure(), journalArticle.getContent());
 
-		String linkUrl = "linkUrl";
-
 		for (Field field : ddmFields) {
-			if (!linkUrl.equals(field.getName())) {
+			String name = field.getName();
+
+			if (!name.equals("linkUrl")) {
 				continue;
 			}
 
@@ -126,30 +123,35 @@ public class UpgradePortalReleaseNoteLinks extends UpgradeProcess {
 				for (int i = 0; i < values.size(); i++) {
 					String value = GetterUtil.getString(values.get(i));
 
-					if (Validator.isNotNull(value) &&
-						value.contains(PORTAL_RELEASE_NOTE_URL)) {
+					if (Validator.isNull(value) ||
+						!value.contains(PORTAL_RELEASE_NOTE_URL)) {
 
-						if (useJIRACloudURL) {
-							int index = value.indexOf(PORTAL_RELEASE_NOTE_URL);
-
-							int pos = index + PORTAL_RELEASE_NOTE_URL.length();
-
-							String fixPackLabel = value.substring(pos);
-
-							releaseNoteURL =
-								"https://liferay.atlassian.net/issues" +
-									"/?jql=labels=" + fixPackLabel;
-						}
-
-						values.set(i, releaseNoteURL);
-
-						journalArticle.setContent(
-							_journalConverter.getContent(
-								journalArticle.getDDMStructure(), ddmFields));
-
-						_journalArticleLocalService.updateJournalArticle(
-							journalArticle);
+						continue;
 					}
+
+					String releaseNoteURL =
+						"https://help.liferay.com/hc/articles/11195039376269";
+
+					if (useJIRACloudURL) {
+						int index = value.indexOf(PORTAL_RELEASE_NOTE_URL);
+
+						int pos = index + PORTAL_RELEASE_NOTE_URL.length();
+
+						String fixPackLabel = value.substring(pos);
+
+						releaseNoteURL =
+							"https://liferay.atlassian.net/issues" +
+								"/?jql=labels=" + fixPackLabel;
+					}
+
+					values.set(i, releaseNoteURL);
+
+					journalArticle.setContent(
+						_journalConverter.getContent(
+							journalArticle.getDDMStructure(), ddmFields));
+
+					_journalArticleLocalService.updateJournalArticle(
+						journalArticle);
 				}
 			}
 		}
