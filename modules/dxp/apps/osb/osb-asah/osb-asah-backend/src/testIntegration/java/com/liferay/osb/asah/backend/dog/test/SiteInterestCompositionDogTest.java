@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 
 import java.util.LinkedHashMap;
 
@@ -36,7 +37,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
 	@Test
 	public void testGetCompositionResultBagCustomRange() {
-		LocalDate localDate = LocalDate.now();
+		LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
 
 		checkResults(
 			_siteInterestCompositionDog.getCompositionResultBag(

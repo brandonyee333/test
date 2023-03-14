@@ -28,6 +28,8 @@ import java.math.BigDecimal;
 
 import java.text.SimpleDateFormat;
 
+import java.time.ZoneId;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,7 +82,8 @@ public class BQSessionInterestScoreRepositoryImpl
 
 	@Override
 	public CompositionResultBag getInterestCompositionResultBag(
-		@Nullable Long channelId, Pageable pageable, TimeRange timeRange) {
+		@Nullable Long channelId, Pageable pageable, TimeRange timeRange,
+		ZoneId zoneId) {
 
 		SelectOnConditionStep<Record3<String, String, Integer>>
 			selectSelectStep = _dslContext.select(
@@ -123,9 +126,12 @@ public class BQSessionInterestScoreRepositoryImpl
 			));
 		conditions.add(
 			DSL.field(
-				"BQSession.sessionStart", Date.class
+				"BQSession.sessionStart"
 			).between(
-				timeRange.getStartDate(), timeRange.getEndDate()
+				DateUtil.toUTCLocalDateTime(
+					timeRange.getStartLocalDateTime(), zoneId),
+				DateUtil.toUTCLocalDateTime(
+					timeRange.getEndLocalDateTime(), zoneId)
 			));
 
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
