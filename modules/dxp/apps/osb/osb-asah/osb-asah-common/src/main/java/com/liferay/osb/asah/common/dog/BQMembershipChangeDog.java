@@ -106,7 +106,7 @@ public class BQMembershipChangeDog {
 		return bqMembershipChanges;
 	}
 
-	public Page<BQMembershipChange> searchBQMembershipChangePages(
+	public Page<BQMembershipChange> searchBQMembershipChangePage(
 		String filterString, Long segmentId, int page, int size,
 		String[] sorts) {
 

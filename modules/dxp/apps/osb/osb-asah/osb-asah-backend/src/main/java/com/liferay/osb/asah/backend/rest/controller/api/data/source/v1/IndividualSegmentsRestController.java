@@ -77,6 +77,62 @@ import org.springframework.web.bind.annotation.RestController;
 )
 public class IndividualSegmentsRestController {
 
+	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
+	public PageDTO<BQMembershipChangeDTO> getBQMembershipChangeDTOPageDTO(
+		@PathVariable Long id, @RequestParam(required = false) String expand,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
+
+		Page<BQMembershipChange> bqMembershipChangePage =
+			_bqMembershipChangeDog.searchBQMembershipChangePage(
+				filterString, id, page, size, sorts);
+
+		if (StringUtils.isEmpty(expand)) {
+			return _toBQMembershipChangeDTOPageDTO(bqMembershipChangePage);
+		}
+
+		List<BQMembershipChange> bqMembershipChanges =
+			bqMembershipChangePage.getContent();
+
+		Set<BQMembershipChangeDTO> bqMembershipChangeDTOs =
+			new LinkedHashSet<>();
+
+		Stream<BQMembershipChange> stream = bqMembershipChanges.stream();
+
+		stream.forEachOrdered(
+			bqMembershipChange -> bqMembershipChangeDTOs.add(
+				new BQMembershipChangeDTO(bqMembershipChange)));
+
+		return _toBQMembershipChangeDTOPageDTO(
+			new BQMembershipChangeDTO(bqMembershipChangeDTOs),
+			bqMembershipChangePage);
+	}
+
+	@GetMapping("/{id}/memberships")
+	public PageDTO<BQMembershipDTO> getBQMembershipDTOPageDTO(
+		@PathVariable Long id,
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
+
+		if (!segmentDog.isIncludeAnonymousUsers(id)) {
+
+			// TODO Change getBQMembershipPage to use filterString instead of
+			//  individualIds
+
+			return _toBQMembershipDTOPageDTO(
+				bqMembershipDog.getBQMembershipPage(
+					Collections.emptyList(), id, "ACTIVE", page, size, sorts));
+		}
+
+		return _toBQMembershipDTOPageDTO(
+			bqMembershipDog.getBQMembershipPage(
+				id, "ACTIVE", page, size, sorts));
+	}
+
 	@GetMapping(params = "!apply", value = "/{id}/individuals")
 	public PageDTO<IndividualDTO> getIndividualDTOPageDTO(
 		@PathVariable Long id,
@@ -89,39 +145,6 @@ public class IndividualSegmentsRestController {
 		// TODO Implement operation
 
 		return _toIndividualDTOPageDTO(Page.empty());
-	}
-
-	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
-	public PageDTO<BQMembershipChangeDTO> getMembershipChangeDTOPageDTO(
-		@PathVariable Long id, @RequestParam(required = false) String expand,
-		@RequestParam(name = "filter", required = false) String filterString,
-		@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "20") int size,
-		@RequestParam(name = "sort", required = false) String[] sorts) {
-
-		Page<BQMembershipChange> bqMembershipChangesPages =
-			_bqMembershipChangeDog.searchBQMembershipChangePages(
-				filterString, id, page, size, sorts);
-
-		if (StringUtils.isEmpty(expand)) {
-			return _toMembershipChangeDTOPageDTO(bqMembershipChangesPages);
-		}
-
-		List<BQMembershipChange> bqMembershipChanges =
-			bqMembershipChangesPages.getContent();
-
-		Set<BQMembershipChangeDTO> bqMembershipChangeDTOs =
-			new LinkedHashSet<>();
-
-		Stream<BQMembershipChange> stream = bqMembershipChanges.stream();
-
-		stream.forEachOrdered(
-			membershipChange -> bqMembershipChangeDTOs.add(
-				new BQMembershipChangeDTO(membershipChange)));
-
-		return _toMembershipChangeDTOPageDTO(
-			new BQMembershipChangeDTO(bqMembershipChangeDTOs),
-			bqMembershipChangesPages);
 	}
 
 	@Cacheable
@@ -138,29 +161,6 @@ public class IndividualSegmentsRestController {
 		// TODO Implement Membership Changes histogram
 
 		return null;
-	}
-
-	@GetMapping("/{id}/memberships")
-	public PageDTO<BQMembershipDTO> getMembershipDTOPageDTO(
-		@PathVariable Long id,
-		@RequestParam(name = "filter", required = false) String filterString,
-		@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "20") int size,
-		@RequestParam(name = "sort", required = false) String[] sorts) {
-
-		if (!segmentDog.isIncludeAnonymousUsers(id)) {
-
-			// TODO Change getBQMembershipPage to use filterString instead of
-			//  individualIds
-
-			return _toMembershipDTOPageDTO(
-				bqMembershipDog.getBQMembershipPage(
-					Collections.emptyList(), id, "ACTIVE", page, size, sorts));
-		}
-
-		return _toMembershipDTOPageDTO(
-			bqMembershipDog.getBQMembershipPage(
-				id, "ACTIVE", page, size, sorts));
 	}
 
 	@GetMapping("/{id}")
@@ -310,8 +310,8 @@ public class IndividualSegmentsRestController {
 
 		JSONArray bqMembershipJSONArray = JSONUtil.toJSONArray(
 			bqMemberships,
-			membership -> objectMapper.convertValue(
-				membership, JSONObject.class));
+			bqMembership -> objectMapper.convertValue(
+				bqMembership, JSONObject.class));
 
 		return bqMembershipJSONArray.toString();
 	}
@@ -418,17 +418,7 @@ public class IndividualSegmentsRestController {
 		return false;
 	}
 
-	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
-		Page<Individual> individualsPage) {
-
-		return new PageDTO<>(
-			"_embedded", new IndividualDTO(individualsPage.getContent()),
-			individualsPage.getNumber(), individualsPage.getSize(),
-			individualsPage.getTotalElements(),
-			individualsPage.getTotalPages());
-	}
-
-	private PageDTO<BQMembershipChangeDTO> _toMembershipChangeDTOPageDTO(
+	private PageDTO<BQMembershipChangeDTO> _toBQMembershipChangeDTOPageDTO(
 		BQMembershipChangeDTO bqMembershipChangeDTO,
 		Page<BQMembershipChange> bqMembershipChangesPage) {
 
@@ -440,7 +430,7 @@ public class IndividualSegmentsRestController {
 			bqMembershipChangesPage.getTotalPages());
 	}
 
-	private PageDTO<BQMembershipChangeDTO> _toMembershipChangeDTOPageDTO(
+	private PageDTO<BQMembershipChangeDTO> _toBQMembershipChangeDTOPageDTO(
 		Page<BQMembershipChange> bqMembershipChangesPage) {
 
 		return new PageDTO<>(
@@ -452,7 +442,7 @@ public class IndividualSegmentsRestController {
 			bqMembershipChangesPage.getTotalPages());
 	}
 
-	private PageDTO<BQMembershipDTO> _toMembershipDTOPageDTO(
+	private PageDTO<BQMembershipDTO> _toBQMembershipDTOPageDTO(
 		Page<BQMembership> bqMembershipsPage) {
 
 		return new PageDTO<>(
@@ -460,6 +450,16 @@ public class IndividualSegmentsRestController {
 			bqMembershipsPage.getNumber(), bqMembershipsPage.getSize(),
 			bqMembershipsPage.getTotalElements(),
 			bqMembershipsPage.getTotalPages());
+	}
+
+	private PageDTO<IndividualDTO> _toIndividualDTOPageDTO(
+		Page<Individual> individualsPage) {
+
+		return new PageDTO<>(
+			"_embedded", new IndividualDTO(individualsPage.getContent()),
+			individualsPage.getNumber(), individualsPage.getSize(),
+			individualsPage.getTotalElements(),
+			individualsPage.getTotalPages());
 	}
 
 	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(

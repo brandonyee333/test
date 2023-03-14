@@ -37,10 +37,10 @@ public class EventAnalysisReferencedObjectDTO {
 
 	public EventAnalysisReferencedObjectDTO(
 		EventDefinition eventDefinition,
-		List<EventAttributeDefinition> eventAtttributeDefinitions) {
+		List<EventAttributeDefinition> eventAttributeDefinitions) {
 
 		_eventAttributeDefinitionDTOs = ListUtil.map(
-			eventAtttributeDefinitions, EventAttributeDefinitionDTO::new);
+			eventAttributeDefinitions, EventAttributeDefinitionDTO::new);
 		_eventDefinitionDTO = new EventDefinitionDTO(eventDefinition);
 	}
 

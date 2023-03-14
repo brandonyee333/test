@@ -217,7 +217,7 @@ public class IndividualSegmentsRestControllerTest
 		// Include anonymous users
 
 		JSONObject membershipChangesJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipChangeDTOPageDTO(
+			_individualSegmentsRestController.getBQMembershipChangeDTOPageDTO(
 				327968823603500666L, null, null, 0, 20, null),
 			JSONObject.class);
 
@@ -240,7 +240,7 @@ public class IndividualSegmentsRestControllerTest
 		// Does not include anonymous users
 
 		membershipChangesJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipChangeDTOPageDTO(
+			_individualSegmentsRestController.getBQMembershipChangeDTOPageDTO(
 				327968823603500677L, null, null, 0, 20, null),
 			JSONObject.class);
 
@@ -288,7 +288,7 @@ public class IndividualSegmentsRestControllerTest
 		// Include anonymous users
 
 		JSONObject membershipsJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipDTOPageDTO(
+			_individualSegmentsRestController.getBQMembershipDTOPageDTO(
 				327968823603500666L, null, 0, 20, null),
 			JSONObject.class);
 
@@ -303,7 +303,7 @@ public class IndividualSegmentsRestControllerTest
 		// Does not include anonymous users
 
 		membershipsJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getMembershipDTOPageDTO(
+			_individualSegmentsRestController.getBQMembershipDTOPageDTO(
 				327968823603500677L, null, 0, 20, null),
 			JSONObject.class);
 

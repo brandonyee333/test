@@ -29,9 +29,9 @@ public class SegmentFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
 
 	public SegmentFilterStringConverterHelper(
-		BQMembershipChangeDog membershipChangeDog) {
+		BQMembershipChangeDog bqMembershipChangeDog) {
 
-		_bqMembershipChangeDog = membershipChangeDog;
+		_bqMembershipChangeDog = bqMembershipChangeDog;
 	}
 
 	@Override

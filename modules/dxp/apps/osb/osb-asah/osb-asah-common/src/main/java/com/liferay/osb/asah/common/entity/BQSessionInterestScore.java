@@ -47,17 +47,17 @@ public class BQSessionInterestScore {
 			return false;
 		}
 
-		BQSessionInterestScore bqIdentityInterestScore =
+		BQSessionInterestScore bqSessionInterestScore =
 			(BQSessionInterestScore)obj;
 
-		if (Objects.equals(_identityId, bqIdentityInterestScore._identityId) &&
-			Objects.equals(_interested, bqIdentityInterestScore._interested) &&
+		if (Objects.equals(_identityId, bqSessionInterestScore._identityId) &&
+			Objects.equals(_interested, bqSessionInterestScore._interested) &&
 			Objects.equals(
-				_interestScore, bqIdentityInterestScore._interestScore) &&
-			Objects.equals(_keyword, bqIdentityInterestScore._keyword) &&
+				_interestScore, bqSessionInterestScore._interestScore) &&
+			Objects.equals(_keyword, bqSessionInterestScore._keyword) &&
 			Objects.equals(
-				_recordedDate, bqIdentityInterestScore._recordedDate) &&
-			Objects.equals(_sessionId, bqIdentityInterestScore._sessionId)) {
+				_recordedDate, bqSessionInterestScore._recordedDate) &&
+			Objects.equals(_sessionId, bqSessionInterestScore._sessionId)) {
 
 			return true;
 		}
