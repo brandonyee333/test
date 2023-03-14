@@ -104,8 +104,8 @@ export function DashboardPage() {
             }
 
 			setDashboardNavigationItems([
+				newAppNavigationItem,
                 ...dashboardNavigationItems.filter((navigationItem) => navigationItem.itemName !== 'apps'),
-                newAppNavigationItem,
             ]);
 
 			setLoading(false);
