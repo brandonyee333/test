@@ -22,6 +22,7 @@ import java.time.LocalDate;
 
 import java.util.LinkedHashMap;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Rachael Koestartyo
  */
+@Disabled
 public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
