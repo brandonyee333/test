@@ -64,17 +64,25 @@ public class BQMembershipRepositoryImpl
 
 	@Override
 	public long countByChannelIdAndFilterString(
-		Long channelId, @Nullable String filterString,
+		@Nullable Long channelId, @Nullable String filterString,
 		@Nullable Boolean includeAnonymousUsers) {
 
 		Condition condition = DSL.noCondition();
 		Set<String> referencedTableNames = Collections.emptySet();
 
+		if (channelId != null) {
+			condition = DSL.field(
+				"IdentityActivity.channelId", Long.class
+			).eq(
+				channelId
+			);
+		}
+
 		if (StringUtils.isNotBlank(filterString)) {
 			FilterExpression filterExpression = new FilterExpression(
 				filterString);
 
-			condition = filterExpression.getCondition();
+			condition = DSL.and(condition, filterExpression.getCondition());
 			referencedTableNames = filterExpression.getReferencedTableNames();
 		}
 
@@ -103,16 +111,6 @@ public class BQMembershipRepositoryImpl
 
 		selectJoinStep = _getSelectJoinStep(
 			channelId, referencedTableNames, selectJoinStep);
-
-		if (channelId != null) {
-			condition = DSL.and(
-				DSL.field(
-					"IdentityActivity.channelId", Long.class
-				).eq(
-					channelId
-				),
-				condition);
-		}
 
 		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
 	}
