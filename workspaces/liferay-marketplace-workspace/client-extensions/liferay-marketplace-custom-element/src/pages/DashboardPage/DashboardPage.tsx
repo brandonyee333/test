@@ -8,8 +8,7 @@ import {
 } from '../../components/DashboardTable/DashboardTable';
 import {Footer} from '../../components/Footer/Footer';
 import {Header} from '../../components/Header/Header';
-import {getProducts, getProductSpecifications, getCatalog} from '../../utils/api';
-import {getCatalogId} from '../../utils/util';
+import {getProducts, getProductSpecifications} from '../../utils/api';
 import {AppDetailsPage} from '../AppDetailsPage/AppDetailsPage';
 import {initialDashboardNavigationItems} from './DashboardPageUtil';
 
@@ -19,7 +18,6 @@ export function DashboardPage() {
 	const [selectedApp, setSelectedApp] = useState<AppProps>();
 	const [apps, setApps] = useState<AppProps[]>(Array<AppProps>());
 	const [loading, setLoading] = useState(false);
-	const [catalogName, setCatalogName] = useState('');
 	const [dashboardNavigationItems, setDashboardNavigationItems] = useState(
 		initialDashboardNavigationItems
 	);
@@ -87,16 +85,10 @@ export function DashboardPage() {
 
 			const appListProductSpecifications = await getAppListProductSpecifications(appListProductIds);
 
-			const catalogIdResponse = await getCatalogId();
-
-			const catalog = await getCatalog({catalogId: catalogIdResponse});
-
-			setCatalogName(catalog.name);
-
 			const newAppList = appList.items.map((product: any, index: number) => {
 				return {
-					name: product.name.en_US,
 					lastUpdatedBy: product.lastUpdatedBy,
+					name: product.name.en_US,
 					status: product.workflowStatusInfo.label.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase()),
 					thumbnail: product.thumbnail,
 					type: getProductTypeFromSpecifications(appListProductSpecifications[index]),
@@ -127,7 +119,7 @@ export function DashboardPage() {
 				<DashboardNavigation
 					accountAppsNumber="4"
 					accountIcon={accountLogo}
-					accountTitle={catalogName}
+					accountTitle="Acme Co"
 					dashboardNavigationItems={dashboardNavigationItems}
 					onSelectAppChange={setSelectedApp}
 					setDashboardNavigationItems={

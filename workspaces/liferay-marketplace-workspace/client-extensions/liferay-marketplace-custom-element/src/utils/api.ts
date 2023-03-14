@@ -181,15 +181,6 @@ export async function getCatalogs() {
 	return response.json();
 }
 
-export async function getCatalog({catalogId}: {catalogId: number}) {
-	const response = await fetch(
-		`/o/headless-commerce-admin-catalog/v1.0/catalog/${catalogId}`,
-		{headers, method: 'GET'}
-	);
-
-	return response.json();
-}
-
 export async function getProduct({appERC}: {appERC: string}) {
 	const response = await fetch(
 		`/o/headless-commerce-admin-catalog/v1.0/products/by-externalReferenceCode/${appERC}
