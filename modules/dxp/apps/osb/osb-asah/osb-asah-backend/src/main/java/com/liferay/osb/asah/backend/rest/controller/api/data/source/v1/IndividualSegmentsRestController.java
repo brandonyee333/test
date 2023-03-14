@@ -391,8 +391,8 @@ public class IndividualSegmentsRestController {
 			JSONUtil.toJSONArray(
 				_bqFieldMappingDog.getBQFieldMappings(
 					segment.getReferencedFieldMappingFieldNames()),
-				fieldMapping -> objectMapper.convertValue(
-					fieldMapping, JSONObject.class)));
+				bqFieldMapping -> objectMapper.convertValue(
+					bqFieldMapping, JSONObject.class)));
 		jsonObject.put("groups", Collections.emptyList());
 		jsonObject.put("organizations", Collections.emptyList());
 		jsonObject.put("roles", Collections.emptyList());

@@ -22,7 +22,6 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
-import com.liferay.osb.asah.common.entity.DataSourceFieldMapping;
 import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.Collection;
@@ -53,18 +52,18 @@ public class BQFieldMappingDTO {
 		_repeatable = bqFieldMapping.getRepeatable();
 	}
 
-	public BQFieldMappingDTO(Collection<BQFieldMappingDTO> bqFieldMappingDTOS) {
-		_bqFieldMappingDTOS = new LinkedHashSet<>(bqFieldMappingDTOS);
+	public BQFieldMappingDTO(Collection<BQFieldMappingDTO> bqFieldMappingDTOs) {
+		_bqFieldMappingDTOs = new LinkedHashSet<>(bqFieldMappingDTOs);
 	}
 
 	public BQFieldMappingDTO(List<BQFieldMapping> bqFieldMappings) {
-		_bqFieldMappingDTOS = SetUtil.map(
+		_bqFieldMappingDTOs = SetUtil.map(
 			bqFieldMappings, BQFieldMappingDTO::new);
 	}
 
 	@JsonProperty("field-mappings")
 	public Set<BQFieldMappingDTO> getBQFieldMappingDTOs() {
-		return _bqFieldMappingDTOS;
+		return _bqFieldMappingDTOs;
 	}
 
 	@JsonProperty("context")
@@ -173,9 +172,8 @@ public class BQFieldMappingDTO {
 		_repeatable = repeatable;
 	}
 
-	private Set<BQFieldMappingDTO> _bqFieldMappingDTOS;
+	private Set<BQFieldMappingDTO> _bqFieldMappingDTOs;
 	private String _context;
-	private Set<DataSourceFieldMapping> _dataSourceFieldMappings;
 	private Map<String, String> _dataSourceFieldNames;
 	private List<Map<String, String>> _dataSources;
 	private String _displayName;

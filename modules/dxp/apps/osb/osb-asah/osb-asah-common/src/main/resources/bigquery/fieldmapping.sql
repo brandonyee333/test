@@ -47,7 +47,7 @@ WITH CustomFieldMapping AS (
 				displayType,
 				dataType,
 				REGEXP_REPLACE(REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), ''), r'\s', '_') AS fieldName,
-				MAX(modifieDdate) AS modifiedDate,
+				MAX(modifiedDate) AS modifiedDate,
 				name,
 				CASE
 					WHEN
