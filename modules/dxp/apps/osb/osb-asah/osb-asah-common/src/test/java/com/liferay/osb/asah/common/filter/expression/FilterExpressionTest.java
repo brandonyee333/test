@@ -197,7 +197,7 @@ public class FilterExpressionTest {
 	@Test
 	public void testContainsOperator() {
 		_assertEquals(
-			DSL.condition("lower(column1) like '%value1%'"),
+			DSL.condition("LOWER(column1) LIKE '%value1%'"),
 			"contains(column1, 'value1')");
 	}
 
@@ -264,7 +264,7 @@ public class FilterExpressionTest {
 				),
 				DSL.and(
 					DSL.or(
-						DSL.condition("lower(column2) like '%escaped'quote)%'"),
+						DSL.condition("LOWER(column2) LIKE '%escaped'quote)%'"),
 						DSL.and(
 							DSL.field(
 								"column3"
@@ -347,7 +347,7 @@ public class FilterExpressionTest {
 	@Test
 	public void testFreestyle5() {
 		_assertEquals(
-			DSL.condition("lower(Individual.jobTitle) like '%manager%'"),
+			DSL.condition("LOWER(Individual.jobTitle) LIKE '%manager%'"),
 			"individuals.filter(filter='contains(demographics/jobTitle/value" +
 				", ''manager'')')");
 	}
@@ -1142,14 +1142,14 @@ public class FilterExpressionTest {
 				"''Test'')')");
 
 		_assertEquals(
-			DSL.condition("lower(Individual.firstName) like '%liferay.com%'"),
+			DSL.condition("LOWER(Individual.firstName) LIKE '%liferay.com%'"),
 			"individuals.filter(filter='contains(demographics/givenName" +
 				"/value, ''liferay.com'')')");
 
 		_assertEquals(
 			DSL.not(
 				DSL.condition(
-					"lower(Individual.firstName) like '%liferay.com%'")),
+					"LOWER(Individual.firstName) LIKE '%liferay.com%'")),
 			"not individuals.filter(filter='contains(demographics/givenName" +
 				"/value, ''liferay.com'')')");
 
@@ -1194,7 +1194,7 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.and(
-				DSL.condition("lower(Fields.value) like '%test%'"),
+				DSL.condition("LOWER(Fields.value) LIKE '%test%'"),
 				DSL.field(
 					"Fields.name"
 				).eq(
@@ -1470,7 +1470,7 @@ public class FilterExpressionTest {
 	@Test
 	public void testNotContainsOperator() {
 		_assertEquals(
-			DSL.not(DSL.condition("lower(column1) like '%value1%'")),
+			DSL.not(DSL.condition("LOWER(column1) LIKE '%value1%'")),
 			"not contains(column1, 'value1')");
 	}
 
@@ -1850,7 +1850,7 @@ public class FilterExpressionTest {
 					)
 				).where(
 					DSL.condition(
-						"lower(Organization.hierarchyPath) like '%test%'")
+						"LOWER(Organization.hierarchyPath) LIKE '%test%'")
 				)
 			),
 			"organizations.filter(filter='(contains(hierarchyPath, ''test''))" +
@@ -1987,7 +1987,7 @@ public class FilterExpressionTest {
 				).where(
 					DSL.and(
 						DSL.condition(
-							"lower(ExpandoValue.value) like '%test%'"),
+							"LOWER(ExpandoValue.value) LIKE '%test%'"),
 						DSL.field(
 							"ExpandoValue.fieldName"
 						).eq(

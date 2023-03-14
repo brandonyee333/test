@@ -310,7 +310,7 @@ public class FilterExpressionVisitor
 
 			condition = DSL.condition(
 				String.format(
-					"lower(%s) like '%s'", field,
+					"LOWER(%s) LIKE '%s'", field,
 					"%" + StringUtils.lowerCase(value) + "%"));
 		}
 		else if (functionName.equalsIgnoreCase("endsWith")) {

@@ -146,7 +146,7 @@ public class FilterOperatorTest {
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
-			DSL.condition("lower(testField) like '%testvalue%'"),
+			DSL.condition("LOWER(testField) LIKE '%testvalue%'"),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
 
@@ -157,7 +157,7 @@ public class FilterOperatorTest {
 			Collections.singletonList("test'Value"));
 
 		Assertions.assertEquals(
-			DSL.condition("lower(testField) like '%test\\'value%'"),
+			DSL.condition("LOWER(testField) LIKE '%test\\'value%'"),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
 
@@ -454,7 +454,7 @@ public class FilterOperatorTest {
 			Collections.singletonList("testValue"));
 
 		Assertions.assertEquals(
-			DSL.not(DSL.condition("lower(testField) like '%testvalue%'")),
+			DSL.not(DSL.condition("LOWER(testField) LIKE '%testvalue%'")),
 			filterOperator.getCondition(DSL.field("testField")));
 	}
 

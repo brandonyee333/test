@@ -77,7 +77,7 @@ public class DSLHelper {
 		if (isBigQueryDialect()) {
 			return DSL.condition(
 				String.format(
-					"lower(%s) like '%s'", fieldName,
+					"LOWER(%s) LIKE '%s'", fieldName,
 					"%" + StringUtils.lowerCase(value) + "%"));
 		}
 
@@ -90,10 +90,10 @@ public class DSLHelper {
 
 	public Field<Integer> countIf(Condition condition) {
 		if (isBigQueryDialect()) {
-			return DSL.field("countif({0})", Integer.class, condition);
+			return DSL.field("COUNTIF({0})", Integer.class, condition);
 		}
 
-		return DSL.field("count(({0}) or null)", Integer.class, condition);
+		return DSL.field("COUNT(({0}) OR null)", Integer.class, condition);
 	}
 
 	public Field<OffsetDateTime> dateDiff(
@@ -102,19 +102,19 @@ public class DSLHelper {
 
 		if (isBigQueryDialect()) {
 			return DSL.field(
-				"date_diff({0}, {1}, {2})", endDateField.getDataType(),
+				"DATE_DIFF({0}, {1}, {2})", endDateField.getDataType(),
 				endDateField, startDateField, datePart.toName());
 		}
 
 		if (datePart == DatePart.WEEK) {
 			return DSL.field(
-				"cast(extract('day' from (cast({0} as timestamp) - cast({1} " +
-					"as timestamp))) / 7 as int)",
+				"CAST(EXTRACT('day' FROM (CAST({0} AS TIMESTAMP) - CAST({1} " +
+					"AS TIMESTAMP))) / 7 AS INT)",
 				endDateField.getDataType(), endDateField, startDateField);
 		}
 
 		return DSL.field(
-			"date_part({0}, AGE({1}, {2}))", endDateField.getDataType(),
+			"DATE_PART({0}, AGE({1}, {2}))", endDateField.getDataType(),
 			datePart.toSQL(), endDateField, startDateField);
 	}
 
@@ -124,23 +124,23 @@ public class DSLHelper {
 		if (isBigQueryDialect()) {
 			if ((datePart == DatePart.HOUR) || (datePart == DatePart.DAY)) {
 				return DSL.field(
-					"datetime_trunc({0}, {1})", field.getDataType(), field,
+					"DATETIME_TRUNC({0}, {1})", field.getDataType(), field,
 					datePart.toName());
 			}
 
 			return DSL.field(
-				"date_trunc({0}, {1})", field.getDataType(), field,
+				"DATE_TRUNC({0}, {1})", field.getDataType(), field,
 				datePart.toName());
 		}
 
 		if (datePart == DatePart.WEEK) {
 			return DSL.field(
-				"date_trunc({0}, {1} + INTERVAL '1 DAY') - INTERVAL '1 DAY'",
+				"DATE_TRUNC({0}, {1} + INTERVAL '1 DAY') - INTERVAL '1 DAY'",
 				field.getDataType(), datePart.toSQL(), field);
 		}
 
 		return DSL.field(
-			"date_trunc({0}, {1})", field.getDataType(), datePart.toSQL(),
+			"DATE_TRUNC({0}, {1})", field.getDataType(), datePart.toSQL(),
 			field);
 	}
 
@@ -202,7 +202,7 @@ public class DSLHelper {
 
 	public Object getDateParam(Date date) {
 		if (isBigQueryDialect()) {
-			return DSL.field("timestamp '" + DateUtil.toUTCString(date) + "'");
+			return DSL.field("TIMESTAMP '" + DateUtil.toUTCString(date) + "'");
 		}
 
 		return date;
@@ -214,7 +214,7 @@ public class DSLHelper {
 
 		if (isBigQueryDialect()) {
 			return DSL.field(
-				"timestamp '" + DateUtil.toUTCString(localDateTime) + "'");
+				"TIMESTAMP '" + DateUtil.toUTCString(localDateTime) + "'");
 		}
 
 		return localDateTime;
@@ -253,7 +253,7 @@ public class DSLHelper {
 	public Field<?> getDayOfWeekField(Field field) {
 		if (isBigQueryDialect()) {
 			return DSL.field(
-				String.format("extract(dayOfWeek from %s)", field));
+				String.format("EXTRACT(DAYOFWEEK FROM %s)", field));
 		}
 
 		return DSL.dayOfWeek(field);
@@ -299,16 +299,16 @@ public class DSLHelper {
 					"UNNEST(GENERATE_DATE_ARRAY(DATE(%s), DATE(%s), INTERVAL " +
 						"1 %s)) AS generatedDate",
 					DSL.field(
-						"timestamp '" + DateUtil.toUTCString(timestamp1) + "'"),
+						"TIMESTAMP '" + DateUtil.toUTCString(timestamp1) + "'"),
 					DSL.field(
-						"timestamp '" + DateUtil.toUTCString(timestamp2) + "'"),
+						"TIMESTAMP '" + DateUtil.toUTCString(timestamp2) + "'"),
 					datePart.toSQL())
 			).asTable();
 		}
 
 		return DSL.table(
 			String.format(
-				"generate_series({0}, {1}, '1 %s'::interval) AS generatedDate",
+				"GENERATE_SERIES({0}, {1}, '1 %s'::INTERVAL) AS generatedDate",
 				datePart.toSQL()),
 			timestamp1, timestamp2);
 	}
