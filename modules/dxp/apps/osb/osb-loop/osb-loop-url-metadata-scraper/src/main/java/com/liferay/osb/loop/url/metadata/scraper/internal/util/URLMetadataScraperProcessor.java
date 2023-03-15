@@ -75,9 +75,12 @@ public class URLMetadataScraperProcessor {
 			"description",
 			StringUtil.shorten(
 				getContent(document, _SELECTORS_DESCRIPTION),
-				_DESCRIPTION_LENGTH_MAXIMUM));
-		jsonObject.put("imageURLs", getImageURLs(document, protocol));
-		jsonObject.put("videoURL", getContent(document, _SELECTORS_VIDEO_URL_));
+				_DESCRIPTION_LENGTH_MAXIMUM)
+		).put(
+			"imageURLs", getImageURLs(document, protocol)
+		).put(
+			"videoURL", getContent(document, _SELECTORS_VIDEO_URL_)
+		);
 
 		String domain = "";
 
@@ -90,11 +93,15 @@ public class URLMetadataScraperProcessor {
 			domain = HttpUtil.getDomain(url);
 		}
 
-		jsonObject.put("shortURL", StringUtil.toLowerCase(domain));
-
-		jsonObject.put("success", true);
-		jsonObject.put("title", title);
-		jsonObject.put("url", url);
+		jsonObject.put(
+			"shortURL", StringUtil.toLowerCase(domain)
+		).put(
+			"success", true
+		).put(
+			"title", title
+		).put(
+			"url", url
+		);
 
 		return jsonObject.toString();
 	}
