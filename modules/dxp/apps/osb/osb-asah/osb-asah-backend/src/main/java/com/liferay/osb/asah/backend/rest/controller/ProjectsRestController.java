@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -72,19 +73,27 @@ public class ProjectsRestController extends BaseRestController {
 					for (DataSource dataSource :
 							_dataSourceDog.getDataSources()) {
 
-						if (dataSource.getAccountsSelected()) {
+						if (BooleanUtils.isTrue(
+								dataSource.getAccountsSelected())) {
+
 							accountsSelected = true;
 						}
 
-						if (dataSource.getCommerceChannelsSelected()) {
+						if (BooleanUtils.isTrue(
+								dataSource.getCommerceChannelsSelected())) {
+
 							commerceChannelsSelected = true;
 						}
 
-						if (dataSource.getContactsSelected()) {
+						if (BooleanUtils.isTrue(
+								dataSource.getContactsSelected())) {
+
 							contactsSelected = true;
 						}
 
-						if (dataSource.getSitesSelected()) {
+						if (BooleanUtils.isTrue(
+								dataSource.getSitesSelected())) {
+
 							sitesSelected = true;
 						}
 
