@@ -23,13 +23,19 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Geyson Silva
  */
+@Component(
+	property = "model.class.name=com.liferay.osb.faro.model.FaroProject",
+	service = FaroProject.class
+)
 public class FaroProjectFinderImpl
 	extends FaroProjectFinderBaseImpl implements FaroProjectFinder {
 
@@ -47,16 +53,16 @@ public class FaroProjectFinderImpl
 
 			String sql = _customSQL.get(getClass(), FIND_BY_ED);
 
-			SQLQuery q = session.createSynchronizedSQLQuery(sql);
+			SQLQuery sqlQuery = session.createSynchronizedSQLQuery(sql);
 
-			q.addEntity("OSBFaro_FaroProject", FaroProjectImpl.class);
+			sqlQuery.addEntity("OSBFaro_FaroProject", FaroProjectImpl.class);
 
-			QueryPos qPos = QueryPos.getInstance(q);
+			QueryPos queryPos = QueryPos.getInstance(sqlQuery);
 
-			qPos.add(emailAddressDomain);
+			queryPos.add(emailAddressDomain);
 
 			return (List<FaroProject>)QueryUtil.list(
-				q, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+				sqlQuery, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
@@ -66,7 +72,7 @@ public class FaroProjectFinderImpl
 		}
 	}
 
-	@ServiceReference(type = CustomSQL.class)
+	@Reference
 	private CustomSQL _customSQL;
 
 }

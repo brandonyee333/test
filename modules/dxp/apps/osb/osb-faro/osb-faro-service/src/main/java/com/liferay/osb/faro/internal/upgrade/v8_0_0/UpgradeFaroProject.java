@@ -14,8 +14,9 @@
 
 package com.liferay.osb.faro.internal.upgrade.v8_0_0;
 
-import com.liferay.osb.faro.internal.upgrade.v8_0_0.util.FaroProjectTable;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
+import com.liferay.portal.kernel.upgrade.UpgradeStep;
 
 /**
  * @author Marcellus Tavares
@@ -24,9 +25,14 @@ public class UpgradeFaroProject extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			FaroProjectTable.class,
-			new AlterTableAddColumn("recommendationsEnabled BOOLEAN"));
+	}
+
+	@Override
+	protected UpgradeStep[] getPreUpgradeSteps() {
+		return new UpgradeStep[] {
+			UpgradeProcessFactory.addColumns(
+				"OSBFaro_FaroProject", "recommendationsEnabled BOOLEAN")
+		};
 	}
 
 }

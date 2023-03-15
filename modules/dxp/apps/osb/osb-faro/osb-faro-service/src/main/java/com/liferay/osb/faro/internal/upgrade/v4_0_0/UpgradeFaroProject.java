@@ -14,8 +14,9 @@
 
 package com.liferay.osb.faro.internal.upgrade.v4_0_0;
 
-import com.liferay.osb.faro.model.impl.FaroProjectModelImpl;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
+import com.liferay.portal.kernel.upgrade.UpgradeStep;
 
 /**
  * @author Matthew Kong
@@ -24,13 +25,17 @@ public class UpgradeFaroProject extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			FaroProjectModelImpl.class,
-			new AlterTableAddColumn("lastAccessTime LONG"));
-
 		runSQL(
 			"update OSBFaro_FaroProject set lastAccessTime = " +
 				System.currentTimeMillis());
+	}
+
+	@Override
+	protected UpgradeStep[] getPreUpgradeSteps() {
+		return new UpgradeStep[] {
+			UpgradeProcessFactory.addColumns(
+				"OSBFaro_FaroProject", "lastAccessTime LONG")
+		};
 	}
 
 }
