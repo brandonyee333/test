@@ -3,20 +3,19 @@ RETURNS STRING
 LANGUAGE js
 AS """
 	try {
-	
-		var decodedUrl = url;
+		var decodedURL = url;
 		
-		var index = decodedUrl.indexOf('+');
+		var index = decodedURL.indexOf('+');
 
 		while (index != -1) {
-			decodedUrl = decodedUrl.replace('+', ' ')
+			decodedURL = decodedURL.replace('+', ' ')
  			
- 			index = decodedUrl.indexOf('+');
+ 			index = decodedURL.indexOf('+');
 		}
 	
-		decodedUrl = decodeURIComponent(decodedUrl);
+		decodedURL = decodeURIComponent(decodedURL);
 
-		var queryParamSeparatorIndexOf = decodedUrl.indexOf("?");
+		var queryParamSeparatorIndexOf = decodedURL.indexOf("?");
 
 		if (queryParamSeparatorIndexOf < 0) {
 			return null;
@@ -24,7 +23,7 @@ AS """
 
 		var queryParams = {};
 
-		var queryParamsString = decodedUrl.substr(queryParamSeparatorIndexOf + 1);
+		var queryParamsString = decodedURL.substr(queryParamSeparatorIndexOf + 1);
 
 		var queryParamsStringParts = queryParamsString.split("&");
 
