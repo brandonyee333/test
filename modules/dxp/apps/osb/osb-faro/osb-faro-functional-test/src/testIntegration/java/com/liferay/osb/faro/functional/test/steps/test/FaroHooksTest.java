@@ -12,22 +12,22 @@
  *
  */
 
-package com.liferay.osb.faro.functional.test.steps;
+package com.liferay.osb.faro.functional.test.steps.test;
 
 import com.liferay.osb.faro.functional.test.driver.FaroSelenium;
 import com.liferay.osb.faro.functional.test.pages.DashboardPage;
 import com.liferay.osb.faro.functional.test.pages.fragments.Table;
+import com.liferay.osb.faro.functional.test.steps.NavigationSteps;
 import com.liferay.osb.faro.functional.test.util.FaroSeleniumUtil;
 import com.liferay.osb.faro.functional.test.util.FaroTestDataUtil;
 import com.liferay.poshi.runner.selenium.SeleniumUtil;
 import com.liferay.poshi.runner.util.GetterUtil;
 import com.liferay.poshi.runner.util.PropsUtil;
 
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-
 import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -36,15 +36,15 @@ import org.openqa.selenium.WebElement;
 /**
  * @author Cheryl Tang
  */
-public class FaroHooks {
+public class FaroHooksTest {
 
 	@Before
-	public static void setUp() {
+	public void setUp() {
 		SeleniumUtil.getSelenium();
 	}
 
 	@After
-	public static void tearDown(Scenario scenario) throws Exception {
+	public void tearDown() throws Exception {
 		FaroSelenium faroSelenium = FaroSeleniumUtil.getFaroSelenium();
 
 		faroSelenium.switchToMainWindow();
@@ -65,21 +65,21 @@ public class FaroHooks {
 	}
 
 	@After("@Keywords")
-	public static void tearDownKeyword() throws Exception {
+	public void tearDownKeyword() throws Exception {
 		_tableDeleteAll("Keywords");
 	}
 
 	@After("@Property, @Data_Source")
-	public static void tearDownProperty() throws Exception {
+	public void tearDownProperty() throws Exception {
 		_tableDeleteProperties();
 	}
 
 	@After("@Token")
-	public static void tearDownToken() throws Exception {
+	public void tearDownToken() throws Exception {
 		FaroTestDataUtil.deleteTokenDataSource();
 	}
 
-	private static void _tableDeleteAll(String page) throws Exception {
+	private void _tableDeleteAll(String page) throws Exception {
 		FaroSelenium faroSelenium = FaroSeleniumUtil.getFaroSelenium();
 
 		NavigationSteps.goToURL(page, "page");
@@ -112,7 +112,7 @@ public class FaroHooks {
 		}
 	}
 
-	private static void _tableDeleteProperties() throws Exception {
+	private void _tableDeleteProperties() throws Exception {
 		FaroSelenium faroSelenium = FaroSeleniumUtil.getFaroSelenium();
 
 		NavigationSteps.goToURL("Properties", "page");
