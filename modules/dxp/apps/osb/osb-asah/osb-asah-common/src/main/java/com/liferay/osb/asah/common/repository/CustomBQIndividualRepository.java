@@ -35,6 +35,10 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		@Nullable String query, @Nullable Long segmentId);
 
+	public long countBQIndividuals(
+		@Nullable Long channelId, String filterString,
+		@Nullable Boolean includeAnonymousUsers, @Nullable String query);
+
 	public long countIndividualFieldValuesCustom(
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString);
@@ -60,6 +64,10 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
 		Pageable pageable, @Nullable String query, @Nullable Long segmentId);
+
+	public List<Individual> searchBQIndividuals(
+		@Nullable Long channelId, @Nullable String filterString,
+		Pageable pageable, @Nullable String query);
 
 	public List<String> searchIndividualFieldValuesCustom(
 		@Nullable Long channelId, String fieldName,

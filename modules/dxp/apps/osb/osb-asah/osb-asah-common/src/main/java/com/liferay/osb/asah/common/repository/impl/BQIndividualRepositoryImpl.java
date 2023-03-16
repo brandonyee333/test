@@ -32,15 +32,19 @@ import com.liferay.osb.asah.common.util.BQSQLUtil;
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import org.apache.commons.collections4.map.HashedMap;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
@@ -49,6 +53,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record11;
+import org.jooq.Record3;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectForStep;
@@ -103,6 +108,51 @@ public class BQIndividualRepositoryImpl
 		}
 
 		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
+	}
+
+	@Override
+	public long countBQIndividuals(
+		@Nullable Long channelId, String filterString,
+		@Nullable Boolean includeAnonymousUsers, @Nullable String query) {
+
+		FilterExpression filterExpression = new FilterExpression(filterString);
+
+		Set<String> referencedTableNames = new HashSet<>(
+			filterExpression.getReferencedTableNames());
+
+		if (StringUtils.isNotBlank(query)) {
+			referencedTableNames.add("Individual");
+		}
+
+		if (referencedTableNames.contains("Individual")) {
+			includeAnonymousUsers = Boolean.FALSE;
+		}
+
+		Field<String> selectField = null;
+
+		if (BooleanUtils.isTrue(includeAnonymousUsers)) {
+			selectField = DSL.field("Identity.id", String.class);
+		}
+		else {
+			selectField = DSL.field("Identity.individualId", String.class);
+		}
+
+		SelectJoinStep<Record1<Integer>> selectJoinStep = _dslContext.select(
+			DSL.countDistinct(selectField)
+		).from(
+			DSL.table(
+				"BQIdentity"
+			).as(
+				"Identity"
+			)
+		);
+
+		selectJoinStep = _getSelectJoinStep(
+			channelId, referencedTableNames, selectJoinStep);
+
+		return _queryExecutor.queryForLong(
+			selectJoinStep.where(
+				_getConditions(channelId, filterExpression, query)));
 	}
 
 	public long countIndividualFieldValuesCustom(
@@ -431,6 +481,66 @@ public class BQIndividualRepositoryImpl
 			_getIndividualSelectOnConditionStep(selectFinalStep, sortFields));
 	}
 
+	@Override
+	public List<Individual> searchBQIndividuals(
+		@Nullable Long channelId, String filterString, Pageable pageable,
+		@Nullable String query) {
+
+		FilterExpression filterExpression = new FilterExpression(filterString);
+
+		Set<String> referencedTableNames = new HashSet<>(
+			filterExpression.getReferencedTableNames());
+
+		referencedTableNames.add("Individual");
+
+		Field<String> emailAddressField = DSL.field(
+			"Individual.emailAddress", String.class);
+		Field<String> firstNameField = DSL.field(
+			"Individual.firstName", String.class);
+		Field<String> lastNameField = DSL.field(
+			"Individual.lastName", String.class);
+
+		SelectJoinStep<Record3<String, String, String>> selectJoinStep =
+			_dslContext.select(
+				emailAddressField, firstNameField, lastNameField
+			).from(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
+			);
+
+		selectJoinStep = _getSelectJoinStep(
+			channelId, referencedTableNames, selectJoinStep);
+
+		return _queryExecutor.queryForList(
+			record -> {
+				BQIndividual bqIndividual = new BQIndividual(record);
+
+				bqIndividual.setFields(
+					Arrays.asList(
+						new BQIndividual.Field(
+							0L, "emailAddress",
+							(String)record.get("emailAddress")),
+						new BQIndividual.Field(
+							0L, "firstName", (String)record.get("firstName")),
+						new BQIndividual.Field(
+							0L, "lastName", (String)record.get("lastName"))));
+
+				return new Individual(0L, bqIndividual, null, _objectMapper);
+			},
+			selectJoinStep.where(
+				_getConditions(channelId, filterExpression, query)
+			).groupBy(
+				emailAddressField, firstNameField, lastNameField
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
 	public List<String> searchIndividualFieldValuesCustom(
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString, Pageable pageable) {
@@ -548,6 +658,28 @@ public class BQIndividualRepositoryImpl
 						DSL.field("BQIndividual.id")
 					))
 			));
+	}
+
+	private List<Condition> _getConditions(
+		Long channelId, FilterExpression filterExpression, String query) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"IdentityActivity.channelId", Long.class
+				).eq(
+					channelId
+				));
+		}
+
+		conditions.add(
+			_getQueryCondition(
+				query, new String[] {"emailAddress", "firstName", "lastName"}));
+		conditions.add(filterExpression.getCondition());
+
+		return conditions;
 	}
 
 	private <T extends Record> SelectConditionStep<T>
@@ -833,6 +965,10 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private Condition _getQueryCondition(String query) {
+		return _getQueryCondition(query, _SEARCH_COLUMNS);
+	}
+
+	private Condition _getQueryCondition(String query, String[] searchColumns) {
 		if (StringUtils.isEmpty(query)) {
 			return DSL.noCondition();
 		}
@@ -842,7 +978,7 @@ public class BQIndividualRepositoryImpl
 		for (String word : StringUtils.split(query)) {
 			List<Condition> wordConditions = new ArrayList<>();
 
-			for (String column : _SEARCH_COLUMNS) {
+			for (String column : searchColumns) {
 				wordConditions.add(
 					DSL.lower(
 						DSL.field(column, String.class)
@@ -857,10 +993,10 @@ public class BQIndividualRepositoryImpl
 		return DSL.and(conditions);
 	}
 
-	private <T extends Record> SelectJoinStep<T> _getSelectJoinStep(
-		Long segmentId, SelectSelectStep<T> selectSelectStep) {
+	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
+		Long segmentId, SelectSelectStep<R> selectSelectStep) {
 
-		SelectJoinStep<T> selectJoinStep = selectSelectStep.from(
+		SelectJoinStep<R> selectJoinStep = selectSelectStep.from(
 			DSL.table(
 				"BQIndividual"
 			).as(
@@ -892,6 +1028,86 @@ public class BQIndividualRepositoryImpl
 					"Individual.id"
 				).eq(
 					DSL.field("Membership.individualId")
+				)
+			);
+		}
+
+		return selectJoinStep;
+	}
+
+	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
+		Long channelId, Set<String> referencedTableNames,
+		SelectJoinStep<R> selectJoinStep) {
+
+		if (channelId != null) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQIdentityActivity"
+				).as(
+					"IdentityActivity"
+				)
+			).on(
+				DSL.field(
+					"IdentityActivity.identityId"
+				).eq(
+					DSL.field("Identity.id")
+				)
+			);
+		}
+
+		if (referencedTableNames.contains("Event")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQEvent"
+				).as(
+					"Event"
+				)
+			).on(
+				DSL.field(
+					"Event.userId"
+				).eq(
+					DSL.field("Identity.id")
+				)
+			);
+		}
+
+		if (referencedTableNames.contains("Individual")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).on(
+				DSL.field(
+					"Identity.individualId"
+				).eq(
+					DSL.field("Individual.id")
+				)
+			);
+
+			if (referencedTableNames.contains("ExpandoValue")) {
+				selectJoinStep = selectJoinStep.crossJoin(
+					DSL.unnest(
+						DSL.field("Individual.fields")
+					).as(
+						"Fields"
+					));
+			}
+		}
+
+		if (referencedTableNames.contains("Session")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
+			).on(
+				DSL.field(
+					"Identity.id"
+				).eq(
+					DSL.field("Session.userId")
 				)
 			);
 		}

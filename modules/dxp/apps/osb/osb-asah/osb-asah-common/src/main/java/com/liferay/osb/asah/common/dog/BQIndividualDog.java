@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,7 +36,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -63,8 +66,14 @@ public class BQIndividualDog {
 
 	public long countBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
-		@Nullable Long dataSourceId, @Nullable Long notSegmentId,
+		@Nullable Long dataSourceId, @Nullable String filterString,
+		@Nullable Boolean includeAnonymousUsers, @Nullable Long notSegmentId,
 		@Nullable String query, @Nullable Long segmentId) {
+
+		if (StringUtils.isNotBlank(filterString)) {
+			return _bqIndividualRepository.countBQIndividuals(
+				channelId, filterString, includeAnonymousUsers, query);
+		}
 
 		return _bqIndividualRepository.countBQIndividuals(
 			accountId, channelId, dataSourceId, notSegmentId, query, segmentId);
@@ -140,25 +149,40 @@ public class BQIndividualDog {
 
 	public Page<Individual> searchBQIndividualPage(
 		@Nullable Long accountId, @Nullable Long channelId,
-		@Nullable Long dataSourceId, @Nullable Long notSegmentId, int page,
-		@Nullable String query, @Nullable Long segmentId, int size,
+		@Nullable Long dataSourceId, @Nullable String filterString,
+		@Nullable Boolean includeAnonymousUsers, @Nullable Long notSegmentId,
+		int page, @Nullable String query, @Nullable Long segmentId, int size,
 		String[] sorts) {
+
+		if ((page == 0) && (size == 0)) {
+			return new PageImpl<>(
+				Collections.emptyList(), Pageable.unpaged(),
+				countBQIndividuals(
+					accountId, channelId, dataSourceId, filterString,
+					includeAnonymousUsers, notSegmentId, query, segmentId));
+		}
 
 		return PageableExecutionUtils.getPage(
 			searchBQIndividuals(
-				accountId, channelId, dataSourceId, notSegmentId, page, query,
-				segmentId, size, sorts),
+				accountId, channelId, dataSourceId, filterString, notSegmentId,
+				page, query, segmentId, size, sorts),
 			PageRequest.of(page, size, _getSort(sorts)),
 			() -> countBQIndividuals(
-				accountId, channelId, dataSourceId, notSegmentId, query,
-				segmentId));
+				accountId, channelId, dataSourceId, filterString,
+				includeAnonymousUsers, notSegmentId, query, segmentId));
 	}
 
 	public List<Individual> searchBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
-		@Nullable Long dataSourceId, @Nullable Long notSegmentId, int page,
-		@Nullable String query, @Nullable Long segmentId, int size,
-		String[] sorts) {
+		@Nullable Long dataSourceId, @Nullable String filterString,
+		@Nullable Long notSegmentId, int page, @Nullable String query,
+		@Nullable Long segmentId, int size, String[] sorts) {
+
+		if (StringUtils.isNotBlank(filterString)) {
+			return _bqIndividualRepository.searchBQIndividuals(
+				channelId, filterString,
+				PageRequest.of(page, size, _getSort(sorts)), query);
+		}
 
 		return _bqIndividualRepository.searchBQIndividuals(
 			accountId, channelId, dataSourceId, notSegmentId,
