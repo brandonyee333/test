@@ -1144,6 +1144,44 @@
 			}
 		]
 	},
+	"identityinterestpages": {
+		"clusteringFields": [
+			"channelId",
+			"keyword"
+		],
+		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "canonicalUrl",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "identityId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "keyword",
+				"type": "STRING"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "title",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "views",
+				"type": "INT64"
+			}
+		]
+	},
 	"identityinterestscore": {
 		"fields": [
 			{
