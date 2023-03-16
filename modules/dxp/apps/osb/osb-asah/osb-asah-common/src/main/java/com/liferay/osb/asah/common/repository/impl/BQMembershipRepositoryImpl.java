@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.AggregateFunction;
@@ -60,59 +59,6 @@ public class BQMembershipRepositoryImpl
 
 		_dslContext = dslContext;
 		_queryExecutor = queryExecutor;
-	}
-
-	@Override
-	public long countByChannelIdAndFilterString(
-		@Nullable Long channelId, @Nullable String filterString,
-		@Nullable Boolean includeAnonymousUsers) {
-
-		Condition condition = DSL.noCondition();
-		Set<String> referencedTableNames = Collections.emptySet();
-
-		if (channelId != null) {
-			condition = DSL.field(
-				"IdentityActivity.channelId", Long.class
-			).eq(
-				channelId
-			);
-		}
-
-		if (StringUtils.isNotBlank(filterString)) {
-			FilterExpression filterExpression = new FilterExpression(
-				filterString);
-
-			condition = DSL.and(condition, filterExpression.getCondition());
-			referencedTableNames = filterExpression.getReferencedTableNames();
-		}
-
-		if (referencedTableNames.contains("Individual")) {
-			includeAnonymousUsers = Boolean.FALSE;
-		}
-
-		Field<String> selectField = null;
-
-		if (BooleanUtils.isTrue(includeAnonymousUsers)) {
-			selectField = DSL.field("Identity.id", String.class);
-		}
-		else {
-			selectField = DSL.field("Identity.individualId", String.class);
-		}
-
-		SelectJoinStep<Record1<Integer>> selectJoinStep = _dslContext.select(
-			DSL.countDistinct(selectField)
-		).from(
-			DSL.table(
-				"BQIdentity"
-			).as(
-				"Identity"
-			)
-		);
-
-		selectJoinStep = _getSelectJoinStep(
-			channelId, referencedTableNames, selectJoinStep);
-
-		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
 	}
 
 	@Override
