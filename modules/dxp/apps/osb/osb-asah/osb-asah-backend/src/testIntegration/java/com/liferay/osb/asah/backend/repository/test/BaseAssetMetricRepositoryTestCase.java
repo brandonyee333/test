@@ -129,18 +129,6 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 				).toArray()));
 	}
 
-	protected void assertGetIndividualsCount(
-		MetricType metricType, TimeRange timeRange) {
-	}
-
-	protected void assertGetSegmentedIndividualsCount(
-		MetricType metricType, TimeRange timeRange) {
-	}
-
-	protected void assertGetSegmentMetrics(
-		MetricType metricType, TimeRange timeRange) {
-	}
-
 	protected void assertHistogramMetrics(
 		Set<Double> expectedMetricValues,
 		List<HistogramMetric> histogramMetrics) {
