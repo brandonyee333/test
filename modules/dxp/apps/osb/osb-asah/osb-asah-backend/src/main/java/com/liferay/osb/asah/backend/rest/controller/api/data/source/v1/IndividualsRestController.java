@@ -48,8 +48,6 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -137,15 +135,11 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		if ((page == 0) && (size == 0)) {
-			return getMembershipCountIndividualDTOPageDTO(
-				channelId, filterString, includeAnonymousUsers);
-		}
-
 		Page<Individual> individualPage =
 			_bqIndividualDog.searchBQIndividualPage(
-				accountId, channelId, dataSourceId, notSegmentId, page, query,
-				segmentId, Math.max(1, size), sorts);
+				accountId, channelId, dataSourceId, filterString,
+				includeAnonymousUsers, notSegmentId, page, query, segmentId,
+				size, sorts);
 
 		if (StringUtils.isEmpty(expand)) {
 			return _toIndividualDTOPageDTO(individualPage);
@@ -213,17 +207,6 @@ public class IndividualsRestController extends BaseRestController {
 			includeAnonymousUsers) {
 
 		return _bqIndividualDog.countIndividuals(includeAnonymousUsers);
-	}
-
-	public PageDTO<IndividualDTO> getMembershipCountIndividualDTOPageDTO(
-		Long channelId, String filterString, Boolean includeAnonymousUsers) {
-
-		Page<Individual> individualPage = new PageImpl<>(
-			Collections.emptyList(), Pageable.unpaged(),
-			_bqMembershipDog.getBQMembershipsCount(
-				channelId, filterString, includeAnonymousUsers));
-
-		return _toIndividualDTOPageDTO(individualPage);
 	}
 
 	@GetMapping("/{id}/individual-segments")
