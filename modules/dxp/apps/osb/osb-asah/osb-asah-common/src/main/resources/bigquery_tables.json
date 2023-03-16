@@ -1169,7 +1169,7 @@
 			{
 				"mode": "REQUIRED",
 				"name": "recordedDate",
-				"type": "TIMESTAMP"
+				"type": "DATE"
 			}
 		]
 	},
