@@ -418,6 +418,10 @@ public class SegmentDog {
 	}
 
 	public void setReferencedFields(Segment segment) {
+		if (StringUtils.isBlank(segment.getFilter())) {
+			return;
+		}
+
 		FilterExpression filterExpression = new FilterExpression(
 			segment.getFilter(), "individual");
 
