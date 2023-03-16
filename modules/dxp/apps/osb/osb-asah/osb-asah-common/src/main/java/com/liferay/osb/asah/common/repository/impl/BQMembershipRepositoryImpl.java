@@ -444,12 +444,12 @@ public class BQMembershipRepositoryImpl
 					"identitiesCount");
 				BigDecimal segmentId = (BigDecimal)record.get("segmentId");
 
-				return new HashMap<String, Long>() {
-					{
-						put("identitiesCount", identitiesCount.longValue());
-						put("segmentId", segmentId.longValue());
-					}
-				};
+				Map<String, Long> map = new HashMap<>();
+
+				map.put("identitiesCount", identitiesCount.longValue());
+				map.put("segmentId", segmentId.longValue());
+
+				return map;
 			},
 			selectSelectStep.from(
 				"BQMembership"
