@@ -29,6 +29,9 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.filter.expression.FilterExpressionReferencedObjectsVisitor;
+import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionBaseVisitor;
+import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionLexer;
+import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -57,11 +60,20 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.BailErrorStrategy;
+import org.antlr.v4.runtime.BaseErrorListener;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.Recognizer;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import org.json.JSONObject;
 
@@ -87,7 +99,7 @@ public class SegmentDog {
 		Segment segment = new Segment();
 
 		segment.setCreateDate(createDate);
-		segment.setFilter(_parseFilterString(filterString));
+		segment.setFilter(_checkFilterString(filterString));
 		segment.setModifiedDate(modifiedDate);
 		segment.setName(name);
 		segment.setScope(scope);
@@ -109,7 +121,7 @@ public class SegmentDog {
 			segment.setState("READY");
 		}
 
-		segment.setFilter(_parseFilterString(segment.getFilter()));
+		segment.setFilter(_checkFilterString(segment.getFilter()));
 
 		segment = _segmentRepository.save(segment);
 
@@ -504,26 +516,23 @@ public class SegmentDog {
 		}
 	}
 
-	private String _parseFilterString(String filterString) {
+	private String _checkFilterString(String filterString) {
 		if (filterString != null) {
-			Matcher matcher = _pattern.matcher(filterString);
+			FilterExpressionLexer filterExpressionLexer =
+				new FilterExpressionLexer(new ANTLRInputStream(filterString));
 
-			while (matcher.find()) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Invalid value: " + matcher.group());
-				}
+			filterExpressionLexer.addErrorListener(new ErrorListener());
 
-				BigDecimal bigDecimal = new BigDecimal(matcher.group());
+			FilterExpressionParser filterExpressionParser =
+				new FilterExpressionParser(
+					new CommonTokenStream(filterExpressionLexer));
 
-				BigDecimal maxIntegerBigDecimal = BigDecimal.valueOf(
-					Integer.MAX_VALUE);
+			filterExpressionParser.setErrorHandler(new BailErrorStrategy());
 
-				if (bigDecimal.compareTo(maxIntegerBigDecimal) > 0) {
-					filterString = StringUtils.replace(
-						filterString, matcher.group(),
-						String.valueOf(Integer.MAX_VALUE));
-				}
-			}
+			FilterExpressionParser.ExpressionContext expressionContext =
+				filterExpressionParser.expression();
+
+			expressionContext.accept(new FilterExpressionVisitor());
 		}
 
 		return filterString;
@@ -679,7 +688,7 @@ public class SegmentDog {
 			BeanUtils.copyProperties(partialSegment, existingSegment);
 
 			existingSegment.setFilter(
-				_parseFilterString(existingSegment.getFilter()));
+				_checkFilterString(existingSegment.getFilter()));
 
 			existingSegment = _segmentRepository.save(existingSegment);
 
@@ -688,11 +697,6 @@ public class SegmentDog {
 
 		return existingSegment;
 	}
-
-	private static final Log _log = LogFactory.getLog(SegmentDog.class);
-
-	private static final Pattern _pattern = Pattern.compile(
-		"(?<=[ ])[0-9]+[.]{0,1}[0-9]*(([e][+]){1}[0-9]+){0,1}");
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
@@ -732,5 +736,67 @@ public class SegmentDog {
 
 	@Autowired
 	private SegmentRepository _segmentRepository;
+
+	private static class ErrorListener extends BaseErrorListener {
+
+		@Override
+		public void syntaxError(
+			Recognizer<?, ?> recognizer, Object offendingSymbol, int line,
+			int charPositionInLine, String message,
+			RecognitionException recognitionException) {
+
+			throw new ParseCancellationException(message, recognitionException);
+		}
+
+	}
+
+	private class FilterExpressionVisitor
+		extends FilterExpressionBaseVisitor<Object> {
+
+		public Object visitFilterExpression(
+			FilterExpressionParser.FilterExpressionContext
+				filterExpressionContext) {
+
+			String filterString = _parseFilterStringExpression(
+				filterExpressionContext.filter);
+
+			_checkFilterString(
+				filterString.substring(1, filterString.length() - 1));
+
+			return null;
+		}
+
+		@Override
+		public Object visitToLiteral(
+			FilterExpressionParser.ToLiteralContext toLiteralContext) {
+
+			ParseTree childParseTree = toLiteralContext.getChild(0);
+
+			if (NumberUtils.isCreatable(childParseTree.getText())) {
+				BigDecimal bigDecimal = new BigDecimal(
+					childParseTree.getText());
+
+				BigDecimal maxIntegerBigDecimal = BigDecimal.valueOf(
+					Integer.MAX_VALUE);
+
+				if (bigDecimal.compareTo(maxIntegerBigDecimal) > 0) {
+					throw new ParseCancellationException();
+				}
+			}
+
+			return null;
+		}
+
+		private String _parseFilterStringExpression(Token filterToken) {
+			String filterString = filterToken.getText();
+
+			filterString = filterString.replaceAll("\\s''", " '");
+			filterString = filterString.replaceAll("''\\s", "' ");
+			filterString = filterString.replaceAll("''\\)", "')");
+
+			return filterString;
+		}
+
+	}
 
 }

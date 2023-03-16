@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import org.antlr.v4.runtime.misc.ParseCancellationException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,33 +27,32 @@ import org.springframework.test.util.ReflectionTestUtils;
 public class SegmentDogTest {
 
 	@Test
-	public void testParserFilter() {
+	public void testCheckFilterString() {
 		Assertions.assertEquals(
 			"demographics/additionalName/value eq 'Miles'",
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parseFilterString",
+				_segmentDog, "_checkFilterString",
 				"demographics/additionalName/value eq 'Miles'"));
-		Assertions.assertEquals(
-			"demographics/age/value ge " + Integer.MAX_VALUE,
-			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parseFilterString",
+		Assertions.assertThrowsExactly(
+			ParseCancellationException.class,
+			() -> ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_checkFilterString",
 				"demographics/age/value ge " +
 					"12345678901234567262899398937898378787878"));
-		Assertions.assertEquals(
-			"demographics/age/value ge " + Integer.MAX_VALUE,
-			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parseFilterString",
+		Assertions.assertThrowsExactly(
+			ParseCancellationException.class,
+			() -> ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_checkFilterString",
 				"demographics/age/value ge 1.2345678901234568e+21"));
 		Assertions.assertEquals(
 			"demographics/age/value ge " + Integer.MAX_VALUE,
 			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parseFilterString",
+				_segmentDog, "_checkFilterString",
 				"demographics/age/value ge " + Integer.MAX_VALUE));
-		Assertions.assertEquals(
-			"organizations.filter(filter='(dateModified gt " +
-				Integer.MAX_VALUE + ")')",
-			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_parseFilterString",
+		Assertions.assertThrowsExactly(
+			ParseCancellationException.class,
+			() -> ReflectionTestUtils.invokeMethod(
+				_segmentDog, "_checkFilterString",
 				"organizations.filter(filter='(dateModified gt " +
 					"1580256740750)')"));
 	}
