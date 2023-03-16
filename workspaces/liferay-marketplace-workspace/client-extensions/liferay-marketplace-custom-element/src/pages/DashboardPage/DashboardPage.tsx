@@ -8,16 +8,20 @@ import {
 } from '../../components/DashboardTable/DashboardTable';
 import {Footer} from '../../components/Footer/Footer';
 import {Header} from '../../components/Header/Header';
-import {getProducts, getProductSpecifications} from '../../utils/api';
+import {getAccountInformation, getAccounts, getProducts, getProductSpecifications} from '../../utils/api';
 import {AppDetailsPage} from '../AppDetailsPage/AppDetailsPage';
 import {initialDashboardNavigationItems} from './DashboardPageUtil';
 
 import './DashboardPage.scss';
+import { MemberProps, MemberTable } from '../../components/MemberTable/MemberTable';
 
 export function DashboardPage() {
 	const [selectedApp, setSelectedApp] = useState<AppProps>();
+	const [selectedNavigationItem, setSelectedNavigationItem] = useState('Apps');
 	const [apps, setApps] = useState<AppProps[]>(Array<AppProps>());
+	const [members, setMembers] = useState<MemberProps[]>(Array<MemberProps>());
 	const [loading, setLoading] = useState(false);
+	const [catalogName, setCatalogName] = useState('');
 	const [dashboardNavigationItems, setDashboardNavigationItems] = useState(
 		initialDashboardNavigationItems
 	);
@@ -36,6 +40,16 @@ export function DashboardPage() {
 		})
 
 		return Promise.all(appListProductSpecifications);
+	}
+
+	function getAccountInformationList(accountIds : number[]) {
+		let accountInformationList: any[] = [];
+
+		accountIds.forEach((accountId) =>  {
+			accountInformationList.push(getAccountInformation({accountId}));
+		})
+
+		return Promise.all(accountInformationList);
 	}
 
 	function getAppListProductIds(products: any) {
@@ -87,8 +101,8 @@ export function DashboardPage() {
 
 			const newAppList = appList.items.map((product: any, index: number) => {
 				return {
-					lastUpdatedBy: product.lastUpdatedBy,
 					name: product.name.en_US,
+					lastUpdatedBy: product.lastUpdatedBy,
 					status: product.workflowStatusInfo.label.replace(/(^\w|\s\w)/g, (m: string) => m.toUpperCase()),
 					thumbnail: product.thumbnail,
 					type: getProductTypeFromSpecifications(appListProductSpecifications[index]),
@@ -105,7 +119,7 @@ export function DashboardPage() {
 
 			setDashboardNavigationItems([
 				newAppNavigationItem,
-                ...dashboardNavigationItems.filter((navigationItem) => navigationItem.itemName !== 'apps'),
+                ...dashboardNavigationItems.filter((navigationItem) => navigationItem.itemName !== 'apps')
             ]);
 
 			setLoading(false);
@@ -113,13 +127,52 @@ export function DashboardPage() {
 		})();
 	}, []);
 
+	useEffect(() => {
+		(() => {
+			const clickedNavigationItem: any = dashboardNavigationItems.find(
+				dashboardNavigationItem => dashboardNavigationItem.itemSelected
+			);
+
+			setSelectedNavigationItem(clickedNavigationItem.itemTitle);
+		})();
+	}, [dashboardNavigationItems]);
+
+	useEffect(() => {
+		(async () => {
+			if (selectedNavigationItem === "Members") {
+
+				const accountsListResponse = await getAccounts();
+
+				const accountIds : number[] = [];
+
+				accountsListResponse.items.map((account: any) => {
+					accountIds.push(account.id);
+				})
+
+				const accountsList = await getAccountInformationList(accountIds);
+
+				const membersList = accountsList.map((account: any) => {
+					const accountItems = account.items[0];
+
+					return {
+						name: accountItems.name,
+						email: accountItems.emailAddress,
+						role: accountItems.jobTitle
+					}
+				})
+
+				setMembers(membersList);
+			}
+		})();
+	}, [selectedNavigationItem]);
+
 	return (
 		<div className="dashboard-page-container">
 			<div className="dashboard-page-body-container">
 				<DashboardNavigation
 					accountAppsNumber="4"
 					accountIcon={accountLogo}
-					accountTitle="Acme Co"
+					accountTitle={catalogName}
 					dashboardNavigationItems={dashboardNavigationItems}
 					onSelectAppChange={setSelectedApp}
 					setDashboardNavigationItems={
@@ -127,30 +180,52 @@ export function DashboardPage() {
 					}
 				/>
 
-				{selectedApp ? (
-					<AppDetailsPage
-						dashboardNavigationItems={dashboardNavigationItems}
-						selectedApp={selectedApp}
-						setSelectedApp={setSelectedApp}
-					/>
-				) : (
-					<div className="dashboard-page-body">
-						<div className="dashboard-page-body-header-container">
+				{selectedNavigationItem === 'Apps' && (
+					selectedApp ? (
+						<AppDetailsPage
+							dashboardNavigationItems={dashboardNavigationItems}
+							selectedApp={selectedApp}
+							setSelectedApp={setSelectedApp}
+						/>
+					) : (
+						<div className="dashboard-page-body">
+							<div className="dashboard-page-body-header-container">
+								<Header
+									description="Manage and publish apps on the Marketplace"
+									title="Apps"
+								/>
+
+								<a href="/create-new-app">
+									<button className="dashboard-page-body-header-button">
+										+ New App
+									</button>
+								</a>
+							</div>
+
+							<DashboardTable apps={apps} loading={loading}/>
+						</div>
+					)
+				)}
+
+				{selectedNavigationItem === 'Members' && (
+					<div className="members-page-body">
+						<div className="members-page-body-header-container">
 							<Header
-								description="Manage and publish apps on the Marketplace"
-								title="Apps"
+								description="Manage users in your development team and invite new ones"
+								title="Members"
 							/>
 
-							<a href="/create-new-app">
-								<button className="dashboard-page-body-header-button">
-									+ New App
+							<a href="/create-new-member">
+								<button className="member-page-body-header-button">
+									+ New Member
 								</button>
 							</a>
-						</div>
 
-						<DashboardTable apps={apps} loading={loading}/>
+							<MemberTable members={members} loading={loading}/>
+						</div>
 					</div>
 				)}
+
 			</div>
 			<Footer />
 		</div>
