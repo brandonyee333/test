@@ -115,10 +115,6 @@ public class BlogAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName(TimeRange timeRange) {
-		if (!dslHelper.isBigQueryDialect()) {
-			return "BQBlog";
-		}
-
 		if ((timeRange == TimeRange.LAST_24_HOURS) ||
 			(timeRange == TimeRange.YESTERDAY)) {
 

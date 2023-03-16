@@ -27,7 +27,6 @@ import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,6 @@ public class BlogAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_browser_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetBrowserMetricsLast30Days() {
 		assertMetrics(
@@ -68,7 +66,6 @@ public class BlogAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_device_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetDeviceMetricsLast30Days() {
 		assertMetrics(
@@ -83,7 +80,6 @@ public class BlogAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "blog_asset_metric_views_geolocation_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetGeolocationMetricsLast30Days() {
 		assertMetrics(
@@ -93,34 +89,6 @@ public class BlogAssetMetricRepositoryTest
 			_assetMetricRepository.getGeolocationMetrics(
 				"e131fabc", null, 1L, BlogMetricType.VIEWS,
 				TimeRange.LAST_30_DAYS));
-	}
-
-	@BQSQLResource(
-		resourcePath = "blog_asset_metric_views_individuals_last_30_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetIndividualsCountLast30Days() {
-		assertGetIndividualsCount(BlogMetricType.VIEWS, TimeRange.LAST_30_DAYS);
-	}
-
-	@BQSQLResource(
-		resourcePath = "blog_asset_metric_views_segments_last_30_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetSegmentedCountLast30Days() {
-		assertGetSegmentedIndividualsCount(
-			BlogMetricType.VIEWS, TimeRange.LAST_30_DAYS);
-	}
-
-	@BQSQLResource(
-		resourcePath = "blog_asset_metric_views_segments_last_7_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetSegmentMetrics7Days() {
-		assertGetSegmentMetrics(BlogMetricType.VIEWS, TimeRange.LAST_7_DAYS);
 	}
 
 	@BQSQLResource(
