@@ -426,7 +426,12 @@ public class BQMembershipRepositoryImpl
 		Field<Object> identityIdField = DSL.field("identityId");
 
 		return _queryExecutor.queryForList(
-			recordMap -> (Long)recordMap.get("segmentId"),
+			recordMap -> {
+				BigDecimal segmentIdBigDecimal =
+					(BigDecimal)recordMap.get("segmentId");
+
+				return segmentIdBigDecimal.longValue();
+			},
 			selectSelectStep.from(
 				"BQMembership"
 			).where(
