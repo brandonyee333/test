@@ -13,8 +13,7 @@ from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
 from liferay.interest_score.job import IdentityInterestScoreSparkJob, \
 	KeywordsExtractionSparkJob, \
-	ReadAnalyticsEventsSparkJob, \
-	SegmentInterestScoreSparkJob
+	ReadAnalyticsEventsSparkJob
 
 from pyspark import SparkConf
 
