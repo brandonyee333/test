@@ -21,24 +21,44 @@ WITH PageEvent AS (
 	WHERE
 		eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
 ),
-PageBounces AS (
-	SELECT
+PageFinalizedEvent AS (
+    SELECT
+		PageEvent.applicationId,
+		PageEvent.browserName,
+		PageEvent.canonicalUrl,
 		PageEvent.channelId,
-		COUNT(*) AS count,
-		COUNTIF(
-			PageEvent.applicationId = 'Page' AND
-			PageEvent.eventId = 'pageViewed'
-		) AS pageViews,
+		PageEvent.city,
+		PageEvent.country,
+		PageEvent.deviceType,
+		PageEvent.eventDate,
+		PageEvent.eventId,
+		PageEvent.platformName,
+		PageEvent.region,
 		PageEvent.sessionId,
+		PageEvent.title,
 		PageEvent.userId
-	FROM
-		PageEvent
+    FROM
+    	PageEvent
 	INNER JOIN
 		`$[AC_PROJECT_ID].session` AS Session ON
-			PageEvent.sessionId = Session.id
-	WHERE
-		PageEvent.eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed') AND
+		    PageEvent.sessionId = Session.id
+    WHERE
 		Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+),
+PageBounces AS (
+	SELECT
+		PageFinalizedEvent.channelId,
+		COUNT(*) AS count,
+		COUNTIF(
+			PageFinalizedEvent.applicationId = 'Page' AND
+			PageFinalizedEvent.eventId = 'pageViewed'
+		) AS pageViews,
+		PageFinalizedEvent.sessionId,
+		PageFinalizedEvent.userId
+	FROM
+		PageFinalizedEvent
+	WHERE
+		PageFinalizedEvent.eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed')
 	GROUP BY
 		channelId, sessionId, userId
 ),
@@ -59,26 +79,21 @@ PageEntrances AS (
 		userId
 	FROM (
 		SELECT
-			PageEvent.browserName,
-			PageEvent.canonicalUrl,
-			PageEvent.channelId,
-			PageEvent.city,
-			PageEvent.country,
-			PageEvent.deviceType,
-			PageEvent.eventDate,
-			PageEvent.platformName,
-			ROW_NUMBER() OVER (PARTITION BY PageEvent.sessionId, PageEvent.channelId, PageEvent.userId ORDER BY PageEvent.eventDate ASC) AS rank,
-			PageEvent.region,
-			PageEvent.sessionId,
-			PageEvent.title,
-			PageEvent.userId
+			PageFinalizedEvent.browserName,
+			PageFinalizedEvent.canonicalUrl,
+			PageFinalizedEvent.channelId,
+			PageFinalizedEvent.city,
+			PageFinalizedEvent.country,
+			PageFinalizedEvent.deviceType,
+			PageFinalizedEvent.eventDate,
+			PageFinalizedEvent.platformName,
+			ROW_NUMBER() OVER (PARTITION BY PageFinalizedEvent.sessionId, PageFinalizedEvent.channelId, PageFinalizedEvent.userId ORDER BY PageFinalizedEvent.eventDate ASC) AS rank,
+			PageFinalizedEvent.region,
+			PageFinalizedEvent.sessionId,
+			PageFinalizedEvent.title,
+			PageFinalizedEvent.userId
 		FROM
-			PageEvent
-		INNER JOIN
-			`$[AC_PROJECT_ID].session` AS Session ON
-				PageEvent.sessionId = Session.id
-		WHERE
-			Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			PageFinalizedEvent
 	) AS EventEntrance
 	WHERE
 		rank = 1
@@ -100,26 +115,21 @@ PageExits AS (
 		userId
 	FROM (
 		SELECT
-			PageEvent.browserName,
-			PageEvent.canonicalUrl,
-			PageEvent.channelId,
-			PageEvent.city,
-			PageEvent.country,
-			PageEvent.deviceType,
-			PageEvent.eventDate,
-			PageEvent.platformName,
-			ROW_NUMBER() OVER (PARTITION BY PageEvent.sessionId, PageEvent.channelId, PageEvent.userId ORDER BY PageEvent.eventDate DESC) AS rank,
-			PageEvent.region,
-			PageEvent.sessionId,
-			PageEvent.title,
-			PageEvent.userId
+			PageFinalizedEvent.browserName,
+			PageFinalizedEvent.canonicalUrl,
+			PageFinalizedEvent.channelId,
+			PageFinalizedEvent.city,
+			PageFinalizedEvent.country,
+			PageFinalizedEvent.deviceType,
+			PageFinalizedEvent.eventDate,
+			PageFinalizedEvent.platformName,
+			ROW_NUMBER() OVER (PARTITION BY PageFinalizedEvent.sessionId, PageFinalizedEvent.channelId, PageFinalizedEvent.userId ORDER BY PageFinalizedEvent.eventDate DESC) AS rank,
+			PageFinalizedEvent.region,
+			PageFinalizedEvent.sessionId,
+			PageFinalizedEvent.title,
+			PageFinalizedEvent.userId
 		FROM
-			PageEvent
-		INNER JOIN
-			`$[AC_PROJECT_ID].session` AS Session ON
-				PageEvent.sessionId = Session.id
-		WHERE
-			Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			PageFinalizedEvent
 	) AS EventExit
 	WHERE
 		rank = 1
@@ -141,26 +151,21 @@ PageTimeOnPages AS (
 		userId
 	FROM (
 		SELECT
-			PageEvent.browserName,
-			PageEvent.canonicalUrl,
-			PageEvent.channelId,
-			PageEvent.city,
-			PageEvent.country,
-			PageEvent.deviceType,
-			PageEvent.eventDate,
-			LEAD(PageEvent.eventDate) OVER (PARTITION BY PageEvent.sessionId, PageEvent.userId, PageEvent.channelId ORDER BY PageEvent.eventDate) AS nextTime,
-			PageEvent.platformName,
-			PageEvent.region,
-			PageEvent.sessionId,
-			PageEvent.title,
-			PageEvent.userId
+			PageFinalizedEvent.browserName,
+			PageFinalizedEvent.canonicalUrl,
+			PageFinalizedEvent.channelId,
+			PageFinalizedEvent.city,
+			PageFinalizedEvent.country,
+			PageFinalizedEvent.deviceType,
+			PageFinalizedEvent.eventDate,
+			LEAD(PageFinalizedEvent.eventDate) OVER (PARTITION BY PageFinalizedEvent.sessionId, PageFinalizedEvent.userId, PageFinalizedEvent.channelId ORDER BY PageFinalizedEvent.eventDate) AS nextTime,
+			PageFinalizedEvent.platformName,
+			PageFinalizedEvent.region,
+			PageFinalizedEvent.sessionId,
+			PageFinalizedEvent.title,
+			PageFinalizedEvent.userId
 		FROM
-			PageEvent
-		INNER JOIN
-			`$[AC_PROJECT_ID].session` AS Session ON
-				PageEvent.sessionId = Session.id
-		WHERE
-			Session.sessionStart > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			PageFinalizedEvent
 	) AS EventTimeOnPage
 	GROUP BY
 		browserName, canonicalUrl, channelId, city, country, deviceType,
@@ -217,7 +222,7 @@ SELECT
 	PageTimeOnPages.sessionId,
 	PageTimeOnPages.timeOnPage,
 	PageViews.title,
-	PageTimeOnPages.userId,
+	PageViews.userId,
 	PageViews.views
 FROM
 	PageViews
