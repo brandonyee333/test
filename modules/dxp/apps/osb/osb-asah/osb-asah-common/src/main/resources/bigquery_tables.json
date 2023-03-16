@@ -1421,13 +1421,13 @@
 				"type": "TIMESTAMP"
 			},
 			{
-				"mode": "NULLABLE",
-				"name": "individualId",
+				"mode": "REQUIRED",
+				"name": "identityId",
 				"type": "STRING"
 			},
 			{
-				"mode": "REQUIRED",
-				"name": "identityId",
+				"mode": "NULLABLE",
+				"name": "individualId",
 				"type": "STRING"
 			},
 			{
