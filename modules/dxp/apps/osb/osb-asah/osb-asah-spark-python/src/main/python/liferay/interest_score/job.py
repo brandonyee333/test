@@ -258,6 +258,9 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			'bigquery'
 		).mode(
 			"overwrite"
+		).option(
+			'createDisposition',
+			'CREATE_NEVER'
 		).save(
 			'{}.identityinterestpages'.format(
 				self.spark_application_args.ac_project_id
@@ -406,6 +409,9 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			'bigquery'
 		).mode(
 			"append"
+		).option(
+			'createDisposition',
+			'CREATE_NEVER'
 		).save(
 			'{}.identityinterestscore'.format(
 				self.spark_application_args.ac_project_id
@@ -424,6 +430,9 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			'bigquery'
 		).mode(
 			"append"
+		).option(
+			'createDisposition',
+			'CREATE_NEVER'
 		).save(
 			'{}.sessioninterestscore'.format(
 				self.spark_application_args.ac_project_id
