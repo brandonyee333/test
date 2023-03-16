@@ -144,11 +144,15 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 					_createWhereClauseCondition(
 						canonicalUrl, channelId, timeRange, zoneId),
 					DSL.not(
-						DSL.field(
-							"acquisitionChannel"
-						).in(
-							null, "organic", "social"
-						)),
+						DSL.or(
+							DSL.field(
+								"acquisitionChannel"
+							).in(
+								"organic", "social"
+							),
+							DSL.field(
+								"acquisitionChannel"
+							).isNull())),
 					referrerCanonicalUrl.notEqual(""))
 			).groupBy(
 				referrerCanonicalUrl
@@ -191,11 +195,15 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 					_createWhereClauseCondition(
 						canonicalUrl, channelId, timeRange, zoneId),
 					DSL.not(
-						DSL.field(
-							"acquisitionChannel"
-						).in(
-							null, "organic", "social"
-						)),
+						DSL.or(
+							DSL.field(
+								"acquisitionChannel"
+							).in(
+								"organic", "social"
+							),
+							DSL.field(
+								"acquisitionChannel"
+							).isNull())),
 					referrerHostField.notEqual(""))
 			).groupBy(
 				referrerHostField
