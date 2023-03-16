@@ -50,7 +50,8 @@ public class BQIdentityInterestScore {
 		BQIdentityInterestScore bqIdentityInterestScore =
 			(BQIdentityInterestScore)obj;
 
-		if (Objects.equals(_identityId, bqIdentityInterestScore._identityId) &&
+		if (Objects.equals(_channelId, bqIdentityInterestScore._channelId) &&
+			Objects.equals(_identityId, bqIdentityInterestScore._identityId) &&
 			Objects.equals(_interested, bqIdentityInterestScore._interested) &&
 			Objects.equals(
 				_interestScore, bqIdentityInterestScore._interestScore) &&
@@ -62,6 +63,10 @@ public class BQIdentityInterestScore {
 		}
 
 		return false;
+	}
+
+	public Long getChannelId() {
+		return _channelId;
 	}
 
 	public String getIdentityId() {
@@ -97,11 +102,16 @@ public class BQIdentityInterestScore {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_identityId, _interested, _interestScore, _keyword, _recordedDate);
+			_channelId, _identityId, _interested, _interestScore, _keyword,
+			_recordedDate);
 	}
 
 	public Boolean isInterested() {
 		return _interested;
+	}
+
+	public void setChannelId(Long channelId) {
+		_channelId = channelId;
 	}
 
 	public void setIdentityId(String identityId) {
@@ -126,6 +136,7 @@ public class BQIdentityInterestScore {
 		}
 	}
 
+	private Long _channelId;
 	private String _identityId;
 	private Boolean _interested;
 	private Double _interestScore;
