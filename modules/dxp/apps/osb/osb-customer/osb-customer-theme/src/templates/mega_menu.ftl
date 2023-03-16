@@ -129,7 +129,7 @@
 				description: '<@liferay.language key="activate-your-environments-to-start-a-project" />',
 				name: '<@liferay.language key="activation-keys" />',
 				svgId: '#server-activation',
-				url: 'https://customer.liferay.com/activation-key'
+				url: 'https://support.liferay.com'
 			}
 		];
 
