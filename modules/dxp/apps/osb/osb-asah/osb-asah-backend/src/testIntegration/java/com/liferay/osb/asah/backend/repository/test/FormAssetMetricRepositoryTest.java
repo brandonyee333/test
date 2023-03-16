@@ -95,34 +95,6 @@ public class FormAssetMetricRepositoryTest
 	}
 
 	@BQSQLResource(
-		resourcePath = "form_asset_metric_views_individuals_last_30_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetIndividualsCountLast30Days() {
-		assertGetIndividualsCount(FormMetricType.VIEWS, TimeRange.LAST_30_DAYS);
-	}
-
-	@BQSQLResource(
-		resourcePath = "form_asset_metric_views_segments_last_30_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetSegmentedCountLast30Days() {
-		assertGetSegmentedIndividualsCount(
-			FormMetricType.VIEWS, TimeRange.LAST_30_DAYS);
-	}
-
-	@BQSQLResource(
-		resourcePath = "form_asset_metric_views_segments_last_7_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetSegmentMetrics7Days() {
-		assertGetSegmentMetrics(FormMetricType.VIEWS, TimeRange.LAST_7_DAYS);
-	}
-
-	@BQSQLResource(
 		resourcePath = "form_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test

@@ -95,16 +95,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	}
 
 	@BQSQLResource(
-		resourcePath = "document_library_asset_metric_views_individuals_last_30_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetIndividualsCountLast30Days() {
-		assertGetIndividualsCount(
-			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_30_DAYS);
-	}
-
-	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_histogram_last_24_hours.sql"
 	)
 	@Test
@@ -187,26 +177,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 		Metric ratingsMetric = documentLibraryMetric.getRatingsMetric();
 
 		Assertions.assertEquals(2.33, ratingsMetric.getValue(), 0.01);
-	}
-
-	@BQSQLResource(
-		resourcePath = "document_library_asset_metric_views_segments_last_30_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetSegmentedCountLast30Days() {
-		assertGetSegmentedIndividualsCount(
-			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_30_DAYS);
-	}
-
-	@BQSQLResource(
-		resourcePath = "document_library_asset_metric_views_segments_last_7_days.sql"
-	)
-	@Disabled
-	@Test
-	public void testGetSegmentMetrics7Days() {
-		assertGetSegmentMetrics(
-			DocumentLibraryMetricType.PREVIEWS, TimeRange.LAST_7_DAYS);
 	}
 
 	@Override
