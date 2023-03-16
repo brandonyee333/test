@@ -826,7 +826,7 @@ public class BQIndividualRepositoryImpl
 			).where(
 				DSL.and(
 					DSL.field(
-						"BQMembership.individualSegmentId"
+						"BQMembership.segmentId"
 					).eq(
 						individualSegmentId
 					),
