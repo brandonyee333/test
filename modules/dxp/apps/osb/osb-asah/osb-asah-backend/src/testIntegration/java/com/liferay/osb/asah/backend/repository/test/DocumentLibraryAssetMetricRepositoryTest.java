@@ -27,7 +27,6 @@ import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_browser_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetBrowserMetricsLast30Days() {
 		assertMetrics(
@@ -68,7 +66,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_device_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetDeviceMetricsLast30Days() {
 		assertMetrics(
@@ -82,7 +79,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_previews_geolocation_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetGeolocationMetricsLast30Days() {
 		assertMetrics(
@@ -163,7 +159,6 @@ public class DocumentLibraryAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "document_library_asset_metric_ratings_histogram_last_24_hours.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetRatingsAssetMetric() {
 		DocumentLibraryMetric documentLibraryMetric =
@@ -176,7 +171,7 @@ public class DocumentLibraryAssetMetricRepositoryTest
 
 		Metric ratingsMetric = documentLibraryMetric.getRatingsMetric();
 
-		Assertions.assertEquals(2.33, ratingsMetric.getValue(), 0.01);
+		Assertions.assertEquals(0.9, ratingsMetric.getValue(), 0.01);
 	}
 
 	@Override

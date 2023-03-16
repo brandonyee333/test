@@ -1,9 +1,9 @@
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-1d}'), 'Windows', 'test', 1);
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-5d}'), 'Ubuntu','test', 2);
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-10d}'), 'Windows','test', 3);
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-15d}'), 'Windows','test', 4);
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-20d}'), 'Ubuntu','test', 5);
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-29d}'), 'Windows','test', 6);
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Desktop', date_trunc('HOUR', timestamp '${now-12d}'), 'Ubuntu','test', 1);
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-4d}'), 'Android','test', 3);
-INSERT INTO BQDocumentLibrary (assetId, channelId, deviceType, eventDate, platformName, projectId, previews) VALUES ('e131fabc', 1, 'Mobile', date_trunc('HOUR', timestamp '${now-18d}'), 'IOS','test', 9);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Desktop', DATETIME_TRUNC(TIMESTAMP '${now-1d}', HOUR), 'Windows', 1);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Desktop', DATETIME_TRUNC(TIMESTAMP '${now-5d}', HOUR), 'Ubuntu', 2);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Desktop', DATETIME_TRUNC(TIMESTAMP '${now-10d}', HOUR), 'Windows', 3);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Desktop', DATETIME_TRUNC(TIMESTAMP '${now-15d}', HOUR), 'Windows', 4);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Desktop', DATETIME_TRUNC(TIMESTAMP '${now-20d}', HOUR), 'Ubuntu', 5);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Desktop', DATETIME_TRUNC(TIMESTAMP '${now-29d}', HOUR), 'Windows', 6);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Desktop', DATETIME_TRUNC(TIMESTAMP '${now-12d}', HOUR), 'Ubuntu', 1);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Mobile', DATETIME_TRUNC(TIMESTAMP '${now-4d}', HOUR), 'Android', 3);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Mobile', DATETIME_TRUNC(TIMESTAMP '${now-18d}', HOUR), 'IOS', 9);

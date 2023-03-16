@@ -100,10 +100,6 @@ public class DocumentLibraryAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName(TimeRange timeRange) {
-		if (!dslHelper.isBigQueryDialect()) {
-			return "BQDocumentLibrary";
-		}
-
 		if ((timeRange == TimeRange.LAST_24_HOURS) ||
 			(timeRange == TimeRange.YESTERDAY)) {
 
