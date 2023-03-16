@@ -74,7 +74,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			self, analytics_events_data_frame, extracted_keywords_data_frame):
 
 		return analytics_events_data_frame.groupby(
-			'canonicalUrl', 'userId'
+			'channelId', 'canonicalUrl', 'userId'
 		).agg(
 			F.count('*').alias('views')
 		).join(
@@ -85,6 +85,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			'keyword', F.explode(F.col('extracted_keywords'))
 		).select(
 			F.col('canonicalUrl'),
+			F.col('channelId'),
 			F.col('userId').alias('identityId'),
 			F.col('keyword'),
 			F.col('title'),
@@ -105,6 +106,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		return f"""
 			SELECT
+				channelId,
 				userId as identityId,
 				interested,
 				interest_score as interestScore,
@@ -166,6 +168,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		return f"""
 			SELECT
+				channelId,
 				userId as identityId,
 				interested,
 				interest_score as interestScore,
@@ -186,7 +189,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			analytics_events_with_keywords_data_frame.withColumn(
 				'keyword', F.explode(F.col('extracted_keywords'))
 			).groupBy(
-				'userId', 'event_date', 'keyword'
+				'channelId', 'userId', 'event_date', 'keyword'
 			).count(
 			).withColumnRenamed(
 				'count', 'user_keyword_count'
@@ -194,7 +197,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		user_total_keyword_count_data_frame = \
 			user_keyword_count_data_frame.groupby(
-				'userId', 'event_date'
+				'channelId', 'userId', 'event_date'
 			).sum(
 			).withColumnRenamed(
 				'sum(user_keyword_count)', 'user_total_keyword_count'
@@ -203,7 +206,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		return user_keyword_count_data_frame.join(
 			user_total_keyword_count_data_frame,
 			how='inner',
-			on=['userId', 'event_date']
+			on=['channelId', 'userId', 'event_date']
 		)
 
 	def _weighted_average(self, column, offsets, weights, window):
@@ -279,12 +282,15 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		)
 
 		session_data_frame = analytics_events_with_keywords_data_frame.select(
-			F.col('event_date'), F.col('userId'), F.col('sessionId')
+			F.col('channelId'),
+			F.col('event_date'),
+			F.col('userId'),
+			F.col('sessionId')
 		).distinct()
 
 		daily_logscores_data_frame = daily_logscores_data_frame.join(
 			session_data_frame,
-			['event_date', 'userId']
+			['channelId', 'event_date', 'userId']
 		)
 
 		threshold_data_frame = keyword_count_with_totals_data_frame.select(
@@ -328,7 +334,10 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		distinct_user_id_keyword_data_frame = \
 			daily_logscores_data_frame.select(
-				F.col('keyword'), F.col('sessionId'), F.col('userId'),
+				F.col('channelId'),
+				F.col('keyword'),
+				F.col('sessionId'),
+				F.col('userId')
 			).distinct()
 
 		date_user_id_keyword_data_frame = date_range_data_frame.crossJoin(
@@ -337,7 +346,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		expanded_dates_logscore_data_frame = \
 			date_user_id_keyword_data_frame.join(
 				daily_logscores_data_frame,
-				['event_date', 'keyword', 'sessionId', 'userId'],
+				['channelId', 'event_date', 'keyword', 'sessionId', 'userId'],
 				how='left'
 			)
 
@@ -348,14 +357,16 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		]
 
 		interest_score_data_frame = expanded_dates_logscore_data_frame.select(
-			'event_date', 'keyword', 'logscore', 'sessionId', 'userId'
+			'channelId', 'event_date', 'keyword', 'logscore', 'sessionId', 'userId'
 		).fillna(
 			{'logscore': 0}
 		).withColumn(
 			'interest_score',
 			self._weighted_average(
 				F.col('logscore'), offsets, weights,
-				Window.partitionBy('userId', 'keyword').orderBy('event_date')
+				Window.partitionBy('channelId', 'userId', 'keyword').orderBy(
+					'event_date'
+				)
 			)
 		).withColumn(
 			'interest_score',
@@ -692,6 +703,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 			WITH FilteredEvent AS ( 
 				SELECT 
 					event.canonicalUrl,
+					event.channelId,
 					DATE_DIFF(CURRENT_DATE("{time_zone}"), DATE(event.eventDate, "{time_zone}"), DAY) as days_delta,
 					event.description, 
 					DATE(event.eventDate, "{time_zone}") as event_date,
@@ -718,6 +730,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 				)
 				SELECT
 					canonicalUrl,
+					channelId,
 					days_delta,
 					description, 
 					event_date,
