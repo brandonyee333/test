@@ -64,7 +64,7 @@ public class InterestScoreIngestionNanite {
 				_getBQSessionInterestScores(keywords, date));
 		}
 
-		_bqIdentityInterestScoreRepository.deleteAll();
+		_bqIdentityInterestScoreRepository.deleteByRecordedDate(date);
 
 		_bqIdentityInterestScoreRepository.insertAll(bqIdentityInterestScores);
 
