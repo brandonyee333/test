@@ -172,6 +172,24 @@ export async function createSpecification({body}: {body: Object}) {
 	return await response.json();
 }
 
+export async function getAccounts() {
+	const response = await fetch(
+		'/o/headless-admin-user/v1.0/accounts',
+		{headers, method: 'GET'}
+	);
+
+	return response.json();
+}
+
+export async function getAccountInformation({accountId}: {accountId: number}) {
+	const response = await fetch(
+		`/o/headless-admin-user/v1.0/accounts/${accountId}/user-accounts`,
+		{headers, method: 'GET'}
+	);
+
+	return response.json();
+}
+
 export async function getCatalogs() {
 	const response = await fetch(
 		'/o/headless-commerce-admin-catalog/v1.0/catalogs',
