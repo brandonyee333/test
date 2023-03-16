@@ -1186,6 +1186,11 @@
 		"fields": [
 			{
 				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "identityId",
 				"type": "STRING"
 			},
@@ -2713,6 +2718,11 @@
 	},
 	"sessioninterestscore": {
 		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
 			{
 				"mode": "NULLABLE",
 				"name": "identityId",
