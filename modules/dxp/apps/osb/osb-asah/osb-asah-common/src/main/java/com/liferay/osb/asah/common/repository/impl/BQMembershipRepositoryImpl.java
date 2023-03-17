@@ -427,8 +427,8 @@ public class BQMembershipRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
-				BigDecimal segmentIdBigDecimal =
-					(BigDecimal)recordMap.get("segmentId");
+				BigDecimal segmentIdBigDecimal = (BigDecimal)recordMap.get(
+					"segmentId");
 
 				return segmentIdBigDecimal.longValue();
 			},

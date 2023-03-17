@@ -69,6 +69,8 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long channelId, @Nullable String filterString,
 		Pageable pageable, @Nullable String query);
 
+	public List<Long> searchIndividualDataSourceIds(String id);
+
 	public List<String> searchIndividualFieldValuesCustom(
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString, Pageable pageable);

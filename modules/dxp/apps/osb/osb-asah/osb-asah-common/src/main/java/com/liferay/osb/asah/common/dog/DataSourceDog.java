@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DXPEntity;
@@ -26,7 +25,7 @@ import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.postgresql.converter.helper.DataSourceFilterStringConverterHelper;
-import com.liferay.osb.asah.common.repository.BQDataSourceUserRepository;
+import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.security.Encryptor;
@@ -248,16 +247,9 @@ public class DataSourceDog {
 		Map<String, JSONObject> dataSourcesJSONObjects = new HashMap<>();
 
 		for (Individual individual : individuals) {
-			List<BQDataSourceUser> bqDataSourceUsers =
-				_bqDataSourceUserRepository.
-					findBQDataSourceUsersByUserEmailAddressHashed(
-						individual.getEmailAddressHashed());
-
-			List<Long> dataSourceIds = new ArrayList<>();
-
-			for (BQDataSourceUser bqDataSourceUser : bqDataSourceUsers) {
-				dataSourceIds.add(bqDataSourceUser.getDataSourceId());
-			}
+			List<Long> dataSourceIds =
+				_bqIndividualRepository.searchIndividualDataSourceIds(
+					individual.getId());
 
 			dataSourcesJSONObjects.put(
 				individual.getId(),
@@ -606,7 +598,7 @@ public class DataSourceDog {
 	private BQCSVUserDog _bqCSVUserDog;
 
 	@Autowired
-	private BQDataSourceUserRepository _bqDataSourceUserRepository;
+	private BQIndividualRepository _bqIndividualRepository;
 
 	@Autowired
 	private ChannelDog _channelDog;

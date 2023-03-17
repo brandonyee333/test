@@ -541,6 +541,27 @@ public class BQIndividualRepositoryImpl
 			));
 	}
 
+	public List<Long> searchIndividualDataSourceIds(String id) {
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				BigDecimal dataSourceIdBigDecimal = (BigDecimal)recordMap.get(
+					"dataSourceId");
+
+				return dataSourceIdBigDecimal.longValue();
+			},
+			_dslContext.selectDistinct(
+				DSL.field("dataSourceId")
+			).from(
+				"BQIdentityActivity"
+			).where(
+				DSL.field(
+					"individualId"
+				).eq(
+					id
+				)
+			));
+	}
+
 	public List<String> searchIndividualFieldValuesCustom(
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString, Pageable pageable) {
