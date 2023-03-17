@@ -30,6 +30,8 @@ import java.math.BigDecimal;
 
 import java.sql.Timestamp;
 
+import java.text.SimpleDateFormat;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
@@ -161,7 +163,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field(
 						"recordedDate"
 					).ge(
-						_dslHelper.toDateFieldValue(recordedDate)
+						DateUtil.toUTCString(
+							recordedDate,
+							new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 					))
 			));
 	}
@@ -175,7 +179,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).eq(
-					_dslHelper.toDateFieldValue(recordedDate)
+					DateUtil.toUTCString(
+						recordedDate,
+						new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 				)
 			));
 	}
@@ -189,7 +195,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).le(
-					_dslHelper.toDateFieldValue(recordedDate)
+					DateUtil.toUTCString(
+						recordedDate,
+						new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 				)
 			));
 	}
@@ -369,8 +377,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"BQIdentityInterestScore.recordedDate"
 				).between(
-					_dslHelper.toDateFieldValue(recordedDate1),
-					_dslHelper.toDateFieldValue(recordedDate2)
+					DateUtil.toUTCString(
+						recordedDate1,
+						new SimpleDateFormat(DateUtil.PATTERN_SHORT)),
+					DateUtil.toUTCString(
+						recordedDate2,
+						new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 				)
 			));
 	}
@@ -479,7 +491,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field(
 						"BQIdentityInterestScore.recordedDate"
 					).eq(
-						_dslHelper.toDateFieldValue(recordedDate)
+						DateUtil.toUTCString(
+							recordedDate,
+							new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 					)
 				));
 
@@ -516,8 +530,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"BQIdentityInterestScore.recordedDate"
 				).ge(
-					_dslHelper.toDateFieldValue(
-						DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30)))
+					DateUtil.toUTCString(
+						DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30)),
+						new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 				));
 		}
 
@@ -774,8 +789,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				bqIdentityInterestScore.getInterested(),
 				bqIdentityInterestScore.getInterestScore(),
 				bqIdentityInterestScore.getKeyword(),
-				_dslHelper.toDateFieldValue(
-					bqIdentityInterestScore.getRecordedDate())
+				DateUtil.toUTCString(
+					bqIdentityInterestScore.getRecordedDate(),
+					new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 			));
 
 		return bqIdentityInterestScore;
@@ -805,8 +821,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				bqIdentityInterestScore.getInterested(),
 				bqIdentityInterestScore.getInterestScore(),
 				bqIdentityInterestScore.getKeyword(),
-				_dslHelper.toDateFieldValue(
-					bqIdentityInterestScore.getRecordedDate()));
+				DateUtil.toUTCString(
+					bqIdentityInterestScore.getRecordedDate(),
+					new SimpleDateFormat(DateUtil.PATTERN_SHORT)));
 		}
 
 		_queryExecutor.queryExecute(insertValuesStep6);
@@ -878,7 +895,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).eq(
-					_dslHelper.toDateFieldValue(recordedDate)
+					DateUtil.toUTCString(
+						recordedDate,
+						new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 				));
 		}
 

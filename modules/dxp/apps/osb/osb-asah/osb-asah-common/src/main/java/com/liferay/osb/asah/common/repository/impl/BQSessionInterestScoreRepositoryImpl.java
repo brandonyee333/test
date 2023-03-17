@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQSessionInterestScore;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
@@ -24,6 +25,8 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.math.BigDecimal;
+
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,7 +72,9 @@ public class BQSessionInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).eq(
-					_dslHelper.toDateFieldValue(recordedDate)
+					DateUtil.toUTCString(
+						recordedDate,
+						new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 				)
 			));
 	}
@@ -113,8 +118,12 @@ public class BQSessionInterestScoreRepositoryImpl
 			DSL.field(
 				"BQSessionInterestScore.recordedDate"
 			).between(
-				_dslHelper.toDateFieldValue(timeRange.getStartDate()),
-				_dslHelper.toDateFieldValue(timeRange.getEndDate())
+				DateUtil.toUTCString(
+					timeRange.getStartDate(),
+					new SimpleDateFormat(DateUtil.PATTERN_SHORT)),
+				DateUtil.toUTCString(
+					timeRange.getEndDate(),
+					new SimpleDateFormat(DateUtil.PATTERN_SHORT))
 			));
 
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
@@ -214,8 +223,9 @@ public class BQSessionInterestScoreRepositoryImpl
 				bqSessionInterestScore.getInterested(),
 				bqSessionInterestScore.getInterestScore(),
 				bqSessionInterestScore.getKeyword(),
-				_dslHelper.toDateFieldValue(
-					bqSessionInterestScore.getRecordedDate()),
+				DateUtil.toUTCString(
+					bqSessionInterestScore.getRecordedDate(),
+					new SimpleDateFormat(DateUtil.PATTERN_SHORT)),
 				bqSessionInterestScore.getSessionId());
 		}
 

@@ -48,6 +48,8 @@ public class DateUtil {
 	public static final String PATTERN_ISO_8601 =
 		"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
+	public static final String PATTERN_SHORT = "yyyy-MM-dd";
+
 	public static final long SECOND = 1000;
 
 	public static Date addDays(Date date, int days) {
