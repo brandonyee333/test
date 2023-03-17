@@ -27,7 +27,6 @@ import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,6 @@ public class FormAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "form_asset_metric_views_browser_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetBrowserMetricsLast30Days() {
 		assertMetrics(
@@ -68,7 +66,6 @@ public class FormAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "form_asset_metric_views_device_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetDeviceMetricsLast30Days() {
 		assertMetrics(
@@ -82,7 +79,6 @@ public class FormAssetMetricRepositoryTest
 	@BQSQLResource(
 		resourcePath = "form_asset_metric_views_geolocation_last_30_days.sql"
 	)
-	@Disabled
 	@Test
 	public void testGetGeolocationMetricsLast30Days() {
 		assertMetrics(

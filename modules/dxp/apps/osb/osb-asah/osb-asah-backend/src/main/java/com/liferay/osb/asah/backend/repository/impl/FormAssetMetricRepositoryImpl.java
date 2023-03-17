@@ -107,10 +107,6 @@ public class FormAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName(TimeRange timeRange) {
-		if (!dslHelper.isBigQueryDialect()) {
-			return "BQForm";
-		}
-
 		if ((timeRange == TimeRange.LAST_24_HOURS) ||
 			(timeRange == TimeRange.YESTERDAY)) {
 
