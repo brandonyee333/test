@@ -95,7 +95,8 @@ public interface CustomBQEventRepository {
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
-	public List<Map<String, String>> getKeywordsGroupedBySessionIdAndUserId();
+	public List<Map<String, String>>
+		getKeywordsGroupedByChannelIdAndSessionIdAndUserId(Date eventDate);
 
 	public Map<String, Date> getLastSeenDateDateGroupedByColumnName(
 		String columnName, int size);

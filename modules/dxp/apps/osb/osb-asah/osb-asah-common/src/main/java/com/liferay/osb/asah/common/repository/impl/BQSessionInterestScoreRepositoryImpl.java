@@ -26,10 +26,6 @@ import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.math.BigDecimal;
 
-import java.text.SimpleDateFormat;
-
-import java.time.ZoneId;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,18 +68,16 @@ public class BQSessionInterestScoreRepositoryImpl
 				DSL.table("BQSessionInterestScore")
 			).where(
 				DSL.field(
-					"recordedDate", Object.class
+					"recordedDate"
 				).eq(
-					DateUtil.toUTCString(
-						recordedDate, new SimpleDateFormat("yyyy-MM-dd"))
+					_dslHelper.toDateFieldValue(recordedDate)
 				)
 			));
 	}
 
 	@Override
 	public CompositionResultBag getInterestCompositionResultBag(
-		@Nullable Long channelId, Pageable pageable, TimeRange timeRange,
-		ZoneId zoneId) {
+		@Nullable Long channelId, Pageable pageable, TimeRange timeRange) {
 
 		SelectOnConditionStep<Record3<String, String, Integer>>
 			selectSelectStep = _dslContext.select(
@@ -126,12 +120,10 @@ public class BQSessionInterestScoreRepositoryImpl
 			));
 		conditions.add(
 			DSL.field(
-				"BQSession.sessionStart"
+				"BQSessionInterestScore.recordedDate"
 			).between(
-				DateUtil.toUTCLocalDateTime(
-					timeRange.getStartLocalDateTime(), zoneId),
-				DateUtil.toUTCLocalDateTime(
-					timeRange.getEndLocalDateTime(), zoneId)
+				_dslHelper.toDateFieldValue(timeRange.getStartDate()),
+				_dslHelper.toDateFieldValue(timeRange.getEndDate())
 			));
 
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
@@ -230,9 +222,8 @@ public class BQSessionInterestScoreRepositoryImpl
 				bqSessionInterestScore.getInterested(),
 				bqSessionInterestScore.getInterestScore(),
 				bqSessionInterestScore.getKeyword(),
-				DateUtil.toUTCString(
-					bqSessionInterestScore.getRecordedDate(),
-					new SimpleDateFormat("yyyy-MM-dd")),
+				_dslHelper.toDateFieldValue(
+					bqSessionInterestScore.getRecordedDate()),
 				bqSessionInterestScore.getSessionId());
 		}
 

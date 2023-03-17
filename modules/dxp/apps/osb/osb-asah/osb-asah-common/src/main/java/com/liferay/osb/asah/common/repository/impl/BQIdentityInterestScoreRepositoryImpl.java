@@ -163,9 +163,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field(
 						"recordedDate"
 					).ge(
-						DSL.field(
-							"timestamp '" + DateUtil.toUTCString(recordedDate) +
-								"'")
+						_dslHelper.toDateFieldValue(recordedDate)
 					))
 			));
 	}
@@ -177,10 +175,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.table("BQIdentityInterestScore")
 			).where(
 				DSL.field(
-					"recordedDate", Object.class
+					"recordedDate"
 				).eq(
-					DateUtil.toUTCString(
-						recordedDate, new SimpleDateFormat("yyyy-MM-dd"))
+					_dslHelper.toDateFieldValue(recordedDate)
 				)
 			));
 	}
@@ -194,9 +191,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).le(
-					DSL.field(
-						"timestamp '" + DateUtil.toUTCString(recordedDate) +
-							"'")
+					_dslHelper.toDateFieldValue(recordedDate)
 				)
 			));
 	}
@@ -376,12 +371,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"BQIdentityInterestScore.recordedDate"
 				).between(
-					DSL.field(
-						"timestamp '" + DateUtil.toUTCString(recordedDate1) +
-							"'"),
-					DSL.field(
-						"timestamp '" + DateUtil.toUTCString(recordedDate2) +
-							"'")
+					_dslHelper.toDateFieldValue(recordedDate1),
+					_dslHelper.toDateFieldValue(recordedDate2)
 				)
 			));
 	}
@@ -490,9 +481,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field(
 						"BQIdentityInterestScore.recordedDate"
 					).eq(
-						DSL.field(
-							"timestamp '" + DateUtil.toUTCString(recordedDate) +
-								"'")
+						_dslHelper.toDateFieldValue(recordedDate)
 					)
 				));
 
@@ -529,9 +518,10 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 			conditions.add(
 				DSL.field(
-					"BQIdentityActivity.lastActivityDate", Date.class
+					"BQIdentityInterestScore.recordedDate"
 				).ge(
-					DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30))
+					_dslHelper.toDateFieldValue(
+						DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30)))
 				));
 		}
 
@@ -746,7 +736,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 		conditions.add(
 			DSL.field(
-				"DATE(recordedDate)"
+				"recordedDate"
 			).equal(
 				DSL.field("generatedDate")
 			));
@@ -800,13 +790,14 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).columns(
 				DSL.field("identityId"), DSL.field("interested", Boolean.class),
 				DSL.field("interestScore", Double.class), DSL.field("keyword"),
-				DSL.field("recordedDate", Date.class)
+				DSL.field("recordedDate", Object.class)
 			).values(
 				bqIdentityInterestScore.getIdentityId(),
 				bqIdentityInterestScore.getInterested(),
 				bqIdentityInterestScore.getInterestScore(),
 				bqIdentityInterestScore.getKeyword(),
-				bqIdentityInterestScore.getRecordedDate()
+				_dslHelper.toDateFieldValue(
+					bqIdentityInterestScore.getRecordedDate())
 			));
 
 		return bqIdentityInterestScore;
@@ -822,7 +813,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).columns(
 				DSL.field("identityId"), DSL.field("interested", Boolean.class),
 				DSL.field("interestScore", Double.class), DSL.field("keyword"),
-				DSL.field("recordedDate", Date.class)
+				DSL.field("recordedDate", Object.class)
 			);
 
 		for (BQIdentityInterestScore bqIdentityInterestScore :
@@ -833,7 +824,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 				bqIdentityInterestScore.getInterested(),
 				bqIdentityInterestScore.getInterestScore(),
 				bqIdentityInterestScore.getKeyword(),
-				bqIdentityInterestScore.getRecordedDate());
+				_dslHelper.toDateFieldValue(
+					bqIdentityInterestScore.getRecordedDate()));
 		}
 
 		_queryExecutor.queryExecute(insertValuesStep5);
@@ -905,9 +897,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field(
 					"recordedDate"
 				).eq(
-					DSL.field(
-						"timestamp '" + DateUtil.toUTCString(recordedDate) +
-							"'")
+					_dslHelper.toDateFieldValue(recordedDate)
 				));
 		}
 

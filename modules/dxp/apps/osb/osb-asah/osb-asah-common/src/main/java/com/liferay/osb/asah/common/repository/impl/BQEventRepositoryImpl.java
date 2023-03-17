@@ -469,11 +469,53 @@ public class BQEventRepositoryImpl
 	}
 
 	@Override
-	public List<Map<String, String>> getKeywordsGroupedBySessionIdAndUserId() {
+	public List<Map<String, String>>
+		getKeywordsGroupedByChannelIdAndSessionIdAndUserId(Date eventDate) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.or(
+				DSL.field(
+					"event.assetTitle"
+				).isNotNull(),
+				DSL.field(
+					"event.description"
+				).isNotNull(),
+				DSL.field(
+					"event.keywords"
+				).isNotNull()));
+		conditions.add(
+			DSL.field(
+				"event.eventDate", Date.class
+			).gt(
+				eventDate
+			));
+		conditions.add(
+			DSL.field(
+				"event.eventId", String.class
+			).eq(
+				"pageUnloaded"
+			));
+		conditions.add(
+			DSL.field(
+				"eventproperty.name", String.class
+			).eq(
+				"viewDuration"
+			));
+		conditions.add(
+			DSL.field(
+				"eventproperty.eventDate", Date.class
+			).gt(
+				eventDate
+			));
+
 		return _queryExecutor.queryForList(
 			recordMap -> {
 				Map<String, String> keywordMap = new HashMap<>();
 
+				keywordMap.put(
+					"channelId", String.valueOf(recordMap.get("channelId")));
 				keywordMap.put(
 					"keywords", String.valueOf(recordMap.get("keywords")));
 				keywordMap.put(
@@ -484,6 +526,11 @@ public class BQEventRepositoryImpl
 				return keywordMap;
 			},
 			_dslContext.select(
+				DSL.field(
+					"event.channelId"
+				).as(
+					"channelId"
+				),
 				DSL.max(
 					_dslHelper.concat(
 						DSL.coalesce(DSL.field("assetTitle"), ""), DSL.val(" "),
@@ -521,29 +568,10 @@ public class BQEventRepositoryImpl
 					DSL.field("eventproperty.id")
 				)
 			).where(
-				DSL.and(
-					DSL.field(
-						"event.eventId", String.class
-					).eq(
-						"pageUnloaded"
-					),
-					DSL.field(
-						"eventproperty.name", String.class
-					).eq(
-						"viewDuration"
-					),
-					DSL.or(
-						DSL.field(
-							"assetTitle"
-						).isNotNull(),
-						DSL.field(
-							"description"
-						).isNotNull(),
-						DSL.field(
-							"keywords"
-						).isNotNull()))
+				conditions
 			).groupBy(
-				DSL.field("sessionId"), DSL.field("userId")
+				DSL.field("channelId"), DSL.field("sessionId"),
+				DSL.field("userId")
 			).orderBy(
 				DSL.field("userId")
 			));
