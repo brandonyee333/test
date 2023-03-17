@@ -55,10 +55,10 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 				1L, "e", 1, Sort.asc("count"), 1),
 			new LinkedHashMap<String, Long>() {
 				{
-					put("compelling metrics", 2L);
+					put("compelling metrics", 4L);
 				}
 			},
-			2, 2, 2);
+			4, 2, 4);
 	}
 
 	@BQSQLResource(
@@ -84,11 +84,11 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 			new LinkedHashMap<String, Long>() {
 				{
 					put("clicks-and-mortar e-tailers", 2L);
-					put("compelling metrics", 2L);
-					put("javascript", 1L);
+					put("compelling metrics", 4L);
+					put("javascript", 2L);
 				}
 			},
-			2, 3, 2);
+			4, 3, 4);
 	}
 
 	@BQSQLResource(
