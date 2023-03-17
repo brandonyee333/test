@@ -1,9 +1,9 @@
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'France', date_trunc('HOUR', timestamp '${now-10d}'), 'test', 3);
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'France', date_trunc('HOUR', timestamp '${now-29d}'), 'test', 6);
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'France', date_trunc('HOUR', timestamp '${now-45d}'), 'test', 9);
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'Japan', date_trunc('HOUR', timestamp '${now-40d}'), 'test', 8);
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'Japan', date_trunc('HOUR', timestamp '${now-5d}'), 'test', 2);
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'Japan', date_trunc('HOUR', timestamp '${today-1h}'), 'test', 5);
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'United States', date_trunc('HOUR', timestamp '${now-15d}'), 'test', 4);
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'United States', date_trunc('HOUR', timestamp '${now-1d}'), 'test', 1);
-INSERT INTO BQJournal (assetId, channelId, country, eventDate, projectId, views) VALUES ('e131fabc', 1, 'United States', date_trunc('HOUR', timestamp '${now-31d}'), 'test', 7);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'France', DATETIME_TRUNC(TIMESTAMP '${now-10d}', HOUR), 3);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'France', DATETIME_TRUNC(TIMESTAMP '${now-29d}', HOUR), 6);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'France', DATETIME_TRUNC(TIMESTAMP '${now-45d}', HOUR), 9);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'Japan', DATETIME_TRUNC(TIMESTAMP '${now-40d}', HOUR), 8);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'Japan', DATETIME_TRUNC(TIMESTAMP '${now-5d}', HOUR), 2);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'Japan', DATETIME_TRUNC(TIMESTAMP '${today-1h}', HOUR), 5);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'United States', DATETIME_TRUNC(TIMESTAMP '${now-15d}', HOUR), 4);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'United States', DATETIME_TRUNC(TIMESTAMP '${now-1d}', HOUR), 1);
+INSERT INTO JournalDaily (assetId, channelId, country, eventDate, views) VALUES ('e131fabc', 1, 'United States', DATETIME_TRUNC(TIMESTAMP '${now-31d}', HOUR), 7);

@@ -80,10 +80,6 @@ public class JournalAssetMetricRepositoryImpl
 
 	@Override
 	protected String getTableName(TimeRange timeRange) {
-		if (!dslHelper.isBigQueryDialect()) {
-			return "BQJournal";
-		}
-
 		if ((timeRange == TimeRange.LAST_24_HOURS) ||
 			(timeRange == TimeRange.YESTERDAY)) {
 
