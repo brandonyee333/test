@@ -302,13 +302,13 @@ public class DateUtil {
 	}
 
 	public static String toString(Date date) {
-		DateFormat dateFormat = _newSimpleDateFormat();
+		DateFormat dateFormat = _newISODateFormat();
 
 		return dateFormat.format(date);
 	}
 
 	public static String toString(String dateString) {
-		DateFormat dateFormat = _newSimpleDateFormat();
+		DateFormat dateFormat = _newISODateFormat();
 
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
@@ -346,19 +346,17 @@ public class DateUtil {
 	}
 
 	public static String toUTCString(Date date) {
-		DateFormat dateFormat = _newSimpleDateFormat();
+		return toUTCString(date, _newISODateFormat());
+	}
 
+	public static String toUTCString(Date date, DateFormat dateFormat) {
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 		return dateFormat.format(date);
 	}
 
-	public static String toUTCString(
-		Date date, SimpleDateFormat simpleDateFormat) {
-
-		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-		return simpleDateFormat.format(date);
+	public static String toUTCString(Date date, String pattern) {
+		return toUTCString(date, new SimpleDateFormat(pattern));
 	}
 
 	public static String toUTCString(LocalDateTime localDateTime) {
@@ -381,7 +379,7 @@ public class DateUtil {
 		return toUTCString(calendar.getTime());
 	}
 
-	private static DateFormat _newSimpleDateFormat() {
+	private static DateFormat _newISODateFormat() {
 		return new SimpleDateFormat(PATTERN_ISO_8601);
 	}
 

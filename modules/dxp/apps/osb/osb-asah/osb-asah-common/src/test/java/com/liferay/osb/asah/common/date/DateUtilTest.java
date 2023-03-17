@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.date;
 
-import java.text.SimpleDateFormat;
-
 import java.time.LocalDate;
 
 import java.util.Calendar;
@@ -253,8 +251,7 @@ public class DateUtilTest {
 		Assertions.assertEquals(
 			"2013-10-20",
 			DateUtil.toUTCString(
-				_toDate(2013, 10, 20, 3, 4, 9, 360),
-				new SimpleDateFormat("yyyy-MM-dd")));
+				_toDate(2013, 10, 20, 3, 4, 9, 360), "yyyy-MM-dd"));
 	}
 
 	@Test
