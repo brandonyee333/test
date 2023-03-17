@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQSessionInterestScore;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
@@ -34,10 +33,10 @@ import java.util.function.Function;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.InsertValuesStep6;
+import org.jooq.InsertValuesStep7;
 import org.jooq.Record;
 import org.jooq.Record3;
-import org.jooq.SelectOnConditionStep;
+import org.jooq.SelectJoinStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,8 +78,8 @@ public class BQSessionInterestScoreRepositoryImpl
 	public CompositionResultBag getInterestCompositionResultBag(
 		@Nullable Long channelId, Pageable pageable, TimeRange timeRange) {
 
-		SelectOnConditionStep<Record3<String, String, Integer>>
-			selectSelectStep = _dslContext.select(
+		SelectJoinStep<Record3<String, String, Integer>> selectSelectStep =
+			_dslContext.select(
 				DSL.field("BQSessionInterestScore.sessionId", String.class),
 				DSL.field("BQSessionInterestScore.keyword", String.class),
 				DSL.countDistinct(
@@ -91,14 +90,6 @@ public class BQSessionInterestScoreRepositoryImpl
 				)
 			).from(
 				"BQSessionInterestScore"
-			).join(
-				"BQSession"
-			).on(
-				DSL.field(
-					"BQSessionInterestScore.sessionId"
-				).eq(
-					DSL.field("BQSession.id")
-				)
 			);
 
 		List<Condition> conditions = new ArrayList<>();
@@ -106,7 +97,7 @@ public class BQSessionInterestScoreRepositoryImpl
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"BQSession.channelId", Long.class
+					"BQSessionInterestScore.channelId", Long.class
 				).eq(
 					channelId
 				));
@@ -201,12 +192,12 @@ public class BQSessionInterestScoreRepositoryImpl
 	public void insertAll(
 		List<BQSessionInterestScore> bqSessionInterestScores) {
 
-		InsertValuesStep6
-			<Record, Object, Boolean, Double, Object, Object, String>
-				insertValuesStep6 = _dslContext.insertInto(
+		InsertValuesStep7
+			<Record, Long, Object, Boolean, Double, Object, Object, String>
+				insertValuesStep7 = _dslContext.insertInto(
 					DSL.table("BQSessionInterestScore")
 				).columns(
-					DSL.field("identityId"),
+					DSL.field("channelId", Long.class), DSL.field("identityId"),
 					DSL.field("interested", Boolean.class),
 					DSL.field("interestScore", Double.class),
 					DSL.field("keyword"),
@@ -217,7 +208,8 @@ public class BQSessionInterestScoreRepositoryImpl
 		for (BQSessionInterestScore bqSessionInterestScore :
 				bqSessionInterestScores) {
 
-			insertValuesStep6 = insertValuesStep6.values(
+			insertValuesStep7 = insertValuesStep7.values(
+				bqSessionInterestScore.getChannelId(),
 				bqSessionInterestScore.getIdentityId(),
 				bqSessionInterestScore.getInterested(),
 				bqSessionInterestScore.getInterestScore(),
@@ -227,7 +219,7 @@ public class BQSessionInterestScoreRepositoryImpl
 				bqSessionInterestScore.getSessionId());
 		}
 
-		_queryExecutor.queryExecute(insertValuesStep6);
+		_queryExecutor.queryExecute(insertValuesStep7);
 	}
 
 	private final DSLContext _dslContext;

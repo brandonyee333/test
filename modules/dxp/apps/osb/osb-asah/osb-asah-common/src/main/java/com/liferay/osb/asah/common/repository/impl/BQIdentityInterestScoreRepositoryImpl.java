@@ -48,13 +48,11 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.Field;
-import org.jooq.InsertValuesStep5;
+import org.jooq.InsertValuesStep6;
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record2;
 import org.jooq.Record3;
 import org.jooq.SelectJoinStep;
-import org.jooq.SelectOnConditionStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
 import org.jooq.Table;
@@ -494,20 +492,18 @@ public class BQIdentityInterestScoreRepositoryImpl
 		boolean active, @Nullable Long channelId, @Nullable String keywords,
 		@Nullable Long segmentId, Pageable pageable) {
 
-		SelectOnConditionStep<Record2<String, String>> selectSelectStep =
+		SelectJoinStep<Record3<String, String, Integer>> selectSelectStep =
 			_dslContext.select(
-				DSL.field("BQIdentityActivity.identityId", String.class),
-				DSL.field("BQIdentityInterestScore.keyword", String.class)
+				DSL.field("BQIdentityInterestScore.identityId", String.class),
+				DSL.field("BQIdentityInterestScore.keyword", String.class),
+				DSL.countDistinct(
+					DSL.field("BQIdentityInterestScore.identityId")
+				).over(
+				).as(
+					"totalCount"
+				)
 			).from(
 				"BQIdentityInterestScore"
-			).join(
-				"BQIdentityActivity"
-			).on(
-				DSL.field(
-					"BQIdentityInterestScore.identityId"
-				).eq(
-					DSL.field("BQIdentityActivity.identityId")
-				)
 			);
 
 		List<Condition> conditions = new ArrayList<>();
@@ -528,7 +524,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"BQIdentityActivity.channelId", Long.class
+					"BQIdentityInterestScore.channelId", Long.class
 				).eq(
 					channelId
 				));
@@ -551,7 +547,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).on(
 				DSL.and(
 					DSL.field(
-						"BQIdentityActivity.identityId"
+						"BQIdentityInterestScore.identityId"
 					).eq(
 						DSL.field("BQMembership.identityId")
 					),
@@ -569,18 +565,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 				"KeywordIdentity"
 			).as(
 				selectSelectStep.where(conditions)
-			).with(
-				"IdentitySummary"
-			).as(
-				_dslContext.select(
-					DSL.countDistinct(
-						DSL.field("identityId")
-					).as(
-						"totalCount"
-					)
-				).from(
-					"KeywordIdentity"
-				)
 			).select(
 				DSL.count(
 				).as(
@@ -599,19 +583,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 				).as(
 					"total"
 				),
-				DSL.max(
-					DSL.field("totalCount")
-				).as(
-					"totalCount"
-				)
+				DSL.field("totalCount")
 			).from(
-				DSL.table(
-					"KeywordIdentity"
-				).crossJoin(
-					"IdentitySummary"
-				)
+				DSL.table("KeywordIdentity")
 			).groupBy(
-				DSL.field("keyword")
+				DSL.field("keyword"), DSL.field("totalCount")
 			).orderBy(
 				_getSortFields(pageable.getSort(), null)
 			).limit(
@@ -788,10 +764,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQIdentityInterestScore")
 			).columns(
-				DSL.field("identityId"), DSL.field("interested", Boolean.class),
+				DSL.field("channelId"), DSL.field("identityId"),
+				DSL.field("interested", Boolean.class),
 				DSL.field("interestScore", Double.class), DSL.field("keyword"),
 				DSL.field("recordedDate", Object.class)
 			).values(
+				bqIdentityInterestScore.getChannelId(),
 				bqIdentityInterestScore.getIdentityId(),
 				bqIdentityInterestScore.getInterested(),
 				bqIdentityInterestScore.getInterestScore(),
@@ -807,11 +785,13 @@ public class BQIdentityInterestScoreRepositoryImpl
 	public void insertAll(
 		List<BQIdentityInterestScore> bqIdentityInterestScores) {
 
-		InsertValuesStep5<Record, Object, Boolean, Double, Object, Date>
-			insertValuesStep5 = _dslContext.insertInto(
+		InsertValuesStep6<Record, Long, String, Boolean, Double, Object, Object>
+			insertValuesStep6 = _dslContext.insertInto(
 				DSL.table("BQIdentityInterestScore")
 			).columns(
-				DSL.field("identityId"), DSL.field("interested", Boolean.class),
+				DSL.field("ChannelId", Long.class),
+				DSL.field("identityId", String.class),
+				DSL.field("interested", Boolean.class),
 				DSL.field("interestScore", Double.class), DSL.field("keyword"),
 				DSL.field("recordedDate", Object.class)
 			);
@@ -819,7 +799,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 		for (BQIdentityInterestScore bqIdentityInterestScore :
 				bqIdentityInterestScores) {
 
-			insertValuesStep5 = insertValuesStep5.values(
+			insertValuesStep6 = insertValuesStep6.values(
+				bqIdentityInterestScore.getChannelId(),
 				bqIdentityInterestScore.getIdentityId(),
 				bqIdentityInterestScore.getInterested(),
 				bqIdentityInterestScore.getInterestScore(),
@@ -828,7 +809,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					bqIdentityInterestScore.getRecordedDate()));
 		}
 
-		_queryExecutor.queryExecute(insertValuesStep5);
+		_queryExecutor.queryExecute(insertValuesStep6);
 	}
 
 	private double _getAggregationValue(BigDecimal value) {
