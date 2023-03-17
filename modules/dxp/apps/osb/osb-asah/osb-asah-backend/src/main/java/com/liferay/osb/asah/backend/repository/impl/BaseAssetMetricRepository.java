@@ -850,8 +850,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				DSL.field(
 					"individualsCount"
 				).desc()
-			).limit(
-				5
 			));
 	}
 
