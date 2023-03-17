@@ -92,7 +92,6 @@ public class IndividualsRestControllerTest
 	}
 
 	@BQSQLResource(resourcePath = "test_expand_data_sources_bq.sql")
-	@Disabled
 	@SQLResource(resourcePath = "test_expand_data_sources.sql")
 	@Test
 	public void testExpandDataSources() throws Exception {
