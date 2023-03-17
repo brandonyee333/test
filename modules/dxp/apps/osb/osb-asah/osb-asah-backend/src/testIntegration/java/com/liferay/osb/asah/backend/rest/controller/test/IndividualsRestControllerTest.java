@@ -26,11 +26,11 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Map;
@@ -58,19 +58,8 @@ public class IndividualsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_memberships_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments_2.json"
-	)
+	@BQSQLResource(resourcePath = "test_active_membership_returned_bq.sql")
+	@SQLResource(resourcePath = "test_active_membership_returned.sql")
 	@Test
 	public void testActiveMembershipReturned() {
 		JSONObject segmentsJSONObject = _objectMapper.convertValue(
@@ -102,15 +91,9 @@ public class IndividualsRestControllerTest
 			"ACTIVE", activeMembershipJSONObject.getString("status"));
 	}
 
+	@BQSQLResource(resourcePath = "test_expand_data_sources_bq.sql")
 	@Disabled
-	@RepositoryResource(
-		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals_2.json"
-	)
+	@SQLResource(resourcePath = "test_expand_data_sources.sql")
 	@Test
 	public void testExpandDataSources() throws Exception {
 		IndividualDTO individualDTO =
@@ -125,19 +108,8 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(2, dataSourcesJSONArray.length());
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_memberships_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments_2.json"
-	)
+	@BQSQLResource(resourcePath = "test_expand_individual_segments_bq.sql")
+	@SQLResource(resourcePath = "test_expand_individual_segments.sql")
 	@Test
 	public void testExpandIndividualSegments() throws Exception {
 		IndividualDTO individualDTO =
@@ -152,11 +124,7 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(2, individualSegmentsJSONArray.length());
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals_2.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_individual_dto_page_dto_bq.sql")
 	@Test
 	public void testGetIndividualDTOPageDTO() throws Exception {
 		PageDTO<IndividualDTO> individualDTOPageDTO =
@@ -186,19 +154,9 @@ public class IndividualsRestControllerTest
 			individualDTO.getLastActivityDate());
 	}
 
+	@BQSQLResource(resourcePath = "test_get_individuals_distribution_bq.sql")
 	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
-	@RepositoryResource(
-		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
+	@SQLResource(resourcePath = "test_get_individuals_distribution.sql")
 	@Test
 	public void testGetIndividualsDistribution() throws Exception {
 		JSONAssert.assertEquals(
@@ -276,7 +234,6 @@ public class IndividualsRestControllerTest
 			false);
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals_2.json"
