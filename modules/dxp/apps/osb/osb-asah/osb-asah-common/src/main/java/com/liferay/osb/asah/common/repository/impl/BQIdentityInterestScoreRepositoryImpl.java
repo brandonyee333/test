@@ -805,7 +805,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			insertValuesStep6 = _dslContext.insertInto(
 				DSL.table("BQIdentityInterestScore")
 			).columns(
-				DSL.field("ChannelId", Long.class),
+				DSL.field("channelId", Long.class),
 				DSL.field("identityId", String.class),
 				DSL.field("interested", Boolean.class),
 				DSL.field("interestScore", Double.class), DSL.field("keyword"),
