@@ -130,9 +130,8 @@ public class BQMembershipChangeRepositoryImpl
 		DeleteUsingStep<Record> deleteUsingStep = _dslContext.deleteFrom(
 			DSL.table("BQMembershipChange"));
 
-		deleteUsingStep.where(
-			segmentIdField.in(segmentIds)
-		).execute();
+		_queryExecutor.queryExecute(
+			deleteUsingStep.where(segmentIdField.in(segmentIds)));
 	}
 
 	@Override
