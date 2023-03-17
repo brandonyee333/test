@@ -39,7 +39,7 @@ def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 			task_id='dataproc_cluster_get_or_create'
 		)
 
-		submit_interest_score_pyspark_job =
+		submit_interest_score_pyspark_job = \
 			DataprocSubmitInterestScorePySparkJobOperator(
 				task_id='dataproc_submit_interest_score_pyspark_job',
 				cluster_name="{{ ti.xcom_pull(task_ids='dataproc_cluster_get_or_create')['cluster_name'] }}"
