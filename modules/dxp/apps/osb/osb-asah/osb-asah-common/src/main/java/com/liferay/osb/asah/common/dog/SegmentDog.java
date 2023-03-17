@@ -126,11 +126,10 @@ public class SegmentDog {
 	}
 
 	public void deleteSegment(Long segmentId) {
-		_segmentRepository.deleteById(segmentId);
+		_bqMembershipDog.deleteBQMemberships(
+			Collections.singletonList(segmentId));
 
-		_asahTaskDog.scheduleAsahTask(
-			"DeleteIndividualSegmentTasksNanite",
-			JSONUtil.put("individualSegmentIds", JSONUtil.put(segmentId)));
+		_segmentRepository.deleteById(segmentId);
 	}
 
 	public void disableDynamicSegments(

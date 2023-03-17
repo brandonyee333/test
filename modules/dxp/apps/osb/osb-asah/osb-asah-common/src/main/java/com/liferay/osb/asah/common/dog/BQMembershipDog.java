@@ -96,6 +96,8 @@ public class BQMembershipDog {
 	}
 
 	public void deleteBQMemberships(List<Long> segmentIds) {
+		_membershipChangeDog.deleteBQMembershipChanges(segmentIds);
+
 		_bqMembershipRepository.deleteBySegmentIdIn(segmentIds);
 	}
 
