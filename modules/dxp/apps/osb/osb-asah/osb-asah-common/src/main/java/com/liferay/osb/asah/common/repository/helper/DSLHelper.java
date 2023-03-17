@@ -21,6 +21,8 @@ import java.math.BigInteger;
 
 import java.sql.Timestamp;
 
+import java.text.SimpleDateFormat;
+
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -367,6 +369,13 @@ public class DSLHelper {
 				"REGEXP_REPLACE(%s, '%s', '%s')", fieldName, regexp, value),
 			String.class);
 	}
+
+	public String toDateFieldValue(Date date) {
+		return DateUtil.toUTCString(date, _DATE_FIELD_FORMAT);
+	}
+
+	private static final SimpleDateFormat _DATE_FIELD_FORMAT =
+		new SimpleDateFormat("yyyy-MM-dd");
 
 	@Autowired
 	private Environment _environment;

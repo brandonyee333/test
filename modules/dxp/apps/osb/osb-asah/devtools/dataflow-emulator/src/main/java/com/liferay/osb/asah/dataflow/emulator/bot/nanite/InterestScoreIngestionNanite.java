@@ -21,6 +21,8 @@ import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQSessionInterestScoreRepository;
 
+import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -49,7 +51,8 @@ public class InterestScoreIngestionNanite {
 		Set<String> userIds = new HashSet<>();
 
 		for (Map<String, String> keywords :
-				_bqEventRepository.getKeywordsGroupedBySessionIdAndUserId()) {
+				_bqEventRepository.
+					getKeywordsGroupedByChannelIdAndSessionIdAndUserId(date)) {
 
 			String userId = keywords.get("userId");
 
@@ -90,6 +93,10 @@ public class InterestScoreIngestionNanite {
 			BQIdentityInterestScore bqIdentityInterestScore =
 				new BQIdentityInterestScore();
 
+			BigDecimal channelId = new BigDecimal(keywords.get("channelId"));
+
+			bqIdentityInterestScore.setChannelId(channelId.longValue());
+
 			bqIdentityInterestScore.setIdentityId(keywords.get("userId"));
 			bqIdentityInterestScore.setInterestScore(interestScore);
 			bqIdentityInterestScore.setInterested(interested);
@@ -117,6 +124,10 @@ public class InterestScoreIngestionNanite {
 
 			BQSessionInterestScore bqSessionInterestScore =
 				new BQSessionInterestScore();
+
+			BigDecimal channelId = new BigDecimal(keywords.get("channelId"));
+
+			bqSessionInterestScore.setChannelId(channelId.longValue());
 
 			bqSessionInterestScore.setIdentityId(keywords.get("userId"));
 			bqSessionInterestScore.setInterestScore(interestScore);
