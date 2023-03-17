@@ -1728,26 +1728,6 @@
 		<body-content>JSP</body-content>
 	</tag>
 	<tag>
-		<name>menu</name>
-		<tag-class>com.liferay.taglib.ui.MenuTag</tag-class>
-		<body-content>JSP</body-content>
-		<attribute>
-			<name>menu</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-	</tag>
-	<tag>
-		<name>menu-item</name>
-		<tag-class>com.liferay.taglib.ui.MenuItemTag</tag-class>
-		<body-content>JSP</body-content>
-		<attribute>
-			<name>menuItem</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-	</tag>
-	<tag>
 		<description>Creates a message to display to the user.</description>
 		<name>message</name>
 		<tag-class>com.liferay.taglib.ui.MessageTag</tag-class>
