@@ -15,12 +15,14 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.dog.util.SortUtil;
+import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
+import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
@@ -51,12 +53,14 @@ import org.springframework.stereotype.Component;
 public class BQIndividualDog {
 
 	public BQIndividualDog(
+		BQFieldMappingRepository bqFieldMappingRepository,
 		BQIdentityRepository bqIdentityRepository,
 		BQIndividualRepository bqIndividualRepository,
 		DataSourceRepository dataSourceRepository,
 		IndividualsFilterStringConverterHelper
 			individualsFilterStringConverterHelper) {
 
+		_bqFieldMappingRepository = bqFieldMappingRepository;
 		_bqIdentityRepository = bqIdentityRepository;
 		_bqIndividualRepository = bqIndividualRepository;
 		_dataSourceRepository = dataSourceRepository;
@@ -134,6 +138,13 @@ public class BQIndividualDog {
 	public Page<Distribution> getDistributionPage(
 		@Nullable Long channelId, String fieldName,
 		@Nullable Long individualSegmentId, int size, String[] sorts) {
+
+		Optional<BQFieldMapping> bqFieldMappingOptional =
+			_bqFieldMappingRepository.findByFieldName(fieldName);
+
+		if (!bqFieldMappingOptional.isPresent()) {
+			throw new RuntimeException("Invalid field name " + fieldName);
+		}
 
 		PageRequest pageRequest = PageRequest.of(
 			0, size,
@@ -235,6 +246,7 @@ public class BQIndividualDog {
 		}
 	}
 
+	private final BQFieldMappingRepository _bqFieldMappingRepository;
 	private final BQIdentityRepository _bqIdentityRepository;
 	private final BQIndividualRepository _bqIndividualRepository;
 	private final DataSourceRepository _dataSourceRepository;

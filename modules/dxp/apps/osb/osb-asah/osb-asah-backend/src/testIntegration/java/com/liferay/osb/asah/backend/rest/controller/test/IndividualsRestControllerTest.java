@@ -25,7 +25,6 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
@@ -154,10 +153,45 @@ public class IndividualsRestControllerTest
 	}
 
 	@BQSQLResource(resourcePath = "test_get_individuals_distribution_bq.sql")
-	@Disabled
 	@SQLResource(resourcePath = "test_get_individuals_distribution.sql")
 	@Test
 	public void testGetIndividualsDistribution() throws Exception {
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_individuals_distribution_sorted.json",
+				this),
+			_objectMapper.convertValue(
+				_individualsRestController.getDistributionDTOPageDTO(
+					null, "emailAddress", null, 10, 100,
+					new String[] {"name", "desc"}),
+				JSONObject.class),
+			false);
+		JSONAssert.assertEquals(
+			ResourceUtil.readResourceToJSONObject(
+				"dependencies/expected_individuals_terms_distribution.json",
+				this),
+			_objectMapper.convertValue(
+				_individualsRestController.getDistributionDTOPageDTO(
+					null, "emailAddress", null, 0, 100, null),
+				JSONObject.class),
+			false);
+	}
+
+	@Test
+	public void testGetIndividualsDistributionInvalidFieldMappings() {
+		Exception exception = Assertions.assertThrows(
+			Exception.class,
+			() -> _individualsRestController.getDistributionDTOPageDTO(
+				null, "331238757947565234", null, 10, 100, null));
+
+		MatcherAssert.assertThat(
+			exception.getMessage(),
+			CoreMatchers.containsString("Invalid field name"));
+	}
+
+	@Disabled
+	@Test
+	public void testGetIndividualsDistributionWithBinning() throws Exception {
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individuals_distribution_filtered.json",
@@ -170,16 +204,6 @@ public class IndividualsRestControllerTest
 			false);
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONObject(
-				"dependencies/expected_individuals_distribution_sorted.json",
-				this),
-			_objectMapper.convertValue(
-				_individualsRestController.getDistributionDTOPageDTO(
-					null, "331238757947565158", null, 10, 100,
-					new String[] {"name", "desc"}),
-				JSONObject.class),
-			false);
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONObject(
 				"dependencies/expected_individuals_numbers_distribution.json",
 				this),
 			_objectMapper.convertValue(
@@ -187,36 +211,6 @@ public class IndividualsRestControllerTest
 					null, "366588394714972833", null, 5, 100, null),
 				JSONObject.class),
 			false);
-		JSONAssert.assertEquals(
-			ResourceUtil.readResourceToJSONObject(
-				"dependencies/expected_individuals_terms_distribution.json",
-				this),
-			_objectMapper.convertValue(
-				_individualsRestController.getDistributionDTOPageDTO(
-					null, "331238757947565158", null, 0, 100, null),
-				JSONObject.class),
-			false);
-	}
-
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
-	@Test
-	public void testGetIndividualsDistributionInvalidFieldMappings() {
-		Exception exception = Assertions.assertThrows(
-			Exception.class,
-			() -> _individualsRestController.getDistributionDTOPageDTO(
-				null, "331238757947565234", null, 10, 100, null));
-
-		MatcherAssert.assertThat(
-			exception.getMessage(),
-			CoreMatchers.containsString("Invalid field mapping ID"));
 	}
 
 	@BQSQLResource(resourcePath = "test_transformation_dto_page_dto.sql")
