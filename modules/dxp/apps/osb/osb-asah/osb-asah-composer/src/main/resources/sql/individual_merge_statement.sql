@@ -176,7 +176,7 @@ USING
 			SELECT
 				User.emailAddress,
 				ARRAY_AGG(
-					STRUCT(MembershipIds.name, MembershipIds.ids)
+					STRUCT(MembershipIds.ids, MembershipIds.name)
 				) AS memberships
 			FROM
 				`{{ dag.default_args['ac_project_id'] }}.user` AS User
