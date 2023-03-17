@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.ResultBag;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,13 +64,30 @@ public class SegmentMetricDog {
 			Long.valueOf(searchQueryContext.getChannelId()), metricType,
 			searchQueryContext.getTimeRange());
 
-		for (Metric metric : segmentMetrics) {
+		Double othersMetricValue = 0D;
+
+		for (int i = 0; i < segmentMetrics.size(); i++) {
+			Metric metric = segmentMetrics.get(i);
+
+			if (i >= 14) {
+				othersMetricValue += metric.getValue();
+
+				continue;
+			}
+
 			Segment segment = _segmentDog.fetchSegment(
 				Long.valueOf(metric.getValueKey()));
 
 			if (segment != null) {
 				metric.setValueKey(segment.getName());
 			}
+		}
+
+		if (segmentMetrics.size() > 14) {
+			segmentMetrics = new ArrayList<>(segmentMetrics.subList(0, 14));
+
+			segmentMetrics.add(
+				Metric.of(metricType, othersMetricValue, "others"));
 		}
 
 		return new ResultBag<>(segmentMetrics, segmentMetrics.size());
