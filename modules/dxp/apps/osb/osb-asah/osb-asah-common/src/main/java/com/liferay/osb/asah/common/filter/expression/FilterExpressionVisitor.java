@@ -303,7 +303,13 @@ public class FilterExpressionVisitor
 
 		Condition condition = null;
 
-		if (functionName.equalsIgnoreCase("contains")) {
+		if (functionName.equalsIgnoreCase("between")) {
+			Param param1 = (Param)parameters.get(1);
+			Param param2 = (Param)parameters.get(2);
+
+			condition = field.between(param1.getValue(), param2.getValue());
+		}
+		else if (functionName.equalsIgnoreCase("contains")) {
 			Param param = (Param)parameters.get(1);
 
 			String value = String.valueOf(param.getValue());
