@@ -1024,6 +1024,7 @@ public class FilterExpressionVisitor
 				put("individuals.givenName", "Individual.firstName");
 				put("lastEnrichmentDate", "Individual.modifiedDate");
 				put("provider/type", "providerType");
+				put("sessions.completeDate", "Session.sessionEnd");
 			}
 		};
 	private final String _filterType;
