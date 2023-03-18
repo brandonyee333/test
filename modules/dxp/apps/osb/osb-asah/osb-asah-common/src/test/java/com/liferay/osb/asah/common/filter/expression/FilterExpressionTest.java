@@ -69,6 +69,30 @@ public class FilterExpressionTest {
 	}
 
 	@Test
+	public void testBetweenFunction() {
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"Session.deviceType"
+				).eq(
+					"app"
+				),
+				DSL.field(
+					"Session.sessionEnd"
+				).between(
+					"2022-05-15", "2022-05-20"
+				),
+				DSL.field(
+					"Session.sessionEnd"
+				).gt(
+					"2022-05-15"
+				)),
+			"(sessions.filter(filter='(context/deviceType eq ''app'' and " +
+				"between(completeDate,''2022-05-15'',''2022-05-20'') and " +
+					"completeDate gt ''2022-05-15'')'))");
+	}
+
+	@Test
 	public void testBooleanFalseValue() {
 		_assertEquals(
 			DSL.field(
@@ -370,7 +394,7 @@ public class FilterExpressionTest {
 					"browser1"
 				),
 				DSL.field(
-					"Session.completeDate"
+					"Session.sessionEnd"
 				).gt(
 					localDateTime.minusHours(24)
 				),
@@ -397,7 +421,7 @@ public class FilterExpressionTest {
 						"country1"
 					),
 					DSL.field(
-						"Session.completeDate"
+						"Session.sessionEnd"
 					).gt(
 						localDateTime.minusHours(24)
 					)),
@@ -408,7 +432,7 @@ public class FilterExpressionTest {
 						"url1"
 					),
 					DSL.field(
-						"Session.completeDate"
+						"Session.sessionEnd"
 					).gt(
 						localDateTime.minusHours(24)
 					))),
@@ -520,7 +544,7 @@ public class FilterExpressionTest {
 					"country1"
 				),
 				DSL.field(
-					"Session.completeDate"
+					"Session.sessionEnd"
 				).gt(
 					localDateTime.minusHours(24)
 				),
@@ -535,12 +559,12 @@ public class FilterExpressionTest {
 					"url1"
 				),
 				DSL.field(
-					"Session.completeDate"
+					"Session.sessionEnd"
 				).gt(
 					localDateTime.minusHours(24)
 				),
 				DSL.field(
-					"Session.completeDate"
+					"Session.sessionEnd"
 				).eq(
 					"2022-12-20T16:56:05.761Z"
 				),
@@ -550,7 +574,7 @@ public class FilterExpressionTest {
 					"deviceType1"
 				),
 				DSL.field(
-					"Session.completeDate"
+					"Session.sessionEnd"
 				).gt(
 					localDateTime.minusHours(24)
 				),
@@ -560,7 +584,7 @@ public class FilterExpressionTest {
 					"browserName1"
 				),
 				DSL.field(
-					"Session.completeDate"
+					"Session.sessionEnd"
 				).gt(
 					localDateTime.minusHours(24)
 				),
@@ -628,7 +652,7 @@ public class FilterExpressionTest {
 							"country1"
 						),
 						DSL.field(
-							"Session.completeDate"
+							"Session.sessionEnd"
 						).gt(
 							localDateTime.minusHours(24)
 						),
@@ -643,12 +667,12 @@ public class FilterExpressionTest {
 							"url1"
 						),
 						DSL.field(
-							"Session.completeDate"
+							"Session.sessionEnd"
 						).gt(
 							localDateTime.minusHours(24)
 						),
 						DSL.field(
-							"Session.completeDate"
+							"Session.sessionEnd"
 						).eq(
 							"2022-12-20T16:56:05.761Z"
 						))),
@@ -658,7 +682,7 @@ public class FilterExpressionTest {
 					"deviceType1"
 				),
 				DSL.field(
-					"Session.completeDate"
+					"Session.sessionEnd"
 				).gt(
 					localDateTime.minusHours(24)
 				),
@@ -668,7 +692,7 @@ public class FilterExpressionTest {
 					"browserName1"
 				),
 				DSL.field(
-					"Session.completeDate"
+					"Session.sessionEnd"
 				).gt(
 					localDateTime.minusHours(24)
 				),
