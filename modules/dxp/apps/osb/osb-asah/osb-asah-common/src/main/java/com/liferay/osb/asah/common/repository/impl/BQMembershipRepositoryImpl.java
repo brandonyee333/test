@@ -568,7 +568,8 @@ public class BQMembershipRepositoryImpl
 					"Identity"
 				));
 
-		FilterExpression filterExpression = new FilterExpression(filterString);
+		FilterExpression filterExpression = new FilterExpression(
+			filterString, true);
 
 		selectJoinStep = _getSelectJoinStep(
 			null, filterExpression.getReferencedTableNames(), selectJoinStep);
