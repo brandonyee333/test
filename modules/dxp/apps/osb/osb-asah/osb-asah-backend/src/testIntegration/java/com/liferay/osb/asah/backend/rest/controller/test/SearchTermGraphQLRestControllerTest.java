@@ -16,13 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
-import org.junit.jupiter.api.Disabled;
-
 /**
  * @author Geyson Silva
  */
 @BQSQLResource(resourcePath = "search_term_graphql_rest_controller_test.sql")
-@Disabled
 public class SearchTermGraphQLRestControllerTest
 	extends BaseGraphQLRestControllerTestCase {
 
