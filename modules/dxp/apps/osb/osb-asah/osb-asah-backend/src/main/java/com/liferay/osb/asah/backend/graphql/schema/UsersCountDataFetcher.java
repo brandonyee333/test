@@ -91,8 +91,7 @@ public class UsersCountDataFetcher extends BaseDataFetcher<Long> {
 				graphQLFieldDefinition.getName(),
 				"nonsegmentedKnownUsersCount")) {
 
-			return (knownUsersCount + anonymousUsersCount) -
-				segmentedIndividualsCount;
+			return knownUsersCount - segmentedIndividualsCount;
 		}
 
 		if (Objects.equals(

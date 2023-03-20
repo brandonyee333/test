@@ -681,22 +681,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 						))
 				)
 			).with(
-				"segmentedAnonymousIndividualCount"
-			).as(
-				dslContext.select(
-					DSL.countDistinct(
-						DSL.field("segmentedIndividuals.identityId")
-					).as(
-						"value"
-					)
-				).from(
-					"segmentedIndividuals"
-				).where(
-					DSL.field(
-						"segmentedIndividuals.individualId"
-					).isNull()
-				)
-			).with(
 				"segmentedKnownIndividualCount"
 			).as(
 				dslContext.select(
@@ -713,14 +697,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					).isNotNull()
 				)
 			).select(
-				DSL.field(
-					"segmentedAnonymousIndividualCount.value", Integer.class
-				).plus(
-					DSL.field(
-						"segmentedKnownIndividualCount.value", Integer.class)
-				)
+				DSL.field("segmentedKnownIndividualCount.value", Integer.class)
 			).from(
-				DSL.table("segmentedAnonymousIndividualCount"),
 				DSL.table("segmentedKnownIndividualCount")
 			));
 	}
@@ -782,29 +760,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 						))
 				)
 			).with(
-				"segmentedAnonymousIndividualCount"
-			).as(
-				dslContext.select(
-					DSL.field(
-						"segmentedIndividuals.segmentId"
-					).as(
-						"segmentId"
-					),
-					DSL.countDistinct(
-						DSL.field("segmentedIndividuals.identityId")
-					).as(
-						"value"
-					)
-				).from(
-					"segmentedIndividuals"
-				).where(
-					DSL.field(
-						"segmentedIndividuals.individualId"
-					).isNull()
-				).groupBy(
-					DSL.field("segmentedIndividuals.segmentId")
-				)
-			).with(
 				"segmentedKnownIndividualCount"
 			).as(
 				dslContext.select(
@@ -829,26 +784,16 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				)
 			).select(
 				DSL.field("segmentId"),
-				DSL.sum(
-					DSL.field("value", Integer.class)
+				DSL.field(
+					"value", Integer.class
 				).as(
 					"individualsCount"
 				)
 			).from(
-				dslContext.select(
-				).from(
-					"segmentedAnonymousIndividualCount"
-				).unionAll(
-					dslContext.select(
-					).from(
-						"segmentedKnownIndividualCount"
-					)
-				)
-			).groupBy(
-				DSL.field("segmentId")
+				DSL.table("segmentedKnownIndividualCount")
 			).orderBy(
 				DSL.field(
-					"individualsCount"
+					"value"
 				).desc()
 			));
 	}
