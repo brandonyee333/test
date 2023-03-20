@@ -92,8 +92,8 @@ PageEntrances AS (
 			PageFinalizedEvent.platformName,
 			ROW_NUMBER() OVER (
 				PARTITION BY
-					PageFinalizedEvent.sessionId,
 					PageFinalizedEvent.channelId,
+					PageFinalizedEvent.sessionId,
 					PageFinalizedEvent.userId
 				ORDER BY
 					PageFinalizedEvent.eventDate ASC
@@ -135,8 +135,8 @@ PageExits AS (
 			PageFinalizedEvent.platformName,
 			ROW_NUMBER() OVER (
 				PARTITION BY
-					PageFinalizedEvent.sessionId,
 					PageFinalizedEvent.channelId,
+					PageFinalizedEvent.sessionId,
 					PageFinalizedEvent.userId
 				ORDER BY
 					PageFinalizedEvent.eventDate DESC
@@ -179,9 +179,9 @@ PageTimeOnPages AS (
 			    PageFinalizedEvent.eventDate
 			) OVER (
 				PARTITION BY
+					PageFinalizedEvent.channelId,
 					PageFinalizedEvent.sessionId,
-					PageFinalizedEvent.userId,
-					PageFinalizedEvent.channelId
+					PageFinalizedEvent.userId
 				ORDER BY
 					PageFinalizedEvent.eventDate
 			) AS nextTime,
@@ -205,15 +205,15 @@ PageViews AS (
 		city,
 		country,
 		deviceType,
-		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 		COUNTIF(referrer = '') AS directAccess,
 		COUNTIF(referrer != '') AS indirectAccess,
-		SUM(1) AS views,
+		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 		platformName,
 		region,
 		sessionId,
 		title,
-		userId
+		userId,
+		SUM(1) AS views
 	FROM
 		PageEvent
 	WHERE
