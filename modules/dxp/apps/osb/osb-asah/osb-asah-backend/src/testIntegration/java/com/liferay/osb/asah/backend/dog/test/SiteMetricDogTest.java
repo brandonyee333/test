@@ -44,7 +44,6 @@ import java.util.stream.Stream;
 import org.apache.commons.lang3.tuple.Pair;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -280,7 +279,6 @@ public class SiteMetricDogTest
 	@BQSQLResource(
 		resourcePath = "test_visitor_cohort_heatmap_week_interval.sql"
 	)
-	@Disabled
 	@Test
 	public void testCohortHeatMapMetricsWeekInterval() {
 		CohortMetric cohortMetric = _siteMetricDog.getCohortMetric(
