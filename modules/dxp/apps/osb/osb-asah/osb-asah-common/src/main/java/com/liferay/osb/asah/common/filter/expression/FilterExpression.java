@@ -41,14 +41,28 @@ import org.springframework.util.Assert;
 public class FilterExpression {
 
 	public FilterExpression(String filterExpressionString) {
-		this(filterExpressionString, null);
+		this(filterExpressionString, null, false);
+	}
+
+	public FilterExpression(String filterExpressionString, boolean segment) {
+		this(filterExpressionString, null, segment);
 	}
 
 	public FilterExpression(String filterExpressionString, String filterType) {
+		this(filterExpressionString, filterType, false);
+	}
+
+	public FilterExpression(
+		String filterExpressionString, String filterType, boolean segment) {
+
 		Assert.notNull(
 			filterExpressionString, "Filter expression string is null");
 
 		_filterType = filterType;
+
+		if ((_filterType == null) && segment) {
+			_filterType = "individuals";
+		}
 
 		try {
 			ErrorListener errorListener = new ErrorListener();
@@ -161,7 +175,7 @@ public class FilterExpression {
 			"(?<id>[\\d]+)'");
 
 	private Condition _condition;
-	private final String _filterType;
+	private String _filterType;
 	private Map<String, Set<String>> _referencedObjectIds;
 	private final Set<String> _referencedTableNames;
 
