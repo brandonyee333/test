@@ -32,14 +32,14 @@ public class HSTSOncePerRequestFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(
-			HttpServletRequest request, HttpServletResponse response,
-			FilterChain filterChain)
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, FilterChain filterChain)
 		throws IOException, ServletException {
 
-		response.setHeader(
+		httpServletResponse.setHeader(
 			"Strict-Transport-Security", "max-age=31536000; includeSubDomains");
 
-		filterChain.doFilter(request, response);
+		filterChain.doFilter(httpServletRequest, httpServletResponse);
 	}
 
 }
