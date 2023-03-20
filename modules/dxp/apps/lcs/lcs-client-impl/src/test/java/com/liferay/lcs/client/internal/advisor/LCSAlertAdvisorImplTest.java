@@ -328,7 +328,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 		Set<LCSAlert> lcsAlerts = lcsAlertAdvisor.getLCSAlerts();
 
 		for (LCSAlert lcsAlert : LCSAlert.values()) {
-			if (!Objects.equals("danger", lcsAlert.getType())) {
+			if (!Objects.equals(lcsAlert.getType(), "danger")) {
 				continue;
 			}
 
