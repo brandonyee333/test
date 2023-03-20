@@ -18,8 +18,6 @@ import com.liferay.osb.asah.common.entity.BQSessionInterestScore;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 
-import java.time.ZoneId;
-
 import java.util.Date;
 import java.util.List;
 
@@ -34,8 +32,7 @@ public interface CustomBQSessionInterestScoreRepository {
 	public void deleteByRecordedDate(Date recordedDate);
 
 	public CompositionResultBag getInterestCompositionResultBag(
-		@Nullable Long channelId, Pageable pageable, TimeRange timeRange,
-		ZoneId zoneId);
+		@Nullable Long channelId, Pageable pageable, TimeRange timeRange);
 
 	public void insertAll(List<BQSessionInterestScore> bqSessionInterestScores);
 

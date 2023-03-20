@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.dog;
 
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.BQSessionInterestScoreRepository;
@@ -34,14 +33,10 @@ public class SiteInterestCompositionDog {
 
 		return _bqSessionInterestScoreRepository.
 			getInterestCompositionResultBag(
-				channelId, PageRequest.of(start / size, size), timeRange,
-				_timeZoneDog.getZoneId());
+				channelId, PageRequest.of(start / size, size), timeRange);
 	}
 
 	@Autowired
 	private BQSessionInterestScoreRepository _bqSessionInterestScoreRepository;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }

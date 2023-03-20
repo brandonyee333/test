@@ -72,11 +72,12 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 			new LinkedHashMap<String, Long>() {
 				{
 					put("engineer", 1L);
+					put("holistic roi", 1L);
 					put("intuitive", 1L);
 					put("models", 1L);
 				}
 			},
-			1, 3, 1);
+			1, 4, 2);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
@@ -147,11 +148,11 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 				1L, 10, 0, TimeRange.of(365)),
 			new LinkedHashMap<String, Long>() {
 				{
-					put("compelling action-items", 3L);
+					put("compelling action-items", 4L);
 					put("holistic roi", 1L);
 				}
 			},
-			3, 2, 4);
+			4, 2, 5);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
