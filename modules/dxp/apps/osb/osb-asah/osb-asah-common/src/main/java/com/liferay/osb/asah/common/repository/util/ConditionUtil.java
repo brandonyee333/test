@@ -47,7 +47,9 @@ public class ConditionUtil {
 		}
 
 		FilterExpression filterExpression = new FilterExpression(
-			filterString, filterStringConverterHelper.getFilterType());
+			filterString,
+			FilterExpression.FilterType.of(
+				filterStringConverterHelper.getFilterType()));
 
 		Condition condition = filterExpression.getCondition();
 

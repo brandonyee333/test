@@ -55,10 +55,10 @@ import org.jooq.impl.DSL;
 public class FilterExpressionVisitor
 	extends FilterExpressionBaseVisitor<Object> {
 
-	public FilterExpressionVisitor(String filterType) {
+	public FilterExpressionVisitor(FilterExpression.FilterType filterType) {
 		_filterType = filterType;
 
-		if (filterType != null) {
+		if ((filterType != null) && _tableReferences.containsKey(filterType)) {
 			_referencedTableNames.add(_tableReferences.get(filterType));
 		}
 	}
@@ -108,7 +108,9 @@ public class FilterExpressionVisitor
 		String value = StringUtil.unquoteAndDecodeInnerQuotes(
 			stopToken.getText());
 
-		if (Objects.equals(_filterType, "organizations")) {
+		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+
 			return _visitOrganizationExpression(fieldName, "eq", value);
 		}
 
@@ -180,7 +182,8 @@ public class FilterExpressionVisitor
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString.substring(1, filterString.length() - 1),
-			filterByCountExpressionContext.filterType.getText());
+			FilterExpression.FilterType.of(
+				filterByCountExpressionContext.filterType.getText()));
 
 		_referencedTableNames.addAll(
 			filterExpression.getReferencedTableNames());
@@ -236,7 +239,8 @@ public class FilterExpressionVisitor
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString.substring(1, filterString.length() - 1),
-			filterExpressionContext.filterType.getText());
+			FilterExpression.FilterType.of(
+				filterExpressionContext.filterType.getText()));
 
 		_referencedTableNames.addAll(
 			filterExpression.getReferencedTableNames());
@@ -293,7 +297,9 @@ public class FilterExpressionVisitor
 
 			qualifiedFieldName = parts[1];
 
-			if (Objects.equals(_filterType, "organizations")) {
+			if (Objects.equals(
+					_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+
 				field = DSL.field("ExpandoValue.value");
 			}
 			else {
@@ -372,7 +378,9 @@ public class FilterExpressionVisitor
 				));
 		}
 
-		if (Objects.equals(_filterType, "organizations")) {
+		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+
 			if (StringUtils.startsWith(fieldName, "ExpandoValue.")) {
 				return _getIndividualIdsInOrganizationCondition(
 					condition, true);
@@ -449,8 +457,13 @@ public class FilterExpressionVisitor
 			fieldName = identifierParts[1];
 		}
 
+		if (_filterType == null) {
+			return DSL.field(_getTableNamespace() + fieldName);
+		}
+
 		String qualifiedFieldName = _fieldMappers.getOrDefault(
-			_filterType + "." + fieldName, _getTableNamespace() + fieldName);
+			_filterType.getName() + "." + fieldName,
+			_getTableNamespace() + fieldName);
 
 		return DSL.field(qualifiedFieldName);
 	}
@@ -496,7 +509,9 @@ public class FilterExpressionVisitor
 		String value = StringUtil.unquoteAndDecodeInnerQuotes(
 			stopToken.getText());
 
-		if (Objects.equals(_filterType, "organizations")) {
+		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+
 			return _visitOrganizationExpression(fieldName, "ne", value);
 		}
 
@@ -1027,17 +1042,17 @@ public class FilterExpressionVisitor
 				put("sessions.completeDate", "Session.sessionEnd");
 			}
 		};
-	private final String _filterType;
+	private final FilterExpression.FilterType _filterType;
 	private final Map<String, Set<String>> _referencedObjectIds =
 		new HashMap<>();
 	private final Set<String> _referencedTableNames = new HashSet<>();
-	private final Map<String, String> _tableReferences =
-		new HashMap<String, String>() {
+	private final Map<FilterExpression.FilterType, String> _tableReferences =
+		new HashMap<FilterExpression.FilterType, String>() {
 			{
-				put("activities", "Event");
-				put("individuals", "Individual");
-				put("organizations", "Organization");
-				put("sessions", "Session");
+				put(FilterExpression.FilterType.ACTIVITIES, "Event");
+				put(FilterExpression.FilterType.INDIVIDUALS, "Individual");
+				put(FilterExpression.FilterType.ORGANIZATIONS, "Organization");
+				put(FilterExpression.FilterType.SESSIONS, "Session");
 			}
 		};
 

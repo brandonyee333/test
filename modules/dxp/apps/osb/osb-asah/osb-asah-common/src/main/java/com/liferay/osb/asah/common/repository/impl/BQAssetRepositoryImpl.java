@@ -49,7 +49,7 @@ public class BQAssetRepositoryImpl
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		FilterExpression filterExpression = new FilterExpression(
-			filterString, "assets");
+			filterString, FilterExpression.FilterType.ASSETS);
 
 		return _queryExecutor.queryForList(
 			BQAsset::new,

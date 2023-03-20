@@ -48,20 +48,24 @@ public class FilterExpression {
 		this(filterExpressionString, null, segment);
 	}
 
-	public FilterExpression(String filterExpressionString, String filterType) {
+	public FilterExpression(
+		String filterExpressionString, FilterType filterType) {
+
 		this(filterExpressionString, filterType, false);
 	}
 
 	public FilterExpression(
-		String filterExpressionString, String filterType, boolean segment) {
+		String filterExpressionString, FilterType filterType, boolean segment) {
 
 		Assert.notNull(
 			filterExpressionString, "Filter expression string is null");
 
-		_filterType = filterType;
+		if (filterType != null) {
+			_filterType = filterType;
+		}
 
 		if ((_filterType == null) && segment) {
-			_filterType = "individuals";
+			_filterType = FilterType.INDIVIDUALS;
 		}
 
 		try {
@@ -110,6 +114,51 @@ public class FilterExpression {
 
 	public Set<String> getReferencedTableNames() {
 		return _referencedTableNames;
+	}
+
+	public enum FilterType {
+
+		ACTIVITIES("activities"), ASSETS("assets"), INDIVIDUALS("individuals"),
+		ORGANIZATIONS("organizations"), SESSIONS("sessions");
+
+		public static FilterType of(String name) {
+			if (name == null) {
+				return null;
+			}
+
+			if (name.equalsIgnoreCase("activities")) {
+				return ACTIVITIES;
+			}
+
+			if (name.equalsIgnoreCase("assets")) {
+				return ASSETS;
+			}
+
+			if (name.equalsIgnoreCase("individuals")) {
+				return INDIVIDUALS;
+			}
+
+			if (name.equalsIgnoreCase("organizations")) {
+				return ORGANIZATIONS;
+			}
+
+			if (name.equalsIgnoreCase("sessions")) {
+				return SESSIONS;
+			}
+
+			return null;
+		}
+
+		public String getName() {
+			return _name;
+		}
+
+		private FilterType(String name) {
+			_name = name;
+		}
+
+		private final String _name;
+
 	}
 
 	private String _rewriteFilterExpression(String filterExpressionString) {
@@ -175,7 +224,7 @@ public class FilterExpression {
 			"(?<id>[\\d]+)'");
 
 	private Condition _condition;
-	private String _filterType;
+	private FilterType _filterType;
 	private Map<String, Set<String>> _referencedObjectIds;
 	private final Set<String> _referencedTableNames;
 
