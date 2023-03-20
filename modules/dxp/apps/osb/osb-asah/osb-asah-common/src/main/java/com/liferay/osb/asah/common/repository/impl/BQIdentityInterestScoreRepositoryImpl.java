@@ -136,7 +136,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 	public long countKeywords(@Nullable String keywords) {
 		return _queryExecutor.queryForLong(
 			_dslContext.select(
-				DSL.countDistinct(DSL.field("keyword", String.class))
+				DSL.countDistinct(DSL.field("LOWER(keyword)", String.class))
 			).from(
 				"BQIdentityInterestScore"
 			).where(
@@ -154,9 +154,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).where(
 				DSL.and(
 					DSL.field(
-						"keyword"
+						"LOWER(keyword)"
 					).eq(
-						keyword
+						StringUtils.lowerCase(keyword)
 					),
 					DSL.field(
 						"recordedDate"
@@ -220,7 +220,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"interested"
 				),
 				DSL.field(
-					"BQIdentityInterestScore.keyword"
+					"LOWER(BQIdentityInterestScore.keyword)"
 				).as(
 					"keyword"
 				),
@@ -278,7 +278,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"interested"
 				),
 				DSL.field(
-					"BQIdentityInterestScore.keyword"
+					"LOWER(BQIdentityInterestScore.keyword)"
 				).as(
 					"keyword"
 				),
@@ -335,7 +335,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"interested"
 				),
 				DSL.field(
-					"BQIdentityInterestScore.keyword"
+					"LOWER(BQIdentityInterestScore.keyword)"
 				).as(
 					"keyword"
 				),
@@ -362,9 +362,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 				)
 			).and(
 				DSL.field(
-					"BQIdentityInterestScore.keyword"
+					"LOWER(BQIdentityInterestScore.keyword)"
 				).eq(
-					keyword
+					StringUtils.lowerCase(keyword)
 				)
 			).and(
 				DSL.field(
@@ -389,7 +389,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).where(
 				_getConditions(null, null, null, null, recordedDate)
 			).orderBy(
-				DSL.field("keyword")
+				DSL.field("LOWER(keyword)")
 			).limit(
 				size
 			));
@@ -443,7 +443,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 				"interested"
 			),
 			DSL.field(
-				"BQIdentityInterestScore.keyword"
+				"LOWER(BQIdentityInterestScore.keyword)"
 			).as(
 				"keyword"
 			),
@@ -473,9 +473,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 						individualId
 					),
 					DSL.field(
-						"BQIdentityInterestScore.keyword"
+						"LOWER(BQIdentityInterestScore.keyword)"
 					).eq(
-						keyword
+						StringUtils.lowerCase(keyword)
 					),
 					DSL.field(
 						"BQIdentityInterestScore.recordedDate"
@@ -497,7 +497,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 		SelectJoinStep<Record3<String, String, Integer>> selectSelectStep =
 			_dslContext.select(
 				DSL.field("BQIdentityInterestScore.identityId", String.class),
-				DSL.field("BQIdentityInterestScore.keyword", String.class),
+				DSL.field(
+					"LOWER(BQIdentityInterestScore.keyword)", String.class
+				).as(
+					"keyword"
+				),
 				DSL.countDistinct(
 					DSL.field("BQIdentityInterestScore.identityId")
 				).over(
@@ -573,7 +577,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 				).as(
 					"count"
 				),
-				DSL.field("keyword"),
+				DSL.field(
+					"keyword"
+				).as(
+					"keyword"
+				),
 				DSL.max(
 					DSL.count()
 				).over(
@@ -581,7 +589,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"maxCount"
 				),
 				DSL.count(
-					DSL.field("keyword")
+					DSL.field("LOWER(keyword)")
 				).over(
 				).as(
 					"total"
@@ -633,7 +641,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 	public List<String> getKeywords(
 		@Nullable String keywords, Pageable pageable) {
 
-		Field<String> field = DSL.field("keyword", String.class);
+		Field<String> field = DSL.field(
+			"LOWER(keyword)", String.class
+		).as(
+			"keyword"
+		);
 
 		SelectSelectStep<Record1<String>> selectSelectStep =
 			_dslContext.selectDistinct(field);
@@ -658,7 +670,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 		String individualId, int size) {
 
 		SelectSelectStep<Record1<String>> selectSelectStep = _dslContext.select(
-			DSL.field("keyword", String.class));
+			DSL.field(
+				"LOWER(keyword)", String.class
+			).as(
+				"keyword"
+			));
 
 		return _queryExecutor.queryForList(
 			recordMap -> (String)recordMap.get("keyword"),
@@ -906,11 +922,14 @@ public class BQIdentityInterestScoreRepositoryImpl
 		List<Sort.Order> orders = new ArrayList<>();
 
 		for (Sort.Order order : sort.toList()) {
-			orders.add(
-				new Sort.Order(
-					order.getDirection(),
-					_fieldNames.getOrDefault(
-						order.getProperty(), order.getProperty())));
+			String fieldName = _fieldNames.getOrDefault(
+				order.getProperty(), order.getProperty());
+
+			if (fieldName.equals("keyword")) {
+				fieldName = "LOWER(keyword)";
+			}
+
+			orders.add(new Sort.Order(order.getDirection(), fieldName));
 		}
 
 		return getSortFields(null, Sort.by(orders), table);

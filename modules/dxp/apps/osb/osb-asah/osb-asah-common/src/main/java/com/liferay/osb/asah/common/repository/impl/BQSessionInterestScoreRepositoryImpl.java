@@ -82,7 +82,11 @@ public class BQSessionInterestScoreRepositoryImpl
 		SelectJoinStep<Record3<String, String, Integer>> selectSelectStep =
 			_dslContext.select(
 				DSL.field("BQSessionInterestScore.sessionId", String.class),
-				DSL.field("BQSessionInterestScore.keyword", String.class),
+				DSL.field(
+					"LOWER(BQSessionInterestScore.keyword)", String.class
+				).as(
+					"keyword"
+				),
 				DSL.countDistinct(
 					DSL.field("BQSessionInterestScore.sessionId")
 				).over(

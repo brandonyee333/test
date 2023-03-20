@@ -48,7 +48,7 @@
 		"_embedded": {
 		},
 		"dateRecorded": "2019-05-15T00:00:00.000Z",
-		"name": "holistic ROI",
+		"name": "holistic roi",
 		"ownerId": "346287660247040704",
 		"ownerType": "individual",
 		"score": 1.5163475
@@ -57,7 +57,7 @@
 		"_embedded": {
 		},
 		"dateRecorded": "2019-05-15T00:00:00.000Z",
-		"name": "holistic ROI",
+		"name": "holistic roi",
 		"ownerId": "346287671371031768",
 		"ownerType": "individual",
 		"score": 1.5163475
@@ -111,7 +111,7 @@
 		"_embedded": {
 		},
 		"dateRecorded": "2019-05-15T00:00:00.000Z",
-		"name": "My Php Title",
+		"name": "my php title",
 		"ownerId": "337984659206412898",
 		"ownerType": "individual",
 		"score": 1.5163475
@@ -120,7 +120,7 @@
 		"_embedded": {
 		},
 		"dateRecorded": "2019-05-15T00:00:00.000Z",
-		"name": "My Javascript title",
+		"name": "my javascript title",
 		"ownerId": "337984659206412898",
 		"ownerType": "individual",
 		"score": 1.5163475
