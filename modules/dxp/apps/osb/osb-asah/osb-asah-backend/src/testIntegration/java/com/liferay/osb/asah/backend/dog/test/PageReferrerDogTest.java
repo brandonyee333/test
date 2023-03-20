@@ -36,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Gabriel Ibson
  */
-@Disabled
 public class PageReferrerDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
