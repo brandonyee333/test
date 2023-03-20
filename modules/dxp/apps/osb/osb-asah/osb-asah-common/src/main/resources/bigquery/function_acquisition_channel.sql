@@ -16,10 +16,6 @@ AS R"""
 
 		var queryParamSeparatorIndexOf = decodedUrl.indexOf('?');
 
-		if (queryParamSeparatorIndexOf < 0) {
-			return null;
-		}
-
 		const paidHostnames = ['googleadservices.com'];
 		const paidMediums = ['cpc', 'paidsearch', 'ppc'];
 		const searchHostnames = [
@@ -38,8 +34,12 @@ AS R"""
 		var gclid = '';
 		var medium = '';
 
-		var queryParamsString = decodedUrl.substr(queryParamSeparatorIndexOf + 1);
-
+		var queryParamsString = '';
+		
+		if (queryParamSeparatorIndexOf > 0) {
+			queryParamsString = decodedUrl.substr(queryParamSeparatorIndexOf + 1);
+		}
+		
 		var queryParamsStringParts = queryParamsString.split('&');
 
 		for (var i = 0; i < queryParamsStringParts.length; i++) {
