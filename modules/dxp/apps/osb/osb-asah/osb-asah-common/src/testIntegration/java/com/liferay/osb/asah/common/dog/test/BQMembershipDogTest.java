@@ -102,8 +102,7 @@ public class BQMembershipDogTest
 
 		Assertions.assertNotNull(bqMembership);
 
-		List<BQMembership> bqMemberships =
-			(List<BQMembership>)_bqMembershipRepository.findAll();
+		List<BQMembership> bqMemberships = _bqMembershipRepository.findAll();
 
 		Assertions.assertEquals(1, bqMemberships.size());
 
@@ -130,8 +129,7 @@ public class BQMembershipDogTest
 
 		Assertions.assertNotNull(bqMembership);
 
-		List<BQMembership> bqMemberships =
-			(List<BQMembership>)_bqMembershipRepository.findAll();
+		List<BQMembership> bqMemberships = _bqMembershipRepository.findAll();
 
 		Assertions.assertEquals(1, bqMemberships.size());
 
@@ -201,9 +199,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMemberships() {
 		_bqMembershipDog.updateBQMemberships(
-			"individuals.filter(filter='contains(demographics/email/value, " +
-				"''delta.com'')')",
-			1L);
+			"contains(demographics/email/value, 'delta.com')", 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
@@ -212,9 +208,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithCustomFields() {
 		_bqMembershipDog.updateBQMemberships(
-			"individuals.filter(filter='(custom/Organization/value eq " +
-				"''Engineer'')')",
-			1L);
+			"(custom/Organization/value eq 'Engineer')", 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
@@ -385,11 +379,10 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithInterest4() {
 		_bqMembershipDog.updateBQMemberships(
-			"(individuals.filter(filter='not contains(demographics/email" +
-				"/value, ''gamma.com'')') and (interests.filter(filter='(" +
-					"name eq ''analytics'' and score eq ''true'')') or " +
-						"interests.filter(filter='(name eq ''cloud'' and " +
-							"score eq ''false'')')))",
+			"(not contains(demographics/email/value, 'gamma.com') and " +
+				"(interests.filter(filter='(name eq ''analytics'' and score " +
+					"eq ''true'')') or interests.filter(filter='(name eq " +
+						"''cloud'' and score eq ''false'')')))",
 			2L);
 
 		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(2L));

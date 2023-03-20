@@ -78,12 +78,11 @@ public class BQIdentityRepositoryTest
 	public void testSearchSegmentBQIdentityIds1() {
 		List<Long> identityIds =
 			_bqIdentityRepository.searchSegmentBQIdentityIds(
-				"(individuals.filter(filter='demographics/firstName/value eq " +
-					"\"Test1\"') and (sessions.filter(filter='(context" +
-						"/browserName eq ''browser1'' and sessionStart gt " +
-							"''last24Hours'')') and individuals.filter(" +
-								"filter='demographics/email/value eq " +
-									"\"test1@liferay.com\"')))");
+				"(demographics/firstName/value eq 'Test1' and " +
+					"(sessions.filter(filter='(context/browserName eq " +
+						"''browser1'' and sessionStart gt ''last24Hours'')') " +
+							"and demographics/email/value eq " +
+								"'test1@liferay.com'))");
 
 		Assertions.assertEquals(1, identityIds.size());
 		Assertions.assertEquals(1, identityIds.get(0));
@@ -94,11 +93,10 @@ public class BQIdentityRepositoryTest
 	public void testSearchSegmentBQIdentityIds2() {
 		List<Long> identityIds =
 			_bqIdentityRepository.searchSegmentBQIdentityIds(
-				"(individuals.filter(filter='demographics/firstName/value eq " +
-					"\"Test1\"') and (activities.filterByCount(filter='(" +
-						"applicationId eq ''Blog'' and eventId = " +
-							"''blogClicked'' and id = ''1'')', " +
-								"operator='ge', value=1)))");
+				"(demographics/firstName/value eq 'Test1' and " +
+					"(activities.filterByCount(filter='(applicationId eq " +
+						"''Blog'' and eventId = ''blogClicked'' and id = " +
+							"''1'')', operator='ge', value=1)))");
 
 		Assertions.assertEquals(1, identityIds.size());
 		Assertions.assertEquals(1, identityIds.get(0));
@@ -109,11 +107,10 @@ public class BQIdentityRepositoryTest
 	public void testSearchSegmentBQIdentityIds3() {
 		List<Long> identityIds =
 			_bqIdentityRepository.searchSegmentBQIdentityIds(
-				"(individuals.filter(filter='demographics/firstName/value eq " +
-					"\"Test1\"') and (activities.filterByCount(filter='(" +
-						"applicationId eq ''Blog'' and eventId eq " +
-							"''blogClicked'' and id eq ''2'')', " +
-								"operator='ge', value=1)))");
+				"(demographics/firstName/value eq 'Test1' and " +
+					"(activities.filterByCount(filter='(applicationId eq " +
+						"''Blog'' and eventId eq ''blogClicked'' and id eq " +
+							"''2'')', operator='ge', value=1)))");
 
 		Assertions.assertEquals(0, identityIds.size());
 	}

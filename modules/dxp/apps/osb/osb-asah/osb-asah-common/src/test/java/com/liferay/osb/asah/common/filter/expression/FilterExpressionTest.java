@@ -122,8 +122,7 @@ public class FilterExpressionTest {
 			).eq(
 				true
 			),
-			"individuals.filter(filter='(cast(demographics/defaultUser/value" +
-				", ''BOOLEAN'') eq true)')");
+			"cast(demographics/defaultUser/value, 'BOOLEAN') eq true", true);
 
 		_assertEquals(
 			DSL.field(
@@ -131,8 +130,7 @@ public class FilterExpressionTest {
 			).eq(
 				false
 			),
-			"individuals.filter(filter='(cast(demographics/defaultUser/value" +
-				", ''BOOLEAN'') eq false)')");
+			"cast(demographics/defaultUser/value, 'BOOLEAN') eq false", true);
 	}
 
 	@Test
@@ -143,8 +141,7 @@ public class FilterExpressionTest {
 			).eq(
 				"2023-02-16"
 			),
-			"individuals.filter(filter='(cast(demographics/birthDate/value, " +
-				"''DATE'') eq ''2023-02-16'')')");
+			"cast(demographics/birthDate/value, 'DATE') eq '2023-02-16'", true);
 
 		_assertEquals(
 			DSL.field(
@@ -152,8 +149,7 @@ public class FilterExpressionTest {
 			).gt(
 				"2023-02-16"
 			),
-			"individuals.filter(filter='(cast(demographics/birthDate/value, " +
-				"''DATE'') gt ''2023-02-16'')')");
+			"cast(demographics/birthDate/value, 'DATE') gt '2023-02-16'", true);
 
 		_assertEquals(
 			DSL.field(
@@ -161,8 +157,7 @@ public class FilterExpressionTest {
 			).lt(
 				"2023-02-16"
 			),
-			"individuals.filter(filter='(cast(demographics/birthDate/value, " +
-				"''DATE'') lt ''2023-02-16'')')");
+			"cast(demographics/birthDate/value, 'DATE') lt '2023-02-16'", true);
 	}
 
 	@Test
@@ -173,8 +168,7 @@ public class FilterExpressionTest {
 			).eq(
 				0L
 			),
-			"individuals.filter(filter='(cast(demographics/contactId/value, " +
-				"''NUMBER'') eq 0)')");
+			"cast(demographics/contactId/value, 'NUMBER') eq 0", true);
 
 		_assertEquals(
 			DSL.field(
@@ -182,8 +176,7 @@ public class FilterExpressionTest {
 			).ne(
 				0L
 			),
-			"individuals.filter(filter='cast(demographics/contactId/value, " +
-				"''NUMBER'') ne 0')");
+			"cast(demographics/contactId/value, 'NUMBER') ne 0", true);
 
 		_assertEquals(
 			DSL.field(
@@ -191,8 +184,7 @@ public class FilterExpressionTest {
 			).gt(
 				0L
 			),
-			"individuals.filter(filter='cast(demographics/contactId/value, " +
-				"''NUMBER'') gt 0')");
+			"cast(demographics/contactId/value, 'NUMBER') gt 0", true);
 
 		_assertEquals(
 			DSL.field(
@@ -200,22 +192,19 @@ public class FilterExpressionTest {
 			).lt(
 				0L
 			),
-			"individuals.filter(filter='cast(demographics/contactId/value, " +
-				"''NUMBER'') lt 0')");
+			"cast(demographics/contactId/value, 'NUMBER') lt 0", true);
 
 		_assertEquals(
 			DSL.field(
 				"Individual.contactId"
 			).isNull(),
-			"individuals.filter(filter='demographics/contactId/value eq " +
-				"null')");
+			"demographics/contactId/value eq null", true);
 
 		_assertEquals(
 			DSL.field(
 				"Individual.contactId"
 			).isNotNull(),
-			"individuals.filter(filter='demographics/contactId/value ne " +
-				"null')");
+			"demographics/contactId/value ne null", true);
 	}
 
 	@Test
@@ -372,8 +361,7 @@ public class FilterExpressionTest {
 	public void testFreestyle5() {
 		_assertEquals(
 			DSL.condition("LOWER(Individual.jobTitle) LIKE '%manager%'"),
-			"individuals.filter(filter='contains(demographics/jobTitle/value" +
-				", ''manager'')')");
+			"contains(demographics/jobTitle/value, 'manager')", true);
 	}
 
 	@Test
@@ -404,7 +392,7 @@ public class FilterExpressionTest {
 					"address2"
 				)),
 			_testFilters.get("testFreestyle6"),
-			new HashSet<>(Arrays.asList("Individual", "Session")));
+			new HashSet<>(Arrays.asList("Individual", "Session")), true);
 	}
 
 	@Test
@@ -629,7 +617,8 @@ public class FilterExpressionTest {
 				)),
 			_testFilters.get("testFreestyle9"),
 			new HashSet<>(
-				Arrays.asList("Individual", "Organization", "Session")));
+				Arrays.asList("Individual", "Organization", "Session")),
+			true);
 	}
 
 	@Test
@@ -737,7 +726,8 @@ public class FilterExpressionTest {
 				)),
 			_testFilters.get("testFreestyle10"),
 			new HashSet<>(
-				Arrays.asList("Individual", "Organization", "Session")));
+				Arrays.asList("Individual", "Organization", "Session")),
+			true);
 	}
 
 	@Test
@@ -977,7 +967,7 @@ public class FilterExpressionTest {
 				)
 			),
 			_testFilters.get("testFreestyle14"),
-			new HashSet<>(Arrays.asList("Event", "Individual")));
+			new HashSet<>(Arrays.asList("Event", "Individual")), true);
 	}
 
 	@Test
@@ -1051,7 +1041,7 @@ public class FilterExpressionTest {
 				)
 			),
 			_testFilters.get("testFreestyle15"),
-			new HashSet<>(Arrays.asList("Event", "Individual")));
+			new HashSet<>(Arrays.asList("Event", "Individual")), true);
 	}
 
 	@Test
@@ -1084,8 +1074,7 @@ public class FilterExpressionTest {
 			).eq(
 				"2023-01-01"
 			),
-			"individuals.filter(filter='(demographics/birthDate/value eq " +
-				"''2023-01-01'')')");
+			"(demographics/birthDate/value eq '2023-01-01')", true);
 
 		_assertEquals(
 			DSL.field(
@@ -1093,8 +1082,7 @@ public class FilterExpressionTest {
 			).gt(
 				"2023-01-01"
 			),
-			"individuals.filter(filter='(demographics/birthDate/value gt " +
-				"''2023-01-01'')')");
+			"(demographics/birthDate/value gt '2023-01-01')", true);
 
 		_assertEquals(
 			DSL.field(
@@ -1102,8 +1090,7 @@ public class FilterExpressionTest {
 			).lt(
 				"2023-01-01"
 			),
-			"individuals.filter(filter='(demographics/birthDate/value lt " +
-				"''2023-01-01'')')");
+			"(demographics/birthDate/value lt '2023-01-01')", true);
 	}
 
 	@Test
@@ -1114,8 +1101,7 @@ public class FilterExpressionTest {
 			).eq(
 				"Test"
 			),
-			"individuals.filter(filter='(demographics/address/value eq " +
-				"''Test'')')");
+			"(demographics/address/value eq 'Test')", true);
 
 		_assertEquals(
 			DSL.field(
@@ -1123,8 +1109,7 @@ public class FilterExpressionTest {
 			).ne(
 				"Test"
 			),
-			"individuals.filter(filter='(demographics/email/value ne " +
-				"''Test'')')");
+			"(demographics/email/value ne 'Test')", true);
 
 		_assertEquals(
 			DSL.field(
@@ -1132,8 +1117,7 @@ public class FilterExpressionTest {
 			).ne(
 				"Test"
 			),
-			"individuals.filter(filter='(demographics/familyName/value ne " +
-				"''Test'')')");
+			"(demographics/familyName/value ne 'Test')", true);
 
 		_assertEquals(
 			DSL.field(
@@ -1141,8 +1125,7 @@ public class FilterExpressionTest {
 			).ne(
 				"Test"
 			),
-			"individuals.filter(filter='(demographics/givenName/value ne " +
-				"''Test'')')");
+			"(demographics/givenName/value ne 'Test')", true);
 	}
 
 	@Test
@@ -1153,8 +1136,7 @@ public class FilterExpressionTest {
 			).eq(
 				"Test"
 			),
-			"individuals.filter(filter='(demographics/givenName/value eq " +
-				"''Test'')')");
+			"(demographics/givenName/value eq 'Test')", true);
 
 		_assertEquals(
 			DSL.field(
@@ -1162,34 +1144,29 @@ public class FilterExpressionTest {
 			).ne(
 				"Test"
 			),
-			"individuals.filter(filter='(demographics/givenName/value ne " +
-				"''Test'')')");
+			"(demographics/givenName/value ne 'Test')", true);
 
 		_assertEquals(
 			DSL.condition("LOWER(Individual.firstName) LIKE '%liferay.com%'"),
-			"individuals.filter(filter='contains(demographics/givenName" +
-				"/value, ''liferay.com'')')");
+			"contains(demographics/givenName/value, 'liferay.com')", true);
 
 		_assertEquals(
 			DSL.not(
 				DSL.condition(
 					"LOWER(Individual.firstName) LIKE '%liferay.com%'")),
-			"not individuals.filter(filter='contains(demographics/givenName" +
-				"/value, ''liferay.com'')')");
+			"not contains(demographics/givenName/value, 'liferay.com')", true);
 
 		_assertEquals(
 			DSL.field(
 				"Individual.firstName"
 			).isNull(),
-			"individuals.filter(filter='demographics/givenName/value eq " +
-				"null')");
+			"demographics/givenName/value eq null", true);
 
 		_assertEquals(
 			DSL.field(
 				"Individual.firstName"
 			).isNotNull(),
-			"individuals.filter(filter='demographics/givenName/value ne " +
-				"null')");
+			"demographics/givenName/value ne null", true);
 	}
 
 	@Test
@@ -1212,9 +1189,8 @@ public class FilterExpressionTest {
 				).eq(
 					"test"
 				)),
-			"individuals.filter(filter='(custom/custom_field/value eq " +
-				"''test'')')",
-			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")));
+			"(custom/custom_field/value eq 'test')",
+			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")), true);
 
 		_assertEquals(
 			DSL.and(
@@ -1224,9 +1200,8 @@ public class FilterExpressionTest {
 				).eq(
 					"custom_field"
 				)),
-			"individuals.filter(filter='contains(custom/custom_field/value, " +
-				"''test'')')",
-			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")));
+			"contains(custom/custom_field/value, 'test')",
+			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")), true);
 	}
 
 	@Test
@@ -1242,8 +1217,9 @@ public class FilterExpressionTest {
 			).isNotNull());
 
 		FilterExpression filterExpression = new FilterExpression(
-			"channelIds eq '506297979389450553' and individuals.filter(" +
-				"filter='(demographics/email/value ne null)')");
+			"channelIds eq '506297979389450553' and (demographics/email" +
+				"/value ne null)",
+			true);
 
 		Condition actualCondition = filterExpression.getCondition();
 
@@ -2089,8 +2065,15 @@ public class FilterExpressionTest {
 	private void _assertEquals(
 		Condition expectedCondition, String actualFilterExpressionString) {
 
+		_assertEquals(expectedCondition, actualFilterExpressionString, false);
+	}
+
+	private void _assertEquals(
+		Condition expectedCondition, String actualFilterExpressionString,
+		boolean segment) {
+
 		FilterExpression filterExpression = new FilterExpression(
-			actualFilterExpressionString);
+			actualFilterExpressionString, segment);
 
 		Assertions.assertEquals(
 			expectedCondition, filterExpression.getCondition());
@@ -2100,8 +2083,17 @@ public class FilterExpressionTest {
 		Condition expectedCondition, String actualFilterExpressionString,
 		Set<String> includedTableNames) {
 
+		_assertEquals(
+			expectedCondition, actualFilterExpressionString, includedTableNames,
+			false);
+	}
+
+	private void _assertEquals(
+		Condition expectedCondition, String actualFilterExpressionString,
+		Set<String> includedTableNames, boolean segment) {
+
 		FilterExpression filterExpression = new FilterExpression(
-			actualFilterExpressionString);
+			actualFilterExpressionString, segment);
 
 		Assertions.assertEquals(
 			expectedCondition, filterExpression.getCondition());
