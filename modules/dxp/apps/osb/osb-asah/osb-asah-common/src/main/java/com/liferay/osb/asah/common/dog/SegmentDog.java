@@ -422,7 +422,7 @@ public class SegmentDog {
 		}
 
 		FilterExpression filterExpression = new FilterExpression(
-			segment.getFilter(), "individual");
+			segment.getFilter(), "individuals");
 
 		// TODO Move _getReferencedObjectIds logic to FilterExpression
 
