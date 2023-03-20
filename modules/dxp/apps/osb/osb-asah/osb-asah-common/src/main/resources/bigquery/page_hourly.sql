@@ -58,7 +58,10 @@ PageBounces AS (
 	FROM
 		PageFinalizedEvent
 	WHERE
-		PageFinalizedEvent.eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed')
+		PageFinalizedEvent.eventId NOT IN (
+			'blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded',
+			'pageUnloaded', 'webContentViewed'
+	  	)
 	GROUP BY
 		channelId, sessionId, userId
 ),
@@ -87,7 +90,14 @@ PageEntrances AS (
 			PageFinalizedEvent.deviceType,
 			PageFinalizedEvent.eventDate,
 			PageFinalizedEvent.platformName,
-			ROW_NUMBER() OVER (PARTITION BY PageFinalizedEvent.sessionId, PageFinalizedEvent.channelId, PageFinalizedEvent.userId ORDER BY PageFinalizedEvent.eventDate ASC) AS rank,
+			ROW_NUMBER() OVER (
+				PARTITION BY
+					PageFinalizedEvent.sessionId,
+					PageFinalizedEvent.channelId,
+					PageFinalizedEvent.userId
+				ORDER BY
+					PageFinalizedEvent.eventDate ASC
+			) AS rank,
 			PageFinalizedEvent.region,
 			PageFinalizedEvent.sessionId,
 			PageFinalizedEvent.title,
@@ -123,7 +133,14 @@ PageExits AS (
 			PageFinalizedEvent.deviceType,
 			PageFinalizedEvent.eventDate,
 			PageFinalizedEvent.platformName,
-			ROW_NUMBER() OVER (PARTITION BY PageFinalizedEvent.sessionId, PageFinalizedEvent.channelId, PageFinalizedEvent.userId ORDER BY PageFinalizedEvent.eventDate DESC) AS rank,
+			ROW_NUMBER() OVER (
+				PARTITION BY
+					PageFinalizedEvent.sessionId,
+					PageFinalizedEvent.channelId,
+					PageFinalizedEvent.userId
+				ORDER BY
+					PageFinalizedEvent.eventDate DESC
+			) AS rank,
 			PageFinalizedEvent.region,
 			PageFinalizedEvent.sessionId,
 			PageFinalizedEvent.title,
@@ -158,7 +175,16 @@ PageTimeOnPages AS (
 			PageFinalizedEvent.country,
 			PageFinalizedEvent.deviceType,
 			PageFinalizedEvent.eventDate,
-			LEAD(PageFinalizedEvent.eventDate) OVER (PARTITION BY PageFinalizedEvent.sessionId, PageFinalizedEvent.userId, PageFinalizedEvent.channelId ORDER BY PageFinalizedEvent.eventDate) AS nextTime,
+			LEAD(
+			    PageFinalizedEvent.eventDate
+			) OVER (
+				PARTITION BY
+					PageFinalizedEvent.sessionId,
+					PageFinalizedEvent.userId,
+					PageFinalizedEvent.channelId
+				ORDER BY
+					PageFinalizedEvent.eventDate
+			) AS nextTime,
 			PageFinalizedEvent.platformName,
 			PageFinalizedEvent.region,
 			PageFinalizedEvent.sessionId,
