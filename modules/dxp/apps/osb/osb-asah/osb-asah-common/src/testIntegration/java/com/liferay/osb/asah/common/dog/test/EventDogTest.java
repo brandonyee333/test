@@ -68,11 +68,10 @@ public class EventDogTest
 				{
 					add(
 						new BQEventPropertyValue(
-							DateUtil.toUTCDate("2023-03-13T00:00:00.000Z"),
-							"testValue2"));
+							DateUtil.newDayDate(), "testValue2"));
 					add(
 						new BQEventPropertyValue(
-							DateUtil.toUTCDate("2023-03-12T00:00:00.000Z"),
+							DateUtil.addDays(DateUtil.newDayDate(), -1),
 							"testValue1"));
 				}
 			},
