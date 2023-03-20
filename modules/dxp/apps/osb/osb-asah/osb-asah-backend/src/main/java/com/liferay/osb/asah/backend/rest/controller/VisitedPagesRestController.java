@@ -18,8 +18,10 @@ import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +38,8 @@ public class VisitedPagesRestController extends BaseRestController {
 	@GetMapping("/{id}")
 	public String getVisitedPages(@PathVariable String id) throws Exception {
 
-		// TODO Get visited pages
-
-		return null;
+		throw new OSBAsahException(
+			HttpStatus.BAD_REQUEST, "Unable to process request");
 	}
 
 	@GetMapping
