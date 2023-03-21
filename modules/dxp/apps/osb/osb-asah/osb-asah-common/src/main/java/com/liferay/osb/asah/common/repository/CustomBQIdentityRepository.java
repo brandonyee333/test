@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.lang.Nullable;
 
@@ -34,6 +35,8 @@ public interface CustomBQIdentityRepository {
 	public List<BQIdentity> findAll();
 
 	public List<String> getIdentityIds(String individualId);
+
+	public Optional<String> getIndividualId(String id);
 
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,

@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 import com.liferay.osb.asah.backend.dto.InterestTopicDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.BQIdentityDog;
 import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
 import com.liferay.osb.asah.common.dog.InterestTopicDog;
 import com.liferay.osb.asah.common.entity.InterestTopic;
@@ -36,7 +37,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -71,9 +71,9 @@ public class InterestsRestController extends BaseRestController {
 				"termsPerTopic * topicsLength must not exceed 1000");
 		}
 
-		JSONObject individual = _fetchIndividual(userId);
+		String individualId = _bqIdentityDog.getIndividualId(userId);
 
-		if (individual == null) {
+		if (individualId == null) {
 			throw new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no individual with user ID " + userId);
@@ -81,7 +81,7 @@ public class InterestsRestController extends BaseRestController {
 
 		List<Integer> topics = _getTopics(
 			bqIdentityInterestScoreDog.getTopKeywords(
-				individual.getString("id"), topicsLength * termsPerTopic * 10),
+				individualId, topicsLength * termsPerTopic * 10),
 			termWeightThreshold);
 
 		if (topics.isEmpty()) {
@@ -162,13 +162,6 @@ public class InterestsRestController extends BaseRestController {
 		topics.put(interestTopic.getTopic(), topic);
 	}
 
-	private JSONObject _fetchIndividual(String userId) {
-
-		// TODO Fetch BQIndividual by userId
-
-		return null;
-	}
-
 	private List<Integer> _getTopics(
 		List<String> terms, double termWeightThreshold) {
 
@@ -235,6 +228,9 @@ public class InterestsRestController extends BaseRestController {
 
 	private static final Log _log = LogFactory.getLog(
 		InterestsRestController.class);
+
+	@Autowired
+	private BQIdentityDog _bqIdentityDog;
 
 	@Autowired
 	private InterestTopicDog _interestTopicDog;
