@@ -24,7 +24,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -87,7 +86,6 @@ public class InterestsRestControllerTest
 			false);
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
@@ -199,15 +197,7 @@ public class InterestsRestControllerTest
 			false);
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIdentityInterestScoreRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_terms.sql")
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
 		resourcePath = "osbasahfaroinfo/interest_topics.json"
@@ -236,7 +226,6 @@ public class InterestsRestControllerTest
 		}
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
 		resourcePath = "osbasahfaroinfo/interest_topics.json"
@@ -266,7 +255,6 @@ public class InterestsRestControllerTest
 		}
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
 		resourcePath = "osbasahfaroinfo/interest_topics.json"
@@ -281,7 +269,6 @@ public class InterestsRestControllerTest
 			"css", "canvas", "sql-server", "python", "multithreading");
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = InterestTopicRepository.class,
 		resourcePath = "osbasahfaroinfo/interest_topics.json"
@@ -299,11 +286,7 @@ public class InterestsRestControllerTest
 			"android", "multithreading", "net");
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_terms.sql")
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
@@ -317,11 +300,7 @@ public class InterestsRestControllerTest
 			new JSONArray());
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_terms.sql")
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
