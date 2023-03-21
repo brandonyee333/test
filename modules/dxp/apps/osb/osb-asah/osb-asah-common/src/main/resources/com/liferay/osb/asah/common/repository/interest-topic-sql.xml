@@ -45,8 +45,17 @@
 		<![CDATA[
 			SELECT
 				term
-			FROM
-				(
+			FROM (
+				SELECT
+					*,
+					ROW_NUMBER() OVER (
+						PARTITION BY
+							topic
+						ORDER BY
+							topicWeight DESC,
+							termWeight DESC
+					) AS rowNumber
+				FROM (
 					SELECT
 						*,
 						RANK() OVER (
@@ -62,12 +71,14 @@
 						InterestTopic.term NOT IN (:terms) AND
 						InterestTopic.termType = :termType AND
 						InterestTopic.topic IN (:topics)
-				) AS TMP
+				) AS TMP1
+				WHERE
+					rank > :termRank1
+				ORDER BY
+					topicWeight DESC, termWeight DESC
+			) AS TMP2
 			WHERE
-				rank > :termRank1 AND
-				rank <= :termRank2
-			ORDER BY
-				topicWeight DESC, termWeight DESC
+				rowNumber <= :termRank2
 		]]>
 	</entry>
 </properties>
