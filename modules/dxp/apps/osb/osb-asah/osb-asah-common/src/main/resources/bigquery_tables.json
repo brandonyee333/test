@@ -1214,7 +1214,11 @@
 				"name": "recordedDate",
 				"type": "DATE"
 			}
-		]
+		],
+		"timePartitioning": {
+			"field": "recordedDate",
+			"type": "DAY"
+		}
 	},
 	"individual": {
 		"clusteringFields": [
