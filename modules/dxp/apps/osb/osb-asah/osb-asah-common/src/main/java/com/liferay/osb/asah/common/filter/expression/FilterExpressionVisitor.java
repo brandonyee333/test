@@ -443,6 +443,8 @@ public class FilterExpressionVisitor
 			fieldName = _fieldMappers.get(fieldName);
 
 			if (fieldName.contains(".")) {
+				_checkReferencedTables(fieldName);
+
 				return DSL.field(fieldName);
 			}
 		}
@@ -464,6 +466,8 @@ public class FilterExpressionVisitor
 		String qualifiedFieldName = _fieldMappers.getOrDefault(
 			_filterType.getName() + "." + fieldName,
 			_getTableNamespace() + fieldName);
+
+		_checkReferencedTables(qualifiedFieldName);
 
 		return DSL.field(qualifiedFieldName);
 	}
@@ -595,6 +599,16 @@ public class FilterExpressionVisitor
 		String string = stringLiteralContext.getText();
 
 		return DSL.val(StringUtil.unquoteAndDecodeInnerQuotes(string));
+	}
+
+	private void _checkReferencedTables(String fieldName) {
+		for (String tableName : _tableReferences.values()) {
+			if (fieldName.startsWith(tableName)) {
+				_referencedTableNames.add(tableName);
+
+				break;
+			}
+		}
 	}
 
 	private Object _getIndividualIdsInOrganizationCondition(
