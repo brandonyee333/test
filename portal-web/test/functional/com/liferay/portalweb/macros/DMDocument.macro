@@ -579,9 +579,16 @@ definition {
 					locator1 = "AssetCategorization#TAGS_FIELD",
 					value1 = ${tagName});
 
-				AssertClick(
-					locator1 = "Button#ADD_TAGS",
-					value1 = "Add");
+				if (IsElementPresent(key_tagName = ${tagName}, locator1 = "AssetCategorization#TAG_AUTO_COMPLETE_SPECIFIC")) {
+					Click(
+						key_tagName = ${tagName},
+						locator1 = "AssetCategorization#TAG_AUTO_COMPLETE_SPECIFIC");
+				}
+				else {
+					AssertClick(
+						locator1 = "Button#ADD_TAGS",
+						value1 = "Add");
+				}
 			}
 		}
 
