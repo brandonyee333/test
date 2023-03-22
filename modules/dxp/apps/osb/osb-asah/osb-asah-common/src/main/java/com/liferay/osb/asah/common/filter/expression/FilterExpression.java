@@ -87,15 +87,13 @@ public class FilterExpression {
 			FilterExpressionParser.ExpressionContext expressionContext =
 				filterExpressionParser.expression();
 
-			FilterExpressionVisitor filterExpressionVisitor =
-				new FilterExpressionVisitor(_filterType);
+			FilterExpressionConditionVisitor filterExpressionConditionVisitor =
+				new FilterExpressionConditionVisitor(_filterType);
 
 			_condition = (Condition)expressionContext.accept(
-				filterExpressionVisitor);
-			_referencedObjectIds =
-				filterExpressionVisitor.getReferencedObjectIds();
+				filterExpressionConditionVisitor);
 			_referencedTableNames =
-				filterExpressionVisitor.getReferencedTableNames();
+				filterExpressionConditionVisitor.getReferencedTableNames();
 		}
 		catch (ParseCancellationException parseCancellationException) {
 			throw new FilterExpressionParserException(

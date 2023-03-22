@@ -52,19 +52,17 @@ import org.jooq.impl.DSL;
  * @author Ivica Cardic
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class FilterExpressionVisitor
+public class FilterExpressionConditionVisitor
 	extends FilterExpressionBaseVisitor<Object> {
 
-	public FilterExpressionVisitor(FilterExpression.FilterType filterType) {
+	public FilterExpressionConditionVisitor(
+		FilterExpression.FilterType filterType) {
+
 		_filterType = filterType;
 
 		if ((filterType != null) && _tableReferences.containsKey(filterType)) {
 			_referencedTableNames.add(_tableReferences.get(filterType));
 		}
-	}
-
-	public Map<String, Set<String>> getReferencedObjectIds() {
-		return _referencedObjectIds;
 	}
 
 	public Set<String> getReferencedTableNames() {
@@ -1053,8 +1051,6 @@ public class FilterExpressionVisitor
 			}
 		};
 	private final FilterExpression.FilterType _filterType;
-	private final Map<String, Set<String>> _referencedObjectIds =
-		new HashMap<>();
 	private final Set<String> _referencedTableNames = new HashSet<>();
 	private final Map<FilterExpression.FilterType, String> _tableReferences =
 		new HashMap<FilterExpression.FilterType, String>() {
