@@ -700,6 +700,7 @@ public class SegmentRepositoryImpl
 		return new HashMap<String, String>() {
 			{
 				put("author/name", "authorName");
+				put("fields/dateModified/value", "dateModified");
 			}
 		};
 	}
