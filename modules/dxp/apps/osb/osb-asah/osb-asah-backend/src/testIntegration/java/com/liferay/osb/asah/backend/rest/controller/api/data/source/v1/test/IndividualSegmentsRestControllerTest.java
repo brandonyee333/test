@@ -297,7 +297,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assertions.assertEquals(0L, identitiesCount);
+		Assertions.assertEquals(6L, identitiesCount);
 
 		long knownIdentitiesCount = Optional.ofNullable(
 			segmentDTO.getKnownIdentitiesCount()
@@ -305,7 +305,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assertions.assertEquals(0L, knownIdentitiesCount);
+		Assertions.assertEquals(6L, knownIdentitiesCount);
 	}
 
 	@RepositoryResource(
