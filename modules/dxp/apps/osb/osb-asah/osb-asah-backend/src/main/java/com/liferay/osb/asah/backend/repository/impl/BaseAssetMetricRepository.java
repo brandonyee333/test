@@ -645,11 +645,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).as(
 				dslContext.selectDistinct(
 					DSL.field(
-						"membership.identityId"
-					).as(
-						"identityId"
-					),
-					DSL.field(
 						"membership.individualId"
 					).as(
 						"individualId"
@@ -742,7 +737,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				"segmentedIndividuals"
 			).as(
 				dslContext.select(
-					DSL.field("membership.identityId"),
 					DSL.field("membership.individualId"),
 					DSL.field("membership.segmentId")
 				).from(
