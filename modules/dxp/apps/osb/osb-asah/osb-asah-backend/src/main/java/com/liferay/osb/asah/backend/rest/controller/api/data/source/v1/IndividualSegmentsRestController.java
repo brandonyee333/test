@@ -24,11 +24,17 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AssetDog;
+import com.liferay.osb.asah.common.dog.BQAssetDog;
 import com.liferay.osb.asah.common.dog.BQFieldMappingDog;
+import com.liferay.osb.asah.common.dog.BQGroupDog;
 import com.liferay.osb.asah.common.dog.BQIdentityDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
+import com.liferay.osb.asah.common.dog.BQOrganizationDog;
+import com.liferay.osb.asah.common.dog.BQRoleDog;
+import com.liferay.osb.asah.common.dog.BQTeamDog;
+import com.liferay.osb.asah.common.dog.BQUserDog;
+import com.liferay.osb.asah.common.dog.BQUserGroupDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
@@ -398,22 +404,46 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		jsonObject.put(
 			"assets",
 			JSONUtil.toJSONArray(
-				_assetDog.getAssets(segment.getReferencedAssetIds()),
-				asset -> objectMapper.convertValue(asset, JSONObject.class)));
-
+				_bqAssetDog.getBQAssets(segment.getReferencedAssetIds()),
+				this::_toJSONObject));
 		jsonObject.put(
 			"field-mappings",
 			JSONUtil.toJSONArray(
 				_bqFieldMappingDog.getBQFieldMappings(
 					segment.getReferencedFieldMappingFieldNames()),
-				bqFieldMapping -> objectMapper.convertValue(
-					bqFieldMapping, JSONObject.class)));
-		jsonObject.put("groups", Collections.emptyList());
-		jsonObject.put("organizations", Collections.emptyList());
-		jsonObject.put("roles", Collections.emptyList());
-		jsonObject.put("teams", Collections.emptyList());
-		jsonObject.put("user-groups", Collections.emptyList());
-		jsonObject.put("users", Collections.emptyList());
+				this::_toJSONObject));
+		jsonObject.put(
+			"groups",
+			JSONUtil.toJSONArray(
+				_bqGroupDog.getBQGroups(segment.getReferencedGroupIds()),
+				this::_toJSONObject));
+		jsonObject.put(
+			"organizations",
+			JSONUtil.toJSONArray(
+				_bqOrganizationDog.getBQOrganizations(
+					segment.getReferencedOrganizationIds()),
+				this::_toJSONObject));
+		jsonObject.put(
+			"roles",
+			JSONUtil.toJSONArray(
+				_bqRoleDog.getBQRoles(segment.getReferencedRoleIds()),
+				this::_toJSONObject));
+		jsonObject.put(
+			"teams",
+			JSONUtil.toJSONArray(
+				_bqTeamDog.getBQTeams(segment.getReferencedTeamIds()),
+				this::_toJSONObject));
+		jsonObject.put(
+			"user-groups",
+			JSONUtil.toJSONArray(
+				_bqUserGroupDog.getBQUserGroups(
+					segment.getReferencedUserGroupIds()),
+				this::_toJSONObject));
+		jsonObject.put(
+			"users",
+			JSONUtil.toJSONArray(
+				_bqUserDog.getBQUsers(segment.getReferencedUserIds()),
+				this::_toJSONObject));
 
 		return jsonObject;
 	}
@@ -477,6 +507,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			individualsPage.getTotalPages());
 	}
 
+	private <T> JSONObject _toJSONObject(T value) throws Exception {
+		return objectMapper.convertValue(value, JSONObject.class);
+	}
+
 	private PageDTO<TransformationDTO> _toTransformationDTOPageDTO(
 		String transformationKey, Page<Transformation> transformations) {
 
@@ -500,15 +534,33 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		IndividualSegmentsRestController.class);
 
 	@Autowired
-	private AssetDog _assetDog;
+	private BQAssetDog _bqAssetDog;
 
 	@Autowired
 	private BQFieldMappingDog _bqFieldMappingDog;
+
+	@Autowired
+	private BQGroupDog _bqGroupDog;
 
 	@Autowired
 	private BQIdentityDog _bqIdentityDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
+	private BQOrganizationDog _bqOrganizationDog;
+
+	@Autowired
+	private BQRoleDog _bqRoleDog;
+
+	@Autowired
+	private BQTeamDog _bqTeamDog;
+
+	@Autowired
+	private BQUserDog _bqUserDog;
+
+	@Autowired
+	private BQUserGroupDog _bqUserGroupDog;
 
 }

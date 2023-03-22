@@ -82,7 +82,7 @@ public class SegmentDTO {
 		_modifiedDate = segment.getModifiedDate();
 		_name = segment.getName();
 		_referencedAssetDataSourceIds = SetUtil.map(
-			segment.getReferencedAssetDataSourceIds(), String::valueOf);
+			segment.getReferencedDataSourceIds(), String::valueOf);
 		_referencedFieldMappingFieldNames = SetUtil.map(
 			segment.getReferencedFieldMappingFieldNames(), String::valueOf);
 		_scope = segment.getScope();
