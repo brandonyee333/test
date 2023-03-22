@@ -25,16 +25,11 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
@@ -77,12 +72,21 @@ public class Segment implements Persistable<Long> {
 				_includeAnonymousUsers, segment._includeAnonymousUsers) &&
 			Objects.equals(_modifiedDate, segment._modifiedDate) &&
 			Objects.equals(_name, segment._name) &&
+			Objects.equals(_referencedAssetIds, segment._referencedAssetIds) &&
 			Objects.equals(
-				_referencedAssetDataSourceIds,
-				segment._referencedAssetDataSourceIds) &&
+				_referencedDataSourceIds, segment._referencedDataSourceIds) &&
 			Objects.equals(
 				_referencedFieldMappingFieldNames,
 				segment._referencedFieldMappingFieldNames) &&
+			Objects.equals(_referencedGroupIds, segment._referencedGroupIds) &&
+			Objects.equals(
+				_referencedOrganizationIds,
+				segment._referencedOrganizationIds) &&
+			Objects.equals(_referencedRoleIds, segment._referencedRoleIds) &&
+			Objects.equals(_referencedTeamIds, segment._referencedTeamIds) &&
+			Objects.equals(
+				_referencedUserGroupIds, segment._referencedUserGroupIds) &&
+			Objects.equals(_referencedUserIds, segment._referencedUserIds) &&
 			Objects.equals(_scope, segment._scope) &&
 			Objects.equals(_state, segment._state) &&
 			Objects.equals(_status, segment._status) &&
@@ -179,31 +183,50 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	@JsonSerialize(contentUsing = ToStringSerializer.class)
-	public Set<Long> getReferencedAssetDataSourceIds() {
-		return _referencedAssetDataSourceIds;
-	}
-
-	public Set<Long> getReferencedAssetIds() {
-		if (StringUtils.isBlank(_filterString)) {
-			return Collections.emptySet();
-		}
-
-		Matcher matcher = _pattern.matcher(_filterString);
-
-		Set<Long> assetsIds = new HashSet<>();
-
-		while (matcher.find()) {
-			assetsIds.add(Long.parseLong(matcher.group()));
-		}
-
-		return assetsIds;
+	public Set<String> getReferencedAssetIds() {
+		return _referencedAssetIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	@JsonAlias("referencedAssetDataSourceIds")
 	@JsonSerialize(contentUsing = ToStringSerializer.class)
+	public Set<Long> getReferencedDataSourceIds() {
+		return _referencedDataSourceIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Set<String> getReferencedFieldMappingFieldNames() {
 		return _referencedFieldMappingFieldNames;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<String> getReferencedGroupIds() {
+		return _referencedGroupIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<String> getReferencedOrganizationIds() {
+		return _referencedOrganizationIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<String> getReferencedRoleIds() {
+		return _referencedRoleIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<String> getReferencedTeamIds() {
+		return _referencedTeamIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<String> getReferencedUserGroupIds() {
+		return _referencedUserGroupIds;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Set<String> getReferencedUserIds() {
+		return _referencedUserIds;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -233,8 +256,11 @@ public class Segment implements Persistable<Long> {
 		return Objects.hash(
 			_author, _channelId, _createDate, _filterString, _filterMetadata,
 			_id, _includeAnonymousUsers, _modifiedDate, _name,
-			_referencedAssetDataSourceIds, _referencedFieldMappingFieldNames,
-			_scope, _state, _status, _type);
+			_referencedAssetIds, _referencedDataSourceIds,
+			_referencedFieldMappingFieldNames, _referencedGroupIds,
+			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
+			_referencedUserGroupIds, _referencedUserIds, _scope, _state,
+			_status, _type);
 	}
 
 	@JsonIgnore
@@ -311,16 +337,44 @@ public class Segment implements Persistable<Long> {
 		_name = name;
 	}
 
-	public void setReferencedAssetDataSourceIds(
-		Set<Long> referencedAssetDataSourceIds) {
+	public void setReferencedAssetIds(Set<String> referencedAssetIds) {
+		_referencedAssetIds = referencedAssetIds;
+	}
 
-		_referencedAssetDataSourceIds = referencedAssetDataSourceIds;
+	public void setReferencedDataSourceIds(Set<Long> referencedDataSourceIds) {
+		_referencedDataSourceIds = referencedDataSourceIds;
 	}
 
 	public void setReferencedFieldMappingFieldNames(
 		Set<String> referencedFieldMappingFieldNames) {
 
 		_referencedFieldMappingFieldNames = referencedFieldMappingFieldNames;
+	}
+
+	public void setReferencedGroupIds(Set<String> referencedGroupIds) {
+		_referencedGroupIds = referencedGroupIds;
+	}
+
+	public void setReferencedOrganizationIds(
+		Set<String> referencedOrganizationIds) {
+
+		_referencedOrganizationIds = referencedOrganizationIds;
+	}
+
+	public void setReferencedRoleIds(Set<String> referencedRoleIds) {
+		_referencedRoleIds = referencedRoleIds;
+	}
+
+	public void setReferencedTeamIds(Set<String> referencedTeamIds) {
+		_referencedTeamIds = referencedTeamIds;
+	}
+
+	public void setReferencedUserGroupIds(Set<String> referencedUserGroupIds) {
+		_referencedUserGroupIds = referencedUserGroupIds;
+	}
+
+	public void setReferencedUserIds(Set<String> referencedUserIds) {
+		_referencedUserIds = referencedUserIds;
 	}
 
 	public void setScope(String scope) {
@@ -354,9 +408,6 @@ public class Segment implements Persistable<Long> {
 		_author = author;
 	}
 
-	private static final Pattern _pattern = Pattern.compile(
-		"(?<=\\#)([0-9]+)(?=\')");
-
 	@Transient
 	private Author _author;
 
@@ -388,10 +439,31 @@ public class Segment implements Persistable<Long> {
 	private String _name;
 
 	@Transient
-	private Set<Long> _referencedAssetDataSourceIds = new HashSet<>();
+	private Set<String> _referencedAssetIds = new HashSet<>();
+
+	@Transient
+	private Set<Long> _referencedDataSourceIds = new HashSet<>();
 
 	@Transient
 	private Set<String> _referencedFieldMappingFieldNames = new HashSet<>();
+
+	@Transient
+	private Set<String> _referencedGroupIds = new HashSet<>();
+
+	@Transient
+	private Set<String> _referencedOrganizationIds = new HashSet<>();
+
+	@Transient
+	private Set<String> _referencedRoleIds = new HashSet<>();
+
+	@Transient
+	private Set<String> _referencedTeamIds = new HashSet<>();
+
+	@Transient
+	private Set<String> _referencedUserGroupIds = new HashSet<>();
+
+	@Transient
+	private Set<String> _referencedUserIds = new HashSet<>();
 
 	@Transient
 	private String _scope;

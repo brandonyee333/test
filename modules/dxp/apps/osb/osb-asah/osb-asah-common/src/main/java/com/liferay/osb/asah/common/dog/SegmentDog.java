@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
+import com.liferay.osb.asah.common.filter.expression.FilterExpressionReferencedObjectsVisitor;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -421,26 +422,53 @@ public class SegmentDog {
 			return;
 		}
 
-		FilterExpression filterExpression = new FilterExpression(
-			segment.getFilter(), FilterExpression.FilterType.INDIVIDUALS);
+		FilterExpressionReferencedObjectsVisitor
+			filterExpressionReferencedObjectsVisitor =
+				new FilterExpressionReferencedObjectsVisitor();
 
-		// TODO Move _getReferencedObjectIds logic to FilterExpression
+		new FilterExpression(
+			segment.getFilter(), filterExpressionReferencedObjectsVisitor);
 
 		Map<String, Set<String>> referencedObjectIds =
-			filterExpression.getReferencedObjectIds();
+			filterExpressionReferencedObjectsVisitor.getReferencedObjectIds();
 
 		if (referencedObjectIds.isEmpty()) {
 			return;
 		}
 
-		segment.setReferencedAssetDataSourceIds(
+		segment.setReferencedAssetIds(
 			SetUtil.map(
-				referencedObjectIds.get("referencedAssetDataSourceIds"),
+				referencedObjectIds.get("referencedAssetIds"),
+				String::valueOf));
+		segment.setReferencedDataSourceIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedDataSourceIds"),
 				Long::valueOf));
 		segment.setReferencedFieldMappingFieldNames(
 			SetUtil.map(
 				referencedObjectIds.get("referencedFieldMappingFieldNames"),
 				String::valueOf));
+		segment.setReferencedGroupIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedGroupIds"),
+				String::valueOf));
+		segment.setReferencedOrganizationIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedOrganizationIds"),
+				String::valueOf));
+		segment.setReferencedRoleIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedRoleIds"), String::valueOf));
+		segment.setReferencedTeamIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedTeamIds"), String::valueOf));
+		segment.setReferencedUserGroupIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedUserGroupIds"),
+				String::valueOf));
+		segment.setReferencedUserIds(
+			SetUtil.map(
+				referencedObjectIds.get("referencedUserIds"), String::valueOf));
 	}
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {

@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.liferay.osb.asah.common.util.BeanUtils;
 
 import java.util.Date;
@@ -67,6 +69,7 @@ public class BQAsset {
 		return _assetId;
 	}
 
+	@JsonProperty("name")
 	public String getAssetTitle() {
 		return _assetTitle;
 	}
