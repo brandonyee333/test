@@ -16,8 +16,8 @@ package com.liferay.osb.asah.common.filter.expression;
 
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionLexer;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
+import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionVisitor;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,6 +46,40 @@ public class FilterExpression {
 
 	public FilterExpression(String filterExpressionString, boolean segment) {
 		this(filterExpressionString, null, segment);
+	}
+
+	public FilterExpression(
+		String filterExpressionString,
+		FilterExpressionVisitor<?> filterExpressionVisitor) {
+
+		Assert.notNull(
+			filterExpressionString, "Filter expression string is null");
+
+		try {
+			ErrorListener errorListener = new ErrorListener();
+
+			FilterExpressionLexer filterExpressionLexer =
+				new FilterExpressionLexer(
+					new ANTLRInputStream(filterExpressionString));
+
+			filterExpressionLexer.addErrorListener(errorListener);
+
+			FilterExpressionParser filterExpressionParser =
+				new FilterExpressionParser(
+					new CommonTokenStream(filterExpressionLexer));
+
+			filterExpressionParser.setErrorHandler(new BailErrorStrategy());
+
+			FilterExpressionParser.ExpressionContext expressionContext =
+				filterExpressionParser.expression();
+
+			expressionContext.accept(filterExpressionVisitor);
+		}
+		catch (ParseCancellationException parseCancellationException) {
+			throw new FilterExpressionParserException(
+				"Unable to parse " + filterExpressionString,
+				parseCancellationException);
+		}
 	}
 
 	public FilterExpression(
@@ -104,10 +138,6 @@ public class FilterExpression {
 
 	public Condition getCondition() {
 		return _condition;
-	}
-
-	public Map<String, Set<String>> getReferencedObjectIds() {
-		return _referencedObjectIds;
 	}
 
 	public Set<String> getReferencedTableNames() {
@@ -223,8 +253,7 @@ public class FilterExpression {
 
 	private Condition _condition;
 	private FilterType _filterType;
-	private Map<String, Set<String>> _referencedObjectIds;
-	private final Set<String> _referencedTableNames;
+	private Set<String> _referencedTableNames;
 
 	private static class ErrorListener extends BaseErrorListener {
 
