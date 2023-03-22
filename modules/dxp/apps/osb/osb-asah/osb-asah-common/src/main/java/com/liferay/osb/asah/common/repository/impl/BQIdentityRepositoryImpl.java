@@ -123,7 +123,7 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public Optional<String> getIndividualId(String id) {
+	public Optional<String> getIndividualIdOptional(String id) {
 		return _queryExecutor.queryForObject(
 			recordMap -> (String)recordMap.get("individualId"),
 			_dslContext.select(

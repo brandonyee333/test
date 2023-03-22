@@ -34,7 +34,7 @@ public class BQIdentityDog {
 
 	public String getIndividualId(String id) {
 		Optional<String> individualIdOptional =
-			_bqIdentityRepository.getIndividualId(id);
+			_bqIdentityRepository.getIndividualIdOptional(id);
 
 		return individualIdOptional.orElse(null);
 	}

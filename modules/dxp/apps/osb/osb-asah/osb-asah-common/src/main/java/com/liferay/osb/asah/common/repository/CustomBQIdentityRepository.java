@@ -36,7 +36,7 @@ public interface CustomBQIdentityRepository {
 
 	public List<String> getIdentityIds(String individualId);
 
-	public Optional<String> getIndividualId(String id);
+	public Optional<String> getIndividualIdOptional(String id);
 
 	public long getIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
