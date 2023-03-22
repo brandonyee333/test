@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,10 @@ public class BQUserDog extends BaseBQDXPEntityDog {
 			bqUsers, pageRequest,
 			() -> _bqUserRepository.countByDataSourceIdsAndKeywords(
 				dataSourceIds, keywords));
+	}
+
+	public List<BQUser> getBQUsers(Collection<String> ids) {
+		return _bqUserRepository.findByIdIn(ids);
 	}
 
 	public List<BQUser> getBQUsers(

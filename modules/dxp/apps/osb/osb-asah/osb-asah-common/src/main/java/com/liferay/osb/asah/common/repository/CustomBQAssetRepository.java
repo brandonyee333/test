@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQAsset;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -24,6 +25,8 @@ import org.springframework.data.domain.Pageable;
  * @author Ivica Cardic
  */
 public interface CustomBQAssetRepository {
+
+	public List<BQAsset> findByIdIn(Collection<String> ids);
 
 	public List<BQAsset> searchBQAssets(String filterString, Pageable pageable);
 

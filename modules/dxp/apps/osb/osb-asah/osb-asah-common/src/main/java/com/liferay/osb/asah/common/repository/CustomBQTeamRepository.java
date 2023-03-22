@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQTeam;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,8 @@ public interface CustomBQTeamRepository {
 		List<Long> dataSourceIds, String keywords);
 
 	public void deleteById(String id);
+
+	public List<BQTeam> findByIdIn(Collection<String> ids);
 
 	public BQTeam insert(BQTeam bqTeam);
 

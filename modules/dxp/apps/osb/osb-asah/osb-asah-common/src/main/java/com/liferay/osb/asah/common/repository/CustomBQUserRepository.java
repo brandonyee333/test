@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQUser;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ public interface CustomBQUserRepository {
 
 	public List<BQUser> findByFields(
 		Map<String, Object> fields, Pageable pageable);
+
+	public List<BQUser> findByIdIn(Collection<String> ids);
 
 	public BQUser insert(BQUser bqUser);
 

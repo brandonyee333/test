@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQRole;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQRoleRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class BQRoleDog extends BaseBQDXPEntityDog {
 			pageRequest,
 			() -> _bqRoleRepository.countByDataSourceIdsAndKeywords(
 				dataSourceIds, keywords));
+	}
+
+	public List<BQRole> getBQRoles(Collection<String> ids) {
+		return _bqRoleRepository.findByIdIn(ids);
 	}
 
 	@Autowired

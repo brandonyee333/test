@@ -49,6 +49,8 @@ public interface CustomBQOrganizationRepository {
 
 	public Optional<BQOrganization> findById(String bqOrganizationId);
 
+	public List<BQOrganization> findByIdIn(Collection<String> ids);
+
 	@Cacheable
 	public List<BQOrganization> findByName(
 		@Nullable String name, Pageable pageable);

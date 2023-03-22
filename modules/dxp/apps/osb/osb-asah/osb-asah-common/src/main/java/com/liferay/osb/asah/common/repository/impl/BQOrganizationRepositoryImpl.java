@@ -162,6 +162,21 @@ public class BQOrganizationRepositoryImpl
 	}
 
 	@Override
+	public List<BQOrganization> findByIdIn(Collection<String> ids) {
+		return _queryExecutor.queryForList(
+			BQOrganization::new,
+			_dslContext.selectFrom(
+				"BQOrganization"
+			).where(
+				DSL.field(
+					"id"
+				).in(
+					ids
+				)
+			));
+	}
+
+	@Override
 	public List<BQOrganization> findByName(
 		@Nullable String name, Pageable pageable) {
 

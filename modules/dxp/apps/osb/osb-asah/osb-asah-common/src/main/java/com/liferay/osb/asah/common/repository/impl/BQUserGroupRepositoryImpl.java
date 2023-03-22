@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.repository.CustomBQUserGroupRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -95,6 +96,21 @@ public class BQUserGroupRepositoryImpl
 					"id"
 				).eq(
 					id
+				)
+			));
+	}
+
+	@Override
+	public List<BQUserGroup> findByIdIn(Collection<String> ids) {
+		return _queryExecutor.queryForList(
+			BQUserGroup::new,
+			_dslContext.selectFrom(
+				"BQUserGroup"
+			).where(
+				DSL.field(
+					"id"
+				).in(
+					ids
 				)
 			));
 	}

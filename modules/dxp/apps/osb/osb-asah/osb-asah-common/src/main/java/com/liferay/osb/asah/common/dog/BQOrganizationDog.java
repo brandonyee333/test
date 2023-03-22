@@ -91,6 +91,10 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 				dataSourceIds, name));
 	}
 
+	public List<BQOrganization> getBQOrganizations(Collection<String> ids) {
+		return _bqOrganizationRepository.findByIdIn(ids);
+	}
+
 	public List<BQOrganization> searchBQOrganizations(
 		String filterString, int page, int size) {
 

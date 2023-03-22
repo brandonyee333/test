@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQGroup;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQGroupRepository;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,10 @@ public class BQGroupDog extends BaseBQDXPEntityDog {
 			pageRequest,
 			() -> _bqGroupRepository.countByDataSourceIdsAndKeywords(
 				dataSourceIds, keywords));
+	}
+
+	public List<BQGroup> getBQGroups(Collection<String> ids) {
+		return _bqGroupRepository.findByIdIn(ids);
 	}
 
 	@Autowired

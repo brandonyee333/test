@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQUserGroup;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public interface CustomBQUserGroupRepository {
 	public void deleteById(String id);
 
 	public Optional<BQUserGroup> findById(String id);
+
+	public List<BQUserGroup> findByIdIn(Collection<String> ids);
 
 	public BQUserGroup insert(BQUserGroup bqUserGroup);
 

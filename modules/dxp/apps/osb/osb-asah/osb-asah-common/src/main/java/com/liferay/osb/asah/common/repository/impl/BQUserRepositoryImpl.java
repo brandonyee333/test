@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.BQSQLUtil;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +113,21 @@ public class BQUserRepositoryImpl
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
+			));
+	}
+
+	@Override
+	public List<BQUser> findByIdIn(Collection<String> ids) {
+		return _queryExecutor.queryForList(
+			BQUser::new,
+			_dslContext.selectFrom(
+				"BQUser"
+			).where(
+				DSL.field(
+					"id"
+				).in(
+					ids
+				)
 			));
 	}
 

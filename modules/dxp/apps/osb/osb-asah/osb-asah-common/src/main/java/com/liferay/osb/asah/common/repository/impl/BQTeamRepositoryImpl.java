@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.repository.CustomBQTeamRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +79,21 @@ public class BQTeamRepositoryImpl
 					"id"
 				).eq(
 					id
+				)
+			));
+	}
+
+	@Override
+	public List<BQTeam> findByIdIn(Collection<String> ids) {
+		return _queryExecutor.queryForList(
+			BQTeam::new,
+			_dslContext.selectFrom(
+				"BQTeam"
+			).where(
+				DSL.field(
+					"id"
+				).in(
+					ids
 				)
 			));
 	}

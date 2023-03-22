@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQGroup;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,8 @@ public interface CustomBQGroupRepository {
 		List<Long> dataSourceIds, @Nullable String keywords);
 
 	public void deleteById(String id);
+
+	public List<BQGroup> findByIdIn(Collection<String> ids);
 
 	public BQGroup insert(BQGroup bqGroup);
 

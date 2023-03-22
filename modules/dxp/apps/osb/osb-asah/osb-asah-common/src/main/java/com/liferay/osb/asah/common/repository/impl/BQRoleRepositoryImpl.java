@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.repository.CustomBQRoleRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -78,6 +79,21 @@ public class BQRoleRepositoryImpl
 					"id"
 				).eq(
 					id
+				)
+			));
+	}
+
+	@Override
+	public List<BQRole> findByIdIn(Collection<String> ids) {
+		return _queryExecutor.queryForList(
+			BQRole::new,
+			_dslContext.selectFrom(
+				"BQRole"
+			).where(
+				DSL.field(
+					"id"
+				).in(
+					ids
 				)
 			));
 	}

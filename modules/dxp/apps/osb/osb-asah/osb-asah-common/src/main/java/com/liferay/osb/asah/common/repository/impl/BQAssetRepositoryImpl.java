@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.repository.CustomBQAssetRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -40,6 +41,21 @@ public class BQAssetRepositoryImpl
 
 		_dslContext = dslContext;
 		_queryExecutor = queryExecutor;
+	}
+
+	@Override
+	public List<BQAsset> findByIdIn(Collection<String> ids) {
+		return _queryExecutor.queryForList(
+			BQAsset::new,
+			_dslContext.selectFrom(
+				"BQAsset"
+			).where(
+				DSL.field(
+					"id"
+				).in(
+					ids
+				)
+			));
 	}
 
 	@Override

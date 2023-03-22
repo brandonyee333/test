@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQRole;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -33,6 +34,8 @@ public interface CustomBQRoleRepository {
 		List<Long> dataSourceIds, String keywords);
 
 	public void deleteById(String id);
+
+	public List<BQRole> findByIdIn(Collection<String> ids);
 
 	public BQRole insert(BQRole bqRole);
 
