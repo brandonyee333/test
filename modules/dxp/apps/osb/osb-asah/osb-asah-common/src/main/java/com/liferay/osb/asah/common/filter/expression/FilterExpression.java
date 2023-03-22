@@ -55,31 +55,10 @@ public class FilterExpression {
 		Assert.notNull(
 			filterExpressionString, "Filter expression string is null");
 
-		try {
-			ErrorListener errorListener = new ErrorListener();
+		FilterExpressionParser.ExpressionContext expressionContext = _parse(
+			filterExpressionString);
 
-			FilterExpressionLexer filterExpressionLexer =
-				new FilterExpressionLexer(
-					new ANTLRInputStream(filterExpressionString));
-
-			filterExpressionLexer.addErrorListener(errorListener);
-
-			FilterExpressionParser filterExpressionParser =
-				new FilterExpressionParser(
-					new CommonTokenStream(filterExpressionLexer));
-
-			filterExpressionParser.setErrorHandler(new BailErrorStrategy());
-
-			FilterExpressionParser.ExpressionContext expressionContext =
-				filterExpressionParser.expression();
-
-			expressionContext.accept(filterExpressionVisitor);
-		}
-		catch (ParseCancellationException parseCancellationException) {
-			throw new FilterExpressionParserException(
-				"Unable to parse " + filterExpressionString,
-				parseCancellationException);
-		}
+		expressionContext.accept(filterExpressionVisitor);
 	}
 
 	public FilterExpression(
@@ -94,6 +73,9 @@ public class FilterExpression {
 		Assert.notNull(
 			filterExpressionString, "Filter expression string is null");
 
+		FilterExpressionParser.ExpressionContext expressionContext = _parse(
+			_rewriteFilterExpression(filterExpressionString));
+
 		if (filterType != null) {
 			_filterType = filterType;
 		}
@@ -102,38 +84,15 @@ public class FilterExpression {
 			_filterType = FilterType.INDIVIDUALS;
 		}
 
-		try {
-			ErrorListener errorListener = new ErrorListener();
+		FilterExpressionConditionVisitor filterExpressionConditionVisitor =
+			new FilterExpressionConditionVisitor(_filterType);
 
-			FilterExpressionLexer filterExpressionLexer =
-				new FilterExpressionLexer(
-					new ANTLRInputStream(
-						_rewriteFilterExpression(filterExpressionString)));
+		expressionContext.accept(filterExpressionConditionVisitor);
 
-			filterExpressionLexer.addErrorListener(errorListener);
-
-			FilterExpressionParser filterExpressionParser =
-				new FilterExpressionParser(
-					new CommonTokenStream(filterExpressionLexer));
-
-			filterExpressionParser.setErrorHandler(new BailErrorStrategy());
-
-			FilterExpressionParser.ExpressionContext expressionContext =
-				filterExpressionParser.expression();
-
-			FilterExpressionConditionVisitor filterExpressionConditionVisitor =
-				new FilterExpressionConditionVisitor(_filterType);
-
-			_condition = (Condition)expressionContext.accept(
-				filterExpressionConditionVisitor);
-			_referencedTableNames =
-				filterExpressionConditionVisitor.getReferencedTableNames();
-		}
-		catch (ParseCancellationException parseCancellationException) {
-			throw new FilterExpressionParserException(
-				"Unable to parse " + filterExpressionString,
-				parseCancellationException);
-		}
+		_condition = (Condition)expressionContext.accept(
+			filterExpressionConditionVisitor);
+		_referencedTableNames =
+			filterExpressionConditionVisitor.getReferencedTableNames();
 	}
 
 	public Condition getCondition() {
@@ -187,6 +146,33 @@ public class FilterExpression {
 
 		private final String _name;
 
+	}
+
+	private FilterExpressionParser.ExpressionContext _parse(
+		String filterExpressionString) {
+
+		try {
+			ErrorListener errorListener = new ErrorListener();
+
+			FilterExpressionLexer filterExpressionLexer =
+				new FilterExpressionLexer(
+					new ANTLRInputStream(filterExpressionString));
+
+			filterExpressionLexer.addErrorListener(errorListener);
+
+			FilterExpressionParser filterExpressionParser =
+				new FilterExpressionParser(
+					new CommonTokenStream(filterExpressionLexer));
+
+			filterExpressionParser.setErrorHandler(new BailErrorStrategy());
+
+			return filterExpressionParser.expression();
+		}
+		catch (ParseCancellationException parseCancellationException) {
+			throw new FilterExpressionParserException(
+				"Unable to parse " + filterExpressionString,
+				parseCancellationException);
+		}
 	}
 
 	private String _rewriteFilterExpression(String filterExpressionString) {
