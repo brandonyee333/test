@@ -6,19 +6,23 @@ import {MemberProps} from './MemberTable';
 
 interface MemberTableRowProps {
 	member: MemberProps;
+	onSelectMemberChange: (value: MemberProps | undefined) => void;
 }
 
-export function MemberTableRow({member}: MemberTableRowProps) {
+export function MemberTableRow({member, onSelectMemberChange}: MemberTableRowProps) {
 	const {
 		email,
 		name,
-		role
+		role,
+		dateCreated,
+		lastLoginDate,
+		userId
 	} = member;
 
 	return (
 		<ClayTable.Row>
 			<ClayTable.Cell>
-				<div className="member-table-row-name-container">
+				<div className="member-table-row-name-container" onClick={() => onSelectMemberChange(member)}>
 					<img
 						alt="Member Image"
 						className="member-table-row-name-logo"

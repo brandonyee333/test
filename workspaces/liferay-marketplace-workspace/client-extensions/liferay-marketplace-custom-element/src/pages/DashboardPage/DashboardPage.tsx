@@ -14,9 +14,11 @@ import {initialDashboardNavigationItems} from './DashboardPageUtil';
 
 import './DashboardPage.scss';
 import { MemberProps, MemberTable } from '../../components/MemberTable/MemberTable';
+import { MemberProfile } from '../../components/MemberProfile/MemberProfile';
 
 export function DashboardPage() {
 	const [selectedApp, setSelectedApp] = useState<AppProps>();
+	const [selectedMember, setSelectedMember] = useState<MemberProps>();
 	const [selectedNavigationItem, setSelectedNavigationItem] = useState('Apps');
 	const [apps, setApps] = useState<AppProps[]>(Array<AppProps>());
 	const [members, setMembers] = useState<MemberProps[]>(Array<MemberProps>());
@@ -143,21 +145,14 @@ export function DashboardPage() {
 
 				const accountsListResponse = await getAccounts();
 
-				const accountIds : number[] = [];
-
-				accountsListResponse.items.map((account: any) => {
-					accountIds.push(account.id);
-				})
-
-				const accountsList = await getAccountInformationList(accountIds);
-
-				const membersList = accountsList.map((account: any) => {
-					const accountItems = account.items[0];
-
+				const membersList = accountsListResponse.items.map((account: any) => {
 					return {
-						name: accountItems.name,
-						email: accountItems.emailAddress,
-						role: accountItems.jobTitle
+						name: account.name,
+						email: account.emailAddress,
+						role: account.jobTitle,
+						dateCreated: account.dateCreated,
+						lastLoginDate: account.lastLoginDate,
+						userId: account.id
 					}
 				})
 
@@ -208,23 +203,38 @@ export function DashboardPage() {
 				)}
 
 				{selectedNavigationItem === 'Members' && (
-					<div className="members-page-body">
-						<div className="members-page-body-header-container">
+					selectedMember ? (
+						<div className="member-profile-body">
 							<Header
-								description="Manage users in your development team and invite new ones"
-								title="Members"
+								description={selectedMember.email}
+								title={selectedMember.name}
 							/>
 
-							<a href="/create-new-member">
-								<button className="member-page-body-header-button">
-									+ New Member
-								</button>
-							</a>
-
-							<MemberTable members={members} loading={loading}/>
+							<MemberProfile
+								member={selectedMember}
+							/>
 						</div>
-					</div>
+					) : (
+						<div className="members-page-body">
+							<div className="members-page-body-header-container">
+								<Header
+									description="Manage users in your development team and invite new ones"
+									title="Members"
+								/>
+
+								<a href="/create-new-member">
+									<button className="member-page-body-header-button">
+										+ New Member
+									</button>
+								</a>
+
+								<MemberTable members={members} loading={loading} onSelectMemberChange={setSelectedMember}/>
+							</div>
+						</div>
+					)
 				)}
+
+
 
 			</div>
 			<Footer />

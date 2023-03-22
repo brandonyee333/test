@@ -174,7 +174,7 @@ export async function createSpecification({body}: {body: Object}) {
 
 export async function getAccounts() {
 	const response = await fetch(
-		'/o/headless-admin-user/v1.0/accounts',
+		'/o/headless-admin-user/v1.0/user-accounts',
 		{headers, method: 'GET'}
 	);
 
