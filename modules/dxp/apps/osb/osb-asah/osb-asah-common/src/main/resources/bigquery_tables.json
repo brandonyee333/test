@@ -1144,7 +1144,7 @@
 			}
 		]
 	},
-	"identityinterestpages": {
+	"identityinterestpage": {
 		"clusteringFields": [
 			"channelId",
 			"keyword"

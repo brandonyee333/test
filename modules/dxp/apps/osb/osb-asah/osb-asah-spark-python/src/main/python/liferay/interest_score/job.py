@@ -262,7 +262,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			'createDisposition',
 			'CREATE_NEVER'
 		).save(
-			'{}.identityinterestpages'.format(
+			'{}.identityinterestpage'.format(
 				self.spark_application_args.ac_project_id
 			)
 		)
