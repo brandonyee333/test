@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
@@ -30,6 +31,8 @@ import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.BQSQLUtil;
 
 import java.math.BigDecimal;
+
+import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,6 +156,51 @@ public class BQIndividualRepositoryImpl
 		return _queryExecutor.queryForLong(
 			selectJoinStep.where(
 				_getConditions(channelId, filterExpression, query)));
+	}
+
+	@Override
+	public long countBQIndividualsModifiedLast30Days(Long channelId) {
+		LocalDateTime localDateTime = LocalDateTime.now(
+			_timeZoneDog.getZoneId());
+
+		localDateTime = localDateTime.minusDays(30);
+
+		return _queryExecutor.queryForLong(
+			_dslContext.select(
+				DSL.countDistinct(DSL.field("Individual.id"))
+			).from(
+				DSL.table(
+					"BQIdentityActivity"
+				).as(
+					"IdentityActivity"
+				)
+			).join(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).on(
+				DSL.field(
+					"IdentityActivity.individualId"
+				).eq(
+					DSL.field("Individual.id")
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"IdentityActivity.channelId", Long.class
+					).eq(
+						channelId
+					)),
+				DSL.field(
+					"Individual.modifiedDate"
+				).greaterOrEqual(
+					DSL.field(
+						"TIMESTAMP '" + DateUtil.toUTCString(localDateTime) +
+							"'")
+				)
+			));
 	}
 
 	public long countIndividualFieldValuesCustom(
@@ -1174,5 +1222,8 @@ public class BQIndividualRepositoryImpl
 
 	@Autowired
 	private QueryExecutor _queryExecutor;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

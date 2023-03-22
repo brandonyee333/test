@@ -1051,7 +1051,6 @@ public class FilterExpressionVisitor
 				put("individuals.email", "Individual.emailAddress");
 				put("individuals.familyName", "Individual.lastName");
 				put("individuals.givenName", "Individual.firstName");
-				put("lastEnrichmentDate", "Individual.modifiedDate");
 				put("provider/type", "providerType");
 				put("sessions.completeDate", "Session.sessionEnd");
 			}

@@ -83,6 +83,11 @@ public class BQIndividualDog {
 			accountId, channelId, dataSourceId, notSegmentId, query, segmentId);
 	}
 
+	public long countBQIndividualsModifiedLast30Days(Long channelId) {
+		return _bqIndividualRepository.countBQIndividualsModifiedLast30Days(
+			channelId);
+	}
+
 	public long countIndividuals(boolean includeAnonymousUsers) {
 		return _bqIdentityRepository.countIndividuals(includeAnonymousUsers);
 	}

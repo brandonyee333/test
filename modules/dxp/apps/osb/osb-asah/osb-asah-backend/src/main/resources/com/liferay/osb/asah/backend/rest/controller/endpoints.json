@@ -148,6 +148,10 @@
 			"href": "{url}/individuals/distribution{?channelId,fieldMappingFieldName,individualSegmentId,numberOfBins,size,sort*}",
 			"templated": true
 		},
+		"individuals-enriched-profiles-count": {
+			"href": "{url}/individuals/enriched-profiles-count{?channelId}",
+			"templated": true
+		},
 		"interest": {
 			"href": "{url}/interests/{id}{?expand}",
 			"templated": true

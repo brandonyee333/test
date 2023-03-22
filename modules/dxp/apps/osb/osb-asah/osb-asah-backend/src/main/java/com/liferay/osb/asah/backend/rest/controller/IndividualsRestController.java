@@ -56,6 +56,11 @@ public class IndividualsRestController
 				sorts));
 	}
 
+	@GetMapping("/enriched-profiles-count")
+	public long getEnrichedProfilesCount(@RequestParam Long channelId) {
+		return _bqIndividualDog.countBQIndividualsModifiedLast30Days(channelId);
+	}
+
 	private PageDTO<DistributionDTO> _toDistributionDTOPageDTO(
 		DistributionDTO distributionDTO, Page<Distribution> distributionsPage) {
 
