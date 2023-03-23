@@ -1044,6 +1044,7 @@ public class FilterExpressionConditionVisitor
 				put("individuals.email", "Individual.emailAddress");
 				put("individuals.familyName", "Individual.lastName");
 				put("individuals.givenName", "Individual.firstName");
+				put("interestName", "keyword");
 				put("provider/type", "providerType");
 				put("sessions.completeDate", "Session.sessionEnd");
 				put("sessions.referrer", "Session.referrers");
