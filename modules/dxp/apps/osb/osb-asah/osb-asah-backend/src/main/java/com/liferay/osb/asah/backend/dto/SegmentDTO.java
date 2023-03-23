@@ -44,8 +44,8 @@ public class SegmentDTO {
 	}
 
 	public SegmentDTO(
-		BQMembershipChange bqMembershipChange, Date lastActivityDate,
-		Segment segment) {
+		Long activeIdentitiesCount, BQMembershipChange bqMembershipChange,
+		Date lastActivityDate, Segment segment) {
 
 		AuthorDTO authorDTO = new AuthorDTO(segment);
 
@@ -53,7 +53,8 @@ public class SegmentDTO {
 			_authorDTO = authorDTO;
 		}
 
-		_activeIdentitiesCount = 0L;
+		_activeIdentitiesCount = activeIdentitiesCount;
+
 		_activitiesCount = 0L;
 
 		if (bqMembershipChange != null) {
@@ -101,8 +102,8 @@ public class SegmentDTO {
 				Long segmentId = segment.getId();
 
 				return new SegmentDTO(
-					bqMembershipChanges.getOrDefault(segmentId, null), null,
-					segment);
+					null, bqMembershipChanges.getOrDefault(segmentId, null),
+					null, segment);
 			});
 	}
 

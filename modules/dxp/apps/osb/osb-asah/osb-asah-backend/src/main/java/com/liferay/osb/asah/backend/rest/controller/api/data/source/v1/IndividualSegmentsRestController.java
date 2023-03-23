@@ -191,6 +191,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		Segment segment = segmentDog.getSegment(id);
 
 		SegmentDTO segmentDTO = new SegmentDTO(
+			_bqMembershipDog.getActiveBQMembershipsCount(
+				segment.getIncludeAnonymousUsers(), id),
 			_bqMembershipChangeDog.getLastBQMembershipChangeBySegmentId(id),
 			segmentDog.getLastActivityDate(segment), segment);
 
@@ -547,6 +549,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
+	private BQMembershipDog _bqMembershipDog;
 
 	@Autowired
 	private BQOrganizationDog _bqOrganizationDog;

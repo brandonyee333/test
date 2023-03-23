@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -41,6 +42,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -106,6 +108,13 @@ public class BQMembershipDog {
 
 		return _bqMembershipRepository.findByIdentityIdAndSegmentIdInAndStatus(
 			identityId, segmentIds, "ACTIVE");
+	}
+
+	public long getActiveBQMembershipsCount(
+		@Nullable Boolean includeAnonymousUsers, Long segmentId) {
+
+		return _bqMembershipRepository.countActiveMembersBySegmentId(
+			includeAnonymousUsers, segmentId, _timeZoneDog.getZoneId());
 	}
 
 	public List<String> getActiveIdentityIds(Long segmentId) {
@@ -245,5 +254,8 @@ public class BQMembershipDog {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	@Autowired
+	private TimeZoneDog _timeZoneDog;
 
 }

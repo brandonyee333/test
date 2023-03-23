@@ -16,6 +16,8 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQMembership;
 
+import java.time.ZoneId;
+
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,10 @@ import org.springframework.lang.Nullable;
  * @author Ivica Cardic
  */
 public interface CustomBQMembershipRepository {
+
+	@Cacheable
+	public long countActiveMembersBySegmentId(
+		@Nullable Boolean includeAnonymousUsers, Long segmentId, ZoneId zoneId);
 
 	@Cacheable
 	public long countByIdentityIdAndSegmentId(

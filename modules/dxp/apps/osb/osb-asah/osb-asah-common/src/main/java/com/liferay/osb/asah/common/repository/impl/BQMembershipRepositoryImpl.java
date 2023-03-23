@@ -14,12 +14,16 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
 import java.math.BigDecimal;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.AggregateFunction;
@@ -41,6 +46,7 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Record5;
+import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -59,6 +65,112 @@ public class BQMembershipRepositoryImpl
 
 		_dslContext = dslContext;
 		_queryExecutor = queryExecutor;
+	}
+
+	@Override
+	public long countActiveMembersBySegmentId(
+		@Nullable Boolean includeAnonymousUsers, Long segmentId,
+		ZoneId zoneId) {
+
+		LocalDateTime localDateTime = LocalDateTime.now(zoneId);
+
+		localDateTime = localDateTime.minusDays(30);
+
+		Condition condition = DSL.and(
+			DSL.field(
+				"Membership.segmentId"
+			).eq(
+				segmentId
+			),
+			DSL.field(
+				"IdentityActivity.lastActivityDate"
+			).greaterOrEqual(
+				DSL.field(
+					"TIMESTAMP '" + DateUtil.toUTCString(localDateTime) + "'")
+			));
+
+		SelectConditionStep<Record1<Integer>>
+			activeKnownMembersSelectConditionStep = _dslContext.select(
+				DSL.countDistinct(
+					DSL.field("IdentityActivity.individualId")
+				).as(
+					"value"
+				)
+			).from(
+				DSL.table(
+					"BQMembership"
+				).as(
+					"Membership"
+				)
+			).join(
+				DSL.table(
+					"BQIdentityActivity"
+				).as(
+					"IdentityActivity"
+				)
+			).on(
+				DSL.field(
+					"Membership.individualId"
+				).eq(
+					DSL.field("IdentityActivity.individualId")
+				)
+			).where(
+				DSL.and(
+					condition,
+					DSL.field(
+						"Membership.individualId"
+					).isNotNull())
+			);
+
+		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
+			return _queryExecutor.queryForLong(
+				activeKnownMembersSelectConditionStep);
+		}
+
+		return _queryExecutor.queryForLong(
+			_dslContext.with(
+				"activeKnownMembersCount"
+			).as(
+				activeKnownMembersSelectConditionStep
+			).with(
+				"activeAnonymousMembersCount"
+			).as(
+				_dslContext.select(
+					DSL.countDistinct(DSL.field("IdentityActivity.identityId"))
+				).from(
+					DSL.table(
+						"BQMembership"
+					).as(
+						"Membership"
+					)
+				).join(
+					DSL.table(
+						"BQIdentityActivity"
+					).as(
+						"IdentityActivity"
+					)
+				).on(
+					DSL.field(
+						"Membership.identityId"
+					).eq(
+						DSL.field("IdentityActivity.identityId")
+					)
+				).where(
+					DSL.and(
+						condition,
+						DSL.field(
+							"Membership.individualId"
+						).isNull())
+				)
+			).select(
+				DSL.field("SUM(value)", Integer.class)
+			).from(
+				_dslContext.selectFrom(
+					"activeKnownMembersCount"
+				).unionAll(
+					_dslContext.selectFrom("activeAnonymousMembersCount")
+				)
+			));
 	}
 
 	@Override
