@@ -16,7 +16,7 @@ buildscript {
 apply plugin: "application"
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "com.liferay.source.formatter"
-apply plugin: "java"
+apply plugin: "java-library"
 
 dependencies {
 	compile group: "com.liferay", name: "com.liferay.data.engine.rest.client", version: "latest.release"
