@@ -221,7 +221,7 @@ public class FilterExpression {
 			"score eq ''(?<interested>true|false)''\\)'\\)");
 	private static final Pattern _membershipPattern = Pattern.compile(
 		"(?<type>groupIds|roleIds|teamIds|userGroupIds) (?<operator>eq|ne) '" +
-			"(?<id>[\\d]+)'");
+			"(?<id>[\\w]+)'");
 
 	private Condition _condition;
 	private FilterType _filterType;
