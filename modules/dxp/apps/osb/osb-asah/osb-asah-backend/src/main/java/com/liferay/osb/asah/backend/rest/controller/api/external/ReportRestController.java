@@ -722,9 +722,8 @@ public class ReportRestController extends BaseRestController {
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
-		// TODO Fetch individualPage by query and segmentId
-
-		Page<Individual> individualPage = Page.empty();
+		Page<Individual> individualPage = _bqIndividualDog.searchBQIndividuals(
+			segmentId, page, query, _PAGE_SIZE);
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(
