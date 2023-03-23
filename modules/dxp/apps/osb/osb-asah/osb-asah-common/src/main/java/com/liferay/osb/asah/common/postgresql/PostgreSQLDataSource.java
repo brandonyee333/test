@@ -96,7 +96,7 @@ public class PostgreSQLDataSource extends AbstractRoutingDataSource {
 		hikariDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		hikariDataSource.setUsername(CredentialConstants.POSTGRESQL_USER);
 
-		if (Objects.equals("global", dataSource)) {
+		if (Objects.equals(dataSource, "global")) {
 			hikariDataSource.setMaximumPoolSize(2);
 		}
 

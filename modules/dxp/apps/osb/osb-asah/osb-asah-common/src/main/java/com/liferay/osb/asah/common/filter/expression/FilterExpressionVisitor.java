@@ -162,7 +162,7 @@ public class FilterExpressionVisitor
 			return leftField.isNull();
 		}
 
-		if (Objects.equals("IdentityActivity.channelId", leftField.getName()) &&
+		if (Objects.equals(leftField.getName(), "IdentityActivity.channelId") &&
 			(rightField instanceof Param)) {
 
 			Param<String> param = (Param<String>)rightField;
@@ -578,7 +578,7 @@ public class FilterExpressionVisitor
 			return leftField.isNotNull();
 		}
 
-		if (Objects.equals("IdentityActivity.channelId", leftField.getName()) &&
+		if (Objects.equals(leftField.getName(), "IdentityActivity.channelId") &&
 			(rightField instanceof Param)) {
 
 			Param<String> param = (Param<String>)rightField;

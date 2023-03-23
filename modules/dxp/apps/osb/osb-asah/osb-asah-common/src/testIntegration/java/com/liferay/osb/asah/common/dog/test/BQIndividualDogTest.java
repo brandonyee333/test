@@ -1043,7 +1043,7 @@ public class BQIndividualDogTest
 		Stream<Field> stream = fields.stream();
 
 		Field countryField = stream.filter(
-			field -> Objects.equals("country", field.getName())
+			field -> Objects.equals(field.getName(), "country")
 		).findFirst(
 		).orElse(
 			null
