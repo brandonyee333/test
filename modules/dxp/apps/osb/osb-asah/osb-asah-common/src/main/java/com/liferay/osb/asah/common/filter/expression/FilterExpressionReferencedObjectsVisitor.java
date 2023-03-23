@@ -217,7 +217,7 @@ public class FilterExpressionReferencedObjectsVisitor
 	}
 
 	private static final String[] _REFERENCED_OBJECT_NAMES = {
-		"referencedDataSourceIds", "referencedAssetIds",
+		"referencedAssetIds", "referencedDataSourceIds",
 		"referencedFieldMappingFieldNames", "referencedGroupIds",
 		"referencedOrganizationIds", "referencedRoleIds", "referencedTeamIds",
 		"referencedUserGroupIds", "referencedUserIds"
