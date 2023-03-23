@@ -62,7 +62,7 @@ public class SegmentRepositoryTest
 		segment1.setCreateDate(DateUtil.addDays(new Date(), -5));
 		segment1.setFilter("(channelId eq '1')");
 		segment1.setName("Segment 1");
-		segment1.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
+		segment1.setReferencedDataSourceIds(SetUtil.of(5L, 6L));
 		segment1.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
 		segment1.setState("READY");
 		segment1.setStatus("STARTED");
@@ -78,7 +78,7 @@ public class SegmentRepositoryTest
 		segment2.setCreateDate(DateUtil.addDays(new Date(), -3));
 		segment2.setFilter("(channelId eq '2')");
 		segment2.setName("Segment 2");
-		segment2.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
+		segment2.setReferencedDataSourceIds(SetUtil.of(5L, 6L));
 		segment2.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
 		segment2.setState("READY");
 		segment2.setStatus("STARTED");

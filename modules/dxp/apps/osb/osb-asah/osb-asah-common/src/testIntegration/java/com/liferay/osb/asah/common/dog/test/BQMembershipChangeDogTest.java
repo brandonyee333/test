@@ -175,7 +175,7 @@ public class BQMembershipChangeDogTest
 			String.format("(channelId eq '%d')", channel.getId()));
 		segment.setName(
 			String.format("Segment of channel %s", channel.getName()));
-		segment.setReferencedAssetDataSourceIds(SetUtil.of(5L, 6L));
+		segment.setReferencedDataSourceIds(SetUtil.of(5L, 6L));
 		segment.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
 		segment.setState("READY");
 		segment.setStatus("STARTED");
