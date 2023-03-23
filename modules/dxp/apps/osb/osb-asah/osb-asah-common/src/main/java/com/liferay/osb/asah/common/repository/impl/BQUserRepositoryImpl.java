@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.BQSQLUtil;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +119,10 @@ public class BQUserRepositoryImpl
 
 	@Override
 	public List<BQUser> findByIdIn(Collection<String> ids) {
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		return _queryExecutor.queryForList(
 			BQUser::new,
 			_dslContext.selectFrom(

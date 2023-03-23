@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -102,6 +103,10 @@ public class BQUserGroupRepositoryImpl
 
 	@Override
 	public List<BQUserGroup> findByIdIn(Collection<String> ids) {
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		return _queryExecutor.queryForList(
 			BQUserGroup::new,
 			_dslContext.selectFrom(
