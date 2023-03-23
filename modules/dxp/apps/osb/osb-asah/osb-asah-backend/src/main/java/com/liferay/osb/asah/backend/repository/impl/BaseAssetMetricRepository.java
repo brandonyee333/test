@@ -747,15 +747,27 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					)
 				).join(
 					DSL.table(
+						"BQIdentity"
+					).as(
+						"identity"
+					)
+				).on(
+					DSL.field(
+						"metric.userId"
+					).eq(
+						DSL.field("identity.id")
+					)
+				).join(
+					DSL.table(
 						"BQMembership"
 					).as(
 						"membership"
 					)
 				).on(
 					DSL.field(
-						"membership.identityId"
+						"identity.individualId"
 					).eq(
-						DSL.field("metric.userId")
+						DSL.field("membership.individualId")
 					)
 				).where(
 					whereClauseCondition.and(
