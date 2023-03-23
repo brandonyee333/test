@@ -8,10 +8,10 @@ INSERT INTO Individual (emailAddress, id) VALUES ('marcus@beta.com', '5970d88ec4
 INSERT INTO Individual (emailAddress, id) VALUES ('nina@delta.com', '5f20f61b2cfaa86c4f3cb3557751a702776af029deabed8e943fb55cfa604e34');
 INSERT INTO Individual (emailAddress, id) VALUES ('chris@gamma.com', 'def73c7b1d2934d8bcdc8080a221c39df40e7ccfa499ad49d862138f5bc055f9');
 
-INSERT INTO IdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (1, 'abc-123', true, 'analytics', timestamp '${now}');
-INSERT INTO IdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (2, 'abc-123', false, 'cloud', timestamp '${now}');
-INSERT INTO IdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (3, 'bcd-456', true, 'cloud', timestamp '${now}');
-INSERT INTO IdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (4, 'bcd-456', false, 'analytics', timestamp '${now}');
-INSERT INTO IdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (5, 'efg-789', false, 'dev', timestamp '${now}');
-INSERT INTO IdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (6, 'efg-789', true, 'metrics', timestamp '${now}');
-INSERT INTO IdentityInterestScore (id, identityId, interested, keyword, recordedDate) VALUES (7, 'efg-789', true, 'quality', timestamp '${now}');
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('abc-123', true, 'analytics', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('abc-123', false, 'cloud', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('bcd-456', true, 'cloud', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('bcd-456', false, 'analytics', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('efg-789', false, 'dev', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('efg-789', true, 'metrics', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('efg-789', true, 'quality', CURRENT_DATE());

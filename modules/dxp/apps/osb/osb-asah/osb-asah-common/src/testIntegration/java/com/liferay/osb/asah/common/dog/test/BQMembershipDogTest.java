@@ -55,7 +55,6 @@ import org.springframework.data.domain.Page;
  * @author Michael Bowerman
  * @author Vishal Reddy
  */
-@Disabled
 public class BQMembershipDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
@@ -121,6 +120,7 @@ public class BQMembershipDogTest
 				segmentIds.toArray(new Long[0])));
 	}
 
+	@Disabled
 	@Test
 	public void testAddMembershipWithInactiveStatus() {
 		BQMembership bqMembership = _bqMembershipDog.addBQMembership(
@@ -156,7 +156,6 @@ public class BQMembershipDogTest
 			2, _bqMembershipRepository.countBySegmentId(338511398116723458L));
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
@@ -202,6 +201,44 @@ public class BQMembershipDogTest
 			"contains(demographics/email/value, 'delta.com')", 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"(organizations.filter(filter='(id eq ''23k92323l923lf0as'')'))",
+			1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"userGroupIds eq 'newr87232kjhdsf89'", 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"groupIds ne '9823423jh23908234'", 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_memberships_activities.sql")
+	@Test
+	public void testUpdateBQMembershipsWithActivities() {
+		_bqMembershipDog.updateBQMemberships(
+			"(demographics/firstName/value eq 'Test1' and " +
+				"(activities.filterByCount(filter='(applicationId eq " +
+					"''Blog'' and eventId = ''blogClicked'' and id = " +
+						"''1'')', operator='ge', value=1)))",
+			1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"(demographics/firstName/value eq 'Test1' and " +
+				"(activities.filterByCount(filter='(applicationId eq " +
+					"''Blog'' and eventId eq ''blogClicked'' and id eq " +
+						"''2'')', operator='ge', value=1)))",
+			1L);
+
+		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_memberships_custom_fields.sql")
@@ -403,6 +440,57 @@ public class BQMembershipDogTest
 			"5f20f61b2cfaa86c4f3cb3557751a702776af029deabed8e943fb55cfa604e34");
 
 		_assertBQMemberships(bqMemberships, expectedIndividuals);
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_memberships_sessions.sql")
+	@Test
+	public void testUpdateBQMembershipsWithSessions() {
+		_bqMembershipDog.updateBQMemberships(
+			"(sessions.filter(filter='(contains(context/referrer, " +
+				"''facebook.com'') and completeDate gt ''2022-09-01'')'))",
+			1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"(sessions.filter(filter='(context/referrer eq " +
+				"''https://facebook.com'' and completeDate gt " +
+					"''2022-09-01'')'))",
+			1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"(sessions.filter(filter='(contains(context/url, ''url2.com'') " +
+				"and completeDate gt ''2022-09-01'')'))",
+			1L);
+
+		Assertions.assertEquals(4L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"(sessions.filter(filter='(context/url eq ''https://url2.com'' " +
+				"and completeDate gt ''2022-09-01'')'))",
+			1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"(sessions.filter(filter='(context/browserName eq ''Chrome'')'))",
+			1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"(sessions.filter(filter='(context/deviceType ne ''Phone'')'))",
+			1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			"(sessions.filter(filter='(context/platformName eq ''Linux'')'))",
+			1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
 	private void _assertBQMemberships(
