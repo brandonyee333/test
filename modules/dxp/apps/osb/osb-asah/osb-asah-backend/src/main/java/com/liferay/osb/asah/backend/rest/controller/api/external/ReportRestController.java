@@ -48,6 +48,7 @@ import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
+import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
@@ -666,9 +667,8 @@ public class ReportRestController extends BaseRestController {
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
-		// TODO Fetch individualPage by query
-
-		Page<Individual> individualPage = Page.empty();
+		Page<Individual> individualPage = _bqIndividualDog.searchBQIndividuals(
+			page, query, _PAGE_SIZE);
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(
@@ -1342,6 +1342,9 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private BQIdentityInterestScoreDog _bqIdentityInterestScoreDog;
+
+	@Autowired
+	private BQIndividualDog _bqIndividualDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;

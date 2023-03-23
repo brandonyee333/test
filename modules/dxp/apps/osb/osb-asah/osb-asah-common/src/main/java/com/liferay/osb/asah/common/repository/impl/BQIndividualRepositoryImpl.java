@@ -115,13 +115,17 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public long countBQIndividuals(
-		@Nullable Long channelId, String filterString,
+		@Nullable Long channelId, @Nullable String filterString,
 		@Nullable Boolean includeAnonymousUsers, @Nullable String query) {
 
 		FilterExpression filterExpression = new FilterExpression(filterString);
 
-		Set<String> referencedTableNames = new HashSet<>(
-			filterExpression.getReferencedTableNames());
+		Set<String> referencedTableNames = new HashSet<>();
+
+		if (!StringUtils.isBlank(filterString)) {
+			referencedTableNames = new HashSet<>(
+				filterExpression.getReferencedTableNames());
+		}
 
 		if (StringUtils.isNotBlank(query)) {
 			referencedTableNames.add("Individual");
