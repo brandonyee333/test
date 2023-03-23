@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.dto.IndividualDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
+import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQFieldMappingDog;
@@ -75,7 +76,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController(
 	"com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController"
 )
-public class IndividualSegmentsRestController {
+public class IndividualSegmentsRestController extends BaseRestController {
 
 	@GetMapping(params = "!apply", value = "/{id}/membership-changes")
 	public PageDTO<BQMembershipChangeDTO> getBQMembershipChangeDTOPageDTO(
@@ -150,7 +151,7 @@ public class IndividualSegmentsRestController {
 	@Cacheable
 	@GetMapping(params = "apply", value = "/{id}/membership-changes")
 	public String getMembershipChangeTransformations(
-			@PathVariable String id, @RequestParam String apply,
+			@PathVariable Long id, @RequestParam String apply,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam(defaultValue = "true") boolean includeToday,
@@ -158,9 +159,21 @@ public class IndividualSegmentsRestController {
 			@RequestParam(defaultValue = "20") int size)
 		throws Exception {
 
-		// TODO Implement Membership Changes histogram
+		List<Transformation> transformations =
+			_bqMembershipChangeDog.getMembershipChangeTransformations(
+				includeToday, id, page, size);
 
-		return null;
+		return JSONUtil.put(
+			"_embedded",
+			JSONUtil.put(
+				"membership-change-transformations",
+				JSONUtil.toJSONArray(
+					transformations,
+					transformation -> transformation.getTerm(
+					).getTermsMap()))
+		).put(
+			"page", getPageJSONObject(page, transformations.size(), size)
+		).toString();
 	}
 
 	@GetMapping("/{id}")
