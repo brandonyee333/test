@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
+import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -121,8 +122,10 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 			return;
 		}
 
-		DataSource dataSource = _dataSourceDog.fetchDataSource(
-			bqOrganization.getDataSourceId());
+		Optional<DataSource> dataSourceOptional =
+			_dataSourceRepository.findById(bqOrganization.getDataSourceId());
+
+		DataSource dataSource = dataSourceOptional.orElse(null);
 
 		if (dataSource != null) {
 			bqOrganization.setDataSourceName(dataSource.getName());
@@ -162,6 +165,6 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 	private BQOrganizationRepository _bqOrganizationRepository;
 
 	@Autowired
-	private DataSourceDog _dataSourceDog;
+	private DataSourceRepository _dataSourceRepository;
 
 }
