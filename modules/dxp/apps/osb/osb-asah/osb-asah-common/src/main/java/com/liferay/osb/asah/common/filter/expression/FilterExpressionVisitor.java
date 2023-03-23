@@ -337,7 +337,7 @@ public class FilterExpressionVisitor
 			Param param = (Param)parameters.get(1);
 
 			condition = _getIsMemberCondition(
-				(String)param.getValue(), field.getName());
+				(String)param.getValue(), fieldName.replace("Individual.", ""));
 		}
 		else if (functionName.equalsIgnoreCase("sha256Hex")) {
 			return DSL.field(String.format("TO_HEX(SHA256(%s))", fieldName));
