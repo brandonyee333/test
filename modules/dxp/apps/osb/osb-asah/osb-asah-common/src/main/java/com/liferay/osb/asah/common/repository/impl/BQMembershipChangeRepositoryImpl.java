@@ -299,8 +299,51 @@ public class BQMembershipChangeRepositoryImpl
 				conditions
 			);
 
-		SelectForUpdateStep<Record4<Long, Long, Long, Long>>
-			selectForUpdateStep = _dslContext.select(
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				Map<String, Object> termsMap = new HashMap<>();
+
+				BigDecimal addedIndividualsCount = BigDecimal.ZERO;
+				BigDecimal identitiesCount = (BigDecimal)recordMap.get(
+					"identitiesCount");
+				BigDecimal intervalInitDate = (BigDecimal)recordMap.get(
+					"intervalInitDate");
+				BigDecimal individualsCount = (BigDecimal)recordMap.get(
+					"individualsCount");
+				BigDecimal prevIndividualsCount =
+					(BigDecimal)recordMap.getOrDefault(
+						"prevIndividualsCount", identitiesCount);
+				BigDecimal removedIndividualsCount = BigDecimal.ZERO;
+
+				BigDecimal anonymousIndividualsCount = identitiesCount.subtract(
+					individualsCount);
+
+				if (identitiesCount.compareTo(prevIndividualsCount) > 0) {
+					addedIndividualsCount = identitiesCount.subtract(
+						prevIndividualsCount);
+				}
+				else {
+					removedIndividualsCount = prevIndividualsCount.subtract(
+						identitiesCount);
+				}
+
+				termsMap.put(
+					"addedIndividualsCount", addedIndividualsCount.longValue());
+				termsMap.put(
+					"anonymousIndividualsCount",
+					anonymousIndividualsCount.longValue());
+				termsMap.put("individualsCount", identitiesCount.longValue());
+				termsMap.put("intervalInitDate", intervalInitDate.longValue());
+				termsMap.put(
+					"knownIndividualsCount", individualsCount.longValue());
+				termsMap.put(
+					"removedIndividualsCount",
+					removedIndividualsCount.longValue());
+
+				return new Transformation(
+					new Transformation.Term(termsMap), null);
+			},
+			_dslContext.select(
 				DSL.field("identitiesCount", Long.class),
 				DSL.field("intervalInitDate", Long.class),
 				DSL.field("individualsCount", Long.class),
@@ -327,50 +370,7 @@ public class BQMembershipChangeRepositoryImpl
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
-			);
-
-		return _queryExecutor.queryForList(
-			recordMap -> {
-				Map<String, Object> map = new HashMap<>();
-				BigDecimal addedIndividualsCount = BigDecimal.ZERO;
-				BigDecimal identitiesCount = (BigDecimal)recordMap.get(
-					"identitiesCount");
-				BigDecimal intervalInitDate = (BigDecimal)recordMap.get(
-					"intervalInitDate");
-				BigDecimal individualsCount = (BigDecimal)recordMap.get(
-					"individualsCount");
-				BigDecimal prevIndividualsCount =
-					(BigDecimal)recordMap.getOrDefault(
-						"prevIndividualsCount", identitiesCount);
-				BigDecimal removedIndividualsCount = BigDecimal.ZERO;
-
-				BigDecimal anonymousIndividualsCount = identitiesCount.subtract(
-					individualsCount);
-
-				if (identitiesCount.compareTo(prevIndividualsCount) > 0) {
-					addedIndividualsCount = identitiesCount.subtract(
-						prevIndividualsCount);
-				}
-				else {
-					removedIndividualsCount = prevIndividualsCount.subtract(
-						identitiesCount);
-				}
-
-				map.put(
-					"addedIndividualsCount", addedIndividualsCount.longValue());
-				map.put(
-					"anonymousIndividualsCount",
-					anonymousIndividualsCount.longValue());
-				map.put("individualsCount", identitiesCount.longValue());
-				map.put("intervalInitDate", intervalInitDate.longValue());
-				map.put("knownIndividualsCount", individualsCount.longValue());
-				map.put(
-					"removedIndividualsCount",
-					removedIndividualsCount.longValue());
-
-				return new Transformation(new Transformation.Term(map), null);
-			},
-			selectForUpdateStep);
+			));
 	}
 
 	@Override
