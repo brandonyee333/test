@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.List;
@@ -53,6 +54,9 @@ public interface CustomBQMembershipChangeRepository {
 
 	@Cacheable
 	public List<Long> findSegmentIdByFilterString(String filterString);
+
+	public List<Transformation> getMembershipChangeTransformations(
+		boolean includeToday, Long segmentId, Pageable pageable);
 
 	public BQMembershipChange insert(BQMembershipChange bqMembershipChange);
 

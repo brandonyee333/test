@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -104,6 +105,13 @@ public class BQMembershipChangeDog {
 		}
 
 		return bqMembershipChanges;
+	}
+
+	public List<Transformation> getMembershipChangeTransformations(
+		boolean includeToday, Long segmentId, int page, int size) {
+
+		return _bqMembershipChangeRepository.getMembershipChangeTransformations(
+			includeToday, segmentId, PageRequest.of(page, size));
 	}
 
 	public Page<BQMembershipChange> searchBQMembershipChangePage(

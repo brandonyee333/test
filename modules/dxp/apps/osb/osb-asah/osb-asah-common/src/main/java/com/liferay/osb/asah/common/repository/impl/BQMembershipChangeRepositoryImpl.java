@@ -15,17 +15,24 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import java.math.BigDecimal;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,15 +40,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.DatePart;
 import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Record4;
 import org.jooq.SelectConditionStep;
+import org.jooq.SelectForUpdateStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 /**
@@ -225,6 +236,144 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	@Override
+	public List<Transformation> getMembershipChangeTransformations(
+		boolean includeToday, Long segmentId, Pageable pageable) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		Field dateField = _dslHelper.dateTrunc(
+			DatePart.DAY, DSL.field("createDate", OffsetDateTime.class));
+
+		LocalDateTime localDateTime = DateUtil.newDayLocalDateTime(
+			TimeZoneDogUtil.getZoneId());
+
+		if (!includeToday) {
+			conditions.add(
+				DSL.field(
+					"createDate"
+				).lt(
+					localDateTime
+				));
+
+			localDateTime = localDateTime.minusDays(1);
+		}
+
+		conditions.add(
+			DSL.field(
+				"createDate"
+			).ge(
+				localDateTime.minusDays(
+					pageable.getOffset() + pageable.getPageSize() - 1)
+			));
+
+		conditions.add(
+			DSL.field(
+				"segmentId", Long.class
+			).eq(
+				segmentId
+			));
+
+		SelectForUpdateStep<Record4<Long, Long, Long, Integer>>
+			selectConditionStep = _dslContext.select(
+				DSL.field("identitiesCount", Long.class),
+				DSL.function(
+					"UNIX_MILLIS", Long.class, dateField
+				).as(
+					"intervalInitDate"
+				),
+				DSL.field("individualsCount", Long.class),
+				DSL.rowNumber(
+				).over(
+				).partitionBy(
+					dateField
+				).orderBy(
+					DSL.field(
+						"createDate"
+					).desc()
+				).as(
+					"rowNumber"
+				)
+			).from(
+				"BQMembershipChange"
+			).where(
+				conditions
+			);
+
+		SelectForUpdateStep<Record4<Long, Long, Long, Long>>
+			selectForUpdateStep = _dslContext.select(
+				DSL.field("identitiesCount", Long.class),
+				DSL.field("intervalInitDate", Long.class),
+				DSL.field("individualsCount", Long.class),
+				DSL.lag(
+					DSL.field("identitiesCount", Long.class)
+				).over(
+				).partitionBy(
+				).orderBy(
+					DSL.field("intervalInitDate")
+				).as(
+					"prevIndividualsCount"
+				)
+			).from(
+				selectConditionStep
+			).where(
+				DSL.field(
+					"rowNumber", Integer.class
+				).eq(
+					1
+				)
+			).orderBy(
+				DSL.field("intervalInitDate")
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			);
+
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				Map<String, Object> map = new HashMap<>();
+				BigDecimal addedIndividualsCount = BigDecimal.ZERO;
+				BigDecimal identitiesCount = (BigDecimal)recordMap.get(
+					"identitiesCount");
+				BigDecimal intervalInitDate = (BigDecimal)recordMap.get(
+					"intervalInitDate");
+				BigDecimal individualsCount = (BigDecimal)recordMap.get(
+					"individualsCount");
+				BigDecimal prevIndividualsCount =
+					(BigDecimal)recordMap.getOrDefault(
+						"prevIndividualsCount", identitiesCount);
+				BigDecimal removedIndividualsCount = BigDecimal.ZERO;
+
+				BigDecimal anonymousIndividualsCount = identitiesCount.subtract(
+					individualsCount);
+
+				if (identitiesCount.compareTo(prevIndividualsCount) > 0) {
+					addedIndividualsCount = identitiesCount.subtract(
+						prevIndividualsCount);
+				}
+				else {
+					removedIndividualsCount = prevIndividualsCount.subtract(
+						identitiesCount);
+				}
+
+				map.put(
+					"addedIndividualsCount", addedIndividualsCount.longValue());
+				map.put(
+					"anonymousIndividualsCount",
+					anonymousIndividualsCount.longValue());
+				map.put("individualsCount", identitiesCount.longValue());
+				map.put("intervalInitDate", intervalInitDate.longValue());
+				map.put("knownIndividualsCount", individualsCount.longValue());
+				map.put(
+					"removedIndividualsCount",
+					removedIndividualsCount.longValue());
+
+				return new Transformation(new Transformation.Term(map), null);
+			},
+			selectForUpdateStep);
+	}
+
+	@Override
 	public BQMembershipChange insert(BQMembershipChange bqMembershipChange) {
 		_queryExecutor.queryExecute(
 			_dslContext.insertInto(
@@ -289,6 +438,10 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private DSLHelper _dslHelper;
+
 	private final QueryExecutor _queryExecutor;
 
 }
