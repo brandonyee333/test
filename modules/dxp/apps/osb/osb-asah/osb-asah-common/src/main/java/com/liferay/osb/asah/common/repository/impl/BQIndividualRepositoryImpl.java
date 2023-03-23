@@ -62,6 +62,7 @@ import org.jooq.SelectFinalStep;
 import org.jooq.SelectForStep;
 import org.jooq.SelectForUpdateStep;
 import org.jooq.SelectJoinStep;
+import org.jooq.SelectOnStep;
 import org.jooq.SelectSeekStep1;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
@@ -154,7 +155,8 @@ public class BQIndividualRepositoryImpl
 		);
 
 		selectJoinStep = _getSelectJoinStep(
-			channelId, referencedTableNames, selectJoinStep);
+			channelId, includeAnonymousUsers, referencedTableNames,
+			selectJoinStep);
 
 		return _queryExecutor.queryForLong(
 			selectJoinStep.where(
@@ -576,7 +578,7 @@ public class BQIndividualRepositoryImpl
 			);
 
 		selectJoinStep = _getSelectJoinStep(
-			channelId, referencedTableNames, selectJoinStep);
+			channelId, null, referencedTableNames, selectJoinStep);
 
 		return _queryExecutor.queryForList(
 			record -> {
@@ -1079,50 +1081,8 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
-		Long segmentId, SelectSelectStep<R> selectSelectStep) {
-
-		SelectJoinStep<R> selectJoinStep = selectSelectStep.from(
-			DSL.table(
-				"BQIndividual"
-			).as(
-				"Individual"
-			)
-		).leftJoin(
-			DSL.table(
-				"BQIdentityActivity"
-			).as(
-				"IdentityActivity"
-			)
-		).on(
-			DSL.field(
-				"Individual.id"
-			).eq(
-				DSL.field("IdentityActivity.individualId")
-			)
-		);
-
-		if (segmentId != null) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"BQMembership"
-				).as(
-					"Membership"
-				)
-			).on(
-				DSL.field(
-					"Individual.id"
-				).eq(
-					DSL.field("Membership.individualId")
-				)
-			);
-		}
-
-		return selectJoinStep;
-	}
-
-	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
-		Long channelId, Set<String> referencedTableNames,
-		SelectJoinStep<R> selectJoinStep) {
+		Long channelId, Boolean includeAnonymousUsers,
+		Set<String> referencedTableNames, SelectJoinStep<R> selectJoinStep) {
 
 		if (channelId != null) {
 			selectJoinStep = selectJoinStep.join(
@@ -1157,19 +1117,31 @@ public class BQIndividualRepositoryImpl
 		}
 
 		if (referencedTableNames.contains("Individual")) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"BQIndividual"
-				).as(
-					"Individual"
-				)
-			).on(
+			SelectOnStep selectOnStep = null;
+
+			if (BooleanUtils.isTrue(includeAnonymousUsers)) {
+				selectOnStep = selectJoinStep.leftJoin(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					));
+			}
+			else {
+				selectOnStep = selectJoinStep.join(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					));
+			}
+
+			selectJoinStep = selectOnStep.on(
 				DSL.field(
 					"Identity.individualId"
 				).eq(
 					DSL.field("Individual.id")
-				)
-			);
+				));
 
 			if (referencedTableNames.contains("ExpandoValue")) {
 				selectJoinStep = selectJoinStep.crossJoin(
@@ -1193,6 +1165,48 @@ public class BQIndividualRepositoryImpl
 					"Identity.id"
 				).eq(
 					DSL.field("Session.userId")
+				)
+			);
+		}
+
+		return selectJoinStep;
+	}
+
+	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
+		Long segmentId, SelectSelectStep<R> selectSelectStep) {
+
+		SelectJoinStep<R> selectJoinStep = selectSelectStep.from(
+			DSL.table(
+				"BQIndividual"
+			).as(
+				"Individual"
+			)
+		).leftJoin(
+			DSL.table(
+				"BQIdentityActivity"
+			).as(
+				"IdentityActivity"
+			)
+		).on(
+			DSL.field(
+				"Individual.id"
+			).eq(
+				DSL.field("IdentityActivity.individualId")
+			)
+		);
+
+		if (segmentId != null) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQMembership"
+				).as(
+					"Membership"
+				)
+			).on(
+				DSL.field(
+					"Individual.id"
+				).eq(
+					DSL.field("Membership.individualId")
 				)
 			);
 		}
