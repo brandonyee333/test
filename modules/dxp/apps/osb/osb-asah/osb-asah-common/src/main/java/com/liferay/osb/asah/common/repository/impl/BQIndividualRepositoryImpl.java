@@ -128,12 +128,10 @@ public class BQIndividualRepositoryImpl
 				filterExpression.getReferencedTableNames());
 		}
 
-		if (StringUtils.isNotBlank(query)) {
-			referencedTableNames.add("Individual");
-		}
+		if (StringUtils.isNotBlank(filterString) ||
+			StringUtils.isNotBlank(query)) {
 
-		if (referencedTableNames.contains("Individual")) {
-			includeAnonymousUsers = Boolean.FALSE;
+			referencedTableNames.add("Individual");
 		}
 
 		Field<String> selectField = null;
