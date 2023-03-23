@@ -1,7 +1,23 @@
+import com.liferay.gradle.util.FileUtil
+
 dependencies {
 	compile group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.5.0"
 	compile group: "org.osgi", name: "osgi.core", version: "6.0.0"
 
 	compileOnly group: "junit", name: "junit", version: "4.13.1"
 	compileOnly project(":test:arquillian-extension-junit-bridge-connector")
+}
+
+jar {
+	doFirst {
+		bundle {
+			instruction "-includeresource", "@com.liferay.arquillian.extension.junit.bridge.connector-*.jar!/com/liferay/arquillian/extension/junit/bridge/connector/FrameworkCommand.class,@com.liferay.arquillian.extension.junit.bridge.connector-*.jar!/com/liferay/arquillian/extension/junit/bridge/connector/FrameworkResult.class"
+		}
+
+		configurations.compileOnly.forEach {
+			if (it.name.startsWith("com.liferay.arquillian.extension.junit.bridge.connector-")) {
+				bundle.instruction "-classpath", FileUtil.getAbsolutePath(it)
+			}
+		}
+	}
 }

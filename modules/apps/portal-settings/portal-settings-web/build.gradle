@@ -1,3 +1,5 @@
+import com.liferay.gradle.util.FileUtil
+
 buildCSS {
 	imports = [
 		new File(npmInstall.nodeModulesDir, "@clayui/css/src/scss")
@@ -31,4 +33,18 @@ dependencies {
 	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-sql-dsl-api")
 	compileOnly project(":core:petra:petra-string")
+}
+
+jar {
+	doFirst {
+		bundle {
+			instruction "-includeresource", "META-INF/resources/users_admin/css=@com.liferay.users.admin.web-*.jar!/META-INF/resources/css"
+		}
+
+		configurations.compileOnly.forEach {
+			if (it.name.startsWith("com.liferay.users.admin.web-")) {
+				bundle.instruction "-classpath", FileUtil.getAbsolutePath(it)
+			}
+		}
+	}
 }

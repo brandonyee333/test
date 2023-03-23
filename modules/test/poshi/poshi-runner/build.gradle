@@ -1,4 +1,5 @@
 import com.liferay.gradle.plugins.defaults.task.ReplaceRegexTask
+import com.liferay.gradle.util.FileUtil
 import com.liferay.gradle.util.copy.RenameDependencyClosure
 
 apply plugin: "com.liferay.poshi.runner"
@@ -39,6 +40,20 @@ task release(type: ReplaceRegexTask)
 deploy {
 	from configurations.runtime
 	rename new RenameDependencyClosure(project, configurations.runtime.name)
+}
+
+jar {
+	doFirst {
+		bundle {
+			instruction "-includeresource", "@com.liferay.data.guard.connector-*.jar"
+		}
+
+		configurations.compileOnly.forEach {
+			if (it.name.startsWith("com.liferay.data.guard.connector-")) {
+				bundle.instruction "-classpath", FileUtil.getAbsolutePath(it)
+			}
+		}
+	}
 }
 
 liferay {
