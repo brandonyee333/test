@@ -55,58 +55,9 @@ public class FilterExpressionReferencedObjectsVisitor
 		Token startToken = equalsExpressionContext.start;
 		Token stopToken = equalsExpressionContext.stop;
 
-		String fieldName = startToken.getText();
-		String value = StringUtil.unquoteAndDecodeInnerQuotes(
-			stopToken.getText());
-
-		if (fieldName.startsWith("activityKey")) {
-			String[] valueParts = value.split("#");
-
-			Set<String> referencedAssetIds = _referencedObjectIds.get(
-				"referencedAssetIds");
-
-			referencedAssetIds.add(valueParts[2]);
-		}
-		else if (fieldName.startsWith("groupIds")) {
-			Set<String> referencedGroupIds = _referencedObjectIds.get(
-				"referencedGroupIds");
-
-			referencedGroupIds.add(value);
-		}
-		else if (fieldName.startsWith("roleIds")) {
-			Set<String> referencedRoleIds = _referencedObjectIds.get(
-				"referencedRoleIds");
-
-			referencedRoleIds.add(value);
-		}
-		else if (fieldName.startsWith("teamIds")) {
-			Set<String> referencedTeamIds = _referencedObjectIds.get(
-				"referencedTeamIds");
-
-			referencedTeamIds.add(value);
-		}
-		else if (fieldName.startsWith("userGroupIds")) {
-			Set<String> referencedUserGroupIds = _referencedObjectIds.get(
-				"referencedUserGroupIds");
-
-			referencedUserGroupIds.add(value);
-		}
-		else if (fieldName.startsWith("userId")) {
-			Set<String> referencedUserIds = _referencedObjectIds.get(
-				"referencedUserIds");
-
-			referencedUserIds.add(value);
-		}
-		else if (Objects.equals(
-					_peekFilterType(),
-					FilterExpression.FilterType.ORGANIZATIONS) &&
-				 (fieldName.equals("id") || fieldName.equals("parentId"))) {
-
-			Set<String> referencedOrganizationIds = _referencedObjectIds.get(
-				"referencedOrganizationIds");
-
-			referencedOrganizationIds.add(value);
-		}
+		_setReferencedObjectIds(
+			startToken.getText(),
+			StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
 
 		_visitChild(equalsExpressionContext, 0);
 
@@ -188,6 +139,23 @@ public class FilterExpressionReferencedObjectsVisitor
 		return null;
 	}
 
+	@Override
+	public Object visitNotEqualsExpression(
+		FilterExpressionParser.NotEqualsExpressionContext
+			notEqualsExpressionContext) {
+
+		Token startToken = notEqualsExpressionContext.start;
+		Token stopToken = notEqualsExpressionContext.stop;
+
+		_setReferencedObjectIds(
+			startToken.getText(),
+			StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+
+		_visitChild(notEqualsExpressionContext, 0);
+
+		return null;
+	}
+
 	private String _parseFilterStringExpression(Token filterToken) {
 		String filterString = filterToken.getText();
 
@@ -206,6 +174,57 @@ public class FilterExpressionReferencedObjectsVisitor
 		}
 
 		return _filterTypeStack.peek();
+	}
+
+	private void _setReferencedObjectIds(String fieldName, String value) {
+		if (fieldName.startsWith("activityKey")) {
+			String[] valueParts = value.split("#");
+
+			Set<String> referencedAssetIds = _referencedObjectIds.get(
+				"referencedAssetIds");
+
+			referencedAssetIds.add(valueParts[2]);
+		}
+		else if (fieldName.startsWith("groupIds")) {
+			Set<String> referencedGroupIds = _referencedObjectIds.get(
+				"referencedGroupIds");
+
+			referencedGroupIds.add(value);
+		}
+		else if (fieldName.startsWith("roleIds")) {
+			Set<String> referencedRoleIds = _referencedObjectIds.get(
+				"referencedRoleIds");
+
+			referencedRoleIds.add(value);
+		}
+		else if (fieldName.startsWith("teamIds")) {
+			Set<String> referencedTeamIds = _referencedObjectIds.get(
+				"referencedTeamIds");
+
+			referencedTeamIds.add(value);
+		}
+		else if (fieldName.startsWith("userGroupIds")) {
+			Set<String> referencedUserGroupIds = _referencedObjectIds.get(
+				"referencedUserGroupIds");
+
+			referencedUserGroupIds.add(value);
+		}
+		else if (fieldName.startsWith("userId")) {
+			Set<String> referencedUserIds = _referencedObjectIds.get(
+				"referencedUserIds");
+
+			referencedUserIds.add(value);
+		}
+		else if (Objects.equals(
+					_peekFilterType(),
+					FilterExpression.FilterType.ORGANIZATIONS) &&
+				 (fieldName.equals("id") || fieldName.equals("parentId"))) {
+
+			Set<String> referencedOrganizationIds = _referencedObjectIds.get(
+				"referencedOrganizationIds");
+
+			referencedOrganizationIds.add(value);
+		}
 	}
 
 	private void _visitChild(
