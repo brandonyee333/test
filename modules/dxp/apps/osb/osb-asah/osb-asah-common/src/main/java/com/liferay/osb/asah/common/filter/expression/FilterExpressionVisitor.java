@@ -625,11 +625,7 @@ public class FilterExpressionVisitor
 				"Individual"
 			)
 		).crossJoin(
-			DSL.unnest(
-				DSL.field("Individual.memberships", String[].class)
-			).as(
-				"IndividualMemberships"
-			)
+			DSL.table("UNNEST(Individual.memberships) AS IndividualMemberships")
 		).join(
 			DSL.table(
 				"BQOrganization"
@@ -637,13 +633,8 @@ public class FilterExpressionVisitor
 				"Organization"
 			)
 		).on(
-			DSL.field(
-				"Organization.id"
-			).in(
-				DSL.function(
-					"unnest", String[].class,
-					DSL.field("IndividualMemberships.ids"))
-			)
+			DSL.condition(
+				"Organization.id IN UNNEST(IndividualMemberships.ids)")
 		);
 
 		if (joinExpandoValue) {
@@ -734,11 +725,8 @@ public class FilterExpressionVisitor
 					"Individual"
 				)
 			).crossJoin(
-				DSL.unnest(
-					DSL.field("Individual.memberships", String[].class)
-				).as(
-					"IndividualMemberships"
-				)
+				DSL.table(
+					"UNNEST(Individual.memberships) AS IndividualMemberships")
 			).where(
 				DSL.and(
 					DSL.field(
@@ -746,13 +734,9 @@ public class FilterExpressionVisitor
 					).eq(
 						type
 					),
-					DSL.val(
-						id
-					).in(
-						DSL.function(
-							"unnest", String[].class,
-							DSL.field("IndividualMemberships.ids"))
-					))
+					DSL.condition(
+						String.format(
+							"'%s' IN UNNEST(IndividualMemberships.ids)", id)))
 			);
 
 		Field<String> field = DSL.field("Individual.id", String.class);
@@ -907,11 +891,9 @@ public class FilterExpressionVisitor
 						"Individual"
 					)
 				).crossJoin(
-					DSL.unnest(
-						DSL.field("Individual.memberships", String[].class)
-					).as(
-						"IndividualMemberships"
-					)
+					DSL.table(
+						"UNNEST(Individual.memberships) AS " +
+							"IndividualMemberships")
 				).where(
 					DSL.and(
 						DSL.field(
@@ -919,13 +901,10 @@ public class FilterExpressionVisitor
 						).eq(
 							"organizationIds"
 						),
-						DSL.val(
-							value
-						).in(
-							DSL.function(
-								"unnest", String[].class,
-								DSL.field("IndividualMemberships.ids"))
-						))
+						DSL.condition(
+							String.format(
+								"'%s' IN UNNEST(IndividualMemberships.ids)",
+								value)))
 				)
 			);
 		}
@@ -945,11 +924,9 @@ public class FilterExpressionVisitor
 						"Individual"
 					)
 				).crossJoin(
-					DSL.unnest(
-						DSL.field("Individual.memberships", String[].class)
-					).as(
-						"IndividualMemberships"
-					)
+					DSL.table(
+						"UNNEST(Individual.memberships) AS " +
+							"IndividualMemberships")
 				).join(
 					DSL.table(
 						"BQOrganization"
@@ -957,13 +934,8 @@ public class FilterExpressionVisitor
 						"Organization"
 					)
 				).on(
-					DSL.field(
-						"Organization.id"
-					).in(
-						DSL.function(
-							"unnest", String[].class,
-							DSL.field("IndividualMemberships.ids"))
-					)
+					DSL.condition(
+						"Organization.id IN UNNEST(IndividualMemberships.ids)")
 				).join(
 					DSL.table(
 						"BQOrganization"

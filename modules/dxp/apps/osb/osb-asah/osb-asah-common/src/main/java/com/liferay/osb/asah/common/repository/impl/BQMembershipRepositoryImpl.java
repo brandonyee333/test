@@ -711,11 +711,7 @@ public class BQMembershipRepositoryImpl
 
 			if (referencedTableNames.contains("ExpandoValue")) {
 				selectJoinStep = selectJoinStep.crossJoin(
-					DSL.unnest(
-						DSL.field("Individual.fields")
-					).as(
-						"Fields"
-					));
+					DSL.table("UNNEST(Individual.fields) AS Fields"));
 			}
 		}
 
