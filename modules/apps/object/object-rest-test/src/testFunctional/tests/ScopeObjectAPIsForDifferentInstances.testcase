@@ -98,7 +98,7 @@ definition {
 
 	@priority = 4
 	test CanCreateObjectEntryByScopeKey {
-		property portal.acceptance = "true";
+		property portal.acceptance = "ashley";
 		property test.name.skip.portal.instance = "ScopeObjectAPIsForDifferentInstances#CanCreateObjectEntryByScopeKey";
 
 		task ("When I use postScopeScopeKey and scopeKey to create an object entry in default instance") {
@@ -126,7 +126,7 @@ definition {
 
 	@priority = 4
 	test CanCreateObjectEntryInVirtualInstance {
-		property portal.acceptance = "true";
+		property portal.acceptance = "ashley";
 		property test.name.skip.portal.instance = "ScopeObjectAPIsForDifferentInstances#CanCreateObjectEntryInVirtualInstance";
 
 		task ("When I use postTest to create an object entry in www.able.com instance") {
@@ -159,7 +159,7 @@ definition {
 
 	@priority = 4
 	test CanIncludeObjectFieldInAPIExplorer {
-		property portal.acceptance = "true";
+		property portal.acceptance = "ashley";
 		property test.name.skip.portal.instance = "ScopeObjectAPIsForDifferentInstances#CanIncludeObjectFieldInAPIExplorer";
 
 		task ("Given navigate to www.able.com:8080/o/c/tests") {
