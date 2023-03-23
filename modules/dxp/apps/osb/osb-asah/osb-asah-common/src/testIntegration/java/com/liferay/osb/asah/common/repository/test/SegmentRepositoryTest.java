@@ -234,20 +234,19 @@ public class SegmentRepositoryTest
 	}
 
 	@Test
-	public void testFindByReferencedAssetDataSourceIdsAndStateNotAndType() {
+	public void testFindByReferencedDataSourceIdsAndStateNotAndType() {
 		Assertions.assertEquals(
 			Arrays.asList(entityModels.get(0), entityModels.get(1)),
-			_segmentRepository.
-				findByReferencedAssetDataSourceIdsAndStateNotAndType(
-					5L, "INACTIVE", Segment.Type.DYNAMIC));
+			_segmentRepository.findByReferencedDataSourceIdsAndStateNotAndType(
+				5L, "INACTIVE", Segment.Type.DYNAMIC));
 	}
 
 	@Test
-	public void testFindByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType() {
+	public void testFindByReferencedDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType() {
 		Assertions.assertEquals(
 			Arrays.asList(entityModels.get(0), entityModels.get(1)),
 			_segmentRepository.
-				findByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
+				findByReferencedDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
 					5L, Arrays.asList("7"), "INACTIVE", Segment.Type.DYNAMIC));
 	}
 

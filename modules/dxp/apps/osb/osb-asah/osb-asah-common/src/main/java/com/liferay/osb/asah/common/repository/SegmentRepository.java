@@ -66,15 +66,14 @@ public interface SegmentRepository
 	public Optional<Segment> findByNameAndStatus(String name, String status);
 
 	@Cacheable
-	public List<Segment> findByReferencedAssetDataSourceIdsAndStateNotAndType(
-		@Param("referencedAssetDataSourceId") Long referencedAssetDataSourceId,
+	public List<Segment> findByReferencedDataSourceIdsAndStateNotAndType(
+		@Param("referencedDataSourceId") Long referencedDataSourceId,
 		@Param("state") String state, @Param("type") Segment.Type type);
 
 	@Cacheable
 	public List<Segment>
-		findByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
-			@Param("referencedAssetDataSourceId") Long
-				referencedAssetDataSourceId,
+		findByReferencedDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
+			@Param("referencedDataSourceId") Long referencedDataSourceId,
 			@Param("referencedFieldMappingFieldNames") List<String>
 				referencedFieldMappingFieldNames,
 			@Param("state") String state, @Param("type") Segment.Type type);

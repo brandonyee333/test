@@ -11,9 +11,9 @@
 		"id": "327968823603500655",
 		"individualCount": 434,
 		"name": "Account: 342313459339515838",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 			"340477857996688156"

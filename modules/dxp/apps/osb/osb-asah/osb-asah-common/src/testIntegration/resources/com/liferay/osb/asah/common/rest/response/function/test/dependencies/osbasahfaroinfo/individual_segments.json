@@ -11,9 +11,9 @@
 		"knownIndividualCount": 12,
 		"lastActivityDate": "2020-01-17T16:33:57.512Z",
 		"name": "Account: 386700291682772906",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 		],
@@ -39,9 +39,9 @@
 		"knownIndividualCount": 5,
 		"lastActivityDate": "2020-01-17T19:00:25.318Z",
 		"name": "engineers",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 			"386700258482326346"

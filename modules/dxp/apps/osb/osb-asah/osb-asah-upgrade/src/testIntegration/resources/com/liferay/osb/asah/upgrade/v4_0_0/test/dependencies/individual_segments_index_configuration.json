@@ -56,10 +56,10 @@
 					"normalizer": "case_insensitive_sort",
 					"type": "keyword"
 				},
-				"referencedAssetDataSourceIds": {
+				"referencedAssetIds": {
 					"type": "keyword"
 				},
-				"referencedAssetIds": {
+				"referencedDataSourceIds": {
 					"type": "keyword"
 				},
 				"referencedFieldMappingFieldNames": {

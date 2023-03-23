@@ -7,7 +7,7 @@
 			DELETE FROM Segment WHERE Segment.channelId IN (:channelIds)
 		]]>
 	</entry>
-	<entry key="Segment.findByReferencedAssetDataSourceIdsAndStateNotAndType">
+	<entry key="Segment.findByReferencedDataSourceIdsAndStateNotAndType">
 		<![CDATA[
 			SELECT
 				Segment.*
@@ -19,9 +19,9 @@
 					SELECT
 						1
 					FROM
-						UNNEST(Segment.referencedAssetDataSourceIds) AS referencedAssetDataSourceId
+						UNNEST(Segment.referencedDataSourceIds) AS referencedDataSourceId
 					WHERE
-						referencedAssetDataSourceId = :referencedAssetDataSourceId
+						referencedDataSourceId = :referencedDataSourceId
 				) AND
 				Segment.state <> :state AND
 				Segment.type = :type
@@ -29,7 +29,7 @@
 				Segment.id
 		]]>
 	</entry>
-	<entry key="Segment.findByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType">
+	<entry key="Segment.findByReferencedDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType">
 		<![CDATA[
 			SELECT
 				Segment.*
@@ -42,9 +42,9 @@
 						SELECT
 							1
 						FROM
-							UNNEST(Segment.referencedAssetDataSourceIds) AS referencedAssetDataSourceId
+							UNNEST(Segment.referencedDataSourceIds) AS referencedDataSourceId
 						WHERE
-							referencedAssetDataSourceId = :referencedAssetDataSourceId
+							referencedDataSourceId = :referencedDataSourceId
 					) OR
 					EXISTS
 					(

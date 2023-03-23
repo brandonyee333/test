@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS Segment (
 	includeAnonymousUsers BOOLEAN,
 	modifiedDate TIMESTAMPTZ,
 	name TEXT,
-	referencedAssetDataSourceIds BIGINT[],
+	referencedDataSourceIds BIGINT[],
 	referencedFieldMappingFieldNames BIGINT[],
 	scope TEXT,
 	state TEXT,

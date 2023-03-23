@@ -10,9 +10,9 @@
 		"filterMetadata": "32906",
 		"id": "327968823603500655",
 		"name": "Account: 342313459339515838",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 			"340477857996688156"
@@ -34,9 +34,9 @@
 		"filterMetadata": "32907",
 		"id": "327968823603500656",
 		"name": "Test Segment 2",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 			"340477857996688157"
@@ -58,9 +58,9 @@
 		"filterMetadata": "32908",
 		"id": "327968823603500657",
 		"name": "Test Segment 3",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 			"340477857996688156",
@@ -83,11 +83,11 @@
 		"filterMetadata": "32909",
 		"id": "327968823603500658",
 		"name": "Test Segment 4",
-		"referencedAssetDataSourceIds": [
-			"351238757269547424"
-		],
 		"referencedAssetIds": [
 			"340477857996688443"
+		],
+		"referencedDataSourceIds": [
+			"351238757269547424"
 		],
 		"referencedFieldMappingFieldNames": [
 		],

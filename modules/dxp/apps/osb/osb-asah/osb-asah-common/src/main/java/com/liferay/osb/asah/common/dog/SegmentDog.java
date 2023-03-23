@@ -154,14 +154,14 @@ public class SegmentDog {
 		if ((dataSourceId != null) && !fieldMappingFieldNames.isEmpty()) {
 			segments =
 				_segmentRepository.
-					findByReferencedAssetDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
+					findByReferencedDataSourceIdsOrReferencedFieldMappingFieldNameInAndStateNotAndType(
 						dataSourceId, fieldMappingFieldNames, "DISABLED",
 						Segment.Type.DYNAMIC);
 		}
 		else if (dataSourceId != null) {
 			segments =
 				_segmentRepository.
-					findByReferencedAssetDataSourceIdsAndStateNotAndType(
+					findByReferencedDataSourceIdsAndStateNotAndType(
 						dataSourceId, "DISABLED", Segment.Type.DYNAMIC);
 		}
 		else if (!fieldMappingFieldNames.isEmpty()) {

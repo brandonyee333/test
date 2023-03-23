@@ -239,10 +239,10 @@ public class IndividualSegmentsRestControllerTest
 
 		Assertions.assertEquals("d-age-gt-50", segmentDTO.getName());
 
-		Set<String> referencedAssetDataSourceIds =
-			segmentDTO.getReferencedAssetDataSourceIds();
+		Set<String> referencedDataSourceIds =
+			segmentDTO.getReferencedDataSourceIds();
 
-		Assertions.assertTrue(referencedAssetDataSourceIds.isEmpty());
+		Assertions.assertTrue(referencedDataSourceIds.isEmpty());
 
 		Set<String> referencedFieldMappingFieldNames =
 			segmentDTO.getReferencedFieldMappingFieldNames();

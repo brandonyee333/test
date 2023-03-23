@@ -7,9 +7,9 @@
 		"id": "346306743994746064",
 		"individualCount": 16,
 		"name": "Account: 346306741766310654",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 		],
@@ -26,9 +26,9 @@
 		"id": "346306763618649567",
 		"individualCount": 16,
 		"name": "Account: 346306745597466890",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 		],
@@ -45,9 +45,9 @@
 		"id": "346308250473619552",
 		"individualCount": 16,
 		"name": "Account: 346306769708391202",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 		],
@@ -64,9 +64,9 @@
 		"id": "346308936219234391",
 		"individualCount": 16,
 		"name": "Account: 346308947223203070",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 		],
@@ -83,9 +83,9 @@
 		"id": "346308970527203814",
 		"individualCount": 16,
 		"name": "Account: 346308948940818080",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 		],

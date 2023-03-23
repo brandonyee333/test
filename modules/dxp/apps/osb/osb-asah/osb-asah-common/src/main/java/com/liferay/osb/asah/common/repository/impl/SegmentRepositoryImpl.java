@@ -651,11 +651,11 @@ public class SegmentRepositoryImpl
 				DSL.exists(
 					DSL.selectOne(
 					).from(
-						"UNNEST(referencedAssetDataSourceIds) AS " +
-							"referencedAssetDataSourceId"
+						"UNNEST(referencedDataSourceIds) AS " +
+							"referencedDataSourceId"
 					).where(
 						DSL.field(
-							"referencedAssetDataSourceId"
+							"referencedDataSourceId"
 						).eq(
 							dataSourceId
 						)

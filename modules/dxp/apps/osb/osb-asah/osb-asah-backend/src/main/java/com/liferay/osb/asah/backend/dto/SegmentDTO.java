@@ -81,7 +81,7 @@ public class SegmentDTO {
 
 		_modifiedDate = segment.getModifiedDate();
 		_name = segment.getName();
-		_referencedAssetDataSourceIds = SetUtil.map(
+		_referencedDataSourceIds = SetUtil.map(
 			segment.getReferencedDataSourceIds(), String::valueOf);
 		_referencedFieldMappingFieldNames = SetUtil.map(
 			segment.getReferencedFieldMappingFieldNames(), String::valueOf);
@@ -220,9 +220,9 @@ public class SegmentDTO {
 		return _name;
 	}
 
-	@JsonProperty("referencedAssetDataSourceIds")
-	public Set<String> getReferencedAssetDataSourceIds() {
-		return _referencedAssetDataSourceIds;
+	@JsonProperty("referencedDataSourceIds")
+	public Set<String> getReferencedDataSourceIds() {
+		return _referencedDataSourceIds;
 	}
 
 	@JsonProperty("referencedFieldMappingFieldNames")
@@ -326,10 +326,10 @@ public class SegmentDTO {
 		_name = name;
 	}
 
-	public void setReferencedAssetDataSourceIds(
-		Set<String> referencedAssetDataSourceIds) {
+	public void setReferencedDataSourceIds(
+		Set<String> referencedDataSourceIds) {
 
-		_referencedAssetDataSourceIds = referencedAssetDataSourceIds;
+		_referencedDataSourceIds = referencedDataSourceIds;
 	}
 
 	public void setReferencedFieldMappingFieldNames(
@@ -435,7 +435,7 @@ public class SegmentDTO {
 	private Date _lastActivityDate;
 	private Date _modifiedDate;
 	private String _name;
-	private Set<String> _referencedAssetDataSourceIds;
+	private Set<String> _referencedDataSourceIds;
 	private Set<String> _referencedFieldMappingFieldNames;
 	private String _scope;
 	private Set<SegmentDTO> _segmentDTOs;

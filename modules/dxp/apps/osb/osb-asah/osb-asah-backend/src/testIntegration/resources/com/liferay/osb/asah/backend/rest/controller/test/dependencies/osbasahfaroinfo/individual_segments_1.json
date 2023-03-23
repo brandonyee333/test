@@ -10,9 +10,9 @@
 		"filterMetadata": "32906",
 		"id": "327968823603500655",
 		"name": "Account: 342313459339515838",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 			"340477857996688156"
@@ -33,9 +33,9 @@
 		"filterMetadata": "32906",
 		"id": "327968823603500656",
 		"name": "Account: 342313458385210529",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 			"340477857996688156"
@@ -56,9 +56,9 @@
 		"filterMetadata": "32906",
 		"id": "327968823603500657",
 		"name": "Account: 342313458385210530",
-		"referencedAssetDataSourceIds": [
-		],
 		"referencedAssetIds": [
+		],
+		"referencedDataSourceIds": [
 		],
 		"referencedFieldMappingFieldNames": [
 			"340477857996688156"
