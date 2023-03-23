@@ -602,7 +602,12 @@ public class BQMembershipRepositoryImpl
 				DSL.field("modifiedDate", Date.class),
 				DSL.field("segmentId", Long.class)
 			).select(
-				selectJoinStep.where(filterExpression.getCondition())
+				selectJoinStep.where(
+					filterExpression.getCondition()
+				).groupBy(
+					DSL.field("Identity.id"),
+					DSL.field("Identity.individualId"), DSL.field("segmentId")
+				)
 			));
 	}
 
@@ -729,6 +734,16 @@ public class BQMembershipRepositoryImpl
 					DSL.field("Session.userId")
 				)
 			);
+
+			if (referencedTableNames.contains("SessionReferrers")) {
+				selectJoinStep = selectJoinStep.crossJoin(
+					DSL.table("UNNEST(Session.referrers) AS SessionReferrer"));
+			}
+
+			if (referencedTableNames.contains("SessionUrls")) {
+				selectJoinStep = selectJoinStep.crossJoin(
+					DSL.table("UNNEST(Session.urls) AS SessionUrl"));
+			}
 		}
 
 		return selectJoinStep;

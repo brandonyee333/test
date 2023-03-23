@@ -114,6 +114,18 @@ public class FilterExpressionVisitor
 			return _visitOrganizationExpression(fieldName, "eq", value);
 		}
 
+		if (Objects.equals(_filterType, FilterExpression.FilterType.SESSIONS)) {
+			if (Objects.equals(fieldName, "context/referrer")) {
+				return DSL.condition(
+					String.format("'%s' IN UNNEST(Session.referrers)", value));
+			}
+
+			if (Objects.equals(fieldName, "context/url")) {
+				return DSL.condition(
+					String.format("'%s' IN UNNEST(Session.urls)", value));
+			}
+		}
+
 		if (fieldName.startsWith("custom/")) {
 			_referencedTableNames.add("ExpandoValue");
 
@@ -319,6 +331,17 @@ public class FilterExpressionVisitor
 			Param param = (Param)parameters.get(1);
 
 			String value = String.valueOf(param.getValue());
+
+			if (Objects.equals(fieldName, "Session.referrers")) {
+				_referencedTableNames.add("SessionReferrers");
+
+				field = DSL.field("SessionReferrer");
+			}
+			else if (Objects.equals(fieldName, "Session.urls")) {
+				_referencedTableNames.add("SessionUrls");
+
+				field = DSL.field("SessionUrl");
+			}
 
 			condition = DSL.condition(
 				String.format(
@@ -1025,6 +1048,8 @@ public class FilterExpressionVisitor
 				put("individuals.givenName", "Individual.firstName");
 				put("provider/type", "providerType");
 				put("sessions.completeDate", "Session.sessionEnd");
+				put("sessions.referrer", "Session.referrers");
+				put("sessions.url", "Session.urls");
 			}
 		};
 	private final FilterExpression.FilterType _filterType;
