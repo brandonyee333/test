@@ -14,8 +14,30 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.model.Transformation;
+
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
+
 /**
  * @author Leslie Wong
  */
 public interface CustomBQIdentityInterestPageRepository {
+
+	public long countActivePagesTransformations(
+		@Nullable String filterString, String ownerId, String ownerType);
+
+	public long countInactivePagesTransformations(
+		@Nullable String filterString, String ownerId, String ownerType);
+
+	public List<Transformation> getActivePagesTransformations(
+		@Nullable String filterString, String ownerId, String ownerType,
+		Pageable pageable);
+
+	public List<Transformation> getInactivePagesTransformations(
+		@Nullable String filterString, String ownerId, String ownerType,
+		Pageable pageable);
+
 }

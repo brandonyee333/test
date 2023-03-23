@@ -14,9 +14,33 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
+import java.math.BigDecimal;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Field;
+import org.jooq.Record3;
+import org.jooq.SelectFinalStep;
+import org.jooq.SelectJoinStep;
+import org.jooq.SelectSelectStep;
+import org.jooq.SortField;
+import org.jooq.impl.DSL;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 /**
  * @author Leslie Wong
@@ -29,6 +53,366 @@ public class BQIdentityInterestPageRepositoryImpl
 
 		_dslContext = dslContext;
 		_queryExecutor = queryExecutor;
+	}
+
+	@Override
+	public long countActivePagesTransformations(
+		@Nullable String filterString, String ownerId, String ownerType) {
+
+		SelectFinalStep<Record3<String, String, BigDecimal>>
+			activePageSelectFinalStep = _getActivePageSelectFinalStep(
+				filterString, ownerId, ownerType);
+
+		if (activePageSelectFinalStep == null) {
+			return 0;
+		}
+
+		return _queryExecutor.queryForLong(
+			_dslContext.with(
+				"ActivePage"
+			).as(
+				activePageSelectFinalStep
+			).selectCount(
+			).from(
+				"ActivePage"
+			));
+	}
+
+	@Override
+	public long countInactivePagesTransformations(
+		@Nullable String filterString, String ownerId, String ownerType) {
+
+		SelectFinalStep<Record3<String, String, BigDecimal>>
+			activePageSelectFinalStep = _getActivePageSelectFinalStep(
+				filterString, ownerId, ownerType);
+
+		if (activePageSelectFinalStep == null) {
+			return 0;
+		}
+
+		SelectFinalStep<Record3<String, String, BigDecimal>>
+			inactivePageSelectFinalStep = _getInactivePageSelectFinalStep(
+				filterString, ownerId, ownerType);
+
+		if (inactivePageSelectFinalStep == null) {
+			return 0;
+		}
+
+		return _queryExecutor.queryForLong(
+			_dslContext.with(
+				"ActivePage"
+			).as(
+				activePageSelectFinalStep
+			).with(
+				"InactivePage"
+			).as(
+				inactivePageSelectFinalStep
+			).selectCount(
+			).from(
+				"InactivePage"
+			).where(
+				DSL.field(
+					"STRUCT(canonicalUrl, title)"
+				).notIn(
+					_dslContext.select(
+						DSL.field("STRUCT(canonicalUrl, title)")
+					).from(
+						"ActivePage"
+					)
+				)
+			));
+	}
+
+	@Override
+	public List<Transformation> getActivePagesTransformations(
+		@Nullable String filterString, String ownerId, String ownerType,
+		Pageable pageable) {
+
+		SelectFinalStep<Record3<String, String, BigDecimal>>
+			activePageSelectFinalStep = _getActivePageSelectFinalStep(
+				filterString, ownerId, ownerType);
+
+		if (activePageSelectFinalStep == null) {
+			return Collections.emptyList();
+		}
+
+		return _queryExecutor.queryForList(
+			record -> new Transformation(new Transformation.Term(record), null),
+			_dslContext.with(
+				"ActivePage"
+			).as(
+				activePageSelectFinalStep
+			).select(
+				DSL.field(
+					"canonicalUrl"
+				).as(
+					"url"
+				),
+				DSL.field("title"),
+				DSL.field(
+					"views", BigDecimal.class
+				).as(
+					"uniqueVisitsCount"
+				)
+			).from(
+				"ActivePage"
+			).orderBy(
+				_getSortFields(pageable.getSort())
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	@Override
+	public List<Transformation> getInactivePagesTransformations(
+		@Nullable String filterString, String ownerId, String ownerType,
+		Pageable pageable) {
+
+		SelectFinalStep<Record3<String, String, BigDecimal>>
+			activePageSelectFinalStep = _getActivePageSelectFinalStep(
+				filterString, ownerId, ownerType);
+
+		if (activePageSelectFinalStep == null) {
+			return Collections.emptyList();
+		}
+
+		SelectFinalStep<Record3<String, String, BigDecimal>>
+			inactivePageSelectFinalStep = _getInactivePageSelectFinalStep(
+				filterString, ownerId, ownerType);
+
+		if (inactivePageSelectFinalStep == null) {
+			return Collections.emptyList();
+		}
+
+		return _queryExecutor.queryForList(
+			record -> new Transformation(new Transformation.Term(record), null),
+			_dslContext.with(
+				"ActivePage"
+			).as(
+				activePageSelectFinalStep
+			).with(
+				"InactivePage"
+			).as(
+				inactivePageSelectFinalStep
+			).select(
+				DSL.field(
+					"InactivePage.canonicalUrl"
+				).as(
+					"url"
+				),
+				DSL.field("InactivePage.title"),
+				DSL.val(
+					0, BigDecimal.class
+				).as(
+					"uniqueVisitsCount"
+				)
+			).from(
+				"InactivePage"
+			).where(
+				DSL.field(
+					"STRUCT(canonicalUrl, title)"
+				).notIn(
+					_dslContext.select(
+						DSL.field("STRUCT(canonicalUrl, title)")
+					).from(
+						"ActivePage"
+					)
+				)
+			).orderBy(
+				_getSortFields(pageable.getSort())
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	private SelectFinalStep<Record3<String, String, BigDecimal>>
+		_getActivePageSelectFinalStep(
+			String filterString, String ownerId, String ownerType) {
+
+		SelectSelectStep<Record3<String, String, BigDecimal>> selectSelectStep =
+			_dslContext.select(
+				DSL.field("canonicalUrl", String.class),
+				DSL.field("title", String.class),
+				DSL.sum(
+					DSL.field("views", Long.class)
+				).as(
+					"views"
+				));
+
+		SelectJoinStep<Record3<String, String, BigDecimal>> selectJoinStep =
+			_getSelectJoinStep(ownerType, selectSelectStep);
+
+		if (selectJoinStep == null) {
+			return null;
+		}
+
+		return selectJoinStep.where(
+			_getConditions(filterString, true, ownerId, ownerType)
+		).groupBy(
+			DSL.field("canonicalUrl"), DSL.field("title")
+		);
+	}
+
+	private List<Condition> _getConditions(
+		String filterString, boolean includeOwner, String ownerId,
+		String ownerType) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (ownerType.equals("individual")) {
+			if (includeOwner) {
+				conditions.add(
+					DSL.field(
+						"BQIdentity.individualId"
+					).eq(
+						ownerId
+					));
+			}
+			else {
+				conditions.add(
+					DSL.field(
+						"BQIdentity.individualId"
+					).ne(
+						ownerId
+					));
+			}
+		}
+		else if (ownerType.equals("individual-segment")) {
+			if (includeOwner) {
+				conditions.add(
+					DSL.field(
+						"BQMembership.segmentId"
+					).eq(
+						Long.parseLong(ownerId)
+					));
+			}
+			else {
+				conditions.add(
+					DSL.or(
+						DSL.field(
+							"BQMembership.segmentId"
+						).isNull(),
+						DSL.field(
+							"BQMembership.segmentId"
+						).ne(
+							Long.parseLong(ownerId)
+						)));
+			}
+		}
+
+		if (StringUtils.isNotBlank(filterString)) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString);
+
+			conditions.add(filterExpression.getCondition());
+		}
+
+		return conditions;
+	}
+
+	private SelectFinalStep<Record3<String, String, BigDecimal>>
+		_getInactivePageSelectFinalStep(
+			String filterString, String ownerId, String ownerType) {
+
+		SelectSelectStep<Record3<String, String, BigDecimal>> selectSelectStep =
+			_dslContext.select(
+				DSL.field("canonicalUrl", String.class),
+				DSL.field("title", String.class),
+				DSL.val(
+					0, BigDecimal.class
+				).as(
+					"views"
+				));
+
+		SelectJoinStep<Record3<String, String, BigDecimal>> selectJoinStep =
+			_getSelectJoinStep(ownerType, selectSelectStep);
+
+		if (selectJoinStep == null) {
+			return null;
+		}
+
+		return selectJoinStep.where(
+			_getConditions(filterString, false, ownerId, ownerType)
+		).groupBy(
+			DSL.field("canonicalUrl"), DSL.field("title")
+		);
+	}
+
+	private SelectJoinStep<Record3<String, String, BigDecimal>>
+		_getSelectJoinStep(
+			String ownerType,
+			SelectSelectStep<Record3<String, String, BigDecimal>>
+				selectSelectStep) {
+
+		SelectJoinStep<Record3<String, String, BigDecimal>> selectJoinStep =
+			selectSelectStep.from("BQIdentityInterestPage");
+
+		if (ownerType.equals("individual")) {
+			return selectJoinStep.join(
+				"BQIdentity"
+			).on(
+				DSL.field(
+					"BQIdentityInterestPage.identityId"
+				).eq(
+					DSL.field("BQIdentity.id")
+				)
+			);
+		}
+		else if (ownerType.equals("individual-segment")) {
+			return selectJoinStep.leftOuterJoin(
+				"BQMembership"
+			).on(
+				DSL.field(
+					"BQIdentityInterestPage.identityId"
+				).eq(
+					DSL.field("BQMembership.identityId")
+				)
+			);
+		}
+
+		return null;
+	}
+
+	private Collection<SortField<?>> _getSortFields(Sort sort) {
+		Collection<SortField<?>> sortFields = new ArrayList<>();
+
+		List<Sort.Order> sortOrders = new ArrayList<>();
+
+		if (sort != null) {
+			sortOrders = sort.toList();
+		}
+
+		if (sortOrders.isEmpty()) {
+			sortFields.add(
+				DSL.field(
+					"uniqueVisitsCount"
+				).desc());
+			sortFields.add(
+				DSL.field(
+					"title"
+				).asc());
+
+			return sortFields;
+		}
+
+		for (Sort.Order sortOrder : sortOrders) {
+			String fieldName = sortOrder.getProperty();
+
+			Field<?> field = DSL.field(fieldName);
+
+			if (sortOrder.getDirection() == Sort.Direction.ASC) {
+				sortFields.add(field.asc());
+			}
+			else {
+				sortFields.add(field.desc());
+			}
+		}
+
+		return sortFields;
 	}
 
 	private final DSLContext _dslContext;
