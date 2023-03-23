@@ -14,578 +14,42 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
-import com.liferay.osb.asah.common.entity.Asset;
-import com.liferay.osb.asah.common.entity.BQFieldMapping;
-import com.liferay.osb.asah.common.entity.Channel;
-import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
-import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.repository.ChannelRepository;
-import com.liferay.osb.asah.common.repository.SegmentRepository;
-import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.RandomUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 
 /**
  * @author Michael Bowerman
  */
-@Disabled
 public class SegmentDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
-	@BeforeEach
-	public void setUp() {
-		Channel channel = new Channel("Liferay");
-
-		channel.setId(1L);
-		channel.setIsNew(Boolean.TRUE);
-
-		_channelRepository.save(channel);
-
-		for (int i = 0; i < 3; i++) {
-			DataSource dataSource = _dataSourceDog.addDataSource(
-				FaroInfoTestUtil.buildLiferayDataSource());
-
-			Long liferayDataSourceId = dataSource.getId();
-
-			_liferayDataSourceIdsJSONArray.put(
-				String.valueOf(liferayDataSourceId));
-
-			JSONArray assetIdsJSONArray = new JSONArray();
-
-			for (int j = 0; j < 3; j++) {
-				Asset asset = _assetRepository.save(
-					_objectMapper.convertValue(
-						FaroInfoTestUtil.buildPageAssetJSONObject(
-							liferayDataSourceId),
-						Asset.class));
-
-				assetIdsJSONArray.put(String.valueOf(asset.getId()));
-			}
-
-			_liferayDataSourceAssetIdsJSONObject.put(
-				String.valueOf(liferayDataSourceId), assetIdsJSONArray);
-
-			JSONObject organizationJSONObject =
-				FaroInfoTestUtil.buildOrganizationJSONObject(
-					String.valueOf(liferayDataSourceId));
-
-			_liferayDataSourceOrganizationIdsJSONObject.put(
-				String.valueOf(liferayDataSourceId),
-				organizationJSONObject.put(
-					"type", DXPEntity.Type.ORGANIZATION));
-		}
-
-		// TODO Save BQFieldMappings with _FIELD_NAMES
-
-	}
-
+	@BQSQLResource(resourcePath = "test_referenced_objects_bq.sql")
+	@SQLResource(resourcePath = "test_referenced_objects.sql")
 	@Test
-	public void testAddAnd() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames(
-				"favoriteColor", "favoriteGenre"),
-			"demographics/favoriteColor/value eq 'blue' and " +
-				"demographics/favoriteGenre/value eq 'Science Fiction'");
-	}
-
-	@Test
-	public void testAddBehavioralCriteriaWithMultipleAssetsFromDifferentDataSources() {
-		String[] expectedReferencedAssetDataSourceIds =
-			new String[_liferayDataSourceIdsJSONArray.length() - 1];
-
-		StringBuilder filterSB = new StringBuilder();
-
-		for (int i = 0; i < (_liferayDataSourceIdsJSONArray.length() - 1);
-			 i++) {
-
-			String dataSourceId = _liferayDataSourceIdsJSONArray.getString(i);
-
-			expectedReferencedAssetDataSourceIds[i] = dataSourceId;
-
-			JSONArray assetIdsJSONArray =
-				_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-			String assetId = assetIdsJSONArray.getString(
-				RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-			filterSB.append("activities/ever eq 'page#pageViewed#");
-			filterSB.append(assetId);
-			filterSB.append("'");
-
-			if (i < (_liferayDataSourceIdsJSONArray.length() - 2)) {
-				filterSB.append(" and ");
-			}
-		}
-
-		_assertAddSetsReferencedObjectIds(
-			expectedReferencedAssetDataSourceIds, new String[0],
-			filterSB.toString());
-	}
-
-	@Test
-	public void testAddBehavioralCriteriaWithMultipleAssetsFromSameDataSource() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		StringBuilder filterSB = new StringBuilder();
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		for (int i = 0; i < assetIdsJSONArray.length(); i++) {
-			filterSB.append("activities/ever eq 'page#pageViewed#");
-			filterSB.append(assetIdsJSONArray.getString(i));
-			filterSB.append("'");
-
-			if (i < (assetIdsJSONArray.length() - 1)) {
-				filterSB.append(" and ");
-			}
-		}
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0], filterSB.toString());
-	}
-
-	@Test
-	public void testAddBehavioralCriterionEqEver() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/ever eq 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionEqLast7Days() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/last7Days eq 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionEqLast30Days() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/last30Days eq 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionEqLastYear() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/lastYear eq 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionEqToday() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/today eq 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionNeEver() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/ever ne 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionNeLast7Days() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/last7Days ne 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionNeLast30Days() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/last30Days ne 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionNeLastYear() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/lastYear ne 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddBehavioralCriterionNeToday() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"activities/today ne 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testAddContainsFunction() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("jobTitle"),
-			"contains(demographics/jobTitle/value, 'Engineer')");
-	}
-
-	@Test
-	public void testAddEndsWithFunction() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingFieldNames("email"),
-			"endsWith(demographics/email/value, '@liferay.com')");
-	}
-
-	@Test
-	public void testAddEqOperator() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("address"),
-			"demographics/address/value eq '221B Baker Street'");
-	}
-
-	@Test
-	public void testAddGeOperator() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingFieldNames("age"),
-			"demographics/age/value ge 18");
-	}
-
-	@Test
-	public void testAddGroupIdEq() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		DXPEntity dxpEntity = new DXPEntity();
-
-		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
-		dxpEntity.setType(DXPEntity.Type.GROUP);
-
-		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.GROUP);
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"groupIds eq '" + String.valueOf(dxpEntity.getId()) + "'");
-	}
-
-	@Test
-	public void testAddGtOperator() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("birthDate"),
-			"demographics/birthDate/value gt '1989-11-09T00:00:00.000Z'");
-	}
-
-	@Test
-	public void testAddLeOperator() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("postalCode"),
-			"demographics/postalCode/value le '09999'");
-	}
-
-	@Test
-	public void testAddLtOperator() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("familyName"),
-			"demographics/familyName/value lt 'N'");
-	}
-
-	@Test
-	public void testAddNeOperator() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("favoritePokemon"),
-			"demographics/favoritePokemon/value ne 'Thundurus'");
-	}
-
-	@Test
-	public void testAddNotStringFunction() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("telephone"),
-			"not contains(demographics/telephone/value, '909')");
-	}
-
-	@Test
-	public void testAddOr() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames(
-				"country", "favoriteArtist"),
-			"demographics/country/value eq 'France' or " +
-				"demographics/favoriteArtist/value eq 'Laurice Deauxnim'");
-	}
-
-	@Test
-	public void testAddOrganizationContainsNameTreePath() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			"(organizations.filter(filter='(contains(nameTreePath, " +
-				"''childOrg1''))'))");
-	}
-
-	@Disabled
-	@Test
-	public void testAddOrganizationCustomField() {
-
-		// TODO Save BQFieldMapping "department", "Text"
-
-		BQFieldMapping bqFieldMapping = new BQFieldMapping();
-
-		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[] {bqFieldMapping.getFieldName()},
-			"(organizations.filter(filter='(custom/department/value eq " +
-				"''engineering'')'))");
-	}
-
-	@Disabled
-	@Test
-	public void testAddOrganizationCustomStringFunctionField() {
-
-		// TODO Save BQFieldMapping "department", "Text"
-
-		BQFieldMapping bqFieldMapping = new BQFieldMapping();
-
-		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[] {bqFieldMapping.getFieldName()},
-			"(organizations.filter(filter='(contains(" +
-				"custom/department/value, ''life''))'))");
-	}
-
-	@Disabled
-	@Test
-	public void testAddOrganizationIdEq() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONObject organizationJSONObject =
-			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				dataSourceId);
-
-		String organizationId = organizationJSONObject.getString("id");
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"(organizations.filter(filter='(id eq ''" + organizationId +
-				"'')'))");
-	}
-
-	@Test
-	public void testAddOrganizationModifiedDate() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0],
-			"organizations.filter(filter='(dateModified gt 1580256740750)')");
-	}
-
-	@Disabled
-	@Test
-	public void testAddOrganizationParentIdNe() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONObject organizationJSONObject =
-			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				dataSourceId);
-
-		String organizationId = organizationJSONObject.getString("id");
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"(organizations.filter(filter='(parentId ne ''" + organizationId +
-				"'')'))");
-	}
-
-	@Disabled
-	@Test
-	public void testAddOrganizationWithMultipleClauses() {
-		List<String> expectedReferencedAssetDataSourceIds = new ArrayList<>();
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("(organizations.filter(filter='(contains(nameTreePath, ");
-		sb.append("''childOrg1'')) ");
-
-		for (String dataSourceId :
-				_liferayDataSourceOrganizationIdsJSONObject.keySet()) {
-
-			expectedReferencedAssetDataSourceIds.add(dataSourceId);
-
-			JSONObject organizationJSONObject =
-				_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-					dataSourceId);
-
-			String organizationId = organizationJSONObject.getString("id");
-
-			sb.append("or id eq ''");
-			sb.append(organizationId);
-			sb.append("'' ");
-		}
-
-		sb.append("'))");
-
-		_assertAddSetsReferencedObjectIds(
-			expectedReferencedAssetDataSourceIds.toArray(new String[0]),
-			new String[0], sb.toString());
-	}
-
-	@Test
-	public void testAddParentheses() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("worksFor"),
-			"(((demographics/worksFor/value eq 'Bluecorp')))");
-	}
-
-	@Test
-	public void testAddRoleIdEq() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		DXPEntity dxpEntity = new DXPEntity();
-
-		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
-		dxpEntity.setType(DXPEntity.Type.ROLE);
-
-		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.ROLE);
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"roleIds eq '" + String.valueOf(dxpEntity.getId()) + "'");
-	}
-
-	@Test
-	public void testAddSameFieldMappingReferencedMultipleTimesOnlyAppearsOnce() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingFieldNames("state"),
-			"demographics/state/value eq 'Alaska' or " +
-				"demographics/state/value eq 'Hawaii'");
-	}
-
-	@Test
-	public void testAddSegmentWithInvalidValue() {
+	public void testReferencedObjects() {
 		Segment segment = new Segment();
 
-		segment.setFilter("demographics/age/value ge 1.2345678901234568e+21");
+		String id =
+			"f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75";
+
+		segment.setFilter(
+			"(activities.filterByCount(filter='(activityKey eq " +
+				"''Form#formViewed#" + id + "'' and day gt ''last24Hours'')'," +
+					"operator='ge',value=1))");
+
 		segment.setIncludeAnonymousUsers(Boolean.FALSE);
 		segment.setModifiedDate(new Date());
 		segment.setName("Segment 1");
@@ -593,503 +57,135 @@ public class SegmentDogTest
 
 		segment = _segmentDog.addSegment(segment);
 
-		Assertions.assertTrue(
-			StringUtils.endsWith(
-				segment.getFilter(), String.valueOf(Integer.MAX_VALUE)));
-	}
+		Set<String> referencedAssetIds = segment.getReferencedAssetIds();
 
-	@Test
-	public void testAddStartsWithFunction() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("givenName"),
-			"startsWith(demographics/givenName/value, 'B')");
-	}
+		Assertions.assertEquals(1L, referencedAssetIds.size());
+		Assertions.assertTrue(referencedAssetIds.contains(id));
 
-	@Test
-	public void testAddTeamIdEq() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
+		Set<Long> referencedDataSourceIds =
+			segment.getReferencedDataSourceIds();
 
-		DXPEntity dxpEntity = new DXPEntity();
+		Assertions.assertEquals(1L, referencedDataSourceIds.size());
+		Assertions.assertTrue(referencedDataSourceIds.contains(123456789L));
 
-		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
-		dxpEntity.setType(DXPEntity.Type.TEAM);
+		segment = new Segment();
 
-		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.TEAM);
+		id = "c4f359787171fadfbcb37c96c324254260e0d164d03dd3384bd0d8eee6976cf5";
 
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"teamIds eq '" + String.valueOf(dxpEntity.getId()) + "'");
-	}
+		segment.setFilter("(groupIds eq '" + id + "')");
 
-	@Test
-	public void testAddUserGroupIdEq() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		DXPEntity dxpEntity = new DXPEntity();
-
-		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
-		dxpEntity.setType(DXPEntity.Type.USER_GROUP);
-
-		dxpEntity = _dxpEntityDog.addDXPEntity(
-			dxpEntity, DXPEntity.Type.USER_GROUP);
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"userGroupIds eq '" + String.valueOf(dxpEntity.getId()) + "'");
-	}
-
-	@Test
-	public void testAddUserIdEq() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		DXPEntity dxpEntity = new DXPEntity();
-
-		dxpEntity.setDataSourceId(Long.valueOf(dataSourceId));
-		dxpEntity.setType(DXPEntity.Type.USER);
-
-		dxpEntity = _dxpEntityDog.addDXPEntity(dxpEntity, DXPEntity.Type.USER);
-
-		_assertAddSetsReferencedObjectIds(
-			new String[] {dataSourceId}, new String[0],
-			"userId eq '" + String.valueOf(dxpEntity.getId()) + "'");
-	}
-
-	@Test
-	public void testFieldNameDoesNotNeedValueSuffixToAddReferencedFieldMappingFieldName() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0], _convertFieldNamesToFieldMappingFieldNames("image"),
-			"demographics/image ne null");
-	}
-
-	@Test
-	public void testFieldNameMustBePrefixedWithDemographicsToAddReferencedFieldMappingFieldName() {
-		_assertAddSetsReferencedObjectIds(
-			new String[0], new String[0], "street eq 'Broadway'");
-	}
-
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments_info_2.json"
-	)
-	@Test
-	public void testGetSegmentPage() {
-		Page<Segment> segmentPage = _segmentDog.getSegmentPage(
-			DateUtil.toUTCDate("2022-04-02T11:00:00.000Z"), -1L, 1,
-			Sort.by(Sort.Order.asc("id")),
-			DateUtil.toUTCDate("2022-04-03T13:00:00.000Z"));
-
-		Assertions.assertEquals(2, segmentPage.getTotalElements());
-
-		List<Segment> segments = segmentPage.getContent();
-
-		Assertions.assertEquals(1, segments.size());
-	}
-
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments_info.json"
-	)
-	@Test
-	public void testGetSegments() {
-		List<Segment> segments = _segmentDog.getSegments(
-			Arrays.asList(338511398116723457L, 338511451975440187L));
-
-		Assertions.assertEquals(2, segments.size(), segments.toString());
-
-		_assertSegment("Test Segment 0", segments.get(0));
-		_assertSegment("Test Segment 2", segments.get(1));
-	}
-
-	@Test
-	public void testReferencedAssetDataSourceIdsAddedOnUpdate() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertUpdateSetsReferencedObjectIds(
-			"id ne null", new String[0], new String[0],
-			new String[] {dataSourceId}, new String[0],
-			"activities/ever eq 'page#pageViewed#" + assetId + "'");
-	}
-
-	@Test
-	public void testReferencedAssetDataSourceIdsEmptiedOnUpdate() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONArray assetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(dataSourceId);
-
-		String assetId = assetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, assetIdsJSONArray.length()));
-
-		_assertUpdateSetsReferencedObjectIds(
-			"activities/ever eq 'page#pageViewed#" + assetId + "'",
-			new String[] {dataSourceId}, new String[0], new String[0],
-			new String[0], "");
-	}
-
-	@Test
-	public void testReferencedAssetDataSourceIdsModifiedOnUpdate() {
-		int addDataSourceIdIndex = RandomUtils.nextInt(
-			0, _liferayDataSourceIdsJSONArray.length());
-
-		String addDataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			addDataSourceIdIndex);
-
-		JSONArray addAssetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(addDataSourceId);
-
-		String addAssetId = addAssetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, addAssetIdsJSONArray.length()));
-
-		String updateDataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			(addDataSourceIdIndex + 1) %
-				_liferayDataSourceIdsJSONArray.length());
-
-		JSONArray updateAssetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				updateDataSourceId);
-
-		String updateAssetId = updateAssetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, addAssetIdsJSONArray.length()));
-
-		_assertUpdateSetsReferencedObjectIds(
-			"activities/ever eq 'page#pageViewed#" + addAssetId + "'",
-			new String[] {addDataSourceId}, new String[0],
-			new String[] {updateDataSourceId}, new String[0],
-			"activities/ever eq 'page#pageViewed#" + updateAssetId + "'");
-	}
-
-	@Test
-	public void testReferencedFieldMappingFieldNamesAddedOnUpdate() {
-		_assertUpdateSetsReferencedObjectIds(
-			"", new String[0], new String[0], new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("additionalName"),
-			"demographics/additionalName/value eq 'Miles'");
-	}
-
-	@Test
-	public void testReferencedFieldMappingFieldNamesEmptiedOnUpdate() {
-		_assertUpdateSetsReferencedObjectIds(
-			"demographics/city/value eq 'Los Angeles'", new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("city"), new String[0],
-			new String[0], "");
-	}
-
-	@Test
-	public void testReferencedFieldMappingFieldNamesModifiedOnUpdate() {
-		_assertUpdateSetsReferencedObjectIds(
-			"demographics/honorificPrefix/value eq 'Mrs.'", new String[0],
-			_convertFieldNamesToFieldMappingFieldNames("honorificPrefix"),
-			new String[0], _convertFieldNamesToFieldMappingFieldNames("gender"),
-			"demographics/gender/value eq 'Female'");
-	}
-
-	@Disabled
-	@Test
-	public void testReferencedOrganizationIdsEmptiedOnUpdate() {
-		String dataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			RandomUtils.nextInt(0, _liferayDataSourceIdsJSONArray.length()));
-
-		JSONObject organizationJSONObject =
-			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				dataSourceId);
-
-		String organizationId = organizationJSONObject.getString("id");
-
-		_assertUpdateSetsReferencedObjectIds(
-			"(organizations.filter(filter='(id eq ''" + organizationId +
-				"'')'))",
-			new String[] {dataSourceId}, new String[0], new String[0],
-			new String[0], "");
-	}
-
-	@Disabled
-	@Test
-	public void testReferencedOrganizationIdsModifiedOnUpdate() {
-		String addDataSourceId = _liferayDataSourceIdsJSONArray.getString(0);
-
-		JSONObject addOrganizationJSONObject =
-			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				addDataSourceId);
-
-		String addOrganizationId = addOrganizationJSONObject.getString("id");
-
-		String updateDataSourceId = _liferayDataSourceIdsJSONArray.getString(1);
-
-		JSONObject updateOrganizationJSONObject =
-			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				updateDataSourceId);
-
-		String updateOrganizationId = updateOrganizationJSONObject.getString(
-			"id");
-
-		_assertUpdateSetsReferencedObjectIds(
-			"(organizations.filter(filter='(id eq ''" + addOrganizationId +
-				"'')'))",
-			new String[] {addDataSourceId}, new String[0],
-			new String[] {updateDataSourceId}, new String[0],
-			"(organizations.filter(filter='(parentId eq ''" +
-				updateOrganizationId + "'')'))");
-	}
-
-	@Disabled
-	@Test
-	public void testUpdateFreestyle() {
-		StringBuilder addFilterSB = new StringBuilder();
-
-		addFilterSB.append("((demographics/age/value ge 21 or ((startsWith(");
-		addFilterSB.append("demographics/favoritePokemon/value, 'Tapu')) or ");
-		addFilterSB.append("(activities/last7Days ne 'page#pageViewed#");
-
-		int addDataSourceIdIndex = RandomUtils.nextInt(
-			0, _liferayDataSourceIdsJSONArray.length());
-
-		String addDataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			addDataSourceIdIndex);
-
-		JSONArray addAssetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(addDataSourceId);
-
-		String addAssetId = addAssetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, addAssetIdsJSONArray.length()));
-
-		addFilterSB.append(addAssetId);
-
-		addFilterSB.append("' and demographics/additionalName/value lt 'S'))");
-		addFilterSB.append("and demographics/image/value ne null ");
-		addFilterSB.append("and organizations.filter(filter='(id eq ''");
-
-		JSONObject organizationJSONObject =
-			_liferayDataSourceOrganizationIdsJSONObject.getJSONObject(
-				addDataSourceId);
-
-		String organizationId = organizationJSONObject.getString("id");
-
-		addFilterSB.append(organizationId);
-
-		addFilterSB.append("'')')))");
-
-		StringBuilder updateFilterSB = new StringBuilder();
-
-		updateFilterSB.append("((demographics/worksFor/value ne null and ");
-		updateFilterSB.append("activities/ever eq 'page#pageViewed#");
-
-		String updateDataSourceId = _liferayDataSourceIdsJSONArray.getString(
-			(addDataSourceIdIndex + 1) %
-				_liferayDataSourceIdsJSONArray.length());
-
-		JSONArray updateAssetIdsJSONArray =
-			_liferayDataSourceAssetIdsJSONObject.getJSONArray(
-				updateDataSourceId);
-
-		String updateAssetId = updateAssetIdsJSONArray.getString(
-			RandomUtils.nextInt(0, addAssetIdsJSONArray.length()));
-
-		updateFilterSB.append(updateAssetId);
-
-		updateFilterSB.append("') or ((demographics/telephone/value eq ");
-		updateFilterSB.append("'page#pageViewed#");
-		updateFilterSB.append(addAssetId);
-		updateFilterSB.append("' and demographics/gender/value eq true) or ");
-		updateFilterSB.append("(demographics/age/value lt 55 and ");
-		updateFilterSB.append("additionalName/value gt 'M')))");
-
-		_assertUpdateSetsReferencedObjectIds(
-			addFilterSB.toString(), new String[] {addDataSourceId},
-			_convertFieldNamesToFieldMappingFieldNames(
-				"additionalName", "age", "favoritePokemon", "image"),
-			new String[] {updateDataSourceId},
-			_convertFieldNamesToFieldMappingFieldNames(
-				"age", "gender", "telephone", "worksFor"),
-			updateFilterSB.toString());
-	}
-
-	@Test
-	public void testUpdateName() {
-		Segment segment = new Segment();
-
-		segment.setFilter("(demographics/favoriteColor/value eq 'blue')");
 		segment.setIncludeAnonymousUsers(Boolean.FALSE);
 		segment.setModifiedDate(new Date());
-		segment.setName("Segment 1");
+		segment.setName("Segment 2");
 		segment.setType(Segment.Type.DYNAMIC);
 
 		segment = _segmentDog.addSegment(segment);
 
-		Segment partialSegment = new Segment();
+		Set<String> referencedGroupIds = segment.getReferencedGroupIds();
 
-		partialSegment.setFilter(
-			"(demographics/favoriteColor/value eq 'blue')");
-		partialSegment.setIncludeAnonymousUsers(Boolean.FALSE);
-		partialSegment.setModifiedDate(new Date());
-		partialSegment.setName("Segment 2");
+		Assertions.assertEquals(1L, referencedGroupIds.size());
+		Assertions.assertTrue(referencedGroupIds.contains(id));
 
-		partialSegment = _segmentDog.updateSegment(
-			partialSegment, segment.getId());
+		referencedDataSourceIds = segment.getReferencedDataSourceIds();
 
-		Assertions.assertTrue(
-			CollectionUtils.isNotEmpty(
-				partialSegment.getReferencedFieldMappingFieldNames()));
-		Assertions.assertEquals(
-			segment.getReferencedFieldMappingFieldNames(),
-			partialSegment.getReferencedFieldMappingFieldNames());
+		Assertions.assertEquals(1L, referencedDataSourceIds.size());
+		Assertions.assertTrue(referencedDataSourceIds.contains(123456789L));
 
-		segment = _segmentDog.getSegment(segment.getId());
+		segment = new Segment();
 
-		Assertions.assertEquals("Segment 2", segment.getName());
-	}
+		id = "49b58366cb287f8d67cbb53ec1666cbc7e479d5d769c5dacadfc2b8981f287b0";
 
-	@Test
-	public void testUpdateSegmentWithInvalidValue() {
-		Segment segment = new Segment();
+		segment.setFilter(
+			"(organizations.filter(filter='(id eq ''" + id + "'')'))");
 
-		segment.setFilter("demographics/age/value ge 18");
 		segment.setIncludeAnonymousUsers(Boolean.FALSE);
 		segment.setModifiedDate(new Date());
-		segment.setName("Segment 1");
+		segment.setName("Segment 3");
 		segment.setType(Segment.Type.DYNAMIC);
 
 		segment = _segmentDog.addSegment(segment);
 
-		Segment partialSegment = new Segment();
+		Set<String> referencedOrganizationIds =
+			segment.getReferencedOrganizationIds();
 
-		partialSegment.setFilter(
-			"demographics/age/value ge 1.2345678901234568e+21");
+		Assertions.assertEquals(1L, referencedOrganizationIds.size());
+		Assertions.assertTrue(referencedOrganizationIds.contains(id));
 
-		partialSegment = _segmentDog.updateSegment(
-			partialSegment, segment.getId());
+		referencedDataSourceIds = segment.getReferencedDataSourceIds();
 
+		Assertions.assertEquals(1L, referencedDataSourceIds.size());
+		Assertions.assertTrue(referencedDataSourceIds.contains(123456789L));
+
+		segment = new Segment();
+
+		String roleId =
+			"75524e028bbe9a84278b7b6285362da90600545f4e8f08a74568bff12d5a2760";
+		String teamId =
+			"2ca148650ffe346c482251a3b6e76dbb705d1eed0ebfa564d202fad2f0df0966";
+		String userGroupId =
+			"a5c97f6263b76cc59857c88139a3ed110ccb9bde454d5c2cde6556c12191337e";
+		String userId =
+			"e8931884a5cfc10b436de0bb5c35a0a37b7574c1f854c46a4cf3a7e522f7ecb2";
+
+		segment.setFilter(
+			"((roleIds eq '" + roleId + "') and (teamIds eq '" + teamId +
+				"') and (userGroupIds ne '" + userGroupId + "') or (userId " +
+					"eq '" + userId + "'))");
+
+		segment.setIncludeAnonymousUsers(Boolean.FALSE);
+		segment.setModifiedDate(new Date());
+		segment.setName("Segment 4");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		segment = _segmentDog.addSegment(segment);
+
+		Set<String> referencedRoleIds = segment.getReferencedRoleIds();
+
+		Assertions.assertEquals(1L, referencedRoleIds.size());
+		Assertions.assertTrue(referencedRoleIds.contains(roleId));
+
+		Set<String> referencedTeamIds = segment.getReferencedTeamIds();
+
+		Assertions.assertEquals(1L, referencedTeamIds.size());
+		Assertions.assertTrue(referencedTeamIds.contains(teamId));
+
+		Set<String> referencedUserGroupIds =
+			segment.getReferencedUserGroupIds();
+
+		Assertions.assertEquals(1L, referencedUserGroupIds.size());
+		Assertions.assertTrue(referencedUserGroupIds.contains(userGroupId));
+
+		Set<String> referencedUserIds = segment.getReferencedUserIds();
+
+		Assertions.assertEquals(1L, referencedUserIds.size());
+		Assertions.assertTrue(referencedUserIds.contains(userId));
+
+		referencedDataSourceIds = segment.getReferencedDataSourceIds();
+
+		Assertions.assertEquals(1L, referencedDataSourceIds.size());
+		Assertions.assertTrue(referencedDataSourceIds.contains(123456789L));
+
+		segment = new Segment();
+
+		segment.setFilter(
+			"((organizations.filter(filter='(custom/Custom_Field/value eq ''" +
+				"custom'')')) and demographics/email/value ne null)");
+		segment.setIncludeAnonymousUsers(Boolean.FALSE);
+		segment.setModifiedDate(new Date());
+		segment.setName("Segment 5");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		segment = _segmentDog.addSegment(segment);
+
+		Set<String> referencedFieldMappingFieldNames =
+			segment.getReferencedFieldMappingFieldNames();
+
+		Assertions.assertEquals(2L, referencedFieldMappingFieldNames.size());
 		Assertions.assertTrue(
-			StringUtils.endsWith(
-				partialSegment.getFilter(), String.valueOf(Integer.MAX_VALUE)));
+			referencedFieldMappingFieldNames.contains("Custom_Field"));
+		Assertions.assertTrue(
+			referencedFieldMappingFieldNames.contains("email"));
 	}
-
-	private JSONObject _assertAddSetsReferencedObjectIds(
-		String[] expectedReferencedAssetDataSourceIds,
-		String[] expectedReferencedFieldMappingFieldNames,
-		String filterString) {
-
-		JSONObject individualSegmentJSONObject = _objectMapper.convertValue(
-			_segmentDog.addSegment(
-				FaroInfoTestUtil.buildDynamicSegment(1L, filterString)),
-			JSONObject.class);
-
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray(
-				"referencedAssetDataSourceIds"),
-			expectedReferencedAssetDataSourceIds);
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray(
-				"referencedFieldMappingFieldNames"),
-			expectedReferencedFieldMappingFieldNames);
-
-		return individualSegmentJSONObject;
-	}
-
-	private void _assertSameContents(
-		JSONArray actualValuesJSONArray, String[] expectedValues) {
-
-		Assertions.assertEquals(
-			expectedValues.length, actualValuesJSONArray.length());
-
-		for (String value : expectedValues) {
-			Assertions.assertTrue(
-				JSONUtil.hasValue(actualValuesJSONArray, value),
-				"Expected to find value " + value + " in JSONArray " +
-					actualValuesJSONArray);
-		}
-	}
-
-	private void _assertSegment(
-		String expectedSegmentName, Segment actualSegment) {
-
-		Assertions.assertEquals(expectedSegmentName, actualSegment.getName());
-	}
-
-	private void _assertUpdateSetsReferencedObjectIds(
-		String addFilter, String[] expectedAddReferencedAssetDataSourceIds,
-		String[] expectedAddReferencedFieldMappingFieldNames,
-		String[] expectedUpdateReferencedAssetDataSourceIds,
-		String[] expectedUpdateReferencedFieldMappingFieldNames,
-		String updateFilter) {
-
-		JSONObject individualSegmentJSONObject =
-			_assertAddSetsReferencedObjectIds(
-				expectedAddReferencedAssetDataSourceIds,
-				expectedAddReferencedFieldMappingFieldNames, addFilter);
-
-		Segment segment = new Segment();
-
-		segment.setFilter(updateFilter);
-
-		individualSegmentJSONObject = _objectMapper.convertValue(
-			_segmentDog.updateSegment(
-				segment, individualSegmentJSONObject.getLong("id")),
-			JSONObject.class);
-
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray(
-				"referencedAssetDataSourceIds"),
-			expectedUpdateReferencedAssetDataSourceIds);
-		_assertSameContents(
-			individualSegmentJSONObject.getJSONArray(
-				"referencedFieldMappingFieldNames"),
-			expectedUpdateReferencedFieldMappingFieldNames);
-	}
-
-	private String[] _convertFieldNamesToFieldMappingFieldNames(
-		String... fieldNames) {
-
-		String[] fieldMappingFieldNames = new String[fieldNames.length];
-
-		for (int i = 0; i < fieldNames.length; i++) {
-			fieldMappingFieldNames[i] = _fieldMappingNameIds.getString(
-				fieldNames[i]);
-		}
-
-		return fieldMappingFieldNames;
-	}
-
-	private static final String[] _FIELD_NAMES = {
-		"additionalName", "address", "age", "birthDate", "city", "country",
-		"email", "familyName", "favoriteArtist", "favoriteColor",
-		"favoriteGenre", "favoritePokemon", "gender", "givenName",
-		"honorificPrefix", "image", "jobTitle", "postalCode", "state", "street",
-		"telephone", "worksFor"
-	};
-
-	@Autowired
-	private AssetRepository _assetRepository;
-
-	@Autowired
-	private ChannelRepository _channelRepository;
-
-	@Autowired
-	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private DXPEntityDog _dxpEntityDog;
-
-	private final JSONObject _fieldMappingNameIds = new JSONObject();
-	private final JSONObject _liferayDataSourceAssetIdsJSONObject =
-		new JSONObject();
-	private final JSONArray _liferayDataSourceIdsJSONArray = new JSONArray();
-	private final JSONObject _liferayDataSourceOrganizationIdsJSONObject =
-		new JSONObject();
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;
