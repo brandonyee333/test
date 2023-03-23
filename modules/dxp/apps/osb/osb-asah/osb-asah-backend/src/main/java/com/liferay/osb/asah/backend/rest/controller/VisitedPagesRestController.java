@@ -14,13 +14,14 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.dog.AssetDog;
-import com.liferay.osb.asah.common.dog.BQMembershipDog;
-import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.backend.dto.PageDTO;
+import com.liferay.osb.asah.backend.dto.TransformationDTO;
+import com.liferay.osb.asah.common.dog.VisitedPagesDog;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,37 +38,38 @@ public class VisitedPagesRestController extends BaseRestController {
 
 	@GetMapping("/{id}")
 	public String getVisitedPages(@PathVariable String id) throws Exception {
-
 		throw new OSBAsahException(
 			HttpStatus.BAD_REQUEST, "Unable to process request");
 	}
 
 	@GetMapping
-	public String getVisitedPages(
+	public PageDTO<TransformationDTO> getVisitedPages(
 			@RequestParam(name = "filter", required = false) String
 				filterString,
-			@RequestParam Long ownerId, @RequestParam String ownerType,
+			@RequestParam String ownerId, @RequestParam String ownerType,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "20") int size,
 			@RequestParam(name = "sort", required = false) String[] sorts,
 			@RequestParam(defaultValue = "true") boolean visitedPages)
 		throws Exception {
 
-		// TODO Get visited pages
+		Page<Transformation> visitedPagesTransformations =
+			_visitedPagesDog.getVisitedPagesTransformations(
+				filterString, ownerId, ownerType, page, size, sorts,
+				visitedPages);
 
-		return null;
+		return new PageDTO<>(
+			"_embedded",
+			new TransformationDTO(
+				"visited-pages-transformation",
+				visitedPagesTransformations.getContent()),
+			visitedPagesTransformations.getNumber(),
+			visitedPagesTransformations.getSize(),
+			visitedPagesTransformations.getTotalElements(),
+			visitedPagesTransformations.getTotalPages());
 	}
 
 	@Autowired
-	private AsahMarkerDog _asahMarkerDog;
-
-	@Autowired
-	private AssetDog _assetDog;
-
-	@Autowired
-	private BQMembershipDog _bqMembershipDog;
-
-	@Autowired
-	private SegmentDog _segmentDog;
+	private VisitedPagesDog _visitedPagesDog;
 
 }
