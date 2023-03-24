@@ -354,10 +354,6 @@ public class SegmentRepositoryImpl
 		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
 		FilterHelper filterHelper, Pageable pageable) {
 
-		if (CollectionUtils.isEmpty(dataSourceFieldMappingFieldNames)) {
-			return new ArrayList<>();
-		}
-
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(
@@ -644,22 +640,27 @@ public class SegmentRepositoryImpl
 		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
 		FilterHelper filterHelper) {
 
-		List<Condition> conditions = new ArrayList<>();
+		List<Condition> andConditions = new ArrayList<>();
 
-		conditions.add(
-			DSL.or(
-				DSL.exists(
-					DSL.selectOne(
-					).from(
-						"UNNEST(referencedDataSourceIds) AS " +
-							"referencedDataSourceId"
-					).where(
-						DSL.field(
-							"referencedDataSourceId"
-						).eq(
-							dataSourceId
-						)
-					)),
+		List<Condition> orConditions = new ArrayList<>();
+
+		andConditions.add(filterHelper.getCondition());
+
+		orConditions.add(
+			DSL.exists(
+				DSL.selectOne(
+				).from(
+					"UNNEST(referencedDataSourceIds) AS referencedDataSourceId"
+				).where(
+					DSL.field(
+						"referencedDataSourceId"
+					).eq(
+						dataSourceId
+					)
+				)));
+
+		if (CollectionUtils.isEmpty(dataSourceFieldMappingFieldNames)) {
+			orConditions.add(
 				DSL.exists(
 					DSL.selectOne(
 					).from(
@@ -671,11 +672,12 @@ public class SegmentRepositoryImpl
 						).in(
 							dataSourceFieldMappingFieldNames
 						)
-					))));
+					)));
+		}
 
-		conditions.add(filterHelper.getCondition());
+		andConditions.add(DSL.or(orConditions));
 
-		return conditions;
+		return andConditions;
 	}
 
 	private List<Long> _getSegmentIds(
