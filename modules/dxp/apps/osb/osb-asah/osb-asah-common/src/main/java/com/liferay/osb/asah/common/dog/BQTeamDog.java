@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQTeamRepository;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,10 @@ public class BQTeamDog extends BaseBQDXPEntityDog {
 	}
 
 	public List<BQTeam> getBQTeams(Collection<String> ids) {
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		return _bqTeamRepository.findByIdIn(ids);
 	}
 

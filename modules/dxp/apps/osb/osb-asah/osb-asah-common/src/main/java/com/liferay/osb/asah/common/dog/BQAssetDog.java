@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQAsset;
 import com.liferay.osb.asah.common.repository.BQAssetRepository;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,10 @@ public class BQAssetDog {
 	}
 
 	public List<BQAsset> getBQAssets(Collection<String> ids) {
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		return _bqAssetEventRepository.findByIdIn(ids);
 	}
 

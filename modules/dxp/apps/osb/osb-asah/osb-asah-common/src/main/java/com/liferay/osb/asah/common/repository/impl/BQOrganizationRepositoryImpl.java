@@ -163,10 +163,6 @@ public class BQOrganizationRepositoryImpl
 
 	@Override
 	public List<BQOrganization> findByIdIn(Collection<String> ids) {
-		if (ids.isEmpty()) {
-			return Collections.emptyList();
-		}
-
 		return _queryExecutor.queryForList(
 			BQOrganization::new,
 			_dslContext.selectFrom(

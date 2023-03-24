@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,6 +94,10 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 	}
 
 	public List<BQOrganization> getBQOrganizations(Collection<String> ids) {
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		return _bqOrganizationRepository.findByIdIn(ids);
 	}
 

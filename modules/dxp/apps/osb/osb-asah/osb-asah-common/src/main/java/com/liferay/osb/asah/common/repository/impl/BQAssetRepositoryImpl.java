@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.repository.CustomBQAssetRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -46,10 +45,6 @@ public class BQAssetRepositoryImpl
 
 	@Override
 	public List<BQAsset> findByIdIn(Collection<String> ids) {
-		if (ids.isEmpty()) {
-			return Collections.emptyList();
-		}
-
 		return _queryExecutor.queryForList(
 			BQAsset::new,
 			_dslContext.selectFrom(

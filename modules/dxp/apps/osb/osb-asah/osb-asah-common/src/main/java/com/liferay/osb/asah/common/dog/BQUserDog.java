@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +61,10 @@ public class BQUserDog extends BaseBQDXPEntityDog {
 	}
 
 	public List<BQUser> getBQUsers(Collection<String> ids) {
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		return _bqUserRepository.findByIdIn(ids);
 	}
 
