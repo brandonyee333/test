@@ -46,7 +46,6 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Record5;
-import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -76,23 +75,28 @@ public class BQMembershipRepositoryImpl
 
 		localDateTime = localDateTime.minusDays(30);
 
-		Condition condition = DSL.and(
+		List<Condition> conditions = new ArrayList<>();
+
+		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
+			conditions.add(
+				DSL.field(
+					"Membership.individualId"
+				).isNotNull());
+		}
+
+		conditions.add(
 			DSL.field(
 				"Membership.segmentId"
 			).eq(
 				segmentId
-			),
-			DSL.field(
-				"IdentityActivity.lastActivityDate"
-			).greaterOrEqual(
-				DSL.field(
-					"TIMESTAMP '" + DateUtil.toUTCString(localDateTime) + "'")
 			));
 
-		SelectConditionStep<Record1<Integer>>
-			activeKnownMembersSelectConditionStep = _dslContext.select(
+		return _queryExecutor.queryForLong(
+			_dslContext.select(
 				DSL.countDistinct(
-					DSL.field("IdentityActivity.individualId")
+					DSL.coalesce(
+						DSL.field("IndividualActivity.individualId"),
+						DSL.field("IdentityActivity.identityId"))
 				).as(
 					"value"
 				)
@@ -102,74 +106,51 @@ public class BQMembershipRepositoryImpl
 				).as(
 					"Membership"
 				)
-			).join(
+			).leftJoin(
 				DSL.table(
 					"BQIdentityActivity"
 				).as(
 					"IdentityActivity"
 				)
 			).on(
-				DSL.field(
-					"Membership.individualId"
-				).eq(
-					DSL.field("IdentityActivity.individualId")
-				)
-			).where(
 				DSL.and(
-					condition,
-					DSL.field(
-						"Membership.individualId"
-					).isNotNull())
-			);
-
-		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
-			return _queryExecutor.queryForLong(
-				activeKnownMembersSelectConditionStep);
-		}
-
-		return _queryExecutor.queryForLong(
-			_dslContext.with(
-				"activeKnownMembersCount"
-			).as(
-				activeKnownMembersSelectConditionStep
-			).with(
-				"activeAnonymousMembersCount"
-			).as(
-				_dslContext.select(
-					DSL.countDistinct(DSL.field("IdentityActivity.identityId"))
-				).from(
-					DSL.table(
-						"BQMembership"
-					).as(
-						"Membership"
-					)
-				).join(
-					DSL.table(
-						"BQIdentityActivity"
-					).as(
-						"IdentityActivity"
-					)
-				).on(
 					DSL.field(
 						"Membership.identityId"
 					).eq(
 						DSL.field("IdentityActivity.identityId")
-					)
-				).where(
-					DSL.and(
-						condition,
+					),
+					DSL.field(
+						"IdentityActivity.lastActivityDate"
+					).greaterOrEqual(
 						DSL.field(
-							"Membership.individualId"
-						).isNull())
+							"TIMESTAMP '" +
+								DateUtil.toUTCString(localDateTime) + "'")
+					),
+					DSL.field(
+						"Membership.individualId"
+					).isNull())
+			).leftJoin(
+				DSL.table(
+					"BQIdentityActivity"
+				).as(
+					"IndividualActivity"
 				)
-			).select(
-				DSL.field("SUM(value)", Integer.class)
-			).from(
-				_dslContext.selectFrom(
-					"activeKnownMembersCount"
-				).unionAll(
-					_dslContext.selectFrom("activeAnonymousMembersCount")
-				)
+			).on(
+				DSL.and(
+					DSL.field(
+						"Membership.individualId"
+					).eq(
+						DSL.field("IndividualActivity.individualId")
+					),
+					DSL.field(
+						"IndividualActivity.lastActivityDate"
+					).greaterOrEqual(
+						DSL.field(
+							"TIMESTAMP '" +
+								DateUtil.toUTCString(localDateTime) + "'")
+					))
+			).where(
+				conditions
 			));
 	}
 
