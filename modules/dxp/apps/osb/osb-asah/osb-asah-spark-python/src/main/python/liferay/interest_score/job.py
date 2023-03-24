@@ -676,6 +676,11 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 			'extracted_keywords', F.array_distinct('extracted_keywords')
 		).withColumn(
 			'extracted_keywords', F.array_remove('extracted_keywords', '')
+		).withColumn(
+			'extracted_keywords',
+			F.transform(
+				F.col('extracted_keywords'),
+				lambda x: F.lower(x))
 		).select(
 			'canonicalUrl', 'description', 'extracted_keywords', 'title',
 			'title_and_description'
