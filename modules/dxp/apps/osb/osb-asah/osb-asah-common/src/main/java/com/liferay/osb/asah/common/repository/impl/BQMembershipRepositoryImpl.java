@@ -329,7 +329,8 @@ public class BQMembershipRepositoryImpl
 			).from(
 				"BQMembership"
 			).where(
-				_getConditions(identityIds, null, status)
+				_getConditions(
+					identityIds, Collections.singletonList(segmentId), status)
 			).limit(
 				pageable.getPageSize()
 			).offset(
