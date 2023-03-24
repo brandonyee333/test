@@ -396,6 +396,7 @@ public class IndividualSegmentsRestControllerTest
 			_individualSegmentsRestController.putSegment(
 				segment.getId(),
 				new SegmentDTO(
+					null,
 					_bqMembershipChangeDog.getLastBQMembershipChangeBySegmentId(
 						segment.getId()),
 					_segmentDog.getLastActivityDate(segment), segment)),
@@ -416,6 +417,7 @@ public class IndividualSegmentsRestControllerTest
 			_individualSegmentsRestController.putSegment(
 				segmentId,
 				new SegmentDTO(
+					null,
 					_bqMembershipChangeDog.getLastBQMembershipChangeBySegmentId(
 						segmentId),
 					_segmentDog.getLastActivityDate(segment), segment)),

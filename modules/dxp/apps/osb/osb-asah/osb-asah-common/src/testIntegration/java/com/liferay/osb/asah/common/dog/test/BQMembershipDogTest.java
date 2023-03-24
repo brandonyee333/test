@@ -156,6 +156,20 @@ public class BQMembershipDogTest
 			2, _bqMembershipRepository.countBySegmentId(338511398116723458L));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_active_memberships_count.sql")
+	@Test
+	public void testGetActiveDynamicMembershipsCountWithAnonymous() {
+		Assertions.assertEquals(
+			3, _bqMembershipDog.getActiveBQMembershipsCount(Boolean.TRUE, 2L));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_active_memberships_count.sql")
+	@Test
+	public void testGetActiveStaticMembershipsCount() {
+		Assertions.assertEquals(
+			2, _bqMembershipDog.getActiveBQMembershipsCount(Boolean.FALSE, 1L));
+	}
+
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
