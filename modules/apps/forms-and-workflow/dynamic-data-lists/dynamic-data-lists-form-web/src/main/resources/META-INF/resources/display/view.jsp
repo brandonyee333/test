@@ -114,7 +114,7 @@ long recordSetId = ddlFormDisplayContext.getRecordSetId();
 								String description = ddlFormDisplayContext.getRecordSetDescription(locale);
 								%>
 
-								<h1 class="ddl-form-name"><%= HtmlUtil.escape(name) %></h1>
+								<h1 class="ddl-form-name" data-form-title="<%= HtmlUtil.escape(name) %>"><%= HtmlUtil.escape(name) %></h1>
 
 								<c:if test="<%= Validator.isNotNull(description) %>">
 									<h2 class="ddl-form-description"><%= HtmlUtil.escape(description) %></h2>
