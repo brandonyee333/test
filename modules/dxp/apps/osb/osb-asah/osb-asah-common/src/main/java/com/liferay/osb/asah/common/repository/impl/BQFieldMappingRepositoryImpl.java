@@ -33,6 +33,7 @@ import org.jooq.tools.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author Robson Pastor
@@ -140,7 +141,7 @@ public class BQFieldMappingRepositoryImpl
 
 		Condition condition = DSL.noCondition();
 
-		if (!fieldNames.isEmpty()) {
+		if (!CollectionUtils.isEmpty(fieldNames)) {
 			condition = DSL.field(
 				"fieldName"
 			).in(
