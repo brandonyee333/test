@@ -16,6 +16,9 @@ package com.liferay.osb.asah.backend.rest.controller.api.external;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.MetricDog;
@@ -51,7 +54,9 @@ import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
 import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
+import com.liferay.osb.asah.common.dog.EventDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataExportTask;
@@ -425,9 +430,30 @@ public class ReportRestController extends BaseRestController {
 			@PathVariable String individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
-		// TODO Return individual's events from BQEvent table
+		Page<BQEvent> bqEventPage = _eventDog.searchBQEvents(
+			individualId, page, _PAGE_SIZE);
 
-		ResultBag<ActivityDTO> activityResultBag = new ResultBag<>();
+		Page<ActivityDTO> activityDTOs = bqEventPage.map(
+			bqEvent -> {
+				try {
+					return new ActivityDTO(
+						bqEvent,
+						_objectMapper.readValue(
+							bqEvent.getContext(),
+							new TypeReference<Map<String, String>>() {
+							}),
+						_objectMapper.readValue(
+							bqEvent.getEventProperties(),
+							new TypeReference<Map<String, String>>() {
+							}));
+				}
+				catch (JsonProcessingException jsonProcessingException) {
+					throw new RuntimeException(jsonProcessingException);
+				}
+			});
+
+		ResultBag<ActivityDTO> activityResultBag = new ResultBag<>(
+			activityDTOs.getContent(), activityDTOs.getTotalElements());
 
 		return _toResultBagEntityModel(
 			_getIndividualActivityResultBagEntityModel(individualId, page + 1),
@@ -462,9 +488,8 @@ public class ReportRestController extends BaseRestController {
 		getIndividualSegmentResultBagEntityModel(
 			@PathVariable String individualId) {
 
-		// TODO Fetch segments by individualId
-
-		List<Segment> segments = Collections.emptyList();
+		List<Segment> segments = _segmentDog.getBQIndividualSegments(
+			individualId);
 
 		return _toResultBagEntityModel(
 			null, 0, null, new ResultBag<>(segments, segments.size()),
@@ -1357,6 +1382,9 @@ public class ReportRestController extends BaseRestController {
 	private int _dataExportTaskExpirationMinutes;
 
 	@Autowired
+	private EventDog _eventDog;
+
+	@Autowired
 	private FormPageDog _formPageDog;
 
 	@Autowired
@@ -1367,6 +1395,9 @@ public class ReportRestController extends BaseRestController {
 
 	@Autowired
 	private MetricTypeDog _metricTypeDog;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private SegmentDog _segmentDog;

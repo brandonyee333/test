@@ -46,6 +46,8 @@ public interface CustomBQEventRepository {
 		LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
 
+	public Integer countBQEvents(String individualId);
+
 	public long countByEventDefinitionId(long eventDefinitionId);
 
 	public Integer countEventSessions(
@@ -123,5 +125,7 @@ public interface CustomBQEventRepository {
 		Long channelId, String individualId, @Nullable String keywords,
 		Pageable pageable, LocalDateTime rangeEndLocalDateTime,
 		LocalDateTime rangeStartLocalDateTime, String timeZoneId);
+
+	public List<BQEvent> searchBQEvents(String individualId, Pageable pageable);
 
 }

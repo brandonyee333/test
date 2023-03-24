@@ -139,6 +139,11 @@ public class BQMembershipDog {
 		return _bqMembershipRepository.countBySegmentId(segmentId);
 	}
 
+	public List<Long> getIndividualSegmentIds(String individualId) {
+		return _bqMembershipRepository.findSegmentIdByIndividualId(
+			individualId);
+	}
+
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
 		String identityId, List<Segment> segments) {
 

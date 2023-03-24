@@ -200,6 +200,13 @@ public class SegmentDog {
 		return segmentOptional.orElse(null);
 	}
 
+	public List<Segment> getBQIndividualSegments(String individualId) {
+		List<Long> segmentIds = _bqMembershipDog.getIndividualSegmentIds(
+			individualId);
+
+		return IterableUtils.toList(_segmentRepository.findAllById(segmentIds));
+	}
+
 	public Date getLastActivityDate(Segment segment) {
 
 		// TODO Implement operation

@@ -456,6 +456,30 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
+	public List<Long> findSegmentIdByIndividualId(String individualId) {
+		Field<Long> segmentIdField = DSL.field(
+			"BQMembership.segmentId", Long.class);
+
+		SelectSelectStep<Record1<Long>> selectSelectStep = _dslContext.select(
+			segmentIdField);
+
+		Field<String> individualIdField = DSL.field(
+			"individualId", String.class);
+
+		return _queryExecutor.queryForList(
+			record -> {
+				BigDecimal segmentId = (BigDecimal)record.get("segmentId");
+
+				return segmentId.longValue();
+			},
+			selectSelectStep.from(
+				"BQMembership"
+			).where(
+				individualIdField.eq(individualId)
+			));
+	}
+
+	@Override
 	public List<Map<String, Long>>
 		findSegmentIdIdentitiesCountByIndividualIdAndStatus(
 			String individualId, String status) {

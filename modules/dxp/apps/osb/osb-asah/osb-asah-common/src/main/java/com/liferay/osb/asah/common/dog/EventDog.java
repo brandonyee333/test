@@ -182,6 +182,16 @@ public class EventDog {
 			_timeZoneDog.getTimeZoneId());
 	}
 
+	public Page<BQEvent> searchBQEvents(
+		String individualId, Integer page, int size) {
+
+		return PageableExecutionUtils.getPage(
+			_bqEventRepository.searchBQEvents(
+				individualId, PageRequest.of(page, size)),
+			PageRequest.of(page, size),
+			() -> _bqEventRepository.countBQEvents(individualId));
+	}
+
 	public Map<BQSession, List<BQEvent>> searchBQEventsGroupByUserSessionId(
 		Long channelId, String individualId, String keywords, int page,
 		int size, TimeRange timeRange) {

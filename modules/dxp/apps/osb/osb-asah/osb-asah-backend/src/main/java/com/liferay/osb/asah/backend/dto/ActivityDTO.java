@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQEvent;
 
 import java.util.Date;
 import java.util.Map;
@@ -26,6 +27,19 @@ import java.util.Objects;
  * @author Marcellus Tavares
  */
 public class ActivityDTO {
+
+	public ActivityDTO(
+		BQEvent bqEvent, Map<String, String> eventContext,
+		Map<String, String> eventProperties) {
+
+		_eventContext = eventContext;
+		_eventProperties = eventProperties;
+
+		_applicationId = bqEvent.getApplicationId();
+		_eventId = bqEvent.getId();
+		_ownerId = bqEvent.getUserId();
+		_startTime = bqEvent.getCreateDate();
+	}
 
 	@Override
 	public boolean equals(Object obj) {
