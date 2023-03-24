@@ -48,6 +48,26 @@ AUI.add(
 				return instance.bindContainerEvent(eventName, callback, instance.getInputSelector);
 			},
 
+			getFormPageTitle: function() {
+				var formPageTitle = document.querySelector('.lfr-ddm-form-page.active .lfr-ddm-form-page-title');
+
+				if(!formPageTitle) {
+					return; 
+				}
+
+				return formPageTitle.innerText;
+			},
+
+			getFormTitle: function() {
+				var formTitle = document.querySelector('[data-form-title]');
+
+				if(!formTitle) {
+					return
+				}
+
+				return formTitle.innerText;
+			},
+
 			_afterEventsRender: function() {
 				var instance = this;
 
@@ -88,7 +108,9 @@ AUI.add(
 							fieldName: instance.get('name'),
 							focusDuration: (now - (instance.get('fieldFocusDate') || now)),
 							formId: root.getFormId(),
-							page: root.getCurrentPage() - 1
+							formPageTitle: this.getFormPageTitle(),
+							page: root.getCurrentPage() - 1,
+							title: this.getFormTitle()
 						}
 					);
 				}
@@ -107,7 +129,9 @@ AUI.add(
 						{
 							fieldName: instance.get('name'),
 							formId: root.getFormId(),
-							page: root.getCurrentPage() - 1
+							formPageTitle: this.getFormPageTitle(),
+							page: root.getCurrentPage() - 1,
+							title: this.getFormTitle()
 						}
 					);
 				}
