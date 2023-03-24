@@ -1,51 +1,44 @@
 [
 	{
 		"createDate": "2019-02-11T20:26:53.215Z",
-		"id": "338511399340944254",
 		"identitiesCount": 2,
-		"knownIdentitiesCount": 0,
+		"individualsCount": 0,
 		"segmentId": "327968823603500677"
 	},
 	{
 		"createDate": "2019-02-11T20:27:18.882Z",
-		"id": "338511452975425116",
 		"identitiesCount": 2,
-		"knownIdentitiesCount": 1,
+		"individualsCount": 1,
 		"segmentId": "327968823603500666"
 	},
 	{
 		"createDate": "2019-02-11T20:27:18.882Z",
-		"id": "327968823603500655",
 		"identitiesCount": 434,
-		"knownIdentitiesCount": 400,
+		"individualsCount": 400,
 		"segmentId": "327968823603500655"
 	},
 	{
 		"createDate": "2019-02-04T12:00:00.000Z",
-		"id": "331238757269547423",
 		"identitiesCount": 161,
-		"knownIdentitiesCount": 100,
+		"individualsCount": 100,
 		"segmentId": "366637689379787789"
 	},
 	{
 		"createDate": "2019-02-03T12:00:00.000Z",
-		"id": "327968823603500657",
 		"identitiesCount": 434,
-		"knownIdentitiesCount": 133,
+		"individualsCount": 133,
 		"segmentId": "327968823603500657"
 	},
 	{
 		"createDate": "2019-02-03T12:00:00.000Z",
-		"id": "327968823603500658",
 		"identitiesCount": 434,
-		"knownIdentitiesCount": 123,
+		"individualsCount": 123,
 		"segmentId": "327968823603500658"
 	},
 	{
 		"createDate": "2019-02-03T12:00:00.000Z",
-		"id": "338511451975440187",
 		"identitiesCount": 1,
-		"knownIdentitiesCount": 1,
+		"individualsCount": 1,
 		"segmentId": "338511451975440187"
 	}
 ]

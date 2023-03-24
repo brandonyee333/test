@@ -3,46 +3,42 @@
 		"createDate": "${now-32dT00:00:00.000Z}",
 		"id": "1",
 		"identitiesCount": 10,
-		"knownIdentitiesCount": 2,
+		"individualsCount": 2,
 		"segmentId": "327968823603500655"
 	},
 	{
 		"createDate": "${now}",
 		"id": "11",
 		"identitiesCount": 11,
-		"knownIdentitiesCount": 2,
+		"individualsCount": 2,
 		"segmentId": "327968823603500655"
 	},
 	{
 		"createDate": "${now-0dT12:00:00.000Z}",
 		"id": "12",
 		"identitiesCount": 12,
-		"individualDeleted": false,
-		"knownIdentitiesCount": 3,
+		"individualsCount": 3,
 		"segmentId": "327968823603500655"
 	},
 	{
 		"createDate": "${now}",
 		"id": "13",
 		"identitiesCount": 12,
-		"individualDeleted": false,
-		"knownIdentitiesCount": 3,
+		"individualsCount": 3,
 		"segmentId": "327968823603500908"
 	},
 	{
 		"createDate": "${now-1d}",
 		"id": "14",
 		"identitiesCount": 12,
-		"individualDeleted": false,
-		"knownIdentitiesCount": 3,
+		"individualsCount": 3,
 		"segmentId": "327968823603500908"
 	},
 	{
 		"createDate": "${now-2d}",
 		"id": "15",
 		"identitiesCount": 12,
-		"individualDeleted": false,
-		"knownIdentitiesCount": 3,
+		"individualsCount": 3,
 		"segmentId": "327968823603500908"
 	}
 ]
