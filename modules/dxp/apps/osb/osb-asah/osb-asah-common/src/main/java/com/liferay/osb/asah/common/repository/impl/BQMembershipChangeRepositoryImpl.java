@@ -399,17 +399,17 @@ public class BQMembershipChangeRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		return selectSelectStep.from(
-			"BQMembershipChange"
-		).where(
-			_getConditions(filterHelper, segmentId)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			record -> new BQMembershipChange(record.intoMap())
-		);
+		return _queryExecutor.queryForList(
+			recordMap -> new BQMembershipChange(recordMap),
+			selectSelectStep.from(
+				"BQMembershipChange"
+			).where(
+				_getConditions(filterHelper, segmentId)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
 	}
 
 	private List<Condition> _getConditions(
