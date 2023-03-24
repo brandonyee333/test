@@ -17,17 +17,13 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.VisitedPagesDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.math.BigDecimal;
 
-import java.util.List;
-
 import org.json.JSONArray;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -43,7 +39,7 @@ public class VisitedPagesDogTest
 
 	@BQSQLResource(resourcePath = "test_visited_pages_dog.sql")
 	@Test
-	public void testGetVisitedPagesTransformationActivePages() {
+	public void testGetVisitedPagesTransformationsActivePages() {
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
 				JSONUtil.put(
@@ -70,35 +66,22 @@ public class VisitedPagesDogTest
 
 	@BQSQLResource(resourcePath = "test_visited_pages_dog.sql")
 	@Test
-	public void testGetVisitedPagesTransformationInactivePages() {
+	public void testGetVisitedPagesTransformationsInactivePages() {
 		JSONAssert.assertEquals(
 			JSONUtil.put(
 				JSONUtil.put(
-					"title", "Basic Calculator"
+					"title", "Know Your Ratios - Distance"
 				).put(
 					"uniqueVisitsCount", BigDecimal.valueOf(0)
 				).put(
-					"url", "https://www.calculator.com/basic"
+					"url", "https://www.know-your-ratios.com/distance"
 				)),
 			new JSONArray(
 				_visitedPagesDog.getVisitedPagesTransformations(
-					1L, "interestName eq 'ratio'", "1234567891011",
-					"individual-segment", 1, 1, new String[] {"title", "desc"},
+					1L, "interestName eq 'ratio'", "3456789101112",
+					"individual-segment", 1, 2, new String[] {"title", "desc"},
 					false)),
 			true);
-	}
-
-	private void _assertTransformations(
-		List<Transformation> actualTransformations,
-		List<Transformation> expectedTransformations) {
-
-		Assertions.assertEquals(
-			expectedTransformations.size(), actualTransformations.size());
-
-		for (int i = 0; i < expectedTransformations.size(); i++) {
-			Assertions.assertEquals(
-				expectedTransformations.get(i), actualTransformations.get(i));
-		}
 	}
 
 	@Autowired

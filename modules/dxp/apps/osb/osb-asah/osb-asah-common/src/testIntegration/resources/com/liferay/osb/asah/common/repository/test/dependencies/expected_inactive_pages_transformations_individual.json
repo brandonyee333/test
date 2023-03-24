@@ -1,10 +1,5 @@
 [
 	{
-		"title": "Basic Calculator",
-		"uniqueVisitsCount": 0,
-		"url": "https://www.calculator.com/basic"
-	},
-	{
 		"title": "Know Your Ratios - Distance",
 		"uniqueVisitsCount": 0,
 		"url": "https://www.know-your-ratios.com/distance"
@@ -18,10 +13,5 @@
 		"title": "Know Your Ratios - Volume",
 		"uniqueVisitsCount": 0,
 		"url": "https://www.know-your-ratios.com/volume"
-	},
-	{
-		"title": "Scientific Calculator",
-		"uniqueVisitsCount": 0,
-		"url": "https://www.calculator.com/scientific"
 	}
 ]

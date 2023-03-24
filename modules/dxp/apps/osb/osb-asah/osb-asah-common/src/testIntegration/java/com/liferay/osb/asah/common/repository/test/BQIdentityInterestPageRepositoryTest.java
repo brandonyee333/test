@@ -74,7 +74,7 @@ public class BQIdentityInterestPageRepositoryTest
 	@Test
 	public void testCountInactivePagesTransformationsIndividual() {
 		Assertions.assertEquals(
-			5,
+			3,
 			_bqIdentityInterestPageRepository.countInactivePagesTransformations(
 				1L, "interestName eq 'ratio'",
 				"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c32f4f" +
@@ -88,7 +88,7 @@ public class BQIdentityInterestPageRepositoryTest
 	@Test
 	public void testCountInactivePagesTransformationsIndividualSegment() {
 		Assertions.assertEquals(
-			2,
+			0,
 			_bqIdentityInterestPageRepository.countInactivePagesTransformations(
 				1L, "interestName eq 'ratio'", "1234567891011",
 				"individual-segment"));
@@ -141,7 +141,7 @@ public class BQIdentityInterestPageRepositoryTest
 		JSONObject transformationJSONObject1 = JSONUtil.put(
 			"title", "Know Your Ratios - Weight"
 		).put(
-			"uniqueVisitsCount", 6
+			"uniqueVisitsCount", BigDecimal.valueOf(6)
 		).put(
 			"url", "https://www.know-your-ratios.com/weight"
 		);
@@ -149,7 +149,7 @@ public class BQIdentityInterestPageRepositoryTest
 		JSONObject transformationJSONObject2 = JSONUtil.put(
 			"title", "Know Your Ratios - Home"
 		).put(
-			"uniqueVisitsCount", 2
+			"uniqueVisitsCount", BigDecimal.valueOf(2)
 		).put(
 			"url", "https://www.know-your-ratios.com"
 		);
@@ -272,7 +272,7 @@ public class BQIdentityInterestPageRepositoryTest
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						1L, "interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "3456789101112",
 						"individual-segment", PageRequest.of(0, 5))),
 			true);
 	}
@@ -283,28 +283,37 @@ public class BQIdentityInterestPageRepositoryTest
 	@Test
 	public void testGetInactivePagesTransformationsIndividualSegmentWithSort() {
 		JSONObject transformationJSONObject1 = JSONUtil.put(
-			"title", "Basic Calculator"
+			"title", "Know Your Ratios - Distance"
 		).put(
 			"uniqueVisitsCount", BigDecimal.valueOf(0)
 		).put(
-			"url", "https://www.calculator.com/basic"
+			"url", "https://www.know-your-ratios.com/distance"
 		);
 
 		JSONObject transformationJSONObject2 = JSONUtil.put(
-			"title", "Scientific Calculator"
+			"title", "Know Your Ratios - Time"
 		).put(
 			"uniqueVisitsCount", BigDecimal.valueOf(0)
 		).put(
-			"url", "https://www.calculator.com/scientific"
+			"url", "https://www.know-your-ratios.com/time"
+		);
+
+		JSONObject transformationJSONObject3 = JSONUtil.put(
+			"title", "Know Your Ratios - Volume"
+		).put(
+			"uniqueVisitsCount", BigDecimal.valueOf(0)
+		).put(
+			"url", "https://www.know-your-ratios.com/volume"
 		);
 
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
-				transformationJSONObject1, transformationJSONObject2),
+				transformationJSONObject1, transformationJSONObject2,
+				transformationJSONObject3),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						1L, "interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "3456789101112",
 						"individual-segment",
 						PageRequest.of(
 							0, 5,
@@ -312,11 +321,12 @@ public class BQIdentityInterestPageRepositoryTest
 			true);
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
-				transformationJSONObject2, transformationJSONObject1),
+				transformationJSONObject3, transformationJSONObject2,
+				transformationJSONObject1),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						1L, "interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "3456789101112",
 						"individual-segment",
 						PageRequest.of(
 							0, 5,
@@ -324,11 +334,12 @@ public class BQIdentityInterestPageRepositoryTest
 			true);
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
-				transformationJSONObject1, transformationJSONObject2),
+				transformationJSONObject1, transformationJSONObject2,
+				transformationJSONObject3),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						1L, "interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "3456789101112",
 						"individual-segment",
 						PageRequest.of(
 							0, 5,
@@ -336,11 +347,12 @@ public class BQIdentityInterestPageRepositoryTest
 			true);
 		JSONAssert.assertEquals(
 			JSONUtil.putAll(
-				transformationJSONObject2, transformationJSONObject1),
+				transformationJSONObject3, transformationJSONObject2,
+				transformationJSONObject1),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						1L, "interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "3456789101112",
 						"individual-segment",
 						PageRequest.of(
 							0, 5,
