@@ -45,6 +45,13 @@ public class VisitedPagesRestController extends BaseRestController {
 			@RequestParam(defaultValue = "true") boolean visitedPages)
 		throws Exception {
 
+		if (!ownerType.equals("individual") &&
+			!ownerType.equals("individual-segment")) {
+
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "Invalid ownerType " + ownerType);
+		}
+
 		long totalElements;
 
 		if (visitedPages) {

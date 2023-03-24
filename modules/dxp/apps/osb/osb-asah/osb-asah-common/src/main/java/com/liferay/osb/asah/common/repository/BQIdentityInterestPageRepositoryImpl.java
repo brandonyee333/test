@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -61,19 +60,12 @@ public class BQIdentityInterestPageRepositoryImpl
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
 		String ownerType) {
 
-		SelectFinalStep<Record3<String, String, BigDecimal>>
-			activePageSelectFinalStep = _getActivePageSelectFinalStep(
-				channelId, filterString, ownerId, ownerType);
-
-		if (activePageSelectFinalStep == null) {
-			return 0;
-		}
-
 		return _queryExecutor.queryForLong(
 			_dslContext.with(
 				"ActivePage"
 			).as(
-				activePageSelectFinalStep
+				_getActivePageSelectFinalStep(
+					channelId, filterString, ownerId, ownerType)
 			).selectCount(
 			).from(
 				"ActivePage"
@@ -85,31 +77,17 @@ public class BQIdentityInterestPageRepositoryImpl
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
 		String ownerType) {
 
-		SelectFinalStep<Record3<String, String, BigDecimal>>
-			activePageSelectFinalStep = _getActivePageSelectFinalStep(
-				channelId, filterString, ownerId, ownerType);
-
-		if (activePageSelectFinalStep == null) {
-			return 0;
-		}
-
-		SelectFinalStep<Record3<String, String, BigDecimal>>
-			inactivePageSelectFinalStep = _getInactivePageSelectFinalStep(
-				channelId, filterString, ownerId, ownerType);
-
-		if (inactivePageSelectFinalStep == null) {
-			return 0;
-		}
-
 		return _queryExecutor.queryForLong(
 			_dslContext.with(
 				"ActivePage"
 			).as(
-				activePageSelectFinalStep
+				_getActivePageSelectFinalStep(
+					channelId, filterString, ownerId, ownerType)
 			).with(
 				"InactivePage"
 			).as(
-				inactivePageSelectFinalStep
+				_getInactivePageSelectFinalStep(
+					channelId, filterString, ownerId, ownerType)
 			).selectCount(
 			).from(
 				"InactivePage"
@@ -131,20 +109,13 @@ public class BQIdentityInterestPageRepositoryImpl
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
 		String ownerType, Pageable pageable) {
 
-		SelectFinalStep<Record3<String, String, BigDecimal>>
-			activePageSelectFinalStep = _getActivePageSelectFinalStep(
-				channelId, filterString, ownerId, ownerType);
-
-		if (activePageSelectFinalStep == null) {
-			return Collections.emptyList();
-		}
-
 		return _queryExecutor.queryForList(
 			Function.identity(),
 			_dslContext.with(
 				"ActivePage"
 			).as(
-				activePageSelectFinalStep
+				_getActivePageSelectFinalStep(
+					channelId, filterString, ownerId, ownerType)
 			).select(
 				DSL.field(
 					"canonicalUrl"
@@ -173,32 +144,18 @@ public class BQIdentityInterestPageRepositoryImpl
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
 		String ownerType, Pageable pageable) {
 
-		SelectFinalStep<Record3<String, String, BigDecimal>>
-			activePageSelectFinalStep = _getActivePageSelectFinalStep(
-				channelId, filterString, ownerId, ownerType);
-
-		if (activePageSelectFinalStep == null) {
-			return Collections.emptyList();
-		}
-
-		SelectFinalStep<Record3<String, String, BigDecimal>>
-			inactivePageSelectFinalStep = _getInactivePageSelectFinalStep(
-				channelId, filterString, ownerId, ownerType);
-
-		if (inactivePageSelectFinalStep == null) {
-			return Collections.emptyList();
-		}
-
 		return _queryExecutor.queryForList(
 			Function.identity(),
 			_dslContext.with(
 				"ActivePage"
 			).as(
-				activePageSelectFinalStep
+				_getActivePageSelectFinalStep(
+					channelId, filterString, ownerId, ownerType)
 			).with(
 				"InactivePage"
 			).as(
-				inactivePageSelectFinalStep
+				_getInactivePageSelectFinalStep(
+					channelId, filterString, ownerId, ownerType)
 			).select(
 				DSL.field(
 					"InactivePage.canonicalUrl"
@@ -249,10 +206,6 @@ public class BQIdentityInterestPageRepositoryImpl
 
 		SelectJoinStep<Record3<String, String, BigDecimal>> selectJoinStep =
 			_getSelectJoinStep(ownerType, selectSelectStep);
-
-		if (selectJoinStep == null) {
-			return null;
-		}
 
 		return selectJoinStep.where(
 			_getConditions(channelId, filterString, true, ownerId, ownerType)
@@ -345,10 +298,6 @@ public class BQIdentityInterestPageRepositoryImpl
 		SelectJoinStep<Record3<String, String, BigDecimal>> selectJoinStep =
 			_getSelectJoinStep(ownerType, selectSelectStep);
 
-		if (selectJoinStep == null) {
-			return null;
-		}
-
 		return selectJoinStep.where(
 			_getConditions(channelId, filterString, false, ownerId, ownerType)
 		).groupBy(
@@ -388,7 +337,7 @@ public class BQIdentityInterestPageRepositoryImpl
 			);
 		}
 
-		return null;
+		throw new IllegalArgumentException("Invalid ownerType " + ownerType);
 	}
 
 	private Collection<SortField<?>> _getSortFields(Sort sort) {
