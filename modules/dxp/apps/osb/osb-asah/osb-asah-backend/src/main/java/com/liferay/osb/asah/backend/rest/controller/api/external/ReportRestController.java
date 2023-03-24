@@ -656,9 +656,11 @@ public class ReportRestController extends BaseRestController {
 	public EntityModel<ReportIndividualDTO> getReportIndividualDTOEntityModel(
 		@PathVariable String individualId) {
 
-		// TODO Implement operation
+		Individual individual = _bqIndividualDog.fetchBQIndividual(
+			individualId);
 
-		return _toReportIndividualDTOEntityModel(new ReportIndividualDTO());
+		return _toReportIndividualDTOEntityModel(
+			new ReportIndividualDTO(individual));
 	}
 
 	@GetMapping("/individuals")

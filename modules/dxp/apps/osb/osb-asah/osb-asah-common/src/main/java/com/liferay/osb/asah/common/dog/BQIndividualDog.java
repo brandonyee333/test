@@ -108,6 +108,10 @@ public class BQIndividualDog {
 		return individual;
 	}
 
+	public Individual fetchBQIndividual(String id) {
+		return fetchBQIndividual(null, id);
+	}
+
 	public Page<String> getBQIndividualFieldValuePage(
 		Long channelId, String filterString, String groupByField, int page,
 		int size) {
