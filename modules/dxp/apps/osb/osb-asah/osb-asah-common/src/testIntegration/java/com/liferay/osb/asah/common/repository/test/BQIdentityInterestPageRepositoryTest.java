@@ -50,7 +50,7 @@ public class BQIdentityInterestPageRepositoryTest
 		Assertions.assertEquals(
 			2,
 			_bqIdentityInterestPageRepository.countActivePagesTransformations(
-				"interestName eq 'ratio'",
+				1L, "interestName eq 'ratio'",
 				"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c32f4f" +
 					"d9f4",
 				"individual"));
@@ -64,7 +64,7 @@ public class BQIdentityInterestPageRepositoryTest
 		Assertions.assertEquals(
 			5,
 			_bqIdentityInterestPageRepository.countActivePagesTransformations(
-				"interestName eq 'ratio'", "1234567891011",
+				1L, "interestName eq 'ratio'", "1234567891011",
 				"individual-segment"));
 	}
 
@@ -76,7 +76,7 @@ public class BQIdentityInterestPageRepositoryTest
 		Assertions.assertEquals(
 			5,
 			_bqIdentityInterestPageRepository.countInactivePagesTransformations(
-				"interestName eq 'ratio'",
+				1L, "interestName eq 'ratio'",
 				"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c32f4f" +
 					"d9f4",
 				"individual"));
@@ -90,7 +90,7 @@ public class BQIdentityInterestPageRepositoryTest
 		Assertions.assertEquals(
 			2,
 			_bqIdentityInterestPageRepository.countInactivePagesTransformations(
-				"interestName eq 'ratio'", "1234567891011",
+				1L, "interestName eq 'ratio'", "1234567891011",
 				"individual-segment"));
 	}
 
@@ -106,7 +106,7 @@ public class BQIdentityInterestPageRepositoryTest
 				this),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					"interestName eq 'ratio'",
+					1L, "interestName eq 'ratio'",
 					"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c3" +
 						"2f4fd9f4",
 					"individual", PageRequest.of(0, 5))),
@@ -128,7 +128,7 @@ public class BQIdentityInterestPageRepositoryTest
 				this),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					"interestName eq 'ratio'", "1234567891011",
+					1L, "interestName eq 'ratio'", "1234567891011",
 					"individual-segment", PageRequest.of(0, 5))),
 			true);
 	}
@@ -159,7 +159,7 @@ public class BQIdentityInterestPageRepositoryTest
 				transformationJSONObject2, transformationJSONObject1),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					"interestName eq 'ratio'",
+					1L, "interestName eq 'ratio'",
 					"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c3" +
 						"2f4fd9f4",
 					"individual",
@@ -171,7 +171,7 @@ public class BQIdentityInterestPageRepositoryTest
 				transformationJSONObject1, transformationJSONObject2),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					"interestName eq 'ratio'",
+					1L, "interestName eq 'ratio'",
 					"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c3" +
 						"2f4fd9f4",
 					"individual",
@@ -183,7 +183,7 @@ public class BQIdentityInterestPageRepositoryTest
 				transformationJSONObject2, transformationJSONObject1),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					"interestName eq 'ratio'",
+					1L, "interestName eq 'ratio'",
 					"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c3" +
 						"2f4fd9f4",
 					"individual",
@@ -197,7 +197,7 @@ public class BQIdentityInterestPageRepositoryTest
 				transformationJSONObject1, transformationJSONObject2),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					"interestName eq 'ratio'",
+					1L, "interestName eq 'ratio'",
 					"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c3" +
 						"2f4fd9f4",
 					"individual",
@@ -211,7 +211,7 @@ public class BQIdentityInterestPageRepositoryTest
 				transformationJSONObject2, transformationJSONObject1),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					"interestName eq 'ratio'",
+					1L, "interestName eq 'ratio'",
 					"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c3" +
 						"2f4fd9f4",
 					"individual",
@@ -224,7 +224,7 @@ public class BQIdentityInterestPageRepositoryTest
 				transformationJSONObject1, transformationJSONObject2),
 			new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					"interestName eq 'ratio'",
+					1L, "interestName eq 'ratio'",
 					"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c3" +
 						"2f4fd9f4",
 					"individual",
@@ -249,7 +249,7 @@ public class BQIdentityInterestPageRepositoryTest
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						"interestName eq 'ratio'",
+						1L, "interestName eq 'ratio'",
 						"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142" +
 							"a6c32f4fd9f4",
 						"individual", PageRequest.of(0, 5))),
@@ -272,7 +272,7 @@ public class BQIdentityInterestPageRepositoryTest
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						"interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "1234567891011",
 						"individual-segment", PageRequest.of(0, 5))),
 			true);
 	}
@@ -304,7 +304,7 @@ public class BQIdentityInterestPageRepositoryTest
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						"interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "1234567891011",
 						"individual-segment",
 						PageRequest.of(
 							0, 5,
@@ -316,7 +316,7 @@ public class BQIdentityInterestPageRepositoryTest
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						"interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "1234567891011",
 						"individual-segment",
 						PageRequest.of(
 							0, 5,
@@ -328,7 +328,7 @@ public class BQIdentityInterestPageRepositoryTest
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						"interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "1234567891011",
 						"individual-segment",
 						PageRequest.of(
 							0, 5,
@@ -340,7 +340,7 @@ public class BQIdentityInterestPageRepositoryTest
 			new JSONArray(
 				_bqIdentityInterestPageRepository.
 					getInactivePagesTransformations(
-						"interestName eq 'ratio'", "1234567891011",
+						1L, "interestName eq 'ratio'", "1234567891011",
 						"individual-segment",
 						PageRequest.of(
 							0, 5,

@@ -26,17 +26,19 @@ import org.springframework.lang.Nullable;
 public interface CustomBQIdentityInterestPageRepository {
 
 	public long countActivePagesTransformations(
-		@Nullable String filterString, String ownerId, String ownerType);
+		@Nullable Long channelId, @Nullable String filterString, String ownerId,
+		String ownerType);
 
 	public long countInactivePagesTransformations(
-		@Nullable String filterString, String ownerId, String ownerType);
+		@Nullable Long channelId, @Nullable String filterString, String ownerId,
+		String ownerType);
 
 	public List<Map<String, Object>> getActivePagesTransformations(
-		@Nullable String filterString, String ownerId, String ownerType,
-		Pageable pageable);
+		@Nullable Long channelId, @Nullable String filterString, String ownerId,
+		String ownerType, Pageable pageable);
 
 	public List<Map<String, Object>> getInactivePagesTransformations(
-		@Nullable String filterString, String ownerId, String ownerType,
-		Pageable pageable);
+		@Nullable Long channelId, @Nullable String filterString, String ownerId,
+		String ownerType, Pageable pageable);
 
 }

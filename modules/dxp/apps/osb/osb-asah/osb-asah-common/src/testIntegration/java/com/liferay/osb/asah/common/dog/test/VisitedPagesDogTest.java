@@ -62,7 +62,7 @@ public class VisitedPagesDogTest
 				)),
 			new JSONArray(
 				_visitedPagesDog.getVisitedPagesTransformations(
-					"interestName eq 'ratio'", "1234567891011",
+					1L, "interestName eq 'ratio'", "1234567891011",
 					"individual-segment", 1, 2,
 					new String[] {"uniqueVisitsCount", "desc"}, true)),
 			true);
@@ -82,7 +82,7 @@ public class VisitedPagesDogTest
 				)),
 			new JSONArray(
 				_visitedPagesDog.getVisitedPagesTransformations(
-					"interestName eq 'ratio'", "1234567891011",
+					1L, "interestName eq 'ratio'", "1234567891011",
 					"individual-segment", 1, 1, new String[] {"title", "desc"},
 					false)),
 			true);

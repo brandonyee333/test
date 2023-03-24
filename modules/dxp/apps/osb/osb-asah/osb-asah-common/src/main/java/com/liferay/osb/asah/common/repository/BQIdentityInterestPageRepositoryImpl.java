@@ -58,11 +58,12 @@ public class BQIdentityInterestPageRepositoryImpl
 
 	@Override
 	public long countActivePagesTransformations(
-		@Nullable String filterString, String ownerId, String ownerType) {
+		@Nullable Long channelId, @Nullable String filterString, String ownerId,
+		String ownerType) {
 
 		SelectFinalStep<Record3<String, String, BigDecimal>>
 			activePageSelectFinalStep = _getActivePageSelectFinalStep(
-				filterString, ownerId, ownerType);
+				channelId, filterString, ownerId, ownerType);
 
 		if (activePageSelectFinalStep == null) {
 			return 0;
@@ -81,11 +82,12 @@ public class BQIdentityInterestPageRepositoryImpl
 
 	@Override
 	public long countInactivePagesTransformations(
-		@Nullable String filterString, String ownerId, String ownerType) {
+		@Nullable Long channelId, @Nullable String filterString, String ownerId,
+		String ownerType) {
 
 		SelectFinalStep<Record3<String, String, BigDecimal>>
 			activePageSelectFinalStep = _getActivePageSelectFinalStep(
-				filterString, ownerId, ownerType);
+				channelId, filterString, ownerId, ownerType);
 
 		if (activePageSelectFinalStep == null) {
 			return 0;
@@ -93,7 +95,7 @@ public class BQIdentityInterestPageRepositoryImpl
 
 		SelectFinalStep<Record3<String, String, BigDecimal>>
 			inactivePageSelectFinalStep = _getInactivePageSelectFinalStep(
-				filterString, ownerId, ownerType);
+				channelId, filterString, ownerId, ownerType);
 
 		if (inactivePageSelectFinalStep == null) {
 			return 0;
@@ -126,12 +128,12 @@ public class BQIdentityInterestPageRepositoryImpl
 
 	@Override
 	public List<Map<String, Object>> getActivePagesTransformations(
-		@Nullable String filterString, String ownerId, String ownerType,
-		Pageable pageable) {
+		@Nullable Long channelId, @Nullable String filterString, String ownerId,
+		String ownerType, Pageable pageable) {
 
 		SelectFinalStep<Record3<String, String, BigDecimal>>
 			activePageSelectFinalStep = _getActivePageSelectFinalStep(
-				filterString, ownerId, ownerType);
+				channelId, filterString, ownerId, ownerType);
 
 		if (activePageSelectFinalStep == null) {
 			return Collections.emptyList();
@@ -168,12 +170,12 @@ public class BQIdentityInterestPageRepositoryImpl
 
 	@Override
 	public List<Map<String, Object>> getInactivePagesTransformations(
-		@Nullable String filterString, String ownerId, String ownerType,
-		Pageable pageable) {
+		@Nullable Long channelId, @Nullable String filterString, String ownerId,
+		String ownerType, Pageable pageable) {
 
 		SelectFinalStep<Record3<String, String, BigDecimal>>
 			activePageSelectFinalStep = _getActivePageSelectFinalStep(
-				filterString, ownerId, ownerType);
+				channelId, filterString, ownerId, ownerType);
 
 		if (activePageSelectFinalStep == null) {
 			return Collections.emptyList();
@@ -181,7 +183,7 @@ public class BQIdentityInterestPageRepositoryImpl
 
 		SelectFinalStep<Record3<String, String, BigDecimal>>
 			inactivePageSelectFinalStep = _getInactivePageSelectFinalStep(
-				filterString, ownerId, ownerType);
+				channelId, filterString, ownerId, ownerType);
 
 		if (inactivePageSelectFinalStep == null) {
 			return Collections.emptyList();
@@ -232,7 +234,8 @@ public class BQIdentityInterestPageRepositoryImpl
 
 	private SelectFinalStep<Record3<String, String, BigDecimal>>
 		_getActivePageSelectFinalStep(
-			String filterString, String ownerId, String ownerType) {
+			Long channelId, String filterString, String ownerId,
+			String ownerType) {
 
 		SelectSelectStep<Record3<String, String, BigDecimal>> selectSelectStep =
 			_dslContext.select(
@@ -252,15 +255,15 @@ public class BQIdentityInterestPageRepositoryImpl
 		}
 
 		return selectJoinStep.where(
-			_getConditions(filterString, true, ownerId, ownerType)
+			_getConditions(channelId, filterString, true, ownerId, ownerType)
 		).groupBy(
 			DSL.field("canonicalUrl"), DSL.field("title")
 		);
 	}
 
 	private List<Condition> _getConditions(
-		String filterString, boolean includeOwner, String ownerId,
-		String ownerType) {
+		Long channelId, String filterString, boolean includeOwner,
+		String ownerId, String ownerType) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -305,6 +308,15 @@ public class BQIdentityInterestPageRepositoryImpl
 			}
 		}
 
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"BQIdentityInterestPage.channelId"
+				).eq(
+					channelId
+				));
+		}
+
 		if (StringUtils.isNotBlank(filterString)) {
 			FilterExpression filterExpression = new FilterExpression(
 				filterString);
@@ -317,7 +329,8 @@ public class BQIdentityInterestPageRepositoryImpl
 
 	private SelectFinalStep<Record3<String, String, BigDecimal>>
 		_getInactivePageSelectFinalStep(
-			String filterString, String ownerId, String ownerType) {
+			Long channelId, String filterString, String ownerId,
+			String ownerType) {
 
 		SelectSelectStep<Record3<String, String, BigDecimal>> selectSelectStep =
 			_dslContext.select(
@@ -337,7 +350,7 @@ public class BQIdentityInterestPageRepositoryImpl
 		}
 
 		return selectJoinStep.where(
-			_getConditions(filterString, false, ownerId, ownerType)
+			_getConditions(channelId, filterString, false, ownerId, ownerType)
 		).groupBy(
 			DSL.field("canonicalUrl"), DSL.field("title")
 		);

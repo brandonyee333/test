@@ -33,14 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class VisitedPagesRestController extends BaseRestController {
 
-	@GetMapping("/{id}")
-	public String getVisitedPages(@PathVariable String id) throws Exception {
-		throw new OSBAsahException(
-			HttpStatus.BAD_REQUEST, "Unable to process request");
-	}
-
 	@GetMapping
 	public String getVisitedPages(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam String ownerId, @RequestParam String ownerType,
@@ -54,11 +49,11 @@ public class VisitedPagesRestController extends BaseRestController {
 
 		if (visitedPages) {
 			totalElements = _visitedPagesDog.countActivePages(
-				filterString, ownerId, ownerType);
+				channelId, filterString, ownerId, ownerType);
 		}
 		else {
 			totalElements = _visitedPagesDog.countInactivePages(
-				filterString, ownerId, ownerType);
+				channelId, filterString, ownerId, ownerType);
 		}
 
 		return JSONUtil.put(
@@ -66,11 +61,17 @@ public class VisitedPagesRestController extends BaseRestController {
 			JSONUtil.put(
 				"visited-pages-transformation",
 				_visitedPagesDog.getVisitedPagesTransformations(
-					filterString, ownerId, ownerType, page, size, sorts,
-					visitedPages))
+					channelId, filterString, ownerId, ownerType, page, size,
+					sorts, visitedPages))
 		).put(
 			"page", getPageJSONObject(page, size, totalElements)
 		).toString();
+	}
+
+	@GetMapping("/{id}")
+	public String getVisitedPages(@PathVariable String id) throws Exception {
+		throw new OSBAsahException(
+			HttpStatus.BAD_REQUEST, "Unable to process request");
 	}
 
 	@Autowired

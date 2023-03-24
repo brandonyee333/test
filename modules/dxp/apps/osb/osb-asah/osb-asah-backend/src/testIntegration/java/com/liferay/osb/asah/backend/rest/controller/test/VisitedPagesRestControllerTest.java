@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.VisitedPagesRestController;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -65,7 +64,7 @@ public class VisitedPagesRestControllerTest
 				"dependencies/expected_visited_pages_not_visited.json", this),
 			new JSONObject(
 				_visitedPagesRestController.getVisitedPages(
-					null, "356970616429554152", "individual", 0, 20,
+					1L, null, "356970616429554152", "individual", 0, 20,
 					new String[] {"title", "asc"}, false)),
 			false);
 
@@ -77,7 +76,7 @@ public class VisitedPagesRestControllerTest
 				this),
 			new JSONObject(
 				_visitedPagesRestController.getVisitedPages(
-					"interestName eq 'compelling action-items'",
+					1L, "interestName eq 'compelling action-items'",
 					"356970540447478387", "individual", 0, 20,
 					new String[] {"title", "asc"}, false)),
 			false);
@@ -89,7 +88,7 @@ public class VisitedPagesRestControllerTest
 				"dependencies/expected_visited_pages_visited.json", this),
 			new JSONObject(
 				_visitedPagesRestController.getVisitedPages(
-					null, "356970527927171432", "individual", 0, 20,
+					1L, null, "356970527927171432", "individual", 0, 20,
 					new String[] {"title", "asc"}, true)),
 			false);
 
@@ -101,8 +100,9 @@ public class VisitedPagesRestControllerTest
 				this),
 			new JSONObject(
 				_visitedPagesRestController.getVisitedPages(
-					"interestName eq 'revolutionary ROI'", "356970527927171432",
-					"individual", 0, 20, new String[] {"title", "asc"}, true)),
+					1L, "interestName eq 'revolutionary ROI'",
+					"356970527927171432", "individual", 0, 20,
+					new String[] {"title", "asc"}, true)),
 			false);
 	}
 

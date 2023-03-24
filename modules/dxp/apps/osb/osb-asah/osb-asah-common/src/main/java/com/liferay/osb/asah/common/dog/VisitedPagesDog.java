@@ -30,22 +30,24 @@ import org.springframework.stereotype.Component;
 public class VisitedPagesDog {
 
 	public long countActivePages(
-		String filterString, String ownerId, String ownerType) {
+		Long channelId, String filterString, String ownerId, String ownerType) {
 
 		return _bqIdentityInterestPageRepository.
-			countActivePagesTransformations(filterString, ownerId, ownerType);
+			countActivePagesTransformations(
+				channelId, filterString, ownerId, ownerType);
 	}
 
 	public long countInactivePages(
-		String filterString, String ownerId, String ownerType) {
+		Long channelId, String filterString, String ownerId, String ownerType) {
 
 		return _bqIdentityInterestPageRepository.
-			countInactivePagesTransformations(filterString, ownerId, ownerType);
+			countInactivePagesTransformations(
+				channelId, filterString, ownerId, ownerType);
 	}
 
 	public JSONArray getVisitedPagesTransformations(
-		String filterString, String ownerId, String ownerType, int page,
-		int size, String[] sorts, boolean visitedPages) {
+		Long channelId, String filterString, String ownerId, String ownerType,
+		int page, int size, String[] sorts, boolean visitedPages) {
 
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
@@ -53,12 +55,12 @@ public class VisitedPagesDog {
 		if (visitedPages) {
 			return new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					filterString, ownerId, ownerType, pageRequest));
+					channelId, filterString, ownerId, ownerType, pageRequest));
 		}
 
 		return new JSONArray(
 			_bqIdentityInterestPageRepository.getInactivePagesTransformations(
-				filterString, ownerId, ownerType, pageRequest));
+				channelId, filterString, ownerId, ownerType, pageRequest));
 	}
 
 	@Autowired
