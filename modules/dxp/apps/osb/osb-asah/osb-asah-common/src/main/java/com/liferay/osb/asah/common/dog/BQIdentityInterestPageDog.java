@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
  * @author Leslie Wong
  */
 @Component
-public class VisitedPagesDog {
+public class BQIdentityInterestPageDog {
 
 	public long countActivePages(
 		Long channelId, String filterString, String ownerId, String ownerType) {

@@ -15,7 +15,7 @@
 package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
-import com.liferay.osb.asah.common.dog.VisitedPagesDog;
+import com.liferay.osb.asah.common.dog.BQIdentityInterestPageDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Leslie Wong
  */
-public class VisitedPagesDogTest
+public class BQIdentityInterestPageDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -57,7 +57,7 @@ public class VisitedPagesDogTest
 					"url", "https://www.know-your-ratios.com/weight"
 				)),
 			new JSONArray(
-				_visitedPagesDog.getVisitedPagesTransformations(
+				_bqIdentityInterestPageDog.getVisitedPagesTransformations(
 					1L, "interestName eq 'ratio'", "1234567891011",
 					"individual-segment", 1, 2,
 					new String[] {"uniqueVisitsCount", "desc"}, true)),
@@ -77,7 +77,7 @@ public class VisitedPagesDogTest
 					"url", "https://www.know-your-ratios.com/distance"
 				)),
 			new JSONArray(
-				_visitedPagesDog.getVisitedPagesTransformations(
+				_bqIdentityInterestPageDog.getVisitedPagesTransformations(
 					1L, "interestName eq 'ratio'", "3456789101112",
 					"individual-segment", 1, 2, new String[] {"title", "desc"},
 					false)),
@@ -85,6 +85,6 @@ public class VisitedPagesDogTest
 	}
 
 	@Autowired
-	private VisitedPagesDog _visitedPagesDog;
+	private BQIdentityInterestPageDog _bqIdentityInterestPageDog;
 
 }

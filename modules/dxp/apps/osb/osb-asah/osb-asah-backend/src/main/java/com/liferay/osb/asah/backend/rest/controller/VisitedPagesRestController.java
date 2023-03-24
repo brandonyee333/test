@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.common.dog.VisitedPagesDog;
+import com.liferay.osb.asah.common.dog.BQIdentityInterestPageDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
@@ -48,11 +48,11 @@ public class VisitedPagesRestController extends BaseRestController {
 		long totalElements;
 
 		if (visitedPages) {
-			totalElements = _visitedPagesDog.countActivePages(
+			totalElements = _bqIdentityInterestPageDog.countActivePages(
 				channelId, filterString, ownerId, ownerType);
 		}
 		else {
-			totalElements = _visitedPagesDog.countInactivePages(
+			totalElements = _bqIdentityInterestPageDog.countInactivePages(
 				channelId, filterString, ownerId, ownerType);
 		}
 
@@ -60,7 +60,7 @@ public class VisitedPagesRestController extends BaseRestController {
 			"_embedded",
 			JSONUtil.put(
 				"visited-pages-transformation",
-				_visitedPagesDog.getVisitedPagesTransformations(
+				_bqIdentityInterestPageDog.getVisitedPagesTransformations(
 					channelId, filterString, ownerId, ownerType, page, size,
 					sorts, visitedPages))
 		).put(
@@ -75,6 +75,6 @@ public class VisitedPagesRestController extends BaseRestController {
 	}
 
 	@Autowired
-	private VisitedPagesDog _visitedPagesDog;
+	private BQIdentityInterestPageDog _bqIdentityInterestPageDog;
 
 }
