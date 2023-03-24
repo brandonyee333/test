@@ -57,7 +57,7 @@ public interface CustomBQIndividualRepository {
 	public Optional<BQIndividual> findByEmailAddress(String emailAddresses);
 
 	public List<Distribution> getIndividualDistributions(
-		@Nullable Long channelId, String fieldName,
+		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable Long individualSegmentId, Pageable pageable);
 
 	public BQIndividual insert(BQIndividual bqIndividual);

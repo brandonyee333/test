@@ -356,7 +356,7 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public List<Distribution> getIndividualDistributions(
-		@Nullable Long channelId, String fieldName,
+		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable Long individualSegmentId, Pageable pageable) {
 
 		Field groupByField = DSL.field("individualFields.value");
@@ -391,9 +391,9 @@ public class BQIndividualRepositoryImpl
 
 				Object groupByFieldValue = record.get("groupByField");
 
-				if (groupByFieldValue instanceof Date) {
+				if (fieldType.equalsIgnoreCase("date")) {
 					groupByFieldValue = DateUtil.toUTCString(
-						(Date)groupByFieldValue);
+						new Date(Long.parseLong((String)groupByFieldValue)));
 				}
 
 				return new Distribution(

@@ -155,9 +155,13 @@ public class BQIndividualDog {
 			0, size,
 			SortUtil.getSort(Sort.by(Sort.Order.desc("count")), sorts));
 
+		BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
+
 		List<Distribution> distributions =
 			_bqIndividualRepository.getIndividualDistributions(
-				channelId, fieldName, individualSegmentId, pageRequest);
+				channelId, bqFieldMapping.getFieldName(),
+				bqFieldMapping.getFieldType(), individualSegmentId,
+				pageRequest);
 
 		return PageableExecutionUtils.getPage(
 			distributions, pageRequest, distributions::size);
