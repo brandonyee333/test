@@ -21,10 +21,8 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.IndividualSegmentsRestController;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
@@ -183,11 +181,6 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals(1, individualSegmentsJSONArray.length());
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals_1.json"
-	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes_1.json"
@@ -219,7 +212,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assertions.assertEquals(8L, anonymousIdentitiesCount);
+		Assertions.assertEquals(9L, anonymousIdentitiesCount);
 
 		long identitiesCount = Optional.ofNullable(
 			segmentDTO.getIdentitiesCount()
@@ -227,7 +220,7 @@ public class IndividualSegmentsRestControllerTest
 			-1L
 		);
 
-		Assertions.assertEquals(10L, identitiesCount);
+		Assertions.assertEquals(11L, identitiesCount);
 
 		long knownIdentitiesCount = Optional.ofNullable(
 			segmentDTO.getKnownIdentitiesCount()
@@ -263,7 +256,7 @@ public class IndividualSegmentsRestControllerTest
 		SegmentDTO segmentDTO = _individualSegmentsRestController.getSegmentDTO(
 			327968823603500655L, null);
 
-		Assertions.assertEquals(0L, segmentDTO.getKnownIdentitiesCount());
+		Assertions.assertEquals(2L, segmentDTO.getKnownIdentitiesCount());
 	}
 
 	@RepositoryResource(
@@ -400,18 +393,11 @@ public class IndividualSegmentsRestControllerTest
 
 		SegmentDTO segmentDTO = segmentDTOs.get(0);
 
-		Assertions.assertEquals(0L, segmentDTO.getKnownIdentitiesCount());
+		Assertions.assertEquals(2L, segmentDTO.getKnownIdentitiesCount());
 	}
 
 	private void _assertEmptyJSONArray(JSONArray jsonArray) {
 		Assertions.assertTrue(jsonArray.isEmpty());
-	}
-
-	private String[] _getIds(
-		String key, JSONObject referencedObjectsJSONObject) {
-
-		return JSONUtil.toStringArray(
-			referencedObjectsJSONObject.getJSONArray(key), "id");
 	}
 
 	@Autowired

@@ -23,7 +23,6 @@ import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -48,7 +47,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Vishal Reddy
  * @author Rachael Koestartyo
  */
-@Disabled
 public class IndividualSegmentsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
@@ -126,15 +124,12 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals(1L, segment.getChannelId());
 
 		Assertions.assertEquals(
-			1,
+			2,
 			_bqMembershipRepository.countBySegmentIdAndStatus(
 				338511451975440187L, "ACTIVE"));
 	}
 
-	@RepositoryResource(
-		repositoryClass = BQEventRepository.class,
-		resourcePath = "osbasahfaroinfo/events.json"
-	)
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQIndividualRepository.class,
 		resourcePath = "osbasahfaroinfo/individuals.json"
@@ -184,32 +179,8 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = BQEventRepository.class,
-		resourcePath = "osbasahfaroinfo/events.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQMembershipChangeRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_membership_changes.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQMembershipRepository.class,
-		resourcePath = "osbasahfaroinfo/bq_memberships.json"
-	)
-	@RepositoryResource(
-		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources_1.json"
-	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
 	)
 	@Test
 	public void testGetMembershipChanges() {
@@ -259,14 +230,6 @@ public class IndividualSegmentsRestControllerTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = BQEventRepository.class,
-		resourcePath = "osbasahfaroinfo/events.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships.json"
 	)
@@ -311,7 +274,8 @@ public class IndividualSegmentsRestControllerTest
 
 		membershipsJSONArray = embeddedJSONObject.getJSONArray("memberships");
 
-		Assertions.assertEquals(1, membershipsJSONArray.length());
+		Assertions.assertEquals(
+			2, membershipsJSONArray.length(), membershipsJSONArray.toString());
 	}
 
 	@RepositoryResource(
@@ -347,7 +311,6 @@ public class IndividualSegmentsRestControllerTest
 		Assertions.assertEquals("READY", responseJSONObject.getString("state"));
 	}
 
-	@Disabled
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
 		resourcePath = "osbasahfaroinfo/channels_2.json"
@@ -363,7 +326,7 @@ public class IndividualSegmentsRestControllerTest
 	@Test
 	public void testPreviewDisabledSegments() throws Exception {
 		Assertions.assertEquals(
-			3L,
+			1L,
 			JSONUtil.getValue(
 				_objectMapper.convertValue(
 					_individualSegmentsRestController.
@@ -372,7 +335,7 @@ public class IndividualSegmentsRestControllerTest
 					JSONObject.class),
 				"JSONObject/page", "Object/totalElements"));
 		Assertions.assertEquals(
-			2L,
+			1L,
 			JSONUtil.getValue(
 				_objectMapper.convertValue(
 					_individualSegmentsRestController.
