@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
-import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
 import java.math.BigDecimal;
@@ -24,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
@@ -124,7 +125,7 @@ public class BQIdentityInterestPageRepositoryImpl
 	}
 
 	@Override
-	public List<Transformation> getActivePagesTransformations(
+	public List<Map<String, Object>> getActivePagesTransformations(
 		@Nullable String filterString, String ownerId, String ownerType,
 		Pageable pageable) {
 
@@ -137,7 +138,7 @@ public class BQIdentityInterestPageRepositoryImpl
 		}
 
 		return _queryExecutor.queryForList(
-			record -> new Transformation(new Transformation.Term(record), null),
+			Function.identity(),
 			_dslContext.with(
 				"ActivePage"
 			).as(
@@ -166,7 +167,7 @@ public class BQIdentityInterestPageRepositoryImpl
 	}
 
 	@Override
-	public List<Transformation> getInactivePagesTransformations(
+	public List<Map<String, Object>> getInactivePagesTransformations(
 		@Nullable String filterString, String ownerId, String ownerType,
 		Pageable pageable) {
 
@@ -187,7 +188,7 @@ public class BQIdentityInterestPageRepositoryImpl
 		}
 
 		return _queryExecutor.queryForList(
-			record -> new Transformation(new Transformation.Term(record), null),
+			Function.identity(),
 			_dslContext.with(
 				"ActivePage"
 			).as(

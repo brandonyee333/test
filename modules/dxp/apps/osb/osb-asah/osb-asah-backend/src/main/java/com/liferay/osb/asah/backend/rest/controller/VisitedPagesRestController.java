@@ -14,14 +14,11 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
-import com.liferay.osb.asah.backend.dto.PageDTO;
-import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.VisitedPagesDog;
-import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +40,7 @@ public class VisitedPagesRestController extends BaseRestController {
 	}
 
 	@GetMapping
-	public PageDTO<TransformationDTO> getVisitedPages(
+	public String getVisitedPages(
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam String ownerId, @RequestParam String ownerType,
@@ -53,20 +50,27 @@ public class VisitedPagesRestController extends BaseRestController {
 			@RequestParam(defaultValue = "true") boolean visitedPages)
 		throws Exception {
 
-		Page<Transformation> visitedPagesTransformations =
-			_visitedPagesDog.getVisitedPagesTransformations(
-				filterString, ownerId, ownerType, page, size, sorts,
-				visitedPages);
+		long totalElements;
 
-		return new PageDTO<>(
+		if (visitedPages) {
+			totalElements = _visitedPagesDog.countActivePages(
+				filterString, ownerId, ownerType);
+		}
+		else {
+			totalElements = _visitedPagesDog.countInactivePages(
+				filterString, ownerId, ownerType);
+		}
+
+		return JSONUtil.put(
 			"_embedded",
-			new TransformationDTO(
+			JSONUtil.put(
 				"visited-pages-transformation",
-				visitedPagesTransformations.getContent()),
-			visitedPagesTransformations.getNumber(),
-			visitedPagesTransformations.getSize(),
-			visitedPagesTransformations.getTotalElements(),
-			visitedPagesTransformations.getTotalPages());
+				_visitedPagesDog.getVisitedPagesTransformations(
+					filterString, ownerId, ownerType, page, size, sorts,
+					visitedPages))
+		).put(
+			"page", getPageJSONObject(page, size, totalElements)
+		).toString();
 	}
 
 	@Autowired

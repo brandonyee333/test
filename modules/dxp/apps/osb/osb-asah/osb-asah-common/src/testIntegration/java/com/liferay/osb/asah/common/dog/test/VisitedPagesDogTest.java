@@ -16,22 +16,23 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.dog.VisitedPagesDog;
+import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.math.BigDecimal;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+
+import org.json.JSONArray;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import org.skyscreamer.jsonassert.JSONAssert;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 
 /**
  * @author Leslie Wong
@@ -43,80 +44,48 @@ public class VisitedPagesDogTest
 	@BQSQLResource(resourcePath = "test_visited_pages_dog.sql")
 	@Test
 	public void testGetVisitedPagesTransformationActivePages() {
-		Page<Transformation> visitedPagesTransformationsPage =
-			_visitedPagesDog.getVisitedPagesTransformations(
-				"interestName eq 'ratio'", "1234567891011",
-				"individual-segment", 1, 2,
-				new String[] {"uniqueVisitsCount", "desc"}, true);
-
-		Assertions.assertEquals(
-			5, visitedPagesTransformationsPage.getTotalElements());
-		Assertions.assertEquals(
-			3, visitedPagesTransformationsPage.getTotalPages());
-		Assertions.assertEquals(1, visitedPagesTransformationsPage.getNumber());
-
-		List<Transformation> transformations = new ArrayList<>();
-
-		transformations.add(
-			new Transformation(
-				new Transformation.Term(
-					new HashMap<String, Object>() {
-						{
-							put("title", "Know Your Ratios - Volume");
-							put("uniqueVisitsCount", BigDecimal.valueOf(7));
-							put(
-								"url",
-								"https://www.know-your-ratios.com/volume");
-						}
-					}),
-				null));
-
-		transformations.add(
-			new Transformation(
-				new Transformation.Term(
-					new HashMap<String, Object>() {
-						{
-							put("title", "Know Your Ratios - Weight");
-							put("uniqueVisitsCount", BigDecimal.valueOf(6));
-							put(
-								"url",
-								"https://www.know-your-ratios.com/weight");
-						}
-					}),
-				null));
-
-		_assertTransformations(
-			transformations, visitedPagesTransformationsPage.getContent());
+		JSONAssert.assertEquals(
+			JSONUtil.putAll(
+				JSONUtil.put(
+					"title", "Know Your Ratios - Volume"
+				).put(
+					"uniqueVisitsCount", BigDecimal.valueOf(7)
+				).put(
+					"url", "https://www.know-your-ratios.com/volume"
+				),
+				JSONUtil.put(
+					"title", "Know Your Ratios - Weight"
+				).put(
+					"uniqueVisitsCount", BigDecimal.valueOf(6)
+				).put(
+					"url", "https://www.know-your-ratios.com/weight"
+				)),
+			new JSONArray(
+				_visitedPagesDog.getVisitedPagesTransformations(
+					"interestName eq 'ratio'", "1234567891011",
+					"individual-segment", 1, 2,
+					new String[] {"uniqueVisitsCount", "desc"}, true)),
+			true);
 	}
 
 	@BQSQLResource(resourcePath = "test_visited_pages_dog.sql")
 	@Test
 	public void testGetVisitedPagesTransformationInactivePages() {
-		Page<Transformation> visitedPagesTransformationsPage =
-			_visitedPagesDog.getVisitedPagesTransformations(
-				"interestName eq 'ratio'", "1234567891011",
-				"individual-segment", 1, 1, new String[] {"title", "desc"},
-				false);
-
-		Assertions.assertEquals(
-			2, visitedPagesTransformationsPage.getTotalElements());
-		Assertions.assertEquals(
-			2, visitedPagesTransformationsPage.getTotalPages());
-		Assertions.assertEquals(1, visitedPagesTransformationsPage.getNumber());
-
-		_assertTransformations(
-			Collections.singletonList(
-				new Transformation(
-					new Transformation.Term(
-						new HashMap<String, Object>() {
-							{
-								put("title", "Basic Calculator");
-								put("uniqueVisitsCount", BigDecimal.valueOf(0));
-								put("url", "https://www.calculator.com/basic");
-							}
-						}),
-					null)),
-			visitedPagesTransformationsPage.getContent());
+		JSONAssert.assertEquals(
+			JSONUtil.put(
+				JSONUtil.put(
+					"title", "Basic Calculator"
+				).put(
+					"uniqueVisitsCount", BigDecimal.valueOf(0)
+				).put(
+					"url", "https://www.calculator.com/basic"
+				)),
+			new JSONArray(
+				_visitedPagesDog.getVisitedPagesTransformations(
+					"interestName eq 'ratio'", "1234567891011",
+					"individual-segment", 1, 1, new String[] {"title", "desc"},
+					false)),
+			true);
 	}
 
 	private void _assertTransformations(

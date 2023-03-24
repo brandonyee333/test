@@ -14,9 +14,8 @@
 
 package com.liferay.osb.asah.common.repository;
 
-import com.liferay.osb.asah.common.model.Transformation;
-
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
@@ -32,11 +31,11 @@ public interface CustomBQIdentityInterestPageRepository {
 	public long countInactivePagesTransformations(
 		@Nullable String filterString, String ownerId, String ownerType);
 
-	public List<Transformation> getActivePagesTransformations(
+	public List<Map<String, Object>> getActivePagesTransformations(
 		@Nullable String filterString, String ownerId, String ownerType,
 		Pageable pageable);
 
-	public List<Transformation> getInactivePagesTransformations(
+	public List<Map<String, Object>> getInactivePagesTransformations(
 		@Nullable String filterString, String ownerId, String ownerType,
 		Pageable pageable);
 

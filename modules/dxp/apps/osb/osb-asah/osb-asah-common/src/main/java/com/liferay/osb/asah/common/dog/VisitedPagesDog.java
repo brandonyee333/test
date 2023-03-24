@@ -15,13 +15,12 @@
 package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestPageRepository;
 
+import org.json.JSONArray;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,7 +29,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class VisitedPagesDog {
 
-	public Page<Transformation> getVisitedPagesTransformations(
+	public long countActivePages(
+		String filterString, String ownerId, String ownerType) {
+
+		return _bqIdentityInterestPageRepository.
+			countActivePagesTransformations(filterString, ownerId, ownerType);
+	}
+
+	public long countInactivePages(
+		String filterString, String ownerId, String ownerType) {
+
+		return _bqIdentityInterestPageRepository.
+			countInactivePagesTransformations(filterString, ownerId, ownerType);
+	}
+
+	public JSONArray getVisitedPagesTransformations(
 		String filterString, String ownerId, String ownerType, int page,
 		int size, String[] sorts, boolean visitedPages) {
 
@@ -38,24 +51,14 @@ public class VisitedPagesDog {
 			page, size, SortUtil.getSort(sorts));
 
 		if (visitedPages) {
-			return PageableExecutionUtils.getPage(
+			return new JSONArray(
 				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					filterString, ownerId, ownerType, pageRequest),
-				pageRequest,
-				() ->
-					_bqIdentityInterestPageRepository.
-						countActivePagesTransformations(
-							filterString, ownerId, ownerType));
+					filterString, ownerId, ownerType, pageRequest));
 		}
 
-		return PageableExecutionUtils.getPage(
+		return new JSONArray(
 			_bqIdentityInterestPageRepository.getInactivePagesTransformations(
-				filterString, ownerId, ownerType, pageRequest),
-			pageRequest,
-			() ->
-				_bqIdentityInterestPageRepository.
-					countInactivePagesTransformations(
-						filterString, ownerId, ownerType));
+				filterString, ownerId, ownerType, pageRequest));
 	}
 
 	@Autowired
