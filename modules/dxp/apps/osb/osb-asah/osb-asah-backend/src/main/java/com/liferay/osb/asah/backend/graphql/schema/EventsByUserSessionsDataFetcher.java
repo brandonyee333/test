@@ -17,7 +17,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.EventsByUserSessionDTO;
 import com.liferay.osb.asah.backend.dto.UserSessionDTO;
-import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
@@ -52,7 +52,7 @@ public class EventsByUserSessionsDataFetcher
 			UserSessionDTO::getCreateDate);
 
 		Map<BQSession, List<BQEvent>> bqSessions =
-			_eventDog.searchBQEventsGroupByUserSessionId(
+			_bqEventDog.searchBQEventsGroupByUserSessionId(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingEnvironment.getArgument("entityId"),
 				dataFetchingEnvironment.getArgument("keywords"),
@@ -73,7 +73,7 @@ public class EventsByUserSessionsDataFetcher
 			).collect(
 				Collectors.toList()
 			),
-			_eventDog.countBQEvents(
+			_bqEventDog.countBQEvents(
 				Long.valueOf(dataFetchingEnvironment.getArgument("channelId")),
 				dataFetchingEnvironment.getArgument("entityId"),
 				dataFetchingEnvironment.getArgument("keywords"),
@@ -81,6 +81,6 @@ public class EventsByUserSessionsDataFetcher
 	}
 
 	@Autowired
-	private EventDog _eventDog;
+	private BQEventDog _bqEventDog;
 
 }

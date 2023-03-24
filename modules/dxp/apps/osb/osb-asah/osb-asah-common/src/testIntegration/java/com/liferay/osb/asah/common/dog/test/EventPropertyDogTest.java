@@ -19,7 +19,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.dog.EventPropertyDog;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -78,7 +78,7 @@ public class EventPropertyDogTest
 				}
 			};
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page", bqEventProperties, channel.getId(), date, 1L, date,
 			"pageUnloaded", "analyticsEventId", "sessionId", "abcdef");
 
@@ -130,7 +130,7 @@ public class EventPropertyDogTest
 	private EventDefinitionDog _eventDefinitionDog;
 
 	@Autowired
-	private EventDog _eventDog;
+	private BQEventDog _bqEventDog;
 
 	@Autowired
 	private EventPropertyDog _eventPropertyDog;

@@ -54,7 +54,7 @@ import org.springframework.stereotype.Component;
  * @author Leslie Wong
  */
 @Component
-public class EventDog {
+public class BQEventDog {
 
 	@VisibleForTestingOnly
 	public BQEvent addBQEvent(

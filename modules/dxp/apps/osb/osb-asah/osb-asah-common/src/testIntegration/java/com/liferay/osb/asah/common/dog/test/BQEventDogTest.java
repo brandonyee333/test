@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.ChannelDog;
-import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -53,7 +53,7 @@ import org.springframework.data.domain.Sort;
  * @author Leslie Wong
  */
 @Import(JDBCTestConfiguration.class)
-public class EventDogTest
+public class BQEventDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
@@ -75,7 +75,7 @@ public class EventDogTest
 							"testValue1"));
 				}
 			},
-			_eventDog.getRecentBQEventPropertyValues(98765L, 2));
+			_bqEventDog.getRecentBQEventPropertyValues(98765L, 2));
 	}
 
 	@Test
@@ -84,7 +84,7 @@ public class EventDogTest
 
 		Channel channel = _channelDog.addChannel("Test Channel");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -99,7 +99,7 @@ public class EventDogTest
 			channel.getId(), date, 1L, DateUtil.addDays(date, -3), "pageViewed",
 			"analyticsEventId1", "sessionId", "Home", "userId");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -114,7 +114,7 @@ public class EventDogTest
 			channel.getId(), date, 1L, DateUtil.addDays(date, -1), "pageViewed",
 			"analyticsEventId2", "sessionId", "Home", "userId");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -129,7 +129,7 @@ public class EventDogTest
 			channel.getId(), date, 1L, DateUtil.addDays(date, -8), "pageViewed",
 			"analyticsEventId3", "sessionId", "Test", "userId");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -145,7 +145,7 @@ public class EventDogTest
 			"sessionId", "Test", "userId");
 
 		Map<String, Date> recentGlobalBQEventProperyValues =
-			_eventDog.getRecentGlobalBQEventProperyValues("title", 10);
+			_bqEventDog.getRecentGlobalBQEventProperyValues("title", 10);
 
 		Assertions.assertEquals(2, recentGlobalBQEventProperyValues.size());
 
@@ -165,7 +165,7 @@ public class EventDogTest
 	public void testGetSearchKeywords() throws Exception {
 		Channel channel = _channelDog.addChannel("Test Channel");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -181,7 +181,7 @@ public class EventDogTest
 			"en_US", "", "", "", "", "", "", "",
 			"http://localhost:8080/search?q=Liferay%20DXP", "userId", "");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -197,7 +197,7 @@ public class EventDogTest
 			"en_US", "", "", "", "", "", "", "",
 			"http://localhost:8080/search?q=Liferay", "userId", "");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -213,7 +213,7 @@ public class EventDogTest
 			"en_US", "", "", "", "", "", "", "",
 			"http://localhost:8080/search?q=Liferay+DXP", "userId", "");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -229,7 +229,7 @@ public class EventDogTest
 			"en_US", "", "", "", "", "", "", "",
 			"http://localhost:8080/search?q=Diamond+Bar", "userId", "");
 
-		Page<SearchKeyword> searchKeywordPage = _eventDog.getSearchKeywordPage(
+		Page<SearchKeyword> searchKeywordPage = _bqEventDog.getSearchKeywordPage(
 			null, null, 0, 0, 2, Sort.by(Sort.Order.desc("counts")));
 
 		Assertions.assertEquals(3, searchKeywordPage.getTotalElements());
@@ -248,7 +248,7 @@ public class EventDogTest
 		Assertions.assertEquals("3212", searchKeyword.getGroupId());
 		Assertions.assertEquals("liferay dxp", searchKeyword.getKeywords());
 
-		searchKeywordPage = _eventDog.getSearchKeywordPage(
+		searchKeywordPage = _bqEventDog.getSearchKeywordPage(
 			null, null, 0, 0, 1, Sort.by(Sort.Order.desc("lastmodifieddate")));
 
 		Assertions.assertEquals(3, searchKeywordPage.getTotalElements());
@@ -274,7 +274,7 @@ public class EventDogTest
 		Channel channel = _channelDog.addChannel("Test Channel");
 
 		for (int i = 2; i <= 7; i++) {
-			_eventDog.addBQEvent(
+			_bqEventDog.addBQEvent(
 				"Page",
 				new HashSet<BQEventProperty>() {
 					{
@@ -291,7 +291,7 @@ public class EventDogTest
 				"analyticsEventId" + i, "sessionId", "userId");
 		}
 
-		List<BQEvent> bqEvents = _eventDog.searchBQEvents(
+		List<BQEvent> bqEvents = _bqEventDog.searchBQEvents(
 			channel.getId(), null, null, 0, 50, TimeRange.LAST_7_DAYS);
 
 		BQEvent bqEvent = bqEvents.get(bqEvents.size() - 1);
@@ -309,7 +309,7 @@ public class EventDogTest
 
 		Channel channel = _channelDog.addChannel("Test Channel");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -324,7 +324,7 @@ public class EventDogTest
 			channel.getId(), date, 1L, date, "pageViewed", "analyticsEventId1",
 			"sessionId", "userId");
 
-		_eventDog.addBQEvent(
+		_bqEventDog.addBQEvent(
 			"Page",
 			new HashSet<BQEventProperty>() {
 				{
@@ -339,7 +339,7 @@ public class EventDogTest
 			channel.getId(), date, 1L, date, "pageViewed", "analyticsEventId2",
 			"sessionId", "userId");
 
-		List<BQEvent> bqEvents = _eventDog.searchBQEvents(
+		List<BQEvent> bqEvents = _bqEventDog.searchBQEvents(
 			channel.getId(), null, null, 0, 50, TimeRange.LAST_24_HOURS);
 
 		Assertions.assertEquals(2, bqEvents.size(), bqEvents.toString());
@@ -367,7 +367,7 @@ public class EventDogTest
 	private ChannelDog _channelDog;
 
 	@Autowired
-	private EventDog _eventDog;
+	private BQEventDog _bqEventDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

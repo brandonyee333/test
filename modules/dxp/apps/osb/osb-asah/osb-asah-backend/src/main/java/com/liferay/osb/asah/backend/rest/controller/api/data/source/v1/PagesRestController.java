@@ -23,7 +23,7 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SearchKeywordDTO;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
-import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.SearchKeyword;
@@ -206,7 +206,7 @@ public class PagesRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toSearchKeywordDTOPageDTO(
-			_eventDog.getSearchKeywordPage(
+			_bqEventDog.getSearchKeywordPage(
 				displayLanguageId, groupId, minCounts, page, size,
 				_getSort(sorts)));
 	}
@@ -343,7 +343,7 @@ public class PagesRestController extends BaseRestController {
 	}
 
 	@Autowired
-	private EventDog _eventDog;
+	private BQEventDog _bqEventDog;
 
 	@Autowired
 	private HistogramDog _histogramDog;

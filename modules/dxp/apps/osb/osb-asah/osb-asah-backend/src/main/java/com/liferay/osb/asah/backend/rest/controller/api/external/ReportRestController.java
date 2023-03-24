@@ -54,7 +54,7 @@ import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
 import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
-import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
@@ -430,7 +430,7 @@ public class ReportRestController extends BaseRestController {
 			@PathVariable String individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
-		Page<BQEvent> bqEventPage = _eventDog.searchBQEvents(
+		Page<BQEvent> bqEventPage = _bqEventDog.searchBQEvents(
 			individualId, page, _PAGE_SIZE);
 
 		Page<ActivityDTO> activityDTOs = bqEventPage.map(
@@ -1382,7 +1382,7 @@ public class ReportRestController extends BaseRestController {
 	private int _dataExportTaskExpirationMinutes;
 
 	@Autowired
-	private EventDog _eventDog;
+	private BQEventDog _bqEventDog;
 
 	@Autowired
 	private FormPageDog _formPageDog;

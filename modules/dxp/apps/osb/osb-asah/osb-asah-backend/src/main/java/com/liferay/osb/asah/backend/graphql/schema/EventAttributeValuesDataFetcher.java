@@ -16,7 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dto.EventAttributeDefinitionDTO;
 import com.liferay.osb.asah.backend.dto.EventAttributeValueDTO;
-import com.liferay.osb.asah.common.dog.EventDog;
+import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -57,7 +57,7 @@ public class EventAttributeValuesDataFetcher
 				new ArrayList<>();
 
 			Map<String, Date> recentGlobalBQEventProperyValues =
-				_eventDog.getRecentGlobalBQEventProperyValues(name, 10);
+				_bqEventDog.getRecentGlobalBQEventProperyValues(name, 10);
 
 			for (Map.Entry<String, Date> entry :
 					recentGlobalBQEventProperyValues.entrySet()) {
@@ -71,7 +71,7 @@ public class EventAttributeValuesDataFetcher
 		}
 
 		return ListUtil.map(
-			_eventDog.getRecentBQEventPropertyValues(
+			_bqEventDog.getRecentBQEventPropertyValues(
 				Long.valueOf(eventAttributeDefinitionDTO.getId()), 10),
 			EventAttributeValueDTO::new);
 	}
@@ -89,6 +89,6 @@ public class EventAttributeValuesDataFetcher
 		};
 
 	@Autowired
-	private EventDog _eventDog;
+	private BQEventDog _bqEventDog;
 
 }
