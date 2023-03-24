@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import org.antlr.v4.runtime.misc.ParseCancellationException;
+import com.liferay.osb.asah.common.filter.expression.FilterExpressionParserException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,32 +27,22 @@ import org.springframework.test.util.ReflectionTestUtils;
 public class SegmentDogTest {
 
 	@Test
-	public void testCheckFilterString() {
-		Assertions.assertEquals(
-			"demographics/additionalName/value eq 'Miles'",
-			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_checkFilterString",
-				"demographics/additionalName/value eq 'Miles'"));
+	public void testValidateFilterString() {
 		Assertions.assertThrowsExactly(
-			ParseCancellationException.class,
+			FilterExpressionParserException.class,
 			() -> ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_checkFilterString",
+				_segmentDog, "_validateFilterString",
 				"demographics/age/value ge " +
 					"12345678901234567262899398937898378787878"));
 		Assertions.assertThrowsExactly(
-			ParseCancellationException.class,
+			FilterExpressionParserException.class,
 			() -> ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_checkFilterString",
+				_segmentDog, "_validateFilterString",
 				"demographics/age/value ge 1.2345678901234568e+21"));
-		Assertions.assertEquals(
-			"demographics/age/value ge " + Integer.MAX_VALUE,
-			ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_checkFilterString",
-				"demographics/age/value ge " + Integer.MAX_VALUE));
 		Assertions.assertThrowsExactly(
-			ParseCancellationException.class,
+			FilterExpressionParserException.class,
 			() -> ReflectionTestUtils.invokeMethod(
-				_segmentDog, "_checkFilterString",
+				_segmentDog, "_validateFilterString",
 				"organizations.filter(filter='(dateModified gt " +
 					"1580256740750)')"));
 	}

@@ -29,9 +29,7 @@ import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.filter.expression.FilterExpressionReferencedObjectsVisitor;
-import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionBaseVisitor;
-import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionLexer;
-import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
+import com.liferay.osb.asah.common.filter.expression.FilterExpressionValidatorVisitor;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
@@ -44,8 +42,6 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
-import java.math.BigDecimal;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -55,25 +51,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.BailErrorStrategy;
-import org.antlr.v4.runtime.BaseErrorListener;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.Token;
-import org.antlr.v4.runtime.misc.ParseCancellationException;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import org.json.JSONObject;
 
@@ -96,10 +79,12 @@ public class SegmentDog {
 		Date createDate, String filterString, Date modifiedDate, String name,
 		String scope, String type, String status) {
 
+		_validateFilterString(filterString);
+
 		Segment segment = new Segment();
 
 		segment.setCreateDate(createDate);
-		segment.setFilter(_checkFilterString(filterString));
+		segment.setFilter(filterString);
 		segment.setModifiedDate(modifiedDate);
 		segment.setName(name);
 		segment.setScope(scope);
@@ -110,6 +95,8 @@ public class SegmentDog {
 	}
 
 	public Segment addSegment(Segment segment) {
+		_validateFilterString(segment.getFilter());
+
 		setReferencedFields(segment);
 
 		if ((segment.getType() == null) ||
@@ -120,8 +107,6 @@ public class SegmentDog {
 		else {
 			segment.setState("READY");
 		}
-
-		segment.setFilter(_checkFilterString(segment.getFilter()));
 
 		segment = _segmentRepository.save(segment);
 
@@ -516,28 +501,6 @@ public class SegmentDog {
 		}
 	}
 
-	private String _checkFilterString(String filterString) {
-		if (filterString != null) {
-			FilterExpressionLexer filterExpressionLexer =
-				new FilterExpressionLexer(new ANTLRInputStream(filterString));
-
-			filterExpressionLexer.addErrorListener(new ErrorListener());
-
-			FilterExpressionParser filterExpressionParser =
-				new FilterExpressionParser(
-					new CommonTokenStream(filterExpressionLexer));
-
-			filterExpressionParser.setErrorHandler(new BailErrorStrategy());
-
-			FilterExpressionParser.ExpressionContext expressionContext =
-				filterExpressionParser.expression();
-
-			expressionContext.accept(new FilterExpressionVisitor());
-		}
-
-		return filterString;
-	}
-
 	private void _setReferencedDataSourceIds(Segment segment) {
 		Set<Long> referencedDataSourceIds =
 			segment.getReferencedDataSourceIds();
@@ -687,8 +650,7 @@ public class SegmentDog {
 
 			BeanUtils.copyProperties(partialSegment, existingSegment);
 
-			existingSegment.setFilter(
-				_checkFilterString(existingSegment.getFilter()));
+			_validateFilterString(existingSegment.getFilter());
 
 			existingSegment = _segmentRepository.save(existingSegment);
 
@@ -696,6 +658,15 @@ public class SegmentDog {
 		}
 
 		return existingSegment;
+	}
+
+	private void _validateFilterString(String filterString) {
+		if (filterString == null) {
+			return;
+		}
+
+		new FilterExpression(
+			filterString, new FilterExpressionValidatorVisitor());
 	}
 
 	@Autowired
@@ -736,67 +707,5 @@ public class SegmentDog {
 
 	@Autowired
 	private SegmentRepository _segmentRepository;
-
-	private static class ErrorListener extends BaseErrorListener {
-
-		@Override
-		public void syntaxError(
-			Recognizer<?, ?> recognizer, Object offendingSymbol, int line,
-			int charPositionInLine, String message,
-			RecognitionException recognitionException) {
-
-			throw new ParseCancellationException(message, recognitionException);
-		}
-
-	}
-
-	private class FilterExpressionVisitor
-		extends FilterExpressionBaseVisitor<Object> {
-
-		public Object visitFilterExpression(
-			FilterExpressionParser.FilterExpressionContext
-				filterExpressionContext) {
-
-			String filterString = _parseFilterStringExpression(
-				filterExpressionContext.filter);
-
-			_checkFilterString(
-				filterString.substring(1, filterString.length() - 1));
-
-			return null;
-		}
-
-		@Override
-		public Object visitToLiteral(
-			FilterExpressionParser.ToLiteralContext toLiteralContext) {
-
-			ParseTree childParseTree = toLiteralContext.getChild(0);
-
-			if (NumberUtils.isCreatable(childParseTree.getText())) {
-				BigDecimal bigDecimal = new BigDecimal(
-					childParseTree.getText());
-
-				BigDecimal maxIntegerBigDecimal = BigDecimal.valueOf(
-					Integer.MAX_VALUE);
-
-				if (bigDecimal.compareTo(maxIntegerBigDecimal) > 0) {
-					throw new ParseCancellationException();
-				}
-			}
-
-			return null;
-		}
-
-		private String _parseFilterStringExpression(Token filterToken) {
-			String filterString = filterToken.getText();
-
-			filterString = filterString.replaceAll("\\s''", " '");
-			filterString = filterString.replaceAll("''\\s", "' ");
-			filterString = filterString.replaceAll("''\\)", "')");
-
-			return filterString;
-		}
-
-	}
 
 }
