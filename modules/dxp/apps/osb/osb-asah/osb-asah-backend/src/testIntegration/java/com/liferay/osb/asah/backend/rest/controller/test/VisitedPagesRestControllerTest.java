@@ -14,11 +14,11 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.VisitedPagesRestController;
-import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
-import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.repository.CrudBQVisitedPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -54,19 +54,7 @@ public class VisitedPagesRestControllerTest
 			false);
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = CrudBQVisitedPageRepository.class,
-		resourcePath = "osbasahfaroinfo/visited_pages.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AsahMarkerRepository.class,
-		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AssetRepository.class,
-		resourcePath = "osbasahfaroinfo/assets.json"
-	)
+	@BQSQLResource(resourcePath = "test_visited_pages_rest_controller.sql")
 	@Test
 	public void testGetVisitedPages() throws Exception {
 
