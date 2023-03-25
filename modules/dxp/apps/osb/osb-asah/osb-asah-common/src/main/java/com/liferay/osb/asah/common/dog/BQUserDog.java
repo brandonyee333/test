@@ -50,7 +50,12 @@ public class BQUserDog extends BaseBQDXPEntityDog {
 			_bqUserRepository.searchByDataSourceIdsAndKeywords(
 				dataSourceIds, keywords, pageRequest);
 
+		Map<Long, String> dataSourceNames = getDataSourceNames(dataSourceIds);
+
 		for (BQUser bqUser : bqUsers) {
+			bqUser.setDataSourceName(
+				dataSourceNames.get(bqUser.getDataSourceId()));
+
 			_populateExpandoFields(bqUser);
 		}
 

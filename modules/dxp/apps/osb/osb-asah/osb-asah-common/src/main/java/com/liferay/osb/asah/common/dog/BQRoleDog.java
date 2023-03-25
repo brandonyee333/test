@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.BQRoleRepository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,10 +43,19 @@ public class BQRoleDog extends BaseBQDXPEntityDog {
 		List<Long> dataSourceIds = getDataSourceIds(channelId);
 		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
 
-		return PageableExecutionUtils.getPage(
+		List<BQRole> bqRoles =
 			_bqRoleRepository.searchByDataSourceIdsAndKeywords(
-				dataSourceIds, keywords, pageRequest),
-			pageRequest,
+				dataSourceIds, keywords, pageRequest);
+
+		Map<Long, String> dataSourceNames = getDataSourceNames(dataSourceIds);
+
+		for (BQRole bqRole : bqRoles) {
+			bqRole.setDataSourceName(
+				dataSourceNames.get(bqRole.getDataSourceId()));
+		}
+
+		return PageableExecutionUtils.getPage(
+			bqRoles, pageRequest,
 			() -> _bqRoleRepository.countByDataSourceIdsAndKeywords(
 				dataSourceIds, keywords));
 	}

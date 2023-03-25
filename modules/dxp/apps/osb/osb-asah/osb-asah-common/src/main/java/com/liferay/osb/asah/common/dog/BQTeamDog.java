@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.repository.BQTeamRepository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,10 +43,19 @@ public class BQTeamDog extends BaseBQDXPEntityDog {
 		List<Long> dataSourceIds = getDataSourceIds(channelId);
 		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
 
-		return PageableExecutionUtils.getPage(
+		List<BQTeam> bqTeams =
 			_bqTeamRepository.searchByDataSourceIdsAndKeywords(
-				dataSourceIds, keywords, pageRequest),
-			pageRequest,
+				dataSourceIds, keywords, pageRequest);
+
+		Map<Long, String> dataSourceNames = getDataSourceNames(dataSourceIds);
+
+		for (BQTeam bqTeam : bqTeams) {
+			bqTeam.setDataSourceName(
+				dataSourceNames.get(bqTeam.getDataSourceId()));
+		}
+
+		return PageableExecutionUtils.getPage(
+			bqTeams, pageRequest,
 			() -> _bqTeamRepository.countByDataSourceIdsAndKeywords(
 				dataSourceIds, keywords));
 	}
