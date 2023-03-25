@@ -163,9 +163,10 @@ definition {
 
 		if (${virtualHosts} == "true") {
 			var currentURL = Navigator.getCurrentURL();
+
 			var blogpageURL = StringUtil.extractFirst(${currentURL}, "/-/");
 
-			Navigator.openSpecificURL(url = "${blogpageURL}");
+			Navigator.openSpecificURL(url = ${blogpageURL});
 		}
 		else {
 			Navigator.gotoPage(pageName = "Blogs Page");
