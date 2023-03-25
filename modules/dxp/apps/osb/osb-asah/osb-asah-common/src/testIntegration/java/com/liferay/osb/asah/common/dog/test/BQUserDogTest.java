@@ -18,8 +18,6 @@ import com.liferay.osb.asah.common.dog.BQUserDog;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.model.ExpandoField;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
-import com.liferay.osb.asah.common.repository.BQUserRepository;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.Collections;
@@ -64,6 +62,10 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 		bqUsers = bqUserPage.getContent();
 
 		Assertions.assertEquals(1, bqUsers.size(), bqUsers.toString());
+
+		BQUser bqUser = bqUsers.get(0);
+
+		Assertions.assertEquals("Liferay Brazil", bqUser.getDataSourceName());
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_user_dog.sql")
@@ -89,12 +91,6 @@ public class BQUserDogTest extends BaseBQDXPEntityDogTestCase {
 	}
 
 	@Autowired
-	private BQExpandoValueRepository _bqExpandoValueRepository;
-
-	@Autowired
 	private BQUserDog _bqUserDog;
-
-	@Autowired
-	private BQUserRepository _bqUserRepository;
 
 }

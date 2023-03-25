@@ -59,6 +59,10 @@ public class BQRoleDogTest extends BaseBQDXPEntityDogTestCase {
 		bqRoles = bqRolePage.getContent();
 
 		Assertions.assertEquals(1, bqRoles.size(), bqRoles.toString());
+
+		BQRole bqRole = bqRoles.get(0);
+
+		Assertions.assertEquals("Liferay Brazil", bqRole.getDataSourceName());
 	}
 
 	@Autowired

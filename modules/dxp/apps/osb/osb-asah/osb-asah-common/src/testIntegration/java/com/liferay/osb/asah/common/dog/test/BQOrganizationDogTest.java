@@ -16,21 +16,11 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.dog.BQOrganizationDog;
 import com.liferay.osb.asah.common.entity.BQOrganization;
-import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.test.util.faro.DXPRawTestUtil;
-import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
-import com.liferay.osb.asah.test.util.util.RandomTestUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
-import java.util.Collections;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
-
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,85 +32,58 @@ import org.springframework.data.domain.Page;
 /**
  * @author Matthew Kong
  */
-public class BQOrganizationDogTest
-	extends BaseFaroInfoDogTestCase
-	implements OSBAsahTestExecutionListenersContext {
+public class BQOrganizationDogTest extends BaseBQDXPEntityDogTestCase {
 
 	@BeforeEach
+	@Override
 	public void setUp() {
-		_liferayDataSource = FaroInfoTestUtil.buildLiferayDataSource();
-
-		_liferayDataSource.setId(RandomTestUtil.randomNumber());
-
-		_dataSourceRepository.save(_liferayDataSource);
+		super.setUp();
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_organization_dog.sql")
 	@Test
-	public void testFindByDataSourceIdAndOrganizationPKIn() throws Exception {
-		JSONObject dxpRawOrganizationJSONObject =
-			DXPRawTestUtil.buildOrganizationJSONObject(
-				String.valueOf(_liferayDataSource.getId()));
-
-		BQOrganization bqOrganization = _addBQOrganization(
-			dxpRawOrganizationJSONObject, _liferayDataSource);
-
+	public void testFindByDataSourceIdAndOrganizationPKIn() {
 		List<BQOrganization> bqOrganizations =
 			_bqOrganizationDog.findByDataSourceIdAndOrganizationIdIn(
-				bqOrganization.getDataSourceId(),
-				Collections.singletonList(bqOrganization.getOrganizationId()));
+				123L, Arrays.asList(1L, 2L));
 
-		Assertions.assertFalse(bqOrganizations.isEmpty());
+		Assertions.assertEquals(
+			2, bqOrganizations.size(), bqOrganizations.toString());
+
+		BQOrganization bqOrganization = bqOrganizations.get(0);
+
+		Assertions.assertEquals(
+			"Liferay Brazil", bqOrganization.getDataSourceName());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_organization_dog.sql")
 	@Test
-	public void testGetOrganizationPage() throws Exception {
-		JSONObject dxpRawOrganizationJSONObject =
-			DXPRawTestUtil.buildOrganizationJSONObject(
-				String.valueOf(_liferayDataSource.getId()));
-
-		BQOrganization bqOrganization = _addBQOrganization(
-			dxpRawOrganizationJSONObject, _liferayDataSource);
-
-		String name = bqOrganization.getName();
-
+	public void testGetOrganizationPage() {
 		Page<BQOrganization> bqOrganizationPage =
 			_bqOrganizationDog.getBQOrganizationPage(
-				null, name.substring(3), 10, new Sort("name", "asc"), 0);
+				11L, null, 10, Sort.asc("name"), 0);
+
+		Assertions.assertEquals(2, bqOrganizationPage.getTotalElements());
+
+		List<BQOrganization> bqOrganizations = bqOrganizationPage.getContent();
+
+		Assertions.assertEquals(
+			2, bqOrganizations.size(), bqOrganizations.toString());
+
+		bqOrganizationPage = _bqOrganizationDog.getBQOrganizationPage(
+			11L, "Liferay", 10, new Sort("name", "asc"), 0);
 
 		Assertions.assertEquals(bqOrganizationPage.getTotalElements(), 1);
-	}
 
-	private BQOrganization _addBQOrganization(
-		JSONObject dataJSONObject, DataSource dataSource) {
+		bqOrganizations = bqOrganizationPage.getContent();
 
-		BQOrganization bqOrganization = new BQOrganization();
+		BQOrganization bqOrganization = bqOrganizations.get(0);
 
-		bqOrganization.setCreateDate(new Date());
-		bqOrganization.setDataSourceId(dataSource.getId());
-		bqOrganization.setId(RandomTestUtil.randomUUID());
-		bqOrganization.setModifiedDate(
-			new Date(dataJSONObject.getLong("modifiedDate")));
-		bqOrganization.setName(dataJSONObject.getString("name"));
-		bqOrganization.setOrganizationId(
-			dataJSONObject.getLong("organizationId"));
-		bqOrganization.setParentOrganizationName(
-			dataJSONObject.optString("parentName"));
-		bqOrganization.setParentOrganizationId(
-			dataJSONObject.optLong("parentOrganizationId"));
-		bqOrganization.setType(dataJSONObject.optString("type"));
-
-		return _bqOrganizationRepository.insert(bqOrganization);
+		Assertions.assertEquals(
+			"Liferay Brazil", bqOrganization.getDataSourceName());
 	}
 
 	@Autowired
 	private BQOrganizationDog _bqOrganizationDog;
-
-	@Autowired
-	private BQOrganizationRepository _bqOrganizationRepository;
-
-	@Autowired
-	private DataSourceRepository _dataSourceRepository;
-
-	private DataSource _liferayDataSource;
 
 }

@@ -61,6 +61,11 @@ public class BQUserGroupDogTest extends BaseBQDXPEntityDogTestCase {
 
 		Assertions.assertEquals(
 			1, bqUserGroups.size(), bqUserGroups.toString());
+
+		BQUserGroup bqUserGroup = bqUserGroups.get(0);
+
+		Assertions.assertEquals(
+			"Liferay Brazil", bqUserGroup.getDataSourceName());
 	}
 
 	@Autowired
