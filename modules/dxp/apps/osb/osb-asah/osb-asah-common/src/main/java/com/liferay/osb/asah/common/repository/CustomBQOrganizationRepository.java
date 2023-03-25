@@ -61,7 +61,6 @@ public interface CustomBQOrganizationRepository {
 	public List<BQOrganization> searchBQOrganizations(
 		FilterHelper filterHelper, Pageable pageable);
 
-	@Cacheable
 	public List<BQOrganization> searchByDataSourceIdsAndName(
 		List<Long> dataSourceIds, @Nullable String name, Pageable pageable);
 
