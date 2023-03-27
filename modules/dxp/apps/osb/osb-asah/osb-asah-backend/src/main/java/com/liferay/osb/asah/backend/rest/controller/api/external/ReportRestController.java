@@ -25,7 +25,6 @@ import com.liferay.osb.asah.backend.dog.MetricDog;
 import com.liferay.osb.asah.backend.dog.MetricTypeDog;
 import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
-import com.liferay.osb.asah.backend.dog.form.FormPageDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.ActivityDTO;
 import com.liferay.osb.asah.backend.dto.DataExportTaskDTO;
@@ -399,31 +398,6 @@ public class ReportRestController extends BaseRestController {
 			formMetricResultBag,
 			formMetric -> _toFormAssetReportEntityModel(
 				new AssetReport(formMetric), rangeKey));
-	}
-
-	@GetMapping("/forms/{formId}/pages")
-	public EntityModel<FormPagesReport> getFormPagesReportEntityModel(
-		@PathVariable String formId,
-		@RequestParam(defaultValue = "") String formTitle,
-		@RequestParam(defaultValue = "30") int rangeKey) {
-
-		SearchQueryContext searchQueryContext = new SearchQueryContext() {
-			{
-				setAssetId(formId);
-				setAssetType(AssetType.FORM);
-				setTimeRange(TimeRange.of(rangeKey));
-
-				if (StringUtils.isNotEmpty(formTitle)) {
-					setTitle(formTitle);
-				}
-			}
-		};
-
-		return _toFormPagesReportEntityModel(
-			new FormPagesReport(
-				formId, _formPageDog.getFormPageMetrics(searchQueryContext),
-				formTitle),
-			rangeKey);
 	}
 
 	@GetMapping("/individuals/{individualId}/activities")
@@ -1182,16 +1156,7 @@ public class ReportRestController extends BaseRestController {
 					Collections.emptySet(), assetReport.getId(),
 					assetReport.getTitle(), rangeKey
 				)
-			).withSelfRel(),
-			WebMvcLinkBuilder.linkTo(
-				WebMvcLinkBuilder.methodOn(
-					ReportRestController.class
-				).getFormPagesReportEntityModel(
-					assetReport.getId(), assetReport.getTitle(), rangeKey
-				)
-			).withRel(
-				"pages"
-			));
+			).withSelfRel());
 	}
 
 	private EntityModel<FormPagesReport> _toFormPagesReportEntityModel(
@@ -1199,14 +1164,6 @@ public class ReportRestController extends BaseRestController {
 
 		return EntityModel.of(
 			formPagesReport,
-			WebMvcLinkBuilder.linkTo(
-				WebMvcLinkBuilder.methodOn(
-					ReportRestController.class
-				).getFormPagesReportEntityModel(
-					formPagesReport.getFormId(), formPagesReport.getFormTitle(),
-					rangeKey
-				)
-			).withSelfRel(),
 			WebMvcLinkBuilder.linkTo(
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
@@ -1405,9 +1362,6 @@ public class ReportRestController extends BaseRestController {
 
 	@Value("${osb.asah.data.export.task.expiration.minutes:30}")
 	private int _dataExportTaskExpirationMinutes;
-
-	@Autowired
-	private FormPageDog _formPageDog;
 
 	@Autowired
 	private HistogramDog _histogramDog;
