@@ -77,10 +77,15 @@ public class ActivitiesRestController extends BaseRestController {
 		List<DataSource> dataSources = _dataSourceDog.getDataSources();
 
 		for (BQAsset bqAsset : bqAssets) {
-			JSONObject jsonObject = new JSONObject();
-
-			jsonObject.put("count", bqAsset.getCount());
-			jsonObject.put("dataSourceAssetPK", bqAsset.getDataSourceId());
+			JSONObject jsonObject = JSONUtil.put(
+				"count", bqAsset.getCount()
+			).put(
+				"dataSourceAssetPK", bqAsset.getDataSourceId()
+			).put(
+				"id", bqAsset.getId()
+			).put(
+				"name", bqAsset.getAssetTitle()
+			);
 
 			for (DataSource dataSource : dataSources) {
 				if (Objects.equals(
@@ -91,9 +96,6 @@ public class ActivitiesRestController extends BaseRestController {
 					break;
 				}
 			}
-
-			jsonObject.put("id", bqAsset.getId());
-			jsonObject.put("name", bqAsset.getAssetTitle());
 
 			jsonObjects.add(jsonObject);
 		}

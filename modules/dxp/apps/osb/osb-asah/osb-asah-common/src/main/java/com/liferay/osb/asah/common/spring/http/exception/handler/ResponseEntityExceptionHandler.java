@@ -61,22 +61,21 @@ public class ResponseEntityExceptionHandler {
 			MethodArgumentNotValidException methodArgumentNotValidException)
 		throws Exception {
 
-		JSONObject jsonObject = new JSONObject();
-
 		BindingResult bindingResult =
 			methodArgumentNotValidException.getBindingResult();
 
-		jsonObject.put("errorCount", bindingResult.getErrorCount());
-		jsonObject.put(
-			"fieldErrors",
-			JSONUtil.toJSONArray(
-				bindingResult.getFieldErrors(),
-				fieldError -> JSONUtil.put(
-					fieldError.getField(), fieldError.getDefaultMessage())));
-
 		return _getResponseEntity(
-			jsonObject, methodArgumentNotValidException, handlerMethod,
-			httpServletRequest, HttpStatus.BAD_REQUEST, null);
+			JSONUtil.put(
+				"errorCount", bindingResult.getErrorCount()
+			).put(
+				"fieldErrors",
+				JSONUtil.toJSONArray(
+					bindingResult.getFieldErrors(),
+					fieldError -> JSONUtil.put(
+						fieldError.getField(), fieldError.getDefaultMessage()))
+			),
+			methodArgumentNotValidException, handlerMethod, httpServletRequest,
+			HttpStatus.BAD_REQUEST, null);
 	}
 
 	@ExceptionHandler(OSBAsahException.class)

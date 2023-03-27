@@ -401,53 +401,50 @@ public class IndividualSegmentsRestController extends BaseRestController {
 	private JSONObject _getReferencedObjectsJSONObject(Segment segment)
 		throws Exception {
 
-		JSONObject jsonObject = new JSONObject();
-
-		jsonObject.put(
+		return JSONUtil.put(
 			"assets",
 			JSONUtil.toJSONArray(
 				_bqAssetDog.getBQAssets(segment.getReferencedAssetIds()),
-				this::_toJSONObject));
-		jsonObject.put(
+				this::_toJSONObject)
+		).put(
 			"field-mappings",
 			JSONUtil.toJSONArray(
 				_bqFieldMappingDog.getBQFieldMappings(
 					segment.getReferencedFieldMappingFieldNames()),
-				this::_toJSONObject));
-		jsonObject.put(
+				this::_toJSONObject)
+		).put(
 			"groups",
 			JSONUtil.toJSONArray(
 				_bqGroupDog.getBQGroups(segment.getReferencedGroupIds()),
-				this::_toJSONObject));
-		jsonObject.put(
+				this::_toJSONObject)
+		).put(
 			"organizations",
 			JSONUtil.toJSONArray(
 				_bqOrganizationDog.getBQOrganizations(
 					segment.getReferencedOrganizationIds()),
-				this::_toJSONObject));
-		jsonObject.put(
+				this::_toJSONObject)
+		).put(
 			"roles",
 			JSONUtil.toJSONArray(
 				_bqRoleDog.getBQRoles(segment.getReferencedRoleIds()),
-				this::_toJSONObject));
-		jsonObject.put(
+				this::_toJSONObject)
+		).put(
 			"teams",
 			JSONUtil.toJSONArray(
 				_bqTeamDog.getBQTeams(segment.getReferencedTeamIds()),
-				this::_toJSONObject));
-		jsonObject.put(
+				this::_toJSONObject)
+		).put(
 			"user-groups",
 			JSONUtil.toJSONArray(
 				_bqUserGroupDog.getBQUserGroups(
 					segment.getReferencedUserGroupIds()),
-				this::_toJSONObject));
-		jsonObject.put(
+				this::_toJSONObject)
+		).put(
 			"users",
 			JSONUtil.toJSONArray(
 				_bqUserDog.getBQUsers(segment.getReferencedUserIds()),
-				this::_toJSONObject));
-
-		return jsonObject;
+				this::_toJSONObject)
+		);
 	}
 
 	private boolean _isMember(String identityId, Long segmentId) {
