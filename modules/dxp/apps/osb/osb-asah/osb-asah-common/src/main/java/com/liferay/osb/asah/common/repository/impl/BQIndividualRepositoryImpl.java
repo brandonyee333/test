@@ -392,8 +392,10 @@ public class BQIndividualRepositoryImpl
 				Object groupByFieldValue = record.get("groupByField");
 
 				if (fieldType.equalsIgnoreCase("date")) {
-					groupByFieldValue = DateUtil.toUTCString(
-						new Date(Long.parseLong((String)groupByFieldValue)));
+					Date date = new Date(
+						Long.parseLong((String)groupByFieldValue));
+
+					groupByFieldValue = DateUtil.toUTCString(date);
 				}
 
 				return new Distribution(
