@@ -56,7 +56,7 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record11;
-import org.jooq.Record3;
+import org.jooq.Record4;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectForStep;
@@ -558,12 +558,13 @@ public class BQIndividualRepositoryImpl
 			"Individual.emailAddress", String.class);
 		Field<String> firstNameField = DSL.field(
 			"Individual.firstName", String.class);
+		Field<String> idField = DSL.field("Individual.id", String.class);
 		Field<String> lastNameField = DSL.field(
 			"Individual.lastName", String.class);
 
-		SelectJoinStep<Record3<String, String, String>> selectJoinStep =
+		SelectJoinStep<Record4<String, String, String, String>> selectJoinStep =
 			_dslContext.select(
-				emailAddressField, firstNameField, lastNameField
+				emailAddressField, firstNameField, idField, lastNameField
 			).from(
 				DSL.table(
 					"BQIdentity"
@@ -594,7 +595,7 @@ public class BQIndividualRepositoryImpl
 			selectJoinStep.where(
 				_getConditions(channelId, filterExpression, query)
 			).groupBy(
-				emailAddressField, firstNameField, lastNameField
+				idField, emailAddressField, firstNameField, lastNameField
 			).limit(
 				pageable.getPageSize()
 			).offset(
