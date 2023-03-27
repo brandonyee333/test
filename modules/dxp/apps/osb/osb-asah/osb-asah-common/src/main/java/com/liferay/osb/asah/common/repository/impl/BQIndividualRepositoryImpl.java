@@ -372,6 +372,7 @@ public class BQIndividualRepositoryImpl
 		}
 
 		conditions.add(groupByField.isNotNull());
+		conditions.add(groupByField.notEqual(""));
 		conditions.add(
 			DSL.field(
 				"individualFields.name"
