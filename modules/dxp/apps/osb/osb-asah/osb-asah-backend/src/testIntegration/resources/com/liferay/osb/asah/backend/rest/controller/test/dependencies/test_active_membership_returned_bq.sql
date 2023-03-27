@@ -9,3 +9,6 @@ INSERT INTO Individual (createDate, emailAddress, id, modifiedDate) VALUES (time
 INSERT INTO Membership (createDate, individualId, identityId, modifiedDate, segmentId, status) VALUES (timestamp '${now}', '123', '123', timestamp '${now}', 910, 'ACTIVE');
 INSERT INTO Membership (createDate, individualId, identityId, modifiedDate, segmentId, status) VALUES (timestamp '${now}', '123', '123', timestamp '${now}', 101, 'ACTIVE');
 INSERT INTO Membership (createDate, individualId, identityId, modifiedDate, segmentId, status) VALUES (timestamp '${now}', '123', '456', timestamp '${now}', 910, 'INACTIVE');
+
+INSERT INTO MembershipChange (createDate, identitiesCount, individualsCount, segmentId) VALUES (timestamp '${now}', 1, 1, 101);
+INSERT INTO MembershipChange (createDate, identitiesCount, individualsCount, segmentId) VALUES (timestamp '${now}', 1, 1, 910);
