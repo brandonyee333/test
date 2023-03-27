@@ -213,7 +213,7 @@ public class BQIndividualDog {
 			searchBQIndividuals(
 				null, null, null, null, null, page, query, segmentId, size,
 				null),
-			PageRequest.of(page, size, null),
+			PageRequest.of(page, size, _getSort(null)),
 			() -> countBQIndividuals(
 				null, null, null, null, null, null, query, segmentId));
 	}
