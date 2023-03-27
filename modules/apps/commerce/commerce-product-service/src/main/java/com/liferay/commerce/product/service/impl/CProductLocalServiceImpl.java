@@ -75,12 +75,10 @@ public class CProductLocalServiceImpl extends CProductLocalServiceBaseImpl {
 	@Override
 	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public CProduct deleteCProduct(CProduct cProduct) throws PortalException {
-		cProduct = cProductPersistence.remove(cProduct);
-
 		_cpDefinitionLinkLocalService.deleteCPDefinitionLinksByCProductId(
 			cProduct.getCProductId());
 
-		return cProduct;
+		return cProductPersistence.remove(cProduct);
 	}
 
 	@Override
