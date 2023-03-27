@@ -46,10 +46,10 @@ public class BQIdentityInterestPage {
 
 		if (Objects.equals(
 				_canonicalUrl, bqIdentityInterestPage._canonicalUrl) &&
-			Objects.equals(_id, bqIdentityInterestPage._id) &&
+			Objects.equals(_channelId, bqIdentityInterestPage._channelId) &&
 			Objects.equals(_identityId, bqIdentityInterestPage._identityId) &&
 			Objects.equals(_keyword, bqIdentityInterestPage._keyword) &&
-			Objects.equals(_pageTitle, bqIdentityInterestPage._pageTitle) &&
+			Objects.equals(_title, bqIdentityInterestPage._title) &&
 			Objects.equals(_views, bqIdentityInterestPage._views)) {
 
 			return true;
@@ -62,8 +62,8 @@ public class BQIdentityInterestPage {
 		return _canonicalUrl;
 	}
 
-	public String getId() {
-		return _id;
+	public long getChannelId() {
+		return _channelId;
 	}
 
 	public String getIdentityId() {
@@ -74,8 +74,8 @@ public class BQIdentityInterestPage {
 		return _keyword;
 	}
 
-	public String getPageTitle() {
-		return _pageTitle;
+	public String getTitle() {
+		return _title;
 	}
 
 	public long getViews() {
@@ -85,15 +85,15 @@ public class BQIdentityInterestPage {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_canonicalUrl, _id, _identityId, _keyword, _pageTitle, _views);
+			_canonicalUrl, _channelId, _identityId, _keyword, _title, _views);
 	}
 
 	public void setCanonicalUrl(String canonicalUrl) {
 		_canonicalUrl = canonicalUrl;
 	}
 
-	public void setId(String id) {
-		_id = id;
+	public void setChannelId(long channelId) {
+		_channelId = channelId;
 	}
 
 	public void setIdentityId(String identityId) {
@@ -104,8 +104,8 @@ public class BQIdentityInterestPage {
 		_keyword = keyword;
 	}
 
-	public void setPageTitle(String pageTitle) {
-		_pageTitle = pageTitle;
+	public void setTitle(String title) {
+		_title = title;
 	}
 
 	public void setViews(long views) {
@@ -113,10 +113,10 @@ public class BQIdentityInterestPage {
 	}
 
 	private String _canonicalUrl;
-	private String _id;
+	private long _channelId;
 	private String _identityId;
 	private String _keyword;
-	private String _pageTitle;
+	private String _title;
 	private long _views;
 
 }

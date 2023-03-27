@@ -20,6 +20,6 @@ import com.liferay.osb.asah.common.entity.BQIdentityInterestPage;
  * @author Leslie Wong
  */
 public interface BQIdentityInterestPageRepository
-	extends BigQueryRepository<BQIdentityInterestPage, String>,
+	extends BigQueryRepository<BQIdentityInterestPage, Long>,
 			CustomBQIdentityInterestPageRepository {
 }
