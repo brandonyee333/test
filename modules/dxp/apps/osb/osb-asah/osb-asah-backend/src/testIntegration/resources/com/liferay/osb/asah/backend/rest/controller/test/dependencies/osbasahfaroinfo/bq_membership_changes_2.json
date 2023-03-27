@@ -1,0 +1,16 @@
+[
+	{
+		"createDate": "2019-02-11T20:26:53.215Z",
+		"id": "101",
+		"identitiesCount": 2,
+		"knownIdentitiesCount": 0,
+		"segmentId": "101"
+	},
+	{
+		"createDate": "2019-02-11T20:27:18.882Z",
+		"id": "910",
+		"identitiesCount": 2,
+		"knownIdentitiesCount": 1,
+		"segmentId": "910"
+	}
+]
