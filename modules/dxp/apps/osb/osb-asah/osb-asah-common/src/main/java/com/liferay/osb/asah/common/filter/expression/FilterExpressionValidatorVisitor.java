@@ -67,9 +67,9 @@ public class FilterExpressionValidatorVisitor
 	private String _parseFilterStringExpression(Token filterToken) {
 		String filterString = filterToken.getText();
 
-		filterString = filterString.replaceAll("\\s''", " '");
-		filterString = filterString.replaceAll("''\\s", "' ");
 		filterString = filterString.replaceAll("''\\)", "')");
+		filterString = filterString.replaceAll("''\\s", "' ");
+		filterString = filterString.replaceAll("\\s''", " '");
 
 		return filterString;
 	}
