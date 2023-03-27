@@ -642,9 +642,9 @@ public class SegmentRepositoryImpl
 
 		List<Condition> andConditions = new ArrayList<>();
 
-		List<Condition> orConditions = new ArrayList<>();
-
 		andConditions.add(filterHelper.getCondition());
+
+		List<Condition> orConditions = new ArrayList<>();
 
 		orConditions.add(
 			DSL.exists(

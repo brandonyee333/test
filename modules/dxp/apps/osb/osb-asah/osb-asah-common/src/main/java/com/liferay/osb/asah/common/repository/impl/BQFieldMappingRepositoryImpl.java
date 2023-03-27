@@ -33,7 +33,6 @@ import org.jooq.tools.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.CollectionUtils;
 
 /**
  * @author Robson Pastor
@@ -139,16 +138,6 @@ public class BQFieldMappingRepositoryImpl
 	public List<BQFieldMapping> findByFieldNameIn(
 		Collection<String> fieldNames) {
 
-		Condition condition = DSL.noCondition();
-
-		if (!CollectionUtils.isEmpty(fieldNames)) {
-			condition = DSL.field(
-				"fieldName"
-			).in(
-				fieldNames
-			);
-		}
-
 		return _queryExecutor.queryForList(
 			BQFieldMapping::new,
 			_dslContext.select(
@@ -160,7 +149,11 @@ public class BQFieldMappingRepositoryImpl
 			).from(
 				"BQFieldMapping"
 			).where(
-				condition
+				DSL.field(
+					"fieldName"
+				).in(
+					fieldNames
+				)
 			));
 	}
 
