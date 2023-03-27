@@ -661,7 +661,7 @@ public class SegmentDog {
 	}
 
 	private void _validateFilterString(String filterString) {
-		if (filterString == null) {
+		if (StringUtils.isBlank(filterString)) {
 			return;
 		}
 
