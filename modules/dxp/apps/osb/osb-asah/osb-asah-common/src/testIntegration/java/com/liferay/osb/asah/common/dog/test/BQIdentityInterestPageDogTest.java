@@ -37,7 +37,7 @@ public class BQIdentityInterestPageDogTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@BQSQLResource(resourcePath = "test_visited_pages_dog.sql")
+	@BQSQLResource(resourcePath = "test_bq_identity_interest_page_dog.sql")
 	@Test
 	public void testGetVisitedPagesTransformationsActivePages() {
 		JSONAssert.assertEquals(
@@ -57,14 +57,14 @@ public class BQIdentityInterestPageDogTest
 					"url", "https://www.know-your-ratios.com/weight"
 				)),
 			new JSONArray(
-				_bqIdentityInterestPageDog.getVisitedPagesTransformations(
+				_bqIdentityInterestPageDog.getActivePagesTransformations(
 					1L, "interestName eq 'ratio'", "1234567891011",
 					"individual-segment", 1, 2,
-					new String[] {"uniqueVisitsCount", "desc"}, true)),
+					new String[] {"uniqueVisitsCount", "desc"})),
 			true);
 	}
 
-	@BQSQLResource(resourcePath = "test_visited_pages_dog.sql")
+	@BQSQLResource(resourcePath = "test_bq_identity_interest_page_dog.sql")
 	@Test
 	public void testGetVisitedPagesTransformationsInactivePages() {
 		JSONAssert.assertEquals(
@@ -77,10 +77,10 @@ public class BQIdentityInterestPageDogTest
 					"url", "https://www.know-your-ratios.com/distance"
 				)),
 			new JSONArray(
-				_bqIdentityInterestPageDog.getVisitedPagesTransformations(
+				_bqIdentityInterestPageDog.getInactivePagesTransformations(
 					1L, "interestName eq 'ratio'", "3456789101112",
-					"individual-segment", 1, 2, new String[] {"title", "desc"},
-					false)),
+					"individual-segment", 1, 2,
+					new String[] {"title", "desc"})),
 			true);
 	}
 

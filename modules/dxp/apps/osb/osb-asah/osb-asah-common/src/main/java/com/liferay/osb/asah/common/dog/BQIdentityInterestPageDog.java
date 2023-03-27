@@ -17,7 +17,8 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestPageRepository;
 
-import org.json.JSONArray;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -45,22 +46,23 @@ public class BQIdentityInterestPageDog {
 				channelId, filterString, ownerId, ownerType);
 	}
 
-	public JSONArray getVisitedPagesTransformations(
+	public List<Map<String, Object>> getActivePagesTransformations(
 		Long channelId, String filterString, String ownerId, String ownerType,
-		int page, int size, String[] sorts, boolean visitedPages) {
+		int page, int size, String[] sorts) {
 
-		PageRequest pageRequest = PageRequest.of(
-			page, size, SortUtil.getSort(sorts));
+		return _bqIdentityInterestPageRepository.getActivePagesTransformations(
+			channelId, filterString, ownerId, ownerType,
+			PageRequest.of(page, size, SortUtil.getSort(sorts)));
+	}
 
-		if (visitedPages) {
-			return new JSONArray(
-				_bqIdentityInterestPageRepository.getActivePagesTransformations(
-					channelId, filterString, ownerId, ownerType, pageRequest));
-		}
+	public List<Map<String, Object>> getInactivePagesTransformations(
+		Long channelId, String filterString, String ownerId, String ownerType,
+		int page, int size, String[] sorts) {
 
-		return new JSONArray(
-			_bqIdentityInterestPageRepository.getInactivePagesTransformations(
-				channelId, filterString, ownerId, ownerType, pageRequest));
+		return _bqIdentityInterestPageRepository.
+			getInactivePagesTransformations(
+				channelId, filterString, ownerId, ownerType,
+				PageRequest.of(page, size, SortUtil.getSort(sorts)));
 	}
 
 	@Autowired
