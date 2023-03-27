@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.model.MetricType;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,8 @@ public interface CustomBQIdentityRepository {
 	public long countIndividuals(boolean includeAnonymousUsers);
 
 	public List<BQIdentity> findAll();
+
+	public List<BQIdentity> findByIdIn(Collection<String> ids);
 
 	public List<String> getIdentityIds(String individualId);
 

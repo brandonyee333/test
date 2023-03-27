@@ -16,10 +16,10 @@ package com.liferay.osb.asah.common.dog.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.EventAttributeDefinitionDog;
 import com.liferay.osb.asah.common.dog.EventDefinitionDog;
-import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.dog.EventPropertyDog;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -121,6 +121,9 @@ public class EventPropertyDogTest
 	}
 
 	@Autowired
+	private BQEventDog _bqEventDog;
+
+	@Autowired
 	private ChannelDog _channelDog;
 
 	@Autowired
@@ -128,9 +131,6 @@ public class EventPropertyDogTest
 
 	@Autowired
 	private EventDefinitionDog _eventDefinitionDog;
-
-	@Autowired
-	private BQEventDog _bqEventDog;
 
 	@Autowired
 	private EventPropertyDog _eventPropertyDog;

@@ -29,15 +29,16 @@ import java.util.Objects;
 public class ActivityDTO {
 
 	public ActivityDTO(
-		BQEvent bqEvent, Map<String, String> eventContext,
-		Map<String, String> eventProperties) {
+		BQEvent bqEvent, String bqIndividualId,
+		Map<String, String> eventContext, Map<String, String> eventProperties) {
 
 		_eventContext = eventContext;
 		_eventProperties = eventProperties;
 
 		_applicationId = bqEvent.getApplicationId();
 		_eventId = bqEvent.getId();
-		_ownerId = bqEvent.getUserId();
+
+		_ownerId = bqIndividualId;
 		_startTime = bqEvent.getCreateDate();
 	}
 

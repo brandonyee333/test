@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.dog;
 
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 
 import java.util.List;
@@ -27,6 +28,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BQIdentityDog {
+
+	public List<BQIdentity> getIdentities(List<String> identityIds) {
+		return _bqIdentityRepository.findByIdIn(identityIds);
+	}
 
 	public List<String> getIdentityIds(String individualId) {
 		return _bqIdentityRepository.getIdentityIds(individualId);

@@ -31,6 +31,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -102,6 +103,21 @@ public class BQIdentityRepositoryImpl
 				DSL.asterisk()
 			).from(
 				"BQIdentity"
+			));
+	}
+
+	@Override
+	public List<BQIdentity> findByIdIn(Collection<String> ids) {
+		return _queryExecutor.queryForList(
+			BQIdentity::new,
+			_dslContext.selectFrom(
+				"BQIdentity"
+			).where(
+				DSL.field(
+					"id"
+				).in(
+					ids
+				)
 			));
 	}
 

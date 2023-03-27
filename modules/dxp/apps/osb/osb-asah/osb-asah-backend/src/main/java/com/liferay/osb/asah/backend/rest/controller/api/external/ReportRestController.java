@@ -50,13 +50,15 @@ import com.liferay.osb.asah.backend.model.PageMetric;
 import com.liferay.osb.asah.backend.model.Trend;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.dog.BQEventDog;
+import com.liferay.osb.asah.common.dog.BQIdentityDog;
 import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
 import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
-import com.liferay.osb.asah.common.dog.BQEventDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
+import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.DataExportTask;
@@ -433,11 +435,28 @@ public class ReportRestController extends BaseRestController {
 		Page<BQEvent> bqEventPage = _bqEventDog.searchBQEvents(
 			individualId, page, _PAGE_SIZE);
 
+		Stream<BQEvent> bqEventStream = bqEventPage.stream();
+
+		List<BQIdentity> bqIdentities = _bqIdentityDog.getIdentities(
+			bqEventStream.map(
+				BQEvent::getUserId
+			).collect(
+				Collectors.toList()
+			));
+
+		Stream<BQIdentity> bqIdentityStream = bqIdentities.stream();
+
+		Map<String, String> identityIdIndividualIdMap =
+			bqIdentityStream.collect(
+				Collectors.toMap(
+					BQIdentity::getId, BQIdentity::getIndividualId));
+
 		Page<ActivityDTO> activityDTOs = bqEventPage.map(
 			bqEvent -> {
 				try {
 					return new ActivityDTO(
 						bqEvent,
+						identityIdIndividualIdMap.get(bqEvent.getUserId()),
 						_objectMapper.readValue(
 							bqEvent.getContext(),
 							new TypeReference<Map<String, String>>() {
@@ -1367,6 +1386,12 @@ public class ReportRestController extends BaseRestController {
 		ReportRestController.class);
 
 	@Autowired
+	private BQEventDog _bqEventDog;
+
+	@Autowired
+	private BQIdentityDog _bqIdentityDog;
+
+	@Autowired
 	private BQIdentityInterestScoreDog _bqIdentityInterestScoreDog;
 
 	@Autowired
@@ -1380,9 +1405,6 @@ public class ReportRestController extends BaseRestController {
 
 	@Value("${osb.asah.data.export.task.expiration.minutes:30}")
 	private int _dataExportTaskExpirationMinutes;
-
-	@Autowired
-	private BQEventDog _bqEventDog;
 
 	@Autowired
 	private FormPageDog _formPageDog;

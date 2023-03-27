@@ -20,8 +20,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.dog.BQEventDog;
+import com.liferay.osb.asah.common.dog.ChannelDog;
 import com.liferay.osb.asah.common.entity.BQEvent;
 import com.liferay.osb.asah.common.entity.BQEventProperty;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -229,8 +229,9 @@ public class BQEventDogTest
 			"en_US", "", "", "", "", "", "", "",
 			"http://localhost:8080/search?q=Diamond+Bar", "userId", "");
 
-		Page<SearchKeyword> searchKeywordPage = _bqEventDog.getSearchKeywordPage(
-			null, null, 0, 0, 2, Sort.by(Sort.Order.desc("counts")));
+		Page<SearchKeyword> searchKeywordPage =
+			_bqEventDog.getSearchKeywordPage(
+				null, null, 0, 0, 2, Sort.by(Sort.Order.desc("counts")));
 
 		Assertions.assertEquals(3, searchKeywordPage.getTotalElements());
 
@@ -364,10 +365,10 @@ public class BQEventDogTest
 	}
 
 	@Autowired
-	private ChannelDog _channelDog;
+	private BQEventDog _bqEventDog;
 
 	@Autowired
-	private BQEventDog _bqEventDog;
+	private ChannelDog _channelDog;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
