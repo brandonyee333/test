@@ -118,7 +118,8 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, @Nullable String filterString,
 		@Nullable Boolean includeAnonymousUsers, @Nullable String query) {
 
-		FilterExpression filterExpression = new FilterExpression(filterString);
+		FilterExpression filterExpression = new FilterExpression(
+			filterString, true);
 
 		Set<String> referencedTableNames = new HashSet<>();
 
@@ -547,7 +548,8 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, String filterString, Pageable pageable,
 		@Nullable String query) {
 
-		FilterExpression filterExpression = new FilterExpression(filterString);
+		FilterExpression filterExpression = new FilterExpression(
+			filterString, true);
 
 		Set<String> referencedTableNames = new HashSet<>(
 			filterExpression.getReferencedTableNames());
