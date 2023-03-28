@@ -687,8 +687,8 @@ public class ReportRestController extends BaseRestController {
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
-		Page<Individual> individualPage = _bqIndividualDog.searchBQIndividuals(
-			page, query, _PAGE_SIZE);
+		Page<Individual> individualPage =
+			_bqIndividualDog.searchBQIndividualPage(page, query, _PAGE_SIZE);
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(
@@ -742,8 +742,9 @@ public class ReportRestController extends BaseRestController {
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
-		Page<Individual> individualPage = _bqIndividualDog.searchBQIndividuals(
-			segmentId, page, query, _PAGE_SIZE);
+		Page<Individual> individualPage =
+			_bqIndividualDog.searchBQIndividualPage(
+				segmentId, page, query, _PAGE_SIZE);
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(

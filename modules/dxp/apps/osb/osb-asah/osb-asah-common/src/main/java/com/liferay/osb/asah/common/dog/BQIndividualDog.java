@@ -156,6 +156,29 @@ public class BQIndividualDog {
 	}
 
 	public Page<Individual> searchBQIndividualPage(
+		int page, @Nullable String query, int size) {
+
+		return PageableExecutionUtils.getPage(
+			_searchBQIndividuals(
+				null, null, null, null, null, page, query, null, size, null),
+			PageRequest.of(page, size),
+			() -> _countBQIndividuals(
+				null, null, null, null, null, null, query, null));
+	}
+
+	public Page<Individual> searchBQIndividualPage(
+		Long segmentId, Integer page, String query, int size) {
+
+		return PageableExecutionUtils.getPage(
+			_searchBQIndividuals(
+				null, null, null, null, null, page, query, segmentId, size,
+				null),
+			PageRequest.of(page, size, _getSort(null)),
+			() -> _countBQIndividuals(
+				null, null, null, null, null, null, query, segmentId));
+	}
+
+	public Page<Individual> searchBQIndividualPage(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable String filterString,
 		@Nullable Boolean includeAnonymousUsers, @Nullable Long notSegmentId,
@@ -178,29 +201,6 @@ public class BQIndividualDog {
 			() -> _countBQIndividuals(
 				accountId, channelId, dataSourceId, filterString,
 				includeAnonymousUsers, notSegmentId, query, segmentId));
-	}
-
-	public Page<Individual> searchBQIndividuals(
-		int page, @Nullable String query, int size) {
-
-		return PageableExecutionUtils.getPage(
-			_searchBQIndividuals(
-				null, null, null, null, null, page, query, null, size, null),
-			PageRequest.of(page, size),
-			() -> _countBQIndividuals(
-				null, null, null, null, null, null, query, null));
-	}
-
-	public Page<Individual> searchBQIndividuals(
-		Long segmentId, Integer page, String query, int size) {
-
-		return PageableExecutionUtils.getPage(
-			_searchBQIndividuals(
-				null, null, null, null, null, page, query, segmentId, size,
-				null),
-			PageRequest.of(page, size, _getSort(null)),
-			() -> _countBQIndividuals(
-				null, null, null, null, null, null, query, segmentId));
 	}
 
 	private long _countBQIndividuals(
