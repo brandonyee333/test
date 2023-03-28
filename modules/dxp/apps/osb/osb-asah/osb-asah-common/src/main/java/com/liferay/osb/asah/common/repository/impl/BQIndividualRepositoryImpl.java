@@ -600,6 +600,10 @@ public class BQIndividualRepositoryImpl
 				_getConditions(channelId, filterExpression, query)
 			).groupBy(
 				idField, emailAddressField, firstNameField, lastNameField
+			).orderBy(
+				getSortFields(
+					_fieldNameConversionMap, pageable.getSort(),
+					DSL.table("Individual"))
 			).limit(
 				pageable.getPageSize()
 			).offset(
