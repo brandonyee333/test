@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collection;
@@ -54,6 +55,10 @@ public interface CustomBQOrganizationRepository {
 	@Cacheable
 	public List<BQOrganization> findByName(
 		@Nullable String name, Pageable pageable);
+
+	public List<Transformation> getOrganizationTransformations(
+		String apply, @Nullable Long channelId, @Nullable String filterString,
+		Pageable pageable);
 
 	public BQOrganization insert(BQOrganization bqOrganization);
 

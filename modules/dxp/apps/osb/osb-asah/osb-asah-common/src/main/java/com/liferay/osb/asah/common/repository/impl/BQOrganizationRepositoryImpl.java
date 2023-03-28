@@ -15,10 +15,13 @@
 package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.CustomBQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
+import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,13 +29,15 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
 
-import org.eclipse.jetty.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -196,6 +201,110 @@ public class BQOrganizationRepositoryImpl
 	}
 
 	@Override
+	public List<Transformation> getOrganizationTransformations(
+		String apply, Long channelId, String filterString, Pageable pageable) {
+
+		Matcher matcher = MatcherUtil.getMatcher(apply);
+
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException(
+				"Apply string " + apply + " does not match pattern " +
+					MatcherUtil.getGroupByPattern());
+		}
+
+		String groupByField = matcher.group("groupByField");
+
+		String fieldName = groupByField.replace("custom/", "");
+
+		fieldName = fieldName.replace("/value", "");
+
+		SelectJoinStep<Record1<String>> selectJoinStep =
+			_dslContext.selectDistinct(
+				DSL.field("ExpandoValue.value", String.class)
+			).from(
+				DSL.table(
+					"BQExpandoValue"
+				).as(
+					"ExpandoValue"
+				)
+			);
+
+		if (channelId != null) {
+			selectJoinStep = selectJoinStep.leftJoin(
+				DSL.table(
+					"BQIdentityActivity"
+				).as(
+					"IdentityActivity"
+				)
+			).on(
+				DSL.field(
+					"ExpandoValue.dataSourceId"
+				).eq(
+					DSL.field("IdentityActivity.dataSourceId")
+				)
+			);
+		}
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"channelId"
+				).eq(
+					channelId
+				));
+		}
+
+		conditions.add(
+			DSL.field(
+				"classType"
+			).eq(
+				"com.liferay.portal.kernel.model.Organization"
+			));
+
+		if (filterString != null) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString, FilterExpression.FilterType.ORGANIZATION_FIELDS);
+
+			conditions.add(filterExpression.getCondition());
+		}
+		else {
+			conditions.add(
+				DSL.field(
+					"fieldName"
+				).eq(
+					fieldName
+				));
+		}
+
+		List<String> values = _queryExecutor.queryForList(
+			recorMap -> String.valueOf(recorMap.get("value")),
+			selectJoinStep.where(
+				conditions
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+
+		List<Transformation> transformations = new ArrayList<>();
+
+		for (String value : values) {
+			Transformation transformation = new Transformation();
+
+			transformation.setTerm(
+				new Transformation.Term(
+					Collections.singletonMap(groupByField, value)));
+			transformation.setTotalElements(0);
+
+			transformations.add(transformation);
+		}
+
+		return transformations;
+	}
+
+	@Override
 	public BQOrganization insert(BQOrganization bqOrganization) {
 		_queryExecutor.queryExecute(
 			_dslContext.insertInto(
@@ -274,7 +383,7 @@ public class BQOrganizationRepositoryImpl
 				));
 		}
 
-		if (StringUtil.isNotBlank(name)) {
+		if (StringUtils.isNotBlank(name)) {
 			conditions.add(DSL.condition("name like '%" + name + "%'"));
 		}
 

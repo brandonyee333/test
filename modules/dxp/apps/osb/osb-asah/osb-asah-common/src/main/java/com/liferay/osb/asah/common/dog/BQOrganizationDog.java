@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -99,6 +100,20 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 		}
 
 		return _bqOrganizationRepository.findByIdIn(ids);
+	}
+
+	public Page<Transformation> getTransformationPage(
+		String apply, Long channelId, String filterString, int page, int size) {
+
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		List<Transformation> bqOrganizationTransformations =
+			_bqOrganizationRepository.getOrganizationTransformations(
+				apply, channelId, filterString, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			bqOrganizationTransformations, pageRequest,
+			bqOrganizationTransformations::size);
 	}
 
 	public List<BQOrganization> searchBQOrganizations(
