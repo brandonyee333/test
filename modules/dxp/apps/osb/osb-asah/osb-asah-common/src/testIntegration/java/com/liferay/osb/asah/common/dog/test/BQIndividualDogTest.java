@@ -279,6 +279,37 @@ public class BQIndividualDogTest
 			3, _countActiveIndividualsFromLast30DaysBySegment(segment));
 	}
 
+	@BQSQLResource(resourcePath = "test_count_bq_individuals.sql")
+	@Test
+	public void testCountBQIndividuals() {
+		Assertions.assertEquals(
+			7L,
+			_bqIndividualDog.countBQIndividuals(
+				null, 1L, null,
+				"(sessions.filter(filter='(completeDate gt ''last90Days'')'))",
+				true, null, null, null));
+		Assertions.assertEquals(
+			3L,
+			_bqIndividualDog.countBQIndividuals(
+				null, 1L, null,
+				"(sessions.filter(filter='(completeDate gt ''last90Days'')'))",
+				false, null, null, null));
+		Assertions.assertEquals(
+			1L,
+			_bqIndividualDog.countBQIndividuals(
+				null, 1L, null,
+				"(sessions.filter(filter='(completeDate gt ''last90Days'')') " +
+					"and demographics/familyName/value eq 'Test')",
+				true, null, null, null));
+		Assertions.assertEquals(
+			1L,
+			_bqIndividualDog.countBQIndividuals(
+				null, 1L, null,
+				"(sessions.filter(filter='(completeDate gt ''last90Days'')') " +
+					"and demographics/familyName/value eq 'Test')",
+				false, null, null, null));
+	}
+
 	@Disabled
 	@RepositoryResource(
 		repositoryClass = BQOrganizationRepository.class,
