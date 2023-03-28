@@ -23,7 +23,7 @@ import com.liferay.osb.asah.backend.dto.SegmentDTO;
 import com.liferay.osb.asah.backend.rest.controller.IndividualsRestController;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.BQIndividualRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
@@ -35,6 +35,8 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import org.apache.commons.collections4.CollectionUtils;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
@@ -228,12 +230,12 @@ public class IndividualsRestControllerTest
 	}
 
 	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals_2.json"
-	)
-	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,
@@ -247,7 +249,36 @@ public class IndividualsRestControllerTest
 
 		Map<String, SegmentDTO> contents = segmentDTOPageDTO.getContent();
 
-		Assertions.assertNull(contents.get("910"));
+		SegmentDTO segmentDTO = contents.get("_embedded");
+
+		Assertions.assertTrue(
+			CollectionUtils.isEmpty(segmentDTO.getSegmentDTOs()));
+	}
+
+	@RepositoryResource(
+		repositoryClass = BQMembershipRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_memberships_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = BQMembershipChangeRepository.class,
+		resourcePath = "osbasahfaroinfo/bq_membership_changes_2.json"
+	)
+	@RepositoryResource(
+		repositoryClass = SegmentRepository.class,
+		resourcePath = "osbasahfaroinfo/individual_segments_2.json"
+	)
+	@Test
+	public void testNotSegmentedIndividualNotReturned() {
+		PageDTO<SegmentDTO> segmentDTOPageDTO =
+			_individualsRestController.getSegmentDTOPageDTO(
+				"321", "active-membership", null, 0, 10, null);
+
+		Map<String, SegmentDTO> contents = segmentDTOPageDTO.getContent();
+
+		SegmentDTO segmentDTO = contents.get("_embedded");
+
+		Assertions.assertTrue(
+			CollectionUtils.isEmpty(segmentDTO.getSegmentDTOs()));
 	}
 
 	@Autowired
