@@ -173,7 +173,7 @@
 			"templated": true
 		},
 		"organizations": {
-			"href": "{url}/organizations{?apply,filter,page,size*}",
+			"href": "{url}/organizations{?apply,channelId,filter,page,size*}",
 			"templated": true
 		},
 		"page-visited": {
