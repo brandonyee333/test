@@ -305,6 +305,11 @@ public interface ObjectRelationshipLocalService
 			long objectDefinitionId, String name)
 		throws Exception;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ObjectRelationship getObjectRelationshipByObjectFieldId2(
+		long objectFieldId2)
+		throws Exception;
+
 	/**
 	 * Returns the object relationship with the matching UUID and company.
 	 *

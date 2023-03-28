@@ -14,6 +14,7 @@
 
 package com.liferay.object.service;
 
+import com.liferay.object.model.ObjectRelationship;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -427,6 +428,14 @@ public class ObjectRelationshipLocalServiceWrapper
 
 		return _objectRelationshipLocalService.
 			getObjectRelationshipByObjectDefinitionId(objectDefinitionId, name);
+	}
+	@Override
+	public com.liferay.object.model.ObjectRelationship getObjectRelationshipByObjectFieldId2(
+		long objectFieldId2)
+		throws Exception {
+
+		return _objectRelationshipLocalService.
+			getObjectRelationshipByObjectFieldId2(objectFieldId2);
 	}
 
 	/**

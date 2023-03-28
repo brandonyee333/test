@@ -18,6 +18,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.petra.sql.dsl.expression.Predicate;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
@@ -107,6 +108,11 @@ public interface ObjectEntryManager {
 			ObjectDefinition objectDefinition, long objectEntryId)
 		throws Exception;
 
+	public Object getSystemBaseModel(
+		DTOConverterContext dtoConverterContext,
+		ObjectDefinition objectDefinition, long primaryKey)
+		throws Exception;
+
 	public ObjectEntry getObjectEntry(
 			DTOConverterContext dtoConverterContext,
 			String externalReferenceCode, long companyId,
@@ -122,6 +128,10 @@ public interface ObjectEntryManager {
 	public Page<Object> getRelatedSystemObjectEntries(
 			ObjectDefinition objectDefinition, Long objectEntryId,
 			String objectRelationshipName, Pagination pagination)
+		throws Exception;
+
+	public ObjectDefinition getObjectRelationshipObjectDefinition1(
+		ObjectDefinition objectDefinition1, String objectField2Name)
 		throws Exception;
 
 	public ObjectEntry updateObjectEntry(
