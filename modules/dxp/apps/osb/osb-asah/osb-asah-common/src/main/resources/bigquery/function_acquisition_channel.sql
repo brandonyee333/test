@@ -4,14 +4,15 @@ LANGUAGE js
 AS R"""
 	try {
 		var decodedUrl = url;
-		
+
 		var index = decodedUrl.indexOf('+');
+
 		while (index != -1) {
 			decodedUrl = decodedUrl.replace('+', ' ')
- 			
+
  			index = decodedUrl.indexOf('+');
 		}
-	
+
 		decodedUrl = decodeURIComponent(decodedUrl);
 
 		var queryParamSeparatorIndexOf = decodedUrl.indexOf('?');
@@ -35,11 +36,11 @@ AS R"""
 		var medium = '';
 
 		var queryParamsString = '';
-		
+	
 		if (queryParamSeparatorIndexOf > 0) {
 			queryParamsString = decodedUrl.substr(queryParamSeparatorIndexOf + 1);
 		}
-		
+	
 		var queryParamsStringParts = queryParamsString.split('&');
 
 		for (var i = 0; i < queryParamsStringParts.length; i++) {
