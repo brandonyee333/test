@@ -54,8 +54,8 @@ public class AsahTaskManagerTest
 		ReflectionTestUtils.setField(
 			_asahTaskManager, "_boundedExecutor", _boundedExecutor);
 		ReflectionTestUtils.setField(
-			_asahTaskManager, "_updateDynamicMembershipsNaniteBoundedExecutor",
-			_updateDynamicMembershipsNaniteBoundedExecutor);
+			_asahTaskManager, "_updateMembershipsNaniteBoundedExecutor",
+			_updateMembershipsNaniteBoundedExecutor);
 	}
 
 	@RepositoryResource(
@@ -115,7 +115,7 @@ public class AsahTaskManagerTest
 			ArgumentCaptor.forClass(ReentrantLock.class);
 
 		Mockito.verify(
-			_updateDynamicMembershipsNaniteBoundedExecutor, Mockito.times(1)
+			_updateMembershipsNaniteBoundedExecutor, Mockito.times(1)
 		).runAsync(
 			asahTaskRunnableArgumentCaptor.capture(),
 			reentrantLockArgumentCaptor.capture()
@@ -125,7 +125,7 @@ public class AsahTaskManagerTest
 			asahTaskRunnableArgumentCaptor.getValue();
 
 		Assertions.assertArrayEquals(
-			new String[] {"UpdateDynamicMembershipsNanite"},
+			new String[] {"UpdateMembershipsNanite"},
 			asahTaskRunnable.getNaniteClassNames());
 		Assertions.assertEquals(
 			Long.valueOf("450553576847486529"),
@@ -165,7 +165,7 @@ public class AsahTaskManagerTest
 			ArgumentCaptor.forClass(ReentrantLock.class);
 
 		Mockito.verify(
-			_updateDynamicMembershipsNaniteBoundedExecutor, Mockito.times(1)
+			_updateMembershipsNaniteBoundedExecutor, Mockito.times(1)
 		).runAsync(
 			asahTaskRunnableArgumentCaptor.capture(),
 			reentrantLockArgumentCaptor.capture()
@@ -175,7 +175,7 @@ public class AsahTaskManagerTest
 			asahTaskRunnableArgumentCaptor.getValue();
 
 		Assertions.assertArrayEquals(
-			new String[] {"UpdateDynamicMembershipsNanite"},
+			new String[] {"UpdateMembershipsNanite"},
 			asahTaskRunnable.getNaniteClassNames());
 		Assertions.assertEquals(
 			Long.valueOf("450553576847486529"),
@@ -249,6 +249,6 @@ public class AsahTaskManagerTest
 	private BoundedExecutor _boundedExecutor;
 
 	@Mock
-	private BoundedExecutor _updateDynamicMembershipsNaniteBoundedExecutor;
+	private BoundedExecutor _updateMembershipsNaniteBoundedExecutor;
 
 }

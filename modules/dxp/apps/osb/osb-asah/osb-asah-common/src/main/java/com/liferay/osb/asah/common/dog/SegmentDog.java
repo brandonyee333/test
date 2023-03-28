@@ -502,7 +502,7 @@ public class SegmentDog {
 	private void _addAsahTask(Segment segment) {
 		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 			_asahTaskDog.scheduleAsahTask(
-				"UpdateDynamicMembershipsNanite",
+				"UpdateMembershipsNanite",
 				JSONUtil.put(
 					"dateModified",
 					DateUtil.toUTCString(segment.getModifiedDate())

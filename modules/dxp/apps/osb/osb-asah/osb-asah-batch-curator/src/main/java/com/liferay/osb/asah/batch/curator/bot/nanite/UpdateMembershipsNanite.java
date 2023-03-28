@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class UpdateDynamicMembershipsNanite extends BaseNanite {
+public class UpdateMembershipsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
@@ -86,7 +86,7 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		UpdateDynamicMembershipsNanite.class);
+		UpdateMembershipsNanite.class);
 
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;

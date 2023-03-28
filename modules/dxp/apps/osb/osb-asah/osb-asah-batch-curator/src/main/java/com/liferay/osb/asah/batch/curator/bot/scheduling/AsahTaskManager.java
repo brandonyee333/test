@@ -92,8 +92,7 @@ public class AsahTaskManager {
 				new AsahTaskRunnable(asahTask, this, false));
 		}
 		else if (Objects.equals(
-					asahTask.getClassName(),
-					"UpdateDynamicMembershipsNanite")) {
+					asahTask.getClassName(), "UpdateMembershipsNanite")) {
 
 			JSONObject contextJSONObject = asahTask.getContextJSONObject();
 
@@ -112,12 +111,12 @@ public class AsahTaskManager {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					String.format(
-						"Pending update dynamic memberships nanite tasks: %d",
-						_updateDynamicMembershipsNaniteBoundedExecutor.
+						"Pending update memberships nanite tasks: %d",
+						_updateMembershipsNaniteBoundedExecutor.
 							countPendingTasks()));
 			}
 
-			_updateDynamicMembershipsNaniteBoundedExecutor.runAsync(
+			_updateMembershipsNaniteBoundedExecutor.runAsync(
 				new AsahTaskRunnable(asahTask, this, false),
 				KeyReentrantLock.getReentrantLock(
 					getClass(), asahTask.getProjectId()));
@@ -263,7 +262,7 @@ public class AsahTaskManager {
 	@PreDestroy
 	private void _destroy() {
 		_boundedExecutor.shutdown();
-		_updateDynamicMembershipsNaniteBoundedExecutor.shutdown();
+		_updateMembershipsNaniteBoundedExecutor.shutdown();
 	}
 
 	private static final Log _log = LogFactory.getLog(AsahTaskManager.class);
@@ -293,8 +292,7 @@ public class AsahTaskManager {
 	@Autowired
 	private RunLogDog _runLogDog;
 
-	private final BoundedExecutor
-		_updateDynamicMembershipsNaniteBoundedExecutor =
-			BoundedExecutor.newBoundedExecutor(10000, 30);
+	private final BoundedExecutor _updateMembershipsNaniteBoundedExecutor =
+		BoundedExecutor.newBoundedExecutor(10000, 30);
 
 }
