@@ -410,10 +410,15 @@ public class SegmentDog {
 		List<Map<String, Long>> segmentIdIdentityCounts =
 			_bqMembershipDog.getActiveSegmentIds(individualId);
 
-		FilterHelper filterHelper = new FilterHelper(filterString);
-
 		PageRequest pageRequest = PageRequest.of(
 			page, size, SortUtil.getSort(sorts));
+
+		if (segmentIdIdentityCounts.isEmpty()) {
+			return PageableExecutionUtils.getPage(
+				Collections.emptyList(), pageRequest, () -> 0);
+		}
+
+		FilterHelper filterHelper = new FilterHelper(filterString);
 
 		return PageableExecutionUtils.getPage(
 			_segmentRepository.searchSegments(
