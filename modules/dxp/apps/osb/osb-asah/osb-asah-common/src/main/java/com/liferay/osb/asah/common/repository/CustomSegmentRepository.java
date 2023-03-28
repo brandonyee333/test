@@ -40,7 +40,7 @@ public interface CustomSegmentRepository {
 	@Cacheable
 	public long countSegments(
 		FilterHelper filterHelper,
-		@Nullable List<Map<String, Long>> segmentIdIdentityCounts);
+		List<Map<String, Long>> segmentIdIdentityCounts);
 
 	@Cacheable
 	public long countSegments(List<Long> channelIds, FilterHelper filterHelper);
@@ -67,8 +67,7 @@ public interface CustomSegmentRepository {
 	@Cacheable
 	public List<Segment> searchSegments(
 		FilterHelper filterHelper,
-		@Nullable List<Map<String, Long>> segmentIdIdentityCounts,
-		Pageable pageable);
+		List<Map<String, Long>> segmentIdIdentityCounts, Pageable pageable);
 
 	@Cacheable
 	public List<Segment> searchSegments(

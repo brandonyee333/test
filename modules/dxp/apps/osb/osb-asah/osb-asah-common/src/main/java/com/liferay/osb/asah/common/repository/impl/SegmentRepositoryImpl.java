@@ -82,71 +82,14 @@ public class SegmentRepositoryImpl
 	@Override
 	public long countSegments(
 		FilterHelper filterHelper,
-		@Nullable List<Map<String, Long>> segmentIdIdentityCounts) {
+		List<Map<String, Long>> segmentIdIdentityCounts) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep1 =
 			_dslContext.selectCount();
 
-		SelectJoinStep<Record1<Integer>> selectJoinStep;
-
-		if (CollectionUtils.isEmpty(segmentIdIdentityCounts)) {
-			selectJoinStep = selectSelectStep1.from(DSL.table("Segment"));
-		}
-		else {
-			Select<Record2<Long, Long>> selectSelectStep = null;
-
-			for (int i = 0; i < segmentIdIdentityCounts.size(); i++) {
-				Map<String, Long> segmentIdIdentityCount =
-					segmentIdIdentityCounts.get(i);
-
-				if (i == 0) {
-					selectSelectStep = DSL.select(
-						DSL.inline(segmentIdIdentityCount.get("segmentId")),
-						DSL.inline(
-							segmentIdIdentityCount.get("identitiesCount")));
-				}
-				else {
-					selectSelectStep = selectSelectStep.unionAll(
-						DSL.select(
-							DSL.inline(segmentIdIdentityCount.get("segmentId")),
-							DSL.inline(
-								segmentIdIdentityCount.get(
-									"identitiesCount"))));
-				}
-			}
-
-			selectJoinStep = selectSelectStep1.from(
-				DSL.with(
-					"membership", "segmentId", "identitiesCount"
-				).as(
-					selectSelectStep
-				).select(
-					DSL.field(
-						"membership.segmentId"
-					).as(
-						"segmentId"
-					),
-					DSL.field(
-						"membership.identitiesCount"
-					).as(
-						"identitiesCount"
-					)
-				).from(
-					"membership"
-				).asTable(
-					"membership"
-				).join(
-					"Segment"
-				).on(
-					DSL.field(
-						"Segment.id"
-					).eq(
-						DSL.field("membership.segmentId")
-					)
-				));
-		}
-
-		return selectJoinStep.where(
+		return selectSelectStep1.from(
+			DSL.table("Segment")
+		).where(
 			_getConditions(
 				filterHelper, _getSegmentIds(segmentIdIdentityCounts))
 		).fetchOptional(
@@ -379,71 +322,55 @@ public class SegmentRepositoryImpl
 		@Nullable List<Map<String, Long>> segmentIdIdentityCounts,
 		Pageable pageable) {
 
-		SelectSelectStep<Record> selectSelectStep1 = _dslContext.select();
-
-		SelectJoinStep<Record> selectJoinStep;
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		Map<String, String> sortFieldNameConversionMap =
 			_getSortFieldNameConversionMap();
 
-		if (CollectionUtils.isEmpty(segmentIdIdentityCounts)) {
-			selectJoinStep = selectSelectStep1.from(DSL.table("Segment"));
+		Select<Record2<Long, Long>> membershipSelect = null;
 
-			sortFieldNameConversionMap.put("individualCount", "id");
-		}
-		else {
-			Select<Record2<Long, Long>> selectSelectStep = null;
+		for (int i = 0; i < segmentIdIdentityCounts.size(); i++) {
+			Map<String, Long> segmentIdIdentityCount =
+				segmentIdIdentityCounts.get(i);
 
-			for (int i = 0; i < segmentIdIdentityCounts.size(); i++) {
-				Map<String, Long> segmentIdIdentityCount =
-					segmentIdIdentityCounts.get(i);
-
-				if (i == 0) {
-					selectSelectStep = DSL.select(
-						DSL.inline(segmentIdIdentityCount.get("segmentId")),
-						DSL.inline(
-							segmentIdIdentityCount.get("identitiesCount")));
-				}
-				else {
-					selectSelectStep = selectSelectStep.unionAll(
-						DSL.select(
-							DSL.inline(segmentIdIdentityCount.get("segmentId")),
-							DSL.inline(
-								segmentIdIdentityCount.get(
-									"identitiesCount"))));
-				}
-			}
-
-			selectJoinStep = selectSelectStep1.from(
-				DSL.with(
-					"membership", "segmentId", "identitiesCount"
-				).as(
-					selectSelectStep
-				).select(
-					DSL.field(
-						"membership.segmentId"
+			if (i == 0) {
+				membershipSelect = DSL.select(
+					DSL.inline(
+						segmentIdIdentityCount.get("segmentId")
 					).as(
 						"segmentId"
 					),
-					DSL.field(
-						"membership.identitiesCount"
+					DSL.inline(
+						segmentIdIdentityCount.get("identitiesCount")
 					).as(
 						"identitiesCount"
-					)
-				).from(
-					"membership"
-				).asTable(
-					"membership"
-				).join(
-					"Segment"
-				).on(
-					DSL.field(
-						"Segment.id"
-					).eq(
-						DSL.field("membership.segmentId")
-					)
-				));
+					));
+			}
+			else {
+				membershipSelect = membershipSelect.unionAll(
+					DSL.select(
+						DSL.inline(segmentIdIdentityCount.get("segmentId")),
+						DSL.inline(
+							segmentIdIdentityCount.get("identitiesCount"))));
+			}
 		}
+
+		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
+			DSL.table(
+				"Segment"
+			).join(
+				DSL.table(
+					membershipSelect
+				).as(
+					"membership"
+				)
+			).on(
+				DSL.field(
+					"Segment.id"
+				).eq(
+					DSL.field("membership.segmentId")
+				)
+			));
 
 		List<Condition> conditions = _getConditions(
 			filterHelper, _getSegmentIds(segmentIdIdentityCounts));
@@ -539,14 +466,12 @@ public class SegmentRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if (!CollectionUtils.isEmpty(segmentIds)) {
-			conditions.add(
-				DSL.field(
-					"id"
-				).in(
-					segmentIds
-				));
-		}
+		conditions.add(
+			DSL.field(
+				"id"
+			).in(
+				segmentIds
+			));
 
 		if (StringUtils.isNotEmpty(filterHelper.getFilterString())) {
 			conditions.add(filterHelper.getCondition());

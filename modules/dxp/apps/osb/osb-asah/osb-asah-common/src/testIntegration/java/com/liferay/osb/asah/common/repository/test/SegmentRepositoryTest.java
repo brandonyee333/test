@@ -150,14 +150,9 @@ public class SegmentRepositoryTest
 	@Test
 	public void testCountSegments() {
 		long segmentsCount = _segmentRepository.countSegments(
-			FilterHelper.EMPTY, null);
-
-		Assertions.assertEquals(3, segmentsCount);
-
-		segmentsCount = _segmentRepository.countSegments(
 			FilterHelper.EMPTY, Collections.emptyList());
 
-		Assertions.assertEquals(3, segmentsCount);
+		Assertions.assertEquals(0, segmentsCount);
 
 		segmentsCount = _segmentRepository.countSegments(
 			FilterHelper.EMPTY,
@@ -299,18 +294,11 @@ public class SegmentRepositoryTest
 	@Test
 	public void testSearchSegmentsOrderByIndividualCountDesc() {
 		List<Segment> segments = _segmentRepository.searchSegments(
-			FilterHelper.EMPTY, null,
-			PageRequest.of(
-				0, 10, Sort.by(Sort.Direction.DESC, "individualCount")));
-
-		Assertions.assertEquals(3, segments.size(), segments.toString());
-
-		segments = _segmentRepository.searchSegments(
 			FilterHelper.EMPTY, Collections.emptyList(),
 			PageRequest.of(
 				0, 10, Sort.by(Sort.Direction.DESC, "individualCount")));
 
-		Assertions.assertEquals(3, segments.size(), segments.toString());
+		Assertions.assertEquals(0, segments.size(), segments.toString());
 
 		segments = _segmentRepository.searchSegments(
 			FilterHelper.EMPTY,
