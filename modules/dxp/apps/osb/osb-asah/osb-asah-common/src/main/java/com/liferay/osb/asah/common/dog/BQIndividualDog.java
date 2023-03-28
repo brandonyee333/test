@@ -151,11 +151,10 @@ public class BQIndividualDog {
 			throw new RuntimeException("Invalid field name " + fieldName);
 		}
 
+		BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
 		PageRequest pageRequest = PageRequest.of(
 			0, size,
 			SortUtil.getSort(Sort.by(Sort.Order.desc("count")), sorts));
-
-		BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
 
 		List<Distribution> distributions =
 			_bqIndividualRepository.getIndividualDistributions(
