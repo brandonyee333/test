@@ -223,6 +223,7 @@ public class BQMembershipDog {
 
 	public void updateBQMemberships(String filterString, Long segmentId) {
 		_bqMembershipRepository.updateBQMemberships(filterString, segmentId);
+		_membershipChangeDog.addMembershipChange(segmentId);
 	}
 
 	private Sort _getSort(String[] sorts) {
