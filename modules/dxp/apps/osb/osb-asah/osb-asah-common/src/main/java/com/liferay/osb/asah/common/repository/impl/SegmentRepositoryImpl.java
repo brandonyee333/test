@@ -83,10 +83,10 @@ public class SegmentRepositoryImpl
 		FilterHelper filterHelper,
 		List<Map<String, Long>> segmentIdIdentityCounts) {
 
-		SelectSelectStep<Record1<Integer>> selectSelectStep1 =
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectSelectStep1.from(
+		return selectSelectStep.from(
 			DSL.table("Segment")
 		).where(
 			_getConditions(
