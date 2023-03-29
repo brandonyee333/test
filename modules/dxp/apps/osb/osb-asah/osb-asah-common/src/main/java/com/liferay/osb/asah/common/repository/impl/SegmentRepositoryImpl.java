@@ -42,7 +42,6 @@ import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Select;
 import org.jooq.SelectJoinStep;
-import org.jooq.SelectOrderByStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -319,8 +318,11 @@ public class SegmentRepositoryImpl
 	@Override
 	public List<Segment> searchSegments(
 		FilterHelper filterHelper,
-		@Nullable List<Map<String, Long>> segmentIdIdentityCounts,
-		Pageable pageable) {
+		List<Map<String, Long>> segmentIdIdentityCounts, Pageable pageable) {
+
+		if (segmentIdIdentityCounts.isEmpty()) {
+			return Collections.emptyList();
+		}
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
@@ -372,16 +374,10 @@ public class SegmentRepositoryImpl
 				)
 			));
 
-		List<Condition> conditions = _getConditions(
-			filterHelper, _getSegmentIds(segmentIdIdentityCounts));
-
-		SelectOrderByStep<Record> selectConditionStep = selectJoinStep;
-
-		if (!conditions.isEmpty()) {
-			selectConditionStep = selectJoinStep.where(conditions);
-		}
-
-		return selectConditionStep.orderBy(
+		return selectJoinStep.where(
+			_getConditions(
+				filterHelper, _getSegmentIds(segmentIdIdentityCounts))
+		).orderBy(
 			getSortFields(sortFieldNameConversionMap, pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
