@@ -307,7 +307,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 				jsonArray.getJSONObject(i), BQMembershipDTO.class);
 
 			for (String identityId :
-					_bqIdentityDog.getIdentityIds(
+					_bqIdentityDog.getBQIdentityIds(
 						bqMembershipDTO.getIndividualId())) {
 
 				BQMembership bqMembership = new BQMembership();

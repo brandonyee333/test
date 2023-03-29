@@ -74,7 +74,7 @@ public class BQIndividualDog {
 	}
 
 	public long countIndividuals(boolean includeAnonymousUsers) {
-		return _bqIdentityRepository.countIndividuals(includeAnonymousUsers);
+		return _bqIdentityRepository.countBQIndividuals(includeAnonymousUsers);
 	}
 
 	public Individual fetchBQIndividual(@Nullable Long channelId, String id) {

@@ -65,7 +65,7 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public long countIndividuals(boolean includeAnonymousUsers) {
+	public long countBQIndividuals(boolean includeAnonymousUsers) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
@@ -107,39 +107,7 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public List<BQIdentity> findByIdIn(Collection<String> ids) {
-		return _queryExecutor.queryForList(
-			BQIdentity::new,
-			_dslContext.selectFrom(
-				"BQIdentity"
-			).where(
-				DSL.field(
-					"id"
-				).in(
-					ids
-				)
-			));
-	}
-
-	@Override
-	public List<String> getIdentityIds(String individualId) {
-		return _queryExecutor.queryForList(
-			record -> (String)record.get("id"),
-			_dslContext.select(
-				DSL.field("id", String.class)
-			).from(
-				"BQIdentity"
-			).where(
-				DSL.field(
-					"individualId", String.class
-				).eq(
-					individualId
-				)
-			));
-	}
-
-	@Override
-	public Optional<String> getIndividualIdOptional(String id) {
+	public Optional<String> findBQIndividualId(String id) {
 		return _queryExecutor.queryForObject(
 			recordMap -> (String)recordMap.get("individualId"),
 			_dslContext.select(
@@ -156,7 +124,39 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public long getIndividualsCount(
+	public List<BQIdentity> findByIdIn(Collection<String> ids) {
+		return _queryExecutor.queryForList(
+			BQIdentity::new,
+			_dslContext.selectFrom(
+				"BQIdentity"
+			).where(
+				DSL.field(
+					"id"
+				).in(
+					ids
+				)
+			));
+	}
+
+	@Override
+	public List<String> getBQIdentityIds(String bqIndividualId) {
+		return _queryExecutor.queryForList(
+			record -> (String)record.get("id"),
+			_dslContext.select(
+				DSL.field("id", String.class)
+			).from(
+				"BQIdentity"
+			).where(
+				DSL.field(
+					"individualId", String.class
+				).eq(
+					bqIndividualId
+				)
+			));
+	}
+
+	@Override
+	public long getBQIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, ZoneId zoneId) {
 
@@ -175,7 +175,7 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public List<Long> getIndividualsCounts(
+	public List<Long> getBQIndividualsCounts(
 		@Nullable Boolean active, @Nullable Long channelId,
 		List<LocalDate> localDates, List<MetricType> metricTypes,
 		ZoneId zoneId) {

@@ -411,7 +411,7 @@ public class ReportRestController extends BaseRestController {
 
 		Stream<BQEvent> bqEventStream = bqEventPage.stream();
 
-		List<BQIdentity> bqIdentities = _bqIdentityDog.getIdentities(
+		List<BQIdentity> bqIdentities = _bqIdentityDog.getBQIdentities(
 			bqEventStream.map(
 				BQEvent::getUserId
 			).collect(

@@ -71,7 +71,7 @@ public class InterestsRestController extends BaseRestController {
 				"termsPerTopic * topicsLength must not exceed 1000");
 		}
 
-		String individualId = _bqIdentityDog.getIndividualId(userId);
+		String individualId = _bqIdentityDog.getBQIndividualId(userId);
 
 		if (individualId == null) {
 			throw new OSBAsahException(

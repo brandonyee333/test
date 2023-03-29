@@ -31,21 +31,21 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomBQIdentityRepository {
 
-	public long countIndividuals(boolean includeAnonymousUsers);
+	public long countBQIndividuals(boolean includeAnonymousUsers);
 
 	public List<BQIdentity> findAll();
 
+	public Optional<String> findBQIndividualId(String id);
+
 	public List<BQIdentity> findByIdIn(Collection<String> ids);
 
-	public List<String> getIdentityIds(String individualId);
+	public List<String> getBQIdentityIds(String bqIndividualId);
 
-	public Optional<String> getIndividualIdOptional(String id);
-
-	public long getIndividualsCount(
+	public long getBQIndividualsCount(
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, ZoneId zoneId);
 
-	public List<Long> getIndividualsCounts(
+	public List<Long> getBQIndividualsCounts(
 		@Nullable Boolean active, @Nullable Long channelId,
 		List<LocalDate> localDates, List<MetricType> metricTypes,
 		ZoneId zoneId);

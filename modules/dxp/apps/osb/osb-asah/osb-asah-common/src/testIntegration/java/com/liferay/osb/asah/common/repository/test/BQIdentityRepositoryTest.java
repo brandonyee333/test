@@ -46,27 +46,29 @@ public class BQIdentityRepositoryTest
 		LocalDate localDate = LocalDate.now();
 
 		long anonymousIndividualsCount =
-			_bqIdentityRepository.getIndividualsCount(
+			_bqIdentityRepository.getBQIndividualsCount(
 				false, 1L, localDate,
 				IndividualMetricType.ANONYMOUS_INDIVIDUALS,
 				_timeZoneDog.getZoneId());
 
 		Assertions.assertEquals(1, anonymousIndividualsCount, 0);
 
-		long knownIndividualsCount = _bqIdentityRepository.getIndividualsCount(
-			false, 1L, localDate, IndividualMetricType.KNOWN_INDIVIDUALS,
-			_timeZoneDog.getZoneId());
+		long knownIndividualsCount =
+			_bqIdentityRepository.getBQIndividualsCount(
+				false, 1L, localDate, IndividualMetricType.KNOWN_INDIVIDUALS,
+				_timeZoneDog.getZoneId());
 
 		Assertions.assertEquals(4, knownIndividualsCount, 0);
 
-		long totalIndividualsCount = _bqIdentityRepository.getIndividualsCount(
-			false, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS,
-			_timeZoneDog.getZoneId());
+		long totalIndividualsCount =
+			_bqIdentityRepository.getBQIndividualsCount(
+				false, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS,
+				_timeZoneDog.getZoneId());
 
 		Assertions.assertEquals(5, totalIndividualsCount, 0);
 
 		long totalActiveIndividualsCount =
-			_bqIdentityRepository.getIndividualsCount(
+			_bqIdentityRepository.getBQIndividualsCount(
 				true, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS,
 				_timeZoneDog.getZoneId());
 

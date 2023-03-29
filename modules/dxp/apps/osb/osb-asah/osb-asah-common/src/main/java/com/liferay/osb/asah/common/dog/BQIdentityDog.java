@@ -29,17 +29,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class BQIdentityDog {
 
-	public List<BQIdentity> getIdentities(List<String> identityIds) {
-		return _bqIdentityRepository.findByIdIn(identityIds);
+	public List<BQIdentity> getBQIdentities(List<String> bqIdentityIds) {
+		return _bqIdentityRepository.findByIdIn(bqIdentityIds);
 	}
 
-	public List<String> getIdentityIds(String individualId) {
-		return _bqIdentityRepository.getIdentityIds(individualId);
+	public List<String> getBQIdentityIds(String bqIndividualId) {
+		return _bqIdentityRepository.getBQIdentityIds(bqIndividualId);
 	}
 
-	public String getIndividualId(String id) {
+	public String getBQIndividualId(String bqIdentityId) {
 		Optional<String> individualIdOptional =
-			_bqIdentityRepository.getIndividualIdOptional(id);
+			_bqIdentityRepository.findBQIndividualId(bqIdentityId);
 
 		return individualIdOptional.orElse(null);
 	}
