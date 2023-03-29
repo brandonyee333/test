@@ -48,10 +48,10 @@ public class BQMembershipChangeDog {
 	public void addBQMembershipChange(List<BQMembership> bqMemberships) {
 		BQMembership bqMembership = bqMemberships.get(0);
 
-		addMembershipChange(bqMembership.getSegmentId());
+		addBQMembershipChange(bqMembership.getSegmentId());
 	}
 
-	public void addMembershipChange(Long segmentId) {
+	public void addBQMembershipChange(Long segmentId) {
 		_bqMembershipChangeRepository.addBQMembershipChange(segmentId);
 	}
 

@@ -20,12 +20,10 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +63,7 @@ public class BQMembershipDog {
 
 		_bqMembershipRepository.insertAll(bqMemberships);
 
-		_membershipChangeDog.addBQMembershipChange(bqMemberships);
+		_bqMembershipChangeDog.addBQMembershipChange(bqMemberships);
 
 		return bqMemberships;
 	}
@@ -74,11 +72,11 @@ public class BQMembershipDog {
 		_bqMembershipRepository.deleteByIndividualIdAndSegmentId(
 			individualId, segmentId);
 
-		_membershipChangeDog.addMembershipChange(segmentId);
+		_bqMembershipChangeDog.addBQMembershipChange(segmentId);
 	}
 
 	public void deleteBQMemberships(List<Long> segmentIds) {
-		_membershipChangeDog.deleteBQMembershipChanges(segmentIds);
+		_bqMembershipChangeDog.deleteBQMembershipChanges(segmentIds);
 
 		_bqMembershipRepository.deleteBySegmentIdIn(segmentIds);
 	}
@@ -196,7 +194,8 @@ public class BQMembershipDog {
 
 	public void updateBQMemberships(String filterString, Long segmentId) {
 		_bqMembershipRepository.updateBQMemberships(filterString, segmentId);
-		_membershipChangeDog.addMembershipChange(segmentId);
+
+		_bqMembershipChangeDog.addBQMembershipChange(segmentId);
 	}
 
 	private Sort _getSort(String[] sorts) {
@@ -221,10 +220,10 @@ public class BQMembershipDog {
 	private static final Log _log = LogFactory.getLog(BQMembershipDog.class);
 
 	@Autowired
-	private BQMembershipRepository _bqMembershipRepository;
+	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
-	private BQMembershipChangeDog _membershipChangeDog;
+	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
 	private ObjectMapper _objectMapper;
