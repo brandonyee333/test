@@ -35,6 +35,12 @@ public interface LDAPImportConfiguration extends CompanyScopedConfiguration {
 	@Override
 	public long companyId();
 
+	@Meta.AD(
+		deflt = "3000", description = "clock-skew-description",
+		name = "clock-skew", required = false
+	)
+	public long clockSkew();
+
 	@Meta.AD(deflt = "false", name = "enable-import", required = false)
 	public boolean importEnabled();
 

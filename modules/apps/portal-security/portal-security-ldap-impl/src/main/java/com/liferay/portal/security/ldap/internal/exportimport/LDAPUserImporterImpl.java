@@ -1737,14 +1737,26 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 			}
 		}
 
-		if ((modifiedDate != null) &&
-			(modifiedDate.compareTo(new Date()) > 0)) {
-
-			modifiedDate = new Date();
-		}
-
 		LDAPImportConfiguration ldapImportConfiguration =
 			_ldapImportConfigurationProvider.getConfiguration(companyId);
+
+		if (modifiedDate != null) {
+			Date expireDate = new Date(
+				System.currentTimeMillis() +
+					ldapImportConfiguration.clockSkew());
+
+			if (modifiedDate.compareTo(expireDate) > 0) {
+				throw new RuntimeException(
+					StringBundler.concat(
+						"User update failed. Modified date is in the future. ",
+						"Current date: ", new Date(), " Modified date: ",
+						modifiedDate));
+			}
+
+			if (modifiedDate.compareTo(new Date()) > 0) {
+				modifiedDate = new Date();
+			}
+		}
 
 		boolean passwordReset = ldapUser.isPasswordReset();
 
