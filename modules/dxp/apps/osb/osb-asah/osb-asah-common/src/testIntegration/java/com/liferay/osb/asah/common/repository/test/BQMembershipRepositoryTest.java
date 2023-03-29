@@ -312,28 +312,6 @@ public class BQMembershipRepositoryTest
 		Assertions.assertEquals(34, segmentIds.get(0));
 	}
 
-	@Test
-	public void testSearchMemberships() {
-		List<BQMembership> bqMemberships =
-			_bqMembershipRepository.searchBQMemberships(
-				null, 34L, 10, "ACTIVE");
-
-		Assertions.assertEquals(
-			2, bqMemberships.size(), bqMemberships.toString());
-
-		bqMemberships = _bqMembershipRepository.searchBQMemberships(
-			null, 34L, 10, "INACTIVE");
-
-		Assertions.assertEquals(
-			0, bqMemberships.size(), bqMemberships.toString());
-
-		bqMemberships = _bqMembershipRepository.searchBQMemberships(
-			null, 56L, 10, "INACTIVE");
-
-		Assertions.assertEquals(
-			1, bqMemberships.size(), bqMemberships.toString());
-	}
-
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
 

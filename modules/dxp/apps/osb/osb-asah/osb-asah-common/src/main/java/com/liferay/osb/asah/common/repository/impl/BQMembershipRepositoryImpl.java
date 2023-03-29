@@ -587,47 +587,6 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
-	public List<BQMembership> searchBQMemberships(
-		@Nullable Long id, Long segmentId, int size, String status) {
-
-		Condition condition = DSL.and(
-			DSL.field(
-				"segmentId"
-			).eq(
-				segmentId
-			),
-			DSL.field(
-				"status"
-			).eq(
-				status
-			));
-
-		if (id != null) {
-			condition = condition.and(
-				DSL.field(
-					"id"
-				).gt(
-					id
-				));
-		}
-
-		return _queryExecutor.queryForList(
-			BQMembership::new,
-			_dslContext.select(
-			).from(
-				"BQMembership"
-			).where(
-				condition
-			).orderBy(
-				DSL.field(
-					"id"
-				).asc()
-			).limit(
-				size
-			));
-	}
-
-	@Override
 	public void updateBQMemberships(String filterString, Long segmentId) {
 		Date date = new Date();
 

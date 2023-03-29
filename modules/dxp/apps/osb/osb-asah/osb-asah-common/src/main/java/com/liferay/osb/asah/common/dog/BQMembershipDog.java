@@ -56,26 +56,6 @@ public class BQMembershipDog {
 		return _bqMembershipRepository.insert(bqMembership);
 	}
 
-	public void addBQMemberships(
-		Date createDate, List<Individual> individuals, Long segmentId) {
-
-		List<BQMembership> bqMemberships = new ArrayList<>();
-
-		for (Individual individual : individuals) {
-			BQMembership bqMembership = new BQMembership();
-
-			bqMembership.setCreateDate(createDate);
-			bqMembership.setIdentityId(String.valueOf(individual.getId()));
-			bqMembership.setModifiedDate(createDate);
-			bqMembership.setSegmentId(segmentId);
-			bqMembership.setStatus("ACTIVE");
-
-			bqMemberships.add(bqMembership);
-		}
-
-		_bqMembershipRepository.insertAll(bqMemberships);
-	}
-
 	public List<BQMembership> addBQMemberships(
 		List<BQMembership> bqMemberships) {
 
@@ -212,13 +192,6 @@ public class BQMembershipDog {
 	public boolean isMember(String identityId, Long segmentId) {
 		return _bqMembershipRepository.existsByIdentityIdAndSegmentIdAndStatus(
 			identityId, segmentId, "ACTIVE");
-	}
-
-	public List<BQMembership> searchBQMemberships(
-		Long segmentId, Long bqMembershipId, int size, String status) {
-
-		return _bqMembershipRepository.searchBQMemberships(
-			bqMembershipId, segmentId, size, status);
 	}
 
 	public void updateBQMemberships(String filterString, Long segmentId) {
