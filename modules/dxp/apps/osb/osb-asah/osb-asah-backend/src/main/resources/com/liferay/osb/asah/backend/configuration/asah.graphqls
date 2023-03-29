@@ -853,11 +853,6 @@ type Organization implements DXPEntity {
 	type: String
 }
 
-type OrganizationBag {
-	organizations: [Organization]
-	total: Int
-}
-
 type PageAsset {
 	canonicalUrl: String
 	description: String
@@ -1297,7 +1292,7 @@ type QueryType {
 		size: Int!,
 		sort: Sort!,
 		start: Int!
-	): OrganizationBag
+	): DXPEntityBag
 
 	page(
 		canonicalUrl: String,
