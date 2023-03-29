@@ -68,6 +68,21 @@ public class BQIndividualDog {
 			individualsFilterStringConverterHelper;
 	}
 
+	public long countBQIndividuals(
+		@Nullable Long accountId, @Nullable Long channelId,
+		@Nullable Long dataSourceId, @Nullable String filterString,
+		@Nullable Boolean includeAnonymousUsers, @Nullable Long notSegmentId,
+		@Nullable String query, @Nullable Long segmentId) {
+
+		if (StringUtils.isNotBlank(filterString)) {
+			return _bqIndividualRepository.countBQIndividuals(
+				channelId, filterString, includeAnonymousUsers, query);
+		}
+
+		return _bqIndividualRepository.countBQIndividuals(
+			accountId, channelId, dataSourceId, notSegmentId, query, segmentId);
+	}
+
 	public long countBQIndividualsModifiedLast30Days(Long channelId) {
 		return _bqIndividualRepository.countBQIndividualsModifiedLast30Days(
 			channelId);
@@ -162,7 +177,7 @@ public class BQIndividualDog {
 			_searchBQIndividuals(
 				null, null, null, null, null, page, query, null, size, null),
 			PageRequest.of(page, size),
-			() -> _countBQIndividuals(
+			() -> countBQIndividuals(
 				null, null, null, null, null, null, query, null));
 	}
 
@@ -174,7 +189,7 @@ public class BQIndividualDog {
 				null, null, null, null, null, page, query, segmentId, size,
 				null),
 			PageRequest.of(page, size, _getSort(null)),
-			() -> _countBQIndividuals(
+			() -> countBQIndividuals(
 				null, null, null, null, null, null, query, segmentId));
 	}
 
@@ -188,7 +203,7 @@ public class BQIndividualDog {
 		if ((page == 0) && (size == 0)) {
 			return new PageImpl<>(
 				Collections.emptyList(), Pageable.unpaged(),
-				_countBQIndividuals(
+				countBQIndividuals(
 					accountId, channelId, dataSourceId, filterString,
 					includeAnonymousUsers, notSegmentId, query, segmentId));
 		}
@@ -198,24 +213,9 @@ public class BQIndividualDog {
 				accountId, channelId, dataSourceId, filterString, notSegmentId,
 				page, query, segmentId, size, sorts),
 			PageRequest.of(page, size, _getSort(sorts)),
-			() -> _countBQIndividuals(
+			() -> countBQIndividuals(
 				accountId, channelId, dataSourceId, filterString,
 				includeAnonymousUsers, notSegmentId, query, segmentId));
-	}
-
-	private long _countBQIndividuals(
-		@Nullable Long accountId, @Nullable Long channelId,
-		@Nullable Long dataSourceId, @Nullable String filterString,
-		@Nullable Boolean includeAnonymousUsers, @Nullable Long notSegmentId,
-		@Nullable String query, @Nullable Long segmentId) {
-
-		if (StringUtils.isNotBlank(filterString)) {
-			return _bqIndividualRepository.countBQIndividuals(
-				channelId, filterString, includeAnonymousUsers, query);
-		}
-
-		return _bqIndividualRepository.countBQIndividuals(
-			accountId, channelId, dataSourceId, notSegmentId, query, segmentId);
 	}
 
 	private org.springframework.data.domain.Sort _getSort(String[] sorts) {
