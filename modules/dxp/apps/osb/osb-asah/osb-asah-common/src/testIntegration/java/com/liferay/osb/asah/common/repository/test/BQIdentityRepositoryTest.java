@@ -45,40 +45,37 @@ public class BQIdentityRepositoryTest
 	public void testGetIndividualsCount() {
 		LocalDate localDate = LocalDate.now();
 
-		long anonymousIndividualsCount =
+		Assertions.assertEquals(
+			1,
 			_bqIdentityRepository.getBQIndividualsCount(
 				false, 1L, localDate,
 				IndividualMetricType.ANONYMOUS_INDIVIDUALS,
-				_timeZoneDog.getZoneId());
-
-		Assertions.assertEquals(1, anonymousIndividualsCount, 0);
-
-		long knownIndividualsCount =
+				_timeZoneDog.getZoneId()),
+			0);
+		Assertions.assertEquals(
+			4,
 			_bqIdentityRepository.getBQIndividualsCount(
 				false, 1L, localDate, IndividualMetricType.KNOWN_INDIVIDUALS,
-				_timeZoneDog.getZoneId());
-
-		Assertions.assertEquals(4, knownIndividualsCount, 0);
-
-		long totalIndividualsCount =
+				_timeZoneDog.getZoneId()),
+			0);
+		Assertions.assertEquals(
+			5,
 			_bqIdentityRepository.getBQIndividualsCount(
 				false, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS,
-				_timeZoneDog.getZoneId());
-
-		Assertions.assertEquals(5, totalIndividualsCount, 0);
-
-		long totalActiveIndividualsCount =
+				_timeZoneDog.getZoneId()),
+			0);
+		Assertions.assertEquals(
+			4,
 			_bqIdentityRepository.getBQIndividualsCount(
 				true, 1L, localDate, IndividualMetricType.TOTAL_INDIVIDUALS,
-				_timeZoneDog.getZoneId());
-
-		Assertions.assertEquals(4, totalActiveIndividualsCount, 0);
+				_timeZoneDog.getZoneId()),
+			0);
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 	@Test
 	public void testSearchSegmentBQIdentityIds1() {
-		List<Long> identityIds =
+		List<Long> bqIdentityIds =
 			_bqIdentityRepository.searchSegmentBQIdentityIds(
 				"(demographics/firstName/value eq 'Test1' and " +
 					"(sessions.filter(filter='(context/browserName eq " +
@@ -86,35 +83,35 @@ public class BQIdentityRepositoryTest
 							"and demographics/email/value eq " +
 								"'test1@liferay.com'))");
 
-		Assertions.assertEquals(1, identityIds.size());
-		Assertions.assertEquals(1, identityIds.get(0));
+		Assertions.assertEquals(1, bqIdentityIds.size());
+		Assertions.assertEquals(1, bqIdentityIds.get(0));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 	@Test
 	public void testSearchSegmentBQIdentityIds2() {
-		List<Long> identityIds =
+		List<Long> bqIdentityIds =
 			_bqIdentityRepository.searchSegmentBQIdentityIds(
 				"(demographics/firstName/value eq 'Test1' and " +
 					"(activities.filterByCount(filter='(applicationId eq " +
 						"''Blog'' and eventId = ''blogClicked'' and id = " +
 							"''1'')', operator='ge', value=1)))");
 
-		Assertions.assertEquals(1, identityIds.size());
-		Assertions.assertEquals(1, identityIds.get(0));
+		Assertions.assertEquals(1, bqIdentityIds.size());
+		Assertions.assertEquals(1, bqIdentityIds.get(0));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_identity_repository.sql")
 	@Test
 	public void testSearchSegmentBQIdentityIds3() {
-		List<Long> identityIds =
+		List<Long> bqIdentityIds =
 			_bqIdentityRepository.searchSegmentBQIdentityIds(
 				"(demographics/firstName/value eq 'Test1' and " +
 					"(activities.filterByCount(filter='(applicationId eq " +
 						"''Blog'' and eventId eq ''blogClicked'' and id eq " +
 							"''2'')', operator='ge', value=1)))");
 
-		Assertions.assertEquals(0, identityIds.size());
+		Assertions.assertEquals(0, bqIdentityIds.size());
 	}
 
 	@Autowired

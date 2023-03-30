@@ -107,23 +107,6 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public Optional<String> findBQIndividualId(String id) {
-		return _queryExecutor.queryForObject(
-			recordMap -> (String)recordMap.get("individualId"),
-			_dslContext.select(
-				DSL.field("individualId")
-			).from(
-				"BQIdentity"
-			).where(
-				DSL.field(
-					"id"
-				).eq(
-					id
-				)
-			));
-	}
-
-	@Override
 	public List<BQIdentity> findByIdIn(Collection<String> ids) {
 		return _queryExecutor.queryForList(
 			BQIdentity::new,
@@ -153,6 +136,25 @@ public class BQIdentityRepositoryImpl
 					bqIndividualId
 				)
 			));
+	}
+
+	@Override
+	public String getBQIndividualId(String id) {
+		Optional<String> bqIndividualIdOptional = _queryExecutor.queryForObject(
+			recordMap -> (String)recordMap.get("individualId"),
+			_dslContext.select(
+				DSL.field("individualId")
+			).from(
+				"BQIdentity"
+			).where(
+				DSL.field(
+					"id"
+				).eq(
+					id
+				)
+			));
+
+		return bqIndividualIdOptional.orElse(null);
 	}
 
 	@Override

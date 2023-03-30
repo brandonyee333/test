@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,10 +37,7 @@ public class BQIdentityDog {
 	}
 
 	public String getBQIndividualId(String bqIdentityId) {
-		Optional<String> individualIdOptional =
-			_bqIdentityRepository.findBQIndividualId(bqIdentityId);
-
-		return individualIdOptional.orElse(null);
+		return _bqIdentityRepository.getBQIndividualId(bqIdentityId);
 	}
 
 	@Autowired

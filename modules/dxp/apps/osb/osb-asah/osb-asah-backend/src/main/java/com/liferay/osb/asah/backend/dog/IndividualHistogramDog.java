@@ -50,7 +50,7 @@ public class IndividualHistogramDog {
 				histogramMetricBag.getMetrics()) {
 
 			histogramMetric.setValue(
-				_bqIndividualMetricDog.getIndividualsCount(
+				_bqIndividualMetricDog.getBQIndividualsCount(
 					_getLocalDate(histogramMetric), metricType,
 					searchQueryContext));
 		}

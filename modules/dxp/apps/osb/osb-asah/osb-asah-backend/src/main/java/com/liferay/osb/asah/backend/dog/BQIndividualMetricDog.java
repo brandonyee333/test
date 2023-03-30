@@ -46,6 +46,21 @@ public class BQIndividualMetricDog {
 		_timeZoneDog = timeZoneDog;
 	}
 
+	public double getBQIndividualsCount(
+		LocalDate localDate, MetricType metricType,
+		SearchQueryContext searchQueryContext) {
+
+		Long channelId = null;
+
+		if (searchQueryContext.getChannelId() != null) {
+			channelId = Long.valueOf(searchQueryContext.getChannelId());
+		}
+
+		return _bqIdentityRepository.getBQIndividualsCount(
+			searchQueryContext.isActive(), channelId, localDate, metricType,
+			_timeZoneDog.getZoneId());
+	}
+
 	public IndividualMetric getIndividualMetric(
 		SearchQueryContext searchQueryContext, Set<String> selectedMetrics) {
 
@@ -80,13 +95,13 @@ public class BQIndividualMetricDog {
 			metricTypes.add(IndividualMetricType.TOTAL_INDIVIDUALS);
 		}
 
-		List<Metric> metrics = _getIndividualCountMetrics(
+		List<Metric> bqIndividualCountMetrics = _getBQIndividualCountMetrics(
 			metricTypes, searchQueryContext);
 
-		for (int i = 0; i < metrics.size(); i++) {
+		for (int i = 0; i < bqIndividualCountMetrics.size(); i++) {
 			Consumer<Metric> metricConsumer = consumers.get(i);
 
-			metricConsumer.accept(metrics.get(i));
+			metricConsumer.accept(bqIndividualCountMetrics.get(i));
 		}
 
 		if (selectedMetrics.contains(
@@ -102,27 +117,28 @@ public class BQIndividualMetricDog {
 			Double previousValue = 0.0;
 			Double value = 0.0;
 
-			for (Metric metric : metrics) {
-				if ((metric.getMetricType() !=
+			for (Metric bqIndividualCountMetric : bqIndividualCountMetrics) {
+				if ((bqIndividualCountMetric.getMetricType() !=
 						IndividualMetricType.ANONYMOUS_INDIVIDUALS) &&
-					(metric.getMetricType() !=
+					(bqIndividualCountMetric.getMetricType() !=
 						IndividualMetricType.KNOWN_INDIVIDUALS)) {
 
 					continue;
 				}
 
-				previousValue += metric.getPreviousValue();
+				previousValue += bqIndividualCountMetric.getPreviousValue();
 
 				totalIndividualsMetric.setPreviousValue(previousValue);
 
 				totalIndividualsMetric.setPreviousValueKey(
-					metric.getPreviousValueKey());
+					bqIndividualCountMetric.getPreviousValueKey());
 
-				value += metric.getValue();
+				value += bqIndividualCountMetric.getValue();
 
 				totalIndividualsMetric.setValue(value);
 
-				totalIndividualsMetric.setValueKey(metric.getValueKey());
+				totalIndividualsMetric.setValueKey(
+					bqIndividualCountMetric.getValueKey());
 			}
 
 			individualMetric.setTotalIndividualsMetric(totalIndividualsMetric);
@@ -131,25 +147,10 @@ public class BQIndividualMetricDog {
 		return individualMetric;
 	}
 
-	public double getIndividualsCount(
-		LocalDate localDate, MetricType metricType,
-		SearchQueryContext searchQueryContext) {
-
-		Long channelId = null;
-
-		if (searchQueryContext.getChannelId() != null) {
-			channelId = Long.valueOf(searchQueryContext.getChannelId());
-		}
-
-		return _bqIdentityRepository.getBQIndividualsCount(
-			searchQueryContext.isActive(), channelId, localDate, metricType,
-			_timeZoneDog.getZoneId());
-	}
-
-	private List<Metric> _getIndividualCountMetrics(
+	private List<Metric> _getBQIndividualCountMetrics(
 		List<MetricType> metricTypes, SearchQueryContext searchQueryContext) {
 
-		List<Metric> metrics = new ArrayList<>();
+		List<Metric> bqIndividualCountMetrics = new ArrayList<>();
 
 		Long channelId = null;
 
@@ -162,7 +163,7 @@ public class BQIndividualMetricDog {
 		LocalDate previousLocalDate = _getPreviousLocalDate(
 			localDate, searchQueryContext.getTimeRange());
 
-		List<Long> individualsCounts =
+		List<Long> bqIndividualsCounts =
 			_bqIdentityRepository.getBQIndividualsCounts(
 				searchQueryContext.isActive(), channelId,
 				Arrays.asList(localDate, previousLocalDate), metricTypes,
@@ -171,22 +172,23 @@ public class BQIndividualMetricDog {
 		for (int i = 0; i < metricTypes.size(); i++) {
 			Metric metric = new Metric(metricTypes.get(i));
 
-			Long previousValue = individualsCounts.get(i + metricTypes.size());
+			Long previousValue = bqIndividualsCounts.get(
+				i + metricTypes.size());
 
 			metric.setPreviousValue(previousValue.doubleValue());
 
 			metric.setPreviousValueKey(previousLocalDate.toString());
 
-			Long value = individualsCounts.get(i);
+			Long value = bqIndividualsCounts.get(i);
 
 			metric.setValue(value.doubleValue());
 
 			metric.setValueKey(localDate.toString());
 
-			metrics.add(metric);
+			bqIndividualCountMetrics.add(metric);
 		}
 
-		return metrics;
+		return bqIndividualCountMetrics;
 	}
 
 	private LocalDate _getPreviousLocalDate(
