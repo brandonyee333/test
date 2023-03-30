@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -36,6 +37,16 @@ public class UpdateMembershipsNanite extends BaseNanite {
 
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
+		_updateDynamicSegmentMemberships();
+		_updateStaticSegmentMembershipChanges();
+	}
+
+	@Override
+	protected Log getLog() {
+		return _log;
+	}
+
+	private void _updateDynamicSegmentMemberships() {
 		int page = 0;
 
 		while (true) {
@@ -46,16 +57,11 @@ public class UpdateMembershipsNanite extends BaseNanite {
 				break;
 			}
 
-			_updateSegmentsMemberships(segments);
+			segments.forEach(this::_updateDynamicSegmentMemberships);
 		}
 	}
 
-	@Override
-	protected Log getLog() {
-		return _log;
-	}
-
-	private void _updateSegmentMemberships(Segment segment) {
+	private void _updateDynamicSegmentMemberships(Segment segment) {
 		String filterString = segment.getFilter();
 		Long segmentId = segment.getId();
 
@@ -79,14 +85,48 @@ public class UpdateMembershipsNanite extends BaseNanite {
 		}
 	}
 
-	private void _updateSegmentsMemberships(List<Segment> segments) {
-		for (Segment segment : segments) {
-			_updateSegmentMemberships(segment);
+	private void _updateStaticSegmentMembershipChanges() {
+		int page = 0;
+
+		while (true) {
+			List<Segment> segments = _segmentDog.getSegments(
+				page++, 50, Segment.Type.STATIC);
+
+			if (segments.isEmpty()) {
+				break;
+			}
+
+			segments.forEach(this::_updateStaticSegmentMembershipChanges);
+		}
+	}
+
+	private void _updateStaticSegmentMembershipChanges(Segment segment) {
+		Long segmentId = segment.getId();
+
+		try {
+			_bqMembershipChangeDog.addBQMembershipChange(segmentId);
+
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format(
+						"Updated membership changes successfully for segment " +
+							"ID %s",
+						segmentId));
+			}
+		}
+		catch (Exception exception) {
+			_log.error(
+				String.format(
+					"Unable to update membership changes for segment ID %s",
+					segmentId));
 		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		UpdateMembershipsNanite.class);
+
+	@Autowired
+	private BQMembershipChangeDog _bqMembershipChangeDog;
 
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;
