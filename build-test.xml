@@ -449,6 +449,18 @@ jdbc.counter.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 		</sequential>
 	</macrodef>
 
+	<macrodef name="get-docker-container-ip-address">
+		<attribute name="container.name" />
+		<attribute name="property.name" />
+
+		<sequential>
+			<exec executable="/bin/bash" outputproperty="@{property.name}">
+				<arg value="-c" />
+				<arg value="docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' @{container.name}" />
+			</exec>
+		</sequential>
+	</macrodef>
+
 	<macrodef name="get-fixpack-version">
 		<attribute name="patch.file.zip.url" />
 
@@ -6050,10 +6062,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				<else>
 					<get-operating-system-property property.name="operating.system.host" />
 
-					<exec executable="/bin/bash" outputproperty="ip.address">
-						<arg value="-c" />
-						<arg value="docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${operating.system.host}" />
-					</exec>
+					<get-docker-container-ip-address container.name="${operating.system.host}" property.name="ip.address" />
 				</else>
 			</if>
 
@@ -6086,6 +6095,13 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 			<wait-for-docker-browser shell.condition="(: &lt;/dev/tcp/127.0.0.1/4444) &amp;> /dev/null &amp;&amp; (: &lt;/dev/tcp/127.0.0.1/22) &amp;> /dev/null" />
 
+			<if>
+				<isset property="env.JENKINS_HOME" />
+				<then>
+					<docker-copy dest.path="${browser.host}:/root/.ssh" src.path="/root/.ssh/." />
+				</then>
+			</if>
+
 			<docker-execute container="${browser.host}">
 				ssh -fN -4 -L 88:${ip.address}:88 ${browser.host}
 				ssh -fN -4 -L 8080:${ip.address}:8080 ${browser.host}
@@ -6098,6 +6114,8 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 				ssh -fN -4 -L 9202:${ip.address}:9202 ${browser.host}
 				ssh -fN -4 -L 10080:${ip.address}:10080 ${browser.host}
 				ssh -fN -4 -L 12080:${ip.address}:12080 ${browser.host}
+				ssh -fN -4 -L 18080:${ip.address}:18080 ${browser.host}
+				ssh -fN -4 -L 18443:${ip.address}:18443 ${browser.host}
 			</docker-execute>
 		</sequential>
 	</macrodef>
@@ -6160,9 +6178,12 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 			</exec>
 
 			<if>
-				<not>
-					<equals arg1="${docker.start.result}" arg2="0" />
-				</not>
+				<or>
+					<contains string="${docker.start.error}" substring="Error" />
+					<not>
+						<equals arg1="${docker.start.result}" arg2="0" />
+					</not>
+				</or>
 				<then>
 					<fail>Unable to start docker container:
 ${docker.start.error}</fail>
@@ -10556,6 +10577,26 @@ session.cookie.use.full.hostname=true
 		<prepare-selenium-required-properties />
 		<prepare-selenium-sharepoint-properties />
 		<prepare-selenium-testcase-properties />
+
+		<get-browser-property property.name="browser.docker.image" />
+
+		<if>
+			<isset property="browser.docker.image" />
+			<then>
+				<get-browser-property property.name="browser.host" />
+
+				<get-docker-container-ip-address container.name="${browser.host}" property.name="browser.ip.address" />
+
+				<echo append="true" file="${test.ext.properties.file}">
+					browser.ip.address=${browser.ip.address}
+				</echo>
+			</then>
+			<else>
+				<echo append="true" file="${test.ext.properties.file}">
+					browser.ip.address=127.0.0.1
+				</echo>
+			</else>
+		</if>
 
 		<get-operating-system-property property.name="operating.system.docker.image" />
 
