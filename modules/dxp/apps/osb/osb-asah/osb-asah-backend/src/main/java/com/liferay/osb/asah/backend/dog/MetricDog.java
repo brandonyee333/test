@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -162,10 +164,16 @@ public class MetricDog {
 			(AssetMetricRepository<T>)_getAssetMetricRepository(
 				searchQueryContext.getAssetType());
 
+		Long channelId = null;
+
+		if (!StringUtils.isEmpty(searchQueryContext.getChannelId())) {
+			channelId = Long.valueOf(searchQueryContext.getChannelId());
+		}
+
 		return assetMetricRepository.getAssetMetrics(
-			Long.valueOf(searchQueryContext.getChannelId()),
-			searchQueryContext.getKeywords(), PageRequest.of(page, size, sort),
-			selectedMetrics, searchQueryContext.getTimeRange());
+			channelId, searchQueryContext.getKeywords(),
+			PageRequest.of(page, size, sort), selectedMetrics,
+			searchQueryContext.getTimeRange());
 	}
 
 	private final Map<AssetType, AssetMetricRepository>

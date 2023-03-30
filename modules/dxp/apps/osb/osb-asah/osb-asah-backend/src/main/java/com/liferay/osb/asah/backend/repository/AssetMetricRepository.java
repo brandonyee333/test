@@ -48,7 +48,7 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		Set<String> selectedMetrics, TimeRange timeRange);
 
 	public List<T> getAssetMetrics(
-		Long channelId, @Nullable String keywords, Pageable pageable,
+		@Nullable Long channelId, @Nullable String keywords, Pageable pageable,
 		Set<String> selectedMetrics, TimeRange timeRange);
 
 	public Long getAssetMetricsCount(
