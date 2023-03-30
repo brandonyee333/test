@@ -73,7 +73,8 @@ public class BQMembershipChangeRepositoryImpl
 		Map<String, Object> membershipSnapshot = _queryExecutor.queryForMap(
 			_dslContext.select(
 				DSL.countDistinct(
-					DSL.field("identityId")
+					DSL.coalesce(
+						DSL.field("individualId"), DSL.field("identityId"))
 				).as(
 					"identitiesCount"
 				),
