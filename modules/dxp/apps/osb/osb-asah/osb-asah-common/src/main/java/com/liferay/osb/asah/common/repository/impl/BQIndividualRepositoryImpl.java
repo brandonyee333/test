@@ -213,7 +213,7 @@ public class BQIndividualRepositoryImpl
 		@Nullable String filterString) {
 
 		Optional<BQFieldMapping> bqFieldMappingOptional =
-			_bqFieldMappingRepository.findByDisplayName(fieldName);
+			_bqFieldMappingRepository.findByFieldName(fieldName);
 
 		if (!bqFieldMappingOptional.isPresent()) {
 			return 0;
@@ -637,7 +637,7 @@ public class BQIndividualRepositoryImpl
 		@Nullable String filterString, Pageable pageable) {
 
 		Optional<BQFieldMapping> bqFieldMappingOptional =
-			_bqFieldMappingRepository.findByDisplayName(fieldName);
+			_bqFieldMappingRepository.findByFieldName(fieldName);
 
 		if (!bqFieldMappingOptional.isPresent()) {
 			return Collections.emptyList();
