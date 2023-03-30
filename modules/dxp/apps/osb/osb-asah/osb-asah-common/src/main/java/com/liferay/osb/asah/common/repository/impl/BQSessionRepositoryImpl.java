@@ -335,7 +335,11 @@ public class BQSessionRepositoryImpl
 	public Map<String, BigDecimal> getSessionsCountGroupedByBrowserName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
-		Field field = DSL.field("browserName");
+		Field field = DSL.coalesce(
+			DSL.field("browserName", String.class), DSL.val("Unknown")
+		).as(
+			"browserName"
+		);
 
 		return _queryExecutor.queryForMap(
 			GetterUtil::getString,
@@ -358,9 +362,16 @@ public class BQSessionRepositoryImpl
 	public List<Map<String, Object>> getSessionsCountGroupedByDeviceName(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
-		Field<String> deviceTypeField = DSL.field("deviceType", String.class);
-		Field<String> platformNameField = DSL.field(
-			"platformName", String.class);
+		Field<String> deviceTypeField = DSL.coalesce(
+			DSL.field("deviceType", String.class), DSL.val("Unknown")
+		).as(
+			"deviceType"
+		);
+		Field<String> platformNameField = DSL.coalesce(
+			DSL.field("platformName", String.class), DSL.val("Unknown")
+		).as(
+			"platformName"
+		);
 
 		return _queryExecutor.queryForList(
 			Function.identity(),
@@ -387,7 +398,11 @@ public class BQSessionRepositoryImpl
 	public Map<String, BigDecimal> getSessionsCountGroupedByGeolocation(
 		Long channelId, TimeRange timeRange, ZoneId zoneId) {
 
-		Field field = DSL.field("country");
+		Field field = DSL.coalesce(
+			DSL.field("country", String.class), DSL.val("Unknown")
+		).as(
+			"country"
+		);
 
 		return _queryExecutor.queryForMap(
 			GetterUtil::getString,
