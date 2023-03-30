@@ -66,7 +66,8 @@ public class UpdateMembershipsNanite extends BaseNanite {
 		Long segmentId = segment.getId();
 
 		try {
-			_bqMembershipDog.updateBQMemberships(filterString, segmentId);
+			_bqMembershipDog.updateBQMemberships(
+				filterString, segment.getIncludeAnonymousUsers(), segmentId);
 
 			if (_log.isInfoEnabled()) {
 				_log.info(

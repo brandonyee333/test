@@ -197,8 +197,11 @@ public class BQMembershipDog {
 			identityId, segmentId, "ACTIVE");
 	}
 
-	public void updateBQMemberships(String filterString, Long segmentId) {
-		_bqMembershipRepository.updateBQMemberships(filterString, segmentId);
+	public void updateBQMemberships(
+		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+
+		_bqMembershipRepository.updateBQMemberships(
+			filterString, includeAnonymousUsers, segmentId);
 
 		_bqMembershipChangeDog.addBQMembershipChange(segmentId);
 	}

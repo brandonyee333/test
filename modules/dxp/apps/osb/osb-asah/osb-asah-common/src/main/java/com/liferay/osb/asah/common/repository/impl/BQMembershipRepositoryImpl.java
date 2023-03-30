@@ -611,7 +611,9 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
-	public void updateBQMemberships(String filterString, Long segmentId) {
+	public void updateBQMemberships(
+		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+
 		Date date = new Date();
 
 		SelectSelectStep<Record5<Date, String, String, Date, Long>>
@@ -654,7 +656,18 @@ public class BQMembershipRepositoryImpl
 			filterString, true);
 
 		selectJoinStep = _getSelectJoinStep(
-			null, filterExpression.getReferencedTableNames(), selectJoinStep);
+			filterExpression.getReferencedTableNames(), selectJoinStep);
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(filterExpression.getCondition());
+
+		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
+			conditions.add(
+				DSL.field(
+					"Identity.individualId"
+				).isNotNull());
+		}
 
 		// TODO Replace DELETE/INSERT by BigQuery MERGE Statement
 
@@ -680,7 +693,7 @@ public class BQMembershipRepositoryImpl
 				DSL.field("segmentId", Long.class)
 			).select(
 				selectJoinStep.where(
-					filterExpression.getCondition()
+					conditions
 				).groupBy(
 					DSL.field("Identity.id"),
 					DSL.field("Identity.individualId"), DSL.field("segmentId")
@@ -741,24 +754,7 @@ public class BQMembershipRepositoryImpl
 	}
 
 	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
-		Long channelId, Set<String> referencedTableNames,
-		SelectJoinStep<R> selectJoinStep) {
-
-		if (channelId != null) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"BQIdentityActivity"
-				).as(
-					"IdentityActivity"
-				)
-			).on(
-				DSL.field(
-					"IdentityActivity.identityId"
-				).eq(
-					DSL.field("Identity.id")
-				)
-			);
-		}
+		Set<String> referencedTableNames, SelectJoinStep<R> selectJoinStep) {
 
 		if (referencedTableNames.contains("Event")) {
 			selectJoinStep = selectJoinStep.join(
@@ -777,7 +773,7 @@ public class BQMembershipRepositoryImpl
 		}
 
 		if (referencedTableNames.contains("Individual")) {
-			selectJoinStep = selectJoinStep.join(
+			selectJoinStep = selectJoinStep.leftJoin(
 				DSL.table(
 					"BQIndividual"
 				).as(
