@@ -6,7 +6,7 @@
 		"OSB_FARO_FRONTEND_URL": "https://analytics-uat.liferay.com"
 	},
 	"id": "osbasahupgrade",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-upgrade-20230327-d06ad66",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-upgrade-20230330-0f4b499",
 	"kind": "Deployment",
 	"memory": 2048,
 	"volumes": {
