@@ -42,7 +42,6 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -74,25 +73,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SegmentDog {
-
-	public Segment addSegment(
-		Date createDate, String filterString, Date modifiedDate, String name,
-		String scope, String type, String status) {
-
-		_validateFilterString(filterString);
-
-		Segment segment = new Segment();
-
-		segment.setCreateDate(createDate);
-		segment.setFilter(filterString);
-		segment.setModifiedDate(modifiedDate);
-		segment.setName(name);
-		segment.setScope(scope);
-		segment.setType(Segment.Type.valueOf(type));
-		segment.setStatus(status);
-
-		return addSegment(segment);
-	}
 
 	public Segment addSegment(Segment segment) {
 		_validateFilterString(segment.getFilter());
@@ -182,20 +162,9 @@ public class SegmentDog {
 		}
 	}
 
-	public boolean existsSegment(Long segmentId) {
-		return _segmentRepository.existsById(segmentId);
-	}
-
 	public Segment fetchSegment(Long segmentId) {
 		Optional<Segment> segmentOptional = _segmentRepository.findById(
 			segmentId);
-
-		return segmentOptional.orElse(null);
-	}
-
-	public Segment fetchSegment(String name, String status) {
-		Optional<Segment> segmentOptional =
-			_segmentRepository.findByNameAndStatus(name, status);
 
 		return segmentOptional.orElse(null);
 	}
@@ -214,17 +183,6 @@ public class SegmentDog {
 		return null;
 	}
 
-	public Map<Long, Date> getLastActivityDates(List<Segment> segments) {
-		Map<Long, Date> lastActivityDateMap = new HashMap();
-
-		for (Segment segment : segments) {
-			lastActivityDateMap.put(
-				segment.getId(), getLastActivityDate(segment));
-		}
-
-		return lastActivityDateMap;
-	}
-
 	public Segment getSegment(Long segmentId) {
 		Optional<Segment> segmentOptional = _segmentRepository.findById(
 			segmentId);
@@ -233,35 +191,6 @@ public class SegmentDog {
 			() -> new OSBAsahException(
 				HttpStatus.BAD_REQUEST,
 				"There is no Segment with ID " + segmentId));
-	}
-
-	public Segment getSegment(String name, String status) {
-		Optional<Segment> segmentOptional =
-			_segmentRepository.findByNameAndStatus(name, status);
-
-		return segmentOptional.orElseThrow(
-			() -> new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"There is no Segment with Name " + name + " and Status " +
-					status));
-	}
-
-	public List<Long> getSegmentIds(List<String> names, String status) {
-		return _segmentRepository.findIdByNameInAndStatus(names, status);
-	}
-
-	public List<String> getSegmentNames(Long channelId, Set<Long> segmentIds) {
-		if (segmentIds.isEmpty()) {
-			return Collections.emptyList();
-		}
-
-		if (Objects.nonNull(channelId)) {
-			return _segmentRepository.findNameByChannelIdAndIdInAndStatus(
-				channelId, new ArrayList<>(segmentIds), "ACTIVE");
-		}
-
-		return _segmentRepository.findNameByIdInAndStatus(
-			new ArrayList<>(segmentIds), "ACTIVE");
 	}
 
 	public Page<Segment> getSegmentPage(
@@ -287,18 +216,6 @@ public class SegmentDog {
 
 	public List<Segment> getSegments(Iterable<Long> segmentIds) {
 		return IterableUtils.toList(_segmentRepository.findAllById(segmentIds));
-	}
-
-	public List<Segment> getSegments(String name, int page, int size) {
-		return _segmentRepository.findByChannelIdIsNotNullOrNameStartingWith(
-			name, PageRequest.of(page, size));
-	}
-
-	public List<Segment> getSegments(
-		String filterString, String state, String status, int page, int size) {
-
-		return _segmentRepository.searchSegments(
-			filterString, state, status, PageRequest.of(page, size));
 	}
 
 	public Map<String, JSONObject> getSegmentsJSONObjects(
@@ -344,28 +261,6 @@ public class SegmentDog {
 		Segment segment = getSegment(segmentId);
 
 		return BooleanUtils.toBoolean(segment.getIncludeAnonymousUsers());
-	}
-
-	public List<Segment> searchDynamicSegments(
-		String filterString, Boolean includeAnonymousUsers, int page,
-		Set<Long> segmentIds, int size,
-		com.liferay.osb.asah.common.model.Sort sort) {
-
-		PageRequest pageRequest = PageRequest.of(page, size, sort);
-
-		return _segmentRepository.searchDynamicSegments(
-			new FilterHelper(filterString), includeAnonymousUsers, pageRequest,
-			segmentIds);
-	}
-
-	public List<Segment> searchDynamicSegments(
-		String filterString, int page, int size, String[] sorts) {
-
-		PageRequest pageRequest = PageRequest.of(
-			page, size, SortUtil.getSort(sorts));
-
-		return _segmentRepository.searchDynamicSegments(
-			new FilterHelper(filterString), pageRequest);
 	}
 
 	public Page<Segment> searchPreviewDisabledSegmentPage(
@@ -489,14 +384,6 @@ public class SegmentDog {
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {
 		return _updateSegment(getSegment(segmentId), partialSegment);
-	}
-
-	public Segment updateSegmentState(Long segmentId, String state) {
-		Segment segment = getSegment(segmentId);
-
-		segment.setState(state);
-
-		return _segmentRepository.save(segment);
 	}
 
 	private void _addAsahTask(Segment segment) {
