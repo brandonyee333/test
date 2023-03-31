@@ -181,7 +181,7 @@
 			"templated": true
 		},
 		"pages-visited": {
-			"href": "{url}/pages-visited{?filter,ownerId,ownerType,page,size,sort*,visitedPages}",
+			"href": "{url}/pages-visited{?channelId,filter,ownerId,ownerType,page,size,sort*,visitedPages}",
 			"templated": true
 		},
 		"preview-disabled-segments": {
