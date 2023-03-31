@@ -126,7 +126,7 @@ public class DXPEntityNanite extends BaseNanite {
 					JSONArray valuesJSONArray = new JSONArray();
 
 					for (String curValue : value.split(",")) {
-						valuesJSONArray.put(curValue);
+						valuesJSONArray.put(StringUtils.trim(curValue));
 					}
 
 					value = valuesJSONArray.toString();
