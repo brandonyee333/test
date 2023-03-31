@@ -819,6 +819,22 @@ public class BQMembershipRepositoryImpl
 			}
 		}
 
+		if (referencedTableNames.contains("User")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQUser"
+				).as(
+					"User"
+				)
+			).on(
+				DSL.field(
+					"Individual.emailAddress"
+				).eq(
+					DSL.field("User.emailAddress")
+				)
+			);
+		}
+
 		return selectJoinStep;
 	}
 

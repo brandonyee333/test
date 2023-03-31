@@ -107,6 +107,13 @@ public class FilterExpressionConditionVisitor
 			stopToken.getText());
 
 		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.INDIVIDUALS) &&
+			Objects.equals(fieldName, "userId")) {
+
+			_referencedTableNames.add("User");
+		}
+
+		if (Objects.equals(
 				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
 
 			return _visitOrganizationExpression(fieldName, "eq", value);
@@ -533,6 +540,13 @@ public class FilterExpressionConditionVisitor
 		String fieldName = startToken.getText();
 		String value = StringUtil.unquoteAndDecodeInnerQuotes(
 			stopToken.getText());
+
+		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.INDIVIDUALS) &&
+			Objects.equals(fieldName, "userId")) {
+
+			_referencedTableNames.add("User");
+		}
 
 		if (Objects.equals(
 				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
@@ -1049,6 +1063,7 @@ public class FilterExpressionConditionVisitor
 				put("sessions.completeDate", "Session.sessionEnd");
 				put("sessions.referrer", "Session.referrers");
 				put("sessions.url", "Session.urls");
+				put("userId", "User.id");
 			}
 		};
 	private final FilterExpression.FilterType _filterType;
