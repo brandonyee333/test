@@ -110,6 +110,8 @@ public class DXPEntitiesIngestionNanite {
 				_generateDXPEntityId(
 					accountEntry.getAccountEntryId(), dataSourceId, projectId));
 
+			_bqAccountEntryRepository.deleteById(accountEntry.getId());
+
 			_bqAccountEntryRepository.insert(accountEntry);
 		}
 		else if (StringUtils.equals(
@@ -123,6 +125,8 @@ public class DXPEntitiesIngestionNanite {
 				_generateDXPEntityId(
 					bqAccountGroup.getAccountGroupId(), dataSourceId,
 					projectId));
+
+			_bqAccountGroupRepository.deleteById(bqAccountGroup.getId());
 
 			_bqAccountGroupRepository.insert(bqAccountGroup);
 		}
@@ -158,6 +162,8 @@ public class DXPEntitiesIngestionNanite {
 				_generateDXPEntityId(
 					bqExpandoColumn.getColumnId(), dataSourceId, projectId));
 
+			_bqExpandoColumnRepository.deleteById(bqExpandoColumn.getId());
+
 			_bqExpandoColumnRepository.insert(bqExpandoColumn);
 		}
 		else if (StringUtils.equals(
@@ -169,6 +175,8 @@ public class DXPEntitiesIngestionNanite {
 			bqGroup.setId(
 				_generateDXPEntityId(
 					bqGroup.getGroupId(), dataSourceId, projectId));
+
+			_bqGroupRepository.deleteById(bqGroup.getId());
 
 			_bqGroupRepository.insert(bqGroup);
 		}
@@ -198,6 +206,8 @@ public class DXPEntitiesIngestionNanite {
 					bqOrganization.getOrganizationId(), dataSourceId,
 					projectId));
 
+			_bqOrganizationRepository.deleteById(bqOrganization.getId());
+
 			_bqOrganizationRepository.insert(bqOrganization);
 		}
 		else if (StringUtils.equals(
@@ -210,6 +220,8 @@ public class DXPEntitiesIngestionNanite {
 				_generateDXPEntityId(
 					bqRole.getRoleId(), dataSourceId, projectId));
 
+			_bqRoleRepository.deleteById(bqRole.getId());
+
 			_bqRoleRepository.insert(bqRole);
 		}
 		else if (StringUtils.equals(
@@ -221,6 +233,8 @@ public class DXPEntitiesIngestionNanite {
 			bqTeam.setId(
 				_generateDXPEntityId(
 					bqTeam.getTeamId(), dataSourceId, projectId));
+
+			_bqTeamRepository.deleteById(bqTeam.getId());
 
 			_bqTeamRepository.insert(bqTeam);
 		}
@@ -252,6 +266,8 @@ public class DXPEntitiesIngestionNanite {
 				DigestUtils.sha256Hex(
 					StringUtils.lowerCase(bqUser.getEmailAddress())));
 
+			_bqUserRepository.deleteById(bqUser.getId());
+
 			_bqUserRepository.insert(bqUser);
 		}
 		else if (StringUtils.equals(
@@ -264,6 +280,8 @@ public class DXPEntitiesIngestionNanite {
 			bqUserGroup.setId(
 				_generateDXPEntityId(
 					bqUserGroup.getUserGroupId(), dataSourceId, projectId));
+
+			_bqUserGroupRepository.deleteById(bqUserGroup.getId());
 
 			_bqUserGroupRepository.insert(bqUserGroup);
 		}
