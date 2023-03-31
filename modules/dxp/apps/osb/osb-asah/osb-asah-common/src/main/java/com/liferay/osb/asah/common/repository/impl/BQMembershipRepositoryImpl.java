@@ -32,6 +32,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -788,8 +790,18 @@ public class BQMembershipRepositoryImpl
 			);
 
 			if (referencedTableNames.contains("ExpandoValue")) {
-				selectJoinStep = selectJoinStep.crossJoin(
-					DSL.table("UNNEST(Individual.fields) AS Fields"));
+				Stream<String> stream = referencedTableNames.stream();
+
+				Set<String> fields = stream.filter(
+					s -> s.startsWith("IndividualFields_")
+				).collect(
+					Collectors.toSet()
+				);
+
+				for (String field : fields) {
+					selectJoinStep = selectJoinStep.crossJoin(
+						"UNNEST(Individual.fields) AS " + field);
+				}
 			}
 		}
 

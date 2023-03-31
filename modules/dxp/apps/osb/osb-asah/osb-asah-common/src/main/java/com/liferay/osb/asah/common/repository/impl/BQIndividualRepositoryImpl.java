@@ -45,6 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.BooleanUtils;
@@ -359,7 +361,8 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable Long individualSegmentId, Pageable pageable) {
 
-		Field groupByField = DSL.field("individualFields.value");
+		Field groupByField = DSL.field(
+			"IndividualFields_" + fieldName + ".value");
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -376,7 +379,7 @@ public class BQIndividualRepositoryImpl
 		conditions.add(groupByField.notEqual(""));
 		conditions.add(
 			DSL.field(
-				"individualFields.name"
+				"IndividualFields_" + fieldName + ".name"
 			).eq(
 				fieldName
 			));
@@ -409,16 +412,23 @@ public class BQIndividualRepositoryImpl
 					"count"
 				)
 			).from(
-				"BQIndividual"
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
 			).crossJoin(
-				DSL.table("UNNEST(fields) AS individualFields")
+				DSL.table(
+					"UNNEST(Individual.fields) AS IndividualFields_" +
+						fieldName)
 			).where(
 				conditions
 			).groupBy(
 				groupByField
 			).orderBy(
 				getSortFields(
-					Collections.singletonMap("name", "individualFields.value"),
+					Collections.singletonMap(
+						"name", "IndividualFields_" + fieldName + ".value"),
 					pageable.getSort(), null)
 			).limit(
 				pageable.getPageSize()
@@ -709,7 +719,7 @@ public class BQIndividualRepositoryImpl
 				channelId, fieldName, filterString,
 				_dslContext.select(
 					DSL.countDistinct(
-						DSL.field("individualFields.value")
+						DSL.field("IndividualFields_" + fieldName + ".value")
 					).as(
 						"totalElements"
 					))));
@@ -791,13 +801,13 @@ public class BQIndividualRepositoryImpl
 
 		conditions.add(
 			DSL.field(
-				"BQFieldMapping.context"
+				"FieldMapping.context"
 			).eq(
 				DSL.val("custom")
 			));
 		conditions.add(
 			DSL.field(
-				"individualFields.name"
+				"IndividualFields_" + fieldName + ".name"
 			).eq(
 				fieldName
 			));
@@ -814,17 +824,21 @@ public class BQIndividualRepositoryImpl
 
 		return selectJoinStep.crossJoin(
 			DSL.table(
-				"UNNEST(fields)"
+				"UNNEST(Individual.fields)"
 			).as(
-				"individualFields"
+				"IndividualFields_" + fieldName
 			)
 		).join(
-			"BQFieldMapping"
+			DSL.table(
+				"BQFieldMapping"
+			).as(
+				"FieldMapping"
+			)
 		).on(
 			DSL.field(
-				"BQFieldMapping.displayName"
+				"FieldMapping.fieldName"
 			).eq(
-				DSL.field("individualFields.name")
+				DSL.field("IndividualFields_" + fieldName + ".name")
 			)
 		).where(
 			conditions
@@ -838,7 +852,7 @@ public class BQIndividualRepositoryImpl
 		SelectSelectStep<Record1<String>> selectSelectStep =
 			_dslContext.selectDistinct(
 				DSL.field(
-					"individualFields.value", String.class
+					"IndividualFields_" + fieldName + ".value", String.class
 				).as(
 					"individualFieldValue"
 				));
@@ -886,7 +900,7 @@ public class BQIndividualRepositoryImpl
 
 		SelectSelectStep jsonExtractSelectSelectStep = _dslContext.select(
 			DSL.field(
-				"JSON_EXTRACT_ARRAY(individualFields.value)"
+				"JSON_EXTRACT_ARRAY(IndividualFields_" + fieldName + ".value)"
 			).as(
 				"fieldValueArray"
 			));
@@ -1148,12 +1162,18 @@ public class BQIndividualRepositoryImpl
 				));
 
 			if (referencedTableNames.contains("ExpandoValue")) {
-				selectJoinStep = selectJoinStep.crossJoin(
-					DSL.unnest(
-						DSL.field("Individual.fields")
-					).as(
-						"Fields"
-					));
+				Stream<String> stream = referencedTableNames.stream();
+
+				Set<String> fields = stream.filter(
+					s -> s.startsWith("IndividualFields_")
+				).collect(
+					Collectors.toSet()
+				);
+
+				for (String field : fields) {
+					selectJoinStep = selectJoinStep.crossJoin(
+						"UNNEST(Individual.fields) AS " + field);
+				}
 			}
 		}
 

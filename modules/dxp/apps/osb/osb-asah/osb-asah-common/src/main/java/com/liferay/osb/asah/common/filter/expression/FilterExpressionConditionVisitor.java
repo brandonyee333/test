@@ -136,25 +136,32 @@ public class FilterExpressionConditionVisitor
 
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
+			String name = identifierParts[1];
+
+			String alias = "IndividualFields_" + name;
+
+			_referencedTableNames.add(alias);
+
 			Condition condition = DSL.field(
-				"Fields.name"
+				alias + ".name"
 			).eq(
-				identifierParts[1]
+				name
 			);
 
 			if (StringUtil.isNull(value)) {
 				condition = condition.and(
 					DSL.field(
-						"Fields.value"
+						alias + ".value"
 					).isNull());
 			}
 			else {
 				condition = condition.and(
-					DSL.field(
-						"Fields.value"
-					).eq(
-						value
-					));
+					DSL.condition(
+						String.join(
+							"", "CASE WHEN STARTS_WITH(", alias,
+							".value, '[') THEN ", alias, ".value LIKE '%",
+							value, "%' ELSE ", alias, ".value = '", value,
+							"' END")));
 			}
 
 			return condition;
@@ -320,7 +327,11 @@ public class FilterExpressionConditionVisitor
 				field = DSL.field("ExpandoValue.value");
 			}
 			else {
-				field = DSL.field("Fields.value");
+				String alias = "IndividualFields_" + qualifiedFieldName;
+
+				_referencedTableNames.add(alias);
+
+				field = DSL.field(alias + ".value");
 			}
 		}
 
@@ -395,12 +406,16 @@ public class FilterExpressionConditionVisitor
 					qualifiedFieldName
 				));
 		}
-		else if (StringUtils.startsWith(field.getName(), "Fields.")) {
+		else if (StringUtils.startsWith(field.getName(), "IndividualFields_")) {
+			String curFieldName = field.getName();
+
+			String[] parts = curFieldName.split("\\.", 2);
+
 			_referencedTableNames.add("ExpandoValue");
 
 			condition = condition.and(
 				DSL.field(
-					"Fields.name"
+					parts[0] + ".name"
 				).eq(
 					qualifiedFieldName
 				));
@@ -559,25 +574,32 @@ public class FilterExpressionConditionVisitor
 
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
+			String name = identifierParts[1];
+
+			String alias = "IndividualFields_" + name;
+
+			_referencedTableNames.add(alias);
+
 			Condition condition = DSL.field(
-				"Fields.name"
+				alias + ".name"
 			).eq(
-				identifierParts[1]
+				name
 			);
 
 			if (StringUtil.isNull(value)) {
 				condition = condition.and(
 					DSL.field(
-						"Fields.value"
+						alias + ".value"
 					).isNotNull());
 			}
 			else {
 				condition = condition.and(
-					DSL.field(
-						"Fields.value"
-					).ne(
-						value
-					));
+					DSL.condition(
+						String.join(
+							"", "CASE WHEN STARTS_WITH(", alias,
+							".value, '[') THEN ", alias, ".value NOT LIKE '%",
+							value, "%' ELSE ", alias, ".value != '", value,
+							"' END")));
 			}
 
 			return condition;
