@@ -13,7 +13,7 @@
 <tr>
 	<td>GLYPHICON_PLUS</td>
 	<td>//span[contains(@class,'glyphicon-plus')]</td>
-	<tr></tr>
+	<td></td>
 </tr>
 <tr>
 	<td>NODE_SELECTED</td>

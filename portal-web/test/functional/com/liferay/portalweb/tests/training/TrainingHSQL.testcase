@@ -1864,8 +1864,7 @@ How can we prove this?
 			locator1 = "xpath=(//div[@class='wiki-body']/p/a[contains(.,'Landfill Waste')])"
 		);
 
-		AlloyEditor.addSourceContent(
-			content = '''
+		var content = '''
 ==Landfill Waste==
 
 Student Names:
@@ -1885,8 +1884,9 @@ We need to:
 How to Present:
 *Can we rent the quad? Is that a thing?
 *Show how waste can be converted efficiently into energy with a conversion scale and repeatable tests and data
-'''
-		);
+''';
+
+		AlloyEditor.addSourceContent(content = ${content});
 
 		PortletEntry.publish();
 
