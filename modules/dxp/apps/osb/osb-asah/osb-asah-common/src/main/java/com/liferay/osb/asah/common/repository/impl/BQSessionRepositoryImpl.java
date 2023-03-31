@@ -86,7 +86,11 @@ public class BQSessionRepositoryImpl
 		SelectJoinStep<Record1<Integer>> selectJoinStep = _dslContext.select(
 			DSL.countDistinct(field)
 		).from(
-			"BQSession"
+			DSL.table(
+				"BQSession"
+			).as(
+				"Session"
+			)
 		);
 
 		if (_nestedFieldNamesMap.containsKey(fieldName)) {
@@ -119,7 +123,11 @@ public class BQSessionRepositoryImpl
 			return Collections.emptyList();
 		}
 
-		Table<Record> sessionTable = DSL.table("BQSession");
+		Table<Record> sessionTable = DSL.table(
+			"BQSession"
+		).as(
+			"Session"
+		);
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select(
 			sessionTable.asterisk());
@@ -127,7 +135,11 @@ public class BQSessionRepositoryImpl
 		return _queryExecutor.queryForList(
 			BQSession::new,
 			selectSelectStep.from(
-				"BQSession"
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
 			).where(
 				DSL.field(
 					"id"
@@ -153,7 +165,11 @@ public class BQSessionRepositoryImpl
 					_dslContext.select(
 						field
 					).from(
-						DSL.table("BQSession")
+						DSL.table(
+							"BQSession"
+						).as(
+							"Session"
+						)
 					).where(
 						DSL.and(
 							_createWhereClauseCondition(
@@ -215,7 +231,11 @@ public class BQSessionRepositoryImpl
 					BigDecimal.class
 				)
 			).from(
-				DSL.table("BQSession")
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
 			).where(
 				DSL.and(
 					_createWhereClauseCondition(channelId, timeRange, zoneId),
@@ -248,7 +268,11 @@ public class BQSessionRepositoryImpl
 					_dslContext.select(
 						field
 					).from(
-						DSL.table("BQSession")
+						DSL.table(
+							"BQSession"
+						).as(
+							"Session"
+						)
 					).where(
 						DSL.and(
 							_createWhereClauseCondition(
@@ -289,7 +313,11 @@ public class BQSessionRepositoryImpl
 			_dslContext.select(
 				DSL.count(DSL.field(field))
 			).from(
-				DSL.table("BQSession")
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
 			).where(
 				DSL.and(
 					_createWhereClauseCondition(channelId, timeRange, zoneId),
@@ -346,7 +374,11 @@ public class BQSessionRepositoryImpl
 			_dslContext.select(
 				field, DSL.count()
 			).from(
-				"BQSession"
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
 			).where(
 				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
@@ -382,7 +414,11 @@ public class BQSessionRepositoryImpl
 					"count"
 				)
 			).from(
-				"BQSession"
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
 			).where(
 				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
@@ -409,7 +445,11 @@ public class BQSessionRepositoryImpl
 			_dslContext.select(
 				field, DSL.count()
 			).from(
-				"BQSession"
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
 			).where(
 				_createWhereClauseCondition(channelId, timeRange, zoneId)
 			).groupBy(
@@ -428,7 +468,7 @@ public class BQSessionRepositoryImpl
 
 		Field<Boolean> previousField = DSL.when(
 			DSL.field(
-				"BQSession.sessionStart"
+				"Session.sessionStart"
 			).gt(
 				_dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString())
@@ -461,7 +501,11 @@ public class BQSessionRepositoryImpl
 						"sessions"
 					)
 				).from(
-					DSL.table("BQSession")
+					DSL.table(
+						"BQSession"
+					).as(
+						"Session"
+					)
 				)
 			).where(
 				_createWhereClauseCondition(
@@ -481,7 +525,7 @@ public class BQSessionRepositoryImpl
 			_dslHelper.dateTrunc(
 				DatePart.valueOf(interval.name()),
 				_dslHelper.getDateAtTimeZoneField(
-					"BQSession.sessionStart", zoneId.toString())));
+					"Session.sessionStart", zoneId.toString())));
 
 		sessionStartField = sessionStartField.as("eventdate");
 
@@ -506,7 +550,11 @@ public class BQSessionRepositoryImpl
 						"sessions"
 					)
 				).from(
-					"BQSession"
+					DSL.table(
+						"BQSession"
+					).as(
+						"Session"
+					)
 				)
 			).where(
 				_createWhereClauseCondition(
@@ -522,7 +570,7 @@ public class BQSessionRepositoryImpl
 
 		Field dayOfWeekField = _dslHelper.getDayOfWeekField(
 			_dslHelper.getDateAtTimeZoneField(
-				"BQSession.sessionStart", zoneId.toString()));
+				"Session.sessionStart", zoneId.toString()));
 
 		dayOfWeekField = dayOfWeekField.cast(BigDecimal.class);
 
@@ -532,7 +580,7 @@ public class BQSessionRepositoryImpl
 			_dslHelper.dateTrunc(
 				DatePart.valueOf(String.valueOf(Interval.HOUR)),
 				_dslHelper.getDateAtTimeZoneField(
-					"BQSession.sessionStart", zoneId.toString())));
+					"Session.sessionStart", zoneId.toString())));
 
 		Field hourOfDayField = DSL.extract(
 			dateField, DatePart.HOUR
@@ -550,7 +598,7 @@ public class BQSessionRepositoryImpl
 					DSL.field(
 						"IndividualIdentity.individualId"
 					).isNull(),
-					DSL.field("BQSession.userid")))
+					DSL.field("Session.userid")))
 		).cast(
 			BigDecimal.class
 		);
@@ -563,7 +611,11 @@ public class BQSessionRepositoryImpl
 				_dslContext.select(
 					dayOfWeekField, hourOfDayField, uniqueVisitorsField
 				).from(
-					"BQSession"
+					DSL.table(
+						"BQSession"
+					).as(
+						"Session"
+					)
 				)
 			).where(
 				_createWhereClauseCondition(channelId, timeRange, zoneId)
@@ -603,7 +655,11 @@ public class BQSessionRepositoryImpl
 		SelectJoinStep<Record1<String>> selectJoinStep = _dslContext.select(
 			field
 		).from(
-			"BQSession"
+			DSL.table(
+				"BQSession"
+			).as(
+				"Session"
+			)
 		);
 
 		if (_nestedFieldNamesMap.containsKey(fieldName)) {
@@ -719,12 +775,12 @@ public class BQSessionRepositoryImpl
 
 		return DSL.and(
 			DSL.field(
-				"BQSession.channelId"
+				"Session.channelId"
 			).eq(
 				channelId
 			),
 			DSL.field(
-				"BQSession.sessionStart"
+				"Session.sessionStart"
 			).between(
 				_dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString()),
@@ -821,7 +877,7 @@ public class BQSessionRepositoryImpl
 
 		SelectJoinStep<Record3<Object, Boolean, Date>> selectJoinStep =
 			_dslContext.select(
-				DSL.field("BQSession.userId"),
+				DSL.field("Session.userId"),
 				DSL.when(
 					DSL.field(
 						"IndividualIdentity.individualId"
@@ -836,12 +892,16 @@ public class BQSessionRepositoryImpl
 					_dslHelper.dateTrunc(
 						datePart,
 						_dslHelper.getDateAtTimeZoneField(
-							"BQSession.sessionStart", zoneId.toString()))
+							"Session.sessionStart", zoneId.toString()))
 				).as(
 					"sessionDate"
 				)
 			).from(
-				"BQSession"
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
 			);
 
 		SelectOnConditionStep<? extends Record> selectOnConditionStep =
@@ -850,9 +910,9 @@ public class BQSessionRepositoryImpl
 		selectOnConditionStep.where(
 			_createWhereClauseCondition(channelId, timeRange, zoneId)
 		).groupBy(
-			DSL.field("BQSession.userId"), DSL.field("isKnown")
+			DSL.field("Session.userId"), DSL.field("isKnown")
 		).orderBy(
-			DSL.field("BQSession.userId"), DSL.field("isKnown")
+			DSL.field("Session.userId"), DSL.field("isKnown")
 		);
 
 		return selectOnConditionStep;
@@ -877,16 +937,19 @@ public class BQSessionRepositoryImpl
 			_dslHelper.dateTrunc(
 				datePart,
 				_dslHelper.getDateAtTimeZoneField(
-					"BQSession.sessionStart", zoneId.toString())),
+					"Session.sessionStart", zoneId.toString())),
 			DSL.field("firstSession.sessionDate", OffsetDateTime.class));
 
 		SelectJoinStep<Record3<Object, Object, OffsetDateTime>> selectJoinStep =
 			_dslContext.select(
-				DSL.field("BQSession.userId"),
-				DSL.field("firstSession.isKnown"),
+				DSL.field("Session.userId"), DSL.field("firstSession.isKnown"),
 				dateDiffField.as("intervalNumber")
 			).from(
-				"BQSession"
+				DSL.table(
+					"BQSession"
+				).as(
+					"Session"
+				)
 			);
 
 		SelectOnConditionStep<? extends Record> selectOnConditionStep =
@@ -896,17 +959,17 @@ public class BQSessionRepositoryImpl
 			DSL.table("firstSession")
 		).on(
 			DSL.field(
-				"BQSession.userId"
+				"Session.userId"
 			).eq(
 				DSL.field("firstSession.userId")
 			)
 		).where(
 			_createWhereClauseCondition(channelId, timeRange, zoneId)
 		).groupBy(
-			DSL.field("BQSession.userId"), DSL.field("firstSession.isKnown"),
+			DSL.field("Session.userId"), DSL.field("firstSession.isKnown"),
 			DSL.field("intervalNumber")
 		).orderBy(
-			DSL.field("BQSession.userId"), DSL.field("firstSession.isKnown")
+			DSL.field("Session.userId"), DSL.field("firstSession.isKnown")
 		);
 
 		return selectOnConditionStep;
@@ -921,7 +984,7 @@ public class BQSessionRepositoryImpl
 					DSL.field(
 						"IndividualIdentity.individualId"
 					).isNull(),
-					DSL.field("BQSession.userid")))
+					DSL.field("Session.userid")))
 		).as(
 			"visitors"
 		);
@@ -933,20 +996,28 @@ public class BQSessionRepositoryImpl
 		return selectJoinStep.leftJoin(
 			_dslContext.select(
 				DSL.field(
-					"BQIdentity.individualId"
+					"Identity.individualId"
 				).as(
 					"individualId"
 				),
-				DSL.field("BQIdentity.id")
+				DSL.field("Identity.id")
 			).from(
-				"BQIdentity"
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
 			).innerJoin(
-				"BQIndividual"
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
 			).on(
 				DSL.field(
-					"BQIdentity.individualId"
+					"Identity.individualId"
 				).eq(
-					DSL.field("BQIndividual.id")
+					DSL.field("Individual.id")
 				)
 			).asTable(
 				"IndividualIdentity"
@@ -955,7 +1026,7 @@ public class BQSessionRepositoryImpl
 			DSL.field(
 				"IndividualIdentity.id"
 			).eq(
-				DSL.field("BQSession.userid")
+				DSL.field("Session.userid")
 			)
 		);
 	}

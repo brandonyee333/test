@@ -81,20 +81,24 @@ public class BQSessionInterestScoreRepositoryImpl
 
 		SelectJoinStep<Record3<String, String, Integer>> selectSelectStep =
 			_dslContext.select(
-				DSL.field("BQSessionInterestScore.sessionId", String.class),
+				DSL.field("SessionInterestScore.sessionId", String.class),
 				DSL.field(
-					"LOWER(BQSessionInterestScore.keyword)", String.class
+					"LOWER(SessionInterestScore.keyword)", String.class
 				).as(
 					"keyword"
 				),
 				DSL.countDistinct(
-					DSL.field("BQSessionInterestScore.sessionId")
+					DSL.field("SessionInterestScore.sessionId")
 				).over(
 				).as(
 					"totalCount"
 				)
 			).from(
-				"BQSessionInterestScore"
+				DSL.table(
+					"BQSessionInterestScore"
+				).as(
+					"SessionInterestScore"
+				)
 			);
 
 		List<Condition> conditions = new ArrayList<>();
@@ -102,7 +106,7 @@ public class BQSessionInterestScoreRepositoryImpl
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"BQSessionInterestScore.channelId", Long.class
+					"SessionInterestScore.channelId", Long.class
 				).eq(
 					channelId
 				));
@@ -110,13 +114,13 @@ public class BQSessionInterestScoreRepositoryImpl
 
 		conditions.add(
 			DSL.field(
-				"BQSessionInterestScore.interested", Boolean.class
+				"SessionInterestScore.interested", Boolean.class
 			).eq(
 				Boolean.TRUE
 			));
 		conditions.add(
 			DSL.field(
-				"BQSessionInterestScore.recordedDate"
+				"SessionInterestScore.recordedDate"
 			).between(
 				DateUtil.toUTCString(
 					timeRange.getStartDate(), DateUtil.PATTERN_SHORT),

@@ -64,10 +64,14 @@ public class PageAssetMetricRepositoryImpl
 		return selectSelectStep.from(
 			getTableName(timeRange)
 		).leftJoin(
-			"BQIdentity"
+			DSL.table(
+				"BQIdentity"
+			).as(
+				"Identity"
+			)
 		).on(
 			DSL.field(
-				"BQIdentity.id"
+				"Identity.id"
 			).eq(
 				DSL.field(getTableName(timeRange) + ".userId")
 			)
@@ -137,12 +141,12 @@ public class PageAssetMetricRepositoryImpl
 
 		if (metricType == PageMetricType.VISITORS) {
 			Field<Integer> visitorsField = DSL.countDistinct(
-				DSL.field("BQIdentity.individualId")
+				DSL.field("Identity.individualId")
 			).plus(
 				DSL.countDistinct(
 					DSL.when(
 						DSL.field(
-							"BQIdentity.individualId"
+							"Identity.individualId"
 						).isNull(),
 						DSL.field(getTableName(timeRange) + ".userId")))
 			);

@@ -249,7 +249,12 @@ public class BQIndividualRepositoryImpl
 			selectJoinStep = _getSelectJoinStep(null, selectSelectStep);
 		}
 		else {
-			selectJoinStep = selectSelectStep.from("BQIndividual");
+			selectJoinStep = selectSelectStep.from(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				));
 		}
 
 		Condition condition;
@@ -683,7 +688,12 @@ public class BQIndividualRepositoryImpl
 			selectJoinStep = _getSelectJoinStep(null, selectSelectStep);
 		}
 		else {
-			selectJoinStep = selectSelectStep.from("BQIndividual");
+			selectJoinStep = selectSelectStep.from(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				));
 		}
 
 		Condition condition;
@@ -745,18 +755,22 @@ public class BQIndividualRepositoryImpl
 		return DSL.exists(
 			DSL.selectOne(
 			).from(
-				"BQIdentityActivity"
+				DSL.table(
+					"BQIdentityActivity"
+				).as(
+					"IdentityActivity"
+				)
 			).where(
 				DSL.and(
 					DSL.field(
-						"BQIdentityActivity.channelId"
+						"IdentityActivity.channelId"
 					).eq(
 						channelId
 					),
 					DSL.field(
-						"BQIdentityActivity.individualId"
+						"IdentityActivity.individualId"
 					).eq(
-						DSL.field("BQIndividual.id")
+						DSL.field("Individual.id")
 					))
 			));
 	}
@@ -794,7 +808,12 @@ public class BQIndividualRepositoryImpl
 			selectJoinStep = _getSelectJoinStep(null, selectSelectStep);
 		}
 		else {
-			selectJoinStep = selectSelectStep.from("BQIndividual");
+			selectJoinStep = selectSelectStep.from(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				));
 		}
 
 		List<Condition> conditions = new ArrayList<>();
@@ -816,7 +835,7 @@ public class BQIndividualRepositoryImpl
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"BQIdentityActivity.channelId"
+					"IdentityActivity.channelId"
 				).eq(
 					channelId
 				));
@@ -927,18 +946,22 @@ public class BQIndividualRepositoryImpl
 		return DSL.exists(
 			DSL.selectOne(
 			).from(
-				"BQMembership"
+				DSL.table(
+					"BQMembership"
+				).as(
+					"Membership"
+				)
 			).where(
 				DSL.and(
 					DSL.field(
-						"BQMembership.segmentId"
+						"Membership.segmentId"
 					).eq(
 						individualSegmentId
 					),
 					DSL.field(
-						"BQMembership.individualId"
+						"Membership.individualId"
 					).eq(
-						DSL.field("BQIndividual.id")
+						DSL.field("Individual.id")
 					))
 			));
 	}
@@ -1050,17 +1073,21 @@ public class BQIndividualRepositoryImpl
 				"screenname"
 			),
 			DSL.field(
-				"BQIndividual.fields"
+				"Individual.fields"
 			).as(
 				"fields"
 			)
 		).from(
 			"individuals"
 		).innerJoin(
-			"BQIndividual"
+			DSL.table(
+				"BQIndividual"
+			).as(
+				"Individual"
+			)
 		).on(
 			DSL.field(
-				"BQIndividual.id"
+				"Individual.id"
 			).eq(
 				DSL.field("individuals.id")
 			)
