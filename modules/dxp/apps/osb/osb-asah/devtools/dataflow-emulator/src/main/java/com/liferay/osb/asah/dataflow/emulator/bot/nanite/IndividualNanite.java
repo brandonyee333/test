@@ -14,18 +14,16 @@
 
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.entity.BQExpandoValue;
 import com.liferay.osb.asah.common.entity.BQIdentity;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.entity.BQUser;
 import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.repository.BQExpandoColumnRepository;
 import com.liferay.osb.asah.common.repository.BQExpandoValueRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQUserRepository;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +38,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.ArrayUtils;
+
+import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -164,6 +166,8 @@ public class IndividualNanite {
 		mergedBQIndividual.setId(bqIndividual2.getId());
 		mergedBQIndividual.setLanguageId(bqIndividual2.getLanguageId());
 		mergedBQIndividual.setLastName(bqIndividual2.getLastName());
+		mergedBQIndividual.setMemberships(
+			_mergeBQIndividualMemberships(bqIndividual1, bqIndividual2));
 		mergedBQIndividual.setMiddleName(bqIndividual2.getMiddleName());
 		mergedBQIndividual.setModifiedDate(bqIndividual2.getModifiedDate());
 		mergedBQIndividual.setScreenName(bqIndividual2.getScreenName());
@@ -190,6 +194,13 @@ public class IndividualNanite {
 					Optional::get)));
 
 		return new ArrayList<>(mergedFieldsMap.values());
+	}
+
+	private List<BQIndividual.Membership> _mergeBQIndividualMemberships(
+		BQIndividual bqIndividual1, BQIndividual bqIndividual2) {
+
+		return ListUtils.union(
+			bqIndividual1.getMemberships(), bqIndividual2.getMemberships());
 	}
 
 	private List<BQIndividual> _mergeBQIndividuals(
@@ -239,6 +250,8 @@ public class IndividualNanite {
 		bqIndividual.setLanguageId(
 			_getFieldValueStringByName(defaultFields, "languageId"));
 		bqIndividual.setLastName(bqUser.getLastName());
+		bqIndividual.setMemberships(
+			_toMemberships(bqUser.getDataSourceId(), bqUser.getFields()));
 		bqIndividual.setMiddleName(bqUser.getMiddleName());
 		bqIndividual.setModifiedDate(bqUser.getModifiedDate());
 		bqIndividual.setScreenName(bqUser.getScreenName());
@@ -267,8 +280,43 @@ public class IndividualNanite {
 		return fields;
 	}
 
-	@Autowired
-	private BQExpandoColumnRepository _bqExpandoColumnRepository;
+	private List<BQIndividual.Membership> _toMemberships(
+		Long dataSourceId, List<BQUser.Field> bqUserFields) {
+
+		if (bqUserFields == null) {
+			return Collections.emptyList();
+		}
+
+		List<BQIndividual.Membership> memberships = new ArrayList<>();
+
+		for (BQUser.Field bqUserField : bqUserFields) {
+			if (!ArrayUtils.contains(
+					new String[] {
+						"groupIds", "organizationIds", "roleIds", "teamIds",
+						"userGroupIds"
+					},
+					bqUserField.getName())) {
+
+				continue;
+			}
+
+			JSONArray jsonArray = new JSONArray(bqUserField.getValue());
+
+			List<String> ids = new ArrayList<>();
+
+			for (int i = 0; i < jsonArray.length(); i++) {
+				ids.add(
+					DigestUtils.sha256Hex(
+						ProjectIdThreadLocal.getProjectId() + "#" +
+							dataSourceId + "#" + jsonArray.getLong(i)));
+			}
+
+			memberships.add(
+				new BQIndividual.Membership(ids, bqUserField.getName()));
+		}
+
+		return memberships;
+	}
 
 	@Autowired
 	private BQExpandoValueRepository _bqExpandoValueRepository;
@@ -281,8 +329,5 @@ public class IndividualNanite {
 
 	@Autowired
 	private BQUserRepository _bqUserRepository;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }
