@@ -27,7 +27,6 @@ import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
-import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 import com.liferay.osb.asah.common.util.BQSQLUtil;
 
 import java.math.BigDecimal;
@@ -241,7 +240,7 @@ public class BQIndividualRepositoryImpl
 				DSL.countDistinct(
 					DSL.field(
 						_fieldNameConversionMap.getOrDefault(
-							fieldName, fieldName))));
+							fieldName, StringUtils.lowerCase(fieldName)))));
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep;
 
@@ -676,7 +675,8 @@ public class BQIndividualRepositoryImpl
 		SelectSelectStep<Record1<String>> selectSelectStep =
 			_dslContext.selectDistinct(
 				DSL.field(
-					_fieldNameConversionMap.getOrDefault(fieldName, fieldName),
+					_fieldNameConversionMap.getOrDefault(
+						fieldName, StringUtils.lowerCase(fieldName)),
 					String.class
 				).as(
 					"fieldValue"
@@ -830,7 +830,13 @@ public class BQIndividualRepositoryImpl
 			).eq(
 				fieldName
 			));
-		conditions.add(ConditionUtil.toCondition(filterString));
+
+		if (StringUtils.isNotBlank(filterString)) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString);
+
+			conditions.add(filterExpression.getCondition());
+		}
 
 		if (channelId != null) {
 			conditions.add(
