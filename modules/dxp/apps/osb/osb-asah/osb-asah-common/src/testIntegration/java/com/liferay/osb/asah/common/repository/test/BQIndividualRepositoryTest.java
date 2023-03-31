@@ -68,6 +68,34 @@ public class BQIndividualRepositoryTest
 			individual.getLastActivityDate());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
+	@Test
+	public void testSearchBQIndividualsOrganizationsFilter() {
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"custom/Organization/value eq 'Developer' and " +
+					"organizations.filter(filter='(id eq " +
+						"''23k92323l923lf0as'')')",
+				false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"custom/Birth_Country/value eq 'England' and " +
+					"custom/Zip_Code/value eq 91765 and userGroupIds eq '" +
+						"newr87232kjhdsf89'",
+				false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(custom/Organization_Type" +
+					"/value eq ''test'')')",
+				false, null));
+	}
+
 	private static final Long _SEGMENT_ID = 11L;
 
 	@Autowired

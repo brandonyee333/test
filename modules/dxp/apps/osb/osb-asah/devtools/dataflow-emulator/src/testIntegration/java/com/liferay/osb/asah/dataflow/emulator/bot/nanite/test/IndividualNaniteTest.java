@@ -32,8 +32,12 @@ import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -178,6 +182,52 @@ public class IndividualNaniteTest
 		jsonObject = jsonObjectMap.get("company");
 
 		Assertions.assertEquals("Liferay", jsonObject.getString("value"));
+	}
+
+	@BQSQLResource(resourcePath = "test_merge_field.sql")
+	@Test
+	public void testMergeMemberships() throws Exception {
+		JSONArray jsonArray = ResourceUtil.readResourceToJSONArray(
+			"dependencies/dxp_entities6.json", this);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			_dxpEntitiesIngestionNanite.processMessage(
+				new Message<>(
+					null,
+					new HashMap<String, String>() {
+						{
+							put("dataSourceId", "1");
+							put("projectId", "test");
+						}
+					},
+					null, String.valueOf(jsonArray.getJSONObject(i))));
+		}
+
+		_individualNanite.run();
+
+		Optional<BQIndividual> bqIndividualOptional =
+			_bqIndividualRepository.findByEmailAddress("joe@liferay.com");
+
+		BQIndividual bqIndividual = bqIndividualOptional.get();
+
+		Map<String, List<String>> memberships = Stream.of(
+			bqIndividual.getMemberships()
+		).flatMap(
+			List::stream
+		).collect(
+			HashMap::new,
+			(map, membership) -> map.put(
+				membership.getName(), membership.getIds()),
+			Map::putAll
+		);
+
+		List<String> groupIds = memberships.get("groupIds");
+
+		Assertions.assertEquals(2, groupIds.size());
+		Assertions.assertTrue(
+			groupIds.contains(DigestUtils.sha256Hex("test#1#12")));
+		Assertions.assertTrue(
+			groupIds.contains(DigestUtils.sha256Hex("test#1#23")));
 	}
 
 	@Autowired

@@ -1144,28 +1144,39 @@ public class FilterExpressionTest {
 		_assertEquals(
 			DSL.and(
 				DSL.field(
-					"Fields.name"
+					"IndividualFields_custom_field.name"
 				).eq(
 					"custom_field"
 				),
-				DSL.field(
-					"Fields.value"
-				).eq(
-					"test"
-				)),
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN STARTS_WITH(",
+						"IndividualFields_custom_field.value, '[') THEN ",
+						"IndividualFields_custom_field.value LIKE '%test%' ",
+						"ELSE IndividualFields_custom_field.value = 'test' ",
+						"END"))),
 			"(custom/custom_field/value eq 'test')",
-			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")), true);
+			new HashSet<>(
+				Arrays.asList(
+					"ExpandoValue", "Individual",
+					"IndividualFields_custom_field")),
+			true);
 
 		_assertEquals(
 			DSL.and(
-				DSL.condition("LOWER(Fields.value) LIKE '%test%'"),
+				DSL.condition(
+					"LOWER(IndividualFields_custom_field.value) LIKE '%test%'"),
 				DSL.field(
-					"Fields.name"
+					"IndividualFields_custom_field.name"
 				).eq(
 					"custom_field"
 				)),
 			"contains(custom/custom_field/value, 'test')",
-			new HashSet<>(Arrays.asList("ExpandoValue", "Individual")), true);
+			new HashSet<>(
+				Arrays.asList(
+					"ExpandoValue", "Individual",
+					"IndividualFields_custom_field")),
+			true);
 	}
 
 	@Test
@@ -1792,7 +1803,9 @@ public class FilterExpressionTest {
 						DSL.field(
 							"ExpandoValue.classPK"
 						).eq(
-							DSL.field("Organization.organizationId")
+							DSL.field(
+								"SAFE_CAST(Organization.organizationId AS " +
+									"STRING)")
 						),
 						DSL.field(
 							"ExpandoValue.classType"
@@ -1858,7 +1871,9 @@ public class FilterExpressionTest {
 						DSL.field(
 							"ExpandoValue.classPK"
 						).eq(
-							DSL.field("Organization.organizationId")
+							DSL.field(
+								"SAFE_CAST(Organization.organizationId AS " +
+									"STRING)")
 						),
 						DSL.field(
 							"ExpandoValue.classType"
