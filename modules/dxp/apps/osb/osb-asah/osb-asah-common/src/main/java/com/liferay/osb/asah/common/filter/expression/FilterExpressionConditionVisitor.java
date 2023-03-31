@@ -706,7 +706,8 @@ public class FilterExpressionConditionVisitor
 					DSL.field(
 						"ExpandoValue.classPK"
 					).eq(
-						DSL.field("Organization.organizationId")
+						DSL.field(
+							"SAFE_CAST(Organization.organizationId AS STRING)")
 					),
 					DSL.field(
 						"ExpandoValue.classType"
