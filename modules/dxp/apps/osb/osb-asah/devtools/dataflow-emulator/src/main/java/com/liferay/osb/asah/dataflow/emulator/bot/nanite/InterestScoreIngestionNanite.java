@@ -69,11 +69,17 @@ public class InterestScoreIngestionNanite {
 
 		_bqIdentityInterestScoreRepository.deleteByRecordedDate(date);
 
-		_bqIdentityInterestScoreRepository.insertAll(bqIdentityInterestScores);
+		if (!bqIdentityInterestScores.isEmpty()) {
+			_bqIdentityInterestScoreRepository.insertAll(
+				bqIdentityInterestScores);
+		}
 
 		_bqSessionInterestScoreRepository.deleteByRecordedDate(date);
 
-		_bqSessionInterestScoreRepository.insertAll(bqSessionInterestScores);
+		if (!bqSessionInterestScores.isEmpty()) {
+			_bqSessionInterestScoreRepository.insertAll(
+				bqSessionInterestScores);
+		}
 	}
 
 	private List<BQIdentityInterestScore> _getBQIdentityInterestScores(
