@@ -1191,6 +1191,16 @@ public class BQIndividualRepositoryImpl
 					DSL.field("Session.userId")
 				)
 			);
+
+			if (referencedTableNames.contains("SessionReferrers")) {
+				selectJoinStep = selectJoinStep.crossJoin(
+					DSL.table("UNNEST(Session.referrers) AS SessionReferrer"));
+			}
+
+			if (referencedTableNames.contains("SessionUrls")) {
+				selectJoinStep = selectJoinStep.crossJoin(
+					DSL.table("UNNEST(Session.urls) AS SessionUrl"));
+			}
 		}
 
 		if (referencedTableNames.contains("User")) {
