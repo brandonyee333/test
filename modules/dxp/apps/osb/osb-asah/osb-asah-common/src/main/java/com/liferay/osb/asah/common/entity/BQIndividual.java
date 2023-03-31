@@ -107,6 +107,11 @@ public class BQIndividual {
 	}
 
 	@BigQueryColumn
+	public List<Membership> getMemberships() {
+		return _memberships;
+	}
+
+	@BigQueryColumn
 	public String getMiddleName() {
 		return _middleName;
 	}
@@ -168,6 +173,10 @@ public class BQIndividual {
 
 	public void setLastName(String lastName) {
 		_lastName = lastName;
+	}
+
+	public void setMemberships(List<Membership> memberships) {
+		_memberships = memberships;
 	}
 
 	public void setMiddleName(String middleName) {
@@ -243,6 +252,31 @@ public class BQIndividual {
 
 	}
 
+	public static class Membership {
+
+		public Membership() {
+		}
+
+		public Membership(List<String> ids, String name) {
+			_ids = ids;
+			_name = name;
+		}
+
+		@BigQueryColumn
+		public List<String> getIds() {
+			return _ids;
+		}
+
+		@BigQueryColumn
+		public String getName() {
+			return _name;
+		}
+
+		private List<String> _ids;
+		private String _name;
+
+	}
+
 	private Date _birthday;
 	private Date _createDate;
 	private String _emailAddress;
@@ -252,6 +286,7 @@ public class BQIndividual {
 	private String _jobTitle;
 	private String _languageId;
 	private String _lastName;
+	private List<Membership> _memberships;
 	private String _middleName;
 	private Date _modifiedDate;
 	private String _screenName;
