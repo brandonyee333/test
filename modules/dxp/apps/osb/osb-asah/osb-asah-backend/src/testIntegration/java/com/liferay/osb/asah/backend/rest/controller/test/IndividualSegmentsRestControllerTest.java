@@ -37,6 +37,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -50,6 +51,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class IndividualSegmentsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@AfterEach
+	public void tearDown() {
+		_segmentRepository.deleteAll();
+	}
 
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
@@ -403,5 +409,8 @@ public class IndividualSegmentsRestControllerTest
 
 	@Autowired
 	private SegmentDog _segmentDog;
+
+	@Autowired
+	private SegmentRepository _segmentRepository;
 
 }
