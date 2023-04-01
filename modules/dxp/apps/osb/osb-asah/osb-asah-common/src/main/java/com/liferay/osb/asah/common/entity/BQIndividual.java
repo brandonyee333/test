@@ -272,6 +272,14 @@ public class BQIndividual {
 			return _name;
 		}
 
+		public void setIds(List<String> ids) {
+			_ids = ids;
+		}
+
+		public void setName(String name) {
+			_name = name;
+		}
+
 		private List<String> _ids;
 		private String _name;
 
