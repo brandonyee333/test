@@ -103,7 +103,7 @@ renderResponse.setTitle(StringBundler.concat(selectedUser.getFullName(), " - ", 
 						cssClass="table-cell-content"
 						name="status"
 					>
-						<span class="<%= "text-" + (uadApplicationSummaryDisplay.hasItems() ? "warning" : "success") %>">
+						<span class="text-<%= (uadApplicationSummaryDisplay.hasItems() ? "warning" : "success") %>">
 							<liferay-ui:message key='<%= uadApplicationSummaryDisplay.hasItems() ? "pending" : "done" %>' />
 						</span>
 					</liferay-ui:search-container-column-text>
