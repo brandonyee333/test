@@ -47,7 +47,7 @@ import org.jooq.InsertValuesStep6;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
-import org.jooq.Record5;
+import org.jooq.Record6;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
@@ -618,7 +618,7 @@ public class BQMembershipRepositoryImpl
 
 		Date date = new Date();
 
-		SelectSelectStep<Record5<Date, String, String, Date, Long>>
+		SelectSelectStep<Record6<Date, String, String, Date, Long, String>>
 			selectSelectStep = _dslContext.select(
 				DSL.val(
 					date, Date.class
@@ -644,9 +644,14 @@ public class BQMembershipRepositoryImpl
 					segmentId
 				).as(
 					"segmentId"
+				),
+				DSL.val(
+					"ACTIVE"
+				).as(
+					"status"
 				));
 
-		SelectJoinStep<Record5<Date, String, String, Date, Long>>
+		SelectJoinStep<Record6<Date, String, String, Date, Long, String>>
 			selectJoinStep = selectSelectStep.from(
 				DSL.table(
 					"BQIdentity"
@@ -692,7 +697,8 @@ public class BQMembershipRepositoryImpl
 				DSL.field("identityId", String.class),
 				DSL.field("individualId", String.class),
 				DSL.field("modifiedDate", Date.class),
-				DSL.field("segmentId", Long.class)
+				DSL.field("segmentId", Long.class),
+				DSL.field("status", String.class)
 			).select(
 				selectJoinStep.where(
 					conditions
