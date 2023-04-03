@@ -6,7 +6,8 @@ import {langSub} from '../helpers/language';
 
 export default class CustomerPortalBanner extends React.Component {
 	static propTypes = {
-		customerPortalURL: PropTypes.string.isRequired
+		customerPortalURL: PropTypes.string.isRequired,
+		videoTutorialURL: PropTypes.string.isRequired
 	};
 
 	render() {
@@ -15,7 +16,7 @@ export default class CustomerPortalBanner extends React.Component {
 				<Alert type="info">
 					{langSub(
 						Liferay.Language.get(
-							'visit-the-new-x-to-manage-your-projects-assign-team-members-and-activate-your-products-check-out-our-video-tutorials-to-get-started'
+							'visit-the-new-x-to-manage-your-projects-assign-team-members-and-activate-your-products-check-out-x-to-get-started'
 						),
 						[
 							<a
@@ -24,6 +25,13 @@ export default class CustomerPortalBanner extends React.Component {
 								href={this.props.customerPortalURL}
 							>
 								{Liferay.Language.get('customer-portal')}
+							</a>,
+							<a
+								aria-label={Liferay.Language.get('video-tutorial-url')}
+								className="btn-link"
+								href={this.props.videoTutorialURL}
+							>
+								{Liferay.Language.get('our-video-tutorials')}
 							</a>
 						],
 						false

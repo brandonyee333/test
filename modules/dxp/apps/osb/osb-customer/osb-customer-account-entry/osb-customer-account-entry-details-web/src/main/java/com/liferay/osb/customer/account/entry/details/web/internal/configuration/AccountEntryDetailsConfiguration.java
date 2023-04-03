@@ -41,6 +41,12 @@ public interface AccountEntryDetailsConfiguration {
 	public String dataAccessArticleURL();
 
 	@Meta.AD(
+		deflt = "https://help.liferay.com/hc/sections/8712397409421",
+		name = "video-tutorial-url", required = false
+	)
+	public String videoTutorialURL();
+
+	@Meta.AD(
 		deflt = "https://liferay-support.zendesk.com/agent/tickets/",
 		name = "zendesk-ticket-url", required = false
 	)

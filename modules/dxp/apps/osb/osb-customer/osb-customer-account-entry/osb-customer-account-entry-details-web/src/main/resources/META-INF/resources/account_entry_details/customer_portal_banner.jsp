@@ -22,7 +22,8 @@
 	AccountDetails.render(
 		AccountDetails.CustomerPortalBanner,
 		{
-			customerPortalURL: '<%= accountEntryDetailsConfiguration.customerPortalURL() %>'
+			customerPortalURL: '<%= accountEntryDetailsConfiguration.customerPortalURL() %>',
+			videoTutorialURL: '<%= accountEntryDetailsConfiguration.videoTutorialURL() %>'
 		},
 		document.getElementById('<portlet:namespace />customerPortalBanner')
 	);
