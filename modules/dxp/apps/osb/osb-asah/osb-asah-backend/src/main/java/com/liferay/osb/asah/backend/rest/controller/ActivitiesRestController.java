@@ -58,17 +58,18 @@ public class ActivitiesRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
-		return JSONUtil.put(
+		List<BQAsset> bqAssets = _bqAssetDog.searchBQAssets(
+			filterString, PageRequest.of(page, size, Sort.by(sorts)));
+
+		JSONObject jsonObject = JSONUtil.put(
 			"_embedded",
-			JSONUtil.put(
-				"activities",
-				_toTransformations(
-					_bqAssetDog.searchBQAssets(
-						filterString,
-						PageRequest.of(page, size, Sort.by(sorts)))))
-		).put(
-			"page", getPageJSONObject(page, size, size)
-		).toString();
+			JSONUtil.put("activities", _toTransformations(bqAssets)));
+
+		if (!bqAssets.isEmpty()) {
+			jsonObject.put("page", getPageJSONObject(page, size, size));
+		}
+
+		return jsonObject.toString();
 	}
 
 	private JSONArray _toTransformations(List<BQAsset> bqAssets) {
