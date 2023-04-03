@@ -52,6 +52,10 @@ definition {
 	}
 
 	macro addCP {
+		WaitForElementPresent(
+			key_header = "Folders and Articles",
+			locator1 = "KnowledgeBase#PAGE_TREE_PANEL_HEADER");
+
 		if (isSet(kbTemplateTitle)) {
 			LexiconEntry.gotoAddMenuItem(menuItem = ${kbTemplateTitle});
 		}
