@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.entity.BQAsset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,12 +50,10 @@ public class ActivitiesRestController extends BaseRestController {
 
 	@GetMapping("/assets")
 	public String getAssetTransformations(
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size,
-			@RequestParam(name = "sort", required = false) String[] sorts)
-		throws Exception {
+		@RequestParam(name = "filter", required = false) String filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		List<BQAsset> bqAssets = _bqAssetDog.searchBQAssets(
 			filterString, PageRequest.of(page, size, Sort.by(sorts)));
@@ -73,7 +70,11 @@ public class ActivitiesRestController extends BaseRestController {
 	}
 
 	private JSONArray _toTransformations(List<BQAsset> bqAssets) {
-		List<JSONObject> jsonObjects = new ArrayList<>();
+		JSONArray jsonArray = new JSONArray();
+
+		if (bqAssets.isEmpty()) {
+			return jsonArray;
+		}
 
 		List<DataSource> dataSources = _dataSourceDog.getDataSources();
 
@@ -98,10 +99,10 @@ public class ActivitiesRestController extends BaseRestController {
 				}
 			}
 
-			jsonObjects.add(jsonObject);
+			jsonArray.put(jsonObject);
 		}
 
-		return new JSONArray(jsonObjects);
+		return jsonArray;
 	}
 
 	private final BQAssetDog _bqAssetDog;
