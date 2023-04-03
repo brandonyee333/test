@@ -37,7 +37,6 @@ public class ActivityDTO {
 
 		_applicationId = bqEvent.getApplicationId();
 		_eventId = bqEvent.getId();
-
 		_ownerId = bqIndividualId;
 		_startTime = bqEvent.getCreateDate();
 	}
