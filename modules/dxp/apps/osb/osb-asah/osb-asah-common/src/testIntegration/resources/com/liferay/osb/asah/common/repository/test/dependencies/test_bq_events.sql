@@ -5,4 +5,4 @@ INSERT INTO Event (applicationId, id, canonicalUrl, channelId, eventDate, eventI
 INSERT INTO Event (applicationId, id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES ('Page', '50', 'http://liferay.com', 1, timestamp '${now-26h}', 'pageUnloaded', '1', 'Liferay', '1');
 INSERT INTO Event (applicationId, id, canonicalUrl, channelId, eventDate, eventId, sessionId, title, userId) VALUES ('SocialBookmarks', '60', 'http://liferay.com', 1, timestamp '${now-30h}', 'shared', '1', 'Liferay', '1');
 
-INSERT INTO identity_raw (id, individualId) VALUES ('1', '1');
+INSERT INTO Identity_Raw (id, individualId) VALUES ('1', '1');
