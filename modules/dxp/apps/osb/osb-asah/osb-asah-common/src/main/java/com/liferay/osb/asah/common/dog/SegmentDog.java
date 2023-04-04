@@ -83,7 +83,7 @@ public class SegmentDog {
 		if (segment.getId() == null) {
 			segment.setId(_timeOrderedUuidGenerator.generateIdAsLong());
 
-			segment.setIsNew(true);
+			segment.setIsNew(Boolean.TRUE);
 		}
 
 		if ((segment.getType() == null) ||
