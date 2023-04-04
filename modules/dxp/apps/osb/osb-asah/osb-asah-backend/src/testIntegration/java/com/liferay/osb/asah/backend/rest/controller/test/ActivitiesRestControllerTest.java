@@ -54,7 +54,7 @@ public class ActivitiesRestControllerTest
 	@Test
 	public void testGetAssetTransformations1() throws Exception {
 		JSONObject jsonObject = new JSONObject(
-			_activitiesRestController.getAssetTransformations(
+			_activitiesRestController.getBQAssetDTOPageDTO(
 				"contains(object.name, 'clicks')", 0, 10,
 				new String[] {"count", "desc"}));
 
@@ -65,7 +65,7 @@ public class ActivitiesRestControllerTest
 				"JSONArray/asset-transformations", "Object/0", "Object/count"));
 
 		jsonObject = new JSONObject(
-			_activitiesRestController.getAssetTransformations(
+			_activitiesRestController.getBQAssetDTOPageDTO(
 				"(channelId eq '1') and contains(object.name, 'clicks')", 0, 10,
 				new String[] {"count", "desc"}));
 
@@ -91,7 +91,7 @@ public class ActivitiesRestControllerTest
 	@Test
 	public void testGetAssetTransformations2() throws Exception {
 		JSONObject jsonObject = new JSONObject(
-			_activitiesRestController.getAssetTransformations(
+			_activitiesRestController.getBQAssetDTOPageDTO(
 				"contains(object.name, 'random')", 0, 10,
 				new String[] {"count", "desc"}));
 

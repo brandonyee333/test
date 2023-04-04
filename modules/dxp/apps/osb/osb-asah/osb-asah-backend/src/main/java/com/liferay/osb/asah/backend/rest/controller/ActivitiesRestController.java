@@ -52,7 +52,7 @@ public class ActivitiesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/assets")
-	public PageDTO<BQAssetDTO> getAssetTransformations(
+	public PageDTO<BQAssetDTO> getBQAssetDTOPageDTO(
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
