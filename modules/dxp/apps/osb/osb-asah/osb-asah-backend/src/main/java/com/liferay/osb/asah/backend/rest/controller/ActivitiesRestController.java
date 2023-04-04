@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dto.BQAssetDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.BQAssetDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
+import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQAsset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -27,11 +28,9 @@ import java.util.List;
 import java.util.Objects;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,7 +59,7 @@ public class ActivitiesRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		Page<BQAsset> bqAssetsPage = _bqAssetDog.searchBQAssets(
-			filterString, PageRequest.of(page, size, Sort.by(sorts)));
+			filterString, PageRequest.of(page, size, SortUtil.getSort(sorts)));
 
 		return new PageDTO(
 			"_embedded",
