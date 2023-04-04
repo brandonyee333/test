@@ -171,26 +171,27 @@ public class BQIndividualDog {
 	}
 
 	public Page<Individual> searchBQIndividualPage(
-		int page, @Nullable String query, int size) {
+		Long channelId, int page, @Nullable String query, int size) {
 
 		return PageableExecutionUtils.getPage(
 			_searchBQIndividuals(
-				null, null, null, null, null, page, query, null, size, null),
+				null, channelId, null, null, null, page, query, null, size,
+				null),
 			PageRequest.of(page, size),
 			() -> countBQIndividuals(
-				null, null, null, null, null, null, query, null));
+				null, channelId, null, null, null, null, query, null));
 	}
 
 	public Page<Individual> searchBQIndividualPage(
-		Long segmentId, Integer page, String query, int size) {
+		Long channelId, Long segmentId, Integer page, String query, int size) {
 
 		return PageableExecutionUtils.getPage(
 			_searchBQIndividuals(
-				null, null, null, null, null, page, query, segmentId, size,
+				null, channelId, null, null, null, page, query, segmentId, size,
 				null),
 			PageRequest.of(page, size, _getSort(null)),
 			() -> countBQIndividuals(
-				null, null, null, null, null, null, query, segmentId));
+				null, channelId, null, null, null, null, query, segmentId));
 	}
 
 	public Page<Individual> searchBQIndividualPage(

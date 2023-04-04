@@ -213,8 +213,16 @@ public class SegmentDog {
 				fromCreateDate, toCreateDate, segmentId));
 	}
 
-	public Page<Segment> getSegmentPage(int page, int size) {
-		return _segmentRepository.findAll(PageRequest.of(page, size));
+	public Page<Segment> getSegmentPage(Long channelId, int page, int size) {
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		if (channelId == null) {
+			return _segmentRepository.findAll(PageRequest.of(page, size));
+		}
+
+		return PageableExecutionUtils.getPage(
+			_segmentRepository.findBySegmentId(channelId, pageRequest),
+			pageRequest, () -> _segmentRepository.countSegments(channelId));
 	}
 
 	public List<Segment> getSegments(int page, int size, Segment.Type type) {

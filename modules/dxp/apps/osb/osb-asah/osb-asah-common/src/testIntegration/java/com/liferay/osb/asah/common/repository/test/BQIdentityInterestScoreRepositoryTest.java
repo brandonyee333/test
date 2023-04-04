@@ -110,8 +110,8 @@ public class BQIdentityInterestScoreRepositoryTest
 	public void testCountByIndividualId() {
 		Assertions.assertEquals(
 			2,
-			_bqIdentityInterestScoreRepository.countByIndividualId(
-				"374790572703144534"));
+			_bqIdentityInterestScoreRepository.countByChannelIdAndIndividualId(
+				null, "374790572703144534"));
 	}
 
 	@BQSQLResource(
@@ -161,8 +161,8 @@ public class BQIdentityInterestScoreRepositoryTest
 	@Test
 	public void testFindByIndividualId() {
 		List<BQIdentityInterestScore> bqIdentityInterestScores =
-			_bqIdentityInterestScoreRepository.findByIndividualId(
-				"374790572703144534", PageRequest.of(0, 10));
+			_bqIdentityInterestScoreRepository.findByChannelIdAndIndividualId(
+				null, "374790572703144534", PageRequest.of(0, 10));
 
 		Assertions.assertEquals(
 			2, bqIdentityInterestScores.size(),

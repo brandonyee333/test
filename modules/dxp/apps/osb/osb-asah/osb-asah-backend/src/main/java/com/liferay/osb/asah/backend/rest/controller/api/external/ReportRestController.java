@@ -152,6 +152,7 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/blogs")
 	public ResultBagEntityModel<AssetReport>
 		getBlogAssetReportResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String keywords,
 			@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -163,6 +164,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.BLOG);
+				setChannelId(_getChannelIdString(channelId));
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -177,10 +179,10 @@ public class ReportRestController extends BaseRestController {
 
 		return _toResultBagEntityModel(
 			_getBlogAssetReportResultBagEntityModel(
-				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
 			_getBlogAssetReportResultBagEntityModel(
-				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			blogMetricResultBag,
 			blogMetric -> _toBlogAssetReportEntityModel(
 				new AssetReport(blogMetric), rangeKey));
@@ -300,6 +302,7 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/documents-and-media")
 	public ResultBagEntityModel<AssetReport>
 		getDocumentLibraryAssetReportResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String keywords,
 			@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -312,6 +315,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.DOCUMENT);
+				setChannelId(_getChannelIdString(channelId));
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -327,10 +331,10 @@ public class ReportRestController extends BaseRestController {
 
 		return _toResultBagEntityModel(
 			_getDocumentLibraryAssetReportResultBagEntityModel(
-				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
 			_getDocumentLibraryAssetReportResultBagEntityModel(
-				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			documentLibraryMetricResultBag,
 			documentLibraryMetric -> _toDocumentLibraryAssetReportEntityModel(
 				new AssetReport(documentLibraryMetric), rangeKey));
@@ -366,6 +370,7 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/forms")
 	public ResultBagEntityModel<AssetReport>
 		getFormAssetReportResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String keywords,
 			@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -377,6 +382,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.FORM);
+				setChannelId(_getChannelIdString(channelId));
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -391,10 +397,10 @@ public class ReportRestController extends BaseRestController {
 
 		return _toResultBagEntityModel(
 			_getFormAssetReportResultBagEntityModel(
-				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
 			_getFormAssetReportResultBagEntityModel(
-				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			formMetricResultBag,
 			formMetric -> _toFormAssetReportEntityModel(
 				new AssetReport(formMetric), rangeKey));
@@ -403,11 +409,12 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/individuals/{individualId}/activities")
 	public ResultBagEntityModel<ActivityDTO>
 		getIndividualActivityResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@PathVariable String individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
 		Page<BQEvent> bqEventPage = _bqEventDog.searchBQEvents(
-			individualId, page, _PAGE_SIZE);
+			channelId, individualId, page, _PAGE_SIZE);
 
 		Stream<BQEvent> bqEventStream = bqEventPage.stream();
 
@@ -449,9 +456,11 @@ public class ReportRestController extends BaseRestController {
 			activityDTOs.getContent(), activityDTOs.getTotalElements());
 
 		return _toResultBagEntityModel(
-			_getIndividualActivityResultBagEntityModel(individualId, page + 1),
+			_getIndividualActivityResultBagEntityModel(
+				channelId, individualId, page + 1),
 			page,
-			_getIndividualActivityResultBagEntityModel(individualId, page - 1),
+			_getIndividualActivityResultBagEntityModel(
+				channelId, individualId, page - 1),
 			activityResultBag,
 			activityDTO -> _toChildEntityModel(individualId, activityDTO));
 	}
@@ -459,17 +468,20 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/individuals/{individualId}/interests")
 	public ResultBagEntityModel<BQIdentityInterestScore>
 		getIndividualInterestResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@PathVariable String individualId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
 		Page<BQIdentityInterestScore> bqIdentityInterestScorePage =
 			_bqIdentityInterestScoreDog.getBQIdentityInterestScorePage(
-				individualId, _PAGE_SIZE, page * _PAGE_SIZE);
+				channelId, individualId, _PAGE_SIZE, page * _PAGE_SIZE);
 
 		return _toResultBagEntityModel(
-			_getIndividualInterestResultBagEntityModel(individualId, page + 1),
+			_getIndividualInterestResultBagEntityModel(
+				channelId, individualId, page + 1),
 			page,
-			_getIndividualInterestResultBagEntityModel(individualId, page - 1),
+			_getIndividualInterestResultBagEntityModel(
+				channelId, individualId, page - 1),
 			new ResultBag<>(
 				bqIdentityInterestScorePage.getContent(),
 				bqIdentityInterestScorePage.getTotalElements()),
@@ -519,6 +531,7 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/web-contents")
 	public ResultBagEntityModel<AssetReport>
 		getJournalAssetReportResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String keywords,
 			@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -530,6 +543,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.JOURNAL);
+				setChannelId(_getChannelIdString(channelId));
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -545,10 +559,10 @@ public class ReportRestController extends BaseRestController {
 
 		return _toResultBagEntityModel(
 			_getJournalAssetReportResultBagEntityModel(
-				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
 			_getJournalAssetReportResultBagEntityModel(
-				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			journalMetricResultBag,
 			journalMetric -> _toJournalAssetReportEntityModel(
 				new AssetReport(journalMetric), rangeKey));
@@ -562,42 +576,42 @@ public class ReportRestController extends BaseRestController {
 					Arrays.asList(
 						WebMvcLinkBuilder.linkTo(
 							_getBlogAssetReportResultBagEntityModel(
-								null, null, null, null, null)
+								null, null, null, null, null, null)
 						).withRel(
 							"blogs"
 						),
 						WebMvcLinkBuilder.linkTo(
 							_getDocumentLibraryAssetReportResultBagEntityModel(
-								null, null, null, null, null)
+								null, null, null, null, null, null)
 						).withRel(
 							"documents-and-media"
 						),
 						WebMvcLinkBuilder.linkTo(
 							_getFormAssetReportResultBagEntityModel(
-								null, null, null, null, null)
+								null, null, null, null, null, null)
 						).withRel(
 							"forms"
 						),
 						WebMvcLinkBuilder.linkTo(
 							_getReportIndividualDTOResultBagEntityModel(
-								null, null)
+								null, null, null)
 						).withRel(
 							"individuals"
 						),
 						WebMvcLinkBuilder.linkTo(
 							_getPageAssetReportResultBagEntityModel(
-								null, null, null, null, null)
+								null, null, null, null, null, null)
 						).withRel(
 							"pages"
 						),
 						WebMvcLinkBuilder.linkTo(
-							_getSegmentResultBagEntityModel(null)
+							_getSegmentResultBagEntityModel(null, null)
 						).withRel(
 							"segments"
 						),
 						WebMvcLinkBuilder.linkTo(
 							_getJournalAssetReportResultBagEntityModel(
-								null, null, null, null, null)
+								null, null, null, null, null, null)
 						).withRel(
 							"web-contents"
 						)));
@@ -636,6 +650,7 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/pages")
 	public ResultBagEntityModel<PageAssetReport>
 		getPageAssetReportResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String keywords,
 			@RequestParam(defaultValue = "30") Integer rangeKey,
@@ -647,6 +662,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.PAGE);
+				setChannelId(_getChannelIdString(channelId));
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -661,10 +677,10 @@ public class ReportRestController extends BaseRestController {
 
 		return _toResultBagEntityModel(
 			_getPageAssetReportResultBagEntityModel(
-				page + 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page + 1, keywords, rangeKey, sortMetric, sortOrder),
 			page,
 			_getPageAssetReportResultBagEntityModel(
-				page - 1, keywords, rangeKey, sortMetric, sortOrder),
+				channelId, page - 1, keywords, rangeKey, sortMetric, sortOrder),
 			pageMetricResultBag,
 			pageMetric -> _toPageAssetReportEntityModel(
 				new PageAssetReport(new AssetReport(pageMetric)), rangeKey));
@@ -684,11 +700,13 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/individuals")
 	public ResultBagEntityModel<ReportIndividualDTO>
 		getReportIndividualDTOResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
 		Page<Individual> individualPage =
-			_bqIndividualDog.searchBQIndividualPage(page, query, _PAGE_SIZE);
+			_bqIndividualDog.searchBQIndividualPage(
+				channelId, page, query, _PAGE_SIZE);
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(
@@ -697,8 +715,11 @@ public class ReportRestController extends BaseRestController {
 				individualPage.getTotalElements());
 
 		return _toResultBagEntityModel(
-			_getReportIndividualDTOResultBagEntityModel(page + 1, query), page,
-			_getReportIndividualDTOResultBagEntityModel(page - 1, query),
+			_getReportIndividualDTOResultBagEntityModel(
+				channelId, page + 1, query),
+			page,
+			_getReportIndividualDTOResultBagEntityModel(
+				channelId, page - 1, query),
 			reportIndividualDTOResultBag,
 			this::_toReportIndividualDTOEntityModel);
 	}
@@ -716,10 +737,11 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/segments")
 	public ResultBagEntityModel<ReportSegmentDTO>
 		getReportSegmentDTOResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@RequestParam(defaultValue = "0") Integer page) {
 
 		Page<Segment> segmentPage = _segmentDog.getSegmentPage(
-			page, _PAGE_SIZE);
+			channelId, page, _PAGE_SIZE);
 
 		List<Segment> segments = segmentPage.getContent();
 
@@ -727,8 +749,8 @@ public class ReportRestController extends BaseRestController {
 			_bqMembershipChangeDog.getLastBQMembershipChanges(segments);
 
 		return _toResultBagEntityModel(
-			_getSegmentResultBagEntityModel(page + 1), page,
-			_getSegmentResultBagEntityModel(page - 1), segments,
+			_getSegmentResultBagEntityModel(channelId, page + 1), page,
+			_getSegmentResultBagEntityModel(channelId, page - 1), segments,
 			segmentPage.getTotalElements(),
 			segment -> _toReportSegmentDTOEntityModel(
 				bqMembershipChanges.getOrDefault(segment.getId(), null),
@@ -738,13 +760,14 @@ public class ReportRestController extends BaseRestController {
 	@GetMapping("/segments/{segmentId}/individuals")
 	public ResultBagEntityModel<ReportIndividualDTO>
 		getSegmentReportIndividualDTOResultBagEntityModel(
+			@RequestParam(required = false) Long channelId,
 			@PathVariable Long segmentId,
 			@RequestParam(defaultValue = "0") Integer page,
 			@RequestParam(defaultValue = "") String query) {
 
 		Page<Individual> individualPage =
 			_bqIndividualDog.searchBQIndividualPage(
-				segmentId, page, query, _PAGE_SIZE);
+				channelId, segmentId, page, query, _PAGE_SIZE);
 
 		ResultBag<ReportIndividualDTO> reportIndividualDTOResultBag =
 			new ResultBag<>(
@@ -754,10 +777,10 @@ public class ReportRestController extends BaseRestController {
 
 		return _toResultBagEntityModel(
 			_getSegmentReportIndividualDTOResultBagEntityModel(
-				segmentId, page + 1, query),
+				channelId, segmentId, page + 1, query),
 			page,
 			_getSegmentReportIndividualDTOResultBagEntityModel(
-				segmentId, page - 1, query),
+				channelId, segmentId, page - 1, query),
 			reportIndividualDTOResultBag,
 			this::_toReportIndividualDTOEntityModel);
 	}
@@ -887,13 +910,13 @@ public class ReportRestController extends BaseRestController {
 
 	private ResultBagEntityModel<AssetReport>
 		_getBlogAssetReportResultBagEntityModel(
-			Integer page, String keywords, Integer rangeKey, String sortMetric,
-			String sortOrder) {
+			Long channelId, Integer page, String keywords, Integer rangeKey,
+			String sortMetric, String sortOrder) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getBlogAssetReportResultBagEntityModel(
-			page, keywords, rangeKey, sortMetric, sortOrder
+			channelId, page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
 
@@ -907,15 +930,23 @@ public class ReportRestController extends BaseRestController {
 		);
 	}
 
+	private String _getChannelIdString(Long channelId) {
+		if (channelId == null) {
+			return null;
+		}
+
+		return channelId + "";
+	}
+
 	private ResultBagEntityModel<AssetReport>
 		_getDocumentLibraryAssetReportResultBagEntityModel(
-			Integer page, String keywords, Integer rangeKey, String sortMetric,
-			String sortOrder) {
+			Long channelId, Integer page, String keywords, Integer rangeKey,
+			String sortMetric, String sortOrder) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getDocumentLibraryAssetReportResultBagEntityModel(
-			page, keywords, rangeKey, sortMetric, sortOrder
+			channelId, page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
 
@@ -931,13 +962,13 @@ public class ReportRestController extends BaseRestController {
 
 	private ResultBagEntityModel<AssetReport>
 		_getFormAssetReportResultBagEntityModel(
-			Integer page, String keywords, Integer rangeKey, String sortMetric,
-			String sortOrder) {
+			Long channelId, Integer page, String keywords, Integer rangeKey,
+			String sortMetric, String sortOrder) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getFormAssetReportResultBagEntityModel(
-			page, keywords, rangeKey, sortMetric, sortOrder
+			channelId, page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
 
@@ -953,35 +984,35 @@ public class ReportRestController extends BaseRestController {
 
 	private ResultBagEntityModel<ActivityDTO>
 		_getIndividualActivityResultBagEntityModel(
-			String individualId, Integer page) {
+			Long channelId, String individualId, Integer page) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getIndividualActivityResultBagEntityModel(
-			individualId, page
+			channelId, individualId, page
 		);
 	}
 
 	private ResultBagEntityModel<BQIdentityInterestScore>
 		_getIndividualInterestResultBagEntityModel(
-			String individualId, Integer page) {
+			Long channelId, String individualId, Integer page) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getIndividualInterestResultBagEntityModel(
-			individualId, page
+			channelId, individualId, page
 		);
 	}
 
 	private ResultBagEntityModel<AssetReport>
 		_getJournalAssetReportResultBagEntityModel(
-			Integer page, String keywords, Integer rangeKey, String sortMetric,
-			String sortOrder) {
+			Long channelId, Integer page, String keywords, Integer rangeKey,
+			String sortMetric, String sortOrder) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getJournalAssetReportResultBagEntityModel(
-			page, keywords, rangeKey, sortMetric, sortOrder
+			channelId, page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
 
@@ -997,13 +1028,13 @@ public class ReportRestController extends BaseRestController {
 
 	private ResultBagEntityModel<PageAssetReport>
 		_getPageAssetReportResultBagEntityModel(
-			Integer page, String keywords, Integer rangeKey, String sortMetric,
-			String sortOrder) {
+			Long channelId, Integer page, String keywords, Integer rangeKey,
+			String sortMetric, String sortOrder) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getPageAssetReportResultBagEntityModel(
-			page, keywords, rangeKey, sortMetric, sortOrder
+			channelId, page, keywords, rangeKey, sortMetric, sortOrder
 		);
 	}
 
@@ -1019,33 +1050,33 @@ public class ReportRestController extends BaseRestController {
 
 	private ResultBagEntityModel<ReportIndividualDTO>
 		_getReportIndividualDTOResultBagEntityModel(
-			Integer page, String query) {
+			Long channelId, Integer page, String query) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getReportIndividualDTOResultBagEntityModel(
-			page, query
+			channelId, page, query
 		);
 	}
 
 	private ResultBagEntityModel<ReportIndividualDTO>
 		_getSegmentReportIndividualDTOResultBagEntityModel(
-			Long segmentId, Integer page, String query) {
+			Long channelId, Long segmentId, Integer page, String query) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getSegmentReportIndividualDTOResultBagEntityModel(
-			segmentId, page, query
+			channelId, segmentId, page, query
 		);
 	}
 
 	private ResultBagEntityModel<ReportSegmentDTO>
-		_getSegmentResultBagEntityModel(Integer page) {
+		_getSegmentResultBagEntityModel(Long channelId, Integer page) {
 
 		return WebMvcLinkBuilder.methodOn(
 			ReportRestController.class
 		).getReportSegmentDTOResultBagEntityModel(
-			page
+			channelId, page
 		);
 	}
 
@@ -1228,13 +1259,13 @@ public class ReportRestController extends BaseRestController {
 			).withSelfRel(),
 			WebMvcLinkBuilder.linkTo(
 				_getIndividualActivityResultBagEntityModel(
-					reportIndividualDTO.getId(), null)
+					null, reportIndividualDTO.getId(), null)
 			).withRel(
 				"activities"
 			),
 			WebMvcLinkBuilder.linkTo(
 				_getIndividualInterestResultBagEntityModel(
-					reportIndividualDTO.getId(), null)
+					null, reportIndividualDTO.getId(), null)
 			).withRel(
 				"interests"
 			),
@@ -1265,7 +1296,7 @@ public class ReportRestController extends BaseRestController {
 				WebMvcLinkBuilder.methodOn(
 					ReportRestController.class
 				).getSegmentReportIndividualDTOResultBagEntityModel(
-					segment.getId(), 0, null
+					null, segment.getId(), 0, null
 				)
 			).withRel(
 				"individuals"

@@ -117,6 +117,42 @@ public class SegmentRepositoryImpl
 	}
 
 	@Override
+	public long countSegments(long channelId) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(Collections.singletonList(channelId), null)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	@Override
+	public List<Segment> findBySegmentId(long channelId, Pageable pageable) {
+		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(Collections.singletonList(channelId), null)
+		).orderBy(
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
+		).limit(
+			pageable.getPageSize()
+		).offset(
+			pageable.getOffset()
+		).fetch(
+			record -> new Segment(record.intoMap())
+		);
+	}
+
+	@Override
 	public List<Transformation> getSegmentTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable,
 		@Nullable List<Long> segmentIds) {
@@ -490,7 +526,9 @@ public class SegmentRepositoryImpl
 				));
 		}
 
-		conditions.add(filterHelper.getCondition());
+		if (filterHelper != null) {
+			conditions.add(filterHelper.getCondition());
+		}
 
 		return conditions;
 	}

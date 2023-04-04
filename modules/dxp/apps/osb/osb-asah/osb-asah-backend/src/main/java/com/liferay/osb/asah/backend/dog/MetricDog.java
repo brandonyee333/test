@@ -99,9 +99,14 @@ public class MetricDog {
 		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
 			searchQueryContext.getAssetType());
 
+		Long channelId = null;
+
+		if (!StringUtils.isEmpty(searchQueryContext.getChannelId())) {
+			channelId = Long.valueOf(searchQueryContext.getChannelId());
+		}
+
 		return assetMetricRepository.getAssetMetricsCount(
-			Long.valueOf(searchQueryContext.getChannelId()),
-			searchQueryContext.getKeywords(),
+			channelId, searchQueryContext.getKeywords(),
 			searchQueryContext.getTimeRange());
 	}
 

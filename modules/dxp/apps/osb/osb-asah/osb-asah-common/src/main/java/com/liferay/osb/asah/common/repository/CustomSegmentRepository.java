@@ -45,6 +45,10 @@ public interface CustomSegmentRepository {
 	@Cacheable
 	public long countSegments(List<Long> channelIds, FilterHelper filterHelper);
 
+	public long countSegments(long channelId);
+
+	public List<Segment> findBySegmentId(long channelId, Pageable pageable);
+
 	@Cacheable
 	public List<Transformation> getSegmentTransformations(
 		String apply, FilterHelper filterHelper, Pageable pageable,

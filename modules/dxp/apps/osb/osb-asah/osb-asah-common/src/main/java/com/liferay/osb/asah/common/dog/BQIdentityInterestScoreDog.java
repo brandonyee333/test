@@ -42,14 +42,15 @@ import org.springframework.stereotype.Component;
 public class BQIdentityInterestScoreDog {
 
 	public Page<BQIdentityInterestScore> getBQIdentityInterestScorePage(
-		String individualId, int size, int start) {
+		Long channelId, String individualId, int size, int start) {
 
 		return PageableExecutionUtils.getPage(
-			_bqIdentityInterestScoreRepository.findByIndividualId(
-				individualId, PageRequest.of(start / size, size)),
+			_bqIdentityInterestScoreRepository.findByChannelIdAndIndividualId(
+				channelId, individualId, PageRequest.of(start / size, size)),
 			PageRequest.of(start / size, size),
-			() -> _bqIdentityInterestScoreRepository.countByIndividualId(
-				individualId));
+			() ->
+				_bqIdentityInterestScoreRepository.
+					countByChannelIdAndIndividualId(channelId, individualId));
 	}
 
 	public List<BQIdentityInterestScore> getBQIdentityInterestScores(

@@ -35,6 +35,9 @@ public interface CustomBQIdentityInterestScoreRepository {
 
 	public long count();
 
+	public long countByChannelIdAndIndividualId(
+		@Nullable Long channelId, String individualId);
+
 	public long countByFilterString(FilterHelper filterHelper);
 
 	public long countByIndividualId(String individualId);
@@ -52,6 +55,9 @@ public interface CustomBQIdentityInterestScoreRepository {
 	@Modifying
 	public void deleteByRecordedDateLessThanEqual(
 		@Param("recordedDate") Date recordedDate);
+
+	public List<BQIdentityInterestScore> findByChannelIdAndIndividualId(
+		@Nullable Long channelId, String individualId, Pageable pageable);
 
 	public List<IdentityInterestScore> findByFilterString(
 		@Nullable FilterHelper filterHelper, Pageable pageable);

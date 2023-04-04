@@ -90,6 +90,37 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
+	public long countByChannelIdAndIndividualId(
+		Long channelId, String individualId) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				DSL.table(
+					"BQIdentityInterestScore"
+				).as(
+					"IdentityInterestScore"
+				)
+			).join(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
+			).on(
+				DSL.field(
+					"IdentityInterestScore.identityId"
+				).eq(
+					DSL.field("Identity.id")
+				)
+			).where(
+				_getConditions(channelId, individualId)
+			));
+	}
+
+	@Override
 	public long countByFilterString(FilterHelper filterHelper) {
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
@@ -212,6 +243,65 @@ public class BQIdentityInterestScoreRepositoryImpl
 				).le(
 					DateUtil.toUTCString(recordedDate, DateUtil.PATTERN_SHORT)
 				)
+			));
+	}
+
+	@Override
+	public List<BQIdentityInterestScore> findByChannelIdAndIndividualId(
+		@Nullable Long channelId, String individualId, Pageable pageable) {
+
+		return _queryExecutor.queryForList(
+			BQIdentityInterestScore::new,
+			_dslContext.selectDistinct(
+				DSL.field(
+					"IdentityInterestScore.identityId"
+				).as(
+					"identityId"
+				),
+				DSL.field(
+					"IdentityInterestScore.interestScore"
+				).as(
+					"interestScore"
+				),
+				DSL.field(
+					"IdentityInterestScore.interested"
+				).as(
+					"interested"
+				),
+				DSL.field(
+					"LOWER(IdentityInterestScore.keyword)"
+				).as(
+					"keyword"
+				),
+				DSL.field(
+					"IdentityInterestScore.recordedDate"
+				).as(
+					"recordedDate"
+				)
+			).from(
+				DSL.table(
+					"BQIdentityInterestScore"
+				).as(
+					"IdentityInterestScore"
+				)
+			).join(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
+			).on(
+				DSL.field(
+					"IdentityInterestScore.identityId"
+				).eq(
+					DSL.field("Identity.id")
+				)
+			).where(
+				_getConditions(channelId, individualId)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
 			));
 	}
 
@@ -986,6 +1076,30 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DateUtil.toUTCString(recordedDate, DateUtil.PATTERN_SHORT)
 				));
 		}
+
+		return conditions;
+	}
+
+	private List<Condition> _getConditions(
+		Long channelId, String individualId) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"IdentityInterestScore.channelId", Long.class
+				).eq(
+					channelId
+				));
+		}
+
+		conditions.add(
+			DSL.field(
+				"Identity.individualId"
+			).eq(
+				individualId
+			));
 
 		return conditions;
 	}

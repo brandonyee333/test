@@ -50,7 +50,7 @@ public class BQIdentityInterestScoreDogTest
 	public void testGetBQIdentityInterestScorePage() {
 		Page<BQIdentityInterestScore> interestPage =
 			_bqIdentityInterestScoreDog.getBQIdentityInterestScorePage(
-				"374790572703144534", 20, 0);
+				null, "374790572703144534", 20, 0);
 
 		Assertions.assertEquals(1, interestPage.getTotalElements());
 
