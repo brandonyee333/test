@@ -34,7 +34,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -57,7 +56,6 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record11;
-import org.jooq.Record4;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectForStep;
@@ -571,8 +569,37 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> searchBQIndividuals(
-		@Nullable Long channelId, String filterString, Pageable pageable,
+		@Nullable Long channelId, String filterString,
+		List<String> includePropertyNames, Pageable pageable,
 		@Nullable String query) {
+
+		includePropertyNames.add("emailAddress");
+		includePropertyNames.add("firstName");
+		includePropertyNames.add("id");
+		includePropertyNames.add("lastName");
+
+		Set<String> includePropertyNamesTranslated = new HashSet<>();
+		Set<Field<String>> targetFields = new HashSet<>();
+
+		for (String includePropertyName : includePropertyNames) {
+			String fieldNameConversionMap = _fieldNameConversionMap.get(
+				includePropertyName);
+
+			if (fieldNameConversionMap == null) {
+				targetFields.add(
+					DSL.field(
+						String.format("Individual." + includePropertyName),
+						String.class));
+				includePropertyNamesTranslated.add(includePropertyName);
+			}
+			else {
+				targetFields.add(
+					DSL.field(
+						String.format("Individual." + fieldNameConversionMap),
+						String.class));
+				includePropertyNamesTranslated.add(fieldNameConversionMap);
+			}
+		}
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString, true);
@@ -582,24 +609,15 @@ public class BQIndividualRepositoryImpl
 
 		referencedTableNames.add("Individual");
 
-		Field<String> emailAddressField = DSL.field(
-			"Individual.emailAddress", String.class);
-		Field<String> firstNameField = DSL.field(
-			"Individual.firstName", String.class);
-		Field<String> idField = DSL.field("Individual.id", String.class);
-		Field<String> lastNameField = DSL.field(
-			"Individual.lastName", String.class);
-
-		SelectJoinStep<Record4<String, String, String, String>> selectJoinStep =
-			_dslContext.select(
-				emailAddressField, firstNameField, idField, lastNameField
-			).from(
-				DSL.table(
-					"BQIdentity"
-				).as(
-					"Identity"
-				)
-			);
+		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
+			targetFields
+		).from(
+			DSL.table(
+				"BQIdentity"
+			).as(
+				"Identity"
+			)
+		);
 
 		selectJoinStep = _getSelectJoinStep(
 			channelId, null, referencedTableNames, selectJoinStep);
@@ -608,22 +626,27 @@ public class BQIndividualRepositoryImpl
 			record -> {
 				BQIndividual bqIndividual = new BQIndividual(record);
 
-				bqIndividual.setFields(
-					Arrays.asList(
+				List<BQIndividual.Field> fields = new ArrayList<>();
+
+				for (String includePropertyName :
+						includePropertyNamesTranslated) {
+
+					fields.add(
 						new BQIndividual.Field(
-							0L, "emailAddress",
-							(String)record.get("emailAddress")),
-						new BQIndividual.Field(
-							0L, "firstName", (String)record.get("firstName")),
-						new BQIndividual.Field(
-							0L, "lastName", (String)record.get("lastName"))));
+							0L, includePropertyName,
+							record.get(
+								includePropertyName
+							).toString()));
+				}
+
+				bqIndividual.setFields(fields);
 
 				return new Individual(0L, bqIndividual, null, _objectMapper);
 			},
 			selectJoinStep.where(
 				_getConditions(channelId, filterExpression, query)
 			).groupBy(
-				idField, emailAddressField, firstNameField, lastNameField
+				targetFields
 			).orderBy(
 				getSortFields(
 					_fieldNameConversionMap, pageable.getSort(),
@@ -1347,9 +1370,10 @@ public class BQIndividualRepositoryImpl
 			{
 				put("additionalName", "middlename");
 				put("address", "addresses");
-				put("birthdate", "birthday");
+				put("birthDate", "birthday");
 				put("demographics/familyName/value", "lastname");
 				put("demographics/givenName/value", "firstname");
+				put("email", "emailaddress");
 				put("familyName", "lastname");
 				put("givenName", "firstname");
 			}
