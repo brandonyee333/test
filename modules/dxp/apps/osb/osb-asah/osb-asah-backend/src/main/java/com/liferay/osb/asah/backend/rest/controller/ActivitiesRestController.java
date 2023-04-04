@@ -14,18 +14,22 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.BQAssetDTO;
+import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.dog.BQAssetDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.entity.BQAsset;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,60 +53,51 @@ public class ActivitiesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/assets")
-	public String getAssetTransformations(
+	public PageDTO<BQAssetDTO> getAssetTransformations(
 		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		List<BQAsset> bqAssets = _bqAssetDog.searchBQAssets(
+		Page<BQAsset> bqAssetsPage = _bqAssetDog.searchBQAssets(
 			filterString, PageRequest.of(page, size, Sort.by(sorts)));
 
-		JSONObject jsonObject = JSONUtil.put(
+		return new PageDTO(
 			"_embedded",
-			JSONUtil.put("activities", _toTransformations(bqAssets)));
-
-		if (!bqAssets.isEmpty()) {
-			jsonObject.put("page", getPageJSONObject(page, size, size));
-		}
-
-		return jsonObject.toString();
+			JSONUtil.put(
+				"activities",
+				new org.jooq.tools.json.JSONArray(
+					_toBQAssetDTOs(bqAssetsPage.getContent()))),
+			bqAssetsPage.getNumber(), bqAssetsPage.getSize(),
+			bqAssetsPage.getTotalElements(), bqAssetsPage.getTotalPages());
 	}
 
-	private JSONArray _toTransformations(List<BQAsset> bqAssets) {
-		JSONArray jsonArray = new JSONArray();
+	private List<BQAssetDTO> _toBQAssetDTOs(List<BQAsset> bqAssets) {
+		List<BQAssetDTO> bqAssetDTOs = new ArrayList<>();
 
 		if (bqAssets.isEmpty()) {
-			return jsonArray;
+			return bqAssetDTOs;
 		}
 
 		List<DataSource> dataSources = _dataSourceDog.getDataSources();
 
 		for (BQAsset bqAsset : bqAssets) {
-			JSONObject jsonObject = JSONUtil.put(
-				"count", bqAsset.getCount()
-			).put(
-				"dataSourceAssetPK", bqAsset.getDataSourceId()
-			).put(
-				"id", bqAsset.getId()
-			).put(
-				"name", bqAsset.getAssetTitle()
-			);
+			BQAssetDTO bqAssetDTO = new BQAssetDTO(bqAsset);
 
 			for (DataSource dataSource : dataSources) {
 				if (Objects.equals(
-						dataSource.getId(), bqAsset.getDataSourceId())) {
+						dataSource.getId(), bqAssetDTO.getDataSourceId())) {
 
-					jsonObject.put("dataSourceName", dataSource.getName());
+					bqAssetDTO.setDataSourceName(dataSource.getName());
 
 					break;
 				}
 			}
 
-			jsonArray.put(jsonObject);
+			bqAssetDTOs.add(bqAssetDTO);
 		}
 
-		return jsonArray;
+		return bqAssetDTOs;
 	}
 
 	private final BQAssetDog _bqAssetDog;

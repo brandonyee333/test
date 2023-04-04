@@ -21,7 +21,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,10 +44,13 @@ public class BQAssetDog {
 		return _bqAssetEventRepository.findByIdIn(ids);
 	}
 
-	public List<BQAsset> searchBQAssets(
+	public Page<BQAsset> searchBQAssets(
 		String filterString, Pageable pageable) {
 
-		return _bqAssetEventRepository.searchBQAssets(filterString, pageable);
+		return PageableExecutionUtils.getPage(
+			_bqAssetEventRepository.searchBQAssets(filterString, pageable),
+			pageable,
+			() -> _bqAssetEventRepository.countBQAssets(filterString));
 	}
 
 	private final BQAssetRepository _bqAssetEventRepository;

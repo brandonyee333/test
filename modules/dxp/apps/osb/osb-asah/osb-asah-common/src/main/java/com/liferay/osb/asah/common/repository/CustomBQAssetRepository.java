@@ -26,6 +26,8 @@ import org.springframework.data.domain.Pageable;
  */
 public interface CustomBQAssetRepository {
 
+	public long countBQAssets(String filterString);
+
 	public List<BQAsset> findByIdIn(Collection<String> ids);
 
 	public List<BQAsset> searchBQAssets(String filterString, Pageable pageable);

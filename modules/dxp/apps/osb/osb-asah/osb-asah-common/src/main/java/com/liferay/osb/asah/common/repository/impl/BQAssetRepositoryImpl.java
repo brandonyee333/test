@@ -44,6 +44,24 @@ public class BQAssetRepositoryImpl
 	}
 
 	@Override
+	public long countBQAssets(String filterString) {
+		FilterExpression filterExpression = new FilterExpression(
+			filterString, FilterExpression.FilterType.ASSETS);
+
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				DSL.table(
+					"BQAsset"
+				).as(
+					"Asset"
+				)
+			).where(
+				filterExpression.getCondition()
+			));
+	}
+
+	@Override
 	public List<BQAsset> findByIdIn(Collection<String> ids) {
 		return _queryExecutor.queryForList(
 			BQAsset::new,
