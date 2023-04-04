@@ -21,13 +21,10 @@ import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQAsset;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import org.json.JSONArray;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,10 +60,7 @@ public class ActivitiesRestController extends BaseRestController {
 
 		return new PageDTO(
 			"_embedded",
-			JSONUtil.put(
-				"activities",
-				new org.jooq.tools.json.JSONArray(
-					_toBQAssetDTOs(bqAssetsPage.getContent()))),
+			new BQAssetDTO(_toBQAssetDTOs(bqAssetsPage.getContent())),
 			bqAssetsPage.getNumber(), bqAssetsPage.getSize(),
 			bqAssetsPage.getTotalElements(), bqAssetsPage.getTotalPages());
 	}

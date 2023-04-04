@@ -52,7 +52,7 @@ public class ActivitiesRestControllerTest
 		resourcePath = "osbasahfaroinfo/data_sources_3.json"
 	)
 	@Test
-	public void testGetAssetTransformations1() throws Exception {
+	public void testGetBQAssetDTOPageDTO1() throws Exception {
 		JSONObject jsonObject = new JSONObject(
 			_activitiesRestController.getBQAssetDTOPageDTO(
 				"contains(object.name, 'clicks')", 0, 10,
@@ -89,7 +89,7 @@ public class ActivitiesRestControllerTest
 		resourcePath = "osbasahfaroinfo/data_sources_3.json"
 	)
 	@Test
-	public void testGetAssetTransformations2() throws Exception {
+	public void testGetBQAssetDTOPageDTO2() throws Exception {
 		JSONObject jsonObject = new JSONObject(
 			_activitiesRestController.getBQAssetDTOPageDTO(
 				"contains(object.name, 'random')", 0, 10,

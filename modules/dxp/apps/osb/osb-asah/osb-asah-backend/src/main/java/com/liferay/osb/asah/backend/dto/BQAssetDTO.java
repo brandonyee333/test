@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQAsset;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,6 +43,10 @@ public class BQAssetDTO {
 		_dataSourceId = bqAsset.getDataSourceId();
 		_id = bqAsset.getAssetId();
 		_modifiedDate = bqAsset.getModifiedDate();
+	}
+
+	public BQAssetDTO(List<BQAssetDTO> bqAssetDTOs) {
+		_bqAssetDTOs = bqAssetDTOs;
 	}
 
 	@Override
@@ -84,6 +89,11 @@ public class BQAssetDTO {
 	@JsonProperty("name")
 	public String getAssetTitle() {
 		return _assetTitle;
+	}
+
+	@JsonProperty("activities")
+	public List<BQAssetDTO> getBQAssetDTOs() {
+		return _bqAssetDTOs;
 	}
 
 	public Long getChannelId() {
@@ -156,6 +166,7 @@ public class BQAssetDTO {
 	private String _applicationId;
 	private String _assetId;
 	private String _assetTitle;
+	private List<BQAssetDTO> _bqAssetDTOs;
 	private Long _channelId;
 	private Long _count;
 	private Long _dataSourceId;
