@@ -127,6 +127,8 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(name = "filter", required = false) String
 				filterString,
 			@RequestParam(required = false) Boolean includeAnonymousUsers,
+			@RequestParam(name = "includePropertyNames", required = false) List
+				<String> includePropertyNames,
 			@RequestParam(required = false) Long notSegmentId,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(name = "query", required = false) String query,
@@ -138,8 +140,8 @@ public class IndividualsRestController extends BaseRestController {
 		Page<Individual> individualPage =
 			_bqIndividualDog.searchBQIndividualPage(
 				accountId, channelId, dataSourceId, filterString,
-				includeAnonymousUsers, notSegmentId, page, query, segmentId,
-				size, sorts);
+				includeAnonymousUsers, includePropertyNames, notSegmentId, page,
+				query, segmentId, size, sorts);
 
 		if (StringUtils.isEmpty(expand)) {
 			return _toIndividualDTOPageDTO(individualPage);
