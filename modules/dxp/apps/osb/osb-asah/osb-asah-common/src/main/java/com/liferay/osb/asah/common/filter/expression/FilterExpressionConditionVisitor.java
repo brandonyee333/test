@@ -303,7 +303,8 @@ public class FilterExpressionConditionVisitor
 				Objects.equals(
 					_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
 
-				field = DSL.field("ExpandoValue.value");
+				field = DSL.field(
+					"ExpandoValue_" + qualifiedFieldName + ".value");
 			}
 			else {
 				String alias = "IndividualFields_" + qualifiedFieldName;
@@ -377,10 +378,10 @@ public class FilterExpressionConditionVisitor
 				"Invalid string function: " + functionName);
 		}
 
-		if (StringUtils.startsWith(field.getName(), "ExpandoValue.")) {
+		if (StringUtils.startsWith(field.getName(), "ExpandoValue_")) {
 			condition = condition.and(
 				DSL.field(
-					"ExpandoValue.fieldName"
+					"ExpandoValue_" + qualifiedFieldName + ".fieldName"
 				).eq(
 					qualifiedFieldName
 				));
@@ -405,10 +406,10 @@ public class FilterExpressionConditionVisitor
 
 			if (StringUtils.startsWith(fieldName, "ExpandoValue.")) {
 				return _getIndividualIdsInOrganizationCondition(
-					condition, true);
+					condition, "ExpandoValue_" + qualifiedFieldName);
 			}
 
-			return _getIndividualIdsInOrganizationCondition(condition, false);
+			return _getIndividualIdsInOrganizationCondition(condition, null);
 		}
 
 		return condition;
@@ -685,7 +686,7 @@ public class FilterExpressionConditionVisitor
 	}
 
 	private Object _getIndividualIdsInOrganizationCondition(
-		Condition condition, boolean joinExpandoValue) {
+		Condition condition, String expandoValueFieldName) {
 
 		_referencedTableNames.add("Individual");
 
@@ -710,28 +711,28 @@ public class FilterExpressionConditionVisitor
 				"Organization.id IN UNNEST(IndividualMemberships.ids)")
 		);
 
-		if (joinExpandoValue) {
+		if (StringUtils.isNotBlank(expandoValueFieldName)) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQExpandoValue"
 				).as(
-					"ExpandoValue"
+					expandoValueFieldName
 				)
 			).on(
 				DSL.and(
 					DSL.field(
-						"ExpandoValue.classPK"
+						expandoValueFieldName + ".classPK"
 					).eq(
 						DSL.field(
 							"SAFE_CAST(Organization.organizationId AS STRING)")
 					),
 					DSL.field(
-						"ExpandoValue.classType"
+						expandoValueFieldName + ".classType"
 					).eq(
 						"com.liferay.portal.kernel.model.Organization"
 					),
 					DSL.field(
-						"ExpandoValue.dataSourceId"
+						expandoValueFieldName + ".dataSourceId"
 					).eq(
 						DSL.field("Organization.dataSourceId")
 					))
@@ -910,7 +911,7 @@ public class FilterExpressionConditionVisitor
 
 			return _getIndividualIdsInOrganizationCondition(
 				_getCustomFieldCondition(identifierParts[1], operator, value),
-				true);
+				"ExpandoValue_" + identifierParts[1]);
 		}
 
 		if (fieldName.equalsIgnoreCase("id")) {
@@ -1030,7 +1031,7 @@ public class FilterExpressionConditionVisitor
 			}
 		}
 
-		return _getIndividualIdsInOrganizationCondition(condition, false);
+		return _getIndividualIdsInOrganizationCondition(condition, null);
 	}
 
 	private Object _visitOrganizationFieldExpression(
