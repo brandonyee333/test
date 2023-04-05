@@ -106,7 +106,6 @@ public class FilterExpression {
 	public enum FilterType {
 
 		ACTIVITIES("activities"), ASSETS("assets"), INDIVIDUALS("individuals"),
-		ORGANIZATION_FIELDS("organization_fields"),
 		ORGANIZATIONS("organizations"), SESSIONS("sessions");
 
 		public static FilterType of(String name) {
@@ -128,10 +127,6 @@ public class FilterExpression {
 
 			if (name.equalsIgnoreCase("organizations")) {
 				return ORGANIZATIONS;
-			}
-
-			if (name.equalsIgnoreCase("organization_fields")) {
-				return ORGANIZATION_FIELDS;
 			}
 
 			if (name.equalsIgnoreCase("sessions")) {

@@ -119,12 +119,6 @@ public class FilterExpressionConditionVisitor
 			return _visitOrganizationExpression(fieldName, "eq", value);
 		}
 
-		if (Objects.equals(
-				_filterType, FilterExpression.FilterType.ORGANIZATION_FIELDS)) {
-
-			return _visitOrganizationFieldExpression(fieldName, "eq", value);
-		}
-
 		if (Objects.equals(_filterType, FilterExpression.FilterType.SESSIONS)) {
 			if (Objects.equals(fieldName, "context/referrer")) {
 				return DSL.condition(
@@ -298,20 +292,17 @@ public class FilterExpressionConditionVisitor
 			qualifiedFieldName = parts[1];
 
 			if (Objects.equals(
-					_filterType,
-					FilterExpression.FilterType.ORGANIZATION_FIELDS) ||
-				Objects.equals(
-					_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+					_filterType, FilterExpression.FilterType.INDIVIDUALS)) {
 
-				field = DSL.field(
-					"ExpandoValue_" + qualifiedFieldName + ".value");
-			}
-			else {
 				String alias = "IndividualFields_" + qualifiedFieldName;
 
 				_referencedTableNames.add(alias);
 
 				field = DSL.field(alias + ".value");
+			}
+			else {
+				field = DSL.field(
+					"ExpandoValue_" + qualifiedFieldName + ".value");
 			}
 		}
 
@@ -1032,43 +1023,6 @@ public class FilterExpressionConditionVisitor
 		}
 
 		return _getIndividualIdsInOrganizationCondition(condition, null);
-	}
-
-	private Object _visitOrganizationFieldExpression(
-		String fieldName, String operator, String value) {
-
-		Condition condition = null;
-
-		if (operator.equalsIgnoreCase("eq")) {
-			if (StringUtil.isNull(value)) {
-				condition = DSL.field(
-					"Organization." + fieldName
-				).isNull();
-			}
-			else {
-				condition = DSL.field(
-					"Organization." + fieldName
-				).eq(
-					value
-				);
-			}
-		}
-		else if (operator.equalsIgnoreCase("ne")) {
-			if (StringUtil.isNull(value)) {
-				condition = DSL.field(
-					"Organization." + fieldName
-				).isNotNull();
-			}
-			else {
-				condition = DSL.field(
-					"Organization." + fieldName
-				).ne(
-					value
-				);
-			}
-		}
-
-		return condition;
 	}
 
 	private static final Map<String, String> _attributeTypes =
