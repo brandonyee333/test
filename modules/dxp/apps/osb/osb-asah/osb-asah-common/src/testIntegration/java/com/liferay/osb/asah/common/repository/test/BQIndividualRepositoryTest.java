@@ -22,6 +22,7 @@ import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -94,6 +95,21 @@ public class BQIndividualRepositoryTest
 				"organizations.filter(filter='(custom/Organization_Type" +
 					"/value eq ''test'')')",
 				false, null));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
+	@Test
+	public void testSearchIndividualFieldValuesDemographics() {
+		PageRequest pageRequest = PageRequest.of(0, 10);
+
+		Assertions.assertEquals(
+			Arrays.asList("Joe", "Marcus", "Nina"),
+			_bqIndividualRepository.searchIndividualFieldValuesDemographics(
+				11L, "firstName", null, pageRequest));
+		Assertions.assertEquals(
+			Arrays.asList("Engineer"),
+			_bqIndividualRepository.searchIndividualFieldValuesDemographics(
+				11L, "jobTitle", null, pageRequest));
 	}
 
 	private static final Long _SEGMENT_ID = 11L;
