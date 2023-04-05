@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
-import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Collection;
@@ -38,6 +37,10 @@ public interface CustomBQOrganizationRepository {
 
 	public long countByName(@Nullable String name);
 
+	public long countOrganizationFieldValuesCustom(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString);
+
 	public void deleteById(String id);
 
 	public List<BQOrganization> findAll();
@@ -56,10 +59,6 @@ public interface CustomBQOrganizationRepository {
 	public List<BQOrganization> findByName(
 		@Nullable String name, Pageable pageable);
 
-	public List<Transformation> getOrganizationTransformations(
-		String apply, @Nullable Long channelId, @Nullable String filterString,
-		Pageable pageable);
-
 	public BQOrganization insert(BQOrganization bqOrganization);
 
 	@Cacheable
@@ -68,5 +67,9 @@ public interface CustomBQOrganizationRepository {
 
 	public List<BQOrganization> searchByDataSourceIdsAndName(
 		List<Long> dataSourceIds, @Nullable String name, Pageable pageable);
+
+	public List<String> searchOrganizationFieldValuesCustom(
+		@Nullable Long channelId, String fieldName,
+		@Nullable String filterString, Pageable pageable);
 
 }
