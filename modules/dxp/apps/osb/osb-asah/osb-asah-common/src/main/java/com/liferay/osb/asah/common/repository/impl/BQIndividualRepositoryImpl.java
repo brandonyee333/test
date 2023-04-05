@@ -235,12 +235,13 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString) {
 
+		Field<String> fieldValueField = DSL.field(
+			_fieldNameConversionMap.getOrDefault(
+				fieldName, StringUtils.lowerCase(fieldName)),
+			String.class);
+
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.select(
-				DSL.countDistinct(
-					DSL.field(
-						_fieldNameConversionMap.getOrDefault(
-							fieldName, StringUtils.lowerCase(fieldName)))));
+			_dslContext.select(DSL.countDistinct(fieldValueField));
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep;
 
@@ -256,19 +257,19 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		Condition condition;
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(fieldValueField.isNotNull());
+		conditions.add(fieldValueField.notEqual(""));
 
 		if (StringUtils.isNotBlank(filterString)) {
 			FilterExpression filterExpression = new FilterExpression(
 				filterString);
 
-			condition = filterExpression.getCondition();
-		}
-		else {
-			condition = DSL.noCondition();
+			conditions.add(filterExpression.getCondition());
 		}
 
-		return _queryExecutor.queryForLong(selectJoinStep.where(condition));
+		return _queryExecutor.queryForLong(selectJoinStep.where(conditions));
 	}
 
 	@Override
@@ -672,15 +673,13 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString, Pageable pageable) {
 
+		Field<String> fieldValueField = DSL.field(
+			_fieldNameConversionMap.getOrDefault(
+				fieldName, StringUtils.lowerCase(fieldName)),
+			String.class);
+
 		SelectSelectStep<Record1<String>> selectSelectStep =
-			_dslContext.selectDistinct(
-				DSL.field(
-					_fieldNameConversionMap.getOrDefault(
-						fieldName, StringUtils.lowerCase(fieldName)),
-					String.class
-				).as(
-					"fieldValue"
-				));
+			_dslContext.selectDistinct(fieldValueField.as("fieldValue"));
 
 		SelectJoinStep<Record1<String>> selectJoinStep;
 
@@ -696,22 +695,22 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		Condition condition;
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(fieldValueField.isNotNull());
+		conditions.add(fieldValueField.notEqual(""));
 
 		if (StringUtils.isNotBlank(filterString)) {
 			FilterExpression filterExpression = new FilterExpression(
 				filterString);
 
-			condition = filterExpression.getCondition();
-		}
-		else {
-			condition = DSL.noCondition();
+			conditions.add(filterExpression.getCondition());
 		}
 
 		return _queryExecutor.queryForList(
 			recordMap -> String.valueOf(recordMap.get("fieldValue")),
 			selectJoinStep.where(
-				condition
+				conditions
 			).orderBy(
 				DSL.field("fieldValue")
 			).limit(
