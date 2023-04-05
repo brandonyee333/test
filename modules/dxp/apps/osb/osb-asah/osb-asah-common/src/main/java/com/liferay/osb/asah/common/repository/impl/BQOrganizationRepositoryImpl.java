@@ -300,6 +300,13 @@ public class BQOrganizationRepositoryImpl
 			return Collections.emptyList();
 		}
 
+		BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
+
+		if (bqFieldMapping.getRepeatable()) {
+			return _getOrganizationFieldValuesCustomRepeatable(
+				channelId, fieldName, filterString, pageable);
+		}
+
 		return _getOrganizationFieldValuesCustom(
 			channelId, fieldName, filterString, pageable);
 	}
@@ -437,6 +444,58 @@ public class BQOrganizationRepositoryImpl
 			).offset(
 				pageable.getOffset()
 			));
+	}
+
+	private List<String> _getOrganizationFieldValuesCustomRepeatable(
+		Long channelId, String fieldName, String filterString,
+		Pageable pageable) {
+
+		SelectJoinStep selectJoinStep =
+			_getOrganizationFieldValuesCustomRepeatableSelectJoinStep(
+				channelId, fieldName, filterString,
+				_dslContext.selectDistinct(
+					DSL.field(
+						"JSON_EXTRACT_SCALAR(fieldValueItem, '$')"
+					).as(
+						"organizationFieldValue"
+					)));
+
+		return _queryExecutor.queryForList(
+			recordMap -> String.valueOf(
+				recordMap.get("organizationFieldValue")),
+			selectJoinStep.limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	private SelectJoinStep
+		_getOrganizationFieldValuesCustomRepeatableSelectJoinStep(
+			Long channelId, String fieldName, String filterString,
+			SelectSelectStep selectSelectStep) {
+
+		SelectSelectStep jsonExtractSelectSelectStep = _dslContext.select(
+			DSL.field(
+				"JSON_EXTRACT_ARRAY(ExpandoValue_" + fieldName + ".value)"
+			).as(
+				"fieldValueArray"
+			));
+
+		SelectConditionStep selectConditionStep =
+			_getOrganizationFieldsSelectConditionStep(
+				channelId, fieldName, filterString,
+				jsonExtractSelectSelectStep);
+
+		return selectSelectStep.from(
+			selectConditionStep.asTable("organizationFieldsValues")
+		).crossJoin(
+			DSL.table(
+				"UNNEST(fieldValueArray)"
+			).as(
+				"fieldValueItem"
+			)
+		);
 	}
 
 	@Autowired
