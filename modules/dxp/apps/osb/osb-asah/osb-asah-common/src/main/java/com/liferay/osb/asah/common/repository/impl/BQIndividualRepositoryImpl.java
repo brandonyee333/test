@@ -1227,6 +1227,22 @@ public class BQIndividualRepositoryImpl
 			}
 		}
 
+		if (referencedTableNames.contains("Membership")) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQMembership"
+				).as(
+					"Membership"
+				)
+			).on(
+				DSL.field(
+					"Identity.id"
+				).eq(
+					DSL.field("Membership.identityId")
+				)
+			);
+		}
+
 		if (referencedTableNames.contains("Session")) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
