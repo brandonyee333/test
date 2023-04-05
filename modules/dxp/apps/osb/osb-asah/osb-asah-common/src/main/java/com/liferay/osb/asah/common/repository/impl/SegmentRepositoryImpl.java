@@ -59,6 +59,22 @@ public class SegmentRepositoryImpl
 	}
 
 	@Override
+	public long countByChannelId(Long channelId) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Segment"
+		).where(
+			_getConditions(Collections.singletonList(channelId), null)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
+	}
+
+	@Override
 	public long countPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
 		FilterHelper filterHelper) {
@@ -117,23 +133,7 @@ public class SegmentRepositoryImpl
 	}
 
 	@Override
-	public long countSegments(long channelId) {
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
-
-		return selectSelectStep.from(
-			"Segment"
-		).where(
-			_getConditions(Collections.singletonList(channelId), null)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
-	@Override
-	public List<Segment> findBySegmentId(long channelId, Pageable pageable) {
+	public List<Segment> findByChannelId(Long channelId, Pageable pageable) {
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		return selectSelectStep.from(

@@ -32,6 +32,8 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomSegmentRepository {
 
+	public long countByChannelId(Long channelId);
+
 	@Cacheable
 	public long countPreviewDisabledSegments(
 		List<Long> dataSourceFieldMappingFieldNames, Long dataSourceId,
@@ -45,9 +47,7 @@ public interface CustomSegmentRepository {
 	@Cacheable
 	public long countSegments(List<Long> channelIds, FilterHelper filterHelper);
 
-	public long countSegments(long channelId);
-
-	public List<Segment> findBySegmentId(long channelId, Pageable pageable);
+	public List<Segment> findByChannelId(Long channelId, Pageable pageable);
 
 	@Cacheable
 	public List<Transformation> getSegmentTransformations(
