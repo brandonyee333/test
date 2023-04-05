@@ -483,6 +483,10 @@ public class FilterExpressionConditionVisitor
 
 		_checkReferencedTables(qualifiedFieldName);
 
+		if (qualifiedFieldName.startsWith("Membership.")) {
+			_referencedTableNames.add("Membership");
+		}
+
 		return DSL.field(qualifiedFieldName);
 	}
 
