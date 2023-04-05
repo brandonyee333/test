@@ -850,7 +850,7 @@ public class BQIndividualRepositoryImpl
 
 		if (StringUtils.isNotBlank(filterString)) {
 			FilterExpression filterExpression = new FilterExpression(
-				filterString);
+				filterString, FilterExpression.FilterType.INDIVIDUALS);
 
 			conditions.add(filterExpression.getCondition());
 		}
