@@ -1053,6 +1053,7 @@ public class FilterExpressionConditionVisitor
 				put(
 					"individuals.lastEnrichmentDate",
 					"Individual.modifiedDate");
+				put("individualSegmentIds", "Membership.segmentId");
 				put("interestName", "keyword");
 				put("provider/type", "providerType");
 				put("sessions.completeDate", "Session.sessionEnd");
