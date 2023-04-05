@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.BQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -26,6 +25,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -72,6 +73,22 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 		return bqOrganization;
 	}
 
+	public Page<String> getBQOrganizationFieldValuePage(
+		Long channelId, String filterString, String groupByField, int page,
+		int size) {
+
+		String[] fields = StringUtils.split(groupByField, "/");
+
+		PageRequest pageRequest = PageRequest.of(page, size);
+
+		return PageableExecutionUtils.getPage(
+			_bqOrganizationRepository.searchOrganizationFieldValuesCustom(
+				channelId, fields[1], filterString, pageRequest),
+			pageRequest,
+			() -> _bqOrganizationRepository.countOrganizationFieldValuesCustom(
+				channelId, fields[1], filterString));
+	}
+
 	public Page<BQOrganization> getBQOrganizationPage(
 		@Nullable Long channelId, @Nullable String name, int size, Sort sort,
 		int start) {
@@ -100,20 +117,6 @@ public class BQOrganizationDog extends BaseBQDXPEntityDog {
 		}
 
 		return _bqOrganizationRepository.findByIdIn(ids);
-	}
-
-	public Page<Transformation> getTransformationPage(
-		String apply, Long channelId, String filterString, int page, int size) {
-
-		PageRequest pageRequest = PageRequest.of(page, size);
-
-		List<Transformation> bqOrganizationTransformations =
-			_bqOrganizationRepository.getOrganizationTransformations(
-				apply, channelId, filterString, pageRequest);
-
-		return PageableExecutionUtils.getPage(
-			bqOrganizationTransformations, pageRequest,
-			bqOrganizationTransformations::size);
 	}
 
 	public List<BQOrganization> searchBQOrganizations(

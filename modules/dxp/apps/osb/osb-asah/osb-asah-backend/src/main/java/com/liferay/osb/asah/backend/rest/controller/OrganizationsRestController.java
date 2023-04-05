@@ -18,9 +18,17 @@ import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.TransformationDTO;
 import com.liferay.osb.asah.common.dog.BQOrganizationDog;
 import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.MatcherUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,15 +49,36 @@ public class OrganizationsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
-		Page<Transformation> bqOrganizationFieldValuePage =
-			_bqOrganizationDog.getTransformationPage(
-				apply, channelId, filterString, page, size);
+		Matcher matcher = MatcherUtil.getMatcher(apply);
+
+		if (!matcher.matches()) {
+			throw new OSBAsahException(
+				HttpStatus.BAD_REQUEST, "Invalid apply string " + apply);
+		}
+
+		String groupByField = matcher.group("groupByField");
+
+		Page<String> bqOrganizationFieldValuePage =
+			_bqOrganizationDog.getBQOrganizationFieldValuePage(
+				channelId, filterString, groupByField, page, size);
+
+		List<Transformation> transformations = new ArrayList<>();
+
+		for (String fieldValue : bqOrganizationFieldValuePage.getContent()) {
+			Transformation transformation = new Transformation();
+
+			transformation.setTerm(
+				new Transformation.Term(
+					Collections.singletonMap(groupByField, fieldValue)));
+			transformation.setTotalElements(0);
+
+			transformations.add(transformation);
+		}
 
 		return new PageDTO<>(
 			"_embedded",
 			new TransformationDTO(
-				"organization-transformations",
-				bqOrganizationFieldValuePage.getContent()),
+				"organization-transformations", transformations),
 			bqOrganizationFieldValuePage.getNumber(),
 			bqOrganizationFieldValuePage.getSize(),
 			bqOrganizationFieldValuePage.getTotalElements(),
