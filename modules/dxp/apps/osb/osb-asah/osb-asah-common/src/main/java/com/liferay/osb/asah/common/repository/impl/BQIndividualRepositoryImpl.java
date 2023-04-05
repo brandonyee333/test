@@ -259,6 +259,15 @@ public class BQIndividualRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"IdentityActivity.channelId", Long.class
+				).eq(
+					channelId
+				));
+		}
+
 		conditions.add(fieldValueField.isNotNull());
 		conditions.add(fieldValueField.notEqual(""));
 
@@ -696,6 +705,15 @@ public class BQIndividualRepositoryImpl
 		}
 
 		List<Condition> conditions = new ArrayList<>();
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"IdentityActivity.channelId", Long.class
+				).eq(
+					channelId
+				));
+		}
 
 		conditions.add(fieldValueField.isNotNull());
 		conditions.add(fieldValueField.notEqual(""));
