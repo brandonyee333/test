@@ -573,34 +573,6 @@ public class BQIndividualRepositoryImpl
 		List<String> includePropertyNames, Pageable pageable,
 		@Nullable String query) {
 
-		includePropertyNames.add("emailAddress");
-		includePropertyNames.add("firstName");
-		includePropertyNames.add("id");
-		includePropertyNames.add("lastName");
-
-		Set<String> includePropertyNamesTranslated = new HashSet<>();
-		Set<Field<String>> targetFields = new HashSet<>();
-
-		for (String includePropertyName : includePropertyNames) {
-			String fieldNameConversionMap = _fieldNameConversionMap.get(
-				includePropertyName);
-
-			if (fieldNameConversionMap == null) {
-				targetFields.add(
-					DSL.field(
-						String.format("Individual." + includePropertyName),
-						String.class));
-				includePropertyNamesTranslated.add(includePropertyName);
-			}
-			else {
-				targetFields.add(
-					DSL.field(
-						String.format("Individual." + fieldNameConversionMap),
-						String.class));
-				includePropertyNamesTranslated.add(fieldNameConversionMap);
-			}
-		}
-
 		FilterExpression filterExpression = new FilterExpression(
 			filterString, true);
 
@@ -609,8 +581,26 @@ public class BQIndividualRepositoryImpl
 
 		referencedTableNames.add("Individual");
 
+		includePropertyNames.add("emailAddress");
+		includePropertyNames.add("firstName");
+		includePropertyNames.add("id");
+		includePropertyNames.add("lastName");
+
+		Set<String> fieldNames = new HashSet<>();
+		Set<Field<String>> fields = new HashSet<>();
+
+		for (String includePropertyName : includePropertyNames) {
+			String fieldName = _fieldNameConversionMap.getOrDefault(
+				includePropertyName, includePropertyName);
+
+			fieldNames.add(fieldName);
+			fields.add(
+				DSL.field(
+					String.format("Individual." + fieldName), String.class));
+		}
+
 		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
-			targetFields
+			fields
 		).from(
 			DSL.table(
 				"BQIdentity"
@@ -626,27 +616,25 @@ public class BQIndividualRepositoryImpl
 			record -> {
 				BQIndividual bqIndividual = new BQIndividual(record);
 
-				List<BQIndividual.Field> fields = new ArrayList<>();
+				List<BQIndividual.Field> bqIndividualFields = new ArrayList<>();
 
-				for (String includePropertyName :
-						includePropertyNamesTranslated) {
-
-					fields.add(
+				for (String fieldName : fieldNames) {
+					bqIndividualFields.add(
 						new BQIndividual.Field(
-							0L, includePropertyName,
+							0L, fieldName,
 							record.get(
-								includePropertyName
+								fieldName
 							).toString()));
 				}
 
-				bqIndividual.setFields(fields);
+				bqIndividual.setFields(bqIndividualFields);
 
 				return new Individual(0L, bqIndividual, null, _objectMapper);
 			},
 			selectJoinStep.where(
 				_getConditions(channelId, filterExpression, query)
 			).groupBy(
-				targetFields
+				fields
 			).orderBy(
 				getSortFields(
 					_fieldNameConversionMap, pageable.getSort(),
