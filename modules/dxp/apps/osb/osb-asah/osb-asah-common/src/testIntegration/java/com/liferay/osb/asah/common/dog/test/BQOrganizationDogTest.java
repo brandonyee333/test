@@ -19,6 +19,7 @@ import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,6 +55,94 @@ public class BQOrganizationDogTest extends BaseBQDXPEntityDogTestCase {
 
 		Assertions.assertEquals(
 			"Liferay Brazil", bqOrganization.getDataSourceName());
+	}
+
+	@BQSQLResource(
+		resourcePath = "test_get_bq_organization_field_value_page_custom.sql"
+	)
+	@Test
+	public void testGetBQOrganizationFieldValuePageCustom() {
+		Page<String> fieldValuePage =
+			_bqOrganizationDog.getBQOrganizationFieldValuePage(
+				null, null, "custom/Organization_Type/value", 0, 5);
+
+		List<String> fieldValues = fieldValuePage.getContent();
+
+		Assertions.assertEquals(5, fieldValues.size());
+
+		List<String> expectedFieldValues = new ArrayList<String>() {
+			{
+				add("Type One");
+				add("Type Two");
+				add("Type Three");
+				add("Type Four");
+				add("Type Five");
+			}
+		};
+
+		for (String fieldValue : fieldValues) {
+			Assertions.assertTrue(expectedFieldValues.remove(fieldValue));
+		}
+
+		Assertions.assertEquals(5, fieldValuePage.getTotalElements());
+	}
+
+	@BQSQLResource(
+		resourcePath = "test_get_bq_organization_field_value_page_custom.sql"
+	)
+	@Test
+	public void testGetBQOrganizationFieldValuePageCustomCheckbox() {
+		Page<String> fieldValuePage =
+			_bqOrganizationDog.getBQOrganizationFieldValuePage(
+				null, null, "custom/Location/value", 0, 10);
+
+		List<String> fieldValues = fieldValuePage.getContent();
+
+		Assertions.assertEquals(5, fieldValues.size());
+
+		List<String> expectedFieldValues = new ArrayList<String>() {
+			{
+				add("Belgium");
+				add("England");
+				add("France");
+				add("Germany");
+				add("Italy");
+			}
+		};
+
+		for (String fieldValue : fieldValues) {
+			Assertions.assertTrue(expectedFieldValues.remove(fieldValue));
+		}
+
+		Assertions.assertEquals(5, fieldValuePage.getTotalElements());
+	}
+
+	@BQSQLResource(
+		resourcePath = "test_get_bq_organization_field_value_page_custom.sql"
+	)
+	@Test
+	public void testGetBQOrganizationFieldValuePageCustomWithFilter() {
+		Page<String> fieldValuePage =
+			_bqOrganizationDog.getBQOrganizationFieldValuePage(
+				null, "contains(custom/Organization_Type/value, 'F')",
+				"custom/Organization_Type/value", 0, 5);
+
+		List<String> fieldValues = fieldValuePage.getContent();
+
+		Assertions.assertEquals(2, fieldValues.size());
+
+		List<String> expectedFieldValues = new ArrayList<String>() {
+			{
+				add("Type Four");
+				add("Type Five");
+			}
+		};
+
+		for (String fieldValue : fieldValues) {
+			Assertions.assertTrue(expectedFieldValues.remove(fieldValue));
+		}
+
+		Assertions.assertEquals(2, fieldValuePage.getTotalElements());
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_organization_dog.sql")

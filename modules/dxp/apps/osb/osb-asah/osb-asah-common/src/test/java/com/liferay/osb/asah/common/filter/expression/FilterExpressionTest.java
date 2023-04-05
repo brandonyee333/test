@@ -1796,44 +1796,48 @@ public class FilterExpressionTest {
 					DSL.table(
 						"BQExpandoValue"
 					).as(
-						"ExpandoValue"
+						"ExpandoValue_custom_field"
 					)
 				).on(
 					DSL.and(
 						DSL.field(
-							"ExpandoValue.classPK"
+							"ExpandoValue_custom_field.classPK"
 						).eq(
 							DSL.field(
 								"SAFE_CAST(Organization.organizationId AS " +
 									"STRING)")
 						),
 						DSL.field(
-							"ExpandoValue.classType"
+							"ExpandoValue_custom_field.classType"
 						).eq(
 							"com.liferay.portal.kernel.model.Organization"
 						),
 						DSL.field(
-							"ExpandoValue.dataSourceId"
+							"ExpandoValue_custom_field.dataSourceId"
 						).eq(
 							DSL.field("Organization.dataSourceId")
 						))
 				).where(
 					DSL.and(
 						DSL.field(
-							"ExpandoValue.fieldName"
+							"ExpandoValue_custom_field.fieldName"
 						).eq(
 							"custom_field"
 						),
-						DSL.field(
-							"ExpandoValue.value"
-						).eq(
-							"test"
-						))
+						DSL.condition(
+							String.join(
+								"", "CASE WHEN STARTS_WITH(",
+								"ExpandoValue_custom_field.value, '[') THEN ",
+								"ExpandoValue_custom_field.value LIKE ",
+								"'%test%' ELSE ",
+								"ExpandoValue_custom_field.value = 'test' ",
+								"END")))
 				)
 			),
 			"organizations.filter(filter='(custom/custom_field/value eq " +
 				"''test'')')",
-			new HashSet<>(Arrays.asList("Individual", "Organization")));
+			new HashSet<>(
+				Arrays.asList("ExpandoValue", "Individual", "Organization")));
 
 		_assertEquals(
 			DSL.field(
@@ -1864,33 +1868,34 @@ public class FilterExpressionTest {
 					DSL.table(
 						"BQExpandoValue"
 					).as(
-						"ExpandoValue"
+						"ExpandoValue_custom_field"
 					)
 				).on(
 					DSL.and(
 						DSL.field(
-							"ExpandoValue.classPK"
+							"ExpandoValue_custom_field.classPK"
 						).eq(
 							DSL.field(
 								"SAFE_CAST(Organization.organizationId AS " +
 									"STRING)")
 						),
 						DSL.field(
-							"ExpandoValue.classType"
+							"ExpandoValue_custom_field.classType"
 						).eq(
 							"com.liferay.portal.kernel.model.Organization"
 						),
 						DSL.field(
-							"ExpandoValue.dataSourceId"
+							"ExpandoValue_custom_field.dataSourceId"
 						).eq(
 							DSL.field("Organization.dataSourceId")
 						))
 				).where(
 					DSL.and(
 						DSL.condition(
-							"LOWER(ExpandoValue.value) LIKE '%test%'"),
+							"LOWER(ExpandoValue_custom_field.value) LIKE " +
+								"'%test%'"),
 						DSL.field(
-							"ExpandoValue.fieldName"
+							"ExpandoValue_custom_field.fieldName"
 						).eq(
 							"custom_field"
 						))
