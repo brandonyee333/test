@@ -14,8 +14,10 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
+import com.liferay.osb.asah.common.entity.BQFieldMapping;
 import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
+import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.CustomBQOrganizationRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -39,6 +41,7 @@ import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -96,6 +99,13 @@ public class BQOrganizationRepositoryImpl
 	@Override
 	public long countOrganizationFieldValuesCustom(
 		Long channelId, String fieldName, String filterString) {
+
+		Optional<BQFieldMapping> bqFieldMappingOptional =
+			_bqFieldMappingRepository.findByFieldName(fieldName);
+
+		if (!bqFieldMappingOptional.isPresent()) {
+			return 0;
+		}
 
 		return _queryExecutor.queryForLong(
 			_getOrganizationFieldsSelectConditionStep(
@@ -283,6 +293,13 @@ public class BQOrganizationRepositoryImpl
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString, Pageable pageable) {
 
+		Optional<BQFieldMapping> bqFieldMappingOptional =
+			_bqFieldMappingRepository.findByFieldName(fieldName);
+
+		if (!bqFieldMappingOptional.isPresent()) {
+			return Collections.emptyList();
+		}
+
 		return _getOrganizationFieldValuesCustom(
 			channelId, fieldName, filterString, pageable);
 	}
@@ -421,6 +438,9 @@ public class BQOrganizationRepositoryImpl
 				pageable.getOffset()
 			));
 	}
+
+	@Autowired
+	private BQFieldMappingRepository _bqFieldMappingRepository;
 
 	private final DSLContext _dslContext;
 	private final QueryExecutor _queryExecutor;
