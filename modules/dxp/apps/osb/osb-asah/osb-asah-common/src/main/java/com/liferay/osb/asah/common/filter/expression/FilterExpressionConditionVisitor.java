@@ -138,39 +138,9 @@ public class FilterExpressionConditionVisitor
 		}
 
 		if (fieldName.startsWith("custom/")) {
-			_referencedTableNames.add("ExpandoValue");
-
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
-			String name = identifierParts[1];
-
-			String alias = "IndividualFields_" + name;
-
-			_referencedTableNames.add(alias);
-
-			Condition condition = DSL.field(
-				alias + ".name"
-			).eq(
-				name
-			);
-
-			if (StringUtil.isNull(value)) {
-				condition = condition.and(
-					DSL.field(
-						alias + ".value"
-					).isNull());
-			}
-			else {
-				condition = condition.and(
-					DSL.condition(
-						String.join(
-							"", "CASE WHEN STARTS_WITH(", alias,
-							".value, '[') THEN ", alias, ".value LIKE '%",
-							value, "%' ELSE ", alias, ".value = '", value,
-							"' END")));
-			}
-
-			return condition;
+			return _getCustomFieldCondition(identifierParts[1], "eq", value);
 		}
 
 		Field leftField = _getLeftField(equalsExpressionContext);
@@ -579,39 +549,9 @@ public class FilterExpressionConditionVisitor
 		}
 
 		if (fieldName.startsWith("custom/")) {
-			_referencedTableNames.add("ExpandoValue");
-
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
-			String name = identifierParts[1];
-
-			String alias = "IndividualFields_" + name;
-
-			_referencedTableNames.add(alias);
-
-			Condition condition = DSL.field(
-				alias + ".name"
-			).eq(
-				name
-			);
-
-			if (StringUtil.isNull(value)) {
-				condition = condition.and(
-					DSL.field(
-						alias + ".value"
-					).isNotNull());
-			}
-			else {
-				condition = condition.and(
-					DSL.condition(
-						String.join(
-							"", "CASE WHEN STARTS_WITH(", alias,
-							".value, '[') THEN ", alias, ".value NOT LIKE '%",
-							value, "%' ELSE ", alias, ".value != '", value,
-							"' END")));
-			}
-
-			return condition;
+			return _getCustomFieldCondition(identifierParts[1], "ne", value);
 		}
 
 		Field leftField = _getLeftField(notEqualsExpressionContext);
@@ -675,6 +615,73 @@ public class FilterExpressionConditionVisitor
 				break;
 			}
 		}
+	}
+
+	private Condition _getCustomFieldCondition(
+		String fieldName, String operator, String value) {
+
+		_referencedTableNames.add("ExpandoValue");
+
+		String alias = null;
+		Condition condition = null;
+
+		if (_filterType == FilterExpression.FilterType.INDIVIDUALS) {
+			alias = "IndividualFields_" + fieldName;
+
+			_referencedTableNames.add(alias);
+
+			condition = DSL.field(
+				alias + ".name"
+			).eq(
+				fieldName
+			);
+		}
+		else {
+			alias = "ExpandoValue_" + fieldName;
+
+			condition = DSL.field(
+				alias + ".fieldName"
+			).eq(
+				fieldName
+			);
+		}
+
+		if (operator.equalsIgnoreCase("eq")) {
+			if (StringUtil.isNull(value)) {
+				condition = condition.and(
+					DSL.field(
+						alias + ".value"
+					).isNull());
+			}
+			else {
+				condition = condition.and(
+					DSL.condition(
+						String.join(
+							"", "CASE WHEN STARTS_WITH(", alias,
+							".value, '[') THEN ", alias, ".value LIKE '%",
+							value, "%' ELSE ", alias, ".value = '", value,
+							"' END")));
+			}
+		}
+		else if (operator.equalsIgnoreCase("ne")) {
+			if (StringUtil.isNull(value)) {
+				condition = condition.and(
+					DSL.field(
+						alias + ".value"
+					).isNotNull());
+			}
+			else {
+				condition = condition.and(
+					DSL.condition(
+						String.join(
+							"", "CASE WHEN STARTS_WITH(", alias,
+							".value, '[') THEN ", alias, ".value NOT LIKE '%",
+							value, "%' ELSE ", alias, ".value != '", value,
+							"' END")));
+			}
+		}
+
+		return condition;
 	}
 
 	private Object _getIndividualIdsInOrganizationCondition(
@@ -901,48 +908,9 @@ public class FilterExpressionConditionVisitor
 		if (fieldName.startsWith("custom/")) {
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
-			String qualifiedFieldName = identifierParts[1];
-
-			Condition condition = DSL.field(
-				"ExpandoValue.fieldName"
-			).eq(
-				qualifiedFieldName
-			);
-
-			if (operator.equalsIgnoreCase("eq")) {
-				if (StringUtil.isNull(value)) {
-					condition = condition.and(
-						DSL.field(
-							"ExpandoValue.value"
-						).isNull());
-				}
-				else {
-					condition = condition.and(
-						DSL.field(
-							"ExpandoValue.value"
-						).eq(
-							value
-						));
-				}
-			}
-			else if (operator.equalsIgnoreCase("ne")) {
-				if (StringUtil.isNull(value)) {
-					condition = condition.and(
-						DSL.field(
-							"ExpandoValue.value"
-						).isNotNull());
-				}
-				else {
-					condition = condition.and(
-						DSL.field(
-							"ExpandoValue.value"
-						).ne(
-							value
-						));
-				}
-			}
-
-			return _getIndividualIdsInOrganizationCondition(condition, true);
+			return _getIndividualIdsInOrganizationCondition(
+				_getCustomFieldCondition(identifierParts[1], operator, value),
+				true);
 		}
 
 		if (fieldName.equalsIgnoreCase("id")) {
