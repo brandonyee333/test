@@ -17,18 +17,22 @@ package com.liferay.osb.asah.backend.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQAsset;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Thiago Buarque
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonRootName("activities")
 public class BQAssetDTO {
 
 	public BQAssetDTO() {
@@ -45,8 +49,8 @@ public class BQAssetDTO {
 		_modifiedDate = bqAsset.getModifiedDate();
 	}
 
-	public BQAssetDTO(List<BQAssetDTO> bqAssetDTOs) {
-		_bqAssetDTOs = bqAssetDTOs;
+	public BQAssetDTO(Collection<BQAssetDTO> bqAssetDTOs) {
+		_bqAssetDTOs = new LinkedHashSet<>(bqAssetDTOs);
 	}
 
 	@Override
@@ -92,7 +96,7 @@ public class BQAssetDTO {
 	}
 
 	@JsonProperty("activities")
-	public List<BQAssetDTO> getBQAssetDTOs() {
+	public Set<BQAssetDTO> getBQAssetDTOs() {
 		return _bqAssetDTOs;
 	}
 
@@ -121,6 +125,10 @@ public class BQAssetDTO {
 		timezone = "UTC"
 	)
 	public Date getModifiedDate() {
+		if (_modifiedDate == null) {
+			return null;
+		}
+
 		return new Date(_modifiedDate.getTime());
 	}
 
@@ -160,13 +168,15 @@ public class BQAssetDTO {
 	}
 
 	public void setModifiedDate(Date modifiedDate) {
-		_modifiedDate = new Date(modifiedDate.getTime());
+		if (modifiedDate != null) {
+			_modifiedDate = new Date(modifiedDate.getTime());
+		}
 	}
 
 	private String _applicationId;
 	private String _assetId;
 	private String _assetTitle;
-	private List<BQAssetDTO> _bqAssetDTOs;
+	private Set<BQAssetDTO> _bqAssetDTOs;
 	private Long _channelId;
 	private Long _count;
 	private Long _dataSourceId;
