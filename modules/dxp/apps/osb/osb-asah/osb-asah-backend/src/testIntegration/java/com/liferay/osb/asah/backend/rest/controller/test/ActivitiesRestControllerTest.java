@@ -14,19 +14,17 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.rest.controller.ActivitiesRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.AssetRepository;
-import com.liferay.osb.asah.common.repository.BQEventRepository;
-import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,74 +32,57 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author Shinn Lok
  */
-@Disabled
 public class ActivitiesRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@RepositoryResource(
-		repositoryClass = AssetRepository.class,
-		resourcePath = "osbasahfaroinfo/assets.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQEventRepository.class,
-		resourcePath = "osbasahfaroinfo/events.json"
-	)
-	@RepositoryResource(
-		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources_3.json"
-	)
+	@BQSQLResource(resourcePath = "bq_page_events.sql")
 	@Test
-	public void testGetBQAssetDTOPageDTO1() throws Exception {
-		JSONObject jsonObject = new JSONObject(
+	public void testGetBQAssetDTOPageDTO1() {
+		JSONObject jsonObject = _objectMapper.convertValue(
 			_activitiesRestController.getBQAssetDTOPageDTO(
-				"contains(object.name, 'clicks')", 0, 10,
-				new String[] {"count", "desc"}));
+				"contains(assetTitle, 'clicks')", 0, 10,
+				new String[] {"count", "desc"}),
+			JSONObject.class);
 
 		Assertions.assertEquals(
-			4,
+			3L,
 			JSONUtil.getValue(
-				jsonObject, "JSONObject/_embedded",
-				"JSONArray/asset-transformations", "Object/0", "Object/count"));
+				jsonObject, "JSONObject/_embedded", "JSONArray/activities",
+				"Object/0", "Object/count"));
 
-		jsonObject = new JSONObject(
+		jsonObject = _objectMapper.convertValue(
 			_activitiesRestController.getBQAssetDTOPageDTO(
-				"(channelId eq '1') and contains(object.name, 'clicks')", 0, 10,
-				new String[] {"count", "desc"}));
+				"(channelId eq 2) and contains(assetTitle, 'clicks')", 0, 10,
+				new String[] {"count", "desc"}),
+			JSONObject.class);
 
 		Assertions.assertEquals(
-			2,
+			1L,
 			JSONUtil.getValue(
-				jsonObject, "JSONObject/_embedded",
-				"JSONArray/asset-transformations", "Object/0", "Object/count"));
+				jsonObject, "JSONObject/_embedded", "JSONArray/activities",
+				"Object/0", "Object/count"));
 	}
 
-	@RepositoryResource(
-		repositoryClass = AssetRepository.class,
-		resourcePath = "osbasahfaroinfo/assets.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQEventRepository.class,
-		resourcePath = "osbasahfaroinfo/events.json"
-	)
-	@RepositoryResource(
-		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources_3.json"
-	)
+	@BQSQLResource(resourcePath = "bq_page_events.sql")
 	@Test
-	public void testGetBQAssetDTOPageDTO2() throws Exception {
-		JSONObject jsonObject = new JSONObject(
+	public void testGetBQAssetDTOPageDTO2() {
+		JSONObject jsonObject = _objectMapper.convertValue(
 			_activitiesRestController.getBQAssetDTOPageDTO(
-				"contains(object.name, 'random')", 0, 10,
-				new String[] {"count", "desc"}));
+				"contains(assetTitle, 'random')", 0, 10,
+				new String[] {"count", "desc"}),
+			JSONObject.class);
 
 		Assertions.assertEquals(
-			0,
+			0L,
 			JSONUtil.getValue(
 				jsonObject, "JSONObject/page", "Object/totalElements"));
 	}
 
 	@Autowired
 	private ActivitiesRestController _activitiesRestController;
+
+	@Autowired
+	private ObjectMapper _objectMapper;
 
 }
