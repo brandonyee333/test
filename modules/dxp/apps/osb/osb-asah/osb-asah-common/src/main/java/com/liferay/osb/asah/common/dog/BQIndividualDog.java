@@ -171,7 +171,7 @@ public class BQIndividualDog {
 	}
 
 	public Page<Individual> searchBQIndividualPage(
-		Long channelId, int page, @Nullable String query, int size) {
+		@Nullable Long channelId, int page, @Nullable String query, int size) {
 
 		return PageableExecutionUtils.getPage(
 			_searchBQIndividuals(

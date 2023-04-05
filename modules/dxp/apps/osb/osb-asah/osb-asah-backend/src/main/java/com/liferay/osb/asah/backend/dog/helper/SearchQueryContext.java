@@ -20,6 +20,8 @@ import com.liferay.osb.asah.backend.model.Technology;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.TimeRange;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author Marcellus Tavares
  */
@@ -51,6 +53,14 @@ public class SearchQueryContext {
 
 	public String getChannelId() {
 		return _channelId;
+	}
+
+	public Long getChannelIdAsLong() {
+		if (StringUtils.isNotBlank(_channelId)) {
+			return Long.valueOf(_channelId);
+		}
+
+		return null;
 	}
 
 	public String getDataSourceId() {
@@ -135,6 +145,12 @@ public class SearchQueryContext {
 
 	public void setCanonicalUrl(String canonicalUrl) {
 		_canonicalUrl = canonicalUrl;
+	}
+
+	public void setChannelId(Long channelId) {
+		if (channelId != null) {
+			_channelId = channelId.toString();
+		}
 	}
 
 	public void setChannelId(String channelId) {

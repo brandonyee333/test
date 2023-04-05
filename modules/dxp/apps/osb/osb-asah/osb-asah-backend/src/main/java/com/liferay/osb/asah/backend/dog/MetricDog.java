@@ -28,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -58,7 +56,7 @@ public class MetricDog {
 
 		return assetMetricRepository.getAppearsOnMetrics(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 	}
 
@@ -83,7 +81,7 @@ public class MetricDog {
 
 		return assetMetricRepository.getAssetMetric(
 			searchQueryContext.getAssetId(), assetTitle,
-			Long.valueOf(searchQueryContext.getChannelId()), selectedMetrics,
+			searchQueryContext.getChannelIdAsLong(), selectedMetrics,
 			searchQueryContext.getTimeRange());
 	}
 
@@ -99,14 +97,9 @@ public class MetricDog {
 		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
 			searchQueryContext.getAssetType());
 
-		Long channelId = null;
-
-		if (!StringUtils.isEmpty(searchQueryContext.getChannelId())) {
-			channelId = Long.valueOf(searchQueryContext.getChannelId());
-		}
-
 		return assetMetricRepository.getAssetMetricsCount(
-			channelId, searchQueryContext.getKeywords(),
+			searchQueryContext.getChannelIdAsLong(),
+			searchQueryContext.getKeywords(),
 			searchQueryContext.getTimeRange());
 	}
 
@@ -118,7 +111,7 @@ public class MetricDog {
 
 		return assetMetricRepository.getBrowserMetrics(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 	}
 
@@ -130,7 +123,7 @@ public class MetricDog {
 
 		return assetMetricRepository.getDeviceMetrics(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 	}
 
@@ -142,7 +135,7 @@ public class MetricDog {
 
 		return assetMetricRepository.getGeolocationMetrics(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 	}
 
@@ -169,16 +162,10 @@ public class MetricDog {
 			(AssetMetricRepository<T>)_getAssetMetricRepository(
 				searchQueryContext.getAssetType());
 
-		Long channelId = null;
-
-		if (!StringUtils.isEmpty(searchQueryContext.getChannelId())) {
-			channelId = Long.valueOf(searchQueryContext.getChannelId());
-		}
-
 		return assetMetricRepository.getAssetMetrics(
-			channelId, searchQueryContext.getKeywords(),
-			PageRequest.of(page, size, sort), selectedMetrics,
-			searchQueryContext.getTimeRange());
+			searchQueryContext.getChannelIdAsLong(),
+			searchQueryContext.getKeywords(), PageRequest.of(page, size, sort),
+			selectedMetrics, searchQueryContext.getTimeRange());
 	}
 
 	private final Map<AssetType, AssetMetricRepository>

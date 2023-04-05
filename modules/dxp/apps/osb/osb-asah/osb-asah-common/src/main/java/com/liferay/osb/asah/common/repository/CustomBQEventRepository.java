@@ -41,7 +41,7 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomBQEventRepository {
 
-	public Integer countBQEvents(Long channelId, String individualId);
+	public Integer countBQEvents(@Nullable Long channelId, String individualId);
 
 	public Integer countBQEvents(
 		Long channelId, String individualId, @Nullable String keywords,

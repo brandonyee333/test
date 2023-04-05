@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,7 +43,7 @@ import org.springframework.stereotype.Component;
 public class BQIdentityInterestScoreDog {
 
 	public Page<BQIdentityInterestScore> getBQIdentityInterestScorePage(
-		Long channelId, String individualId, int size, int start) {
+		@Nullable Long channelId, String individualId, int size, int start) {
 
 		return PageableExecutionUtils.getPage(
 			_bqIdentityInterestScoreRepository.findByChannelIdAndIndividualId(

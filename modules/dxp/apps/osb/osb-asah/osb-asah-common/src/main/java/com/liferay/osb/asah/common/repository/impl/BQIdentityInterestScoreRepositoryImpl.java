@@ -91,7 +91,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 	@Override
 	public long countByChannelIdAndIndividualId(
-		Long channelId, String individualId) {
+		@Nullable Long channelId, String individualId) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();

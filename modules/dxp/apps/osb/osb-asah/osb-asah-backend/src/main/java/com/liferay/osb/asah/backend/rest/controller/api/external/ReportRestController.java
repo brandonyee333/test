@@ -164,7 +164,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.BLOG);
-				setChannelId(_getChannelIdString(channelId));
+				setChannelId(channelId);
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -315,7 +315,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.DOCUMENT);
-				setChannelId(_getChannelIdString(channelId));
+				setChannelId(channelId);
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -382,7 +382,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.FORM);
-				setChannelId(_getChannelIdString(channelId));
+				setChannelId(channelId);
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -543,7 +543,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.JOURNAL);
-				setChannelId(_getChannelIdString(channelId));
+				setChannelId(channelId);
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -662,7 +662,7 @@ public class ReportRestController extends BaseRestController {
 		SearchQueryContext searchQueryContext = new SearchQueryContext() {
 			{
 				setAssetType(AssetType.PAGE);
-				setChannelId(_getChannelIdString(channelId));
+				setChannelId(channelId);
 				setKeywords(keywords);
 				setTimeRange(TimeRange.of(rangeKey));
 			}
@@ -928,14 +928,6 @@ public class ReportRestController extends BaseRestController {
 		).collect(
 			Collectors.toSet()
 		);
-	}
-
-	private String _getChannelIdString(Long channelId) {
-		if (channelId == null) {
-			return null;
-		}
-
-		return channelId + "";
 	}
 
 	private ResultBagEntityModel<AssetReport>

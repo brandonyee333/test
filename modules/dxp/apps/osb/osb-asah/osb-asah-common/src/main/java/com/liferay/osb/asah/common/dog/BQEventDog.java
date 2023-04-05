@@ -172,7 +172,7 @@ public class BQEventDog {
 	}
 
 	public Page<BQEvent> searchBQEvents(
-		Long channelId, String individualId, Integer page, int size) {
+		@Nullable Long channelId, String individualId, Integer page, int size) {
 
 		return PageableExecutionUtils.getPage(
 			_bqEventRepository.searchBQEvents(

@@ -100,7 +100,9 @@ public class BQEventRepositoryImpl
 	}
 
 	@Override
-	public Integer countBQEvents(Long channelId, String individualId) {
+	public Integer countBQEvents(
+		@Nullable Long channelId, String individualId) {
+
 		SelectSelectStep<Record1<Integer>> selectCount =
 			_dslContext.selectCount();
 
