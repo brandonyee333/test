@@ -23,6 +23,7 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -48,6 +49,19 @@ public class BQIndividualRepositoryTest
 			1,
 			_bqIndividualRepository.countBQIndividuals(
 				null, 11L, null, null, null, _SEGMENT_ID));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
+	@Test
+	public void testCountIndividualFieldValuesDemographics() {
+		Assertions.assertEquals(
+			3,
+			_bqIndividualRepository.countIndividualFieldValuesDemographics(
+				11L, "firstName", null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countIndividualFieldValuesDemographics(
+				11L, "jobTitle", null));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository.sql")
@@ -110,6 +124,15 @@ public class BQIndividualRepositoryTest
 			Arrays.asList("Engineer"),
 			_bqIndividualRepository.searchIndividualFieldValuesDemographics(
 				11L, "jobTitle", null, pageRequest));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
+	@Test
+	public void testSearchIndividualFieldValuesDemographicsUnknownChannel() {
+		Assertions.assertEquals(
+			Collections.emptyList(),
+			_bqIndividualRepository.searchIndividualFieldValuesDemographics(
+				42L, "firstName", null, PageRequest.of(0, 10)));
 	}
 
 	private static final Long _SEGMENT_ID = 11L;
