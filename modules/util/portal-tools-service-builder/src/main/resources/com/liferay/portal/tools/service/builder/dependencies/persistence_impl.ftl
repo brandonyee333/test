@@ -452,9 +452,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	public void clearCache() {
 		${entityCache}.clearCache(${entity.name}Impl.class);
 
-		<#if serviceBuilder.isVersionGTE_7_4_0()>
-			${finderCache}.clearCache(${entity.name}Impl.class);
-		<#else>
+		<#if serviceBuilder.isVersionLTE_7_3_0()>
 			${finderCache}.clearCache(FINDER_CLASS_NAME_ENTITY);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -508,9 +506,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		@Override
 	</#if>
 	public void clearCache(Set<Serializable> primaryKeys) {
-		<#if serviceBuilder.isVersionGTE_7_4_0()>
-			${finderCache}.clearCache(${entity.name}Impl.class);
-		<#else>
+		<#if serviceBuilder.isVersionLTE_7_3_0()>
 			${finderCache}.clearCache(FINDER_CLASS_NAME_ENTITY);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 			${finderCache}.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
