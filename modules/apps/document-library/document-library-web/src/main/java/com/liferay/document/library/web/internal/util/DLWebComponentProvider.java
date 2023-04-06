@@ -56,20 +56,6 @@ public class DLWebComponentProvider {
 	}
 
 	@Reference(unbind = "-")
-	protected void setDlAdminDisplayContextProvider(
-		DLAdminDisplayContextProvider dlAdminDisplayContextProvider) {
-
-		_dlAdminDisplayContextProvider = dlAdminDisplayContextProvider;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDLDisplayContextProvider(
-		DLDisplayContextProvider dlDisplayContextProvider) {
-
-		_dlDisplayContextProvider = dlDisplayContextProvider;
-	}
-
-	@Reference(unbind = "-")
 	protected void setIGDisplayContextProvider(
 		IGDisplayContextProvider igDisplayContextProvider) {
 
@@ -78,8 +64,12 @@ public class DLWebComponentProvider {
 
 	private static DLWebComponentProvider _dlWebComponentProvider;
 
+	@Reference
 	private DLAdminDisplayContextProvider _dlAdminDisplayContextProvider;
+
 	private DLDisplayContextProvider _dlDisplayContextProvider;
+
+	@Reference
 	private IGDisplayContextProvider _igDisplayContextProvider;
 
 }
