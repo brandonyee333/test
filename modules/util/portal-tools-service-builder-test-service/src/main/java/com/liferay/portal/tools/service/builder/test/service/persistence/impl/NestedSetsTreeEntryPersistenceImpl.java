@@ -147,8 +147,6 @@ public class NestedSetsTreeEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(NestedSetsTreeEntryImpl.class);
-
-		finderCache.clearCache(NestedSetsTreeEntryImpl.class);
 	}
 
 	/**
@@ -174,8 +172,6 @@ public class NestedSetsTreeEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(NestedSetsTreeEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(NestedSetsTreeEntryImpl.class, primaryKey);
 		}

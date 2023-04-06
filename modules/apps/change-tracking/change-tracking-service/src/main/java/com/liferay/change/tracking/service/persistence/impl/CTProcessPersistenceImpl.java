@@ -1685,8 +1685,6 @@ public class CTProcessPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTProcessImpl.class);
-
-		finderCache.clearCache(CTProcessImpl.class);
 	}
 
 	/**
@@ -1710,8 +1708,6 @@ public class CTProcessPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTProcessImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CTProcessImpl.class, primaryKey);
 		}

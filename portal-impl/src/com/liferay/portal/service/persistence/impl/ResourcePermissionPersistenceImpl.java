@@ -6701,8 +6701,6 @@ public class ResourcePermissionPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ResourcePermissionImpl.class);
-
-		FinderCacheUtil.clearCache(ResourcePermissionImpl.class);
 	}
 
 	/**
@@ -6728,8 +6726,6 @@ public class ResourcePermissionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ResourcePermissionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				ResourcePermissionImpl.class, primaryKey);

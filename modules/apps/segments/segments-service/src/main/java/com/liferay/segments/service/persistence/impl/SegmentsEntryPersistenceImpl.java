@@ -10773,8 +10773,6 @@ public class SegmentsEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SegmentsEntryImpl.class);
-
-		finderCache.clearCache(SegmentsEntryImpl.class);
 	}
 
 	/**
@@ -10798,8 +10796,6 @@ public class SegmentsEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SegmentsEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SegmentsEntryImpl.class, primaryKey);
 		}

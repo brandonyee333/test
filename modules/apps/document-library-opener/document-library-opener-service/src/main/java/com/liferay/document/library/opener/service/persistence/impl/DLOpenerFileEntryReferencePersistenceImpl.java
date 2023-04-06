@@ -640,8 +640,6 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DLOpenerFileEntryReferenceImpl.class);
-
-		finderCache.clearCache(DLOpenerFileEntryReferenceImpl.class);
 	}
 
 	/**
@@ -674,8 +672,6 @@ public class DLOpenerFileEntryReferencePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLOpenerFileEntryReferenceImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				DLOpenerFileEntryReferenceImpl.class, primaryKey);

@@ -2793,8 +2793,6 @@ public class DDLRecordVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDLRecordVersionImpl.class);
-
-		finderCache.clearCache(DDLRecordVersionImpl.class);
 	}
 
 	/**
@@ -2819,8 +2817,6 @@ public class DDLRecordVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDLRecordVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDLRecordVersionImpl.class, primaryKey);
 		}

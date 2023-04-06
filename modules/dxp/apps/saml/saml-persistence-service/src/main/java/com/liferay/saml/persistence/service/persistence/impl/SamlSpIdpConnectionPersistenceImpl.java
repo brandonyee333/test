@@ -942,8 +942,6 @@ public class SamlSpIdpConnectionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SamlSpIdpConnectionImpl.class);
-
-		finderCache.clearCache(SamlSpIdpConnectionImpl.class);
 	}
 
 	/**
@@ -969,8 +967,6 @@ public class SamlSpIdpConnectionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlSpIdpConnectionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SamlSpIdpConnectionImpl.class, primaryKey);
 		}

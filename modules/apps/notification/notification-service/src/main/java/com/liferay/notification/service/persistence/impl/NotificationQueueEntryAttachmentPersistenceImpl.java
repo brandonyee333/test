@@ -718,8 +718,6 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(NotificationQueueEntryAttachmentImpl.class);
-
-		finderCache.clearCache(NotificationQueueEntryAttachmentImpl.class);
 	}
 
 	/**
@@ -754,8 +752,6 @@ public class NotificationQueueEntryAttachmentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(NotificationQueueEntryAttachmentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				NotificationQueueEntryAttachmentImpl.class, primaryKey);

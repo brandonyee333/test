@@ -4007,8 +4007,6 @@ public class DDLRecordSetPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDLRecordSetImpl.class);
-
-		finderCache.clearCache(DDLRecordSetImpl.class);
 	}
 
 	/**
@@ -4032,8 +4030,6 @@ public class DDLRecordSetPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDLRecordSetImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDLRecordSetImpl.class, primaryKey);
 		}

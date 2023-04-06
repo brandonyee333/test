@@ -1777,8 +1777,6 @@ public class KaleoNodePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoNodeImpl.class);
-
-		finderCache.clearCache(KaleoNodeImpl.class);
 	}
 
 	/**
@@ -1802,8 +1800,6 @@ public class KaleoNodePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoNodeImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoNodeImpl.class, primaryKey);
 		}

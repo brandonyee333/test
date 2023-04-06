@@ -3879,8 +3879,6 @@ public class DepotEntryGroupRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DepotEntryGroupRelImpl.class);
-
-		finderCache.clearCache(DepotEntryGroupRelImpl.class);
 	}
 
 	/**
@@ -3906,8 +3904,6 @@ public class DepotEntryGroupRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DepotEntryGroupRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DepotEntryGroupRelImpl.class, primaryKey);
 		}

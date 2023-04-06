@@ -3169,8 +3169,6 @@ public class MBSuspiciousActivityPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBSuspiciousActivityImpl.class);
-
-		finderCache.clearCache(MBSuspiciousActivityImpl.class);
 	}
 
 	/**
@@ -3198,8 +3196,6 @@ public class MBSuspiciousActivityPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBSuspiciousActivityImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				MBSuspiciousActivityImpl.class, primaryKey);

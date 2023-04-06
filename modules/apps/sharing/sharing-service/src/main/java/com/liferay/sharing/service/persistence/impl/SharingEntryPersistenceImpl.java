@@ -5404,8 +5404,6 @@ public class SharingEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SharingEntryImpl.class);
-
-		finderCache.clearCache(SharingEntryImpl.class);
 	}
 
 	/**
@@ -5429,8 +5427,6 @@ public class SharingEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SharingEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SharingEntryImpl.class, primaryKey);
 		}

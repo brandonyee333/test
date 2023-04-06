@@ -833,8 +833,6 @@ public class DLSyncEventPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DLSyncEventImpl.class);
-
-		finderCache.clearCache(DLSyncEventImpl.class);
 	}
 
 	/**
@@ -858,8 +856,6 @@ public class DLSyncEventPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLSyncEventImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DLSyncEventImpl.class, primaryKey);
 		}

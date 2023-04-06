@@ -3973,8 +3973,6 @@ public class WebsitePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(WebsiteImpl.class);
-
-		FinderCacheUtil.clearCache(WebsiteImpl.class);
 	}
 
 	/**
@@ -3998,8 +3996,6 @@ public class WebsitePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(WebsiteImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(WebsiteImpl.class, primaryKey);
 		}

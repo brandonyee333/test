@@ -4985,8 +4985,6 @@ public class WikiNodePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(WikiNodeImpl.class);
-
-		finderCache.clearCache(WikiNodeImpl.class);
 	}
 
 	/**
@@ -5010,8 +5008,6 @@ public class WikiNodePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WikiNodeImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(WikiNodeImpl.class, primaryKey);
 		}

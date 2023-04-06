@@ -652,8 +652,6 @@ public class ImagePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ImageImpl.class);
-
-		FinderCacheUtil.clearCache(ImageImpl.class);
 	}
 
 	/**
@@ -677,8 +675,6 @@ public class ImagePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ImageImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ImageImpl.class, primaryKey);
 		}

@@ -3520,8 +3520,6 @@ public class DDMDataProviderInstancePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMDataProviderInstanceImpl.class);
-
-		finderCache.clearCache(DDMDataProviderInstanceImpl.class);
 	}
 
 	/**
@@ -3551,8 +3549,6 @@ public class DDMDataProviderInstancePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMDataProviderInstanceImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				DDMDataProviderInstanceImpl.class, primaryKey);

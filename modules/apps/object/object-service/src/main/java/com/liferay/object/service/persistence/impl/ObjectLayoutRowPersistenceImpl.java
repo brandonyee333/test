@@ -1790,8 +1790,6 @@ public class ObjectLayoutRowPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectLayoutRowImpl.class);
-
-		finderCache.clearCache(ObjectLayoutRowImpl.class);
 	}
 
 	/**
@@ -1816,8 +1814,6 @@ public class ObjectLayoutRowPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectLayoutRowImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectLayoutRowImpl.class, primaryKey);
 		}

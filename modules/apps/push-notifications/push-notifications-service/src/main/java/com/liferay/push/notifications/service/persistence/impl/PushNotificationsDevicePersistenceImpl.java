@@ -1283,8 +1283,6 @@ public class PushNotificationsDevicePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(PushNotificationsDeviceImpl.class);
-
-		finderCache.clearCache(PushNotificationsDeviceImpl.class);
 	}
 
 	/**
@@ -1314,8 +1312,6 @@ public class PushNotificationsDevicePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(PushNotificationsDeviceImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				PushNotificationsDeviceImpl.class, primaryKey);

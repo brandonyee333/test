@@ -4182,8 +4182,6 @@ public class SAPEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SAPEntryImpl.class);
-
-		finderCache.clearCache(SAPEntryImpl.class);
 	}
 
 	/**
@@ -4207,8 +4205,6 @@ public class SAPEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SAPEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SAPEntryImpl.class, primaryKey);
 		}

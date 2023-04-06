@@ -1545,8 +1545,6 @@ public class CSDiagramSettingPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CSDiagramSettingImpl.class);
-
-		finderCache.clearCache(CSDiagramSettingImpl.class);
 	}
 
 	/**
@@ -1571,8 +1569,6 @@ public class CSDiagramSettingPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CSDiagramSettingImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CSDiagramSettingImpl.class, primaryKey);
 		}

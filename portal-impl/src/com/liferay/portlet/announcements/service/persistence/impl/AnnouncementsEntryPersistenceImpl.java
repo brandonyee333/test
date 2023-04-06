@@ -7957,8 +7957,6 @@ public class AnnouncementsEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AnnouncementsEntryImpl.class);
-
-		FinderCacheUtil.clearCache(AnnouncementsEntryImpl.class);
 	}
 
 	/**
@@ -7984,8 +7982,6 @@ public class AnnouncementsEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AnnouncementsEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsEntryImpl.class, primaryKey);

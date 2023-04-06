@@ -13624,8 +13624,6 @@ public class GroupPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(GroupImpl.class);
-
-		FinderCacheUtil.clearCache(GroupImpl.class);
 	}
 
 	/**
@@ -13649,8 +13647,6 @@ public class GroupPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(GroupImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(GroupImpl.class, primaryKey);
 		}

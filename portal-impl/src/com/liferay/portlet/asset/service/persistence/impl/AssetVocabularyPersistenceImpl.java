@@ -6591,8 +6591,6 @@ public class AssetVocabularyPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AssetVocabularyImpl.class);
-
-		FinderCacheUtil.clearCache(AssetVocabularyImpl.class);
 	}
 
 	/**
@@ -6618,8 +6616,6 @@ public class AssetVocabularyPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetVocabularyImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(AssetVocabularyImpl.class, primaryKey);
 		}

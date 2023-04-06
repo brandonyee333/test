@@ -6444,8 +6444,6 @@ public class CalendarResourcePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CalendarResourceImpl.class);
-
-		finderCache.clearCache(CalendarResourceImpl.class);
 	}
 
 	/**
@@ -6470,8 +6468,6 @@ public class CalendarResourcePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CalendarResourceImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CalendarResourceImpl.class, primaryKey);
 		}

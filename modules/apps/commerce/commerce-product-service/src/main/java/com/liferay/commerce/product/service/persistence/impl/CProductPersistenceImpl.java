@@ -2351,8 +2351,6 @@ public class CProductPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CProductImpl.class);
-
-		finderCache.clearCache(CProductImpl.class);
 	}
 
 	/**
@@ -2376,8 +2374,6 @@ public class CProductPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CProductImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CProductImpl.class, primaryKey);
 		}

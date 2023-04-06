@@ -3783,8 +3783,6 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoTaskInstanceTokenImpl.class);
-
-		finderCache.clearCache(KaleoTaskInstanceTokenImpl.class);
 	}
 
 	/**
@@ -3814,8 +3812,6 @@ public class KaleoTaskInstanceTokenPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTaskInstanceTokenImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				KaleoTaskInstanceTokenImpl.class, primaryKey);

@@ -1372,8 +1372,6 @@ public class VersionedEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(VersionedEntryImpl.class);
-
-		finderCache.clearCache(VersionedEntryImpl.class);
 	}
 
 	/**
@@ -1397,8 +1395,6 @@ public class VersionedEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(VersionedEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(VersionedEntryImpl.class, primaryKey);
 		}

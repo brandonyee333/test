@@ -7250,8 +7250,6 @@ public class AccountGroupPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AccountGroupImpl.class);
-
-		finderCache.clearCache(AccountGroupImpl.class);
 	}
 
 	/**
@@ -7275,8 +7273,6 @@ public class AccountGroupPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountGroupImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AccountGroupImpl.class, primaryKey);
 		}

@@ -1803,8 +1803,6 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPDefinitionVirtualSettingImpl.class);
-
-		finderCache.clearCache(CPDefinitionVirtualSettingImpl.class);
 	}
 
 	/**
@@ -1837,8 +1835,6 @@ public class CPDefinitionVirtualSettingPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionVirtualSettingImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CPDefinitionVirtualSettingImpl.class, primaryKey);

@@ -648,8 +648,6 @@ public class CTSchemaVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTSchemaVersionImpl.class);
-
-		finderCache.clearCache(CTSchemaVersionImpl.class);
 	}
 
 	/**
@@ -674,8 +672,6 @@ public class CTSchemaVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTSchemaVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CTSchemaVersionImpl.class, primaryKey);
 		}

@@ -2540,8 +2540,6 @@ public class LayoutBranchPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(LayoutBranchImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutBranchImpl.class);
 	}
 
 	/**
@@ -2565,8 +2563,6 @@ public class LayoutBranchPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutBranchImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(LayoutBranchImpl.class, primaryKey);
 		}

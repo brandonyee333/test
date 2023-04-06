@@ -2415,8 +2415,6 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceDiscountUsageEntryImpl.class);
-
-		finderCache.clearCache(CommerceDiscountUsageEntryImpl.class);
 	}
 
 	/**
@@ -2449,8 +2447,6 @@ public class CommerceDiscountUsageEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceDiscountUsageEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceDiscountUsageEntryImpl.class, primaryKey);

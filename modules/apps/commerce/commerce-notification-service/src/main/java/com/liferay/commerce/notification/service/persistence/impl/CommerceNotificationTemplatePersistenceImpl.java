@@ -4530,8 +4530,6 @@ public class CommerceNotificationTemplatePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceNotificationTemplateImpl.class);
-
-		finderCache.clearCache(CommerceNotificationTemplateImpl.class);
 	}
 
 	/**
@@ -4565,8 +4563,6 @@ public class CommerceNotificationTemplatePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceNotificationTemplateImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceNotificationTemplateImpl.class, primaryKey);

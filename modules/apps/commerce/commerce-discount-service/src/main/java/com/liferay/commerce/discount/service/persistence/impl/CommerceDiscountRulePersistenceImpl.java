@@ -677,8 +677,6 @@ public class CommerceDiscountRulePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceDiscountRuleImpl.class);
-
-		finderCache.clearCache(CommerceDiscountRuleImpl.class);
 	}
 
 	/**
@@ -706,8 +704,6 @@ public class CommerceDiscountRulePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceDiscountRuleImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceDiscountRuleImpl.class, primaryKey);

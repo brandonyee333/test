@@ -14487,8 +14487,6 @@ public class DLFolderPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(DLFolderImpl.class);
-
-		FinderCacheUtil.clearCache(DLFolderImpl.class);
 	}
 
 	/**
@@ -14512,8 +14510,6 @@ public class DLFolderPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFolderImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(DLFolderImpl.class, primaryKey);
 		}

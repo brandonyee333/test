@@ -3040,8 +3040,6 @@ public class PortalPreferenceValuePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(PortalPreferenceValueImpl.class);
-
-		FinderCacheUtil.clearCache(PortalPreferenceValueImpl.class);
 	}
 
 	/**
@@ -3069,8 +3067,6 @@ public class PortalPreferenceValuePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PortalPreferenceValueImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				PortalPreferenceValueImpl.class, primaryKey);

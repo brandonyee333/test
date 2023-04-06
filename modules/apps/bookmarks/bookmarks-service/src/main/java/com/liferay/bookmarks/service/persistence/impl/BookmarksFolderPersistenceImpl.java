@@ -6831,8 +6831,6 @@ public class BookmarksFolderPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BookmarksFolderImpl.class);
-
-		finderCache.clearCache(BookmarksFolderImpl.class);
 	}
 
 	/**
@@ -6857,8 +6855,6 @@ public class BookmarksFolderPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BookmarksFolderImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(BookmarksFolderImpl.class, primaryKey);
 		}

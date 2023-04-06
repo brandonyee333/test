@@ -1529,8 +1529,6 @@ public class ERCCompanyEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ERCCompanyEntryImpl.class);
-
-		finderCache.clearCache(ERCCompanyEntryImpl.class);
 	}
 
 	/**
@@ -1555,8 +1553,6 @@ public class ERCCompanyEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ERCCompanyEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ERCCompanyEntryImpl.class, primaryKey);
 		}

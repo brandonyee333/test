@@ -1580,8 +1580,6 @@ public class CTAutoResolutionInfoPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTAutoResolutionInfoImpl.class);
-
-		finderCache.clearCache(CTAutoResolutionInfoImpl.class);
 	}
 
 	/**
@@ -1609,8 +1607,6 @@ public class CTAutoResolutionInfoPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTAutoResolutionInfoImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CTAutoResolutionInfoImpl.class, primaryKey);

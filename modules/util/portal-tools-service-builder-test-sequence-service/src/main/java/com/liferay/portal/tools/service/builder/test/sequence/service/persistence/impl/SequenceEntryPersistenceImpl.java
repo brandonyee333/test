@@ -1271,8 +1271,6 @@ public class SequenceEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SequenceEntryImpl.class);
-
-		finderCache.clearCache(SequenceEntryImpl.class);
 	}
 
 	/**
@@ -1296,8 +1294,6 @@ public class SequenceEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SequenceEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SequenceEntryImpl.class, primaryKey);
 		}

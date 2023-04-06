@@ -3842,8 +3842,6 @@ public class CPInstanceOptionValueRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPInstanceOptionValueRelImpl.class);
-
-		finderCache.clearCache(CPInstanceOptionValueRelImpl.class);
 	}
 
 	/**
@@ -3873,8 +3871,6 @@ public class CPInstanceOptionValueRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPInstanceOptionValueRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CPInstanceOptionValueRelImpl.class, primaryKey);

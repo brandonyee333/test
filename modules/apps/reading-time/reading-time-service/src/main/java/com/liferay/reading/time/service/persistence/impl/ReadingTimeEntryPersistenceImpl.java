@@ -1862,8 +1862,6 @@ public class ReadingTimeEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ReadingTimeEntryImpl.class);
-
-		finderCache.clearCache(ReadingTimeEntryImpl.class);
 	}
 
 	/**
@@ -1888,8 +1886,6 @@ public class ReadingTimeEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ReadingTimeEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ReadingTimeEntryImpl.class, primaryKey);
 		}

@@ -1666,8 +1666,6 @@ public class UserTrackerPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(UserTrackerImpl.class);
-
-		FinderCacheUtil.clearCache(UserTrackerImpl.class);
 	}
 
 	/**
@@ -1691,8 +1689,6 @@ public class UserTrackerPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserTrackerImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(UserTrackerImpl.class, primaryKey);
 		}

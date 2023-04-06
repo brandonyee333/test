@@ -5407,8 +5407,6 @@ public class LayoutFriendlyURLPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(LayoutFriendlyURLImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutFriendlyURLImpl.class);
 	}
 
 	/**
@@ -5434,8 +5432,6 @@ public class LayoutFriendlyURLPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutFriendlyURLImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				LayoutFriendlyURLImpl.class, primaryKey);

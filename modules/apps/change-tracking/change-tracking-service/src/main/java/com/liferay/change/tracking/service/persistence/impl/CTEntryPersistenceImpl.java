@@ -2327,8 +2327,6 @@ public class CTEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTEntryImpl.class);
-
-		finderCache.clearCache(CTEntryImpl.class);
 	}
 
 	/**
@@ -2352,8 +2350,6 @@ public class CTEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CTEntryImpl.class, primaryKey);
 		}

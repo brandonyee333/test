@@ -3816,8 +3816,6 @@ public class CPMeasurementUnitPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPMeasurementUnitImpl.class);
-
-		finderCache.clearCache(CPMeasurementUnitImpl.class);
 	}
 
 	/**
@@ -3843,8 +3841,6 @@ public class CPMeasurementUnitPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPMeasurementUnitImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CPMeasurementUnitImpl.class, primaryKey);
 		}

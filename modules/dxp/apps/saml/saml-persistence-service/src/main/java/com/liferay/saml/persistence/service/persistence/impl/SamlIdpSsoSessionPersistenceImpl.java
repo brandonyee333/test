@@ -954,8 +954,6 @@ public class SamlIdpSsoSessionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SamlIdpSsoSessionImpl.class);
-
-		finderCache.clearCache(SamlIdpSsoSessionImpl.class);
 	}
 
 	/**
@@ -981,8 +979,6 @@ public class SamlIdpSsoSessionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlIdpSsoSessionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SamlIdpSsoSessionImpl.class, primaryKey);
 		}

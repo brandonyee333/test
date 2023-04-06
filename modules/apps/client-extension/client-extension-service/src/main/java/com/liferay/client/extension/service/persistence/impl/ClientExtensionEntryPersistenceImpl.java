@@ -4459,8 +4459,6 @@ public class ClientExtensionEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ClientExtensionEntryImpl.class);
-
-		finderCache.clearCache(ClientExtensionEntryImpl.class);
 	}
 
 	/**
@@ -4488,8 +4486,6 @@ public class ClientExtensionEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ClientExtensionEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				ClientExtensionEntryImpl.class, primaryKey);

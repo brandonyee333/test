@@ -3094,8 +3094,6 @@ public class AssetLinkPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AssetLinkImpl.class);
-
-		FinderCacheUtil.clearCache(AssetLinkImpl.class);
 	}
 
 	/**
@@ -3119,8 +3117,6 @@ public class AssetLinkPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetLinkImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(AssetLinkImpl.class, primaryKey);
 		}

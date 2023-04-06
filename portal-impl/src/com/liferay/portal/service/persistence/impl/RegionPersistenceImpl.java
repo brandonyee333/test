@@ -3023,8 +3023,6 @@ public class RegionPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RegionImpl.class);
-
-		FinderCacheUtil.clearCache(RegionImpl.class);
 	}
 
 	/**
@@ -3048,8 +3046,6 @@ public class RegionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RegionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(RegionImpl.class, primaryKey);
 		}

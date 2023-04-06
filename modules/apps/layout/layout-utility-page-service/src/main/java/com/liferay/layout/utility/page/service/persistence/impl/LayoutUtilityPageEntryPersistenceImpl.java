@@ -5528,8 +5528,6 @@ public class LayoutUtilityPageEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LayoutUtilityPageEntryImpl.class);
-
-		finderCache.clearCache(LayoutUtilityPageEntryImpl.class);
 	}
 
 	/**
@@ -5559,8 +5557,6 @@ public class LayoutUtilityPageEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutUtilityPageEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				LayoutUtilityPageEntryImpl.class, primaryKey);

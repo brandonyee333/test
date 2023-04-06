@@ -2463,8 +2463,6 @@ public class KBTemplatePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KBTemplateImpl.class);
-
-		finderCache.clearCache(KBTemplateImpl.class);
 	}
 
 	/**
@@ -2488,8 +2486,6 @@ public class KBTemplatePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KBTemplateImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KBTemplateImpl.class, primaryKey);
 		}

@@ -1203,8 +1203,6 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(OAuth2ApplicationScopeAliasesImpl.class);
-
-		finderCache.clearCache(OAuth2ApplicationScopeAliasesImpl.class);
 	}
 
 	/**
@@ -1238,8 +1236,6 @@ public class OAuth2ApplicationScopeAliasesPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuth2ApplicationScopeAliasesImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				OAuth2ApplicationScopeAliasesImpl.class, primaryKey);

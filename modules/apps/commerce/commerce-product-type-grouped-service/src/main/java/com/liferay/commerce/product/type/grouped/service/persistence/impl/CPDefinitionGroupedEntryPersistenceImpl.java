@@ -2823,8 +2823,6 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPDefinitionGroupedEntryImpl.class);
-
-		finderCache.clearCache(CPDefinitionGroupedEntryImpl.class);
 	}
 
 	/**
@@ -2854,8 +2852,6 @@ public class CPDefinitionGroupedEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionGroupedEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CPDefinitionGroupedEntryImpl.class, primaryKey);

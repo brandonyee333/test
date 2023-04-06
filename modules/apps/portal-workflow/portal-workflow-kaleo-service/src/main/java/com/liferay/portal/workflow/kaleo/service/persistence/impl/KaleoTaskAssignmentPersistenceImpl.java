@@ -2531,8 +2531,6 @@ public class KaleoTaskAssignmentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoTaskAssignmentImpl.class);
-
-		finderCache.clearCache(KaleoTaskAssignmentImpl.class);
 	}
 
 	/**
@@ -2558,8 +2556,6 @@ public class KaleoTaskAssignmentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTaskAssignmentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoTaskAssignmentImpl.class, primaryKey);
 		}

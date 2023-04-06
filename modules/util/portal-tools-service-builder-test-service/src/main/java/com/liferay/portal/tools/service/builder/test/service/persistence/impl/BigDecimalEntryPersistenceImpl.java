@@ -1777,8 +1777,6 @@ public class BigDecimalEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BigDecimalEntryImpl.class);
-
-		finderCache.clearCache(BigDecimalEntryImpl.class);
 	}
 
 	/**
@@ -1803,8 +1801,6 @@ public class BigDecimalEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BigDecimalEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(BigDecimalEntryImpl.class, primaryKey);
 		}

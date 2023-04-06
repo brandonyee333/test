@@ -3971,8 +3971,6 @@ public class PhonePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(PhoneImpl.class);
-
-		FinderCacheUtil.clearCache(PhoneImpl.class);
 	}
 
 	/**
@@ -3996,8 +3994,6 @@ public class PhonePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PhoneImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(PhoneImpl.class, primaryKey);
 		}

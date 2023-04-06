@@ -1438,8 +1438,6 @@ public class COREntryRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(COREntryRelImpl.class);
-
-		finderCache.clearCache(COREntryRelImpl.class);
 	}
 
 	/**
@@ -1463,8 +1461,6 @@ public class COREntryRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(COREntryRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(COREntryRelImpl.class, primaryKey);
 		}

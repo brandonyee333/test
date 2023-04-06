@@ -1205,8 +1205,6 @@ public class DispatchLogPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DispatchLogImpl.class);
-
-		finderCache.clearCache(DispatchLogImpl.class);
 	}
 
 	/**
@@ -1230,8 +1228,6 @@ public class DispatchLogPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DispatchLogImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DispatchLogImpl.class, primaryKey);
 		}

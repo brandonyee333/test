@@ -1862,8 +1862,6 @@ public class LayoutSEOEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LayoutSEOEntryImpl.class);
-
-		finderCache.clearCache(LayoutSEOEntryImpl.class);
 	}
 
 	/**
@@ -1887,8 +1885,6 @@ public class LayoutSEOEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutSEOEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(LayoutSEOEntryImpl.class, primaryKey);
 		}

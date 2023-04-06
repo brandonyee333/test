@@ -2878,8 +2878,6 @@ public class DefinitionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DefinitionImpl.class);
-
-		finderCache.clearCache(DefinitionImpl.class);
 	}
 
 	/**
@@ -2903,8 +2901,6 @@ public class DefinitionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DefinitionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DefinitionImpl.class, primaryKey);
 		}

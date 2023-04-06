@@ -951,8 +951,6 @@ public class ListTypePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ListTypeImpl.class);
-
-		FinderCacheUtil.clearCache(ListTypeImpl.class);
 	}
 
 	/**
@@ -976,8 +974,6 @@ public class ListTypePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ListTypeImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ListTypeImpl.class, primaryKey);
 		}

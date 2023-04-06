@@ -881,8 +881,6 @@ public class PasswordPolicyRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(PasswordPolicyRelImpl.class);
-
-		FinderCacheUtil.clearCache(PasswordPolicyRelImpl.class);
 	}
 
 	/**
@@ -908,8 +906,6 @@ public class PasswordPolicyRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PasswordPolicyRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				PasswordPolicyRelImpl.class, primaryKey);

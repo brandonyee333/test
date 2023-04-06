@@ -2038,8 +2038,6 @@ public class MBDiscussionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBDiscussionImpl.class);
-
-		finderCache.clearCache(MBDiscussionImpl.class);
 	}
 
 	/**
@@ -2063,8 +2061,6 @@ public class MBDiscussionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBDiscussionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MBDiscussionImpl.class, primaryKey);
 		}

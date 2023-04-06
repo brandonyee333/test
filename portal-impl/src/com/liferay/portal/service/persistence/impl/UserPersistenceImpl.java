@@ -8304,8 +8304,6 @@ public class UserPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(UserImpl.class);
-
-		FinderCacheUtil.clearCache(UserImpl.class);
 	}
 
 	/**
@@ -8329,8 +8327,6 @@ public class UserPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(UserImpl.class, primaryKey);
 		}

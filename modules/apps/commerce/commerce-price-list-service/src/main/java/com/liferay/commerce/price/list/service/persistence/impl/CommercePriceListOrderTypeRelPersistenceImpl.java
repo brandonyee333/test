@@ -2153,8 +2153,6 @@ public class CommercePriceListOrderTypeRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommercePriceListOrderTypeRelImpl.class);
-
-		finderCache.clearCache(CommercePriceListOrderTypeRelImpl.class);
 	}
 
 	/**
@@ -2188,8 +2186,6 @@ public class CommercePriceListOrderTypeRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommercePriceListOrderTypeRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommercePriceListOrderTypeRelImpl.class, primaryKey);

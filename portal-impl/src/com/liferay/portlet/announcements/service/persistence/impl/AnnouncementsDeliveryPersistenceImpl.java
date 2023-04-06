@@ -1420,8 +1420,6 @@ public class AnnouncementsDeliveryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AnnouncementsDeliveryImpl.class);
-
-		FinderCacheUtil.clearCache(AnnouncementsDeliveryImpl.class);
 	}
 
 	/**
@@ -1451,8 +1449,6 @@ public class AnnouncementsDeliveryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AnnouncementsDeliveryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsDeliveryImpl.class, primaryKey);

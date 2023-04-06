@@ -142,8 +142,6 @@ public class RSVEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(RSVEntryImpl.class);
-
-		finderCache.clearCache(RSVEntryImpl.class);
 	}
 
 	/**
@@ -167,8 +165,6 @@ public class RSVEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RSVEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(RSVEntryImpl.class, primaryKey);
 		}

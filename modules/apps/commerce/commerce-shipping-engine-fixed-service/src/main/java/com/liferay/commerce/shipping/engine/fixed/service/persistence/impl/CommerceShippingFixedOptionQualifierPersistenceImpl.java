@@ -1601,8 +1601,6 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceShippingFixedOptionQualifierImpl.class);
-
-		finderCache.clearCache(CommerceShippingFixedOptionQualifierImpl.class);
 	}
 
 	/**
@@ -1639,8 +1637,6 @@ public class CommerceShippingFixedOptionQualifierPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceShippingFixedOptionQualifierImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceShippingFixedOptionQualifierImpl.class, primaryKey);

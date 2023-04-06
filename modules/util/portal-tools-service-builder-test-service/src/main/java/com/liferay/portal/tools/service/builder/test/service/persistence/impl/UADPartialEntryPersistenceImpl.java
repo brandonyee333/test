@@ -135,8 +135,6 @@ public class UADPartialEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(UADPartialEntryImpl.class);
-
-		finderCache.clearCache(UADPartialEntryImpl.class);
 	}
 
 	/**
@@ -161,8 +159,6 @@ public class UADPartialEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(UADPartialEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(UADPartialEntryImpl.class, primaryKey);
 		}

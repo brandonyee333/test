@@ -2852,8 +2852,6 @@ public class DDMStorageLinkPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMStorageLinkImpl.class);
-
-		finderCache.clearCache(DDMStorageLinkImpl.class);
 	}
 
 	/**
@@ -2877,8 +2875,6 @@ public class DDMStorageLinkPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStorageLinkImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDMStorageLinkImpl.class, primaryKey);
 		}

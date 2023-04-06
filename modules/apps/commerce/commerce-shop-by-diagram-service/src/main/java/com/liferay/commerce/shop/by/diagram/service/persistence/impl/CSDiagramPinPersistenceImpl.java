@@ -683,8 +683,6 @@ public class CSDiagramPinPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CSDiagramPinImpl.class);
-
-		finderCache.clearCache(CSDiagramPinImpl.class);
 	}
 
 	/**
@@ -708,8 +706,6 @@ public class CSDiagramPinPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CSDiagramPinImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CSDiagramPinImpl.class, primaryKey);
 		}

@@ -1738,8 +1738,6 @@ public class DLFileVersionPreviewPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DLFileVersionPreviewImpl.class);
-
-		finderCache.clearCache(DLFileVersionPreviewImpl.class);
 	}
 
 	/**
@@ -1767,8 +1765,6 @@ public class DLFileVersionPreviewPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLFileVersionPreviewImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				DLFileVersionPreviewImpl.class, primaryKey);

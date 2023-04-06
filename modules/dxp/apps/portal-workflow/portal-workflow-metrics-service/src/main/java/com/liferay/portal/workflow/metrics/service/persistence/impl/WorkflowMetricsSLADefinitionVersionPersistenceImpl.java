@@ -2486,8 +2486,6 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(WorkflowMetricsSLADefinitionVersionImpl.class);
-
-		finderCache.clearCache(WorkflowMetricsSLADefinitionVersionImpl.class);
 	}
 
 	/**
@@ -2524,8 +2522,6 @@ public class WorkflowMetricsSLADefinitionVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WorkflowMetricsSLADefinitionVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				WorkflowMetricsSLADefinitionVersionImpl.class, primaryKey);

@@ -6772,8 +6772,6 @@ public class AddressPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AddressImpl.class);
-
-		FinderCacheUtil.clearCache(AddressImpl.class);
 	}
 
 	/**
@@ -6797,8 +6795,6 @@ public class AddressPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AddressImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(AddressImpl.class, primaryKey);
 		}

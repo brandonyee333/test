@@ -135,8 +135,6 @@ public class ManyColumnsEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ManyColumnsEntryImpl.class);
-
-		finderCache.clearCache(ManyColumnsEntryImpl.class);
 	}
 
 	/**
@@ -161,8 +159,6 @@ public class ManyColumnsEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ManyColumnsEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ManyColumnsEntryImpl.class, primaryKey);
 		}

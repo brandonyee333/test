@@ -2639,8 +2639,6 @@ public class CTSContentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTSContentImpl.class);
-
-		finderCache.clearCache(CTSContentImpl.class);
 	}
 
 	/**
@@ -2664,8 +2662,6 @@ public class CTSContentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTSContentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CTSContentImpl.class, primaryKey);
 		}

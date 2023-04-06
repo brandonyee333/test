@@ -396,8 +396,6 @@ public class RedundantIndexEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(RedundantIndexEntryImpl.class);
-
-		finderCache.clearCache(RedundantIndexEntryImpl.class);
 	}
 
 	/**
@@ -423,8 +421,6 @@ public class RedundantIndexEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RedundantIndexEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(RedundantIndexEntryImpl.class, primaryKey);
 		}

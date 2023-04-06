@@ -954,8 +954,6 @@ public class ResourceActionPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ResourceActionImpl.class);
-
-		FinderCacheUtil.clearCache(ResourceActionImpl.class);
 	}
 
 	/**
@@ -980,8 +978,6 @@ public class ResourceActionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ResourceActionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ResourceActionImpl.class, primaryKey);
 		}

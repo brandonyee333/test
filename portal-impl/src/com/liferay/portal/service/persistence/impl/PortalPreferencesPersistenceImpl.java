@@ -383,8 +383,6 @@ public class PortalPreferencesPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(PortalPreferencesImpl.class);
-
-		FinderCacheUtil.clearCache(PortalPreferencesImpl.class);
 	}
 
 	/**
@@ -410,8 +408,6 @@ public class PortalPreferencesPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PortalPreferencesImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				PortalPreferencesImpl.class, primaryKey);

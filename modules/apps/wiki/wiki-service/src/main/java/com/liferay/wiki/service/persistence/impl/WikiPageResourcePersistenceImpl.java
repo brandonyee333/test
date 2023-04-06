@@ -1859,8 +1859,6 @@ public class WikiPageResourcePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(WikiPageResourceImpl.class);
-
-		finderCache.clearCache(WikiPageResourceImpl.class);
 	}
 
 	/**
@@ -1885,8 +1883,6 @@ public class WikiPageResourcePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WikiPageResourceImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(WikiPageResourceImpl.class, primaryKey);
 		}

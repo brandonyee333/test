@@ -24114,8 +24114,6 @@ public class WikiPagePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(WikiPageImpl.class);
-
-		finderCache.clearCache(WikiPageImpl.class);
 	}
 
 	/**
@@ -24139,8 +24137,6 @@ public class WikiPagePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(WikiPageImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(WikiPageImpl.class, primaryKey);
 		}

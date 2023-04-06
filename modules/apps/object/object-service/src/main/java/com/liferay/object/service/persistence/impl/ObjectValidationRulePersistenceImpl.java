@@ -2355,8 +2355,6 @@ public class ObjectValidationRulePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectValidationRuleImpl.class);
-
-		finderCache.clearCache(ObjectValidationRuleImpl.class);
 	}
 
 	/**
@@ -2384,8 +2382,6 @@ public class ObjectValidationRulePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectValidationRuleImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				ObjectValidationRuleImpl.class, primaryKey);

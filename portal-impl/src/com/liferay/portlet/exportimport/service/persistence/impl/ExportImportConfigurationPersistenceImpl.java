@@ -2848,8 +2848,6 @@ public class ExportImportConfigurationPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ExportImportConfigurationImpl.class);
-
-		FinderCacheUtil.clearCache(ExportImportConfigurationImpl.class);
 	}
 
 	/**
@@ -2881,8 +2879,6 @@ public class ExportImportConfigurationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ExportImportConfigurationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				ExportImportConfigurationImpl.class, primaryKey);

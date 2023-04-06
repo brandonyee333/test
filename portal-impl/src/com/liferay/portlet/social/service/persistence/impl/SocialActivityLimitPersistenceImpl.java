@@ -2130,8 +2130,6 @@ public class SocialActivityLimitPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(SocialActivityLimitImpl.class);
-
-		FinderCacheUtil.clearCache(SocialActivityLimitImpl.class);
 	}
 
 	/**
@@ -2157,8 +2155,6 @@ public class SocialActivityLimitPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialActivityLimitImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				SocialActivityLimitImpl.class, primaryKey);

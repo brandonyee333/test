@@ -2529,8 +2529,6 @@ public class CalendarNotificationTemplatePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CalendarNotificationTemplateImpl.class);
-
-		finderCache.clearCache(CalendarNotificationTemplateImpl.class);
 	}
 
 	/**
@@ -2564,8 +2562,6 @@ public class CalendarNotificationTemplatePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CalendarNotificationTemplateImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CalendarNotificationTemplateImpl.class, primaryKey);

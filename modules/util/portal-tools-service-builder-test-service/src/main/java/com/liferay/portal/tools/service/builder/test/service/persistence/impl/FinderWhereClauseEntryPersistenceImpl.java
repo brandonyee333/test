@@ -687,8 +687,6 @@ public class FinderWhereClauseEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FinderWhereClauseEntryImpl.class);
-
-		finderCache.clearCache(FinderWhereClauseEntryImpl.class);
 	}
 
 	/**
@@ -718,8 +716,6 @@ public class FinderWhereClauseEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FinderWhereClauseEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				FinderWhereClauseEntryImpl.class, primaryKey);

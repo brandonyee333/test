@@ -12232,8 +12232,6 @@ public class DDMTemplatePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMTemplateImpl.class);
-
-		finderCache.clearCache(DDMTemplateImpl.class);
 	}
 
 	/**
@@ -12257,8 +12255,6 @@ public class DDMTemplatePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMTemplateImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDMTemplateImpl.class, primaryKey);
 		}

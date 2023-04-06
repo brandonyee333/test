@@ -1496,8 +1496,6 @@ public class ObjectStateFlowPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectStateFlowImpl.class);
-
-		finderCache.clearCache(ObjectStateFlowImpl.class);
 	}
 
 	/**
@@ -1522,8 +1520,6 @@ public class ObjectStateFlowPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectStateFlowImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectStateFlowImpl.class, primaryKey);
 		}

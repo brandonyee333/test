@@ -3604,8 +3604,6 @@ public class CommerceChannelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceChannelImpl.class);
-
-		finderCache.clearCache(CommerceChannelImpl.class);
 	}
 
 	/**
@@ -3630,8 +3628,6 @@ public class CommerceChannelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceChannelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CommerceChannelImpl.class, primaryKey);
 		}

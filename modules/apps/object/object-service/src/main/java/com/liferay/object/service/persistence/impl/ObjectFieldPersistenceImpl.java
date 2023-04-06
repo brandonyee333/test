@@ -6248,8 +6248,6 @@ public class ObjectFieldPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectFieldImpl.class);
-
-		finderCache.clearCache(ObjectFieldImpl.class);
 	}
 
 	/**
@@ -6273,8 +6271,6 @@ public class ObjectFieldPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectFieldImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectFieldImpl.class, primaryKey);
 		}

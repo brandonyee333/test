@@ -1416,8 +1416,6 @@ public class AnnouncementsFlagPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AnnouncementsFlagImpl.class);
-
-		FinderCacheUtil.clearCache(AnnouncementsFlagImpl.class);
 	}
 
 	/**
@@ -1443,8 +1441,6 @@ public class AnnouncementsFlagPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AnnouncementsFlagImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				AnnouncementsFlagImpl.class, primaryKey);

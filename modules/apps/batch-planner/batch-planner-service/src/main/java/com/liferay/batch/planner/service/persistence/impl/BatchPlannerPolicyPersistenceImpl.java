@@ -928,8 +928,6 @@ public class BatchPlannerPolicyPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BatchPlannerPolicyImpl.class);
-
-		finderCache.clearCache(BatchPlannerPolicyImpl.class);
 	}
 
 	/**
@@ -955,8 +953,6 @@ public class BatchPlannerPolicyPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BatchPlannerPolicyImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(BatchPlannerPolicyImpl.class, primaryKey);
 		}

@@ -2124,8 +2124,6 @@ public class NotificationRecipientSettingPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(NotificationRecipientSettingImpl.class);
-
-		finderCache.clearCache(NotificationRecipientSettingImpl.class);
 	}
 
 	/**
@@ -2159,8 +2157,6 @@ public class NotificationRecipientSettingPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(NotificationRecipientSettingImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				NotificationRecipientSettingImpl.class, primaryKey);

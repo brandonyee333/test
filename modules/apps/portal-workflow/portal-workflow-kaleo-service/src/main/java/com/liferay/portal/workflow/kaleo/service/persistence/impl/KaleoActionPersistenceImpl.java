@@ -3882,8 +3882,6 @@ public class KaleoActionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoActionImpl.class);
-
-		finderCache.clearCache(KaleoActionImpl.class);
 	}
 
 	/**
@@ -3907,8 +3905,6 @@ public class KaleoActionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoActionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoActionImpl.class, primaryKey);
 		}

@@ -4404,8 +4404,6 @@ public class SiteNavigationMenuItemPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SiteNavigationMenuItemImpl.class);
-
-		finderCache.clearCache(SiteNavigationMenuItemImpl.class);
 	}
 
 	/**
@@ -4435,8 +4433,6 @@ public class SiteNavigationMenuItemPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SiteNavigationMenuItemImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				SiteNavigationMenuItemImpl.class, primaryKey);

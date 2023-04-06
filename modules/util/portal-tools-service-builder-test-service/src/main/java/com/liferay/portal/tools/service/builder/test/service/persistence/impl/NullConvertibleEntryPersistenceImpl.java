@@ -373,8 +373,6 @@ public class NullConvertibleEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		dummyEntityCache.clearCache(NullConvertibleEntryImpl.class);
-
-		dummyFinderCache.clearCache(NullConvertibleEntryImpl.class);
 	}
 
 	/**
@@ -402,8 +400,6 @@ public class NullConvertibleEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		dummyFinderCache.clearCache(NullConvertibleEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			dummyEntityCache.removeResult(
 				NullConvertibleEntryImpl.class, primaryKey);

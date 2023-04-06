@@ -4111,8 +4111,6 @@ public class EmailAddressPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(EmailAddressImpl.class);
-
-		FinderCacheUtil.clearCache(EmailAddressImpl.class);
 	}
 
 	/**
@@ -4136,8 +4134,6 @@ public class EmailAddressPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(EmailAddressImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(EmailAddressImpl.class, primaryKey);
 		}

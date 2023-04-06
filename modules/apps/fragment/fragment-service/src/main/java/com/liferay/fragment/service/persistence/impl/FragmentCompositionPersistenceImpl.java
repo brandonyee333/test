@@ -5415,8 +5415,6 @@ public class FragmentCompositionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FragmentCompositionImpl.class);
-
-		finderCache.clearCache(FragmentCompositionImpl.class);
 	}
 
 	/**
@@ -5442,8 +5440,6 @@ public class FragmentCompositionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FragmentCompositionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(FragmentCompositionImpl.class, primaryKey);
 		}

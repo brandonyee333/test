@@ -2733,8 +2733,6 @@ public class JournalFeedPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(JournalFeedImpl.class);
-
-		finderCache.clearCache(JournalFeedImpl.class);
 	}
 
 	/**
@@ -2758,8 +2756,6 @@ public class JournalFeedPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JournalFeedImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(JournalFeedImpl.class, primaryKey);
 		}

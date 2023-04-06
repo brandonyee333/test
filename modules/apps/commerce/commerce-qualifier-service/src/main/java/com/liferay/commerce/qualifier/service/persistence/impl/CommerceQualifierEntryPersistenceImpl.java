@@ -2764,8 +2764,6 @@ public class CommerceQualifierEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceQualifierEntryImpl.class);
-
-		finderCache.clearCache(CommerceQualifierEntryImpl.class);
 	}
 
 	/**
@@ -2795,8 +2793,6 @@ public class CommerceQualifierEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceQualifierEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceQualifierEntryImpl.class, primaryKey);

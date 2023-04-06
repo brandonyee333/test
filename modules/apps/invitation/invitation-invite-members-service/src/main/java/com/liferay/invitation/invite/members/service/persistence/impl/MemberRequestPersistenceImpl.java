@@ -1720,8 +1720,6 @@ public class MemberRequestPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MemberRequestImpl.class);
-
-		finderCache.clearCache(MemberRequestImpl.class);
 	}
 
 	/**
@@ -1745,8 +1743,6 @@ public class MemberRequestPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MemberRequestImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MemberRequestImpl.class, primaryKey);
 		}

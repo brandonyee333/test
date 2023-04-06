@@ -1501,8 +1501,6 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AssetEntryAssetCategoryRelImpl.class);
-
-		finderCache.clearCache(AssetEntryAssetCategoryRelImpl.class);
 	}
 
 	/**
@@ -1535,8 +1533,6 @@ public class AssetEntryAssetCategoryRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetEntryAssetCategoryRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				AssetEntryAssetCategoryRelImpl.class, primaryKey);

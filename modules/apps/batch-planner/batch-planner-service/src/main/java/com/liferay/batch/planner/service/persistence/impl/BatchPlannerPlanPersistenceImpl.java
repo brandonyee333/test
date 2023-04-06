@@ -5913,8 +5913,6 @@ public class BatchPlannerPlanPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BatchPlannerPlanImpl.class);
-
-		finderCache.clearCache(BatchPlannerPlanImpl.class);
 	}
 
 	/**
@@ -5939,8 +5937,6 @@ public class BatchPlannerPlanPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BatchPlannerPlanImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(BatchPlannerPlanImpl.class, primaryKey);
 		}

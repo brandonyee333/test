@@ -633,8 +633,6 @@ public class OrgLaborPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(OrgLaborImpl.class);
-
-		FinderCacheUtil.clearCache(OrgLaborImpl.class);
 	}
 
 	/**
@@ -658,8 +656,6 @@ public class OrgLaborPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(OrgLaborImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(OrgLaborImpl.class, primaryKey);
 		}

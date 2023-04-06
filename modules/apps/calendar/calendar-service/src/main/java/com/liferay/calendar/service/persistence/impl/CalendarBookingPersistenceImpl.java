@@ -5636,8 +5636,6 @@ public class CalendarBookingPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CalendarBookingImpl.class);
-
-		finderCache.clearCache(CalendarBookingImpl.class);
 	}
 
 	/**
@@ -5662,8 +5660,6 @@ public class CalendarBookingPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CalendarBookingImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CalendarBookingImpl.class, primaryKey);
 		}

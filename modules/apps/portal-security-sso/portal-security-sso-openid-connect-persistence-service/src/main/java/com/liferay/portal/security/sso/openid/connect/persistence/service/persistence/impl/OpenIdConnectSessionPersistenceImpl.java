@@ -2216,8 +2216,6 @@ public class OpenIdConnectSessionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(OpenIdConnectSessionImpl.class);
-
-		finderCache.clearCache(OpenIdConnectSessionImpl.class);
 	}
 
 	/**
@@ -2245,8 +2243,6 @@ public class OpenIdConnectSessionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OpenIdConnectSessionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				OpenIdConnectSessionImpl.class, primaryKey);

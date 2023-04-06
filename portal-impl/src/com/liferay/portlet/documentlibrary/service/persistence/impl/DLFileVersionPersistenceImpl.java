@@ -5842,8 +5842,6 @@ public class DLFileVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(DLFileVersionImpl.class);
-
-		FinderCacheUtil.clearCache(DLFileVersionImpl.class);
 	}
 
 	/**
@@ -5868,8 +5866,6 @@ public class DLFileVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFileVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(DLFileVersionImpl.class, primaryKey);
 		}

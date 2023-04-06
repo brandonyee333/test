@@ -2861,8 +2861,6 @@ public class SourcePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SourceImpl.class);
-
-		finderCache.clearCache(SourceImpl.class);
 	}
 
 	/**
@@ -2886,8 +2884,6 @@ public class SourcePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SourceImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SourceImpl.class, primaryKey);
 		}

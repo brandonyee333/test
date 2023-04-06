@@ -8726,8 +8726,6 @@ public class BackgroundTaskPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BackgroundTaskImpl.class);
-
-		finderCache.clearCache(BackgroundTaskImpl.class);
 	}
 
 	/**
@@ -8751,8 +8749,6 @@ public class BackgroundTaskPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BackgroundTaskImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(BackgroundTaskImpl.class, primaryKey);
 		}

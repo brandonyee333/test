@@ -1276,8 +1276,6 @@ public class FVSCustomEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FVSCustomEntryImpl.class);
-
-		finderCache.clearCache(FVSCustomEntryImpl.class);
 	}
 
 	/**
@@ -1301,8 +1299,6 @@ public class FVSCustomEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FVSCustomEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(FVSCustomEntryImpl.class, primaryKey);
 		}

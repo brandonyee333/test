@@ -2051,8 +2051,6 @@ public class DDMFieldPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMFieldImpl.class);
-
-		finderCache.clearCache(DDMFieldImpl.class);
 	}
 
 	/**
@@ -2076,8 +2074,6 @@ public class DDMFieldPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMFieldImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDMFieldImpl.class, primaryKey);
 		}

@@ -1443,8 +1443,6 @@ public class AccountEntryOrganizationRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AccountEntryOrganizationRelImpl.class);
-
-		finderCache.clearCache(AccountEntryOrganizationRelImpl.class);
 	}
 
 	/**
@@ -1477,8 +1475,6 @@ public class AccountEntryOrganizationRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountEntryOrganizationRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				AccountEntryOrganizationRelImpl.class, primaryKey);

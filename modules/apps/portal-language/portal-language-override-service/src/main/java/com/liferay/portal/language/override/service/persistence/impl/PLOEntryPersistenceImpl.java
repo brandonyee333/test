@@ -2111,8 +2111,6 @@ public class PLOEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(PLOEntryImpl.class);
-
-		finderCache.clearCache(PLOEntryImpl.class);
 	}
 
 	/**
@@ -2136,8 +2134,6 @@ public class PLOEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(PLOEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(PLOEntryImpl.class, primaryKey);
 		}

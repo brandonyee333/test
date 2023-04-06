@@ -13620,8 +13620,6 @@ public class AssetListEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AssetListEntryImpl.class);
-
-		finderCache.clearCache(AssetListEntryImpl.class);
 	}
 
 	/**
@@ -13645,8 +13643,6 @@ public class AssetListEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetListEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AssetListEntryImpl.class, primaryKey);
 		}

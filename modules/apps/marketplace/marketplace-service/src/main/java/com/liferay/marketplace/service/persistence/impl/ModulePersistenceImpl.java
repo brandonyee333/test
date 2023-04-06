@@ -3435,8 +3435,6 @@ public class ModulePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ModuleImpl.class);
-
-		finderCache.clearCache(ModuleImpl.class);
 	}
 
 	/**
@@ -3460,8 +3458,6 @@ public class ModulePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ModuleImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ModuleImpl.class, primaryKey);
 		}

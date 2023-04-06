@@ -1005,8 +1005,6 @@ public class SamlSpMessagePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SamlSpMessageImpl.class);
-
-		finderCache.clearCache(SamlSpMessageImpl.class);
 	}
 
 	/**
@@ -1030,8 +1028,6 @@ public class SamlSpMessagePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlSpMessageImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SamlSpMessageImpl.class, primaryKey);
 		}

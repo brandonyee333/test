@@ -1454,8 +1454,6 @@ public class CommerceTaxMethodPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceTaxMethodImpl.class);
-
-		finderCache.clearCache(CommerceTaxMethodImpl.class);
 	}
 
 	/**
@@ -1481,8 +1479,6 @@ public class CommerceTaxMethodPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTaxMethodImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CommerceTaxMethodImpl.class, primaryKey);
 		}

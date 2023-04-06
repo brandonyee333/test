@@ -2994,8 +2994,6 @@ public class ListTypeEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ListTypeEntryImpl.class);
-
-		finderCache.clearCache(ListTypeEntryImpl.class);
 	}
 
 	/**
@@ -3019,8 +3017,6 @@ public class ListTypeEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ListTypeEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ListTypeEntryImpl.class, primaryKey);
 		}

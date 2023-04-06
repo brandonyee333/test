@@ -366,8 +366,6 @@ public class WebDAVPropsPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(WebDAVPropsImpl.class);
-
-		FinderCacheUtil.clearCache(WebDAVPropsImpl.class);
 	}
 
 	/**
@@ -391,8 +389,6 @@ public class WebDAVPropsPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(WebDAVPropsImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(WebDAVPropsImpl.class, primaryKey);
 		}

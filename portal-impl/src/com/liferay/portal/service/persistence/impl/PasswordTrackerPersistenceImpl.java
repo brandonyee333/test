@@ -644,8 +644,6 @@ public class PasswordTrackerPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(PasswordTrackerImpl.class);
-
-		FinderCacheUtil.clearCache(PasswordTrackerImpl.class);
 	}
 
 	/**
@@ -671,8 +669,6 @@ public class PasswordTrackerPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PasswordTrackerImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(PasswordTrackerImpl.class, primaryKey);
 		}

@@ -1259,8 +1259,6 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceShippingFixedOptionRelImpl.class);
-
-		finderCache.clearCache(CommerceShippingFixedOptionRelImpl.class);
 	}
 
 	/**
@@ -1294,8 +1292,6 @@ public class CommerceShippingFixedOptionRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceShippingFixedOptionRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceShippingFixedOptionRelImpl.class, primaryKey);

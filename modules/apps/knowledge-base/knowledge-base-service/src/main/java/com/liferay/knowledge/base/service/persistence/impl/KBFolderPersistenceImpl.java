@@ -3932,8 +3932,6 @@ public class KBFolderPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KBFolderImpl.class);
-
-		finderCache.clearCache(KBFolderImpl.class);
 	}
 
 	/**
@@ -3957,8 +3955,6 @@ public class KBFolderPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KBFolderImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KBFolderImpl.class, primaryKey);
 		}

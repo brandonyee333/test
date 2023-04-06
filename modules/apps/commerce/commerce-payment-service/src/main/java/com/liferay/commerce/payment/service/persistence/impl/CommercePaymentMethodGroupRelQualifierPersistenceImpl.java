@@ -1611,9 +1611,6 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 	public void clearCache() {
 		entityCache.clearCache(
 			CommercePaymentMethodGroupRelQualifierImpl.class);
-
-		finderCache.clearCache(
-			CommercePaymentMethodGroupRelQualifierImpl.class);
 	}
 
 	/**
@@ -1650,9 +1647,6 @@ public class CommercePaymentMethodGroupRelQualifierPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(
-			CommercePaymentMethodGroupRelQualifierImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommercePaymentMethodGroupRelQualifierImpl.class, primaryKey);

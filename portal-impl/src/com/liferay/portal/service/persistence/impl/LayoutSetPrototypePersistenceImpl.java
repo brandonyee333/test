@@ -3998,8 +3998,6 @@ public class LayoutSetPrototypePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(LayoutSetPrototypeImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutSetPrototypeImpl.class);
 	}
 
 	/**
@@ -4025,8 +4023,6 @@ public class LayoutSetPrototypePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutSetPrototypeImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				LayoutSetPrototypeImpl.class, primaryKey);

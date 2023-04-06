@@ -6807,8 +6807,6 @@ public class CPAttachmentFileEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPAttachmentFileEntryImpl.class);
-
-		finderCache.clearCache(CPAttachmentFileEntryImpl.class);
 	}
 
 	/**
@@ -6838,8 +6836,6 @@ public class CPAttachmentFileEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPAttachmentFileEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CPAttachmentFileEntryImpl.class, primaryKey);

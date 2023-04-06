@@ -2536,8 +2536,6 @@ public class KaleoTaskFormPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoTaskFormImpl.class);
-
-		finderCache.clearCache(KaleoTaskFormImpl.class);
 	}
 
 	/**
@@ -2561,8 +2559,6 @@ public class KaleoTaskFormPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTaskFormImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoTaskFormImpl.class, primaryKey);
 		}

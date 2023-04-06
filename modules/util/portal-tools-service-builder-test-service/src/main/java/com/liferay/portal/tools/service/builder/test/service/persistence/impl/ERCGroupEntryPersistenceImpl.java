@@ -1778,8 +1778,6 @@ public class ERCGroupEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ERCGroupEntryImpl.class);
-
-		finderCache.clearCache(ERCGroupEntryImpl.class);
 	}
 
 	/**
@@ -1803,8 +1801,6 @@ public class ERCGroupEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ERCGroupEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ERCGroupEntryImpl.class, primaryKey);
 		}

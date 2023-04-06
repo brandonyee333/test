@@ -4462,8 +4462,6 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceMLForecastAlertEntryImpl.class);
-
-		finderCache.clearCache(CommerceMLForecastAlertEntryImpl.class);
 	}
 
 	/**
@@ -4497,8 +4495,6 @@ public class CommerceMLForecastAlertEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceMLForecastAlertEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceMLForecastAlertEntryImpl.class, primaryKey);

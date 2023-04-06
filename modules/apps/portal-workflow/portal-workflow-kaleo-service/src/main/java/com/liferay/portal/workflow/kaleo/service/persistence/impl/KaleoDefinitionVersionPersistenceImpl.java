@@ -1617,8 +1617,6 @@ public class KaleoDefinitionVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoDefinitionVersionImpl.class);
-
-		finderCache.clearCache(KaleoDefinitionVersionImpl.class);
 	}
 
 	/**
@@ -1648,8 +1646,6 @@ public class KaleoDefinitionVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoDefinitionVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				KaleoDefinitionVersionImpl.class, primaryKey);

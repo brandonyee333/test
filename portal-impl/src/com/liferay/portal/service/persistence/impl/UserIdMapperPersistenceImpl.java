@@ -1175,8 +1175,6 @@ public class UserIdMapperPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(UserIdMapperImpl.class);
-
-		FinderCacheUtil.clearCache(UserIdMapperImpl.class);
 	}
 
 	/**
@@ -1200,8 +1198,6 @@ public class UserIdMapperPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserIdMapperImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(UserIdMapperImpl.class, primaryKey);
 		}

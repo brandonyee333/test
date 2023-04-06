@@ -1121,8 +1121,6 @@ public class OAuth2ScopeGrantPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(OAuth2ScopeGrantImpl.class);
-
-		finderCache.clearCache(OAuth2ScopeGrantImpl.class);
 	}
 
 	/**
@@ -1147,8 +1145,6 @@ public class OAuth2ScopeGrantPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuth2ScopeGrantImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(OAuth2ScopeGrantImpl.class, primaryKey);
 		}

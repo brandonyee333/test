@@ -21732,8 +21732,6 @@ public class BlogsEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BlogsEntryImpl.class);
-
-		finderCache.clearCache(BlogsEntryImpl.class);
 	}
 
 	/**
@@ -21757,8 +21755,6 @@ public class BlogsEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BlogsEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(BlogsEntryImpl.class, primaryKey);
 		}

@@ -137,8 +137,6 @@ public class LocalizedEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LocalizedEntryImpl.class);
-
-		finderCache.clearCache(LocalizedEntryImpl.class);
 	}
 
 	/**
@@ -162,8 +160,6 @@ public class LocalizedEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LocalizedEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(LocalizedEntryImpl.class, primaryKey);
 		}

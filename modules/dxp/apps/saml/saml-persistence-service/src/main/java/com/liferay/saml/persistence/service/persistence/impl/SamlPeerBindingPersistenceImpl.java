@@ -1457,8 +1457,6 @@ public class SamlPeerBindingPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SamlPeerBindingImpl.class);
-
-		finderCache.clearCache(SamlPeerBindingImpl.class);
 	}
 
 	/**
@@ -1483,8 +1481,6 @@ public class SamlPeerBindingPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlPeerBindingImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SamlPeerBindingImpl.class, primaryKey);
 		}

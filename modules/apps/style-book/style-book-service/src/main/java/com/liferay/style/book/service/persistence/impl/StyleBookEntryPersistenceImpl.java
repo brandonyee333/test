@@ -7996,8 +7996,6 @@ public class StyleBookEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(StyleBookEntryImpl.class);
-
-		finderCache.clearCache(StyleBookEntryImpl.class);
 	}
 
 	/**
@@ -8021,8 +8019,6 @@ public class StyleBookEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(StyleBookEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(StyleBookEntryImpl.class, primaryKey);
 		}

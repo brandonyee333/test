@@ -3427,8 +3427,6 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FriendlyURLEntryLocalizationImpl.class);
-
-		finderCache.clearCache(FriendlyURLEntryLocalizationImpl.class);
 	}
 
 	/**
@@ -3462,8 +3460,6 @@ public class FriendlyURLEntryLocalizationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FriendlyURLEntryLocalizationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				FriendlyURLEntryLocalizationImpl.class, primaryKey);

@@ -4342,8 +4342,6 @@ public class AssetTagPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AssetTagImpl.class);
-
-		FinderCacheUtil.clearCache(AssetTagImpl.class);
 	}
 
 	/**
@@ -4367,8 +4365,6 @@ public class AssetTagPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetTagImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(AssetTagImpl.class, primaryKey);
 		}

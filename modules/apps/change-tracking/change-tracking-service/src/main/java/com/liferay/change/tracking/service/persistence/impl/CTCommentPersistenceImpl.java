@@ -1139,8 +1139,6 @@ public class CTCommentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTCommentImpl.class);
-
-		finderCache.clearCache(CTCommentImpl.class);
 	}
 
 	/**
@@ -1164,8 +1162,6 @@ public class CTCommentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTCommentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CTCommentImpl.class, primaryKey);
 		}

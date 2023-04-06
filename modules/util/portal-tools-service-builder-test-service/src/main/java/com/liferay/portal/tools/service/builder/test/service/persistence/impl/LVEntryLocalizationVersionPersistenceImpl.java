@@ -2878,8 +2878,6 @@ public class LVEntryLocalizationVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LVEntryLocalizationVersionImpl.class);
-
-		finderCache.clearCache(LVEntryLocalizationVersionImpl.class);
 	}
 
 	/**
@@ -2912,8 +2910,6 @@ public class LVEntryLocalizationVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LVEntryLocalizationVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				LVEntryLocalizationVersionImpl.class, primaryKey);

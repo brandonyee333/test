@@ -923,8 +923,6 @@ public class RedirectNotFoundEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(RedirectNotFoundEntryImpl.class);
-
-		finderCache.clearCache(RedirectNotFoundEntryImpl.class);
 	}
 
 	/**
@@ -954,8 +952,6 @@ public class RedirectNotFoundEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RedirectNotFoundEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				RedirectNotFoundEntryImpl.class, primaryKey);

@@ -6215,8 +6215,6 @@ public class DLFileShortcutPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(DLFileShortcutImpl.class);
-
-		FinderCacheUtil.clearCache(DLFileShortcutImpl.class);
 	}
 
 	/**
@@ -6241,8 +6239,6 @@ public class DLFileShortcutPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFileShortcutImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(DLFileShortcutImpl.class, primaryKey);
 		}

@@ -5689,8 +5689,6 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DEDataDefinitionFieldLinkImpl.class);
-
-		finderCache.clearCache(DEDataDefinitionFieldLinkImpl.class);
 	}
 
 	/**
@@ -5722,8 +5720,6 @@ public class DEDataDefinitionFieldLinkPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DEDataDefinitionFieldLinkImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				DEDataDefinitionFieldLinkImpl.class, primaryKey);

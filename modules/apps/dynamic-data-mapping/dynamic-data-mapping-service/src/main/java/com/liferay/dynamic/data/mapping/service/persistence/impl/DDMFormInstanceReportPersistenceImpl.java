@@ -415,8 +415,6 @@ public class DDMFormInstanceReportPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMFormInstanceReportImpl.class);
-
-		finderCache.clearCache(DDMFormInstanceReportImpl.class);
 	}
 
 	/**
@@ -444,8 +442,6 @@ public class DDMFormInstanceReportPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMFormInstanceReportImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				DDMFormInstanceReportImpl.class, primaryKey);

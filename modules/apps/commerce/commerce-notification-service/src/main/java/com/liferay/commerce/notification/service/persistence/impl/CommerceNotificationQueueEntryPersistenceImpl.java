@@ -2922,8 +2922,6 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceNotificationQueueEntryImpl.class);
-
-		finderCache.clearCache(CommerceNotificationQueueEntryImpl.class);
 	}
 
 	/**
@@ -2957,8 +2955,6 @@ public class CommerceNotificationQueueEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceNotificationQueueEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceNotificationQueueEntryImpl.class, primaryKey);

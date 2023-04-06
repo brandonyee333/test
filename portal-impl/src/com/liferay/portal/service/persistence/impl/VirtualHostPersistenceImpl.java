@@ -2672,8 +2672,6 @@ public class VirtualHostPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(VirtualHostImpl.class);
-
-		FinderCacheUtil.clearCache(VirtualHostImpl.class);
 	}
 
 	/**
@@ -2697,8 +2695,6 @@ public class VirtualHostPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(VirtualHostImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(VirtualHostImpl.class, primaryKey);
 		}

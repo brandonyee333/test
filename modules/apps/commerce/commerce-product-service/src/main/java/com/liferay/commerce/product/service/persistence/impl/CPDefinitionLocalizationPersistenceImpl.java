@@ -997,8 +997,6 @@ public class CPDefinitionLocalizationPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPDefinitionLocalizationImpl.class);
-
-		finderCache.clearCache(CPDefinitionLocalizationImpl.class);
 	}
 
 	/**
@@ -1028,8 +1026,6 @@ public class CPDefinitionLocalizationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionLocalizationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CPDefinitionLocalizationImpl.class, primaryKey);

@@ -2448,8 +2448,6 @@ public class TranslationEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(TranslationEntryImpl.class);
-
-		finderCache.clearCache(TranslationEntryImpl.class);
 	}
 
 	/**
@@ -2474,8 +2472,6 @@ public class TranslationEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TranslationEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(TranslationEntryImpl.class, primaryKey);
 		}

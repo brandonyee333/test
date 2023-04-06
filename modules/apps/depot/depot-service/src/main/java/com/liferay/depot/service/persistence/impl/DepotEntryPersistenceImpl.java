@@ -1716,8 +1716,6 @@ public class DepotEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DepotEntryImpl.class);
-
-		finderCache.clearCache(DepotEntryImpl.class);
 	}
 
 	/**
@@ -1741,8 +1739,6 @@ public class DepotEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DepotEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DepotEntryImpl.class, primaryKey);
 		}

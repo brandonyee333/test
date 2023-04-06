@@ -1620,8 +1620,6 @@ public class FVSActiveEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FVSActiveEntryImpl.class);
-
-		finderCache.clearCache(FVSActiveEntryImpl.class);
 	}
 
 	/**
@@ -1645,8 +1643,6 @@ public class FVSActiveEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FVSActiveEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(FVSActiveEntryImpl.class, primaryKey);
 		}

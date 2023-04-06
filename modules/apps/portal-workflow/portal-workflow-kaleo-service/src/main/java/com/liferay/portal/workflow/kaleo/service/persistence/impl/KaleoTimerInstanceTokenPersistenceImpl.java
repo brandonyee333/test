@@ -2147,8 +2147,6 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoTimerInstanceTokenImpl.class);
-
-		finderCache.clearCache(KaleoTimerInstanceTokenImpl.class);
 	}
 
 	/**
@@ -2178,8 +2176,6 @@ public class KaleoTimerInstanceTokenPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTimerInstanceTokenImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				KaleoTimerInstanceTokenImpl.class, primaryKey);

@@ -5816,8 +5816,6 @@ public class SocialActivityPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(SocialActivityImpl.class);
-
-		FinderCacheUtil.clearCache(SocialActivityImpl.class);
 	}
 
 	/**
@@ -5842,8 +5840,6 @@ public class SocialActivityPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SocialActivityImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(SocialActivityImpl.class, primaryKey);
 		}

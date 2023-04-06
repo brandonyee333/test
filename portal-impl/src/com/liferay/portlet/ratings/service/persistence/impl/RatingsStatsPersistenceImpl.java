@@ -761,8 +761,6 @@ public class RatingsStatsPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RatingsStatsImpl.class);
-
-		FinderCacheUtil.clearCache(RatingsStatsImpl.class);
 	}
 
 	/**
@@ -786,8 +784,6 @@ public class RatingsStatsPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RatingsStatsImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(RatingsStatsImpl.class, primaryKey);
 		}

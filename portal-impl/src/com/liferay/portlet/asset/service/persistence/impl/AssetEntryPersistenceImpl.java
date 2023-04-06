@@ -5185,8 +5185,6 @@ public class AssetEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AssetEntryImpl.class);
-
-		FinderCacheUtil.clearCache(AssetEntryImpl.class);
 	}
 
 	/**
@@ -5210,8 +5208,6 @@ public class AssetEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(AssetEntryImpl.class, primaryKey);
 		}

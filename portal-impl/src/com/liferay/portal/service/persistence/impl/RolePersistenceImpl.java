@@ -10017,8 +10017,6 @@ public class RolePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RoleImpl.class);
-
-		FinderCacheUtil.clearCache(RoleImpl.class);
 	}
 
 	/**
@@ -10042,8 +10040,6 @@ public class RolePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RoleImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(RoleImpl.class, primaryKey);
 		}

@@ -363,8 +363,6 @@ public class ClassNamePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ClassNameImpl.class);
-
-		FinderCacheUtil.clearCache(ClassNameImpl.class);
 	}
 
 	/**
@@ -388,8 +386,6 @@ public class ClassNamePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ClassNameImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ClassNameImpl.class, primaryKey);
 		}

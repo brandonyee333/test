@@ -13230,8 +13230,6 @@ public class MicroblogsEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MicroblogsEntryImpl.class);
-
-		finderCache.clearCache(MicroblogsEntryImpl.class);
 	}
 
 	/**
@@ -13256,8 +13254,6 @@ public class MicroblogsEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MicroblogsEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MicroblogsEntryImpl.class, primaryKey);
 		}

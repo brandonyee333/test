@@ -3217,8 +3217,6 @@ public class TeamPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(TeamImpl.class);
-
-		FinderCacheUtil.clearCache(TeamImpl.class);
 	}
 
 	/**
@@ -3242,8 +3240,6 @@ public class TeamPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(TeamImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(TeamImpl.class, primaryKey);
 		}

@@ -1482,8 +1482,6 @@ public class CommerceTermEntryRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceTermEntryRelImpl.class);
-
-		finderCache.clearCache(CommerceTermEntryRelImpl.class);
 	}
 
 	/**
@@ -1511,8 +1509,6 @@ public class CommerceTermEntryRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTermEntryRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceTermEntryRelImpl.class, primaryKey);

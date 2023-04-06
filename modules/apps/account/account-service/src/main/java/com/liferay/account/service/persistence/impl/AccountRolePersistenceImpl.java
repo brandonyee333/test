@@ -4004,8 +4004,6 @@ public class AccountRolePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AccountRoleImpl.class);
-
-		finderCache.clearCache(AccountRoleImpl.class);
 	}
 
 	/**
@@ -4029,8 +4027,6 @@ public class AccountRolePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountRoleImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AccountRoleImpl.class, primaryKey);
 		}

@@ -957,8 +957,6 @@ public class CTermEntryLocalizationPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTermEntryLocalizationImpl.class);
-
-		finderCache.clearCache(CTermEntryLocalizationImpl.class);
 	}
 
 	/**
@@ -988,8 +986,6 @@ public class CTermEntryLocalizationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTermEntryLocalizationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CTermEntryLocalizationImpl.class, primaryKey);

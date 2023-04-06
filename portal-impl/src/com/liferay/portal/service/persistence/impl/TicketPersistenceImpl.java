@@ -2160,8 +2160,6 @@ public class TicketPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(TicketImpl.class);
-
-		FinderCacheUtil.clearCache(TicketImpl.class);
 	}
 
 	/**
@@ -2185,8 +2183,6 @@ public class TicketPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(TicketImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(TicketImpl.class, primaryKey);
 		}

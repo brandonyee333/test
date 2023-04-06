@@ -2338,8 +2338,6 @@ public class MBMailingListPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBMailingListImpl.class);
-
-		finderCache.clearCache(MBMailingListImpl.class);
 	}
 
 	/**
@@ -2363,8 +2361,6 @@ public class MBMailingListPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBMailingListImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MBMailingListImpl.class, primaryKey);
 		}

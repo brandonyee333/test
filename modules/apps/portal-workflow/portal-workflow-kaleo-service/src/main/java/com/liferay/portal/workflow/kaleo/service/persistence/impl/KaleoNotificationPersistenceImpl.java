@@ -2524,8 +2524,6 @@ public class KaleoNotificationPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoNotificationImpl.class);
-
-		finderCache.clearCache(KaleoNotificationImpl.class);
 	}
 
 	/**
@@ -2551,8 +2549,6 @@ public class KaleoNotificationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoNotificationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoNotificationImpl.class, primaryKey);
 		}

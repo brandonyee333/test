@@ -2111,8 +2111,6 @@ public class CPTaxCategoryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPTaxCategoryImpl.class);
-
-		finderCache.clearCache(CPTaxCategoryImpl.class);
 	}
 
 	/**
@@ -2136,8 +2134,6 @@ public class CPTaxCategoryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPTaxCategoryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CPTaxCategoryImpl.class, primaryKey);
 		}

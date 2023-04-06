@@ -2925,8 +2925,6 @@ public class SiteFriendlyURLPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SiteFriendlyURLImpl.class);
-
-		finderCache.clearCache(SiteFriendlyURLImpl.class);
 	}
 
 	/**
@@ -2951,8 +2949,6 @@ public class SiteFriendlyURLPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SiteFriendlyURLImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SiteFriendlyURLImpl.class, primaryKey);
 		}

@@ -1235,8 +1235,6 @@ public class AnalyticsDeleteMessagePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AnalyticsDeleteMessageImpl.class);
-
-		finderCache.clearCache(AnalyticsDeleteMessageImpl.class);
 	}
 
 	/**
@@ -1266,8 +1264,6 @@ public class AnalyticsDeleteMessagePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AnalyticsDeleteMessageImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				AnalyticsDeleteMessageImpl.class, primaryKey);

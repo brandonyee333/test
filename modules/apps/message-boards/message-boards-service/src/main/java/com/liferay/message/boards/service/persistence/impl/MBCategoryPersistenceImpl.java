@@ -11654,8 +11654,6 @@ public class MBCategoryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBCategoryImpl.class);
-
-		finderCache.clearCache(MBCategoryImpl.class);
 	}
 
 	/**
@@ -11679,8 +11677,6 @@ public class MBCategoryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBCategoryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MBCategoryImpl.class, primaryKey);
 		}

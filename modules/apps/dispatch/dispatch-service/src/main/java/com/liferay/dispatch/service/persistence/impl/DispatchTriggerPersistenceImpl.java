@@ -7018,8 +7018,6 @@ public class DispatchTriggerPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DispatchTriggerImpl.class);
-
-		finderCache.clearCache(DispatchTriggerImpl.class);
 	}
 
 	/**
@@ -7044,8 +7042,6 @@ public class DispatchTriggerPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DispatchTriggerImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DispatchTriggerImpl.class, primaryKey);
 		}

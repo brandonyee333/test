@@ -7839,8 +7839,6 @@ public class LayoutRevisionPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(LayoutRevisionImpl.class);
-
-		FinderCacheUtil.clearCache(LayoutRevisionImpl.class);
 	}
 
 	/**
@@ -7865,8 +7863,6 @@ public class LayoutRevisionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(LayoutRevisionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(LayoutRevisionImpl.class, primaryKey);
 		}

@@ -140,8 +140,6 @@ public class TestEntityPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(TestEntityImpl.class);
-
-		finderCache.clearCache(TestEntityImpl.class);
 	}
 
 	/**
@@ -165,8 +163,6 @@ public class TestEntityPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TestEntityImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(TestEntityImpl.class, primaryKey);
 		}

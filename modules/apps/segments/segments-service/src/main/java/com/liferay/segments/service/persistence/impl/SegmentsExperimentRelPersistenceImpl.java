@@ -1497,8 +1497,6 @@ public class SegmentsExperimentRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SegmentsExperimentRelImpl.class);
-
-		finderCache.clearCache(SegmentsExperimentRelImpl.class);
 	}
 
 	/**
@@ -1526,8 +1524,6 @@ public class SegmentsExperimentRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SegmentsExperimentRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				SegmentsExperimentRelImpl.class, primaryKey);

@@ -1413,8 +1413,6 @@ public class KaleoTimerPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoTimerImpl.class);
-
-		finderCache.clearCache(KaleoTimerImpl.class);
 	}
 
 	/**
@@ -1438,8 +1436,6 @@ public class KaleoTimerPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoTimerImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoTimerImpl.class, primaryKey);
 		}

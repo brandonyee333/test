@@ -2094,8 +2094,6 @@ public class AssetCategoryPropertyPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AssetCategoryPropertyImpl.class);
-
-		finderCache.clearCache(AssetCategoryPropertyImpl.class);
 	}
 
 	/**
@@ -2125,8 +2123,6 @@ public class AssetCategoryPropertyPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetCategoryPropertyImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				AssetCategoryPropertyImpl.class, primaryKey);

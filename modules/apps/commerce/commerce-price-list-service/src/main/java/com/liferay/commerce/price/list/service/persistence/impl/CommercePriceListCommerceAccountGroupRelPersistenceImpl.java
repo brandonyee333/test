@@ -2263,9 +2263,6 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 	public void clearCache() {
 		entityCache.clearCache(
 			CommercePriceListCommerceAccountGroupRelImpl.class);
-
-		finderCache.clearCache(
-			CommercePriceListCommerceAccountGroupRelImpl.class);
 	}
 
 	/**
@@ -2302,9 +2299,6 @@ public class CommercePriceListCommerceAccountGroupRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(
-			CommercePriceListCommerceAccountGroupRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommercePriceListCommerceAccountGroupRelImpl.class, primaryKey);

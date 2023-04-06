@@ -4415,8 +4415,6 @@ public class DDMStructureLayoutPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMStructureLayoutImpl.class);
-
-		finderCache.clearCache(DDMStructureLayoutImpl.class);
 	}
 
 	/**
@@ -4442,8 +4440,6 @@ public class DDMStructureLayoutPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStructureLayoutImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDMStructureLayoutImpl.class, primaryKey);
 		}

@@ -4410,8 +4410,6 @@ public class AMImageEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AMImageEntryImpl.class);
-
-		finderCache.clearCache(AMImageEntryImpl.class);
 	}
 
 	/**
@@ -4435,8 +4433,6 @@ public class AMImageEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AMImageEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AMImageEntryImpl.class, primaryKey);
 		}

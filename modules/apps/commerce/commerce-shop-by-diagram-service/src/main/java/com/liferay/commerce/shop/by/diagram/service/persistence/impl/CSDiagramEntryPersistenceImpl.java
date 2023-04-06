@@ -1991,8 +1991,6 @@ public class CSDiagramEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CSDiagramEntryImpl.class);
-
-		finderCache.clearCache(CSDiagramEntryImpl.class);
 	}
 
 	/**
@@ -2016,8 +2014,6 @@ public class CSDiagramEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CSDiagramEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CSDiagramEntryImpl.class, primaryKey);
 		}

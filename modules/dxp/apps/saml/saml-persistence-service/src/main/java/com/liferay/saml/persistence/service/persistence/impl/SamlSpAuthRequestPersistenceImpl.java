@@ -1005,8 +1005,6 @@ public class SamlSpAuthRequestPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SamlSpAuthRequestImpl.class);
-
-		finderCache.clearCache(SamlSpAuthRequestImpl.class);
 	}
 
 	/**
@@ -1032,8 +1030,6 @@ public class SamlSpAuthRequestPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlSpAuthRequestImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SamlSpAuthRequestImpl.class, primaryKey);
 		}

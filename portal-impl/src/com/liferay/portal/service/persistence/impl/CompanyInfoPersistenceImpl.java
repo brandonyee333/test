@@ -347,8 +347,6 @@ public class CompanyInfoPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(CompanyInfoImpl.class);
-
-		FinderCacheUtil.clearCache(CompanyInfoImpl.class);
 	}
 
 	/**
@@ -372,8 +370,6 @@ public class CompanyInfoPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(CompanyInfoImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(CompanyInfoImpl.class, primaryKey);
 		}

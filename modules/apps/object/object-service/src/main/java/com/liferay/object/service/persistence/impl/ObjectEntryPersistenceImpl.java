@@ -4817,8 +4817,6 @@ public class ObjectEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectEntryImpl.class);
-
-		finderCache.clearCache(ObjectEntryImpl.class);
 	}
 
 	/**
@@ -4842,8 +4840,6 @@ public class ObjectEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectEntryImpl.class, primaryKey);
 		}

@@ -921,8 +921,6 @@ public class DDMTemplateLinkPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMTemplateLinkImpl.class);
-
-		finderCache.clearCache(DDMTemplateLinkImpl.class);
 	}
 
 	/**
@@ -947,8 +945,6 @@ public class DDMTemplateLinkPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMTemplateLinkImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDMTemplateLinkImpl.class, primaryKey);
 		}

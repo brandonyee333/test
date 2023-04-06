@@ -1598,9 +1598,6 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 	public void clearCache() {
 		entityCache.clearCache(
 			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class);
-
-		finderCache.clearCache(
-			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class);
 	}
 
 	/**
@@ -1637,9 +1634,6 @@ public class CommerceNotificationTemplateCommerceAccountGroupRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(
-			CommerceNotificationTemplateCommerceAccountGroupRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceNotificationTemplateCommerceAccountGroupRelImpl.class,

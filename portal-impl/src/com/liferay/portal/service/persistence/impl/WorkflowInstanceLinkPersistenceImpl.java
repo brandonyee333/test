@@ -1400,8 +1400,6 @@ public class WorkflowInstanceLinkPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(WorkflowInstanceLinkImpl.class);
-
-		FinderCacheUtil.clearCache(WorkflowInstanceLinkImpl.class);
 	}
 
 	/**
@@ -1429,8 +1427,6 @@ public class WorkflowInstanceLinkPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(WorkflowInstanceLinkImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				WorkflowInstanceLinkImpl.class, primaryKey);

@@ -5808,8 +5808,6 @@ public class CPDisplayLayoutPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPDisplayLayoutImpl.class);
-
-		finderCache.clearCache(CPDisplayLayoutImpl.class);
 	}
 
 	/**
@@ -5834,8 +5832,6 @@ public class CPDisplayLayoutPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDisplayLayoutImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CPDisplayLayoutImpl.class, primaryKey);
 		}

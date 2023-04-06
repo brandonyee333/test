@@ -3386,8 +3386,6 @@ public class KaleoDefinitionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoDefinitionImpl.class);
-
-		finderCache.clearCache(KaleoDefinitionImpl.class);
 	}
 
 	/**
@@ -3412,8 +3410,6 @@ public class KaleoDefinitionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoDefinitionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoDefinitionImpl.class, primaryKey);
 		}

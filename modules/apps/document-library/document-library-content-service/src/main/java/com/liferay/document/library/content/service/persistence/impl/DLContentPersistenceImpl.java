@@ -2330,8 +2330,6 @@ public class DLContentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DLContentImpl.class);
-
-		finderCache.clearCache(DLContentImpl.class);
 	}
 
 	/**
@@ -2355,8 +2353,6 @@ public class DLContentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLContentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DLContentImpl.class, primaryKey);
 		}

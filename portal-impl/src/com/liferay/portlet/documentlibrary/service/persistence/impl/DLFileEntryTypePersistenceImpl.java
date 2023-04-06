@@ -3473,8 +3473,6 @@ public class DLFileEntryTypePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(DLFileEntryTypeImpl.class);
-
-		FinderCacheUtil.clearCache(DLFileEntryTypeImpl.class);
 	}
 
 	/**
@@ -3500,8 +3498,6 @@ public class DLFileEntryTypePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFileEntryTypeImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(DLFileEntryTypeImpl.class, primaryKey);
 		}

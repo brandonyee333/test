@@ -2297,8 +2297,6 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommercePaymentMethodGroupRelImpl.class);
-
-		finderCache.clearCache(CommercePaymentMethodGroupRelImpl.class);
 	}
 
 	/**
@@ -2332,8 +2330,6 @@ public class CommercePaymentMethodGroupRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommercePaymentMethodGroupRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommercePaymentMethodGroupRelImpl.class, primaryKey);

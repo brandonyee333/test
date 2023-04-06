@@ -1284,8 +1284,6 @@ public class CommerceInventoryAuditPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceInventoryAuditImpl.class);
-
-		finderCache.clearCache(CommerceInventoryAuditImpl.class);
 	}
 
 	/**
@@ -1315,8 +1313,6 @@ public class CommerceInventoryAuditPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceInventoryAuditImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceInventoryAuditImpl.class, primaryKey);

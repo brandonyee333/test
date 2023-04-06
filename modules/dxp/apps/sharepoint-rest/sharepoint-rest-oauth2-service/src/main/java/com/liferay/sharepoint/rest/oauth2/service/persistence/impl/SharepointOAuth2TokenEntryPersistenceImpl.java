@@ -931,8 +931,6 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SharepointOAuth2TokenEntryImpl.class);
-
-		finderCache.clearCache(SharepointOAuth2TokenEntryImpl.class);
 	}
 
 	/**
@@ -965,8 +963,6 @@ public class SharepointOAuth2TokenEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SharepointOAuth2TokenEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				SharepointOAuth2TokenEntryImpl.class, primaryKey);

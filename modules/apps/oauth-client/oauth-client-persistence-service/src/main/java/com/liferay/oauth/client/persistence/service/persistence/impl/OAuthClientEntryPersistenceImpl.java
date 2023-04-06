@@ -3277,8 +3277,6 @@ public class OAuthClientEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(OAuthClientEntryImpl.class);
-
-		finderCache.clearCache(OAuthClientEntryImpl.class);
 	}
 
 	/**
@@ -3303,8 +3301,6 @@ public class OAuthClientEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuthClientEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(OAuthClientEntryImpl.class, primaryKey);
 		}

@@ -5809,8 +5809,6 @@ public class PortletPreferencesPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(PortletPreferencesImpl.class);
-
-		FinderCacheUtil.clearCache(PortletPreferencesImpl.class);
 	}
 
 	/**
@@ -5836,8 +5834,6 @@ public class PortletPreferencesPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PortletPreferencesImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				PortletPreferencesImpl.class, primaryKey);

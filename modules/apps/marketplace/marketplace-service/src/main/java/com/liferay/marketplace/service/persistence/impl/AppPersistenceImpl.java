@@ -2487,8 +2487,6 @@ public class AppPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AppImpl.class);
-
-		finderCache.clearCache(AppImpl.class);
 	}
 
 	/**
@@ -2512,8 +2510,6 @@ public class AppPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AppImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AppImpl.class, primaryKey);
 		}

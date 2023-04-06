@@ -938,8 +938,6 @@ public class EagerBlobEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		dummyEntityCache.clearCache(EagerBlobEntryImpl.class);
-
-		dummyFinderCache.clearCache(EagerBlobEntryImpl.class);
 	}
 
 	/**
@@ -964,8 +962,6 @@ public class EagerBlobEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		dummyFinderCache.clearCache(EagerBlobEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			dummyEntityCache.removeResult(EagerBlobEntryImpl.class, primaryKey);
 		}

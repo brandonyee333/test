@@ -1464,8 +1464,6 @@ public class TrashVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(TrashVersionImpl.class);
-
-		finderCache.clearCache(TrashVersionImpl.class);
 	}
 
 	/**
@@ -1489,8 +1487,6 @@ public class TrashVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TrashVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(TrashVersionImpl.class, primaryKey);
 		}

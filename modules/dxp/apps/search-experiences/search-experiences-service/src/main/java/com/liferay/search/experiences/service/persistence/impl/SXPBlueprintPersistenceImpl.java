@@ -3281,8 +3281,6 @@ public class SXPBlueprintPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SXPBlueprintImpl.class);
-
-		finderCache.clearCache(SXPBlueprintImpl.class);
 	}
 
 	/**
@@ -3306,8 +3304,6 @@ public class SXPBlueprintPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SXPBlueprintImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SXPBlueprintImpl.class, primaryKey);
 		}

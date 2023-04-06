@@ -2945,8 +2945,6 @@ public class AssetDisplayPageEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AssetDisplayPageEntryImpl.class);
-
-		finderCache.clearCache(AssetDisplayPageEntryImpl.class);
 	}
 
 	/**
@@ -2976,8 +2974,6 @@ public class AssetDisplayPageEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetDisplayPageEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				AssetDisplayPageEntryImpl.class, primaryKey);

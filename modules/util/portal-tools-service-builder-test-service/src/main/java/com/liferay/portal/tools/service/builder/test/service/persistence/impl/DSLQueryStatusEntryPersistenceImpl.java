@@ -135,8 +135,6 @@ public class DSLQueryStatusEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DSLQueryStatusEntryImpl.class);
-
-		finderCache.clearCache(DSLQueryStatusEntryImpl.class);
 	}
 
 	/**
@@ -162,8 +160,6 @@ public class DSLQueryStatusEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DSLQueryStatusEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DSLQueryStatusEntryImpl.class, primaryKey);
 		}

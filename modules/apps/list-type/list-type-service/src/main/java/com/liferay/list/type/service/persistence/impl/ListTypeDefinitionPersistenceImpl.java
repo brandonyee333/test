@@ -2428,8 +2428,6 @@ public class ListTypeDefinitionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ListTypeDefinitionImpl.class);
-
-		finderCache.clearCache(ListTypeDefinitionImpl.class);
 	}
 
 	/**
@@ -2455,8 +2453,6 @@ public class ListTypeDefinitionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ListTypeDefinitionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ListTypeDefinitionImpl.class, primaryKey);
 		}

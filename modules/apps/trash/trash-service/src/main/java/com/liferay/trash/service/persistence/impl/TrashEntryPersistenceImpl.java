@@ -2552,8 +2552,6 @@ public class TrashEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(TrashEntryImpl.class);
-
-		finderCache.clearCache(TrashEntryImpl.class);
 	}
 
 	/**
@@ -2577,8 +2575,6 @@ public class TrashEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TrashEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(TrashEntryImpl.class, primaryKey);
 		}

@@ -2835,8 +2835,6 @@ public class MBThreadFlagPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBThreadFlagImpl.class);
-
-		finderCache.clearCache(MBThreadFlagImpl.class);
 	}
 
 	/**
@@ -2860,8 +2858,6 @@ public class MBThreadFlagPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBThreadFlagImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MBThreadFlagImpl.class, primaryKey);
 		}

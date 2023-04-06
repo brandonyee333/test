@@ -958,8 +958,6 @@ public class PluginSettingPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(PluginSettingImpl.class);
-
-		FinderCacheUtil.clearCache(PluginSettingImpl.class);
 	}
 
 	/**
@@ -984,8 +982,6 @@ public class PluginSettingPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(PluginSettingImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(PluginSettingImpl.class, primaryKey);
 		}

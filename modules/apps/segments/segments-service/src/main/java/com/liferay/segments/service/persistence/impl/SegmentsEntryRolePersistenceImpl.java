@@ -1448,8 +1448,6 @@ public class SegmentsEntryRolePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SegmentsEntryRoleImpl.class);
-
-		finderCache.clearCache(SegmentsEntryRoleImpl.class);
 	}
 
 	/**
@@ -1475,8 +1473,6 @@ public class SegmentsEntryRolePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SegmentsEntryRoleImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SegmentsEntryRoleImpl.class, primaryKey);
 		}

@@ -1866,8 +1866,6 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceInventoryBookedQuantityImpl.class);
-
-		finderCache.clearCache(CommerceInventoryBookedQuantityImpl.class);
 	}
 
 	/**
@@ -1902,8 +1900,6 @@ public class CommerceInventoryBookedQuantityPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceInventoryBookedQuantityImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceInventoryBookedQuantityImpl.class, primaryKey);

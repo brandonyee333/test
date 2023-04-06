@@ -1833,8 +1833,6 @@ public class CPDefinitionInventoryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPDefinitionInventoryImpl.class);
-
-		finderCache.clearCache(CPDefinitionInventoryImpl.class);
 	}
 
 	/**
@@ -1864,8 +1862,6 @@ public class CPDefinitionInventoryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionInventoryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CPDefinitionInventoryImpl.class, primaryKey);

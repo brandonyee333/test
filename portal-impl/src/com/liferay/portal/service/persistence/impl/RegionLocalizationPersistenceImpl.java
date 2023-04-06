@@ -910,8 +910,6 @@ public class RegionLocalizationPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RegionLocalizationImpl.class);
-
-		FinderCacheUtil.clearCache(RegionLocalizationImpl.class);
 	}
 
 	/**
@@ -937,8 +935,6 @@ public class RegionLocalizationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RegionLocalizationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				RegionLocalizationImpl.class, primaryKey);

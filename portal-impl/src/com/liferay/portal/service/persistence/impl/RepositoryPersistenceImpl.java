@@ -2399,8 +2399,6 @@ public class RepositoryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RepositoryImpl.class);
-
-		FinderCacheUtil.clearCache(RepositoryImpl.class);
 	}
 
 	/**
@@ -2424,8 +2422,6 @@ public class RepositoryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RepositoryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(RepositoryImpl.class, primaryKey);
 		}

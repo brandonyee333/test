@@ -1944,8 +1944,6 @@ public class VersionedEntryVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(VersionedEntryVersionImpl.class);
-
-		finderCache.clearCache(VersionedEntryVersionImpl.class);
 	}
 
 	/**
@@ -1973,8 +1971,6 @@ public class VersionedEntryVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(VersionedEntryVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				VersionedEntryVersionImpl.class, primaryKey);

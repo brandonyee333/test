@@ -992,8 +992,6 @@ public class UserNotificationDeliveryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(UserNotificationDeliveryImpl.class);
-
-		FinderCacheUtil.clearCache(UserNotificationDeliveryImpl.class);
 	}
 
 	/**
@@ -1023,8 +1021,6 @@ public class UserNotificationDeliveryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserNotificationDeliveryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				UserNotificationDeliveryImpl.class, primaryKey);

@@ -1001,8 +1001,6 @@ public class BatchPlannerMappingPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BatchPlannerMappingImpl.class);
-
-		finderCache.clearCache(BatchPlannerMappingImpl.class);
 	}
 
 	/**
@@ -1028,8 +1026,6 @@ public class BatchPlannerMappingPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BatchPlannerMappingImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(BatchPlannerMappingImpl.class, primaryKey);
 		}

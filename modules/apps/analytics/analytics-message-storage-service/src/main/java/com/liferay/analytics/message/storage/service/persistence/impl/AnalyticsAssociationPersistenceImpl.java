@@ -2056,8 +2056,6 @@ public class AnalyticsAssociationPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AnalyticsAssociationImpl.class);
-
-		finderCache.clearCache(AnalyticsAssociationImpl.class);
 	}
 
 	/**
@@ -2085,8 +2083,6 @@ public class AnalyticsAssociationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AnalyticsAssociationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				AnalyticsAssociationImpl.class, primaryKey);

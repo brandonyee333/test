@@ -1726,8 +1726,6 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceTaxFixedRateAddressRelImpl.class);
-
-		finderCache.clearCache(CommerceTaxFixedRateAddressRelImpl.class);
 	}
 
 	/**
@@ -1761,8 +1759,6 @@ public class CommerceTaxFixedRateAddressRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTaxFixedRateAddressRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceTaxFixedRateAddressRelImpl.class, primaryKey);

@@ -687,8 +687,6 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BatchEngineImportTaskErrorImpl.class);
-
-		finderCache.clearCache(BatchEngineImportTaskErrorImpl.class);
 	}
 
 	/**
@@ -721,8 +719,6 @@ public class BatchEngineImportTaskErrorPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BatchEngineImportTaskErrorImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				BatchEngineImportTaskErrorImpl.class, primaryKey);

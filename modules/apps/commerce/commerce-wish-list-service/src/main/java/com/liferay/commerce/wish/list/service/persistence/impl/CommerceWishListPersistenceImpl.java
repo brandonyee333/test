@@ -4223,8 +4223,6 @@ public class CommerceWishListPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceWishListImpl.class);
-
-		finderCache.clearCache(CommerceWishListImpl.class);
 	}
 
 	/**
@@ -4249,8 +4247,6 @@ public class CommerceWishListPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceWishListImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CommerceWishListImpl.class, primaryKey);
 		}

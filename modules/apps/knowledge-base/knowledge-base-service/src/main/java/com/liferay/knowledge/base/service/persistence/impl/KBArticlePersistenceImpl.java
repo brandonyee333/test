@@ -35591,8 +35591,6 @@ public class KBArticlePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KBArticleImpl.class);
-
-		finderCache.clearCache(KBArticleImpl.class);
 	}
 
 	/**
@@ -35616,8 +35614,6 @@ public class KBArticlePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KBArticleImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KBArticleImpl.class, primaryKey);
 		}

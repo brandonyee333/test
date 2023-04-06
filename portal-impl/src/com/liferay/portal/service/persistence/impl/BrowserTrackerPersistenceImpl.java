@@ -339,8 +339,6 @@ public class BrowserTrackerPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(BrowserTrackerImpl.class);
-
-		FinderCacheUtil.clearCache(BrowserTrackerImpl.class);
 	}
 
 	/**
@@ -365,8 +363,6 @@ public class BrowserTrackerPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(BrowserTrackerImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(BrowserTrackerImpl.class, primaryKey);
 		}

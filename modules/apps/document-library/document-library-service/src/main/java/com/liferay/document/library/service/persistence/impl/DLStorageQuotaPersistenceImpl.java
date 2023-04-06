@@ -349,8 +349,6 @@ public class DLStorageQuotaPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DLStorageQuotaImpl.class);
-
-		finderCache.clearCache(DLStorageQuotaImpl.class);
 	}
 
 	/**
@@ -374,8 +372,6 @@ public class DLStorageQuotaPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DLStorageQuotaImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DLStorageQuotaImpl.class, primaryKey);
 		}

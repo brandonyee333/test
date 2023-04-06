@@ -2451,8 +2451,6 @@ public class SystemEventPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(SystemEventImpl.class);
-
-		FinderCacheUtil.clearCache(SystemEventImpl.class);
 	}
 
 	/**
@@ -2476,8 +2474,6 @@ public class SystemEventPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(SystemEventImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(SystemEventImpl.class, primaryKey);
 		}

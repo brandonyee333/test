@@ -643,8 +643,6 @@ public class AuditEventPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AuditEventImpl.class);
-
-		finderCache.clearCache(AuditEventImpl.class);
 	}
 
 	/**
@@ -668,8 +666,6 @@ public class AuditEventPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AuditEventImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AuditEventImpl.class, primaryKey);
 		}

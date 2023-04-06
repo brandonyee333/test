@@ -6507,8 +6507,6 @@ public class CommerceInventoryWarehousePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceInventoryWarehouseImpl.class);
-
-		finderCache.clearCache(CommerceInventoryWarehouseImpl.class);
 	}
 
 	/**
@@ -6541,8 +6539,6 @@ public class CommerceInventoryWarehousePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceInventoryWarehouseImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceInventoryWarehouseImpl.class, primaryKey);

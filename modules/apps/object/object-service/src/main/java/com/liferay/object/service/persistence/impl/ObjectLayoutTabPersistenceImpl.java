@@ -2299,8 +2299,6 @@ public class ObjectLayoutTabPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectLayoutTabImpl.class);
-
-		finderCache.clearCache(ObjectLayoutTabImpl.class);
 	}
 
 	/**
@@ -2325,8 +2323,6 @@ public class ObjectLayoutTabPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectLayoutTabImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectLayoutTabImpl.class, primaryKey);
 		}

@@ -4186,8 +4186,6 @@ public class CommerceShipmentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceShipmentImpl.class);
-
-		finderCache.clearCache(CommerceShipmentImpl.class);
 	}
 
 	/**
@@ -4212,8 +4210,6 @@ public class CommerceShipmentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceShipmentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CommerceShipmentImpl.class, primaryKey);
 		}

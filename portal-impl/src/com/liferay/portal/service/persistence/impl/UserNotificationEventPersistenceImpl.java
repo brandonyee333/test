@@ -11499,8 +11499,6 @@ public class UserNotificationEventPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(UserNotificationEventImpl.class);
-
-		FinderCacheUtil.clearCache(UserNotificationEventImpl.class);
 	}
 
 	/**
@@ -11528,8 +11526,6 @@ public class UserNotificationEventPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserNotificationEventImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				UserNotificationEventImpl.class, primaryKey);

@@ -1791,8 +1791,6 @@ public class ObjectLayoutBoxPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectLayoutBoxImpl.class);
-
-		finderCache.clearCache(ObjectLayoutBoxImpl.class);
 	}
 
 	/**
@@ -1817,8 +1815,6 @@ public class ObjectLayoutBoxPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectLayoutBoxImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectLayoutBoxImpl.class, primaryKey);
 		}

@@ -2422,8 +2422,6 @@ public class LayoutPageTemplateStructurePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LayoutPageTemplateStructureImpl.class);
-
-		finderCache.clearCache(LayoutPageTemplateStructureImpl.class);
 	}
 
 	/**
@@ -2456,8 +2454,6 @@ public class LayoutPageTemplateStructurePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutPageTemplateStructureImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				LayoutPageTemplateStructureImpl.class, primaryKey);

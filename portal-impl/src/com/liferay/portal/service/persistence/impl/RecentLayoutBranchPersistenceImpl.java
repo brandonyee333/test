@@ -1906,8 +1906,6 @@ public class RecentLayoutBranchPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RecentLayoutBranchImpl.class);
-
-		FinderCacheUtil.clearCache(RecentLayoutBranchImpl.class);
 	}
 
 	/**
@@ -1933,8 +1931,6 @@ public class RecentLayoutBranchPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RecentLayoutBranchImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				RecentLayoutBranchImpl.class, primaryKey);

@@ -8048,8 +8048,6 @@ public class CommerceTermEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceTermEntryImpl.class);
-
-		finderCache.clearCache(CommerceTermEntryImpl.class);
 	}
 
 	/**
@@ -8075,8 +8073,6 @@ public class CommerceTermEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceTermEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CommerceTermEntryImpl.class, primaryKey);
 		}

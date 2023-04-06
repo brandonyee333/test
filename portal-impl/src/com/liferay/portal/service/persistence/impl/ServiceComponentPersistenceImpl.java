@@ -964,8 +964,6 @@ public class ServiceComponentPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ServiceComponentImpl.class);
-
-		FinderCacheUtil.clearCache(ServiceComponentImpl.class);
 	}
 
 	/**
@@ -991,8 +989,6 @@ public class ServiceComponentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ServiceComponentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				ServiceComponentImpl.class, primaryKey);

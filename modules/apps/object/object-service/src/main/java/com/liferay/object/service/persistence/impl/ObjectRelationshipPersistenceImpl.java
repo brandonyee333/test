@@ -7872,8 +7872,6 @@ public class ObjectRelationshipPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectRelationshipImpl.class);
-
-		finderCache.clearCache(ObjectRelationshipImpl.class);
 	}
 
 	/**
@@ -7899,8 +7897,6 @@ public class ObjectRelationshipPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectRelationshipImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectRelationshipImpl.class, primaryKey);
 		}

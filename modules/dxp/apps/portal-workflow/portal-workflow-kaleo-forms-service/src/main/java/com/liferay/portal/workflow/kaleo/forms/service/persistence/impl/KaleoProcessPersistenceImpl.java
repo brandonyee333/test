@@ -2613,8 +2613,6 @@ public class KaleoProcessPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoProcessImpl.class);
-
-		finderCache.clearCache(KaleoProcessImpl.class);
 	}
 
 	/**
@@ -2638,8 +2636,6 @@ public class KaleoProcessPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoProcessImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoProcessImpl.class, primaryKey);
 		}

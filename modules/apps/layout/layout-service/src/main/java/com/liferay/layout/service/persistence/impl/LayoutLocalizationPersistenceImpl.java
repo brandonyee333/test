@@ -2676,8 +2676,6 @@ public class LayoutLocalizationPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LayoutLocalizationImpl.class);
-
-		finderCache.clearCache(LayoutLocalizationImpl.class);
 	}
 
 	/**
@@ -2703,8 +2701,6 @@ public class LayoutLocalizationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutLocalizationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(LayoutLocalizationImpl.class, primaryKey);
 		}

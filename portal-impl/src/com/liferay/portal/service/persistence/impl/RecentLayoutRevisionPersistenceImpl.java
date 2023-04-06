@@ -1919,8 +1919,6 @@ public class RecentLayoutRevisionPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RecentLayoutRevisionImpl.class);
-
-		FinderCacheUtil.clearCache(RecentLayoutRevisionImpl.class);
 	}
 
 	/**
@@ -1948,8 +1946,6 @@ public class RecentLayoutRevisionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RecentLayoutRevisionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				RecentLayoutRevisionImpl.class, primaryKey);

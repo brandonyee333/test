@@ -6101,8 +6101,6 @@ public class SXPElementPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SXPElementImpl.class);
-
-		finderCache.clearCache(SXPElementImpl.class);
 	}
 
 	/**
@@ -6126,8 +6124,6 @@ public class SXPElementPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SXPElementImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SXPElementImpl.class, primaryKey);
 		}

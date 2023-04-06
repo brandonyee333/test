@@ -388,8 +388,6 @@ public class ReleasePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ReleaseImpl.class);
-
-		FinderCacheUtil.clearCache(ReleaseImpl.class);
 	}
 
 	/**
@@ -413,8 +411,6 @@ public class ReleasePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ReleaseImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ReleaseImpl.class, primaryKey);
 		}

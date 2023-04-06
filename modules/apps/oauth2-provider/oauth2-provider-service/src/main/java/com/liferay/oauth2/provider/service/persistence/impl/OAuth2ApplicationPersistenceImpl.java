@@ -4541,8 +4541,6 @@ public class OAuth2ApplicationPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(OAuth2ApplicationImpl.class);
-
-		finderCache.clearCache(OAuth2ApplicationImpl.class);
 	}
 
 	/**
@@ -4568,8 +4566,6 @@ public class OAuth2ApplicationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuth2ApplicationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(OAuth2ApplicationImpl.class, primaryKey);
 		}

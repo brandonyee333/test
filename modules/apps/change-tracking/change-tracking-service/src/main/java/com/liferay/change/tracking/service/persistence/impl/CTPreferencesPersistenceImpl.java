@@ -1394,8 +1394,6 @@ public class CTPreferencesPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTPreferencesImpl.class);
-
-		finderCache.clearCache(CTPreferencesImpl.class);
 	}
 
 	/**
@@ -1419,8 +1417,6 @@ public class CTPreferencesPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTPreferencesImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CTPreferencesImpl.class, primaryKey);
 		}

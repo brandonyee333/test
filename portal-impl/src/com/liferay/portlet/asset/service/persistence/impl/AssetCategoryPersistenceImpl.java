@@ -12242,8 +12242,6 @@ public class AssetCategoryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(AssetCategoryImpl.class);
-
-		FinderCacheUtil.clearCache(AssetCategoryImpl.class);
 	}
 
 	/**
@@ -12268,8 +12266,6 @@ public class AssetCategoryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(AssetCategoryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(AssetCategoryImpl.class, primaryKey);
 		}

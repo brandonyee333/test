@@ -1775,8 +1775,6 @@ public class CommerceVirtualOrderItemPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceVirtualOrderItemImpl.class);
-
-		finderCache.clearCache(CommerceVirtualOrderItemImpl.class);
 	}
 
 	/**
@@ -1806,8 +1804,6 @@ public class CommerceVirtualOrderItemPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceVirtualOrderItemImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceVirtualOrderItemImpl.class, primaryKey);

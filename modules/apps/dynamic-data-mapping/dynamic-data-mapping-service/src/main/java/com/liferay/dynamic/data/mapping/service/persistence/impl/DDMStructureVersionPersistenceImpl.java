@@ -1540,8 +1540,6 @@ public class DDMStructureVersionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMStructureVersionImpl.class);
-
-		finderCache.clearCache(DDMStructureVersionImpl.class);
 	}
 
 	/**
@@ -1567,8 +1565,6 @@ public class DDMStructureVersionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStructureVersionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDMStructureVersionImpl.class, primaryKey);
 		}

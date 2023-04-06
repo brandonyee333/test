@@ -151,8 +151,6 @@ public class CacheMissEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		dummyEntityCache.clearCache(CacheMissEntryImpl.class);
-
-		dummyFinderCache.clearCache(CacheMissEntryImpl.class);
 	}
 
 	/**
@@ -177,8 +175,6 @@ public class CacheMissEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		dummyFinderCache.clearCache(CacheMissEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			dummyEntityCache.removeResult(CacheMissEntryImpl.class, primaryKey);
 		}

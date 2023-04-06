@@ -1753,8 +1753,6 @@ public class SpringEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SpringEntryImpl.class);
-
-		finderCache.clearCache(SpringEntryImpl.class);
 	}
 
 	/**
@@ -1778,8 +1776,6 @@ public class SpringEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SpringEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SpringEntryImpl.class, primaryKey);
 		}

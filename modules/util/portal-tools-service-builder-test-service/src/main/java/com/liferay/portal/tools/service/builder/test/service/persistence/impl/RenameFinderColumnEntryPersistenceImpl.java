@@ -400,8 +400,6 @@ public class RenameFinderColumnEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(RenameFinderColumnEntryImpl.class);
-
-		finderCache.clearCache(RenameFinderColumnEntryImpl.class);
 	}
 
 	/**
@@ -431,8 +429,6 @@ public class RenameFinderColumnEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RenameFinderColumnEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				RenameFinderColumnEntryImpl.class, primaryKey);

@@ -12527,8 +12527,6 @@ public class BookmarksEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(BookmarksEntryImpl.class);
-
-		finderCache.clearCache(BookmarksEntryImpl.class);
 	}
 
 	/**
@@ -12552,8 +12550,6 @@ public class BookmarksEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(BookmarksEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(BookmarksEntryImpl.class, primaryKey);
 		}

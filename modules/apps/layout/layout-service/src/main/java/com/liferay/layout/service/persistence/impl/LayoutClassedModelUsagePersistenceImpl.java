@@ -4903,8 +4903,6 @@ public class LayoutClassedModelUsagePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LayoutClassedModelUsageImpl.class);
-
-		finderCache.clearCache(LayoutClassedModelUsageImpl.class);
 	}
 
 	/**
@@ -4934,8 +4932,6 @@ public class LayoutClassedModelUsagePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LayoutClassedModelUsageImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				LayoutClassedModelUsageImpl.class, primaryKey);

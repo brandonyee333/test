@@ -3105,8 +3105,6 @@ public class RatingsEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(RatingsEntryImpl.class);
-
-		FinderCacheUtil.clearCache(RatingsEntryImpl.class);
 	}
 
 	/**
@@ -3130,8 +3128,6 @@ public class RatingsEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(RatingsEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(RatingsEntryImpl.class, primaryKey);
 		}

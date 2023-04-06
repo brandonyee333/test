@@ -1809,8 +1809,6 @@ public class ExpandoColumnPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ExpandoColumnImpl.class);
-
-		FinderCacheUtil.clearCache(ExpandoColumnImpl.class);
 	}
 
 	/**
@@ -1835,8 +1833,6 @@ public class ExpandoColumnPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ExpandoColumnImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ExpandoColumnImpl.class, primaryKey);
 		}

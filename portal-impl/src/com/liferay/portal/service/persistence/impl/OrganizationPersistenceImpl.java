@@ -9277,8 +9277,6 @@ public class OrganizationPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(OrganizationImpl.class);
-
-		FinderCacheUtil.clearCache(OrganizationImpl.class);
 	}
 
 	/**
@@ -9302,8 +9300,6 @@ public class OrganizationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(OrganizationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(OrganizationImpl.class, primaryKey);
 		}

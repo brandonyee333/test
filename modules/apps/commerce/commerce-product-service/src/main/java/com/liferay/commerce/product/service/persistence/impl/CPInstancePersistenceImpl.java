@@ -7387,8 +7387,6 @@ public class CPInstancePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPInstanceImpl.class);
-
-		finderCache.clearCache(CPInstanceImpl.class);
 	}
 
 	/**
@@ -7412,8 +7410,6 @@ public class CPInstancePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPInstanceImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CPInstanceImpl.class, primaryKey);
 		}

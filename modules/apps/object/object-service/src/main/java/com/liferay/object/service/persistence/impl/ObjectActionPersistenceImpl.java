@@ -3360,8 +3360,6 @@ public class ObjectActionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectActionImpl.class);
-
-		finderCache.clearCache(ObjectActionImpl.class);
 	}
 
 	/**
@@ -3385,8 +3383,6 @@ public class ObjectActionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectActionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectActionImpl.class, primaryKey);
 		}

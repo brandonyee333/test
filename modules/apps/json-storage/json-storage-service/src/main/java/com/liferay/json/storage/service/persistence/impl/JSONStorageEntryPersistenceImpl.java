@@ -2486,8 +2486,6 @@ public class JSONStorageEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(JSONStorageEntryImpl.class);
-
-		finderCache.clearCache(JSONStorageEntryImpl.class);
 	}
 
 	/**
@@ -2512,8 +2510,6 @@ public class JSONStorageEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JSONStorageEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(JSONStorageEntryImpl.class, primaryKey);
 		}

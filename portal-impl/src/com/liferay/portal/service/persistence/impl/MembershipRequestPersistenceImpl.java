@@ -2260,8 +2260,6 @@ public class MembershipRequestPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(MembershipRequestImpl.class);
-
-		FinderCacheUtil.clearCache(MembershipRequestImpl.class);
 	}
 
 	/**
@@ -2287,8 +2285,6 @@ public class MembershipRequestPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(MembershipRequestImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				MembershipRequestImpl.class, primaryKey);

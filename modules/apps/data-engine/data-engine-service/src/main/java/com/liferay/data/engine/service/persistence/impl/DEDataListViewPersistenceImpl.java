@@ -2711,8 +2711,6 @@ public class DEDataListViewPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DEDataListViewImpl.class);
-
-		finderCache.clearCache(DEDataListViewImpl.class);
 	}
 
 	/**
@@ -2736,8 +2734,6 @@ public class DEDataListViewPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DEDataListViewImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DEDataListViewImpl.class, primaryKey);
 		}

@@ -21478,8 +21478,6 @@ public class MBMessagePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBMessageImpl.class);
-
-		finderCache.clearCache(MBMessageImpl.class);
 	}
 
 	/**
@@ -21503,8 +21501,6 @@ public class MBMessagePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBMessageImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MBMessageImpl.class, primaryKey);
 		}

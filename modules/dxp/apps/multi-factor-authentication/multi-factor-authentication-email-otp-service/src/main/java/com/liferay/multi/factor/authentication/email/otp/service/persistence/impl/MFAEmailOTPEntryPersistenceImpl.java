@@ -351,8 +351,6 @@ public class MFAEmailOTPEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MFAEmailOTPEntryImpl.class);
-
-		finderCache.clearCache(MFAEmailOTPEntryImpl.class);
 	}
 
 	/**
@@ -377,8 +375,6 @@ public class MFAEmailOTPEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MFAEmailOTPEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MFAEmailOTPEntryImpl.class, primaryKey);
 		}

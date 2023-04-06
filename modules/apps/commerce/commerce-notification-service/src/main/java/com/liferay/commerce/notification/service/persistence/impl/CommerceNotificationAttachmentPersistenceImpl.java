@@ -2139,8 +2139,6 @@ public class CommerceNotificationAttachmentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceNotificationAttachmentImpl.class);
-
-		finderCache.clearCache(CommerceNotificationAttachmentImpl.class);
 	}
 
 	/**
@@ -2174,8 +2172,6 @@ public class CommerceNotificationAttachmentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceNotificationAttachmentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceNotificationAttachmentImpl.class, primaryKey);

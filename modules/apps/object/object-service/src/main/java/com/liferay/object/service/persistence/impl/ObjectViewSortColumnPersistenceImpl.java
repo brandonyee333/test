@@ -2390,8 +2390,6 @@ public class ObjectViewSortColumnPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectViewSortColumnImpl.class);
-
-		finderCache.clearCache(ObjectViewSortColumnImpl.class);
 	}
 
 	/**
@@ -2419,8 +2417,6 @@ public class ObjectViewSortColumnPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectViewSortColumnImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				ObjectViewSortColumnImpl.class, primaryKey);

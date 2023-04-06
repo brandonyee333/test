@@ -1005,8 +1005,6 @@ public class ExpandoTablePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ExpandoTableImpl.class);
-
-		FinderCacheUtil.clearCache(ExpandoTableImpl.class);
 	}
 
 	/**
@@ -1030,8 +1028,6 @@ public class ExpandoTablePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ExpandoTableImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ExpandoTableImpl.class, primaryKey);
 		}

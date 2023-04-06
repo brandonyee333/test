@@ -141,8 +141,6 @@ public class DataLimitEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DataLimitEntryImpl.class);
-
-		finderCache.clearCache(DataLimitEntryImpl.class);
 	}
 
 	/**
@@ -166,8 +164,6 @@ public class DataLimitEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DataLimitEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DataLimitEntryImpl.class, primaryKey);
 		}

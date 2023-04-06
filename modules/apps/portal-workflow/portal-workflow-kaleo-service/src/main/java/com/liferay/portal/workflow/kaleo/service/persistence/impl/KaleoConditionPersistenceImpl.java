@@ -1447,8 +1447,6 @@ public class KaleoConditionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KaleoConditionImpl.class);
-
-		finderCache.clearCache(KaleoConditionImpl.class);
 	}
 
 	/**
@@ -1472,8 +1470,6 @@ public class KaleoConditionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KaleoConditionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KaleoConditionImpl.class, primaryKey);
 		}

@@ -1508,8 +1508,6 @@ public class DDMStructureLinkPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(DDMStructureLinkImpl.class);
-
-		finderCache.clearCache(DDMStructureLinkImpl.class);
 	}
 
 	/**
@@ -1534,8 +1532,6 @@ public class DDMStructureLinkPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(DDMStructureLinkImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(DDMStructureLinkImpl.class, primaryKey);
 		}

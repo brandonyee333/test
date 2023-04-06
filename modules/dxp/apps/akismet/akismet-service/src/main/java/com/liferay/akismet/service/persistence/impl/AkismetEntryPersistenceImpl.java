@@ -929,8 +929,6 @@ public class AkismetEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AkismetEntryImpl.class);
-
-		finderCache.clearCache(AkismetEntryImpl.class);
 	}
 
 	/**
@@ -954,8 +952,6 @@ public class AkismetEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AkismetEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AkismetEntryImpl.class, primaryKey);
 		}

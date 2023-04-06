@@ -2018,8 +2018,6 @@ public class AccountGroupRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AccountGroupRelImpl.class);
-
-		finderCache.clearCache(AccountGroupRelImpl.class);
 	}
 
 	/**
@@ -2044,8 +2042,6 @@ public class AccountGroupRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountGroupRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AccountGroupRelImpl.class, primaryKey);
 		}

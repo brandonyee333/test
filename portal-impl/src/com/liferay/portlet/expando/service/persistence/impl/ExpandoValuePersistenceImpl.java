@@ -5038,8 +5038,6 @@ public class ExpandoValuePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ExpandoValueImpl.class);
-
-		FinderCacheUtil.clearCache(ExpandoValueImpl.class);
 	}
 
 	/**
@@ -5063,8 +5061,6 @@ public class ExpandoValuePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ExpandoValueImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ExpandoValueImpl.class, primaryKey);
 		}

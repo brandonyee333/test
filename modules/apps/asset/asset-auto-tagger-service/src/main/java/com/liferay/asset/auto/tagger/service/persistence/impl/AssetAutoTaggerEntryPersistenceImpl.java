@@ -1460,8 +1460,6 @@ public class AssetAutoTaggerEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AssetAutoTaggerEntryImpl.class);
-
-		finderCache.clearCache(AssetAutoTaggerEntryImpl.class);
 	}
 
 	/**
@@ -1489,8 +1487,6 @@ public class AssetAutoTaggerEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetAutoTaggerEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				AssetAutoTaggerEntryImpl.class, primaryKey);

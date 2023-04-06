@@ -643,8 +643,6 @@ public class CacheFieldEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CacheFieldEntryImpl.class);
-
-		finderCache.clearCache(CacheFieldEntryImpl.class);
 	}
 
 	/**
@@ -669,8 +667,6 @@ public class CacheFieldEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CacheFieldEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CacheFieldEntryImpl.class, primaryKey);
 		}

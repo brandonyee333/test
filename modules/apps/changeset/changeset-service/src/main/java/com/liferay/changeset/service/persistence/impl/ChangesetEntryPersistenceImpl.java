@@ -3006,8 +3006,6 @@ public class ChangesetEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ChangesetEntryImpl.class);
-
-		finderCache.clearCache(ChangesetEntryImpl.class);
 	}
 
 	/**
@@ -3031,8 +3029,6 @@ public class ChangesetEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ChangesetEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ChangesetEntryImpl.class, primaryKey);
 		}

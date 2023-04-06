@@ -642,8 +642,6 @@ public class CTMessagePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTMessageImpl.class);
-
-		finderCache.clearCache(CTMessageImpl.class);
 	}
 
 	/**
@@ -667,8 +665,6 @@ public class CTMessagePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTMessageImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CTMessageImpl.class, primaryKey);
 		}

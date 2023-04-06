@@ -2200,8 +2200,6 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(OAuthClientASLocalMetadataImpl.class);
-
-		finderCache.clearCache(OAuthClientASLocalMetadataImpl.class);
 	}
 
 	/**
@@ -2234,8 +2232,6 @@ public class OAuthClientASLocalMetadataPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(OAuthClientASLocalMetadataImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				OAuthClientASLocalMetadataImpl.class, primaryKey);

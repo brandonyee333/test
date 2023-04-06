@@ -1411,8 +1411,6 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MFAFIDO2CredentialEntryImpl.class);
-
-		finderCache.clearCache(MFAFIDO2CredentialEntryImpl.class);
 	}
 
 	/**
@@ -1442,8 +1440,6 @@ public class MFAFIDO2CredentialEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MFAFIDO2CredentialEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				MFAFIDO2CredentialEntryImpl.class, primaryKey);

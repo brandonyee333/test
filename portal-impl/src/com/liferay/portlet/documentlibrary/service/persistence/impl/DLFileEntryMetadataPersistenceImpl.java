@@ -2619,8 +2619,6 @@ public class DLFileEntryMetadataPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(DLFileEntryMetadataImpl.class);
-
-		FinderCacheUtil.clearCache(DLFileEntryMetadataImpl.class);
 	}
 
 	/**
@@ -2646,8 +2644,6 @@ public class DLFileEntryMetadataPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(DLFileEntryMetadataImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				DLFileEntryMetadataImpl.class, primaryKey);

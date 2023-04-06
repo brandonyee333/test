@@ -2405,8 +2405,6 @@ public class JournalArticleResourcePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(JournalArticleResourceImpl.class);
-
-		finderCache.clearCache(JournalArticleResourceImpl.class);
 	}
 
 	/**
@@ -2436,8 +2434,6 @@ public class JournalArticleResourcePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(JournalArticleResourceImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				JournalArticleResourceImpl.class, primaryKey);

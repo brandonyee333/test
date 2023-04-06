@@ -3837,8 +3837,6 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AssetListEntrySegmentsEntryRelImpl.class);
-
-		finderCache.clearCache(AssetListEntrySegmentsEntryRelImpl.class);
 	}
 
 	/**
@@ -3872,8 +3870,6 @@ public class AssetListEntrySegmentsEntryRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AssetListEntrySegmentsEntryRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				AssetListEntrySegmentsEntryRelImpl.class, primaryKey);

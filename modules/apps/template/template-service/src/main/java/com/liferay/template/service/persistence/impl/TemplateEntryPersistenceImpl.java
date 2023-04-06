@@ -4285,8 +4285,6 @@ public class TemplateEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(TemplateEntryImpl.class);
-
-		finderCache.clearCache(TemplateEntryImpl.class);
 	}
 
 	/**
@@ -4310,8 +4308,6 @@ public class TemplateEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(TemplateEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(TemplateEntryImpl.class, primaryKey);
 		}

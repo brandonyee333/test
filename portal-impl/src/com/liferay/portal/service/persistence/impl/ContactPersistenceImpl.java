@@ -2191,8 +2191,6 @@ public class ContactPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(ContactImpl.class);
-
-		FinderCacheUtil.clearCache(ContactImpl.class);
 	}
 
 	/**
@@ -2216,8 +2214,6 @@ public class ContactPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(ContactImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(ContactImpl.class, primaryKey);
 		}

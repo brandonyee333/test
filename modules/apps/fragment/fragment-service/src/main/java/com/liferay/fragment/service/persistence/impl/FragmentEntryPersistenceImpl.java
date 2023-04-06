@@ -15437,8 +15437,6 @@ public class FragmentEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(FragmentEntryImpl.class);
-
-		finderCache.clearCache(FragmentEntryImpl.class);
 	}
 
 	/**
@@ -15462,8 +15460,6 @@ public class FragmentEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(FragmentEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(FragmentEntryImpl.class, primaryKey);
 		}

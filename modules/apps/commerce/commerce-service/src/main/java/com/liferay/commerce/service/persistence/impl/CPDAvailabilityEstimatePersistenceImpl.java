@@ -2044,8 +2044,6 @@ public class CPDAvailabilityEstimatePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPDAvailabilityEstimateImpl.class);
-
-		finderCache.clearCache(CPDAvailabilityEstimateImpl.class);
 	}
 
 	/**
@@ -2075,8 +2073,6 @@ public class CPDAvailabilityEstimatePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDAvailabilityEstimateImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CPDAvailabilityEstimateImpl.class, primaryKey);

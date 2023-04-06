@@ -1819,8 +1819,6 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceAvailabilityEstimateImpl.class);
-
-		finderCache.clearCache(CommerceAvailabilityEstimateImpl.class);
 	}
 
 	/**
@@ -1854,8 +1852,6 @@ public class CommerceAvailabilityEstimatePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceAvailabilityEstimateImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceAvailabilityEstimateImpl.class, primaryKey);

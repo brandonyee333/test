@@ -1199,8 +1199,6 @@ public class SamlIdpSpSessionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(SamlIdpSpSessionImpl.class);
-
-		finderCache.clearCache(SamlIdpSpSessionImpl.class);
 	}
 
 	/**
@@ -1225,8 +1223,6 @@ public class SamlIdpSpSessionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(SamlIdpSpSessionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(SamlIdpSpSessionImpl.class, primaryKey);
 		}

@@ -2373,8 +2373,6 @@ public class ObjectViewColumnPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectViewColumnImpl.class);
-
-		finderCache.clearCache(ObjectViewColumnImpl.class);
 	}
 
 	/**
@@ -2399,8 +2397,6 @@ public class ObjectViewColumnPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectViewColumnImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectViewColumnImpl.class, primaryKey);
 		}

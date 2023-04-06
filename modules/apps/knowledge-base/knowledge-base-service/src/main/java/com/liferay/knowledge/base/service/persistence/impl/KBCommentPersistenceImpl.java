@@ -5226,8 +5226,6 @@ public class KBCommentPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(KBCommentImpl.class);
-
-		finderCache.clearCache(KBCommentImpl.class);
 	}
 
 	/**
@@ -5251,8 +5249,6 @@ public class KBCommentPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(KBCommentImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(KBCommentImpl.class, primaryKey);
 		}

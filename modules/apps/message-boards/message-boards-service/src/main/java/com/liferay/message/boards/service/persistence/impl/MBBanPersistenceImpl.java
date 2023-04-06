@@ -3317,8 +3317,6 @@ public class MBBanPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBBanImpl.class);
-
-		finderCache.clearCache(MBBanImpl.class);
 	}
 
 	/**
@@ -3342,8 +3340,6 @@ public class MBBanPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBBanImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MBBanImpl.class, primaryKey);
 		}

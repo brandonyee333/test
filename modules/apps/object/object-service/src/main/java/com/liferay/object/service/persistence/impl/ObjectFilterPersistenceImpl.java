@@ -1769,8 +1769,6 @@ public class ObjectFilterPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(ObjectFilterImpl.class);
-
-		finderCache.clearCache(ObjectFilterImpl.class);
 	}
 
 	/**
@@ -1794,8 +1792,6 @@ public class ObjectFilterPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(ObjectFilterImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(ObjectFilterImpl.class, primaryKey);
 		}

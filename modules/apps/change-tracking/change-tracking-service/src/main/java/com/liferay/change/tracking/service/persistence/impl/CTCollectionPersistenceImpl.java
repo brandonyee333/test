@@ -3344,8 +3344,6 @@ public class CTCollectionPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CTCollectionImpl.class);
-
-		finderCache.clearCache(CTCollectionImpl.class);
 	}
 
 	/**
@@ -3369,8 +3367,6 @@ public class CTCollectionPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CTCollectionImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(CTCollectionImpl.class, primaryKey);
 		}

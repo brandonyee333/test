@@ -5227,8 +5227,6 @@ public class AccountEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(AccountEntryImpl.class);
-
-		finderCache.clearCache(AccountEntryImpl.class);
 	}
 
 	/**
@@ -5252,8 +5250,6 @@ public class AccountEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(AccountEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(AccountEntryImpl.class, primaryKey);
 		}

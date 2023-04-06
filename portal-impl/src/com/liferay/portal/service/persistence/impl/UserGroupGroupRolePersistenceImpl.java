@@ -3090,8 +3090,6 @@ public class UserGroupGroupRolePersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(UserGroupGroupRoleImpl.class);
-
-		FinderCacheUtil.clearCache(UserGroupGroupRoleImpl.class);
 	}
 
 	/**
@@ -3117,8 +3115,6 @@ public class UserGroupGroupRolePersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(UserGroupGroupRoleImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				UserGroupGroupRoleImpl.class, primaryKey);

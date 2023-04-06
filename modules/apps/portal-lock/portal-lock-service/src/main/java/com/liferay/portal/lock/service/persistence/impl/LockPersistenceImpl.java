@@ -2597,8 +2597,6 @@ public class LockPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(LockImpl.class);
-
-		finderCache.clearCache(LockImpl.class);
 	}
 
 	/**
@@ -2622,8 +2620,6 @@ public class LockPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(LockImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(LockImpl.class, primaryKey);
 		}

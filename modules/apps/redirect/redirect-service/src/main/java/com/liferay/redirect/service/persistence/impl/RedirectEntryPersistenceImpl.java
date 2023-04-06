@@ -3689,8 +3689,6 @@ public class RedirectEntryPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(RedirectEntryImpl.class);
-
-		finderCache.clearCache(RedirectEntryImpl.class);
 	}
 
 	/**
@@ -3714,8 +3712,6 @@ public class RedirectEntryPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(RedirectEntryImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(RedirectEntryImpl.class, primaryKey);
 		}

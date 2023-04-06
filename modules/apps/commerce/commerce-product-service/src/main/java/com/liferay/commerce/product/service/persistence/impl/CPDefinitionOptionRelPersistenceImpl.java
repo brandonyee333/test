@@ -4828,8 +4828,6 @@ public class CPDefinitionOptionRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CPDefinitionOptionRelImpl.class);
-
-		finderCache.clearCache(CPDefinitionOptionRelImpl.class);
 	}
 
 	/**
@@ -4857,8 +4855,6 @@ public class CPDefinitionOptionRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CPDefinitionOptionRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CPDefinitionOptionRelImpl.class, primaryKey);

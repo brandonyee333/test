@@ -13313,8 +13313,6 @@ public class MBThreadPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(MBThreadImpl.class);
-
-		finderCache.clearCache(MBThreadImpl.class);
 	}
 
 	/**
@@ -13338,8 +13336,6 @@ public class MBThreadPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(MBThreadImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(MBThreadImpl.class, primaryKey);
 		}

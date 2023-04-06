@@ -916,8 +916,6 @@ public class CountryLocalizationPersistenceImpl
 	@Override
 	public void clearCache() {
 		EntityCacheUtil.clearCache(CountryLocalizationImpl.class);
-
-		FinderCacheUtil.clearCache(CountryLocalizationImpl.class);
 	}
 
 	/**
@@ -943,8 +941,6 @@ public class CountryLocalizationPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		FinderCacheUtil.clearCache(CountryLocalizationImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			EntityCacheUtil.removeResult(
 				CountryLocalizationImpl.class, primaryKey);

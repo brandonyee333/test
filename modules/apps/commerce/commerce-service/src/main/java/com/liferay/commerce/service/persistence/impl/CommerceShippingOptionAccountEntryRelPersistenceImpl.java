@@ -2108,8 +2108,6 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 	@Override
 	public void clearCache() {
 		entityCache.clearCache(CommerceShippingOptionAccountEntryRelImpl.class);
-
-		finderCache.clearCache(CommerceShippingOptionAccountEntryRelImpl.class);
 	}
 
 	/**
@@ -2146,8 +2144,6 @@ public class CommerceShippingOptionAccountEntryRelPersistenceImpl
 
 	@Override
 	public void clearCache(Set<Serializable> primaryKeys) {
-		finderCache.clearCache(CommerceShippingOptionAccountEntryRelImpl.class);
-
 		for (Serializable primaryKey : primaryKeys) {
 			entityCache.removeResult(
 				CommerceShippingOptionAccountEntryRelImpl.class, primaryKey);
