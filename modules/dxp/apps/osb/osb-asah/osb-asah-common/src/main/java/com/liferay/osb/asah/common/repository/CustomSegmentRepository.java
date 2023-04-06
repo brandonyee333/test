@@ -32,6 +32,7 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomSegmentRepository {
 
+	@Cacheable
 	public long countByChannelId(Long channelId);
 
 	@Cacheable
@@ -47,6 +48,7 @@ public interface CustomSegmentRepository {
 	@Cacheable
 	public long countSegments(List<Long> channelIds, FilterHelper filterHelper);
 
+	@Cacheable
 	public List<Segment> findByChannelId(Long channelId, Pageable pageable);
 
 	@Cacheable
