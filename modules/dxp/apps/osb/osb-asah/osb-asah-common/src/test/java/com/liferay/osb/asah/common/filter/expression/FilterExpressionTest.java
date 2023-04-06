@@ -1180,6 +1180,25 @@ public class FilterExpressionTest {
 	}
 
 	@Test
+	public void testIndividualSegmentIdsFilterExpression() {
+		FilterExpression filterExpression = new FilterExpression(
+			"individualSegmentIds eq '1'", true);
+
+		Assertions.assertEquals(
+			DSL.field(
+				"Membership.segmentId"
+			).eq(
+				1
+			),
+			filterExpression.getCondition());
+
+		Set<String> referencedTableNames =
+			filterExpression.getReferencedTableNames();
+
+		Assertions.assertTrue(referencedTableNames.contains("Membership"));
+	}
+
+	@Test
 	public void testIndividualsEqAndNull() {
 		Condition expectedCondition = DSL.and(
 			DSL.field(
