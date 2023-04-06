@@ -36,8 +36,6 @@ public interface FinderCache {
 		FinderPath finderPath, Object[] args,
 		BasePersistence<?> basePersistence);
 
-	public void invalidate();
-
 	public void putResult(FinderPath finderPath, Object[] args, Object result);
 
 	public void removeResult(FinderPath finderPath, Object[] args);

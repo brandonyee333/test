@@ -49,10 +49,6 @@ public class FinderCacheUtil {
 		return _finderCache.getResult(finderPath, args, basePersistence);
 	}
 
-	public static void invalidate() {
-		_finderCache.invalidate();
-	}
-
 	public static void putResult(
 		FinderPath finderPath, Object[] args, Object result) {
 
