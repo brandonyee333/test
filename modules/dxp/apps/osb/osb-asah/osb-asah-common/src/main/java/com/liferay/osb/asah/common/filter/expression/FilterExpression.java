@@ -126,6 +126,10 @@ public class FilterExpression {
 				return INDIVIDUALS;
 			}
 
+			if (name.equalsIgnoreCase("memberships")) {
+				return MEMBERSHIPS;
+			}
+
 			if (name.equalsIgnoreCase("organizations")) {
 				return ORGANIZATIONS;
 			}
