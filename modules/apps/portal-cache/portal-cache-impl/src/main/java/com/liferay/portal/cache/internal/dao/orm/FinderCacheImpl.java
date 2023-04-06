@@ -18,6 +18,7 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.petra.lang.HashUtil;
+import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
@@ -39,6 +40,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.ShardedModel;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LRUMap;
@@ -239,6 +241,39 @@ public class FinderCacheImpl
 	@Override
 	public void invalidate() {
 		clearCache();
+	}
+
+	public void notifyFinderCache(
+		String className, BaseModel<?> baseModel, Boolean removePortalCache) {
+
+		_notify(
+			className, baseModel, removePortalCache,
+			CompanyThreadLocal.getCompanyId());
+
+		if (!_clusterExecutor.isEnabled() ||
+			!ClusterInvokeThreadLocal.isEnabled()) {
+
+			return;
+		}
+
+		try {
+			MethodHandler methodHandler = new MethodHandler(
+				_notifyMethodKey,
+				new Object[] {
+					className, baseModel, removePortalCache,
+					CompanyThreadLocal.getCompanyId()
+				});
+
+			ClusterRequest clusterRequest =
+				ClusterRequest.createMulticastRequest(methodHandler, true);
+
+			clusterRequest.setFireAndForget(true);
+
+			_clusterExecutor.execute(clusterRequest);
+		}
+		catch (Throwable throwable) {
+			_log.error("Unable to notify cluster", throwable);
+		}
 	}
 
 	@Override
@@ -701,6 +736,38 @@ public class FinderCacheImpl
 		return ThreadLocalFilterThreadLocal.isFilterInvoked();
 	}
 
+	private void _notify(
+		String className, BaseModel<?> baseModel, Boolean removePortalCache,
+		long companyId) {
+
+		try (SafeCloseable safeCloseable =
+				CompanyThreadLocal.setWithSafeCloseable(companyId)) {
+
+			if (removePortalCache == null) {
+				updateByEntityCache(className, baseModel);
+			}
+			else if (baseModel != null) {
+				removeByEntityCache(className, baseModel);
+			}
+			else if (removePortalCache) {
+				if (className == null) {
+					dispose();
+				}
+				else {
+					removeCacheByEntityCache(className);
+				}
+			}
+			else {
+				if (className == null) {
+					clearCache();
+				}
+				else {
+					clearByEntityCache(className);
+				}
+			}
+		}
+	}
+
 	private void _removeResult(FinderPath finderPath, Object[] args) {
 		if (args == null) {
 			return;
@@ -729,6 +796,9 @@ public class FinderCacheImpl
 
 	private static final MethodKey _clearDSLQueryCacheMethodKey = new MethodKey(
 		FinderCacheUtil.class, "clearDSLQueryCache", String.class);
+	private static final MethodKey _notifyMethodKey = new MethodKey(
+		FinderCacheImpl.class, "_notify", String.class, BaseModel.class,
+		Boolean.class, long.class);
 
 	private ServiceTrackerMap<String, ArgumentsResolver> _argumentsResolvers;
 	private volatile CacheKeyGenerator _baseModelCacheKeyGenerator;

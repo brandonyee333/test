@@ -15,7 +15,6 @@
 package com.liferay.portal.cache.internal.dao.orm;
 
 import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
@@ -24,21 +23,13 @@ import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheHelperUtil;
 import com.liferay.portal.kernel.cache.PortalCacheManager;
 import com.liferay.portal.kernel.cache.PortalCacheManagerListener;
-import com.liferay.portal.kernel.cluster.ClusterExecutor;
-import com.liferay.portal.kernel.cluster.ClusterInvokeThreadLocal;
-import com.liferay.portal.kernel.cluster.ClusterRequest;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.MVCCModel;
 import com.liferay.portal.kernel.model.ShardedModel;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LRUMap;
-import com.liferay.portal.kernel.util.MethodHandler;
-import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.servlet.filters.threadlocal.ThreadLocalFilterThreadLocal;
@@ -304,75 +295,17 @@ public class EntityCacheImpl
 		return ThreadLocalFilterThreadLocal.isFilterInvoked();
 	}
 
-	private void _notify(
-		String className, BaseModel<?> baseModel, Boolean removePortalCache,
-		long companyId) {
-
-		try (SafeCloseable safeCloseable =
-				CompanyThreadLocal.setWithSafeCloseable(companyId)) {
-
-			FinderCacheImpl finderCacheImpl = _finderCacheImpl;
-
-			if (finderCacheImpl == null) {
-				return;
-			}
-
-			if (removePortalCache == null) {
-				finderCacheImpl.updateByEntityCache(className, baseModel);
-			}
-			else if (baseModel != null) {
-				finderCacheImpl.removeByEntityCache(className, baseModel);
-			}
-			else if (removePortalCache) {
-				if (className == null) {
-					finderCacheImpl.dispose();
-				}
-				else {
-					finderCacheImpl.removeCacheByEntityCache(className);
-				}
-			}
-			else {
-				if (className == null) {
-					finderCacheImpl.clearCache();
-				}
-				else {
-					finderCacheImpl.clearByEntityCache(className);
-				}
-			}
-		}
-	}
-
 	private void _notifyFinderCache(
 		String className, BaseModel<?> baseModel, Boolean removePortalCache) {
 
-		_notify(
-			className, baseModel, removePortalCache,
-			CompanyThreadLocal.getCompanyId());
+		FinderCacheImpl finderCacheImpl = _finderCacheImpl;
 
-		if (!_clusterExecutor.isEnabled() ||
-			!ClusterInvokeThreadLocal.isEnabled()) {
-
+		if (finderCacheImpl == null) {
 			return;
 		}
 
-		try {
-			MethodHandler methodHandler = new MethodHandler(
-				_notifyMethodKey,
-				new Object[] {
-					className, baseModel, removePortalCache,
-					CompanyThreadLocal.getCompanyId()
-				});
-
-			ClusterRequest clusterRequest =
-				ClusterRequest.createMulticastRequest(methodHandler, true);
-
-			clusterRequest.setFireAndForget(true);
-
-			_clusterExecutor.execute(clusterRequest);
-		}
-		catch (Throwable throwable) {
-			_log.error("Unable to notify cluster", throwable);
-		}
+		finderCacheImpl.notifyFinderCache(
+			className, baseModel, removePortalCache);
 	}
 
 	private void _putResult(
@@ -455,16 +388,7 @@ public class EntityCacheImpl
 	private static final String _GROUP_KEY_PREFIX =
 		EntityCache.class.getName() + StringPool.PERIOD;
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		EntityCacheImpl.class);
-
 	private static volatile FinderCacheImpl _finderCacheImpl;
-	private static final MethodKey _notifyMethodKey = new MethodKey(
-		EntityCacheImpl.class, "_notify", String.class, BaseModel.class,
-		Boolean.class, long.class);
-
-	@Reference
-	private ClusterExecutor _clusterExecutor;
 
 	private boolean _dbPartitionEnabled;
 	private ThreadLocal<LRUMap<Serializable, Serializable>> _localCache;
