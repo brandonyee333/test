@@ -22,10 +22,6 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
  */
 public class FinderCacheUtil {
 
-	public static void clearCache(Class<?> clazz) {
-		_finderCache.clearCache(clazz);
-	}
-
 	public static void clearDSLQueryCache(String tableName) {
 		_finderCache.clearDSLQueryCache(tableName);
 	}

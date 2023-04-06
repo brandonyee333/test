@@ -85,11 +85,6 @@ public class FinderCacheImpl
 	implements CacheRegistryItem, FinderCache, PortalCacheManagerListener {
 
 	@Override
-	public void clearCache(Class<?> clazz) {
-		_clearByEntityCache(clazz.getName());
-	}
-
-	@Override
 	public void clearDSLQueryCache(String tableName) {
 		String modelImplClassName = _modelImplClassNames.getService(tableName);
 
