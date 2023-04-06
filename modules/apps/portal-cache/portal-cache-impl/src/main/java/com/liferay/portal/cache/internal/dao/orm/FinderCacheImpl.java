@@ -85,15 +85,6 @@ public class FinderCacheImpl
 	implements CacheRegistryItem, FinderCache, PortalCacheManagerListener {
 
 	@Override
-	public void clearCache() {
-		clearLocalCache();
-
-		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
-			portalCache.removeAll();
-		}
-	}
-
-	@Override
 	public void clearCache(Class<?> clazz) {
 		_clearByEntityCache(clazz.getName());
 	}
@@ -230,7 +221,7 @@ public class FinderCacheImpl
 
 	@Override
 	public void invalidate() {
-		clearCache();
+		_clearCache();
 	}
 
 	public void notifyByEntityCache(
@@ -482,6 +473,14 @@ public class FinderCacheImpl
 		_clearDSLQueryCache(className);
 	}
 
+	private void _clearCache() {
+		clearLocalCache();
+
+		for (PortalCache<?, ?> portalCache : _portalCaches.values()) {
+			portalCache.removeAll();
+		}
+	}
+
 	private void _clearCache(String cacheName) {
 		PortalCache<?, ?> portalCache = _getPortalCache(cacheName);
 
@@ -658,7 +657,7 @@ public class FinderCacheImpl
 			}
 			else {
 				if (className == null) {
-					clearCache();
+					_clearCache();
 				}
 				else {
 					_clearByEntityCache(className);

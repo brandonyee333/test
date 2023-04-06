@@ -24,8 +24,6 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface FinderCache {
 
-	public void clearCache();
-
 	public void clearCache(Class<?> clazz);
 
 	public void clearDSLQueryCache(String tableName);
