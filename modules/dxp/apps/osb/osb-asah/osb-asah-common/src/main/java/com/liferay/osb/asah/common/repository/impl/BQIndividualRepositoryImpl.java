@@ -539,15 +539,16 @@ public class BQIndividualRepositoryImpl
 					selectJoinStep.where(
 						condition
 					).groupBy(
+						DSL.field("Individual.birthday"),
+						DSL.field("Individual.createDate"),
+						DSL.field("Individual.emailAddress"),
+						DSL.field("Individual.firstName"),
 						DSL.field("Individual.id"),
-						DSL.field("Individual.createdate"),
-						DSL.field("Individual.emailaddress"),
-						DSL.field("Individual.firstname"),
-						DSL.field("Individual.lastname"),
-						DSL.field("Individual.jobtitle"),
-						DSL.field("Individual.middlename"),
-						DSL.field("Individual.modifieddate"),
-						DSL.field("Individual.screenname")
+						DSL.field("Individual.lastName"),
+						DSL.field("Individual.jobTitle"),
+						DSL.field("Individual.middleName"),
+						DSL.field("Individual.modifiedDate"),
+						DSL.field("Individual.screenName")
 					).orderBy(
 						sortFields
 					).limit(
