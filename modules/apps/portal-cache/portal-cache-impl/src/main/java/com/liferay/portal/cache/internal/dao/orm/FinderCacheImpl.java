@@ -403,17 +403,6 @@ public class FinderCacheImpl
 	}
 
 	@Override
-	public void removeCache(String className) {
-		_portalCaches.remove(className);
-
-		String groupKey = _GROUP_KEY_PREFIX.concat(className);
-
-		_multiVMPool.removePortalCache(groupKey);
-
-		_finderPathsMap.remove(className);
-	}
-
-	@Override
 	public void removeResult(FinderPath finderPath, Object[] args) {
 		if (!_valueObjectFinderCacheEnabled || !CacheRegistryUtil.isActive()) {
 			return;
@@ -709,17 +698,27 @@ public class FinderCacheImpl
 		}
 	}
 
+	private void _removeCache(String className) {
+		_portalCaches.remove(className);
+
+		String groupKey = _GROUP_KEY_PREFIX.concat(className);
+
+		_multiVMPool.removePortalCache(groupKey);
+
+		_finderPathsMap.remove(className);
+	}
+
 	private void _removeCacheByEntityCache(String cacheName) {
-		removeCache(cacheName);
-		removeCache(_getCacheNameWithPagination(cacheName));
-		removeCache(_getCacheNameWithoutPagination(cacheName));
+		_removeCache(cacheName);
+		_removeCache(_getCacheNameWithPagination(cacheName));
+		_removeCache(_getCacheNameWithoutPagination(cacheName));
 
 		Set<String> dslQueryCacheNames = _dslQueryCacheNamesMap.remove(
 			cacheName);
 
 		if (dslQueryCacheNames != null) {
 			for (String dslQueryCacheName : dslQueryCacheNames) {
-				removeCache(dslQueryCacheName);
+				_removeCache(dslQueryCacheName);
 			}
 		}
 	}
