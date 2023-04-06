@@ -17,7 +17,6 @@ package com.liferay.portal.verify;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -186,7 +185,6 @@ public class VerifyPermission extends VerifyProcess {
 		}
 		finally {
 			EntityCacheUtil.clearCache();
-			FinderCacheUtil.clearCache();
 		}
 	}
 
