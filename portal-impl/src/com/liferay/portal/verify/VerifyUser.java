@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
-import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -72,7 +71,6 @@ public class VerifyUser extends VerifyProcess {
 			runSQL(sb.toString());
 
 			EntityCacheUtil.clearCache(GroupImpl.class);
-			FinderCacheUtil.clearCache(GroupImpl.class);
 		}
 	}
 

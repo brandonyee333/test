@@ -238,7 +238,6 @@ public class ExpandoValueLocalServiceTest {
 			).build());
 
 		_entityCache.clearCache(ExpandoValueImpl.class);
-		_finderCache.clearCache(ExpandoValueImpl.class);
 
 		TransactionInvokerUtil.invoke(
 			TransactionConfig.Factory.create(
@@ -286,7 +285,6 @@ public class ExpandoValueLocalServiceTest {
 			).build());
 
 		_entityCache.clearCache(ExpandoValueImpl.class);
-		_finderCache.clearCache(ExpandoValueImpl.class);
 
 		TransactionInvokerUtil.invoke(
 			TransactionConfig.Factory.create(
