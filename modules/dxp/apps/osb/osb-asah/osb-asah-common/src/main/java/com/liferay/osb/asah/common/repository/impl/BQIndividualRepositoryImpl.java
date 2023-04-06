@@ -374,8 +374,9 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable Long individualSegmentId, Pageable pageable) {
 
-		Field groupByField = DSL.field(
-			"IndividualFields_" + fieldName + ".value");
+		Field field = DSL.field("IndividualFields_" + fieldName + ".value");
+
+		field = DSL.lower(field);
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -388,8 +389,8 @@ public class BQIndividualRepositoryImpl
 				_getIndividualSegmentIdCondition(individualSegmentId));
 		}
 
-		conditions.add(groupByField.isNotNull());
-		conditions.add(groupByField.notEqual(""));
+		conditions.add(field.isNotNull());
+		conditions.add(field.notEqual(""));
 		conditions.add(
 			DSL.field(
 				"IndividualFields_" + fieldName + ".name"
@@ -405,7 +406,7 @@ public class BQIndividualRepositoryImpl
 				BigDecimal count = new BigDecimal(
 					String.valueOf(record.get("count")));
 
-				Object groupByFieldValue = record.get("groupByField");
+				Object groupByFieldValue = record.get("field");
 
 				if (fieldType.equalsIgnoreCase("date")) {
 					Date date = new Date(
@@ -419,7 +420,7 @@ public class BQIndividualRepositoryImpl
 					Collections.singletonList(groupByFieldValue));
 			},
 			modifiedDateSelectSelectStep.select(
-				groupByField.as("groupByField"),
+				field.as("field"),
 				DSL.count(
 				).as(
 					"count"
@@ -437,7 +438,7 @@ public class BQIndividualRepositoryImpl
 			).where(
 				conditions
 			).groupBy(
-				groupByField
+				DSL.field("field")
 			).orderBy(
 				getSortFields(
 					Collections.singletonMap(
