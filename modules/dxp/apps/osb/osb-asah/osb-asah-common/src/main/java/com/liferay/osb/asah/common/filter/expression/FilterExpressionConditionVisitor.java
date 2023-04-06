@@ -144,7 +144,9 @@ public class FilterExpressionConditionVisitor
 			return leftField.isNull();
 		}
 
-		if (Objects.equals(leftField.getName(), "IdentityActivity.channelId") &&
+		if ((Objects.equals(
+				leftField.getName(), "IdentityActivity.channelId") ||
+			 Objects.equals(leftField.getName(), "Membership.segmentId")) &&
 			(rightField instanceof Param)) {
 
 			Param<String> param = (Param<String>)rightField;
