@@ -96,7 +96,7 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		searchQueryContext.setCanonicalUrl(
 			dataFetchingEnvironment.getArgument("canonicalUrl"));
 		searchQueryContext.setChannelId(
-			dataFetchingEnvironment.getArgument("channelId"));
+			(String)dataFetchingEnvironment.getArgument("channelId"));
 		searchQueryContext.setCountry(
 			dataFetchingEnvironment.getArgument("country"));
 		searchQueryContext.setDataSourceId(
