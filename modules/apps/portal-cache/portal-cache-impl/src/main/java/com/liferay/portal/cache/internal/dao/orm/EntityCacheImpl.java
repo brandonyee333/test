@@ -304,7 +304,7 @@ public class EntityCacheImpl
 			return;
 		}
 
-		finderCacheImpl.notifyFinderCache(
+		finderCacheImpl.notifyByEntityCache(
 			className, baseModel, removePortalCache);
 	}
 

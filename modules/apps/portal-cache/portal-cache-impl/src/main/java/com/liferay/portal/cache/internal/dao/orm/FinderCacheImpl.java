@@ -233,7 +233,7 @@ public class FinderCacheImpl
 		clearCache();
 	}
 
-	public void notifyFinderCache(
+	public void notifyByEntityCache(
 		String className, BaseModel<?> baseModel, Boolean removePortalCache) {
 
 		_notify(
