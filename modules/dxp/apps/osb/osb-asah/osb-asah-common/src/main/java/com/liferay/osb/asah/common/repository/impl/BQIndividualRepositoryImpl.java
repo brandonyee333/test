@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -569,8 +570,7 @@ public class BQIndividualRepositoryImpl
 
 	@Override
 	public List<Individual> searchBQIndividuals(
-		@Nullable Long channelId, String filterString,
-		List<String> includePropertyNames, Pageable pageable,
+		@Nullable Long channelId, String filterString, Pageable pageable,
 		@Nullable String query) {
 
 		FilterExpression filterExpression = new FilterExpression(
@@ -581,23 +581,15 @@ public class BQIndividualRepositoryImpl
 
 		referencedTableNames.add("Individual");
 
-		includePropertyNames.add("emailAddress");
-		includePropertyNames.add("firstName");
-		includePropertyNames.add("id");
-		includePropertyNames.add("lastName");
-
-		Set<String> fieldNames = new HashSet<>();
-		Set<Field<String>> fields = new HashSet<>();
-
-		for (String includePropertyName : includePropertyNames) {
-			String fieldName = _fieldNameConversionMap.getOrDefault(
-				includePropertyName, includePropertyName);
-
-			fieldNames.add(fieldName);
-			fields.add(
-				DSL.field(
-					String.format("Individual." + fieldName), String.class));
-		}
+		List<Field> fields = Arrays.asList(
+			DSL.field("Individual.birthday"),
+			DSL.field("Individual.emailAddress"),
+			DSL.field("Individual.firstName"), DSL.field("Individual.id"),
+			DSL.field("Individual.languageId"),
+			DSL.field("Individual.lastName"),
+			DSL.field("Individual.modifiedDate"),
+			DSL.field("Individual.jobTitle"),
+			DSL.field("Individual.screenName"));
 
 		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
 			fields
@@ -616,18 +608,29 @@ public class BQIndividualRepositoryImpl
 			record -> {
 				BQIndividual bqIndividual = new BQIndividual(record);
 
-				List<BQIndividual.Field> bqIndividualFields = new ArrayList<>();
-
-				for (String fieldName : fieldNames) {
-					bqIndividualFields.add(
+				bqIndividual.setFields(
+					Arrays.asList(
 						new BQIndividual.Field(
-							0L, fieldName,
-							record.get(
-								fieldName
-							).toString()));
-				}
-
-				bqIndividual.setFields(bqIndividualFields);
+							0L, "birthday",
+							DateUtil.toUTCString((Date)record.get("birthday"))),
+						new BQIndividual.Field(
+							0L, "emailAddress",
+							(String)record.get("emailAddress")),
+						new BQIndividual.Field(
+							0L, "firstName", (String)record.get("firstName")),
+						new BQIndividual.Field(
+							0L, "lastName", (String)record.get("lastName")),
+						new BQIndividual.Field(
+							0L, "languageId", (String)record.get("languageId")),
+						new BQIndividual.Field(
+							0L, "modifiedDate",
+							DateUtil.toUTCString(
+								(Date)record.get("modifiedDate"))),
+						new BQIndividual.Field(
+							0L, "jobTitle", (String)record.get("jobTitle")),
+						new BQIndividual.Field(
+							0L, "screenName",
+							(String)record.get("screenName"))));
 
 				return new Individual(0L, bqIndividual, null, _objectMapper);
 			},
@@ -1358,10 +1361,9 @@ public class BQIndividualRepositoryImpl
 			{
 				put("additionalName", "middlename");
 				put("address", "addresses");
-				put("birthDate", "birthday");
+				put("birthdate", "birthday");
 				put("demographics/familyName/value", "lastname");
 				put("demographics/givenName/value", "firstname");
-				put("email", "emailaddress");
 				put("familyName", "lastname");
 				put("givenName", "firstname");
 			}

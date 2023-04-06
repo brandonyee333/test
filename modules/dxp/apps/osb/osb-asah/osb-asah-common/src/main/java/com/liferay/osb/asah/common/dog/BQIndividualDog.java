@@ -175,7 +175,7 @@ public class BQIndividualDog {
 
 		return PageableExecutionUtils.getPage(
 			_searchBQIndividuals(
-				null, channelId, null, null, null, null, page, query, null, size,
+				null, channelId, null, null, null, page, query, null, size,
 				null),
 			PageRequest.of(page, size),
 			() -> countBQIndividuals(
@@ -187,7 +187,7 @@ public class BQIndividualDog {
 
 		return PageableExecutionUtils.getPage(
 			_searchBQIndividuals(
-				null, channelId, null, null, null, null, page, query, segmentId, size,
+				null, channelId, null, null, null, page, query, segmentId, size,
 				null),
 			PageRequest.of(page, size, _getSort(null)),
 			() -> countBQIndividuals(
@@ -197,10 +197,9 @@ public class BQIndividualDog {
 	public Page<Individual> searchBQIndividualPage(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable String filterString,
-		@Nullable Boolean includeAnonymousUsers,
-		@Nullable List<String> includePropertyNames,
-		@Nullable Long notSegmentId, int page, @Nullable String query,
-		@Nullable Long segmentId, int size, String[] sorts) {
+		@Nullable Boolean includeAnonymousUsers, @Nullable Long notSegmentId,
+		int page, @Nullable String query, @Nullable Long segmentId, int size,
+		String[] sorts) {
 
 		if ((page == 0) && (size == 0)) {
 			return new PageImpl<>(
@@ -212,9 +211,8 @@ public class BQIndividualDog {
 
 		return PageableExecutionUtils.getPage(
 			_searchBQIndividuals(
-				accountId, channelId, dataSourceId, filterString,
-				includePropertyNames, notSegmentId, page, query, segmentId,
-				size, sorts),
+				accountId, channelId, dataSourceId, filterString, notSegmentId,
+				page, query, segmentId, size, sorts),
 			PageRequest.of(page, size, _getSort(sorts)),
 			() -> countBQIndividuals(
 				accountId, channelId, dataSourceId, filterString,
@@ -257,13 +255,12 @@ public class BQIndividualDog {
 	private List<Individual> _searchBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable String filterString,
-		@Nullable List<String> includePropertyNames,
 		@Nullable Long notSegmentId, int page, @Nullable String query,
 		@Nullable Long segmentId, int size, String[] sorts) {
 
 		if (StringUtils.isNotBlank(filterString)) {
 			return _bqIndividualRepository.searchBQIndividuals(
-				channelId, filterString, includePropertyNames,
+				channelId, filterString,
 				PageRequest.of(page, size, _getSort(sorts)), query);
 		}
 
