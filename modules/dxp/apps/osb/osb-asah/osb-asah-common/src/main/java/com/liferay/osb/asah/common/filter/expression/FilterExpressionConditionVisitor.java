@@ -483,10 +483,6 @@ public class FilterExpressionConditionVisitor
 
 		_checkReferencedTables(qualifiedFieldName);
 
-		if (qualifiedFieldName.startsWith("Membership.")) {
-			_referencedTableNames.add("Membership");
-		}
-
 		return DSL.field(qualifiedFieldName);
 	}
 
@@ -1073,6 +1069,7 @@ public class FilterExpressionConditionVisitor
 			{
 				put(FilterExpression.FilterType.ACTIVITIES, "Event");
 				put(FilterExpression.FilterType.INDIVIDUALS, "Individual");
+				put(FilterExpression.FilterType.MEMBERSHIPS, "Membership");
 				put(FilterExpression.FilterType.ORGANIZATIONS, "Organization");
 				put(FilterExpression.FilterType.SESSIONS, "Session");
 			}

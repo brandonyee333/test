@@ -106,7 +106,8 @@ public class FilterExpression {
 	public enum FilterType {
 
 		ACTIVITIES("activities"), ASSETS("assets"), INDIVIDUALS("individuals"),
-		ORGANIZATIONS("organizations"), SESSIONS("sessions");
+		MEMBERSHIPS("memberships"), ORGANIZATIONS("organizations"),
+		SESSIONS("sessions");
 
 		public static FilterType of(String name) {
 			if (name == null) {
