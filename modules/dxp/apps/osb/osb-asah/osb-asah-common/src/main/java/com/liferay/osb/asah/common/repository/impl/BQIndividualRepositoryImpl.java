@@ -376,7 +376,9 @@ public class BQIndividualRepositoryImpl
 
 		Field field = DSL.field("IndividualFields_" + fieldName + ".value");
 
-		field = DSL.lower(field);
+		if (fieldType.equalsIgnoreCase("text")) {
+			field = DSL.lower(field);
+		}
 
 		List<Condition> conditions = new ArrayList<>();
 
