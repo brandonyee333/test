@@ -136,6 +136,12 @@ public class FilterExpressionConditionVisitor
 
 			return _getCustomFieldCondition(identifierParts[1], "eq", value);
 		}
+		else if (fieldName.startsWith("demographics/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getDemographicsFieldCondition(
+				equalsExpressionContext, identifierParts[1], "eq", value);
+		}
 
 		Field leftField = _getLeftField(equalsExpressionContext);
 		Field rightField = _getRightField(equalsExpressionContext);
@@ -547,6 +553,12 @@ public class FilterExpressionConditionVisitor
 
 			return _getCustomFieldCondition(identifierParts[1], "ne", value);
 		}
+		else if (fieldName.startsWith("demographics/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getDemographicsFieldCondition(
+				notEqualsExpressionContext, identifierParts[1], "ne", value);
+		}
 
 		Field leftField = _getLeftField(notEqualsExpressionContext);
 		Field rightField = _getRightField(notEqualsExpressionContext);
@@ -676,6 +688,30 @@ public class FilterExpressionConditionVisitor
 		}
 
 		return condition;
+	}
+
+	private Condition _getDemographicsFieldCondition(
+		ParserRuleContext parserRuleContext, String fieldName, String operator,
+		String value) {
+
+		Field leftField = _getLeftField(parserRuleContext);
+
+		fieldName = fieldName.toLowerCase();
+
+		if (StringUtils.endsWithIgnoreCase(fieldName, "date")) {
+			leftField = DSL.date(leftField);
+		}
+		else {
+			leftField = DSL.lower(leftField);
+
+			value = value.toLowerCase();
+		}
+
+		if (operator.equalsIgnoreCase("eq")) {
+			return leftField.eq(value);
+		}
+
+		return leftField.ne(value);
 	}
 
 	private Object _getIndividualIdsInOrganizationCondition(
