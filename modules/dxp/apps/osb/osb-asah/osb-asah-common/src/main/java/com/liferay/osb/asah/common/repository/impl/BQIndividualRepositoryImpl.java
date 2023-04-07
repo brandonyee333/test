@@ -374,7 +374,7 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long channelId, String fieldName, String fieldType,
 		@Nullable Long individualSegmentId, Pageable pageable) {
 
-		Field field = DSL.field("IndividualFields_" + fieldName + ".value");
+		Field field = DSL.field(fieldName);
 
 		if (fieldType.equalsIgnoreCase("text")) {
 			field = DSL.lower(field);
@@ -393,12 +393,6 @@ public class BQIndividualRepositoryImpl
 
 		conditions.add(field.isNotNull());
 		conditions.add(field.notEqual(""));
-		conditions.add(
-			DSL.field(
-				"IndividualFields_" + fieldName + ".name"
-			).eq(
-				fieldName
-			));
 
 		SelectSelectStep<Record> modifiedDateSelectSelectStep =
 			_dslContext.select();
@@ -433,18 +427,14 @@ public class BQIndividualRepositoryImpl
 				).as(
 					"Individual"
 				)
-			).crossJoin(
-				DSL.table(
-					"UNNEST(Individual.fields) AS IndividualFields_" +
-						fieldName)
 			).where(
 				conditions
 			).groupBy(
-				DSL.field("field")
+				DSL.field(fieldName)
 			).orderBy(
 				getSortFields(
 					Collections.singletonMap(
-						"name", "IndividualFields_" + fieldName + ".value"),
+						"name", fieldName),
 					pageable.getSort(), null)
 			).limit(
 				pageable.getPageSize()
