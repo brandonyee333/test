@@ -190,8 +190,8 @@ public class ReportRestController extends BaseRestController {
 
 	@GetMapping("/export/{type}")
 	public ResponseEntity<DataExportTaskDTO> getDataExportTask(
-		@RequestParam(required = false, value = "fromDate") String fromDate,
-		@RequestParam(required = false, value = "toDate") String toDate,
+		@RequestParam(value = "fromDate") String fromDate,
+		@RequestParam(value = "toDate") String toDate,
 		@PathVariable String type) {
 
 		_validateDateRange(fromDate, toDate);
