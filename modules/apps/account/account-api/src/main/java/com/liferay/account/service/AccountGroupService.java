@@ -63,6 +63,15 @@ public interface AccountGroupService extends BaseService {
 	public void deleteAccountGroups(long[] accountGroupIds)
 		throws PortalException;
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountGroup fetchAccountGroupByExternalReferenceCode(
+			String externalReferenceCode, long companyId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountGroup getAccountGroup(long accountGroupId)
+		throws PortalException;
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
