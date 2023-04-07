@@ -27,7 +27,6 @@ import java.util.stream.Stream;
  */
 public enum JournalMetricType implements MetricType {
 
-	MOST_CLICKED("clicks", "mostClicked", TrendClassification.Order.ASC),
 	VIEWS("views", "viewsMetric", TrendClassification.Order.ASC);
 
 	public static JournalMetricType of(String name) {

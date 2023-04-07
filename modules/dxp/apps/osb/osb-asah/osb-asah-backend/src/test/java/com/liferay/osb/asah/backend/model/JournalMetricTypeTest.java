@@ -26,31 +26,6 @@ import org.junit.jupiter.api.Test;
 public class JournalMetricTypeTest extends BaseEnumTestCase<JournalMetricType> {
 
 	@Test
-	public void testMostClicked() {
-		JournalMetricType journalMetricType = JournalMetricType.of(
-			"mostClicked");
-
-		Assertions.assertEquals(
-			JournalMetricType.MOST_CLICKED, journalMetricType);
-	}
-
-	@Test
-	public void testMostClickedFieldName() {
-		JournalMetricType journalMetricType = JournalMetricType.MOST_CLICKED;
-
-		Assertions.assertEquals("clicks", journalMetricType.getFieldName());
-	}
-
-	@Test
-	public void testMostClickedTrendClassificationOrder() {
-		JournalMetricType journalMetricType = JournalMetricType.MOST_CLICKED;
-
-		Assertions.assertEquals(
-			TrendClassification.Order.ASC,
-			journalMetricType.getTrendClassificationOrder());
-	}
-
-	@Test
 	public void testViews() {
 		JournalMetricType journalMetricType = JournalMetricType.of(
 			"viewsMetric");
