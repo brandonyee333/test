@@ -45,7 +45,7 @@ public class BQAssetDTO {
 		_channelId = bqAsset.getChannelId();
 		_count = bqAsset.getCount();
 		_dataSourceId = bqAsset.getDataSourceId();
-		_id = bqAsset.getAssetId();
+		_id = bqAsset.getId();
 		_modifiedDate = bqAsset.getModifiedDate();
 	}
 
