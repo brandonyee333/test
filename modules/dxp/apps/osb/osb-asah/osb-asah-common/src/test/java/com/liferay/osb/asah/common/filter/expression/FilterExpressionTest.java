@@ -371,8 +371,8 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.and(
-				DSL.field(
-					"Individual.addresses"
+				DSL.lower(
+					DSL.field("Individual.addresses", String.class)
 				).eq(
 					"address1"
 				),
@@ -386,8 +386,8 @@ public class FilterExpressionTest {
 				).gt(
 					localDateTime.minusHours(24)
 				),
-				DSL.field(
-					"Individual.addresses"
+				DSL.lower(
+					DSL.field("Individual.addresses", String.class)
 				).eq(
 					"address2"
 				)),
@@ -505,8 +505,8 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.and(
-				DSL.field(
-					"Individual.addresses"
+				DSL.lower(
+					DSL.field("Individual.addresses", String.class)
 				).eq(
 					"address1"
 				),
@@ -520,10 +520,10 @@ public class FilterExpressionTest {
 				).gt(
 					localDateTime.minusHours(24)
 				),
-				DSL.field(
-					"Individual.emailAddress"
+				DSL.lower(
+					DSL.field("Individual.emailAddress", String.class)
 				).eq(
-					"emailAddress1"
+					"emailaddress1"
 				),
 				DSL.condition("'url1' IN UNNEST(Session.urls)"),
 				DSL.field(
@@ -603,8 +603,8 @@ public class FilterExpressionTest {
 		_assertEquals(
 			DSL.and(
 				DSL.or(
-					DSL.field(
-						"Individual.addresses"
+					DSL.lower(
+						DSL.field("Individual.addresses", String.class)
 					).eq(
 						"address1"
 					),
@@ -619,10 +619,10 @@ public class FilterExpressionTest {
 						).gt(
 							localDateTime.minusHours(24)
 						),
-						DSL.field(
-							"Individual.emailAddress"
+						DSL.lower(
+							DSL.field("Individual.emailAddress", String.class)
 						).eq(
-							"emailAddress1"
+							"emailaddress1"
 						),
 						DSL.condition("'url1' IN UNNEST(Session.urls)"),
 						DSL.field(
@@ -868,14 +868,14 @@ public class FilterExpressionTest {
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.addresses"
+			DSL.lower(
+				DSL.field("Individual.addresses", String.class)
 			).eq(
 				"address"
 			).and(
 				DSL.or(
-					DSL.field(
-						"Individual.jobTitle"
+					DSL.lower(
+						DSL.field("Individual.jobTitle", String.class)
 					).eq(
 						"jobtitle"
 					),
@@ -924,8 +924,8 @@ public class FilterExpressionTest {
 							)
 						)))
 			).and(
-				DSL.field(
-					"Individual.emailAddress"
+				DSL.lower(
+					DSL.field("Individual.emailAddress", String.class)
 				).eq(
 					"email@test.com"
 				)
@@ -941,14 +941,14 @@ public class FilterExpressionTest {
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.addresses"
+			DSL.lower(
+				DSL.field("Individual.addresses", String.class)
 			).eq(
 				"address"
 			).and(
 				DSL.or(
-					DSL.field(
-						"Individual.jobTitle"
+					DSL.lower(
+						DSL.field("Individual.jobTitle", String.class)
 					).eq(
 						"jobtitle"
 					),
@@ -998,8 +998,8 @@ public class FilterExpressionTest {
 								)
 							))))
 			).and(
-				DSL.field(
-					"Individual.emailAddress"
+				DSL.lower(
+					DSL.field("Individual.emailAddress", String.class)
 				).eq(
 					"email@test.com"
 				)
@@ -1034,25 +1034,25 @@ public class FilterExpressionTest {
 	public void testIdentifierDemographicsDate() {
 		_assertEquals(
 			DSL.field(
-				"Individual.birthday"
+				"cast(Individual.birthday as date)"
 			).eq(
-				"2023-01-01"
+				DSL.date("2023-01-01")
 			),
 			"(demographics/birthDate/value eq '2023-01-01')", true);
 
 		_assertEquals(
 			DSL.field(
-				"Individual.birthday"
+				"cast(Individual.birthday as date)"
 			).gt(
-				"2023-01-01"
+				DSL.date("2023-01-01")
 			),
 			"(demographics/birthDate/value gt '2023-01-01')", true);
 
 		_assertEquals(
 			DSL.field(
-				"Individual.birthday"
+				"cast(Individual.birthday as date)"
 			).lt(
-				"2023-01-01"
+				DSL.date("2023-01-01")
 			),
 			"(demographics/birthDate/value lt '2023-01-01')", true);
 	}
@@ -1060,34 +1060,34 @@ public class FilterExpressionTest {
 	@Test
 	public void testIdentifierDemographicsFieldMappings() {
 		_assertEquals(
-			DSL.field(
-				"Individual.addresses"
+			DSL.lower(
+				DSL.field("Individual.addresses", String.class)
 			).eq(
-				"Test"
+				"test"
 			),
 			"(demographics/address/value eq 'Test')", true);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.emailAddress"
+			DSL.lower(
+				DSL.field("Individual.emailAddress", String.class)
 			).ne(
-				"Test"
+				"test"
 			),
 			"(demographics/email/value ne 'Test')", true);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.lastName"
+			DSL.lower(
+				DSL.field("Individual.lastName", String.class)
 			).ne(
-				"Test"
+				"test"
 			),
 			"(demographics/familyName/value ne 'Test')", true);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.firstName"
+			DSL.lower(
+				DSL.field("Individual.firstName", String.class)
 			).ne(
-				"Test"
+				"test"
 			),
 			"(demographics/givenName/value ne 'Test')", true);
 	}
@@ -1095,18 +1095,18 @@ public class FilterExpressionTest {
 	@Test
 	public void testIdentifierDemographicsText() {
 		_assertEquals(
-			DSL.field(
-				"Individual.firstName"
+			DSL.lower(
+				DSL.field("Individual.firstName", String.class)
 			).eq(
-				"Test"
+				"test"
 			),
 			"(demographics/givenName/value eq 'Test')", true);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.firstName"
+			DSL.lower(
+				DSL.field("Individual.firstName", String.class)
 			).ne(
-				"Test"
+				"test"
 			),
 			"(demographics/givenName/value ne 'Test')", true);
 
@@ -1152,8 +1152,9 @@ public class FilterExpressionTest {
 					String.join(
 						"", "CASE WHEN STARTS_WITH(",
 						"IndividualFields_custom_field.value, '[') THEN ",
-						"IndividualFields_custom_field.value LIKE '%test%' ",
-						"ELSE IndividualFields_custom_field.value = 'test' ",
+						"LOWER(IndividualFields_custom_field.value) LIKE ",
+						"'%test%' ELSE ",
+						"LOWER(IndividualFields_custom_field.value) = 'test' ",
 						"END"))),
 			"(custom/custom_field/value eq 'test')",
 			new HashSet<>(
@@ -1847,10 +1848,10 @@ public class FilterExpressionTest {
 							String.join(
 								"", "CASE WHEN STARTS_WITH(",
 								"ExpandoValue_custom_field.value, '[') THEN ",
-								"ExpandoValue_custom_field.value LIKE ",
+								"LOWER(ExpandoValue_custom_field.value) LIKE ",
 								"'%test%' ELSE ",
-								"ExpandoValue_custom_field.value = 'test' ",
-								"END")))
+								"LOWER(ExpandoValue_custom_field.value) = ",
+								"'test' END")))
 				)
 			),
 			"organizations.filter(filter='(custom/custom_field/value eq " +
