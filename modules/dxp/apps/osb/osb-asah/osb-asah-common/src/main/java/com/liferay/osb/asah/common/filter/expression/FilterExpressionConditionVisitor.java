@@ -439,6 +439,19 @@ public class FilterExpressionConditionVisitor
 		FilterExpressionParser.GreaterThanExpressionContext
 			greaterThanExpressionContext) {
 
+		Token startToken = greaterThanExpressionContext.start;
+		Token stopToken = greaterThanExpressionContext.stop;
+
+		String fieldName = startToken.getText();
+
+		if (fieldName.startsWith("demographics/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getDemographicsFieldCondition(
+				greaterThanExpressionContext, identifierParts[1], "gt",
+				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+		}
+
 		Field leftField = _getLeftField(greaterThanExpressionContext);
 
 		return leftField.gt(_getRightField(greaterThanExpressionContext));
@@ -448,6 +461,19 @@ public class FilterExpressionConditionVisitor
 	public Object visitGreaterThanOrEqualsExpression(
 		FilterExpressionParser.GreaterThanOrEqualsExpressionContext
 			greaterThanOrEqualsExpressionContext) {
+
+		Token startToken = greaterThanOrEqualsExpressionContext.start;
+		Token stopToken = greaterThanOrEqualsExpressionContext.stop;
+
+		String fieldName = startToken.getText();
+
+		if (fieldName.startsWith("demographics/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getDemographicsFieldCondition(
+				greaterThanOrEqualsExpressionContext, identifierParts[1], "ge",
+				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+		}
 
 		Field leftField = _getLeftField(greaterThanOrEqualsExpressionContext);
 
@@ -508,6 +534,19 @@ public class FilterExpressionConditionVisitor
 		FilterExpressionParser.LessThanExpressionContext
 			lessThanExpressionContext) {
 
+		Token startToken = lessThanExpressionContext.start;
+		Token stopToken = lessThanExpressionContext.stop;
+
+		String fieldName = startToken.getText();
+
+		if (fieldName.startsWith("demographics/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getDemographicsFieldCondition(
+				lessThanExpressionContext, identifierParts[1], "lt",
+				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+		}
+
 		Field leftField = _getLeftField(lessThanExpressionContext);
 
 		return leftField.lt(_getRightField(lessThanExpressionContext));
@@ -517,6 +556,19 @@ public class FilterExpressionConditionVisitor
 	public Object visitLessThanOrEqualsExpression(
 		FilterExpressionParser.LessThanOrEqualsExpressionContext
 			lessThanOrEqualsExpressionContext) {
+
+		Token startToken = lessThanOrEqualsExpressionContext.start;
+		Token stopToken = lessThanOrEqualsExpressionContext.stop;
+
+		String fieldName = startToken.getText();
+
+		if (fieldName.startsWith("demographics/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getDemographicsFieldCondition(
+				lessThanOrEqualsExpressionContext, identifierParts[1], "le",
+				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+		}
 
 		Field leftField = _getLeftField(lessThanOrEqualsExpressionContext);
 
@@ -717,6 +769,18 @@ public class FilterExpressionConditionVisitor
 
 		if (operator.equalsIgnoreCase("eq")) {
 			return leftField.eq(value);
+		}
+		else if (operator.equalsIgnoreCase("ge")) {
+			return leftField.ge(value);
+		}
+		else if (operator.equalsIgnoreCase("gt")) {
+			return leftField.gt(value);
+		}
+		else if (operator.equalsIgnoreCase("le")) {
+			return leftField.le(value);
+		}
+		else if (operator.equalsIgnoreCase("lt")) {
+			return leftField.lt(value);
 		}
 
 		return leftField.ne(value);
