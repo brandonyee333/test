@@ -439,7 +439,7 @@ public class BQIndividualRepositoryImpl
 				DSL.field("field")
 			).orderBy(
 				getSortFields(
-					Collections.singletonMap("name", fieldName),
+					Collections.singletonMap("name", "field"),
 					pageable.getSort(), null)
 			).limit(
 				pageable.getPageSize()
