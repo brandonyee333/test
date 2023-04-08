@@ -717,8 +717,9 @@ public class FilterExpressionConditionVisitor
 						String.join(
 							"", "CASE WHEN STARTS_WITH(", alias,
 							".value, '[') THEN LOWER(", alias,
-							".value) LIKE '%", value, "%' ELSE LOWER(", alias,
-							".value) = '", value, "' END")));
+							".value) LIKE '%", StringUtils.lowerCase(value),
+							"%' ELSE LOWER(", alias, ".value) = '",
+							StringUtils.lowerCase(value), "' END")));
 			}
 		}
 		else if (operator.equalsIgnoreCase("ne")) {
@@ -734,8 +735,9 @@ public class FilterExpressionConditionVisitor
 						String.join(
 							"", "CASE WHEN STARTS_WITH(", alias,
 							".value, '[') THEN LOWER(", alias,
-							".value) NOT LIKE '%", value, "%' ELSE LOWER(",
-							alias, ".value) != '", value, "' END")));
+							".value) NOT LIKE '%", StringUtils.lowerCase(value),
+							"%' ELSE LOWER(", alias, ".value) != '",
+							StringUtils.lowerCase(value), "' END")));
 			}
 		}
 
