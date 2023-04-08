@@ -696,6 +696,14 @@ public class FilterExpressionConditionVisitor
 
 		Field leftField = _getLeftField(parserRuleContext);
 
+		if (StringUtil.isNull(value)) {
+			if (operator.equalsIgnoreCase("eq")) {
+				return leftField.isNull();
+			}
+
+			return leftField.isNotNull();
+		}
+
 		fieldName = fieldName.toLowerCase();
 
 		if (StringUtils.endsWithIgnoreCase(fieldName, "date")) {
