@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -607,29 +608,59 @@ public class BQIndividualRepositoryImpl
 			record -> {
 				BQIndividual bqIndividual = new BQIndividual(record);
 
-				bqIndividual.setFields(
-					Arrays.asList(
+				List<BQIndividual.Field> bqIndividualFields = new ArrayList<>();
+
+				bqIndividualFields.add(
+					new BQIndividual.Field(
+						0L, "emailAddress",
+						(String)record.get("emailAddress")));
+				bqIndividualFields.add(
+					new BQIndividual.Field(
+						0L, "modifiedDate",
+						DateUtil.toUTCString(
+							(Date)record.get("modifiedDate"))));
+
+				if (!Objects.isNull(record.get("birthday"))) {
+					bqIndividualFields.add(
 						new BQIndividual.Field(
 							0L, "birthday",
-							DateUtil.toUTCString((Date)record.get("birthday"))),
-						new BQIndividual.Field(
-							0L, "emailAddress",
-							(String)record.get("emailAddress")),
-						new BQIndividual.Field(
-							0L, "firstName", (String)record.get("firstName")),
-						new BQIndividual.Field(
-							0L, "lastName", (String)record.get("lastName")),
-						new BQIndividual.Field(
-							0L, "languageId", (String)record.get("languageId")),
-						new BQIndividual.Field(
-							0L, "modifiedDate",
 							DateUtil.toUTCString(
-								(Date)record.get("modifiedDate"))),
+								(Date)record.get("birthday"))));
+				}
+
+				if (!Objects.isNull(record.get("firstName"))) {
+					bqIndividualFields.add(
 						new BQIndividual.Field(
-							0L, "jobTitle", (String)record.get("jobTitle")),
+							0L, "firstName", (String)record.get("firstName")));
+				}
+
+				if (!Objects.isNull(record.get("lastName"))) {
+					bqIndividualFields.add(
+						new BQIndividual.Field(
+							0L, "lastName", (String)record.get("lastName")));
+				}
+
+				if (!Objects.isNull(record.get("languageId"))) {
+					bqIndividualFields.add(
+						new BQIndividual.Field(
+							0L, "languageId",
+							(String)record.get("languageId")));
+				}
+
+				if (!Objects.isNull(record.get("jobTitle"))) {
+					bqIndividualFields.add(
+						new BQIndividual.Field(
+							0L, "jobTitle", (String)record.get("jobTitle")));
+				}
+
+				if (!Objects.isNull(record.get("screenName"))) {
+					bqIndividualFields.add(
 						new BQIndividual.Field(
 							0L, "screenName",
-							(String)record.get("screenName"))));
+							(String)record.get("screenName")));
+				}
+
+				bqIndividual.setFields(bqIndividualFields);
 
 				return new Individual(0L, bqIndividual, null, _objectMapper);
 			},
