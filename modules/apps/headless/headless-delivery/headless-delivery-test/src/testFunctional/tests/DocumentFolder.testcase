@@ -20,6 +20,8 @@ definition {
 	@disable-webdriver = "true"
 	@priority = 3
 	test CannotPostRatingToNonexistentFolder {
+		property portal.acceptance = "true";
+
 		task ("When a post request is made using a non-existent folder ID") {
 			var response = DocumentFolderAPI.postRatingWithFolderID(folderId = "12345", ratingValue = "1");
 		}
@@ -34,6 +36,8 @@ definition {
 	@disable-webdriver = "true"
 	@priority = 3
 	test CannotPutRatingToNonexistentFolder {
+		property portal.acceptance = "true";
+
 		task ("When a put request is made using a nonexistent folder ID") {
 			var response = DocumentFolderAPI.putRatingWithFolderID(folderId = "12345", ratingValue = "0.5");
 		}
