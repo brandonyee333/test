@@ -60,7 +60,8 @@ response = requests.get(
 for project in response.json():
 	dag_id = 'interest_score_{}'.format(project.get('id'))
 
-	globals()[dag_id] = create_dag(
-		project.get('id'), project.get('timeZoneId'), dag_id,
-		'Interest Score DAG For {}'.format(project.get('id'))
-	)
+	if project.get('sitesSelected'):
+		globals()[dag_id] = create_dag(
+			project.get('id'), project.get('timeZoneId'), dag_id,
+			'Interest Score DAG For {}'.format(project.get('id'))
+		)
