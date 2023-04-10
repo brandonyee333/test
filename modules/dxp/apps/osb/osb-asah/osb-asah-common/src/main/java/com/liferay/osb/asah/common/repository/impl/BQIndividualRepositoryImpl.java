@@ -616,9 +616,24 @@ public class BQIndividualRepositoryImpl
 						(String)record.get("emailAddress")));
 				bqIndividualFields.add(
 					new BQIndividual.Field(
+						0L, "firstName", (String)record.get("firstName")));
+				bqIndividualFields.add(
+					new BQIndividual.Field(
+						0L, "jobTitle", (String)record.get("jobTitle")));
+				bqIndividualFields.add(
+					new BQIndividual.Field(
+						0L, "languageId", (String)record.get("languageId")));
+				bqIndividualFields.add(
+					new BQIndividual.Field(
+						0L, "lastName", (String)record.get("lastName")));
+				bqIndividualFields.add(
+					new BQIndividual.Field(
 						0L, "modifiedDate",
 						DateUtil.toUTCString(
 							(Date)record.get("modifiedDate"))));
+				bqIndividualFields.add(
+					new BQIndividual.Field(
+						0L, "screenName", (String)record.get("screenName")));
 
 				if (!Objects.isNull(record.get("birthday"))) {
 					bqIndividualFields.add(
@@ -626,38 +641,6 @@ public class BQIndividualRepositoryImpl
 							0L, "birthday",
 							DateUtil.toUTCString(
 								(Date)record.get("birthday"))));
-				}
-
-				if (!Objects.isNull(record.get("firstName"))) {
-					bqIndividualFields.add(
-						new BQIndividual.Field(
-							0L, "firstName", (String)record.get("firstName")));
-				}
-
-				if (!Objects.isNull(record.get("lastName"))) {
-					bqIndividualFields.add(
-						new BQIndividual.Field(
-							0L, "lastName", (String)record.get("lastName")));
-				}
-
-				if (!Objects.isNull(record.get("languageId"))) {
-					bqIndividualFields.add(
-						new BQIndividual.Field(
-							0L, "languageId",
-							(String)record.get("languageId")));
-				}
-
-				if (!Objects.isNull(record.get("jobTitle"))) {
-					bqIndividualFields.add(
-						new BQIndividual.Field(
-							0L, "jobTitle", (String)record.get("jobTitle")));
-				}
-
-				if (!Objects.isNull(record.get("screenName"))) {
-					bqIndividualFields.add(
-						new BQIndividual.Field(
-							0L, "screenName",
-							(String)record.get("screenName")));
 				}
 
 				bqIndividual.setFields(bqIndividualFields);
