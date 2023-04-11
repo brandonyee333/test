@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.liferay.osb.asah.backend.dto.BQAssetDTO;
 import com.liferay.osb.asah.backend.dto.BQMembershipChangeDTO;
 import com.liferay.osb.asah.backend.dto.BQMembershipDTO;
 import com.liferay.osb.asah.backend.dto.IndividualDTO;
@@ -43,6 +44,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
+import com.liferay.osb.asah.common.util.ListUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -404,7 +406,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		return JSONUtil.put(
 			"assets",
 			JSONUtil.toJSONArray(
-				_bqAssetDog.getBQAssets(segment.getReferencedAssetIds()),
+				ListUtil.map(
+					_bqAssetDog.getBQAssets(segment.getReferencedAssetIds()),
+					BQAssetDTO::new),
 				this::_toJSONObject)
 		).put(
 			"field-mappings",
