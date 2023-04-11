@@ -199,6 +199,14 @@ type AssetMetricBag {
 	total: Int
 }
 
+type AudienceReport {
+    anonymousUsersCount: Int
+    knownUsersCount: Int
+    nonsegmentedKnownUsersCount: Int
+    segmentedAnonymousUsersCount: Int
+    segmentedKnownUsersCount: Int
+}
+
 type BaseDXPEntity implements DXPEntity {
 	dataSourceName: String
 	id: String
@@ -686,6 +694,7 @@ type JournalMetric implements AssetMetric {
 
 type Metric {
 	anonymousUsersCount: Int
+	audienceReport: AudienceReport
 	browser: [Metric]
 	cohortHeatMap: [CohortHeatMapMetric]
 	device: [Metric]
