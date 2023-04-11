@@ -67,7 +67,7 @@ interest_score_dag_trigger:
                 {
                     "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
                     "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:4.1.0",
-                    "spark.jars": "gs://spark-lib/bigquery/spark-bigquery-with-dependencies_2.12-0.27.0.jar"
+                    "spark.jars": "gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar"
                 }
 pubsub_dag_trigger:
     dag:
