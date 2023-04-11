@@ -1165,6 +1165,90 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.and(
+				DSL.field(
+					"IndividualFields_custom_field.name"
+				).eq(
+					"custom_field"
+				),
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) IS ",
+						"NULL THEN false ELSE SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) >= ",
+						"SAFE_CAST(50 AS NUMERIC) END"))),
+			"(custom/custom_field/value ge 50)",
+			new HashSet<>(
+				Arrays.asList(
+					"ExpandoValue", "Individual",
+					"IndividualFields_custom_field")),
+			true);
+
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"IndividualFields_custom_field.name"
+				).eq(
+					"custom_field"
+				),
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) IS ",
+						"NULL THEN false ELSE SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) > ",
+						"SAFE_CAST(50 AS NUMERIC) END"))),
+			"(custom/custom_field/value gt 50)",
+			new HashSet<>(
+				Arrays.asList(
+					"ExpandoValue", "Individual",
+					"IndividualFields_custom_field")),
+			true);
+
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"IndividualFields_custom_field.name"
+				).eq(
+					"custom_field"
+				),
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) IS ",
+						"NULL THEN false ELSE SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) <= ",
+						"SAFE_CAST(50.03 AS NUMERIC) END"))),
+			"(custom/custom_field/value le 50.03)",
+			new HashSet<>(
+				Arrays.asList(
+					"ExpandoValue", "Individual",
+					"IndividualFields_custom_field")),
+			true);
+
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"IndividualFields_custom_field.name"
+				).eq(
+					"custom_field"
+				),
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) IS ",
+						"NULL THEN false ELSE SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) < ",
+						"SAFE_CAST(500.2344 AS NUMERIC) END"))),
+			"(custom/custom_field/value lt '500.2344')",
+			new HashSet<>(
+				Arrays.asList(
+					"ExpandoValue", "Individual",
+					"IndividualFields_custom_field")),
+			true);
+
+		_assertEquals(
+			DSL.and(
 				DSL.condition(
 					"LOWER(IndividualFields_custom_field.value) LIKE '%test%'"),
 				DSL.field(
@@ -1856,6 +1940,76 @@ public class FilterExpressionTest {
 			),
 			"organizations.filter(filter='(custom/custom_field/value eq " +
 				"''test'')')",
+			new HashSet<>(
+				Arrays.asList("ExpandoValue", "Individual", "Organization")));
+
+		_assertEquals(
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				DSL.selectDistinct(
+					DSL.field("Individual.id", String.class)
+				).from(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).crossJoin(
+					DSL.table(
+						"UNNEST(Individual.memberships) AS " +
+							"IndividualMemberships")
+				).join(
+					DSL.table(
+						"BQOrganization"
+					).as(
+						"Organization"
+					)
+				).on(
+					DSL.condition(
+						"Organization.id IN UNNEST(IndividualMemberships.ids)")
+				).join(
+					DSL.table(
+						"BQExpandoValue"
+					).as(
+						"ExpandoValue_custom_field"
+					)
+				).on(
+					DSL.and(
+						DSL.field(
+							"ExpandoValue_custom_field.classPK"
+						).eq(
+							DSL.field(
+								"SAFE_CAST(Organization.organizationId AS " +
+									"STRING)")
+						),
+						DSL.field(
+							"ExpandoValue_custom_field.classType"
+						).eq(
+							"com.liferay.portal.kernel.model.Organization"
+						),
+						DSL.field(
+							"ExpandoValue_custom_field.dataSourceId"
+						).eq(
+							DSL.field("Organization.dataSourceId")
+						))
+				).where(
+					DSL.and(
+						DSL.field(
+							"ExpandoValue_custom_field.fieldName"
+						).eq(
+							"custom_field"
+						),
+						DSL.condition(
+							String.join(
+								"", "CASE WHEN SAFE_CAST(",
+								"ExpandoValue_custom_field.value AS NUMERIC) ",
+								"IS NULL THEN false ELSE SAFE_CAST(",
+								"ExpandoValue_custom_field.value AS NUMERIC) ",
+								">= SAFE_CAST(123 AS NUMERIC) END")))
+				)
+			),
+			"organizations.filter(filter='(custom/custom_field/value ge 123)')",
 			new HashSet<>(
 				Arrays.asList("ExpandoValue", "Individual", "Organization")));
 

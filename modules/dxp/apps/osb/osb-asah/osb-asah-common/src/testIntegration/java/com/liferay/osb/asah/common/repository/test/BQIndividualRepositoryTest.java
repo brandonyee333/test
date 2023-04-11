@@ -83,6 +83,27 @@ public class BQIndividualRepositoryTest
 			individual.getLastActivityDate());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
+	@Test
+	public void testSearchBQIndividualsCustomFieldFilter() {
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Salary/value ge 120000.30", false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Salary/value gt 100000", false, null));
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Salary/value le 100000.00", false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Salary/value lt 100001", false, null));
+	}
+
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_2.sql")
 	@Test
 	public void testSearchBQIndividualsIndividualSegmentIdsFilter() {
