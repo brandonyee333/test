@@ -663,7 +663,8 @@ public class BQMembershipRepositoryImpl
 			filterString, true);
 
 		selectJoinStep = _getSelectJoinStep(
-			filterExpression.getReferencedTableNames(), selectJoinStep);
+			includeAnonymousUsers, filterExpression.getReferencedTableNames(),
+			selectJoinStep);
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -672,7 +673,7 @@ public class BQMembershipRepositoryImpl
 		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
 			conditions.add(
 				DSL.field(
-					"Identity.individualId"
+					"Individual.id"
 				).isNotNull());
 		}
 
@@ -762,7 +763,24 @@ public class BQMembershipRepositoryImpl
 	}
 
 	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
-		Set<String> referencedTableNames, SelectJoinStep<R> selectJoinStep) {
+		boolean includeAnonymousUsers, Set<String> referencedTableNames,
+		SelectJoinStep<R> selectJoinStep) {
+
+		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).on(
+				DSL.field(
+					"Identity.individualId"
+				).eq(
+					DSL.field("Individual.id")
+				)
+			);
+		}
 
 		if (referencedTableNames.contains("Event")) {
 			selectJoinStep = selectJoinStep.join(
@@ -781,19 +799,21 @@ public class BQMembershipRepositoryImpl
 		}
 
 		if (referencedTableNames.contains("Individual")) {
-			selectJoinStep = selectJoinStep.leftJoin(
-				DSL.table(
-					"BQIndividual"
-				).as(
-					"Individual"
-				)
-			).on(
-				DSL.field(
-					"Identity.individualId"
-				).eq(
-					DSL.field("Individual.id")
-				)
-			);
+			if (BooleanUtils.isTrue(includeAnonymousUsers)) {
+				selectJoinStep = selectJoinStep.leftJoin(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).on(
+					DSL.field(
+						"Identity.individualId"
+					).eq(
+						DSL.field("Individual.id")
+					)
+				);
+			}
 
 			if (referencedTableNames.contains("ExpandoValue")) {
 				Stream<String> stream = referencedTableNames.stream();
