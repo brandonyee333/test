@@ -66,32 +66,25 @@ public class UsersCountDataFetcher extends BaseDataFetcher<Long> {
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			fieldExecutionTypeInfo.getFieldDefinition();
 
-		Long anonymousUsersCount = _userDog.getAnonymousUsersCount(
-			metricType, searchQueryContext);
-
 		if (Objects.equals(
 				graphQLFieldDefinition.getName(), "anonymousUsersCount")) {
 
-			return anonymousUsersCount;
+			return _userDog.getAnonymousUsersCount(
+				metricType, searchQueryContext);
 		}
-
-		Long knownUsersCount = _userDog.getKnownUsersCount(
-			metricType, searchQueryContext);
 
 		if (Objects.equals(
 				graphQLFieldDefinition.getName(), "knownUsersCount")) {
 
-			return knownUsersCount;
+			return _userDog.getKnownUsersCount(metricType, searchQueryContext);
 		}
-
-		Long segmentedIndividualsCount = _userDog.getSegmentedIndividualsCount(
-			metricType, searchQueryContext);
 
 		if (Objects.equals(
 				graphQLFieldDefinition.getName(),
 				"nonsegmentedKnownUsersCount")) {
 
-			return knownUsersCount - segmentedIndividualsCount;
+			return _userDog.getNonsegmentedIndividualsCount(
+				metricType, searchQueryContext);
 		}
 
 		if (Objects.equals(
@@ -101,7 +94,8 @@ public class UsersCountDataFetcher extends BaseDataFetcher<Long> {
 			return 0L;
 		}
 
-		return segmentedIndividualsCount;
+		return _userDog.getSegmentedIndividualsCount(
+			metricType, searchQueryContext);
 	}
 
 	@Autowired
