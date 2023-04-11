@@ -12,6 +12,9 @@
 import json
 import logging
 
+from abc import ABCMeta, \
+	abstractmethod
+
 from liferay.common.spark import BaseSparkJob
 
 from pyspark.ml import Pipeline
@@ -27,7 +30,197 @@ from sparknlp.annotator import Chunker, \
 from sparknlp.base import DocumentAssembler, \
 	Finisher
 
-class IdentityInterestScoreSparkJob(BaseSparkJob):
+class BaseBigQueryDataFrameWriterSparkJob(BaseSparkJob):
+
+	def __init__(self, spark_application, bigquery_dataset, mode='append', table_name=None):
+		BaseSparkJob.__init__(self, spark_application)
+
+		self.bigquery_dataset = bigquery_dataset
+		self.mode = mode
+		self.table_name = table_name
+
+	def _pre_process(self, data_frame):
+		return data_frame
+
+	def run(self):
+		data_frame = self.spark_session.table(self.table_name)
+
+		data_frame = self._pre_process(data_frame)
+
+		data_frame_writer = data_frame.write
+
+		data_frame_writer.format(
+			'bigquery'
+		).mode(
+			self.mode
+		).option(
+			'createDisposition',
+			'CREATE_NEVER'
+		).save(
+			'{}.{}'.format(
+				self.spark_application_args.ac_project_id,
+				self.bigquery_dataset
+			)
+		)
+
+class BaseSQLCommandSparkJob(BaseSparkJob, metaclass=ABCMeta):
+
+	def __init__(self, spark_application, temp_view):
+		BaseSparkJob.__init__(self, spark_application)
+
+		self._temp_view = temp_view
+
+	def _get_job_parameter(self, parameter_name, default_value=None):
+		job_parameters = json.loads(self.spark_application_args.job_parameters)
+
+		for job_parameter in job_parameters:
+			if job_parameter.get('name') == parameter_name:
+				return job_parameter.get('value')
+
+		return default_value
+
+	@abstractmethod
+	def get_sql_command(self, end_date, start_date):
+		pass
+
+	def run(self):
+		end_date = self._get_job_parameter('endDate')
+		start_date = self._get_job_parameter('startDate')
+
+		sql_command = self.get_sql_command(end_date, start_date)
+
+		data_frame = self.spark_session.sql(sql_command)
+
+		data_frame.createOrReplaceTempView(self._temp_view)
+
+
+class IdentityInterestScoreBigQueryDataFrameWriterSparkJob(BaseBigQueryDataFrameWriterSparkJob):
+
+	def __init__(self, spark_application):
+		BaseBigQueryDataFrameWriterSparkJob.__init__(
+			self,
+			spark_application,
+			'identityinterestscore',
+			'append',
+			'identityinterestscore'
+		)
+
+
+class IdentityInterestScorePageBigQueryDataFrameWriterSparkJob(BaseBigQueryDataFrameWriterSparkJob):
+
+	def __init__(self, spark_application):
+		BaseBigQueryDataFrameWriterSparkJob.__init__(
+			self,
+			spark_application,
+			'identityinterestpage',
+			'overwrite',
+			'identity_interest_pages'
+		)
+
+class IdentityInterestScorePageSparkJob(BaseSparkJob):
+
+	def __init__(self, spark_application):
+		BaseSparkJob.__init__(self, spark_application)
+
+	def _get_identity_interest_pages_data_frame(
+			self, analytics_events_data_frame, extracted_keywords_data_frame):
+
+		return analytics_events_data_frame.groupby(
+			'channelId', 'canonicalUrl', 'userId'
+		).agg(
+			F.count('*').alias('views')
+		).join(
+			extracted_keywords_data_frame,
+			how='inner',
+			on=['canonicalUrl']
+		).withColumn(
+			'keyword', F.explode(F.col('extracted_keywords'))
+		).select(
+			F.col('canonicalUrl'),
+			F.col('channelId'),
+			F.col('userId').alias('identityId'),
+			F.col('keyword'),
+			F.col('title'),
+			F.col('views')
+		)
+
+	def run(self):
+		analytics_events_data_frame = self.spark_session.table(
+			'analytics_events'
+		)
+
+		extracted_keywords_data_frame = self.spark_session.table(
+			'extracted_keywords'
+		)
+
+		identity_interest_pages_data_frame = self._get_identity_interest_pages_data_frame(
+			analytics_events_data_frame,
+			extracted_keywords_data_frame)
+
+		identity_interest_pages_data_frame.createOrReplaceTempView(
+			'identity_interest_pages'
+		)
+
+class IdentityInterestScorePrepareAnalyticsEventsWithKeywordsSparkJob(BaseSparkJob):
+
+	def __init__(self, spark_application):
+		BaseSparkJob.__init__(self, spark_application)
+
+	def run(self):
+		analytics_events_data_frame = self.spark_session.table(
+			'analytics_events'
+		)
+
+		extracted_keywords_data_frame = self.spark_session.table(
+			'extracted_keywords'
+		)
+
+		analytics_events_with_keywords_data_frame = \
+			analytics_events_data_frame.drop(
+				'description', 'keywords', 'title'
+			).join(
+				extracted_keywords_data_frame,
+				how='inner',
+				on=['canonicalUrl']
+			)
+
+		analytics_events_with_keywords_data_frame.createOrReplaceTempView(
+			'analytics_events_with_keywords')
+
+class IdentityInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
+
+	def __init__(self, spark_application):
+		BaseSQLCommandSparkJob.__init__(self, spark_application, 'identityinterestscore')
+
+		self._initial_run_day_range = 7
+
+	def get_sql_command(self, end_date, start_date):
+		if end_date and start_date:
+			end_date_sql_string = f'"{end_date}"'
+			start_date_sql_string = f'"{start_date}"'
+		else:
+			end_date_sql_string = 'CURRENT_DATE()'
+			start_date_sql_string = 'date_sub(CURRENT_DATE(), {})'.format(
+				self._initial_run_day_range
+			)
+
+		return f"""
+			SELECT
+				channelId,
+				userId as identityId,
+				interested,
+				interest_score as interestScore,
+				keyword,
+				event_date as recordedDate
+			FROM
+				individual_interest_score
+			WHERE
+				event_date >= TIMESTAMP({start_date_sql_string}) AND
+				event_date < TIMESTAMP({end_date_sql_string})
+		"""
+
+
+class IndividualInterestScoreSparkJob(BaseSparkJob):
 
 	def _30_day_sum(self, column, window):
 		values = list()
@@ -42,7 +235,7 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		return sum(values, F.lit(0))
 
 	def __init__(self, spark_application):
-		super(IdentityInterestScoreSparkJob, self).__init__(spark_application)
+		BaseSparkJob.__init__(self, spark_application)
 
 		self._global_keyword_weight = 1.0
 		self._initial_run_day_range = 7
@@ -69,55 +262,6 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		return "SELECT SEQUENCE({}, {}, INTERVAL 1 DAY) AS event_date".format(
 			start_date_sql_string, end_date_sql_string
 		)
-
-	def _get_identity_interest_pages_data_frame(
-			self, analytics_events_data_frame, extracted_keywords_data_frame):
-
-		return analytics_events_data_frame.groupby(
-			'channelId', 'canonicalUrl', 'userId'
-		).agg(
-			F.count('*').alias('views')
-		).join(
-			extracted_keywords_data_frame,
-			how='inner',
-			on=['canonicalUrl']
-		).withColumn(
-			'keyword', F.explode(F.col('extracted_keywords'))
-		).select(
-			F.col('canonicalUrl'),
-			F.col('channelId'),
-			F.col('userId').alias('identityId'),
-			F.col('keyword'),
-			F.col('title'),
-			F.col('views')
-		)
-
-	def _get_individual_interest_score_sql_command(
-		self, end_date=None, start_date=None):
-
-		if end_date and start_date:
-			end_date_sql_string = f'"{end_date}"'
-			start_date_sql_string = f'"{start_date}"'
-		else:
-			end_date_sql_string = 'CURRENT_DATE()'
-			start_date_sql_string = 'date_sub(CURRENT_DATE(), {})'.format(
-				self._initial_run_day_range
-			)
-
-		return f"""
-			SELECT
-				channelId,
-				userId as identityId,
-				interested,
-				interest_score as interestScore,
-				keyword,
-				event_date as recordedDate
-			FROM
-				individual_interest_score
-			WHERE
-				event_date >= TIMESTAMP({start_date_sql_string}) AND
-				event_date < TIMESTAMP({end_date_sql_string})
-		"""
 
 	def _get_job_parameter(self, parameter_name, default_value=None):
 		job_parameters = json.loads(self.spark_application_args.job_parameters)
@@ -153,34 +297,6 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			how='left',
 			on=['event_date']
 		)
-
-	def _get_session_interest_score_sql_command(
-		self, end_date=None, start_date=None):
-
-		if end_date and start_date:
-			end_date_sql_string = f'"{end_date}"'
-			start_date_sql_string = f'"{start_date}"'
-		else:
-			end_date_sql_string = 'CURRENT_DATE()'
-			start_date_sql_string = 'DATE_SUB(CURRENT_DATE(), {})'.format(
-				self._initial_run_day_range
-			)
-
-		return f"""
-			SELECT
-				channelId,
-				userId as identityId,
-				interested,
-				interest_score as interestScore,
-				keyword,
-				event_date as recordedDate,
-				sessionId
-			FROM 
-				individual_interest_score
-			WHERE
-				event_date >= TIMESTAMP({start_date_sql_string}) AND
-				event_date < TIMESTAMP({end_date_sql_string})
-		"""
 
 	def _get_user_keyword_count_with_totals_data_frame(
 		self, analytics_events_with_keywords_data_frame):
@@ -220,22 +336,9 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 		return sum(values, F.lit(0))
 
 	def run(self):
-		analytics_events_data_frame = self.spark_session.table(
-			'analytics_events'
+		analytics_events_with_keywords_data_frame = self.spark_session.table(
+			'analytics_events_with_keywords'
 		)
-
-		extracted_keywords_data_frame = self.spark_session.table(
-			'extracted_keywords'
-		)
-
-		analytics_events_with_keywords_data_frame = \
-			analytics_events_data_frame.drop(
-				'description', 'keywords', 'title'
-			).join(
-				extracted_keywords_data_frame,
-				how='inner',
-				on=['canonicalUrl']
-			)
 
 		keyword_count_with_totals_data_frame = \
 			self._get_keyword_count_with_totals_data_frame(
@@ -246,26 +349,6 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 			self._get_user_keyword_count_with_totals_data_frame(
 				analytics_events_with_keywords_data_frame
 			)
-
-		analytics_events_with_keywords_data_frame.createOrReplaceTempView(
-			'analytics_events_with_keywords_data_frame')
-
-		identity_interest_pages_data_frame = self._get_identity_interest_pages_data_frame(
-			analytics_events_data_frame,
-			extracted_keywords_data_frame)
-
-		identity_interest_pages_data_frame.write.format(
-			'bigquery'
-		).mode(
-			"overwrite"
-		).option(
-			'createDisposition',
-			'CREATE_NEVER'
-		).save(
-			'{}.identityinterestpage'.format(
-				self.spark_application_args.ac_project_id
-			)
-		)
 
 		daily_logscores_data_frame = \
 			user_keyword_counts_with_totals_data_frame.join(
@@ -397,47 +480,6 @@ class IdentityInterestScoreSparkJob(BaseSparkJob):
 
 		interest_score_data_frame.createOrReplaceTempView(
 			'individual_interest_score')
-
-		sql_command = self._get_individual_interest_score_sql_command(
-			end_date, start_date)
-
-		individual_interest_score_data_frame = self.spark_session.sql(sql_command)
-
-		data_frame_writer = individual_interest_score_data_frame.write
-
-		data_frame_writer.format(
-			'bigquery'
-		).mode(
-			"append"
-		).option(
-			'createDisposition',
-			'CREATE_NEVER'
-		).save(
-			'{}.identityinterestscore'.format(
-				self.spark_application_args.ac_project_id
-			)
-		)
-
-		sql_command = self._get_session_interest_score_sql_command(
-			end_date, start_date)
-
-		session_interest_score_data_frame = self.spark_session.sql(
-			sql_command)
-
-		data_frame_writer = session_interest_score_data_frame.write
-
-		data_frame_writer.format(
-			'bigquery'
-		).mode(
-			"append"
-		).option(
-			'createDisposition',
-			'CREATE_NEVER'
-		).save(
-			'{}.sessioninterestscore'.format(
-				self.spark_application_args.ac_project_id
-			)
-		)
 
 class KeywordsExtractionSparkJob(BaseSparkJob):
 
@@ -787,3 +829,47 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		event_data_frame.createOrReplaceTempView(
 			'analytics_events')
+
+class SessionInterestScoreBigQuerydataFrameWriterSparkJob(BaseBigQueryDataFrameWriterSparkJob):
+
+	def __init__(self, spark_application):
+		BaseBigQueryDataFrameWriterSparkJob.__init__(
+			self,
+			spark_application,
+			'sessioninterestscore',
+			'append',
+			'sessioninterestscore'
+		)
+
+class SessionInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
+
+	def __init__(self, spark_application):
+		BaseSQLCommandSparkJob.__init__(self, spark_application, 'sessioninterestscore')
+
+		self._initial_run_day_range = 7
+
+	def get_sql_command(self, end_date, start_date):
+		if end_date and start_date:
+			end_date_sql_string = f'"{end_date}"'
+			start_date_sql_string = f'"{start_date}"'
+		else:
+			end_date_sql_string = 'CURRENT_DATE()'
+			start_date_sql_string = 'DATE_SUB(CURRENT_DATE(), {})'.format(
+				self._initial_run_day_range
+			)
+
+		return f"""
+			SELECT
+				channelId,
+				userId as identityId,
+				interested,
+				interest_score as interestScore,
+				keyword,
+				event_date as recordedDate,
+				sessionId
+			FROM
+				individual_interest_score
+			WHERE
+				event_date >= TIMESTAMP({start_date_sql_string}) AND
+				event_date < TIMESTAMP({end_date_sql_string})
+		"""

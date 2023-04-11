@@ -11,9 +11,16 @@
 
 from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
-from liferay.interest_score.job import IdentityInterestScoreSparkJob, \
+from liferay.interest_score.job import IdentityInterestScoreBigQueryDataFrameWriterSparkJob, \
+	IdentityInterestScorePageBigQueryDataFrameWriterSparkJob, \
+	IdentityInterestScorePageSparkJob, \
+	IdentityInterestScorePrepareAnalyticsEventsWithKeywordsSparkJob, \
+	IdentityInterestScoreSQLCommandSparkJob, \
+	IndividualInterestScoreSparkJob, \
 	KeywordsExtractionSparkJob, \
-	ReadAnalyticsEventsSparkJob
+	ReadAnalyticsEventsSparkJob, \
+	SessionInterestScoreBigQuerydataFrameWriterSparkJob, \
+	SessionInterestScoreSQLCommandSparkJob
 
 from pyspark import SparkConf
 
@@ -64,7 +71,21 @@ class InterestScoreApplication(BaseSparkApplication):
 
 		jobs.append(KeywordsExtractionSparkJob(self))
 
-		jobs.append(IdentityInterestScoreSparkJob(self))
+		jobs.append(IdentityInterestScorePrepareAnalyticsEventsWithKeywordsSparkJob(self))
+
+		jobs.append(IdentityInterestScorePageSparkJob(self))
+
+		jobs.append(IdentityInterestScorePageBigQueryDataFrameWriterSparkJob(self))
+
+		jobs.append(IndividualInterestScoreSparkJob(self))
+
+		jobs.append(IdentityInterestScoreSQLCommandSparkJob(self))
+
+		jobs.append(IdentityInterestScoreBigQueryDataFrameWriterSparkJob(self))
+
+		jobs.append(SessionInterestScoreSQLCommandSparkJob(self))
+
+		jobs.append(SessionInterestScoreBigQuerydataFrameWriterSparkJob(self))
 
 		return SparkJobPipeline(jobs)
 
