@@ -588,6 +588,7 @@ public class BQIndividualRepositoryImpl
 			DSL.field("Individual.languageId"),
 			DSL.field("Individual.lastName"),
 			DSL.field("Individual.modifiedDate"),
+			DSL.field("Individual.middleName"),
 			DSL.field("Individual.jobTitle"),
 			DSL.field("Individual.screenName"));
 
@@ -631,6 +632,9 @@ public class BQIndividualRepositoryImpl
 						0L, "modifiedDate",
 						DateUtil.toUTCString(
 							(Date)record.get("modifiedDate"))));
+				bqIndividualFields.add(
+					new BQIndividual.Field(
+						0L, "middleName", (String)record.get("middleName")));
 				bqIndividualFields.add(
 					new BQIndividual.Field(
 						0L, "screenName", (String)record.get("screenName")));
