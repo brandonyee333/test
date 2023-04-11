@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.repository.impl;
 
 import com.liferay.osb.asah.backend.constants.DataConstants;
 import com.liferay.osb.asah.backend.model.AssetMetric;
+import com.liferay.osb.asah.backend.model.AudienceReport;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.model.Metric;
@@ -40,6 +41,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -72,49 +74,6 @@ import org.springframework.lang.Nullable;
  */
 public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	implements AssetMetricRepository<T> {
-
-	@Override
-	public Long getAnonymousIndividualsCount(
-		String assetId, @Nullable String assetTitle, Long channelId,
-		MetricType metricType, TimeRange timeRange) {
-
-		Condition whereClauseCondition = _createWhereClauseCondition(
-			assetId, assetTitle, channelId, timeRange);
-
-		return _queryExecutor.queryForLong(
-			dslContext.select(
-				DSL.countDistinct(DSL.field("metric.userId"))
-			).from(
-				DSL.table(
-					getTableName(timeRange)
-				).as(
-					"metric"
-				)
-			).join(
-				DSL.table(
-					"BQIdentity"
-				).as(
-					"identity"
-				)
-			).on(
-				DSL.field(
-					"identity.id"
-				).eq(
-					DSL.field("metric.userId")
-				)
-			).where(
-				DSL.and(
-					whereClauseCondition,
-					DSL.field(
-						metricType.getFieldName()
-					).gt(
-						0
-					),
-					DSL.field(
-						"identity.individualId"
-					).isNull())
-			));
-	}
 
 	@Override
 	public List<T> getAppearsOnMetrics(
@@ -268,6 +227,106 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					assetIdField, assetTitleField
 				)
 			));
+	}
+
+	@Override
+	public AudienceReport getAudienceReport(
+		String assetId, @Nullable String assetTitle, Long channelId,
+		MetricType metricType, TimeRange timeRange) {
+
+		Condition whereClauseCondition = _createWhereClauseCondition(
+			assetId, assetTitle, channelId, timeRange);
+
+		Optional<AudienceReport> audienceMetricOptional =
+			_queryExecutor.queryForObject(
+				recordMap -> {
+					AudienceReport audienceReport = new AudienceReport();
+
+					audienceReport.setAnonymousIndividualsCount(
+						_getLongValue("anonymousIndividualsCount", recordMap));
+					audienceReport.setKnownIndividualsCount(
+						_getLongValue("knownIndividualsCount", recordMap));
+					audienceReport.setNonsegmentedIndividualsCount(
+						_getLongValue(
+							"nonsegmentedIndividualsCount", recordMap));
+					audienceReport.setSegmentedIndividualsCount(
+						_getLongValue("segmentedIndividualsCount", recordMap));
+
+					return audienceReport;
+				},
+				dslContext.select(
+					DSL.countDistinct(
+						DSL.when(
+							DSL.field(
+								"identity.individualId"
+							).isNull(),
+							DSL.field("identity.id"))
+					).as(
+						"anonymousIndividualsCount"
+					),
+					DSL.countDistinct(
+						DSL.field("identity.individualId")
+					).as(
+						"knownIndividualsCount"
+					),
+					DSL.countDistinct(
+						DSL.when(
+							DSL.field(
+								"membership.segmentId"
+							).isNull(),
+							DSL.field("identity.individualId"))
+					).as(
+						"nonsegmentedIndividualsCount"
+					),
+					DSL.countDistinct(
+						DSL.when(
+							DSL.field(
+								"membership.segmentId"
+							).isNotNull(),
+							DSL.field("identity.individualId"))
+					).as(
+						"segmentedIndividualsCount"
+					)
+				).from(
+					DSL.table(
+						getTableName(timeRange)
+					).as(
+						"metric"
+					)
+				).join(
+					DSL.table(
+						"BQIdentity"
+					).as(
+						"identity"
+					)
+				).on(
+					DSL.field(
+						"metric.userId"
+					).eq(
+						DSL.field("identity.id")
+					)
+				).leftJoin(
+					DSL.table(
+						"BQMembership"
+					).as(
+						"membership"
+					)
+				).on(
+					DSL.field(
+						"identity.individualId"
+					).eq(
+						DSL.field("membership.individualId")
+					)
+				).where(
+					whereClauseCondition.and(
+						DSL.field(
+							metricType.getFieldName()
+						).gt(
+							0
+						))
+				));
+
+		return audienceMetricOptional.get();
 	}
 
 	@Override
@@ -576,141 +635,6 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	@Override
-	public Long getKnownIndividualsCount(
-		String assetId, @Nullable String assetTitle, Long channelId,
-		MetricType metricType, @Nullable String keywords, TimeRange timeRange) {
-
-		Condition whereClauseCondition = _createWhereClauseCondition(
-			assetId, assetTitle, channelId, timeRange);
-
-		if (StringUtils.isNotBlank(keywords)) {
-			whereClauseCondition = whereClauseCondition.and(
-				_createIndividualKeywordsWhereClauseCondition(keywords));
-		}
-
-		return _queryExecutor.queryForLong(
-			dslContext.select(
-				DSL.countDistinct(DSL.field("individual.id"))
-			).from(
-				DSL.table(
-					getTableName(timeRange)
-				).as(
-					"metric"
-				)
-			).join(
-				DSL.table(
-					"BQIdentity"
-				).as(
-					"identity"
-				)
-			).on(
-				DSL.field(
-					"identity.id"
-				).eq(
-					DSL.field("metric.userId")
-				)
-			).join(
-				DSL.table(
-					"BQIndividual"
-				).as(
-					"individual"
-				)
-			).on(
-				DSL.field(
-					"individual.id"
-				).eq(
-					DSL.field("identity.individualId")
-				)
-			).where(
-				whereClauseCondition.and(
-					DSL.field(
-						metricType.getFieldName()
-					).gt(
-						0
-					))
-			));
-	}
-
-	@Override
-	public Long getSegmentedIndividualsCount(
-		String assetId, @Nullable String assetTitle, Long channelId,
-		MetricType metricType, TimeRange timeRange) {
-
-		Condition whereClauseCondition = _createWhereClauseCondition(
-			assetId, assetTitle, channelId, timeRange);
-
-		return _queryExecutor.queryForLong(
-			dslContext.with(
-				"segmentedIndividuals"
-			).as(
-				dslContext.selectDistinct(
-					DSL.field(
-						"membership.individualId"
-					).as(
-						"individualId"
-					)
-				).from(
-					DSL.table(
-						getTableName(timeRange)
-					).as(
-						"metric"
-					)
-				).join(
-					DSL.table(
-						"BQIdentity"
-					).as(
-						"identity"
-					)
-				).on(
-					DSL.field(
-						"metric.userId"
-					).eq(
-						DSL.field("identity.id")
-					)
-				).join(
-					DSL.table(
-						"BQMembership"
-					).as(
-						"membership"
-					)
-				).on(
-					DSL.field(
-						"identity.individualId"
-					).eq(
-						DSL.field("membership.individualId")
-					)
-				).where(
-					whereClauseCondition.and(
-						DSL.field(
-							metricType.getFieldName()
-						).gt(
-							0
-						))
-				)
-			).with(
-				"segmentedKnownIndividualCount"
-			).as(
-				dslContext.select(
-					DSL.countDistinct(
-						DSL.field("segmentedIndividuals.individualId")
-					).as(
-						"value"
-					)
-				).from(
-					"segmentedIndividuals"
-				).where(
-					DSL.field(
-						"segmentedIndividuals.individualId"
-					).isNotNull()
-				)
-			).select(
-				DSL.field("segmentedKnownIndividualCount.value", Integer.class)
-			).from(
-				DSL.table("segmentedKnownIndividualCount")
-			));
-	}
-
-	@Override
 	public List<Metric> getSegmentMetrics(
 		String assetId, @Nullable String assetTitle, Long channelId,
 		MetricType metricType, TimeRange timeRange) {
@@ -733,85 +657,59 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 				return metric;
 			},
-			dslContext.with(
-				"segmentedIndividuals"
-			).as(
-				dslContext.select(
-					DSL.field("membership.individualId"),
-					DSL.field("membership.segmentId")
-				).from(
-					DSL.table(
-						getTableName(timeRange)
-					).as(
-						"metric"
-					)
-				).join(
-					DSL.table(
-						"BQIdentity"
-					).as(
-						"identity"
-					)
-				).on(
-					DSL.field(
-						"metric.userId"
-					).eq(
-						DSL.field("identity.id")
-					)
-				).join(
-					DSL.table(
-						"BQMembership"
-					).as(
-						"membership"
-					)
-				).on(
-					DSL.field(
-						"identity.individualId"
-					).eq(
-						DSL.field("membership.individualId")
-					)
-				).where(
-					whereClauseCondition.and(
-						DSL.field(
-							metricType.getFieldName()
-						).gt(
-							0
-						))
-				)
-			).with(
-				"segmentedKnownIndividualCount"
-			).as(
-				dslContext.select(
-					DSL.field(
-						"segmentedIndividuals.segmentId"
-					).as(
-						"segmentId"
-					),
-					DSL.countDistinct(
-						DSL.field("segmentedIndividuals.individualId")
-					).as(
-						"value"
-					)
-				).from(
-					"segmentedIndividuals"
-				).where(
-					DSL.field(
-						"segmentedIndividuals.individualId"
-					).isNotNull()
-				).groupBy(
-					DSL.field("segmentedIndividuals.segmentId")
-				)
-			).select(
-				DSL.field("segmentId"),
-				DSL.field(
-					"value", Integer.class
+			dslContext.select(
+				DSL.countDistinct(
+					DSL.field("membership.individualId")
 				).as(
 					"individualsCount"
+				),
+				DSL.field(
+					"membership.segmentId"
+				).as(
+					"segmentId"
 				)
 			).from(
-				DSL.table("segmentedKnownIndividualCount")
+				DSL.table(
+					getTableName(timeRange)
+				).as(
+					"metric"
+				)
+			).join(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"identity"
+				)
+			).on(
+				DSL.field(
+					"metric.userId"
+				).eq(
+					DSL.field("identity.id")
+				)
+			).join(
+				DSL.table(
+					"BQMembership"
+				).as(
+					"membership"
+				)
+			).on(
+				DSL.field(
+					"identity.individualId"
+				).eq(
+					DSL.field("membership.individualId")
+				)
+			).where(
+				whereClauseCondition.and(
+					DSL.field(
+						metricType.getFieldName()
+					).gt(
+						0
+					))
+			).groupBy(
+				DSL.field("membership.segmentId")
 			).orderBy(
 				DSL.field(
-					"value"
+					"individualsCount"
 				).desc()
 			));
 	}
@@ -960,26 +858,12 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			assetId, assetTitle, channelId, null, timeRange);
 	}
 
-	private long _getIndividualsCount(
-		MetricType metricType, TimeRange timeRange,
-		Condition whereClauseCondition) {
+	private Long _getLongValue(
+		String fieldName, Map<String, Object> recordMap) {
 
-		return dslContext.select(
-			DSL.countDistinct(DSL.field("individualId"))
-		).from(
-			getTableName(timeRange)
-		).where(
-			whereClauseCondition.and(
-				DSL.field(
-					metricType.getFieldName()
-				).gt(
-					0
-				))
-		).fetch(
-		).get(
-			0
-		).value1(
-		).longValue();
+		BigDecimal count = (BigDecimal)recordMap.get(fieldName);
+
+		return count.longValue();
 	}
 
 	private List<Field<BigDecimal>> _getMetricFields(

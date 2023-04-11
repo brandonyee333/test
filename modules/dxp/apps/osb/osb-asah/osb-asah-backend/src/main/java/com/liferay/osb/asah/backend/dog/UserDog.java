@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.AudienceReport;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.model.MetricType;
 
@@ -46,7 +47,21 @@ public class UserDog {
 		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
 			searchQueryContext.getAssetType());
 
-		return assetMetricRepository.getAnonymousIndividualsCount(
+		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
+
+		return audienceReport.getAnonymousIndividualsCount();
+	}
+
+	public AudienceReport getAudienceReport(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		return assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
 			Long.valueOf(searchQueryContext.getChannelId()), metricType,
 			searchQueryContext.getTimeRange());
@@ -58,10 +73,26 @@ public class UserDog {
 		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
 			searchQueryContext.getAssetType());
 
-		return assetMetricRepository.getKnownIndividualsCount(
+		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType, null,
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
 			searchQueryContext.getTimeRange());
+
+		return audienceReport.getKnownIndividualsCount();
+	}
+
+	public Long getNonsegmentedIndividualsCount(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
+			searchQueryContext.getAssetType());
+
+		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
+			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getTimeRange());
+
+		return audienceReport.getNonsegmentedIndividualsCount();
 	}
 
 	public Long getSegmentedIndividualsCount(
@@ -70,10 +101,12 @@ public class UserDog {
 		AssetMetricRepository assetMetricRepository = _getAssetMetricRepository(
 			searchQueryContext.getAssetType());
 
-		return assetMetricRepository.getSegmentedIndividualsCount(
+		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
 			Long.valueOf(searchQueryContext.getChannelId()), metricType,
 			searchQueryContext.getTimeRange());
+
+		return audienceReport.getSegmentedIndividualsCount();
 	}
 
 	private AssetMetricRepository _getAssetMetricRepository(
