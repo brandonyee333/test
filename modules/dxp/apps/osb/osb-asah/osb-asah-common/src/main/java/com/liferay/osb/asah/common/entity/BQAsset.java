@@ -65,6 +65,7 @@ public class BQAsset {
 		return _applicationId;
 	}
 
+	@JsonProperty("dataSourceAssetPK")
 	public String getAssetId() {
 		return _assetId;
 	}
