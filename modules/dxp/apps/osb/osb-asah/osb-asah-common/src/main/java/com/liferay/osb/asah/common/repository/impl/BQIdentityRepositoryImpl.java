@@ -271,13 +271,50 @@ public class BQIdentityRepositoryImpl
 				_dslHelper.getDateParam(localDateTime, zoneId.toString())
 			));
 
-		if (channelId != null) {
+		if (BooleanUtils.isTrue(active) || (channelId != null)) {
+			Condition condition = DSL.field(
+				"Identity.id"
+			).eq(
+				DSL.field("IdentityActivity.identityId")
+			);
+
+			if (channelId != null) {
+				condition = DSL.and(
+					condition,
+					DSL.field(
+						"IdentityActivity.channelId"
+					).eq(
+						channelId
+					));
+			}
+
+			if (BooleanUtils.isTrue(active)) {
+				TimeRange timeRange = TimeRange.LAST_30_DAYS;
+
+				condition = DSL.and(
+					condition,
+					DSL.field(
+						"IdentityActivity.lastActivityDate"
+					).greaterThan(
+						_dslHelper.getDateParam(
+							timeRange.getStartLocalDateTime(),
+							zoneId.toString())
+					));
+			}
+
 			conditions.add(
-				DSL.field(
-					"IdentityActivity.channelId"
-				).eq(
-					channelId
-				));
+				DSL.exists(
+					DSL.select(
+						DSL.field("IdentityActivity.identityId")
+					).from(
+						DSL.table(
+							"BQIdentityActivity"
+						).as(
+							"IdentityActivity"
+						)
+					).where(
+						condition
+					)));
 		}
 
 		if (metricType == IndividualMetricType.ANONYMOUS_INDIVIDUALS) {
@@ -295,18 +332,6 @@ public class BQIdentityRepositoryImpl
 							DSL.table("BQIndividual")
 						)
 					)));
-		}
-
-		if (BooleanUtils.isTrue(active)) {
-			TimeRange timeRange = TimeRange.LAST_30_DAYS;
-
-			conditions.add(
-				DSL.field(
-					"IdentityActivity.lastActivityDate"
-				).greaterThan(
-					_dslHelper.getDateParam(
-						timeRange.getStartLocalDateTime(), zoneId.toString())
-				));
 		}
 
 		return conditions;
@@ -354,22 +379,6 @@ public class BQIdentityRepositoryImpl
 				).as(
 					"Identity"
 				));
-
-		if (BooleanUtils.isTrue(active) || (channelId != null)) {
-			selectJoinStep = selectJoinStep.join(
-				DSL.table(
-					"BQIdentityActivity"
-				).as(
-					"IdentityActivity"
-				)
-			).on(
-				DSL.field(
-					"Identity.id"
-				).eq(
-					DSL.field("IdentityActivity.identityId")
-				)
-			);
-		}
 
 		selectJoinStep = selectJoinStep.leftJoin(
 			DSL.table(
