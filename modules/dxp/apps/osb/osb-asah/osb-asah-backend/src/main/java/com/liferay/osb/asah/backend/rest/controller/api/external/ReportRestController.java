@@ -27,6 +27,7 @@ import com.liferay.osb.asah.backend.dog.SegmentMetricDog;
 import com.liferay.osb.asah.backend.dog.UserDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dto.ActivityDTO;
+import com.liferay.osb.asah.backend.dto.AudienceReportDTO;
 import com.liferay.osb.asah.backend.dto.DataExportTaskDTO;
 import com.liferay.osb.asah.backend.dto.ReportIndividualDTO;
 import com.liferay.osb.asah.backend.dto.ReportSegmentDTO;
@@ -875,37 +876,21 @@ public class ReportRestController extends BaseRestController {
 		MetricReport metricReport, MetricType metricType,
 		SearchQueryContext searchQueryContext) {
 
-		AudienceReport audienceReport = new AudienceReport();
-
-		Long anonymousUsersCount = _userDog.getAnonymousUsersCount(
-			metricType, searchQueryContext);
-
-		audienceReport._anonymousUsersCount = anonymousUsersCount;
-
-		Long knownUsersCount = _userDog.getKnownUsersCount(
-			metricType, searchQueryContext);
-
-		audienceReport._knownUsersCount = knownUsersCount;
-
-		Long individualsCount = anonymousUsersCount + knownUsersCount;
-
-		Long segmentedIndividualsCount = _userDog.getSegmentedIndividualsCount(
-			metricType, searchQueryContext);
-
-		audienceReport._nonsegmentedIndividualsCount =
-			individualsCount - segmentedIndividualsCount;
-		audienceReport._segmentedIndividualsCount = segmentedIndividualsCount;
+		AudienceReportDTO audienceReportDTO = new AudienceReportDTO(
+			_userDog.getAudienceReport(metricType, searchQueryContext));
 
 		ResultBag<Metric> segmentMetricResultBag =
 			_segmentMetricDog.getSegmentMetricResultBag(
 				metricType, searchQueryContext);
 
-		audienceReport._segmentMetricReportResultBag = new ResultBag<>(
-			ListUtil.map(
-				segmentMetricResultBag.getResults(), MetricReport::new),
-			segmentMetricResultBag.getTotal());
+		audienceReportDTO.setSegmentMetricDTOReportResultBag(
+			new ResultBag<>(
+				ListUtil.map(
+					segmentMetricResultBag.getResults(),
+					AudienceReportDTO.SegmentMetricDTO::new),
+				segmentMetricResultBag.getTotal()));
 
-		metricReport._audienceReport = audienceReport;
+		metricReport._audienceReportDTO = audienceReportDTO;
 	}
 
 	private ResultBagEntityModel<AssetReport>
@@ -1448,38 +1433,6 @@ public class ReportRestController extends BaseRestController {
 	}
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private static class AudienceReport {
-
-		public Long getAnonymousUsersCount() {
-			return _anonymousUsersCount;
-		}
-
-		public Long getKnownUsersCount() {
-			return _knownUsersCount;
-		}
-
-		public Long getNonsegmentedIndividualsCount() {
-			return _nonsegmentedIndividualsCount;
-		}
-
-		public Long getSegmentedAnonymousIndividualsCount() {
-			return _segmentedIndividualsCount;
-		}
-
-		@JsonProperty("segments")
-		public ResultBag<MetricReport> getSegmentMetricReportResultBag() {
-			return _segmentMetricReportResultBag;
-		}
-
-		private Long _anonymousUsersCount;
-		private Long _knownUsersCount;
-		private Long _nonsegmentedIndividualsCount;
-		private Long _segmentedIndividualsCount;
-		private ResultBag<MetricReport> _segmentMetricReportResultBag;
-
-	}
-
-	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private static class FormFieldReport {
 
 		public FormFieldReport(FormFieldMetric formFieldMetric) {
@@ -1639,8 +1592,8 @@ public class ReportRestController extends BaseRestController {
 		}
 
 		@JsonProperty("audience")
-		public AudienceReport getAudienceReport() {
-			return _audienceReport;
+		public AudienceReportDTO getAudienceReport() {
+			return _audienceReportDTO;
 		}
 
 		@JsonProperty("browsers")
@@ -1711,7 +1664,7 @@ public class ReportRestController extends BaseRestController {
 			_geolocationMetricReports.add(metricReport);
 		}
 
-		private AudienceReport _audienceReport;
+		private AudienceReportDTO _audienceReportDTO;
 		private List<MetricReport> _browserMetricReports;
 		private List<MetricReport> _deviceMetricReports;
 		private List<MetricReport> _geolocationMetricReports;
