@@ -188,7 +188,7 @@ public class FilterExpression {
 				"applicationId eq ''" + matcher.group("applicationId") + "'' " +
 					"and eventId eq ''" + matcher.group("eventId") + "'' and " +
 						"sha256Hex(assetId) eq ''" +
-							matcher.group("asseIdHashed") + "''";
+							matcher.group("assetIdHashed") + "''";
 
 			filterExpressionString = matcher.replaceFirst(expression);
 
@@ -234,7 +234,7 @@ public class FilterExpression {
 
 	private static final Pattern _activityKeyPattern = Pattern.compile(
 		"activityKey eq ''(?<applicationId>[\\w]+)#(?<eventId>[\\w]+)#" +
-			"(?<asseIdHashed>[\\w]+)''");
+			"(?<assetIdHashed>[\\w]+)''");
 	private static final Pattern _interestPattern = Pattern.compile(
 		"interests.filter\\(filter='\\(name eq ''(?<keyword>[^']+)'' and " +
 			"score eq ''(?<interested>true|false)''\\)'\\)");
