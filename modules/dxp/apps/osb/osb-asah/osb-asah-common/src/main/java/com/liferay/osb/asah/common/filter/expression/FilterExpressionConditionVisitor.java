@@ -443,13 +443,26 @@ public class FilterExpressionConditionVisitor
 		Token stopToken = greaterThanExpressionContext.stop;
 
 		String fieldName = startToken.getText();
+		String value = StringUtil.unquoteAndDecodeInnerQuotes(
+			stopToken.getText());
+
+		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+
+			return _visitOrganizationExpression(fieldName, "gt", value);
+		}
+
+		if (fieldName.startsWith("custom/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getCustomFieldCondition(identifierParts[1], "gt", value);
+		}
 
 		if (fieldName.startsWith("demographics/")) {
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
 			return _getDemographicsFieldCondition(
-				greaterThanExpressionContext, identifierParts[1], "gt",
-				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+				greaterThanExpressionContext, identifierParts[1], "gt", value);
 		}
 
 		Field leftField = _getLeftField(greaterThanExpressionContext);
@@ -466,13 +479,27 @@ public class FilterExpressionConditionVisitor
 		Token stopToken = greaterThanOrEqualsExpressionContext.stop;
 
 		String fieldName = startToken.getText();
+		String value = StringUtil.unquoteAndDecodeInnerQuotes(
+			stopToken.getText());
+
+		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+
+			return _visitOrganizationExpression(fieldName, "ge", value);
+		}
+
+		if (fieldName.startsWith("custom/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getCustomFieldCondition(identifierParts[1], "ge", value);
+		}
 
 		if (fieldName.startsWith("demographics/")) {
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
 			return _getDemographicsFieldCondition(
 				greaterThanOrEqualsExpressionContext, identifierParts[1], "ge",
-				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+				value);
 		}
 
 		Field leftField = _getLeftField(greaterThanOrEqualsExpressionContext);
@@ -538,13 +565,26 @@ public class FilterExpressionConditionVisitor
 		Token stopToken = lessThanExpressionContext.stop;
 
 		String fieldName = startToken.getText();
+		String value = StringUtil.unquoteAndDecodeInnerQuotes(
+			stopToken.getText());
+
+		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+
+			return _visitOrganizationExpression(fieldName, "lt", value);
+		}
+
+		if (fieldName.startsWith("custom/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getCustomFieldCondition(identifierParts[1], "lt", value);
+		}
 
 		if (fieldName.startsWith("demographics/")) {
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
 			return _getDemographicsFieldCondition(
-				lessThanExpressionContext, identifierParts[1], "lt",
-				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+				lessThanExpressionContext, identifierParts[1], "lt", value);
 		}
 
 		Field leftField = _getLeftField(lessThanExpressionContext);
@@ -561,13 +601,27 @@ public class FilterExpressionConditionVisitor
 		Token stopToken = lessThanOrEqualsExpressionContext.stop;
 
 		String fieldName = startToken.getText();
+		String value = StringUtil.unquoteAndDecodeInnerQuotes(
+			stopToken.getText());
+
+		if (Objects.equals(
+				_filterType, FilterExpression.FilterType.ORGANIZATIONS)) {
+
+			return _visitOrganizationExpression(fieldName, "le", value);
+		}
+
+		if (fieldName.startsWith("custom/")) {
+			String[] identifierParts = StringUtils.split(fieldName, "/");
+
+			return _getCustomFieldCondition(identifierParts[1], "le", value);
+		}
 
 		if (fieldName.startsWith("demographics/")) {
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
 			return _getDemographicsFieldCondition(
 				lessThanOrEqualsExpressionContext, identifierParts[1], "le",
-				StringUtil.unquoteAndDecodeInnerQuotes(stopToken.getText()));
+				value);
 		}
 
 		Field leftField = _getLeftField(lessThanOrEqualsExpressionContext);
@@ -721,6 +775,42 @@ public class FilterExpressionConditionVisitor
 							"%' ELSE LOWER(", alias, ".value) = '",
 							StringUtils.lowerCase(value), "' END")));
 			}
+		}
+		else if (operator.equalsIgnoreCase("ge")) {
+			condition = condition.and(
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN SAFE_CAST(", alias,
+						".value AS NUMERIC) IS NULL THEN false ELSE SAFE_CAST(",
+						alias, ".value AS NUMERIC) >= SAFE_CAST(", value,
+						" AS NUMERIC) END")));
+		}
+		else if (operator.equalsIgnoreCase("gt")) {
+			condition = condition.and(
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN SAFE_CAST(", alias,
+						".value AS NUMERIC) IS NULL THEN false ELSE SAFE_CAST(",
+						alias, ".value AS NUMERIC) > SAFE_CAST(", value,
+						" AS NUMERIC) END")));
+		}
+		else if (operator.equalsIgnoreCase("le")) {
+			condition = condition.and(
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN SAFE_CAST(", alias,
+						".value AS NUMERIC) IS NULL THEN false ELSE SAFE_CAST(",
+						alias, ".value AS NUMERIC) <= SAFE_CAST(", value,
+						" AS NUMERIC) END")));
+		}
+		else if (operator.equalsIgnoreCase("lt")) {
+			condition = condition.and(
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN SAFE_CAST(", alias,
+						".value AS NUMERIC) IS NULL THEN false ELSE SAFE_CAST(",
+						alias, ".value AS NUMERIC) < SAFE_CAST(", value,
+						" AS NUMERIC) END")));
 		}
 		else if (operator.equalsIgnoreCase("ne")) {
 			if (StringUtil.isNull(value)) {
