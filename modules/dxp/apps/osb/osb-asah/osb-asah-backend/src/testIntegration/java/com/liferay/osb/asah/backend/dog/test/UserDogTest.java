@@ -20,13 +20,10 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.backend.model.JournalMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.BQIndividualRepository;
-import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.repository.CrudBQJournalRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,15 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author André Miranda
  */
-@Disabled
 public class UserDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@RepositoryResource(
-		repositoryClass = CrudBQJournalRepository.class,
-		resourcePath = "osbasahcereroinfo/user_journal_info.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_anonymous_users_count.sql")
 	@Test
 	public void testGetAnonymousUsersCount() {
 		Assertions.assertEquals(
@@ -51,34 +44,29 @@ public class UserDogTest
 				JournalMetricType.VIEWS, _searchQueryContext));
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQJournalRepository.class,
-		resourcePath = "osbasahcereroinfo/user_journal_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_known_users_count.sql")
 	@Test
 	public void testGetKnownUsersCount() {
 		Assertions.assertEquals(
-			4,
+			5,
 			_userDog.getKnownUsersCount(
 				JournalMetricType.VIEWS, _searchQueryContext));
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQJournalRepository.class,
-		resourcePath = "osbasahcereroinfo/user_journal_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/user_journal_individuals_info.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_nonsegmented_individuals_count.sql")
+	@Test
+	public void testGetNonsegmentedIndividualsCount() {
+		Assertions.assertEquals(
+			2,
+			_userDog.getNonsegmentedIndividualsCount(
+				JournalMetricType.VIEWS, _searchQueryContext));
+	}
+
+	@BQSQLResource(resourcePath = "test_get_segmented_individuals_count.sql")
 	@Test
 	public void testGetSegmentedIndividualsCount() {
 		Assertions.assertEquals(
-			1,
+			3,
 			_userDog.getSegmentedIndividualsCount(
 				JournalMetricType.VIEWS, _searchQueryContext));
 	}
@@ -86,6 +74,7 @@ public class UserDogTest
 	private final SearchQueryContext _searchQueryContext =
 		new SearchQueryContext("1", AssetType.JOURNAL) {
 			{
+				setChannelId(1L);
 				setTimeRange(TimeRange.LAST_7_DAYS);
 			}
 		};
