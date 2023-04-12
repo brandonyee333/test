@@ -258,14 +258,14 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					DSL.countDistinct(
 						DSL.when(
 							DSL.field(
-								"identity.individualId"
+								"individual.id"
 							).isNull(),
 							DSL.field("identity.id"))
 					).as(
 						"anonymousIndividualsCount"
 					),
 					DSL.countDistinct(
-						DSL.field("identity.individualId")
+						DSL.field("individual.id")
 					).as(
 						"knownIndividualsCount"
 					),
@@ -274,7 +274,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 							DSL.field(
 								"membership.segmentId"
 							).isNull(),
-							DSL.field("identity.individualId"))
+							DSL.field("individual.id"))
 					).as(
 						"nonsegmentedIndividualsCount"
 					),
@@ -283,7 +283,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 							DSL.field(
 								"membership.segmentId"
 							).isNotNull(),
-							DSL.field("identity.individualId"))
+							DSL.field("individual.id"))
 					).as(
 						"segmentedIndividualsCount"
 					)
@@ -304,6 +304,18 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 						"metric.userId"
 					).eq(
 						DSL.field("identity.id")
+					)
+				).leftJoin(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"individual"
+					)
+				).on(
+					DSL.field(
+						"identity.individualId"
+					).eq(
+						DSL.field("individual.id")
 					)
 				).leftJoin(
 					DSL.table(
