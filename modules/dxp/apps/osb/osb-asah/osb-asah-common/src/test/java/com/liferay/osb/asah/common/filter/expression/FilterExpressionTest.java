@@ -711,8 +711,10 @@ public class FilterExpressionTest {
 		LocalDateTime localDateTime = LocalDateTime.of(
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
+		Field identityIdField = DSL.field("Identity.id");
+
 		_assertEquals(
-			DSL.exists(
+			identityIdField.in(
 				DSL.select(
 					userIdField
 				).from(
@@ -744,8 +746,6 @@ public class FilterExpressionTest {
 						).gt(
 							localDateTime.minus(1, ChronoUnit.DAYS)
 						)
-					).and(
-						userIdField.eq(DSL.field("Identity.id"))
 					)
 				).groupBy(
 					userIdField
@@ -766,53 +766,53 @@ public class FilterExpressionTest {
 		LocalDateTime localDateTime = LocalDateTime.of(
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
+		Field identityIdField = DSL.field("Identity.id");
+
 		_assertEquals(
-			DSL.exists(
-				DSL.select(
-					userIdField
-				).from(
-					DSL.table(
-						"BQEvent"
-					).as(
-						"Event"
-					)
-				).where(
-					DSL.field(
-						"Event.applicationId"
-					).eq(
-						"Form"
-					).and(
-						DSL.field(
-							"Event.eventId"
-						).eq(
-							"formSubmitted"
-						)
-					).and(
-						DSL.field(
-							"Event.id"
-						).eq(
-							"519356017509996745"
-						)
-					).and(
-						DSL.field(
-							"Event.eventDate"
-						).gt(
-							localDateTime.minus(1, ChronoUnit.DAYS)
-						)
-					).and(
-						userIdField.eq(DSL.field("Identity.id"))
-					)
-				).groupBy(
-					userIdField
-				).having(
-					DSL.count(
+			DSL.and(
+				identityIdField.in(
+					DSL.select(
 						userIdField
-					).ge(
-						1
-					)
-				)
-			).and(
-				DSL.exists(
+					).from(
+						DSL.table(
+							"BQEvent"
+						).as(
+							"Event"
+						)
+					).where(
+						DSL.field(
+							"Event.applicationId"
+						).eq(
+							"Form"
+						).and(
+							DSL.field(
+								"Event.eventId"
+							).eq(
+								"formSubmitted"
+							)
+						).and(
+							DSL.field(
+								"Event.id"
+							).eq(
+								"519356017509996745"
+							)
+						).and(
+							DSL.field(
+								"Event.eventDate"
+							).gt(
+								localDateTime.minus(1, ChronoUnit.DAYS)
+							)
+						)
+					).groupBy(
+						userIdField
+					).having(
+						DSL.count(
+							userIdField
+						).ge(
+							1
+						)
+					)),
+				identityIdField.in(
 					DSL.select(
 						userIdField
 					).from(
@@ -844,8 +844,6 @@ public class FilterExpressionTest {
 							).gt(
 								localDateTime.minus(1, ChronoUnit.DAYS)
 							)
-						).and(
-							userIdField.eq(DSL.field("Identity.id"))
 						)
 					).groupBy(
 						userIdField
@@ -855,8 +853,7 @@ public class FilterExpressionTest {
 						).ge(
 							1
 						)
-					))
-			),
+					))),
 			_testFilters.get("testFreestyle13"),
 			new HashSet<>(Arrays.asList("Event")));
 	}
@@ -866,6 +863,8 @@ public class FilterExpressionTest {
 		Field userIdField = DSL.field("Event.userId");
 		LocalDateTime localDateTime = LocalDateTime.of(
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		Field identityIdField = DSL.field("Identity.id");
 
 		_assertEquals(
 			DSL.lower(
@@ -879,7 +878,7 @@ public class FilterExpressionTest {
 					).eq(
 						"jobtitle"
 					),
-					DSL.exists(
+					identityIdField.in(
 						DSL.select(
 							userIdField
 						).from(
@@ -911,8 +910,6 @@ public class FilterExpressionTest {
 								).gt(
 									localDateTime.minus(1, ChronoUnit.DAYS)
 								)
-							).and(
-								userIdField.eq(DSL.field("Identity.id"))
 							)
 						).groupBy(
 							userIdField
@@ -940,6 +937,8 @@ public class FilterExpressionTest {
 		LocalDateTime localDateTime = LocalDateTime.of(
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
+		Field identityIdField = DSL.field("Identity.id");
+
 		_assertEquals(
 			DSL.lower(
 				DSL.field("Individual.addresses", String.class)
@@ -953,7 +952,7 @@ public class FilterExpressionTest {
 						"jobtitle"
 					),
 					DSL.not(
-						DSL.exists(
+						identityIdField.in(
 							DSL.select(
 								userIdField
 							).from(
@@ -985,8 +984,6 @@ public class FilterExpressionTest {
 									).gt(
 										localDateTime.minus(1, ChronoUnit.DAYS)
 									)
-								).and(
-									userIdField.eq(DSL.field("Identity.id"))
 								)
 							).groupBy(
 								userIdField
