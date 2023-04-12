@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +44,7 @@ import org.jooq.DSLContext;
 import org.jooq.DatePart;
 import org.jooq.DeleteUsingStep;
 import org.jooq.Field;
+import org.jooq.InsertValuesStep4;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -372,6 +374,32 @@ public class BQMembershipChangeRepositoryImpl
 			).offset(
 				pageable.getOffset()
 			));
+	}
+
+	@Override
+	public void initializeBQMembershipChanges(Long segmentId, ZoneId zoneId) {
+		InsertValuesStep4<Record, Object, Long, Long, Long> insertValuesStep4 =
+			_dslContext.insertInto(
+				DSL.table("BQMembershipChange")
+			).columns(
+				DSL.field("createDate", Object.class),
+				DSL.field("identitiesCount", Long.class),
+				DSL.field("individualsCount", Long.class),
+				DSL.field("segmentId", Long.class)
+			);
+
+		LocalDateTime endLocalDateTime = DateUtil.newDayLocalDateTime(zoneId);
+
+		LocalDateTime startLocalDateTime = endLocalDateTime.minusDays(30);
+
+		while (startLocalDateTime.compareTo(endLocalDateTime) < 1) {
+			insertValuesStep4 = insertValuesStep4.values(
+				DateUtil.toUTCString(startLocalDateTime), 0L, 0L, segmentId);
+
+			startLocalDateTime = startLocalDateTime.plusDays(1);
+		}
+
+		_queryExecutor.queryExecute(insertValuesStep4);
 	}
 
 	@Override

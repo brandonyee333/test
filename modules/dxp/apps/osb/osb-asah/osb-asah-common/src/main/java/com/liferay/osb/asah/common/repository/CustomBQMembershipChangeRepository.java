@@ -18,6 +18,8 @@ import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
+import java.time.ZoneId;
+
 import java.util.List;
 
 import org.springframework.cache.annotation.CacheEvict;
@@ -57,6 +59,10 @@ public interface CustomBQMembershipChangeRepository {
 
 	public List<Transformation> getMembershipChangeTransformations(
 		boolean includeToday, Long segmentId, Pageable pageable);
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	public void initializeBQMembershipChanges(Long segmentId, ZoneId zoneId);
 
 	public BQMembershipChange insert(BQMembershipChange bqMembershipChange);
 
