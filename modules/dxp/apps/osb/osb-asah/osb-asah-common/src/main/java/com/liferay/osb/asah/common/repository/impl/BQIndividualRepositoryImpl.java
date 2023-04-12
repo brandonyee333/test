@@ -585,11 +585,11 @@ public class BQIndividualRepositoryImpl
 			DSL.field("Individual.birthday"),
 			DSL.field("Individual.emailAddress"),
 			DSL.field("Individual.firstName"), DSL.field("Individual.id"),
+			DSL.field("Individual.jobTitle"),
 			DSL.field("Individual.languageId"),
 			DSL.field("Individual.lastName"),
-			DSL.field("Individual.modifiedDate"),
 			DSL.field("Individual.middleName"),
-			DSL.field("Individual.jobTitle"),
+			DSL.field("Individual.modifiedDate"),
 			DSL.field("Individual.screenName"));
 
 		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
