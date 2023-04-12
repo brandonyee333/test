@@ -15,9 +15,11 @@
 package com.liferay.osb.asah.dataflow.emulator.bot.nanite;
 
 import com.liferay.osb.asah.common.date.DateUtil;
+import com.liferay.osb.asah.common.entity.BQIdentityInterestPage;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.entity.BQSessionInterestScore;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
+import com.liferay.osb.asah.common.repository.BQIdentityInterestPageRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQSessionInterestScoreRepository;
 
@@ -48,23 +50,26 @@ public class InterestScoreIngestionNanite {
 		List<BQIdentityInterestScore> bqIdentityInterestScores =
 			new ArrayList<>();
 		List<BQSessionInterestScore> bqSessionInterestScores = new ArrayList();
+		Set<String> keywords = new HashSet<>();
 		Set<String> userIds = new HashSet<>();
 
-		for (Map<String, String> keywords :
+		for (Map<String, String> keywordsMap :
 				_bqEventRepository.
 					getKeywordsGroupedByChannelIdAndSessionIdAndUserId(date)) {
 
-			String userId = keywords.get("userId");
+			String userId = keywordsMap.get("userId");
 
 			if (!userIds.contains(userId)) {
 				bqIdentityInterestScores.addAll(
-					_getBQIdentityInterestScores(keywords, date));
+					_getBQIdentityInterestScores(keywordsMap, date));
 
 				userIds.add(userId);
 			}
 
 			bqSessionInterestScores.addAll(
-				_getBQSessionInterestScores(keywords, date));
+				_getBQSessionInterestScores(keywordsMap, date));
+
+			keywords.addAll(_getKeywords(keywordsMap.get("keywords")));
 		}
 
 		_bqIdentityInterestScoreRepository.deleteByRecordedDate(date);
@@ -80,6 +85,30 @@ public class InterestScoreIngestionNanite {
 			_bqSessionInterestScoreRepository.insertAll(
 				bqSessionInterestScores);
 		}
+
+		_bqIdentityInterestPageRepository.deleteByKeywords(keywords);
+
+		List<BQIdentityInterestPage> bqIdentityInterestPages =
+			_getBQIdentityInterestPages(keywords);
+
+		if (!bqIdentityInterestPages.isEmpty()) {
+			_bqIdentityInterestPageRepository.insertAll(
+				bqIdentityInterestPages);
+		}
+	}
+
+	private List<BQIdentityInterestPage> _getBQIdentityInterestPages(
+		Set<String> keywords) {
+
+		List<BQIdentityInterestPage> bqIdentityInterestPages = new ArrayList();
+
+		for (String keyword : keywords) {
+			bqIdentityInterestPages.addAll(
+				_bqIdentityInterestPageRepository.getBQIdentityInterestPages(
+					keyword));
+		}
+
+		return bqIdentityInterestPages;
 	}
 
 	private List<BQIdentityInterestScore> _getBQIdentityInterestScores(
@@ -156,6 +185,9 @@ public class InterestScoreIngestionNanite {
 
 	@Autowired
 	private BQEventRepository _bqEventRepository;
+
+	@Autowired
+	private BQIdentityInterestPageRepository _bqIdentityInterestPageRepository;
 
 	@Autowired
 	private BQIdentityInterestScoreRepository
