@@ -14,6 +14,8 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.BQIdentityInterestPage;
+
 import java.util.List;
 import java.util.Map;
 
@@ -40,5 +42,7 @@ public interface CustomBQIdentityInterestPageRepository {
 	public List<Map<String, Object>> getInactivePagesTransformations(
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
 		String ownerType, Pageable pageable);
+
+	public void insertAll(List<BQIdentityInterestPage> bqIdentityInterestPages);
 
 }

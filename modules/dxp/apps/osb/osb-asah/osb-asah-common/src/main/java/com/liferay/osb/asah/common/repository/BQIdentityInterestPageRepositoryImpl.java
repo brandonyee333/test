@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository;
 
+import com.liferay.osb.asah.common.entity.BQIdentityInterestPage;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
@@ -32,6 +33,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.InsertValuesStep6;
+import org.jooq.Record;
 import org.jooq.Record3;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectJoinStep;
@@ -187,6 +190,35 @@ public class BQIdentityInterestPageRepositoryImpl
 			).offset(
 				pageable.getOffset()
 			));
+	}
+
+	@Override
+	public void insertAll(
+		List<BQIdentityInterestPage> bqIdentityInterestPages) {
+
+		InsertValuesStep6<Record, String, Long, Object, Object, Object, Long>
+			insertValuesStep6 = _dslContext.insertInto(
+				DSL.table("BQIdentityInterestPage")
+			).columns(
+				DSL.field("canonicalUrl", String.class),
+				DSL.field("channelId", Long.class), DSL.field("identityId"),
+				DSL.field("keyword"), DSL.field("title"),
+				DSL.field("views", Long.class)
+			);
+
+		for (BQIdentityInterestPage bqIdentityInterestPage :
+				bqIdentityInterestPages) {
+
+			insertValuesStep6 = insertValuesStep6.values(
+				bqIdentityInterestPage.getCanonicalUrl(),
+				bqIdentityInterestPage.getChannelId(),
+				bqIdentityInterestPage.getIdentityId(),
+				bqIdentityInterestPage.getKeyword(),
+				bqIdentityInterestPage.getTitle(),
+				bqIdentityInterestPage.getViews());
+		}
+
+		_queryExecutor.queryExecute(insertValuesStep6);
 	}
 
 	private SelectFinalStep<Record3<String, String, BigDecimal>>
