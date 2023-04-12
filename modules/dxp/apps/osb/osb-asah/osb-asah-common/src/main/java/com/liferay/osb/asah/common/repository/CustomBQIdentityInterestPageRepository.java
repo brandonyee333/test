@@ -44,6 +44,9 @@ public interface CustomBQIdentityInterestPageRepository {
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
 		String ownerType, Pageable pageable);
 
+	public List<BQIdentityInterestPage> getBQIdentityInterestPages(
+		String keyword);
+
 	public List<Map<String, Object>> getInactivePagesTransformations(
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
 		String ownerType, Pageable pageable);

@@ -157,6 +157,52 @@ public class BQIdentityInterestPageRepositoryImpl
 			));
 	}
 
+	public List<BQIdentityInterestPage> getBQIdentityInterestPages(
+		String keyword) {
+
+		return _queryExecutor.queryForList(
+			BQIdentityInterestPage::new,
+			_dslContext.select(
+				DSL.field("canonicalUrl"), DSL.field("channelId"),
+				DSL.field(
+					"userId"
+				).as(
+					"identityId"
+				),
+				DSL.val(
+					keyword
+				).as(
+					"keyword"
+				),
+				DSL.max(DSL.field("title")),
+				DSL.count(
+					DSL.asterisk()
+				).as(
+					"views"
+				)
+			).from(
+				DSL.table(
+					"BQEvent"
+				).as(
+					"Event"
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"Event.applicationId"
+					).eq(
+						"Page"
+					),
+					DSL.condition(
+						String.format(
+							"LOWER(Event.keywords) LIKE '%s'",
+							"%" + StringUtils.lowerCase(keyword) + "%")))
+			).groupBy(
+				DSL.field("canonicalUrl"), DSL.field("channelId"),
+				DSL.field("userId")
+			));
+	}
+
 	@Override
 	public List<Map<String, Object>> getInactivePagesTransformations(
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
