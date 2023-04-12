@@ -317,7 +317,7 @@ public class BQIdentityInterestPageRepositoryImpl
 			if (includeOwner) {
 				conditions.add(
 					DSL.field(
-						"BQIdentity.individualId"
+						"Identity.individualId"
 					).eq(
 						ownerId
 					));
@@ -325,7 +325,7 @@ public class BQIdentityInterestPageRepositoryImpl
 			else {
 				conditions.add(
 					DSL.field(
-						"BQIdentity.individualId"
+						"Identity.individualId"
 					).ne(
 						ownerId
 					));
@@ -335,7 +335,7 @@ public class BQIdentityInterestPageRepositoryImpl
 			if (includeOwner) {
 				conditions.add(
 					DSL.field(
-						"BQMembership.segmentId"
+						"Membership.segmentId"
 					).eq(
 						Long.parseLong(ownerId)
 					));
@@ -344,10 +344,10 @@ public class BQIdentityInterestPageRepositoryImpl
 				conditions.add(
 					DSL.or(
 						DSL.field(
-							"BQMembership.segmentId"
+							"Membership.segmentId"
 						).isNull(),
 						DSL.field(
-							"BQMembership.segmentId"
+							"Membership.segmentId"
 						).ne(
 							Long.parseLong(ownerId)
 						)));
@@ -357,7 +357,7 @@ public class BQIdentityInterestPageRepositoryImpl
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"BQIdentityInterestPage.channelId"
+					"IdentityInterestPage.channelId"
 				).eq(
 					channelId
 				));
@@ -405,27 +405,40 @@ public class BQIdentityInterestPageRepositoryImpl
 				selectSelectStep) {
 
 		SelectJoinStep<Record3<String, String, BigDecimal>> selectJoinStep =
-			selectSelectStep.from("BQIdentityInterestPage");
+			selectSelectStep.from(
+				DSL.table(
+					"BQIdentityInterestPage"
+				).as(
+					"IdentityInterestPage"
+				));
 
 		if (ownerType.equals("individual")) {
 			return selectJoinStep.join(
-				"BQIdentity"
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
 			).on(
 				DSL.field(
-					"BQIdentityInterestPage.identityId"
+					"IdentityInterestPage.identityId"
 				).eq(
-					DSL.field("BQIdentity.id")
+					DSL.field("Identity.id")
 				)
 			);
 		}
 		else if (ownerType.equals("individual-segment")) {
 			return selectJoinStep.leftOuterJoin(
-				"BQMembership"
+				DSL.table(
+					"BQMembership"
+				).as(
+					"Membership"
+				)
 			).on(
 				DSL.field(
-					"BQIdentityInterestPage.identityId"
+					"IdentityInterestPage.identityId"
 				).eq(
-					DSL.field("BQMembership.identityId")
+					DSL.field("Membership.identityId")
 				)
 			);
 		}
