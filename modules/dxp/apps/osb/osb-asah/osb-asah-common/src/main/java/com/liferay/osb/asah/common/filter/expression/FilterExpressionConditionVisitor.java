@@ -769,7 +769,7 @@ public class FilterExpressionConditionVisitor
 				condition = condition.and(
 					DSL.condition(
 						String.join(
-							"CASE WHEN STARTS_WITH(", alias,
+							"", "CASE WHEN STARTS_WITH(", alias,
 							".value, '[') THEN LOWER(", alias,
 							".value) LIKE '%", StringUtils.lowerCase(value),
 							"%' ELSE LOWER(", alias, ".value) = '",
@@ -780,7 +780,7 @@ public class FilterExpressionConditionVisitor
 			condition = condition.and(
 				DSL.condition(
 					String.join(
-						"CASE WHEN SAFE_CAST(", alias,
+						"", "CASE WHEN SAFE_CAST(", alias,
 						".value AS NUMERIC) IS NULL THEN false ELSE SAFE_CAST(",
 						alias, ".value AS NUMERIC) >= SAFE_CAST(", value,
 						" AS NUMERIC) END")));
@@ -789,7 +789,7 @@ public class FilterExpressionConditionVisitor
 			condition = condition.and(
 				DSL.condition(
 					String.join(
-						"CASE WHEN SAFE_CAST(", alias,
+						"", "CASE WHEN SAFE_CAST(", alias,
 						".value AS NUMERIC) IS NULL THEN false ELSE SAFE_CAST(",
 						alias, ".value AS NUMERIC) > SAFE_CAST(", value,
 						" AS NUMERIC) END")));
@@ -798,7 +798,7 @@ public class FilterExpressionConditionVisitor
 			condition = condition.and(
 				DSL.condition(
 					String.join(
-						"CASE WHEN SAFE_CAST(", alias,
+						"", "CASE WHEN SAFE_CAST(", alias,
 						".value AS NUMERIC) IS NULL THEN false ELSE SAFE_CAST(",
 						alias, ".value AS NUMERIC) <= SAFE_CAST(", value,
 						" AS NUMERIC) END")));
@@ -807,7 +807,7 @@ public class FilterExpressionConditionVisitor
 			condition = condition.and(
 				DSL.condition(
 					String.join(
-						"CASE WHEN SAFE_CAST(", alias,
+						"", "CASE WHEN SAFE_CAST(", alias,
 						".value AS NUMERIC) IS NULL THEN false ELSE SAFE_CAST(",
 						alias, ".value AS NUMERIC) < SAFE_CAST(", value,
 						" AS NUMERIC) END")));
@@ -823,7 +823,7 @@ public class FilterExpressionConditionVisitor
 				condition = condition.and(
 					DSL.condition(
 						String.join(
-							"CASE WHEN STARTS_WITH(", alias,
+							"", "CASE WHEN STARTS_WITH(", alias,
 							".value, '[') THEN LOWER(", alias,
 							".value) NOT LIKE '%", StringUtils.lowerCase(value),
 							"%' ELSE LOWER(", alias, ".value) != '",

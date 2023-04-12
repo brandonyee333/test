@@ -1150,7 +1150,7 @@ public class FilterExpressionTest {
 				),
 				DSL.condition(
 					String.join(
-						"CASE WHEN STARTS_WITH(",
+						"", "CASE WHEN STARTS_WITH(",
 						"IndividualFields_custom_field.value, '[') THEN ",
 						"LOWER(IndividualFields_custom_field.value) LIKE ",
 						"'%test%' ELSE ",
@@ -1172,7 +1172,7 @@ public class FilterExpressionTest {
 				),
 				DSL.condition(
 					String.join(
-						"CASE WHEN SAFE_CAST(",
+						"", "CASE WHEN SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) IS ",
 						"NULL THEN false ELSE SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) >= ",
@@ -1193,7 +1193,7 @@ public class FilterExpressionTest {
 				),
 				DSL.condition(
 					String.join(
-						"CASE WHEN SAFE_CAST(",
+						"", "CASE WHEN SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) IS ",
 						"NULL THEN false ELSE SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) > ",
@@ -1214,7 +1214,7 @@ public class FilterExpressionTest {
 				),
 				DSL.condition(
 					String.join(
-						"CASE WHEN SAFE_CAST(",
+						"", "CASE WHEN SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) IS ",
 						"NULL THEN false ELSE SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) <= ",
@@ -1235,7 +1235,7 @@ public class FilterExpressionTest {
 				),
 				DSL.condition(
 					String.join(
-						"CASE WHEN SAFE_CAST(",
+						"", "CASE WHEN SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) IS ",
 						"NULL THEN false ELSE SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) < ",
@@ -1930,7 +1930,7 @@ public class FilterExpressionTest {
 						),
 						DSL.condition(
 							String.join(
-								"CASE WHEN STARTS_WITH(",
+								"", "CASE WHEN STARTS_WITH(",
 								"ExpandoValue_custom_field.value, '[') THEN ",
 								"LOWER(ExpandoValue_custom_field.value) LIKE ",
 								"'%test%' ELSE ",
@@ -2002,7 +2002,7 @@ public class FilterExpressionTest {
 						),
 						DSL.condition(
 							String.join(
-								"CASE WHEN SAFE_CAST(",
+								"", "CASE WHEN SAFE_CAST(",
 								"ExpandoValue_custom_field.value AS NUMERIC) ",
 								"IS NULL THEN false ELSE SAFE_CAST(",
 								"ExpandoValue_custom_field.value AS NUMERIC) ",
