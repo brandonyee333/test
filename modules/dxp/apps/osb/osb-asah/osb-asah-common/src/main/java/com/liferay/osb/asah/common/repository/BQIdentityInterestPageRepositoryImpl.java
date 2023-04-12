@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
@@ -103,6 +104,20 @@ public class BQIdentityInterestPageRepositoryImpl
 					).from(
 						"ActivePage"
 					)
+				)
+			));
+	}
+
+	@Override
+	public void deleteByKeywords(Set<String> keywords) {
+		_queryExecutor.queryExecute(
+			_dslContext.delete(
+				DSL.table("BQIdentityInterestPage")
+			).where(
+				DSL.field(
+					"keyword"
+				).in(
+					keywords
 				)
 			));
 	}

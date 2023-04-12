@@ -18,8 +18,10 @@ import com.liferay.osb.asah.common.entity.BQIdentityInterestPage;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.lang.Nullable;
 
 /**
@@ -34,6 +36,9 @@ public interface CustomBQIdentityInterestPageRepository {
 	public long countInactivePagesTransformations(
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
 		String ownerType);
+
+	@Modifying
+	public void deleteByKeywords(Set<String> keywords);
 
 	public List<Map<String, Object>> getActivePagesTransformations(
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,
