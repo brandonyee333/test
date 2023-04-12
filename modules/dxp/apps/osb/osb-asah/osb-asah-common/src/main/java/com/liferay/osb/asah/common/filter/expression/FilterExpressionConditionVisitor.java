@@ -212,7 +212,9 @@ public class FilterExpressionConditionVisitor
 			);
 		}
 
-		return DSL.exists(
+		Field identityIdField = DSL.field("Identity.id");
+
+		return identityIdField.in(
 			DSL.select(
 				userIdField
 			).from(
@@ -223,8 +225,6 @@ public class FilterExpressionConditionVisitor
 				)
 			).where(
 				filterExpression.getCondition()
-			).and(
-				userIdField.eq(DSL.field("Identity.id"))
 			).groupBy(
 				userIdField
 			).having(
