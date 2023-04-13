@@ -190,20 +190,48 @@ public class BQIdentityInterestPageRepositoryImpl
 						"Page"
 					),
 					DSL.or(
-						DSL.condition(
-							String.format(
-								"LOWER(Event.keywords) LIKE '%s'",
-								StringUtils.lowerCase(keyword) + " %")),
-						DSL.condition(
-							String.format(
-								"LOWER(Event.keywords) LIKE '%s'",
-								"% " + StringUtils.lowerCase(keyword))),
-						DSL.condition(
-							String.format(
-								"LOWER(Event.keywords) LIKE '%s'",
-								"% " + StringUtils.lowerCase(keyword) + " %"))
-					)
-				)
+						DSL.or(
+							DSL.condition(
+								String.format(
+									"LOWER(Event.assetTitle) LIKE '%s'",
+									StringUtils.lowerCase(keyword) + " %")),
+							DSL.condition(
+								String.format(
+									"LOWER(Event.assetTitle) LIKE '%s'",
+									"% " + StringUtils.lowerCase(keyword))),
+							DSL.condition(
+								String.format(
+									"LOWER(Event.assetTitle) LIKE '%s'",
+									"% " + StringUtils.lowerCase(keyword) +
+										" %"))),
+						DSL.or(
+							DSL.condition(
+								String.format(
+									"LOWER(Event.description) LIKE '%s'",
+									StringUtils.lowerCase(keyword) + " %")),
+							DSL.condition(
+								String.format(
+									"LOWER(Event.description) LIKE '%s'",
+									"% " + StringUtils.lowerCase(keyword))),
+							DSL.condition(
+								String.format(
+									"LOWER(Event.description) LIKE '%s'",
+									"% " + StringUtils.lowerCase(keyword) +
+										" %"))),
+						DSL.or(
+							DSL.condition(
+								String.format(
+									"LOWER(Event.keywords) LIKE '%s'",
+									StringUtils.lowerCase(keyword) + " %")),
+							DSL.condition(
+								String.format(
+									"LOWER(Event.keywords) LIKE '%s'",
+									"% " + StringUtils.lowerCase(keyword))),
+							DSL.condition(
+								String.format(
+									"LOWER(Event.keywords) LIKE '%s'",
+									"% " + StringUtils.lowerCase(keyword) +
+										" %")))))
 			).groupBy(
 				DSL.field("canonicalUrl"), DSL.field("channelId"),
 				DSL.field("userId")
