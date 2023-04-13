@@ -172,11 +172,21 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("Identity.id")
 				)
 			).where(
-				DSL.field(
-					"Identity.individualId"
-				).eq(
-					individualId
-				)
+				DSL.and(
+					DSL.field(
+						"Identity.individualId"
+					).eq(
+						individualId
+					),
+					DSL.field(
+						"recordedDate"
+					).eq(
+						_dslContext.select(
+							DSL.max(DSL.field("recordedDate"))
+						).from(
+							DSL.table("BQIdentityInterestScore")
+						)
+					))
 			));
 	}
 
@@ -424,11 +434,21 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("Identity.id")
 				)
 			).where(
-				DSL.field(
-					"Identity.individualId"
-				).eq(
-					individualId
-				)
+				DSL.and(
+					DSL.field(
+						"Identity.individualId"
+					).eq(
+						individualId
+					),
+					DSL.field(
+						"recordedDate"
+					).eq(
+						_dslContext.select(
+							DSL.max(DSL.field("recordedDate"))
+						).from(
+							DSL.table("BQIdentityInterestScore")
+						)
+					))
 			).limit(
 				pageable.getPageSize()
 			).offset(
@@ -860,6 +880,15 @@ public class BQIdentityInterestScoreRepositoryImpl
 						"individualId"
 					).equal(
 						individualId
+					),
+					DSL.field(
+						"recordedDate"
+					).eq(
+						_dslContext.select(
+							DSL.max(DSL.field("recordedDate"))
+						).from(
+							DSL.table("BQIdentityInterestScore")
+						)
 					))
 			).orderBy(
 				DSL.field(
@@ -1076,6 +1105,18 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DateUtil.toUTCString(recordedDate, DateUtil.PATTERN_SHORT)
 				));
 		}
+		else {
+			conditions.add(
+				DSL.field(
+					"recordedDate"
+				).eq(
+					_dslContext.select(
+						DSL.max(DSL.field("recordedDate"))
+					).from(
+						"BQIdentityInterestScore"
+					)
+				));
+		}
 
 		return conditions;
 	}
@@ -1099,6 +1140,16 @@ public class BQIdentityInterestScoreRepositoryImpl
 				"Identity.individualId"
 			).eq(
 				individualId
+			));
+		conditions.add(
+			DSL.field(
+				"recordedDate"
+			).eq(
+				_dslContext.select(
+					DSL.max(DSL.field("recordedDate"))
+				).from(
+					"BQIdentityInterestScore"
+				)
 			));
 
 		return conditions;
