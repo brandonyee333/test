@@ -109,16 +109,12 @@ public class BQIdentityInterestPageRepositoryImpl
 	}
 
 	@Override
-	public void deleteByKeywords(Set<String> keywords) {
+	public void deleteAll() {
 		_queryExecutor.queryExecute(
 			_dslContext.delete(
 				DSL.table("BQIdentityInterestPage")
 			).where(
-				DSL.field(
-					"keyword"
-				).in(
-					keywords
-				)
+				DSL.trueCondition()
 			));
 	}
 

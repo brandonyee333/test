@@ -38,7 +38,7 @@ public interface CustomBQIdentityInterestPageRepository {
 		String ownerType);
 
 	@Modifying
-	public void deleteByKeywords(Set<String> keywords);
+	public void deleteAll();
 
 	public List<Map<String, Object>> getActivePagesTransformations(
 		@Nullable Long channelId, @Nullable String filterString, String ownerId,

@@ -86,7 +86,7 @@ public class InterestScoreIngestionNanite {
 				bqSessionInterestScores);
 		}
 
-		_bqIdentityInterestPageRepository.deleteByKeywords(keywords);
+		_bqIdentityInterestPageRepository.deleteAll();
 
 		List<BQIdentityInterestPage> bqIdentityInterestPages =
 			_getBQIdentityInterestPages(keywords);
