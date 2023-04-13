@@ -341,6 +341,21 @@ public class ReportRestController extends BaseRestController {
 				new AssetReport(documentLibraryMetric), rangeKey));
 	}
 
+	@GetMapping("/*")
+	public ResponseEntity<Map<String, Object>> getFallback() {
+		return ResponseEntity.ok(
+			new HashMap<String, Object>() {
+				{
+					put(
+						"message",
+						"'type' query parameter must be either blogs, " +
+							"documents-and-media, forms, individuals, " +
+								"pages,segments, or web-contents.");
+					put("status", "ERROR");
+				}
+			});
+	}
+
 	@GetMapping("/forms/{formId}")
 	public EntityModel<AssetReport> getFormAssetReportEntityModel(
 		@RequestParam(defaultValue = "", name = "expand") Set<String> expands,
