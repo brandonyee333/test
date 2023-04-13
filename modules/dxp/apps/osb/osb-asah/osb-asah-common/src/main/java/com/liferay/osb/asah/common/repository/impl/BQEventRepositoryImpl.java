@@ -555,9 +555,16 @@ public class BQEventRepositoryImpl
 				),
 				DSL.max(
 					_dslHelper.concat(
-						DSL.coalesce(DSL.field("assetTitle"), ""), DSL.val(" "),
-						DSL.coalesce(DSL.field("description"), ""),
-						DSL.val(" "), DSL.coalesce(DSL.field("keywords"), ""))
+						DSL.coalesce(
+							DSL.lower(DSL.field("assetTitle", String.class)),
+							""),
+						DSL.val(" "),
+						DSL.coalesce(
+							DSL.lower(DSL.field("description", String.class)),
+							""),
+						DSL.val(" "),
+						DSL.coalesce(
+							DSL.lower(DSL.field("keywords", String.class)), ""))
 				).as(
 					"keywords"
 				),
