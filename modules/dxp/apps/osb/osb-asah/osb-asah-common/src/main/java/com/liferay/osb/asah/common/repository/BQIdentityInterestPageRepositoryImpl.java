@@ -189,10 +189,21 @@ public class BQIdentityInterestPageRepositoryImpl
 					).eq(
 						"Page"
 					),
-					DSL.condition(
-						String.format(
-							"LOWER(Event.keywords) LIKE '%s'",
-							"%" + StringUtils.lowerCase(keyword) + "%")))
+					DSL.or(
+						DSL.condition(
+							String.format(
+								"LOWER(Event.keywords) LIKE '%s'",
+								StringUtils.lowerCase(keyword) + " %")),
+						DSL.condition(
+							String.format(
+								"LOWER(Event.keywords) LIKE '%s'",
+								"% " + StringUtils.lowerCase(keyword))),
+						DSL.condition(
+							String.format(
+								"LOWER(Event.keywords) LIKE '%s'",
+								"% " + StringUtils.lowerCase(keyword) + " %"))
+					)
+				)
 			).groupBy(
 				DSL.field("canonicalUrl"), DSL.field("channelId"),
 				DSL.field("userId")
