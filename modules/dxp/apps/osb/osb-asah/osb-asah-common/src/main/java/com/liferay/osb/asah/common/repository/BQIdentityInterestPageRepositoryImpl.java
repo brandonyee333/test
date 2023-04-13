@@ -180,7 +180,11 @@ public class BQIdentityInterestPageRepositoryImpl
 				).as(
 					"keyword"
 				),
-				DSL.max(DSL.field("title")),
+				DSL.max(
+					DSL.field("title")
+				).as(
+					"title"
+				),
 				DSL.count(
 					DSL.asterisk()
 				).as(
