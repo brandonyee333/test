@@ -189,6 +189,11 @@ public class BQIdentityInterestPageRepositoryImpl
 					).eq(
 						"Page"
 					),
+					DSL.field(
+						"Event.eventId"
+					).eq(
+						"pageViewed"
+					),
 					DSL.or(
 						DSL.or(
 							DSL.condition(
