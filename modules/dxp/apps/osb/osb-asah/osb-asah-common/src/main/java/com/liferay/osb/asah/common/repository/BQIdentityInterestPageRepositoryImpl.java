@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
@@ -157,7 +156,18 @@ public class BQIdentityInterestPageRepositoryImpl
 		String keyword) {
 
 		return _queryExecutor.queryForList(
-			BQIdentityInterestPage::new,
+			recordMap -> {
+				BigDecimal channelIdBigDecimal = (BigDecimal)recordMap.get(
+					"channelId");
+
+				recordMap.put("channelId", channelIdBigDecimal.longValue());
+
+				BigDecimal viewsBigDecimal = (BigDecimal)recordMap.get("views");
+
+				recordMap.put("views", viewsBigDecimal.longValue());
+
+				return new BQIdentityInterestPage(recordMap);
+			},
 			_dslContext.select(
 				DSL.field("canonicalUrl"), DSL.field("channelId"),
 				DSL.field(
