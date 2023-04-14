@@ -161,6 +161,9 @@ public class DXPEntitiesIngestionNanite {
 			bqExpandoColumn.setId(
 				_generateDXPEntityId(
 					bqExpandoColumn.getColumnId(), dataSourceId, projectId));
+			bqExpandoColumn.setName(
+				StringUtils.substringBeforeLast(
+					bqExpandoColumn.getName(), "-"));
 
 			_bqExpandoColumnRepository.deleteById(bqExpandoColumn.getId());
 
