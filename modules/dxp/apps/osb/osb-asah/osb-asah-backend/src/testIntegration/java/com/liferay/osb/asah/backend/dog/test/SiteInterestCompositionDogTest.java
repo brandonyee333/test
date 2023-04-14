@@ -72,12 +72,11 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 			new LinkedHashMap<String, Long>() {
 				{
 					put("engineer", 1L);
-					put("holistic roi", 1L);
 					put("intuitive", 1L);
 					put("models", 1L);
 				}
 			},
-			1, 4, 2);
+			1, 3, 1);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
