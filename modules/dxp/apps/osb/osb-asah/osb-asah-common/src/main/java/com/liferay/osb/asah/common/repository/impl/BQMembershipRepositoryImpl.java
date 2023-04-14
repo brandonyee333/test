@@ -614,7 +614,7 @@ public class BQMembershipRepositoryImpl
 					"identityId"
 				),
 				DSL.field(
-					"Individual.id", String.class
+					"Identity.individualId", String.class
 				).as(
 					"individualId"
 				),
@@ -640,36 +640,18 @@ public class BQMembershipRepositoryImpl
 					"BQIdentity"
 				).as(
 					"Identity"
-				).leftJoin(
-					DSL.table(
-						"BQIndividual"
-					).as(
-						"Individual"
-					)
-				).on(
-					DSL.field(
-						"Identity.individualId"
-					).eq(
-						DSL.field("Individual.id")
-					)
 				));
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString, true);
 
 		selectJoinStep = _getSelectJoinStep(
-			filterExpression.getReferencedTableNames(), selectJoinStep);
+			includeAnonymousUsers, filterExpression.getReferencedTableNames(),
+			selectJoinStep);
 
 		List<Condition> conditions = new ArrayList<>();
 
 		conditions.add(filterExpression.getCondition());
-
-		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
-			conditions.add(
-				DSL.field(
-					"Individual.id"
-				).isNotNull());
-		}
 
 		// TODO Replace DELETE/INSERT by BigQuery MERGE Statement
 
@@ -698,8 +680,9 @@ public class BQMembershipRepositoryImpl
 				selectJoinStep.where(
 					conditions
 				).groupBy(
-					DSL.field("Identity.id"), DSL.field("Individual.id"),
-					DSL.field("segmentId")
+					DSL.field("Identity.id"),
+					DSL.field("Identity.individualId"), DSL.field("segmentId")
+
 				)
 			));
 	}
@@ -757,7 +740,24 @@ public class BQMembershipRepositoryImpl
 	}
 
 	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
-		Set<String> referencedTableNames, SelectJoinStep<R> selectJoinStep) {
+		Boolean includeAnonymousUsers, Set<String> referencedTableNames,
+		SelectJoinStep<R> selectJoinStep) {
+
+		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).on(
+				DSL.field(
+					"Identity.individualId"
+				).eq(
+					DSL.field("Individual.id")
+				)
+			);
+		}
 
 		if (referencedTableNames.contains("Event")) {
 			selectJoinStep = selectJoinStep.join(
@@ -775,20 +775,36 @@ public class BQMembershipRepositoryImpl
 			);
 		}
 
-		if (referencedTableNames.contains("ExpandoValue") &&
-			referencedTableNames.contains("Individual")) {
+		if (referencedTableNames.contains("Individual")) {
+			if (BooleanUtils.isTrue(includeAnonymousUsers)) {
+				selectJoinStep = selectJoinStep.leftJoin(
+					DSL.table(
+						"BQIndividual"
+					).as(
+						"Individual"
+					)
+				).on(
+					DSL.field(
+						"Identity.individualId"
+					).eq(
+						DSL.field("Individual.id")
+					)
+				);
+			}
 
-			Stream<String> stream = referencedTableNames.stream();
+			if (referencedTableNames.contains("ExpandoValue")) {
+				Stream<String> stream = referencedTableNames.stream();
 
-			Set<String> fields = stream.filter(
-				s -> s.startsWith("IndividualFields_")
-			).collect(
-				Collectors.toSet()
-			);
+				Set<String> fields = stream.filter(
+					s -> s.startsWith("IndividualFields_")
+				).collect(
+					Collectors.toSet()
+				);
 
-			for (String field : fields) {
-				selectJoinStep = selectJoinStep.crossJoin(
-					"UNNEST(Individual.fields) AS " + field);
+				for (String field : fields) {
+					selectJoinStep = selectJoinStep.crossJoin(
+						"UNNEST(Individual.fields) AS " + field);
+				}
 			}
 		}
 
