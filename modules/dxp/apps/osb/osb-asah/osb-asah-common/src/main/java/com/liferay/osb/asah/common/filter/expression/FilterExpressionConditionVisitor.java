@@ -358,6 +358,28 @@ public class FilterExpressionConditionVisitor
 			condition = _getIsMemberCondition(
 				(String)param.getValue(), fieldName.replace("Individual.", ""));
 		}
+		else if (functionName.equalsIgnoreCase("notContains")) {
+			Param param = (Param)parameters.get(1);
+
+			String value = String.valueOf(param.getValue());
+
+			if (Objects.equals(fieldName, "Session.referrers")) {
+				_referencedTableNames.add("SessionReferrers");
+
+				field = DSL.field("SessionReferrer");
+			}
+			else if (Objects.equals(fieldName, "Session.urls")) {
+				_referencedTableNames.add("SessionUrls");
+
+				field = DSL.field("SessionUrl");
+			}
+
+			condition = DSL.not(
+				DSL.condition(
+					String.format(
+						"LOWER(%s) LIKE '%s'", field,
+						"%" + StringUtils.lowerCase(value) + "%")));
+		}
 		else if (functionName.equalsIgnoreCase("sha256Hex")) {
 			return DSL.field(String.format("TO_HEX(SHA256(%s))", fieldName));
 		}
