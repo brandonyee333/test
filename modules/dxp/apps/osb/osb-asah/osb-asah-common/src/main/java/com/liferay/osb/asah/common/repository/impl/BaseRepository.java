@@ -84,6 +84,10 @@ public abstract class BaseRepository {
 				fieldName = table.getName() + "." + fieldName;
 			}
 
+			if (order.isIgnoreCase()) {
+				fieldName = String.format("LOWER(%s)", fieldName);
+			}
+
 			Field<?> field = DSL.field(fieldName);
 
 			if (order.getDirection() == Sort.Direction.ASC) {
