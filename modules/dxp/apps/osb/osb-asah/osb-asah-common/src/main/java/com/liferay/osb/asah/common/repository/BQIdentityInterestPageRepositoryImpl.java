@@ -208,49 +208,19 @@ public class BQIdentityInterestPageRepositoryImpl
 					).eq(
 						"pageViewed"
 					),
-					DSL.or(
-						DSL.or(
-							DSL.condition(
-								String.format(
-									"LOWER(Event.assetTitle) LIKE '%s'",
-									StringUtils.lowerCase(keyword) + " %")),
-							DSL.condition(
-								String.format(
-									"LOWER(Event.assetTitle) LIKE '%s'",
-									"% " + StringUtils.lowerCase(keyword))),
-							DSL.condition(
-								String.format(
-									"LOWER(Event.assetTitle) LIKE '%s'",
-									"% " + StringUtils.lowerCase(keyword) +
-										" %"))),
-						DSL.or(
-							DSL.condition(
-								String.format(
-									"LOWER(Event.description) LIKE '%s'",
-									StringUtils.lowerCase(keyword) + " %")),
-							DSL.condition(
-								String.format(
-									"LOWER(Event.description) LIKE '%s'",
-									"% " + StringUtils.lowerCase(keyword))),
-							DSL.condition(
-								String.format(
-									"LOWER(Event.description) LIKE '%s'",
-									"% " + StringUtils.lowerCase(keyword) +
-										" %"))),
-						DSL.or(
-							DSL.condition(
-								String.format(
-									"LOWER(Event.keywords) LIKE '%s'",
-									StringUtils.lowerCase(keyword) + " %")),
-							DSL.condition(
-								String.format(
-									"LOWER(Event.keywords) LIKE '%s'",
-									"% " + StringUtils.lowerCase(keyword))),
-							DSL.condition(
-								String.format(
-									"LOWER(Event.keywords) LIKE '%s'",
-									"% " + StringUtils.lowerCase(keyword) +
-										" %")))))
+					DSL.exists(
+						DSL.selectFrom(
+							"UNNEST(ARRAY_CONCAT(SPLIT(LOWER(Event." +
+								"assetTitle), ' '), SPLIT(LOWER(Event." +
+									"description), ' '), SPLIT(LOWER(Event." +
+										"keywords), ' '))) AS keyword"
+						).where(
+							DSL.field(
+								"keyword"
+							).eq(
+								StringUtils.lowerCase(keyword)
+							)
+						)))
 			).groupBy(
 				DSL.field("canonicalUrl"), DSL.field("channelId"),
 				DSL.field("userId")
