@@ -1254,6 +1254,23 @@ public class BQIndividualRepositoryImpl
 				for (String field : fields) {
 					selectJoinStep = selectJoinStep.crossJoin(
 						"UNNEST(Individual.fields) AS " + field);
+
+					if (referencedTableNames.contains("FieldMapping")) {
+						selectJoinStep = selectJoinStep.join(
+							DSL.table(
+								"BQFieldMapping"
+							).as(
+								"FieldMapping_" + field
+							)
+						).on(
+							DSL.field(
+								field + ".name"
+							).eq(
+								DSL.field(
+									"FieldMapping_" + field + ".fieldName")
+							)
+						);
+					}
 				}
 			}
 		}
