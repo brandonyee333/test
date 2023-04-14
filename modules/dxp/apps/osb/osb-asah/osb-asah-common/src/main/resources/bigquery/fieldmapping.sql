@@ -46,7 +46,7 @@ WITH CustomFieldMapping AS (
 				ARRAY_AGG(DISTINCT CAST(dataSourceId AS STRING)) AS dataSourceIds,
 				displayType,
 				dataType,
-				REGEXP_REPLACE(REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), ''), r'\s', '_') AS fieldName,
+				REGEXP_REPLACE(name, r'\s', '_') AS fieldName,
 				MAX(modifiedDate) AS modifiedDate,
 				name,
 				CASE

@@ -3,7 +3,20 @@ MERGE INTO
 USING
 	(
 		SELECT
-			*
+			className,
+			classPK,
+			columnId,
+			dataSourceId,
+			dataType,
+			deleted,
+			displayType,
+			modifiedDate,
+			REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), '') AS name
+			projectId,
+			rowNumber,
+			sha256HexId,
+			type,
+			uploadDate,
 		FROM (
 			SELECT
 				analyticsDeleteMessage.deleted,
