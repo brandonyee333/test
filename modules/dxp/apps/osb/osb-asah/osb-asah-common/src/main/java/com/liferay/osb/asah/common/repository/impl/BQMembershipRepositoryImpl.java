@@ -97,7 +97,7 @@ public class BQMembershipRepositoryImpl
 			_dslContext.select(
 				DSL.countDistinct(
 					DSL.coalesce(
-						DSL.field("IndividualActivity.individualId"),
+						DSL.field("IdentityActivity.individualId"),
 						DSL.field("IdentityActivity.identityId"))
 				).as(
 					"value"
@@ -116,36 +116,19 @@ public class BQMembershipRepositoryImpl
 				)
 			).on(
 				DSL.and(
-					DSL.field(
-						"Membership.identityId"
-					).eq(
-						DSL.field("IdentityActivity.identityId")
-					),
+					DSL.or(
+						DSL.field(
+							"Membership.identityId"
+						).eq(
+							DSL.field("IdentityActivity.identityId")
+						),
+						DSL.field(
+							"Membership.individualId"
+						).eq(
+							DSL.field("IdentityActivity.individualId")
+						)),
 					DSL.field(
 						"IdentityActivity.lastActivityDate"
-					).greaterOrEqual(
-						DSL.field(
-							"TIMESTAMP '" +
-								DateUtil.toUTCString(localDateTime) + "'")
-					),
-					DSL.field(
-						"Membership.individualId"
-					).isNull())
-			).leftJoin(
-				DSL.table(
-					"BQIdentityActivity"
-				).as(
-					"IndividualActivity"
-				)
-			).on(
-				DSL.and(
-					DSL.field(
-						"Membership.individualId"
-					).eq(
-						DSL.field("IndividualActivity.individualId")
-					),
-					DSL.field(
-						"IndividualActivity.lastActivityDate"
 					).greaterOrEqual(
 						DSL.field(
 							"TIMESTAMP '" +
