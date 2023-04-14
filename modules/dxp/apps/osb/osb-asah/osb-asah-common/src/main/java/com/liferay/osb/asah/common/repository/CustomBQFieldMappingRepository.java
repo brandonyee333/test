@@ -34,7 +34,8 @@ public interface CustomBQFieldMappingRepository {
 
 	public long countIndividualBQFieldMappings(@Nullable String displayName);
 
-	public Optional<BQFieldMapping> findByDisplayName(String displayName);
+	public Optional<BQFieldMapping> findByDisplayNameAndFieldType(
+		String displayName, String fieldType);
 
 	public Optional<BQFieldMapping> findByFieldName(String fieldName);
 

@@ -383,8 +383,8 @@ public class DXPEntitiesIngestionNanite {
 			BQExpandoColumn bqExpandoColumn = bqExpandoColumnOptional.get();
 
 			Optional<BQFieldMapping> bqFieldMappingOptional =
-				_bqFieldMappingRepository.findByDisplayName(
-					bqExpandoColumn.getName());
+				_bqFieldMappingRepository.findByDisplayNameAndFieldType(
+					bqExpandoColumn.getName(), bqExpandoColumn.getDataType());
 
 			if (bqFieldMappingOptional.isPresent()) {
 				BQFieldMapping bqFieldMapping = bqFieldMappingOptional.get();
