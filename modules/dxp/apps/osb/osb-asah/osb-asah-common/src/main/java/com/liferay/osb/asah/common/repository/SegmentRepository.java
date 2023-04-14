@@ -48,6 +48,10 @@ public interface SegmentRepository
 	public boolean existsByName(String name);
 
 	@Cacheable
+	public Optional<Segment> findByChannelIdAndNameIgnoreCase(
+		Long channelId, String name);
+
+	@Cacheable
 	public List<Segment> findByChannelIdIn(
 		@Param("channelIds") Set<Long> channelIds, Pageable pageable);
 

@@ -37,7 +37,9 @@ import com.liferay.osb.asah.common.postgresql.converter.helper.SegmentFilterStri
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahDuplicateNameException;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
@@ -77,6 +79,7 @@ public class SegmentDog {
 
 	public Segment addSegment(Segment segment) {
 		_validateFilterString(segment.getFilter());
+		_validateSegmentName(segment.getChannelId(), null, segment.getName());
 
 		setReferencedFields(segment);
 
@@ -402,6 +405,9 @@ public class SegmentDog {
 	}
 
 	public Segment updateSegment(Segment partialSegment, Long segmentId) {
+		_validateSegmentName(
+			partialSegment.getChannelId(), segmentId, partialSegment.getName());
+
 		return _updateSegment(getSegment(segmentId), partialSegment);
 	}
 
@@ -585,6 +591,24 @@ public class SegmentDog {
 
 		new FilterExpression(
 			filterString, new FilterExpressionValidatorVisitor());
+	}
+
+	private void _validateSegmentName(
+		Long channelId, @Nullable Long segmentId, String name) {
+
+		if (StringUtils.isBlank(name)) {
+			throw new OSBAsahNameException();
+		}
+
+		Optional<Segment> segmentOptional =
+			_segmentRepository.findByChannelIdAndNameIgnoreCase(
+				channelId, name);
+
+		Segment segment = segmentOptional.orElse(null);
+
+		if ((segment != null) && !Objects.equals(segment.getId(), segmentId)) {
+			throw new OSBAsahDuplicateNameException();
+		}
 	}
 
 	private static final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
