@@ -98,7 +98,7 @@ public class BQIdentityInterestScoreRepositoryTest
 	@Test
 	public void testCountByFilterString() {
 		Assertions.assertEquals(
-			4,
+			2,
 			_bqIdentityInterestScoreRepository.countByFilterString(
 				new FilterHelper(null)));
 	}
@@ -120,7 +120,7 @@ public class BQIdentityInterestScoreRepositoryTest
 	@Test
 	public void testCountKeywords() {
 		Assertions.assertEquals(
-			4, _bqIdentityInterestScoreRepository.countKeywords(null));
+			2, _bqIdentityInterestScoreRepository.countKeywords(null));
 	}
 
 	@BQSQLResource(
@@ -129,7 +129,7 @@ public class BQIdentityInterestScoreRepositoryTest
 	@Test
 	public void testCountKeywordsWithFilter() {
 		Assertions.assertEquals(
-			2, _bqIdentityInterestScoreRepository.countKeywords("le"));
+			1, _bqIdentityInterestScoreRepository.countKeywords("le"));
 	}
 
 	@BQSQLResource(
@@ -325,9 +325,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			new ArrayList<String>() {
 				{
-					add("clicks-and-mortar e-tailers");
 					add("compelling metrics");
-					add("javascript");
 					add("sales");
 				}
 			},
@@ -343,12 +341,11 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			new ArrayList<String>() {
 				{
-					add("javascript");
 					add("sales");
 				}
 			},
 			_bqIdentityInterestScoreRepository.getKeywords(
-				null, PageRequest.of(1, 2)));
+				null, PageRequest.of(1, 1)));
 	}
 
 	@BQSQLResource(
@@ -359,7 +356,6 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			new ArrayList<String>() {
 				{
-					add("clicks-and-mortar e-tailers");
 					add("sales");
 				}
 			},
