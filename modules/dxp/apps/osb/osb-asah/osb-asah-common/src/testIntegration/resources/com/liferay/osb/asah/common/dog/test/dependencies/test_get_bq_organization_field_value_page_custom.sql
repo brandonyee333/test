@@ -1,5 +1,5 @@
-INSERT INTO ExpandoColumn (dataSourceId, className, dataType, displayType, name) VALUES (1, 'com.liferay.portal.kernel.model.Organization', 'text', 'checkbox', 'Location-text');
-INSERT INTO ExpandoColumn (dataSourceId, className, dataType, displayType, name) VALUES (1, 'com.liferay.portal.kernel.model.Organization', 'text', 'input-field', 'Organization_Type-text');
+INSERT INTO ExpandoColumn (dataSourceId, className, dataType, displayType, name) VALUES (1, 'com.liferay.portal.kernel.model.Organization', 'text', 'checkbox', 'Location');
+INSERT INTO ExpandoColumn (dataSourceId, className, dataType, displayType, name) VALUES (1, 'com.liferay.portal.kernel.model.Organization', 'text', 'input-field', 'Organization_Type');
 
 INSERT INTO ExpandoValue (classPK, classType, columnId, dataSourceId, fieldName, id, value) VALUES ('2345', 'com.liferay.portal.kernel.model.Organization', '191', 123, 'Location', '19884', '["England", "Italy"]');
 INSERT INTO ExpandoValue (classPK, classType, columnId, dataSourceId, fieldName, id, value) VALUES ('2346', 'com.liferay.portal.kernel.model.Organization', '191', 123, 'Location', '19885', '["France"]');

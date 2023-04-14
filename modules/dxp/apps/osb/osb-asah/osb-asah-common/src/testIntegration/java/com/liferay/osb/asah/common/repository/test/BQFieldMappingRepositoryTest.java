@@ -58,12 +58,14 @@ public class BQFieldMappingRepositoryTest
 	@Test
 	public void testFindByDisplayName() {
 		Optional<BQFieldMapping> bqFieldMappingOptional =
-			_bqFieldMappingRepository.findByDisplayName("additionalName");
+			_bqFieldMappingRepository.findByDisplayNameAndFieldType(
+				"additionalName", "text");
 
 		Assertions.assertNotNull(bqFieldMappingOptional.orElse(null));
 
-		bqFieldMappingOptional = _bqFieldMappingRepository.findByDisplayName(
-			"name");
+		bqFieldMappingOptional =
+			_bqFieldMappingRepository.findByDisplayNameAndFieldType(
+				"name", "text");
 
 		Assertions.assertNull(bqFieldMappingOptional.orElse(null));
 	}
