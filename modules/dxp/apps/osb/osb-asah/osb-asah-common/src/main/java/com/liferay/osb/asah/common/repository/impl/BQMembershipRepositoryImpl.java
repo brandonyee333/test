@@ -94,48 +94,53 @@ public class BQMembershipRepositoryImpl
 			));
 
 		return _queryExecutor.queryForLong(
-			_dslContext.select(
-				DSL.countDistinct(
-					DSL.coalesce(
-						DSL.field("IdentityActivity.individualId"),
-						DSL.field("IdentityActivity.identityId"))
-				).as(
-					"value"
-				)
-			).from(
-				DSL.table(
-					"BQMembership"
-				).as(
-					"Membership"
-				)
-			).leftJoin(
-				DSL.table(
-					"BQIdentityActivity"
-				).as(
-					"IdentityActivity"
-				)
-			).on(
-				DSL.and(
-					DSL.or(
+			_dslContext.with(
+				"ActiveMembers"
+			).as(
+				_dslContext.select(
+					DSL.field("IdentityActivity.individualId"),
+					DSL.field("IdentityActivity.identityId")
+				).from(
+					DSL.table(
+						"BQMembership"
+					).as(
+						"Membership"
+					)
+				).leftJoin(
+					DSL.table(
+						"BQIdentityActivity"
+					).as(
+						"IdentityActivity"
+					)
+				).on(
+					DSL.and(
+						DSL.field(
+							"IdentityActivity.lastActivityDate"
+						).greaterOrEqual(
+							DSL.field(
+								"TIMESTAMP '" +
+									DateUtil.toUTCString(localDateTime) + "'")
+						),
 						DSL.field(
 							"Membership.identityId"
 						).eq(
 							DSL.field("IdentityActivity.identityId")
 						),
-						DSL.field(
-							"Membership.individualId"
+						DSL.coalesce(
+							DSL.field("Membership.individualId"), ""
 						).eq(
-							DSL.field("IdentityActivity.individualId")
-						)),
-					DSL.field(
-						"IdentityActivity.lastActivityDate"
-					).greaterOrEqual(
-						DSL.field(
-							"TIMESTAMP '" +
-								DateUtil.toUTCString(localDateTime) + "'")
-					))
-			).where(
-				conditions
+							DSL.coalesce(
+								DSL.field("IdentityActivity.individualId"), "")
+						))
+				).where(
+					conditions
+				).groupBy(
+					DSL.field("IdentityActivity.individualId"),
+					DSL.field("IdentityActivity.identityId")
+				)
+			).selectCount(
+			).from(
+				"ActiveMembers"
 			));
 	}
 
@@ -682,7 +687,6 @@ public class BQMembershipRepositoryImpl
 				).groupBy(
 					DSL.field("Identity.id"),
 					DSL.field("Identity.individualId"), DSL.field("segmentId")
-
 				)
 			));
 	}
