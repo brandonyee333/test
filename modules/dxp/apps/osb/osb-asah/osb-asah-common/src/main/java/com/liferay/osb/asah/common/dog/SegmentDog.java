@@ -604,9 +604,13 @@ public class SegmentDog {
 			_segmentRepository.findByChannelIdAndNameIgnoreCase(
 				channelId, name);
 
-		Segment segment = segmentOptional.orElse(null);
+		if (!segmentOptional.isPresent()) {
+			return;
+		}
 
-		if ((segment != null) && !Objects.equals(segment.getId(), segmentId)) {
+		Segment existingSegment = segmentOptional.get();
+
+		if (!Objects.equals(existingSegment.getId(), segmentId)) {
 			throw new OSBAsahDuplicateNameException();
 		}
 	}

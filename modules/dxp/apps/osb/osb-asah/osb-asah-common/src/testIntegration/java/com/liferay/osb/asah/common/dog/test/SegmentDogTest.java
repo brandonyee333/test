@@ -46,13 +46,13 @@ public class SegmentDogTest
 
 		Assertions.assertEquals("Name cannot be blank", exception.getMessage());
 
-		String eventAnalysisName1 = "Segment 1";
+		String segmentName = "Segment 1";
 
 		exception = Assertions.assertThrows(
 			OSBAsahDuplicateNameException.class,
 			() -> {
-				_addSegment(1L, eventAnalysisName1.toLowerCase());
-				_addSegment(1L, eventAnalysisName1);
+				_addSegment(1L, segmentName.toLowerCase());
+				_addSegment(1L, segmentName);
 			});
 
 		Assertions.assertEquals("Name is already used", exception.getMessage());
@@ -213,15 +213,7 @@ public class SegmentDogTest
 		Segment segment = new Segment();
 
 		segment.setChannelId(channelId);
-
-		String id =
-			"f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75";
-
-		segment.setFilter(
-			"(activities.filterByCount(filter='(activityKey eq " +
-				"''Form#formViewed#" + id + "'' and day gt ''last24Hours'')'," +
-					"operator='ge',value=1))");
-
+		segment.setFilter("demographics/email/value ne null");
 		segment.setIncludeAnonymousUsers(Boolean.FALSE);
 		segment.setModifiedDate(new Date());
 		segment.setName(name);
