@@ -17,6 +17,8 @@ package com.liferay.osb.asah.common.dog.test;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahDuplicateNameException;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -35,6 +37,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class SegmentDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
+
+	@SQLResource(resourcePath = "test_referenced_objects.sql")
+	@Test
+	public void testAddSegment() {
+		Exception exception = Assertions.assertThrows(
+			OSBAsahNameException.class, () -> _addSegment(1L, " "));
+
+		Assertions.assertEquals("Name cannot be blank", exception.getMessage());
+
+		String eventAnalysisName1 = "Segment 1";
+
+		exception = Assertions.assertThrows(
+			OSBAsahDuplicateNameException.class,
+			() -> {
+				_addSegment(1L, eventAnalysisName1.toLowerCase());
+				_addSegment(1L, eventAnalysisName1);
+			});
+
+		Assertions.assertEquals("Name is already used", exception.getMessage());
+	}
 
 	@BQSQLResource(resourcePath = "test_referenced_objects_bq.sql")
 	@SQLResource(resourcePath = "test_referenced_objects.sql")
@@ -185,6 +207,27 @@ public class SegmentDogTest
 			referencedFieldMappingFieldNames.contains("Custom_Field"));
 		Assertions.assertTrue(
 			referencedFieldMappingFieldNames.contains("email"));
+	}
+
+	private Segment _addSegment(Long channelId, String name) {
+		Segment segment = new Segment();
+
+		segment.setChannelId(channelId);
+
+		String id =
+			"f8638b979b2f4f793ddb6dbd197e0ee25a7a6ea32b0ae22f5e3c5d119d839e75";
+
+		segment.setFilter(
+			"(activities.filterByCount(filter='(activityKey eq " +
+				"''Form#formViewed#" + id + "'' and day gt ''last24Hours'')'," +
+					"operator='ge',value=1))");
+
+		segment.setIncludeAnonymousUsers(Boolean.FALSE);
+		segment.setModifiedDate(new Date());
+		segment.setName(name);
+		segment.setType(Segment.Type.DYNAMIC);
+
+		return _segmentDog.addSegment(segment);
 	}
 
 	@Autowired
