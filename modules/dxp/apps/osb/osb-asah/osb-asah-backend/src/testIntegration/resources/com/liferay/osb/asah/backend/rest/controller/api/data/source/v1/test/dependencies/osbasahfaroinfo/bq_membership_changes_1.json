@@ -14,7 +14,7 @@
 		"segmentId": "327968823603500655"
 	},
 	{
-		"createDate": "${now-0dT12:00:00.000Z}",
+		"createDate": "${now-1h}",
 		"id": "12",
 		"identitiesCount": 12,
 		"individualsCount": 3,
