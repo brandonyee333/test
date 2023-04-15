@@ -65,22 +65,6 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
 	@Test
-	public void testGetCompositionResultBagLast24Hours() {
-		checkResults(
-			_siteInterestCompositionDog.getCompositionResultBag(
-				1L, 10, 0, TimeRange.of(0)),
-			new LinkedHashMap<String, Long>() {
-				{
-					put("engineer", 1L);
-					put("intuitive", 1L);
-					put("models", 1L);
-				}
-			},
-			1, 3, 1);
-	}
-
-	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
-	@Test
 	public void testGetCompositionResultBagLast28Days() {
 		checkResults(
 			_siteInterestCompositionDog.getCompositionResultBag(

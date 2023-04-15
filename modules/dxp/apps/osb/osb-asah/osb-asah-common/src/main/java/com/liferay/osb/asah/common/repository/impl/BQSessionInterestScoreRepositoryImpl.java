@@ -119,26 +119,15 @@ public class BQSessionInterestScoreRepositoryImpl
 				Boolean.TRUE
 			));
 
-		if (timeRange.equals(TimeRange.LAST_24_HOURS)) {
-			conditions.add(
-				DSL.field(
-					"SessionInterestScore.recordedDate"
-				).eq(
-					DateUtil.toUTCString(
-						timeRange.getEndDate(), DateUtil.PATTERN_SHORT)
-				));
-		}
-		else {
-			conditions.add(
-				DSL.field(
-					"SessionInterestScore.recordedDate"
-				).between(
-					DateUtil.toUTCString(
-						timeRange.getStartDate(), DateUtil.PATTERN_SHORT),
-					DateUtil.toUTCString(
-						timeRange.getEndDate(), DateUtil.PATTERN_SHORT)
-				));
-		}
+		conditions.add(
+			DSL.field(
+				"SessionInterestScore.recordedDate"
+			).between(
+				DateUtil.toUTCString(
+					timeRange.getStartDate(), DateUtil.PATTERN_SHORT),
+				DateUtil.toUTCString(
+					timeRange.getEndDate(), DateUtil.PATTERN_SHORT)
+			));
 
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
 			Function.identity(),
