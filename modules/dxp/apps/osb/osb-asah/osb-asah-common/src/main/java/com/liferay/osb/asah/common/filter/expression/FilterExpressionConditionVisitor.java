@@ -25,7 +25,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -755,8 +754,7 @@ public class FilterExpressionConditionVisitor
 	private Condition _getCustomFieldCondition(
 		String fieldName, String operator, String value) {
 
-		Collections.addAll(
-			_referencedTableNames, "ExpandoValue", "FieldMapping");
+		_referencedTableNames.add("ExpandoValue");
 
 		String alias = null;
 		Condition condition = null;
@@ -782,6 +780,15 @@ public class FilterExpressionConditionVisitor
 			);
 		}
 
+		String query = String.join(
+			"", "CASE WHEN STARTS_WITH({0}.value, '[') AND ENDS_WITH(",
+			"{0}.value, ']') THEN (EXISTS (SELECT numeric_value FROM UNNEST(",
+			"JSON_EXTRACT_ARRAY({0}.value,'$')) AS numeric_value WHERE ",
+			"SAFE_CAST(numeric_value AS NUMERIC) {1} SAFE_CAST('", value, "' ",
+			"AS NUMERIC))) WHEN SAFE_CAST({0}.value AS NUMERIC) IS NULL THEN ",
+			"false ELSE SAFE_CAST({0}.value AS NUMERIC) {1} SAFE_CAST('", value,
+			"' AS NUMERIC) END");
+
 		if (operator.equalsIgnoreCase("eq")) {
 			if (StringUtil.isNull(value)) {
 				condition = condition.and(
@@ -803,62 +810,30 @@ public class FilterExpressionConditionVisitor
 		else if (operator.equalsIgnoreCase("ge")) {
 			condition = condition.and(
 				DSL.condition(
-					String.join(
-						"", "CASE WHEN SAFE_CAST(", alias,
-						".value AS NUMERIC) IS NULL THEN false ELSE ",
-						"CASE WHEN FieldMapping_", alias, ".repeatable THEN ",
-						"(", "EXISTS (SELECT numeric_value FROM UNNEST(",
-						"JSON_EXTRACT_ARRAY(", alias,
-						".value,'$')) AS numeric_value WHERE ",
-						"SAFE_CAST(numeric_value AS NUMERIC) >= SAFE_CAST(",
-						value, " AS NUMERIC)", ")", ") ", "ELSE ", "SAFE_CAST(",
-						alias, ".value AS NUMERIC) >= SAFE_CAST(", value,
-						" AS NUMERIC) END ", "END")));
+					StringUtil.replace(
+						query, new String[] {"{0}", "{1}"},
+						new String[] {alias, ">="})));
 		}
 		else if (operator.equalsIgnoreCase("gt")) {
 			condition = condition.and(
 				DSL.condition(
-					String.join(
-						"", "CASE WHEN SAFE_CAST(", alias,
-						".value AS NUMERIC) IS NULL THEN false ELSE ",
-						"CASE WHEN FieldMapping_", alias, ".repeatable THEN ",
-						"(", "EXISTS (SELECT numeric_value FROM UNNEST(",
-						"JSON_EXTRACT_ARRAY(", alias,
-						".value,'$')) AS numeric_value WHERE ",
-						"SAFE_CAST(numeric_value AS NUMERIC) > SAFE_CAST(",
-						value, " AS NUMERIC)", ")", ") ", "ELSE ", "SAFE_CAST(",
-						alias, ".value AS NUMERIC) > SAFE_CAST(", value,
-						" AS NUMERIC) END ", "END")));
+					StringUtil.replace(
+						query, new String[] {"{0}", "{1}"},
+						new String[] {alias, ">"})));
 		}
 		else if (operator.equalsIgnoreCase("le")) {
 			condition = condition.and(
 				DSL.condition(
-					String.join(
-						"", "CASE WHEN SAFE_CAST(", alias,
-						".value AS NUMERIC) IS NULL THEN false ELSE ",
-						"CASE WHEN FieldMapping_", alias, ".repeatable THEN ",
-						"(", "EXISTS (SELECT numeric_value FROM UNNEST(",
-						"JSON_EXTRACT_ARRAY(", alias,
-						".value,'$')) AS numeric_value WHERE ",
-						"SAFE_CAST(numeric_value AS NUMERIC) <= SAFE_CAST(",
-						value, " AS NUMERIC)", ")", ") ", "ELSE ", "SAFE_CAST(",
-						alias, ".value AS NUMERIC) <= SAFE_CAST(", value,
-						" AS NUMERIC) END ", "END")));
+					StringUtil.replace(
+						query, new String[] {"{0}", "{1}"},
+						new String[] {alias, "<="})));
 		}
 		else if (operator.equalsIgnoreCase("lt")) {
 			condition = condition.and(
 				DSL.condition(
-					String.join(
-						"", "CASE WHEN SAFE_CAST(", alias,
-						".value AS NUMERIC) IS NULL THEN false ELSE ",
-						"CASE WHEN FieldMapping_", alias, ".repeatable THEN ",
-						"(", "EXISTS (SELECT numeric_value FROM UNNEST(",
-						"JSON_EXTRACT_ARRAY(", alias,
-						".value,'$')) AS numeric_value WHERE ",
-						"SAFE_CAST(numeric_value AS NUMERIC) < SAFE_CAST(",
-						value, " AS NUMERIC)", ")", ") ", "ELSE ", "SAFE_CAST(",
-						alias, ".value AS NUMERIC) < SAFE_CAST(", value,
-						" AS NUMERIC) END ", "END")));
+					StringUtil.replace(
+						query, new String[] {"{0}", "{1}"},
+						new String[] {alias, "<"})));
 		}
 		else if (operator.equalsIgnoreCase("ne")) {
 			if (StringUtil.isNull(value)) {
