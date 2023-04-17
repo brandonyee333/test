@@ -60,6 +60,24 @@ public class StringUtilTest {
 	}
 
 	@Test
+	public void testReplaceString() {
+		Assertions.assertEquals(
+			"Aloha World HELLO WORLD Aloha World",
+			StringUtil.replace(
+				"Hello World HELLO WORLD Hello World", "Hello", "Aloha"));
+	}
+
+	@Test
+	public void testReplaceStringArray() {
+		Assertions.assertEquals(
+			"Aloha World ALOHA WORLD Aloha World",
+			StringUtil.replace(
+				"Hello World HELLO WORLD Hello World",
+				new String[] {"Hello", "HELLO"},
+				new String[] {"Aloha", "ALOHA"}));
+	}
+
+	@Test
 	public void testToObject() {
 		Assertions.assertEquals(
 			"'Hello World'", StringUtil.toObject("'''Hello World'''"));
