@@ -292,8 +292,6 @@ public class IndividualSegmentsRestControllerTest
 	public void testPostIndividualSegment1() throws Exception {
 		Segment segment = FaroInfoTestUtil.buildDynamicSegment(1L, "");
 
-		_segmentDog.addSegment(segment);
-
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.postSegment(
 				_objectMapper.convertValue(segment, SegmentDTO.class)),
@@ -306,8 +304,6 @@ public class IndividualSegmentsRestControllerTest
 	@Test
 	public void testPostIndividualSegment2() {
 		Segment segment = FaroInfoTestUtil.buildStaticSegment();
-
-		_segmentDog.addSegment(segment);
 
 		JSONObject responseJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.postSegment(
