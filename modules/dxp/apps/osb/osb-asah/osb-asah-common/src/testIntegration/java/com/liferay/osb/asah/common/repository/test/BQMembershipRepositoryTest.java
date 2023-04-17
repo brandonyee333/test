@@ -113,18 +113,6 @@ public class BQMembershipRepositoryTest
 	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
 	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
-	public void testFindByIndividualIdAndSegmentIdInAndStatus() {
-		List<BQMembership> bqMemberships =
-			_bqMembershipRepository.findByIndividualIdAndSegmentIdInAndStatus(
-				"12", Arrays.asList(34L, 56L), "ACTIVE");
-
-		Assertions.assertEquals(
-			1, bqMemberships.size(), bqMemberships.toString());
-	}
-
-	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
-	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
-	@Test
 	public void testFindByIdentityIdAndStatus() {
 		List<BQMembership> bqMemberships =
 			_bqMembershipRepository.findByIdentityIdAndStatus("12", "ACTIVE");
@@ -157,6 +145,18 @@ public class BQMembershipRepositoryTest
 			_bqMembershipRepository.findByIdentityIdInAndSegmentIdAndStatus(
 				Arrays.asList("12", "78"), 56L, "INACTIVE",
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
+
+		Assertions.assertEquals(
+			1, bqMemberships.size(), bqMemberships.toString());
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
+	@Test
+	public void testFindByIndividualIdAndSegmentIdInAndStatus() {
+		List<BQMembership> bqMemberships =
+			_bqMembershipRepository.findByIndividualIdAndSegmentIdInAndStatus(
+				"12", Arrays.asList(34L, 56L), "ACTIVE");
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
@@ -286,7 +286,7 @@ public class BQMembershipRepositoryTest
 	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
 	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
-	public void testFindSegmentIdIdentitiesCountByIdentityIdAndStatus() {
+	public void testFindSegmentIdIdentitiesCountByIndividualIdAndStatus() {
 		List<Map<String, Long>> segmentIdIdentitiesCounts =
 			_bqMembershipRepository.
 				findSegmentIdIdentitiesCountByIndividualIdAndStatus(

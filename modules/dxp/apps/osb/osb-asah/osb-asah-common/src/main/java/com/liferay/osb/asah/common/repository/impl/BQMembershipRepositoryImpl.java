@@ -266,34 +266,6 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
-	public List<BQMembership> findByIdentityIdAndSegmentIdInAndStatus(
-		String individualId, List<Long> segmentIds, String status) {
-
-		return _queryExecutor.queryForList(
-			BQMembership::new,
-			_dslContext.selectFrom(
-				"BQMembership"
-			).where(
-				DSL.and(
-					DSL.field(
-						"individualId"
-					).eq(
-						individualId
-					),
-					DSL.field(
-						"segmentId", Long.class
-					).in(
-						segmentIds
-					),
-					DSL.field(
-						"status"
-					).in(
-						status
-					))
-			));
-	}
-
-	@Override
 	public List<BQMembership> findByIdentityIdAndStatus(
 		String identityId, String status) {
 
@@ -325,6 +297,34 @@ public class BQMembershipRepositoryImpl
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
+			));
+	}
+
+	@Override
+	public List<BQMembership> findByIndividualIdAndSegmentIdInAndStatus(
+		String individualId, List<Long> segmentIds, String status) {
+
+		return _queryExecutor.queryForList(
+			BQMembership::new,
+			_dslContext.selectFrom(
+				"BQMembership"
+			).where(
+				DSL.and(
+					DSL.field(
+						"individualId"
+					).eq(
+						individualId
+					),
+					DSL.field(
+						"segmentId", Long.class
+					).in(
+						segmentIds
+					),
+					DSL.field(
+						"status"
+					).in(
+						status
+					))
 			));
 	}
 
@@ -412,7 +412,11 @@ public class BQMembershipRepositoryImpl
 		Field<Object> identityIdField = DSL.field("identityId");
 
 		return _queryExecutor.queryForList(
-			recordMap -> (Long)recordMap.get("segmentId"),
+			recordMap -> {
+				BigDecimal bigDecimal = (BigDecimal)recordMap.get("segmentId");
+
+				return bigDecimal.longValue();
+			},
 			selectSelectStep.from(
 				"BQMembership"
 			).where(
@@ -435,7 +439,11 @@ public class BQMembershipRepositoryImpl
 		Field<Object> identityIdField = DSL.field("identityId");
 
 		return _queryExecutor.queryForList(
-			recordMap -> (Long)recordMap.get("segmentId"),
+			recordMap -> {
+				BigDecimal bigDecimal = (BigDecimal)recordMap.get("segmentId");
+
+				return bigDecimal.longValue();
+			},
 			selectSelectStep.from(
 				"BQMembership"
 			).where(

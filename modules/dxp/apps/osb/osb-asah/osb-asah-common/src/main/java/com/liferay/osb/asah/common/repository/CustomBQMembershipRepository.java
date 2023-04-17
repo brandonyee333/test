@@ -66,10 +66,6 @@ public interface CustomBQMembershipRepository {
 	public List<BQMembership> findAll();
 
 	@Cacheable
-	public List<BQMembership> findByIdentityIdAndSegmentIdInAndStatus(
-		String identityId, List<Long> segmentIds, String status);
-
-	@Cacheable
 	public List<BQMembership> findByIdentityIdAndStatus(
 		String identityId, String status);
 
@@ -77,6 +73,10 @@ public interface CustomBQMembershipRepository {
 	public List<BQMembership> findByIdentityIdInAndSegmentIdAndStatus(
 		List<String> identityIds, Long segmentId, String status,
 		Pageable pageable);
+
+	@Cacheable
+	public List<BQMembership> findByIndividualIdAndSegmentIdInAndStatus(
+		String individualId, List<Long> segmentIds, String status);
 
 	@Cacheable
 	public List<BQMembership> findBySegmentIdAndStatus(

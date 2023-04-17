@@ -82,10 +82,11 @@ public class BQMembershipDog {
 	}
 
 	public List<BQMembership> getActiveBQMemberships(
-		String identityId, List<Long> segmentIds) {
+		String individualId, List<Long> segmentIds) {
 
-		return _bqMembershipRepository.findByIdentityIdAndSegmentIdInAndStatus(
-			identityId, segmentIds, "ACTIVE");
+		return _bqMembershipRepository.
+			findByIndividualIdAndSegmentIdInAndStatus(
+				individualId, segmentIds, "ACTIVE");
 	}
 
 	public long getActiveBQMembershipsCount(
@@ -145,10 +146,10 @@ public class BQMembershipDog {
 	}
 
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
-		String identityId, List<Segment> segments) {
+		String individualId, List<Segment> segments) {
 
 		List<BQMembership> bqMemberships = getActiveBQMemberships(
-			identityId, ListUtil.map(segments, Segment::getId));
+			individualId, ListUtil.map(segments, Segment::getId));
 
 		Map<Long, JSONObject> segmentJSONObjects = new HashMap<>();
 
@@ -167,7 +168,7 @@ public class BQMembershipDog {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						"Unable to get active membership for user " +
-							identityId + "and individual segment " + segmentId);
+							individualId + "and individual segment " + segmentId);
 				}
 
 				continue;
