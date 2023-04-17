@@ -41,14 +41,13 @@ import org.springframework.data.domain.Sort;
 /**
  * @author Inácio Nery
  */
-@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
-@Disabled
 @Import(JDBCTestConfiguration.class)
-@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 public class BQMembershipRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testCountByIdentityIdInAndSegmentIdAndStatus() {
 		Assertions.assertEquals(
@@ -65,6 +64,8 @@ public class BQMembershipRepositoryTest
 				Arrays.asList("12", "78"), 56L, "INACTIVE"));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testCountBySegmentIdAndStatus() {
 		Assertions.assertEquals(
@@ -78,6 +79,8 @@ public class BQMembershipRepositoryTest
 			_bqMembershipRepository.countBySegmentIdAndStatus(56L, "INACTIVE"));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testDeleteBySegmentIdIn() {
 		List<BQMembership> bqMemberships = IterableUtils.toList(
@@ -98,6 +101,8 @@ public class BQMembershipRepositoryTest
 			stream.anyMatch(bqMembership -> bqMembership.getSegmentId() == 34));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testExistsByIdentityIdAndSegmentIdAndStatus() {
 		Assertions.assertTrue(
@@ -105,16 +110,20 @@ public class BQMembershipRepositoryTest
 				"12", 34L, "ACTIVE"));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
-	public void testFindByIdentityIdAndSegmentIdInAndStatus() {
+	public void testFindByIndividualIdAndSegmentIdInAndStatus() {
 		List<BQMembership> bqMemberships =
-			_bqMembershipRepository.findByIdentityIdAndSegmentIdInAndStatus(
+			_bqMembershipRepository.findByIndividualIdAndSegmentIdInAndStatus(
 				"12", Arrays.asList(34L, 56L), "ACTIVE");
 
 		Assertions.assertEquals(
 			1, bqMemberships.size(), bqMemberships.toString());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindByIdentityIdAndStatus() {
 		List<BQMembership> bqMemberships =
@@ -124,6 +133,8 @@ public class BQMembershipRepositoryTest
 			1, bqMemberships.size(), bqMemberships.toString());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindByIdentityIdInAndSegmentIdAndStatus() {
 		List<BQMembership> bqMemberships =
@@ -151,6 +162,8 @@ public class BQMembershipRepositoryTest
 			1, bqMemberships.size(), bqMemberships.toString());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindBySegmentIdAndStatus() {
 		List<BQMembership> bqMemberships =
@@ -176,6 +189,8 @@ public class BQMembershipRepositoryTest
 			1, bqMemberships.size(), bqMemberships.toString());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindIdentityIdBySegmentIdAndStatus() {
 		List<String> identityIds =
@@ -200,6 +215,8 @@ public class BQMembershipRepositoryTest
 		Assertions.assertEquals("12", identityIds.get(0));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindIdentityIdBySegmentIdIn() {
 		List<String> identityIds =
@@ -224,6 +241,8 @@ public class BQMembershipRepositoryTest
 		Assertions.assertEquals(Arrays.asList("78"), identityIds);
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindSegmentIdByIdentityIdAndStatus() {
 		List<Long> segmentIds =
@@ -245,6 +264,8 @@ public class BQMembershipRepositoryTest
 		Assertions.assertEquals(56, segmentIds.get(0));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindSegmentIdByIdentityIdInAndStatus() {
 		List<Long> segmentIds =
@@ -262,6 +283,8 @@ public class BQMembershipRepositoryTest
 		Assertions.assertEquals(56, segmentIds.get(0));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindSegmentIdIdentitiesCountByIdentityIdAndStatus() {
 		List<Map<String, Long>> segmentIdIdentitiesCounts =
@@ -296,6 +319,8 @@ public class BQMembershipRepositoryTest
 			27, segmentIdIdentitiesCount.get("identitiesCount"));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
 	public void testFindTop20SegmentIdByIdentityId() {
 		List<Long> segmentIds =
