@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.filter.expression;
 
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionBaseVisitor;
 import com.liferay.osb.asah.common.filter.expression.parser.FilterExpressionParser;
@@ -788,6 +789,12 @@ public class FilterExpressionConditionVisitor
 			"AS NUMERIC))) WHEN SAFE_CAST({0}.value AS NUMERIC) IS NULL THEN ",
 			"false ELSE SAFE_CAST({0}.value AS NUMERIC) {1} SAFE_CAST('", value,
 			"' AS NUMERIC) END");
+
+		if (DateUtil.isValidPatternShort(value)) {
+			query =
+				"SAFE_CAST({0}.value AS DATE) {1} SAFE_CAST('" + value +
+					"' AS DATE)";
+		}
 
 		if (operator.equalsIgnoreCase("eq")) {
 			if (StringUtil.isNull(value)) {
