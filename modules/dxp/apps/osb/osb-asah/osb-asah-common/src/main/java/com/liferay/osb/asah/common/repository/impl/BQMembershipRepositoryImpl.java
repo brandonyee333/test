@@ -533,13 +533,13 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
-	public List<Long> findTop20SegmentIdByIdentityId(String identityId) {
+	public List<Long> findTop20SegmentIdByIndividualId(String individualId) {
 		Field<Object> segmentIdField = DSL.field("segmentId");
 
 		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
 			segmentIdField);
 
-		Field<Object> identityIdField = DSL.field("identityId");
+		Field<Object> individualIdField = DSL.field("individualId");
 
 		return _queryExecutor.queryForList(
 			recordMap -> {
@@ -551,12 +551,12 @@ public class BQMembershipRepositoryImpl
 			selectSelectStep.from(
 				"BQMembership"
 			).where(
-				identityIdField.eq(identityId)
+				individualIdField.eq(individualId)
 			).groupBy(
 				segmentIdField
 			).orderBy(
 				DSL.count(
-					identityIdField
+					individualIdField
 				).desc()
 			).limit(
 				20

@@ -107,7 +107,7 @@ public interface CustomBQMembershipRepository {
 			String individualId, String status);
 
 	@Cacheable
-	public List<Long> findTop20SegmentIdByIdentityId(String identityId);
+	public List<Long> findTop20SegmentIdByIndividualId(String individualId);
 
 	@CacheEvict(allEntries = true)
 	@Modifying

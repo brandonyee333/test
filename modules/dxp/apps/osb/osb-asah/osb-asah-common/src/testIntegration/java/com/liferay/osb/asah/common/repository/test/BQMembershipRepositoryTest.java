@@ -30,7 +30,6 @@ import java.util.stream.Stream;
 import org.apache.commons.collections4.IterableUtils;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -322,15 +321,15 @@ public class BQMembershipRepositoryTest
 	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
 	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
 	@Test
-	public void testFindTop20SegmentIdByIdentityId() {
+	public void testFindTop20SegmentIdByIndividualId() {
 		List<Long> segmentIds =
-			_bqMembershipRepository.findTop20SegmentIdByIdentityId("12");
+			_bqMembershipRepository.findTop20SegmentIdByIndividualId("12");
 
 		Assertions.assertEquals(2, segmentIds.size(), segmentIds.toString());
 		Assertions.assertEquals(34, segmentIds.get(0));
 		Assertions.assertEquals(56, segmentIds.get(1));
 
-		segmentIds = _bqMembershipRepository.findTop20SegmentIdByIdentityId(
+		segmentIds = _bqMembershipRepository.findTop20SegmentIdByIndividualId(
 			"78");
 
 		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());

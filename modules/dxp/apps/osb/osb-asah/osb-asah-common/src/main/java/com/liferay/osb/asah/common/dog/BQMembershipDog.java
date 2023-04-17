@@ -168,7 +168,8 @@ public class BQMembershipDog {
 				if (_log.isWarnEnabled()) {
 					_log.warn(
 						"Unable to get active membership for user " +
-							individualId + "and individual segment " + segmentId);
+							individualId + "and individual segment " +
+								segmentId);
 				}
 
 				continue;
@@ -188,9 +189,9 @@ public class BQMembershipDog {
 		return membershipsJSONObjects;
 	}
 
-	public List<Long> getSegmentIds(String identityId) {
-		return _bqMembershipRepository.findTop20SegmentIdByIdentityId(
-			identityId);
+	public List<Long> getSegmentIds(String individualId) {
+		return _bqMembershipRepository.findTop20SegmentIdByIndividualId(
+			individualId);
 	}
 
 	public boolean isMember(String identityId, Long segmentId) {
