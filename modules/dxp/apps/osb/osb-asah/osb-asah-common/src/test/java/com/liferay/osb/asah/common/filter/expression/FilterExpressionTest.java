@@ -1156,7 +1156,7 @@ public class FilterExpressionTest {
 			"(custom/custom_field/value eq 'test')",
 			new HashSet<>(
 				Arrays.asList(
-					"ExpandoValue", "Individual",
+					"ExpandoValue", "FieldMapping", "Individual",
 					"IndividualFields_custom_field")),
 			true);
 
@@ -1170,14 +1170,21 @@ public class FilterExpressionTest {
 				DSL.condition(
 					String.join(
 						"", "CASE WHEN SAFE_CAST(",
-						"IndividualFields_custom_field.value AS NUMERIC) IS ",
-						"NULL THEN false ELSE SAFE_CAST(",
+						"IndividualFields_custom_field.value AS NUMERIC) ",
+						"IS NULL THEN false ELSE CASE WHEN ",
+						"FieldMapping_IndividualFields_custom_field.",
+						"repeatable ", "THEN (EXISTS (SELECT numeric_value ",
+						"FROM UNNEST(JSON_EXTRACT_ARRAY(",
+						"IndividualFields_custom_field.value,'$')) AS ",
+						"numeric_value WHERE ",
+						"SAFE_CAST(numeric_value AS NUMERIC) >= ",
+						"SAFE_CAST(50 AS NUMERIC))) ELSE SAFE_CAST(",
 						"IndividualFields_custom_field.value AS NUMERIC) >= ",
-						"SAFE_CAST(50 AS NUMERIC) END"))),
+						"SAFE_CAST(50 AS NUMERIC) END END"))),
 			"(custom/custom_field/value ge 50)",
 			new HashSet<>(
 				Arrays.asList(
-					"ExpandoValue", "Individual",
+					"ExpandoValue", "FieldMapping", "Individual",
 					"IndividualFields_custom_field")),
 			true);
 
@@ -1191,14 +1198,20 @@ public class FilterExpressionTest {
 				DSL.condition(
 					String.join(
 						"", "CASE WHEN SAFE_CAST(",
-						"IndividualFields_custom_field.value AS NUMERIC) IS ",
-						"NULL THEN false ELSE SAFE_CAST(",
-						"IndividualFields_custom_field.value AS NUMERIC) > ",
-						"SAFE_CAST(50 AS NUMERIC) END"))),
+						"IndividualFields_custom_field.value AS NUMERIC) ",
+						"IS NULL THEN false ELSE CASE WHEN ",
+						"FieldMapping_IndividualFields_custom_field.",
+						"repeatable ", "THEN (EXISTS (SELECT numeric_value ",
+						"FROM UNNEST(JSON_EXTRACT_ARRAY(",
+						"IndividualFields_custom_field.value,'$')) AS ",
+						"numeric_value WHERE SAFE_CAST(numeric_value ",
+						"AS NUMERIC) > SAFE_CAST(50 AS NUMERIC))) ",
+						"ELSE SAFE_CAST(IndividualFields_custom_field.value ",
+						"AS NUMERIC) > SAFE_CAST(50 AS NUMERIC) END END"))),
 			"(custom/custom_field/value gt 50)",
 			new HashSet<>(
 				Arrays.asList(
-					"ExpandoValue", "Individual",
+					"ExpandoValue", "FieldMapping", "Individual",
 					"IndividualFields_custom_field")),
 			true);
 
@@ -1212,14 +1225,20 @@ public class FilterExpressionTest {
 				DSL.condition(
 					String.join(
 						"", "CASE WHEN SAFE_CAST(",
-						"IndividualFields_custom_field.value AS NUMERIC) IS ",
-						"NULL THEN false ELSE SAFE_CAST(",
-						"IndividualFields_custom_field.value AS NUMERIC) <= ",
-						"SAFE_CAST(50.03 AS NUMERIC) END"))),
+						"IndividualFields_custom_field.value AS NUMERIC) ",
+						"IS NULL THEN false ELSE CASE WHEN ",
+						"FieldMapping_IndividualFields_custom_field.",
+						"repeatable ", "THEN (EXISTS (SELECT numeric_value ",
+						"FROM UNNEST(JSON_EXTRACT_ARRAY(",
+						"IndividualFields_custom_field.value,'$')) AS ",
+						"numeric_value WHERE SAFE_CAST(numeric_value ",
+						"AS NUMERIC) <= SAFE_CAST(50.03 AS NUMERIC))) ELSE ",
+						"SAFE_CAST(IndividualFields_custom_field.value ",
+						"AS NUMERIC) <= SAFE_CAST(50.03 AS NUMERIC) END END"))),
 			"(custom/custom_field/value le 50.03)",
 			new HashSet<>(
 				Arrays.asList(
-					"ExpandoValue", "Individual",
+					"ExpandoValue", "FieldMapping", "Individual",
 					"IndividualFields_custom_field")),
 			true);
 
@@ -1233,14 +1252,21 @@ public class FilterExpressionTest {
 				DSL.condition(
 					String.join(
 						"", "CASE WHEN SAFE_CAST(",
-						"IndividualFields_custom_field.value AS NUMERIC) IS ",
-						"NULL THEN false ELSE SAFE_CAST(",
-						"IndividualFields_custom_field.value AS NUMERIC) < ",
-						"SAFE_CAST(500.2344 AS NUMERIC) END"))),
+						"IndividualFields_custom_field.value AS NUMERIC) ",
+						"IS NULL THEN false ELSE CASE WHEN ",
+						"FieldMapping_IndividualFields_custom_field.",
+						"repeatable ", "THEN (EXISTS (SELECT numeric_value ",
+						"FROM UNNEST(JSON_EXTRACT_ARRAY(",
+						"IndividualFields_custom_field.value,'$')) AS ",
+						"numeric_value WHERE SAFE_CAST(numeric_value ",
+						"AS NUMERIC) < SAFE_CAST(500.2344 AS NUMERIC))) ELSE ",
+						"SAFE_CAST(IndividualFields_custom_field.value ",
+						"AS NUMERIC) < SAFE_CAST(500.2344 AS NUMERIC) END ",
+						"END"))),
 			"(custom/custom_field/value lt '500.2344')",
 			new HashSet<>(
 				Arrays.asList(
-					"ExpandoValue", "Individual",
+					"ExpandoValue", "FieldMapping", "Individual",
 					"IndividualFields_custom_field")),
 			true);
 
@@ -1938,7 +1964,9 @@ public class FilterExpressionTest {
 			"organizations.filter(filter='(custom/custom_field/value eq " +
 				"''test'')')",
 			new HashSet<>(
-				Arrays.asList("ExpandoValue", "Individual", "Organization")));
+				Arrays.asList(
+					"ExpandoValue", "FieldMapping", "Individual",
+					"Organization")));
 
 		_assertEquals(
 			DSL.field(
@@ -2001,14 +2029,25 @@ public class FilterExpressionTest {
 							String.join(
 								"", "CASE WHEN SAFE_CAST(",
 								"ExpandoValue_custom_field.value AS NUMERIC) ",
-								"IS NULL THEN false ELSE SAFE_CAST(",
+								"IS NULL THEN false ELSE CASE WHEN ",
+								"FieldMapping_ExpandoValue_custom_field.",
+								"repeatable ", "THEN (", "EXISTS (",
+								"SELECT numeric_value FROM UNNEST(",
+								"JSON_EXTRACT_ARRAY(",
+								"ExpandoValue_custom_field.value,'$')",
+								") AS numeric_value WHERE ", "SAFE_CAST(",
+								"numeric_value AS NUMERIC) ",
+								">= SAFE_CAST(123 AS NUMERIC)", ")", ") ELSE ",
+								"SAFE_CAST(",
 								"ExpandoValue_custom_field.value AS NUMERIC) ",
-								">= SAFE_CAST(123 AS NUMERIC) END")))
+								">= SAFE_CAST(123 AS NUMERIC) END END")))
 				)
 			),
 			"organizations.filter(filter='(custom/custom_field/value ge 123)')",
 			new HashSet<>(
-				Arrays.asList("ExpandoValue", "Individual", "Organization")));
+				Arrays.asList(
+					"ExpandoValue", "FieldMapping", "Individual",
+					"Organization")));
 
 		_assertEquals(
 			DSL.field(
