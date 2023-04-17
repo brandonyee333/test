@@ -158,6 +158,19 @@ public class DateUtilTest {
 	}
 
 	@Test
+	public void testIsValidPatternShort() {
+		Assertions.assertFalse(
+			DateUtil.isValidPatternShort("January 1st 2023"),
+			"January 1st 2023 is a valid date pattern");
+		Assertions.assertFalse(
+			DateUtil.isValidPatternShort("20231209"),
+			"20231209 is a valid date pattern");
+		Assertions.assertTrue(
+			DateUtil.isValidPatternShort("2023-12-09"),
+			"2023-12-09 is not a valid date pattern");
+	}
+
+	@Test
 	public void testNewBeginningOfDayDate() {
 		Assertions.assertEquals(
 			"2019-05-31T00:00:00.000Z",

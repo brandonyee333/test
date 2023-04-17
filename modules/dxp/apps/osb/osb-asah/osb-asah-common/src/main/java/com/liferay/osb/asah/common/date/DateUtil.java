@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.date;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.time.DayOfWeek;
@@ -154,6 +155,21 @@ public class DateUtil {
 		}
 
 		return deltaWeeks;
+	}
+
+	public static boolean isValidPatternShort(String dateString) {
+		DateFormat dateFormat = new SimpleDateFormat(PATTERN_SHORT);
+
+		dateFormat.setLenient(false);
+
+		try {
+			dateFormat.parse(dateString);
+		}
+		catch (ParseException parseException) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public static String minusMinutes(
