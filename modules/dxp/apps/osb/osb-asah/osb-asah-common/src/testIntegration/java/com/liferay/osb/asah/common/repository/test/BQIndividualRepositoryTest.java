@@ -87,6 +87,64 @@ public class BQIndividualRepositoryTest
 	@Test
 	public void testSearchBQIndividualsCustomFieldFilter() {
 		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "contains(custom/Favorite_Food/value, 'Rice')", false,
+				null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "not contains(custom/Favorite_Food/value, 'Rice')", false,
+				null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "contains(custom/Favorite_Number/value, 3)", false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "not contains(custom/Favorite_Number/value, 5)", false,
+				null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Favorite_Number/value ge 3", false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"custom/Favorite_Number/value gt 2 and " +
+					"custom/Favorite_Number/value lt 3",
+				false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Favorite_Number/value gt 3", false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Favorite_Number/value le 4", false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Favorite_Number/value lt 2", false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value ge '2022-05-01'", false, null));
+		Assertions.assertEquals(
+			3,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value gt '2022-01-01'", false, null));
+		Assertions.assertEquals(
+			3,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value le '2022-06-01'", false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value lt '2022-05-03'", false, null));
+		Assertions.assertEquals(
 			1,
 			_bqIndividualRepository.countBQIndividuals(
 				11L, "custom/Salary/value ge 120000.30", false, null));
@@ -148,6 +206,30 @@ public class BQIndividualRepositoryTest
 				11L,
 				"organizations.filter(filter='(custom/Organization_Type" +
 					"/value eq ''test'')')",
+				false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(custom/Divisions/value ge 35)')",
+				false, null));
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(custom/Divisions/value gt 35)')",
+				false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(custom/Year/value le 2023)')",
+				false, null));
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(custom/Year/value lt 2023)')",
 				false, null));
 	}
 
