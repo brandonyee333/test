@@ -1,3 +1,13 @@
+INSERT INTO Event (applicationId, channelId, createDate, eventDate, eventId, id, userId) VALUES ('Blog', 1, timestamp '${now-2d}', timestamp '${now-2d}', 'blogClicked', '1', '1');
+INSERT INTO Event (applicationId, channelId, createDate, eventDate, eventId, id, userId) VALUES ('Blog', 1, timestamp '${now-4d}', timestamp '${now-4d}', 'blogClicked', '2', '2');
+INSERT INTO Event (applicationId, channelId, createDate, eventDate, eventId, id, userId) VALUES ('Blog', 1, timestamp '${now-11d}', timestamp '${now-11d}', 'blogClicked', '3', '3');
+INSERT INTO Event (applicationId, channelId, createDate, eventDate, eventId, id, userId) VALUES ('Blog', 1, timestamp '${now-13d}', timestamp '${now-13d}', 'blogClicked', '4', '4');
+
+INSERT INTO IdentityActivitySummary (channelId, identityId, individualId, lastActivityDate) VALUES (1, 'abc-123', '761319ac0d9f6e0f3467ad26bc8c63989d06c5f491849d6aa12fabdbd6c6b7bb', timestamp '${now-3d}');
+INSERT INTO IdentityActivitySummary (channelId, identityId, individualId, lastActivityDate) VALUES (1, 'bcd-456', '5970d88ec4ed505177361de1b17a3f2debf7c4f630c14f075a823ec97942692a', timestamp '${now-5d}');
+INSERT INTO IdentityActivitySummary (channelId, identityId, individualId, lastActivityDate) VALUES (1, 'efg-789', '5f20f61b2cfaa86c4f3cb3557751a702776af029deabed8e943fb55cfa604e34', timestamp '${now-11d}');
+INSERT INTO IdentityActivitySummary (channelId, identityId, individualId, lastActivityDate) VALUES (1, 'ghi-101', 'def73c7b1d2934d8bcdc8080a221c39df40e7ccfa499ad49d862138f5bc055f9', timestamp '${now-36d}');
+
 INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('abc-123', true, 'analytics', CURRENT_DATE());
 INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('abc-123', false, 'cloud', CURRENT_DATE());
 INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('bcd-456', true, 'cloud', CURRENT_DATE());

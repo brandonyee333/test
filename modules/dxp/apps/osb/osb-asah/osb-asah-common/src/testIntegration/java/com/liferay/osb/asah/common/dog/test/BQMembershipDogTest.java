@@ -212,24 +212,25 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMemberships() {
 		_bqMembershipDog.updateBQMemberships(
-			"contains(demographics/email/value, 'delta.com')", Boolean.TRUE,
+			1L, "contains(demographics/email/value, 'delta.com')", Boolean.TRUE,
 			1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(organizations.filter(filter='(id eq ''23k92323l923lf0as'')'))",
 			Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
-			"userGroupIds eq 'newr87232kjhdsf89'", Boolean.TRUE, 1L);
+			1L, "userGroupIds eq 'newr87232kjhdsf89'", Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
-			"groupIds ne '9823423jh23908234'", Boolean.TRUE, 1L);
+			1L, "groupIds ne '9823423jh23908234'", Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
@@ -238,6 +239,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithActivities() {
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(demographics/firstName/value eq 'Test1' and " +
 				"(activities.filterByCount(filter='(applicationId eq " +
 					"''Blog'' and eventId = ''blogClicked'' and id = " +
@@ -247,6 +249,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(demographics/firstName/value eq 'Test1' and " +
 				"(activities.filterByCount(filter='(applicationId eq " +
 					"''Blog'' and eventId eq ''blogClicked'' and id eq " +
@@ -260,7 +263,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithCustomFields() {
 		_bqMembershipDog.updateBQMemberships(
-			"(custom/Organization/value eq 'Engineer')", Boolean.TRUE, 1L);
+			1L, "(custom/Organization/value eq 'Engineer')", Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
@@ -269,6 +272,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithInterest1() {
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
 				"''true'')'))",
 			Boolean.TRUE, 2L);
@@ -290,6 +294,7 @@ public class BQMembershipDogTest
 		_assertBQMemberships(bqMemberships, expectedIndividuals);
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
 				"''false'')'))",
 			Boolean.TRUE, 2L);
@@ -320,6 +325,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithInterest2() {
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
 				"''true'')') and interests.filter(filter='(name eq ''cloud'' " +
 					"and score eq ''true'')'))",
@@ -328,6 +334,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(2L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(interests.filter(filter='(name eq ''metrics'' and score eq " +
 				"''true'')') and interests.filter(filter='(name eq " +
 					"''quality'' and score eq ''true'')'))",
@@ -350,6 +357,7 @@ public class BQMembershipDogTest
 		_assertBQMemberships(bqMemberships, expectedIndividuals);
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
 				"''true'')') and interests.filter(filter='(name eq ''cloud'' " +
 					"and score eq ''false'')'))",
@@ -375,6 +383,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithInterest3() {
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
 				"''true'')') or interests.filter(filter='(name eq ''cloud'' " +
 					"and score eq ''true'')'))",
@@ -400,6 +409,7 @@ public class BQMembershipDogTest
 		_assertBQMemberships(bqMemberships, expectedIndividuals);
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
 				"''true'')') or interests.filter(filter='(name eq ''cloud'' " +
 					"and score eq ''false'')'))",
@@ -431,6 +441,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithInterest4() {
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(not contains(demographics/email/value, 'gamma.com') and " +
 				"(interests.filter(filter='(name eq ''analytics'' and score " +
 					"eq ''true'')') or interests.filter(filter='(name eq " +
@@ -461,6 +472,7 @@ public class BQMembershipDogTest
 	@Test
 	public void testUpdateBQMembershipsWithSessions() {
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(sessions.filter(filter='(contains(context/referrer, " +
 				"''facebook.com'') and completeDate gt ''2022-09-01'')'))",
 			Boolean.FALSE, 1L);
@@ -468,6 +480,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(sessions.filter(filter='(contains(context/referrer, " +
 				"''facebook.com'') and completeDate gt ''2022-09-01'')'))",
 			Boolean.TRUE, 1L);
@@ -475,6 +488,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(sessions.filter(filter='(context/referrer eq " +
 				"''https://facebook.com'' and completeDate gt " +
 					"''2022-09-01'')'))",
@@ -483,6 +497,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(sessions.filter(filter='(context/referrer eq " +
 				"''https://facebook.com'' and completeDate gt " +
 					"''2022-09-01'')'))",
@@ -491,6 +506,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(sessions.filter(filter='(contains(context/url, ''url2.com'') " +
 				"and completeDate gt ''2022-09-01'')'))",
 			Boolean.TRUE, 1L);
@@ -498,6 +514,7 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(5L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(sessions.filter(filter='(context/url eq ''https://url2.com'' " +
 				"and completeDate gt ''2022-09-01'')'))",
 			Boolean.FALSE, 1L);
@@ -505,18 +522,20 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(sessions.filter(filter='(context/browserName eq ''Chrome'')'))",
 			Boolean.FALSE, 1L);
 
 		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
-			"(sessions.filter(filter='(context/deviceType ne ''Phone'')'))",
+			1L, "(sessions.filter(filter='(context/deviceType ne ''Phone'')'))",
 			Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
+			1L,
 			"(sessions.filter(filter='(context/platformName eq ''Linux'')'))",
 			Boolean.FALSE, 1L);
 
