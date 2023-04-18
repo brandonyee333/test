@@ -37,6 +37,11 @@ public class Project implements Persistable<String> {
 		_id = id;
 	}
 
+	public Project(String id, String version) {
+		_id = id;
+		_version = version;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

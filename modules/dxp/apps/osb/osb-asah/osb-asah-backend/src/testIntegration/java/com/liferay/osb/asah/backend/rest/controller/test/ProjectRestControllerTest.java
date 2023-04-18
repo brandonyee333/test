@@ -15,12 +15,13 @@
 package com.liferay.osb.asah.backend.rest.controller.test;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
+import com.liferay.osb.asah.backend.dto.ProjectDTO;
 import com.liferay.osb.asah.backend.dto.ProjectDetailDTO;
 import com.liferay.osb.asah.backend.rest.controller.ProjectsRestController;
 import com.liferay.osb.asah.common.dog.ProjectDog;
-import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -58,9 +59,22 @@ public class ProjectRestControllerTest
 		Assertions.assertTrue(projectDetailDTO.getSitesSelected());
 	}
 
+	@Test
+	public void testGetProjectDTO() {
+		List<ProjectDTO> projectDTOs = _projectsRestController.getProjectDTOs();
+
+		Assertions.assertEquals(1, projectDTOs.size());
+
+		ProjectDTO projectDTO = projectDTOs.get(0);
+
+		Assertions.assertEquals("test", projectDTO.getId());
+		Assertions.assertEquals(
+			ReleaseInfo.getVersion(), projectDTO.getVersion());
+	}
+
 	@BeforeEach
 	protected void setUp() {
-		_projectDog.addProject(new Project("test"));
+		_projectDog.addProject("test");
 
 		ProjectIdThreadLocal.setProjectId("test");
 	}
