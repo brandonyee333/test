@@ -51,7 +51,6 @@ import org.jooq.Record4;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectForUpdateStep;
 import org.jooq.SelectSelectStep;
-import org.jooq.Table;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -209,30 +208,43 @@ public class BQMembershipChangeRepositoryImpl
 
 		Field<Object> segmentIdField = DSL.field("segmentId");
 
-		SelectSelectStep<Record1<Object>> selectSelectStep = _dslContext.select(
-			segmentIdField);
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				BigDecimal bigDecimal = (BigDecimal)recordMap.get("segmentId");
 
-		Table<Record> bqMembershipChangeTable = DSL.table("BQMembershipChange");
-
-		return selectSelectStep.from(
-			bqMembershipChangeTable
-		).where(
-			DSL.row(
-				createDateField, segmentIdField
-			).in(
-				DSL.select(
-					DSL.max(createDateField), segmentIdField
+				return bigDecimal.longValue();
+			},
+			_dslContext.with(
+				"LatestMembershipChange"
+			).as(
+				_dslContext.select(
+					DSL.asterisk(),
+					DSL.rowNumber(
+					).over(
+						DSL.partitionBy(
+							segmentIdField
+						).orderBy(
+							createDateField.desc()
+						)
+					).as(
+						"rowNumber"
+					)
 				).from(
-					bqMembershipChangeTable
-				).groupBy(
-					segmentIdField
+					"BQMembershipChange"
 				)
-			).and(
-				ConditionUtil.toCondition(filterString)
-			)
-		).fetch(
-			0, Long.class
-		);
+			).select(
+				segmentIdField
+			).from(
+				"LatestMembershipChange"
+			).where(
+				DSL.and(
+					DSL.field(
+						"rowNumber"
+					).eq(
+						1
+					),
+					ConditionUtil.toCondition(filterString))
+			));
 	}
 
 	@Override
