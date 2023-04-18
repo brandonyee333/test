@@ -50,8 +50,6 @@ public class ProjectDogTest
 
 	@BeforeEach
 	public void setUp() {
-		_projectDog.addConsumer(_consumer);
-
 		ReflectionTestUtils.setField(_projectDog, "_nanitesHttp", _nanitesHttp);
 		ReflectionTestUtils.setField(
 			_projectDog, "_postgreSQLSchemaManager", _postgreSQLSchemaManager);
@@ -68,11 +66,6 @@ public class ProjectDogTest
 	public void testAddProject() {
 		_projectDog.addProject("project4");
 
-		Mockito.verify(
-			_consumer, Mockito.times(1)
-		).accept(
-			ArgumentMatchers.eq("project4")
-		);
 		Mockito.verify(
 			_nanitesHttp, Mockito.times(1)
 		).rescheduleNanites();
@@ -126,9 +119,6 @@ public class ProjectDogTest
 
 		Assertions.assertEquals("4.0.0", project2.getVersion());
 	}
-
-	@Mock
-	private Consumer<String> _consumer;
 
 	@MockBean
 	private NanitesHttp _nanitesHttp;

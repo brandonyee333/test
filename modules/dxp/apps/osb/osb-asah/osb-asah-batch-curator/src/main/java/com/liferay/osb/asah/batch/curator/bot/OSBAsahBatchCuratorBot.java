@@ -71,8 +71,6 @@ public class OSBAsahBatchCuratorBot {
 		for (Project project : _projectDog.getProjects()) {
 			_init(project.getId());
 		}
-
-		_projectDog.addConsumer(this::_init);
 	}
 
 	public void removeNanitesSchedule(String projectId) {

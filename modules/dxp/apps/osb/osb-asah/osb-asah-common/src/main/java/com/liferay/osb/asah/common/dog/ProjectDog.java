@@ -23,16 +23,12 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.collections4.IterableUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,10 +40,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProjectDog {
 
-	public void addConsumer(Consumer<String> consumer) {
-		_consumers.add(consumer);
-	}
-
 	public void addProject(String projectId) {
 		Project project = new Project(projectId, ReleaseInfo.getVersion());
 
@@ -58,10 +50,6 @@ public class ProjectDog {
 		}
 		finally {
 			ProjectIdThreadLocal.setGlobalContext(false);
-		}
-
-		for (Consumer<String> consumer : _consumers) {
-			consumer.accept(project.getId());
 		}
 
 		_bigQuerySchemaManager.createSchema(projectId);
@@ -124,8 +112,6 @@ public class ProjectDog {
 	@PostConstruct
 	public void init() {
 		_postgreSQLSchemaManager.createGlobalSchema();
-
-		_consumers.add(this::_createSnapshots);
 	}
 
 	public void updateVersion(String projectId, String version) {
@@ -139,15 +125,8 @@ public class ProjectDog {
 		}
 	}
 
-	private void _createSnapshots(String projectId) {
-	}
-
-	private static final Log _log = LogFactory.getLog(ProjectDog.class);
-
 	@Autowired
 	private BigQuerySchemaManager _bigQuerySchemaManager;
-
-	private final List<Consumer<String>> _consumers = new ArrayList<>();
 
 	@Autowired
 	private NanitesHttp _nanitesHttp;
