@@ -59,7 +59,7 @@ public class ProjectsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/details")
-	public List<ProjectDetailDTO> getProjectDetails() {
+	public List<ProjectDetailDTO> getProjectDetailDTOs() {
 		List<ProjectDetailDTO> projectDetailDTOs = new ArrayList<>();
 
 		ProjectIdThreadLocal.forProjects(

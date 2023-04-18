@@ -46,12 +46,12 @@ public class ProjectRestControllerTest
 	)
 	@Test
 	public void testGetProjectDetails() {
-		List<ProjectDetailDTO> projectDetails =
-			_projectsRestController.getProjectDetails();
+		List<ProjectDetailDTO> projectDetailDTOs =
+			_projectsRestController.getProjectDetailDTOs();
 
-		Assertions.assertEquals(1, projectDetails.size());
+		Assertions.assertEquals(1, projectDetailDTOs.size());
 
-		ProjectDetailDTO projectDetailDTO = projectDetails.get(0);
+		ProjectDetailDTO projectDetailDTO = projectDetailDTOs.get(0);
 
 		Assertions.assertTrue(projectDetailDTO.getAccountsSelected());
 		Assertions.assertFalse(projectDetailDTO.getCommerceChannelsSelected());
