@@ -29,6 +29,10 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -204,6 +208,35 @@ public class BQMembershipChangeRepositoryTest
 			"individualsCount ge 3");
 
 		Assertions.assertEquals(3, segmentIds.size());
+	}
+
+	@Test
+	public void testInitializeBQMembershipChanges() {
+		_bqMembershipChangeRepository.initializeBQMembershipChanges(
+			123L, ZoneId.of("UTC"));
+
+		List<BQMembershipChange> bqMembershipChanges =
+			_bqMembershipChangeRepository.findBySegmentId(123L);
+
+		Assertions.assertEquals(31, bqMembershipChanges.size());
+
+		LocalDateTime localDateTime = DateUtil.newDayLocalDateTime(
+			ZoneId.of("UTC"));
+
+		for (int i = 0; i < bqMembershipChanges.size(); i++) {
+			BQMembershipChange bqMembershipChange = bqMembershipChanges.get(i);
+
+			Assertions.assertEquals(0, bqMembershipChange.getIdentitiesCount());
+			Assertions.assertEquals(
+				0, bqMembershipChange.getIndividualsCount());
+			Assertions.assertEquals(123L, bqMembershipChange.getSegmentId());
+
+			LocalDateTime expectedLocalDateTime = localDateTime.minusDays(i);
+
+			Assertions.assertEquals(
+				Date.from(expectedLocalDateTime.toInstant(ZoneOffset.UTC)),
+				bqMembershipChange.getCreateDate());
+		}
 	}
 
 	@Test
