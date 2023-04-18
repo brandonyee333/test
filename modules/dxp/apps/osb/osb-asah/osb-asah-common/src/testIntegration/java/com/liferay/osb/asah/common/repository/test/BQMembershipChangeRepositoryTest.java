@@ -28,7 +28,6 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -116,70 +115,37 @@ public class BQMembershipChangeRepositoryTest
 
 	@Test
 	public void testFindLastBQMembershipChangeBySegmentIds() {
-		List<Long> segmentIds1 = Collections.singletonList(
-			_bqMembershipChange.getSegmentId());
+		Stream<Segment> segmentsStream = _segments.stream();
 
-		List<BQMembershipChange> bqMembershipChanges =
-			_bqMembershipChangeRepository.
-				findLastBQMembershipChangeBySegmentIds(segmentIds1);
-
-		Assertions.assertTrue(bqMembershipChanges.isEmpty());
-
-		bqMembershipChanges =
-			_bqMembershipChangeRepository.
-				findLastBQMembershipChangeBySegmentIds(segmentIds1);
-
-		Assertions.assertEquals(
-			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
-		Assertions.assertEquals(
-			_bqMembershipChange, bqMembershipChanges.get(0));
-
-		bqMembershipChanges =
-			_bqMembershipChangeRepository.
-				findLastBQMembershipChangeBySegmentIds(segmentIds1);
-
-		Assertions.assertEquals(
-			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
-		Assertions.assertEquals(
-			_bqMembershipChange, bqMembershipChanges.get(0));
-
-		bqMembershipChanges =
-			_bqMembershipChangeRepository.
-				findLastBQMembershipChangeBySegmentIds(segmentIds1);
-
-		Assertions.assertEquals(
-			1, bqMembershipChanges.size(), bqMembershipChanges.toString());
-
-		List<Segment> segments = _segments.subList(0, 2);
-
-		Stream<Segment> stream1 = segments.stream();
-
-		List<Long> segmentIds2 = stream1.map(
+		List<Long> segmentIds = segmentsStream.map(
 			Segment::getId
 		).collect(
 			Collectors.toList()
 		);
 
-		bqMembershipChanges =
+		List<BQMembershipChange> bqMembershipChanges =
 			_bqMembershipChangeRepository.
-				findLastBQMembershipChangeBySegmentIds(segmentIds2);
+				findLastBQMembershipChangeBySegmentIds(segmentIds);
 
 		Assertions.assertEquals(
-			2, bqMembershipChanges.size(), bqMembershipChanges.toString());
+			3, bqMembershipChanges.size(), bqMembershipChanges.toString());
 
-		Stream<BQMembershipChange> stream2 = bqMembershipChanges.stream();
+		Stream<BQMembershipChange> bqMembershipChangesStream =
+			bqMembershipChanges.stream();
 
 		Assertions.assertEquals(
-			segmentIds2,
-			stream2.map(
+			segmentIds,
+			bqMembershipChangesStream.map(
 				BQMembershipChange::getSegmentId
 			).collect(
 				Collectors.toList()
 			));
 
-		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
+		for (BQMembershipChange actualBQMembershipChanges :
+				bqMembershipChanges) {
+
 			Assertions.assertEquals(
-				7L, bqMembershipChange.getIdentitiesCount());
+				7L, actualBQMembershipChanges.getIdentitiesCount());
 		}
 	}
 
@@ -261,8 +227,6 @@ public class BQMembershipChangeRepositoryTest
 
 		return bqMembershipChange;
 	}
-
-	private BQMembershipChange _bqMembershipChange;
 
 	@Autowired
 	private BQMembershipChangeRepository _bqMembershipChangeRepository;
