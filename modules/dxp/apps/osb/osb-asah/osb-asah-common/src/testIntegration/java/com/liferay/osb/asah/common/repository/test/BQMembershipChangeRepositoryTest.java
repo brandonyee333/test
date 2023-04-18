@@ -24,10 +24,13 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -75,6 +78,26 @@ public class BQMembershipChangeRepositoryTest
 		}
 
 		bqMembershipsChanges.forEach(_bqMembershipChangeRepository::insert);
+	}
+
+	@BQSQLResource(resourcePath = "test_add_membership_change_bq.sql")
+	@SQLResource(resourcePath = "test_add_membership_change.sql")
+	@Test
+	public void testAddMembershipChange() {
+		_bqMembershipChangeRepository.addBQMembershipChange(1L);
+
+		List<BQMembershipChange> bqMembershipChanges =
+			_bqMembershipChangeRepository.
+				findLastBQMembershipChangeBySegmentIds(
+					Collections.singletonList(1L));
+
+		Assertions.assertEquals(1, bqMembershipChanges.size());
+
+		BQMembershipChange bqMembershipChange = bqMembershipChanges.get(0);
+
+		Assertions.assertEquals(5, bqMembershipChange.getIdentitiesCount());
+		Assertions.assertEquals(3, bqMembershipChange.getIndividualsCount());
+		Assertions.assertEquals(1L, bqMembershipChange.getSegmentId());
 	}
 
 	@Test
