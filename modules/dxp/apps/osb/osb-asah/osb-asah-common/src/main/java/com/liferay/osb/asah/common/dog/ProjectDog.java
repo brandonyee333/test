@@ -125,6 +125,17 @@ public class ProjectDog {
 		_consumers.add(this::_createSnapshots);
 	}
 
+	public void updateVersion(String projectId, String version) {
+		try {
+			ProjectIdThreadLocal.setGlobalContext(true);
+
+			_projectRepository.updateVersion(projectId, version);
+		}
+		finally {
+			ProjectIdThreadLocal.setGlobalContext(false);
+		}
+	}
+
 	private void _createSnapshots(String projectId) {
 	}
 
