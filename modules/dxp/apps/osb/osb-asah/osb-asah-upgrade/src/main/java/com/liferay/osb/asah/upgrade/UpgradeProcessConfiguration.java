@@ -24,9 +24,13 @@ import com.liferay.osb.asah.upgrade.v4_0_0.DataControlTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.DataExportTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.DatabaseSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.ExperimentMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_0.InterestTopicMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_0.ItemRecommendationMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.JobMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.JobRunMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_0.RunLogMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SegmentFilterUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_0.SegmentMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SequenceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SuppressionMigrationUpgradeStep;
 
@@ -61,11 +65,15 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_dataControlTaskMigrationUpgradeStep);
 		upgradeSteps.add(_dataExportTaskMigrationUpgradeStep);
 		upgradeSteps.add(_experimentMigrationUpgradeStep);
+		upgradeSteps.add(_interestTopicMigrationUpgradeStep);
+		upgradeSteps.add(_itemRecommendationMigrationUpgradeStep);
 		upgradeSteps.add(_jobMigrationUpgradeStep);
 		upgradeSteps.add(_jobRunMigrationUpgradeStep);
+		upgradeSteps.add(_runLogMigrationUpgradeStep);
+		upgradeSteps.add(_segmentFilterUpgradeStep);
+		upgradeSteps.add(_segmentMigrationUpgradeStep);
 		upgradeSteps.add(_sequenceUpgradeStep);
 		upgradeSteps.add(_suppressionMigrationUpgradeStep);
-		upgradeSteps.add(_segmentFilterUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"3.6.0", "4.0.0", upgradeSteps.toArray(new UpgradeStep[0]));
@@ -101,13 +109,27 @@ public class UpgradeProcessConfiguration {
 	private ExperimentMigrationUpgradeStep _experimentMigrationUpgradeStep;
 
 	@Autowired
+	private InterestTopicMigrationUpgradeStep
+		_interestTopicMigrationUpgradeStep;
+
+	@Autowired
+	private ItemRecommendationMigrationUpgradeStep
+		_itemRecommendationMigrationUpgradeStep;
+
+	@Autowired
 	private JobMigrationUpgradeStep _jobMigrationUpgradeStep;
 
 	@Autowired
 	private JobRunMigrationUpgradeStep _jobRunMigrationUpgradeStep;
 
 	@Autowired
+	private RunLogMigrationUpgradeStep _runLogMigrationUpgradeStep;
+
+	@Autowired
 	private SegmentFilterUpgradeStep _segmentFilterUpgradeStep;
+
+	@Autowired
+	private SegmentMigrationUpgradeStep _segmentMigrationUpgradeStep;
 
 	@Autowired
 	private SequenceUpgradeStep _sequenceUpgradeStep;
