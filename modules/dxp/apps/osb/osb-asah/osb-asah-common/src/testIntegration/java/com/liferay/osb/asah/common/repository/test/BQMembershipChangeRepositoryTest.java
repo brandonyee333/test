@@ -29,6 +29,7 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -41,6 +42,7 @@ import java.util.stream.Stream;
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang.time.DateUtils;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -78,6 +80,19 @@ public class BQMembershipChangeRepositoryTest
 		}
 
 		bqMembershipsChanges.forEach(_bqMembershipChangeRepository::insert);
+	}
+
+	@AfterEach
+	public void tearDown() {
+		List<Long> segmentIds = new ArrayList<>();
+
+		for (Segment segment : _segmentRepository.findAll()) {
+			segmentIds.add(segment.getId());
+		}
+
+		_bqMembershipChangeRepository.deleteBySegmentIdIn(segmentIds);
+
+		_segmentRepository.deleteAll();
 	}
 
 	@BQSQLResource(resourcePath = "test_add_membership_change_bq.sql")
