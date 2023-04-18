@@ -120,6 +120,7 @@ public interface CustomBQMembershipRepository {
 	@CacheEvict(allEntries = true)
 	@Modifying
 	public void updateBQMemberships(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId);
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		Long segmentId);
 
 }

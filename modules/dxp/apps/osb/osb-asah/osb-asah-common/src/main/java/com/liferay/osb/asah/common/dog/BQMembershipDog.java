@@ -200,10 +200,11 @@ public class BQMembershipDog {
 	}
 
 	public void updateBQMemberships(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		Long segmentId) {
 
 		_bqMembershipRepository.updateBQMemberships(
-			filterString, includeAnonymousUsers, segmentId);
+			channelId, filterString, includeAnonymousUsers, segmentId);
 
 		_bqMembershipChangeDog.addBQMembershipChange(segmentId);
 	}

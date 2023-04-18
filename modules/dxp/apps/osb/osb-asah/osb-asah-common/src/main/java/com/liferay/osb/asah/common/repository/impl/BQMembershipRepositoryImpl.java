@@ -610,7 +610,8 @@ public class BQMembershipRepositoryImpl
 
 	@Override
 	public void updateBQMemberships(
-		String filterString, Boolean includeAnonymousUsers, Long segmentId) {
+		Long channelId, String filterString, Boolean includeAnonymousUsers,
+		Long segmentId) {
 
 		Date date = new Date();
 
@@ -653,6 +654,18 @@ public class BQMembershipRepositoryImpl
 					"BQIdentity"
 				).as(
 					"Identity"
+				).leftJoin(
+					DSL.table(
+						"BQIdentityActivity"
+					).as(
+						"IdentityActivity"
+					)
+				).on(
+					DSL.field(
+						"Identity.id"
+					).eq(
+						DSL.field("IdentityActivity.identityId")
+					)
 				));
 
 		FilterExpression filterExpression = new FilterExpression(
@@ -665,6 +678,20 @@ public class BQMembershipRepositoryImpl
 		List<Condition> conditions = new ArrayList<>();
 
 		conditions.add(filterExpression.getCondition());
+
+		conditions.add(
+			DSL.field(
+				"IdentityActivity.channelId"
+			).eq(
+				channelId
+			));
+
+		if (BooleanUtils.isFalse(includeAnonymousUsers)) {
+			conditions.add(
+				DSL.field(
+					"Individual.id"
+				).isNotNull());
+		}
 
 		// TODO Replace DELETE/INSERT by BigQuery MERGE Statement
 
