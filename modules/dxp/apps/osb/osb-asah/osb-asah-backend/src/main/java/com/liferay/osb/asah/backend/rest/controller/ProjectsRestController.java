@@ -14,13 +14,14 @@
 
 package com.liferay.osb.asah.backend.rest.controller;
 
+import com.liferay.osb.asah.backend.dto.ProjectDTO;
 import com.liferay.osb.asah.backend.dto.ProjectDetailDTO;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dog.PreferenceDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Preference;
-import com.liferay.osb.asah.common.entity.Project;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.ArrayList;
@@ -122,13 +123,13 @@ public class ProjectsRestController extends BaseRestController {
 	}
 
 	@GetMapping
-	public List<Project> getProjects() {
-		return _projectDog.getProjects();
+	public List<ProjectDTO> getProjectDTOs() {
+		return ListUtil.map(_projectDog.getProjects(), ProjectDTO::new);
 	}
 
 	@PostMapping
-	public void postProject(@RequestBody Project project) {
-		_projectDog.addProject(project);
+	public void postProject(@RequestBody ProjectDTO projectDTO) {
+		_projectDog.addProject(projectDTO.getId());
 	}
 
 	private static final Log _log = LogFactory.getLog(
