@@ -230,23 +230,27 @@ public class BQIndividualDog {
 		for (int i = 0; i < sorts.length; i++) {
 			String sort = sorts[i];
 
-			String order = null;
+			String orderString = null;
 
 			String[] properties = sort.split(",");
 
 			if (properties.length == 1) {
-				order = sorts[++i];
+				orderString = sorts[++i];
 			}
 			else {
-				order = properties[1];
+				orderString = properties[1];
 			}
 
-			if (Objects.equals(order, "asc")) {
-				orders.add(Sort.Order.asc(properties[0]));
+			Sort.Order order = null;
+
+			if (Objects.equals(orderString, "asc")) {
+				order = Sort.Order.asc(properties[0]);
 			}
 			else {
-				orders.add(Sort.Order.desc(properties[0]));
+				order = Sort.Order.desc(properties[0]);
 			}
+
+			orders.add(order.ignoreCase());
 		}
 
 		return Sort.by(orders);

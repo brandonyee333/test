@@ -71,7 +71,6 @@ import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.lang.Nullable;
 
 /**
@@ -658,8 +657,7 @@ public class BQIndividualRepositoryImpl
 				fields
 			).orderBy(
 				getSortFields(
-					_fieldNameConversionMap,
-					_toIgnoreCaseSort(pageable.getSort()),
+					_fieldNameConversionMap, pageable.getSort(),
 					DSL.table("Individual"))
 			).limit(
 				pageable.getPageSize()
@@ -1361,16 +1359,6 @@ public class BQIndividualRepositoryImpl
 		}
 
 		return selectJoinStep;
-	}
-
-	private Sort _toIgnoreCaseSort(Sort sort) {
-		List<Sort.Order> orders = new ArrayList<>();
-
-		for (Sort.Order order : sort.toList()) {
-			orders.add(order.ignoreCase());
-		}
-
-		return Sort.by(orders);
 	}
 
 	private static final String[] _SEARCH_COLUMNS = {
