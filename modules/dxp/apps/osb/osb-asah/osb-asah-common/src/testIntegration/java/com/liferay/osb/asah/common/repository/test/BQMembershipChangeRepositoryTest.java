@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -24,6 +25,7 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,7 +41,6 @@ import org.apache.commons.lang.time.DateUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,10 @@ import org.springframework.data.domain.PageRequest;
 /**
  * @author Marcellus Tavares
  */
-@Disabled
 @Import(JDBCTestConfiguration.class)
-public class BQMembershipChangeRepositoryTest {
+public class BQMembershipChangeRepositoryTest
+	implements OSBAsahCommonSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@BeforeEach
 	public void setUp() {
