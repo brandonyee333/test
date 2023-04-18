@@ -34,9 +34,6 @@ import com.liferay.osb.asah.upgrade.v4_0_0.SegmentMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SequenceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SuppressionMigrationUpgradeStep;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,29 +51,39 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
 
-		List<UpgradeStep> upgradeSteps = new ArrayList<>();
-
-		upgradeSteps.add(_databaseSchemaUpgradeStep);
-
-		upgradeSteps.add(_asahMarkerMigrationUpgradeStep);
-		upgradeSteps.add(_asahTaskMigrationUpgradeStep);
-		upgradeSteps.add(_blockedKeywordMigrationUpgradeStep);
-		upgradeSteps.add(_csvUserMigrationUpgradeStep);
-		upgradeSteps.add(_dataControlTaskMigrationUpgradeStep);
-		upgradeSteps.add(_dataExportTaskMigrationUpgradeStep);
-		upgradeSteps.add(_experimentMigrationUpgradeStep);
-		upgradeSteps.add(_interestTopicMigrationUpgradeStep);
-		upgradeSteps.add(_itemRecommendationMigrationUpgradeStep);
-		upgradeSteps.add(_jobMigrationUpgradeStep);
-		upgradeSteps.add(_jobRunMigrationUpgradeStep);
-		upgradeSteps.add(_runLogMigrationUpgradeStep);
-		upgradeSteps.add(_segmentFilterUpgradeStep);
-		upgradeSteps.add(_segmentMigrationUpgradeStep);
-		upgradeSteps.add(_sequenceUpgradeStep);
-		upgradeSteps.add(_suppressionMigrationUpgradeStep);
-
 		upgradeProcess.addUpgradeSteps(
-			"3.6.0", "4.0.0", upgradeSteps.toArray(new UpgradeStep[0]));
+			"3.6.0", "3.7.0", _databaseSchemaUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.0", "3.7.1", _asahMarkerMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.1", "3.7.2", _asahTaskMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.2", "3.7.3", _blockedKeywordMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.3", "3.7.4", _csvUserMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.4", "3.7.5", _dataControlTaskMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.5", "3.7.6", _dataExportTaskMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.7", "3.7.8", _experimentMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.8", "3.7.9", _interestTopicMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.7.9", "3.8.0", _itemRecommendationMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.8.1", "3.8.2", _jobMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.8.1", "3.8.2", _jobRunMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.8.2", "3.8.3", _runLogMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.8.3", "3.8.4", _segmentMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.8.4", "3.8.5", _suppressionMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps("3.8.5", "3.8.6", _sequenceUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.8.6", "4.0.0", _segmentFilterUpgradeStep);
 
 		return upgradeProcess;
 	}
