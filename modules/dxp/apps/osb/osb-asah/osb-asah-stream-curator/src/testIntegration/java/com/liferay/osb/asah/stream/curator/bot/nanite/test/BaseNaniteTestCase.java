@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.stream.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.common.dog.ProjectDog;
-import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -32,7 +31,7 @@ public abstract class BaseNaniteTestCase
 
 	@BeforeEach
 	public void setUp() {
-		_projectDog.addProject(new Project("test"));
+		_projectDog.addProject("test");
 
 		ProjectIdThreadLocal.setProjectId("test");
 	}
