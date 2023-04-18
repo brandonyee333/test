@@ -268,6 +268,17 @@ public class BQMembershipDogTest
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_memberships_2.sql")
+	@Test
+	public void testUpdateBQMembershipsWithDifferentChannelIds() {
+		_bqMembershipDog.updateBQMemberships(
+			1L,
+			"(organizations.filter(filter='(id eq ''23k92323l923lf0as'')'))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+	}
+
 	@BQSQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
 	@Test
 	public void testUpdateBQMembershipsWithInterest1() {
