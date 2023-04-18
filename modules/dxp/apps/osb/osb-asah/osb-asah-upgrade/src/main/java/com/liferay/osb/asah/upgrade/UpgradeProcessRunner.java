@@ -33,14 +33,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class UpgradeProcessRunner {
 
-	public void run() throws Exception {
+	public void run() {
 		runProjectUpgrades();
 	}
 
-	public void runProjectUpgrades() throws Exception {
-		List<Project> projects = _projectDog.getProjects();
-
-		for (Project project : projects) {
+	public void runProjectUpgrades() {
+		for (Project project : _projectDog.getProjects()) {
 			try {
 				ProjectIdThreadLocal.setProjectId(project.getId());
 
