@@ -26,7 +26,6 @@ import com.liferay.osb.asah.upgrade.v4_0_0.DataControlTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.DataExportTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.DatabaseSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.ExperimentMigrationUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_0_0.IdentityMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.JobMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.JobRunMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SegmentFilterUpgradeStep;
@@ -66,7 +65,6 @@ public class UpgradeProcessConfiguration {
 		upgradeSteps.add(_dataExportTaskMigrationUpgradeStep);
 		upgradeSteps.add(_dxpEntityMigrationUpgradeStep);
 		upgradeSteps.add(_experimentMigrationUpgradeStep);
-		upgradeSteps.add(_identityMigrationUpgradeStep);
 		upgradeSteps.add(_jobMigrationUpgradeStep);
 		upgradeSteps.add(_jobRunMigrationUpgradeStep);
 		upgradeSteps.add(_sequenceUpgradeStep);
@@ -112,9 +110,6 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private ExperimentMigrationUpgradeStep _experimentMigrationUpgradeStep;
-
-	@Autowired
-	private IdentityMigrationUpgradeStep _identityMigrationUpgradeStep;
 
 	@Autowired
 	private JobMigrationUpgradeStep _jobMigrationUpgradeStep;
