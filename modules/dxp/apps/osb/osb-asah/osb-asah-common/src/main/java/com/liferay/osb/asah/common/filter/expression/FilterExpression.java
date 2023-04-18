@@ -229,12 +229,12 @@ public class FilterExpression {
 			matcher = _membershipPattern.matcher(filterExpressionString);
 		}
 
-		matcher = _notContainPattern.matcher(filterExpressionString);
+		matcher = _notContainsPattern.matcher(filterExpressionString);
 
 		while (matcher.find()) {
 			filterExpressionString = matcher.replaceFirst("notContains");
 
-			matcher = _notContainPattern.matcher(filterExpressionString);
+			matcher = _notContainsPattern.matcher(filterExpressionString);
 		}
 
 		return filterExpressionString;
@@ -249,7 +249,7 @@ public class FilterExpression {
 	private static final Pattern _membershipPattern = Pattern.compile(
 		"(?<type>groupIds|roleIds|teamIds|userGroupIds) (?<operator>eq|ne) '" +
 			"(?<id>[\\w]+)'");
-	private static final Pattern _notContainPattern = Pattern.compile(
+	private static final Pattern _notContainsPattern = Pattern.compile(
 		"not contains");
 
 	private Condition _condition;
