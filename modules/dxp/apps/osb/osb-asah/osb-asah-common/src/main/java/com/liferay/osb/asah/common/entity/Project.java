@@ -63,9 +63,14 @@ public class Project implements Persistable<String> {
 		return _id;
 	}
 
+	@AccessType(AccessType.Type.PROPERTY)
+	public String getVersion() {
+		return _version;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(_id);
+		return Objects.hash(_id, _version);
 	}
 
 	@JsonIgnore
@@ -78,7 +83,14 @@ public class Project implements Persistable<String> {
 		_id = id;
 	}
 
+	public void setVersion(String version) {
+		_version = version;
+	}
+
 	@Transient
 	private String _id;
+
+	@Transient
+	private String _version;
 
 }
