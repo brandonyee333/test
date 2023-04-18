@@ -121,15 +121,12 @@ public class BQMembershipChangeRepositoryImpl
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
-		return selectSelectStep.from(
-			"BQMembershipChange"
-		).where(
-			_getConditions(filterHelper, segmentId)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQMembershipChange"
+			).where(
+				_getConditions(filterHelper, segmentId)
+			));
 	}
 
 	@Override
