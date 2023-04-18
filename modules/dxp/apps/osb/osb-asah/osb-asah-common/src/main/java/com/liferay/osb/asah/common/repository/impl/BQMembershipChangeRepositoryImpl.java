@@ -146,12 +146,52 @@ public class BQMembershipChangeRepositoryImpl
 
 	@Override
 	public List<BQMembershipChange> findAll() {
-		return null;
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				BigDecimal identitiesCountBigDecimal =
+					(BigDecimal)recordMap.get("identitiesCount");
+				BigDecimal individualsCountBigDecimal =
+					(BigDecimal)recordMap.get("individualsCount");
+
+				recordMap.put(
+					"identitiesCount", identitiesCountBigDecimal.longValue());
+				recordMap.put(
+					"individualsCount", individualsCountBigDecimal.longValue());
+
+				return new BQMembershipChange(recordMap);
+			},
+			_dslContext.selectFrom("BQMembershipChange"));
 	}
 
 	@Override
-	public BQMembershipChange findBySegmentId(long segmentId) {
-		return null;
+	public List<BQMembershipChange> findBySegmentId(long segmentId) {
+		return _queryExecutor.queryForList(
+			recordMap -> {
+				BigDecimal identitiesCountBigDecimal =
+					(BigDecimal)recordMap.get("identitiesCount");
+				BigDecimal individualsCountBigDecimal =
+					(BigDecimal)recordMap.get("individualsCount");
+
+				recordMap.put(
+					"identitiesCount", identitiesCountBigDecimal.longValue());
+				recordMap.put(
+					"individualsCount", individualsCountBigDecimal.longValue());
+
+				return new BQMembershipChange(recordMap);
+			},
+			_dslContext.selectFrom(
+				"BQMembershipChange"
+			).where(
+				DSL.field(
+					"segmentId"
+				).eq(
+					segmentId
+				)
+			).orderBy(
+				DSL.field(
+					"createDate"
+				).desc()
+			));
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public interface CustomBQMembershipChangeRepository {
 
 	public List<BQMembershipChange> findAll();
 
-	public BQMembershipChange findBySegmentId(long segmentId);
+	public List<BQMembershipChange> findBySegmentId(long segmentId);
 
 	@Cacheable
 	public List<BQMembershipChange> findLastBQMembershipChangeBySegmentIds(
