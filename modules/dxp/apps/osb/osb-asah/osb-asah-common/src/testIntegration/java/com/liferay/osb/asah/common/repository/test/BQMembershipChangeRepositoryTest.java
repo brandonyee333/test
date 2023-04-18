@@ -163,7 +163,7 @@ public class BQMembershipChangeRepositoryTest
 		Assertions.assertEquals(3, segmentIds.size());
 
 		segmentIds = _bqMembershipChangeRepository.findSegmentIdByFilterString(
-			"knownIdentitiesCount ge 3");
+			"individualsCount ge 3");
 
 		Assertions.assertEquals(3, segmentIds.size());
 	}
