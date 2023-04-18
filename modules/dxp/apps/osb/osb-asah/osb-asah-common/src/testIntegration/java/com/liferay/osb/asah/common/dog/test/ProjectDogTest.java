@@ -113,6 +113,20 @@ public class ProjectDogTest
 			).toArray());
 	}
 
+	@SQLResource(resourcePath = "test_projects.sql")
+	@Test
+	public void testUpdateVersion() {
+		_projectDog.updateVersion("project1", "5.0.0");
+
+		Project project1 = _projectDog.getProject("project1");
+
+		Assertions.assertEquals("5.0.0", project1.getVersion());
+
+		Project project2 = _projectDog.getProject("project2");
+
+		Assertions.assertEquals("4.0.0", project2.getVersion());
+	}
+
 	@Mock
 	private Consumer<String> _consumer;
 

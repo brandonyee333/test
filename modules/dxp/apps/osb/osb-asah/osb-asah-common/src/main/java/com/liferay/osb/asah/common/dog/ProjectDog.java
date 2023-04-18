@@ -21,11 +21,13 @@ import com.liferay.osb.asah.common.http.NanitesHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.repository.ProjectRepository;
+import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.ReleaseInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import javax.annotation.PostConstruct;
@@ -35,6 +37,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
@@ -104,6 +107,23 @@ public class ProjectDog {
 
 		if (deleteData) {
 			_postgreSQLSchemaManager.deleteSchema(projectId);
+		}
+	}
+
+	public Project getProject(String projectId) {
+		try {
+			ProjectIdThreadLocal.setGlobalContext(true);
+
+			Optional<Project> projectOptional = _projectRepository.findById(
+				projectId);
+
+			return projectOptional.orElseThrow(
+				() -> new OSBAsahException(
+					HttpStatus.BAD_REQUEST,
+					"There is no Project with ID " + projectId));
+		}
+		finally {
+			ProjectIdThreadLocal.setGlobalContext(false);
 		}
 	}
 
