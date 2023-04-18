@@ -277,6 +277,16 @@ public class BQMembershipDogTest
 			Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			1L, "custom/Organization/value eq 'Developer'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			2L, "custom/Organization/value eq 'Developer'", Boolean.TRUE, 2L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(2L));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_memberships_with_interest.sql")
