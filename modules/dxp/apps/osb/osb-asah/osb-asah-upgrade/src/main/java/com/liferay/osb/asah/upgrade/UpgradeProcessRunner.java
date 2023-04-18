@@ -14,11 +14,8 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.common.dog.AsahMarkerDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
-import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.upgrade.UpgradeState;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
@@ -26,8 +23,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,7 +49,7 @@ public class UpgradeProcessRunner {
 						"Checking upgrades for project: " + project.getId());
 				}
 
-				_run();
+				_run(project);
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
@@ -69,48 +64,6 @@ public class UpgradeProcessRunner {
 		}
 
 		_upgradeState.complete();
-	}
-
-	private AsahMarker _getAsahMarker() {
-		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker("Upgrade");
-
-		if (asahMarker != null) {
-			return asahMarker;
-		}
-
-		asahMarker = _asahMarkerDog.addAsahMarker(
-			new AsahMarker("Upgrade", JSONUtil.put("version", "0.0.0")));
-
-		asahMarker.setIsNew(Boolean.FALSE);
-
-		return asahMarker;
-	}
-
-	private String _getCurrentVersion(AsahMarker asahMarker) {
-		JSONObject asahMarkerContextJSONObject =
-			asahMarker.getContextJSONObject();
-
-		return asahMarkerContextJSONObject.getString("version");
-	}
-
-	private void _run() throws Exception {
-		AsahMarker asahMarker = _getAsahMarker();
-
-		String currentVersion = _getCurrentVersion(asahMarker);
-
-		List<UpgradeStep> upgradeSteps = _upgradeProcess.getUpgradeSteps(
-			currentVersion);
-
-		while (!upgradeSteps.isEmpty()) {
-			String toVersionString = _upgradeProcess.getToVersionString(
-				currentVersion);
-
-			_run(upgradeSteps, toVersionString);
-
-			currentVersion = _saveCurrentVersion(asahMarker, toVersionString);
-
-			upgradeSteps = _upgradeProcess.getUpgradeSteps(currentVersion);
-		}
 	}
 
 	private void _run(List<UpgradeStep> upgradeSteps, String version)
@@ -132,24 +85,33 @@ public class UpgradeProcessRunner {
 		}
 	}
 
-	private String _saveCurrentVersion(
-		AsahMarker asahMarker, String versionString) {
+	private void _run(Project project) throws Exception {
+		String currentVersion = project.getVersion();
 
-		JSONObject asahMarkerContextJSONObject =
-			asahMarker.getContextJSONObject();
+		List<UpgradeStep> upgradeSteps = _upgradeProcess.getUpgradeSteps(
+			currentVersion);
 
-		asahMarkerContextJSONObject.put("version", versionString);
+		while (!upgradeSteps.isEmpty()) {
+			String toVersionString = _upgradeProcess.getToVersionString(
+				currentVersion);
 
-		_asahMarkerDog.updateAsahMarker(asahMarker);
+			_run(upgradeSteps, toVersionString);
 
-		return versionString;
+			currentVersion = _updateProjectVersion(
+				project.getId(), toVersionString);
+
+			upgradeSteps = _upgradeProcess.getUpgradeSteps(currentVersion);
+		}
+	}
+
+	private String _updateProjectVersion(String projectId, String version) {
+		_projectDog.updateVersion(projectId, version);
+
+		return version;
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		UpgradeProcessRunner.class);
-
-	@Autowired
-	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private ProjectDog _projectDog;
