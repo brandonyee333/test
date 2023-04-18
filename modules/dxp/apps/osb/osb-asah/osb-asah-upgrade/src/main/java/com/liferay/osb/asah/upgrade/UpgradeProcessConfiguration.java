@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.common.util.ReleaseInfo;
-import com.liferay.osb.asah.upgrade.v0_0_0.SnapshotsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.BlockedKeywordMigrationUpgradeStep;
@@ -47,9 +45,6 @@ public class UpgradeProcessConfiguration {
 	@Bean
 	public UpgradeProcess upgradeProcess() {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
-
-		upgradeProcess.addUpgradeSteps(
-			"0.0.0", ReleaseInfo.getVersion(), _snapshotsUpgradeStep);
 
 		upgradeProcess.addUpgradeSteps(
 			"3.6.0", "3.7.0", _databaseSchemaUpgradeStep);
@@ -140,9 +135,6 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private SequenceUpgradeStep _sequenceUpgradeStep;
-
-	@Autowired
-	private SnapshotsUpgradeStep _snapshotsUpgradeStep;
 
 	@Autowired
 	private SuppressionMigrationUpgradeStep _suppressionMigrationUpgradeStep;
