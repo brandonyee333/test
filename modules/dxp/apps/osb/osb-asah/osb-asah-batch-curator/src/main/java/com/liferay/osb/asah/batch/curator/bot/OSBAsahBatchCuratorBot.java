@@ -38,7 +38,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
@@ -93,24 +92,6 @@ public class OSBAsahBatchCuratorBot {
 			});
 	}
 
-	@Scheduled(fixedDelay = DateUtil.MINUTE)
-	public void runContentRecommendationDataSolutionNanite() {
-		if (_contentRecommendationDataSolutionNaniteRunnable == null) {
-			return;
-		}
-
-		try {
-			ProjectIdThreadLocal.forProjects(
-				_projectDog.getProjects(),
-				_contentRecommendationDataSolutionNaniteRunnable);
-		}
-		catch (Exception exception) {
-			_log.error(
-				"Unable to execute ContentRecommendationDataSolutionNanite",
-				exception);
-		}
-	}
-
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataControlNanite() {
 		_asahTaskManager.runNanitesForAllProjects("DataControlNanite");
@@ -119,24 +100,6 @@ public class OSBAsahBatchCuratorBot {
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runDataExportNanite() {
 		_asahTaskManager.runNanitesForAllProjects("DataExportNanite");
-	}
-
-	@Scheduled(fixedDelay = DateUtil.MINUTE)
-	public void runDataprocSparkManagerMonitoringNanite() {
-		if (_dataprocSparkManagerMonitoringNaniteRunnable == null) {
-			return;
-		}
-
-		try {
-			ProjectIdThreadLocal.forProjects(
-				_projectDog.getProjects(),
-				_dataprocSparkManagerMonitoringNaniteRunnable);
-		}
-		catch (Exception exception) {
-			_log.error(
-				"Unable to execute DataprocSparkManagerMonitoringNanite",
-				exception);
-		}
 	}
 
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
@@ -189,26 +152,8 @@ public class OSBAsahBatchCuratorBot {
 		_boundedExecutor.shutdown();
 	}
 
-	private Runnable _getDeleteDXPBatchEntitiesRunnable() {
-		if (_deleteDXPBatchEntitiesNaniteRunnable == null) {
-			return () -> {
-			};
-		}
-
-		return _deleteDXPBatchEntitiesNaniteRunnable;
-	}
-
 	private Runnable _getDeleteTempFilesRunnable() {
 		return () -> _asahTaskManager.runNanites("DeleteTempFilesNanite");
-	}
-
-	private Runnable _getInterestsRunnable() {
-		return () -> _asahTaskManager.runNanites("InterestTopicsNanite");
-	}
-
-	private Runnable _getStaleDynamicIndividualSegmentsRunnable() {
-		return () -> _asahTaskManager.runNanites(
-			"StaleDynamicIndividualSegmentsNanite");
 	}
 
 	private void _init(String projectId) {
@@ -218,8 +163,6 @@ public class OSBAsahBatchCuratorBot {
 			// TODO
 
 			_asahTaskManager.runNanites("DeleteTempFilesNanite");
-
-			_asahTaskManager.runNanites("StaleDynamicIndividualSegmentsNanite");
 
 			_asahTaskManager.scheduleAsahTasks();
 
@@ -260,14 +203,7 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private void _scheduleNanites() {
-		_scheduleNanite(
-			_getDeleteDXPBatchEntitiesRunnable(),
-			"DeleteDXPBatchEntitiesNanite");
 		_scheduleNanite(_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
-		_scheduleNanite(_getInterestsRunnable(), "Interests");
-		_scheduleNanite(
-			_getStaleDynamicIndividualSegmentsRunnable(),
-			"StaleDynamicIndividualSegments");
 	}
 
 	private void _unscheduleNanites() {
@@ -298,18 +234,6 @@ public class OSBAsahBatchCuratorBot {
 
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(50, 40);
-
-	@Autowired(required = false)
-	@Qualifier("contentRecommendationDataSolutionNaniteRunnable")
-	private Runnable _contentRecommendationDataSolutionNaniteRunnable;
-
-	@Autowired(required = false)
-	@Qualifier("dataprocSparkManagerMonitoringNaniteRunnable")
-	private Runnable _dataprocSparkManagerMonitoringNaniteRunnable;
-
-	@Autowired(required = false)
-	@Qualifier("deleteDXPBatchEntitiesNaniteRunnable")
-	private Runnable _deleteDXPBatchEntitiesNaniteRunnable;
 
 	@Autowired
 	private ProjectDog _projectDog;
