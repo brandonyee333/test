@@ -66,7 +66,7 @@ public class ProjectDogTest
 
 	@Test
 	public void testAddProject() {
-		_projectDog.addProject(new Project("project4"));
+		_projectDog.addProject("project4");
 
 		Mockito.verify(
 			_consumer, Mockito.times(1)
