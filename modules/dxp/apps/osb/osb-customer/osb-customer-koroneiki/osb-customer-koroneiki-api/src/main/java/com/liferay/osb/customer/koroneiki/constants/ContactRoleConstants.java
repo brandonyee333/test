@@ -50,4 +50,8 @@ public class ContactRoleConstants {
 		NAME_SUPPORT_CLOSED_WATCHER
 	};
 
+	public static final String[] SUPPORT_TICKET_ROLES = {
+		NAME_SUPPORT_ADMINISTRATOR, NAME_SUPPORT_REQUESTER
+	};
+
 }

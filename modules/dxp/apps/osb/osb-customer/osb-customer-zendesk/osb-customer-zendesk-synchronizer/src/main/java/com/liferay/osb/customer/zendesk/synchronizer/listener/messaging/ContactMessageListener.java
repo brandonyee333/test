@@ -234,6 +234,9 @@ public class ContactMessageListener extends BaseMessageListener {
 				return;
 			}
 
+			boolean supportContactRole = false;
+			boolean supportTicketRole = false;
+
 			for (ContactRole curContactRole : contactRoles) {
 				String name = curContactRole.getName();
 
@@ -246,28 +249,32 @@ public class ContactMessageListener extends BaseMessageListener {
 				}
 
 				if (ArrayUtil.contains(
-						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
-						curContactRole.getName()) ||
+						ContactRoleConstants.SUPPORT_CONTACT_ROLES, name) ||
 					ArrayUtil.contains(
-						ContactRoleConstants.PARTNER_CONTACT_ROLES,
-						curContactRole.getName())) {
+						ContactRoleConstants.PARTNER_CONTACT_ROLES, name)) {
+
+					supportContactRole = true;
 
 					_customerSynchronizer.update(user);
 
-					if (name.equals(
-							ContactRoleConstants.NAME_SUPPORT_ADMINISTRATOR) ||
-						contactRoleName.equals(
-							ContactRoleConstants.NAME_SUPPORT_REQUESTER)) {
+					if (ArrayUtil.contains(
+							ContactRoleConstants.SUPPORT_TICKET_ROLES, name)) {
 
-						_accountSynchronizer.reassignTickets(
-							account.getKey(), accountEntry, user);
+						supportTicketRole = true;
+
+						break;
 					}
-
-					return;
 				}
 			}
 
-			onContactUnassign(account, accountEntry, user);
+			if (!supportContactRole) {
+				onContactUnassign(account, accountEntry, user);
+			}
+
+			if (!supportTicketRole) {
+				_accountSynchronizer.reassignTickets(
+					account.getKey(), accountEntry, user);
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
