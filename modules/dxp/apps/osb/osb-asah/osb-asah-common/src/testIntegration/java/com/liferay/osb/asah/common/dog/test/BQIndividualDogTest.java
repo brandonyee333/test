@@ -631,42 +631,33 @@ public class BQIndividualDogTest
 		Assertions.assertEquals(0, segmentIds.size(), segmentIds.toString());
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_bq_individual_page.sql")
 	@Test
 	public void testSearchBQIndividuals1() {
-
-		// TODO Add BQFieldMapping "givenName", "Text"
-
-		List<Individual> individuals = _searchIndividuals(
-			100L, null, false, 0, 10,
-			new String[] {"demographics/givenName/value,asc"});
+		Page<Individual> individualPage =
+			_bqIndividualDog.searchBQIndividualPage(
+				null, 1L, null, null, false, null, 0, null, null, 10,
+				new String[] {"demographics/givenName/value,asc"});
 
 		Assertions.assertEquals(
 			ArrayUtils.toUnmodifiableList(
-				new String[] {"alpha", "beta", "gamma", "omega", "theta"}),
-			_getGivenNames(individuals));
+				new String[] {
+					"Adam", "alex", "Bonnie", "cedric", "Christina", "Daniel",
+					"Eve", "fiona", "olivia", "Zinchenko"
+				}),
+			_getGivenNames(individualPage.getContent()));
 
-		individuals = _searchIndividuals(
-			100L, null, false, 0, 10,
+		individualPage = _bqIndividualDog.searchBQIndividualPage(
+			null, 1L, null, null, false, null, 0, null, null, 10,
 			new String[] {"demographics/givenName/value,desc"});
 
 		Assertions.assertEquals(
 			ArrayUtils.toUnmodifiableList(
-				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
-			_getGivenNames(individuals));
-
-		individuals = _searchIndividuals(
-			null, null, false, 0, 10,
-			new String[] {"demographics/givenName/value,desc"});
-
-		Assertions.assertEquals(
-			ArrayUtils.toUnmodifiableList(
-				new String[] {"theta", "omega", "gamma", "beta", "alpha"}),
-			_getGivenNames(individuals));
+				new String[] {
+					"Zinchenko", "olivia", "fiona", "Eve", "Daniel",
+					"Christina", "cedric", "Bonnie", "alex", "Adam"
+				}),
+			_getGivenNames(individualPage.getContent()));
 	}
 
 	@Disabled
