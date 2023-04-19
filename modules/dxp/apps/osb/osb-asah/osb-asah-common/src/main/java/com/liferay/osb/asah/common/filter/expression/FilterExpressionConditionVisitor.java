@@ -40,6 +40,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.Param;
@@ -783,17 +784,26 @@ public class FilterExpressionConditionVisitor
 
 		String query = String.join(
 			"", "CASE WHEN STARTS_WITH({0}.value, '[') AND ENDS_WITH(",
-			"{0}.value, ']') THEN (EXISTS (SELECT numeric_value FROM UNNEST(",
-			"JSON_EXTRACT_ARRAY({0}.value,'$')) AS numeric_value WHERE ",
-			"SAFE_CAST(numeric_value AS NUMERIC) {1} SAFE_CAST('", value, "' ",
-			"AS NUMERIC))) WHEN SAFE_CAST({0}.value AS NUMERIC) IS NULL THEN ",
-			"false ELSE SAFE_CAST({0}.value AS NUMERIC) {1} SAFE_CAST('", value,
-			"' AS NUMERIC) END");
+			"{0}.value, ']') THEN ({1} EXISTS (SELECT value FROM UNNEST(",
+			"JSON_EXTRACT_STRING_ARRAY({0}.value,'$')) AS value WHERE ",
+			"LOWER(value) = '", StringUtils.lowerCase(value),
+			"')) ELSE LOWER({0}.value) {2} '", StringUtils.lowerCase(value),
+			"' END");
 
 		if (DateUtil.isValidPatternShort(value)) {
 			query =
 				"SAFE_CAST({0}.value AS DATE) {1} SAFE_CAST('" + value +
 					"' AS DATE)";
+		}
+		else if (NumberUtils.isCreatable(value)) {
+			query = String.join(
+				"", "CASE WHEN STARTS_WITH({0}.value, '[') AND ENDS_WITH(",
+				"{0}.value, ']') THEN (EXISTS (SELECT numeric_value FROM ",
+				"UNNEST(JSON_EXTRACT_ARRAY({0}.value,'$')) AS numeric_value ",
+				"WHERE SAFE_CAST(numeric_value AS NUMERIC) {1} SAFE_CAST('",
+				value, "' AS NUMERIC))) WHEN SAFE_CAST({0}.value AS NUMERIC) ",
+				"IS NULL THEN false ELSE SAFE_CAST({0}.value AS NUMERIC) {1} ",
+				"SAFE_CAST('", value, "' AS NUMERIC) END");
 		}
 
 		if (operator.equalsIgnoreCase("eq")) {
@@ -806,14 +816,22 @@ public class FilterExpressionConditionVisitor
 						aliasField.eq("[]"), aliasField.eq("[\"\"]")));
 			}
 			else {
-				condition = condition.and(
-					DSL.condition(
-						String.join(
-							"", "CASE WHEN STARTS_WITH(", alias,
-							".value, '[') THEN LOWER(", alias,
-							".value) LIKE '%", StringUtils.lowerCase(value),
-							"%' ELSE LOWER(", alias, ".value) = '",
-							StringUtils.lowerCase(value), "' END")));
+				if (!DateUtil.isValidPatternShort(value) &&
+					!NumberUtils.isCreatable(value)) {
+
+					condition = condition.and(
+						DSL.condition(
+							StringUtil.replace(
+								query, new String[] {"{0}", "{1}", "{2}"},
+								new String[] {alias, "", "="})));
+				}
+				else {
+					condition = condition.and(
+						DSL.condition(
+							StringUtil.replace(
+								query, new String[] {"{0}", "{1}"},
+								new String[] {alias, "="})));
+				}
 			}
 		}
 		else if (operator.equalsIgnoreCase("ge")) {
@@ -854,14 +872,22 @@ public class FilterExpressionConditionVisitor
 						aliasField.ne("[]"), aliasField.ne("[\"\"]")));
 			}
 			else {
-				condition = condition.and(
-					DSL.condition(
-						String.join(
-							"", "CASE WHEN STARTS_WITH(", alias,
-							".value, '[') THEN LOWER(", alias,
-							".value) NOT LIKE '%", StringUtils.lowerCase(value),
-							"%' ELSE LOWER(", alias, ".value) != '",
-							StringUtils.lowerCase(value), "' END")));
+				if (!DateUtil.isValidPatternShort(value) &&
+					!NumberUtils.isCreatable(value)) {
+
+					condition = condition.and(
+						DSL.condition(
+							StringUtil.replace(
+								query, new String[] {"{0}", "{1}", "{2}"},
+								new String[] {alias, "NOT", "!="})));
+				}
+				else {
+					condition = condition.and(
+						DSL.condition(
+							StringUtil.replace(
+								query, new String[] {"{0}", "{1}"},
+								new String[] {alias, "!="})));
+				}
 			}
 		}
 
