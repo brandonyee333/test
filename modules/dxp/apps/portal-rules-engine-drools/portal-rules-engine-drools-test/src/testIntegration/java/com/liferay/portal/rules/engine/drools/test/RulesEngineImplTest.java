@@ -6,7 +6,7 @@
  * compliance with the License. You can obtain a copy of the License by
  * contacting Liferay, Inc. See the License for the specific language governing
  * permissions and limitations under the License, including but not limited to
- * distribution rights of the Software.
+ * distribution rights of the Software.ci test
  *
  *
  *
