@@ -33,8 +33,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -76,11 +74,14 @@ public class Individual {
 		);
 
 		if (fields != null) {
+			Set<String> demographicsFieldNames =
+				FieldMappingConstants.demographicsDisplayNames.keySet();
+
 			Stream<Field> stream2 = fields.stream();
 
 			_customFields = stream2.filter(
-				bqIndividualField -> StringUtils.contains(
-					bqIndividualField.getName(), "-")
+				bqIndividualField -> !demographicsFieldNames.contains(
+					bqIndividualField.getName())
 			).collect(
 				Collectors.toSet()
 			);
