@@ -365,6 +365,17 @@ public class BQIndividualDogTest
 
 		Assertions.assertEquals(1, customFields.size());
 
+		Stream<Field> stream = customFields.stream();
+
+		Field customField = stream.filter(
+			field -> Objects.equals(field.getName(), "custom")
+		).findFirst(
+		).orElse(
+			null
+		);
+
+		Assertions.assertNotNull(customField);
+
 		Assertions.assertEquals(
 			"joe.bloggs@liferay.com",
 			FaroInfoIndividualUtil.getIndividualEmail(individual));
