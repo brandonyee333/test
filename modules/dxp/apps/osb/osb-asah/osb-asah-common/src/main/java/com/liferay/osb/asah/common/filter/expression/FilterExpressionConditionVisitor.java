@@ -798,10 +798,12 @@ public class FilterExpressionConditionVisitor
 
 		if (operator.equalsIgnoreCase("eq")) {
 			if (StringUtil.isNull(value)) {
+				Field aliasField = DSL.field(alias + ".value");
+
 				condition = condition.and(
-					DSL.field(
-						alias + ".value"
-					).isNull());
+					DSL.or(
+						aliasField.isNull(), aliasField.eq(""),
+						aliasField.eq("[]"), aliasField.eq("[\"\"]")));
 			}
 			else {
 				condition = condition.and(
@@ -844,10 +846,12 @@ public class FilterExpressionConditionVisitor
 		}
 		else if (operator.equalsIgnoreCase("ne")) {
 			if (StringUtil.isNull(value)) {
+				Field aliasField = DSL.field(alias + ".value");
+
 				condition = condition.and(
-					DSL.field(
-						alias + ".value"
-					).isNotNull());
+					DSL.and(
+						aliasField.isNotNull(), aliasField.ne(""),
+						aliasField.ne("[]"), aliasField.ne("[\"\"]")));
 			}
 			else {
 				condition = condition.and(
