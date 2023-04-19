@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.backend.dto.DataSourceDTO;
 import com.liferay.osb.asah.backend.rest.controller.DataSourcesRestController;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
-import com.liferay.osb.asah.batch.curator.bot.nanite.DeleteDataSourcesNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.DataSource;
@@ -49,7 +48,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
@@ -105,8 +103,6 @@ public class DataSourcesRestControllerTest {
 		Assertions.assertEquals(
 			"IN_PROGRESS_DELETING",
 			updateDataSourceJSONObject.getString("state"));
-
-		_runDeleteDataSourcesNanite(updateDataSourceJSONObject);
 
 		// TODO Assert BQEvent is not deleted
 
@@ -268,29 +264,8 @@ public class DataSourcesRestControllerTest {
 			false);
 	}
 
-	private void _runDeleteDataSourcesNanite(JSONObject dataSourceJSONObject)
-		throws Exception {
-
-		DeleteDataSourcesNanite deleteDataSourcesNanite =
-			new DeleteDataSourcesNanite();
-
-		_autowireCapableBeanFactory.autowireBeanProperties(
-			deleteDataSourcesNanite, AutowireCapableBeanFactory.AUTOWIRE_NO,
-			false);
-
-		Class<?> clazz = deleteDataSourcesNanite.getClass();
-
-		_autowireCapableBeanFactory.initializeBean(
-			deleteDataSourcesNanite, clazz.getName());
-
-		deleteDataSourcesNanite.run(dataSourceJSONObject);
-	}
-
 	@Autowired
 	private AssetRepository _assetRepository;
-
-	@Autowired
-	private AutowireCapableBeanFactory _autowireCapableBeanFactory;
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
