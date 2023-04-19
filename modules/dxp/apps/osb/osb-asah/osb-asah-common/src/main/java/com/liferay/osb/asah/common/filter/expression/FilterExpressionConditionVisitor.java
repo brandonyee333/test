@@ -872,10 +872,10 @@ public class FilterExpressionConditionVisitor
 
 		if (StringUtil.isNull(value)) {
 			if (operator.equalsIgnoreCase("eq")) {
-				return leftField.isNull();
+				return DSL.or(leftField.isNull(), leftField.eq(""));
 			}
 
-			return leftField.isNotNull();
+			return DSL.and(leftField.isNotNull(), leftField.ne(""));
 		}
 
 		fieldName = fieldName.toLowerCase();
