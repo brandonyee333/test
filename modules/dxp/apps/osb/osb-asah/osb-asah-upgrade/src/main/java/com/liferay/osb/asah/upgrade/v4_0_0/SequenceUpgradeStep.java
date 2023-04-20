@@ -41,6 +41,10 @@ public class SequenceUpgradeStep implements UpgradeStep {
 		_syncSequenceStart(_getLatestId(true, "channel"), "channel_id_seq");
 		_syncSequenceStart(
 			_getLatestId(true, "datasource"), "datasource_id_seq");
+		_syncSequenceStart(
+			_getLatestId(true, "experimentvariantmetric"),
+			"experimentvariantmetric_id_seq");
+		_syncSequenceStart(_getLatestId(true, "runlog"), "runlog_id_seq");
 	}
 
 	private Long _getLatestId(boolean retry, String tableName) {

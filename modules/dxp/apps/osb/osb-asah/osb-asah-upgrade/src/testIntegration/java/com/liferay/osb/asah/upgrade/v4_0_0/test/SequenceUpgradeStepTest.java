@@ -16,8 +16,10 @@ package com.liferay.osb.asah.upgrade.v4_0_0.test;
 
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.DataSource;
+import com.liferay.osb.asah.common.entity.RunLog;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.RunLogRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
 import com.liferay.osb.asah.upgrade.v4_0_0.SequenceUpgradeStep;
@@ -57,6 +59,13 @@ public class SequenceUpgradeStepTest
 		dataSource.setProviderType("LIFERAY");
 
 		_dataSourceRepository.save(dataSource);
+
+		RunLog runLog = new RunLog();
+
+		runLog.setId(2112123123L);
+		runLog.setIsNew(Boolean.TRUE);
+
+		_runLogRepository.save(runLog);
 	}
 
 	@Test
@@ -104,6 +113,9 @@ public class SequenceUpgradeStepTest
 	private DataSourceRepository _dataSourceRepository;
 
 	private NamedParameterJdbcTemplate _namedParameterJdbcTemplate;
+
+	@Autowired
+	private RunLogRepository _runLogRepository;
 
 	@Autowired
 	private SequenceUpgradeStep _sequenceUpgradeStep;
