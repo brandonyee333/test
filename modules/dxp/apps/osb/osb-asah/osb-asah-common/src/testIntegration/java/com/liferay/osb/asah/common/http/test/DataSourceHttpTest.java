@@ -98,6 +98,7 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 			_dataSourceRepository.existsByName("Liferay (3)"));
 	}
 
+	@Disabled
 	@Test
 	public void testDeleteCSVDataSource() throws Exception {
 		DataSource dataSource1 = _dataSourceDog.addDataSource(

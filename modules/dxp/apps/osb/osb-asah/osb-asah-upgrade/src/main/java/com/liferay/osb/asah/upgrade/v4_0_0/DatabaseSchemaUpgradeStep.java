@@ -82,8 +82,6 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 				ProjectIdThreadLocal.getProjectId(), "expandovalue");
 			_bigQuerySchemaManager.dropTable(
 				ProjectIdThreadLocal.getProjectId(), "individual");
-			_bigQuerySchemaManager.dropTable(
-				ProjectIdThreadLocal.getProjectId(), "user");
 
 			_bigQuerySchemaManager.createTable(
 				ProjectIdThreadLocal.getProjectId(), "expandovalue");
@@ -99,8 +97,6 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 				ProjectIdThreadLocal.getProjectId(), "membershipchange");
 			_bigQuerySchemaManager.createTable(
 				ProjectIdThreadLocal.getProjectId(), "sessioninterestscore");
-			_bigQuerySchemaManager.createTable(
-				ProjectIdThreadLocal.getProjectId(), "user");
 
 			_updateTableFields(
 				Arrays.asList(
@@ -147,6 +143,20 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 						Field.Mode.REPEATED
 					).build()),
 				"session");
+
+			_updateTableFields(
+				Arrays.asList(
+					Field.newBuilder(
+						"individualId", LegacySQLTypeName.STRING
+					).setMode(
+						Field.Mode.NULLABLE
+					).build(),
+					Field.newBuilder(
+						"uuid", LegacySQLTypeName.STRING
+					).setMode(
+						Field.Mode.NULLABLE
+					).build()),
+				"user");
 
 			// BigQuery Views
 
