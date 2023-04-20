@@ -241,19 +241,19 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 	private void _updateTableFields(List<Field> newFields, String tableName) {
 		List<Field> fields = new ArrayList<>();
 
+		fields.addAll(newFields);
+
+		Set<String> newFieldNames = SetUtil.map(newFields, Field::getName);
+
 		Table table = _bigQuery.getTable(
 			ProjectIdThreadLocal.getProjectId(), tableName);
 
 		for (Field field : _getTableFields(table)) {
-			for (Field newField : newFields) {
-				if (StringUtils.equals(newField.getName(), field.getName())) {
-					fields.add(newField);
-
-					continue;
-				}
-
-				fields.add(field);
+			if (newFieldNames.contains(field.getName())) {
+				continue;
 			}
+
+			fields.add(field);
 		}
 
 		Table.Builder builder = table.toBuilder();
