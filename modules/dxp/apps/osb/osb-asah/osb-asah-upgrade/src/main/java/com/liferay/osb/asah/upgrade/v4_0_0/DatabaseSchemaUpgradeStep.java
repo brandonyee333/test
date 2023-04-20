@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.ArrayList;
