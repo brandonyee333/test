@@ -32,6 +32,9 @@ import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 /**
  * @author Marcellus Tavares
  */
@@ -58,11 +61,11 @@ public abstract class BaseDataExporter implements DataExporter {
 
 	@Override
 	public void export() throws Exception {
-		String lastDocumentId = "0";
+		int page = 0;
 
 		while (true) {
 			JSONObject resultPageJSONObject = doGetResultPageJSONObject(
-				lastDocumentId);
+				PageRequest.of(page, _PAGE_SIZE));
 
 			JSONArray resultsJSONArray = resultPageJSONObject.getJSONArray(
 				"results");
@@ -71,15 +74,14 @@ public abstract class BaseDataExporter implements DataExporter {
 				break;
 			}
 
-			lastDocumentId = _getLastDocumentId(resultsJSONArray);
-
 			exportResults(resultsJSONArray);
+			page++;
 		}
 
 		jsonGenerator.close();
 	}
 
-	protected abstract JSONObject doGetResultPageJSONObject(String after);
+	protected abstract JSONObject doGetResultPageJSONObject(Pageable pageable);
 
 	protected void exportResults(JSONArray resultsJSONArray) {
 		for (int i = 0; i < resultsJSONArray.length(); i++) {
@@ -101,11 +103,7 @@ public abstract class BaseDataExporter implements DataExporter {
 		}
 	}
 
-	private String _getLastDocumentId(JSONArray jsonArray) {
-		JSONObject jsonObject = jsonArray.getJSONObject(jsonArray.length() - 1);
-
-		return jsonObject.getString("id");
-	}
+	private static final int _PAGE_SIZE = 50;
 
 	private static final Log _log = LogFactory.getLog(BaseDataExporter.class);
 

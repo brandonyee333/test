@@ -29,7 +29,7 @@ import java.util.Collections;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 /**
  * @author Marcos Martins
@@ -54,43 +54,20 @@ public class DXPEntityDataExporter extends BaseDataExporter {
 	}
 
 	@Override
-	public void export() throws Exception {
-		int page = 0;
-
-		while (true) {
-			JSONObject resultPageJSONObject = doGetResultPageJSONObject(
-				String.valueOf(page++));
-
-			JSONArray resultsJSONArray = resultPageJSONObject.getJSONArray(
-				"results");
-
-			if (resultsJSONArray.length() == 0) {
-				break;
-			}
-
-			exportResults(resultsJSONArray);
-		}
-
-		jsonGenerator.close();
-	}
-
-	@Override
-	protected JSONObject doGetResultPageJSONObject(String page) {
+	protected JSONObject doGetResultPageJSONObject(Pageable pageable) {
 		return JSONUtil.put(
 			"results",
 			new JSONArray(
 				ListUtil.map(
 					_bqUserDog.getBQUsers(
 						Collections.singletonMap(_fieldName, _fieldValue),
-						PageRequest.of(Integer.parseInt(page), _PAGE_SIZE)),
+						pageable),
 					this::_toJSONObject)));
 	}
 
 	private JSONObject _toJSONObject(BQUser bqUser) {
 		return _objectMapper.convertValue(bqUser, JSONObject.class);
 	}
-
-	private static final int _PAGE_SIZE = 50;
 
 	private final BQUserDog _bqUserDog;
 	private final String _fieldName;

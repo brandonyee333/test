@@ -23,6 +23,8 @@ import java.io.OutputStream;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.data.domain.Pageable;
+
 /**
  * @author Matthew Kong
  */
@@ -41,7 +43,7 @@ public class RawDataExporter extends BaseDataExporter {
 	}
 
 	@Override
-	protected JSONObject doGetResultPageJSONObject(String after) {
+	protected JSONObject doGetResultPageJSONObject(Pageable pageable) {
 
 		// TODO Implement Data Export
 
