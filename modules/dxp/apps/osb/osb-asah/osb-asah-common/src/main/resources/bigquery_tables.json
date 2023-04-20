@@ -268,55 +268,6 @@
 			"type": "DAY"
 		}
 	},
-	"csvuser": {
-		"clusteringFields": [
-			"dataSourceId"
-		],
-		"fields": [
-			{
-				"mode": "REQUIRED",
-				"name": "dataSourceId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "dataSourceUserPK",
-				"type": "STRING"
-			},
-			{
-				"mode": "NULLABLE",
-				"name": "emailAddress",
-				"type": "STRING"
-			},
-			{
-				"fields": [
-					{
-						"mode": "REQUIRED",
-						"name": "name",
-						"type": "STRING"
-					},
-					{
-						"mode": "REQUIRED",
-						"name": "value",
-						"type": "STRING"
-					}
-				],
-				"mode": "REPEATED",
-				"name": "fields",
-				"type": "RECORD"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "id",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "modifiedDate",
-				"type": "TIMESTAMP"
-			}
-		]
-	},
 	"customassetdaily": {
 		"clusteringFields": [
 			"channelId"
@@ -382,33 +333,6 @@
 			"field": "eventDate",
 			"type": "DAY"
 		}
-	},
-	"datasourceuser": {
-		"clusteringFields": [
-			"dataSourceId"
-		],
-		"fields": [
-			{
-				"mode": "REPEATED",
-				"name": "accountPKs",
-				"type": "STRING"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "dataSourceId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "userId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REPEATED",
-				"name": "userPKs",
-				"type": "STRING"
-			}
-		]
 	},
 	"documentlibrarydaily": {
 		"clusteringFields": [
