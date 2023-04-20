@@ -807,9 +807,10 @@ public class FilterExpressionConditionVisitor
 			"' END");
 
 		if (DateUtil.isValidPatternShort(value)) {
-			query =
-				"SAFE_CAST({0}.value AS DATE) {1} SAFE_CAST('" + value +
-					"' AS DATE)";
+			query = String.join(
+				"", "CASE WHEN {0}.name = '", fieldName, "' THEN DATE(",
+				"PARSE_TIMESTAMP('%a %b %d %H:%M:%S %Z %Y', {0}.value)) {1} ",
+				"SAFE_CAST('", value, "' AS DATE) ELSE false END");
 		}
 		else if (NumberUtils.isCreatable(value)) {
 			query = String.join(
