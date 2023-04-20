@@ -129,6 +129,22 @@ public class BQIndividualRepositoryTest
 			_bqIndividualRepository.countBQIndividuals(
 				11L, "custom/Favorite_Number/value lt 2", false, null));
 		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Hobbies/value eq 'ing'", false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Hobbies/value eq 'Exercise'", false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Hobbies/value ne 'Exercise'", false, null));
+		Assertions.assertEquals(
+			3,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Hobbies/value ne 'ing'", false, null));
+		Assertions.assertEquals(
 			2,
 			_bqIndividualRepository.countBQIndividuals(
 				11L, "custom/Joined_Date/value ge '2022-05-01'", false, null));
