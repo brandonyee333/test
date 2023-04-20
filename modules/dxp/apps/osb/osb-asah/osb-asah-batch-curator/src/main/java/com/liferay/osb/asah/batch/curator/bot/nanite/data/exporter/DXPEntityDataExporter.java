@@ -42,7 +42,7 @@ public class DXPEntityDataExporter extends BaseDataExporter {
 			OutputStream outputStream)
 		throws Exception {
 
-		super(jsonFactory, outputStream, null);
+		super(jsonFactory, outputStream);
 
 		_bqUserDog = bqUserDog;
 		_fieldName = fieldName;

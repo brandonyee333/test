@@ -24,8 +24,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import com.liferay.osb.asah.common.http.ReportHttp;
-
 import java.io.OutputStream;
 
 import org.apache.commons.logging.Log;
@@ -39,9 +37,7 @@ import org.json.JSONObject;
  */
 public abstract class BaseDataExporter implements DataExporter {
 
-	public BaseDataExporter(
-			JsonFactory jsonFactory, OutputStream outputStream,
-			ReportHttp reportHttp)
+	public BaseDataExporter(JsonFactory jsonFactory, OutputStream outputStream)
 		throws Exception {
 
 		jsonGenerator = jsonFactory.createGenerator(
@@ -58,8 +54,6 @@ public abstract class BaseDataExporter implements DataExporter {
 				}
 			});
 		jsonGenerator.setPrettyPrinter(new MinimalPrettyPrinter(""));
-
-		this.reportHttp = reportHttp;
 	}
 
 	@Override
@@ -94,7 +88,6 @@ public abstract class BaseDataExporter implements DataExporter {
 	}
 
 	protected JsonGenerator jsonGenerator;
-	protected ReportHttp reportHttp;
 
 	private void _exportResult(JSONObject resultJSONObject) {
 		try {

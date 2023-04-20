@@ -20,10 +20,8 @@ import com.google.cloud.bigquery.BigQuery;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.BigQueryDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
-import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.SegmentDataExporter;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.entity.DataExportTask;
-import com.liferay.osb.asah.common.http.ReportHttp;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,12 +54,11 @@ public class DataExportNanite extends BaseNanite {
 	@Autowired
 	public DataExportNanite(
 		BigQuery bigQuery, DataExportTaskDog dataExportTaskDog,
-		DSLContext dslContext, ReportHttp reportHttp) {
+		DSLContext dslContext) {
 
 		_bigQuery = bigQuery;
 		_dataExportTaskDog = dataExportTaskDog;
 		_dslContext = dslContext;
-		_reportHttp = reportHttp;
 	}
 
 	@Override
@@ -143,11 +140,7 @@ public class DataExportNanite extends BaseNanite {
 
 		zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
 
-		DataExporter dataExporter = new SegmentDataExporter(
-			dataExportTask.getFromDate(), _jsonFactory, zipOutputStream,
-			_reportHttp, dataExportTask.getToDate());
-
-		dataExporter.export();
+		// TODO export segment data
 
 		zipOutputStream.closeEntry();
 
@@ -164,6 +157,5 @@ public class DataExportNanite extends BaseNanite {
 	private String _exportPath;
 
 	private final JsonFactory _jsonFactory = new JsonFactory();
-	private final ReportHttp _reportHttp;
 
 }

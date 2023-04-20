@@ -33,7 +33,7 @@ public class RawDataExporter extends BaseDataExporter {
 			OutputStream outputStream)
 		throws Exception {
 
-		super(jsonFactory, outputStream, null);
+		super(jsonFactory, outputStream);
 
 		_collectionName = collectionName;
 
