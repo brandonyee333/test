@@ -20,6 +20,7 @@ import com.google.cloud.bigquery.BigQuery;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.BigQueryDataExporter;
 import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.DataExporter;
+import com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter.PostgreSQLDataExporter;
 import com.liferay.osb.asah.common.dog.DataExportTaskDog;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 
@@ -140,9 +141,11 @@ public class DataExportNanite extends BaseNanite {
 
 		zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
 
-		// TODO export segment data
+		DataExporter dataExporter = new PostgreSQLDataExporter(
+			dataExportTask, "createDate", _dslContext, _jsonFactory,
+			zipOutputStream, "segment");
 
-		zipOutputStream.closeEntry();
+		dataExporter.export();
 
 		zipOutputStream.close();
 	}
