@@ -14,13 +14,10 @@
 
 package com.liferay.osb.asah.test.util.faro;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQCSVUser;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
-import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
-import com.liferay.osb.asah.common.entity.BQOrganization;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.Segment;
@@ -30,18 +27,10 @@ import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.model.Individual;
-import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -80,13 +69,13 @@ public class FaroInfoTestUtil {
 	}
 
 	public static BQCSVUser buildBQCSVUser(
-		String dataSourceUserPK, Long dataSourceId) {
+		Long bqCSVUserId, String dataSourceUserPK, Long dataSourceId) {
 
 		BQCSVUser bqCSVUser = new BQCSVUser();
 
 		bqCSVUser.setDataSourceUserPK(dataSourceUserPK);
 		bqCSVUser.setDataSourceId(dataSourceId);
-		bqCSVUser.setId(Long.valueOf(_timeOrderedUuidGenerator.generateId()));
+		bqCSVUser.setId(bqCSVUserId);
 
 		return bqCSVUser;
 	}
@@ -140,7 +129,7 @@ public class FaroInfoTestUtil {
 		);
 	}
 
-	public static DataSource buildCSVDataSource() {
+	public static DataSource buildCSVDataSource(Long dataSourceId) {
 		DataSource dataSource = new DataSource();
 
 		dataSource.setAuthorId(
@@ -151,7 +140,7 @@ public class FaroInfoTestUtil {
 
 		dataSource.setCreateDate(date);
 
-		dataSource.setId(Long.valueOf(_timeOrderedUuidGenerator.generateId()));
+		dataSource.setId(dataSourceId);
 		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setModifiedDate(date);
 		dataSource.setName(RandomTestUtil.randomMultipleWordString(5, 20));
@@ -203,44 +192,21 @@ public class FaroInfoTestUtil {
 		return experiment;
 	}
 
-	public static JSONObject buildFieldJSONObject(
-		String dataSourceId, String dataSourceName) {
+	public static Individual buildIndividual(
+		DataSource dataSource, Long individualId) {
 
-		return JSONUtil.put(
-			"context", "demographics"
-		).put(
-			"dataSourceId", dataSourceId
-		).put(
-			"dataSourceName", dataSourceName
-		).put(
-			"dateModified", DateUtil.newDateString()
-		).put(
-			"fieldType", "Text"
-		).put(
-			"name", "givenName"
-		).put(
-			"ownerId", RandomTestUtil.randomId()
-		).put(
-			"ownerType", "individual"
-		).put(
-			"sourceName", "firstName"
-		).put(
-			"value", RandomTestUtil.randomString()
-		);
-	}
-
-	public static Individual buildIndividual(DataSource dataSource) {
 		return buildIndividual(
-			Long.parseLong(RandomStringUtils.randomNumeric(4)), dataSource);
+			Long.parseLong(RandomStringUtils.randomNumeric(4)), dataSource,
+			individualId);
 	}
 
 	public static Individual buildIndividual(
-		Long channelId, DataSource dataSource) {
+		Long channelId, DataSource dataSource, Long individualId) {
 
 		Long dataSourceId = dataSource.getId();
 		String dataId = RandomTestUtil.randomUUID();
 		Date date = new Date();
-		Long individualId = _timeOrderedUuidGenerator.generateIdAsLong();
+
 		String providerType = dataSource.getProviderType();
 
 		String sourceName = "email";
@@ -515,8 +481,5 @@ public class FaroInfoTestUtil {
 
 		return keywordsJSONArray;
 	}
-
-	private static final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
-		new TimeOrderedUuidGenerator();
 
 }

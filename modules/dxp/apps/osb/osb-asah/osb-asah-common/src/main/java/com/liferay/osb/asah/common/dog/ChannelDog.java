@@ -28,7 +28,6 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.StringUtil;
-import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +70,6 @@ public class ChannelDog {
 
 		channel.setChannelDataSources(_getChannelDataSources(dataSources));
 		channel.setDefaultChannel(defaultChannel);
-		channel.setId(_timeOrderedUuidGenerator.generateIdAsLong());
 		channel.setIsNew(Boolean.TRUE);
 
 		channel = _channelRepository.save(channel);
@@ -524,9 +522,6 @@ public class ChannelDog {
 
 	@Autowired
 	private SegmentRepository _segmentRepository;
-
-	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
-		new TimeOrderedUuidGenerator();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

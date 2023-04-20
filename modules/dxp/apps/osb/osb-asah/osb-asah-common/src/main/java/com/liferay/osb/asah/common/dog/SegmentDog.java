@@ -43,7 +43,6 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
 import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
-import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.util.Collections;
 import java.util.Date;
@@ -84,8 +83,6 @@ public class SegmentDog {
 		setReferencedFields(segment);
 
 		if (segment.getId() == null) {
-			segment.setId(_timeOrderedUuidGenerator.generateIdAsLong());
-
 			segment.setIsNew(Boolean.TRUE);
 		}
 
@@ -614,9 +611,6 @@ public class SegmentDog {
 			throw new OSBAsahDuplicateNameException();
 		}
 	}
-
-	private static final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
-		new TimeOrderedUuidGenerator();
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;

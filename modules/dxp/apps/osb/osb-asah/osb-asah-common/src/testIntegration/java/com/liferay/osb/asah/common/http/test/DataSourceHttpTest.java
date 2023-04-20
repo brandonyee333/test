@@ -101,14 +101,14 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 	@Test
 	public void testDeleteCSVDataSource() throws Exception {
 		DataSource dataSource1 = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildCSVDataSource());
+			FaroInfoTestUtil.buildCSVDataSource(1L));
 
 		dataSource1.setName("DataSource1");
 
 		_dataSourceRepository.save(dataSource1);
 
 		DataSource dataSource2 = _dataSourceDog.addDataSource(
-			FaroInfoTestUtil.buildCSVDataSource());
+			FaroInfoTestUtil.buildCSVDataSource(2L));
 
 		dataSource2.setName("DataSource2");
 
@@ -116,11 +116,11 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 
 		_bqCSVUserRepository.insert(
 			FaroInfoTestUtil.buildBQCSVUser(
-				RandomTestUtil.randomUUID(), dataSource1.getId()));
+				1L, RandomTestUtil.randomUUID(), dataSource1.getId()));
 
 		_bqCSVUserRepository.insert(
 			FaroInfoTestUtil.buildBQCSVUser(
-				RandomTestUtil.randomUUID(), dataSource2.getId()));
+				2L, RandomTestUtil.randomUUID(), dataSource2.getId()));
 
 		dataSource1.setDeletionDate(new Date());
 
@@ -286,7 +286,8 @@ public class DataSourceHttpTest extends BaseFaroInfoDogTestCase {
 		// TODO Add BQFieldMapping "email", "Text"
 		// TODO Add BQFieldMapping "givenName", "Text"
 
-		Individual individual = FaroInfoTestUtil.buildIndividual(dataSource1);
+		Individual individual = FaroInfoTestUtil.buildIndividual(
+			dataSource1, 1L);
 
 		// TODO Add individual
 

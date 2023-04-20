@@ -31,7 +31,6 @@ import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.common.security.Encryptor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.BeanUtils;
-import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.security.KeyPair;
@@ -76,7 +75,6 @@ import org.springframework.stereotype.Component;
 public class DataSourceDog {
 
 	public DataSource addDataSource(DataSource dataSource) {
-		dataSource.setId(_timeOrderedUuidGenerator.generateIdAsLong());
 		dataSource.setIsNew(Boolean.TRUE);
 		dataSource.setName(_getDataSourceName(dataSource.getName()));
 
@@ -628,8 +626,5 @@ public class DataSourceDog {
 
 	@Autowired
 	private SegmentDog _segmentDog;
-
-	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
-		new TimeOrderedUuidGenerator();
 
 }

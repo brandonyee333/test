@@ -153,7 +153,7 @@ public class DataSourcesRestControllerTest {
 	@Test
 	public void testGetCSVDataSourceProgress() {
 		DataSource csvDataSource = _dataSourceRepository.save(
-			FaroInfoTestUtil.buildCSVDataSource());
+			FaroInfoTestUtil.buildCSVDataSource(1L));
 
 		// CSV individuals nanite is null
 
