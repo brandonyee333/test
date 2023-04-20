@@ -260,7 +260,12 @@ public class ConditionUtilTest {
 			),
 			DSL.field(
 				"Individual.emailAddress"
-			).isNotNull());
+			).isNotNull(),
+			DSL.field(
+				"Individual.emailAddress"
+			).ne(
+				""
+			));
 
 		Condition actualCondition = ConditionUtil.toCondition(
 			"(channelIds eq '506297979389450553' and " +

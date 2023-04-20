@@ -196,15 +196,27 @@ public class FilterExpressionTest {
 			"cast(demographics/contactId/value, 'NUMBER') lt 0", true);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.contactId"
-			).isNull(),
+			DSL.or(
+				DSL.field(
+					"Individual.contactId"
+				).isNull(),
+				DSL.field(
+					"Individual.contactId"
+				).eq(
+					""
+				)),
 			"demographics/contactId/value eq null", true);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.contactId"
-			).isNotNull(),
+			DSL.and(
+				DSL.field(
+					"Individual.contactId"
+				).isNotNull(),
+				DSL.field(
+					"Individual.contactId"
+				).ne(
+					""
+				)),
 			"demographics/contactId/value ne null", true);
 	}
 
@@ -1119,15 +1131,27 @@ public class FilterExpressionTest {
 			"not contains(demographics/givenName/value, 'liferay.com')", true);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.firstName"
-			).isNull(),
+			DSL.or(
+				DSL.field(
+					"Individual.firstName"
+				).isNull(),
+				DSL.field(
+					"Individual.firstName"
+				).eq(
+					""
+				)),
 			"demographics/givenName/value eq null", true);
 
 		_assertEquals(
-			DSL.field(
-				"Individual.firstName"
-			).isNotNull(),
+			DSL.and(
+				DSL.field(
+					"Individual.firstName"
+				).isNotNull(),
+				DSL.field(
+					"Individual.firstName"
+				).ne(
+					""
+				)),
 			"demographics/givenName/value ne null", true);
 	}
 
@@ -1155,6 +1179,39 @@ public class FilterExpressionTest {
 						"LOWER(IndividualFields_custom_field.value) = 'test' ",
 						"END"))),
 			"(custom/custom_field/value eq 'test')",
+			new HashSet<>(
+				Arrays.asList(
+					"ExpandoValue", "Individual",
+					"IndividualFields_custom_field")),
+			true);
+
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"IndividualFields_custom_field.name"
+				).eq(
+					"custom_field"
+				),
+				DSL.or(
+					DSL.field(
+						"IndividualFields_custom_field.value"
+					).isNull(),
+					DSL.field(
+						"IndividualFields_custom_field.value"
+					).eq(
+						""
+					),
+					DSL.field(
+						"IndividualFields_custom_field.value"
+					).eq(
+						"[]"
+					),
+					DSL.field(
+						"IndividualFields_custom_field.value"
+					).eq(
+						"[\"\"]"
+					))),
+			"(custom/custom_field/value eq null)",
 			new HashSet<>(
 				Arrays.asList(
 					"ExpandoValue", "Individual",
@@ -1243,6 +1300,39 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.and(
+				DSL.field(
+					"IndividualFields_custom_field.name"
+				).eq(
+					"custom_field"
+				),
+				DSL.and(
+					DSL.field(
+						"IndividualFields_custom_field.value"
+					).isNotNull()),
+				DSL.field(
+					"IndividualFields_custom_field.value"
+				).ne(
+					""
+				),
+				DSL.field(
+					"IndividualFields_custom_field.value"
+				).ne(
+					"[]"
+				),
+				DSL.field(
+					"IndividualFields_custom_field.value"
+				).ne(
+					"[\"\"]"
+				)),
+			"(custom/custom_field/value ne null)",
+			new HashSet<>(
+				Arrays.asList(
+					"ExpandoValue", "Individual",
+					"IndividualFields_custom_field")),
+			true);
+
+		_assertEquals(
+			DSL.and(
 				DSL.condition(
 					"LOWER(IndividualFields_custom_field.value) LIKE '%test%'"),
 				DSL.field(
@@ -1287,7 +1377,12 @@ public class FilterExpressionTest {
 			),
 			DSL.field(
 				"Individual.emailAddress"
-			).isNotNull());
+			).isNotNull(),
+			DSL.field(
+				"Individual.emailAddress"
+			).ne(
+				""
+			));
 
 		FilterExpression filterExpression = new FilterExpression(
 			"channelIds eq '506297979389450553' and (demographics/email" +
