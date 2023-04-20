@@ -55,85 +55,6 @@ import org.json.JSONObject;
  */
 public class FaroInfoTestUtil {
 
-	public static JSONObject buildActivityJSONObject(
-		JSONObject assetJSONObject, Long channelId, Long dataSourceId,
-		String dateString, String eventId, String[] eventProperties,
-		Individual individual) {
-
-		if ((eventProperties.length % 2) != 0) {
-			throw new IllegalArgumentException(
-				"Event properties must be an even length");
-		}
-
-		String applicationId = assetJSONObject.getString("assetType");
-		String assetId = assetJSONObject.getString("id");
-
-		JSONObject eventPropertiesJSONObject = new JSONObject();
-
-		for (int i = 0; i < eventProperties.length; i += 2) {
-			eventPropertiesJSONObject.put(
-				String.valueOf(eventProperties[i]), eventProperties[i + 1]);
-		}
-
-		Set<Individual.DataSourceUserPK> dataSourceUserPKs =
-			individual.getDataSourceUserPKs();
-
-		Stream<Individual.DataSourceUserPK> stream = dataSourceUserPKs.stream();
-
-		Individual.DataSourceUserPK dataSourceUserPK = stream.filter(
-			userPK -> Objects.equals(userPK.getDataSourceId(), dataSourceId)
-		).findFirst(
-		).orElse(
-			null
-		);
-
-		Set<String> userPKs = new HashSet<>();
-
-		if (dataSourceUserPK != null) {
-			userPKs = dataSourceUserPK.getUserPKs();
-		}
-
-		return JSONUtil.put(
-			"activityKey", applicationId + "#" + eventId + "#" + assetId
-		).put(
-			"activityType", "BROWSE"
-		).put(
-			"applicationId", applicationId
-		).put(
-			"channelId", String.valueOf(channelId)
-		).put(
-			"dataSourceId", String.valueOf(dataSourceId)
-		).put(
-			"day", dateString
-		).put(
-			"endTime", dateString
-		).put(
-			"eventId", eventId
-		).put(
-			"eventProperties", eventPropertiesJSONObject
-		).put(
-			"object",
-			JSONUtil.put(
-				"dataSourceAssetPK",
-				assetJSONObject.getString("dataSourceAssetPK")
-			).put(
-				"id", assetId
-			).put(
-				"name", assetJSONObject.getString("name")
-			).put(
-				"objectType", applicationId
-			)
-		).put(
-			"ownerId", String.valueOf(individual.getId())
-		).put(
-			"startTime", dateString
-		).put(
-			"url", RandomTestUtil.randomURL()
-		).put(
-			"userId", userPKs.toArray(new String[0])[0]
-		);
-	}
-
 	public static JSONObject buildAssetJSONObject(
 		String assetType, Long dataSourceId) {
 
@@ -170,39 +91,6 @@ public class FaroInfoTestUtil {
 		return bqCSVUser;
 	}
 
-	public static List<BQIdentityInterestScore> buildBQIdentityInterestScores(
-		String identityId, JSONArray keywordsJSONArray, Date recordedDate,
-		double score) {
-
-		List<BQIdentityInterestScore> bqIdentityInterestScores =
-			new ArrayList<>();
-
-		for (int i = 0; i < keywordsJSONArray.length(); i++) {
-			JSONObject keywordJSONObject = keywordsJSONArray.getJSONObject(i);
-			BQIdentityInterestScore bqIdentityInterestScore =
-				new BQIdentityInterestScore();
-
-			bqIdentityInterestScore.setIdentityId(identityId);
-			bqIdentityInterestScore.setKeyword(
-				keywordJSONObject.getString("keyword"));
-			bqIdentityInterestScore.setRecordedDate(recordedDate);
-			bqIdentityInterestScore.setInterestScore(score);
-
-			bqIdentityInterestScores.add(bqIdentityInterestScore);
-		}
-
-		return bqIdentityInterestScores;
-	}
-
-	public static List<BQIdentityInterestScore> buildBQIdentityInterestScores(
-		String identityId, JSONObject assetJSONObject, Date recordedDate,
-		double score) {
-
-		return buildBQIdentityInterestScores(
-			identityId, assetJSONObject.getJSONArray("keywords"), recordedDate,
-			score);
-	}
-
 	public static BQMembership buildBQMembership(
 		String identityId, Long segmentId) {
 
@@ -227,26 +115,6 @@ public class FaroInfoTestUtil {
 		bqMembershipChange.setSegmentId(segmentId);
 
 		return bqMembershipChange;
-	}
-
-	public static BQOrganization buildBQOrganization(Long dataSourceId) {
-		Date date = new Date();
-		String name = RandomTestUtil.randomString();
-		long organizationPK = RandomTestUtil.randomNumber();
-
-		BQOrganization bqOrganization = new BQOrganization();
-
-		bqOrganization.setCreateDate(date);
-		bqOrganization.setDataSourceId(dataSourceId);
-		bqOrganization.setId(_timeOrderedUuidGenerator.generateId());
-		bqOrganization.setName(name);
-		bqOrganization.setOrganizationId(organizationPK);
-		bqOrganization.setParentOrganizationName("");
-		bqOrganization.setParentOrganizationId(0L);
-		bqOrganization.setTreePath("/" + organizationPK + "/");
-		bqOrganization.setType("organization");
-
-		return bqOrganization;
 	}
 
 	public static JSONObject buildChannelJSONObject(
@@ -438,24 +306,6 @@ public class FaroInfoTestUtil {
 		return field;
 	}
 
-	public static JSONArray buildIndividualSegmentVisitedPagesJSONArray(
-		JSONObject assetJSONObject, String dayDateString,
-		Long individualSegmentId, int uniqueVisitsCount) {
-
-		return buildVisitedPagesJSONArray(
-			assetJSONObject, dayDateString, individualSegmentId,
-			"individual-segment", uniqueVisitsCount);
-	}
-
-	public static JSONArray buildIndividualVisitedPagesJSONArray(
-		JSONObject assetJSONObject, String dayDateString, Long individualId,
-		int uniqueVisitsCount) {
-
-		return buildVisitedPagesJSONArray(
-			assetJSONObject, dayDateString, individualId, "individual",
-			uniqueVisitsCount);
-	}
-
 	public static DataSource buildLiferayDataSource() {
 		return buildLiferayDataSource(
 			RandomTestUtil.randomMultipleWordString(5, 20),
@@ -541,35 +391,6 @@ public class FaroInfoTestUtil {
 		return dataSource;
 	}
 
-	public static JSONObject buildOrganizationJSONObject(String dataSourceId) {
-		String name = RandomTestUtil.randomString();
-		long organizationPK = RandomTestUtil.randomNumber();
-
-		return JSONUtil.put(
-			"dataSourceId", dataSourceId
-		).put(
-			"dateCreated", DateUtil.newDateString()
-		).put(
-			"dateModified", DateUtil.newDateString()
-		).put(
-			"id", _timeOrderedUuidGenerator.generateId()
-		).put(
-			"name", name
-		).put(
-			"nameTreePath", name
-		).put(
-			"organizationPK", organizationPK
-		).put(
-			"parentName", ""
-		).put(
-			"parentOrganizationPK", "0"
-		).put(
-			"treePath", "/" + organizationPK + "/"
-		).put(
-			"type", "organization"
-		);
-	}
-
 	public static JSONObject buildPageAssetJSONObject(Long dataSourceId) {
 		return buildPageAssetJSONObject(
 			dataSourceId, _randomKeywordsJSONArray());
@@ -607,115 +428,6 @@ public class FaroInfoTestUtil {
 		segment.setType(Segment.Type.STATIC);
 
 		return segment;
-	}
-
-	public static JSONObject buildUserSessionJSONObject(
-		Map<String, String> parameters) {
-
-		return JSONUtil.put(
-			"acquisition",
-			JSONUtil.put(
-				"channel", parameters.getOrDefault("channel", "direct")
-			).put(
-				"medium", parameters.getOrDefault("medium", "referral")
-			)
-		).put(
-			"bounced", parameters.getOrDefault("bounced", "false")
-		).put(
-			"channelId", parameters.getOrDefault("channelId", "1")
-		).put(
-			"city", parameters.getOrDefault("city", "Diamond Bar")
-		).put(
-			"completed", parameters.getOrDefault("completed", "true")
-		).put(
-			"completeDate",
-			parameters.getOrDefault("completeDate", DateUtil.newDateString())
-		).put(
-			"completeReason",
-			parameters.getOrDefault("completeReason", "expired")
-		).put(
-			"country", parameters.getOrDefault("country", "United States")
-		).put(
-			"dataSourceId", parameters.getOrDefault("dataSourceId", "0")
-		).put(
-			"date", parameters.getOrDefault("date", DateUtil.newDateString())
-		).put(
-			"deviceType", parameters.getOrDefault("deviceType", "Desktop")
-		).put(
-			"duration", 0
-		).put(
-			"entryPage",
-			parameters.getOrDefault("entryPage", RandomTestUtil.randomURL())
-		).put(
-			"exitPage",
-			parameters.getOrDefault("exitPage", RandomTestUtil.randomURL())
-		).put(
-			"firstEventDate",
-			parameters.getOrDefault("firstEventDate", DateUtil.newDateString())
-		).put(
-			"id", RandomTestUtil.randomId()
-		).put(
-			"individualId", parameters.getOrDefault("individualId", "10000")
-		).put(
-			"interactionsCount", 0
-		).put(
-			"lastEventDate",
-			parameters.getOrDefault("lastEventDate", DateUtil.newDateString())
-		).put(
-			"pageViewsCount", parameters.getOrDefault("pageViewsCount", "0")
-		).put(
-			"platformName", parameters.getOrDefault("platformName", "Windows")
-		).put(
-			"referrers",
-			JSONUtil.put(
-				RandomTestUtil.randomURL()
-			).toString()
-		).put(
-			"region", parameters.getOrDefault("region", "California")
-		).put(
-			"urls",
-			JSONUtil.put(
-				RandomTestUtil.randomURL()
-			).toString()
-		).put(
-			"userId",
-			parameters.getOrDefault("userId", RandomTestUtil.randomUUID())
-		);
-	}
-
-	public static JSONArray buildVisitedPagesJSONArray(
-		JSONObject assetJSONObject, String dayDateString, Long ownerId,
-		String ownerType, int uniqueVisitsCount) {
-
-		JSONArray visitedPagesJSONArray = new JSONArray();
-
-		JSONArray keywordsJSONArray = assetJSONObject.getJSONArray("keywords");
-
-		for (int i = 0; i < keywordsJSONArray.length(); i++) {
-			JSONObject keywordJSONObject = keywordsJSONArray.getJSONObject(i);
-
-			visitedPagesJSONArray.put(
-				JSONUtil.put(
-					"day", dayDateString
-				).put(
-					"description",
-					assetJSONObject.optString("description", null)
-				).put(
-					"interestName", keywordJSONObject.getString("keyword")
-				).put(
-					"ownerId", String.valueOf(ownerId)
-				).put(
-					"ownerType", ownerType
-				).put(
-					"title", assetJSONObject.getString("name")
-				).put(
-					"uniqueVisitsCount", uniqueVisitsCount
-				).put(
-					"url", assetJSONObject.getString("dataSourceAssetPK")
-				));
-		}
-
-		return visitedPagesJSONArray;
 	}
 
 	private static JSONObject _getAuthorJSONObject() {
