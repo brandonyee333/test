@@ -82,6 +82,23 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 		_bigQueryOptions = bigQuery.getOptions();
 	}
 
+	public void createFunction(String projectId, String functionName) {
+		JSONObject jsonObject = _functionsJSONObject.getJSONObject(
+			functionName);
+
+		_executeQuery(
+			StringUtils.replace(
+				_readFile("/bigquery/" + jsonObject.getString("path")),
+				"$[AC_PROJECT_ID]", projectId));
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				String.format(
+					"Function %s.%s created successfully", projectId,
+					functionName));
+		}
+	}
+
 	@Override
 	public void createOrReplaceView(String projectId, String viewName) {
 		JSONObject jsonObject = _viewsJSONObject.getJSONObject(viewName);
@@ -94,13 +111,7 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 
 		Table table = _bigQuery.getTable(TableId.of(projectId, viewName));
 
-		if ((table != null) && table.exists()) {
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					String.format(
-						"View %s.%s already exists", projectId, viewName));
-			}
-
+		if (table != null) {
 			_bigQuery.delete(table.getTableId());
 
 			if (_log.isInfoEnabled()) {
@@ -235,6 +246,29 @@ public class BigQuerySchemaManagerImpl implements BigQuerySchemaManager {
 			_log.error(
 				"Unable to delete schema for project " + projectId,
 				bigQueryException);
+		}
+	}
+
+	@Override
+	public void dropTable(String projectId, String tableName) {
+		Table table = _bigQuery.getTable(TableId.of(projectId, tableName));
+
+		if (table == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					String.format(
+						"Table %s.%s does not exists", projectId, tableName));
+			}
+
+			return;
+		}
+
+		_bigQuery.delete(table.getTableId());
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				String.format(
+					"Table %s.%s deleted successfully", projectId, tableName));
 		}
 	}
 

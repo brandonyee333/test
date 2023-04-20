@@ -56,7 +56,7 @@ import org.springframework.stereotype.Component;
 public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade(String version) {
 		try {
 
 			// PostgreSQL
@@ -71,12 +71,50 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 					new ClassPathResource("constraints_4.0.0.sql")),
 				_postgreSQLDataSource);
 
-			// BigQuery
+			// BigQuery Functions
 
+			_bigQuerySchemaManager.createFunction(
+				ProjectIdThreadLocal.getProjectId(), "acquisitionChannel");
+
+			// BigQuery Tables
+
+			_bigQuerySchemaManager.dropTable(
+				ProjectIdThreadLocal.getProjectId(), "expandovalue");
+			_bigQuerySchemaManager.dropTable(
+				ProjectIdThreadLocal.getProjectId(), "individual");
+			_bigQuerySchemaManager.dropTable(
+				ProjectIdThreadLocal.getProjectId(), "user");
+
+			_bigQuerySchemaManager.createTable(
+				ProjectIdThreadLocal.getProjectId(), "expandovalue");
+			_bigQuerySchemaManager.createTable(
+				ProjectIdThreadLocal.getProjectId(), "identityinterestpage");
 			_bigQuerySchemaManager.createTable(
 				ProjectIdThreadLocal.getProjectId(), "identityinterestscore");
 			_bigQuerySchemaManager.createTable(
+				ProjectIdThreadLocal.getProjectId(), "individual");
+			_bigQuerySchemaManager.createTable(
+				ProjectIdThreadLocal.getProjectId(), "membership");
+			_bigQuerySchemaManager.createTable(
+				ProjectIdThreadLocal.getProjectId(), "membershipchange");
+			_bigQuerySchemaManager.createTable(
 				ProjectIdThreadLocal.getProjectId(), "sessioninterestscore");
+			_bigQuerySchemaManager.createTable(
+				ProjectIdThreadLocal.getProjectId(), "user");
+
+			_updateTableFields(
+				Arrays.asList(
+					Field.newBuilder(
+						"status", LegacySQLTypeName.INTEGER
+					).setMode(
+						Field.Mode.NULLABLE
+					).build(),
+					Field.newBuilder(
+						"type", LegacySQLTypeName.STRING
+					).setMode(
+						Field.Mode.NULLABLE
+					).build()),
+				"accountentry");
 
 			_addTableFields(
 				Arrays.asList(
@@ -93,6 +131,15 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 				"event");
 
 			_addTableFields(
+				Arrays.asList(
+					Field.newBuilder(
+						"createDate", LegacySQLTypeName.TIMESTAMP
+					).setMode(
+						Field.Mode.NULLABLE
+					).build()),
+				"organization");
+
+			_addTableFields(
 				Collections.singletonList(
 					Field.newBuilder(
 						"urls", LegacySQLTypeName.STRING
@@ -101,19 +148,7 @@ public class DatabaseSchemaUpgradeStep implements UpgradeStep {
 					).build()),
 				"session");
 
-			_updateTableFields(
-				Arrays.asList(
-					Field.newBuilder(
-						"status", LegacySQLTypeName.INTEGER
-					).setMode(
-						Field.Mode.NULLABLE
-					).build(),
-					Field.newBuilder(
-						"type", LegacySQLTypeName.STRING
-					).setMode(
-						Field.Mode.NULLABLE
-					).build()),
-				"accountentry");
+			// BigQuery Views
 
 			_bigQuerySchemaManager.createOrReplaceView(
 				ProjectIdThreadLocal.getProjectId(), "asset");

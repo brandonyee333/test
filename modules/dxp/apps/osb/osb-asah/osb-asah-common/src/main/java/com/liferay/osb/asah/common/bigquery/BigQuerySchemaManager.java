@@ -19,6 +19,8 @@ package com.liferay.osb.asah.common.bigquery;
  */
 public interface BigQuerySchemaManager {
 
+	public void createFunction(String projectId, String functionsName);
+
 	public void createOrReplaceView(String projectId, String viewName);
 
 	public void createSchema(String projectId);
@@ -28,5 +30,7 @@ public interface BigQuerySchemaManager {
 	public void createTables(String projectId);
 
 	public void deleteSchema(String projectId);
+
+	public void dropTable(String projectId, String tableName);
 
 }
