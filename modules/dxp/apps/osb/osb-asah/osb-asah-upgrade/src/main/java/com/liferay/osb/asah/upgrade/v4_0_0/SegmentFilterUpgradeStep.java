@@ -30,6 +30,7 @@ import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -85,6 +86,10 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 		for (Segment segment : _segmentRepository.findAll()) {
 			String filterString = segment.getFilter();
 
+			if (StringUtils.isBlank(filterString)) {
+				continue;
+			}
+
 			Matcher matcher = _activityKeyPattern.matcher(filterString);
 
 			while (matcher.find()) {
@@ -124,6 +129,10 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 
 		for (Segment segment : _segmentRepository.findAll()) {
 			String filterString = segment.getFilter();
+
+			if (StringUtils.isBlank(filterString)) {
+				continue;
+			}
 
 			Matcher matcher = pattern.matcher(filterString);
 
@@ -165,6 +174,10 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 	private void _upgradeOrganizationIds() {
 		for (Segment segment : _segmentRepository.findAll()) {
 			String filterString = segment.getFilter();
+
+			if (StringUtils.isBlank(filterString)) {
+				continue;
+			}
 
 			Matcher matcher = _organizationIdsPattern.matcher(filterString);
 
