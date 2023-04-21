@@ -180,11 +180,11 @@ public class BigQueryDataExporter implements DataExporter {
 	}
 
 	private static final String _DATA_EXPORTER_BUCKET_TEMPLATE =
-		"gs://{googleProjectId}-data-exporter";
+		"{googleProjectId}-data-exporter";
 
 	private static final String _EXPORT_DATA_QUERY_TEMPLATE =
 		"EXPORT DATA OPTIONS(format='JSON', overwrite=true, " +
-			"uri='%s/%s/*.json') AS %s";
+			"uri='gs://%s/%s/*.json') AS %s";
 
 	private static final Log _log = LogFactory.getLog(
 		BigQueryDataExporter.class);
