@@ -11,7 +11,7 @@ USING
 			deleted,
 			displayType,
 			modifiedDate,
-			REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), '') AS name
+			REPLACE(name, SUBSTR(name, STRPOS(name, CONCAT('-', dataType))), '') AS name,
 			projectId,
 			rowNumber,
 			sha256HexId,
