@@ -1,5 +1,5 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.documentlibrarydaily` AS replica
+	`${PROJECT_ID}.${asah_project_id}.documentlibrarydaily` AS replica
 USING
 	(
 		WITH
@@ -8,11 +8,11 @@ USING
 					Event.* EXCEPT(assetId, assetTitle),
 					classPK.value AS assetId
 				FROM
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS className ON (
+					`${PROJECT_ID}.${asah_project_id}.event` AS Event
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS className ON (
 						Event.id = className.id AND className.name = 'className'
 					)
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS classPK ON (
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS classPK ON (
 						Event.id = classPK.id AND classPK.name = 'classPK'
 					)
 				WHERE
@@ -28,11 +28,11 @@ USING
 					fileEntryId.value AS assetId,
 					documentTitle.value AS assetTitle
 				FROM
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS fileEntryId ON (
+					`${PROJECT_ID}.${asah_project_id}.event` AS Event
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS fileEntryId ON (
 						Event.id = fileEntryId.id AND fileEntryId.name = 'fileEntryId'
 					)
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS documentTitle ON (
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS documentTitle ON (
 						Event.id = documentTitle.id AND documentTitle.name = 'title'
 					)
 				WHERE
@@ -47,17 +47,17 @@ USING
 					classPK.value AS assetId,
 					CAST(score.value AS FLOAT64) AS score
 				FROM
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS className ON (
+					`${PROJECT_ID}.${asah_project_id}.event` AS Event
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS className ON (
 						Event.id = className.id AND className.name = 'className'
 					)
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS classPK ON (
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS classPK ON (
 						Event.id = classPK.id AND classPK.name = 'classPK'
 					)
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS ratingType ON (
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS ratingType ON (
 						Event.id = ratingType.id AND ratingType.name = 'ratingType'
 					)
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS score ON (
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS score ON (
 						Event.id = score.id AND score.name = 'score'
 					)
 				WHERE

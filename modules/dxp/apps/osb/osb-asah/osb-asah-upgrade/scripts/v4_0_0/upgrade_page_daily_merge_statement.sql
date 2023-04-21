@@ -1,5 +1,5 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.pagedaily` AS replica
+	`${PROJECT_ID}.${asah_project_id}.pagedaily` AS replica
 USING
 	(
 		WITH PageEvent AS (
@@ -21,7 +21,7 @@ USING
 				url,
 				userId
 			FROM
-				`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
+				`${PROJECT_ID}.${asah_project_id}.event` AS Event
 			WHERE
 				Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
 		),
@@ -43,7 +43,7 @@ USING
 			FROM
 				PageEvent
 			INNER JOIN
-				`${PROJECT_ID}.${ASAH_PROJECT_ID}.session` AS Session ON
+				`${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 					PageEvent.sessionId = Session.id
 			WHERE
 				PageEvent.eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed') AND
@@ -84,7 +84,7 @@ USING
 				FROM
 					PageEvent
 				INNER JOIN
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.session` AS Session ON
+					`${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 						PageEvent.sessionId = Session.id
 				WHERE
 					Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
@@ -125,7 +125,7 @@ USING
 				FROM
 					PageEvent
 				INNER JOIN
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.session` AS Session ON
+					`${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 						PageEvent.sessionId = Session.id
 				WHERE
 					Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
@@ -166,7 +166,7 @@ USING
 				FROM
 					PageEvent
 				INNER JOIN
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.session` AS Session ON
+					`${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 						PageEvent.sessionId = Session.id
 				WHERE
 					Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)

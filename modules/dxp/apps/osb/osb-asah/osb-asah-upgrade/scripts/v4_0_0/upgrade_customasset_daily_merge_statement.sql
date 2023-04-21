@@ -1,5 +1,5 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.customassetdaily` AS replica
+	`${PROJECT_ID}.${asah_project_id}.customassetdaily` AS replica
 USING
 	(
 		WITH
@@ -19,13 +19,13 @@ USING
 					COALESCE(category.value, 'default') AS category,
 					formEnabled.value AS formEnabled
 				FROM
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` Event
+					`${PROJECT_ID}.${asah_project_id}.event` Event
 				LEFT JOIN (
 					SELECT
 						id,
 						value
 					FROM
-						`${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty`
+						`${PROJECT_ID}.${asah_project_id}.eventproperty`
 					WHERE
 						name = 'assetId' AND
 						eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
@@ -37,7 +37,7 @@ USING
 						id,
 						value
 					FROM
-						`${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty`
+						`${PROJECT_ID}.${asah_project_id}.eventproperty`
 					WHERE
 						name = 'category' AND
 						eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
@@ -49,7 +49,7 @@ USING
 						id,
 						value
 					FROM
-						`${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty`
+						`${PROJECT_ID}.${asah_project_id}.eventproperty`
 					WHERE
 						name = 'formEnabled' AND
 						eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
@@ -65,7 +65,7 @@ USING
 				SELECT
 					CustomAssetEvent.*
 				FROM
-					CustomAssetEvent INNER JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.session` Session ON
+					CustomAssetEvent INNER JOIN `${PROJECT_ID}.${asah_project_id}.session` Session ON
 					CustomAssetEvent.sessionId = Session.id
 				WHERE
 					Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)

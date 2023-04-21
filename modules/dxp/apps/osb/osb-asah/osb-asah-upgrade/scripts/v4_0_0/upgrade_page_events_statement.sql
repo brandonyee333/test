@@ -1,12 +1,12 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS replica
+	`${PROJECT_ID}.${asah_project_id}.event` AS replica
 USING (
 	SELECT
 		AssetId.value AS assetId,
 		AssetTitle.value AS assetTitle,
 		Event.id
-	FROM `${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-	LEFT OUTER JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS AssetId
+	FROM `${PROJECT_ID}.${asah_project_id}.event` AS Event
+	LEFT OUTER JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS AssetId
 		ON (
 			Event.id = AssetId.id AND
 			AssetId.name IN (
@@ -14,7 +14,7 @@ USING (
 				'formId'
 			)
 		)
-	LEFT OUTER JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty`
+	LEFT OUTER JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty`
 		AS AssetTitle
 	ON (
 		Event.id = AssetTitle.id AND

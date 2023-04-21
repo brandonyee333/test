@@ -1,5 +1,5 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.blogdaily` AS replica
+	`${PROJECT_ID}.${asah_project_id}.blogdaily` AS replica
 USING
 	(
 		WITH BlogEvent AS (
@@ -8,12 +8,12 @@ USING
 				entryId.value AS assetId,
 				blogTitle.value as assetTitle
 			FROM
-				`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-			LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS entryId ON (
+				`${PROJECT_ID}.${asah_project_id}.event` AS Event
+			LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS entryId ON (
 				Event.id = entryId.id AND entryId.name = 'entryId' AND
 				entryId.value IS NOT NULL AND entryId.value != ''
 			)
-			LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS blogTitle ON (
+			LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS blogTitle ON (
 				Event.id = blogTitle.id AND blogTitle.name = 'title'
 			)
 			WHERE
@@ -27,7 +27,7 @@ USING
 				BlogEvent.*
 			FROM
 				BlogEvent
-			INNER JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.session` AS Session ON
+			INNER JOIN `${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 				BlogEvent.sessionId = Session.id
 			WHERE
 				Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
@@ -37,11 +37,11 @@ USING
 				Event.*,
 				classPK.value as assetId
 			FROM
-				`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-			LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS className ON (
+				`${PROJECT_ID}.${asah_project_id}.event` AS Event
+			LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS className ON (
 				Event.id = className.id AND className.name = 'className'
 			)
-			LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS classPK ON (
+			LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS classPK ON (
 				Event.id = classPK.id AND classPK.name = 'classPK'
 			)
 			WHERE
@@ -56,17 +56,17 @@ USING
 				classPK.value as assetId,
 				CAST(score.value AS FLOAT64) as score
 			FROM
-				`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-			LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS className ON (
+				`${PROJECT_ID}.${asah_project_id}.event` AS Event
+			LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS className ON (
 				Event.id = className.id AND className.name = 'className'
 			)
-			LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS classPK ON (
+			LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS classPK ON (
 				Event.id = classPK.id AND classPK.name = 'classPK'
 			)
-			LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS ratingType ON (
+			LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS ratingType ON (
 				Event.id = ratingType.id AND ratingType.name = 'ratingType'
 			)
-			LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS score ON (
+			LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS score ON (
 				Event.id = score.id AND score.name = 'score'
 			)
 			WHERE

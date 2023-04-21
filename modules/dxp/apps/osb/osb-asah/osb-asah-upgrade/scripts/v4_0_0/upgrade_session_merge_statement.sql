@@ -1,10 +1,10 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.session` AS replica
+	`${PROJECT_ID}.${asah_project_id}.session` AS replica
 USING (
 	SELECT
 		sessionId, ARRAY_AGG(DISTINCT url) AS urls
 	FROM
-		`${PROJECT_ID}.${ASAH_PROJECT_ID}.event`
+		`${PROJECT_ID}.${asah_project_id}.event`
 	GROUP
 		BY sessionId
 ) AS staging

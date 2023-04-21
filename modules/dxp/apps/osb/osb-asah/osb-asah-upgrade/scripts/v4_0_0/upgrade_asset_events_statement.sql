@@ -1,4 +1,4 @@
-UPDATE `${PROJECT_ID}.${ASAH_PROJECT_ID}.event`
+UPDATE `${PROJECT_ID}.${asah_project_id}.event`
 SET
 	assetId = canonicalUrl,
 	assetTitle = title

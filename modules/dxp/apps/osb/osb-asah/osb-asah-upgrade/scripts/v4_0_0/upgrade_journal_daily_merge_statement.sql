@@ -1,5 +1,5 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.journaldaily` AS replica
+	`${PROJECT_ID}.${asah_project_id}.journaldaily` AS replica
 USING
 	(
 		WITH
@@ -9,11 +9,11 @@ USING
 					articleId.value AS assetId,
 					COALESCE(articleTitle.value, '') AS assetTitle
 				FROM
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS articleId ON (
+					`${PROJECT_ID}.${asah_project_id}.event` AS Event
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS articleId ON (
 						Event.id = articleId.id AND articleId.name = 'articleId'
 					)
-					LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS articleTitle ON (
+					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS articleTitle ON (
 						Event.id = articleTitle.id AND articleTitle.name = 'title'
 					)
 				WHERE

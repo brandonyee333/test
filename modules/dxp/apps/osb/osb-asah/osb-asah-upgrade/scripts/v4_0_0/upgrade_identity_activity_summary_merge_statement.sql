@@ -1,5 +1,5 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.identityactivitysummary` AS replica
+	`${PROJECT_ID}.${asah_project_id}.identityactivitysummary` AS replica
 USING
 	(
 		SELECT
@@ -12,8 +12,8 @@ USING
 			MAX(Identity.individualId) AS individualId,
 			MAX(Event.eventDate) AS lastActivityDate
 		FROM
-			`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-		LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.identity` AS Identity ON (
+			`${PROJECT_ID}.${asah_project_id}.event` AS Event
+		LEFT JOIN `${PROJECT_ID}.${asah_project_id}.identity` AS Identity ON (
 			Event.userId = Identity.id
 		)
 		WHERE

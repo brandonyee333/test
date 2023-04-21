@@ -1,5 +1,5 @@
 MERGE INTO
-	`${PROJECT_ID}.${ASAH_PROJECT_ID}.formdaily` AS replica
+	`${PROJECT_ID}.${asah_project_id}.formdaily` AS replica
 USING
 	(
 		WITH
@@ -21,13 +21,13 @@ USING
 					Event.title,
 					Event.userId
 				FROM
-					`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
-				LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS formId ON (
+					`${PROJECT_ID}.${asah_project_id}.event` AS Event
+				LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS formId ON (
 					Event.id = formId.id AND formId.name = 'formId' AND
 					formId.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
 					formId.value IS NOT NULL
 				)
-				LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.eventproperty` AS formTitle ON (
+				LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS formTitle ON (
 					Event.id = formTitle.id AND formTitle.name = 'title' AND
 					formTitle.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
 				)
@@ -133,7 +133,7 @@ USING
 			TIMESTAMP_TRUNC(eventDate, HOUR) = FormSubmissionTimes.normalizedEventDate AND
 			FormEvent.title = FormSubmissionTimes.pageTitle AND
 			FormEvent.userId = FormSubmissionTimes.userId)
-		LEFT JOIN `${PROJECT_ID}.${ASAH_PROJECT_ID}.session` AS Session ON
+		LEFT JOIN `${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 			FormEvent.sessionId = Session.id AND
 			Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
 		GROUP BY
