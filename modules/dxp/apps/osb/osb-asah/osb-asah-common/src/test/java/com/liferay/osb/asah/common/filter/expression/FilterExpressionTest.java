@@ -1196,11 +1196,13 @@ public class FilterExpressionTest {
 				DSL.condition(
 					String.join(
 						"", "CASE WHEN STARTS_WITH(",
-						"IndividualFields_custom_field.value, '[') THEN ",
-						"LOWER(IndividualFields_custom_field.value) LIKE ",
-						"'%test%' ELSE ",
-						"LOWER(IndividualFields_custom_field.value) = 'test' ",
-						"END"))),
+						"IndividualFields_custom_field.value, '[') AND ",
+						"ENDS_WITH(IndividualFields_custom_field.value, ']') ",
+						"THEN ( EXISTS (SELECT value FROM UNNEST(",
+						"JSON_EXTRACT_STRING_ARRAY(",
+						"IndividualFields_custom_field.value,'$')) AS value ",
+						"WHERE LOWER(value) = 'test')) ELSE LOWER(",
+						"IndividualFields_custom_field.value) = 'test' END"))),
 			"(custom/custom_field/value eq 'test')",
 			new HashSet<>(
 				Arrays.asList(
@@ -1356,13 +1358,22 @@ public class FilterExpressionTest {
 
 		_assertEquals(
 			DSL.and(
-				DSL.condition(
-					"LOWER(IndividualFields_custom_field.value) LIKE '%test%'"),
 				DSL.field(
 					"IndividualFields_custom_field.name"
 				).eq(
 					"custom_field"
-				)),
+				),
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN STARTS_WITH(",
+						"IndividualFields_custom_field.value, '[') ",
+						"AND ENDS_WITH(IndividualFields_custom_field.value, ",
+						"']') THEN (EXISTS (SELECT value FROM UNNEST(",
+						"JSON_EXTRACT_STRING_ARRAY(",
+						"IndividualFields_custom_field.value,'$')) AS value ",
+						"WHERE LOWER(value) LIKE '%test%')) ELSE LOWER(",
+						"IndividualFields_custom_field.value) LIKE '%test%' ",
+						"END"))),
 			"contains(custom/custom_field/value, 'test')",
 			new HashSet<>(
 				Arrays.asList(
@@ -2043,17 +2054,19 @@ public class FilterExpressionTest {
 						DSL.condition(
 							String.join(
 								"", "CASE WHEN STARTS_WITH(",
-								"ExpandoValue_custom_field.value, '[') THEN ",
-								"LOWER(ExpandoValue_custom_field.value) LIKE ",
-								"'%test%' ELSE ",
+								"ExpandoValue_custom_field.value, '[') AND ",
+								"ENDS_WITH(ExpandoValue_custom_field.value, ",
+								"']') THEN ( EXISTS (SELECT value FROM UNNEST(",
+								"JSON_EXTRACT_STRING_ARRAY(",
+								"ExpandoValue_custom_field.value,'$')) AS ",
+								"value WHERE LOWER(value) = 'test')) ELSE ",
 								"LOWER(ExpandoValue_custom_field.value) = ",
 								"'test' END")))
 				)
 			),
 			"organizations.filter(filter='(custom/custom_field/value eq " +
 				"''test'')')",
-			new HashSet<>(
-				Arrays.asList("ExpandoValue", "Individual", "Organization")));
+			new HashSet<>(Arrays.asList("Individual", "Organization")));
 
 		_assertEquals(
 			DSL.field(
@@ -2121,8 +2134,7 @@ public class FilterExpressionTest {
 				)
 			),
 			"organizations.filter(filter='(custom/custom_field/value ge 123)')",
-			new HashSet<>(
-				Arrays.asList("ExpandoValue", "Individual", "Organization")));
+			new HashSet<>(Arrays.asList("Individual", "Organization")));
 
 		_assertEquals(
 			DSL.field(
@@ -2176,14 +2188,22 @@ public class FilterExpressionTest {
 						))
 				).where(
 					DSL.and(
-						DSL.condition(
-							"LOWER(ExpandoValue_custom_field.value) LIKE " +
-								"'%test%'"),
 						DSL.field(
 							"ExpandoValue_custom_field.fieldName"
 						).eq(
 							"custom_field"
-						))
+						),
+						DSL.condition(
+							String.join(
+								"", "CASE WHEN STARTS_WITH(",
+								"ExpandoValue_custom_field.value, '[') AND ",
+								"ENDS_WITH(ExpandoValue_custom_field.value, ",
+								"']') THEN (EXISTS (SELECT value FROM UNNEST(",
+								"JSON_EXTRACT_STRING_ARRAY(",
+								"ExpandoValue_custom_field.value,'$')) AS ",
+								"value WHERE LOWER(value) LIKE '%test%')) ",
+								"ELSE LOWER(ExpandoValue_custom_field.value) ",
+								"LIKE '%test%' END")))
 				)
 			),
 			"organizations.filter(filter='(contains(custom/custom_field" +
