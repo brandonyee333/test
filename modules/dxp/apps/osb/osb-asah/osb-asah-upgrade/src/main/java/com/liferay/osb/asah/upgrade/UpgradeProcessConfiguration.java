@@ -16,15 +16,16 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v4_0_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.AsahTaskMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_0.BigQuerySchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.BlockedKeywordMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.DataControlTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.DataExportTaskMigrationUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_0_0.DatabaseSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.ExperimentMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.InterestTopicMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.ItemRecommendationMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.JobMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.JobRunMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_0.PostgreSQLSchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.RunLogMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SegmentFilterUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SegmentMigrationUpgradeStep;
@@ -46,7 +47,9 @@ public class UpgradeProcessConfiguration {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
 		upgradeProcess.addUpgradeSteps(
-			"3.6.0", "3.7.0", _databaseSchemaUpgradeStep);
+			"3.6.0", "3.6.1", _postgreSQLSchemaUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.6.1", "3.7.0", _bigQuerySchemaUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"3.7.0", "3.7.1", _asahMarkerMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
@@ -87,11 +90,11 @@ public class UpgradeProcessConfiguration {
 	private AsahTaskMigrationUpgradeStep _asahTaskMigrationUpgradeStep;
 
 	@Autowired
-	private BlockedKeywordMigrationUpgradeStep
-		_blockedKeywordMigrationUpgradeStep;
+	private BigQuerySchemaUpgradeStep _bigQuerySchemaUpgradeStep;
 
 	@Autowired
-	private DatabaseSchemaUpgradeStep _databaseSchemaUpgradeStep;
+	private BlockedKeywordMigrationUpgradeStep
+		_blockedKeywordMigrationUpgradeStep;
 
 	@Autowired
 	private DataControlTaskMigrationUpgradeStep
@@ -117,6 +120,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private JobRunMigrationUpgradeStep _jobRunMigrationUpgradeStep;
+
+	@Autowired
+	private PostgreSQLSchemaUpgradeStep _postgreSQLSchemaUpgradeStep;
 
 	@Autowired
 	private RunLogMigrationUpgradeStep _runLogMigrationUpgradeStep;
