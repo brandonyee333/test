@@ -11,7 +11,6 @@ PROJECT_ID=$(gcloud config get-value project)
 DXP_CLOUD_PROJECT=${1}
 GCS_BUCKET=gs://${PROJECT_ID}-dxp-entities/
 MAIN_CLASS_NAME=com.liferay.osb.asah.dataflow.ingestion.dxp.DXPCommerceEntitiesIngestionPipeline
-DEFAULT_PUBSUB_SUBSCRIPTION=projects/${PROJECT_ID}/subscriptions/${DXP_CLOUD_PROJECT}_dxp_commerce_entities_default
 ORDER_BIGQUERY_TABLE=order_raw
 ORDER_PUBSUB_SUBSCRIPTION=projects/${PROJECT_ID}/subscriptions/${DXP_CLOUD_PROJECT}_dxp_commerce_entities_order
 PRODUCT_BIGQUERY_TABLE=product_raw
@@ -25,7 +24,6 @@ TRIGGER_INTERVAL_DURATION=60
 ../gradlew clean assemble execute \
 	-Dexec.args=" \
 	--GCSBucket=${GCS_BUCKET} \
-		--defaultPubsubSubscription=${DEFAULT_PUBSUB_SUBSCRIPTION} \
 		--jobName=dxpcommerceentitiesingestionpipeline-${DXP_CLOUD_PROJECT}-latest \
 		--orderBigQueryTable=${ORDER_BIGQUERY_TABLE} \
 		--orderPubsubSubscription=${ORDER_PUBSUB_SUBSCRIPTION} \

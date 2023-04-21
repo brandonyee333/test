@@ -38,7 +38,6 @@ function main {
 
 	# DXP Commerce Entities
 
-	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_default ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_default
 	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_order ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_order
 	create_subscription ${PROJECT_ID} ${DXP_CLOUD_PROJECT}_dxp_entities_product ${DXP_CLOUD_PROJECT}_dxp_commerce_entities_product
 
