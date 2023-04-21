@@ -94,7 +94,7 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 				).build()),
 			"accountentry");
 
-		_addTableFields(
+		_updateTableFields(
 			Arrays.asList(
 				Field.newBuilder(
 					"assetId", LegacySQLTypeName.STRING
@@ -108,7 +108,7 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 				).build()),
 			"event");
 
-		_addTableFields(
+		_updateTableFields(
 			Arrays.asList(
 				Field.newBuilder(
 					"createDate", LegacySQLTypeName.TIMESTAMP
@@ -117,7 +117,7 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 				).build()),
 			"organization");
 
-		_addTableFields(
+		_updateTableFields(
 			Collections.singletonList(
 				Field.newBuilder(
 					"urls", LegacySQLTypeName.STRING
@@ -166,26 +166,6 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 		if (_log.isInfoEnabled()) {
 			_log.info("BigQuery successfully upgraded to schema 4.0.0");
 		}
-	}
-
-	private void _addTableFields(List<Field> newFields, String tableName) {
-		Table table = _bigQuery.getTable(
-			ProjectIdThreadLocal.getProjectId(), tableName);
-
-		List<Field> fields = _getTableFields(table);
-
-		for (Field newField : newFields) {
-			fields.add(newField);
-		}
-
-		Table.Builder builder = table.toBuilder();
-
-		builder = builder.setDefinition(
-			StandardTableDefinition.of(Schema.of(fields)));
-
-		table = builder.build();
-
-		table.update();
 	}
 
 	private List<Field> _getTableFields(Table table) {
