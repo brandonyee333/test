@@ -68,22 +68,6 @@ public class DXPCommerceEntitiesIngestionPipeline {
 		pipeline = orderPipelineBuilder.<Order>withBigQueryWriter(
 			new OrderParserPTransform(),
 			dxpCommerceEntitiesIngestionPipelineOptions.getOrderBigQueryTable()
-		).withFailedBigQueryItemsToGCS(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed/bigquery",
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
-		).withFailedParsedItemsToGCS(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed/parse",
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
 		).withGCSWriter(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket(),
 			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
@@ -105,22 +89,6 @@ public class DXPCommerceEntitiesIngestionPipeline {
 			new ProductParserPTransform(),
 			dxpCommerceEntitiesIngestionPipelineOptions.
 				getProductBigQueryTable()
-		).withFailedBigQueryItemsToGCS(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed/bigquery",
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
-		).withFailedParsedItemsToGCS(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket() +
-				"failed/parse",
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
 		).withGCSWriter(
 			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket(),
 			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
