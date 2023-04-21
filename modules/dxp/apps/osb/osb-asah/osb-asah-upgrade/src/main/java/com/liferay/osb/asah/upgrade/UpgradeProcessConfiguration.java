@@ -60,7 +60,10 @@ public class UpgradeProcessConfiguration {
 			"3.7.4", "3.7.5", _dataControlTaskMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"3.7.5", "3.7.6", _dataExportTaskMigrationUpgradeStep);
-		upgradeProcess.addUpgradeSteps("3.7.6", "3.7.7", version -> {});
+		upgradeProcess.addUpgradeSteps(
+			"3.7.6", "3.7.7",
+			version -> {
+			});
 		upgradeProcess.addUpgradeSteps(
 			"3.7.7", "3.7.8", _experimentMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
