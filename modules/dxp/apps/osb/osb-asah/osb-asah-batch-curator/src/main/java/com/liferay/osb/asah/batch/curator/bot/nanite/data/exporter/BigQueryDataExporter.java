@@ -33,6 +33,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -139,7 +140,7 @@ public class BigQueryDataExporter implements DataExporter {
 		if (_dataExportTask.getFromDate() != null) {
 			conditions.add(
 				DSL.field(
-					_dateFieldName
+					_dateFieldName, Date.class
 				).greaterOrEqual(
 					_dataExportTask.getFromDate()
 				));
@@ -148,7 +149,7 @@ public class BigQueryDataExporter implements DataExporter {
 		if (_dataExportTask.getToDate() != null) {
 			conditions.add(
 				DSL.field(
-					_dateFieldName
+					_dateFieldName, Date.class
 				).lessOrEqual(
 					_dataExportTask.getToDate()
 				));
@@ -172,7 +173,7 @@ public class BigQueryDataExporter implements DataExporter {
 						_getBigQueryTableName(_tableName)
 					).where(
 						_getConditions()
-					).getSQL())
+					))
 			).build();
 
 		_bigQuery.query(queryJobConfiguration);
