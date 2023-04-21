@@ -43,29 +43,12 @@ public class DXPCommerceEntitiesIngestionPipeline {
 		DXPCommerceEntitiesIngestionPipelineOptions
 			dxpCommerceEntitiesIngestionPipelineOptions) {
 
-		// Default
-
-		PipelineBuilder defaultPipelineBuilder = new PipelineBuilder(
-			Pipeline.create(dxpCommerceEntitiesIngestionPipelineOptions));
-
-		Pipeline pipeline = defaultPipelineBuilder.withGCSWriter(
-			dxpCommerceEntitiesIngestionPipelineOptions.getGCSBucket(),
-			dxpCommerceEntitiesIngestionPipelineOptions.getShardCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerElementCount(),
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getTriggerIntervalDuration()
-		).withPubsubSubscription(
-			dxpCommerceEntitiesIngestionPipelineOptions.
-				getDefaultPubsubSubscription(),
-			"Default"
-		).build();
-
 		// Order
 
-		PipelineBuilder orderPipelineBuilder = new PipelineBuilder(pipeline);
+		PipelineBuilder orderPipelineBuilder = new PipelineBuilder(
+			Pipeline.create(dxpCommerceEntitiesIngestionPipelineOptions));
 
-		pipeline = orderPipelineBuilder.<Order>withBigQueryWriter(
+		Pipeline pipeline = orderPipelineBuilder.<Order>withBigQueryWriter(
 			new OrderParserPTransform(),
 			dxpCommerceEntitiesIngestionPipelineOptions.getOrderBigQueryTable()
 		).withGCSWriter(

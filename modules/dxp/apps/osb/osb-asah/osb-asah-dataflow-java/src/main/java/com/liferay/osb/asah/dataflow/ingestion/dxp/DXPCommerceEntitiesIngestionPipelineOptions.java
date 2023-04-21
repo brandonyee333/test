@@ -24,12 +24,6 @@ import org.apache.beam.sdk.options.Validation;
 public interface DXPCommerceEntitiesIngestionPipelineOptions
 	extends DataflowPipelineOptions {
 
-	@Description(
-		"Return the default queue pubsub subscription name. The name should be in the format of projects/<project-id>/subscriptions/<subscription-name>."
-	)
-	@Validation.Required
-	public String getDefaultPubsubSubscription();
-
 	@Description("Return the GCS output bucket")
 	@Validation.Required
 	public String getGCSBucket();
@@ -65,8 +59,6 @@ public interface DXPCommerceEntitiesIngestionPipelineOptions
 	@Description("Return the trigger interval duration in seconds")
 	@Validation.Required
 	public long getTriggerIntervalDuration();
-
-	public void setDefaultPubsubSubscription(String pubsubSubscription);
 
 	public void setGCSBucket(String gcsBucket);
 
