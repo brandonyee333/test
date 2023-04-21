@@ -415,7 +415,9 @@ public class FilterExpressionConditionVisitor
 					qualifiedFieldName
 				));
 		}
-		else if (StringUtils.startsWith(field.getName(), "IndividualFields_")) {
+		else if (StringUtils.startsWith(field.getName(), "IndividualFields_") &&
+				 !functionName.equalsIgnoreCase("contains")) {
+
 			String curFieldName = field.getName();
 
 			String[] parts = curFieldName.split("\\.", 2);
