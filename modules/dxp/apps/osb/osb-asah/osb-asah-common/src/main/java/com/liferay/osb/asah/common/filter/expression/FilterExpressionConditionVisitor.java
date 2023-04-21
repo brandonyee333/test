@@ -416,8 +416,8 @@ public class FilterExpressionConditionVisitor
 						qualifiedFieldName
 					));
 			}
-			else if (
-				StringUtils.startsWith(field.getName(), "IndividualFields_")) {
+			else if (StringUtils.startsWith(
+						field.getName(), "IndividualFields_")) {
 
 				String curFieldName = field.getName();
 
@@ -766,8 +766,6 @@ public class FilterExpressionConditionVisitor
 	private Condition _getCustomFieldCondition(
 		String fieldName, String operator, String value) {
 
-		_referencedTableNames.add("ExpandoValue");
-
 		String alias = null;
 		Condition condition = null;
 
@@ -781,6 +779,8 @@ public class FilterExpressionConditionVisitor
 			alias = "IndividualFields_" + fieldName;
 
 			_referencedTableNames.add(alias);
+
+			_referencedTableNames.add("ExpandoValue");
 
 			condition = DSL.field(
 				alias + ".name"
