@@ -407,29 +407,31 @@ public class FilterExpressionConditionVisitor
 				"Invalid string function: " + functionName);
 		}
 
-		if (StringUtils.startsWith(field.getName(), "ExpandoValue_")) {
-			condition = condition.and(
-				DSL.field(
-					"ExpandoValue_" + qualifiedFieldName + ".fieldName"
-				).eq(
-					qualifiedFieldName
-				));
-		}
-		else if (StringUtils.startsWith(field.getName(), "IndividualFields_") &&
-				 !functionName.equalsIgnoreCase("contains")) {
+		if (!functionName.equalsIgnoreCase("contains")) {
+			if (StringUtils.startsWith(field.getName(), "ExpandoValue_")) {
+				condition = condition.and(
+					DSL.field(
+						"ExpandoValue_" + qualifiedFieldName + ".fieldName"
+					).eq(
+						qualifiedFieldName
+					));
+			}
+			else if (
+				StringUtils.startsWith(field.getName(), "IndividualFields_")) {
 
-			String curFieldName = field.getName();
+				String curFieldName = field.getName();
 
-			String[] parts = curFieldName.split("\\.", 2);
+				String[] parts = curFieldName.split("\\.", 2);
 
-			_referencedTableNames.add("ExpandoValue");
+				_referencedTableNames.add("ExpandoValue");
 
-			condition = condition.and(
-				DSL.field(
-					parts[0] + ".name"
-				).eq(
-					qualifiedFieldName
-				));
+				condition = condition.and(
+					DSL.field(
+						parts[0] + ".name"
+					).eq(
+						qualifiedFieldName
+					));
+			}
 		}
 
 		if (Objects.equals(
@@ -769,13 +771,13 @@ public class FilterExpressionConditionVisitor
 		String alias = null;
 		Condition condition = null;
 
+		if (fieldName.startsWith("ExpandoValue.")) {
+			String[] parts = fieldName.split("\\.", 2);
+
+			fieldName = parts[1];
+		}
+
 		if (_filterType == FilterExpression.FilterType.INDIVIDUALS) {
-			if (fieldName.startsWith("ExpandoValue.")) {
-				String[] parts = fieldName.split("\\.", 2);
-
-				fieldName = parts[1];
-			}
-
 			alias = "IndividualFields_" + fieldName;
 
 			_referencedTableNames.add(alias);
