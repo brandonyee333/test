@@ -228,6 +228,29 @@ public class FilterExpressionTest {
 	}
 
 	@Test
+	public void testContainsOperatorCustomField() {
+		_assertEquals(
+			DSL.and(
+				DSL.field(
+					"IndividualFields_custom_field.name"
+				).eq(
+					"custom_field"
+				),
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN STARTS_WITH(",
+						"IndividualFields_custom_field.value, '[') AND ",
+						"ENDS_WITH(IndividualFields_custom_field.value, ']') ",
+						"THEN (EXISTS (SELECT value FROM UNNEST(",
+						"JSON_EXTRACT_STRING_ARRAY(",
+						"IndividualFields_custom_field.value,'$')) AS value ",
+						"WHERE LOWER(value) LIKE '%value1%')) ELSE ",
+						"LOWER(IndividualFields_custom_field.value) ",
+						"LIKE '%value1%' END"))),
+			"contains(custom/custom_field/value, 'value1')", true);
+	}
+
+	@Test
 	public void testDanglingLogicalOperatorThrowsException() {
 		_assertThrowsException(
 			"column1 eq 'value1' and",
