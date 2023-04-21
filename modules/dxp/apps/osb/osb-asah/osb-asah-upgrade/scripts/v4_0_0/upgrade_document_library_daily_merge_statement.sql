@@ -5,7 +5,7 @@ USING
 		WITH
 			CommentEvent AS (
 				SELECT
-					Event.*,
+					Event.* EXCEPT(assetId, assetTitle),
 					classPK.value AS assetId
 				FROM
 					`${PROJECT_ID}.${ASAH_PROJECT_ID}.event` AS Event
@@ -24,7 +24,7 @@ USING
 			),
 			DocumentEvent AS (
 				SELECT
-					Event.*,
+					Event.* EXCEPT(assetId, assetTitle),
 					fileEntryId.value AS assetId,
 					documentTitle.value AS assetTitle
 				FROM
@@ -43,7 +43,7 @@ USING
 			),
 			RatingEvent AS (
 				SELECT
-					Event.*,
+					Event.* EXCEPT(assetId, assetTitle),
 					classPK.value AS assetId,
 					CAST(score.value AS FLOAT64) AS score
 				FROM

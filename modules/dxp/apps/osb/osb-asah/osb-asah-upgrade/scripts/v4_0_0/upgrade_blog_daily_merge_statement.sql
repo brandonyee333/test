@@ -4,7 +4,7 @@ USING
 	(
 		WITH BlogEvent AS (
 			SELECT
-				Event.*,
+				Event.* EXCEPT(assetId, assetTitle),
 				entryId.value AS assetId,
 				blogTitle.value as assetTitle
 			FROM

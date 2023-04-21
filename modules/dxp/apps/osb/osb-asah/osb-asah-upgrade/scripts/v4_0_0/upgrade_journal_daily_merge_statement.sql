@@ -5,7 +5,7 @@ USING
 		WITH
 			WebContentEvent AS (
 				SELECT
-					Event.*,
+					Event.* EXCEPT(assetId, assetTitle),
 					articleId.value AS assetId,
 					COALESCE(articleTitle.value, '') AS assetTitle
 				FROM
