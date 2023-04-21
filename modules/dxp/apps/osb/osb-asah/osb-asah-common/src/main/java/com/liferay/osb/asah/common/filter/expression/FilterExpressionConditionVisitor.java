@@ -39,8 +39,8 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import org.apache.commons.lang3.StringUtils;
-
 import org.apache.commons.lang3.math.NumberUtils;
+
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.Param;
@@ -329,21 +329,27 @@ public class FilterExpressionConditionVisitor
 
 			String value = String.valueOf(param.getValue());
 
-			if (Objects.equals(fieldName, "Session.referrers")) {
-				_referencedTableNames.add("SessionReferrers");
-
-				field = DSL.field("SessionReferrer");
+			if (StringUtils.startsWith(fieldName, "ExpandoValue.")) {
+				condition = _getCustomFieldCondition(
+					fieldName, "contains", value);
 			}
-			else if (Objects.equals(fieldName, "Session.urls")) {
-				_referencedTableNames.add("SessionUrls");
+			else {
+				if (Objects.equals(fieldName, "Session.referrers")) {
+					_referencedTableNames.add("SessionReferrers");
 
-				field = DSL.field("SessionUrl");
+					field = DSL.field("SessionReferrer");
+				}
+				else if (Objects.equals(fieldName, "Session.urls")) {
+					_referencedTableNames.add("SessionUrls");
+
+					field = DSL.field("SessionUrl");
+				}
+
+				condition = DSL.condition(
+					String.format(
+						"LOWER(%s) LIKE '%s'", field,
+						"%" + StringUtils.lowerCase(value) + "%"));
 			}
-
-			condition = DSL.condition(
-				String.format(
-					"LOWER(%s) LIKE '%s'", field,
-					"%" + StringUtils.lowerCase(value) + "%"));
 		}
 		else if (functionName.equalsIgnoreCase("endsWith")) {
 			Param param = (Param)parameters.get(1);
@@ -762,6 +768,12 @@ public class FilterExpressionConditionVisitor
 		Condition condition = null;
 
 		if (_filterType == FilterExpression.FilterType.INDIVIDUALS) {
+			if (fieldName.startsWith("ExpandoValue.")) {
+				String[] parts = fieldName.split("\\.", 2);
+
+				fieldName = parts[1];
+			}
+
 			alias = "IndividualFields_" + fieldName;
 
 			_referencedTableNames.add(alias);
@@ -806,7 +818,19 @@ public class FilterExpressionConditionVisitor
 				"SAFE_CAST('", value, "' AS NUMERIC) END");
 		}
 
-		if (operator.equalsIgnoreCase("eq")) {
+		if (operator.equalsIgnoreCase("contains")) {
+			condition = condition.and(
+				DSL.condition(
+					String.join(
+						"", "CASE WHEN STARTS_WITH(", alias, ".value, '[') ",
+						"AND ENDS_WITH(", alias, ".value, ']') THEN (EXISTS ",
+						"(SELECT value FROM UNNEST(JSON_EXTRACT_STRING_ARRAY(",
+						alias, ".value,'$')) AS value WHERE LOWER(value) LIKE ",
+						"'%", StringUtils.lowerCase(value), "%')) ELSE LOWER(",
+						alias, ".value) LIKE '%", StringUtils.lowerCase(value),
+						"%' END")));
+		}
+		else if (operator.equalsIgnoreCase("eq")) {
 			if (StringUtil.isNull(value)) {
 				Field aliasField = DSL.field(alias + ".value");
 
