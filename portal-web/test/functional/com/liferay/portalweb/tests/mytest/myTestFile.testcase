@@ -1,0 +1,124 @@
+     definition {
+
+	property osgi.module.configuration.file.names = "com.liferay.frontend.js.loader.modules.extender.internal.configuration.Details.config";
+	property osgi.module.configurations = "waitTimeout=\"15\"";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Forms";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if (${testPortalInstance} == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			Navigator.openURL();
+
+			ProductMenu.gotoPortlet(
+				category = "Content & Data",
+				portlet = "Forms");
+
+			FormsAdmin.teardownForms();
+
+			Navigator.gotoNavItem(navItem = "Element Sets");
+
+			FormsAdmin.teardownElementSets();
+
+			PagesAdmin.tearDownCP();
+		}
+	}
+
+
+     
+     @priority = 5
+    test addFormLiferay {
+        task("Criar o form") {
+            FormsAdmin.addForm();
+    }
+        task("editar o titulo") {
+            Form.editName(formName= "Form Liferay");
+        }
+        task("adicionar campo de texto") {
+            Form.addTextField();
+        }
+        task("mudar texto do campo de texto") {
+            Form.editFieldLabelMetal(fieldValue= "Full Name");
+            Form.save();
+        }
+        task("Adicionando field numeric") {
+           Form.gotoAddField(
+            fieldPositionNumber = 1,
+            fieldType = "Numeric");
+            Form.editFieldLabelMetal(fieldValue= "Age");
+            Form.save();
+        }
+        task("Adicionando idioma Portugues"){
+            Form.addTranslation(localizedLanguage= "Portuguese (Brazil)");
+            Form.save();
+        }
+        task("Traduzindo para pt") {
+            Form.selectTranslation(localizedLanguage= "Portuguese (Brazil)");
+            Form.editName(formName = "Forms da Liferay");
+            FormViewBuilder.editFieldLabel(
+            fieldLabel = "Full Name",
+            label = "Nome Completo");
+            FormViewBuilder.editFieldLabel(
+            fieldLabel = "Age",
+            label = "Idade");
+            Form.save();
+            Form.publishForm();
+         }
+         task("Visualizando o form criado"){
+            FormsAdminNavigator.gotoPublishedForm();
+         }
+         task("preenchendo o form em english e enviando"){
+            FormViewBuilder.editText(
+            fieldName = "Full Name",
+            fieldValue = "Aquiles");
+            FormViewBuilder.editText(
+            fieldName = "Age",
+            fieldValue = "17");
+            FormPortlet.submit();
+            Form.submitAgain();
+         }
+         task("Repreenchendo o form em portugues"){
+            FormViewBuilder.changeAppLanguageTo(changeAppLanguageTo = "en-US");
+            FormViewBuilder.changeAppLanguageTo(changeAppLanguageTo = "português-Brasil");
+            FormViewBuilder.viewTranslationLanguage(symbolName = "pt-BR");
+            FormViewBuilder.editText(
+            fieldName = "Nome Completo",
+            fieldValue = "Aquiles Kaua Duarte da Silva");
+            FormViewBuilder.editText(
+            fieldName = "Idade",
+            fieldValue = "18");
+            FormPortlet.submit();
+            Pause(locator1 = 5000);
+         }
+         task("verificando se chegou as respostas"){
+            Navigator.openWithAppendToBaseURL(baseURL= "http://localhost:8080",
+            urlAppend= "home");
+            ProductMenu.gotoPortlet(
+            category = "Content & Data",
+            portlet = "Forms");
+            FormsAdminNavigator.gotoViewEntries();
+        
+                }
+
+        task("Validate if is visible") {
+            LexiconEntry.viewEntryContent(
+            key_rowAny = "Aquiles",
+            key_rowEntry = "17");
+            LexiconEntry.viewEntryContent(
+            key_rowAny = "Aquiles Kaua Duarte da Silva",
+            key_rowEntry = "18");
+        }
+         
+    }
+}
