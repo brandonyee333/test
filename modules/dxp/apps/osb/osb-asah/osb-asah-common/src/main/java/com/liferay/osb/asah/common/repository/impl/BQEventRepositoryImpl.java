@@ -708,12 +708,17 @@ public class BQEventRepositoryImpl
 			).from(
 				DSL.table("BQEvent")
 			).where(
-				_createCondition(
-					displayLanguageId, groupId, minCounts, searchQueryParams)
+				_createCondition(displayLanguageId, groupId, searchQueryParams)
 			).groupBy(
 				DSL.field("displaylanguageid"), DSL.field("groupid"),
 				_dslHelper.getField(
 					DSL.field("keywords"), _getKeywordsField(searchQueryParams))
+			).having(
+				DSL.field(
+					"counts"
+				).ge(
+					minCounts
+				)
 			).orderBy(
 				getSortFields(pageable.getSort(), null)
 			).limit(
@@ -739,6 +744,11 @@ public class BQEventRepositoryImpl
 					).as(
 						"displaylanguageid"
 					),
+					DSL.count(
+						DSL.asterisk()
+					).as(
+						"counts"
+					),
 					_dslHelper.jsonExtractScalar(
 						"context", "groupId"
 					).as(
@@ -753,13 +763,18 @@ public class BQEventRepositoryImpl
 					"BQEvent"
 				).where(
 					_createCondition(
-						displayLanguageId, groupId, minCounts,
-						searchQueryParams)
+						displayLanguageId, groupId, searchQueryParams)
 				).groupBy(
 					DSL.field("displaylanguageid"), DSL.field("groupid"),
 					_dslHelper.getField(
 						DSL.field("keywords"),
 						_getKeywordsField(searchQueryParams))
+				).having(
+					DSL.field(
+						"counts"
+					).ge(
+						minCounts
+					)
 				)));
 	}
 
@@ -1053,7 +1068,7 @@ public class BQEventRepositoryImpl
 
 	private Condition _createCondition(
 		@Nullable String displayLanguageId, @Nullable String groupId,
-		int minCounts, Set<String> searchQueryParams) {
+		Set<String> searchQueryParams) {
 
 		Condition condition = DSL.and(
 			DSL.field(
@@ -1080,15 +1095,6 @@ public class BQEventRepositoryImpl
 					"context", "groupId"
 				).eq(
 					groupId
-				));
-		}
-
-		if (minCounts > 0) {
-			condition = condition.and(
-				DSL.field(
-					DSL.count(DSL.asterisk())
-				).ge(
-					minCounts
 				));
 		}
 
