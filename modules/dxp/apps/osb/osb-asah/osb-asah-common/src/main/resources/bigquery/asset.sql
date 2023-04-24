@@ -1,25 +1,39 @@
 WITH AssetEvent AS (
 	SELECT
-		CASE WHEN event.applicationId = 'Comment' THEN 'Blog' ELSE event.applicationId END AS applicationId,
-		event.assetId,
-		event.assetTitle,
-		event.canonicalUrl,
-		event.channelId,
-		event.dataSourceId,
-		event.eventDate,
-		CASE WHEN event.eventId = 'posted' THEN 'commentPosted' ELSE event.eventId END AS eventId,
-		event.title
+		CASE
+		    WHEN
+				Event.applicationId = 'Comment'
+			THEN
+				'Blog'
+			ELSE
+			    Event.applicationId
+		END AS applicationId,
+		Event.assetId,
+		Event.assetTitle,
+		Event.canonicalUrl,
+		Event.channelId,
+		Event.dataSourceId,
+		Event.eventDate,
+		CASE
+			WHEN
+				Event.eventId = 'posted'
+			THEN
+			    'commentPosted'
+		    ELSE
+				Event.eventId
+		END AS eventId,
+		Event.title
 	FROM
-		`$[AC_PROJECT_ID].event` event
+		`$[AC_PROJECT_ID].event` Event
 	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
 		className.id = Event.id
 	)
 	WHERE
 		(
-			event.applicationId IN (
+			Event.applicationId IN (
 				'Blog', 'Document', 'Form', 'WebContent', 'Page'
 			) AND
-			event.eventId IN (
+			Event.eventId IN (
 				'blogViewed', 'formViewed', 'formSubmitted', 'documentDownloaded',
 				'documentPreviewed', 'webContentViewed', 'pageViewed'
 			)
