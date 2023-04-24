@@ -55,38 +55,30 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"3.7.1", "3.7.2", _asahTaskMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.7.2", "3.7.4", _blockedKeywordMigrationUpgradeStep);
+			"3.7.2", "3.7.3", _blockedKeywordMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.7.4", "3.7.5", _dataControlTaskMigrationUpgradeStep);
+			"3.7.3", "3.7.4", _dataControlTaskMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.7.5", "3.7.6", _dataExportTaskMigrationUpgradeStep);
+			"3.7.4", "3.7.5", _dataExportTaskMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.7.6", "3.7.7",
-			version -> {
-			});
+			"3.7.5", "3.7.6", _experimentMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.7.7", "3.7.8", _experimentMigrationUpgradeStep);
+			"3.7.6", "3.7.7", _interestTopicMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.7.8", "3.7.9", _interestTopicMigrationUpgradeStep);
+			"3.7.7", "3.7.8", _itemRecommendationMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.7.9", "3.8.0", _itemRecommendationMigrationUpgradeStep);
+			"3.7.8", "3.7.9", _jobMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.8.0", "3.8.1",
-			version -> {
-			});
+			"3.7.9", "3.8.0", _jobRunMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.8.1", "3.8.2", _jobMigrationUpgradeStep);
+			"3.8.0", "3.8.1", _runLogMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.8.2", "3.8.3", _jobRunMigrationUpgradeStep);
+			"3.8.1", "3.8.2", _segmentMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.8.3", "3.8.4", _runLogMigrationUpgradeStep);
+			"3.8.2", "3.8.3", _suppressionMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps("3.8.3", "3.8.4", _sequenceUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.8.4", "3.8.5", _segmentMigrationUpgradeStep);
-		upgradeProcess.addUpgradeSteps(
-			"3.8.5", "3.8.6", _suppressionMigrationUpgradeStep);
-		upgradeProcess.addUpgradeSteps("3.8.6", "3.8.7", _sequenceUpgradeStep);
-		upgradeProcess.addUpgradeSteps(
-			"3.8.7", "4.0.0", _segmentFilterUpgradeStep);
+			"3.8.4", "4.0.0", _segmentFilterUpgradeStep);
 
 		return upgradeProcess;
 	}
