@@ -25,14 +25,12 @@ WITH AssetEvent AS (
 		Event.title
 	FROM
 		`$[AC_PROJECT_ID].event` Event
-	LEFT JOIN `$[AC_PROJECT_ID].eventproperty` AS className ON (
-		className.id = Event.id
-	)
 	WHERE
 		(
 			Event.applicationId IN (
 				'Blog', 'Document', 'Form', 'WebContent', 'Page'
 			) AND
+			Event.assetId IS NOT NULL AND
 			Event.eventId IN (
 				'blogViewed', 'formViewed', 'formSubmitted', 'documentDownloaded',
 				'documentPreviewed', 'webContentViewed', 'pageViewed'
@@ -42,8 +40,7 @@ WITH AssetEvent AS (
 			Event.applicationId = 'Comment' AND
 			Event.assetId IS NOT NULL AND
 			Event.eventId = 'posted' AND
-			className.name = 'className' AND
-			className.value = 'com.liferay.blogs.model.BlogsEntry'
+			JSON_VALUE(Event.eventProperties, '$.className') = 'com.liferay.blogs.model.BlogsEntry'
 		)
 )
 SELECT
