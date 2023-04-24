@@ -231,7 +231,7 @@ public class BQEventDogTest
 
 		Page<SearchKeyword> searchKeywordPage =
 			_bqEventDog.getSearchKeywordPage(
-				null, null, 0, 0, 2, Sort.by(Sort.Order.desc("counts")));
+				null, null, 1, 0, 2, Sort.by(Sort.Order.desc("counts")));
 
 		Assertions.assertEquals(3, searchKeywordPage.getTotalElements());
 
@@ -266,6 +266,11 @@ public class BQEventDogTest
 		Assertions.assertEquals("pt_BR", searchKeyword.getDisplayLanguageId());
 		Assertions.assertEquals("3212", searchKeyword.getGroupId());
 		Assertions.assertEquals("diamond bar", searchKeyword.getKeywords());
+
+		searchKeywordPage = _bqEventDog.getSearchKeywordPage(
+			null, null, 3, 0, 1, Sort.by(Sort.Order.desc("counts")));
+
+		Assertions.assertEquals(0, searchKeywordPage.getTotalElements());
 	}
 
 	@Test
