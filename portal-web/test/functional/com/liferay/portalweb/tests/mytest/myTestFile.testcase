@@ -101,7 +101,7 @@
             FormPortlet.submit();
             Pause(locator1 = 5000);
          }
-         task("verificando se chegou as respostas"){
+         task("Verificando se chegou as respostas"){
             Navigator.openWithAppendToBaseURL(baseURL= "http://localhost:8080",
             urlAppend= "home");
             ProductMenu.gotoPortlet(
