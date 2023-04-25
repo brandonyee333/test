@@ -32,7 +32,6 @@ import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -457,12 +456,12 @@ public class BQMembershipChangeRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembershipChange")
 			).columns(
-				DSL.field("createDate", Date.class),
+				DSL.field("createDate", Object.class),
 				DSL.field("identitiesCount", Long.class),
 				DSL.field("individualsCount", Long.class),
 				DSL.field("segmentId", Long.class)
 			).values(
-				bqMembershipChange.getCreateDate(),
+				DateUtil.toUTCString(bqMembershipChange.getCreateDate()),
 				bqMembershipChange.getIdentitiesCount(),
 				bqMembershipChange.getIndividualsCount(),
 				bqMembershipChange.getSegmentId()
