@@ -158,6 +158,19 @@ public class SegmentFilterUpgradeStepTest
 
 		segments.add(segment);
 
+		segment = new Segment();
+
+		segment.setFilter("(demographics/country/value eq 'argentina')");
+
+		segment.setId(7L);
+		segment.setIncludeAnonymousUsers(Boolean.FALSE);
+		segment.setIsNew(true);
+		segment.setModifiedDate(new Date());
+		segment.setName("Segment 7");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		segments.add(segment);
+
 		_segmentRepository.saveAll(segments);
 	}
 
@@ -280,6 +293,12 @@ public class SegmentFilterUpgradeStepTest
 			"(userGroupIds eq '" + id1 + "') and (userGroupIds ne '" + id2 +
 				"')",
 			segment.getFilter());
+
+		segmentOptional = _segmentRepository.findById(7L);
+
+		segment = segmentOptional.get();
+
+		Assertions.assertEquals("DISABLED", segment.getState());
 	}
 
 	private void _createIndexTemplate(
