@@ -46,7 +46,6 @@ import org.jooq.Field;
 import org.jooq.InsertValuesStep6;
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record2;
 import org.jooq.Record6;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
@@ -490,15 +489,6 @@ public class BQMembershipRepositoryImpl
 		Field<BigDecimal> identitiesCountField = DSL.field(
 			"identitiesCount", BigDecimal.class);
 
-		SelectSelectStep<Record2<Long, BigDecimal>> selectSelectStep =
-			_dslContext.select(
-				segmentIdField,
-				DSL.sum(
-					DSL.coalesce(identitiesCountField, BigDecimal.ZERO)
-				).as(
-					"identitiesCount"
-				));
-
 		Field<String> statusField = DSL.field("status", String.class);
 		Field<String> individualIdField = DSL.field(
 			"individualId", String.class);
@@ -516,22 +506,53 @@ public class BQMembershipRepositoryImpl
 
 				return map;
 			},
-			selectSelectStep.from(
-				"BQMembership"
-			).join(
-				"BQMembershipChange"
-			).on(
-				DSL.field(
-					"BQMembership.segmentId"
-				).eq(
-					DSL.field("BQMembershipChange.segmentId")
+			_dslContext.with(
+				"SegmentsWithIndividual"
+			).as(
+				_dslContext.select(
+					segmentIdField,
+					DSL.coalesce(
+						identitiesCountField, BigDecimal.ZERO
+					).as(
+						"identitiesCount"
+					),
+					DSL.rowNumber(
+					).over(
+						DSL.partitionBy(
+							DSL.field("BQMembershipChange.segmentId")
+						).orderBy(
+							DSL.field(
+								"BQMembershipChange.createDate"
+							).desc()
+						)
+					).as(
+						"rowNumber"
+					)
+				).from(
+					"BQMembership"
+				).join(
+					"BQMembershipChange"
+				).on(
+					DSL.field(
+						"BQMembership.segmentId"
+					).eq(
+						DSL.field("BQMembershipChange.segmentId")
+					)
+				).where(
+					statusField.eq(status)
+				).and(
+					individualIdField.eq(individualId)
 				)
+			).select(
+				DSL.field("segmentId"), DSL.field("identitiesCount")
+			).from(
+				"SegmentsWithIndividual"
 			).where(
-				statusField.eq(status)
-			).and(
-				individualIdField.eq(individualId)
-			).groupBy(
-				DSL.field("BQMembership.segmentId")
+				DSL.field(
+					"rowNumber"
+				).eq(
+					1
+				)
 			));
 	}
 
