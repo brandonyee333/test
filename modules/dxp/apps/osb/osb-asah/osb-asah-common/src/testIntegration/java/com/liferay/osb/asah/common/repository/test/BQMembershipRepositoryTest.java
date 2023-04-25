@@ -22,6 +22,8 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.time.ZoneId;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,16 @@ import org.springframework.data.domain.Sort;
 public class BQMembershipRepositoryTest
 	implements OSBAsahCommonSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
+
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
+	@Test
+	public void testCountActiveMembersBySegmentId() {
+		Assertions.assertEquals(
+			2,
+			_bqMembershipRepository.countActiveMembersBySegmentId(
+				false, 34L, ZoneId.of("UTC")));
+	}
 
 	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
 	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
