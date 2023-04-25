@@ -59,6 +59,30 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 		_upgradeMembershipIds(
 			"userGroupId", "user-groups", _userGroupIdsPattern);
 		_upgradeOrganizationIds();
+
+		_disableSegments();
+	}
+
+	private void _disableSegments() {
+		for (Segment segment : _segmentRepository.findAll()) {
+			String filterString = segment.getFilter();
+
+			if (StringUtils.isBlank(filterString)) {
+				continue;
+			}
+
+			if (StringUtils.containsAnyIgnoreCase(
+					filterString, "demographics/address", "demographics/city",
+					"demographics/country", "demographics/department",
+					"demographics/division", "demographics/fullName",
+					"demographics/gender", "demographics/region",
+					"demographics/role", "demographics/state")) {
+
+				segment.setState("DISABLED");
+
+				_segmentRepository.save(segment);
+			}
+		}
 	}
 
 	@PostConstruct
