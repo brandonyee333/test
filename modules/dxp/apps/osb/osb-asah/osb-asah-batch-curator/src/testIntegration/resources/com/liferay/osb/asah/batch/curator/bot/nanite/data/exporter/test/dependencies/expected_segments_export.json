@@ -1,0 +1,58 @@
+[
+	{
+		"authorname": "Test Test",
+		"createdate": "2023-04-02T16:02:01.824Z",
+		"filter": "(demographics/birthday/value lt '2023-04-20')",
+		"id": 12345,
+		"name": "Segment 1",
+		"referencedassetids": [
+		],
+		"referenceddatasourceids": [
+		],
+		"referencedfieldmappingfieldnames": [
+		],
+		"referencedgroupids": [
+		],
+		"referencedorganizationids": [
+		],
+		"referencedroleids": [
+		],
+		"referencedteamids": [
+		],
+		"referencedusergroupids": [
+		],
+		"referenceduserids": [
+		],
+		"state": "READY",
+		"status": "ACTIVE",
+		"type": "DYNAMIC"
+	},
+	{
+		"authorname": "Test Test",
+		"createdate": "2023-04-03T03:02:01.824Z",
+		"filter": "(demographics/emailAddress/value ne null)",
+		"id": 67890,
+		"name": "Segment 2",
+		"referencedassetids": [
+		],
+		"referenceddatasourceids": [
+		],
+		"referencedfieldmappingfieldnames": [
+		],
+		"referencedgroupids": [
+		],
+		"referencedorganizationids": [
+		],
+		"referencedroleids": [
+		],
+		"referencedteamids": [
+		],
+		"referencedusergroupids": [
+		],
+		"referenceduserids": [
+		],
+		"state": "READY",
+		"status": "ACTIVE",
+		"type": "DYNAMIC"
+	}
+]
