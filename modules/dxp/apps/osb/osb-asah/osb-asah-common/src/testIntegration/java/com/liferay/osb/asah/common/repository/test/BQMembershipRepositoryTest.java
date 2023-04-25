@@ -80,7 +80,7 @@ public class BQMembershipRepositoryTest
 	@Test
 	public void testCountBySegmentIdAndStatus() {
 		Assertions.assertEquals(
-			2,
+			3,
 			_bqMembershipRepository.countBySegmentIdAndStatus(34L, "ACTIVE"));
 		Assertions.assertEquals(
 			0,
@@ -170,7 +170,7 @@ public class BQMembershipRepositoryTest
 				"12", Arrays.asList(34L, 56L), "ACTIVE");
 
 		Assertions.assertEquals(
-			1, bqMemberships.size(), bqMemberships.toString());
+			2, bqMemberships.size(), bqMemberships.toString());
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
@@ -183,7 +183,7 @@ public class BQMembershipRepositoryTest
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))));
 
 		Assertions.assertEquals(
-			2, bqMemberships.size(), bqMemberships.toString());
+			3, bqMemberships.size(), bqMemberships.toString());
 
 		bqMemberships = _bqMembershipRepository.findBySegmentIdAndStatus(
 			34L, "INACTIVE",
@@ -208,9 +208,10 @@ public class BQMembershipRepositoryTest
 			_bqMembershipRepository.findIdentityIdBySegmentIdAndStatus(
 				34L, "ACTIVE");
 
-		Assertions.assertEquals(2, identityIds.size(), identityIds.toString());
-		Assertions.assertEquals("12", identityIds.get(0));
-		Assertions.assertEquals("78", identityIds.get(1));
+		Assertions.assertEquals(3, identityIds.size(), identityIds.toString());
+		Assertions.assertEquals("11", identityIds.get(0));
+		Assertions.assertEquals("12", identityIds.get(1));
+		Assertions.assertEquals("78", identityIds.get(2));
 
 		identityIds =
 			_bqMembershipRepository.findIdentityIdBySegmentIdAndStatus(
@@ -234,12 +235,12 @@ public class BQMembershipRepositoryTest
 			_bqMembershipRepository.findIdentityIdBySegmentIdIn(
 				Arrays.asList(34L, 56L), 10, 1, true);
 
-		Assertions.assertEquals(Arrays.asList("78", "12"), identityIds);
+		Assertions.assertEquals(Arrays.asList("11", "78", "12"), identityIds);
 
 		identityIds = _bqMembershipRepository.findIdentityIdBySegmentIdIn(
 			Arrays.asList(34L, 56L), 10, 1, false);
 
-		Assertions.assertEquals(Arrays.asList("12", "78"), identityIds);
+		Assertions.assertEquals(Arrays.asList("12", "11", "78"), identityIds);
 
 		identityIds = _bqMembershipRepository.findIdentityIdBySegmentIdIn(
 			Arrays.asList(34L, 56L), 10, 2, true);
@@ -249,7 +250,7 @@ public class BQMembershipRepositoryTest
 		identityIds = _bqMembershipRepository.findIdentityIdBySegmentIdIn(
 			Arrays.asList(34L, 56L), 1, 1, true);
 
-		Assertions.assertEquals(Arrays.asList("78"), identityIds);
+		Assertions.assertEquals(Arrays.asList("11", "78"), identityIds);
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
