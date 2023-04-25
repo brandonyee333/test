@@ -131,7 +131,17 @@ export function PurchasedAppsDashboardPage() {
 		const makeFetch = async () => {
 			const userAccountsResponse = await getUserAccounts();
 
-			const userAccount = userAccountsResponse.items.map(
+			const myUserAccountResponse = await getMyUserAccount();
+
+			const userAccount = userAccountsResponse.items[0];
+
+			const currentUserAccount = {
+				externalReferenceCode: userAccount.externalReferenceCode,
+				id: userAccount.id,
+				name: userAccount.name
+			} as Account;
+
+			const businessAccounts = myUserAccountResponse.accountBriefs.map(
 				(accountBrief: AccountBriefProps) => {
 					return {
 						externalReferenceCode: accountBrief.externalReferenceCode,
@@ -141,17 +151,7 @@ export function PurchasedAppsDashboardPage() {
 				}
 			);
 
-			const businessAccounts = userAccountsResponse.items[0].accountBriefs.map(
-				(accountBrief: AccountBriefProps) => {
-					return {
-						externalReferenceCode: accountBrief.externalReferenceCode,
-						id: accountBrief.id,
-						name: accountBrief.name,
-					} as Account;
-				}
-			);
-
-			const accounts = [...userAccount, ...businessAccounts]
+			const accounts = [currentUserAccount, ...businessAccounts]
 
 			setAccounts(accounts);
 			setSelectedAccount(accounts[0]);
@@ -257,13 +257,6 @@ export function PurchasedAppsDashboardPage() {
 					isCustomerAccount: false,
 					isPublisherAccount: false,
 				};
-
-				const currentUserAccountRoleBriefs =
-					currentUserAccount.accountBriefs.find(
-						(accountBrief: {name: string}) =>
-							accountBrief.name === selectedAccount.name
-					).roleBriefs;
-
 
 				const currentUserAccountBriefs =
 					currentUserAccount.accountBriefs.find(
