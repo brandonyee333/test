@@ -138,7 +138,10 @@ public class BQMembershipRepositoryImpl
 					DSL.field("IdentityActivity.individualId"),
 					DSL.field("IdentityActivity.identityId")
 				)
-			).selectCount(
+			).select(
+				DSL.countDistinct(
+					DSL.coalesce(
+						DSL.field("individualId"), DSL.field("identityId")))
 			).from(
 				"ActiveMembers"
 			));
