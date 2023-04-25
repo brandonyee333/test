@@ -145,22 +145,6 @@ public class BQIndividualRepositoryTest
 			_bqIndividualRepository.countBQIndividuals(
 				11L, "custom/Hobbies/value ne 'ing'", false, null));
 		Assertions.assertEquals(
-			2,
-			_bqIndividualRepository.countBQIndividuals(
-				11L, "custom/Joined_Date/value ge '2022-05-01'", false, null));
-		Assertions.assertEquals(
-			3,
-			_bqIndividualRepository.countBQIndividuals(
-				11L, "custom/Joined_Date/value gt '2022-01-01'", false, null));
-		Assertions.assertEquals(
-			3,
-			_bqIndividualRepository.countBQIndividuals(
-				11L, "custom/Joined_Date/value le '2022-06-01'", false, null));
-		Assertions.assertEquals(
-			2,
-			_bqIndividualRepository.countBQIndividuals(
-				11L, "custom/Joined_Date/value lt '2022-05-03'", false, null));
-		Assertions.assertEquals(
 			1,
 			_bqIndividualRepository.countBQIndividuals(
 				11L, "custom/Salary/value ge 120000.30", false, null));
@@ -176,6 +160,31 @@ public class BQIndividualRepositoryTest
 			1,
 			_bqIndividualRepository.countBQIndividuals(
 				11L, "custom/Salary/value lt 100001", false, null));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
+	@Test
+	public void testSearchBQIndividualsDateCustomFieldFilter() {
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value eq '2022-04-30'", false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value ge '2022-04-30'", false, null));
+		Assertions.assertEquals(
+			3,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value gt '2022-01-01'", false, null));
+		Assertions.assertEquals(
+			3,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value le '2022-06-01'", false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "custom/Joined_Date/value lt '2022-05-03'", false, null));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_2.sql")
