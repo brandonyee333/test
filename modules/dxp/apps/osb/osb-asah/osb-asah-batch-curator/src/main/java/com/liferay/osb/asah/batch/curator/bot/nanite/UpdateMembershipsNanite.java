@@ -85,6 +85,9 @@ public class UpdateMembershipsNanite extends BaseNanite {
 						"filter %s",
 					segmentId, filterString));
 		}
+		finally {
+			_segmentDog.updateSegmentState(segment, "READY");
+		}
 	}
 
 	private void _updateStaticSegmentMembershipChanges() {
