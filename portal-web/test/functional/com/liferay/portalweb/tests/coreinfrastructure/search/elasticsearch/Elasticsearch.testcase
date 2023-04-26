@@ -1,5 +1,6 @@
 @component-name = "portal-search"
 definition {
+
 	property portal.release = "true";
 	property portal.suite.search.engine = "elasticsearch2";
 	property portal.upstream = "true";
@@ -14,7 +15,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -26,21 +27,19 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AssertConfigFileValuesPropogateToModule {
 		property osgi.module.configuration.file.names = "com.liferay.portal.search.elasticsearch.configuration.ElasticsearchConfiguration.config";
-		property osgi.module.configurations = "clusterName=&quot;LiferayElasticsearchCluster1&quot;";
+		property osgi.module.configurations = "clusterName=\"LiferayElasticsearchCluster1\"";
 		property portal.acceptance = "true";
 
 		Navigator.openSpecificURL(url = "http://localhost:9200");
 
-		Elasticsearch.viewClusterStatus(
-			clusterStatus = "&quot;cluster_name&quot; : &quot;LiferayElasticsearchCluster1&quot;"
-		);
+		Elasticsearch.viewClusterStatus(clusterStatus = "\"cluster_name\" : \"LiferayElasticsearchCluster1\"");
 	}
 
 	@description = "This test asserts that index on startup works consistently on remote Elasticsearch."
-	@priority = "5"
+	@priority = 5
 	test AssertIndexOnStartupViaRemote {
 		property portal.acceptance = "true";
 		property remote.elasticsearch.enabled = "true";
@@ -55,48 +54,45 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.viewCP(
 			userEmailAddress = "test@liferay.com",
 			userFirstName = "Test",
 			userLastName = "Test",
-			userScreenName = "test"
-		);
+			userScreenName = "test");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ElasticsearchRemoteClusterSmokeTest {
 		property remote.elasticsearch.cluster.size = "2";
 		property remote.elasticsearch.enabled = "true";
 		property test.name.skip.portal.instance = "Elasticsearch#ElasticsearchRemoteClusterSmokeTest";
 
-		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = "2");
+		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = 2);
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Message Boards"
-		);
+			portlet = "Message Boards");
 
-		MessageboardsThread.addCP(threadBody = "Orange", threadSubject = "Apple");
+		MessageboardsThread.addCP(
+			threadBody = "Orange",
+			threadSubject = "Apple");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "Orange",
 			dmDocumentFile = "Document_1.txt",
-			dmDocumentTitle = "Apple"
-		);
+			dmDocumentTitle = "Apple");
 
 		Navigator.openURL();
 
@@ -104,13 +100,11 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
 		Navigator.openURL();
 
@@ -118,12 +112,11 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 	}
+
 }

@@ -1,5 +1,6 @@
 @component-name = "portal-business-productivity-ee"
 definition {
+
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property test.run.environment = "EE";
@@ -14,13 +15,11 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
-			Workflow.tearDownSpecificWorkflowDefinition(
-				workflowDefinitionTitle = "Edited Workflow Definition"
-			);
+			Workflow.tearDownSpecificWorkflowDefinition(workflowDefinitionTitle = "Edited Workflow Definition");
 
 			Workflow.tearDownWorkflowDefinitionsViaWorkflowCP();
 
@@ -28,152 +27,139 @@ definition {
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddConditionNodeEditNameAndDesciptionAndDeleteViaViewTab {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "Condition Node Description",
 			nodeName = "Condition",
 			nodeNodeLabel = "Condition",
-			nodeType = "condition"
-		);
+			nodeType = "condition");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "Condition", nodeType = "condition");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "Condition",
+			nodeType = "condition");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "Condition");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddEndNodeEditNameAndDesciptionAndDeleteViaViewTab {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "TestEndNode Node Description",
 			nodeName = "TestEndNode",
 			nodeNodeLabel = "TestEndNode",
-			nodeType = "end"
-		);
+			nodeType = "end");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "TestEndNode", nodeType = "end");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "TestEndNode",
+			nodeType = "end");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "TestEndNode");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddForkNodeEditNameAndDesciptionAndDeleteViaViewTab {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "Fork Node Description",
 			nodeName = "Fork",
 			nodeNodeLabel = "Fork",
-			nodeType = "fork"
-		);
+			nodeType = "fork");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "Fork", nodeType = "fork");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "Fork",
+			nodeType = "fork");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "Fork");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddJoinNodeEditNameAndDesciptionAndDeleteViaViewTab {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "Join Node Description",
 			nodeName = "Join",
 			nodeNodeLabel = "Join",
-			nodeType = "join"
-		);
+			nodeType = "join");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "Join", nodeType = "join");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "Join",
+			nodeType = "join");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "Join");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddJoinXORNodeEditNameAndDesciptionAndDeleteViaViewTab {
-
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "Join XOR Node Description",
 			nodeName = "Join XOR",
 			nodeNodeLabel = "Join XOR",
-			nodeType = "join-xor"
-		);
+			nodeType = "join-xor");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "Join XOR", nodeType = "join-xor");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "Join XOR",
+			nodeType = "join-xor");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "Join XOR");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddJoinXORWorkflowDefinitionViaViewTab {
-		property test.name.skip.portal.instance = "Kaleodesigner#AddJoinXORWorkflowDefinitionViaViewTab";
 		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "Kaleodesigner#AddJoinXORWorkflowDefinitionViaViewTab";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
 		AssertVisible(
+			key_navItem = "Workflow Definitions",
 			locator1 = "NavBar#NAV_ITEM_LINK",
-			value1 = "Workflow Definitions",
-			key_navItem = "Workflow Definitions"
-		);
+			value1 = "Workflow Definitions");
 
-		AssertTextEquals(locator1 = "Portlet#HEADER", value1 = "Kaleo Designer");
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "Kaleo Designer");
 
 		ProductMenuHelper.closeProductMenu();
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
 
@@ -187,8 +173,7 @@ definition {
 			nodeDescription = "Start Node Description",
 			nodeName = "Start",
 			nodeNodeLabel = "Start",
-			nodeType = "start"
-		);
+			nodeType = "start");
 
 		KaleoDesigner.addConnectorAndNodeViaViewTab(
 			connectorName = "SubmitToFork",
@@ -196,8 +181,7 @@ definition {
 			newNodeDescription = "Fork Description",
 			newNodeName = "Fork",
 			newNodeType = "fork",
-			nodeType = "start"
-		);
+			nodeType = "start");
 
 		KaleoDesigner.addConnectorAndNodeViaViewTab(
 			connectorName = "SendToTask",
@@ -205,8 +189,7 @@ definition {
 			newNodeDescription = "Task Description",
 			newNodeName = "Task",
 			newNodeType = "task",
-			nodeType = "fork"
-		);
+			nodeType = "fork");
 
 		KaleoDesigner.addConnectorAndNodeViaViewTab(
 			connectorName = "Join1",
@@ -214,8 +197,7 @@ definition {
 			newNodeDescription = "JoinXOR Description",
 			newNodeName = "JoinXOR",
 			newNodeType = "join-xor",
-			nodeType = "task"
-		);
+			nodeType = "task");
 
 		KaleoDesigner.addConnectorAndNodeViaViewTab(
 			connectorName = "SendToState",
@@ -224,14 +206,12 @@ definition {
 			newNodeDescription = "State Description",
 			newNodeName = "State",
 			newNodeType = "state",
-			nodeType = "fork"
-		);
+			nodeType = "fork");
 
 		KaleoDesigner.addConnectorViaViewTab(
 			connectorName = "Join2",
 			nodeType = "state",
-			nodeTypeDestination = "join-xor"
-		);
+			nodeTypeDestination = "join-xor");
 
 		KaleoDesigner.addConnectorAndNodeViaViewTab(
 			connectorName = "Finish",
@@ -239,15 +219,14 @@ definition {
 			newNodeDescription = "End Description",
 			newNodeName = "End",
 			newNodeType = "end",
-			nodeType = "join-xor"
-		);
+			nodeType = "join-xor");
 
 		ScrollBy(value1 = "0, 60");
 
 		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddNewWorkflowDefinitionViaViewTab {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "Kaleodesigner#AddNewWorkflowDefinitionViaViewTab";
@@ -255,12 +234,9 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
 
@@ -274,8 +250,7 @@ definition {
 			nodeDescription = "Start Node Description",
 			nodeName = "Start",
 			nodeNodeLabel = "Start",
-			nodeType = "start"
-		);
+			nodeType = "start");
 
 		KaleoDesigner.addConnectorAndNodeViaViewTab(
 			connectorName = "Submit",
@@ -283,8 +258,7 @@ definition {
 			newNodeDescription = "Task Node Description",
 			newNodeName = "Task",
 			newNodeType = "task",
-			nodeType = "start"
-		);
+			nodeType = "start");
 
 		KaleoDesigner.addConnectorAndNodeViaViewTab(
 			connectorName = "Approve",
@@ -292,20 +266,16 @@ definition {
 			newNodeDescription = "End Node Description",
 			newNodeName = "End",
 			newNodeType = "end",
-			nodeType = "task"
-		);
+			nodeType = "task");
 
 		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.editWorkflowDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.editWorkflowDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
 
@@ -318,60 +288,56 @@ definition {
 		KaleoDesigner.viewConnectorPresent(connectorLabel = "Approve");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddStartNodeEditNameAndDesciptionAndDeleteViaViewTab {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "TestStartNode Node Description",
 			nodeName = "TestStartNode",
 			nodeNodeLabel = "TestStartNode",
-			nodeType = "start"
-		);
+			nodeType = "start");
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "TestStartNode");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "TestStartNode", nodeType = "start");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "TestStartNode",
+			nodeType = "start");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "TestStartNode");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddStateNodeEditNameAndDesciptionAndDeleteViaViewTab {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "State Node Description",
 			nodeName = "State",
 			nodeNodeLabel = "State",
-			nodeType = "state"
-		);
+			nodeType = "state");
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "State");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "State", nodeType = "state");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "State",
+			nodeType = "state");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "State");
 	}
 
 	@description = "This is a use case for LPS-53992."
-	@priority = "5"
+	@priority = 5
 	test AddTaskNodeEditNameAndDesciptionAndNotificationsAndDeleteViaViewTab {
 		property portal.acceptance = "true";
 		property testray.component.names = "Training";
@@ -379,12 +345,9 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
 
@@ -398,12 +361,13 @@ definition {
 			nodeDescription = "Task Node Description",
 			nodeName = "Task",
 			nodeNodeLabel = "Task",
-			nodeType = "task"
-		);
+			nodeType = "task");
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "Task");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "Task", nodeType = "task");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "Task",
+			nodeType = "task");
 
 		KaleoDesigner.editNodeNotifications(
 			nodeNotificationsDescription = "Update Notification Description",
@@ -413,8 +377,7 @@ definition {
 			nodeNotificationsTemplateLanguage = "Text",
 			nodeNotificationsType = "User Notification",
 			roleName = "Administrator",
-			roleType = "Regular"
-		);
+			roleType = "Regular");
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "Task");
 
@@ -424,28 +387,23 @@ definition {
 			nodeNotificationsTemplateLanguage = "Text",
 			nodeNotificationsType = "User Notification",
 			roleName = "Administrator",
-			roleType = "Regular"
-		);
+			roleType = "Regular");
 
 		AssertClick.pauseAssertTextClickAt(
 			locator1 = "KaleoDesignerEditWorkflow#NODES_TAB",
-			value1 = "Nodes"
-		);
-		
+			value1 = "Nodes");
+
 		KaleoDesigner.deleteNode(nodeNodeLabel = "Task");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddTaskNodeViaSourceTabAndEditNameAndDesciptionAndDeleteViaViewTab {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
 		KaleoDesigner.addNodeViaSourceXML(nodeType = "task");
 
@@ -455,1132 +413,15 @@ definition {
 
 		KaleoDesigner.editNodeDescription(nodeDescription = "Task Node Description");
 
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "Task", nodeType = "task");
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "Task",
+			nodeType = "task");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "Task");
 	}
 
-	@description = "This is a use case for LPS-37209."
-	@priority = "4"
-	test ConfigureTaskTimersViaSourceTab {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Workflow Definition"
-		);
-
-		Workflow.uploadDefinition(
-			workflowDefinitionFile = "workflow_definition_task_timers.xml",
-			workflowDefinitionTitle = "New Workflow Definition Title");
-
-		Navigator.openURL();
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer");
-
-		KaleoDesigner.editWorkflowDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "__TIMER_REVIEW__");
-
-		KaleoDesigner.viewNodeTimer(
-			blockerName = "timer 1 action",
-			blocking = "false",
-			durationTime1 = "1",
-			durationTime2 = "2",
-			timerName = "timer 1"
-		);
-	}
-
-	@description = "This is a use case for LPS-37209 and LPS-74351."
-	@ignore = "true"
-	@priority = "4"
-	test ConfigureTaskTimersViaViewTab {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addNodeViaViewTab(
-			nodeDescription = "Task Node Description",
-			nodeName = "Task",
-			nodeNodeLabel = "Task",
-			nodeType = "task"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "Task");
-
-		KaleoDesigner.editNodeTimer(
-			blockerDescription = "Blocker Description",
-			blockerName = "Blocker Name",
-			blockerScript = "Test Script",
-			durationScale1 = "Hour",
-			durationScale2 = "Hour",
-			durationTime1 = "5",
-			durationTime2 = "6",
-			timerDescription = "Timer Description",
-			timerName = "Timer Name"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<name>Timer Name</name>''',
-			line = "21"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<duration>5</duration>''',
-			line = "24"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<scale>hour</scale>''',
-			line = "25"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<duration>6</duration>''',
-			line = "28"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<scale>hour</scale>''',
-			line = "29"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(kdSourceXML = '''<timer-action>''', line = "33");
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<name>Blocker Name</name>''',
-			line = "34"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<description>Blocker Description</description>''',
-			line = "35"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(kdSourceXML = '''Test Script''', line = "37");
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<blocking>true</blocking>''',
-			line = "31"
-		);
-	}
-
-	@priority = "5"
-	test DeleteConnectors {
-		property portal.acceptance = "true";
-		property testray.component.names = "Training";
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addNodeViaViewTab(
-			nodeDescription = "Start Node Description",
-			nodeName = "Start",
-			nodeNodeLabel = "Start",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Submit",
-			newNode = "Task",
-			newNodeDescription = "Task Node Description",
-			newNodeName = "Task",
-			newNodeType = "task",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Approve",
-			newNode = "End",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "end",
-			nodeType = "task"
-		);
-
-		KaleoDesigner.deleteConnector(connectorLabel = "Submit");
-
-		KaleoDesigner.deleteConnector(connectorLabel = "Approve");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "End");
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.editWorkflowDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "End");
-
-		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Submit");
-
-		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Approve");
-	}
-
-	@priority = "3"
-	test DeleteWorkflowDefinitionDraftViaKDCP {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition"
-		);
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		Navigator.openURL();
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.viewTableDefinitionDraftViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition"
-		);
-
-		KaleoDesigner.deleteTableDefinitionDraftViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition"
-		);
-
-		KaleoDesigner.viewNoWorkflowDefinitionsViaKDCP();
-	}
-
-	@priority = "5"
-	test EditAssignmentsForTaskNodeKDCP {
-		property portal.acceptance = "true";
-		property testray.component.names = "Training";
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.addNodeViaViewTab(
-			nodeDescription = "Task Node Description",
-			nodeName = "Task",
-			nodeNodeLabel = "Task",
-			nodeType = "task"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "Task");
-
-		KaleoDesigner.viewNodeType(nodeNodeLabel = "Task", nodeType = "task");
-
-		KaleoDesigner.editNodeAssignments(
-			autoCreate = "true",
-			nodeAssignmentType = "Role Type",
-			roleName = "Board Member",
-			roleType = "Regular"
-		);
-
-		KaleoDesigner.viewNodeAssignments(nodeAssignmentType = "Role Type");
-	}
-
-	@description = "This is a use case for LPS-71924."
-	@priority = "5"
-	test PublishDefaultWorkflowDefinition {
-		property test.name.skip.portal.instance = "Kaleodesigner#PublishDefaultWorkflowDefinition";
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<script-language>groovy</script-language>''',
-			line = "34"
-		);
-
-		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
-	}
-
-	@description = "This is a use case for LPS-43214 and LPS-50269."
-	@priority = "3"
-	test PublishFromSourceTabAndViewNameChange {
-		property test.name.skip.portal.instance = "Kaleodesigner#PublishFromSourceTabAndViewNameChange";
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "Test Definition"
-		);
-
-		KaleoDesigner.editSourceXML(kdSourceXML = '''<name>NAME EDIT''', line = "5");
-
-		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.viewTableDefinitionPublishedViaKDCP(
-			workflowDefinitionName = "NAME EDIT",
-			workflowDefinitionTitle = "Test Definition"
-		);
-
-		KaleoDesigner.editWorkflowDefinitionViaKDCP(
-			workflowDefinitionTitle = "Test Definition"
-		);
-
-		KaleoDesigner.viewSourceXMLLine(
-			kdSourceXML = '''<name>NAME EDIT</name>''',
-			line = "5"
-		);
-	}
-
-	@priority = "3"
-	test PublishWorkflowDefinitionWithConnectorPointingToStartNodeAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Approve",
-			newNode = "Task",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "task",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.deleteConnector(connectorLabel = "Approve");
-
-		KaleoDesigner.addConnectorViaViewTab(
-			connectorName = "Reverse",
-			nodeType = "task",
-			nodeTypeDestination = "start2"
-		);
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "The StartNode node cannot have an incoming transition."
-		);
-	}
-
-	@priority = "3"
-	test PublishWorkflowDefinitionWithInvalidConditionNodeAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Submit",
-			newNode = "Condition",
-			newNodeDescription = "Condition Node Description",
-			newNodeName = "Condition",
-			newNodeType = "condition",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Approve",
-			newNode = "End",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "end",
-			nodeType = "condition"
-		);
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "The Condition node must have at least two outgoing transitions."
-		);
-	}
-
-	@priority = "3"
-	test PublishWorkflowDefinitionWithInvalidConditionNodeSettingsAndViewErrorMessage {
-
-		var nodeScript = '''
-	import com.liferay.portal.kernel.util.GetterUtil;${line.separator}
-	import com.liferay.portal.kernel.workflow.WorkflowConstants;${line.separator}
-	import com.liferay.portal.model.Role;${line.separator}
-	import com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalServiceUtil${line.separator}
-	import com.liferay.portal.service.RoleLocalServiceUtil;${line.separator}
-	import com.liferay.portlet.dynamicdatalists.model.DDLRecord;${line.separator}
-	import com.liferay.portlet.dynamicdatamapping.storage.Field;${line.separator}
-	import com.liferay.portal.service.ServiceContext;${line.separator}
-	import com.liferay.portal.kernel.json.JSONFactoryUtil;${line.separator}
-	import com.liferay.portal.kernel.json.JSONArray;${line.separator}${line.separator}
-
-	long companyId = GetterUtil.getLong String workflowContext.getWorkflowConstants.CONTEXT_COMPANY_ID;${line.separator}${line.separator}
-
-	ServiceContext serviceContext = (ServiceContext) workflowContext.get(WorkflowConstants.CONTEXT_SERVICE_CONTEXT);${line.separator}${line.separator}
-
-	long ddlRecordId = GetterUtil.getLong(serviceContext.getAttribute("ddlRecordId"));${line.separator}${line.separator}
-
-	DDLRecord ddlRecord = DDLRecordLocalServiceUtil.getRecord(ddlRecordId);${line.separator}${line.separator}
-
-	Field field = ddlRecord.getField("status");${line.separator}${line.separator}
-
-	String json = GetterUtil.getString(field.getValue());${line.separator}${line.separator}
-
-	JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json)${line.separator}${line.separator}
-
-	String status = jsonArray.getString(0);${line.separator}${line.separator}
-
-	if (status.equals("closed")) {${line.separator}
-	  returnValue = "Yes"${line.separator}
-	} else {${line.separator}
-	  returnValue = "No"${line.separator}
-	}${line.separator}${line.separator}
-
-''';
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Submit",
-			newNode = "Condition",
-			newNodeDescription = "Condition Node Description",
-			newNodeName = "Condition",
-			newNodeType = "condition",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "Condition");
-
-		KaleoDesigner.editNodeScript(nodeScript = "${nodeScript}");
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Approve",
-			newNode = "End",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "end",
-			nodeType = "condition"
-		);
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "The Condition node must have at least two outgoing transitions."
-		);
-	}
-
-	@priority = "3"
-	test PublishWorkflowDefinitionWithInvalidForkNodeAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Submit",
-			newNode = "Fork",
-			newNodeDescription = "Fork Node Description",
-			newNodeName = "Fork",
-			newNodeType = "fork",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Approve",
-			newNode = "End",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "end",
-			nodeType = "fork"
-		);
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "Each fork node requires a join node. Make sure all forks and joins are properly paired."
-		);
-	}
-
-	@priority = "3"
-	test PublishWorkflowDefinitionWithInvalidJoinNodeAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Submit",
-			newNode = "Join",
-			newNodeDescription = "Join Node Description",
-			newNodeName = "Join",
-			newNodeType = "join",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Approve",
-			newNode = "End",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "end",
-			nodeType = "join"
-		);
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "Each fork node requires a join node. Make sure all forks and joins are properly paired."
-		);
-	}
-
-	@priority = "3"
-	test PublishWorkflowDefinitionWithInvalidJoinXORNodeAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Submit",
-			newNode = "Join XOR",
-			newNodeDescription = "JoinXOR Description",
-			newNodeName = "JoinXOR",
-			newNodeType = "join-xor",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Approve",
-			newNode = "End",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "end",
-			nodeType = "join-xor"
-		);
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "Each fork node requires a join node. Make sure all forks and joins are properly paired."
-		);
-	}
-
-	@priority = "4"
-	test PublishWorkflowDefinitionWithMultipleStartNodesAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.addNodeViaViewTab(
-			nodeDescription = "TestStartNode Node Description",
-			nodeName = "TestStartNode",
-			nodeNodeLabel = "TestStartNode",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "The workflow has too many start nodes (state nodes StartNode and TestStartNode)."
-		);
-	}
-
-	@priority = "4"
-	test PublishWorkflowDefinitionWithNoConnectorsAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.deleteConnector(connectorLabel = "connector");
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "The StartNode node must have an outgoing transition."
-		);
-	}
-
-	@priority = "4"
-	test PublishWorkflowDefinitionWithNoEndNodeAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "The StartNode node must have an outgoing transition."
-		);
-	}
-
-	@description = "This is a use case for LPS-76517."
-	@priority = "3"
-	test PublishWorkflowDefinitionWithNoNameLineAndViewErrorMessage {
-		property test.name.skip.portal.instance = "Kaleodesigner#PublishWorkflowDefinitionWithNoNameLineAndViewErrorMessage";
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "Test Definition"
-		);
-
-		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.viewTableDefinitionPublishedViaKDCP(
-			workflowDefinitionTitle = "Test Definition"
-		);
-
-		KaleoDesigner.editWorkflowDefinitionViaKDCP(
-			workflowDefinitionName = "Test Definition",
-			workflowDefinitionTitle = "Test Definition"
-		);
-
-		KaleoDesigner.editSourceXML(kdSourceXML = " ", line = "5");
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "An error occurred in the workflow engine."
-		);
-	}
-
-	@priority = "4"
-	test PublishWorkflowDefinitionWithNoStartNodeAndViewErrorMessage {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(
-			errorMessage = "You must define a start node."
-		);
-	}
-
-	@priority = "5"
-	test RedoDraftDefinition {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addNodeViaViewTab(
-			nodeDescription = "Start Node Description",
-			nodeName = "Start",
-			nodeNodeLabel = "Start",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Submit",
-			newNode = "Task",
-			newNodeDescription = "Task Node Description",
-			newNodeName = "Task",
-			newNodeType = "task",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Complete",
-			newNode = "End",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "end",
-			nodeType = "task"
-		);
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		KaleoDesigner.showDetails();
-
-		KaleoDesigner.undoDraft();
-
-		KaleoDesigner.undoDraft();
-
-		KaleoDesigner.redoDraft();
-
-		KaleoDesigner.viewDraftVersion(draftVersion = "2");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
-
-		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "End");
-
-		KaleoDesigner.viewConnectorPresent(connectorLabel = "Submit");
-
-		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Complete");
-
-		KaleoDesigner.undoDraft();
-
-		KaleoDesigner.viewDraftVersion(draftVersion = "1");
-
-		KaleoDesigner.latestVersionDraft();
-
-		KaleoDesigner.viewDraftVersion(draftVersion = "3");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "End");
-
-		KaleoDesigner.viewConnectorPresent(connectorLabel = "Submit");
-
-		KaleoDesigner.viewConnectorPresent(connectorLabel = "Complete");
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-	}
-
-	@priority = "3"
-	test SaveInvalidWorkflowDefinitionAsDraft {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-	}
-
-	@priority = "3"
-	test UndoDraftDefinition {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
-
-		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.addNodeViaViewTab(
-			nodeDescription = "Start Node Description",
-			nodeName = "Start",
-			nodeNodeLabel = "Start",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Submit",
-			newNode = "Task",
-			newNodeDescription = "Task Node Description",
-			newNodeName = "Task",
-			newNodeType = "task",
-			nodeType = "start"
-		);
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Complete",
-			newNode = "End",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "end",
-			nodeType = "task"
-		);
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		KaleoDesigner.showDetails();
-
-		KaleoDesigner.undoDraft();
-
-		KaleoDesigner.viewDraftVersion(draftVersion = "2");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
-
-		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "End");
-
-		KaleoDesigner.viewConnectorPresent(connectorLabel = "Submit");
-
-		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Complete");
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.editWorkflowDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.showDetails();
-
-		KaleoDesigner.viewDraftVersion(draftVersion = "3");
-
-		KaleoDesigner.undoDraft();
-
-		KaleoDesigner.undoDraft();
-
-		KaleoDesigner.viewDraftVersion(draftVersion = "1");
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
-
-		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "Task");
-
-		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "End");
-
-		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Submit");
-
-		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Complete");
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-	}
-
-	@priority = "4"
-	test ViewAndPublishWorkflowDefinitionDraftViaKDCP {
-		property test.name.skip.portal.instance = "Kaleodesigner#ViewAndPublishWorkflowDefinitionDraftViaKDCP";
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition"
-		);
-
-		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
-
-		Navigator.openURL();
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.viewTableDefinitionDraftViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition"
-		);
-
-		Navigator.openURL();
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.editWorkflowDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition"
-		);
-
-		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
-
-		Navigator.openURL();
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.viewTableDefinitionPublishedViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition"
-		);
-	}
-
-	@description = "This is a use case for LPS-48590."
-	@priority = "4"
-	test ViewSourceXMLNotErasedWhenInvalid {
-		property test.name.skip.portal.instance = "Kaleodesigner#ViewSourceXMLNotErasedWhenInvalid";
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.editSourceXML(kdSourceXML = " ", line = "20");
-
-		KaleoDesigner.viewViewTab();
-
-		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.editSourceXML(
-			kdSourceXML = '''</transitions></state>''',
-			line = "20"
-		);
-
-		KaleoDesigner.viewViewTab();
-
-		KaleoDesigner.viewNodePresent(nodeNodeLabel = "EndNode");
-
-		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
-	}
-
-	@description = "This is a use case for LPS-47352 and LPS-48912."
-	@priority = "2"
-	test ViewWorkflowDefinitionButtonsViaKaleoFormsAdmin {
-		Navigator.openURL();
-
-		ProductMenu.gotoPortlet(
-			category = "Content",
-			panel = "Site Administration",
-			portlet = "Kaleo Forms Admin"
-		);
-
-		KaleoFormsAdmin.addProcess();
-
-		KaleoFormsAdmin.addProcessDetails(
-			kfProcessDescription = "Kaleo Forms Process Description",
-			kfProcessName = "Kaleo Forms Process"
-		);
-
-		KaleoFormsAdmin.next();
-
-		KaleoFormsAdmin.addFieldSet(
-			kfFieldSetName = "Field Set Data Definition",
-			kfProcessName = "Kaleo Forms Process"
-		);
-
-		DynamicDataMapping.addField(
-			field = "Text",
-			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
-
-		KaleoFormsAdmin.saveFieldSet();
-
-		KaleoFormsAdmin.chooseFieldSet(
-			kfFieldSetName = "Field Set Data Definition",
-			kfProcessName = "Kaleo Forms Process"
-		);
-
-		KaleoFormsAdmin.next();
-
-		KaleoFormsAdmin.addWorkflow(
-			kfProcessName = "Kaleo Forms Process",
-			workflowDefinitionTitle = "Workflow Definition Title"
-		);
-
-		KaleoDesigner.viewButtons(cancelButton = "true");
-
-		SelectFrameTop();
-
-		KaleoFormsAdmin.viewPublishedWorkflowDefinitions();
-
-		KaleoFormsAdmin.viewNoUnpublishedWorkflowDefinitions();
-	}
-
-	@description = "This is a use case for LPS-47352 and LPS-48912."
-	@priority = "2"
-	test ViewWorkflowDefinitionButtonsViaKDCP {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaKDCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.viewButtons(cancelButton = "true");
-
-		KaleoDesigner.viewNoWorkflowDefinitionsViaKDCP();
-	}
-
-	@description = "This is a use case for LPS-47352 and LPS-48912."
-	@priority = "2"
-	test ViewWorkflowDefinitionButtonsViaWorkflowCP {
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
-
-		KaleoDesigner.addNewDefinitionViaWorkflowCP(
-			workflowDefinitionTitle = "New Workflow Definition Title"
-		);
-
-		KaleoDesigner.viewButtons();
-	}
-
 	@description = "This is a use case for LPS-124984."
-	@priority = "5"
+	@priority = 5
 	test AssertReceiveNotificationAfterEditSingleApprover {
 		property test.name.skip.portal.instance = "Kaleodesigner#AssertReceiveNotificationAfterEditSingleApprover";
 
@@ -1625,4 +466,968 @@ definition {
 
 		Notifications.viewNoNotifications();
 	}
+
+	@description = "This is a use case for LPS-37209."
+	@priority = 4
+	test ConfigureTaskTimersViaSourceTab {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Workflow Definition");
+
+		Workflow.uploadDefinition(
+			workflowDefinitionFile = "workflow_definition_task_timers.xml",
+			workflowDefinitionTitle = "New Workflow Definition Title");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.editWorkflowDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "__TIMER_REVIEW__");
+
+		KaleoDesigner.viewNodeTimer(
+			blockerName = "timer 1 action",
+			blocking = "false",
+			durationTime1 = 1,
+			durationTime2 = 2,
+			timerName = "timer 1");
+	}
+
+	@description = "This is a use case for LPS-37209 and LPS-74351."
+	@ignore = "true"
+	@priority = 4
+	test ConfigureTaskTimersViaViewTab {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addNodeViaViewTab(
+			nodeDescription = "Task Node Description",
+			nodeName = "Task",
+			nodeNodeLabel = "Task",
+			nodeType = "task");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "Task");
+
+		KaleoDesigner.editNodeTimer(
+			blockerDescription = "Blocker Description",
+			blockerName = "Blocker Name",
+			blockerScript = "Test Script",
+			durationScale1 = "Hour",
+			durationScale2 = "Hour",
+			durationTime1 = 5,
+			durationTime2 = 6,
+			timerDescription = "Timer Description",
+			timerName = "Timer Name");
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<name>Timer Name</name>''',
+			line = 21);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<duration>5</duration>''',
+			line = 24);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<scale>hour</scale>''',
+			line = 25);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<duration>6</duration>''',
+			line = 28);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<scale>hour</scale>''',
+			line = 29);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<timer-action>''',
+			line = 33);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<name>Blocker Name</name>''',
+			line = 34);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<description>Blocker Description</description>''',
+			line = 35);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''Test Script''',
+			line = 37);
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<blocking>true</blocking>''',
+			line = 31);
+	}
+
+	@priority = 5
+	test DeleteConnectors {
+		property portal.acceptance = "true";
+		property testray.component.names = "Training";
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addNodeViaViewTab(
+			nodeDescription = "Start Node Description",
+			nodeName = "Start",
+			nodeNodeLabel = "Start",
+			nodeType = "start");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Submit",
+			newNode = "Task",
+			newNodeDescription = "Task Node Description",
+			newNodeName = "Task",
+			newNodeType = "task",
+			nodeType = "start");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Approve",
+			newNode = "End",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "end",
+			nodeType = "task");
+
+		KaleoDesigner.deleteConnector(connectorLabel = "Submit");
+
+		KaleoDesigner.deleteConnector(connectorLabel = "Approve");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "End");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.editWorkflowDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "End");
+
+		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Submit");
+
+		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Approve");
+	}
+
+	@priority = 3
+	test DeleteWorkflowDefinitionDraftViaKDCP {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.viewTableDefinitionDraftViaKDCP(workflowDefinitionTitle = "New Workflow Definition");
+
+		KaleoDesigner.deleteTableDefinitionDraftViaKDCP(workflowDefinitionTitle = "New Workflow Definition");
+
+		KaleoDesigner.viewNoWorkflowDefinitionsViaKDCP();
+	}
+
+	@priority = 5
+	test EditAssignmentsForTaskNodeKDCP {
+		property portal.acceptance = "true";
+		property testray.component.names = "Training";
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.addNodeViaViewTab(
+			nodeDescription = "Task Node Description",
+			nodeName = "Task",
+			nodeNodeLabel = "Task",
+			nodeType = "task");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "Task");
+
+		KaleoDesigner.viewNodeType(
+			nodeNodeLabel = "Task",
+			nodeType = "task");
+
+		KaleoDesigner.editNodeAssignments(
+			autoCreate = "true",
+			nodeAssignmentType = "Role Type",
+			roleName = "Board Member",
+			roleType = "Regular");
+
+		KaleoDesigner.viewNodeAssignments(nodeAssignmentType = "Role Type");
+	}
+
+	@description = "This is a use case for LPS-71924."
+	@priority = 5
+	test PublishDefaultWorkflowDefinition {
+		property test.name.skip.portal.instance = "Kaleodesigner#PublishDefaultWorkflowDefinition";
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<script-language>groovy</script-language>''',
+			line = 34);
+
+		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
+	}
+
+	@description = "This is a use case for LPS-43214 and LPS-50269."
+	@priority = 3
+	test PublishFromSourceTabAndViewNameChange {
+		property test.name.skip.portal.instance = "Kaleodesigner#PublishFromSourceTabAndViewNameChange";
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "Test Definition");
+
+		KaleoDesigner.editSourceXML(
+			kdSourceXML = '''<name>NAME EDIT''',
+			line = 5);
+
+		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.viewTableDefinitionPublishedViaKDCP(
+			workflowDefinitionName = "NAME EDIT",
+			workflowDefinitionTitle = "Test Definition");
+
+		KaleoDesigner.editWorkflowDefinitionViaKDCP(workflowDefinitionTitle = "Test Definition");
+
+		KaleoDesigner.viewSourceXMLLine(
+			kdSourceXML = '''<name>NAME EDIT</name>''',
+			line = 5);
+	}
+
+	@priority = 3
+	test PublishWorkflowDefinitionWithConnectorPointingToStartNodeAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Approve",
+			newNode = "Task",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "task",
+			nodeType = "start");
+
+		KaleoDesigner.deleteConnector(connectorLabel = "Approve");
+
+		KaleoDesigner.addConnectorViaViewTab(
+			connectorName = "Reverse",
+			nodeType = "task",
+			nodeTypeDestination = "start2");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The StartNode node cannot have an incoming transition.");
+	}
+
+	@priority = 3
+	test PublishWorkflowDefinitionWithInvalidConditionNodeAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Submit",
+			newNode = "Condition",
+			newNodeDescription = "Condition Node Description",
+			newNodeName = "Condition",
+			newNodeType = "condition",
+			nodeType = "start");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Approve",
+			newNode = "End",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "end",
+			nodeType = "condition");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The Condition node must have at least two outgoing transitions.");
+	}
+
+	@priority = 3
+	test PublishWorkflowDefinitionWithInvalidConditionNodeSettingsAndViewErrorMessage {
+		var nodeScript = '''
+	import com.liferay.portal.kernel.util.GetterUtil;${line.separator}
+	import com.liferay.portal.kernel.workflow.WorkflowConstants;${line.separator}
+	import com.liferay.portal.model.Role;${line.separator}
+	import com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalServiceUtil${line.separator}
+	import com.liferay.portal.service.RoleLocalServiceUtil;${line.separator}
+	import com.liferay.portlet.dynamicdatalists.model.DDLRecord;${line.separator}
+	import com.liferay.portlet.dynamicdatamapping.storage.Field;${line.separator}
+	import com.liferay.portal.service.ServiceContext;${line.separator}
+	import com.liferay.portal.kernel.json.JSONFactoryUtil;${line.separator}
+	import com.liferay.portal.kernel.json.JSONArray;${line.separator}${line.separator}
+
+	long companyId = GetterUtil.getLong String workflowContext.getWorkflowConstants.CONTEXT_COMPANY_ID;${line.separator}${line.separator}
+
+	ServiceContext serviceContext = (ServiceContext) workflowContext.get(WorkflowConstants.CONTEXT_SERVICE_CONTEXT);${line.separator}${line.separator}
+
+	long ddlRecordId = GetterUtil.getLong(serviceContext.getAttribute("ddlRecordId"));${line.separator}${line.separator}
+
+	DDLRecord ddlRecord = DDLRecordLocalServiceUtil.getRecord(ddlRecordId);${line.separator}${line.separator}
+
+	Field field = ddlRecord.getField("status");${line.separator}${line.separator}
+
+	String json = GetterUtil.getString(field.getValue());${line.separator}${line.separator}
+
+	JSONArray jsonArray = JSONFactoryUtil.createJSONArray(json)${line.separator}${line.separator}
+
+	String status = jsonArray.getString(0);${line.separator}${line.separator}
+
+	if (status.equals("closed")) {${line.separator}
+	  returnValue = "Yes"${line.separator}
+	} else {${line.separator}
+	  returnValue = "No"${line.separator}
+	}${line.separator}${line.separator}
+
+''';
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Submit",
+			newNode = "Condition",
+			newNodeDescription = "Condition Node Description",
+			newNodeName = "Condition",
+			newNodeType = "condition",
+			nodeType = "start");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "Condition");
+
+		KaleoDesigner.editNodeScript(nodeScript = ${nodeScript});
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Approve",
+			newNode = "End",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "end",
+			nodeType = "condition");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The Condition node must have at least two outgoing transitions.");
+	}
+
+	@priority = 3
+	test PublishWorkflowDefinitionWithInvalidForkNodeAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Submit",
+			newNode = "Fork",
+			newNodeDescription = "Fork Node Description",
+			newNodeName = "Fork",
+			newNodeType = "fork",
+			nodeType = "start");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Approve",
+			newNode = "End",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "end",
+			nodeType = "fork");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "Each fork node requires a join node. Make sure all forks and joins are properly paired.");
+	}
+
+	@priority = 3
+	test PublishWorkflowDefinitionWithInvalidJoinNodeAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Submit",
+			newNode = "Join",
+			newNodeDescription = "Join Node Description",
+			newNodeName = "Join",
+			newNodeType = "join",
+			nodeType = "start");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Approve",
+			newNode = "End",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "end",
+			nodeType = "join");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "Each fork node requires a join node. Make sure all forks and joins are properly paired.");
+	}
+
+	@priority = 3
+	test PublishWorkflowDefinitionWithInvalidJoinXORNodeAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Submit",
+			newNode = "Join XOR",
+			newNodeDescription = "JoinXOR Description",
+			newNodeName = "JoinXOR",
+			newNodeType = "join-xor",
+			nodeType = "start");
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Approve",
+			newNode = "End",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "end",
+			nodeType = "join-xor");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "Each fork node requires a join node. Make sure all forks and joins are properly paired.");
+	}
+
+	@priority = 4
+	test PublishWorkflowDefinitionWithMultipleStartNodesAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.addNodeViaViewTab(
+			nodeDescription = "TestStartNode Node Description",
+			nodeName = "TestStartNode",
+			nodeNodeLabel = "TestStartNode",
+			nodeType = "start");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The workflow has too many start nodes (state nodes StartNode and TestStartNode).");
+	}
+
+	@priority = 4
+	test PublishWorkflowDefinitionWithNoConnectorsAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.deleteConnector(connectorLabel = "connector");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The StartNode node must have an outgoing transition.");
+	}
+
+	@priority = 4
+	test PublishWorkflowDefinitionWithNoEndNodeAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The StartNode node must have an outgoing transition.");
+	}
+
+	@description = "This is a use case for LPS-76517."
+	@priority = 3
+	test PublishWorkflowDefinitionWithNoNameLineAndViewErrorMessage {
+		property test.name.skip.portal.instance = "Kaleodesigner#PublishWorkflowDefinitionWithNoNameLineAndViewErrorMessage";
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "Test Definition");
+
+		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.viewTableDefinitionPublishedViaKDCP(workflowDefinitionTitle = "Test Definition");
+
+		KaleoDesigner.editWorkflowDefinitionViaKDCP(
+			workflowDefinitionName = "Test Definition",
+			workflowDefinitionTitle = "Test Definition");
+
+		KaleoDesigner.editSourceXML(
+			kdSourceXML = " ",
+			line = 5);
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "An error occurred in the workflow engine.");
+	}
+
+	@priority = 4
+	test PublishWorkflowDefinitionWithNoStartNodeAndViewErrorMessage {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "You must define a start node.");
+	}
+
+	@priority = 5
+	test RedoDraftDefinition {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addNodeViaViewTab(
+			nodeDescription = "Start Node Description",
+			nodeName = "Start",
+			nodeNodeLabel = "Start",
+			nodeType = "start");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Submit",
+			newNode = "Task",
+			newNodeDescription = "Task Node Description",
+			newNodeName = "Task",
+			newNodeType = "task",
+			nodeType = "start");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Complete",
+			newNode = "End",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "end",
+			nodeType = "task");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		KaleoDesigner.showDetails();
+
+		KaleoDesigner.undoDraft();
+
+		KaleoDesigner.undoDraft();
+
+		KaleoDesigner.redoDraft();
+
+		KaleoDesigner.viewDraftVersion(draftVersion = 2);
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
+
+		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "End");
+
+		KaleoDesigner.viewConnectorPresent(connectorLabel = "Submit");
+
+		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Complete");
+
+		KaleoDesigner.undoDraft();
+
+		KaleoDesigner.viewDraftVersion(draftVersion = 1);
+
+		KaleoDesigner.latestVersionDraft();
+
+		KaleoDesigner.viewDraftVersion(draftVersion = 3);
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "End");
+
+		KaleoDesigner.viewConnectorPresent(connectorLabel = "Submit");
+
+		KaleoDesigner.viewConnectorPresent(connectorLabel = "Complete");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+	}
+
+	@priority = 3
+	test SaveInvalidWorkflowDefinitionAsDraft {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+	}
+
+	@priority = 3
+	test UndoDraftDefinition {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.addNodeViaViewTab(
+			nodeDescription = "Start Node Description",
+			nodeName = "Start",
+			nodeNodeLabel = "Start",
+			nodeType = "start");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Submit",
+			newNode = "Task",
+			newNodeDescription = "Task Node Description",
+			newNodeName = "Task",
+			newNodeType = "task",
+			nodeType = "start");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		KaleoDesigner.addConnectorAndNodeViaViewTab(
+			connectorName = "Complete",
+			newNode = "End",
+			newNodeDescription = "End Node Description",
+			newNodeName = "End",
+			newNodeType = "end",
+			nodeType = "task");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		KaleoDesigner.showDetails();
+
+		KaleoDesigner.undoDraft();
+
+		KaleoDesigner.viewDraftVersion(draftVersion = 2);
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Task");
+
+		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "End");
+
+		KaleoDesigner.viewConnectorPresent(connectorLabel = "Submit");
+
+		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Complete");
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.editWorkflowDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.showDetails();
+
+		KaleoDesigner.viewDraftVersion(draftVersion = 3);
+
+		KaleoDesigner.undoDraft();
+
+		KaleoDesigner.undoDraft();
+
+		KaleoDesigner.viewDraftVersion(draftVersion = 1);
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "Start");
+
+		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "Task");
+
+		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "End");
+
+		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Submit");
+
+		KaleoDesigner.viewConnectorNotPresent(connectorLabel = "Complete");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+	}
+
+	@priority = 4
+	test ViewAndPublishWorkflowDefinitionDraftViaKDCP {
+		property test.name.skip.portal.instance = "Kaleodesigner#ViewAndPublishWorkflowDefinitionDraftViaKDCP";
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition");
+
+		KaleoDesigner.saveAsDraftWorkflowDefinitionViaKDCP();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.viewTableDefinitionDraftViaKDCP(workflowDefinitionTitle = "New Workflow Definition");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.editWorkflowDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition");
+
+		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.viewTableDefinitionPublishedViaKDCP(workflowDefinitionTitle = "New Workflow Definition");
+	}
+
+	@description = "This is a use case for LPS-48590."
+	@priority = 4
+	test ViewSourceXMLNotErasedWhenInvalid {
+		property test.name.skip.portal.instance = "Kaleodesigner#ViewSourceXMLNotErasedWhenInvalid";
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.editSourceXML(
+			kdSourceXML = " ",
+			line = 20);
+
+		KaleoDesigner.viewViewTab();
+
+		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.editSourceXML(
+			kdSourceXML = '''</transitions></state>''',
+			line = 20);
+
+		KaleoDesigner.viewViewTab();
+
+		KaleoDesigner.viewNodePresent(nodeNodeLabel = "EndNode");
+
+		KaleoDesigner.publishWorkflowDefinitionViaKDCP();
+	}
+
+	@description = "This is a use case for LPS-47352 and LPS-48912."
+	@priority = 2
+	test ViewWorkflowDefinitionButtonsViaKaleoFormsAdmin {
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Kaleo Forms Admin");
+
+		KaleoFormsAdmin.addProcess();
+
+		KaleoFormsAdmin.addProcessDetails(
+			kfProcessDescription = "Kaleo Forms Process Description",
+			kfProcessName = "Kaleo Forms Process");
+
+		KaleoFormsAdmin.next();
+
+		KaleoFormsAdmin.addFieldSet(
+			kfFieldSetName = "Field Set Data Definition",
+			kfProcessName = "Kaleo Forms Process");
+
+		DynamicDataMapping.addField(
+			field = "Text",
+			fieldFieldLabel = "Text",
+			fieldName = "Text");
+
+		KaleoFormsAdmin.saveFieldSet();
+
+		KaleoFormsAdmin.chooseFieldSet(
+			kfFieldSetName = "Field Set Data Definition",
+			kfProcessName = "Kaleo Forms Process");
+
+		KaleoFormsAdmin.next();
+
+		KaleoFormsAdmin.addWorkflow(
+			kfProcessName = "Kaleo Forms Process",
+			workflowDefinitionTitle = "Workflow Definition Title");
+
+		KaleoDesigner.viewButtons(cancelButton = "true");
+
+		SelectFrameTop();
+
+		KaleoFormsAdmin.viewPublishedWorkflowDefinitions();
+
+		KaleoFormsAdmin.viewNoUnpublishedWorkflowDefinitions();
+	}
+
+	@description = "This is a use case for LPS-47352 and LPS-48912."
+	@priority = 2
+	test ViewWorkflowDefinitionButtonsViaKDCP {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.viewButtons(cancelButton = "true");
+
+		KaleoDesigner.viewNoWorkflowDefinitionsViaKDCP();
+	}
+
+	@description = "This is a use case for LPS-47352 and LPS-48912."
+	@priority = 2
+	test ViewWorkflowDefinitionButtonsViaWorkflowCP {
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Kaleo Designer");
+
+		KaleoDesigner.addNewDefinitionViaWorkflowCP(workflowDefinitionTitle = "New Workflow Definition Title");
+
+		KaleoDesigner.viewButtons();
+	}
+
 }

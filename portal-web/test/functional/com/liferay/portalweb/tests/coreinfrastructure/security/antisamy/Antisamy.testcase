@@ -1,8 +1,10 @@
 @component-name = "portal-security"
 definition {
+
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "AntiSamy";
+
 	var pageName = "Antisamy Test Page";
 	var portletName = "Wiki";
 
@@ -11,17 +13,17 @@ definition {
 
 		User.firstLoginPG();
 
-		Page.add(pageName = "${pageName}");
+		Page.add(pageName = ${pageName});
 
-		Navigator.gotoPage(pageName = "${pageName}");
+		Navigator.gotoPage(pageName = ${pageName});
 
-		Portlet.addPG(portletName = "${portletName}");
+		Portlet.addPG(portletName = ${portletName});
 	}
 
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -31,9 +33,8 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWikiFrontPageContentJavascript {
-
 		var wikiPageContent = '''
 				<p id='demo'>PASS</p>
 
@@ -45,9 +46,9 @@ definition {
 
 		WikiPage.addFrontPagePG(
 			htmlSource = "true",
-			pageName = "${pageName}",
-			wikiPageContent = "${wikiPageContent}",
-			wikiPageText = "${wikiPageText}"
-		);
+			pageName = ${pageName},
+			wikiPageContent = ${wikiPageContent},
+			wikiPageText = ${wikiPageText});
 	}
+
 }

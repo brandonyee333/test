@@ -1,54 +1,51 @@
 definition {
-	macro addConnectorAndNodeViaViewTab {
-		var key_nodeType = StringUtil.replace("${nodeType}", "-", "_");
 
-		if ("${down}" == "true") {
+	macro addConnectorAndNodeViaViewTab {
+		var key_nodeType = StringUtil.replace(${nodeType}, "-", "_");
+
+		if (${down} == "true") {
 			SikuliDragAndDrop(
 				locator1 = "KaleoDesignerEditWorkflow#NODE_CORNER",
-				value1 = "50,100"
-			);
+				value1 = "50,100");
 		}
-		else if ("${up}" == "true") {
+		else if (${up} == "true") {
 			SikuliDragAndDrop(
 				locator1 = "KaleoDesignerEditWorkflow#NODE_CORNER",
-				value1 = "150,-250"
-			);
+				value1 = "150,-250");
 		}
 		else {
 			SikuliDragAndDrop(
 				locator1 = "KaleoDesignerEditWorkflow#NODE_CORNER",
-				value1 = "100,0"
-			);
+				value1 = "100,0");
 		}
 
-		var key_newNode = "${newNode}";
+		var key_newNode = ${newNode};
 
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_ADD_NEW_NODE",
-			value1 = "${newNode}"
-		);
+			value1 = ${newNode});
 
 		Click(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_CONNECTOR_DEFAULT");
 
-		KaleoDesigner.editConnectorName(connectorName = "${connectorName}");
+		KaleoDesigner.editConnectorName(connectorName = ${connectorName});
 
-		var key_nodeType = "${newNodeType}";
+		var key_nodeType = ${newNodeType};
 
 		Click(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_NODE_DEFAULT");
 
-		KaleoDesigner.editNodeName(nodeName = "${newNodeName}");
+		KaleoDesigner.editNodeName(nodeName = ${newNodeName});
 
-		KaleoDesigner.editNodeDescription(nodeDescription = "${newNodeDescription}");
+		KaleoDesigner.editNodeDescription(nodeDescription = ${newNodeDescription});
 	}
 
 	macro addConnectorViaViewTab {
-		var key_nodeType = StringUtil.replace("${nodeType}", "-", "_");
+		var key_nodeType = StringUtil.replace(${nodeType}, "-", "_");
 
 		SikuliMouseMove(locator1 = "KaleoDesignerEditWorkflow#NODE_CORNER");
 
 		SikuliLeftMouseDown();
 
-		var key_nodeType = StringUtil.replace("${nodeTypeDestination}", "-", "_");
+		var key_nodeType = StringUtil.replace(${nodeTypeDestination}, "-", "_");
 
 		SikuliMouseMove(locator1 = "KaleoDesignerEditWorkflow#NODE_CORNER");
 
@@ -56,32 +53,29 @@ definition {
 
 		Click(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_CONNECTOR_DEFAULT");
 
-		KaleoDesigner.editConnectorName(connectorName = "${connectorName}");
+		KaleoDesigner.editConnectorName(connectorName = ${connectorName});
 	}
 
 	macro addNewDefinitionViaKDCP {
 		LexiconEntry.gotoAdd();
 
-		PortletEntry.inputTitle(title = "${workflowDefinitionTitle}");
+		PortletEntry.inputTitle(title = ${workflowDefinitionTitle});
 	}
 
 	macro addNewDefinitionViaWorkflowCP {
 		LexiconEntry.gotoAdd();
 
-		PortletEntry.inputTitle(title = "${workflowDefinitionTitle}");
+		PortletEntry.inputTitle(title = ${workflowDefinitionTitle});
 	}
 
 	macro addNodeSettingsSection {
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ADD_SECTION",
-			value1 = "Add Section"
-		);
+			value1 = "Add Section");
 	}
 
 	macro addNodeViaSourceXML {
-
-		if ("${nodeType}" == "task") {
-
+		if (${nodeType} == "task") {
 			var sourceXML = '''
 <?xml version="1.0"?>
 <workflow-definition xmlns="urn:liferay.com:liferay-workflow_6.2.0"${line.separator} xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"${line.separator} xsi:schemaLocation="urn:liferay.com:liferay-workflow_6.2.0 http://www.liferay.com/dtd/liferay-workflow-definition_6_2_0.xsd">${line.separator}
@@ -103,47 +97,44 @@ definition {
 
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_TAB",
-			value1 = "Source (Kaleo XML)"
-		);
+			value1 = "Source (Kaleo XML)");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		Type.typeAceEditorNoMouseOver(
 			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_CONTENT",
-			value1 = "${sourceXML}"
-		);
+			value1 = ${sourceXML});
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
-		AssertClick(locator1 = "KaleoDesignerEditWorkflow#VIEW_TAB", value1 = "View");
+		AssertClick(
+			locator1 = "KaleoDesignerEditWorkflow#VIEW_TAB",
+			value1 = "View");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 	}
 
 	macro addNodeViaViewTab {
 		AssertClick.pauseAssertTextClickAt(
 			locator1 = "KaleoDesignerEditWorkflow#NODES_TAB",
-			value1 = "Nodes"
-		);
+			value1 = "Nodes");
 
-		var key_nodeType = StringUtil.replace("${nodeType}", "-", "_");
+		var key_nodeType = StringUtil.replace(${nodeType}, "-", "_");
 
 		SikuliDragAndDrop(
 			locator1 = "KaleoDesignerEditWorkflow#NODE_PNG",
-			value1 = "250,0"
-		);
+			value1 = "250,0");
 
-		var key_nodeType = "${nodeType}";
+		var key_nodeType = ${nodeType};
 
 		Click(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_NODE_DEFAULT");
 
-		KaleoDesigner.editNodeName(nodeName = "${nodeName}");
+		KaleoDesigner.editNodeName(nodeName = ${nodeName});
 
-		KaleoDesigner.editNodeDescription(nodeDescription = "${nodeDescription}");
+		KaleoDesigner.editNodeDescription(nodeDescription = ${nodeDescription});
 	}
 
 	macro addSourceXMLBasicDefinition {
-
 		var sourceXML = '''
 <?xml version="1.0"?>
 <workflow-definition${line.separator} xmlns="urn:liferay.com:liferay-workflow_6.2.0"${line.separator} xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"${line.separator} xsi:schemaLocation="urn:liferay.com:liferay-workflow_6.2.0 http://www.liferay.com/dtd/liferay-workflow-definition_6_2_0.xsd">${line.separator}
@@ -199,64 +190,59 @@ definition {
 
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_TAB",
-			value1 = "Source (Kaleo XML)"
-		);
+			value1 = "Source (Kaleo XML)");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		Type.typeAceEditorNoMouseOver(
 			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_CONTENT",
-			value1 = "${sourceXML}"
-		);
+			value1 = ${sourceXML});
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
-		AssertClick(locator1 = "KaleoDesignerEditWorkflow#VIEW_TAB", value1 = "View");
+		AssertClick(
+			locator1 = "KaleoDesignerEditWorkflow#VIEW_TAB",
+			value1 = "View");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 	}
 
 	macro deleteConnector {
-		var key_connectorLabel = "${connectorLabel}";
+		var key_connectorLabel = ${connectorLabel};
 
 		Click(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_CONNECTOR");
 
 		KeyPress.keyPressNoError(
 			locator1 = "KaleoDesignerEditWorkflow#BODY",
-			value1 = "\DELETE"
-		);
+			value1 = "\DELETE");
 
 		Confirm(value1 = "Are you sure you want to delete the selected connector(s)?");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		KaleoDesigner.viewConnectorNotPresent(
-			connectorLabel = "${connectorLabel}",
-			nodeNodeLabel = "${nodeNodeLabel}"
-		);
+			connectorLabel = ${connectorLabel},
+			nodeNodeLabel = ${nodeNodeLabel});
 	}
 
 	macro deleteNode {
-		var key_nodeNodeLabel = "${nodeNodeLabel}";
+		var key_nodeNodeLabel = ${nodeNodeLabel};
 
 		ClickNoError(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_NODE_DELETE_ICON");
 
 		Confirm(value1 = "Are you sure you want to delete the selected node(s)?");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
-		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = "${nodeNodeLabel}");
+		KaleoDesigner.viewNodeNotPresent(nodeNodeLabel = ${nodeNodeLabel});
 	}
 
 	macro deleteTableDefinitionDraftViaKDCP {
 		LexiconEntry.gotoEntryMenuItemNoError(
 			menuItem = "Delete",
-			rowEntry = "${workflowDefinitionTitle}"
-		);
+			rowEntry = ${workflowDefinitionTitle});
 
-		Confirm(
-			value1 = "Are you sure you want to delete this? It will be deleted immediately."
-		);
+		Confirm(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
 
 		Alert.viewSuccessMessage();
 	}
@@ -264,21 +250,23 @@ definition {
 	macro editConnectorName {
 		DoubleClick(locator1 = "DDMEditStructure#SETTINGS_NAME");
 
-		Type(locator1 = "TextInput#TEXT", value1 = "${connectorName}");
+		Type(
+			locator1 = "TextInput#TEXT",
+			value1 = ${connectorName});
 
-		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 
 		AssertTextEquals(
 			locator1 = "DDMEditStructure#SETTINGS_NAME",
-			value1 = "${connectorName}"
-		);
+			value1 = ${connectorName});
 	}
 
 	macro editExecutionType {
 		Select(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_EXECUTION_TYPE_SELECT",
-			value1 = "${nodeExecutionType}"
-		);
+			value1 = ${nodeExecutionType});
 	}
 
 	macro editNodeAssignments {
@@ -286,53 +274,42 @@ definition {
 
 		Select(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ASSIGNMENT_TYPE_SELECT",
-			value1 = "${nodeAssignmentType}"
-		);
+			value1 = ${nodeAssignmentType});
 
-		if ("${nodeAssignmentType}" == "Role") {
-			Click(
-				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_SEARCH"
-			);
+		if (${nodeAssignmentType} == "Role") {
+			Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_SEARCH");
 
-			var key_roleName = "${roleName}";
+			var key_roleName = ${roleName};
 
-			Click(
-				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_SEARCH_LIST_RESULT"
-			);
+			Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_SEARCH_LIST_RESULT");
 		}
 
-		if ("${nodeAssignmentType}" == "Role Type") {
+		if (${nodeAssignmentType} == "Role Type") {
 			Select(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_TYPE_SELECT",
-				value1 = "${roleType}"
-			);
+				value1 = ${roleType});
 
-			var key_roleName = "${roleName}";
+			var key_roleName = ${roleName};
 
 			if (isSet(autoCreate)) {
-				Click(
-					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_NAME_SEARCH"
-				);
+				Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_NAME_SEARCH");
 
 				Type(
 					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_NAME_SEARCH",
-					value1 = "${roleName}"
-				);
+					value1 = ${roleName});
 
 				Check(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_AUTO_CREATE");
 			}
 			else {
-				Click(
-					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_NAME_SEARCH"
-				);
+				Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_NAME_SEARCH");
 
-				Click(
-					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_SEARCH_LIST_RESULT"
-				);
+				Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_SEARCH_LIST_RESULT");
 			}
 		}
 
-		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 	}
 
 	macro editNodeDescription {
@@ -340,28 +317,31 @@ definition {
 
 		Type(
 			locator1 = "DDMEditStructure#SETTINGS_CELL_EDITOR_TEXT_AREA",
-			value1 = "${nodeDescription}"
-		);
+			value1 = ${nodeDescription});
 
-		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_DESCRIPTION",
-			value1 = "${nodeDescription}"
-		);
+			value1 = ${nodeDescription});
 	}
 
 	macro editNodeName {
 		DoubleClick(locator1 = "DDMEditStructure#SETTINGS_NAME");
 
-		Type(locator1 = "TextInput#TEXT", value1 = "${nodeName}");
+		Type(
+			locator1 = "TextInput#TEXT",
+			value1 = ${nodeName});
 
-		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 
 		AssertTextEquals(
 			locator1 = "DDMEditStructure#SETTINGS_NAME",
-			value1 = "${nodeName}"
-		);
+			value1 = ${nodeName});
 	}
 
 	macro editNodeNotifications {
@@ -369,80 +349,65 @@ definition {
 
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NAME",
-			value1 = "${nodeNotificationsName}"
-		);
+			value1 = ${nodeNotificationsName});
 
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_DESCRIPTION",
-			value1 = "${nodeNotificationsDescription}"
-		);
+			value1 = ${nodeNotificationsDescription});
 
 		if (isSet(nodeNotificationsTemplateLanguage)) {
 			Select(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_TEMPLATE_LANGUAGE_SELECT",
-				value1 = "${nodeNotificationsTemplateLanguage}"
-			);
+				value1 = ${nodeNotificationsTemplateLanguage});
 		}
 
 		if (isSet(nodeNotificationsTemplate)) {
 			Type(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_TEMPLATE",
-				value1 = "${nodeNotificationsTemplate}"
-			);
+				value1 = ${nodeNotificationsTemplate});
 		}
 
 		if (isSet(nodeNotificationsType)) {
 			Select(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATION_TYPE_SELECT",
-				value1 = "${nodeNotificationsType}"
-			);
+				value1 = ${nodeNotificationsType});
 		}
 
 		if (isSet(nodeNotificationsExecutionType)) {
-			KaleoDesigner.editExecutionType(
-				nodeExecutionType = "${nodeNotificationsExecutionType}"
-			);
+			KaleoDesigner.editExecutionType(nodeExecutionType = ${nodeNotificationsExecutionType});
 		}
 
 		if (isSet(nodeNotificationsRecipientType)) {
 			Select(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ASSIGNMENT_TYPE_SELECT",
-				value1 = "${nodeNotificationsRecipientType}"
-			);
+				value1 = ${nodeNotificationsRecipientType});
 
-			if ("${nodeNotificationsRecipientType}" == "Role") {
-				Click(
-					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_SEARCH"
-				);
+			if (${nodeNotificationsRecipientType} == "Role") {
+				Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_SEARCH");
 
-				var key_roleName = "${roleName}";
+				var key_roleName = ${roleName};
 
-				Click(
-					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_SEARCH_LIST_RESULT"
-				);
+				Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_SEARCH_LIST_RESULT");
 			}
 
-			if ("${nodeNotificationsRecipientType}" == "Role Type") {
+			if (${nodeNotificationsRecipientType} == "Role Type") {
 				Select(
 					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_TYPE_SELECT",
-					value1 = "${roleType}"
-				);
+					value1 = ${roleType});
 
-				Click(
-					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_NAME_SEARCH"
-				);
+				Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_NAME_SEARCH");
 
-				var key_roleName = "${roleName}";
+				var key_roleName = ${roleName};
 
-				Click(
-					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_SEARCH_LIST_RESULT"
-				);
+				Click(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_SEARCH_LIST_RESULT");
 			}
 		}
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
-		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 	}
 
 	macro editNodeScript {
@@ -450,10 +415,11 @@ definition {
 
 		Type.typeAceEditorNoMouseOver(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_SCRIPT_CONTENT",
-			value1 = "${nodeScript}"
-		);
+			value1 = ${nodeScript});
 
-		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 	}
 
 	macro editNodeTimer {
@@ -461,33 +427,30 @@ definition {
 
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NAME",
-			value1 = "${timerName}"
-		);
+			value1 = ${timerName});
 
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_DESCRIPTION",
-			value1 = "${timerDescription}"
-		);
+			value1 = ${timerDescription});
 
 		KaleoDesigner.editNodeTimerDuration(
-			durationScale = "${durationScale1}",
-			durationTime = "${durationTime1}"
-		);
+			durationScale = ${durationScale1},
+			durationTime = ${durationTime1});
 
 		KaleoDesigner.addNodeSettingsSection();
 
 		KaleoDesigner.editNodeTimerDurationAdditional(
-			durationScale = "${durationScale2}",
-			durationTime = "${durationTime2}"
-		);
+			durationScale = ${durationScale2},
+			durationTime = ${durationTime2});
 
 		KaleoDesigner.editNodeTimerBlocker(
-			blockerDescription = "${blockerDescription}",
-			blockerName = "${blockerName}",
-			blockerScript = "${blockerScript}"
-		);
+			blockerDescription = ${blockerDescription},
+			blockerName = ${blockerName},
+			blockerScript = ${blockerScript});
 
-		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 	}
 
 	macro editNodeTimerBlocker {
@@ -495,95 +458,84 @@ definition {
 
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ACTION_NAME",
-			value1 = "${blockerName}"
-		);
+			value1 = ${blockerName});
 
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ACTION_DESCRIPTION",
-			value1 = "${blockerDescription}"
-		);
+			value1 = ${blockerDescription});
 
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_SCRIPT",
-			value1 = "${blockerScript}"
-		);
+			value1 = ${blockerScript});
 	}
 
 	macro editNodeTimerDuration {
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_DURATION",
-			value1 = "${durationTime}"
-		);
+			value1 = ${durationTime});
 
 		Select(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_SCALE_SELECT",
-			value1 = "${durationScale}"
-		);
+			value1 = ${durationScale});
 	}
 
 	macro editNodeTimerDurationAdditional {
 		Type(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_DURATION_2",
-			value1 = "${durationTime}"
-		);
+			value1 = ${durationTime});
 
 		Select(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_SCALE_SELECT_2",
-			value1 = "${durationScale}"
-		);
+			value1 = ${durationScale});
 	}
 
 	macro editSourceXML {
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_TAB",
-			value1 = "Source (Kaleo XML)"
-		);
+			value1 = "Source (Kaleo XML)");
 
-		var key_line = "${line}";
+		var key_line = ${line};
 
-		DoubleClick(
-			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_CONTENT_SPECIFIC_LINE"
-		);
+		DoubleClick(locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_CONTENT_SPECIFIC_LINE");
 
-		Click(
-			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_CONTENT_SPECIFIC_LINE"
-		);
+		Click(locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_CONTENT_SPECIFIC_LINE");
 
-		TypeScreen(locator1 = "${kdSourceXML}");
+		TypeScreen(locator1 = ${kdSourceXML});
 	}
 
 	macro editWorkflowDefinitionViaKDCP {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit",
-			rowEntry = "${workflowDefinitionTitle}"
-		);
+			rowEntry = ${workflowDefinitionTitle});
 	}
 
 	macro latestVersionDraft {
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#DRAFT_HISTORY_LATEST_VERSION_BUTTON",
-			value1 = "Latest Version"
-		);
+			value1 = "Latest Version");
 	}
 
 	macro publishInvalidWorkflowDefinitionViaWorkflowCP {
-		AssertClickNoError(locator1 = "Button#PUBLISH", value1 = "Publish");
+		AssertClickNoError(
+			locator1 = "Button#PUBLISH",
+			value1 = "Publish");
 
 		if (IsTextEqual(locator1 = "Message#ERROR", value1 = "Please enter valid content.")) {
 			Alert.viewRequestFailedToComplete();
 
 			AssertTextEquals.assertPartialText(
 				locator1 = "Message#ERROR",
-				value1 = "Please enter valid content."
-			);
+				value1 = "Please enter valid content.");
 		}
 		else {
-			Alert.viewErrorMessage(errorMessage = "${errorMessage}");
+			Alert.viewErrorMessage(errorMessage = ${errorMessage});
 		}
 	}
 
 	macro publishWorkflowDefinitionViaKDCP {
-		AssertClick(locator1 = "Button#PUBLISH", value1 = "Publish");
+		AssertClick(
+			locator1 = "Button#PUBLISH",
+			value1 = "Publish");
 
 		Alert.viewSuccessMessage();
 	}
@@ -591,8 +543,7 @@ definition {
 	macro redoDraft {
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#DRAFT_HISTORY_REDO_BUTTON",
-			value1 = "Redo"
-		);
+			value1 = "Redo");
 	}
 
 	macro removeAllNodeAssignments {
@@ -601,18 +552,22 @@ definition {
 		while (IsElementPresent(locator1 = "KaleoDesignerEditWorkflow#ROLE_REMOVE_ICON")) {
 			Click(locator1 = "KaleoDesignerEditWorkflow#ROLE_REMOVE_ICON");
 		}
-		
-		AssertClick(locator1 = "Button#SAVE", value1 = "Save");
+
+		AssertClick(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 	}
 
 	macro saveAsDraftWorkflowDefinitionViaKDCP {
-		AssertClick(locator1 = "Button#SAVE_AS_DRAFT", value1 = "Save as Draft");
+		AssertClick(
+			locator1 = "Button#SAVE_AS_DRAFT",
+			value1 = "Save as Draft");
 
 		Alert.viewSuccessMessage();
 	}
 
 	macro selectNode {
-		var key_nodeNodeLabel = "${nodeNodeLabel}";
+		var key_nodeNodeLabel = ${nodeNodeLabel};
 
 		Click(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_NODE");
 
@@ -630,71 +585,70 @@ definition {
 	macro undoDraft {
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#DRAFT_HISTORY_UNDO_BUTTON",
-			value1 = "Undo"
-		);
+			value1 = "Undo");
 	}
 
 	macro viewButtons {
-		AssertTextEquals(locator1 = "Button#PUBLISH", value1 = "Publish");
+		AssertTextEquals(
+			locator1 = "Button#PUBLISH",
+			value1 = "Publish");
 
-		AssertTextEquals(locator1 = "Button#SAVE_AS_DRAFT", value1 = "Save as Draft");
+		AssertTextEquals(
+			locator1 = "Button#SAVE_AS_DRAFT",
+			value1 = "Save as Draft");
 
-		if ("${cancelButton}" == "true") {
-			AssertTextEquals(locator1 = "Button#CANCEL", value1 = "Cancel");
+		if (${cancelButton} == "true") {
+			AssertTextEquals(
+				locator1 = "Button#CANCEL",
+				value1 = "Cancel");
 
-			AssertClick(locator1 = "Button#CANCEL", value1 = "Cancel");
+			AssertClick(
+				locator1 = "Button#CANCEL",
+				value1 = "Cancel");
 		}
 	}
 
 	macro viewConnectorNotPresent {
-		var key_connectorLabel = "${connectorLabel}";
+		var key_connectorLabel = ${connectorLabel};
 
-		AssertElementNotPresent(
-			locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_CONNECTOR"
-		);
+		AssertElementNotPresent(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_CONNECTOR");
 	}
 
 	macro viewConnectorPresent {
-		var key_connectorLabel = "${connectorLabel}";
+		var key_connectorLabel = ${connectorLabel};
 
 		AssertElementPresent(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_CONNECTOR");
 	}
 
 	macro viewDraftVersion {
-		var key_draftVersion = "${draftVersion}";
+		var key_draftVersion = ${draftVersion};
 
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#DRAFT_VERSION",
-			value1 = "${draftVersion}"
-		);
+			value1 = ${draftVersion});
 	}
 
 	macro viewExecutionType {
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_EXECUTION_TYPE_SELECT",
-			value1 = "${nodeExecutionType}"
-		);
+			value1 = ${nodeExecutionType});
 	}
 
 	macro viewNodeAssignments {
-		if ("${nodeAssignmentType}" == "Role") {
+		if (${nodeAssignmentType} == "Role") {
 			AssertTextEquals(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_ASSIGNMENTS",
-				value1 = "Role ID"
-			);
+				value1 = "Role ID");
 		}
 		else {
 			AssertTextEquals(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_ASSIGNMENTS",
-				value1 = "${nodeAssignmentType}"
-			);
+				value1 = ${nodeAssignmentType});
 		}
 
 		DoubleClick(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_ASSIGNMENTS");
 
-		AssertElementPresent(
-			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ASSIGNMENT_TYPE_SELECT"
-		);
+		AssertElementPresent(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ASSIGNMENT_TYPE_SELECT");
 	}
 
 	macro viewNodeNotifications {
@@ -702,89 +656,77 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NAME",
-			value1 = "${nodeNotificationsName}"
-		);
+			value1 = ${nodeNotificationsName});
 
 		if (isSet(nodeNotificationsDescription)) {
 			AssertTextEquals(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_DESCRIPTION",
-				value1 = "${nodeNotificationsDescription}"
-			);
+				value1 = ${nodeNotificationsDescription});
 		}
 
 		if (isSet(nodeNotificationsTemplateLanguage)) {
 			AssertSelectedLabel(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_TEMPLATE_LANGUAGE_SELECT",
-				value1 = "${nodeNotificationsTemplateLanguage}"
-			);
+				value1 = ${nodeNotificationsTemplateLanguage});
 		}
 
 		if (isSet(nodeNotificationsTemplate)) {
 			AssertTextEquals(
 				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_TEMPLATE",
-				value1 = "${nodeNotificationsTemplate}"
-			);
+				value1 = ${nodeNotificationsTemplate});
 		}
 
 		if (isSet(nodeNotificationsType)) {
-			if ("${nodeNotificationsType}" == "User Notification") {
+			if (${nodeNotificationsType} == "User Notification") {
 				AssertSelectedLabel(
 					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATION_TYPE_SELECT",
-					value1 = "User Notification"
-				);
+					value1 = "User Notification");
 			}
 		}
 
 		if (isSet(nodeNotificationsExecutionType)) {
-			KaleoDesigner.viewExecutionType(
-				nodeExecutionType = "${nodeNotificationsExecutionType}"
-			);
+			KaleoDesigner.viewExecutionType(nodeExecutionType = ${nodeNotificationsExecutionType});
 		}
 
 		if (isSet(nodeNotificationsRecipientType)) {
-			if ("${nodeNotificationsRecipientType}" == "Role") {
+			if (${nodeNotificationsRecipientType} == "Role") {
 				AssertTextEquals(
 					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ASSIGNMENT_TYPE_SELECT",
-					value1 = "${nodeNotificationsRecipientType}"
-				);
+					value1 = ${nodeNotificationsRecipientType});
 
 				AssertTextEquals(
 					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_SEARCH",
-					value1 = "${nodeNotificationsRecipientRole}"
-				);
+					value1 = ${nodeNotificationsRecipientRole});
 			}
 
-			if ("${nodeNotificationsRecipientType}" == "Role Type") {
+			if (${nodeNotificationsRecipientType} == "Role Type") {
 				AssertSelectedLabel(
 					locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ASSIGNMENT_TYPE_SELECT",
-					value1 = "Role Type"
-				);
+					value1 = "Role Type");
 
-				if ("${nodeNotificationsRecipientType}" == "Role") {
+				if (${nodeNotificationsRecipientType} == "Role") {
 					AssertSelectedLabel(
 						locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_SEARCH",
-						value1 = "Regular"
-					);
+						value1 = "Regular");
 				}
 
-				if ("${roleName}" == "Administrator") {
+				if (${roleName} == "Administrator") {
 					AssertTextEquals(
 						locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NOTIFICATIONS_RECIPIENT_EDITOR_ROLE_NAME_SEARCH",
-						value1 = "Administrator"
-					);
+						value1 = "Administrator");
 				}
 			}
 		}
 	}
 
 	macro viewNodeNotPresent {
-		var key_nodeNodeLabel = "${nodeNodeLabel}";
+		var key_nodeNodeLabel = ${nodeNodeLabel};
 
 		AssertElementNotPresent(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_NODE");
 	}
 
 	macro viewNodePresent {
-		var key_nodeNodeLabel = "${nodeNodeLabel}";
+		var key_nodeNodeLabel = ${nodeNodeLabel};
 
 		AssertElementPresent(locator1 = "KaleoDesignerEditWorkflow#VIEW_FORM_NODE");
 	}
@@ -794,119 +736,100 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_NAME",
-			value1 = "${timerName}"
-		);
+			value1 = ${timerName});
 
-		if ("${blocking}" == "false") {
-			AssertNotChecked(
-				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_BLOCKING"
-			);
+		if (${blocking} == "false") {
+			AssertNotChecked(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_BLOCKING");
 		}
-		else if ("${blocking}" == "true") {
-			AssertChecked(
-				locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_BLOCKING"
-			);
+		else if (${blocking} == "true") {
+			AssertChecked(locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_BLOCKING");
 		}
 
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_ACTION_NAME",
-			value1 = "${blockerName}"
-		);
+			value1 = ${blockerName});
 
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_DURATION",
-			value1 = "${durationTime1}"
-		);
+			value1 = ${durationTime1});
 
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_CELL_EDITOR_DURATION_2",
-			value1 = "${durationTime2}"
-		);
+			value1 = ${durationTime2});
 	}
 
 	macro viewNodeType {
 		AssertTextEquals(
 			locator1 = "KaleoDesignerEditWorkflow#SETTINGS_TYPE",
-			value1 = "${nodeType}"
-		);
+			value1 = ${nodeType});
 	}
 
 	macro viewNoWorkflowDefinitionsViaKDCP {
 		var key_workflowDefinitionTitle = "Single Approver";
 
 		if (IsElementPresent(locator1 = "KaleoDesigner#DEFINITION_TABLE_TITLE")) {
-			KaleoDesigner.viewTableDefinitionPublishedViaKDCP(
-				workflowDefinitionTitle = "Single Approver"
-			);
+			KaleoDesigner.viewTableDefinitionPublishedViaKDCP(workflowDefinitionTitle = "Single Approver");
 		}
 		else {
 			AssertTextEquals(
 				locator1 = "KaleoDesigner#INFO_MESSAGE",
-				value1 = "No workflow definitions are defined."
-			);
+				value1 = "No workflow definitions are defined.");
 		}
 	}
 
 	macro viewSourceXMLLine {
 		KaleoDesigner.viewSourceXMLTab();
 
-		ScrollWebElementIntoView(
-			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_TAB"
-		);
+		ScrollWebElementIntoView(locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_TAB");
 
-		var key_line = "${line}";
+		var key_line = ${line};
 
-		if ("${invalid}" == "true") {
+		if (${invalid} == "true") {
 			AssertTextNotPresent(
 				locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_CONTENT_SPECIFIC_LINE_CONTENT",
-				value1 = "${kdSourceXML}"
-			);
+				value1 = ${kdSourceXML});
 		}
 		else {
 			AssertTextEquals.assertPartialText(
 				locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_CONTENT_SPECIFIC_LINE_CONTENT",
-				value1 = "${kdSourceXML}"
-			);
+				value1 = ${kdSourceXML});
 		}
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
-		AssertClick(locator1 = "KaleoDesignerEditWorkflow#VIEW_TAB", value1 = "View");
+		AssertClick(
+			locator1 = "KaleoDesignerEditWorkflow#VIEW_TAB",
+			value1 = "View");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 	}
 
 	macro viewSourceXMLTab {
 		AssertClick(
 			locator1 = "KaleoDesignerEditWorkflow#SOURCE_KALEO_XML_TAB",
-			value1 = "Source (Kaleo XML)"
-		);
+			value1 = "Source (Kaleo XML)");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 	}
 
 	macro viewTableDefinitionDraftViaKDCP {
-		var key_workflowDefinitionTitle = "${workflowDefinitionTitle}";
+		var key_workflowDefinitionTitle = ${workflowDefinitionTitle};
 
 		AssertTextEquals(
 			locator1 = "KaleoDesigner#DEFINITION_TABLE_TITLE",
-			value1 = "${workflowDefinitionTitle}"
-		);
+			value1 = ${workflowDefinitionTitle});
 
 		AssertTextEquals(
 			locator1 = "KaleoDesigner#DEFINITION_TABLE_VERSION",
-			value1 = "0"
-		);
+			value1 = 0);
 
 		AssertTextEquals(
 			locator1 = "KaleoDesigner#DEFINITION_TABLE_DRAFT_VERSION",
-			value1 = "1"
-		);
+			value1 = 1);
 
 		AssertTextEquals(
 			locator1 = "KaleoDesigner#DEFINITION_TABLE_PUBLISHED",
-			value1 = "No"
-		);
+			value1 = "No");
 
 		AssertElementPresent(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 	}
@@ -915,51 +838,46 @@ definition {
 		if (isSet(workflowDefinitionName)) {
 			AssertTextEquals(
 				locator1 = "KaleoDesigner#DEFINITION_TABLE_NAME",
-				value1 = "${workflowDefinitionName}"
-			);
+				value1 = ${workflowDefinitionName});
 		}
 		else {
 			AssertTextEquals(
 				locator1 = "KaleoDesigner#DEFINITION_TABLE_TITLE",
-				value1 = "${workflowDefinitionTitle}"
-			);
+				value1 = ${workflowDefinitionTitle});
 		}
 
 		AssertTextEquals(
 			locator1 = "KaleoDesigner#DEFINITION_TABLE_TITLE",
-			value1 = "${workflowDefinitionTitle}"
-		);
+			value1 = ${workflowDefinitionTitle});
 
 		if (isSet(workflowDefinitionVersionNumber)) {
 			AssertTextEquals(
 				locator1 = "KaleoDesigner#DEFINITION_TABLE_VERSION",
-				value1 = "${workflowDefinitionVersionNumber}"
-			);
+				value1 = ${workflowDefinitionVersionNumber});
 		}
 		else {
 			AssertTextEquals(
 				locator1 = "KaleoDesigner#DEFINITION_TABLE_VERSION",
-				value1 = "1"
-			);
+				value1 = 1);
 		}
 
 		AssertTextEquals(
 			locator1 = "KaleoDesigner#DEFINITION_TABLE_DRAFT_VERSION",
-			value1 = "1"
-		);
+			value1 = 1);
 
 		AssertTextEquals(
 			locator1 = "KaleoDesigner#DEFINITION_TABLE_PUBLISHED",
-			value1 = "Yes"
-		);
+			value1 = "Yes");
 
 		AssertElementPresent(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 	}
 
 	macro viewViewTab {
-		AssertClick(locator1 = "KaleoDesignerEditWorkflow#VIEW_TAB", value1 = "View");
+		AssertClick(
+			locator1 = "KaleoDesignerEditWorkflow#VIEW_TAB",
+			value1 = "View");
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 	}
 
 }

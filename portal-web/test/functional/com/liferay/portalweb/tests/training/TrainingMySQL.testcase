@@ -1,5 +1,6 @@
 @component-name = "portal-training"
 definition {
+
 	property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
 	property portal.release = "false";
 	property portal.upstream = "false";
@@ -7,7 +8,7 @@ definition {
 	property test.prepare.bundle.properties = "false";
 	property testray.main.component.name = "Setup Wizard";
 
-	@priority = "5"
+	@priority = 5
 	test TrainingDemo1 {
 		property database.types = "mysql";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
@@ -24,83 +25,80 @@ definition {
 			databaseUserName = PropsUtil.get("database.mysql.username"),
 			jdbcDriverClassName = PropsUtil.get("database.mysql.driver"),
 			jdbcURL = PropsUtil.get("database.mysql.url"),
-			portalName = "S.P.A.C.E"
-		);
+			portalName = "S.P.A.C.E");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.addCP(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
 			administratorEmail = "space.admin@spaceprogram.liferay.com",
 			userEmailAddress = "userea@liferay.com",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		User.assignRegularRoleCP(roleName = "Administrator", userScreenName = "usersn");
+		User.assignRegularRoleCP(
+			roleName = "Administrator",
+			userScreenName = "usersn");
 
 		Navigator.openURL();
 
-		Portlet.addPG(pageName = "Mock LDAP Page", portletName = "Mock LDAP");
+		Portlet.addPG(
+			pageName = "Mock LDAP Page",
+			portletName = "Mock LDAP");
 
-		MockLDAP.selectJsonFile(fileName = "space-groups.json", tabName = "User Groups");
+		MockLDAP.selectJsonFile(
+			fileName = "space-groups.json",
+			tabName = "User Groups");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "User Groups"
-		);
+			portlet = "User Groups");
 
-		Pagination.changePagination(itemsPerPage = "20");
+		Pagination.changePagination(itemsPerPage = 20);
 
 		Pagination.viewResults(results = "Showing 1 to 11 of 11 entries.");
 
 		Navigator.openURL();
 
-		MockLDAP.selectJsonFile(fileName = "space-users.json", tabName = "Users");
+		MockLDAP.selectJsonFile(
+			fileName = "space-users.json",
+			tabName = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		Pagination.changePagination(itemsPerPage = "20");
+		Pagination.changePagination(itemsPerPage = 20);
 
 		Pagination.viewResults(results = "Showing 1 to 20 of 116 entries.");
 
@@ -109,23 +107,20 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
 		LAR.importPortlet(
 			larFileName = "organizations-7.0.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -133,8 +128,7 @@ definition {
 			orgName = "Space Program Academy of Continuing Education",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		for (var suborgName : list "College of Agricultural Science,College of Business,College of Engineering,Accounting,Business Administration,Department of Aeronautics,Department of Astronautics,Aerospace Engineering,Civil Engineering,Computer Engineering,Electrical Engineering,Mechanical Engineering") {
 			Navigator.openURL();
@@ -142,19 +136,19 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Users",
 				panel = "Control Panel",
-				portlet = "Users and Organizations"
-			);
+				portlet = "Users and Organizations");
 
 			UsersAndOrganizationsNavigator.gotoOrganizations();
 
-			Organization.addSiteCP(orgName = "${suborgName}", orgType = "Organization");
+			Organization.addSiteCP(
+				orgName = ${suborgName},
+				orgType = "Organization");
 
 			Navigator.gotoBack();
 
 			Organization.manageMembershipOptionsInSites(
 				allowManualMembershipManagement = "true",
-				orgName = "${suborgName}"
-			);
+				orgName = ${suborgName});
 		}
 
 		Navigator.openSiteURL(siteName = "College of Agricultural Science");
@@ -162,19 +156,17 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
 		Site.assignUserGroupAsMemberCP(userGroupName = "Agricultural Science");
 
 		for (var siteName : list "Accounting,Business Administration") {
-			Navigator.openSiteURL(siteName = "${siteName}");
+			Navigator.openSiteURL(siteName = ${siteName});
 
 			ProductMenu.gotoPortlet(
 				category = "Members",
 				panel = "Site Administration",
-				portlet = "Site Memberships"
-			);
+				portlet = "Site Memberships");
 
 			Site.assignUserGroupAsMemberCP(userGroupName = "Business: ${siteName}");
 		}
@@ -184,33 +176,26 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
-		Site.assignUserGroupAsMemberCP(
-			userGroupName = "Engineering: Aerospace Engineering: Aeronautics"
-		);
+		Site.assignUserGroupAsMemberCP(userGroupName = "Engineering: Aerospace Engineering: Aeronautics");
 
 		Navigator.openSiteURL(siteName = "Department of Astronautics");
 
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
-		Site.assignUserGroupAsMemberCP(
-			userGroupName = "Engineering: Aerospace Engineering: Astronautics"
-		);
+		Site.assignUserGroupAsMemberCP(userGroupName = "Engineering: Aerospace Engineering: Astronautics");
 
 		for (var siteName : list "Civil Engineering,Computer Engineering,Electrical Engineering,Mechanical Engineering") {
-			Navigator.openSiteURL(siteName = "${siteName}");
+			Navigator.openSiteURL(siteName = ${siteName});
 
 			ProductMenu.gotoPortlet(
 				category = "Members",
 				panel = "Site Administration",
-				portlet = "Site Memberships"
-			);
+				portlet = "Site Memberships");
 
 			Site.assignUserGroupAsMemberCP(userGroupName = "Engineering: ${siteName}");
 		}
@@ -218,8 +203,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -227,14 +211,12 @@ definition {
 			orgName = "College of Agricultural Science",
 			userFirstName = "Wolfgang",
 			userLastName = "von Richter",
-			userScreenName = "w.vonrichter"
-		);
+			userScreenName = "w.vonrichter");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -242,14 +224,12 @@ definition {
 			orgName = "Accounting",
 			userFirstName = "Jane",
 			userLastName = "Phillips",
-			userScreenName = "j.phillips"
-		);
+			userScreenName = "j.phillips");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -257,14 +237,12 @@ definition {
 			orgName = "Business Administration",
 			userFirstName = "Oliver",
 			userLastName = "Wainwright",
-			userScreenName = "o.wainwright"
-		);
+			userScreenName = "o.wainwright");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -272,14 +250,12 @@ definition {
 			orgName = "Aerospace Engineering",
 			userFirstName = "Josefina",
 			userLastName = "Suarez",
-			userScreenName = "j.suarez"
-		);
+			userScreenName = "j.suarez");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -287,14 +263,12 @@ definition {
 			orgName = "Department of Aeronautics",
 			userFirstName = "Andrew",
 			userLastName = "Washington",
-			userScreenName = "a.washington"
-		);
+			userScreenName = "a.washington");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -302,14 +276,12 @@ definition {
 			orgName = "Department of Astronautics",
 			userFirstName = "Peter",
 			userLastName = "Vance",
-			userScreenName = "p.vance"
-		);
+			userScreenName = "p.vance");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -317,14 +289,12 @@ definition {
 			orgName = "Civil Engineering",
 			userFirstName = "Glen",
 			userLastName = "Powers",
-			userScreenName = "g.powers"
-		);
+			userScreenName = "g.powers");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -332,14 +302,12 @@ definition {
 			orgName = "Computer Engineering",
 			userFirstName = "Harriet",
 			userLastName = "Winters",
-			userScreenName = "h.winters"
-		);
+			userScreenName = "h.winters");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -347,14 +315,12 @@ definition {
 			orgName = "Electrical Engineering",
 			userFirstName = "Margaret",
 			userLastName = "Walker",
-			userScreenName = "m.walker"
-		);
+			userScreenName = "m.walker");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -362,19 +328,16 @@ definition {
 			orgName = "Mechanical Engineering",
 			userFirstName = "Leo",
 			userLastName = "Blythe",
-			userScreenName = "l.blythe"
-		);
+			userScreenName = "l.blythe");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -383,14 +346,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Wolfgang",
 			userLastName = "von Richter",
-			userScreenName = "w.vonrichter"
-		);
+			userScreenName = "w.vonrichter");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -399,14 +360,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Jane",
 			userLastName = "Phillips",
-			userScreenName = "j.phillips"
-		);
+			userScreenName = "j.phillips");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -415,14 +374,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Oliver",
 			userLastName = "Wainwright",
-			userScreenName = "o.wainwright"
-		);
+			userScreenName = "o.wainwright");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -431,14 +388,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Josefina",
 			userLastName = "Suarez",
-			userScreenName = "j.suarez"
-		);
+			userScreenName = "j.suarez");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -447,14 +402,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Andrew",
 			userLastName = "Washington",
-			userScreenName = "a.washington"
-		);
+			userScreenName = "a.washington");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -463,14 +416,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Peter",
 			userLastName = "Vance",
-			userScreenName = "p.vance"
-		);
+			userScreenName = "p.vance");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -479,14 +430,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Glen",
 			userLastName = "Powers",
-			userScreenName = "g.powers"
-		);
+			userScreenName = "g.powers");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -495,14 +444,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Harriet",
 			userLastName = "Winters",
-			userScreenName = "h.winters"
-		);
+			userScreenName = "h.winters");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -511,14 +458,12 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Margaret",
 			userLastName = "Walker",
-			userScreenName = "m.walker"
-		);
+			userScreenName = "m.walker");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -527,57 +472,48 @@ definition {
 			roleName = "Organization Administrator",
 			userFirstName = "Leo",
 			userLastName = "Blythe",
-			userScreenName = "l.blythe"
-		);
+			userScreenName = "l.blythe");
 
 		User.logoutPG();
 
 		User.loginPG(
 			password = "liferay",
-			userEmailAddress = "harriet.winters@spaceprogram.liferay.com"
-		);
+			userEmailAddress = "harriet.winters@spaceprogram.liferay.com");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "College of Engineering");
 
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
 		Site.assignSiteRoleCP(
 			resourceName = "Harriet Winters",
-			roleName = "Site Administrator"
-		);
+			roleName = "Site Administrator");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "harriet.winters@spaceprogram.liferay.com",
-			userLoginFullName = "Harriet Winters"
-		);
+			userLoginFullName = "Harriet Winters");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "S.P.A.C.E");
 
 		Page.add(
 			pageName = "Colleges",
 			siteName = "S.P.A.C.E",
-			sitePageType = "Page Set"
-		);
+			sitePageType = "Page Set");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Page.addChild(
 			page = "Public Pages",
@@ -585,14 +521,12 @@ definition {
 			pageTypeURL = "/web/college-of-agricultural-science",
 			siteChildPageName = "College of Agricultural Science",
 			siteName = "S.P.A.C.E",
-			sitePageType = "Link to URL"
-		);
+			sitePageType = "Link to URL");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Page.addChild(
 			page = "Public Pages",
@@ -600,14 +534,12 @@ definition {
 			pageTypeURL = "/web/college-of-busuness",
 			siteChildPageName = "College of Business",
 			siteName = "S.P.A.C.E",
-			sitePageType = "Link to URL"
-		);
+			sitePageType = "Link to URL");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Page.addChild(
 			page = "Public Pages",
@@ -615,19 +547,16 @@ definition {
 			pageTypeURL = "/web/college-of-engineering",
 			siteChildPageName = "College of Engineering",
 			siteName = "S.P.A.C.E",
-			sitePageType = "Link to URL"
-		);
+			sitePageType = "Link to URL");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Page Templates"
-		);
+			portlet = "Page Templates");
 
 		LAR.importPortlet(
 			larFileName = "college-and-department-page-templates.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -635,14 +564,12 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Sites",
 				panel = "Control Panel",
-				portlet = "Sites"
-			);
+				portlet = "Sites");
 
 			Page.add(
 				pageName = "Home",
 				pageTemplateName = "College Landing Page",
-				siteName = "${siteName}"
-			);
+				siteName = ${siteName});
 		}
 
 		Navigator.openSiteURL(siteName = "College of Business");
@@ -650,27 +577,25 @@ definition {
 		Page.add(
 			pageName = "Departments",
 			siteName = "College of Business",
-			sitePageType = "Page Set"
-		);
+			sitePageType = "Page Set");
 
 		for (var childPageName : list "Accounting,Business Administration") {
 			ProductMenu.gotoPortlet(
 				category = "Sites",
 				panel = "Control Panel",
-				portlet = "Sites"
-			);
+				portlet = "Sites");
 
-			var key_partialURL = StringUtil.replace("${childPageName}", " ", "-");
-			var key_partialURL = StringUtil.lowerCase("${key_partialURL}");
+			var key_partialURL = StringUtil.replace(${childPageName}, " ", "-");
+
+			var key_partialURL = StringUtil.lowerCase(${key_partialURL});
 
 			Page.addChild(
 				page = "Public Pages",
 				pageName = "Departments",
 				pageTypeURL = "/web/${key_partialURL}",
-				siteChildPageName = "${childPageName}",
+				siteChildPageName = ${childPageName},
 				siteName = "College of Business",
-				sitePageType = "Link to URL"
-			);
+				sitePageType = "Link to URL");
 		}
 
 		Navigator.openSiteURL(siteName = "College of Engineering");
@@ -678,52 +603,45 @@ definition {
 		Page.add(
 			pageName = "Departments",
 			siteName = "College of Engineering",
-			sitePageType = "Page Set"
-		);
+			sitePageType = "Page Set");
 
 		for (var childPageName : list "Department of Aeronautics,Department of Astronautics,Aerospace Engineering,Civil Engineering,Computer Engineering,Electrical Engineering,Mechanical Engineering") {
 			ProductMenu.gotoPortlet(
 				category = "Sites",
 				panel = "Control Panel",
-				portlet = "Sites"
-			);
+				portlet = "Sites");
 
-			var key_partialURL = StringUtil.replace("${childPageName}", " ", "-");
-			var key_partialURL = StringUtil.lowerCase("${key_partialURL}");
+			var key_partialURL = StringUtil.replace(${childPageName}, " ", "-");
+
+			var key_partialURL = StringUtil.lowerCase(${key_partialURL});
 
 			Page.addChild(
 				page = "Public Pages",
 				pageName = "Departments",
 				pageTypeURL = "/web/${key_partialURL}",
-				siteChildPageName = "${childPageName}",
+				siteChildPageName = ${childPageName},
 				siteName = "College of Engineering",
-				sitePageType = "Link to URL"
-			);
+				sitePageType = "Link to URL");
 		}
 
 		for (var siteName : list "Accounting,Business Administration,Aerospace Engineering,Civil Engineering,Computer Engineering,Electrical Engineering,Mechanical Engineering") {
 			ProductMenu.gotoPortlet(
 				category = "Sites",
 				panel = "Control Panel",
-				portlet = "Sites"
-			);
+				portlet = "Sites");
 
 			Page.add(
 				pageName = "Home",
 				pageTemplateName = "Department Landing Page",
-				siteName = "${siteName}"
-			);
+				siteName = ${siteName});
 		}
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Page Templates"
-		);
+			portlet = "Page Templates");
 
-		PageTemplate.gotoPageTemplateViaEdit(
-			pageTemplateName = "Department Landing Page"
-		);
+		PageTemplate.gotoPageTemplateViaEdit(pageTemplateName = "Department Landing Page");
 
 		SelectWindow(locator1 = "title=Department Landing Page - S.P.A.C.E");
 
@@ -733,7 +651,9 @@ definition {
 
 		SelectWindow(locator1 = "title=Page Templates - Control Panel - S.P.A.C.E");
 
-		Navigator.gotoSitePage(pageName = "Home", siteName = "Accounting");
+		Navigator.gotoSitePage(
+			pageName = "Home",
+			siteName = "Accounting");
 
 		Portlet.viewPG(portletName = "Blogs");
 
@@ -742,45 +662,39 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Bookmarks"
-		);
+			portlet = "Bookmarks");
 
 		Bookmark.addCP(
 			bookmarkDescription = "This is a list of Scholarship from the American Institute of Aeronautics and Astronautics (AIAA)!",
 			bookmarkName = "List of Scholarship from the American Institute of Aeronautics and Astronautics (AIAA)",
 			bookmarkURL = "https://www.aiaa.org/Secondary.aspx?id=3199",
-			trailingSlash = "false"
-		);
+			trailingSlash = "false");
 
 		Navigator.openSiteURL(siteName = "College of Engineering");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Bookmarks"
-		);
+			portlet = "Bookmarks");
 
 		Bookmark.addCP(
 			bookmarkDescription = "This is an Iowa Space Grant Fellowship Program!",
 			bookmarkName = "Iowa Space Grant Fellowship Program",
 			bookmarkURL = "http://www.iaspacegrant.org/sites/default/files/2016-2017_isgc_fell_final.pdf",
-			trailingSlash = "false"
-		);
+			trailingSlash = "false");
 
 		Navigator.openSiteURL(siteName = "College of Engineering");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Bookmarks"
-		);
+			portlet = "Bookmarks");
 
 		Bookmark.addCP(
 			bookmarkDescription = "This is the list of Scholarships from the International Space University!",
 			bookmarkName = "List of Scholarships from the International Space University",
 			bookmarkURL = "http://www.isunet.edu/admissions/funding-scholarships",
-			trailingSlash = "false"
-		);
+			trailingSlash = "false");
 
 		Navigator.openSiteURL(siteName = "College of Engineering");
 
@@ -794,54 +708,44 @@ definition {
 
 		Portlet.gotoPortletOptions(
 			portletName = "Bookmarks",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
-		Portlet.configureCustomTitleViaLookandfeelPG(
-			customPortletTitle = "Scholarships"
-		);
+		Portlet.configureCustomTitleViaLookandfeelPG(customPortletTitle = "Scholarships");
 
 		Navigator.openURL();
 
 		Page.add(
 			pageName = "Mechanical Engineering 101",
 			siteName = "Mechanical Engineering",
-			sitePagePrivacy = "Private"
-		);
+			sitePagePrivacy = "Private");
 
 		User.logoutPG();
 
 		User.loginPG(
 			password = "liferay",
-			userEmailAddress = "sally.beech@spaceprogram.liferay.com"
-		);
+			userEmailAddress = "sally.beech@spaceprogram.liferay.com");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Mechanical Engineering 101",
-			siteName = "Mechanical Engineering"
-		);
+			siteName = "Mechanical Engineering");
 
 		AssertTextEquals(
 			locator1 = "Home#ERROR_MESSAGE_ALERT_ERROR",
-			value1 = "Not Found"
-		);
+			value1 = "Not Found");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Site Templates"
-		);
+			portlet = "Site Templates");
 
 		LAR.importPortlet(
 			larFileName = "class-site-template-7.0.lar",
 			portletName = "Site Templates",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		SiteTemplates.viewCP(siteTemplateName = "Digital Class Room");
 
@@ -850,20 +754,17 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(
 			membershipType = "Private",
 			parentSiteName = "College of Agricultural Science",
 			siteName = "Moon Rocks 101",
-			siteType = "Blank"
-		);
+			siteType = "Blank");
 
 		Site.selectPageType(
 			selectPrivatePages = "true",
-			siteTemplate = "Digital Class Room"
-		);
+			siteTemplate = "Digital Class Room");
 
 		Navigator.openURL();
 
@@ -872,53 +773,47 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
 		Site.assignUserAsMemberCP(
 			userFirstName = "Edward",
 			userLastName = "Knight",
-			userScreenName = "e.knight"
-		);
+			userScreenName = "e.knight");
 
 		Site.assignSiteRoleCP(
 			resourceName = "Edward Knight",
-			roleName = "Site Administrator"
-		);
+			roleName = "Site Administrator");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Roles"
-		);
+			portlet = "Roles");
 
 		Role.addCP(
 			roleDescription = "Content Team Writers generate content to display on College and Department Pages.",
 			roleName = "Content Team Writer",
-			roleType = "Organization"
-		);
+			roleType = "Organization");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Roles"
-		);
+			portlet = "Roles");
 
-		Role.viewCP(roleName = "Content Team Writer", roleType = "Organization");
+		Role.viewCP(
+			roleName = "Content Team Writer",
+			roleType = "Organization");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Roles"
-		);
+			portlet = "Roles");
 
 		Role.definePermissionsCP(
 			permissionDefinitionKeys = "SITE_ADMIN_CONTENT_WEB_CONTENT_GENERAL_PERMISSIONS_ACCESS_IN_SITE_ADMINISTRATION_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_GENERAL_PERMISSIONS_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_ADD_FOLDER_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FOLDER_ADD_SUBFOLDER_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FOLDER_ADD_WEB_CONTENT_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FOLDER_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_ARTICLE_UPDATE_CHECKBOX,SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_GENERAL_PERMISSIONS_ACCESS_IN_SITE_ADMINISTRATION_CHECKBOX,SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_ADD_FOLDER_CHECKBOX,SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_FOLDER_ADD_SUBFOLDER_CHECKBOX,SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_GENERAL_PERMISSIONS_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_FOLDER_ADD_DOCUMENT_CHECKBOX,SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENTS_FOLDER_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_DOCUMENTS_AND_MEDIA_RESOURCE_PERMISSIONS_DOCUMENT_UPDATE_CHECKBOX",
 			roleName = "Content Team Writer",
-			roleType = "Organization"
-		);
+			roleType = "Organization");
 
 		Navigator.openURL();
 
@@ -927,13 +822,11 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		LAR.importPortlet(
 			larFileName = "moon-rocks-101-materials-structure.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -942,8 +835,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMFolder.gotoCP(dmFolderName = "Unit 1 - Moon Rock Chemistry");
 
@@ -954,8 +846,7 @@ definition {
 		DMDocument.addCP(
 			dmDocumentDescription = "DM Document Description",
 			dmDocumentFile = "Dr. Winters Introductory Audio Lecture.ogg",
-			dmDocumentTitle = "Dr. Winters Introductory Audio Lecture.ogg"
-		);
+			dmDocumentTitle = "Dr. Winters Introductory Audio Lecture.ogg");
 
 		Navigator.openURL();
 
@@ -964,8 +855,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_DESCRIPTIVE");
 
@@ -978,8 +868,7 @@ definition {
 		DMFolder.removePermissions(
 			dmFolder = "Audio Lectures",
 			permissionNameList = "ADD_DOCUMENT,ADD_SHORTCUT,ADD_SUBFOLDER",
-			roleName = "Site Member"
-		);
+			roleName = "Site Member");
 
 		IFrame.closeFrame();
 
@@ -990,13 +879,11 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		LAR.importPortlet(
 			larFileName = "moon-rocks-101-assignment-structure.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -1005,14 +892,12 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMFolder.removePermissions(
 			dmFolder = "Class Syllabus and Assignments",
 			permissionNameList = "ADD_DOCUMENT,ADD_SHORTCUT,ADD_SUBFOLDER",
-			roleName = "Site Member"
-		);
+			roleName = "Site Member");
 
 		IFrame.closeFrame();
 
@@ -1023,14 +908,12 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMFolder.removePermissions(
 			dmFolder = "Assignment Submission",
 			permissionNameList = "ADD_DOCUMENT,ADD_SHORTCUT,ADD_SUBFOLDER",
-			roleName = "Site Member"
-		);
+			roleName = "Site Member");
 
 		IFrame.closeFrame();
 
@@ -1041,79 +924,72 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Message Boards"
-		);
+			portlet = "Message Boards");
 
 		LAR.importPortlet(
 			larFileName = "space-message-boards.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Student Boards",
-			siteName = "Moon Rocks 101"
-		);
+			siteName = "Moon Rocks 101");
 
 		MessageboardsCategory.viewPG(
 			categoryDescription = "General Discussions for students to have about the happenings at S.P.A.C.E.",
 			categoryDescriptionEnabled = "true",
-			categoryName = "General Discussion"
-		);
+			categoryName = "General Discussion");
 
 		MessageboardsThread.gotoPG(
 			lastPostUserName = "userfn userln",
-			postCount = "5",
+			postCount = 5,
 			threadBody = "Super embarrassing, but does anybody know what to do when the Anti-Gravity Chamber door gets stuck and maintenance has gone for the day? Yesterday was the second time I’ve been in there all night, and I have to say, not liking the ambience.",
-			threadSubject = "Stuck in the Anti-Gravity Chamber"
-		);
+			threadSubject = "Stuck in the Anti-Gravity Chamber");
 
 		MessageboardsThread.viewPG(
 			threadBody = "Super embarrassing, but does anybody know what to do when the Anti-Gravity Chamber door gets stuck and maintenance has gone for the day? Yesterday was the second time I’ve been in there all night, and I have to say, not liking the ambience.",
 			threadSubject = "Stuck in the Anti-Gravity Chamber",
-			userName = "userfn userln"
-		);
+			userName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "S.P.A.C.E");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Wiki"
-		);
+			portlet = "Wiki");
 
 		LAR.importPortlet(
 			larFileName = "space-history-wiki.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
-		Page.add(pageName = "Wiki", pageTemplateName = "Wiki", siteName = "S.P.A.C.E");
+		Page.add(
+			pageName = "Wiki",
+			pageTemplateName = "Wiki",
+			siteName = "S.P.A.C.E");
 
-		Navigator.gotoSitePage(pageName = "Wiki", siteName = "S.P.A.C.E");
+		Navigator.gotoSitePage(
+			pageName = "Wiki",
+			siteName = "S.P.A.C.E");
 
 		WikiNavigator.gotoPG(wikiPageTitle = "FrontPage");
 
-		WikiPage.viewFrontPagePG(
-			wikiPageContent = "Located in Provincetown, MA, S.P.A.C.E. (Space Program Academy of Continuing Education) was founded in February of 2063 by its current Board of Governors members—Dr. Edith Adams, Dr. Harold Vance, Antony Carelli, and Victoria Allen—as a fully-accredited, internationally-run school for students interested in pursuing a wide range of space-related careers. S.P.A.C.E. also serves as a research center for faculty. S.P.A.C.E.’s foundation came about largely as a result of skyrocketing interest in space-related careers and the limitations on The Space Program."
-		);
+		WikiPage.viewFrontPagePG(wikiPageContent = "Located in Provincetown, MA, S.P.A.C.E. (Space Program Academy of Continuing Education) was founded in February of 2063 by its current Board of Governors members—Dr. Edith Adams, Dr. Harold Vance, Antony Carelli, and Victoria Allen—as a fully-accredited, internationally-run school for students interested in pursuing a wide range of space-related careers. S.P.A.C.E. also serves as a research center for faculty. S.P.A.C.E.’s foundation came about largely as a result of skyrocketing interest in space-related careers and the limitations on The Space Program.");
 
 		for (var wikiPageTitle : list "FrontPage,Board of Governors,Board of Governors,The Space Program,Antony Carelli,Dr. Harold Vance,Victoria Allen,Dr. Asmund Grey") {
 			WikiNavigator.gotoAllPagesPG();
 
-			WikiNavigator.gotoPG(wikiPageTitle = "${wikiPageTitle}");
+			WikiNavigator.gotoPG(wikiPageTitle = ${wikiPageTitle});
 		}
 
 		WikiPage.viewPG(
 			wikiPageContent = "Dr. Asmund Grey, first and current president of S.P.A.C.E., was born Asmund Andrew Grey March 22, 2029 to Drs. Albert and Anita Grey in Stratford-upon-Avon, England.",
-			wikiPageTitle = "Dr. Asmund Grey"
-		);
+			wikiPageTitle = "Dr. Asmund Grey");
 
 		Navigator.openURL();
 
@@ -1122,16 +998,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Forms"
-		);
+			portlet = "Forms");
 
 		LexiconEntry.gotoAdd();
 
 		Form.editName(formName = "Student Feedback Form");
 
-		Form.editDescription(
-			formDescription = "Leave feedback for your class to make S.P.A.C.E. a better place for all."
-		);
+		Form.editDescription(formDescription = "Leave feedback for your class to make S.P.A.C.E. a better place for all.");
 
 		Form.editPageTitle(formPageName = "Student Feedback Form");
 
@@ -1139,7 +1012,9 @@ definition {
 
 		Form.editFieldLabel(fieldValue = "Class");
 
-		FormFields.editHelpText(fieldHelpText = "class code here", fieldName = "tip");
+		FormFields.editHelpText(
+			fieldHelpText = "class code here",
+			fieldName = "tip");
 
 		FormFields.enableSwitcher(fieldName = "required");
 
@@ -1159,20 +1034,27 @@ definition {
 
 		FormFields.editHelpText(
 			fieldHelpText = "Select how much you agree with the above statement",
-			fieldName = "tip"
-		);
+			fieldName = "tip");
 
 		FormFields.enableSwitcher(fieldName = "required");
 
 		FormFields.editOptionsRow(optionValue = "Strongly Agree");
 
-		FormFields.editOptionsRow(optionValue = "Agree", rowNumber = "2");
+		FormFields.editOptionsRow(
+			optionValue = "Agree",
+			rowNumber = 2);
 
-		FormFields.editOptionsRow(optionValue = "Neutral", rowNumber = "3");
+		FormFields.editOptionsRow(
+			optionValue = "Neutral",
+			rowNumber = 3);
 
-		FormFields.editOptionsRow(optionValue = "Disagree", rowNumber = "4");
+		FormFields.editOptionsRow(
+			optionValue = "Disagree",
+			rowNumber = 4);
 
-		FormFields.editOptionsRow(optionValue = "Strongly Disagree", rowNumber = "5");
+		FormFields.editOptionsRow(
+			optionValue = "Strongly Disagree",
+			rowNumber = 5);
 
 		FormFields.save();
 
@@ -1222,8 +1104,7 @@ definition {
 
 		FormFields.editHelpText(
 			fieldHelpText = "Enter any other comments you have about the class",
-			fieldName = "tip"
-		);
+			fieldName = "tip");
 
 		FormFields.selectTextFieldLineOption(textFieldLineOption = "multiline");
 
@@ -1238,23 +1119,19 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Forms"
-		);
+			portlet = "Forms");
 
 		FormsAdmin.viewForm(
 			formDescription = "Leave feedback for your class to make S.P.A.C.E. a better place for all.",
-			formName = "Student Feedback Form"
-		);
+			formName = "Student Feedback Form");
 
 		FormsAdminNavigator.gotoPermissions(
 			formName = "Student Feedback Form",
-			menuItem = "Permissions"
-		);
+			menuItem = "Permissions");
 
 		Role.definePermissionPG(
 			permissionDefinitionKey = "CONTENT_PERMISSIONS_ADD_RECORD_CHECKBOX",
-			roleName = "Power User"
-		);
+			roleName = "Power User");
 
 		Navigator.openURL();
 
@@ -1263,15 +1140,15 @@ definition {
 			pageName = "Class Feedback",
 			siteName = "Moon Rocks 101",
 			sitePagePrivacy = "Private",
-			sitePageType = "Empty Page"
-		);
+			sitePageType = "Empty Page");
 
-		Portlet.addPG(pageName = "Class Feedback", portletName = "Form");
+		Portlet.addPG(
+			pageName = "Class Feedback",
+			portletName = "Form");
 
 		FormPortletConfiguration.configureScopePG(
 			portletName = "Form",
-			scopeSelection = "Global"
-		);
+			scopeSelection = "Global");
 
 		FormPortletConfiguration.selectForm(formName = "Student Feedback Form");
 
@@ -1279,27 +1156,28 @@ definition {
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Class Feedback",
-			siteName = "Moon Rocks 101"
-		);
+			siteName = "Moon Rocks 101");
 
-		FormFields.editText(fieldName = "Class", fieldValue = "MR-1001");
+		FormFields.editText(
+			fieldName = "Class",
+			fieldValue = "MR-1001");
 
-		FormFields.editText(fieldName = "Professor", fieldValue = "Edward Knight");
+		FormFields.editText(
+			fieldName = "Professor",
+			fieldValue = "Edward Knight");
 
 		FormFields.editTextMultiline(
 			fieldName = "ADDITIONALCOMMENTS",
-			fieldValue = "Liferay is awesome!"
-		);
+			fieldValue = "Liferay is awesome!");
 
 		FormFields.selectSelectOption(
 			fieldName = "IENJOYTHECLASS",
-			selectOption = "Strongly Agree"
-		);
+			selectOption = "Strongly Agree");
 
 		for (var fieldName : list "THE PROFESSOR WAS GREAT,I LEARNED NEW SKILLS,THIS CLASS WAS DIFFICULT,I FELT PREPARED FOR THE CLASS") {
-			var fieldName = StringUtil.replace("${fieldName}", " ", "");
+			var fieldName = StringUtil.replace(${fieldName}, " ", "");
 
-			FormFields.enableSwitcher(fieldName = "${fieldName}");
+			FormFields.enableSwitcher(fieldName = ${fieldName});
 		}
 
 		FormPortlet.submit();
@@ -1311,8 +1189,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Forms"
-		);
+			portlet = "Forms");
 
 		FormsAdminNavigator.gotoViewEntries();
 
@@ -1321,26 +1198,22 @@ definition {
 		FormsAdmin.viewTextEntry(
 			fieldLabel = "Class",
 			fieldName = "Class",
-			fieldValue = "MR-1001"
-		);
+			fieldValue = "MR-1001");
 
 		FormsAdmin.viewTextEntry(
 			fieldLabel = "Professor",
 			fieldName = "Professor",
-			fieldValue = "Edward Knight"
-		);
+			fieldValue = "Edward Knight");
 
 		FormsAdmin.viewMultilineTextEntry(
 			fieldLabel = "ADDITIONAL COMMENTS",
 			fieldName = "ADDITIONALCOMMENTS",
-			fieldValue = "Liferay is awesome!"
-		);
+			fieldValue = "Liferay is awesome!");
 
 		FormsAdmin.viewSelectEntry(
 			fieldLabel = "I ENJOY THE CLASS",
 			fieldName = "IENJOYTHECLASS",
-			selectOption = "Strongly Agree"
-		);
+			selectOption = "Strongly Agree");
 
 		Navigator.openURL();
 
@@ -1349,25 +1222,22 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Forms"
-		);
+			portlet = "Forms");
 
 		LAR.exportPortlet(larFileName = "FormsExport.lar");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Workflow Definition"
-		);
+			portlet = "Workflow Definition");
 
 		Workflow.uploadDefinition(
 			workflowDefinitionFile = "assignment-grading.xml",
-			workflowDefinitionTitle = "Assignment Grading Process"
-		);
+			workflowDefinitionTitle = "Assignment Grading Process");
 
 		Navigator.openURL();
 
@@ -1376,12 +1246,9 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
-		Workflow.configureWorkflowViaPortlet(
-			workflowDefinition = "Assignment Grading Process (Version 1)"
-		);
+		Workflow.configureWorkflowViaPortlet(workflowDefinition = "Assignment Grading Process (Version 1)");
 
 		Navigator.openURL();
 
@@ -1390,8 +1257,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
 		Site.assignUserGroupAsMemberCP(userGroupName = "Agricultural Science");
 
@@ -1399,13 +1265,11 @@ definition {
 
 		User.loginPG(
 			password = "liferay",
-			userEmailAddress = "iefan.owain@spaceprogram.liferay.com"
-		);
+			userEmailAddress = "iefan.owain@spaceprogram.liferay.com");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Materials",
-			siteName = "Moon Rocks 101"
-		);
+			siteName = "Moon Rocks 101");
 
 		DMNavigator.gotoFolder(dmFolderName = "Assignment Submission");
 
@@ -1416,23 +1280,19 @@ definition {
 		DMDocument.addWithWorkflowCP(
 			dmDocumentDescription = "DM Document Description",
 			dmDocumentFile = "Document_1.docx",
-			dmDocumentTitle = "DM Document Title"
-		);
+			dmDocumentTitle = "DM Document Title");
 
 		User.logoutPG();
 
 		User.loginPG(
 			password = "liferay",
-			userEmailAddress = "edward.knight@spaceprogram.liferay.com"
-		);
+			userEmailAddress = "edward.knight@spaceprogram.liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = 1);
 
 		Notifications.gotoNotifications();
 
-		Notifications.gotoNotificationsEntry(
-			notificationsWorkflowTitle = "A students has submitted an assignment for grading!"
-		);
+		Notifications.gotoNotificationsEntry(notificationsWorkflowTitle = "A students has submitted an assignment for grading!");
 
 		Click(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 
@@ -1449,12 +1309,9 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "My Account",
 			panel = "User",
-			portlet = "Notifications"
-		);
+			portlet = "Notifications");
 
-		Notifications.gotoNotificationsEntry(
-			notificationsWorkflowTitle = "A students has submitted an assignment for grading!"
-		);
+		Notifications.gotoNotificationsEntry(notificationsWorkflowTitle = "A students has submitted an assignment for grading!");
 
 		Click(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 
@@ -1470,31 +1327,29 @@ definition {
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
-		Organization.addSiteCP(orgName = "Board of Governors", orgType = "Organization");
+		Organization.addSiteCP(
+			orgName = "Board of Governors",
+			orgType = "Organization");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Workflow Definition"
-		);
+			portlet = "Workflow Definition");
 
 		Workflow.uploadDefinition(
 			workflowDefinitionFile = "advanced-governors-review.xml",
-			workflowDefinitionTitle = "Quarterly Reports Review Process"
-		);
+			workflowDefinitionTitle = "Quarterly Reports Review Process");
 
 		Navigator.openURL();
 
@@ -1503,29 +1358,25 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_ICON");
 
 		DMFolder.addCP(
 			dmFolderDescription = "Quarterly Financial Reports Description",
-			dmFolderName = "Quarterly Financial Reports"
-		);
+			dmFolderName = "Quarterly Financial Reports");
 
 		DMFolder.configureWorkflowCP(
 			dmFolderName = "Quarterly Financial Reports",
 			workflowDefinition = "Quarterly Reports Review Process (Version 1)",
-			workflowRestriction = "Default Workflow"
-		);
+			workflowRestriction = "Default Workflow");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -1533,18 +1384,18 @@ definition {
 			orgName = "Board of Governors",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		User.assignRegularRoleCP(roleName = "Board Member", userScreenName = "usersn");
+		User.assignRegularRoleCP(
+			roleName = "Board Member",
+			userScreenName = "usersn");
 
 		Navigator.openURL();
 
@@ -1553,15 +1404,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMFolder.gotoCP(dmFolderName = "Quarterly Financial Reports");
 
 		DMDocument.addWithWorkflowCP(
 			dmDocumentFile = "space-financial-report.pdf",
-			dmDocumentTitle = "space-financial-report.pdf"
-		);
+			dmDocumentTitle = "space-financial-report.pdf");
 
 		Navigator.openURL();
 
@@ -1570,22 +1419,20 @@ definition {
 		Workflow.assignToMeTaskByActions(
 			workflowAssetTitle = "space-financial-report.pdf",
 			workflowAssetType = "Document",
-			workflowTask = "Board Member Review 1"
-		);
+			workflowTask = "Board Member Review 1");
 
 		Navigator.openURL();
 
 		Page.gotoMyAccount(portletName = "My Workflow Tasks");
 
 		Workflow.approveTaskByActions(
-			boardWorkflowTask = "1",
+			boardWorkflowTask = 1,
 			workflowAssetTitle = "space-financial-report.pdf",
 			workflowAssetType = "Document",
-			workflowTask = "Board Member Review 1"
-		);
+			workflowTask = "Board Member Review 1");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test TrainingDemo2 {
 		property database.types = "mysql";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
@@ -1602,46 +1449,46 @@ definition {
 			databaseUserName = PropsUtil.get("database.mysql.username"),
 			jdbcDriverClassName = PropsUtil.get("database.mysql.driver"),
 			jdbcURL = PropsUtil.get("database.mysql.url"),
-			portalName = "S.P.A.C.E"
-		);
+			portalName = "S.P.A.C.E");
 
 		Navigator.openURL();
 
-		Portlet.addPG(pageName = "Mock LDAP Page", portletName = "Mock LDAP");
+		Portlet.addPG(
+			pageName = "Mock LDAP Page",
+			portletName = "Mock LDAP");
 
-		MockLDAP.selectJsonFile(fileName = "space-groups.json", tabName = "User Groups");
+		MockLDAP.selectJsonFile(
+			fileName = "space-groups.json",
+			tabName = "User Groups");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "User Groups"
-		);
+			portlet = "User Groups");
 
-		Pagination.changePagination(itemsPerPage = "20");
+		Pagination.changePagination(itemsPerPage = 20);
 
 		Pagination.viewResults(results = "Showing 1 to 11 of 11 entries.");
 
 		Navigator.openURL();
 
-		MockLDAP.selectJsonFile(fileName = "space-users.json", tabName = "Users");
+		MockLDAP.selectJsonFile(
+			fileName = "space-users.json",
+			tabName = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		Pagination.changePagination(itemsPerPage = "20");
+		Pagination.changePagination(itemsPerPage = 20);
 
 		Pagination.viewResults(results = "Showing 1 to 20 of 115 entries.");
 
@@ -1650,15 +1497,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
 		LAR.importPortlet(
 			larFileName = "organizations-7.0.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		for (var suborgName : list "College of Agricultural Science,Board of Governors,College of Engineering,Human Resources") {
 			Navigator.openURL();
@@ -1666,17 +1511,15 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Users",
 				panel = "Control Panel",
-				portlet = "Users and Organizations"
-			);
+				portlet = "Users and Organizations");
 
 			UsersAndOrganizationsNavigator.gotoOrganizations();
 
 			Organization.addSiteCPWithPrivatePage(
 				checkEnablePropagationCheckbox = "false",
 				organizationSite = "Intranet Site",
-				orgName = "${suborgName}",
-				orgType = "Organization"
-			);
+				orgName = ${suborgName},
+				orgType = "Organization");
 		}
 
 		Navigator.openURL();
@@ -1684,14 +1527,12 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Site Templates"
-		);
+			portlet = "Site Templates");
 
 		LAR.importPortlet(
 			larFileName = "class-site-template-7.0.lar",
 			portletName = "Site Templates",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		SiteTemplates.viewCP(siteTemplateName = "Digital Class Room");
 
@@ -1700,39 +1541,33 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(
 			parentSiteName = "College of Agricultural Science",
 			siteName = "Moon Rocks 101",
 			siteType = "Blank",
-			uncheckPropagation = "false"
-		);
+			uncheckPropagation = "false");
 
 		Site.selectPageType(
 			selectPrivatePages = "true",
-			siteTemplate = "Digital Class Room"
-		);
+			siteTemplate = "Digital Class Room");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(
 			parentSiteName = "College of Engineering",
 			siteName = "Spacecraft Fuel Alternatives 327",
-			siteType = "Blank"
-		);
+			siteType = "Blank");
 
 		Site.selectPageType(
 			selectPrivatePages = "true",
-			siteTemplate = "Digital Class Room"
-		);
+			siteTemplate = "Digital Class Room");
 
 		Navigator.openURL();
 
@@ -1741,8 +1576,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Wiki"
-		);
+			portlet = "Wiki");
 
 		WikiNavigator.gotoNode(wikiNodeName = "Main");
 
@@ -1750,23 +1584,20 @@ definition {
 
 		AssertClick(
 			locator1 = "Wiki#FRONTPAGE_DEFAULT_MESSAGE",
-			value1 = "This page is empty. Edit it to add some text."
-		);
+			value1 = "This page is empty. Edit it to add some text.");
 
-		AlloyEditor.addSourceContent(
-			content = '''==Research Projects for Spacecraft Fuel Alternatives 327==
+		AlloyEditor.addSourceContent(content = '''==Research Projects for Spacecraft Fuel Alternatives 327==
 
 You can brainstorm, edit, and collaborate on your research projects for this class here. Put your links to your project notes below so they can be found easily.
 
-This wiki isn’t meant to be the place for your final project. Just use it as a jumping-off point to talk to your peers and generate ideas. That being said, don’t put anything on here you don’t want me to see.
+This wiki isn't meant to be the place for your final project. Just use it as a jumping-off point to talk to your peers and generate ideas. That being said, don't put anything on here you don't want me to see.
 
 [[Sweet Potatoes]]
 
 [[Cranberries]]
 
 [[Landfill Waste]]
-'''
-		);
+''');
 
 		PortletEntry.publish();
 
@@ -1777,27 +1608,23 @@ This wiki isn’t meant to be the place for your final project. Just use it as a
 			pageName = "Research Projects",
 			siteName = "Spacecraft Fuel Alternatives 327",
 			sitePagePrivacy = "Private",
-			sitePageType = "Empty Page"
-		);
+			sitePageType = "Empty Page");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Research Projects",
-			siteName = "Spacecraft Fuel Alternatives 327"
-		);
+			siteName = "Spacecraft Fuel Alternatives 327");
 
-		Portlet.addPG(pageName = "Research Projects", portletName = "Wiki");
+		Portlet.addPG(
+			pageName = "Research Projects",
+			portletName = "Wiki");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Research Projects",
-			siteName = "Spacecraft Fuel Alternatives 327"
-		);
+			siteName = "Spacecraft Fuel Alternatives 327");
 
-		Click(
-			locator1 = "xpath=(//div[@class='wiki-body']/p/a[contains(.,'Sweet Potatoes')])"
-		);
+		Click(locator1 = "xpath=(//div[@class='wiki-body']/p/a[contains(.,'Sweet Potatoes')])");
 
-		AlloyEditor.addSourceContent(
-			content = '''==Sweet Potatoes==
+		AlloyEditor.addSourceContent(content = '''==Sweet Potatoes==
 
 Student Names:
 Clark Waterford
@@ -1812,22 +1639,17 @@ Ideas:
 Demonstration Ideas:
 *Use specialized fast-growing techniques as an example
 *Conduct experiments for small-size rockets
-*'''
-		);
+*''');
 
 		PortletEntry.publish();
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Research Projects",
-			siteName = "Spacecraft Fuel Alternatives 327"
-		);
+			siteName = "Spacecraft Fuel Alternatives 327");
 
-		Click(
-			locator1 = "xpath=(//div[@class='wiki-body']/p/a[contains(.,'Cranberries')])"
-		);
+		Click(locator1 = "xpath=(//div[@class='wiki-body']/p/a[contains(.,'Cranberries')])");
 
-		AlloyEditor.addSourceContent(
-			content = '''==Cranberries==
+		AlloyEditor.addSourceContent(content = '''==Cranberries==
 
 Student Names:
 Rupert Kelly
@@ -1848,19 +1670,15 @@ How can we prove this?
 
 ==================================================================
 
-'''
-		);
+''');
 
 		PortletEntry.publish();
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Research Projects",
-			siteName = "Spacecraft Fuel Alternatives 327"
-		);
+			siteName = "Spacecraft Fuel Alternatives 327");
 
-		Click(
-			locator1 = "xpath=(//div[@class='wiki-body']/p/a[contains(.,'Landfill Waste')])"
-		);
+		Click(locator1 = "xpath=(//div[@class='wiki-body']/p/a[contains(.,'Landfill Waste')])");
 
 		var content = '''
 ==Landfill Waste==
@@ -1895,8 +1713,7 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_ICON");
 
@@ -1917,13 +1734,11 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		LAR.importPortlet(
 			larFileName = "Moon-Rocks-101-syllabi-and-assignments.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -1932,14 +1747,12 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMFolder.removePermissions(
 			dmFolder = "Assignment Submission",
 			permissionNameList = "ADD_SHORTCUT,ADD_SUBFOLDER,SUBSCRIBE",
-			roleName = "Site Member"
-		);
+			roleName = "Site Member");
 
 		IFrame.closeFrame();
 
@@ -1950,8 +1763,7 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_DESCRIPTIVE");
 
@@ -1965,8 +1777,7 @@ How to Present:
 			dmDocumentDescription = "Dr. Knight - MR101 -  Lecture 1.ogg Description",
 			dmDocumentFile = "Dr. Knight - MR101 -  Lecture 1.ogg",
 			dmDocumentTitle = "Dr. Knight - MR101 -  Lecture 1.ogg",
-			tagNameList = "moon rocks"
-		);
+			tagNameList = "moon rocks");
 
 		Navigator.openURL();
 
@@ -1975,8 +1786,7 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMFolder.gotoCP(dmFolderName = "Assignment Submission");
 
@@ -1985,9 +1795,8 @@ How to Present:
 		DMFolder.gotoCP(dmFolderName = "Chapter 1 Worksheet");
 
 		Click(
-			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_VERTICAL_ELLIPSIS",
-			key_dmDocumentTitle = "owain-unit-1-assignment.pdf"
-		);
+			key_dmDocumentTitle = "owain-unit-1-assignment.pdf",
+			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_VERTICAL_ELLIPSIS");
 
 		MenuItem.click(menuItem = "Edit");
 
@@ -1995,7 +1804,9 @@ How to Present:
 
 		Click.clickAt(locator1 = "Button#ADD_TAGS");
 
-		Type(locator1 = "AssetCategorization#TAGS_FIELD", value1 = "moon rocks");
+		Type(
+			locator1 = "AssetCategorization#TAGS_FIELD",
+			value1 = "moon rocks");
 
 		Click.clickAt(locator1 = "Button#ADD_TAGS");
 
@@ -2008,8 +1819,7 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_ICON");
 
@@ -2023,13 +1833,11 @@ How to Present:
 
 		Search.viewSearchResultPG(
 			searchAssetTitle = "owain-unit-1-assignment.pdf",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultPG(
 			searchAssetTitle = "Dr. Knight - MR101 - Lecture 1.ogg",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Navigator.openURL();
 
@@ -2038,8 +1846,7 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Categories"
-		);
+			portlet = "Categories");
 
 		Vocabulary.addCP(vocabularyName = "Unit 1 - Moon Rock Chemistry");
 
@@ -2050,13 +1857,11 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Categories"
-		);
+			portlet = "Categories");
 
 		Category.addCP(
 			categoryName = "1.1 - The Properties of Moon Rocks",
-			vocabularyName = "Unit 1 - Moon Rock Chemistry"
-		);
+			vocabularyName = "Unit 1 - Moon Rock Chemistry");
 
 		Navigator.openURL();
 
@@ -2065,14 +1870,12 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Categories"
-		);
+			portlet = "Categories");
 
 		Subcategory.addCP(
 			categoryName = "1.1 - The Properties of Moon Rocks",
 			subcategoryName = "1.1 - Audio Lectures",
-			vocabularyName = "Unit 1 - Moon Rock Chemistry"
-		);
+			vocabularyName = "Unit 1 - Moon Rock Chemistry");
 
 		Navigator.openURL();
 
@@ -2081,14 +1884,12 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Categories"
-		);
+			portlet = "Categories");
 
 		Subcategory.addCP(
 			categoryName = "1.1 - The Properties of Moon Rocks",
 			subcategoryName = "1.1 - Lecture Notes",
-			vocabularyName = "Unit 1 - Moon Rock Chemistry"
-		);
+			vocabularyName = "Unit 1 - Moon Rock Chemistry");
 
 		Navigator.openURL();
 
@@ -2097,13 +1898,11 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Categories"
-		);
+			portlet = "Categories");
 
 		LAR.importPortlet(
 			larFileName = "Moon-Rocks-Unit-Category-Hierarchy.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -2112,8 +1911,7 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_DESCRIPTIVE");
 
@@ -2123,36 +1921,27 @@ How to Present:
 
 		DMFolder.gotoCP(dmFolderName = "Audio Lectures");
 
-		DMNavigator.gotoEditDocument(
-			dmDocumentTitle = "Dr. Knight - MR101 -  Lecture 1.ogg"
-		);
+		DMNavigator.gotoEditDocument(dmDocumentTitle = "Dr. Knight - MR101 -  Lecture 1.ogg");
 
 		DMDocument.addCategories(
 			categoryNameList = "1.1 - Audio Lectures",
-			vocabularyName = "Unit 1 - Moon Rock Chemistry"
-		);
+			vocabularyName = "Unit 1 - Moon Rock Chemistry");
 
 		PortletEntry.publish();
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Materials",
-			siteName = "Moon Rocks 101"
-		);
+			siteName = "Moon Rocks 101");
 
 		Portlet.addPG(portletName = "Categories Navigation");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Materials",
-			siteName = "Moon Rocks 101"
-		);
+			siteName = "Moon Rocks 101");
 
-		CategoriesNavigationPortlet.selectCategoryPG(
-			categoryName = "1.1 - The Properties of Moon Rocks"
-		);
+		CategoriesNavigationPortlet.selectCategoryPG(categoryName = "1.1 - The Properties of Moon Rocks");
 
-		CategoriesNavigationPortlet.selectCategoryPG(
-			categoryName = "1.1 - Audio Lectures"
-		);
+		CategoriesNavigationPortlet.selectCategoryPG(categoryName = "1.1 - Audio Lectures");
 
 		Navigator.openURL();
 
@@ -2161,8 +1950,7 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Wiki"
-		);
+			portlet = "Wiki");
 
 		WikiNode.addCP(wikiNodeName = "Electricity");
 
@@ -2173,8 +1961,7 @@ How to Present:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Wiki"
-		);
+			portlet = "Wiki");
 
 		WikiNavigator.gotoNode(wikiNodeName = "Electricity");
 
@@ -2195,14 +1982,13 @@ Brainstorming:
 <ul>
 	<li>Talk about Bell's Bane (cite Dr. Novola's paper as reference)</li>
 
-	<li>Yesterday’s technology</li>
+	<li>Yesterday's technology</li>
 
 	<li>Fuel alternatives need to keep pace with the latest in spacecraft technology</li>
 </ul>
 
 ''',
-			wikiNodeName = "Electricity"
-		);
+			wikiNodeName = "Electricity");
 
 		Navigator.openURL();
 
@@ -2211,14 +1997,12 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Wiki"
-		);
+			portlet = "Wiki");
 
 		LAR.importPortlet(
 			larFileName = "research-projects-node.lar",
 			mirrorWithOverwriting = "true",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -2227,16 +2011,19 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Wiki"
-		);
+			portlet = "Wiki");
 
 		WikiNavigator.gotoNode(wikiNodeName = "Organic Research Projects");
 
 		WikiNavigator.gotoCP(wikiPageTitle = "FrontPage");
 
-		AssertClick(locator1 = "WikiEntry#BODY_LINK", value1 = "Sweet Potatoes");
+		AssertClick(
+			locator1 = "WikiEntry#BODY_LINK",
+			value1 = "Sweet Potatoes");
 
-		AssertTextEquals(locator1 = "Portlet#HEADER_TITLE", value1 = "Sweet Potatoes");
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER_TITLE",
+			value1 = "Sweet Potatoes");
 
 		Navigator.openURL();
 
@@ -2245,28 +2032,24 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Document Types");
 
 		DMDocumentType.add(
 			dmDocumentTypeDescription = "S.P.A.C.E. Employee Information Sheet Description",
 			dmDocumentTypeFieldNames = "Boolean",
-			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet"
-		);
+			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet");
 
 		DMDocumentType.edit(
 			dmDocumentTypeFieldLabel = "Hire Date",
 			dmDocumentTypeFieldNames = "Date",
-			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet"
-		);
+			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet");
 
 		DMDocumentType.edit(
 			dmDocumentTypeFieldLabel = "Supervisor Notes",
 			dmDocumentTypeFieldNames = "Text Box",
-			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet"
-		);
+			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet");
 
 		Navigator.openURL();
 
@@ -2275,15 +2058,13 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_ICON");
 
 		DMFolder.addCP(
 			dmFolderDescription = "S.P.A.C.E. Adjunct Faculty Description",
-			dmFolderName = "S.P.A.C.E. Adjunct Faculty"
-		);
+			dmFolderName = "S.P.A.C.E. Adjunct Faculty");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_DESCRIPTIVE");
 
@@ -2297,8 +2078,7 @@ Brainstorming:
 			dmDocumentTitle = "Edward Knight.docx",
 			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet",
 			textBox = "Liferay Supervisor",
-			textBoxFieldName = "SupervisorNotes"
-		);
+			textBoxFieldName = "SupervisorNotes");
 
 		Navigator.openURL();
 
@@ -2307,13 +2087,11 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Staging"
-		);
+			portlet = "Staging");
 
 		Staging.activateStagingCP(
 			contentNameList = "Web Content,Documents and Media,Mobile Device Families",
-			siteName = "Human Resources"
-		);
+			siteName = "Human Resources");
 
 		Navigator.openURL();
 
@@ -2324,8 +2102,7 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Staging"
-		);
+			portlet = "Staging");
 
 		Staging.editStagingConfiguration(privatePageVersioningEnabled = "true");
 
@@ -2346,13 +2123,11 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "HR_WebContent.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -2363,10 +2138,9 @@ Brainstorming:
 		Portlet.deletePG(portletName = "Language Selector");
 
 		Portlet.dragAndDropPortletToColumnPG(
-			columnNumberFrom = "1",
-			columnNumberTo = "2",
-			portletName = "Activities"
-		);
+			columnNumberFrom = 1,
+			columnNumberTo = 2,
+			portletName = "Activities");
 
 		Navigator.openURL();
 
@@ -2376,8 +2150,7 @@ Brainstorming:
 
 		Portlet.gotoPortletOptions(
 			portletName = "Asset Publisher",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.configureCustomTitleViaLookandfeelPG(customPortletTitle = "What’s New");
 
@@ -2389,9 +2162,7 @@ Brainstorming:
 
 		Content.addPG(assetTitle = "The SPACE Family");
 
-		Staging.viewStagingWorkflowStatusPG(
-			stagingWorkflowStatus = "Ready for Publication"
-		);
+		Staging.viewStagingWorkflowStatusPG(stagingWorkflowStatus = "Ready for Publication");
 
 		ProductMenu.gotoStagingSite();
 
@@ -2407,20 +2178,17 @@ Brainstorming:
 
 		Content.addPG(assetTitle = "Enrollment Features");
 
-		Staging.viewStagingWorkflowStatusPG(
-			stagingWorkflowStatus = "Ready for Publication"
-		);
+		Staging.viewStagingWorkflowStatusPG(stagingWorkflowStatus = "Ready for Publication");
 
 		Staging.schedulePublishToLivePG(
 			endByDate = "true",
 			frequency = "Yearly",
-			scheduleTitleName = "HR Site Launch"
-		);
+			scheduleTitleName = "HR Site Launch");
 
-		Pause(locator1 = "120000");
+		Pause(locator1 = 120000);
 	}
 
-	@priority = "5"
+	@priority = 5
 	test TrainingDemo3 {
 		property database.types = "mysql";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
@@ -2437,46 +2205,46 @@ Brainstorming:
 			databaseUserName = PropsUtil.get("database.mysql.username"),
 			jdbcDriverClassName = PropsUtil.get("database.mysql.driver"),
 			jdbcURL = PropsUtil.get("database.mysql.url"),
-			portalName = "S.P.A.C.E"
-		);
+			portalName = "S.P.A.C.E");
 
 		Navigator.openURL();
 
-		Portlet.addPG(pageName = "Mock LDAP Page", portletName = "Mock LDAP");
+		Portlet.addPG(
+			pageName = "Mock LDAP Page",
+			portletName = "Mock LDAP");
 
-		MockLDAP.selectJsonFile(fileName = "space-groups.json", tabName = "User Groups");
+		MockLDAP.selectJsonFile(
+			fileName = "space-groups.json",
+			tabName = "User Groups");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "User Groups"
-		);
+			portlet = "User Groups");
 
-		Pagination.changePagination(itemsPerPage = "20");
+		Pagination.changePagination(itemsPerPage = 20);
 
 		Pagination.viewResults(results = "Showing 1 to 11 of 11 entries.");
 
 		Navigator.openURL();
 
-		MockLDAP.selectJsonFile(fileName = "space-users.json", tabName = "Users");
+		MockLDAP.selectJsonFile(
+			fileName = "space-users.json",
+			tabName = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		Pagination.changePagination(itemsPerPage = "20");
+		Pagination.changePagination(itemsPerPage = 20);
 
 		Pagination.viewResults(results = "Showing 1 to 20 of 115 entries.");
 
@@ -2485,23 +2253,20 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
 		LAR.importPortlet(
 			larFileName = "organizations-7.0.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
@@ -2509,24 +2274,21 @@ Brainstorming:
 
 		WebContent.addAbstractSummary(abstractSummary = "A basic front page banner");
 
-		AlloyEditor.addSourceContent(
-			content = '''
+		AlloyEditor.addSourceContent(content = '''
 <h2 class="text-center">Space Program Academy of Continuing Education</h2>
 
 <p class="text-center">Dare to Dream out of this world</p>
-'''
-		);
+''');
 
 		Click(locator1 = "Button#EDITOR_FORMAT");
 
 		WebContent.addWithImage(
 			uploadFileName = "Spaceport.jpg",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Button.clickPublish();
 
-		Pause(locator1 = "10000");
+		Pause(locator1 = 10000);
 
 		Navigator.openURL();
 
@@ -2536,9 +2298,7 @@ Brainstorming:
 
 		Content.addPG(assetTitle = "Basic S.P.A.C.E. Banner");
 
-		WebContent.viewPGViaWCD(
-			webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world"
-		);
+		WebContent.viewPGViaWCD(webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world");
 
 		WebContentNavigator.gotoEditPGViaWCD();
 
@@ -2546,16 +2306,13 @@ Brainstorming:
 			localizedAbstractSummary = "A Japanese translation of the basic front page banner",
 			localizedLanguage = "Japanese (Japan)",
 			localizedTitle = "Basic S.P.A.C.E. Banner (Japanese Translation)",
-			webContentTitle = "Basic S.P.A.C.E. Banner"
-		);
+			webContentTitle = "Basic S.P.A.C.E. Banner");
 
-		AlloyEditor.addSourceContent(
-			content = '''
+		AlloyEditor.addSourceContent(content = '''
 <h2 class="text-center">Space Program 大学生涯教育</h2>
 
 <p class="text-center">地球から、宇宙の果てへ</p>
-'''
-		);
+''');
 
 		Button.clickPublish();
 
@@ -2569,9 +2326,7 @@ Brainstorming:
 
 		Navigator.openURL();
 
-		WebContent.viewPGViaWCD(
-			webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world Space Program 大学生涯教育 地球から、宇宙の果てへ"
-		);
+		WebContent.viewPGViaWCD(webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world Space Program 大学生涯教育 地球から、宇宙の果てへ");
 
 		Navigator.openURL();
 
@@ -2579,14 +2334,11 @@ Brainstorming:
 
 		Navigator.openURL();
 
-		WebContent.viewPGViaWCD(
-			webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world"
-		);
+		WebContent.viewPGViaWCD(webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world");
 
 		AssertTextNotPresent(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "Space Program 大学生涯教育 地球から、宇宙の果てへ"
-		);
+			value1 = "Space Program 大学生涯教育 地球から、宇宙の果てへ");
 
 		Navigator.openURL();
 
@@ -2595,8 +2347,7 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMFolder.addCP(dmFolderName = "Web Content Images");
 
@@ -2604,13 +2355,14 @@ Brainstorming:
 
 		DMNavigator.gotoFolder(dmFolderName = "Web Content Images");
 
-		DMDocument.addCP(dmDocumentFile = "dream.jpg", dmDocumentTitle = "dream.jpg");
+		DMDocument.addCP(
+			dmDocumentFile = "dream.jpg",
+			dmDocumentTitle = "dream.jpg");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMNavigator.gotoFolder(dmFolderName = "Web Content Images");
 
@@ -2619,15 +2371,14 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMNavigator.gotoFolder(dmFolderName = "Web Content Images");
 
 		for (var dmDocumentTitle : list "dream.jpg,future.jpg,lift-off.jpg") {
-			DMNavigator.gotoDocumentCP(dmDocumentTitle = "${dmDocumentTitle}");
+			DMNavigator.gotoDocumentCP(dmDocumentTitle = ${dmDocumentTitle});
 
-			DMDocument.viewCP(dmDocumentTitle = "${dmDocumentTitle}");
+			DMDocument.viewCP(dmDocumentTitle = ${dmDocumentTitle});
 
 			Click(locator1 = "Icon#ANGLE_LEFT_BACK");
 		}
@@ -2635,8 +2386,7 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_DESCRIPTIVE");
 
@@ -2647,22 +2397,20 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Blogs"
-		);
+			portlet = "Blogs");
 
 		LexiconEntry.gotoAdd();
 
 		BlogsEntry.addEntryContent(
 			entryContent = '''A World-Renowned Professor<br />It's no secret that Agricultural Science Department professor Dr. Wolfgang von Richter has built his entire career on solving the problem of sustainable living on other planets. For Dr. von Richter, the humble lima bean, which comes from the aptly-named phaseolus lunatus plant of the legume family, is the solution. For years, Dr. von Richter has cultivated variety after variety of lima bean. He's turned lima beans cobalt blue by adding the hardiness of a violet gene; he's grown lima beans the size of fists with his nutrient-rich, hyper-growth soil. But how realistic is his dream of getting lima beans to grow in the harsh, unpredictable, and, frankly, otherworldly conditions of different planets?''',
 			entrySubtitle = "A conversation with Dr. Von Richter",
-			entryTitle = "Is the Lima Bean Really the Answer to Our Life on Other Planets?"
-		);
+			entryTitle = "Is the Lima Bean Really the Answer to Our Life on Other Planets?");
 
 		BlogsEntry.selectFormattingStyle(styleFormat = "Heading 2");
 
 		Button.clickPublish();
 
-		Pause(locator1 = "10000");
+		Pause(locator1 = 10000);
 
 		Navigator.openURL();
 
@@ -2671,14 +2419,12 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		for (var folderName : list "News,Events,Front Page Content") {
 			WebContentFolder.addCP(
 				folderDescription = "${folderName} Folder Description",
-				folderName = "${folderName}"
-			);
+				folderName = ${folderName});
 		}
 
 		Navigator.openURL();
@@ -2688,44 +2434,38 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContent.moveToFolderCP(
 			folderName = "Front Page Content",
-			webContentTitle = "Basic S.P.A.C.E. Banner"
-		);
+			webContentTitle = "Basic S.P.A.C.E. Banner");
 
 		Navigator.openURL();
 
 		Portlet.gotoPortletOptions(
 			portletName = "Web Content Display",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.selectApplicationDecorator(decorator = "Borderless");
 
 		Refresh();
 
 		AssertTextEquals(
+			key_portletTitleName = "Basic S.P.A.C.E. Banner",
 			locator1 = "Portlet#SPECIFIC_TITLE",
-			value1 = "Basic S.P.A.C.E. Banner",
-			key_portletTitleName = "Basic S.P.A.C.E. Banner"
-		);
+			value1 = "Basic S.P.A.C.E. Banner");
 
 		Portlet.gotoPortletOptions(
 			portletName = "Web Content Display",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.selectApplicationDecorator(decorator = "Barebone");
 
 		Refresh();
 
 		AssertElementNotPresent(
-			locator1 = "Portlet#SPECIFIC_TITLE",
-			key_portletTitleName = "Basic S.P.A.C.E. Banner"
-		);
+			key_portletTitleName = "Basic S.P.A.C.E. Banner",
+			locator1 = "Portlet#SPECIFIC_TITLE");
 
 		Navigator.openURL();
 
@@ -2740,43 +2480,36 @@ Brainstorming:
 		AssetPublisherPortlet.configureAssetTypePG(
 			assetSubtype = "Any",
 			portletName = "Asset Publisher",
-			selectedAsset = "Web Content Article"
-		);
+			selectedAsset = "Web Content Article");
 
 		Navigator.openURL();
 
 		AssetPublisherPortlet.configureAssetLinkBehaviorPG(
 			assetLinkBehavior = "View in Context",
-			disableConfiguration = "Show Add Content Button"
-		);
+			disableConfiguration = "Show Add Content Button");
 
 		Navigator.openURL();
 
 		AssetPublisherPortlet.configurePaginationPG(
-			paginationNumber = "5",
-			paginationType = "Regular"
-		);
+			paginationNumber = 5,
+			paginationType = "Regular");
 
 		Navigator.openURL();
 
-		AssetPublisherPortlet.saveConfigurationTemplatePG(
-			configurationName = "Basic Web Content Feed"
-		);
+		AssetPublisherPortlet.saveConfigurationTemplatePG(configurationName = "Basic Web Content Feed");
 
 		Navigator.openURL();
 
 		Portlet.gotoSpecificPortletOptions(
-			order = "2",
+			order = 2,
 			portletName = "Asset Publisher",
-			portletOption = "Configuration Templates"
-		);
+			portletOption = "Configuration Templates");
 
 		IFrame.selectDialogFrame();
 
 		Click(
-			locator1 = "Icon#ROW_VERTICAL_ELLIPSIS",
-			key_rowEntry = "Basic Web Content Feed"
-		);
+			key_rowEntry = "Basic Web Content Feed",
+			locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
 
 		MenuItem.click(menuItem = "Apply");
 
@@ -2786,18 +2519,16 @@ Brainstorming:
 
 		Portlet.gotoPortletOptions(
 			portletName = "Asset Publisher",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.configureCustomTitleViaLookandfeelPG(customPortletTitle = "News");
 
 		Navigator.openURL();
 
 		Portlet.gotoSpecificPortletOptions(
-			order = "2",
+			order = 2,
 			portletName = "Asset Publisher",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.configureCustomTitleViaLookandfeelPG(customPortletTitle = "Events");
 
@@ -2806,27 +2537,26 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "space-content-7.0.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		Click(locator1 = "xpath=(//a[.='Events'])");
 
-		Type.clickAtType(locator1 = "TextInput#NAME", value1 = "Evold");
+		Type.clickAtType(
+			locator1 = "TextInput#NAME",
+			value1 = "Evold");
 
 		WebContentStructures.saveCP(structureName = "Evold");
 
@@ -2835,33 +2565,31 @@ Brainstorming:
 		AssetPublisherPortlet.configureAssetTypePG(
 			assetSubtype = "News",
 			portletName = "Asset Publisher",
-			selectedAsset = "Web Content Article"
-		);
+			selectedAsset = "Web Content Article");
 
 		Navigator.openURL();
 
 		AssetPublisherPortlet.configureAssetTypePG(
 			assetSubtype = "Evold",
-			order = "2",
+			order = 2,
 			portletName = "Asset Publisher",
-			selectedAsset = "Web Content Article"
-		);
+			selectedAsset = "Web Content Article");
 
 		Navigator.openURL();
 
 		Page.add(
 			inheritChanges = "disable",
 			pageName = "News and Events",
-			pageTemplateName = "Content Display Page"
-		);
+			pageTemplateName = "Content Display Page");
 
-		Navigator.gotoSitePage(pageName = "News and Events", siteName = "S.P.A.C.E");
+		Navigator.gotoSitePage(
+			pageName = "News and Events",
+			siteName = "S.P.A.C.E");
 
 		AssetPublisherPortlet.configureAssetTypePG(
 			selectContent = "3 Column with Images,Footer Content,1 Column Banner,3 Column,Basic Web Content,News and Events Structure",
 			selectedAsset = "Web Content Article",
-			selectMoreThanOneSubtype = "true"
-		);
+			selectMoreThanOneSubtype = "true");
 
 		Navigator.openURL();
 
@@ -2869,26 +2597,25 @@ Brainstorming:
 
 		Page.editPageLayoutColumn(columnName = "1-2 Columns (30/70)");
 
-		Navigator.gotoSitePage(pageName = "News and Events", siteName = "S.P.A.C.E");
+		Navigator.gotoSitePage(
+			pageName = "News and Events",
+			siteName = "S.P.A.C.E");
 
 		Portlet.gotoPortletOptions(
 			portletName = "Asset Publisher",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.selectApplicationDecorator(decorator = "Barebone");
 
 		Portlet.dragAndDropPortletToColumnPG(
-			columnNumberFrom = "1",
-			columnNumberTo = "2",
-			portletName = "Tags Navigation"
-		);
+			columnNumberFrom = 1,
+			columnNumberTo = 2,
+			portletName = "Tags Navigation");
 
 		Portlet.dragAndDropPortletToColumnPG(
-			columnNumberFrom = "1",
-			columnNumberTo = "2",
-			portletName = "Categories Navigation"
-		);
+			columnNumberFrom = 1,
+			columnNumberTo = 2,
+			portletName = "Categories Navigation");
 
 		Portlet.addPG(portletName = "Web Content Display");
 
@@ -2897,18 +2624,18 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
-		WebContentFolder.gotoCP(folderName = "News (2)", webContentTitle = "News (2)");
+		WebContentFolder.gotoCP(
+			folderName = "News (2)",
+			webContentTitle = "News (2)");
 
 		for (var webContentTitle : list "When It All Began...,Student Spotlight,Stravinksy in Space?") {
-			WebContentNavigator.gotoEditCP(webContentTitle = "${webContentTitle}");
+			WebContentNavigator.gotoEditCP(webContentTitle = ${webContentTitle});
 
 			WebContent.editDisplayPageCP(
 				pageName = "News and Events",
-				webContentTitle = "${webContentTitle}"
-			);
+				webContentTitle = ${webContentTitle});
 		}
 
 		Navigator.openURL();
@@ -2916,21 +2643,18 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentFolder.gotoCP(
 			folderName = "Events (2)",
-			webContentTitle = "Events (2)"
-		);
+			webContentTitle = "Events (2)");
 
 		for (var webContentTitle : list "Upcoming Press Conference,New Student Orientation,Fall Special Speaker Series") {
-			WebContentNavigator.gotoEditCP(webContentTitle = "${webContentTitle}");
+			WebContentNavigator.gotoEditCP(webContentTitle = ${webContentTitle});
 
 			WebContent.editDisplayPageCP(
 				pageName = "News and Events",
-				webContentTitle = "${webContentTitle}"
-			);
+				webContentTitle = ${webContentTitle});
 		}
 
 		Navigator.openURL();
@@ -2938,8 +2662,7 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
@@ -2948,13 +2671,11 @@ Brainstorming:
 		DynamicDataMapping.addField(
 			field = "Web Content",
 			fieldFieldLabel = "Web Content",
-			fieldName = "contents"
-		);
+			fieldName = "contents");
 
 		DynamicDataMapping.editFieldTip(
 			fieldFieldLabel = "Web Content",
-			fieldTip = "Choose as many content pieces as you would like to feature."
-		);
+			fieldTip = "Choose as many content pieces as you would like to feature.");
 
 		DynamicDataMapping.editFieldRepeatable(fieldFieldLabel = "Web Content");
 
@@ -2965,31 +2686,27 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentTemplates.editTemplateFile(
 			templateFile = "event-advanced-display.ftl",
-			templateName = "Event Template"
-		);
+			templateName = "Event Template");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "content-display-templates.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		for (var templateName : list "Carousel Display,Thumbnail Display,Content List Display") {
-			WebContentNavigator.gotoViewTemplate(templateName = "${templateName}");
+			WebContentNavigator.gotoViewTemplate(templateName = ${templateName});
 
 			WebContentTemplates.addStructure(structureName = "Content List");
 
@@ -3000,15 +2717,13 @@ Brainstorming:
 			ProductMenu.gotoPortlet(
 				category = "Content",
 				panel = "Site Administration",
-				portlet = "Web Content"
-			);
+				portlet = "Web Content");
 
 			WebContentTemplates.viewCP(
 				structureName = "Content List",
 				templateDescription = "",
 				templateLanguage = "ftl",
-				templateName = "${templateName}"
-			);
+				templateName = ${templateName});
 		}
 
 		Navigator.openURL();
@@ -3019,20 +2734,19 @@ Brainstorming:
 
 		Type.typeClickAt(
 			locator1 = "TextInput#SEO_HTML_TITLE",
-			value1 = "S.P.A.C.E.Home"
-		);
+			value1 = "S.P.A.C.E.Home");
 
 		Type.typeClickAt(
 			locator1 = "TextArea#SEO_META_TAGS_DESCRIPTION",
-			value1 = "Welcome to S.P.A.C.E., a graduate-level school for those passionate about expanding their horizons through science, research, and space travel"
-		);
+			value1 = "Welcome to S.P.A.C.E., a graduate-level school for those passionate about expanding their horizons through science, research, and space travel");
 
 		Type.typeClickAt(
 			locator1 = "TextArea#SEO_META_TAGS_KEYWORDS",
-			value1 = "space, education, space travel, graduateschool"
-		);
+			value1 = "space, education, space travel, graduateschool");
 
-		AssertClick.pauseAssertTextClickAt(locator1 = "Button#SAVE", value1 = "Save");
+		AssertClick.pauseAssertTextClickAt(
+			locator1 = "Button#SAVE",
+			value1 = "Save");
 
 		Alert.waitForSuccessMessageHide();
 
@@ -3045,35 +2759,30 @@ Brainstorming:
 		Page.viewPageMetadata(
 			HTMLTitle = "S.P.A.C.E.Home",
 			metaTagsDescription = "Welcome to S.P.A.C.E., a graduate-level school for those passionate about expanding their horizons through science, research, and space travel",
-			metaTagsKeywords = "space, education, space travel, graduateschool"
-		);
+			metaTagsKeywords = "space, education, space travel, graduateschool");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "News Description",
-			structureName = "News"
-		);
+			structureName = "News");
 
 		DynamicDataMapping.addField(
 			field = "Documents and Media",
 			fieldFieldLabel = "Cover Image",
-			fieldName = "NewsCoverImage"
-		);
+			fieldName = "NewsCoverImage");
 
 		DynamicDataMapping.addField(
 			field = "Text Box",
 			fieldFieldLabel = "Content",
-			fieldName = "NewsContent"
-		);
+			fieldName = "NewsContent");
 
 		WebContentStructures.saveCP(structureName = "News");
 
@@ -3082,39 +2791,33 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "Events Custom Description",
-			structureName = "Events Custom"
-		);
+			structureName = "Events Custom");
 
 		DynamicDataMapping.addField(
 			field = "Documents and Media",
 			fieldFieldLabel = "Cover Image",
-			fieldName = "NewsCoverImage"
-		);
+			fieldName = "NewsCoverImage");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Headline",
-			fieldName = "EventsHeadline"
-		);
+			fieldName = "EventsHeadline");
 
 		DynamicDataMapping.addField(
 			field = "Date",
 			fieldFieldLabel = "Event Date",
-			fieldName = "EventDate"
-		);
+			fieldName = "EventDate");
 
 		DynamicDataMapping.addField(
 			field = "Text Box",
 			fieldFieldLabel = "Lead Text",
-			fieldName = "EventsLeadText"
-		);
+			fieldName = "EventsLeadText");
 
 		WebContentStructures.saveCP(structureName = "Events Custom");
 
@@ -3123,39 +2826,33 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "frontPage-structures.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "space-templates.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentFolder.gotoCP(
 			folderName = "Front Page Content",
-			webContentTitle = "Front Page Content"
-		);
+			webContentTitle = "Front Page Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "1 Column Banner");
 
@@ -3166,8 +2863,7 @@ Brainstorming:
 			webContentImage = "Spaceport.jpg",
 			webContentTextBox = "Space Program Academy of Continuing Education",
 			webContentTextBox2 = "Dare to dream out of this world",
-			webContentTitle = "S.P.A.C.E. Banner"
-		);
+			webContentTitle = "S.P.A.C.E. Banner");
 
 		PortletEntry.publish();
 
@@ -3180,60 +2876,60 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "S.P.A.C.E.-News-and-Events.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openSiteURL(siteName = "S.P.A.C.E.");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		for (var webContentTitle : list "When It All Began...,Stravinksy in Space?,Student Spotlight,Upcoming Press Conference,New Student Orientation,Fall Special Speaker Series") {
-			WebContent.viewTitle(webContentTitle = "${webContentTitle}");
+			WebContent.viewTitle(webContentTitle = ${webContentTitle});
 		}
 
 		WebContent.moveArticlesToFolderCP(
 			folderName = "News",
-			webContentArticlesList = "When It All Began...,Stravinksy in Space?,Student Spotlight"
-		);
+			webContentArticlesList = "When It All Began...,Stravinksy in Space?,Student Spotlight");
 
 		var folderName = "Events";
 		var webContentArticlesList = "Upcoming Press Conference,New Student Orientation,Fall Special Speaker Series";
 
-		for (var webContentTitle : list "${webContentArticlesList}") {
+		for (var webContentTitle : list ${webContentArticlesList}) {
 			Check(
-				locator1 = "WC#ENTRY_DESCRIPTIVE_CHECKBOX",
-				key_webContentTitle = "${webContentTitle}"
-			);
+				key_webContentTitle = ${webContentTitle},
+				locator1 = "WC#ENTRY_DESCRIPTIVE_CHECKBOX");
 		}
 
 		Click(locator1 = "WC#TOOLBAR_MOVE_BUTTON");
 
-		AssertTextEquals(locator1 = "Portlet#HEADER", value1 = "Move Web Content");
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "Move Web Content");
 
 		Click(locator1 = "Button#PARENT_FOLDER_SELECT");
 
 		IFrame.selectDialogFrame();
 
 		AssertClick(
+			key_folderName = "Events",
 			locator1 = "WC#FOLDER_TABLE_CHOOSE",
-			value1 = "Choose",
-			key_folderName = "Events"
-		);
+			value1 = "Choose");
 
 		SelectFrameTop();
 
-		AssertClick(locator1 = "Button#DONE", value1 = "Done");
+		AssertClick(
+			locator1 = "Button#DONE",
+			value1 = "Done");
 
-		AssertClick(locator1 = "Button#MOVE", value1 = "Move");
+		AssertClick(
+			locator1 = "Button#MOVE",
+			value1 = "Move");
 
 		Alert.waitForSuccessMessageHide();
 
@@ -3242,27 +2938,23 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Workflow Definition"
-		);
+			portlet = "Workflow Definition");
 
 		Workflow.uploadDefinition(
 			workflowDefinitionFile = "advanced-governors-review-edit.xml",
-			workflowDefinitionTitle = "Quarterly Reports Review Process"
-		);
+			workflowDefinitionTitle = "Quarterly Reports Review Process");
 
 		Workflow.viewDefinition(
 			workflowDefinitionName = "Quarterly Reports Review Process",
 			workflowDefinitionTitle = "Quarterly Reports Review Process",
-			workflowDefinitionVersionNumber = "1"
-		);
+			workflowDefinitionVersionNumber = 1);
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -3270,8 +2962,7 @@ Brainstorming:
 			checkEnablePropagationCheckbox = "false",
 			organizationSite = "Intranet Site",
 			orgName = "Board of Governors",
-			orgType = "Organization"
-		);
+			orgType = "Organization");
 
 		Navigator.openURL();
 
@@ -3280,31 +2971,29 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_ICON");
 
 		DMFolder.addCP(
 			dmFolderDescription = "Quarterly Financial Reports Description",
-			dmFolderName = "Quarterly Financial Reports"
-		);
+			dmFolderName = "Quarterly Financial Reports");
 
 		DMFolder.configureWorkflowCP(
 			dmFolderName = "Quarterly Financial Reports",
 			workflowDefinition = "Quarterly Reports Review Process (Version 1)",
-			workflowRestriction = "Default Workflow"
-		);
+			workflowRestriction = "Default Workflow");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		User.assignRegularRoleCP(roleName = "Board Member", userScreenName = "test");
+		User.assignRegularRoleCP(
+			roleName = "Board Member",
+			userScreenName = "test");
 
 		Navigator.openURL();
 
@@ -3313,15 +3002,13 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMFolder.gotoCP(dmFolderName = "Quarterly Financial Reports");
 
 		DMDocument.addWithWorkflowCP(
 			dmDocumentFile = "space-financial-report.pdf",
-			dmDocumentTitle = "space-financial-report.pdf"
-		);
+			dmDocumentTitle = "space-financial-report.pdf");
 
 		Navigator.openURL();
 
@@ -3330,8 +3017,7 @@ Brainstorming:
 		Workflow.assignToMeTaskByActions(
 			workflowAssetTitle = "space-financial-report.pdf",
 			workflowAssetType = "Document",
-			workflowTask = "Board Member Review 1"
-		);
+			workflowTask = "Board Member Review 1");
 
 		for (var workflowTask : list "Board Member Review 2,Board Member Review 3,Board Member Review 4") {
 			Navigator.openURL();
@@ -3340,10 +3026,9 @@ Brainstorming:
 
 			Workflow.gotoTaskAssignedToMyRolesActionsCmd(
 				workflowAssetTitle = "space-financial-report.pdf",
-				workflowTask = "${workflowTask}"
-			);
+				workflowTask = ${workflowTask});
 
-			MenuItem.click(menuItem = "${workflowTask}");
+			MenuItem.click(menuItem = ${workflowTask});
 
 			Workflow.confirmAndViewSucessMessageViaActions();
 
@@ -3354,8 +3039,7 @@ Brainstorming:
 			Workflow.assignToMeTaskByActions(
 				workflowAssetTitle = "space-financial-report.pdf",
 				workflowAssetType = "Document",
-				workflowTask = "${workflowTask}"
-			);
+				workflowTask = ${workflowTask});
 		}
 
 		Navigator.openURL();
@@ -3365,8 +3049,7 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
@@ -3377,28 +3060,23 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
-		Workflow.configureWorkflowViaFolderInfo(
-			workflowDefinition = "Single Approver (Version 1)"
-		);
+		Workflow.configureWorkflowViaFolderInfo(workflowDefinition = "Single Approver (Version 1)");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "SPACE Events Template Description",
 			templateLanguage = "ftl",
-			templateName = "SPACE Events"
-		);
+			templateName = "SPACE Events");
 
 		WebContentTemplates.addStructure(structureName = "Events Custom");
 
@@ -3409,21 +3087,18 @@ Brainstorming:
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		Click(locator1 = "Icon#DISPLAY_STYLE_DESCRIPTIVE");
 
 		WebContentFolder.addSubfolderCP(
 			folderName = "Events (2)",
 			subfolderDescription = "Highlighted Description",
-			subfolderName = "Highlighted"
-		);
+			subfolderName = "Highlighted");
 
 		WebContentFolder.gotoCP(
 			folderName = "Highlighted",
-			webContentTitle = "Highlighted"
-		);
+			webContentTitle = "Highlighted");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "Events Custom");
 
@@ -3441,8 +3116,7 @@ Headline: New Student Orientation
 Event Date: 09/17/2065
 
 Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 P.M. Monday, August 17th in the Carelli Auditorium on South Campus.''',
-			webContentTitle = "New Student Orientation"
-		);
+			webContentTitle = "New Student Orientation");
 
 		Button.clickSubmitForPublication();
 
@@ -3454,23 +3128,19 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		Notifications.reviewViaNotificationsEntry(
 			menuItem = "Assign to Me",
-			notificationsWorkflowTitle = "Space Admin sent you a Web Content Article for review in the workflow."
-		);
+			notificationsWorkflowTitle = "Space Admin sent you a Web Content Article for review in the workflow.");
 
 		Navigator.openURL();
 
 		Page.gotoMyAccount(portletName = "Notifications");
 
-		Notifications.gotoNotificationsEntry(
-			notificationsWorkflowTitle = "Space Admin sent you a Web Content Article for review in the workflow."
-		);
+		Notifications.gotoNotificationsEntry(notificationsWorkflowTitle = "Space Admin sent you a Web Content Article for review in the workflow.");
 
 		Workflow.gotoPreviewEdit();
 
 		WebContent.editInReview(
 			webContentImage = "library.jpg",
-			webContentTitleEdit = "New Student Orientation Edit"
-		);
+			webContentTitleEdit = "New Student Orientation Edit");
 
 		Navigator.openURL();
 
@@ -3479,29 +3149,26 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		Workflow.approveTaskByActions(
 			workflowAssetTitle = "New Student Orientation Edit",
 			workflowAssetType = "Web Content Article",
-			workflowTask = "Review"
-		);
+			workflowTask = "Review");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Kaleo Designer"
-		);
+			portlet = "Kaleo Designer");
 
 		var fileContent = TestCase.getFileContent(fileName = "advanced-governors-review.xml");
 
-		KaleoDesigner.viewTableDefinitionPublishedViaKDCP(
-			workflowDefinitionTitle = "Quarterly Reports Review Process"
-		);
+		KaleoDesigner.viewTableDefinitionPublishedViaKDCP(workflowDefinitionTitle = "Quarterly Reports Review Process");
 
 		KaleoDesigner.editWorkflowDefinitionViaKDCP(
 			workflowDefinitionName = "Quarterly Reports Review Process",
-			workflowDefinitionTitle = "Quarterly Reports Review Process"
-		);
+			workflowDefinitionTitle = "Quarterly Reports Review Process");
 
-		KaleoDesigner.editSourceXML(kdSourceXML = "${fileContent}", line = "1");
+		KaleoDesigner.editSourceXML(
+			kdSourceXML = ${fileContent},
+			line = 1);
 
 		Navigator.openURL();
 
@@ -3510,13 +3177,11 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Staging"
-		);
+			portlet = "Staging");
 
 		Staging.activateStagingCP(
 			contentNameList = "Documents and Media,Mobile Device Families,Web Content",
-			siteName = "S.P.A.C.E"
-		);
+			siteName = "S.P.A.C.E");
 
 		Navigator.openURL();
 
@@ -3527,8 +3192,7 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Staging"
-		);
+			portlet = "Staging");
 
 		Staging.editStagingConfiguration(publicPageVersioningEnabled = "true");
 
@@ -3546,7 +3210,9 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		ProductMenu.gotoStagingSite();
 
-		Page.add(columnName = "1-2-1 Columns", pageName = "Staging Page");
+		Page.add(
+			columnName = "1-2-1 Columns",
+			pageName = "Staging Page");
 
 		Content.addPG(assetTitle = "S.P.A.C.E. Banner");
 
@@ -3590,20 +3256,19 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		Content.addPG(assetTitle = "S.P.A.C.E. Footer");
 
-		Staging.viewStagingWorkflowStatusPG(
-			stagingWorkflowStatus = "Ready for Publication"
-		);
+		Staging.viewStagingWorkflowStatusPG(stagingWorkflowStatus = "Ready for Publication");
 
 		Staging.schedulePublishToLivePG(scheduleTitleName = "Site Launch");
 
-		Pause(locator1 = "120000");
+		Pause(locator1 = 120000);
 
-		Navigator.gotoSitePage(pageName = "Staging Page", siteName = "S.P.A.C.E");
+		Navigator.gotoSitePage(
+			pageName = "Staging Page",
+			siteName = "S.P.A.C.E");
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "Dare to dream out of this world"
-		);
+			value1 = "Dare to dream out of this world");
 
 		Navigator.openURL();
 
@@ -3614,14 +3279,12 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Import"
-		);
+			portlet = "Import");
 
 		LAR.importSiteCP(
 			larFileName = "Landing_Page_Redesign.lar",
 			mirrorWithOverwriting = "true",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -3633,15 +3296,13 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "Dream even bigger"
-		);
+			value1 = "Dream even bigger");
 
 		ProductMenu.gotoLiveSite();
 
 		AssertTextNotEquals.assertNotPartialText(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "Dream even bigger"
-		);
+			value1 = "Dream even bigger");
 
 		ProductMenu.gotoStagingSite();
 
@@ -3653,11 +3314,10 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "Dream even bigger"
-		);
+			value1 = "Dream even bigger");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test TrainingDemo4 {
 		property database.types = "mysql";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
@@ -3674,83 +3334,80 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 			databaseUserName = PropsUtil.get("database.mysql.username"),
 			jdbcDriverClassName = PropsUtil.get("database.mysql.driver"),
 			jdbcURL = PropsUtil.get("database.mysql.url"),
-			portalName = "S.P.A.C.E"
-		);
+			portalName = "S.P.A.C.E");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.addCP(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
 			administratorEmail = "space.admin@spaceprogram.liferay.com",
 			userEmailAddress = "userea@liferay.com",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		User.assignRegularRoleCP(roleName = "Administrator", userScreenName = "usersn");
+		User.assignRegularRoleCP(
+			roleName = "Administrator",
+			userScreenName = "usersn");
 
 		Navigator.openURL();
 
-		Portlet.addPG(pageName = "Mock LDAP Page", portletName = "Mock LDAP");
+		Portlet.addPG(
+			pageName = "Mock LDAP Page",
+			portletName = "Mock LDAP");
 
-		MockLDAP.selectJsonFile(fileName = "space-groups.json", tabName = "User Groups");
+		MockLDAP.selectJsonFile(
+			fileName = "space-groups.json",
+			tabName = "User Groups");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "User Groups"
-		);
+			portlet = "User Groups");
 
-		Pagination.changePagination(itemsPerPage = "20");
+		Pagination.changePagination(itemsPerPage = 20);
 
 		Pagination.viewResults(results = "Showing 1 to 11 of 11 entries.");
 
 		Navigator.openURL();
 
-		MockLDAP.selectJsonFile(fileName = "space-users.json", tabName = "Users");
+		MockLDAP.selectJsonFile(
+			fileName = "space-users.json",
+			tabName = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		Pagination.changePagination(itemsPerPage = "20");
+		Pagination.changePagination(itemsPerPage = 20);
 
 		Pagination.viewResults(results = "Showing 1 to 20 of 116 entries.");
 
@@ -3759,23 +3416,20 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
 		LAR.importPortlet(
 			larFileName = "organizations-7.0.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -3783,13 +3437,11 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 			orgName = "Space Program Academy of Continuing Education",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
 		Navigator.openSiteURL(siteName = "S.P.A.C.E");
 
@@ -3832,21 +3484,18 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "space-content-7.0.lar",
 			siteName = "S.P.A.C.E",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		Portlet.gotoPortletOptions(
 			portletName = "Web Content Display",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.selectApplicationDecorator(decorator = "Barebone");
 
@@ -3854,8 +3503,7 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		Portlet.gotoPortletOptions(
 			portletName = "Asset Publisher",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.configureCustomTitleViaLookandfeelPG(customPortletTitle = "News");
 
@@ -3863,26 +3511,23 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		AssetPublisherPortlet.configureAssetTypePG(
 			assetSubtype = "News",
-			selectedAsset = "Web Content Article"
-		);
+			selectedAsset = "Web Content Article");
 
 		Navigator.openURL();
 
 		Portlet.gotoSpecificPortletOptions(
-			order = "2",
+			order = 2,
 			portletName = "Web Content Display",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.selectApplicationDecorator(decorator = "Barebone");
 
 		Navigator.openURL();
 
 		Portlet.gotoSpecificPortletOptions(
-			order = "2",
+			order = 2,
 			portletName = "Asset Publisher",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.configureCustomTitleViaLookandfeelPG(customPortletTitle = "Events");
 
@@ -3890,18 +3535,16 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		AssetPublisherPortlet.configureAssetTypePG(
 			assetSubtype = "Events",
-			order = "2",
+			order = 2,
 			portletName = "Asset Publisher",
-			selectedAsset = "Web Content Article"
-		);
+			selectedAsset = "Web Content Article");
 
 		Navigator.openURL();
 
 		Portlet.gotoSpecificPortletOptions(
-			order = "3",
+			order = 3,
 			portletName = "Web Content Display",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.selectApplicationDecorator(decorator = "Barebone");
 
@@ -3912,24 +3555,21 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		Navigator.openURL();
 
 		WebContentDisplayPortlet.selectWebContent(
-			order = "2",
-			webContentTitle = "About S.P.A.C.E."
-		);
+			order = 2,
+			webContentTitle = "About S.P.A.C.E.");
 
 		Navigator.openURL();
 
 		WebContentDisplayPortlet.selectWebContent(
-			order = "3",
-			webContentTitle = "S.P.A.C.E. Footer"
-		);
+			order = 3,
+			webContentTitle = "S.P.A.C.E. Footer");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
@@ -3937,36 +3577,31 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 			checkEnablePropagationCheckbox = "false",
 			organizationSite = "Intranet Site",
 			orgName = "Human Resources",
-			orgType = "Organization"
-		);
+			orgType = "Organization");
 
 		Navigator.openSiteURL(siteName = "Human Resources");
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Import"
-		);
+			portlet = "Import");
 
 		LAR.importSiteCP(
 			larFileName = "HR_Home_Page_Content.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		UsersAndOrganizationsNavigator.gotoOrganizations();
 
 		Organization.manageMembershipOptionsInSites(
 			allowManualMembershipManagement = "true",
-			orgName = "Human Resources"
-		);
+			orgName = "Human Resources");
 
 		Navigator.openURL();
 
@@ -3975,11 +3610,10 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
 		for (var userGroupName : list "Agricultural Science,Board Member,Business: Accounting,Business: Business Administration,Engineering: Aerospace Engineering: Aeronautics,Engineering: Aerospace Engineering: Astronautics,Engineering: Civil Engineering,Engineering: Computer Engineering,Engineering: Electrical Engineering,Engineering: Mechanical Engineering") {
-			Site.assignUserGroupAsMemberCP(userGroupName = "${userGroupName}");
+			Site.assignUserGroupAsMemberCP(userGroupName = ${userGroupName});
 		}
 
 		Navigator.openURL();
@@ -3992,8 +3626,7 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		DMDocument.addMultiplePG(
 			dmDocumentFileList = "Hariet Winters Contract.pdf,Jane Phillips Contract.pdf,Peter Vance Contract.pdf",
-			viewableBy = "Owner"
-		);
+			viewableBy = "Owner");
 
 		DMFolder.addPG(dmFolderName = "Employee Contracts");
 
@@ -4004,23 +3637,20 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMNavigator.gotoFolderPermissions(dmFolderName = "Employee Contracts");
 
 		for (var permissionsInLineUncheckListsCount : list "INLINE_PERMISSIONS_ADD_SUBFOLDER_CHECKBOX,INLINE_PERMISSIONS_ADD_SHORTCUT_CHECKBOX,INLINE_PERMISSIONS_UPDATE_CHECKBOX,INLINE_PERMISSIONS_ADD_DOCUMENT_CHECKBOX,INLINE_PERMISSIONS_SUBSCRIBE_CHECKBOX,INLINE_PERMISSIONS_VIEW_CHECKBOX") {
 			Role.removePermissionPG(
-				permissionDefinitionKey = "${permissionsInLineUncheckListsCount}",
-				roleName = "Site Member"
-			);
+				permissionDefinitionKey = ${permissionsInLineUncheckListsCount},
+				roleName = "Site Member");
 		}
 
 		for (var permissionsInLineCheckListsCount : list "INLINE_PERMISSIONS_ADD_DOCUMENT_CHECKBOX,INLINE_PERMISSIONS_VIEW_CHECKBOX,INLINE_PERMISSIONS_ACCESS_CHECKBOX") {
 			Role.definePermissionPG(
-				permissionDefinitionKey = "${permissionsInLineCheckListsCount}",
-				roleName = "Organization User"
-			);
+				permissionDefinitionKey = ${permissionsInLineCheckListsCount},
+				roleName = "Organization User");
 		}
 
 		Navigator.openURL();
@@ -4030,13 +3660,11 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		LAR.importPortlet(
 			larFileName = "SPACE_Employee_Information.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -4045,8 +3673,7 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Document Types");
 
@@ -4054,15 +3681,13 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 			dmDocumentTypeFieldLabel = "Active",
 			dmDocumentTypeFieldNames = "Boolean",
 			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet",
-			fieldPredefinedValue = "Yes"
-		);
+			fieldPredefinedValue = "Yes");
 
 		DMDocumentType.edit(
 			dmDocumentTypeFieldLabel = "Tenured",
 			dmDocumentTypeFieldNames = "Boolean",
 			dmDocumentTypeName = "S.P.A.C.E. Employee Information Sheet",
-			fieldPredefinedValue = "Yes"
-		);
+			fieldPredefinedValue = "Yes");
 
 		Navigator.openURL();
 
@@ -4071,54 +3696,43 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 			pageName = "Employee Information",
 			siteName = "Human Resources",
 			sitePagePrivacy = "Private",
-			sitePageType = "Empty Page"
-		);
+			sitePageType = "Empty Page");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Employee Information",
-			siteName = "Human Resources"
-		);
+			siteName = "Human Resources");
 
 		Portlet.addPG(
 			pageName = "Employee Information",
-			portletName = "Knowledge Base Display"
-		);
+			portletName = "Knowledge Base Display");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Employee Information",
-			siteName = "Human Resources"
-		);
+			siteName = "Human Resources");
 
 		Portlet.addPG(
 			pageName = "Employee Information",
-			portletName = "Knowledge Base Search"
-		);
+			portletName = "Knowledge Base Search");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Employee Information",
-			siteName = "Human Resources"
-		);
+			siteName = "Human Resources");
 
 		Portlet.gotoPortletOptions(
 			portletName = "Knowledge Base Search",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
 		Portlet.configureCustomTitleViaLookandfeelPG(customPortletTitle = "");
 
 		Navigator.openPrivateSitePageURL(
 			pageName = "Employee Information",
-			siteName = "Human Resources"
-		);
+			siteName = "Human Resources");
 
 		Portlet.gotoPortletOptions(
 			portletName = "Knowledge Base Display",
-			portletOption = "Look and Feel Configuration"
-		);
+			portletOption = "Look and Feel Configuration");
 
-		Portlet.configureCustomTitleViaLookandfeelPG(
-			customPortletTitle = "Employee Handbook"
-		);
+		Portlet.configureCustomTitleViaLookandfeelPG(customPortletTitle = "Employee Handbook");
 
 		Navigator.openURL();
 
@@ -4127,28 +3741,24 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Knowledge Base"
-		);
+			portlet = "Knowledge Base");
 
 		KBFolder.addCP(
 			kbFolderDescription = "This is S.P.A.C.E. Faculty and Staff Handbook Folder.",
-			kbFolderName = "S.P.A.C.E. Faculty and Staff Handbook"
-		);
+			kbFolderName = "S.P.A.C.E. Faculty and Staff Handbook");
 
 		KBFolder.gotoCP(kbFolderName = "S.P.A.C.E. Faculty and Staff Handbook");
 
 		KBArticle.addCP(
 			kbArticleContent = "Article Content",
-			kbArticleTitle = "A Brief Note about SPACE"
-		);
+			kbArticleTitle = "A Brief Note about SPACE");
 
 		Navigator.openSiteURL(siteName = "S.P.A.C.E");
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Staging"
-		);
+			portlet = "Staging");
 
 		Staging.activateStagingCP(siteName = "S.P.A.C.E");
 
@@ -4161,14 +3771,12 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Import"
-		);
+			portlet = "Import");
 
 		LAR.importSiteCP(
 			larFileName = "Landing_Page_Redesign.lar",
 			mirrorWithOverwriting = "true",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -4187,13 +3795,11 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Staging"
-		);
+			portlet = "Staging");
 
 		Staging.activateStagingCP(
 			pageVersioningEnabled = "true",
-			siteName = "Human Resources"
-		);
+			siteName = "Human Resources");
 
 		Navigator.openURL();
 
@@ -4204,13 +3810,11 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Import"
-		);
+			portlet = "Import");
 
 		LAR.importSiteCP(
 			larFileName = "HR_Home_Page_Content.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -4220,26 +3824,21 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		AssertTextEquals(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "Faculty Meet-and-Greet Brunch Events All faculty are invited to a Meet-and-Greet Brunch at Allen Café 11:00 A.M. Saturday, June 13. This brunch is intended to introduce new faculty members and promote inter-departmental unity. Brunch will be catered by the Provincetown chapter of the NECI."
-		);
+			value1 = "Faculty Meet-and-Greet Brunch Events All faculty are invited to a Meet-and-Greet Brunch at Allen Café 11:00 A.M. Saturday, June 13. This brunch is intended to introduce new faculty members and promote inter-departmental unity. Brunch will be catered by the Provincetown chapter of the NECI.");
 
 		AssertTextEquals(
 			locator1 = "WCD#WEB_CONTENT_CONTENT_2",
-			value1 = "New Faculty and Staff Orientation Events Attention all new faculty and staff: Orientation will be held Monday, June 8 at 8:00 A.M. New faculty should meet in Rm. 221 and new staff should meet in Rm. 139 of Adams Hall. A full schedule of orientation will be emailed to you in the coming weeks."
-		);
+			value1 = "New Faculty and Staff Orientation Events Attention all new faculty and staff: Orientation will be held Monday, June 8 at 8:00 A.M. New faculty should meet in Rm. 221 and new staff should meet in Rm. 139 of Adams Hall. A full schedule of orientation will be emailed to you in the coming weeks.");
 
 		AssertTextEquals(
 			locator1 = "WCD#WEB_CONTENT_CONTENT_3",
-			value1 = "Vaccinations and Physical Check-Ups Health Any members of faculty or staff planning to leave Earth are required to have up-to-date vaccinations. Please check with the Health Center on your status. In addition, each and every Earth departure requires a physical check-up. The Health Center is happy to give both vaccinations and physical check-ups free of charge."
-		);
+			value1 = "Vaccinations and Physical Check-Ups Health Any members of faculty or staff planning to leave Earth are required to have up-to-date vaccinations. Please check with the Health Center on your status. In addition, each and every Earth departure requires a physical check-up. The Health Center is happy to give both vaccinations and physical check-ups free of charge.");
 
-		Staging.viewStagingWorkflowStatusPG(
-			stagingWorkflowStatus = "Ready for Publication"
-		);
+		Staging.viewStagingWorkflowStatusPG(stagingWorkflowStatus = "Ready for Publication");
 
 		Staging.schedulePublishToLivePG(
 			frequency = "Yearly",
-			scheduleTitleName = "Staging Schedule Title"
-		);
+			scheduleTitleName = "Staging Schedule Title");
 	}
+
 }

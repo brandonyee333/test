@@ -1,5 +1,6 @@
 @component-name = "portal-security"
 definition {
+
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Security";
@@ -13,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -24,15 +25,14 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-83566."
-	@priority = "5"
+	@priority = 5
 	test EscapeUrlRedirectWithGroovyScript {
 		property test.name.skip.portal.instance = "SecurityTestingUsecase#EscapeUrlRedirectWithGroovyScript";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
 		ServerAdministration.executeScriptCP(
 			script = '''
@@ -40,17 +40,15 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 out.println(PortalUtil.escapeRedirect("/"));
 ''',
-			scriptLanguage = "Groovy"
-		);
+			scriptLanguage = "Groovy");
 
 		AssertTextEquals(
 			locator1 = "ServerAdministrationScript#OUTPUT_FIELD",
-			value1 = "/"
-		);
+			value1 = "/");
 	}
 
 	@description = "This is a use case for LPS-102832. Check returns property value without leading spaces."
-	@priority = "4"
+	@priority = 4
 	test ExecuteScriptWithPredefinedProperty {
 		property custom.properties = "partnerstamm-api-user = his_user";
 		property test.name.skip.portal.instance = "SecurityTestingUsecase#ExecuteScriptWithPredefinedProperty";
@@ -61,11 +59,11 @@ out.println(PortalUtil.escapeRedirect("/"));
 			portlet = "Server Administration");
 
 		var script = '''
-			import com.liferay.portal.util.PropsUtil;
-			import com.liferay.portal.kernel.util.PropsUtil;
 			import com.liferay.portal.kernel.configuration.Configuration;
 			import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 			import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
+			import com.liferay.portal.kernel.util.PropsUtil;
+			import com.liferay.portal.util.PropsUtil;
 
 			println("com.liferay.portal.util.PropsUtil:" + com.liferay.portal.util.PropsUtil.get("partnerstamm-api-user"))
 
@@ -76,7 +74,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 		''';
 
 		ServerAdministration.executeScriptCP(
-			script = "${script}",
+			script = ${script},
 			scriptLanguage = "Groovy");
 
 		AssertTextEquals(
@@ -85,46 +83,42 @@ out.println(PortalUtil.escapeRedirect("/"));
 	}
 
 	@description = "This is a use case for LPS-87768."
-	@priority = "5"
+	@priority = 5
 	test NoPermissionFromUnauthorizedURLAsPowerUser {
 		property test.name.skip.portal.instance = "SecurityTestingUsecase#NoPermissionFromUnauthorizedURLAsPowerUser";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.addCP(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		User.assignRegularRoleCP(roleName = "Power User", userScreenName = "usersn");
+		User.assignRegularRoleCP(
+			roleName = "Power User",
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
 			userEmailAddress = "userea@liferay.com",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
 		UserBar.gotoProfile();
 
@@ -134,96 +128,84 @@ out.println(PortalUtil.escapeRedirect("/"));
 		var plid = Page.getPlidFromHtmlSource();
 		var portalURL = PropsUtil.get("portal.url");
 
-		Navigator.openSpecificURL(
-			url = '''${portalURL}/c/portal/update_layout?cmd=add&p_p_col_id=column-1&p_p_col_pos=0&p_p_id=com_liferay_marketplace_store_web_portlet_MarketplacePurchasedPortlet&p_auth=${authToken}&p_l_id=${plid}'''
-		);
+		Navigator.openSpecificURL(url = '''${portalURL}/c/portal/update_layout?cmd=add&p_p_col_id=column-1&p_p_col_pos=0&p_p_id=com_liferay_marketplace_store_web_portlet_MarketplacePurchasedPortlet&p_auth=${authToken}&p_l_id=${plid}''');
 
 		UserBar.gotoProfile();
 
 		AssertElementNotPresent(
-			locator1 = "Portlet#BODY",
-			key_portletName = "Purchased"
-		);
+			key_portletName = "Purchased",
+			locator1 = "Portlet#BODY");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ValidateBeanIdentifierUserPermissions {
 		property portal.acceptance = "true";
+
 		var portalURL = PropsUtil.get("portal.url");
-		var url = "${portalURL}/c/portal/json_service?serviceClassName=com.liferay.portal.service.AccountServiceUtil&amp;serviceMethodName=getBeanIdentifier&amp;p_auth=";
+
+		var url = "${portalURL}/c/portal/json_service?serviceClassName=com.liferay.portal.service.AccountServiceUtil&serviceMethodName=getBeanIdentifier&p_auth=";
 
 		Api.gotoPAuthURL();
 
-		Pause(locator1 = "1000");
+		Pause(locator1 = 1000);
 
 		AssertElementNotPresent(locator1 = "JSONWS#SECURITY_TEST_PAGE_POPULATED");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ValidateCannotStealAdminAccount {
 		property custom.properties = "json.service.serialize.throwable=true";
 		property test.name.skip.portal.instance = "SecurityTestingUsecase#ValidateCannotStealAdminAccount";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.addCP(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
 			userEmailAddress = "userea@liferay.com",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
-		Api.gotoPAuthURL(
-			url = "${portalURL}/api/jsonws/user/update-status/user-id/20250/status/6?p_auth="
-		);
+		Api.gotoPAuthURL(url = "${portalURL}/api/jsonws/user/update-status/user-id/20250/status/6?p_auth=");
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Home#DIRECT_URL",
-			value1 = "must have DELETE permission for com.liferay.portal.kernel.model.User"
-		);
+			value1 = "must have DELETE permission for com.liferay.portal.kernel.model.User");
 
 		AssertTextEquals.assertPartialText(
 			locator1 = "Home#DIRECT_URL",
-			value1 = "com.liferay.portal.kernel.security.auth.PrincipalException$MustHavePermission"
-		);
+			value1 = "com.liferay.portal.kernel.security.auth.PrincipalException$MustHavePermission");
 
-		AssertConsoleTextPresent(
-			value1 = "must have DELETE permission for com.liferay.portal.kernel.model.User"
-		);
+		AssertConsoleTextPresent(value1 = "must have DELETE permission for com.liferay.portal.kernel.model.User");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ValidateForwardURLPG {
 		property custom.properties = "virtual.hosts.valid.hosts=localhost,127.0.0.1,${ip.address}";
 		property portal.acceptance = "true";
+
 		var portalURL = PropsUtil.get("portal.url");
 
-		Navigator.openSpecificURL(
-			url = "${portalURL}/html/common/forward_jsp.jsp?FORWARD_URL=http://www.msn.com"
-		);
+		Navigator.openSpecificURL(url = "${portalURL}/html/common/forward_jsp.jsp?FORWARD_URL=http://www.msn.com");
 
-		Pause(locator1 = "3000");
+		Pause(locator1 = 3000);
 
 		var key_pageName = "Welcome";
 
@@ -231,16 +213,13 @@ out.println(PortalUtil.escapeRedirect("/"));
 
 		AssertTextEquals.assertText(
 			locator1 = "HelloWorld#PORTLET_TITLE",
-			value1 = "Hello World"
-		);
+			value1 = "Hello World");
 
 		AssertElementPresent(locator1 = "HelloWorld#PORTLET_CONTENT");
 
 		Page.add(pageName = "Test");
 
-		Open(
-			locator1 = "${portalURL}/html/common/forward_jsp.jsp?FORWARD_URL=${portalURL}/web/guest/test"
-		);
+		Open(locator1 = "${portalURL}/html/common/forward_jsp.jsp?FORWARD_URL=${portalURL}/web/guest/test");
 
 		var key_pageName = "Test";
 
@@ -248,7 +227,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 	}
 
 	@description = "This is a use case for LPS-57776."
-	@priority = "5"
+	@priority = 5
 	test ValidateNoLARRemoteCodeExecution {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -266,7 +245,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 	}
 
 	@description = "This is a use case for LPS-73595."
-	@priority = "5"
+	@priority = 5
 	test ViewJSLoaderModulesURLNoWiki {
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -282,107 +261,94 @@ out.println(PortalUtil.escapeRedirect("/"));
 	}
 
 	@description = "This is a use case for LPS-55622."
-	@priority = "5"
+	@priority = 5
 	test ViewNoInvokedPortletViaURL {
 		var portalURL = PropsUtil.get("portal.url");
 
-		Navigator.openSpecificURL(
-			url = "${portalURL}/web/guest/home/?p_p_id=asdf&amp;p_p_lifecycle=0&amp;p_p_state=maximized&amp;_asdf_mvcPath=/html/portlet/portal_settings/edit_company.jsp"
-		);
+		Navigator.openSpecificURL(url = "${portalURL}/web/guest/home/?p_p_id=asdf&p_p_lifecycle=0&p_p_state=maximized&_asdf_mvcPath=/html/portlet/portal_settings/edit_company.jsp");
 
 		AssertTextEquals(
 			locator1 = "Message#INFO",
-			value1 = "This portlet has been undeployed. Please redeploy it or remove it from the page."
-		);
+			value1 = "This portlet has been undeployed. Please redeploy it or remove it from the page.");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewUpdateUserViaJSONWS {
 		property test.name.skip.portal.instance = "SecurityTestingUsecase#ViewUpdateUserViaJSONWS";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		var key_userScreenName = "test";
 
 		AssertClick(
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
-			value1 = "test"
-		);
+			value1 = "test");
 
-		Pause(locator1 = "5000");
+		Pause(locator1 = 5000);
 
 		var userId = selenium.getElementValue("UsersAndOrganizationsEditUser#DETAILS_USER_ID_FIELD");
 
 		Api.apiJsonwsUserView();
 
 		Api.editJsonwsUserView(
-			userBirthdayDay = "24",
-			userBirthdayMonth = "10",
-			userBirthdayYear = "1984",
+			userBirthdayDay = 24,
+			userBirthdayMonth = 10,
+			userBirthdayYear = 1984,
 			userEmailAddress = "test1@liferay.com",
-			userFacebookId = "0",
+			userFacebookId = 0,
 			userFirstName = "test1",
-			userId = "${userId}",
+			userId = ${userId},
 			userLastName = "test1",
-			userPrefixId = "0",
+			userPrefixId = 0,
 			userScreenName = "test1",
-			userSuffixId = "0"
-		);
+			userSuffixId = 0);
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		var key_userScreenName = "test1";
 
 		AssertClick(
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
-			value1 = "test1"
-		);
+			value1 = "test1");
 
 		AssertValue(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_USER_ID_FIELD",
-			value1 = "${userId}"
-		);
+			value1 = ${userId});
 
 		AssertValue(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_FIRST_NAME_FIELD",
-			value1 = "test1"
-		);
+			value1 = "test1");
 
 		AssertValue(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_LAST_NAME_FIELD",
-			value1 = "test1"
-		);
+			value1 = "test1");
 
-		AssertValue(locator1 = "TextInput#EMAIL_ADDRESS", value1 = "test1@liferay.com");
+		AssertValue(
+			locator1 = "TextInput#EMAIL_ADDRESS",
+			value1 = "test1@liferay.com");
 
 		AssertValue(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_SCREEN_NAME_FIELD",
-			value1 = "test1"
-		);
+			value1 = "test1");
 
 		AssertValue(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_BIRTHDAY_FIELD",
-			value1 = "11/24/1984"
-		);
+			value1 = "11/24/1984");
 	}
+
 }

@@ -1,5 +1,6 @@
 @component-name = "portal-security"
 definition {
+
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Authentication";
@@ -13,7 +14,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -24,7 +25,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-65498."
-	@priority = "3"
+	@priority = 3
 	test ImportLDAPUserWithBlankPassword {
 		property apacheds.blank.user.password.enabled = "true";
 		property apacheds.enabled = "true";
@@ -33,18 +34,14 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Instance Settings"
-		);
+			portlet = "Instance Settings");
 
 		PortalSettingsNavigator.gotoLDAP();
 
@@ -61,21 +58,18 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Instance Settings"
-		);
+			portlet = "Instance Settings");
 
 		PortalSettingsNavigator.gotoLDAP();
 
 		for (var enableCheckboxKey : list "ENABLED,IMPORT_ENABLED,IMPORT_ON_STARTUP_ENABLED,USE_LDAP_PASSWORD_POLICY") {
 			PortalSettingsNavigator.gotoLDAP();
 
-			PortalSettings.enableLDAPSetting(enableCheckboxKey = "${enableCheckboxKey}");
+			PortalSettings.enableLDAPSetting(enableCheckboxKey = ${enableCheckboxKey});
 
 			PortalSettingsNavigator.gotoLDAP();
 
-			PortalSettings.viewEnabledLDAPSetting(
-				enableCheckboxKey = "${enableCheckboxKey}"
-			);
+			PortalSettings.viewEnabledLDAPSetting(enableCheckboxKey = ${enableCheckboxKey});
 		}
 
 		AssertConsoleTextNotPresent(value1 = "Unable to encrypt blank password");
@@ -89,33 +83,27 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		if (IsElementNotPresent(locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK", key_userScreenName = "ldapusercn")) {
+		if (IsElementNotPresent(key_userScreenName = "ldapusercn", locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK")) {
 			ProductMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
-				portlet = "Instance Settings"
-			);
+				portlet = "Instance Settings");
 
 			PortalSettings.disableLDAPCP();
 
 			ProductMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
-				portlet = "Instance Settings"
-			);
+				portlet = "Instance Settings");
 
 			PortalSettingsNavigator.gotoLDAP();
 
@@ -128,21 +116,18 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
-				portlet = "Instance Settings"
-			);
+				portlet = "Instance Settings");
 
 			PortalSettingsNavigator.gotoLDAP();
 
 			for (var enableCheckboxKey : list "ENABLED,IMPORT_ENABLED,IMPORT_ON_STARTUP_ENABLED,USE_LDAP_PASSWORD_POLICY") {
 				PortalSettingsNavigator.gotoLDAP();
 
-				PortalSettings.enableLDAPSetting(enableCheckboxKey = "${enableCheckboxKey}");
+				PortalSettings.enableLDAPSetting(enableCheckboxKey = ${enableCheckboxKey});
 
 				PortalSettingsNavigator.gotoLDAP();
 
-				PortalSettings.viewEnabledLDAPSetting(
-					enableCheckboxKey = "${enableCheckboxKey}"
-				);
+				PortalSettings.viewEnabledLDAPSetting(enableCheckboxKey = ${enableCheckboxKey});
 			}
 
 			AssertConsoleTextNotPresent(value1 = "Unable to encrypt blank password");
@@ -156,32 +141,27 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
-				portlet = "Server Administration"
-			);
+				portlet = "Server Administration");
 
-			ServerAdministration.executeServerResourcesActions(
-				actionsDescription = "Reindex all search indexes."
-			);
+			ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 			ProductMenu.gotoPortlet(
 				category = "Users",
 				panel = "Control Panel",
-				portlet = "Users and Organizations"
-			);
+				portlet = "Users and Organizations");
 		}
 
 		User.viewCP(
 			userEmailAddress = "ldapuseremail@liferay.com",
 			userFirstName = "ldapusergivenname",
 			userLastName = "ldapusersn",
-			userScreenName = "ldapusercn"
-		);
+			userScreenName = "ldapusercn");
 
 		AssertConsoleTextNotPresent(value1 = "Unable to encrypt blank password");
 	}
 
 	@description = "This is a use case for LPS-30529 and LPS-77948."
-	@priority = "4"
+	@priority = 4
 	test ResetFieldsValueForImportedLDAPUser {
 		property apacheds.enabled = "true";
 		property test.name.skip.portal.instance = "AuthenticationUsecase#ResetFieldsValueForImportedLDAPUser";
@@ -189,18 +169,14 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Instance Settings"
-		);
+			portlet = "Instance Settings");
 
 		PortalSettingsNavigator.gotoLDAP();
 
@@ -215,8 +191,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Instance Settings"
-		);
+			portlet = "Instance Settings");
 
 		PortalSettingsNavigator.gotoLDAP();
 
@@ -225,13 +200,11 @@ definition {
 		for (var enableCheckboxKey : list "ENABLED,EXPORT_ENABLED,IMPORT_ENABLED,IMPORT_ON_STARTUP_ENABLED") {
 			PortalSettingsNavigator.gotoLDAP();
 
-			PortalSettings.enableLDAPSetting(enableCheckboxKey = "${enableCheckboxKey}");
+			PortalSettings.enableLDAPSetting(enableCheckboxKey = ${enableCheckboxKey});
 
 			PortalSettingsNavigator.gotoLDAP();
 
-			PortalSettings.viewEnabledLDAPSetting(
-				enableCheckboxKey = "${enableCheckboxKey}"
-			);
+			PortalSettings.viewEnabledLDAPSetting(enableCheckboxKey = ${enableCheckboxKey});
 		}
 
 		Portlet.shutdownServer();
@@ -241,33 +214,27 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		if (IsElementNotPresent(locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK", key_userScreenName = "ldapusercn")) {
+		if (IsElementNotPresent(key_userScreenName = "ldapusercn", locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK")) {
 			ProductMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
-				portlet = "Instance Settings"
-			);
+				portlet = "Instance Settings");
 
 			PortalSettings.disableLDAPCP();
 
 			ProductMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
-				portlet = "Instance Settings"
-			);
+				portlet = "Instance Settings");
 
 			PortalSettingsNavigator.gotoLDAP();
 
@@ -280,21 +247,18 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
-				portlet = "Instance Settings"
-			);
+				portlet = "Instance Settings");
 
 			PortalSettingsNavigator.gotoLDAP();
 
 			for (var enableCheckboxKey : list "ENABLED,IMPORT_ENABLED,IMPORT_ON_STARTUP_ENABLED,USE_LDAP_PASSWORD_POLICY") {
 				PortalSettingsNavigator.gotoLDAP();
 
-				PortalSettings.enableLDAPSetting(enableCheckboxKey = "${enableCheckboxKey}");
+				PortalSettings.enableLDAPSetting(enableCheckboxKey = ${enableCheckboxKey});
 
 				PortalSettingsNavigator.gotoLDAP();
 
-				PortalSettings.viewEnabledLDAPSetting(
-					enableCheckboxKey = "${enableCheckboxKey}"
-				);
+				PortalSettings.viewEnabledLDAPSetting(enableCheckboxKey = ${enableCheckboxKey});
 			}
 
 			AssertConsoleTextNotPresent(value1 = "Unable to encrypt blank password");
@@ -308,75 +272,61 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Configuration",
 				panel = "Control Panel",
-				portlet = "Server Administration"
-			);
+				portlet = "Server Administration");
 
-			ServerAdministration.executeServerResourcesActions(
-				actionsDescription = "Reindex all search indexes."
-			);
+			ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 			ProductMenu.gotoPortlet(
 				category = "Users",
 				panel = "Control Panel",
-				portlet = "Users and Organizations"
-			);
+				portlet = "Users and Organizations");
 		}
 
 		User.viewCP(
 			userEmailAddress = "ldapuseremail@liferay.com",
 			userFirstName = "ldapusergivenname",
 			userLastName = "ldapusersn",
-			userScreenName = "ldapusercn"
-		);
+			userScreenName = "ldapusercn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editUserGenderCP(
 			userGender = "Female",
-			userName = "ldapusergivenname ldapusersn"
-		);
+			userName = "ldapusergivenname ldapusersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editUserJobTitleCP(
 			userJobTitle = "QA",
-			userName = "ldapusergivenname ldapusersn"
-		);
+			userName = "ldapusergivenname ldapusersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editUserSuffixCP(
 			userName = "ldapusergivenname ldapusersn",
-			userSuffix = "Phd"
-		);
+			userSuffix = "Phd");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
 			userEmailAddress = "ldapuseremail@liferay.com",
-			userScreenName = "ldapusercn"
-		);
+			userScreenName = "ldapusercn");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "ldapuseremail@liferay.com",
-			userLoginFullName = "ldapusergivenname ldapusersn"
-		);
+			userLoginFullName = "ldapusergivenname ldapusersn");
 
 		Page.gotoMyAccount(portletName = "Account Settings");
 
@@ -388,8 +338,7 @@ definition {
 
 		AssertTextEquals(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_JOB_TITLE_FIELD",
-			value1 = "QA"
-		);
+			value1 = "QA");
 
 		// LPS-77948
 
@@ -399,20 +348,20 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-73381."
-	@priority = "4"
+	@priority = 4
 	test ViewHiddenSecurityCredential {
 		property test.name.skip.portal.instance = "AuthenticationUsecase#ViewHiddenSecurityCredential";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "System Settings"
-		);
+			portlet = "System Settings");
 
 		SystemSettings.gotoCategory(category = "Foundation");
 
 		SystemSettings.editConfiguration(configurationName = "LDAP Servers");
 
-		SystemSettings.editSecurityCredential(securityCredential = "123456");
+		SystemSettings.editSecurityCredential(securityCredential = 123456);
 	}
+
 }

@@ -1,5 +1,6 @@
 @component-name = "portal-search-ee"
 definition {
+
 	property portal.release = "true";
 	property portal.suite.search.engine = "elasticsearch2";
 	property portal.upstream = "true";
@@ -15,7 +16,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -28,14 +29,13 @@ definition {
 	}
 
 	@description = "This test asserts Elasticsearch clustering to add/remove replicas as nodes are added/removed from the portal cluster. Also, we want to maintain no loss in search functionality as replicas are being added or removed."
-	@priority = "5"
+	@priority = 5
 	test ElasticsearchClusterSmokeTest {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
 		property test.name.skip.portal.instance = "ElasticsearchEE#ElasticsearchClusterSmokeTest";
 
 		// Verify the total number of Elasticsearch replicas is two as there are two nodes/bundles running
-
 		// LRQA-28998
 
 		/* <execute macro="Elasticsearch#viewClusterStatusViaClusterHealthAPI">
@@ -43,40 +43,35 @@ definition {
 		</execute> */
 
 		// <execute macro="Elasticsearch#viewReplicaAddedInConsole" />
-
 		// <execute macro="Navigator#openURL" />
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Message Boards"
-		);
+			portlet = "Message Boards");
 
-		MessageboardsThread.addCP(threadBody = "Orange", threadSubject = "Apple");
+		MessageboardsThread.addCP(
+			threadBody = "Orange",
+			threadSubject = "Apple");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "Orange",
 			dmDocumentFile = "Document_1.txt",
-			dmDocumentTitle = "Apple"
-		);
+			dmDocumentTitle = "Apple");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		Navigator.openURL();
 
@@ -84,13 +79,11 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
 		Navigator.openURL();
 
@@ -98,20 +91,16 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
-		Portlet.shutdownSpecificServer(nodePort = "9");
+		Portlet.shutdownSpecificServer(nodePort = 9);
 
 		// Verify the total number of Elasticsearch replicas has decreased to one
-
 		// LRQA-28998
-
 		// <execute macro="Elasticsearch#viewReplicaRemovedInConsole" />
 
 		/* <execute macro="Elasticsearch#viewClusterStatusViaClusterHealthAPI">
@@ -126,13 +115,11 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
 		Navigator.openURL();
 
@@ -140,47 +127,44 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ElasticsearchRemotePortalClusterSmokeTest {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
 		property remote.elasticsearch.enabled = "true";
 		property test.name.skip.portal.instance = "ElasticsearchEE#ElasticsearchRemotePortalClusterSmokeTest";
 
-		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = "1");
+		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = 1);
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Message Boards"
-		);
+			portlet = "Message Boards");
 
-		MessageboardsThread.addCP(threadBody = "Orange", threadSubject = "Apple");
+		MessageboardsThread.addCP(
+			threadBody = "Orange",
+			threadSubject = "Apple");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "Orange",
 			dmDocumentFile = "Document_1.txt",
-			dmDocumentTitle = "Apple"
-		);
+			dmDocumentTitle = "Apple");
 
 		Navigator.openURL();
 
@@ -188,13 +172,11 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
 		Navigator.openURL();
 
@@ -202,35 +184,32 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
-		User.logoutPG(password = "test", userEmailAddress = "test@liferay.com");
+		User.logoutPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
 
 		User.loginPG(
-			nodePort = "9080",
+			nodePort = 9080,
 			password = "test",
-			userEmailAddress = "test@liferay.com"
-		);
+			userEmailAddress = "test@liferay.com");
 
-		Portlet.shutdownSpecificServer(nodePort = "8");
+		Portlet.shutdownSpecificServer(nodePort = 8);
 
 		Search.searchPG(searchTerm = "Apple");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
 		Navigator.openSpecificURL(url = "http://localhost:9080");
 
@@ -238,16 +217,14 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ElasticsearchRemoteWithMarvelAndKibanaAndShieldSmokeTest {
 		property custom.properties = "default.layout.template.id=1_column";
 		property elastic.kibana.enabled = "true";
@@ -275,7 +252,7 @@ definition {
 		Marvel.viewAsGuestPG();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ElasticsearchRemoteWithMarvelAndKibanaSmokeTest {
 		property custom.properties = "default.layout.template.id=1_column";
 		property elastic.kibana.enabled = "true";
@@ -300,4 +277,5 @@ definition {
 
 		Marvel.viewAsGuestPG();
 	}
+
 }

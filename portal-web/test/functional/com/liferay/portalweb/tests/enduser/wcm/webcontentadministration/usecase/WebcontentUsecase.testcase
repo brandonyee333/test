@@ -1,8 +1,10 @@
 @component-name = "portal-wcm"
 definition {
+
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Web Content Administration";
+
 	var globalSiteName = "Global";
 
 	setUp {
@@ -14,7 +16,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -26,7 +28,7 @@ definition {
 
 			WebContentStructures.tearDownCP();
 
-			WebContentStructures.tearDownCP(siteScopeName = "${globalSiteName}");
+			WebContentStructures.tearDownCP(siteScopeName = ${globalSiteName});
 
 			Page.tearDownPG();
 
@@ -36,15 +38,14 @@ definition {
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddAndViewStructureAndTemplateWithPermissions {
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Site Name");
 
@@ -55,107 +56,91 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Roles"
-		);
+			portlet = "Roles");
 
 		Role.addCP(roleName = "Regular Role Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Roles"
-		);
+			portlet = "Roles");
 
 		Role.definePermissionsCP(
 			permissionDefinitionKeys = "SITE_ADMIN_CONTENT_WEB_CONTENT_GENERAL_PERMISSIONS_ACCESS_IN_SITE_ADMINISTRATION_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_GENERAL_PERMISSIONS_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_ADD_WEB_CONTENT_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_VIEW_CHECKBOX",
-			roleName = "Regular Role Name"
-		);
+			roleName = "Regular Role Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Roles"
-		);
+			portlet = "Roles");
 
 		Role.definePermissionsCP(
 			permissionDefinitionKeys = "SITE_ADMIN_CONTENT_WEB_CONTENT_GENERAL_PERMISSIONS_ACCESS_IN_SITE_ADMINISTRATION_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_GENERAL_PERMISSIONS_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_ADD_WEB_CONTENT_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_VIEW_CHECKBOX",
 			roleName = "Site Member",
-			roleType = "Site"
-		);
+			roleType = "Site");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(
 			addRoleViewPermissions = "Regular Role Name",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		IFrame.selectDialogFrame();
 
 		PermissionsInline.addOrRemoveViewPermissionFromAllRoles(
 			addOrRemoveViewPermission = "Remove",
-			roleList = "Guest,Site Member"
-		);
+			roleList = "Guest,Site Member");
 
 		IFrame.closeFrame();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
 			templateFieldNames = "Text",
-			templateLanguage = "ftl"
-		);
+			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Permissions",
-			rowEntry = "WC Template Name"
-		);
+			rowEntry = "WC Template Name");
 
 		IFrame.selectDialogFrame();
 
 		PermissionsInline.addOrRemoveViewPermissionFromAllRoles(
 			addOrRemoveViewPermission = "Add",
-			roleList = "Regular Role Name"
-		);
+			roleList = "Regular Role Name");
 
 		PermissionsInline.addOrRemoveViewPermissionFromAllRoles(
 			addOrRemoveViewPermission = "Remove",
-			roleList = "Guest,Site Member"
-		);
+			roleList = "Guest,Site Member");
 
 		SelectFrameTop();
 
@@ -165,96 +150,87 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Users",
 				panel = "Control Panel",
-				portlet = "Users and Organizations"
-			);
+				portlet = "Users and Organizations");
 
 			User.addCP(
 				userEmailAddress = "user${number}@liferay.com",
 				userFirstName = "userfn${number}",
 				userLastName = "userln${number}",
-				userScreenName = "usersn${number}"
-			);
+				userScreenName = "usersn${number}");
 
 			ProductMenu.gotoPortlet(
 				category = "Users",
 				panel = "Control Panel",
-				portlet = "Users and Organizations"
-			);
+				portlet = "Users and Organizations");
 
 			User.editPasswordCP(
 				userEmailAddress = "user${number}@liferay.com",
-				userScreenName = "usersn${number}"
-			);
+				userScreenName = "usersn${number}");
 
 			Navigator.openSiteURL(siteName = "Site Name");
 
 			ProductMenu.gotoPortlet(
 				category = "Members",
 				panel = "Site Administration",
-				portlet = "Site Memberships"
-			);
+				portlet = "Site Memberships");
 
 			Site.assignUserAsMemberCP(
 				userFirstName = "userfn${number}",
 				userLastName = "userln${number}",
-				userScreenName = "usersn${number}"
-			);
+				userScreenName = "usersn${number}");
 		}
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.assignRegularRoleCP(
 			roleName = "Regular Role Name",
-			userScreenName = "usersn1"
-		);
+			userScreenName = "usersn1");
 
 		User.logoutPG();
 
-		User.loginPG(password = "test", userEmailAddress = "user1@liferay.com");
+		User.loginPG(
+			password = "test",
+			userEmailAddress = "user1@liferay.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.viewCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentTemplates.viewCP(
 			templateDescription = "WC Template Description",
 			templateLanguage = "ftl",
 			templateName = "WC Template Name",
-			userEditPermission = "noEditPermission"
-		);
+			userEditPermission = "noEditPermission");
 
 		User.logoutPG();
 
-		User.loginPG(password = "test", userEmailAddress = "user2@liferay.com");
+		User.loginPG(
+			password = "test",
+			userEmailAddress = "user2@liferay.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
@@ -263,8 +239,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
@@ -272,35 +247,30 @@ definition {
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "test@liferay.com",
-			userLoginFullName = "Test Test"
-		);
+			userLoginFullName = "Test Test");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Roles"
-		);
+			portlet = "Roles");
 
 		Role.definePermissionsCP(
 			permissionDefinitionKeys = "SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FOLDER_ADD_SUBFOLDER_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FOLDER_ADD_WEB_CONTENT_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_FOLDER_VIEW_CHECKBOX,SITE_ADMIN_CONTENT_WEB_CONTENT_RESOURCE_PERMISSIONS_WEB_CONTENT_ARTICLE_UPDATE_CHECKBOX",
-			roleName = "Regular Role Name"
-		);
+			roleName = "Regular Role Name");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
 		WebContent.addWithStructureCP(
 			structureName = "WC Structure Name",
 			webContentText = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -308,57 +278,52 @@ definition {
 
 		WebContent.viewWithStructureCP(
 			webContentText = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentFolder.addCP(
 			folderDescription = "WC Folder Description",
-			folderName = "WC Folder Name"
-		);
+			folderName = "WC Folder Name");
 
 		User.logoutPG();
 
-		User.loginPG(password = "test", userEmailAddress = "user1@liferay.com");
+		User.loginPG(
+			password = "test",
+			userEmailAddress = "user1@liferay.com");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
 		WebContent.editCP(
 			webContentTitle = "WC WebContent Title",
-			webContentTitleEdit = "WC WebContent Title Edit"
-		);
+			webContentTitleEdit = "WC WebContent Title Edit");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentFolder.addSubfolderCP(
 			folderName = "WC Folder Name",
 			subfolderDescription = "WC SubFolder Description",
-			subfolderName = "WC SubFolder Name"
-		);
+			subfolderName = "WC SubFolder Name");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddAudioViaWebContent {
 		property custom.properties = "editor.wysiwyg.portal-impl.portlet.ddm.text_html.ftl=ckeditor";
 		property dummy.socket.proxy.disabled = "true";
@@ -369,8 +334,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
 		ServerAdministration.configureExternalServices(installXuggler = "true");
 
@@ -385,8 +349,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
 		ServerAdministration.configureExternalServices(enableXuggler = "true");
 
@@ -395,14 +358,12 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "DM Document Description",
 			dmDocumentFile = "Document_1.mp3",
-			dmDocumentTitle = "Document_1.mp3"
-		);
+			dmDocumentTitle = "Document_1.mp3");
 
 		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Document_1.mp3");
 
@@ -415,17 +376,15 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addViaCKEditor(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
-		WebContent.uploadAudio(dmDocumentURL = "${dmDocumentURL}");
+		WebContent.uploadAudio(dmDocumentURL = ${dmDocumentURL});
 
 		PortletEntry.publish();
 
@@ -437,24 +396,21 @@ definition {
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
-		WebContentDisplayPortlet.selectWebContent(
-			webContentTitle = "WC WebContent Title"
-		);
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
 		WebContent.viewAudioViaWCD();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddCreatedStructureForImportedTemplate {
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
@@ -463,13 +419,11 @@ definition {
 		DynamicDataMapping.addField(
 			field = "Web Content",
 			fieldFieldLabel = "Web Content",
-			fieldName = "contents"
-		);
+			fieldName = "contents");
 
 		DynamicDataMapping.editFieldTip(
 			fieldFieldLabel = "Web Content",
-			fieldTip = "Choose as many content pieces as you would like to feature."
-		);
+			fieldTip = "Choose as many content pieces as you would like to feature.");
 
 		DynamicDataMapping.editFieldRepeatable(fieldFieldLabel = "Web Content");
 
@@ -478,18 +432,16 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "content-display-templates.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		for (var templateName : list "Carousel Display,Thumbnail Display,Content List Display") {
-			WebContentNavigator.gotoViewTemplate(templateName = "${templateName}");
+			WebContentNavigator.gotoViewTemplate(templateName = ${templateName});
 
 			WebContentTemplates.addStructure(structureName = "Content List");
 
@@ -500,27 +452,24 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Content",
 				panel = "Site Administration",
-				portlet = "Web Content"
-			);
+				portlet = "Web Content");
 
 			WebContentTemplates.viewCP(
 				structureName = "Content List",
 				templateDescription = "",
 				templateLanguage = "ftl",
-				templateName = "${templateName}"
-			);
+				templateName = ${templateName});
 		}
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEmbeddedPortletFreemarkerTemplate {
 		property osgi.app.includes = "currency-converter";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Test Site Name");
 
@@ -535,21 +484,18 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -558,16 +504,14 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		WebContentTemplates.addStructure(structureName = "WC Structure Name");
 
@@ -575,8 +519,7 @@ definition {
 
 		Type.typeAceEditor(
 			locator1 = "DDMEditTemplate#SCRIPT_CONTENT_FIELD_TEXT_AREA",
-			value1 = "${templateScript}"
-		);
+			value1 = ${templateScript});
 
 		DDLDataDefinition.save();
 
@@ -590,24 +533,21 @@ definition {
 
 		WebContent.addStructuredPGViaWCD(
 			structureName = "WC Structure Name",
-			webContentTitle = "WC Title"
-		);
+			webContentTitle = "WC Title");
 
 		Portlet.viewBody(
 			portletBody = "Welcome to Liferay",
-			portletName = "Hello World"
-		);
+			portletName = "Hello World");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddEmbeddedPortletVelocityTemplate {
 		property osgi.app.includes = "currency-converter";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Test Site Name");
 
@@ -622,21 +562,18 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -645,15 +582,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template Description",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		WebContentTemplates.addStructure(structureName = "WC Structure Name");
 
@@ -661,8 +596,7 @@ definition {
 
 		Type.typeAceEditor(
 			locator1 = "DDMEditTemplate#SCRIPT_CONTENT_FIELD_TEXT_AREA",
-			value1 = "${templateScript}"
-		);
+			value1 = ${templateScript});
 
 		PortletEntry.save();
 
@@ -676,34 +610,32 @@ definition {
 
 		WebContent.addStructuredPGViaWCD(
 			structureName = "WC Structure Name",
-			webContentTitle = "WC Title"
-		);
+			webContentTitle = "WC Title");
 
 		Portlet.viewBody(
 			portletBody = "Welcome to Liferay",
-			portletName = "Hello World"
-		);
+			portletName = "Hello World");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddExistingPageAsDisplayPageInSiteCP {
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Blank Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
-		Page.add(pageName = "Site Page Name", siteName = "Blank Site Name");
+		Page.add(
+			pageName = "Site Page Name",
+			siteName = "Blank Site Name");
 
 		Navigator.openSiteURL(siteName = "Blank Site Name");
 
@@ -713,23 +645,20 @@ definition {
 
 		AssetPublisherPortlet.configureFlaggableDisplaySettingsPG(
 			portletName = "Asset Publisher",
-			setAsDefaultPage = "true"
-		);
+			setAsDefaultPage = "true");
 
 		Navigator.openSiteURL(siteName = "Blank Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "Web Content Content",
-			webContentTitle = "Web Content Title"
-		);
+			webContentTitle = "Web Content Title");
 
 		PortletEntry.publish();
 
@@ -740,25 +669,22 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
 
 		WebContent.editDisplayPageCP(
 			pageName = "Site Page Name",
-			webContentTitle = "Web Content Title"
-		);
+			webContentTitle = "Web Content Title");
 
 		Navigator.openSiteURL(siteName = "Blank Site Name");
 
 		WebContent.viewPGViaAP(
 			webContentContent = "Web Content Content",
-			webContentTitle = "Web Content Title"
-		);
+			webContentTitle = "Web Content Title");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddImageToWebContentViaItemSelector {
 		property testray.component.names = "Training";
 
@@ -767,22 +693,19 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		ItemSelector.gotoItemSelectorViaAlloyEditor();
 
 		ItemSelector.uploadFile(
 			navTab = "Documents and Media",
-			uploadFileName = "Document_3.png"
-		);
+			uploadFileName = "Document_3.png");
 
 		PortletEntry.publish();
 
@@ -792,9 +715,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Web Content Image Page");
 
-		WebContentDisplayPortlet.selectWebContent(
-			webContentTitle = "WC WebContent Title"
-		);
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoPage(pageName = "Web Content Image Page");
 
@@ -803,7 +724,7 @@ definition {
 		AssertElementPresent(locator1 = "WCD#WEB_CONTENT_INLINE_IMAGE");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddLocalizedWebContentViaSourceEditor {
 		property testray.component.names = "Training,Web Content Administration";
 
@@ -817,21 +738,17 @@ definition {
 
 		WebContent.addCP(webContentTitle = "Basic S.P.A.C.E. Banner");
 
-		AlloyEditor.addSourceContent(
-			content = '''
+		AlloyEditor.addSourceContent(content = '''
 <h2 class="text-center">Space Program Academy of Continuing Education</h2>
 
 <p class="text-center">Dare to Dream out of this world</p>
-'''
-		);
+''');
 
 		Button.clickPublish();
 
 		Navigator.gotoPage(pageName = "Test Page Name");
 
-		WebContent.viewPGViaWCD(
-			webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world"
-		);
+		WebContent.viewPGViaWCD(webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world");
 
 		WebContentNavigator.gotoEditPGViaWCD();
 
@@ -839,16 +756,13 @@ definition {
 			localizedAbstractSummary = "A Japanese translation of the basic front page banner",
 			localizedLanguage = "Japanese (Japan)",
 			localizedTitle = "Basic S.P.A.C.E. Banner (Japanese Translation)",
-			webContentTitle = "Basic S.P.A.C.E. Banner"
-		);
+			webContentTitle = "Basic S.P.A.C.E. Banner");
 
-		AlloyEditor.addSourceContent(
-			content = '''
+		AlloyEditor.addSourceContent(content = '''
 <h2 class="text-center">Space Program 大学生涯教育</h2>
 
 <p class="text-center">地球から、宇宙の果てへ</p>
-'''
-		);
+''');
 
 		Button.clickPublish();
 
@@ -862,9 +776,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Test Page Name");
 
-		WebContent.viewPGViaWCD(
-			webContentContent = "Space Program 大学生涯教育 地球から、宇宙の果てへ"
-		);
+		WebContent.viewPGViaWCD(webContentContent = "Space Program 大学生涯教育 地球から、宇宙の果てへ");
 
 		Navigator.gotoPage(pageName = "Test Page Name");
 
@@ -872,19 +784,16 @@ definition {
 
 		Navigator.gotoPage(pageName = "Test Page Name");
 
-		WebContent.viewPGViaWCD(
-			webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world"
-		);
+		WebContent.viewPGViaWCD(webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world");
 
 		AssertTextNotPresent(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "Space Program 大学生涯教育 地球から、宇宙の果てへ"
-		);
+			value1 = "Space Program 大学生涯教育 地球から、宇宙の果てへ");
 	}
 
 	@description = "LPS-100416 - Non-Repeatable text fields show incorrect translation on label at first load."
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test AddNonRepeatableTextFieldWithTranslation {
 		JSONGroup.addGroup(groupName = "Test Site Name");
 
@@ -967,7 +876,7 @@ definition {
 	}
 
 	@description = "LPS-102795 - Adding Translations to removable fields sets contents to null."
-	@priority = "4"
+	@priority = 4
 	test AddTranslationsToRemovableFields {
 		JSONGroup.addGroup(groupName = "Test Site Name");
 
@@ -1009,7 +918,7 @@ definition {
 
 		WebContentTemplates.addCP(
 			templateName = "WC Template Name",
-			templateScript = "${templateScript}");
+			templateScript = ${templateScript});
 
 		PortletEntry.save();
 
@@ -1072,7 +981,7 @@ definition {
 			portletName = "WC Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddVideoViaWebContent {
 		property custom.properties = "editor.wysiwyg.portal-impl.portlet.ddm.text_html.ftl=ckeditor";
 		property dummy.socket.proxy.disabled = "true";
@@ -1081,8 +990,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
 		ServerAdministration.configureExternalServices(installXuggler = "true");
 
@@ -1097,8 +1005,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
 		ServerAdministration.configureExternalServices(enableXuggler = "true");
 
@@ -1107,14 +1014,12 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "DM Document Description",
 			dmDocumentFile = "Document_1.mp4",
-			dmDocumentTitle = "Document_1.mp4"
-		);
+			dmDocumentTitle = "Document_1.mp4");
 
 		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Document_1.mp4");
 
@@ -1125,17 +1030,15 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addViaCKEditor(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
-		WebContent.uploadVideo(dmDocumentURL = "${dmDocumentURL}");
+		WebContent.uploadVideo(dmDocumentURL = ${dmDocumentURL});
 
 		PortletEntry.publish();
 
@@ -1147,16 +1050,14 @@ definition {
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
-		WebContentDisplayPortlet.selectWebContent(
-			webContentTitle = "WC WebContent Title"
-		);
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
 		WebContent.viewVideoViaWCD();
 	}
 
-	@priority = "5"
+	@priority = 5
 	test AddWebContentFromImportedStructureAndTemplate {
 		property test.name.skip.portal.instance = "WebcontentUsecase#AddWebContentFromImportedStructureAndTemplate";
 		property testray.component.names = "Training";
@@ -1164,26 +1065,23 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "frontPage-structures.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		WebContentNavigator.gotoManageStructures();
 
 		for (var structureName : list "3 Columns with Images,Footer Content,1 Column Banner") {
-			WebContentStructures.viewCP(structureName = "${structureName}");
+			WebContentStructures.viewCP(structureName = ${structureName});
 		}
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -1191,26 +1089,22 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "space-templates.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		for (var templateName : list "3 Columns with Images Template,Footer Content Template,1 Column Banner Template,News,Events") {
 			WebContentTemplates.viewCP(
 				templateDescription = "",
 				templateLanguage = "ftl",
-				templateName = "${templateName}"
-			);
+				templateName = ${templateName});
 
 			ProductMenu.gotoPortlet(
 				category = "Content",
 				panel = "Site Administration",
-				portlet = "Web Content"
-			);
+				portlet = "Web Content");
 		}
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "1 Column Banner");
@@ -1222,8 +1116,7 @@ definition {
 			webContentImage = "Spaceport.jpg",
 			webContentTextBox = "Space Program Academy of Continuing Education",
 			webContentTextBox2 = "Dare to dream out of this world",
-			webContentTitle = "S.P.A.C.E. Banner"
-		);
+			webContentTitle = "S.P.A.C.E. Banner");
 
 		PortletEntry.publish();
 
@@ -1236,27 +1129,23 @@ definition {
 			webContentImage = "Spaceport.jpg",
 			webContentTextBox = "Space Program Academy of Continuing Education",
 			webContentTextBox2 = "Dare to dream out of this world",
-			webContentTitle = "S.P.A.C.E. Banner"
-		);
+			webContentTitle = "S.P.A.C.E. Banner");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWebContentRemoveGuestViewPermission {
 		property test.name.skip.portal.instance = "WebcontentUsecase#AddWebContentRemoveGuestViewPermission";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "System Settings"
-		);
+			portlet = "System Settings");
 
 		Search.searchCP(searchTerm = "Web Content");
 
 		SystemSettings.editConfiguration(configurationName = "Web Content");
 
-		SystemSettings.enableSetting(
-			checkboxSetting = "ARTICLE_VIEW_PERMISSIONS_CHECK_ENABLED_CHECKBOX"
-		);
+		SystemSettings.enableSetting(checkboxSetting = "ARTICLE_VIEW_PERMISSIONS_CHECK_ENABLED_CHECKBOX");
 
 		SystemSettings.saveConfiguration();
 
@@ -1265,15 +1154,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -1283,8 +1170,7 @@ definition {
 
 		Role.removePermissionPG(
 			permissionDefinitionKey = "CONFIGURATION_PERMISSIONS_VIEW_CHECKBOX",
-			roleName = "Guest"
-		);
+			roleName = "Guest");
 
 		Navigator.openURL();
 
@@ -1294,16 +1180,15 @@ definition {
 
 		Portlet.addPG(portletName = "Web Content Display");
 
-		WebContentDisplayPortlet.selectWebContent(
-			webContentTitle = "WC WebContent Title"
-		);
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoPage(pageName = "WCD Page");
 
 		PermissionsInline.gotoConfigurationPG();
 
 		var key_roleName = StringUtil.replace("Guest", " ", "-");
-		var key_roleName = StringUtil.lowerCase("${key_roleName}");
+
+		var key_roleName = StringUtil.lowerCase(${key_roleName});
 
 		AssertChecked(locator1 = "Permissions#CONFIGURATION_PERMISSIONS_VIEW_CHECKBOX");
 
@@ -1319,37 +1204,32 @@ definition {
 
 		AssertTextNotPresent(
 			locator1 = "Portlet#SPECIFIC_TITLE",
-			value1 = "Web Content Display"
-		);
+			value1 = "Web Content Display");
 
 		AssertTextNotPresent(
 			locator1 = "WCD#WEB_CONTENT_CONTENT",
-			value1 = "WC WebContent Content"
-		);
+			value1 = "WC WebContent Content");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test AddWebContentViaWCDWithGlobalStructureAndLocalTemplate {
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "Global WC Structure Description",
-			structureName = "Global WC Structure Name"
-		);
+			structureName = "Global WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "Global WC Structure Name");
 
@@ -1358,22 +1238,19 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "Local WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "Local WC Template Name"
-		);
+			templateName = "Local WC Template Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "Global WC Structure Name",
 			templateFieldNames = "Text",
-			templateLanguage = "ftl"
-		);
+			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
 
@@ -1393,37 +1270,32 @@ definition {
 			structureName = "Global WC Structure Name",
 			templateName = "Local WC Template Name",
 			webContentContent = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test AddWebContentWithGlobalStructureAndEditedDefaultValues {
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "Structure Description",
-			structureName = "Global Structure"
-		);
+			structureName = "Global Structure");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(
 			addRoleViewPermissions = "Power User",
-			structureName = "Global Structure"
-		);
+			structureName = "Global Structure");
 
 		Navigator.openURL();
 
@@ -1432,16 +1304,14 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			addRoleViewPermissions = "Power User",
 			templateDescription = "Template Description",
-			templateName = "Template Name"
-		);
+			templateName = "Template Name");
 
 		WebContentTemplates.addStructure(structureName = "Global Structure");
 
@@ -1449,8 +1319,7 @@ definition {
 
 		WebContentTemplates.addRoleViewPermissions(
 			roles = "Power User",
-			templateName = "Template Name"
-		);
+			templateName = "Template Name");
 
 		Navigator.openURL();
 
@@ -1459,39 +1328,33 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.editSubstructureDefaultValuesCP(
 			editSubstructureFieldNames = "Text",
-			substructureName = "Global Structure"
-		);
+			substructureName = "Global Structure");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.addCP(
 			userEmailAddress = "test1@liferay.com",
 			userFirstName = "test1",
 			userLastName = "test1",
-			userScreenName = "test1test"
-		);
+			userScreenName = "test1test");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
 			userEmailAddress = "test1@liferay.com",
-			userScreenName = "test1test"
-		);
+			userScreenName = "test1test");
 
 		JSONRole.assignRoleToUser(
 			roleName = "Power User",
@@ -1502,38 +1365,32 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
 		Site.assignUserAsMemberCP(
 			userFirstName = "test1",
 			userLastName = "test1",
-			userScreenName = "test1test"
-		);
+			userScreenName = "test1test");
 
 		ProductMenu.gotoPortlet(
 			category = "Members",
 			panel = "Site Administration",
-			portlet = "Site Memberships"
-		);
+			portlet = "Site Memberships");
 
 		Site.assignSiteRoleCP(
 			resourceName = "test1 test1",
-			roleName = "Site Administrator"
-		);
+			roleName = "Site Administrator");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "test1@liferay.com",
-			userLoginFullName = "test1 test1"
-		);
+			userLoginFullName = "test1 test1");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "Global Structure");
 
@@ -1541,8 +1398,7 @@ definition {
 			saveAsDraft = "true",
 			structureName = "Global Structure",
 			webContentText = "Web Content Text",
-			webContentTitle = "Web Content Title"
-		);
+			webContentTitle = "Web Content Title");
 
 		PortletEntry.publish();
 
@@ -1550,21 +1406,18 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-70386."
-	@priority = "5"
+	@priority = 5
 	test AddWebContentWithPortletURL {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(webContentTitle = "Web Content Title");
 
-		AlloyEditor.addSourceContent(
-			content = '''<p><span><a href="http://localhost:8080/web/guest/home/-/testportlet">text</a></span></p>'''
-		);
+		AlloyEditor.addSourceContent(content = '''<p><span><a href="http://localhost:8080/web/guest/home/-/testportlet">text</a></span></p>''');
 
 		PortletEntry.publish();
 
@@ -1578,47 +1431,44 @@ definition {
 
 		Navigator.openURL();
 
-		Click(locator1 = "WCD#WEB_CONTENT_TEXT_LINK_URL", key_contentText = "text");
+		Click(
+			key_contentText = "text",
+			locator1 = "WCD#WEB_CONTENT_TEXT_LINK_URL");
 
 		Portlet.viewTitle(portletName = "testportlet");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test DeleteTemplateAndStructureWithReferencedWebContent {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template Description",
 			templateFieldNames = "Text",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		WebContentTemplates.addStructure(structureName = "WC Structure Name");
 
@@ -1629,8 +1479,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
@@ -1638,8 +1487,7 @@ definition {
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
 			webContentText = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -1650,63 +1498,54 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentStructures.deleteCP(
 			structureName = "WC Structure Name",
-			webContentHasReference = "true"
-		);
+			webContentHasReference = "true");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentTemplates.deleteCP(
 			templateName = "WC Template Name",
-			webContentHasReference = "true"
-		);
+			webContentHasReference = "true");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentStructures.deleteCP(
 			structureName = "WC Structure Name",
-			webContentHasReference = "true"
-		);
+			webContentHasReference = "true");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditArticleMadeFromGlobalStructure {
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "Global WC Structure Description",
-			structureName = "Global WC Structure Name"
-		);
+			structureName = "Global WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "Global WC Structure Name");
 
@@ -1715,22 +1554,19 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "Global WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "Global WC Template Name"
-		);
+			templateName = "Global WC Template Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "Global WC Structure Name",
 			templateFieldNames = "Text",
-			templateLanguage = "ftl"
-		);
+			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
 
@@ -1750,8 +1586,7 @@ definition {
 			structureName = "Global WC Structure Name",
 			templateName = "Global WC Template Name",
 			webContentContent = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -1762,33 +1597,29 @@ definition {
 			templateName = "WC Template2 Name",
 			webContentContentEdit = "WC WebContent Text Edit",
 			webContentText = "WC WebContent Text Edit",
-			webContentTitleEdit = "WC WebContent Title Edit"
-		);
+			webContentTitleEdit = "WC WebContent Title Edit");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test EditContentWithTitleAndAllFieldsNull {
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		for (var structureFieldName : list "Boolean,Date,Decimal,Documents and Media,HTML,Image,Integer,Link to Page,Number,Radio,Select,Text,Text Box") {
 			DynamicDataMapping.addField(
-				field = "${structureFieldName}",
-				fieldFieldLabel = "${structureFieldName}",
-				fieldName = StringUtil.replace("${structureFieldName}", " ", "")
-			);
+				field = ${structureFieldName},
+				fieldFieldLabel = ${structureFieldName},
+				fieldName = StringUtil.replace(${structureFieldName}, " ", ""));
 		}
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
@@ -1796,22 +1627,19 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
 			templateFieldNames = "Boolean,Date,Decimal,Documents and Media,HTML,Image,Integer,Link to Page,Number,Radio,Select,Text,Text Box",
-			templateLanguage = "ftl"
-		);
+			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
 
@@ -1820,16 +1648,14 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
 		WebContent.addWithStructureCP(
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publishAndWait();
 
@@ -1840,39 +1666,34 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
 		WebContent.editCP(
 			webContentTitle = "WC WebContent Title",
-			webContentTitleEdit = "WC WebContent Title Edit"
-		);
+			webContentTitleEdit = "WC WebContent Title Edit");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditGlobalWebContentTemplate {
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "Global WC Structure Description",
-			structureName = "Global WC Structure Name"
-		);
+			structureName = "Global WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "Global WC Structure Name");
 
@@ -1881,22 +1702,19 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "Global WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "Global WC Template Name"
-		);
+			templateName = "Global WC Template Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "Global WC Structure Name",
 			templateFieldNames = "Text",
-			templateLanguage = "ftl"
-		);
+			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
 
@@ -1916,8 +1734,7 @@ definition {
 			structureName = "Global WC Structure Name",
 			templateName = "Global WC Template Name",
 			webContentContent = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -1926,66 +1743,57 @@ definition {
 			structureName = "Global WC Structure Name",
 			templateName = "Template Edit",
 			webContentContent = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
 		WebContent.viewSelectedTemplateCP(
 			templateName = "Template Edit",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test EditWebContentTemplate {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template1 Description",
 			templateFieldNames = "Text",
-			templateName = "WC Template1 Name"
-		);
+			templateName = "WC Template1 Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
-			templateFieldNames = "Text"
-		);
+			templateFieldNames = "Text");
 
 		DDLDataDefinition.save();
 
@@ -1994,20 +1802,17 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template2 Description",
-			templateName = "WC Template2 Name"
-		);
+			templateName = "WC Template2 Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
-			templateFieldNames = "Text"
-		);
+			templateFieldNames = "Text");
 
 		DDLDataDefinition.save();
 
@@ -2016,15 +1821,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
 		WebContent.addWithStructureCP(
 			webContentText = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -2035,15 +1838,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
 		WebContent.selectTemplateCP(
 			structureName = "WC Structure Name",
-			templateName = "WC Template1 Name"
-		);
+			templateName = "WC Template1 Name");
 
 		PortletEntry.publish();
 
@@ -2052,25 +1853,22 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
 		WebContent.viewSelectedTemplateCP(
 			templateName = "WC Template1 Name",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 	}
 
 	@description = "This is a use case for LPS-80208."
-	@priority = "4"
+	@priority = 4
 	test ExpireLatestVersion {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Test Site Name");
 
@@ -2081,15 +1879,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -2100,24 +1896,24 @@ definition {
 		WebContent.editCP(
 			webContentContentEdit = "WC WebContent Content Edit",
 			webContentTitle = "WC WebContent Title",
-			webContentTitleEdit = "WC WebContent Title Edit"
-		);
+			webContentTitleEdit = "WC WebContent Title Edit");
 
-		Navigator.gotoSitePage(pageName = "Test Page", siteName = "Test Site Name");
+		Navigator.gotoSitePage(
+			pageName = "Test Page",
+			siteName = "Test Site Name");
 
 		Portlet.addPG(portletName = "Web Content Display");
 
-		WebContentDisplayPortlet.selectWebContent(
-			webContentTitle = "WC WebContent Title Edit"
-		);
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title Edit");
 
-		Navigator.gotoSitePage(pageName = "Test Page", siteName = "Test Site Name");
+		Navigator.gotoSitePage(
+			pageName = "Test Page",
+			siteName = "Test Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContent.expireSpecificVersionCP(webContentTitle = "WC WebContent Title Edit");
 
@@ -2127,27 +1923,24 @@ definition {
 	}
 
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ExpireMultipleWebContent {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		for (var i : list "1,2,3") {
 			ProductMenu.gotoPortlet(
 				category = "Content",
 				panel = "Site Administration",
-				portlet = "Web Content"
-			);
+				portlet = "Web Content");
 
 			WebContentNavigator.gotoAddCP();
 
 			WebContent.addCP(
 				webContentContent = "WC WebContent Content",
-				webContentTitle = "WC WebContent Title ${i}"
-			);
+				webContentTitle = "WC WebContent Title ${i}");
 
 			PortletEntry.publish();
 		}
@@ -2155,39 +1948,33 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
-		WebContent.expireCP(
-			webContentTitleList = "WC WebContent Title 1,WC WebContent Title 2,WC WebContent Title 3,"
-		);
+		WebContent.expireCP(webContentTitleList = "WC WebContent Title 1,WC WebContent Title 2,WC WebContent Title 3,");
 
 		for (var i : list "1,2,3") {
 			ProductMenu.gotoPortlet(
 				category = "Content",
 				panel = "Site Administration",
-				portlet = "Web Content"
-			);
+				portlet = "Web Content");
 
 			WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title ${i}");
 
 			WebContent.viewStatus(
 				webContentContent = "WC WebContent Content",
 				webContentStatus = "Expired",
-				webContentTitle = "WC WebContent Title ${i}"
-			);
+				webContentTitle = "WC WebContent Title ${i}");
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test ImportAndUseGlobalStructureAndTemplate {
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Site Name");
 
@@ -2196,13 +1983,11 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		LAR.importPortlet(
 			larFileName = "structure-templates.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openURL();
 
@@ -2211,19 +1996,15 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
-		WebContentNavigator.gotoAddWithStructureCP(
-			structureName = "3 Column with Images"
-		);
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "3 Column with Images");
 
 		WebContent.addWithStructureCP(
 			fieldName = "title",
 			webContentTextBox = "Green Waste",
 			webContentTextBoxList = "Mowed Lawns,Mulched Branches,Compost Bin",
-			webContentTitle = "Agricultural Science Front Page"
-		);
+			webContentTitle = "Agricultural Science Front Page");
 
 		PortletEntry.publish();
 
@@ -2233,11 +2014,10 @@ definition {
 			fieldName = "title",
 			webContentTextBox = "Green Waste",
 			webContentTextBoxList = "Mowed Lawns,Mulched Branches,Compost Bin",
-			webContentTitle = "Agricultural Science Front Page"
-		);
+			webContentTitle = "Agricultural Science Front Page");
 	}
 
-	@priority = "5"
+	@priority = 5
 	test MoveImportedWebContentArticlesToFolders {
 		property test.name.skip.portal.instance = "WebcontentUsecase#MoveImportedWebContentArticlesToFolders";
 		property testray.component.names = "Training";
@@ -2245,8 +2025,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "S.P.A.C.E.");
 
@@ -2255,72 +2034,67 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentFolder.addCP(
 			folderDescription = "News Folder Description",
-			folderName = "News"
-		);
+			folderName = "News");
 
 		WebContentFolder.addCP(
 			folderDescription = "Events Folder Description",
-			folderName = "Events"
-		);
+			folderName = "Events");
 
 		LAR.importPortlet(
 			larFileName = "space-web-content.lar",
-			uploadFrom = "dependencies"
-		);
+			uploadFrom = "dependencies");
 
 		Navigator.openSiteLanding(siteURLKey = "S.P.A.C.E.");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		for (var webContentTitle : list "When It All Began...,Stravinksy in Space?,Student Spotlight,Upcoming Press Conference,New Student Orientation,Fall Special Speaker Series") {
-			WebContent.viewTitle(webContentTitle = "${webContentTitle}");
+			WebContent.viewTitle(webContentTitle = ${webContentTitle});
 		}
 
 		WebContent.moveArticlesToFolderCP(
 			folderName = "News",
-			webContentArticlesList = "When It All Began...,Stravinksy in Space?,Student Spotlight"
-		);
+			webContentArticlesList = "When It All Began...,Stravinksy in Space?,Student Spotlight");
 
 		WebContent.moveArticlesToFolderCP(
 			folderName = "Events",
-			webContentArticlesList = "Upcoming Press Conference,New Student Orientation,Fall Special Speaker Series"
-		);
+			webContentArticlesList = "Upcoming Press Conference,New Student Orientation,Fall Special Speaker Series");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
-		WebContentFolder.gotoCP(folderName = "News", webContentTitle = "News");
+		WebContentFolder.gotoCP(
+			folderName = "News",
+			webContentTitle = "News");
 
 		for (var webContentTitle : list "When It All Began...,Stravinksy in Space?,Student Spotlight") {
-			WebContent.viewTitle(webContentTitle = "${webContentTitle}");
+			WebContent.viewTitle(webContentTitle = ${webContentTitle});
 		}
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
-		WebContentFolder.gotoCP(folderName = "Events", webContentTitle = "Events");
+		WebContentFolder.gotoCP(
+			folderName = "Events",
+			webContentTitle = "Events");
 
 		for (var webContentTitle : list "Upcoming Press Conference,New Student Orientation,Fall Special Speaker Series") {
-			WebContent.viewTitle(webContentTitle = "${webContentTitle}");
+			WebContent.viewTitle(webContentTitle = ${webContentTitle});
 		}
 	}
 
-	@priority = "5"
+	@priority = 5
 	test MoveWebContentToFolder {
 		property testray.component.names = "Training";
 
@@ -2329,15 +2103,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -2348,45 +2120,39 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentFolder.addCP(
 			folderDescription = "WC Folder Description",
-			folderName = "WC Folder Name"
-		);
+			folderName = "WC Folder Name");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContent.moveToFolderCP(
 			folderName = "WC Folder Name",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentFolder.gotoCP(
 			folderName = "WC Folder Name",
-			webContentTitle = "WC Folder Name"
-		);
+			webContentTitle = "WC Folder Name");
 
 		WebContent.viewTitle(webContentTitle = "WC WebContent Title");
 	}
 
 	@description = "LPS-102867 - Repeatable Select loses options."
-	@priority = "4"
+	@priority = 4
 	test RepeatableSelectDisplaysOptions {
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -2442,7 +2208,7 @@ definition {
 			AssertElementPresent(
 				key_selectFieldLabel = "Select",
 				locator1 = "Select#ANY",
-				value1 = "${selectFieldValue1}");
+				value1 = ${selectFieldValue1});
 		}
 
 		DDLRecord.addRepeatableField(fieldName = "Date");
@@ -2455,36 +2221,37 @@ definition {
 			Select(
 				key_selectFieldLabel = "Select",
 				locator1 = "Select#ANY_2",
-				value1 = "${selectFieldValue2}");
+				value1 = ${selectFieldValue2});
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test StagingPublishExpiredWebContentViaWCD {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
-		Page.add(pageName = "Staging Test Page", siteName = "Site Name");
+		Page.add(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
 
-		Navigator.gotoSitePage(pageName = "Staging Test Page", siteName = "Site Name");
+		Navigator.gotoSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
 
 		Portlet.addPG(portletName = "Web Content Display");
 
 		WebContent.addPGViaWCD(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		WebContent.viewPGViaWCD(webContentContent = "WC WebContent Content");
 
@@ -2493,15 +2260,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
 			panel = "Site Administration",
-			portlet = "Staging"
-		);
+			portlet = "Staging");
 
 		Staging.activateStagingCP(siteName = "Site Name");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Test Page",
-			siteName = "Site Name"
-		);
+			siteName = "Site Name");
 
 		Staging.viewStagingLocalLivePG();
 
@@ -2514,15 +2279,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContent.expireSpecificVersionCP(webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Test Page",
-			siteName = "Site Name"
-		);
+			siteName = "Site Name");
 
 		Staging.viewStagingLocalLivePG();
 
@@ -2530,12 +2293,13 @@ definition {
 
 		Staging.publishToLive();
 
-		Navigator.gotoSitePage(pageName = "Staging Test Page", siteName = "Site Name");
+		Navigator.gotoSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
 
 		WebContent.viewPGViaWCD(
 			expiredContent = "true",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2544,25 +2308,22 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
 		WebContent.viewCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		WebContent.viewStatus(
 			webContentContent = "WC WebContent Content",
 			webContentStatus = "Expired",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 	}
 
 	@description = "This is a use case for LPS-71941."
-	@priority = "5"
+	@priority = 5
 	test UndeployWebContentDisplayModuleViaGogoShell {
 		property test.name.skip.portal.instance = "WebcontentUsecase#UndeployWebContentDisplayModuleViaGogoShell";
 
@@ -2575,105 +2336,93 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Gogo Shell"
-		);
+			portlet = "Gogo Shell");
 
 		var moduleID = GogoShell.getModuleID(moduleName = "com.liferay.journal.content.web");
 
-		GogoShell.stopModule(moduleID = "${moduleID}");
+		GogoShell.stopModule(moduleID = ${moduleID});
 
 		GogoShell.viewModuleStatus(
 			moduleName = "com.liferay.journal.content.web",
-			moduleStatus = "Resolved"
-		);
+			moduleStatus = "Resolved");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
 		Portlet.viewUndeployMessage();
 
-		Portlet.deletePG(
-			portletName = "com_liferay_journal_content_web_portlet_JournalContentPortlet"
-		);
+		Portlet.deletePG(portletName = "com_liferay_journal_content_web_portlet_JournalContentPortlet");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Gogo Shell"
-		);
+			portlet = "Gogo Shell");
 
-		GogoShell.startModule(moduleID = "${moduleID}");
+		GogoShell.startModule(moduleID = ${moduleID});
 
 		GogoShell.viewModuleStatus(
 			moduleName = "com.liferay.journal.content.web",
-			moduleStatus = "Active"
-		);
+			moduleStatus = "Active");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
 		Portlet.addPG(portletName = "Web Content Display");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test UseStructureAndTemplateFromParentSiteHierarchy {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
-		Site.addBlankCP(parentSiteName = "Site Name", siteName = "Child SiteName");
+		Site.addBlankCP(
+			parentSiteName = "Site Name",
+			siteName = "Child SiteName");
 
 		Navigator.openSiteLanding(siteURLKey = "Site Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "HTML",
 			fieldFieldLabel = "HTML",
 			fieldName = "HTML",
-			structureFieldName = "HTML"
-		);
+			structureFieldName = "HTML");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
 			templateFieldNames = "HTML",
-			templateLanguage = "ftl"
-		);
+			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
 
@@ -2682,34 +2431,29 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.viewCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.viewTableEntryCP(
 			templateDescription = "WC Template Description",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
@@ -2717,82 +2461,76 @@ definition {
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
 		WebContent.viewTitle(webContentTitle = "WC WebContent Title");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewArticleEmailNotification {
 		property test.smtp.server.enabled = "true";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.addCP(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
 			userLastName = "userln",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
 			password = "password",
 			userEmailAddress = "userea@liferay.com",
-			userScreenName = "usersn"
-		);
+			userScreenName = "usersn");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
-			portlet = "Users and Organizations"
-		);
+			portlet = "Users and Organizations");
 
-		User.assignRegularRoleCP(roleName = "Administrator", userScreenName = "usersn");
+		User.assignRegularRoleCP(
+			roleName = "Administrator",
+			userScreenName = "usersn");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
-			userLoginFullName = "userfn userln"
-		);
+			userLoginFullName = "userfn userln");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContent.subscribeCP();
 
 		User.logoutPG();
 
-		User.loginUserPG(password = "test", userEmailAddress = "test@liferay.com");
+		User.loginUserPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -2801,13 +2539,12 @@ definition {
 			content = "WC WebContent Content",
 			recipient = "userfn userln",
 			sender = "Joe Bloggs",
-			subject = "WC WebContent Title"
-		);
+			subject = "WC WebContent Title");
 	}
 
 	@description = "This will be ignored until LPS-125429 is fixed. This is a use case for LPS-101289."
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ViewCommentAfterEditingViaStage {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -2935,28 +2672,25 @@ definition {
 			userFullName = "Test Test");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test ViewGlobalStructureViaAddMenuInLiferaySite {
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -2965,21 +2699,43 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContent.viewStructureViaAddMenuCP(structureName = "WC Structure Name");
 	}
 
-	@priority = "4"
+	@description = "This is a test for LPS-153323. View kebab icon of web content visible."
+	@priority = 4
+	test ViewKebabIconOfWebContentVisible {
+		property testray.component.names = "Web Content Administration";
+
+		task ("Add a published web content based on Basic Web Content") {
+			JSONGroup.addGroup(groupName = "Test Site Name");
+
+			JSONWebcontent.addWebContent(
+				content = "Web Content Content",
+				groupName = "Test Site Name",
+				title = "Web Content Title");
+		}
+
+		task ("Check kebab icon of the web content visible") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			AssertCssValue(
+				locator1 = "//li[contains(@class, 'list-group-item')]//a[contains(@class, 'dropdown-toggle')]",
+				locator2 = "color",
+				value1 = "rgba(106, 112, 139, 1)");
+		}
+	}
+
+	@priority = 4
 	test ViewMultipleCategoriesViaWebContent {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Categories"
-		);
+			portlet = "Categories");
 
 		Vocabulary.addCP(vocabularyName = "Vocabulary Name");
 
@@ -2988,22 +2744,19 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Categories"
-		);
+			portlet = "Categories");
 
 		for (var categoryName : list "Category Name 1,Category Name 2,Category Name 3,Category Name 4,Category Name 5") {
 			Category.addCP(
-				categoryName = "${categoryName}",
-				vocabularyName = "Vocabulary Name"
-			);
+				categoryName = ${categoryName},
+				vocabularyName = "Vocabulary Name");
 
 			Navigator.openURL();
 
 			ProductMenu.gotoPortlet(
 				category = "Content",
 				panel = "Site Administration",
-				portlet = "Categories"
-			);
+				portlet = "Categories");
 		}
 
 		Navigator.openURL();
@@ -3011,8 +2764,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
@@ -3020,32 +2772,27 @@ definition {
 			categoryNameList = "Category Name 1,Category Name 2,Category Name 3,Category Name 4,Category Name 5",
 			vocabularyName = "Vocabulary Name",
 			webContentContent = "WC Content Body",
-			webContentTitle = "WC Content Title"
-		);
+			webContentTitle = "WC Content Title");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC Content Title");
 
 		WebContent.viewCategorizationCategoryCP(
 			categoryNameList = "Category Name 1,Category Name 2,Category Name 3,Category Name 4,Category Name 5",
-			webContentTitle = "WC Content Title"
-		);
+			webContentTitle = "WC Content Title");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC Content Title");
 
-		WebContent.viewCategorizationCategoryCP(
-			categoryNameList = "Category Name 1,Category Name 2,Category Name 3,Category Name 4,Category Name 5"
-		);
+		WebContent.viewCategorizationCategoryCP(categoryNameList = "Category Name 1,Category Name 2,Category Name 3,Category Name 4,Category Name 5");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewMultipleVocabulariesViaAddWebContent {
 		for (var vocabularyName : list "Vocabulary Name 1,Vocabulary Name 2,Vocabulary Name 3,Vocabulary Name 4,Vocabulary Name 5") {
 			Navigator.openURL();
@@ -3053,15 +2800,13 @@ definition {
 			ProductMenu.gotoPortlet(
 				category = "Content",
 				panel = "Site Administration",
-				portlet = "Categories"
-			);
+				portlet = "Categories");
 
-			Vocabulary.addCP(vocabularyName = "${vocabularyName}");
+			Vocabulary.addCP(vocabularyName = ${vocabularyName});
 
 			Category.addCP(
 				categoryName = "Category Name",
-				vocabularyName = "${vocabularyName}"
-			);
+				vocabularyName = ${vocabularyName});
 		}
 
 		Navigator.openURL();
@@ -3069,19 +2814,16 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
-		WebContent.viewCategorizationVocabularyCP(
-			vocabularyNameList = "Vocabulary Name 1,Vocabulary Name 2,Vocabulary Name 3,Vocabulary Name 4,Vocabulary Name 5"
-		);
+		WebContent.viewCategorizationVocabularyCP(vocabularyNameList = "Vocabulary Name 1,Vocabulary Name 2,Vocabulary Name 3,Vocabulary Name 4,Vocabulary Name 5");
 	}
 
 	@description = "This is a use case for LPS-103344. View the same name categorization of web content. This will be ignored until LPS-143193 is fixed."
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test ViewSameNameCategoriesViaWebContent {
 		JSONCategory.addVocabulary(
 			groupName = "Guest",
@@ -3099,7 +2841,6 @@ definition {
 			parentCategoryName = "Category Name 1",
 			title = "Subcategory Name",
 			vocabularyName = "Vocabulary Name");
-
 		var subcategoryId2 = JSONCategory.addSubcategory(
 			groupName = "Guest",
 			parentCategoryName = "Category Name 2",
@@ -3119,34 +2860,30 @@ definition {
 		WebContent.viewCategorizationCategoryCP(categoryNameList = "Subcategory Name,Subcategory Name");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewSourceContainsNoGarbageData {
 		property testray.component.names = "Web Content Administration";
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		DynamicDataMapping.addField(
 			field = "Image",
 			fieldFieldLabel = "Image",
-			fieldName = "image"
-		);
+			fieldName = "image");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
@@ -3155,30 +2892,26 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
 			templateFieldNames = "Image",
-			templateLanguage = "ftl"
-		);
+			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
@@ -3186,8 +2919,7 @@ definition {
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
 			webContentText = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -3197,24 +2929,25 @@ definition {
 
 		FormFields.editText(
 			fieldName = "title",
-			fieldValue = "English (United States) Title"
-		);
+			fieldValue = "English (United States) Title");
 
 		ItemSelector.gotoItemSelectorViaSelectButton();
 
 		ItemSelector.uploadFile(
 			navTab = "Documents and Media",
-			uploadFileName = "Document_3.png"
-		);
+			uploadFileName = "Document_3.png");
 
 		FormFields.editTextAlt(
 			fieldName = "image",
-			fieldValue = "English (United States) Image Description"
-		);
+			fieldValue = "English (United States) Image Description");
 
-		WebContent.addLocale(language = "Spanish (Spain)", locale = "es_ES");
+		WebContent.addLocale(
+			language = "Spanish (Spain)",
+			locale = "es_ES");
 
-		FormFields.editText(fieldName = "title", fieldValue = "Spanish (Spain) Title");
+		FormFields.editText(
+			fieldName = "title",
+			fieldValue = "Spanish (Spain) Title");
 
 		ItemSelector.gotoItemSelectorViaSelectButton();
 
@@ -3222,59 +2955,50 @@ definition {
 
 		FormFields.editTextAlt(
 			fieldName = "image",
-			fieldValue = "Spanish (Spain) Image Description"
-		);
+			fieldValue = "Spanish (Spain) Image Description");
 
 		WebContent.selectLocale(locale = "English (United States)");
 
 		FormFields.viewTextValue(
 			fieldName = "title",
-			fieldValue = "English (United States) Title"
-		);
+			fieldValue = "English (United States) Title");
 
 		FormFields.viewTextValueAlt(
 			fieldName = "image",
-			fieldValue = "English (United States) Image Description"
-		);
+			fieldValue = "English (United States) Image Description");
 
 		WebContent.selectLocale(locale = "es_ES");
 
 		FormFields.viewTextValue(
 			fieldName = "title",
-			fieldValue = "Spanish (Spain) Title"
-		);
+			fieldValue = "Spanish (Spain) Title");
 
 		FormFields.viewTextValueAlt(
 			fieldName = "image",
-			fieldValue = "Spanish (Spain) Image Description"
-		);
+			fieldValue = "Spanish (Spain) Image Description");
 
 		PortletEntry.publish();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
-		WebContentNavigator.gotoEditCP(
-			webContentTitle = "English (United States) Title"
-		);
+		WebContentNavigator.gotoEditCP(webContentTitle = "English (United States) Title");
 
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "View Source");
 
 		AssertElementNotPresent(locator1 = "WC#SOURCE_GARBAGE_DATA");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test WebContentAdministrationDataValidation {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
@@ -3285,15 +3009,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -3304,40 +3026,35 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
 		WebContent.editNullCP(
 			webContentContent = "WC WebContent Content",
 			webContentContentEdit = "WC WebContent Content",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
 		WebContent.editCP(
 			webContentContentEdit = "WC WebContent Content Edit",
 			webContentTitle = "WC WebContent Title",
-			webContentTitleEdit = "WC WebContent Title Edit"
-		);
+			webContentTitleEdit = "WC WebContent Title Edit");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentTemplates.addNullCP();
 
@@ -3346,8 +3063,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentTemplates.addNullCP();
 
@@ -3356,15 +3072,14 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addNullCP();
 	}
 
-	@priority = "4"
+	@priority = 4
 	test WebContentAdministrationLocalization {
 		property test.name.skip.portal.instance = "WebcontentUsecase#WebContentAdministrationLocalization";
 
@@ -3385,8 +3100,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
@@ -3402,30 +3116,26 @@ definition {
 			localization1Name = "nom de la structure de wc",
 			localization1NameKey = "fr_FR",
 			localization2Name = "wc 结构名称",
-			localization2NameKey = "zh_CN"
-		);
+			localization2NameKey = "zh_CN");
 
 		DynamicDataMapping.addField(
 			field = "Text",
 			fieldFieldLabel = "Text",
-			fieldName = "Text"
-		);
+			fieldName = "Text");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageTemplates();
 
 		WebContentTemplates.addCP(
 			templateDescription = "WC Template Description",
 			templateLanguage = "ftl",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		DDLDataDefinition.save();
 
@@ -3434,14 +3144,12 @@ definition {
 			localization1NameKey = "fr_FR",
 			localization2Name = "wc 模板名称",
 			localization2NameKey = "zh_CN",
-			templateName = "WC Template Name"
-		);
+			templateName = "WC Template Name");
 
 		WebContentTemplates.addStructure(
 			structureName = "WC Structure Name",
 			templateFieldNames = "Text",
-			templateLanguage = "ftl"
-		);
+			templateLanguage = "ftl");
 
 		DDLDataDefinition.save();
 
@@ -3450,8 +3158,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Name");
 
@@ -3459,8 +3166,7 @@ definition {
 			structureName = "WC Structure Name",
 			templateName = "WC Template Name",
 			webContentText = "WC WebContent Text",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
@@ -3472,16 +3178,13 @@ definition {
 			localizedLanguage = "French (France)",
 			localizedText = "WC contenu WebContent",
 			localizedTitle = "WC WebContent Titre",
-			webContentTitle = "WC WebContent Title"
-		);
+			webContentTitle = "WC WebContent Title");
 
 		PortletEntry.publish();
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
-		WebContentDisplayPortlet.selectWebContent(
-			webContentTitle = "WC WebContent Title"
-		);
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent Title");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -3491,9 +3194,7 @@ definition {
 
 		WebContent.viewPGViaWCD(webContentContent = "WC contenu WebContent");
 
-		WebContentNavigator.gotoLocalizedEditPGViaWCD(
-			localizedPortletOption = "Modifier le contenu de Web"
-		);
+		WebContentNavigator.gotoLocalizedEditPGViaWCD(localizedPortletOption = "Modifier le contenu de Web");
 
 		WebContent.viewTranslationPGViaWCD(
 			fieldName = "Text",
@@ -3503,8 +3204,7 @@ definition {
 			panelHeading = "Structure et gabarit",
 			structureLocalizationName = "nom de la structure de wc",
 			templateLocalizationName = "nom de la template de wc",
-			webContentTranslationLanguage = "français (France)"
-		);
+			webContentTranslationLanguage = "français (France)");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
@@ -3517,32 +3217,29 @@ definition {
 		WebContent.viewTranslationPGViaWCD(
 			panelHeading = "结构和模板",
 			structureLocalizationName = "wc 结构名称",
-			templateLocalizationName = "wc 模板名称"
-		);
+			templateLocalizationName = "wc 模板名称");
 
 		Navigator.gotoPage(pageName = "Web Content Display Page");
 
 		LanguagePortlet.selectLanguagePG(language = "English (United States)");
 	}
 
-	@priority = "3"
+	@priority = 3
 	test WebContentAdministrationPaginatingRelatedAssets {
-		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent 1 Content",
-			webContentTitle = "WC WebContent 1 Title"
-		);
+			webContentTitle = "WC WebContent 1 Title");
 
 		PortletEntry.publish();
 
@@ -3552,8 +3249,7 @@ definition {
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent 2 Content",
-			webContentTitle = "WC WebContent 2 Title"
-		);
+			webContentTitle = "WC WebContent 2 Title");
 
 		PortletEntry.publish();
 
@@ -3563,8 +3259,7 @@ definition {
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent 3 Content",
-			webContentTitle = "WC WebContent 3 Title"
-		);
+			webContentTitle = "WC WebContent 3 Title");
 
 		PortletEntry.publish();
 
@@ -3574,8 +3269,7 @@ definition {
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent 4 Content",
-			webContentTitle = "WC WebContent 4 Title"
-		);
+			webContentTitle = "WC WebContent 4 Title");
 
 		PortletEntry.publish();
 
@@ -3585,8 +3279,7 @@ definition {
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent 5 Content",
-			webContentTitle = "WC WebContent 5 Title"
-		);
+			webContentTitle = "WC WebContent 5 Title");
 
 		PortletEntry.publish();
 
@@ -3596,8 +3289,7 @@ definition {
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent 6 Content",
-			webContentTitle = "WC WebContent 6 Title"
-		);
+			webContentTitle = "WC WebContent 6 Title");
 
 		PortletEntry.publish();
 
@@ -3608,45 +3300,38 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContent.viewTitle(webContentTitle = "WC WebContent 3 Title");
 
 		WebContent.paginateRelatedAssets(
 			assetType = "Basic Web Content",
-			itemsPerPage = "5",
-			webContentTitle = "WC WebContent 3 Title"
-		);
+			itemsPerPage = 5,
+			webContentTitle = "WC WebContent 3 Title");
 
 		WebContent.viewPaginateRelatedAssets(
 			itemsPerPage = "5 Entries",
-			numberOfPages = "Showing 1 to 5 of 6 entries."
-		);
+			numberOfPages = "Showing 1 to 5 of 6 entries.");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent 3 Title");
 
 		WebContent.addExistingRelatedAssetCP(
 			assetTitle = "WC WebContent 5 Title",
 			assetType = "Basic Web Content",
-			siteName = "${siteName}"
-		);
+			siteName = ${siteName});
 
 		Page.add(pageName = "Web Content Display Page");
 
 		Portlet.addPG(portletName = "Web Content Display");
 
-		WebContentDisplayPortlet.selectWebContent(
-			webContentTitle = "WC WebContent 3 Title"
-		);
+		WebContentDisplayPortlet.selectWebContent(webContentTitle = "WC WebContent 3 Title");
 
 		WebContentDisplayPortlet.configureSetupPG(metadataNameList = "Related Assets");
 
@@ -3658,26 +3343,23 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-89641."
-	@priority = "4"
+	@priority = 4
 	test WebcontentAdministrationTemplateValidation {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoManageStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
-			structureName = "WC Structure Name"
-		);
+			structureName = "WC Structure Name");
 
 		DynamicDataMapping.addField(
 			field = "Image",
 			fieldFieldLabel = "Image",
-			fieldName = "Image"
-		);
+			fieldName = "Image");
 
 		WebContentStructures.saveCP();
 
@@ -3705,36 +3387,17 @@ definition {
 
 		WebContent.addCP(webContentTitle = "WC WebContent Title");
 
-		AssertClickNoError(locator1 = "Button#SAVE_AS_DRAFT", value1 = "Save as Draft");
+		AssertClickNoError(
+			locator1 = "Button#SAVE_AS_DRAFT",
+			value1 = "Save as Draft");
 
 		WebContentStructures.viewTemplateValidation();
 
-		AssertClickNoError(locator1 = "Button#PUBLISH", value1 = "Publish");
+		AssertClickNoError(
+			locator1 = "Button#PUBLISH",
+			value1 = "Publish");
 
 		WebContentStructures.viewTemplateValidation();
 	}
 
-	@description = "This is a test for LPS-153323. View kebab icon of web content visible."
-	@priority = "4"
-	test ViewKebabIconOfWebContentVisible {
-		property testray.component.names = "Web Content Administration";
-
-		task ("Add a published web content based on Basic Web Content") {
-			JSONGroup.addGroup(groupName = "Test Site Name");
-
-			JSONWebcontent.addWebContent(
-				content = "Web Content Content",
-				groupName = "Test Site Name",
-				title = "Web Content Title");
-		}
-
-		task ("Check kebab icon of the web content visible") {
-			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-			AssertCssValue(
-				locator1 = "//li[contains(@class, 'list-group-item')]//a[contains(@class, 'dropdown-toggle')]",
-				locator2 = "color",
-				value1 = "rgba(106, 112, 139, 1)");
-		}
-	}
 }

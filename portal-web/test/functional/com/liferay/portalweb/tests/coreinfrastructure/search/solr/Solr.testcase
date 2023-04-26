@@ -1,8 +1,9 @@
 @component-name = "portal-search"
 definition {
+
 	property osgi.app.includes = "portal-search-solr";
 	property osgi.module.configuration.file.names = "com.liferay.portal.bundle.blacklist.internal.BundleBlacklistConfiguration.config";
-	property osgi.module.configurations = "blacklistBundleSymbolicNames=&quot;com.liferay.portal.mobile.device.detection.fiftyonedegrees.api,com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise,com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise.test.data,com.liferay.portal.mobile.device.detection.fiftyonedegrees,com.liferay.portal.search.elasticsearch,com.liferay.portal.search.elasticsearch.shield,com.liferay.portal.search.elasticsearch.shield.fragment,com.liferay.portal.search.elasticsearch.marvel.web&quot;";
+	property osgi.module.configurations = "blacklistBundleSymbolicNames=\"com.liferay.portal.mobile.device.detection.fiftyonedegrees.api,com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise,com.liferay.portal.mobile.device.detection.fiftyonedegrees.enterprise.test.data,com.liferay.portal.mobile.device.detection.fiftyonedegrees,com.liferay.portal.search.elasticsearch,com.liferay.portal.search.elasticsearch.shield,com.liferay.portal.search.elasticsearch.shield.fragment,com.liferay.portal.search.elasticsearch.marvel.web\"";
 	property portal.release = "true";
 	property portal.suite.search.engine = "solr";
 	property portal.upstream = "true";
@@ -20,7 +21,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -32,73 +33,66 @@ definition {
 		}
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SearchAssetsScopeEverythingAcrossMultipleSites {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Site Name 1");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Web Content"
-		);
+			portlet = "Web Content");
 
 		WebContentNavigator.gotoAddCP();
 
 		WebContent.addCP(
 			webContentContent = "WC WebContent Content",
-			webContentTitle = "Apple"
-		);
+			webContentTitle = "Apple");
 
 		PortletEntry.publish();
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Site Name 2");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "DM Document Description",
 			dmDocumentFile = "Document_1.doc",
-			dmDocumentTitle = "Apple"
-		);
+			dmDocumentTitle = "Apple");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
-			portlet = "Sites"
-		);
+			portlet = "Sites");
 
 		Site.addBlankCP(siteName = "Site Name 3");
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Blogs"
-		);
+			portlet = "Blogs");
 
-		Blogs.addEntry(entryContent = "Blogs Entry Content", entryTitle = "Apple");
+		Blogs.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Apple");
 
 		Navigator.openURL();
 
 		Portlet.gotoPortletOptions(
 			portletName = "Search",
-			portletOption = "Configuration"
-		);
+			portletOption = "Configuration");
 
 		Search.configureSearchScopePG(searchScope = "Everything");
 
@@ -108,21 +102,18 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Web Content Article"
-		);
+			searchAssetType = "Web Content Article");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Blogs Entry"
-		);
+			searchAssetType = "Blogs Entry");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test SolrSmokeTest {
 		property environment.acceptance = "false";
 		property test.name.skip.portal.instance = "Solr#SolrSmokeTest";
@@ -144,34 +135,30 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Message Boards"
-		);
+			portlet = "Message Boards");
 
-		MessageboardsThread.addCP(threadBody = "Orange", threadSubject = "Apple");
+		MessageboardsThread.addCP(
+			threadBody = "Orange",
+			threadSubject = "Apple");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "Orange",
 			dmDocumentFile = "Document_1.txt",
-			dmDocumentTitle = "Apple"
-		);
+			dmDocumentTitle = "Apple");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		Navigator.gotoPage(pageName = "Solr Page");
 
@@ -179,13 +166,11 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
 		Navigator.gotoPage(pageName = "Solr Page");
 
@@ -193,18 +178,16 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 	}
 
 	@description = "This smoke test is to ensure that Liferay is successfully running on a remote SolrCloud with 2 nodes by asserting console logging for ZooKeeper and performing searches in portal. Note by default, an embedded Elasticsearch is deployed in portal."
 	@ignore = "true"
-	@priority = "4"
+	@priority = 4
 	test SolrWithSolrCloudSmokeTest {
 		property solr.solrcloud.enabled = "true";
 		property test.name.skip.portal.instance = "Solr#SolrWithSolrCloudSmokeTest";
@@ -218,34 +201,30 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Message Boards"
-		);
+			portlet = "Message Boards");
 
-		MessageboardsThread.addCP(threadBody = "Orange", threadSubject = "Apple");
+		MessageboardsThread.addCP(
+			threadBody = "Orange",
+			threadSubject = "Apple");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "Orange",
 			dmDocumentFile = "Document_1.txt",
-			dmDocumentTitle = "Apple"
-		);
+			dmDocumentTitle = "Apple");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		Navigator.gotoPage(pageName = "Solr Page");
 
@@ -253,13 +232,11 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
 		Navigator.gotoPage(pageName = "Solr Page");
 
@@ -267,17 +244,15 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 	}
 
 	@description = "This smoke test is to ensure that Liferay is successfully running on a remote Solr with SSL Authentication by asserting console logging for KeyStoreLoaderImpl and performing searches in portal. Note by default, an embedded Elasticsearch is deployed in portal."
-	@priority = "4"
+	@priority = 4
 	test SolrWithSSLAuthenticationSmokeTest {
 		property solr.ssl.authentication.enabled = "true";
 		property test.name.skip.portal.instance = "Solr#SolrWithSSLAuthenticationSmokeTest";
@@ -287,34 +262,30 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Message Boards"
-		);
+			portlet = "Message Boards");
 
-		MessageboardsThread.addCP(threadBody = "Orange", threadSubject = "Apple");
+		MessageboardsThread.addCP(
+			threadBody = "Orange",
+			threadSubject = "Apple");
 
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Documents and Media"
-		);
+			portlet = "Documents and Media");
 
 		DMDocument.addCP(
 			dmDocumentDescription = "Orange",
 			dmDocumentFile = "Document_1.txt",
-			dmDocumentTitle = "Apple"
-		);
+			dmDocumentTitle = "Apple");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		Navigator.gotoPage(pageName = "Solr Page");
 
@@ -322,13 +293,11 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 
 		Navigator.gotoPage(pageName = "Solr Page");
 
@@ -336,16 +305,14 @@ definition {
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Document"
-		);
+			searchAssetType = "Document");
 
 		Search.viewSearchResultsPG(
 			searchAssetTitle = "Apple",
-			searchAssetType = "Message Boards Message"
-		);
+			searchAssetType = "Message Boards Message");
 	}
 
-	@priority = "4"
+	@priority = 4
 	test ViewReindexAllSearchIndexesLoggingInSolrAdmin {
 		property index.on.startup = "false";
 		property solr.logging.info.level = "true";
@@ -354,15 +321,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "Server Administration"
-		);
+			portlet = "Server Administration");
 
-		ServerAdministration.executeServerResourcesActions(
-			actionsDescription = "Reindex all search indexes."
-		);
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		Navigator.openSpecificURL(url = "http://localhost:8983/solr/#/~logging");
 
 		Solr.viewLoggerNameInSolrAdminLogging();
 	}
+
 }

@@ -1,5 +1,6 @@
 @component-name = "portal-web-forms-and-data-lists"
 definition {
+
 	property portal.release = "true";
 	property testray.main.component.name = "Dynamic Data Lists";
 
@@ -13,13 +14,11 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Dynamic Data Lists"
-		);
+			portlet = "Dynamic Data Lists");
 
 		DDLDataDefinition.addCP();
 
-		DynamicDataMapping.addFieldViaJSON(
-			sourceJSON = '''
+		DynamicDataMapping.addFieldViaJSON(sourceJSON = '''
 {
 	"availableLanguageIds": [
 		"es_ES",
@@ -578,8 +577,7 @@ definition {
 		}
 	]
 }
-'''
-		);
+''');
 
 		DDLDataDefinition.setInputFieldLocalization(languageValue = "pt_BR");
 
@@ -592,8 +590,7 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Dynamic Data Lists"
-		);
+			portlet = "Dynamic Data Lists");
 
 		DDLList.addCP();
 
@@ -606,14 +603,13 @@ definition {
 		ProductMenu.gotoPortlet(
 			category = "Content",
 			panel = "Site Administration",
-			portlet = "Dynamic Data Lists"
-		);
+			portlet = "Dynamic Data Lists");
 	}
 
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -626,46 +622,41 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-69325."
-	@priority = "4"
+	@priority = 4
 	test ViewFieldInputWhenSwitchingTranslations {
 		DDLRecord.addCP();
 
 		DDLRecord.populateFieldText(
 			ddlRecordFieldData = "English (United States) Categoria",
-			fieldName = "Categoria"
-		);
+			fieldName = "Categoria");
 
 		DDLRecord.populateFieldText(
 			ddlRecordFieldData = "English (United States) Pergunta",
-			fieldName = "Pergunta"
-		);
+			fieldName = "Pergunta");
 
 		for (var language : list "Spanish (Spain),Portuguese (Brazil)") {
-			DDLRecord.addTranslation(localizedLanguage = "${language}");
+			DDLRecord.addTranslation(localizedLanguage = ${language});
 
 			DDLRecord.populateFieldText(
 				ddlRecordFieldData = "${language} Categoria",
-				fieldName = "Categoria"
-			);
+				fieldName = "Categoria");
 
 			DDLRecord.populateFieldText(
 				ddlRecordFieldData = "${language} Pergunta",
-				fieldName = "Pergunta"
-			);
+				fieldName = "Pergunta");
 		}
 
 		for (var language : list "English (United States),Spanish (Spain),Portuguese (Brazil)") {
-			DDLRecord.selectTranslation(localizedLanguage = "${language}");
+			DDLRecord.selectTranslation(localizedLanguage = ${language});
 
 			FormFields.viewTextValue(
 				fieldName = "Categoria",
-				fieldValue = "${language} Categoria"
-			);
+				fieldValue = "${language} Categoria");
 
 			FormFields.viewTextValue(
 				fieldName = "Pergunta",
-				fieldValue = "${language} Pergunta"
-			);
+				fieldValue = "${language} Pergunta");
 		}
 	}
+
 }
