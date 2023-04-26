@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -47,7 +49,6 @@ import org.jooq.DSLContext;
 import org.json.JSONArray;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -72,7 +73,7 @@ public class PostgreSQLDataExporterTest
 	}
 
 	@Test
-	public void testExportSegmentData() {
+	public void testExportSegmentData() throws Exception {
 		Segment segment1 = new Segment();
 
 		segment1.setAuthorName("Test Test");
@@ -103,36 +104,24 @@ public class PostgreSQLDataExporterTest
 			DateUtil.toUTCDate("2023-04-01T00:00:00.000Z"), 1L,
 			DateUtil.toUTCDate("2023-04-28T23:23:59.000Z"));
 
-		String fileName = String.valueOf(dataExportTask.getId());
+		_exportSegmentData(dataExportTask);
 
-		Assertions.assertDoesNotThrow(
-			() -> {
-				_exportSegmentData(dataExportTask, fileName);
+		_extractJSONFileFromZip();
 
-				_extractJSONFileFromZip(fileName);
+		try (FileInputStream fileInputStream = new FileInputStream(
+				"data.json")) {
 
-				try (FileInputStream fileInputStream = new FileInputStream(
-						"data.json")) {
+			JSONArray jsonArray = new JSONArray(
+				IOUtils.toString(fileInputStream, StandardCharsets.UTF_8));
 
-					JSONArray jsonArray = new JSONArray(
-						IOUtils.toString(
-							fileInputStream, StandardCharsets.UTF_8));
-
-					JSONAssert.assertEquals(
-						ResourceUtil.readResourceToJSONArray(
-							"dependencies/expected_segments_export.json", this),
-						jsonArray, true);
-				}
-				finally {
-					File file1 = new File(fileName + ".zip");
-
-					file1.delete();
-
-					File file2 = new File("data.json");
-
-					file2.delete();
-				}
-			});
+			JSONAssert.assertEquals(
+				ResourceUtil.readResourceToJSONArray(
+					"dependencies/expected_segments_export.json", this),
+				jsonArray, true);
+		}
+		finally {
+			Files.deleteIfExists(Paths.get("data.json"));
+		}
 	}
 
 	private DataExportTask _createDataExportTask(
@@ -147,44 +136,40 @@ public class PostgreSQLDataExporterTest
 		return dataExportTask;
 	}
 
-	private void _exportSegmentData(
-			DataExportTask dataExportTask, String fileName)
+	private void _exportSegmentData(DataExportTask dataExportTask)
 		throws Exception, IOException {
 
-		OutputStream zipOutputStream = _getZipOutputStream(fileName);
+		try (OutputStream zipOutputStream = _getZipOutputStream()) {
+			DataExporter dataExporter = new PostgreSQLDataExporter(
+				dataExportTask, "createDate", _dslContext, _jsonFactory,
+				zipOutputStream, "segment");
 
-		DataExporter dataExporter = new PostgreSQLDataExporter(
-			dataExportTask, "createDate", _dslContext, _jsonFactory,
-			zipOutputStream, "segment");
-
-		dataExporter.export();
-
-		zipOutputStream.close();
-	}
-
-	private void _extractJSONFileFromZip(String fileName) throws IOException {
-		try (ZipInputStream zipInputStream = new ZipInputStream(
-				new FileInputStream(fileName + ".zip"),
-				StandardCharsets.UTF_8)) {
-
-			ZipEntry entry = zipInputStream.getNextEntry();
-
-			FileOutputStream fileOutputStream = new FileOutputStream(
-				entry.getName());
-
-			while (zipInputStream.available() != 0) {
-				fileOutputStream.write(zipInputStream.read());
-			}
-
-			zipInputStream.closeEntry();
+			dataExporter.export();
 		}
 	}
 
-	private OutputStream _getZipOutputStream(String fileName)
-		throws IOException {
+	private void _extractJSONFileFromZip() throws Exception {
+		try (ZipInputStream zipInputStream = new ZipInputStream(
+				new FileInputStream("1.zip"), StandardCharsets.UTF_8)) {
 
+			zipInputStream.getNextEntry();
+
+			try (FileOutputStream fileOutputStream = new FileOutputStream(
+					"data.json")) {
+
+				while (zipInputStream.available() != 0) {
+					fileOutputStream.write(zipInputStream.read());
+				}
+			}
+		}
+		finally {
+			Files.deleteIfExists(Paths.get("1.zip"));
+		}
+	}
+
+	private OutputStream _getZipOutputStream() throws IOException {
 		ZipOutputStream zipOutputStream = new ZipOutputStream(
-			new FileOutputStream(fileName + ".zip"));
+			new FileOutputStream("1.zip"));
 
 		File file = new File("data.json");
 

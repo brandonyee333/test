@@ -16,16 +16,13 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.data.exporter;
 
 import com.fasterxml.jackson.core.JsonFactory;
 
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.io.OutputStream;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -86,11 +83,7 @@ public class PostgreSQLDataExporter extends BaseDataExporter {
 				DSL.field(
 					_dateFieldName
 				).greaterOrEqual(
-					Optional.ofNullable(
-						_dataExportTask.getFromDate()
-					).orElse(
-						_defaultDate
-					)
+					_dataExportTask.getFromDate()
 				));
 		}
 
@@ -99,19 +92,12 @@ public class PostgreSQLDataExporter extends BaseDataExporter {
 				DSL.field(
 					_dateFieldName
 				).lessOrEqual(
-					Optional.ofNullable(
-						_dataExportTask.getToDate()
-					).orElse(
-						_defaultDate
-					)
+					_dataExportTask.getToDate()
 				));
 		}
 
 		return conditions;
 	}
-
-	private static final Date _defaultDate = DateUtil.toUTCDate(
-		"1970-01-01T00:00:00.000Z");
 
 	private final DataExportTask _dataExportTask;
 	private final String _dateFieldName;
