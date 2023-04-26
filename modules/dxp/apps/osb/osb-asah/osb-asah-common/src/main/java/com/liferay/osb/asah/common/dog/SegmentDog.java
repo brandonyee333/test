@@ -408,6 +408,12 @@ public class SegmentDog {
 		return _updateSegment(getSegment(segmentId), partialSegment);
 	}
 
+	public Segment updateSegmentState(Segment segment, String state) {
+		segment.setState(state);
+
+		return _segmentRepository.save(segment);
+	}
+
 	private void _addAsahTask(Segment segment) {
 		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
 			_asahTaskDog.scheduleAsahTask(
