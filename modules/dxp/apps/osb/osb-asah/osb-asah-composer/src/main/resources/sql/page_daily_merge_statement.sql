@@ -9,6 +9,7 @@ USING
 			channelId,
 			city,
 			country,
+			SUM(ctaClicks) AS ctaClicks,
 			deviceType,
 			SUM(directAccess) AS directAccess,
 			SUM(entrances) AS entrances,
@@ -21,6 +22,7 @@ USING
 			SUM(timeOnPage) AS timeOnPage,
 			title,
 			userId,
+			ANY_VALUE(variantId) variantId,
 			SUM(views) AS views
 		FROM
 			`{{ dag.default_args['ac_project_id'] }}.pagehourly`
@@ -54,6 +56,7 @@ WHEN NOT MATCHED THEN
 		`channelId`,
 		`city`,
 		`country`,
+		`ctaClicks`,
 		`deviceType`,
 		`directAccess`,
 		`entrances`,
@@ -66,6 +69,7 @@ WHEN NOT MATCHED THEN
 		`timeOnPage`,
 		`title`,
 		`userId`,
+		`variantId`,
 		`views`
 	)
 	VALUES (
@@ -75,6 +79,7 @@ WHEN NOT MATCHED THEN
 		staging.channelId,
 		staging.city,
 		staging.country,
+		staging.ctaClicks,
 		staging.deviceType,
 		staging.directAccess,
 		staging.entrances,
@@ -87,5 +92,6 @@ WHEN NOT MATCHED THEN
 		staging.timeOnPage,
 		staging.title,
 		staging.userId,
+		staging.variantId,
 		staging.views
 	)

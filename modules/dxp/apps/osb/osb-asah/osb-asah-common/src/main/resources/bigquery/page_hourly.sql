@@ -15,7 +15,8 @@ WITH PageEvent AS (
 		sessionId,
 		title,
 		url,
-		userId
+		userId,
+		variantId
 	FROM
 		`$[AC_PROJECT_ID].event` AS Event
 	WHERE
@@ -204,20 +205,22 @@ PageViews AS (
 		channelId,
 		city,
 		country,
+		COUNTIF(eventId = 'ctaClicked') ctaClicks,
 		deviceType,
-		COUNTIF(referrer = '') AS directAccess,
-		COUNTIF(referrer != '') AS indirectAccess,
+		COUNTIF(eventId = 'pageViewed' AND referrer = '') AS directAccess,
+		COUNTIF(eventId = 'pageViewed' AND referrer != '') AS indirectAccess,
 		TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
 		platformName,
 		region,
 		sessionId,
 		title,
 		userId,
-		SUM(1) AS views
+		ANY_VALUE(variantId) AS variantId,
+		COUNTIF(eventId = 'pageViewed') AS views
 	FROM
 		PageEvent
 	WHERE
-		applicationId = 'Page' AND eventId = 'pageViewed'
+		applicationId = 'Page' AND eventId IN('ctaClicked', 'pageViewed')
 	GROUP BY
 		browserName, canonicalUrl, channelId, city, country, deviceType,
 		normalizedEventDate, platformName, region, sessionId, title, userId
@@ -237,6 +240,7 @@ SELECT
 	PageViews.channelId,
 	PageViews.city,
 	PageViews.country,
+	PageViews.ctaClicks,
 	PageViews.deviceType,
 	PageViews.directAccess,
 	PageEntrances.entrances,
@@ -249,6 +253,7 @@ SELECT
 	PageTimeOnPages.timeOnPage,
 	PageViews.title,
 	PageViews.userId,
+	PageViews.variantId,
 	PageViews.views
 FROM
 	PageViews

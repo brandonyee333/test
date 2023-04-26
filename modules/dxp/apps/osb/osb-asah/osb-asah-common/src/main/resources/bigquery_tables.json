@@ -1893,6 +1893,11 @@
 			},
 			{
 				"mode": "NULLABLE",
+				"name": "ctaClicks",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
 				"name": "deviceType",
 				"type": "STRING"
 			},
@@ -1955,6 +1960,11 @@
 				"mode": "NULLABLE",
 				"name": "views",
 				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
+				"name": "variantId",
+				"type": "STRING"
 			}
 		],
 		"timePartitioning": {
