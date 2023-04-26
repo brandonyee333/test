@@ -278,6 +278,9 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 
 				start_date = start_date.isoformat()
 
+				if end_date == start_date:
+					start_date = today.subtract(days=1)
+
 		if start_date:
 			parameters.append(
 				{
