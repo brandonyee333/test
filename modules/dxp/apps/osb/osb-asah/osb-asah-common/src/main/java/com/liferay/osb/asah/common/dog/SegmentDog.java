@@ -416,6 +416,8 @@ public class SegmentDog {
 
 	private void _addAsahTask(Segment segment) {
 		if (Objects.equals(segment.getType(), Segment.Type.DYNAMIC)) {
+			segment.setState("IN_PROGRESS");
+
 			_asahTaskDog.scheduleAsahTask(
 				"UpdateMembershipsNanite",
 				JSONUtil.put(
