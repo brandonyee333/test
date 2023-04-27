@@ -130,6 +130,9 @@ public class BQSessionInterestScoreRepositoryImpl
 				DSL.field("id")
 			).over();
 
+		AggregateFunction<Integer> aggregateFunction = DSL.countDistinct(
+			DSL.field("KeywordSession.sessionId"));
+
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
 			Function.identity(),
 			_dslContext.with(
@@ -150,14 +153,9 @@ public class BQSessionInterestScoreRepositoryImpl
 					"BQSession"
 				)
 			).select(
-				DSL.count(
-					DSL.field("keyword")
-				).as(
-					"count"
-				),
-				DSL.field("keyword"),
+				aggregateFunction.as("count"), DSL.field("keyword"),
 				DSL.max(
-					DSL.count(DSL.field("keyword"))
+					aggregateFunction
 				).over(
 				).as(
 					"maxCount"

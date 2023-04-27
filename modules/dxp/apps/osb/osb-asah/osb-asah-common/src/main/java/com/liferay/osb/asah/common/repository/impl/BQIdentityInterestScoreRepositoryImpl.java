@@ -812,6 +812,21 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("Identity.individualId"))
 			).over();
 
+		AggregateFunction<Integer> aggregateFunction = DSL.countDistinct(
+			DSL.when(
+				DSL.field(
+					"IdentityOverview.individualId"
+				).isNotNull(),
+				DSL.field("IdentityOverview.individualId")));
+
+		Field<Integer> countField = aggregateFunction.add(
+			DSL.countDistinct(
+				DSL.when(
+					DSL.field(
+						"IdentityOverview.individualId"
+					).isNull(),
+					DSL.field("IdentityOverview.identityId"))));
+
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
 			Function.identity(),
 			_dslContext.with(
@@ -851,17 +866,14 @@ public class BQIdentityInterestScoreRepositoryImpl
 					)
 				)
 			).select(
-				DSL.count(
-				).as(
-					"count"
-				),
+				countField.as("count"),
 				DSL.field(
 					"keyword"
 				).as(
 					"keyword"
 				),
 				DSL.max(
-					DSL.count()
+					countField
 				).over(
 				).as(
 					"maxCount"
