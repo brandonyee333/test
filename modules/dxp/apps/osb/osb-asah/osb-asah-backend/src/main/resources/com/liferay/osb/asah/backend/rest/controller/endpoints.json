@@ -169,7 +169,7 @@
 			"templated": true
 		},
 		"interests": {
-			"href": "{url}/interests{?apply,expand,filter,page,size,sort*}",
+			"href": "{url}/interests{?apply,channelId,expand,name,ownerId,query,page,size,sort*}",
 			"templated": true
 		},
 		"organizations": {

@@ -65,16 +65,19 @@ public class InterestsRestController
 	@Cacheable
 	@GetMapping(params = "!apply")
 	public PageDTO<InterestDTO> getInterestDTOPageDTO(
-		@RequestParam(name = "filter", required = false) String filterString,
-		@RequestParam(defaultValue = "0") int page,
-		@RequestParam(defaultValue = "20") int size,
+		@RequestParam(required = false) Long channelId,
 		@RequestParam(required = false) String expand,
+		@RequestParam(required = false) String name,
+		@RequestParam(name = "ownerId", required = false) String individualId,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(required = false) String query,
+		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		return _toPageDTO(
 			expand,
 			bqIdentityInterestScoreDog.getIdentityInterestScorePage(
-				filterString, page, size, sorts));
+				channelId, individualId, query, page, size, sorts));
 	}
 
 	@GetMapping("/keywords")

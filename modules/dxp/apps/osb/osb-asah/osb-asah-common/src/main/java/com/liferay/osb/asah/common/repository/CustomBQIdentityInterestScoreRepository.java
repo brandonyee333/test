@@ -38,7 +38,9 @@ public interface CustomBQIdentityInterestScoreRepository {
 	public long countByChannelIdAndIndividualId(
 		@Nullable Long channelId, String individualId);
 
-	public long countByFilterString(FilterHelper filterHelper);
+	public long countByChannelIdAndIndividualIdAndKeywords(
+		@Nullable Long channelId, @Nullable String individualId,
+		@Nullable String keywords);
 
 	public long countByIndividualId(String individualId);
 
@@ -59,8 +61,10 @@ public interface CustomBQIdentityInterestScoreRepository {
 	public List<BQIdentityInterestScore> findByChannelIdAndIndividualId(
 		@Nullable Long channelId, String individualId, Pageable pageable);
 
-	public List<IdentityInterestScore> findByFilterString(
-		@Nullable FilterHelper filterHelper, Pageable pageable);
+	public List<IdentityInterestScore>
+		findByChannelIdAndIndividualIdAndKeywords(
+			@Nullable Long channelId, @Nullable String individualId,
+			@Nullable String keywords, Pageable pageable);
 
 	public List<BQIdentityInterestScore> findByIndividualId(
 		String individualId, Pageable pageable);

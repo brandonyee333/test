@@ -34,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -121,9 +122,18 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public long countByFilterString(FilterHelper filterHelper) {
+	public long countByChannelIdAndIndividualIdAndKeywords(
+		@Nullable Long channelId, @Nullable String individualId,
+		@Nullable String keywords) {
+
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
+
+		List<String> individualIds = null;
+
+		if (StringUtils.isNotBlank(individualId)) {
+			individualIds = Arrays.asList(individualId);
+		}
 
 		return _queryExecutor.queryForLong(
 			selectSelectStep.from(
@@ -145,7 +155,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("Identity.id")
 				)
 			).where(
-				_getConditions(filterHelper, Boolean.TRUE, null, null, null)
+				_getConditions(
+					channelId, Boolean.TRUE, individualIds, keywords, null)
 			));
 	}
 
@@ -316,11 +327,19 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	@Override
-	public List<IdentityInterestScore> findByFilterString(
-		@Nullable FilterHelper filterHelper, Pageable pageable) {
+	public List<IdentityInterestScore>
+		findByChannelIdAndIndividualIdAndKeywords(
+			@Nullable Long channelId, @Nullable String individualId,
+			@Nullable String keywords, Pageable pageable) {
+
+		List<String> individualIds = null;
+
+		if (StringUtils.isNotBlank(individualId)) {
+			individualIds = Arrays.asList(individualId);
+		}
 
 		List<Condition> conditions = _getConditions(
-			filterHelper, Boolean.TRUE, null, null, null);
+			channelId, Boolean.TRUE, individualIds, keywords, null);
 
 		conditions.add(
 			DSL.field(
@@ -355,11 +374,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 					"IdentityInterestScore.interestScore"
 				).as(
 					"interestScore"
-				),
-				DSL.field(
-					"IdentityInterestScore.interested"
-				).as(
-					"interested"
 				),
 				DSL.field(
 					"LOWER(IdentityInterestScore.keyword)"
@@ -622,10 +636,18 @@ public class BQIdentityInterestScoreRepositoryImpl
 		selectJoinStep = _getBQIdentitySelectJoinStep(
 			individualIds, selectJoinStep);
 
+		List<Condition> conditions = _getConditions(
+			null, null, individualIds, null, null);
+
+		if ((filterHelper != null) &&
+			!StringUtils.isEmpty(filterHelper.getFilterString())) {
+
+			conditions.add(filterHelper.getCondition());
+		}
+
 		return _queryExecutor.queryForList(
 			record -> (String)record.get("individualId"),
-			selectJoinStep.where(
-				_getConditions(filterHelper, null, individualIds, null, null)));
+			selectJoinStep.where(conditions));
 	}
 
 	@Override
@@ -1107,16 +1129,19 @@ public class BQIdentityInterestScoreRepositoryImpl
 	}
 
 	private List<Condition> _getConditions(
-		@Nullable FilterHelper filterHelper, @Nullable Boolean interested,
+		@Nullable Long channelId, @Nullable Boolean interested,
 		@Nullable List<String> individualIds, @Nullable String keywords,
 		@Nullable Date recordedDate) {
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if ((filterHelper != null) &&
-			!StringUtils.isEmpty(filterHelper.getFilterString())) {
-
-			conditions.add(filterHelper.getCondition());
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"IdentityInterestScore.channelId", Long.class
+				).eq(
+					channelId
+				));
 		}
 
 		if ((individualIds != null) && !individualIds.isEmpty()) {
@@ -1138,7 +1163,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 		}
 
 		if (StringUtils.isNotBlank(keywords)) {
-			conditions.add(_dslHelper.containsSubstring("keyword", keywords));
+			conditions.add(
+				_dslHelper.containsSubstring(
+					"IdentityInterestScore.keyword", keywords));
 		}
 
 		if (recordedDate != null) {
