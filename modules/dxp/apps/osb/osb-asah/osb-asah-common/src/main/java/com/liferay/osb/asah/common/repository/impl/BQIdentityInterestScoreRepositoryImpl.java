@@ -319,11 +319,33 @@ public class BQIdentityInterestScoreRepositoryImpl
 	public List<IdentityInterestScore> findByFilterString(
 		@Nullable FilterHelper filterHelper, Pageable pageable) {
 
+		List<Condition> conditions = _getConditions(
+			filterHelper, Boolean.TRUE, null, null, null);
+
+		conditions.add(
+			DSL.field(
+				"IdentityInterestPage.views", Long.class
+			).gt(
+				0L
+			));
+
 		return _queryExecutor.queryForList(
-			record -> new IdentityInterestScore(
-				new BQIdentityInterestScore(record),
-				(String)record.get("individualId")),
+			record -> {
+				BigDecimal contributingPagesCount = (BigDecimal)record.get(
+					"contributingPagesCount");
+
+				return new IdentityInterestScore(
+					new BQIdentityInterestScore(record),
+					contributingPagesCount.longValue(),
+					(String)record.get("individualId"));
+			},
 			_dslContext.select(
+				DSL.field(
+					"COUNT(CONCAT(IdentityInterestPage.canonicalUrl, " +
+						"IdentityInterestPage.title))"
+				).as(
+					"contributingPagesCount"
+				),
 				DSL.field(
 					"IdentityInterestScore.identityId"
 				).as(
@@ -372,8 +394,30 @@ public class BQIdentityInterestScoreRepositoryImpl
 				).eq(
 					DSL.field("Identity.id")
 				)
+			).join(
+				DSL.table(
+					"BQIdentityInterestPage"
+				).as(
+					"IdentityInterestPage"
+				)
+			).on(
+				DSL.and(
+					DSL.field(
+						"IdentityInterestPage.identityId"
+					).eq(
+						DSL.field("Identity.id")
+					),
+					DSL.field(
+						"LOWER(IdentityInterestPage.keyword)"
+					).eq(
+						DSL.field("LOWER(IdentityInterestScore.keyword)")
+					))
 			).where(
-				_getConditions(filterHelper, Boolean.TRUE, null, null, null)
+				conditions
+			).groupBy(
+				DSL.field("identityId"), DSL.field("individualId"),
+				DSL.field("interestScore"), DSL.field("keyword"),
+				DSL.field("recordedDate")
 			).orderBy(
 				_getSortFields(pageable.getSort(), null)
 			).limit(

@@ -25,8 +25,10 @@ import java.util.Objects;
 public class IdentityInterestScore {
 
 	public IdentityInterestScore(
-		BQIdentityInterestScore bqIdentityInterestScore, String individualId) {
+		BQIdentityInterestScore bqIdentityInterestScore,
+		Long contributingPagesCount, String individualId) {
 
+		_contributingPagesCount = contributingPagesCount;
 		_individualId = individualId;
 
 		_identityId = bqIdentityInterestScore.getIdentityId();
@@ -48,8 +50,12 @@ public class IdentityInterestScore {
 		IdentityInterestScore identityInterestScore =
 			(IdentityInterestScore)obj;
 
-		if (Objects.equals(_identityId, identityInterestScore._identityId) &&
-			Objects.equals(_individualId, identityInterestScore._identityId) &&
+		if (Objects.equals(
+				_contributingPagesCount,
+				identityInterestScore._contributingPagesCount) &&
+			Objects.equals(_identityId, identityInterestScore._identityId) &&
+			Objects.equals(
+				_individualId, identityInterestScore._individualId) &&
 			Objects.equals(
 				_interestScore, identityInterestScore._interestScore) &&
 			Objects.equals(_keyword, identityInterestScore._keyword) &&
@@ -60,6 +66,10 @@ public class IdentityInterestScore {
 		}
 
 		return false;
+	}
+
+	public Long getContributingPagesCount() {
+		return _contributingPagesCount;
 	}
 
 	public String getIdentityId() {
@@ -89,10 +99,11 @@ public class IdentityInterestScore {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_identityId, _individualId, _interestScore, _keyword,
-			_recordedDate);
+			_contributingPagesCount, _identityId, _individualId, _interestScore,
+			_keyword, _recordedDate);
 	}
 
+	private final Long _contributingPagesCount;
 	private final String _identityId;
 	private final String _individualId;
 	private final Double _interestScore;
