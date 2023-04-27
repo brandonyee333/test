@@ -39,7 +39,6 @@ import org.jooq.InsertValuesStep7;
 import org.jooq.Record;
 import org.jooq.Record2;
 import org.jooq.SelectJoinStep;
-import org.jooq.WindowPartitionByStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,11 +124,6 @@ public class BQSessionInterestScoreRepositoryImpl
 					timeRange.getEndDate(), DateUtil.PATTERN_SHORT)
 			));
 
-		WindowPartitionByStep<Integer> windowPartitionByStep =
-			DSL.countDistinct(
-				DSL.field("id")
-			).over();
-
 		AggregateFunction<Integer> aggregateFunction = DSL.countDistinct(
 			DSL.field("KeywordSession.sessionId"));
 
@@ -140,15 +134,14 @@ public class BQSessionInterestScoreRepositoryImpl
 			).as(
 				selectSelectStep.where(conditions)
 			).with(
-				"SessionOverview"
+				"SessionTotalCount"
 			).as(
 				DSL.select(
-					DSL.field(
-						"id"
+					DSL.countDistinct(
+						DSL.field("id")
 					).as(
-						"sessionId"
-					),
-					windowPartitionByStep.as("totalCount")
+						"totalCount"
+					)
 				).from(
 					"BQSession"
 				)
@@ -173,14 +166,8 @@ public class BQSessionInterestScoreRepositoryImpl
 				)
 			).from(
 				DSL.table("KeywordSession")
-			).join(
-				DSL.table("SessionOverview")
-			).on(
-				DSL.field(
-					"KeywordSession.sessionId"
-				).eq(
-					DSL.field("SessionOverview.sessionId")
-				)
+			).crossJoin(
+				DSL.table("SessionTotalCount")
 			).groupBy(
 				DSL.field("keyword")
 			).orderBy(
