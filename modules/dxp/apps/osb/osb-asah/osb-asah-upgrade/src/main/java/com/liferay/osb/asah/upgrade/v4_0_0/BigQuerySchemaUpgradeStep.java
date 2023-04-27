@@ -111,6 +111,20 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 		_updateTableFields(
 			Arrays.asList(
 				Field.newBuilder(
+					"ctaClicks", LegacySQLTypeName.INTEGER
+				).setMode(
+					Field.Mode.NULLABLE
+				).build(),
+				Field.newBuilder(
+					"variantId", LegacySQLTypeName.STRING
+				).setMode(
+					Field.Mode.NULLABLE
+				).build()),
+			"pagedaily");
+
+		_updateTableFields(
+			Arrays.asList(
+				Field.newBuilder(
 					"createDate", LegacySQLTypeName.TIMESTAMP
 				).setMode(
 					Field.Mode.NULLABLE
