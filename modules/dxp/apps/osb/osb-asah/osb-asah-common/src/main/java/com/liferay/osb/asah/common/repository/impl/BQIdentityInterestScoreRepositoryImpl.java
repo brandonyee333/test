@@ -861,8 +861,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 				).as(
 					"total"
 				),
-				DSL.field(
-					"IdentityOverview.totalCount"
+				DSL.max(
+					DSL.field("IdentityOverview.totalCount")
 				).as(
 					"totalCount"
 				)
@@ -877,7 +877,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					DSL.field("IdentityOverview.identityId")
 				)
 			).groupBy(
-				DSL.field("keyword"), DSL.field("totalCount")
+				DSL.field("keyword")
 			).orderBy(
 				_getSortFields(pageable.getSort(), null)
 			).limit(

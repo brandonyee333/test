@@ -166,7 +166,11 @@ public class BQSessionInterestScoreRepositoryImpl
 				).as(
 					"total"
 				),
-				DSL.field("totalCount")
+				DSL.max(
+					DSL.field("totalCount")
+				).as(
+					"totalCount"
+				)
 			).from(
 				DSL.table("KeywordSession")
 			).join(
@@ -178,7 +182,7 @@ public class BQSessionInterestScoreRepositoryImpl
 					DSL.field("SessionOverview.sessionId")
 				)
 			).groupBy(
-				DSL.field("keyword"), DSL.field("totalCount")
+				DSL.field("keyword")
 			).orderBy(
 				DSL.count(
 				).desc(),
