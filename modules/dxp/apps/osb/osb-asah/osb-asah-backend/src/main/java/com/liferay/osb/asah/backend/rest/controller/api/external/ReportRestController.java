@@ -101,7 +101,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpHeaders;
@@ -1720,10 +1719,8 @@ public class ReportRestController extends BaseRestController {
 	private static class ResultBagEntityModel<T>
 		extends EntityModel<ResultBag<EntityModel<T>>> {
 
-		public ResultBagEntityModel(
-			ResultBag<EntityModel<T>> content, Link... links) {
-
-			super.of(content, links);
+		public ResultBagEntityModel(ResultBag<EntityModel<T>> content) {
+			super(content);
 		}
 
 	}
