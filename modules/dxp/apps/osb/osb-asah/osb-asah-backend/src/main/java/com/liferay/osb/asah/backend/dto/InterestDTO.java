@@ -37,6 +37,8 @@ public class InterestDTO {
 	}
 
 	public InterestDTO(IdentityInterestScore identityInterestScore) {
+		_contributingPagesCount =
+			identityInterestScore.getContributingPagesCount();
 		_name = identityInterestScore.getKeyword();
 		_ownerId = identityInterestScore.getIndividualId();
 		_ownerType = "individual";
@@ -47,6 +49,11 @@ public class InterestDTO {
 
 	public InterestDTO(Set<InterestDTO> interestDTOS) {
 		_interestDTOs = interestDTOS;
+	}
+
+	@JsonProperty("relatedPagesCount")
+	public Long getContributingPagesCount() {
+		return _contributingPagesCount;
 	}
 
 	@JsonProperty("_embedded")
@@ -130,6 +137,7 @@ public class InterestDTO {
 		_views = views;
 	}
 
+	private Long _contributingPagesCount;
 	private Map<String, Object> _embedded;
 	private Set<InterestDTO> _interestDTOs;
 	private String _name;
