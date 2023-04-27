@@ -30,7 +30,6 @@ import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -67,7 +66,6 @@ public class InterestsRestController
 	public PageDTO<InterestDTO> getInterestDTOPageDTO(
 		@RequestParam(required = false) Long channelId,
 		@RequestParam(required = false) String expand,
-		@RequestParam(required = false) String name,
 		@RequestParam(name = "ownerId", required = false) String individualId,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(required = false) String query,
@@ -101,12 +99,11 @@ public class InterestsRestController
 	@Cacheable
 	@GetMapping(params = "apply")
 	public String getInterestTransformations(
-			@RequestParam String apply,
-			@RequestParam(name = "filter", required = false) String
-				filterString,
-			@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "20") int size)
-		throws Exception {
+		@RequestParam String apply,
+		@RequestParam(name = "filter", required = false) String
+			filterString,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "20") int size) {
 
 		return JSONUtil.put(
 			"_embedded",
@@ -119,21 +116,9 @@ public class InterestsRestController
 		).toString();
 	}
 
-	private boolean _containsPageVisited(String expand) {
-		if (StringUtils.isEmpty(expand)) {
-			return false;
-		}
-
-		Set<String> expandParts = new HashSet<>(
-			Arrays.asList(expand.split(",")));
-
-		return expandParts.contains("pages-visited");
-	}
-
 	@NotNull
 	private InterestDTO _createInterestDTO(
-		boolean addPageVisited, int days,
-		IdentityInterestScore identityInterestScore) {
+		int days, IdentityInterestScore identityInterestScore) {
 
 		InterestDTO interestDTO = new InterestDTO(identityInterestScore);
 
@@ -152,13 +137,6 @@ public class InterestsRestController
 					endDayLocalDateTime.plusDays(1 - days)));
 		}
 
-		if (addPageVisited) {
-
-			// TODO Get visited pages
-
-			embedded.put("pages-visited", Collections.emptyList());
-		}
-
 		interestDTO.setEmbedded(embedded);
 
 		return interestDTO;
@@ -169,16 +147,12 @@ public class InterestsRestController
 
 		int days = _getDaysRange(expand);
 
-		boolean addPageVisited = _containsPageVisited(expand);
-
 		Set<InterestDTO> interestDTOs = new LinkedHashSet<>();
 
 		for (IdentityInterestScore identityInterestScore :
 				identityInterestScores) {
 
-			interestDTOs.add(
-				_createInterestDTO(
-					addPageVisited, days, identityInterestScore));
+			interestDTOs.add(_createInterestDTO(days, identityInterestScore));
 		}
 
 		return interestDTOs;
@@ -282,9 +256,6 @@ public class InterestsRestController
 					expand, identityInterestScores.getContent())),
 			identityInterestScores);
 	}
-
-	@Autowired
-	private AssetDog _assetDog;
 
 	@Autowired
 	private BQIdentityInterestScoreDog _bqIdentityInterestScoreDog;
