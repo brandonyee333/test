@@ -58,7 +58,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 4L);
 				}
 			},
-			4, 2, 4);
+			4, 2, 5);
 	}
 
 	@BQSQLResource(
@@ -88,7 +88,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("javascript", 2L);
 				}
 			},
-			4, 3, 4);
+			4, 3, 5);
 	}
 
 	@BQSQLResource(
@@ -117,7 +117,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 2L);
 				}
 			},
-			2, 1, 2);
+			2, 1, 5);
 	}
 
 	@BQSQLResource(
@@ -148,7 +148,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 2L);
 				}
 			},
-			2, 3, 2);
+			2, 3, 5);
 	}
 
 	@BQSQLResource(
@@ -179,7 +179,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("javascript", 1L);
 				}
 			},
-			2, 3, 2);
+			2, 3, 5);
 	}
 
 	@Autowired

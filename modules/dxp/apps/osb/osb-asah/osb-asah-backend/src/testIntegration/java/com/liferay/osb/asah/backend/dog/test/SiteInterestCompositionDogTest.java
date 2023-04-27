@@ -46,7 +46,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling action-items", 1L);
 				}
 			},
-			1, 1, 1);
+			1, 1, 8);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
@@ -60,7 +60,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("holistic roi", 1L);
 				}
 			},
-			1, 1, 1);
+			1, 1, 8);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
@@ -75,7 +75,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("holistic roi", 1L);
 				}
 			},
-			1, 2, 2);
+			1, 2, 8);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
@@ -90,7 +90,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("holistic roi", 1L);
 				}
 			},
-			1, 2, 2);
+			1, 2, 8);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
@@ -105,7 +105,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("holistic roi", 1L);
 				}
 			},
-			1, 2, 2);
+			1, 2, 8);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
@@ -120,7 +120,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("holistic roi", 1L);
 				}
 			},
-			2, 2, 3);
+			2, 2, 8);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
@@ -135,7 +135,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("holistic roi", 1L);
 				}
 			},
-			4, 2, 5);
+			4, 2, 8);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
@@ -149,7 +149,7 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("holistic roi", 1L);
 				}
 			},
-			1, 1, 1);
+			1, 1, 8);
 	}
 
 	@Autowired
