@@ -80,7 +80,7 @@ public class BQIdentityInterestScoreDogTest
 	public void testGetBQIdentityInterestScorePageByFilterString() {
 		Page<IdentityInterestScore> individualInterestScorePage =
 			_bqIdentityInterestScoreDog.getIdentityInterestScorePage(
-				null, 0, 20, new String[] {"keyword,ASC"});
+				null, null, null, 0, 20, new String[] {"keyword,ASC"});
 
 		Assertions.assertEquals(
 			2, individualInterestScorePage.getTotalElements());
