@@ -1,0 +1,4 @@
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/i-love-javascript', 1, '374790569167317525', 'javascript', 'I Love Javascript', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/what-is-javascript', 1, '374790569167317525', 'javascript', 'What is Javascript', 0);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/is-javascript-good', 2, '374790569167317525', 'javascript', 'Is Javascript Good?', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/java-is-great', 1, '374790569167317525', 'java', 'Java is Great', 1);

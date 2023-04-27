@@ -1,5 +1,6 @@
 [
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521342",
 		"identityId": "374790569167317525",
@@ -8,6 +9,16 @@
 		"keyword": "javascript"
 	},
 	{
+		"channelId": 1,
+		"dateRecorded": "2019-05-17T00:00:00.000Z",
+		"id": "635452168436521342",
+		"identityId": "374790569167317525",
+		"interestScore": 2.000000000000000,
+		"interested": true,
+		"keyword": "java"
+	},
+	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521343",
 		"identityId": "374790569167317525",
@@ -15,6 +26,7 @@
 		"keyword": "clicks-and-mortar e-tailers"
 	},
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521344",
 		"identityId": "374790569167317525",
@@ -22,6 +34,7 @@
 		"keyword": "compelling metrics"
 	},
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521345",
 		"identityId": "374790572309620075",
@@ -29,6 +42,7 @@
 		"keyword": "clicks-and-mortar e-tailers"
 	},
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521346",
 		"identityId": "374790572309620075",
@@ -36,6 +50,7 @@
 		"keyword": "compelling metrics"
 	},
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521347",
 		"identityId": "474790572703144534",
@@ -43,14 +58,16 @@
 		"keyword": "compelling metrics"
 	},
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521348",
 		"identityId": "374790575409131096",
 		"interestScore": 0.7702225204735745,
-		"interested": true,
+		"interested": false,
 		"keyword": "javascript"
 	},
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521349",
 		"identityId": "374790575409131096",
@@ -58,6 +75,7 @@
 		"keyword": "compelling metrics"
 	},
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-17T00:00:00.000Z",
 		"id": "635452168436521350",
 		"identityId": "386190546467211094",
@@ -65,6 +83,7 @@
 		"keyword": "sales"
 	},
 	{
+		"channelId": 1,
 		"dateRecorded": "2019-05-16T00:00:00.000Z",
 		"id": "635452168436521351",
 		"identityId": "374790575409131099",

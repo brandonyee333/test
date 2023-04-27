@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.IdentityInterestScore;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -64,6 +65,9 @@ public class BQIdentityInterestScoreDogTest
 			"compelling metrics", bqIdentityInterestScore.getKeyword());
 	}
 
+	@BQSQLResource(
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_page.sql"
+	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
@@ -76,7 +80,7 @@ public class BQIdentityInterestScoreDogTest
 	public void testGetBQIdentityInterestScorePageByFilterString() {
 		Page<IdentityInterestScore> individualInterestScorePage =
 			_bqIdentityInterestScoreDog.getIdentityInterestScorePage(
-				"keyword eq 'javascript'", 0, 20, null);
+				null, 0, 20, new String[] {"keyword,ASC"});
 
 		Assertions.assertEquals(
 			2, individualInterestScorePage.getTotalElements());
@@ -84,9 +88,20 @@ public class BQIdentityInterestScoreDogTest
 		List<IdentityInterestScore> individualInterestScores =
 			individualInterestScorePage.getContent();
 
-		IdentityInterestScore interest = individualInterestScores.get(0);
+		IdentityInterestScore identityInterestScore1 =
+			individualInterestScores.get(0);
 
-		Assertions.assertEquals("javascript", interest.getKeyword());
+		Assertions.assertEquals("java", identityInterestScore1.getKeyword());
+		Assertions.assertEquals(
+			1L, identityInterestScore1.getContributingPagesCount());
+
+		IdentityInterestScore identityInterestScore2 =
+			individualInterestScores.get(1);
+
+		Assertions.assertEquals(
+			"javascript", identityInterestScore2.getKeyword());
+		Assertions.assertEquals(
+			2L, identityInterestScore2.getContributingPagesCount());
 	}
 
 	@Autowired
