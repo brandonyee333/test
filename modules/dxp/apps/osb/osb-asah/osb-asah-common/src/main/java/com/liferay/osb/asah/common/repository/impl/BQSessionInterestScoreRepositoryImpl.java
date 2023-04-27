@@ -32,12 +32,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.InsertValuesStep7;
 import org.jooq.Record;
-import org.jooq.Record3;
+import org.jooq.Record2;
 import org.jooq.SelectJoinStep;
+import org.jooq.WindowPartitionByStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,19 +81,13 @@ public class BQSessionInterestScoreRepositoryImpl
 	public CompositionResultBag getInterestCompositionResultBag(
 		@Nullable Long channelId, Pageable pageable, TimeRange timeRange) {
 
-		SelectJoinStep<Record3<String, String, Integer>> selectSelectStep =
+		SelectJoinStep<Record2<String, String>> selectSelectStep =
 			_dslContext.select(
 				DSL.field("SessionInterestScore.sessionId", String.class),
 				DSL.field(
 					"LOWER(SessionInterestScore.keyword)", String.class
 				).as(
 					"keyword"
-				),
-				DSL.countDistinct(
-					DSL.field("SessionInterestScore.sessionId")
-				).over(
-				).as(
-					"totalCount"
 				)
 			).from(
 				DSL.table(
@@ -129,12 +125,30 @@ public class BQSessionInterestScoreRepositoryImpl
 					timeRange.getEndDate(), DateUtil.PATTERN_SHORT)
 			));
 
+		WindowPartitionByStep<Integer> windowPartitionByStep =
+			DSL.countDistinct(
+				DSL.field("id")
+			).over();
+
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
 			Function.identity(),
 			_dslContext.with(
 				"KeywordSession"
 			).as(
 				selectSelectStep.where(conditions)
+			).with(
+				"SessionOverview"
+			).as(
+				DSL.select(
+					DSL.field(
+						"id"
+					).as(
+						"sessionId"
+					),
+					windowPartitionByStep.as("totalCount")
+				).from(
+					"BQSession"
+				)
 			).select(
 				DSL.count(
 					DSL.field("keyword")
@@ -157,6 +171,14 @@ public class BQSessionInterestScoreRepositoryImpl
 				DSL.field("totalCount")
 			).from(
 				DSL.table("KeywordSession")
+			).join(
+				DSL.table("SessionOverview")
+			).on(
+				DSL.field(
+					"KeywordSession.sessionId"
+				).eq(
+					DSL.field("SessionOverview.sessionId")
+				)
 			).groupBy(
 				DSL.field("keyword"), DSL.field("totalCount")
 			).orderBy(

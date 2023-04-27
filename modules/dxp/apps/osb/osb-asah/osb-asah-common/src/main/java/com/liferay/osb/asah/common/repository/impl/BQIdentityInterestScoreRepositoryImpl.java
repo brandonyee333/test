@@ -45,6 +45,7 @@ import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
@@ -52,11 +53,13 @@ import org.jooq.Field;
 import org.jooq.InsertValuesStep6;
 import org.jooq.Record;
 import org.jooq.Record1;
+import org.jooq.Record2;
 import org.jooq.Record3;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
 import org.jooq.Table;
+import org.jooq.WindowPartitionByStep;
 import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -730,19 +733,13 @@ public class BQIdentityInterestScoreRepositoryImpl
 		boolean active, @Nullable Long channelId, @Nullable String keywords,
 		@Nullable Long segmentId, Pageable pageable) {
 
-		SelectJoinStep<Record3<String, String, Integer>> selectSelectStep =
+		SelectJoinStep<Record2<String, String>> selectSelectStep =
 			_dslContext.select(
 				DSL.field("IdentityInterestScore.identityId", String.class),
 				DSL.field(
 					"LOWER(IdentityInterestScore.keyword)", String.class
 				).as(
 					"keyword"
-				),
-				DSL.countDistinct(
-					DSL.field("IdentityInterestScore.identityId")
-				).over(
-				).as(
-					"totalCount"
 				)
 			).from(
 				DSL.table(
@@ -806,12 +803,53 @@ public class BQIdentityInterestScoreRepositoryImpl
 			);
 		}
 
+		WindowPartitionByStep<Integer> knownIndividualsCount =
+			DSL.countDistinct(
+				DSL.when(
+					DSL.field(
+						"Identity.individualId"
+					).isNotNull(),
+					DSL.field("Identity.individualId"))
+			).over();
+
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
 			Function.identity(),
 			_dslContext.with(
 				"KeywordIdentity"
 			).as(
 				selectSelectStep.where(conditions)
+			).with(
+				"IdentityOverview"
+			).as(
+				DSL.select(
+					DSL.field(
+						"Identity.id"
+					).as(
+						"identityId"
+					),
+					DSL.field(
+						"Identity.individualId"
+					).as(
+						"individualId"
+					),
+					knownIndividualsCount.add(
+						DSL.countDistinct(
+							DSL.when(
+								DSL.field(
+									"Identity.individualId"
+								).isNull(),
+								DSL.field("Identity.id"))
+						).over()
+					).as(
+						"totalCount"
+					)
+				).from(
+					DSL.table(
+						"BQIdentity"
+					).as(
+						"Identity"
+					)
+				)
 			).select(
 				DSL.count(
 				).as(
@@ -834,9 +872,21 @@ public class BQIdentityInterestScoreRepositoryImpl
 				).as(
 					"total"
 				),
-				DSL.field("totalCount")
+				DSL.field(
+					"IdentityOverview.totalCount"
+				).as(
+					"totalCount"
+				)
 			).from(
 				DSL.table("KeywordIdentity")
+			).join(
+				DSL.table("IdentityOverview")
+			).on(
+				DSL.field(
+					"KeywordIdentity.identityId"
+				).eq(
+					DSL.field("IdentityOverview.identityId")
+				)
 			).groupBy(
 				DSL.field("keyword"), DSL.field("totalCount")
 			).orderBy(
