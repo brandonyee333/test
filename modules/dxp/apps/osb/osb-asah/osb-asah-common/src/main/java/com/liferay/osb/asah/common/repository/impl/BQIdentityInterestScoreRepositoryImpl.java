@@ -45,7 +45,6 @@ import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.jooq.AggregateFunction;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.DatePart;
@@ -803,29 +802,17 @@ public class BQIdentityInterestScoreRepositoryImpl
 			);
 		}
 
-		WindowPartitionByStep<Integer> knownIndividualsCount =
+		WindowPartitionByStep<Integer> windowPartitionByStep =
 			DSL.countDistinct(
-				DSL.when(
-					DSL.field(
-						"Identity.individualId"
-					).isNotNull(),
-					DSL.field("Identity.individualId"))
+				DSL.coalesce(
+					DSL.field("Identity.individualId"),
+					DSL.field("Identity.id"))
 			).over();
 
-		AggregateFunction<Integer> aggregateFunction = DSL.countDistinct(
-			DSL.when(
-				DSL.field(
-					"IdentityOverview.individualId"
-				).isNotNull(),
-				DSL.field("IdentityOverview.individualId")));
-
-		Field<Integer> countField = aggregateFunction.add(
-			DSL.countDistinct(
-				DSL.when(
-					DSL.field(
-						"IdentityOverview.individualId"
-					).isNull(),
-					DSL.field("IdentityOverview.identityId"))));
+		Field<Integer> countField = DSL.countDistinct(
+			DSL.coalesce(
+				DSL.field("IdentityOverview.individualId"),
+				DSL.field("IdentityOverview.identityId")));
 
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
 			Function.identity(),
@@ -847,17 +834,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 					).as(
 						"individualId"
 					),
-					knownIndividualsCount.add(
-						DSL.countDistinct(
-							DSL.when(
-								DSL.field(
-									"Identity.individualId"
-								).isNull(),
-								DSL.field("Identity.id"))
-						).over()
-					).as(
-						"totalCount"
-					)
+					windowPartitionByStep.as("totalCount")
 				).from(
 					DSL.table(
 						"BQIdentity"
