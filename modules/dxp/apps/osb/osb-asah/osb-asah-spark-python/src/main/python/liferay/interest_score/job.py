@@ -209,7 +209,7 @@ class IdentityInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 				channelId,
 				userId as identityId,
 				interested,
-				interest_score as interestScore,
+				MAX(interest_score) as interestScore,
 				keyword,
 				event_date as recordedDate
 			FROM
@@ -217,6 +217,12 @@ class IdentityInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 			WHERE
 				event_date >= TIMESTAMP({start_date_sql_string}) AND
 				event_date < TIMESTAMP({end_date_sql_string})
+			GROUP BY
+				channelId,
+				identityId,
+				interested,
+				keyword,
+				recordedDate
 		"""
 
 
