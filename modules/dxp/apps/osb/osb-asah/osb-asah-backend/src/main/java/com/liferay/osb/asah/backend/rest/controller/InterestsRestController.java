@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.dto.InterestDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
-import com.liferay.osb.asah.common.dog.AssetDog;
 import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.findbugs.SuppressFBWarnings;
@@ -100,8 +99,7 @@ public class InterestsRestController
 	@GetMapping(params = "apply")
 	public String getInterestTransformations(
 		@RequestParam String apply,
-		@RequestParam(name = "filter", required = false) String
-			filterString,
+		@RequestParam(name = "filter", required = false) String filterString,
 		@RequestParam(defaultValue = "0") int page,
 		@RequestParam(defaultValue = "20") int size) {
 
