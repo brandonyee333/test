@@ -19,7 +19,8 @@ USING
 				sessionId,
 				title,
 				url,
-				userId
+				userId,
+				variantId
 			FROM
 				`${PROJECT_ID}.${asah_project_id}.event` AS Event
 			WHERE
@@ -29,14 +30,9 @@ USING
 			SELECT
 				PageEvent.channelId,
 				COUNT(*) AS count,
-				SUM(
-					CASE
-						WHEN PageEvent.applicationId = 'Page' AND PageEvent.eventId = 'pageViewed'
-					THEN
-						1
-					ELSE
-						0
-					END
+				COUNTIF(
+					PageEvent.applicationId = 'Page' AND
+					PageEvent.eventId = 'pageViewed'
 				) AS pageViews,
 				PageEvent.sessionId,
 				PageEvent.userId
@@ -182,38 +178,23 @@ USING
 				channelId,
 				city,
 				country,
+				COUNTIF(eventId = 'ctaClicked') ctaClicks,
 				deviceType,
+				COUNTIF(eventId = 'pageViewed' AND Referrer = '') AS directAccess,
+				COUNTIF(eventId = 'pageViewed' AND referrer != '') AS indirectAccess,
 				TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
-				SUM(
-					CASE
-						WHEN
-							referrer = ''
-						THEN
-							1
-						ELSE
-							0
-					END
-				) AS directAccess,
-				SUM(
-					CASE
-						WHEN
-							referrer != ''
-						THEN
-							1
-						ELSE
-							0
-					END
-				) AS indirectAccess,
-				SUM(1) AS views,
 				platformName,
 				region,
 				sessionId,
 				title,
-				userId
+				userId,
+				ANY_VALUE(variantId) AS variantId,
+				COUNTIF(eventId = 'pageViewed') AS views
 			FROM
 				PageEvent
 			WHERE
-				applicationId = 'Page' AND eventId = 'pageViewed'
+				applicationId = 'Page' AND
+				eventId IN('ctaClicked', 'pageViewed')
 			GROUP BY
 				browserName, canonicalUrl, channelId, city, country, deviceType,
 				normalizedEventDate, platformName, region, sessionId, title, userId
@@ -233,6 +214,7 @@ USING
 				PageViews.channelId,
 				PageViews.city,
 				PageViews.country,
+				PageViews.ctaClicks,
 				PageViews.deviceType,
 				PageViews.directAccess,
 				PageEntrances.entrances,
@@ -245,6 +227,7 @@ USING
 				PageTimeOnPages.timeOnPage,
 				PageViews.title,
 				PageTimeOnPages.userId,
+				PageViews.variantId,
 				PageViews.views
 			FROM
 				PageViews
@@ -303,6 +286,7 @@ USING
 			channelId,
 			city,
 			country,
+			SUM(ctaClicks) AS ctaClicks,
 			deviceType,
 			SUM(directAccess) AS directAccess,
 			SUM(entrances) AS entrances,
@@ -315,6 +299,7 @@ USING
 			SUM(timeOnPage) AS timeOnPage,
 			title,
 			userId,
+			ANY_VALUE(variantId) variantId,
 			SUM(views) AS views
 		FROM
 			PageHourlyMetrics
@@ -345,6 +330,7 @@ WHEN NOT MATCHED BY TARGET THEN
 		`channelId`,
 		`city`,
 		`country`,
+		`ctaClicks`,
 		`deviceType`,
 		`directAccess`,
 		`entrances`,
@@ -357,6 +343,7 @@ WHEN NOT MATCHED BY TARGET THEN
 		`timeOnPage`,
 		`title`,
 		`userId`,
+		`variantId`,
 		`views`
 	)
 	VALUES (
@@ -366,6 +353,7 @@ WHEN NOT MATCHED BY TARGET THEN
 		staging.channelId,
 		staging.city,
 		staging.country,
+		staging.ctaClicks,
 		staging.deviceType,
 		staging.directAccess,
 		staging.entrances,
@@ -378,5 +366,6 @@ WHEN NOT MATCHED BY TARGET THEN
 		staging.timeOnPage,
 		staging.title,
 		staging.userId,
+		staging.variantId,
 		staging.views
 	)
