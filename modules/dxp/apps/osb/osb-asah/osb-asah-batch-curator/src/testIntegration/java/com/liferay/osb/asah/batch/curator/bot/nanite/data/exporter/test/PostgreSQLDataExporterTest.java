@@ -137,7 +137,7 @@ public class PostgreSQLDataExporterTest
 	}
 
 	private void _exportSegmentData(DataExportTask dataExportTask)
-		throws Exception, IOException {
+		throws Exception {
 
 		try (OutputStream zipOutputStream = _getZipOutputStream()) {
 			DataExporter dataExporter = new PostgreSQLDataExporter(

@@ -78,6 +78,7 @@ public abstract class BaseDataExporter implements DataExporter {
 			}
 
 			exportResults(resultsJSONArray);
+
 			page++;
 		}
 
