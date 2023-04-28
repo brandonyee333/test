@@ -1,0 +1,114 @@
+definition {
+
+	var baseUrl = "http://localhost:8080";
+
+	macro createPage {
+		var groupId = LiferayPortalAPI.fetchGroupId();
+		// var user = PropsUtil.get("test.this.lcp.test.team.user.email");
+		// var password = PropsUtil.get("test.this.lcp.test.team.user.password");
+		// var baseURL = PropsUtil.get("test.this.lcp.test.base.url.api");
+
+        // -w "Status Code:%{http_code}" \
+
+		var curl = '''
+			${baseUrl}/api/jsonws/layout/add-layout \
+				-u test@liferay.com:test \
+				-d groupId=${groupId} \
+				-d privateLayout=${privateLayout} \
+				-d parentLayoutId=${parentLayoutId} \
+				-d name=${layoutName} \
+				-d title= \
+				-d description= \
+				-d type=${type} \
+				-d hidden=false \
+				-d friendlyURL=${friendlyURL}
+        ''';
+
+        var plid = JSONCurlUtil.post("${curl}", "$['plid']");
+
+		if (${type} == "content") {
+			LiferayPortalAPI.publishContentPage(plid = "${plid}");
+		}
+	}
+
+	macro publishContentPage {
+		var curl = '''
+			${baseUrl}/api/jsonws/layout/publish-layout \
+				-u test@liferay.com:test \
+				-d plid=${plid}
+        ''';
+
+		var response = JSONCurlUtil.post("${curl}");
+	}
+
+	macro fetchCompanyId {
+		var curl = '''
+			${baseUrl}/api/jsonws/company/get-companies \
+				-u test@liferay.com:test
+        ''';
+
+		var companyId = JSONCurlUtil.get("${curl}", "$[0]['companyId']");
+
+		return "${companyId}";
+	}
+
+	macro fetchGroupId {
+		var companyId = LiferayPortalAPI.fetchCompanyId();
+		var curl = '''
+			${baseUrl}/api/jsonws/group/get-group
+			-u test@liferay.com:test
+			-d companyId=${companyId}
+			-d groupKey=Guest
+			''';
+
+		var groupId = JSONCurlUtil.post("${curl}", "$.groupId");
+
+		return "${groupId}";
+	}
+
+	macro fetchLayoutId {
+		var groupId = LiferayPortalAPI.fetchGroupId();
+		
+		var curl = '''
+			${baseUrl}/api/jsonws/layout/get-layouts \
+				-u test@liferay.com:test \
+				-d groupId=${groupId} \
+				-d privateLayout=false
+		''';
+		var layoutId = JSONCurlUtil.post("${curl}", "$.[?(@['nameCurrentValue']=='${layoutName}')]['layoutId']");
+
+		return "${layoutId}";
+	}
+
+	macro deletePage {
+		var layoutId = LiferayPortalAPI.fetchLayoutId(layoutName = ${layoutName});
+		var groupId = LiferayPortalAPI.fetchGroupId();
+
+		var curl = '''
+			${baseUrl}/api/jsonws/layout/delete-layout \
+				-u test@liferay.com:test \
+				-d groupId=${groupId} \
+				-d privateLayout=false \
+				-d layoutId=${layoutId}
+        ''';
+
+		var response = JSONCurlUtil.post("${curl}");
+	}
+
+	macro updateLayout {
+		var layoutId = LiferayPortalAPI.fetchLayoutId(layoutName = ${layoutName});
+		var groupId = LiferayPortalAPI.fetchGroupId();
+
+		var curl = '''
+			${baseUrl}/api/jsonws/layout/update-layout \
+				-u test@liferay.com:test \
+				-d groupId=${groupId} \
+				-d privateLayout=false \
+				-d layoutId=${layoutId} \
+				-d typeSettings=${typeSettings}
+		''';
+
+		com.liferay.poshi.runner.util.JSONCurlUtil.post(${curl});
+	}
+
+}
