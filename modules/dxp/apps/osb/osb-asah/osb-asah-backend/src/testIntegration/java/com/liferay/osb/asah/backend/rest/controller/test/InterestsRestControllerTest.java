@@ -21,7 +21,6 @@ import com.liferay.osb.asah.backend.dto.InterestDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.rest.controller.InterestsRestController;
 import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
@@ -60,6 +59,9 @@ public class InterestsRestControllerTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
+	@BQSQLResource(
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_page.sql"
+	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
@@ -67,10 +69,6 @@ public class InterestsRestControllerTest
 	@RepositoryResource(
 		repositoryClass = BQIdentityInterestScoreRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity_interest_scores.json"
-	)
-	@RepositoryResource(
-		repositoryClass = AsahMarkerRepository.class,
-		resourcePath = "osbasahfaroinfo/osbasahmarkers.json"
 	)
 	@Test
 	public void testGetInterestDTOPageDTO() throws Exception {
@@ -80,12 +78,16 @@ public class InterestsRestControllerTest
 			(JSONArray)JSONUtil.getValue(
 				_objectMapper.convertValue(
 					_interestsRestController.getInterestDTOPageDTO(
-						null, 0, 20, null, new String[] {"name", "desc"}),
+						null, null, null, 0, null, 20,
+						new String[] {"name", "desc"}),
 					JSONObject.class),
 				"JSONObject/_embedded", "JSONArray/interests"),
 			false);
 	}
 
+	@BQSQLResource(
+		resourcePath = "osbasahfaroinfo/bq_identity_interest_page.sql"
+	)
 	@RepositoryResource(
 		repositoryClass = BQIdentityRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_identity_interest_score_identities.json"
@@ -356,7 +358,7 @@ public class InterestsRestControllerTest
 
 	private List<InterestDTO> _getInterestDTOs(String[] sorts) {
 		PageDTO pageDTO = _interestsRestController.getInterestDTOPageDTO(
-			null, 0, 15, null, sorts);
+			null, null, null, 0, null, 15, sorts);
 
 		Map<String, InterestDTO> contents = pageDTO.getContent();
 

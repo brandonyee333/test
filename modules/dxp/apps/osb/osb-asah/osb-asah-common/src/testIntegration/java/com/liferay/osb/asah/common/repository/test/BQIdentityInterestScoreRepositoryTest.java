@@ -99,8 +99,8 @@ public class BQIdentityInterestScoreRepositoryTest
 	public void testCountByFilterString() {
 		Assertions.assertEquals(
 			2,
-			_bqIdentityInterestScoreRepository.countByFilterString(
-				new FilterHelper(null)));
+			_bqIdentityInterestScoreRepository.
+				countByChannelIdAndIndividualIdAndKeywords(null, null, null));
 	}
 
 	@BQSQLResource(

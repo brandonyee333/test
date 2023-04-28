@@ -1,0 +1,14 @@
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/productize', 1, '337984659206412898', 'productize best-of-breed web services', 'productize best-of-breed web services', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/clicks-and-mortar', 1, '337984659206412898', 'clicks-and-mortar e-tailers', '1', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/clicks-and-mortar', 1, '346287653729332051', 'clicks-and-mortar e-tailers', '1', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/clicks-and-mortar', 1, '346287655690647357', 'clicks-and-mortar e-tailers', '1', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/compelling metrics', 1, '337984659206412898', 'compelling metrics', 'compelling metrics', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/compelling metrics', 1, '346287681638899660', 'compelling metrics', 'compelling metrics', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/holistic', 1, '346287660247040704', 'holistic ROI', 'holistic ROI', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/holistic', 1, '346287671371031768', 'holistic ROI', 'holistic ROI', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/php', 1, '337984659206412898', 'php', 'php', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/javascript', 1, '337984659206412898', 'javascript', 'javascript', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/web', 1, '337984659206412898', 'web', 'web', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/javascript-php', 1, '337984659206412898', 'javascript php', 'javascript php', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/my-php-title', 1, '337984659206412898', 'My Php Title', 'My Php Title', 1);
+INSERT INTO IdentityInterestPage (canonicalUrl, channelId, identityId, keyword, title, views) VALUES ('http://www.liferay.com/my-javascript-title', 1, '337984659206412898', 'My Javascript title', 'My Javascript title', 1);
