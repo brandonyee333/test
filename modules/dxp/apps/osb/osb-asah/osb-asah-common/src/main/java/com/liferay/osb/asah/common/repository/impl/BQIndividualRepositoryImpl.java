@@ -62,6 +62,7 @@ import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectForStep;
 import org.jooq.SelectForUpdateStep;
+import org.jooq.SelectHavingConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectOnStep;
 import org.jooq.SelectSeekStep1;
@@ -787,16 +788,22 @@ public class BQIndividualRepositoryImpl
 		Long channelId, String fieldName, String filterString) {
 
 		return _queryExecutor.queryForLong(
-			_getIndividualFieldValuesCustomRepeatableSelectJoinStep(
-				channelId, fieldName, filterString,
-				_dslContext.select(
-					DSL.countDistinct(
+			_dslContext.select(
+				DSL.countDistinct(
+					DSL.field("individualFieldValue")
+				).as(
+					"totalElements"
+				)
+			).from(
+				_getIndividualFieldValuesCustomRepeatableSelectJoinStep(
+					channelId, fieldName, filterString,
+					_dslContext.selectDistinct(
 						DSL.field(
-							"JSON_EXTRACT_SCALAR(fieldValueItem, '$')",
-							String.class)
-					).as(
-						"totalElements"
-					))));
+							"JSON_EXTRACT_SCALAR(fieldValueItem, '$')"
+						).as(
+							"individualFieldValue"
+						)))
+			));
 	}
 
 	private Condition _getChannelIdCondition(Long channelId) {
@@ -947,7 +954,7 @@ public class BQIndividualRepositoryImpl
 		Long channelId, String fieldName, String filterString,
 		Pageable pageable) {
 
-		SelectJoinStep selectJoinStep =
+		SelectHavingConditionStep selectHavingConditionStep =
 			_getIndividualFieldValuesCustomRepeatableSelectJoinStep(
 				channelId, fieldName, filterString,
 				_dslContext.selectDistinct(
@@ -959,14 +966,16 @@ public class BQIndividualRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			recordMap -> String.valueOf(recordMap.get("individualFieldValue")),
-			selectJoinStep.limit(
+			selectHavingConditionStep.orderBy(
+				DSL.field("individualFieldValue")
+			).limit(
 				pageable.getPageSize()
 			).offset(
 				pageable.getOffset()
 			));
 	}
 
-	private SelectJoinStep
+	private SelectHavingConditionStep
 		_getIndividualFieldValuesCustomRepeatableSelectJoinStep(
 			Long channelId, String fieldName, String filterString,
 			SelectSelectStep selectSelectStep) {
@@ -990,6 +999,14 @@ public class BQIndividualRepositoryImpl
 				"UNNEST(fieldValueArray)"
 			).as(
 				"fieldValueItem"
+			)
+		).groupBy(
+			DSL.field("individualFieldValue")
+		).having(
+			DSL.field(
+				"individualFieldValue"
+			).ne(
+				""
 			)
 		);
 	}
