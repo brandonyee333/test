@@ -975,6 +975,7 @@ definition {
 	@description = "Verify that a Multiple Selection Field can be previewed"
 	@priority = 5
 	test MultipleSelectionFieldCanBePreviewed {
+		property portal.acceptance = "calum";
 		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
