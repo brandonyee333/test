@@ -584,6 +584,7 @@ public class BQIndividualRepositoryImpl
 
 		List<Field> fields = Arrays.asList(
 			DSL.field("Individual.birthday"),
+			DSL.field("Individual.createDate"),
 			DSL.field("Individual.emailAddress"),
 			DSL.field("Individual.firstName"), DSL.field("Individual.id"),
 			DSL.field("Individual.jobTitle"),
