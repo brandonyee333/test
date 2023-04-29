@@ -939,7 +939,9 @@ public class FilterExpressionConditionVisitor
 
 		fieldName = fieldName.toLowerCase();
 
-		if (StringUtils.endsWithIgnoreCase(fieldName, "date")) {
+		if (StringUtils.equalsIgnoreCase(fieldName, "birthday") ||
+			StringUtils.endsWithIgnoreCase(fieldName, "date")) {
+
 			leftField = DSL.date(leftField);
 		}
 		else {
