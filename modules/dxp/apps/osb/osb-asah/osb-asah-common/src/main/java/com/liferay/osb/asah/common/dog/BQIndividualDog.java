@@ -250,7 +250,12 @@ public class BQIndividualDog {
 				order = Sort.Order.desc(properties[0]);
 			}
 
-			orders.add(order.ignoreCase());
+			if (StringUtils.containsIgnoreCase(properties[0], "date")) {
+				orders.add(order);
+			}
+			else {
+				orders.add(order.ignoreCase());
+			}
 		}
 
 		return Sort.by(orders);
