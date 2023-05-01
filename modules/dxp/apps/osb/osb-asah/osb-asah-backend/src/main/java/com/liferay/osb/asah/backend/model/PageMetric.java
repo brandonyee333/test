@@ -89,8 +89,6 @@ public class PageMetric implements AssetMetric {
 			Objects.equals(_exitRateMetric, pageMetric._exitRateMetric) &&
 			Objects.equals(
 				_indirectAccessMetric, pageMetric._indirectAccessMetric) &&
-			Objects.equals(
-				_maxScrollDepthMetric, pageMetric._maxScrollDepthMetric) &&
 			Objects.equals(_readsMetric, pageMetric._readsMetric) &&
 			Objects.equals(_sessionsMetric, pageMetric._sessionsMetric) &&
 			Objects.equals(_timeOnPageMetric, pageMetric._timeOnPageMetric) &&
@@ -184,10 +182,6 @@ public class PageMetric implements AssetMetric {
 		return _indirectAccessMetric;
 	}
 
-	public Metric getMaxScrollDepthMetric() {
-		return _maxScrollDepthMetric;
-	}
-
 	public Metric getReadsMetric() {
 		return _readsMetric;
 	}
@@ -219,9 +213,9 @@ public class PageMetric implements AssetMetric {
 			_assetMetrics, _assetTitle, _avgTimeOnPageMetric, _bounceMetric,
 			_bounceRateMetric, _canonicalUrls, _ctpMetric, _ctrMetric,
 			_dataSourceId, _directAccessMetric, _entrancesMetric,
-			_exitRateMetric, _indirectAccessMetric, _maxScrollDepthMetric,
-			_readsMetric, _sessionsMetric, _timeOnPageMetric, _urls,
-			_viewsMetric, _visitorsMetric);
+			_exitRateMetric, _indirectAccessMetric, _readsMetric,
+			_sessionsMetric, _timeOnPageMetric, _urls, _viewsMetric,
+			_visitorsMetric);
 	}
 
 	@Override
@@ -324,10 +318,6 @@ public class PageMetric implements AssetMetric {
 		_indirectAccessMetric = indirectAccessMetric;
 	}
 
-	public void setMaxScrollDepthMetric(Metric maxScrollDepthMetric) {
-		_maxScrollDepthMetric = maxScrollDepthMetric;
-	}
-
 	public void setReadsMetric(Metric readsMetric) {
 		_readsMetric = readsMetric;
 	}
@@ -401,8 +391,6 @@ public class PageMetric implements AssetMetric {
 	private Metric _exitRateMetric = new Metric(PageMetricType.EXIT_RATE);
 	private Metric _indirectAccessMetric = new Metric(
 		PageMetricType.INDIRECT_ACCESS);
-	private Metric _maxScrollDepthMetric = new Metric(
-		PageMetricType.MAX_SCROLL_DEPTH);
 	private Metric _readsMetric = new Metric(PageMetricType.READS);
 	private Metric _sessionsMetric = new Metric(PageMetricType.SESSIONS);
 	private Metric _timeOnPageMetric = new Metric(PageMetricType.TIME_ON_PAGE);

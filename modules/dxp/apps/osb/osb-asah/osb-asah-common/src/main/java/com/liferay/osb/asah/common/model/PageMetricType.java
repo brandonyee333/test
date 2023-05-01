@@ -39,8 +39,6 @@ public enum PageMetricType implements MetricType {
 	INDIRECT_ACCESS(
 		"indirectAccess", "indirectAccessMetric",
 		TrendClassification.Order.ASC),
-	MAX_SCROLL_DEPTH(
-		"pageScrolls", "maxScrollDepthMetric", TrendClassification.Order.DESC),
 	READS("reads", "readsMetric", TrendClassification.Order.ASC),
 	SESSIONS(
 		"sessions", "sessionId", "sessionsMetric", false,
