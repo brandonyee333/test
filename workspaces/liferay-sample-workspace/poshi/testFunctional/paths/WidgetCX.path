@@ -10,7 +10,9 @@
 </thead>
 
 <tbody>
+
 <!-- Liferay Sample Custom Element 1 -->
+
 <tr>
 	<td>LSCE1_PORTLET</td>
 	<td>css=vanilla-counter</td>
