@@ -611,29 +611,6 @@ public class MetricDogTest
 		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
 	)
 	@Test
-	public void testPagesMaxScrollDepthMetric() {
-		PageMetric pageMetric = _metricDog.getAssetMetric(
-			_createSearchQuery(
-				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
-			new HashSet<String>() {
-				{
-					add(PageMetricType.MAX_SCROLL_DEPTH.getName());
-				}
-			});
-
-		Assertions.assertNotNull(pageMetric);
-
-		Metric maxScrollDepthMetric = pageMetric.getMaxScrollDepthMetric();
-
-		Assertions.assertEquals(100, maxScrollDepthMetric.getValue(), 0);
-	}
-
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/pages_info_1.json"
-	)
-	@Test
 	public void testPagesVariantFilter() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
 			_createSearchQuery(

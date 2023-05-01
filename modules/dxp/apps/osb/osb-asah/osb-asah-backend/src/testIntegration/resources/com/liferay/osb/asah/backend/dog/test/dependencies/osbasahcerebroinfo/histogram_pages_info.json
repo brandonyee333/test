@@ -29,16 +29,6 @@
 		"knownIndividual": false,
 		"lastEventDate": "${now}",
 		"modifiedDate": "${now}",
-		"pageScrolls": [
-			{
-				"depth": 50,
-				"eventDate": "${now}"
-			},
-			{
-				"depth": 100,
-				"eventDate": "${now}"
-			}
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -79,8 +69,6 @@
 		"knownIndividual": false,
 		"lastEventDate": "${now-1dT00:00:00.000Z}",
 		"modifiedDate": "${now-1dT00:00:00.000Z}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -121,8 +109,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "${now-2dT00:00:00.000Z}",
 		"modifiedDate": "${now-2dT00:00:00.000Z}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -162,8 +148,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "${now-3dT00:00:00.000Z}",
 		"modifiedDate": "${now-3dT00:00:00.000Z}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -203,8 +187,6 @@
 		],
 		"lastEventDate": "${now-4dT00:00:00.000Z}",
 		"modifiedDate": "${now-4dT00:00:00.000Z}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -243,8 +225,6 @@
 		],
 		"lastEventDate": "${now-5dT00:00:00.000Z}",
 		"modifiedDate": "${now-5dT00:00:00.000Z}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "Liferay DXP",
@@ -283,8 +263,6 @@
 		],
 		"lastEventDate": "${now-6dT00:00:00.000Z}",
 		"modifiedDate": "${now-6dT00:00:00.000Z}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "Liferay",
@@ -324,12 +302,6 @@
 		],
 		"lastEventDate": "${now-7dT00:00:00.000Z}",
 		"modifiedDate": "${now-7dT00:00:00.000Z}",
-		"pageScrolls": [
-			{
-				"depth": 25,
-				"eventDate": "${now-1d}"
-			}
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "Liferay",

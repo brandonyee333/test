@@ -29,16 +29,6 @@
 		"knownIndividual": false,
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-			{
-				"depth": 50,
-				"eventDate": "${now-1d}"
-			},
-			{
-				"depth": 100,
-				"eventDate": "${now-1d}"
-			}
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -79,8 +69,6 @@
 		"knownIndividual": false,
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -121,8 +109,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -163,8 +149,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -204,8 +188,6 @@
 		],
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -244,8 +226,6 @@
 		],
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "Liferay DXP",
@@ -284,8 +264,6 @@
 		],
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "Liferay",
@@ -325,12 +303,6 @@
 		],
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-			{
-				"depth": 25,
-				"eventDate": "${now-1d}"
-			}
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "Liferay",
@@ -369,8 +341,6 @@
 		],
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": " liferay",
@@ -409,8 +379,6 @@
 		],
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "",
@@ -449,8 +417,6 @@
 		],
 		"lastEventDate": "${now-6d}",
 		"modifiedDate": "${now-6d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "",
@@ -489,8 +455,6 @@
 		],
 		"lastEventDate": "${now-21d}",
 		"modifiedDate": "${now-21d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "",
@@ -529,8 +493,6 @@
 		],
 		"lastEventDate": "${now-27d}",
 		"modifiedDate": "${now-27d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "",
@@ -569,8 +531,6 @@
 		],
 		"lastEventDate": "${now-75d}",
 		"modifiedDate": "${now-75d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "",
@@ -609,8 +569,6 @@
 		],
 		"lastEventDate": "${now-160d}",
 		"modifiedDate": "${now-160d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "Liferay DXP",
@@ -649,8 +607,6 @@
 		],
 		"lastEventDate": "${now-361d}",
 		"modifiedDate": "${now-361d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"searchTerm": "liferay",

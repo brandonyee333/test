@@ -29,16 +29,6 @@
 		"knownIndividual": false,
 		"lastEventDate": "${now-30d}",
 		"modifiedDate": "${now-30d}",
-		"pageScrolls": [
-			{
-				"depth": 50,
-				"eventDate": "${now-30d}"
-			},
-			{
-				"depth": 100,
-				"eventDate": "${now-30d}"
-			}
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [

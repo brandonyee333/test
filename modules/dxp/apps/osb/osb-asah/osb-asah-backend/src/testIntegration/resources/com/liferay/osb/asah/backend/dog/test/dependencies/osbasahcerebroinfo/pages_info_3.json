@@ -29,16 +29,6 @@
 		"knownIndividual": false,
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-			{
-				"depth": 50,
-				"eventDate": "${now-1d}"
-			},
-			{
-				"depth": 100,
-				"eventDate": "${now-1d}"
-			}
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -79,8 +69,6 @@
 		"knownIndividual": false,
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [
@@ -121,8 +109,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "${now-1d}",
 		"modifiedDate": "${now-1d}",
-		"pageScrolls": [
-		],
 		"platformName": "Unknown",
 		"region": null,
 		"segmentNames": [

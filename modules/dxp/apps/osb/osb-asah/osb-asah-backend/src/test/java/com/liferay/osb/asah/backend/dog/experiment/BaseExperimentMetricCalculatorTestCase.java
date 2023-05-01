@@ -172,24 +172,6 @@ public abstract class BaseExperimentMetricCalculatorTestCase {
 		return 5;
 	}
 
-	protected ExperimentMetricCalculator
-		getScrollDepthExperimentMetricCalculator(
-			List<Variant<Double[]>> variants) {
-
-		return new ScrollDepthExperimentCalculator() {
-
-			@Override
-			protected List<Variant<Double[]>> getVariants(
-				Experiment experiment) {
-
-				variants.forEach(this::setVariantEstimatedTrafficRate);
-
-				return variants;
-			}
-
-		};
-	}
-
 	protected void percentageBasedAssertEquals(
 		double expected, double actual, double deltaPercentage) {
 

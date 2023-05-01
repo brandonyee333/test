@@ -31,8 +31,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T01:19:47.039Z",
 		"modifiedDate": "2019-08-17T01:19:58.324Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "55c666134c628619981d555166258a7f93bdc2b0fd25dbd91ae38c145c81eae1",
 		"region": null,
@@ -80,8 +78,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T01:20:10.131Z",
 		"modifiedDate": "2019-08-17T01:20:58.401Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "27cf20103ad8ad56478cab73a938dccccd050612fb9777d3c12dc59f3d90eea8",
 		"region": null,
@@ -129,8 +125,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T02:07:54.852Z",
 		"modifiedDate": "2019-08-17T02:07:58.785Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "c1ca9020125ef139705a8647753ea1c8359d715ce5d70c6af816f664ebecf2a0",
 		"region": null,
@@ -181,8 +175,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T01:20:09.705Z",
 		"modifiedDate": "2019-08-17T01:20:58.415Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "cbea030920e0feb92213e3cd845ad07e936a15db1bbcf93dbe94b3f6e10576a3",
 		"region": null,
@@ -232,12 +224,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T01:20:19.532Z",
 		"modifiedDate": "2019-08-17T01:20:58.422Z",
-		"pageScrolls": [
-			{
-				"depth": 100,
-				"eventDate": "2019-08-17T01:20:19.532Z"
-			}
-		],
 		"platformName": "Windows",
 		"primaryKey": "85eb429625b395444bfc4d32a06ff9cdd60fbc967ef2c09a41d8d70a5aa299ba",
 		"region": null,
@@ -285,8 +271,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T02:07:44.458Z",
 		"modifiedDate": "2019-08-17T02:07:58.785Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "368333d7b3841934ea2a165d0cca1ccf2e3cef60c8dd47c2af36c84b6820519b",
 		"region": null,
@@ -334,8 +318,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T01:19:59.133Z",
 		"modifiedDate": "2019-08-17T01:20:58.415Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "9275696918282116b0e15439f60869798230afd1082791b151456fbdf2a62cdf",
 		"region": null,
@@ -383,8 +365,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T02:07:53.171Z",
 		"modifiedDate": "2019-08-17T02:07:58.802Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "148f653d0801f6d9bc90a69a867f331b5e5953ccfb648abc4f0d97c379d35784",
 		"region": null,
@@ -432,8 +412,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-08-17T02:07:55.458Z",
 		"modifiedDate": "2019-08-17T02:07:58.785Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "00abd98995a4910555d1a6596e47511b8eaf03a76cf93d18eb1b76a8f2a03bbf",
 		"region": null,

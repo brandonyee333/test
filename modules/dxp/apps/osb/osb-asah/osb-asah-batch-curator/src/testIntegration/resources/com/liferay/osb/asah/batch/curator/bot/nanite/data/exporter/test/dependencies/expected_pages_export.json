@@ -30,8 +30,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-21T13:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:28:59.992Z",
-		"pageScrolls": [
-		],
 		"platformName": "iOS",
 		"primaryKey": "df11d06a7a5d37f644cb1bc2ad5470df49a87463bc46a8ce7a2d2da5963c2b67",
 		"region": "Oregon",
@@ -78,8 +76,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-10-16T09:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:04.355Z",
-		"pageScrolls": [
-		],
 		"platformName": "macOS",
 		"primaryKey": "492d7713cabc1972a19b26782bce7fc250732be6894a471aaabb53bdfe8e20ce",
 		"region": "Oregon",
@@ -126,8 +122,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-24T21:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:04.308Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "e1c65c7d166bb23481924587eca0545de0de01f655214b007905e38c0c83596e",
 		"region": "Oregon",
@@ -174,8 +168,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-10-12T18:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:04.307Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "6189ea476980842b718bb3f295975488fb167990a241bc8c1c795543a53d7b61",
 		"region": "Oregon",
@@ -221,8 +213,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-18T00:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:04.559Z",
-		"pageScrolls": [
-		],
 		"platformName": "iOS",
 		"primaryKey": "9978fed87b5abaed505b6800cbfbfd2b37e4a524834af5a7b6faeb2651c83428",
 		"region": "Oregon",
@@ -268,8 +258,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-17T21:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:04.139Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "22a72757da7bca39b428d874f3ed9d010d13004480430c4413fe650493744655",
 		"region": "Oregon",
@@ -315,8 +303,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-24T23:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:30.477Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "4fb3c37098133bbaaa61e1826552677d6b591151445dec86e1276d71294e445f",
 		"region": "Oregon",
@@ -363,8 +349,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-29T08:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:30.563Z",
-		"pageScrolls": [
-		],
 		"platformName": "iOS",
 		"primaryKey": "92c383af41713b8a272eed4f3c8f47922c0982e367276a5146c41b0f58626380",
 		"region": "Oregon",
@@ -410,8 +394,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-17T18:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:32.816Z",
-		"pageScrolls": [
-		],
 		"platformName": "iOS",
 		"primaryKey": "4057061f825bd283c1da29be64489a8b57a4931ecee972145ab49a3b4ef9f53e",
 		"region": "Oregon",
@@ -457,8 +439,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-10-05T08:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:32.827Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "18bff6d14980ba88c6cd41c7fe1fc81ba0fe5ebfdee6b6e6e4d8e55d4348f298",
 		"region": "Oregon",
@@ -504,8 +484,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-10-01T15:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:32.848Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "932eae7e2464ccb27ae3998be0afe880db332a5f6ba850c82784ada2ee3bdc4e",
 		"region": "Oregon",
@@ -552,8 +530,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-19T12:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:32.804Z",
-		"pageScrolls": [
-		],
 		"platformName": "macOS",
 		"primaryKey": "b9d201e22d57b8de0c810b756f88dee995c6fc81e752bb38fb5a9dcbf54fcc34",
 		"region": "Oregon",
@@ -600,8 +576,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-20T10:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:36.243Z",
-		"pageScrolls": [
-		],
 		"platformName": "iOS",
 		"primaryKey": "b4971eefd476dc713caef85206604c936922dd04644ad95674f31d3564fd9e70",
 		"region": "Oregon",

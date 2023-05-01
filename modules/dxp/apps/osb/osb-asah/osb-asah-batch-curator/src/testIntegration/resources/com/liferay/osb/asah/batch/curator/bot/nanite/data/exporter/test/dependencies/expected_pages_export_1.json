@@ -30,8 +30,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-18T00:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:04.559Z",
-		"pageScrolls": [
-		],
 		"platformName": "iOS",
 		"primaryKey": "9978fed87b5abaed505b6800cbfbfd2b37e4a524834af5a7b6faeb2651c83428",
 		"region": "Oregon",
@@ -77,8 +75,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-09-17T21:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:04.139Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "22a72757da7bca39b428d874f3ed9d010d13004480430c4413fe650493744655",
 		"region": "Oregon",
@@ -124,8 +120,6 @@
 		"knownIndividual": true,
 		"lastEventDate": "2019-10-12T18:00:00.000Z",
 		"modifiedDate": "2019-10-16T21:29:04.307Z",
-		"pageScrolls": [
-		],
 		"platformName": "Windows",
 		"primaryKey": "6189ea476980842b718bb3f295975488fb167990a241bc8c1c795543a53d7b61",
 		"region": "Oregon",
