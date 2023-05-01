@@ -21,7 +21,6 @@ public enum GoalMetric {
 
 	BOUNCE_RATE(false, true, PageMetricType.BOUNCE_RATE),
 	CLICK_RATE(false, false, PageMetricType.CLICK_THROUGH_RATE),
-	MAX_SCROLL_DEPTH(true, false, PageMetricType.MAX_SCROLL_DEPTH),
 	TIME_ON_PAGE(true, false, PageMetricType.TIME_ON_PAGE);
 
 	public PageMetricType getPageMetricType() {

@@ -66,18 +66,11 @@ public class ExperimentMetricDog {
 			return _dichotomousDataExperimentMetricCalculator;
 		}
 
-		if (goalMetric == GoalMetric.MAX_SCROLL_DEPTH) {
-			return _scrollDepthExperimentCalculator;
-		}
-
 		throw new IllegalStateException("Unexpected goal metric " + goalMetric);
 	}
 
 	@Autowired
 	private DichotomousDataExperimentMetricCalculator
 		_dichotomousDataExperimentMetricCalculator;
-
-	@Autowired
-	private ScrollDepthExperimentCalculator _scrollDepthExperimentCalculator;
 
 }

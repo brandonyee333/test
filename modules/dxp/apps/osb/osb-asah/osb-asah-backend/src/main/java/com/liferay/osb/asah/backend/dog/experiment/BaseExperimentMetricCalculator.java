@@ -217,16 +217,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 		double lowerQuantile = 100 - confidenceLevel;
 		double upperQuantile = confidenceLevel;
 
-		if (goalMetric == GoalMetric.MAX_SCROLL_DEPTH) {
-			double[] data = doubleTensor.asFlatDoubleArray();
-
-			lowerBound = percentile.evaluate(data, lowerQuantile);
-			lowerBound = FastMath.max(0, lowerBound);
-
-			upperBound = percentile.evaluate(data, upperQuantile);
-			upperBound = FastMath.min(100, upperBound);
-		}
-		else if (goalMetric == GoalMetric.TIME_ON_PAGE) {
+		if (goalMetric == GoalMetric.TIME_ON_PAGE) {
 			DoubleTensor normalizedDoubleTensor = _log10exp(doubleTensor);
 
 			double[] data = normalizedDoubleTensor.asFlatDoubleArray();
