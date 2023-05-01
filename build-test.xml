@@ -16260,7 +16260,7 @@ oracle.admin.user=system
 
 		<if>
 			<not>
-				<isset property="skip.prepare.portal.ext.properties" />
+				<isset property="skip.prepare.portal.ext.propertiess" />
 			</not>
 			<then>
 				<antcall inheritAll="false" target="prepare-portal-ext-properties" />
