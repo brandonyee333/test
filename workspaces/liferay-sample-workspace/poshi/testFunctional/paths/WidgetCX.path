@@ -23,6 +23,16 @@
 	<td>css=vanilla-counter>>>.counter</td>
 	<td></td>
 </tr>
+<tr>
+	<td>LSCE1_DECREMENT_BTN</td>
+	<td>css=vanilla-counter>>>.decrement</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LSCE1_INCREMENT_BTN</td>
+	<td>css=vanilla-counter>>>.increment</td>
+	<td></td>
+</tr>
 
 </tbody>
 </table>

@@ -67,11 +67,11 @@ definition {
 				locator1 = "WidgetCX#LSCE1_COUNTER",
 				value1 = 0);
 
-			CXJavascript.clickIncrementBtn();
+			Default.Click(locator1 = "WidgetCX#LSCE1_INCREMENT_BTN");
 
-			CXJavascript.clickIncrementBtn();
+			Default.Click(locator1 = "WidgetCX#LSCE1_INCREMENT_BTN");
 
-			CXJavascript.clickIncrementBtn();
+			Default.Click(locator1 = "WidgetCX#LSCE1_INCREMENT_BTN");
 
 			Default.AssertTextPresent(
 				locator1 = "WidgetCX#LSCE1_COUNTER",
@@ -81,13 +81,13 @@ definition {
 				locator1 = "WidgetCX#LSCE1_COUNTER",
 				value1 = 0);
 
-			CXJavascript.clickDecrementBtn();
+			Default.Click(locator1 = "WidgetCX#LSCE1_DECREMENT_BTN");
 
-			CXJavascript.clickDecrementBtn();
+			Default.Click(locator1 = "WidgetCX#LSCE1_DECREMENT_BTN");
 
-			CXJavascript.clickDecrementBtn();
+			Default.Click(locator1 = "WidgetCX#LSCE1_DECREMENT_BTN");
 
-			CXJavascript.clickDecrementBtn();
+			Default.Click(locator1 = "WidgetCX#LSCE1_DECREMENT_BTN");
 
 			Default.AssertTextPresent(
 				locator1 = "WidgetCX#LSCE1_COUNTER",

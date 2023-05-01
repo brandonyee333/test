@@ -1,14 +1,14 @@
 definition {
 
 	var baseAuth = "test@liferay.com:test";
-	var baseUrl = PropsUtil.get("portal.url");
+	var baseURL = PropsUtil.get("portal.url");
 
 	@summary = "Creates a 'portlet' or 'content' page. Requires: privateLayout, parentLayoutId, layoutName, and type. Optional: friendlyURL"
 	macro createPage {
 		var groupId = LiferayPortalAPI.fetchGroupId();
 
 		var curl = '''
-			${baseUrl}/api/jsonws/layout/add-layout \
+			${baseURL}/api/jsonws/layout/add-layout \
 				-u ${baseAuth} \
 				-d groupId=${groupId} \
 				-d privateLayout=${privateLayout} \
@@ -30,11 +30,11 @@ definition {
 
 	@summary = "Provide a layoutName to delete the page"
 	macro deletePage {
-		var layoutId = LiferayPortalAPI.fetchLayoutId("layoutName = ${layoutName}");
+		var layoutId = LiferayPortalAPI.fetchLayoutId(layoutName = ${layoutName});
 		var groupId = LiferayPortalAPI.fetchGroupId();
 
 		var curl = '''
-			${baseUrl}/api/jsonws/layout/delete-layout \
+			${baseURL}/api/jsonws/layout/delete-layout \
 				-u ${baseAuth} \
 				-d groupId=${groupId} \
 				-d privateLayout=false \
@@ -47,7 +47,7 @@ definition {
 	@summary = "Used to return the companyId"
 	macro fetchCompanyId {
 		var curl = '''
-			${baseUrl}/api/jsonws/company/get-companies \
+			${baseURL}/api/jsonws/company/get-companies \
 				-u ${baseAuth}
 		''';
 
@@ -61,7 +61,7 @@ definition {
 		var companyId = LiferayPortalAPI.fetchCompanyId();
 
 		var curl = '''
-			${baseUrl}/api/jsonws/group/get-group
+			${baseURL}/api/jsonws/group/get-group
 				-u ${baseAuth}
 				-d companyId=${companyId}
 				-d groupKey=Guest
@@ -77,7 +77,7 @@ definition {
 		var groupId = LiferayPortalAPI.fetchGroupId();
 
 		var curl = '''
-			${baseUrl}/api/jsonws/layout/get-layouts \
+			${baseURL}/api/jsonws/layout/get-layouts \
 				-u ${baseAuth} \
 				-d groupId=${groupId} \
 				-d privateLayout=false
@@ -91,7 +91,7 @@ definition {
 	@summary = "Used to publish content type pages"
 	macro publishContentPage {
 		var curl = '''
-			${baseUrl}/api/jsonws/layout/publish-layout \
+			${baseURL}/api/jsonws/layout/publish-layout \
 				-u ${baseAuth} \
 				-d plid=${plid}
 		''';
@@ -101,11 +101,11 @@ definition {
 
 	@summary = "Provide the layoutName and typesettings to update the page layout"
 	macro updateLayout {
-		var layoutId = LiferayPortalAPI.fetchLayoutId("layoutName = ${layoutName}");
+		var layoutId = LiferayPortalAPI.fetchLayoutId(layoutName = ${layoutName});
 		var groupId = LiferayPortalAPI.fetchGroupId();
 
 		var curl = '''
-			${baseUrl}/api/jsonws/layout/update-layout \
+			${baseURL}/api/jsonws/layout/update-layout \
 				-u ${baseAuth} \
 				-d groupId=${groupId} \
 				-d privateLayout=false \
