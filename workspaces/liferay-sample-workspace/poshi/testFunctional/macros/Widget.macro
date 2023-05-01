@@ -1,6 +1,6 @@
 definition {
 
-	@summary = "Add a widget"
+	@summary = "Add a widget using the widgetName"
 	macro addWidget {
 		if (Default.IsElementNotPresent(locator1 = "Widget#INPUT_FIELD")) {
 			Default.Click(locator1 = "Widget#MENU_ADD_BUTTON");

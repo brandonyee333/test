@@ -1,13 +1,15 @@
 definition {
 
+	var baseAuth = "test@liferay.com:test";
 	var baseUrl = PropsUtil.get("portal.url");
 
+	@summary = "Creates a 'portlet' or 'content' page. Requires: privateLayout, parentLayoutId, layoutName, and type. Optional: friendlyURL"
 	macro createPage {
 		var groupId = LiferayPortalAPI.fetchGroupId();
 
 		var curl = '''
 			${baseUrl}/api/jsonws/layout/add-layout \
-				-u test@liferay.com:test \
+				-u ${baseAuth} \
 				-d groupId=${groupId} \
 				-d privateLayout=${privateLayout} \
 				-d parentLayoutId=${parentLayoutId} \
@@ -26,20 +28,27 @@ definition {
 		}
 	}
 
-	macro publishContentPage {
+	@summary = "Provide a layoutName to delete the page"
+	macro deletePage {
+		var layoutId = LiferayPortalAPI.fetchLayoutId(layoutName = ${layoutName});
+		var groupId = LiferayPortalAPI.fetchGroupId();
+
 		var curl = '''
-			${baseUrl}/api/jsonws/layout/publish-layout \
-				-u test@liferay.com:test \
-				-d plid=${plid}
+			${baseUrl}/api/jsonws/layout/delete-layout \
+				-u ${baseAuth} \
+				-d groupId=${groupId} \
+				-d privateLayout=false \
+				-d layoutId=${layoutId}
         ''';
 
 		var response = JSONCurlUtil.post("${curl}");
 	}
 
+	@summary = "Used to return the companyId"
 	macro fetchCompanyId {
 		var curl = '''
 			${baseUrl}/api/jsonws/company/get-companies \
-				-u test@liferay.com:test
+				-u ${baseAuth}
         ''';
 
 		var companyId = JSONCurlUtil.get("${curl}", "$[0]['companyId']");
@@ -47,11 +56,12 @@ definition {
 		return "${companyId}";
 	}
 
+	@summary = "Used to return the groupId"
 	macro fetchGroupId {
 		var companyId = LiferayPortalAPI.fetchCompanyId();
 		var curl = '''
 			${baseUrl}/api/jsonws/group/get-group
-			-u test@liferay.com:test
+			-u ${baseAuth}
 			-d companyId=${companyId}
 			-d groupKey=Guest
 			''';
@@ -61,12 +71,13 @@ definition {
 		return "${groupId}";
 	}
 
+	@summary = "Provide the layoutName to return its layoutId"
 	macro fetchLayoutId {
 		var groupId = LiferayPortalAPI.fetchGroupId();
 		
 		var curl = '''
 			${baseUrl}/api/jsonws/layout/get-layouts \
-				-u test@liferay.com:test \
+				-u ${baseAuth} \
 				-d groupId=${groupId} \
 				-d privateLayout=false
 		''';
@@ -75,28 +86,26 @@ definition {
 		return "${layoutId}";
 	}
 
-	macro deletePage {
-		var layoutId = LiferayPortalAPI.fetchLayoutId(layoutName = ${layoutName});
-		var groupId = LiferayPortalAPI.fetchGroupId();
 
+	@summary = "Used to publish content type pages"
+	macro publishContentPage {
 		var curl = '''
-			${baseUrl}/api/jsonws/layout/delete-layout \
-				-u test@liferay.com:test \
-				-d groupId=${groupId} \
-				-d privateLayout=false \
-				-d layoutId=${layoutId}
+			${baseUrl}/api/jsonws/layout/publish-layout \
+				-u ${baseAuth} \
+				-d plid=${plid}
         ''';
 
 		var response = JSONCurlUtil.post("${curl}");
 	}
 
+	@summary = "Provide the layoutName and typesettings to update the page layout"
 	macro updateLayout {
 		var layoutId = LiferayPortalAPI.fetchLayoutId(layoutName = ${layoutName});
 		var groupId = LiferayPortalAPI.fetchGroupId();
 
 		var curl = '''
 			${baseUrl}/api/jsonws/layout/update-layout \
-				-u test@liferay.com:test \
+				-u ${baseAuth} \
 				-d groupId=${groupId} \
 				-d privateLayout=false \
 				-d layoutId=${layoutId} \
