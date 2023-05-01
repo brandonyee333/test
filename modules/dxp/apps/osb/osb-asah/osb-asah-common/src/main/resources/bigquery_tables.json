@@ -1933,6 +1933,11 @@
 			},
 			{
 				"mode": "NULLABLE",
+				"name": "reads",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
 				"name": "region",
 				"type": "STRING"
 			},
