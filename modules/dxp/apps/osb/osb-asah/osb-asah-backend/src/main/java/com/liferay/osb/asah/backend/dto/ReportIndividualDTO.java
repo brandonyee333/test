@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import com.liferay.osb.asah.common.graphql.GraphQLProperty;
 import com.liferay.osb.asah.common.graphql.GraphQLType;
+import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
@@ -99,7 +100,14 @@ public class ReportIndividualDTO {
 			return Collections.emptyMap();
 		}
 
-		return Collections.emptyMap();
+		Map<String, String> individualProperties = new HashMap<>();
+
+		for (Field field : demographics.getFields()) {
+			individualProperties.put(
+				field.getName(), String.valueOf(field.getValue()));
+		}
+
+		return individualProperties;
 	}
 
 	private Map<String, String> _custom = new HashMap<>();
