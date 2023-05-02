@@ -1,3 +1,12 @@
+INSERT INTO Session(channelId, id) VALUES(1, '1');
+INSERT INTO Session(channelId, id) VALUES(1, '2');
+INSERT INTO Session(channelId, id) VALUES(1, '3');
+INSERT INTO Session(channelId, id) VALUES(1, '4');
+INSERT INTO Session(channelId, id) VALUES(1, '5');
+INSERT INTO Session(channelId, id) VALUES(1, '6');
+INSERT INTO Session(channelId, id) VALUES(1, '7');
+INSERT INTO Session(channelId, id) VALUES(1, '8');
+
 INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, sessionId) VALUES (1, TRUE, 'compelling action-items', DATE(TIMESTAMP  '${today-400d}'), '1');
 INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, sessionId) VALUES (1, TRUE, 'compelling action-items', DATE(TIMESTAMP '${today-387d}'), '2');
 INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, sessionId) VALUES (1, TRUE, 'compelling action-items', DATE(TIMESTAMP '${today-366d}'), '3');
@@ -9,12 +18,3 @@ INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, s
 INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, sessionId) VALUES (1, FALSE, 'error', DATE(TIMESTAMP '${today}'), '8');
 INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, sessionId) VALUES (1, TRUE, 'intuitive', DATE(TIMESTAMP '${today}'), '8');
 INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, sessionId) VALUES (1, TRUE, 'models', DATE(TIMESTAMP '${today}'), '8');
-
-INSERT INTO Session(channelId, id) VALUES(1, '1');
-INSERT INTO Session(channelId, id) VALUES(1, '2');
-INSERT INTO Session(channelId, id) VALUES(1, '3');
-INSERT INTO Session(channelId, id) VALUES(1, '4');
-INSERT INTO Session(channelId, id) VALUES(1, '5');
-INSERT INTO Session(channelId, id) VALUES(1, '6');
-INSERT INTO Session(channelId, id) VALUES(1, '7');
-INSERT INTO Session(channelId, id) VALUES(1, '8');
