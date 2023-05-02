@@ -152,6 +152,12 @@ public class FilterExpressionConditionVisitor
 			return leftField.isNull();
 		}
 
+		if (DateUtil.isValidPatternShort(value) &&
+			!fieldName.equalsIgnoreCase("cast")) {
+
+			leftField = DSL.date(leftField);
+		}
+
 		if ((Objects.equals(
 				leftField.getName(), "IdentityActivity.channelId") ||
 			 Objects.equals(leftField.getName(), "Membership.segmentId")) &&
@@ -501,6 +507,12 @@ public class FilterExpressionConditionVisitor
 
 		Field leftField = _getLeftField(greaterThanExpressionContext);
 
+		if (DateUtil.isValidPatternShort(value) &&
+			!fieldName.equalsIgnoreCase("cast")) {
+
+			leftField = DSL.date(leftField);
+		}
+
 		return leftField.gt(_getRightField(greaterThanExpressionContext));
 	}
 
@@ -537,6 +549,12 @@ public class FilterExpressionConditionVisitor
 		}
 
 		Field leftField = _getLeftField(greaterThanOrEqualsExpressionContext);
+
+		if (DateUtil.isValidPatternShort(value) &&
+			!fieldName.equalsIgnoreCase("cast")) {
+
+			leftField = DSL.date(leftField);
+		}
 
 		return leftField.ge(
 			_getRightField(greaterThanOrEqualsExpressionContext));
@@ -623,6 +641,12 @@ public class FilterExpressionConditionVisitor
 
 		Field leftField = _getLeftField(lessThanExpressionContext);
 
+		if (DateUtil.isValidPatternShort(value) &&
+			!fieldName.equalsIgnoreCase("cast")) {
+
+			leftField = DSL.date(leftField);
+		}
+
 		return leftField.lt(_getRightField(lessThanExpressionContext));
 	}
 
@@ -659,6 +683,12 @@ public class FilterExpressionConditionVisitor
 		}
 
 		Field leftField = _getLeftField(lessThanOrEqualsExpressionContext);
+
+		if (DateUtil.isValidPatternShort(value) &&
+			!fieldName.equalsIgnoreCase("cast")) {
+
+			leftField = DSL.date(leftField);
+		}
 
 		return leftField.le(_getRightField(lessThanOrEqualsExpressionContext));
 	}
@@ -713,6 +743,12 @@ public class FilterExpressionConditionVisitor
 			Param<String> param = (Param<String>)rightField;
 
 			rightField = DSL.val(Long.parseLong(param.getValue()));
+		}
+
+		if (DateUtil.isValidPatternShort(value) &&
+			!fieldName.equalsIgnoreCase("cast")) {
+
+			leftField = DSL.date(leftField);
 		}
 
 		return leftField.ne(rightField);
