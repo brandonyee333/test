@@ -140,18 +140,12 @@ public class PageAssetMetricRepositoryImpl
 		}
 
 		if (metricType == PageMetricType.VISITORS) {
-			Field<Integer> visitorsField = DSL.countDistinct(
-				DSL.field("Identity.individualId")
-			).plus(
+			return DSL.cast(
 				DSL.countDistinct(
-					DSL.when(
-						DSL.field(
-							"Identity.individualId"
-						).isNull(),
-						DSL.field(getTableName(timeRange) + ".userId")))
-			);
-
-			return DSL.cast(visitorsField, BigDecimal.class);
+					DSL.coalesce(
+						DSL.field("Identity.individualId"),
+						DSL.field(getTableName(timeRange) + ".userId"))),
+				BigDecimal.class);
 		}
 
 		Field<Long> longField = DSL.field(
