@@ -139,6 +139,11 @@ public class PageAssetMetricRepositoryImpl
 				BigDecimal.ZERO);
 		}
 
+		if (metricType == PageMetricType.SESSIONS) {
+			return DSL.cast(
+				DSL.countDistinct(DSL.field("sessionId")), BigDecimal.class);
+		}
+
 		if (metricType == PageMetricType.VISITORS) {
 			return DSL.cast(
 				DSL.countDistinct(
