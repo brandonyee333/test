@@ -1,8 +1,8 @@
-INSERT INTO Event (applicationId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('WebContent', 11, timestamp '${now}', 1, timestamp '2022-12-14T23:59:59.999Z', 'webContentViewed', '123', 'abc', 'abc-123');
-INSERT INTO Event (applicationId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('WebContent', 11, timestamp '${now}', 1, timestamp '2022-12-15T23:59:59.999Z', 'webContentViewed', '234', 'bcd', 'abc-123');
-INSERT INTO Event (applicationId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('WebContent', 11, timestamp '${now}', 1, timestamp '2022-12-16T23:59:59.999Z', 'webContentViewed', '345', 'cde', 'bcd-456');
-INSERT INTO Event (applicationId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('Page', 11, timestamp '${now}', 1, timestamp '2022-12-17T23:59:59.999Z', 'pageViewed', '456', 'def', 'bcd-456');
-INSERT INTO Event (applicationId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('Page', 11, timestamp '${now}', 1, timestamp '2022-12-18T23:59:59.999Z', 'pageLoaded', '567', 'efg', 'efg-789');
+INSERT INTO Event (applicationId, assetId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('WebContent', '123', 11, timestamp '${now}', 1, timestamp '2022-12-14T23:59:59.999Z', 'webContentViewed', '123', 'abc', 'abc-123');
+INSERT INTO Event (applicationId, assetId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('WebContent', '234', 11, timestamp '${now}', 1, timestamp '2022-12-15T23:59:59.999Z', 'webContentViewed', '234', 'bcd', 'abc-123');
+INSERT INTO Event (applicationId, assetId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('WebContent', '345', 11, timestamp '${now}', 1, timestamp '2022-12-16T23:59:59.999Z', 'webContentViewed', '345', 'cde', 'bcd-456');
+INSERT INTO Event (applicationId, assetId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('Page', '456', 11, timestamp '${now}', 1, timestamp '2022-12-17T23:59:59.999Z', 'pageViewed', '456', 'def', 'bcd-456');
+INSERT INTO Event (applicationId, assetId, channelId, createDate, dataSourceId, eventDate, eventId, id, sessionId, userId) VALUES ('Page', '567', 11, timestamp '${now}', 1, timestamp '2022-12-18T23:59:59.999Z', 'pageLoaded', '567', 'efg', 'efg-789');
 
 INSERT INTO ExpandoColumn (columnId, dataSourceId, dataType, id, name) VALUES ('190', 123, 'STRING', '1', 'Organization Type');
 
