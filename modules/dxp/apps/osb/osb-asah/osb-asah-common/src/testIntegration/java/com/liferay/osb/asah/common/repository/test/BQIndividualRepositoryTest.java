@@ -289,6 +289,27 @@ public class BQIndividualRepositoryTest
 				11L,
 				"organizations.filter(filter='(custom/Year/value lt 2023)')",
 				false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(modifiedDate eq " +
+					"''2022-12-18'')')",
+				false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(modifiedDate gt " +
+					"''2022-12-17'')')",
+				false, null));
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(modifiedDate lt " +
+					"''2022-12-18'')')",
+				false, null));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
