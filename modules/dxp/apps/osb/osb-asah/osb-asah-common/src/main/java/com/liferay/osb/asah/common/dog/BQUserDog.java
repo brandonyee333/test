@@ -55,8 +55,6 @@ public class BQUserDog extends BaseBQDXPEntityDog {
 		for (BQUser bqUser : bqUsers) {
 			bqUser.setDataSourceName(
 				dataSourceNames.get(bqUser.getDataSourceId()));
-
-			_populateExpandoFields(bqUser);
 		}
 
 		return PageableExecutionUtils.getPage(
