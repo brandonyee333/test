@@ -844,6 +844,8 @@ definition {
 	@description = "LPS-80771 - Verify if an alert message is shown when the user tries to change the type of field that is being used on a Rule"
 	@priority = 5
 	test DisplaysAWarningWhenChangingAFieldUsedInARule {
+		property portal.acceptance = "runtests";
+
 		FormsAdmin.addForm();
 
 		Form.editName();
@@ -983,6 +985,8 @@ definition {
 	@description = "LPS-80771 - Verify if an alert message is shown when the user tries to change the type of field that is being used in a Calculator Expression"
 	@priority = 5
 	test DisplaysWarningWhenChangingFieldUsedInCalculatorExpression {
+		property portal.acceptance = "runtests";
+
 		FormsAdmin.addForm();
 
 		Form.editName();
