@@ -46,11 +46,12 @@ public class UpdateMembershipsNaniteTest
 
 		Segment segment = new Segment();
 
+		segment.setAuthorName("Test Test");
+
 		Channel channel1 = _addChannel(10, "Liferay Brazil");
 
 		segment.setChannelId(channel1.getId());
 
-		segment.setAuthorName("Test Test");
 		segment.setCreateDate(DateUtil.addDays(new Date(), -5));
 		segment.setFilter("(channelId eq '10')");
 		segment.setIsNew(Boolean.TRUE);
