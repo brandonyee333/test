@@ -64,6 +64,7 @@ public abstract class BaseDataExporter implements DataExporter {
 		int page = 0;
 
 		jsonGenerator.writeStartArray();
+
 		jsonGenerator.writeRaw("\n");
 
 		while (true) {
@@ -83,6 +84,7 @@ public abstract class BaseDataExporter implements DataExporter {
 		}
 
 		jsonGenerator.writeRaw("\n");
+
 		jsonGenerator.writeEndArray();
 
 		jsonGenerator.close();
