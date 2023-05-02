@@ -1323,25 +1323,44 @@ public class FilterExpressionConditionVisitor
 
 		Condition condition = null;
 
-		if (operator.equalsIgnoreCase("eq")) {
-			condition = DSL.field(
-				qualifiedFieldName
-			).eq(
-				value
-			);
-		}
-		else if (operator.equalsIgnoreCase("ne")) {
-			if (StringUtil.isNull(value)) {
-				condition = DSL.field(
-					qualifiedFieldName
-				).isNotNull();
+		if (fieldName.equalsIgnoreCase("modifiedDate")) {
+			if (operator.equalsIgnoreCase("eq")) {
+				condition = DSL.condition(
+					"DATE(Organization.modifiedDate) = SAFE_CAST('" + value +
+						"' AS DATE)");
 			}
-			else {
+			else if (operator.equalsIgnoreCase("gt")) {
+				condition = DSL.condition(
+					"DATE(Organization.modifiedDate) > SAFE_CAST('" + value +
+						"' AS DATE)");
+			}
+			else if (operator.equalsIgnoreCase("lt")) {
+				condition = DSL.condition(
+					"DATE(Organization.modifiedDate) < SAFE_CAST('" + value +
+						"' AS DATE)");
+			}
+		}
+		else {
+			if (operator.equalsIgnoreCase("eq")) {
 				condition = DSL.field(
 					qualifiedFieldName
-				).ne(
+				).eq(
 					value
 				);
+			}
+			else if (operator.equalsIgnoreCase("ne")) {
+				if (StringUtil.isNull(value)) {
+					condition = DSL.field(
+						qualifiedFieldName
+					).isNotNull();
+				}
+				else {
+					condition = DSL.field(
+						qualifiedFieldName
+					).ne(
+						value
+					);
+				}
 			}
 		}
 
