@@ -322,6 +322,7 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 			user_keyword_count_data_frame.groupby(
 				'channelId', 'userId', 'event_date'
 			).sum(
+				'user_keyword_count'
 			).withColumnRenamed(
 				'sum(user_keyword_count)', 'user_total_keyword_count'
 			)
@@ -374,18 +375,6 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 			)
 		)
 
-		session_data_frame = analytics_events_with_keywords_data_frame.select(
-			F.col('channelId'),
-			F.col('event_date'),
-			F.col('userId'),
-			F.col('sessionId')
-		).distinct()
-
-		daily_logscores_data_frame = daily_logscores_data_frame.join(
-			session_data_frame,
-			['channelId', 'event_date', 'userId']
-		)
-
 		threshold_data_frame = keyword_count_with_totals_data_frame.select(
 			'event_date', 'keyword', 'keyword_count', 'total_keywords_count'
 		).fillna(
@@ -425,21 +414,18 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 			'event_date', F.explode(F.col('event_date'))
 		)
 
-		distinct_user_id_keyword_data_frame = \
+		date_user_id_keyword_data_frame = date_range_data_frame.crossJoin(
 			daily_logscores_data_frame.select(
 				F.col('channelId'),
-				F.col('keyword'),
-				F.col('sessionId'),
-				F.col('userId')
+				F.col('userId'),
+				F.col('keyword')
 			).distinct()
-
-		date_user_id_keyword_data_frame = date_range_data_frame.crossJoin(
-			distinct_user_id_keyword_data_frame)
+		)
 
 		expanded_dates_logscore_data_frame = \
 			date_user_id_keyword_data_frame.join(
 				daily_logscores_data_frame,
-				['channelId', 'event_date', 'keyword', 'sessionId', 'userId'],
+				['channelId', 'event_date', 'keyword', 'userId'],
 				how='left'
 			)
 
@@ -450,7 +436,7 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 		]
 
 		interest_score_data_frame = expanded_dates_logscore_data_frame.select(
-			'channelId', 'event_date', 'keyword', 'logscore', 'sessionId', 'userId'
+			'channelId', 'event_date', 'keyword', 'logscore', 'userId'
 		).fillna(
 			{'logscore': 0}
 		).withColumn(
@@ -483,6 +469,19 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 		interest_score_data_frame = interest_score_data_frame.withColumn(
 			'interested',
 			F.col('interest_score') >= F.col('threshold_score')
+		)
+
+		session_data_frame = analytics_events_with_keywords_data_frame.select(
+			F.col('channelId'),
+			F.col('event_date'),
+			F.col('userId'),
+			F.col('sessionId')
+		).distinct()
+
+		interest_score_data_frame = interest_score_data_frame.join(
+			session_data_frame,
+			['channelId', 'event_date', 'userId'],
+			how='left'
 		)
 
 		interest_score_data_frame.createOrReplaceTempView(
@@ -878,5 +877,6 @@ class SessionInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 				individual_interest_score
 			WHERE
 				from_utc_timestamp(event_date, "{time_zone}") >= {start_date_sql_string} AND
-				from_utc_timestamp(event_date, "{time_zone}") < {end_date_sql_string}
+				from_utc_timestamp(event_date, "{time_zone}") < {end_date_sql_string} AND
+				sessionId IS NOT NULL
 		"""
