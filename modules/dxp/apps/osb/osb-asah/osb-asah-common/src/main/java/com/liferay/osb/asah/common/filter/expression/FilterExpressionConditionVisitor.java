@@ -1348,6 +1348,7 @@ public class FilterExpressionConditionVisitor
 					"Individual.modifiedDate");
 				put("individualSegmentIds", "Membership.segmentId");
 				put("interestName", "keyword");
+				put("organizations.hierarchyPath", "Organization.treePath");
 				put("provider/type", "providerType");
 				put("sessions.completeDate", "Session.sessionEnd");
 				put("sessions.referrer", "Session.referrers");
