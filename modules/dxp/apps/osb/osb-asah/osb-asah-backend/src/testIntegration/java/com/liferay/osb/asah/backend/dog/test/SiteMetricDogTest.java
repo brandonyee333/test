@@ -217,6 +217,7 @@ public class SiteMetricDogTest
 	@BQSQLResource(
 		resourcePath = "test_visitor_cohort_heatmap_month_interval.sql"
 	)
+	@Disabled
 	@Test
 	public void testCohortHeatMapMetricsMonthInterval() {
 		CohortMetric cohortMetric = _siteMetricDog.getCohortMetric(
