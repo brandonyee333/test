@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 public class Upgrade implements CommandLineRunner {
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		if (_log.isInfoEnabled()) {
 			_log.info("Upgrade started");
 		}
@@ -44,11 +44,20 @@ public class Upgrade implements CommandLineRunner {
 		if (_log.isInfoEnabled()) {
 			_log.info("Upgrade finished");
 		}
+
+		if (_upgradeVerifier == null) {
+			return;
+		}
+
+		_upgradeVerifier.verify();
 	}
 
 	private static final Log _log = LogFactory.getLog(Upgrade.class);
 
 	@Autowired
 	private UpgradeProcessRunner _upgradeProcessRunner;
+
+	@Autowired(required = false)
+	private UpgradeVerifier _upgradeVerifier;
 
 }
