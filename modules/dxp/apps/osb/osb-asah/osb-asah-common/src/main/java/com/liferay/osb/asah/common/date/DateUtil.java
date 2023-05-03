@@ -158,6 +158,10 @@ public class DateUtil {
 	}
 
 	public static boolean isValidPatternShort(String dateString) {
+		if (PATTERN_SHORT.length() != dateString.length()) {
+			return false;
+		}
+
 		DateFormat dateFormat = new SimpleDateFormat(PATTERN_SHORT);
 
 		dateFormat.setLenient(false);

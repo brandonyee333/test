@@ -165,6 +165,9 @@ public class DateUtilTest {
 		Assertions.assertFalse(
 			DateUtil.isValidPatternShort("20231209"),
 			"20231209 is a valid date pattern");
+		Assertions.assertFalse(
+			DateUtil.isValidPatternShort("2019-05-31T14:23:31.309Z"),
+			"2023-12-09 is a valid date pattern");
 		Assertions.assertTrue(
 			DateUtil.isValidPatternShort("2023-12-09"),
 			"2023-12-09 is not a valid date pattern");
