@@ -45,11 +45,11 @@ public class Upgrade implements CommandLineRunner {
 			_log.info("Upgrade finished");
 		}
 
-		if (_upgradeVerifier == null) {
+		if (_verifyProcessRunner == null) {
 			return;
 		}
 
-		_upgradeVerifier.verify();
+		_verifyProcessRunner.run();
 	}
 
 	private static final Log _log = LogFactory.getLog(Upgrade.class);
@@ -58,6 +58,6 @@ public class Upgrade implements CommandLineRunner {
 	private UpgradeProcessRunner _upgradeProcessRunner;
 
 	@Autowired(required = false)
-	private UpgradeVerifier _upgradeVerifier;
+	private VerifyProcessRunner _verifyProcessRunner;
 
 }

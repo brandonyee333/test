@@ -50,10 +50,12 @@ import org.springframework.util.Assert;
  * @author Marcellus Tavares
  */
 @Component
-@ConditionalOnProperty("osb.asah.upgrade.verifier.enabled")
-public class UpgradeVerifier {
+@ConditionalOnProperty(
+	matchIfMissing = true, value = "osb.asah.verify.process.enabled"
+)
+public class VerifyProcessRunner {
 
-	public void verify() {
+	public void run() {
 		for (Project project : _projectDog.getProjects()) {
 			if (!Objects.equals(
 					project.getVersion(), ReleaseInfo.getVersion())) {
@@ -68,7 +70,7 @@ public class UpgradeVerifier {
 					_log.info("Verifying project: " + project.getId());
 				}
 
-				_verify();
+				_run();
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
@@ -87,7 +89,7 @@ public class UpgradeVerifier {
 		}
 	}
 
-	private void _verify() {
+	private void _run() {
 		long cerebroInfoAsahMarkersCount =
 			_cerebroInfoElasticsearchInvoker.count(
 				"OSBAsahMarkers", QueryBuilders.matchAllQuery());
@@ -194,7 +196,8 @@ public class UpgradeVerifier {
 				upgradeStepName, actualRowsCount, expectedRowsCount));
 	}
 
-	private static final Log _log = LogFactory.getLog(UpgradeVerifier.class);
+	private static final Log _log = LogFactory.getLog(
+		VerifyProcessRunner.class);
 
 	@Autowired
 	private AsahMarkerRepository _asahMarkerRepository;
