@@ -34,6 +34,8 @@ import com.liferay.osb.asah.common.util.ReleaseInfo;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
 
+import java.util.Objects;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -53,9 +55,14 @@ public class UpgradeVerifier {
 
 	public void verify() {
 		for (Project project : _projectDog.getProjects()) {
+			if (!Objects.equals(
+					project.getVersion(), ReleaseInfo.getVersion())) {
+
+				continue;
+			}
+
 			try {
 				ProjectIdThreadLocal.setProjectId(project.getId());
-
 
 				if (_log.isInfoEnabled()) {
 					_log.info("Verifying project: " + project.getId());
