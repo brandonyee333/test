@@ -242,36 +242,6 @@ public class BQIndividualRepositoryTest
 	@Test
 	public void testSearchBQIndividualsOrganizationsFilter() {
 
-		// Hierarchy Path Known/Unknown
-
-		Assertions.assertEquals(
-			1,
-			_bqIndividualRepository.countBQIndividuals(
-				11L, "(organizations.filter(filter='(hierarchyPath ne null)'))",
-				false, null));
-
-		Assertions.assertEquals(
-			2,
-			_bqIndividualRepository.countBQIndividuals(
-				11L, "(organizations.filter(filter='(hierarchyPath eq null)'))",
-				false, null));
-
-		// Name
-
-		Assertions.assertEquals(
-			1,
-			_bqIndividualRepository.countBQIndividuals(
-				11L,
-				"organizations.filter(filter='(name eq ''Organization 1'')')",
-				false, null));
-
-		Assertions.assertEquals(
-			0,
-			_bqIndividualRepository.countBQIndividuals(
-				11L,
-				"organizations.filter(filter='(name ne ''Organization 1'')')",
-				false, null));
-
 		// Custom Fields
 
 		Assertions.assertEquals(
@@ -321,6 +291,22 @@ public class BQIndividualRepositoryTest
 				11L,
 				"organizations.filter(filter='(custom/Year/value lt 2023)')",
 				false, null));
+
+		// Hierarchy Path Known/Unknown
+
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "(organizations.filter(filter='(hierarchyPath ne null)'))",
+				false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "(organizations.filter(filter='(hierarchyPath eq null)'))",
+				false, null));
+
+		// Modified Date
+
 		Assertions.assertEquals(
 			1,
 			_bqIndividualRepository.countBQIndividuals(
@@ -341,6 +327,21 @@ public class BQIndividualRepositoryTest
 				11L,
 				"organizations.filter(filter='(modifiedDate lt " +
 					"''2022-12-18'')')",
+				false, null));
+
+		// Name
+
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(name eq ''Organization 1'')')",
+				false, null));
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(name ne ''Organization 1'')')",
 				false, null));
 	}
 
