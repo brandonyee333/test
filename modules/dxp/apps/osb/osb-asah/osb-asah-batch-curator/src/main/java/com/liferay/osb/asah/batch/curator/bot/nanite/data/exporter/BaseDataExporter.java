@@ -63,9 +63,6 @@ public abstract class BaseDataExporter implements DataExporter {
 	public void export() throws Exception {
 		int page = 0;
 
-		jsonGenerator.writeStartArray();
-		jsonGenerator.writeRaw("\n");
-
 		while (true) {
 			JSONObject resultPageJSONObject = doGetResultPageJSONObject(
 				PageRequest.of(page, _PAGE_SIZE));
@@ -81,19 +78,23 @@ public abstract class BaseDataExporter implements DataExporter {
 			page++;
 		}
 
-		jsonGenerator.writeRaw("\n");
-		jsonGenerator.writeEndArray();
-
 		jsonGenerator.close();
 	}
 
 	protected abstract JSONObject doGetResultPageJSONObject(Pageable pageable);
 
 	protected void exportResults(JSONArray resultsJSONArray) {
+		for (int i = 0; i < resultsJSONArray.length(); i++) {
+			_exportResult(resultsJSONArray.getJSONObject(i));
+		}
+	}
+
+	protected JsonGenerator jsonGenerator;
+
+	private void _exportResult(JSONObject resultJSONObject) {
 		try {
-			for (int i = 0; i < resultsJSONArray.length(); i++) {
-				jsonGenerator.writeObject(resultsJSONArray.getJSONObject(i));
-			}
+			jsonGenerator.writeObject(resultJSONObject);
+			jsonGenerator.writeRaw("\n");
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
@@ -101,8 +102,6 @@ public abstract class BaseDataExporter implements DataExporter {
 			}
 		}
 	}
-
-	protected JsonGenerator jsonGenerator;
 
 	private static final int _PAGE_SIZE = 50;
 
