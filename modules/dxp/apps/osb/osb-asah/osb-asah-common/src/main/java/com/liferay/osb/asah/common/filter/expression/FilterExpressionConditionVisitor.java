@@ -972,6 +972,18 @@ public class FilterExpressionConditionVisitor
 	private Object _getIndividualIdsInOrganizationCondition(
 		Condition condition, String expandoValueFieldName) {
 
+		return DSL.field(
+			"Individual.id", String.class
+		).in(
+			_getIndividualIdsInOrganizationSelectConditionStep(
+				condition, expandoValueFieldName)
+		);
+	}
+
+	private SelectConditionStep
+		_getIndividualIdsInOrganizationSelectConditionStep(
+			Condition condition, String expandoValueFieldName) {
+
 		_referencedTableNames.add("Individual");
 
 		SelectJoinStep selectJoinStep = DSL.selectDistinct(
@@ -1023,10 +1035,23 @@ public class FilterExpressionConditionVisitor
 			);
 		}
 
+		return selectJoinStep.where(
+			DSL.field(
+				"IndividualMemberships.name"
+			).eq(
+				"organizationIds"
+			),
+			condition);
+	}
+
+	private Object _getIndividualIdsNotInOrganizationCondition(
+		Condition condition, String expandoValueFieldName) {
+
 		return DSL.field(
 			"Individual.id", String.class
-		).in(
-			selectJoinStep.where(condition)
+		).notIn(
+			_getIndividualIdsInOrganizationSelectConditionStep(
+				condition, expandoValueFieldName)
 		);
 	}
 
@@ -1284,31 +1309,36 @@ public class FilterExpressionConditionVisitor
 			);
 		}
 
+		String qualifiedFieldName = _fieldMappers.getOrDefault(
+			_filterType.getName() + "." + fieldName,
+			_getTableNamespace() + fieldName);
+
+		if (operator.equalsIgnoreCase("eq") && StringUtil.isNull(value)) {
+			return _getIndividualIdsNotInOrganizationCondition(
+				DSL.field(
+					qualifiedFieldName
+				).isNotNull(),
+				null);
+		}
+
 		Condition condition = null;
 
 		if (operator.equalsIgnoreCase("eq")) {
-			if (StringUtil.isNull(value)) {
-				condition = DSL.field(
-					"Organization." + fieldName
-				).isNull();
-			}
-			else {
-				condition = DSL.field(
-					"Organization." + fieldName
-				).eq(
-					value
-				);
-			}
+			condition = DSL.field(
+				qualifiedFieldName
+			).eq(
+				value
+			);
 		}
 		else if (operator.equalsIgnoreCase("ne")) {
 			if (StringUtil.isNull(value)) {
 				condition = DSL.field(
-					"Organization." + fieldName
+					qualifiedFieldName
 				).isNotNull();
 			}
 			else {
 				condition = DSL.field(
-					"Organization." + fieldName
+					qualifiedFieldName
 				).ne(
 					value
 				);
