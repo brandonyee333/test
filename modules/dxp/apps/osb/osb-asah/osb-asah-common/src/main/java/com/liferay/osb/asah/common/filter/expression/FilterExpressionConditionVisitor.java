@@ -1324,20 +1324,21 @@ public class FilterExpressionConditionVisitor
 		Condition condition = null;
 
 		if (fieldName.equalsIgnoreCase("modifiedDate")) {
+			String query =
+				"DATE(" + qualifiedFieldName + ") {0} SAFE_CAST('" + value +
+					"' AS DATE)";
+
 			if (operator.equalsIgnoreCase("eq")) {
 				condition = DSL.condition(
-					"DATE(Organization.modifiedDate) = SAFE_CAST('" + value +
-						"' AS DATE)");
+					StringUtil.replace(query, "{0}", "="));
 			}
 			else if (operator.equalsIgnoreCase("gt")) {
 				condition = DSL.condition(
-					"DATE(Organization.modifiedDate) > SAFE_CAST('" + value +
-						"' AS DATE)");
+					StringUtil.replace(query, "{0}", ">"));
 			}
 			else if (operator.equalsIgnoreCase("lt")) {
 				condition = DSL.condition(
-					"DATE(Organization.modifiedDate) < SAFE_CAST('" + value +
-						"' AS DATE)");
+					StringUtil.replace(query, "{0}", "<"));
 			}
 		}
 		else {
