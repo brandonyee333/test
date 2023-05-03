@@ -80,14 +80,15 @@ class BaseSQLCommandSparkJob(BaseSparkJob, metaclass=ABCMeta):
 		return default_value
 
 	@abstractmethod
-	def get_sql_command(self, end_date, start_date):
+	def get_sql_command(self, end_date, start_date, time_zone=None):
 		pass
 
 	def run(self):
 		end_date = self._get_job_parameter('endDate')
 		start_date = self._get_job_parameter('startDate')
+		time_zone = self._get_job_parameter('timeZone', None)
 
-		sql_command = self.get_sql_command(end_date, start_date)
+		sql_command = self.get_sql_command(end_date, start_date, time_zone)
 
 		data_frame = self.spark_session.sql(sql_command)
 
@@ -194,7 +195,7 @@ class IdentityInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 
 		self._initial_run_day_range = 7
 
-	def get_sql_command(self, end_date, start_date):
+	def get_sql_command(self, end_date, start_date, time_zone=None):
 		if end_date and start_date:
 			end_date_sql_string = f'"{end_date}"'
 			start_date_sql_string = f'"{start_date}"'
@@ -215,8 +216,8 @@ class IdentityInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 			FROM
 				individual_interest_score
 			WHERE
-				event_date >= TIMESTAMP({start_date_sql_string}) AND
-				event_date < TIMESTAMP({end_date_sql_string})
+				from_utc_timestamp(event_date, "{time_zone}") >= {start_date_sql_string} AND
+				from_utc_timestamp(event_date, "{time_zone}") < {end_date_sql_string}
 			GROUP BY
 				channelId,
 				identityId,
@@ -854,7 +855,7 @@ class SessionInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 
 		self._initial_run_day_range = 7
 
-	def get_sql_command(self, end_date, start_date):
+	def get_sql_command(self, end_date, start_date, time_zone=None):
 		if end_date and start_date:
 			end_date_sql_string = f'"{end_date}"'
 			start_date_sql_string = f'"{start_date}"'
@@ -876,6 +877,6 @@ class SessionInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 			FROM
 				individual_interest_score
 			WHERE
-				event_date >= TIMESTAMP({start_date_sql_string}) AND
-				event_date < TIMESTAMP({end_date_sql_string})
+				from_utc_timestamp(event_date, "{time_zone}") >= {start_date_sql_string} AND
+				from_utc_timestamp(event_date, "{time_zone}") < {end_date_sql_string}
 		"""
