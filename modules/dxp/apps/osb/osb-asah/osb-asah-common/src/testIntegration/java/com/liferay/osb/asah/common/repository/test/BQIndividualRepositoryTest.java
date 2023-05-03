@@ -209,6 +209,39 @@ public class BQIndividualRepositoryTest
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
 	@Test
 	public void testSearchBQIndividualsOrganizationsFilter() {
+
+		// Hierarchy Path Known/Unknown
+
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "(organizations.filter(filter='(hierarchyPath ne null)'))",
+				false, null));
+
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "(organizations.filter(filter='(hierarchyPath eq null)'))",
+				false, null));
+
+		// Name
+
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(name eq ''Organization 1'')')",
+				false, null));
+
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"organizations.filter(filter='(name ne ''Organization 1'')')",
+				false, null));
+
+		// Custom Fields
+
 		Assertions.assertEquals(
 			1,
 			_bqIndividualRepository.countBQIndividuals(
