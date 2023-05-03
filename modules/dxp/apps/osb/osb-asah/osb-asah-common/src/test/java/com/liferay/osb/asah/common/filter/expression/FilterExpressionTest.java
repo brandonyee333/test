@@ -84,7 +84,7 @@ public class FilterExpressionTest {
 					"2022-05-15", "2022-05-20"
 				),
 				DSL.field(
-					"Session.sessionEnd"
+					"cast(Session.sessionEnd as date)"
 				).gt(
 					"2022-05-15"
 				)),
