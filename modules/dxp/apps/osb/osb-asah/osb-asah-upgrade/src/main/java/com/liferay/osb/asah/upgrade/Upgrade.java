@@ -14,12 +14,8 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -27,34 +23,21 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-@ConditionalOnProperty(
-	matchIfMissing = true, value = "osb.asah.upgrade.enabled"
-)
 @Profile("!test")
 public class Upgrade implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		if (_log.isInfoEnabled()) {
-			_log.info("Upgrade started");
+		if (_upgradeProcessRunner != null) {
+			_upgradeProcessRunner.run();
 		}
 
-		_upgradeProcessRunner.run();
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Upgrade finished");
+		if (_verifyProcessRunner != null) {
+			_verifyProcessRunner.run();
 		}
-
-		if (_verifyProcessRunner == null) {
-			return;
-		}
-
-		_verifyProcessRunner.run();
 	}
 
-	private static final Log _log = LogFactory.getLog(Upgrade.class);
-
-	@Autowired
+	@Autowired(required = false)
 	private UpgradeProcessRunner _upgradeProcessRunner;
 
 	@Autowired(required = false)

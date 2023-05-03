@@ -25,16 +25,28 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Marcellus Tavares
  */
 @Component
+@ConditionalOnProperty(
+	matchIfMissing = true, value = "osb.asah.upgrade.process.enabled"
+)
 public class UpgradeProcessRunner {
 
 	public void run() {
+		if (_log.isInfoEnabled()) {
+			_log.info("Upgrade started");
+		}
+
 		runProjectUpgrades();
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Upgrade finished");
+		}
 	}
 
 	public void runProjectUpgrades() {
