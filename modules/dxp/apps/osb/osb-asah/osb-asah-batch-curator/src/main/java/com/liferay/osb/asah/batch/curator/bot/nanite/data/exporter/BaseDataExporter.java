@@ -75,6 +75,7 @@ public abstract class BaseDataExporter implements DataExporter {
 			}
 
 			exportResults(resultsJSONArray);
+
 			page++;
 		}
 
@@ -94,6 +95,7 @@ public abstract class BaseDataExporter implements DataExporter {
 	private void _exportResult(JSONObject resultJSONObject) {
 		try {
 			jsonGenerator.writeObject(resultJSONObject);
+
 			jsonGenerator.writeRaw("\n");
 		}
 		catch (Exception exception) {
