@@ -491,6 +491,11 @@ public class FilterExpressionTest {
 								"IndividualMemberships.ids)")
 					).where(
 						DSL.field(
+							"IndividualMemberships.name"
+						).eq(
+							"organizationIds"
+						),
+						DSL.field(
 							"Organization.name"
 						).eq(
 							"name1"
@@ -523,6 +528,11 @@ public class FilterExpressionTest {
 							"Organization.id IN UNNEST(" +
 								"IndividualMemberships.ids)")
 					).where(
+						DSL.field(
+							"IndividualMemberships.name"
+						).eq(
+							"organizationIds"
+						),
 						DSL.field(
 							"Organization.type"
 						).eq(
@@ -618,6 +628,11 @@ public class FilterExpressionTest {
 							"Organization.id IN UNNEST(" +
 								"IndividualMemberships.ids)")
 					).where(
+						DSL.field(
+							"IndividualMemberships.name"
+						).eq(
+							"organizationIds"
+						),
 						DSL.field(
 							"Organization.name"
 						).eq(
@@ -717,6 +732,11 @@ public class FilterExpressionTest {
 							"Organization.id IN UNNEST(" +
 								"IndividualMemberships.ids)")
 					).where(
+						DSL.field(
+							"IndividualMemberships.name"
+						).eq(
+							"organizationIds"
+						),
 						DSL.field(
 							"Organization.name"
 						).eq(
@@ -1852,6 +1872,11 @@ public class FilterExpressionTest {
 						"Organization.id IN UNNEST(IndividualMemberships.ids)")
 				).where(
 					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
+					DSL.field(
 						"Organization.type"
 					).eq(
 						"org"
@@ -1863,7 +1888,7 @@ public class FilterExpressionTest {
 		_assertEquals(
 			DSL.field(
 				"Individual.id", String.class
-			).in(
+			).notIn(
 				DSL.selectDistinct(
 					DSL.field("Individual.id", String.class)
 				).from(
@@ -1887,8 +1912,13 @@ public class FilterExpressionTest {
 						"Organization.id IN UNNEST(IndividualMemberships.ids)")
 				).where(
 					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
+					DSL.field(
 						"Organization.type"
-					).isNull()
+					).isNotNull()
 				)
 			),
 			"organizations.filter(filter='(type eq null)')");
@@ -1919,6 +1949,11 @@ public class FilterExpressionTest {
 					DSL.condition(
 						"Organization.id IN UNNEST(IndividualMemberships.ids)")
 				).where(
+					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
 					DSL.field(
 						"Organization.type"
 					).ne(
@@ -1955,6 +1990,11 @@ public class FilterExpressionTest {
 						"Organization.id IN UNNEST(IndividualMemberships.ids)")
 				).where(
 					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
+					DSL.field(
 						"Organization.type"
 					).isNotNull()
 				)
@@ -1987,8 +2027,12 @@ public class FilterExpressionTest {
 					DSL.condition(
 						"Organization.id IN UNNEST(IndividualMemberships.ids)")
 				).where(
-					DSL.condition(
-						"LOWER(Organization.hierarchyPath) LIKE '%test%'")
+					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
+					DSL.condition("LOWER(Organization.treePath) LIKE '%test%'")
 				)
 			),
 			"organizations.filter(filter='(contains(hierarchyPath, ''test''))" +
@@ -2045,23 +2089,27 @@ public class FilterExpressionTest {
 							DSL.field("Organization.dataSourceId")
 						))
 				).where(
-					DSL.and(
-						DSL.field(
-							"ExpandoValue_custom_field.fieldName"
-						).eq(
-							"custom_field"
-						),
-						DSL.condition(
-							String.join(
-								"", "CASE WHEN STARTS_WITH(",
-								"ExpandoValue_custom_field.value, '[') AND ",
-								"ENDS_WITH(ExpandoValue_custom_field.value, ",
-								"']') THEN ( EXISTS (SELECT value FROM UNNEST(",
-								"JSON_EXTRACT_STRING_ARRAY(",
-								"ExpandoValue_custom_field.value,'$')) AS ",
-								"value WHERE LOWER(value) = 'test')) ELSE ",
-								"LOWER(ExpandoValue_custom_field.value) = ",
-								"'test' END")))
+					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
+					DSL.field(
+						"ExpandoValue_custom_field.fieldName"
+					).eq(
+						"custom_field"
+					),
+					DSL.condition(
+						String.join(
+							"", "CASE WHEN STARTS_WITH(",
+							"ExpandoValue_custom_field.value, '[') AND ",
+							"ENDS_WITH(ExpandoValue_custom_field.value, ",
+							"']') THEN ( EXISTS (SELECT value FROM UNNEST(",
+							"JSON_EXTRACT_STRING_ARRAY(",
+							"ExpandoValue_custom_field.value,'$')) AS ",
+							"value WHERE LOWER(value) = 'test')) ELSE ",
+							"LOWER(ExpandoValue_custom_field.value) = ",
+							"'test' END"))
 				)
 			),
 			"organizations.filter(filter='(custom/custom_field/value eq " +
@@ -2119,18 +2167,22 @@ public class FilterExpressionTest {
 							DSL.field("Organization.dataSourceId")
 						))
 				).where(
-					DSL.and(
-						DSL.field(
-							"ExpandoValue_custom_field.fieldName"
-						).eq(
-							"custom_field"
-						),
-						DSL.condition(
-							StringUtil.replace(
-								_QUERY, new String[] {"{0}", "{1}", "{2}"},
-								new String[] {
-									"ExpandoValue_custom_field", ">=", "123"
-								})))
+					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
+					DSL.field(
+						"ExpandoValue_custom_field.fieldName"
+					).eq(
+						"custom_field"
+					),
+					DSL.condition(
+						StringUtil.replace(
+							_QUERY, new String[] {"{0}", "{1}", "{2}"},
+							new String[] {
+								"ExpandoValue_custom_field", ">=", "123"
+							}))
 				)
 			),
 			"organizations.filter(filter='(custom/custom_field/value ge 123)')",
@@ -2187,23 +2239,27 @@ public class FilterExpressionTest {
 							DSL.field("Organization.dataSourceId")
 						))
 				).where(
-					DSL.and(
-						DSL.field(
-							"ExpandoValue_custom_field.fieldName"
-						).eq(
-							"custom_field"
-						),
-						DSL.condition(
-							String.join(
-								"", "CASE WHEN STARTS_WITH(",
-								"ExpandoValue_custom_field.value, '[') AND ",
-								"ENDS_WITH(ExpandoValue_custom_field.value, ",
-								"']') THEN (EXISTS (SELECT value FROM UNNEST(",
-								"JSON_EXTRACT_STRING_ARRAY(",
-								"ExpandoValue_custom_field.value,'$')) AS ",
-								"value WHERE LOWER(value) LIKE '%test%')) ",
-								"ELSE LOWER(ExpandoValue_custom_field.value) ",
-								"LIKE '%test%' END")))
+					DSL.field(
+						"IndividualMemberships.name"
+					).eq(
+						"organizationIds"
+					),
+					DSL.field(
+						"ExpandoValue_custom_field.fieldName"
+					).eq(
+						"custom_field"
+					),
+					DSL.condition(
+						String.join(
+							"", "CASE WHEN STARTS_WITH(",
+							"ExpandoValue_custom_field.value, '[') AND ",
+							"ENDS_WITH(ExpandoValue_custom_field.value, ",
+							"']') THEN (EXISTS (SELECT value FROM UNNEST(",
+							"JSON_EXTRACT_STRING_ARRAY(",
+							"ExpandoValue_custom_field.value,'$')) AS ",
+							"value WHERE LOWER(value) LIKE '%test%')) ",
+							"ELSE LOWER(ExpandoValue_custom_field.value) ",
+							"LIKE '%test%' END"))
 				)
 			),
 			"organizations.filter(filter='(contains(custom/custom_field" +
