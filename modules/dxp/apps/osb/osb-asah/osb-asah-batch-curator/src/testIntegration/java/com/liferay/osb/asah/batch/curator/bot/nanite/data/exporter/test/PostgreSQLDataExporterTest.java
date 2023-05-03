@@ -46,8 +46,6 @@ import org.apache.commons.io.IOUtils;
 
 import org.jooq.DSLContext;
 
-import org.json.JSONArray;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -111,13 +109,11 @@ public class PostgreSQLDataExporterTest
 		try (FileInputStream fileInputStream = new FileInputStream(
 				"data.json")) {
 
-			JSONArray jsonArray = new JSONArray(
-				IOUtils.toString(fileInputStream, StandardCharsets.UTF_8));
-
 			JSONAssert.assertEquals(
-				ResourceUtil.readResourceToJSONArray(
-					"dependencies/expected_segments_export.json", this),
-				jsonArray, true);
+				ResourceUtil.readResourceToString(
+					"dependencies/expected_segments_export.jsonl", this),
+				IOUtils.toString(fileInputStream, StandardCharsets.UTF_8),
+				true);
 		}
 		finally {
 			Files.deleteIfExists(Paths.get("data.json"));
