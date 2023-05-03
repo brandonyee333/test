@@ -588,7 +588,7 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 
 		tokenizer.setInputCols(column_names)
 		tokenizer.setOutputCol(output_column_name)
-		tokenizer.setSplitChars(['|'])
+		tokenizer.setSplitChars(['|', '(', ')'])
 
 		return tokenizer
 
