@@ -184,11 +184,21 @@ public class FilterExpression {
 		Matcher matcher = _activityKeyPattern.matcher(filterExpressionString);
 
 		while (matcher.find()) {
+			String applicationId = matcher.group("applicationId");
+
+			String eventId = matcher.group("eventId");
+
+			if (applicationId.equalsIgnoreCase("Blog") &&
+				eventId.equalsIgnoreCase("commentPosted")) {
+
+				applicationId = "Comment";
+				eventId = "posted";
+			}
+
 			String expression =
-				"applicationId eq ''" + matcher.group("applicationId") + "'' " +
-					"and eventId eq ''" + matcher.group("eventId") + "'' and " +
-						"sha256Hex(assetId) eq ''" +
-							matcher.group("assetIdHashed") + "''";
+				"applicationId eq ''" + applicationId + "'' and eventId eq ''" +
+					eventId + "'' and sha256Hex(assetId) eq ''" +
+						matcher.group("assetIdHashed") + "''";
 
 			filterExpressionString = matcher.replaceFirst(expression);
 
