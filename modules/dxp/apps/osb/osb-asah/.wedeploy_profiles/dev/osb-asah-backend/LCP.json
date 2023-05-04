@@ -6,7 +6,7 @@
 		"OSB_FARO_FRONTEND_URL": "https://analytics-dev.liferay.com"
 	},
 	"id": "osbasahbackend",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-backend-20230502-b425570",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-backend-20230504-9aba16f",
 	"kind": "Deployment",
 	"loadBalancer": {
 		"cdn": false,
