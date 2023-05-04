@@ -593,6 +593,7 @@ public class BQMembershipRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembership")
 			).columns(
+				DSL.field("channelId", Long.class),
 				DSL.field("createDate", Date.class),
 				DSL.field("individualId", String.class),
 				DSL.field("identityId", String.class),
@@ -600,9 +601,10 @@ public class BQMembershipRepositoryImpl
 				DSL.field("segmentId", Long.class),
 				DSL.field("status", String.class)
 			).values(
-				bqMembership.getCreateDate(), bqMembership.getIndividualId(),
-				bqMembership.getIdentityId(), bqMembership.getModifiedDate(),
-				bqMembership.getSegmentId(), bqMembership.getStatus()
+				bqMembership.getChannelId(), bqMembership.getCreateDate(),
+				bqMembership.getIndividualId(), bqMembership.getIdentityId(),
+				bqMembership.getModifiedDate(), bqMembership.getSegmentId(),
+				bqMembership.getStatus()
 			));
 
 		return bqMembership;
@@ -610,26 +612,29 @@ public class BQMembershipRepositoryImpl
 
 	@Override
 	public void insertAll(List<BQMembership> bqMemberships) {
-		InsertValuesStep6<Record, Date, String, String, Date, Long, String>
-			insertValuesStep6 = _dslContext.insertInto(
-				DSL.table("BQMembership")
-			).columns(
-				DSL.field("createDate", Date.class),
-				DSL.field("individualId", String.class),
-				DSL.field("identityId", String.class),
-				DSL.field("modifiedDate", Date.class),
-				DSL.field("segmentId", Long.class),
-				DSL.field("status", String.class)
-			);
+		InsertValuesStep7
+			<Record, Long, Date, String, String, Date, Long, String>
+				insertValuesStep7 = _dslContext.insertInto(
+					DSL.table("BQMembership")
+				).columns(
+					DSL.field("channelId", Long.class),
+					DSL.field("createDate", Date.class),
+					DSL.field("individualId", String.class),
+					DSL.field("identityId", String.class),
+					DSL.field("modifiedDate", Date.class),
+					DSL.field("segmentId", Long.class),
+					DSL.field("status", String.class)
+				);
 
 		for (BQMembership bqMembership : bqMemberships) {
-			insertValuesStep6 = insertValuesStep6.values(
-				bqMembership.getCreateDate(), bqMembership.getIndividualId(),
-				bqMembership.getIdentityId(), bqMembership.getModifiedDate(),
-				bqMembership.getSegmentId(), bqMembership.getStatus());
+			insertValuesStep7 = insertValuesStep7.values(
+				bqMembership.getChannelId(), bqMembership.getCreateDate(),
+				bqMembership.getIndividualId(), bqMembership.getIdentityId(),
+				bqMembership.getModifiedDate(), bqMembership.getSegmentId(),
+				bqMembership.getStatus());
 		}
 
-		_queryExecutor.queryExecute(insertValuesStep6);
+		_queryExecutor.queryExecute(insertValuesStep7);
 	}
 
 	@Override
@@ -639,40 +644,46 @@ public class BQMembershipRepositoryImpl
 
 		Date date = new Date();
 
-		SelectSelectStep<Record6<Date, String, String, Date, Long, String>>
-			selectSelectStep = _dslContext.select(
-				DSL.val(
-					date, Date.class
-				).as(
-					"createDate"
-				),
-				DSL.field(
-					"Identity.id", String.class
-				).as(
-					"identityId"
-				),
-				DSL.field(
-					"Identity.individualId", String.class
-				).as(
-					"individualId"
-				),
-				DSL.val(
-					date, Date.class
-				).as(
-					"modifiedDate"
-				),
-				DSL.val(
-					segmentId
-				).as(
-					"segmentId"
-				),
-				DSL.val(
-					"ACTIVE"
-				).as(
-					"status"
-				));
+		SelectSelectStep
+			<Record7<Long, Date, String, String, Date, Long, String>>
+				selectSelectStep = _dslContext.select(
+					DSL.val(
+						channelId, Long.class
+					).as(
+						"channelId"
+					),
+					DSL.val(
+						date, Date.class
+					).as(
+						"createDate"
+					),
+					DSL.field(
+						"Identity.id", String.class
+					).as(
+						"identityId"
+					),
+					DSL.field(
+						"Identity.individualId", String.class
+					).as(
+						"individualId"
+					),
+					DSL.val(
+						date, Date.class
+					).as(
+						"modifiedDate"
+					),
+					DSL.val(
+						segmentId
+					).as(
+						"segmentId"
+					),
+					DSL.val(
+						"ACTIVE"
+					).as(
+						"status"
+					));
 
-		SelectJoinStep<Record6<Date, String, String, Date, Long, String>>
+		SelectJoinStep<Record7<Long, Date, String, String, Date, Long, String>>
 			selectJoinStep = selectSelectStep.from(
 				DSL.table(
 					"BQIdentity"
@@ -734,6 +745,7 @@ public class BQMembershipRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembership")
 			).columns(
+				DSL.field("channelId", Long.class),
 				DSL.field("createDate", Date.class),
 				DSL.field("identityId", String.class),
 				DSL.field("individualId", String.class),
