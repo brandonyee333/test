@@ -297,7 +297,7 @@ public class BQIndividualRepositoryTest
 	@Test
 	public void testSearchBQIndividualsOrganizationsFilter() {
 
-		// Custom Fields
+		// Custom fields
 
 		Assertions.assertEquals(
 			1,
@@ -347,7 +347,7 @@ public class BQIndividualRepositoryTest
 				"organizations.filter(filter='(custom/Year/value lt 2023)')",
 				false, null));
 
-		// Hierarchy Path Known/Unknown
+		// Hierarchy path known/unknown
 
 		Assertions.assertEquals(
 			1,
@@ -360,7 +360,7 @@ public class BQIndividualRepositoryTest
 				11L, "(organizations.filter(filter='(hierarchyPath eq null)'))",
 				false, null));
 
-		// Modified Date
+		// Modified date
 
 		Assertions.assertEquals(
 			1,
