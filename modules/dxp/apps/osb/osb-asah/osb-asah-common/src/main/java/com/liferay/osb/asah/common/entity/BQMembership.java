@@ -51,7 +51,8 @@ public class BQMembership {
 
 		BQMembership bqMembership = (BQMembership)obj;
 
-		if (Objects.equals(_createDate, bqMembership._createDate) &&
+		if (Objects.equals(_channelId, bqMembership._channelId) &&
+			Objects.equals(_createDate, bqMembership._createDate) &&
 			Objects.equals(_id, bqMembership._id) &&
 			Objects.equals(_identityId, bqMembership._identityId) &&
 			Objects.equals(_individualId, bqMembership._individualId) &&
@@ -64,6 +65,10 @@ public class BQMembership {
 		}
 
 		return false;
+	}
+
+	public Long getChannelId() {
+		return _channelId;
 	}
 
 	@JsonAlias("createDate")
@@ -135,8 +140,12 @@ public class BQMembership {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_createDate, _id, _identityId, _individualId, _modifiedDate,
-			_removedDate, _segmentId, _status);
+			_channelId, _createDate, _id, _identityId, _individualId,
+			_modifiedDate, _removedDate, _segmentId, _status);
+	}
+
+	public void setChannelId(Long channelId) {
+		_channelId = channelId;
 	}
 
 	public void setCreateDate(Date createDate) {
@@ -177,6 +186,7 @@ public class BQMembership {
 		_status = status;
 	}
 
+	private Long _channelId;
 	private Date _createDate;
 	private Long _id;
 	private String _identityId;

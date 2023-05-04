@@ -1359,6 +1359,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
 				"mode": "NULLABLE",
 				"name": "individualId",
 				"type": "STRING"
