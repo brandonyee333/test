@@ -115,7 +115,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				canonicalUrlField, metricField, pageTitleField
 			).from(
-				getTableName(timeRange)
+				DSL.table(
+					getTableName(timeRange)
+				).as(
+					"metric"
+				)
 			).where(
 				_createWhereClauseCondition(
 					assetId, assetTitle, channelId, timeRange)
@@ -219,7 +223,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				DSL.select(
 					assetIdField, assetTitleField
 				).from(
-					getTableName(timeRange)
+					DSL.table(
+						getTableName(timeRange)
+					).as(
+						"metric"
+					)
 				).where(
 					_createWhereClauseCondition(
 						null, null, channelId, keywords, timeRange)
@@ -328,6 +336,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 						"identity.individualId"
 					).eq(
 						DSL.field("membership.individualId")
+					),
+					DSL.field(
+						"membership.channelId"
+					).eq(
+						channelId
 					)
 				).where(
 					whereClauseCondition.and(
@@ -375,7 +388,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				browserNameField, metricField1
 			).from(
-				getTableName(timeRange)
+				DSL.table(
+					getTableName(timeRange)
+				).as(
+					"metric"
+				)
 			).where(
 				_createWhereClauseCondition(
 					assetId, assetTitle, channelId, timeRange)
@@ -448,7 +465,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				deviceTypeField, metricField1, platformNameField
 			).from(
-				getTableName(timeRange)
+				DSL.table(
+					getTableName(timeRange)
+				).as(
+					"metric"
+				)
 			).where(
 				_createWhereClauseCondition(
 					assetId, assetTitle, channelId, timeRange)
@@ -499,7 +520,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslContext.select(
 				countryField, metricField1
 			).from(
-				getTableName(timeRange)
+				DSL.table(
+					getTableName(timeRange)
+				).as(
+					"metric"
+				)
 			).where(
 				_createWhereClauseCondition(
 					assetId, assetTitle, channelId, timeRange)
@@ -709,6 +734,11 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					"identity.individualId"
 				).eq(
 					DSL.field("membership.individualId")
+				),
+				DSL.field(
+					"membership.channelId"
+				).eq(
+					channelId
 				)
 			).where(
 				whereClauseCondition.and(
@@ -735,7 +765,12 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	protected SelectJoinStep<Record> getAssetMetricSelectJoinStep(
 		SelectSelectStep<Record> selectSelectStep, TimeRange timeRange) {
 
-		return selectSelectStep.from(getTableName(timeRange));
+		return selectSelectStep.from(
+			DSL.table(
+				getTableName(timeRange)
+			).as(
+				"metric"
+			));
 	}
 
 	protected abstract Map<String, BiConsumer<T, Metric>>
@@ -840,7 +875,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		if (channelId != null) {
 			conditions.add(
 				DSL.field(
-					"channelId"
+					"metric.channelId"
 				).eq(
 					channelId
 				));
