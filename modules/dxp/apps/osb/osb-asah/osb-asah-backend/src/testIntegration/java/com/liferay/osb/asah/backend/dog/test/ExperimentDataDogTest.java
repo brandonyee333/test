@@ -97,6 +97,25 @@ public class ExperimentDataDogTest
 
 	@RepositoryResource(
 		repositoryClass = CrudBQPageRepository.class,
+		resourcePath = "osbasahcerebroinfo/pages_info.json"
+	)
+	@Test
+	public void testFetchDichotomousDataPointBounceMetric() {
+		LocalDate localDate = LocalDate.now(ZoneOffset.UTC);
+
+		ExperimentDataPoint<Double> experimentDataPoint =
+			_experimentDataDog.fetchDichotomousDataPoint(
+				null, null, null, PageMetricType.BOUNCE_RATE, null,
+				TimeRange.of(localDate.minusDays(1), localDate.minusDays(1)),
+				"1");
+
+		Assertions.assertEquals(4, experimentDataPoint.getTrials());
+		Assertions.assertEquals(3.0, experimentDataPoint.getValue(), 0);
+	}
+
+
+	@RepositoryResource(
+		repositoryClass = CrudBQPageRepository.class,
 		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
 	)
 	@RepositoryResource(
