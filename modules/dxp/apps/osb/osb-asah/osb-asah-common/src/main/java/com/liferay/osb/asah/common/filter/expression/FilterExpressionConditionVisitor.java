@@ -221,23 +221,57 @@ public class FilterExpressionConditionVisitor
 		}
 
 		Field identityIdField = DSL.field("Identity.id");
+		Field individualIdField = DSL.field("Individual.id");
 
-		return identityIdField.in(
-			DSL.select(
-				userIdField
-			).from(
-				DSL.table(
-					"BQEvent"
-				).as(
-					"Event"
-				)
-			).where(
-				filterExpression.getCondition()
-			).groupBy(
-				userIdField
-			).having(
-				havingCondition
-			));
+		return DSL.or(
+			identityIdField.in(
+				DSL.select(
+					userIdField
+				).from(
+					DSL.table(
+						"BQEvent"
+					).as(
+						"Event"
+					)
+				).where(
+					filterExpression.getCondition()
+				).groupBy(
+					userIdField
+				).having(
+					havingCondition
+				)),
+			individualIdField.in(
+				DSL.selectDistinct(
+					DSL.field("Identity.individualId")
+				).from(
+					DSL.table(
+						"BQEvent"
+					).as(
+						"Event"
+					).join(
+						DSL.table(
+							"BQIdentity"
+						).as(
+							"Identity"
+						)
+					).on(
+						DSL.field(
+							"Event.userId"
+						).eq(
+							DSL.field("Identity.id")
+						)
+					)
+				).where(
+					DSL.and(
+						filterExpression.getCondition(),
+						DSL.field(
+							"Identity.individualId"
+						).isNotNull())
+				).groupBy(
+					userIdField, DSL.field("Identity.individualId")
+				).having(
+					havingCondition
+				)));
 	}
 
 	public Object visitFilterExpression(
