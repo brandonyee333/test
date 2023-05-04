@@ -768,64 +768,10 @@ public class FilterExpressionTest {
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
 		Field identityIdField = DSL.field("Identity.id");
+		Field individualIdField = DSL.field("Individual.id");
 
 		_assertEquals(
-			identityIdField.in(
-				DSL.select(
-					userIdField
-				).from(
-					DSL.table(
-						"BQEvent"
-					).as(
-						"Event"
-					)
-				).where(
-					DSL.field(
-						"Event.applicationId"
-					).eq(
-						"Blog"
-					).and(
-						DSL.field(
-							"Event.eventId"
-						).eq(
-							"blogViewed"
-						)
-					).and(
-						DSL.field(
-							"Event.id"
-						).eq(
-							"370994124094927024"
-						)
-					).and(
-						DSL.field(
-							"Event.eventDate"
-						).gt(
-							localDateTime.minus(1, ChronoUnit.DAYS)
-						)
-					)
-				).groupBy(
-					userIdField
-				).having(
-					DSL.count(
-						userIdField
-					).ge(
-						1
-					)
-				)),
-			_testFilters.get("testFreestyle12"),
-			new HashSet<>(Arrays.asList("Event")));
-	}
-
-	@Test
-	public void testFreestyle13() {
-		Field userIdField = DSL.field("Event.userId");
-		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
-
-		Field identityIdField = DSL.field("Identity.id");
-
-		_assertEquals(
-			DSL.and(
+			DSL.or(
 				identityIdField.in(
 					DSL.select(
 						userIdField
@@ -839,18 +785,18 @@ public class FilterExpressionTest {
 						DSL.field(
 							"Event.applicationId"
 						).eq(
-							"Form"
+							"Blog"
 						).and(
 							DSL.field(
 								"Event.eventId"
 							).eq(
-								"formSubmitted"
+								"blogViewed"
 							)
 						).and(
 							DSL.field(
 								"Event.id"
 							).eq(
-								"519356017509996745"
+								"370994124094927024"
 							)
 						).and(
 							DSL.field(
@@ -868,31 +814,43 @@ public class FilterExpressionTest {
 							1
 						)
 					)),
-				identityIdField.in(
-					DSL.select(
-						userIdField
+				individualIdField.in(
+					DSL.selectDistinct(
+						DSL.field("Identity.individualId")
 					).from(
 						DSL.table(
 							"BQEvent"
 						).as(
 							"Event"
+						).join(
+							DSL.table(
+								"BQIdentity"
+							).as(
+								"Identity"
+							)
+						).on(
+							DSL.field(
+								"Event.userId"
+							).eq(
+								DSL.field("Identity.id")
+							)
 						)
 					).where(
 						DSL.field(
 							"Event.applicationId"
 						).eq(
-							"Form"
+							"Blog"
 						).and(
 							DSL.field(
 								"Event.eventId"
 							).eq(
-								"formSubmitted"
+								"blogViewed"
 							)
 						).and(
 							DSL.field(
 								"Event.id"
 							).eq(
-								"499704442662154327"
+								"370994124094927024"
 							)
 						).and(
 							DSL.field(
@@ -900,9 +858,13 @@ public class FilterExpressionTest {
 							).gt(
 								localDateTime.minus(1, ChronoUnit.DAYS)
 							)
+						).and(
+							DSL.field(
+								"Identity.individualId"
+							).isNotNull()
 						)
 					).groupBy(
-						userIdField
+						userIdField, DSL.field("Identity.individualId")
 					).having(
 						DSL.count(
 							userIdField
@@ -910,30 +872,22 @@ public class FilterExpressionTest {
 							1
 						)
 					))),
-			_testFilters.get("testFreestyle13"),
+			_testFilters.get("testFreestyle12"),
 			new HashSet<>(Arrays.asList("Event")));
 	}
 
 	@Test
-	public void testFreestyle14() {
+	public void testFreestyle13() {
 		Field userIdField = DSL.field("Event.userId");
 		LocalDateTime localDateTime = LocalDateTime.of(
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
 		Field identityIdField = DSL.field("Identity.id");
+		Field individualIdField = DSL.field("Individual.id");
 
 		_assertEquals(
-			DSL.lower(
-				DSL.field("Individual.addresses", String.class)
-			).eq(
-				"address"
-			).and(
+			DSL.and(
 				DSL.or(
-					DSL.lower(
-						DSL.field("Individual.jobTitle", String.class)
-					).eq(
-						"jobtitle"
-					),
 					identityIdField.in(
 						DSL.select(
 							userIdField
@@ -947,18 +901,18 @@ public class FilterExpressionTest {
 							DSL.field(
 								"Event.applicationId"
 							).eq(
-								"Page"
+								"Form"
 							).and(
 								DSL.field(
 									"Event.eventId"
 								).eq(
-									"pageViewed"
+									"formSubmitted"
 								)
 							).and(
 								DSL.field(
 									"Event.id"
 								).eq(
-									"370983685501627145"
+									"519356017509996745"
 								)
 							).and(
 								DSL.field(
@@ -975,25 +929,178 @@ public class FilterExpressionTest {
 							).ge(
 								1
 							)
-						)))
-			).and(
-				DSL.lower(
-					DSL.field("Individual.emailAddress", String.class)
-				).eq(
-					"email@test.com"
-				)
-			),
-			_testFilters.get("testFreestyle14"),
-			new HashSet<>(Arrays.asList("Event", "Individual")), true);
+						)),
+					individualIdField.in(
+						DSL.selectDistinct(
+							DSL.field("Identity.individualId")
+						).from(
+							DSL.table(
+								"BQEvent"
+							).as(
+								"Event"
+							).join(
+								DSL.table(
+									"BQIdentity"
+								).as(
+									"Identity"
+								)
+							).on(
+								DSL.field(
+									"Event.userId"
+								).eq(
+									DSL.field("Identity.id")
+								)
+							)
+						).where(
+							DSL.field(
+								"Event.applicationId"
+							).eq(
+								"Form"
+							).and(
+								DSL.field(
+									"Event.eventId"
+								).eq(
+									"formSubmitted"
+								)
+							).and(
+								DSL.field(
+									"Event.id"
+								).eq(
+									"519356017509996745"
+								)
+							).and(
+								DSL.field(
+									"Event.eventDate"
+								).gt(
+									localDateTime.minus(1, ChronoUnit.DAYS)
+								)
+							).and(
+								DSL.field(
+									"Identity.individualId"
+								).isNotNull()
+							)
+						).groupBy(
+							userIdField, DSL.field("Identity.individualId")
+						).having(
+							DSL.count(
+								userIdField
+							).ge(
+								1
+							)
+						))),
+				DSL.or(
+					identityIdField.in(
+						DSL.select(
+							userIdField
+						).from(
+							DSL.table(
+								"BQEvent"
+							).as(
+								"Event"
+							)
+						).where(
+							DSL.field(
+								"Event.applicationId"
+							).eq(
+								"Form"
+							).and(
+								DSL.field(
+									"Event.eventId"
+								).eq(
+									"formSubmitted"
+								)
+							).and(
+								DSL.field(
+									"Event.id"
+								).eq(
+									"499704442662154327"
+								)
+							).and(
+								DSL.field(
+									"Event.eventDate"
+								).gt(
+									localDateTime.minus(1, ChronoUnit.DAYS)
+								)
+							)
+						).groupBy(
+							userIdField
+						).having(
+							DSL.count(
+								userIdField
+							).ge(
+								1
+							)
+						)),
+					individualIdField.in(
+						DSL.selectDistinct(
+							DSL.field("Identity.individualId")
+						).from(
+							DSL.table(
+								"BQEvent"
+							).as(
+								"Event"
+							).join(
+								DSL.table(
+									"BQIdentity"
+								).as(
+									"Identity"
+								)
+							).on(
+								DSL.field(
+									"Event.userId"
+								).eq(
+									DSL.field("Identity.id")
+								)
+							)
+						).where(
+							DSL.field(
+								"Event.applicationId"
+							).eq(
+								"Form"
+							).and(
+								DSL.field(
+									"Event.eventId"
+								).eq(
+									"formSubmitted"
+								)
+							).and(
+								DSL.field(
+									"Event.id"
+								).eq(
+									"499704442662154327"
+								)
+							).and(
+								DSL.field(
+									"Event.eventDate"
+								).gt(
+									localDateTime.minus(1, ChronoUnit.DAYS)
+								)
+							).and(
+								DSL.field(
+									"Identity.individualId"
+								).isNotNull()
+							)
+						).groupBy(
+							userIdField, DSL.field("Identity.individualId")
+						).having(
+							DSL.count(
+								userIdField
+							).ge(
+								1
+							)
+						)))),
+			_testFilters.get("testFreestyle13"),
+			new HashSet<>(Arrays.asList("Event")));
 	}
 
 	@Test
-	public void testFreestyle15() {
+	public void testFreestyle14() {
 		Field userIdField = DSL.field("Event.userId");
 		LocalDateTime localDateTime = LocalDateTime.of(
 			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
 
 		Field identityIdField = DSL.field("Identity.id");
+		Field individualIdField = DSL.field("Individual.id");
 
 		_assertEquals(
 			DSL.lower(
@@ -1007,7 +1114,7 @@ public class FilterExpressionTest {
 					).eq(
 						"jobtitle"
 					),
-					DSL.not(
+					DSL.or(
 						identityIdField.in(
 							DSL.select(
 								userIdField
@@ -1049,7 +1156,202 @@ public class FilterExpressionTest {
 								).ge(
 									1
 								)
-							))))
+							))),
+					individualIdField.in(
+						DSL.selectDistinct(
+							DSL.field("Identity.individualId")
+						).from(
+							DSL.table(
+								"BQEvent"
+							).as(
+								"Event"
+							).join(
+								DSL.table(
+									"BQIdentity"
+								).as(
+									"Identity"
+								)
+							).on(
+								DSL.field(
+									"Event.userId"
+								).eq(
+									DSL.field("Identity.id")
+								)
+							)
+						).where(
+							DSL.field(
+								"Event.applicationId"
+							).eq(
+								"Page"
+							).and(
+								DSL.field(
+									"Event.eventId"
+								).eq(
+									"pageViewed"
+								)
+							).and(
+								DSL.field(
+									"Event.id"
+								).eq(
+									"370983685501627145"
+								)
+							).and(
+								DSL.field(
+									"Event.eventDate"
+								).gt(
+									localDateTime.minus(1, ChronoUnit.DAYS)
+								)
+							).and(
+								DSL.field(
+									"Identity.individualId"
+								).isNotNull()
+							)
+						).groupBy(
+							userIdField, DSL.field("Identity.individualId")
+						).having(
+							DSL.count(
+								userIdField
+							).ge(
+								1
+							)
+						)))
+			).and(
+				DSL.lower(
+					DSL.field("Individual.emailAddress", String.class)
+				).eq(
+					"email@test.com"
+				)
+			),
+			_testFilters.get("testFreestyle14"),
+			new HashSet<>(Arrays.asList("Event", "Individual")), true);
+	}
+
+	@Test
+	public void testFreestyle15() {
+		Field userIdField = DSL.field("Event.userId");
+		LocalDateTime localDateTime = LocalDateTime.of(
+			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
+
+		Field identityIdField = DSL.field("Identity.id");
+		Field individualIdField = DSL.field("Individual.id");
+
+		_assertEquals(
+			DSL.lower(
+				DSL.field("Individual.addresses", String.class)
+			).eq(
+				"address"
+			).and(
+				DSL.or(
+					DSL.lower(
+						DSL.field("Individual.jobTitle", String.class)
+					).eq(
+						"jobtitle"
+					),
+					DSL.not(
+						DSL.or(
+							identityIdField.in(
+								DSL.select(
+									userIdField
+								).from(
+									DSL.table(
+										"BQEvent"
+									).as(
+										"Event"
+									)
+								).where(
+									DSL.field(
+										"Event.applicationId"
+									).eq(
+										"Page"
+									).and(
+										DSL.field(
+											"Event.eventId"
+										).eq(
+											"pageViewed"
+										)
+									).and(
+										DSL.field(
+											"Event.id"
+										).eq(
+											"370983685501627145"
+										)
+									).and(
+										DSL.field(
+											"Event.eventDate"
+										).gt(
+											localDateTime.minus(
+												1, ChronoUnit.DAYS)
+										)
+									)
+								).groupBy(
+									userIdField
+								).having(
+									DSL.count(
+										userIdField
+									).ge(
+										1
+									)
+								)),
+							individualIdField.in(
+								DSL.selectDistinct(
+									DSL.field("Identity.individualId")
+								).from(
+									DSL.table(
+										"BQEvent"
+									).as(
+										"Event"
+									).join(
+										DSL.table(
+											"BQIdentity"
+										).as(
+											"Identity"
+										)
+									).on(
+										DSL.field(
+											"Event.userId"
+										).eq(
+											DSL.field("Identity.id")
+										)
+									)
+								).where(
+									DSL.field(
+										"Event.applicationId"
+									).eq(
+										"Page"
+									).and(
+										DSL.field(
+											"Event.eventId"
+										).eq(
+											"pageViewed"
+										)
+									).and(
+										DSL.field(
+											"Event.id"
+										).eq(
+											"370983685501627145"
+										)
+									).and(
+										DSL.field(
+											"Event.eventDate"
+										).gt(
+											localDateTime.minus(
+												1, ChronoUnit.DAYS)
+										)
+									).and(
+										DSL.field(
+											"Identity.individualId"
+										).isNotNull()
+									)
+								).groupBy(
+									userIdField,
+									DSL.field("Identity.individualId")
+								).having(
+									DSL.count(
+										userIdField
+									).ge(
+										1
+									)
+								)))))
 			).and(
 				DSL.lower(
 					DSL.field("Individual.emailAddress", String.class)
@@ -1464,6 +1766,92 @@ public class FilterExpressionTest {
 	public void testInterestFilterExpressionFalse() {
 		_assertEquals(
 			DSL.not(
+				DSL.or(
+					DSL.field(
+						"Identity.id", String.class
+					).in(
+						DSL.selectDistinct(
+							DSL.field("Identity.id", String.class)
+						).from(
+							DSL.table(
+								"BQIdentity"
+							).as(
+								"Identity"
+							)
+						).join(
+							DSL.table(
+								"BQIdentityInterestScore"
+							).as(
+								"Interest"
+							)
+						).on(
+							DSL.field(
+								"Identity.id", String.class
+							).eq(
+								DSL.field("Interest.identityId", String.class)
+							)
+						).where(
+							DSL.and(
+								DSL.field(
+									"Interest.keyword", String.class
+								).eq(
+									"analytics"
+								),
+								DSL.field(
+									"Interest.interested", Boolean.class
+								).eq(
+									true
+								))
+						)
+					),
+					DSL.field(
+						"Individual.id", String.class
+					).in(
+						DSL.selectDistinct(
+							DSL.field("Identity.individualId", String.class)
+						).from(
+							DSL.table(
+								"BQIdentity"
+							).as(
+								"Identity"
+							)
+						).join(
+							DSL.table(
+								"BQIdentityInterestScore"
+							).as(
+								"Interest"
+							)
+						).on(
+							DSL.field(
+								"Identity.id", String.class
+							).eq(
+								DSL.field("Interest.identityId", String.class)
+							)
+						).where(
+							DSL.and(
+								DSL.field(
+									"Interest.keyword", String.class
+								).eq(
+									"analytics"
+								),
+								DSL.field(
+									"Interest.interested", Boolean.class
+								).eq(
+									true
+								),
+								DSL.field(
+									"Identity.individualId"
+								).isNotNull())
+						)
+					))),
+			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
+				"''false'')'))");
+	}
+
+	@Test
+	public void testInterestFilterExpressionTrue() {
+		_assertEquals(
+			DSL.or(
 				DSL.field(
 					"Identity.id", String.class
 				).in(
@@ -1500,51 +1888,47 @@ public class FilterExpressionTest {
 								true
 							))
 					)
+				),
+				DSL.field(
+					"Individual.id", String.class
+				).in(
+					DSL.selectDistinct(
+						DSL.field("Identity.individualId", String.class)
+					).from(
+						DSL.table(
+							"BQIdentity"
+						).as(
+							"Identity"
+						)
+					).join(
+						DSL.table(
+							"BQIdentityInterestScore"
+						).as(
+							"Interest"
+						)
+					).on(
+						DSL.field(
+							"Identity.id", String.class
+						).eq(
+							DSL.field("Interest.identityId", String.class)
+						)
+					).where(
+						DSL.and(
+							DSL.field(
+								"Interest.keyword", String.class
+							).eq(
+								"analytics"
+							),
+							DSL.field(
+								"Interest.interested", Boolean.class
+							).eq(
+								true
+							),
+							DSL.field(
+								"Identity.individualId"
+							).isNotNull())
+					)
 				)),
-			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
-				"''false'')'))");
-	}
-
-	@Test
-	public void testInterestFilterExpressionTrue() {
-		_assertEquals(
-			DSL.field(
-				"Identity.id", String.class
-			).in(
-				DSL.selectDistinct(
-					DSL.field("Identity.id", String.class)
-				).from(
-					DSL.table(
-						"BQIdentity"
-					).as(
-						"Identity"
-					)
-				).join(
-					DSL.table(
-						"BQIdentityInterestScore"
-					).as(
-						"Interest"
-					)
-				).on(
-					DSL.field(
-						"Identity.id", String.class
-					).eq(
-						DSL.field("Interest.identityId", String.class)
-					)
-				).where(
-					DSL.and(
-						DSL.field(
-							"Interest.keyword", String.class
-						).eq(
-							"analytics"
-						),
-						DSL.field(
-							"Interest.interested", Boolean.class
-						).eq(
-							true
-						))
-				)
-			),
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
 				"''true'')'))");
 	}
