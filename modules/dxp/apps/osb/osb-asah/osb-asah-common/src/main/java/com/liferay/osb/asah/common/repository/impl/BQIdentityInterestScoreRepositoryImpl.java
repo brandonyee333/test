@@ -1232,16 +1232,36 @@ public class BQIdentityInterestScoreRepositoryImpl
 				));
 		}
 		else {
-			conditions.add(
-				DSL.field(
-					"recordedDate"
-				).eq(
-					_dslContext.select(
-						DSL.max(DSL.field("recordedDate"))
-					).from(
-						"BQIdentityInterestScore"
-					)
-				));
+			if (channelId != null) {
+				conditions.add(
+					DSL.field(
+						"recordedDate"
+					).eq(
+						_dslContext.select(
+							DSL.max(DSL.field("recordedDate"))
+						).from(
+							"BQIdentityInterestScore"
+						).where(
+							DSL.field(
+								"channelId"
+							).eq(
+								channelId
+							)
+						)
+					));
+			}
+			else {
+				conditions.add(
+					DSL.field(
+						"recordedDate"
+					).eq(
+						_dslContext.select(
+							DSL.max(DSL.field("recordedDate"))
+						).from(
+							"BQIdentityInterestScore"
+						)
+					));
+			}
 		}
 
 		return conditions;
@@ -1267,16 +1287,37 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).eq(
 				individualId
 			));
-		conditions.add(
-			DSL.field(
-				"recordedDate"
-			).eq(
-				_dslContext.select(
-					DSL.max(DSL.field("recordedDate"))
-				).from(
-					"BQIdentityInterestScore"
-				)
-			));
+
+		if (channelId != null) {
+			conditions.add(
+				DSL.field(
+					"recordedDate"
+				).eq(
+					_dslContext.select(
+						DSL.max(DSL.field("recordedDate"))
+					).from(
+						"BQIdentityInterestScore"
+					).where(
+						DSL.field(
+							"channelId"
+						).eq(
+							channelId
+						)
+					)
+				));
+		}
+		else {
+			conditions.add(
+				DSL.field(
+					"recordedDate"
+				).eq(
+					_dslContext.select(
+						DSL.max(DSL.field("recordedDate"))
+					).from(
+						"BQIdentityInterestScore"
+					)
+				));
+		}
 
 		return conditions;
 	}
