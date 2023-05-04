@@ -113,6 +113,18 @@ public class BQIndividualRepositoryTest
 					"''WebContent#webContentViewed#" + assetId + "'' and day " +
 						"lt ''2022-12-17'')', operator='ge', value=1))",
 				false, null));
+
+		assetId =
+			"0e12831a7047f759733b21f028525039607350b1b1b4fe904595427e72ea0d9b";
+
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"(activities.filterByCount(filter='(activityKey eq ''Blog#" +
+					"commentPosted#" + assetId + "'' and day lt ''" +
+						"2022-12-17'')', operator='ge', value=1))",
+				false, null));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
