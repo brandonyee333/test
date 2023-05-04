@@ -262,10 +262,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			@PathVariable Long id, @RequestBody String json)
 		throws Exception {
 
-		SegmentDTO segmentDTO = getSegmentDTO(id, null);
+		Segment segment = segmentDog.getSegment(id);
 
-		if (!Objects.equals(segmentDTO.getType(), "STATIC") ||
-			!Objects.equals(segmentDTO.getStatus(), "ACTIVE")) {
+		if (!Objects.equals(segment.getType(), Segment.Type.STATIC) ||
+			!Objects.equals(segment.getStatus(), "ACTIVE")) {
 
 			throw new Exception(
 				"Membership POST requests can only be made to an active " +
