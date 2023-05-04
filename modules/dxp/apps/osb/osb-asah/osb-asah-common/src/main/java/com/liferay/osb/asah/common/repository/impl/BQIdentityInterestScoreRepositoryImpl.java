@@ -841,6 +841,28 @@ public class BQIdentityInterestScoreRepositoryImpl
 					).as(
 						"Identity"
 					)
+				).join(
+					DSL.select(
+						DSL.field("channelId"), DSL.field("identityId")
+					).from(
+						"BQIdentityActivity"
+					).groupBy(
+						DSL.field("channelId"), DSL.field("identityId")
+					).asTable(
+						"IdentityActivity"
+					)
+				).on(
+					DSL.field(
+						"Identity.id"
+					).eq(
+						DSL.field("IdentityActivity.identityId")
+					)
+				).where(
+					DSL.field(
+						"channelId"
+					).eq(
+						channelId
+					)
 				)
 			).select(
 				countField.as("count"),

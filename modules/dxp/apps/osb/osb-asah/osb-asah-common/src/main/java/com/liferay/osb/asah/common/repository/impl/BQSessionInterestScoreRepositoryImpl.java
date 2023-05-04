@@ -144,6 +144,12 @@ public class BQSessionInterestScoreRepositoryImpl
 					)
 				).from(
 					"BQSession"
+				).where(
+					DSL.field(
+						"channelId"
+					).eq(
+						channelId
+					)
 				)
 			).select(
 				aggregateFunction.as("count"), DSL.field("keyword"),
