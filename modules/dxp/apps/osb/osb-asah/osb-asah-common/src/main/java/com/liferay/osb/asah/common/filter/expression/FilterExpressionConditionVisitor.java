@@ -1126,7 +1126,7 @@ public class FilterExpressionConditionVisitor
 	}
 
 	private Condition _getIsInterestedCondition(String keyword) {
-		SelectConditionStep<Record1<String>> selectConditionStep =
+		SelectConditionStep<Record1<String>> identitySelectConditionStep =
 			DSL.selectDistinct(
 				DSL.field("Identity.id", String.class)
 			).from(
@@ -1161,9 +1161,55 @@ public class FilterExpressionConditionVisitor
 					))
 			);
 
-		Field<String> field = DSL.field("Identity.id", String.class);
+		SelectConditionStep<Record1<String>> individualSelectConditionStep =
+			DSL.selectDistinct(
+				DSL.field("Identity.individualId", String.class)
+			).from(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
+			).join(
+				DSL.table(
+					"BQIdentityInterestScore"
+				).as(
+					"Interest"
+				)
+			).on(
+				DSL.field(
+					"Identity.id", String.class
+				).eq(
+					DSL.field("Interest.identityId", String.class)
+				)
+			).where(
+				DSL.and(
+					DSL.field(
+						"Interest.keyword", String.class
+					).eq(
+						keyword
+					),
+					DSL.field(
+						"Interest.interested", Boolean.class
+					).eq(
+						true
+					),
+					DSL.field(
+						"Identity.individualId", String.class
+					).isNotNull())
+			);
 
-		return field.in(selectConditionStep);
+		return DSL.or(
+			DSL.field(
+				"Identity.id", String.class
+			).in(
+				identitySelectConditionStep
+			),
+			DSL.field(
+				"Individual.id", String.class
+			).in(
+				individualSelectConditionStep
+			));
 	}
 
 	private Condition _getIsMemberCondition(String id, String type) {
