@@ -94,6 +94,12 @@ public class PageAssetMetricRepositoryImpl
 					PageMetricType.BOUNCE_RATE.getName(),
 					PageMetric::setBounceRateMetric);
 				put(
+					PageMetricType.CLICK_THROUGH_PROBABILITY.getName(),
+					PageMetric::setCTPMetric);
+				put(
+					PageMetricType.CLICK_THROUGH_RATE.getName(),
+					PageMetric::setCTRMetric);
+				put(
 					PageMetricType.DIRECT_ACCESS.getName(),
 					PageMetric::setDirectAccessMetric);
 				put(
@@ -109,6 +115,9 @@ public class PageAssetMetricRepositoryImpl
 				put(
 					PageMetricType.SESSIONS.getName(),
 					PageMetric::setSessionsMetric);
+				put(
+					PageMetricType.TIME_ON_PAGE.getName(),
+					PageMetric::setTimeOnPageMetric);
 				put(PageMetricType.VIEWS.getName(), PageMetric::setViewsMetric);
 				put(
 					PageMetricType.VISITORS.getName(),
