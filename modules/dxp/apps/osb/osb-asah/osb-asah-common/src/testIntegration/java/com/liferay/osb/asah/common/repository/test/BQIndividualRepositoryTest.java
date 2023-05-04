@@ -276,6 +276,25 @@ public class BQIndividualRepositoryTest
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
 	@Test
+	public void testSearchBQIndividualsInterestFilter() {
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"(interests.filter(filter='(name eq ''analytics'' and score " +
+					"eq ''true'')'))",
+				false, null));
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"(interests.filter(filter='(name eq ''analytics'' and score " +
+					"eq ''false'')'))",
+				false, null));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
+	@Test
 	public void testSearchBQIndividualsOrganizationsFilter() {
 
 		// Custom Fields

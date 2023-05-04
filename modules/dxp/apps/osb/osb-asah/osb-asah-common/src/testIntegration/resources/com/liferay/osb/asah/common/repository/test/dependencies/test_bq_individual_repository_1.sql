@@ -20,6 +20,15 @@ INSERT INTO IdentityActivitySummary (activitiesCount, channelId, eventId, identi
 INSERT INTO IdentityActivitySummary (activitiesCount, channelId, eventId, identityId, individualId, lastActivityDate) VALUES (1, 11, 'pageViewed', 'bcd-456', '5970d88ec4ed505177361de1b17a3f2debf7c4f630c14f075a823ec97942692a', timestamp '2022-12-17T23:59:59.999Z');
 INSERT INTO IdentityActivitySummary (activitiesCount, channelId, eventId, identityId, individualId, lastActivityDate) VALUES (1, 11, 'pageLoaded', 'efg-789', '5f20f61b2cfaa86c4f3cb3557751a702776af029deabed8e943fb55cfa604e34', timestamp '2022-12-18T23:59:59.999Z');
 
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('abc-123', true, 'analytics', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('abc-123', false, 'cloud', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('bcd-456', true, 'cloud', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('bcd-456', false, 'analytics', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('bcd-457', true, 'analytics', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('efg-789', false, 'dev', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('efg-789', true, 'metrics', CURRENT_DATE());
+INSERT INTO IdentityInterestScore (identityId, interested, keyword, recordedDate) VALUES ('efg-789', true, 'quality', CURRENT_DATE());
+
 INSERT INTO Identity_Raw (id, individualId) VALUES ('abc-123', '761319ac0d9f6e0f3467ad26bc8c63989d06c5f491849d6aa12fabdbd6c6b7bb');
 INSERT INTO Identity_Raw (id, individualId) VALUES ('bcd-456', '5970d88ec4ed505177361de1b17a3f2debf7c4f630c14f075a823ec97942692a');
 INSERT INTO Identity_Raw (id, individualId) VALUES ('bcd-457', '5970d88ec4ed505177361de1b17a3f2debf7c4f630c14f075a823ec97942692a');
