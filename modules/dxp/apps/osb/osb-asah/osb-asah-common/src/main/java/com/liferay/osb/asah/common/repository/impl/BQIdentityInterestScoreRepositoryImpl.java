@@ -367,13 +367,8 @@ public class BQIdentityInterestScoreRepositoryImpl
 				).as(
 					"contributingPagesCount"
 				),
-				DSL.field(
-					"IdentityInterestScore.identityId"
-				).as(
-					"identityId"
-				),
-				DSL.field(
-					"IdentityInterestScore.interestScore"
+				DSL.max(
+					DSL.field("IdentityInterestScore.interestScore")
 				).as(
 					"interestScore"
 				),
@@ -431,8 +426,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			).where(
 				conditions
 			).groupBy(
-				DSL.field("identityId"), DSL.field("individualId"),
-				DSL.field("interestScore"), DSL.field("keyword"),
+				DSL.field("individualId"), DSL.field("keyword"),
 				DSL.field("recordedDate")
 			).orderBy(
 				_getSortFields(pageable.getSort(), null)
