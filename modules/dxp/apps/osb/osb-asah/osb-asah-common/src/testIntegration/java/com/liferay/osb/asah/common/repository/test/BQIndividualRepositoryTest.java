@@ -98,6 +98,14 @@ public class BQIndividualRepositoryTest
 						"eq ''2022-12-16'')', operator='ge', value=1))",
 				false, null));
 		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"(not(activities.filterByCount(filter='(activityKey eq " +
+					"''WebContent#webContentViewed#" + assetId + "'' and day " +
+						"eq ''2022-12-16'')', operator='ge', value=1)))",
+				false, null));
+		Assertions.assertEquals(
 			0,
 			_bqIndividualRepository.countBQIndividuals(
 				11L,
@@ -106,12 +114,28 @@ public class BQIndividualRepositoryTest
 						"gt ''2022-12-17'')', operator='ge', value=1))",
 				false, null));
 		Assertions.assertEquals(
+			3,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"(not(activities.filterByCount(filter='(activityKey eq " +
+					"''WebContent#webContentViewed#" + assetId + "'' and day " +
+						"gt ''2022-12-17'')', operator='ge', value=1)))",
+				false, null));
+		Assertions.assertEquals(
 			1,
 			_bqIndividualRepository.countBQIndividuals(
 				11L,
 				"(activities.filterByCount(filter='(activityKey eq " +
 					"''WebContent#webContentViewed#" + assetId + "'' and day " +
 						"lt ''2022-12-17'')', operator='ge', value=1))",
+				false, null));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				11L,
+				"(not(activities.filterByCount(filter='(activityKey eq " +
+					"''WebContent#webContentViewed#" + assetId + "'' and day " +
+						"lt ''2022-12-17'')', operator='ge', value=1)))",
 				false, null));
 
 		assetId =
