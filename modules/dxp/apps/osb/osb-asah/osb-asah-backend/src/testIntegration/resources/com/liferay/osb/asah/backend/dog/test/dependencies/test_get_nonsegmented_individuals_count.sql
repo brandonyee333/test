@@ -22,7 +22,9 @@ INSERT INTO JournalDaily (assetId, channelId, eventDate, userId, views) VALUES (
 INSERT INTO JournalDaily (assetId, channelId, eventDate, userId, views) VALUES ('1', 1, timestamp '${now-1d}', '7', 1);
 INSERT INTO JournalDaily (assetId, channelId, eventDate, userId, views) VALUES ('1', 1, timestamp '${now-1d}', '8', 1);
 
-INSERT INTO Membership (createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (timestamp '${today}', '2', '10', timestamp '${now}', 1001, 'ACTIVE');
-INSERT INTO Membership (createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (timestamp '${today}', '3', '30', timestamp '${now}', 1002, 'ACTIVE');
-INSERT INTO Membership (createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (timestamp '${today}', '4', null, timestamp '${now}', 1001, 'ACTIVE');
-INSERT INTO Membership (createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (timestamp '${today}', '8', '80', timestamp '${now}', 1003, 'ACTIVE');
+INSERT INTO Membership (channelId, createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (1, timestamp '${today}', '2', '10', timestamp '${now}', 1001, 'ACTIVE');
+INSERT INTO Membership (channelId, createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (1, timestamp '${today}', '3', '30', timestamp '${now}', 1002, 'ACTIVE');
+INSERT INTO Membership (channelId, createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (1, timestamp '${today}', '4', null, timestamp '${now}', 1001, 'ACTIVE');
+INSERT INTO Membership (channelId, createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (2, timestamp '${today}', '5', '50', timestamp '${now}', 1004, 'ACTIVE');
+INSERT INTO Membership (channelId, createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (2, timestamp '${today}', '6', '70', timestamp '${now}', 1004, 'ACTIVE');
+INSERT INTO Membership (channelId, createDate, identityId, individualId, modifiedDate, segmentId, status) VALUES (1, timestamp '${today}', '8', '80', timestamp '${now}', 1003, 'ACTIVE');
