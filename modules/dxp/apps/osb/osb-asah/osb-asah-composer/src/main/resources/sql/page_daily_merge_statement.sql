@@ -15,6 +15,7 @@ USING
 			SUM(entrances) AS entrances,
 			DATE_TRUNC(eventDate, DAY) AS eventDate,
 			SUM(exits) exits,
+			ANY_VALUE(experimentId) AS experimentId,
 			SUM(indirectAccess) AS indirectAccess,
 			platformName,
 			SUM(reads) AS reads,
@@ -23,7 +24,7 @@ USING
 			SUM(timeOnPage) AS timeOnPage,
 			title,
 			userId,
-			ANY_VALUE(variantId) variantId,
+			ANY_VALUE(variantId) AS variantId,
 			SUM(views) AS views
 		FROM
 			`{{ dag.default_args['ac_project_id'] }}.pagehourly`
@@ -63,6 +64,7 @@ WHEN NOT MATCHED THEN
 		`entrances`,
 		`eventDate`,
 		`exits`,
+		`experimentId`,
 		`indirectAccess`,
 		`platformName`,
 		`reads`,
@@ -87,6 +89,7 @@ WHEN NOT MATCHED THEN
 		staging.entrances,
 		staging.eventDate,
 		staging.exits,
+		staging.experimentId,
 		staging.indirectAccess,
 		staging.platformName,
 		staging.reads,
