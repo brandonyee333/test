@@ -73,7 +73,7 @@ public class PageAssetMetricRepositoryImpl
 			dslHelper.dateTrunc(
 				DatePart.DAY,
 				dslHelper.getDateAtTimeZoneField(
-					"eventdate", _timeZoneDog.getTimeZoneId())));
+					"eventdate", timeZoneDog.getTimeZoneId())));
 
 		field = field.as("key");
 
@@ -83,7 +83,7 @@ public class PageAssetMetricRepositoryImpl
 			getTableName(timeRange)
 		);
 
-		return _queryExecutor.queryForList(
+		return queryExecutor.queryForList(
 			rowMap -> {
 				Metric metric = new Metric(pageMetricType);
 
@@ -120,9 +120,9 @@ public class PageAssetMetricRepositoryImpl
 			getTableName(timeRange)
 		);
 
-		ZoneId zoneId = _timeZoneDog.getZoneId();
+		ZoneId zoneId = timeZoneDog.getZoneId();
 
-		return _queryExecutor.queryForObject(
+		return queryExecutor.queryForObject(
 			recordMap -> _toPageMetric(pageMetricTypes, recordMap),
 			selectJoinStep.where(
 				DSL.field(
@@ -156,9 +156,9 @@ public class PageAssetMetricRepositoryImpl
 			getTableName(timeRange)
 		);
 
-		ZoneId zoneId = _timeZoneDog.getZoneId();
+		ZoneId zoneId = timeZoneDog.getZoneId();
 
-		return _queryExecutor.queryForObject(
+		return queryExecutor.queryForObject(
 			recordMap -> _toPageMetric(pageMetricTypes, recordMap),
 			selectJoinStep.where(
 				DSL.field(
@@ -178,9 +178,9 @@ public class PageAssetMetricRepositoryImpl
 
 	@Override
 	public Long getUniqueSessionsCount(Long experimentId, TimeRange timeRange) {
-		ZoneId zoneId = _timeZoneDog.getZoneId();
+		ZoneId zoneId = timeZoneDog.getZoneId();
 
-		return _queryExecutor.queryForLong(
+		return queryExecutor.queryForLong(
 			dslContext.select(
 				DSL.countDistinct(DSL.field("sessionId"))
 			).from(
@@ -206,9 +206,9 @@ public class PageAssetMetricRepositoryImpl
 	public Long getVariantUniqueVisitors(
 		Long experimentId, TimeRange timeRange, String variantId) {
 
-		ZoneId zoneId = _timeZoneDog.getZoneId();
+		ZoneId zoneId = timeZoneDog.getZoneId();
 
-		return _queryExecutor.queryForLong(
+		return queryExecutor.queryForLong(
 			dslContext.select(
 				DSL.countDistinct(
 					DSL.coalesce(
@@ -405,7 +405,7 @@ public class PageAssetMetricRepositoryImpl
 				experimentId
 			));
 
-		ZoneId zoneId = _timeZoneDog.getZoneId();
+		ZoneId zoneId = timeZoneDog.getZoneId();
 
 		conditions.add(
 			DSL.field(

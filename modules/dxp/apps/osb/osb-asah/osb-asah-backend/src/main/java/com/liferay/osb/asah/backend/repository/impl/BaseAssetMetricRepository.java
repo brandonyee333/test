@@ -89,7 +89,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Map<String, BiConsumer<T, Metric>> assetMetricSetters =
 			getAssetMetricSetters();
 
-		return _queryExecutor.queryForList(
+		return queryExecutor.queryForList(
 			recordMap -> {
 				T assetMetric = createAssetMetric();
 
@@ -137,7 +137,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			).gt(
 				dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(),
-					_timeZoneDog.getTimeZoneId())
+					timeZoneDog.getTimeZoneId())
 			),
 			false
 		).otherwise(
@@ -155,7 +155,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		SelectJoinStep<Record> selectJoinStep = getAssetMetricSelectJoinStep(
 			selectSelectStep, timeRange);
 
-		List<Map<String, Object>> recordMaps = _queryExecutor.queryForList(
+		List<Map<String, Object>> recordMaps = queryExecutor.queryForList(
 			Function.identity(),
 			selectJoinStep.where(
 				_createWhereClauseCondition(
@@ -188,7 +188,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		SelectJoinStep<Record> selectJoinStep = getAssetMetricSelectJoinStep(
 			dslContext.select(fields), timeRange);
 
-		return _queryExecutor.queryForList(
+		return queryExecutor.queryForList(
 			rowMap -> _toMetric(rowMap, selectedMetrics),
 			selectJoinStep.where(
 				_createWhereClauseCondition(
@@ -213,7 +213,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Field<String> assetTitleField = DSL.field(
 			getAssetTitleFieldName(), String.class);
 
-		return _queryExecutor.queryForLong(
+		return queryExecutor.queryForLong(
 			dslContext.selectCount(
 			).from(
 				DSL.select(
@@ -238,7 +238,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			assetId, assetTitle, channelId, timeRange);
 
 		Optional<AudienceReport> audienceMetricOptional =
-			_queryExecutor.queryForObject(
+			queryExecutor.queryForObject(
 				recordMap -> {
 					AudienceReport audienceReport = new AudienceReport();
 
@@ -355,7 +355,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			metricType, timeRange);
 		Field<BigDecimal> metricField2 = getMetricField(metricType, timeRange);
 
-		return _queryExecutor.queryForList(
+		return queryExecutor.queryForList(
 			recordMap -> {
 				Metric metric = new Metric(metricType);
 
@@ -409,7 +409,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		Map<String, Metric> metrics = new LinkedHashMap<>();
 
-		_queryExecutor.queryForList(
+		queryExecutor.queryForList(
 			recordMap -> {
 				Metric deviceTypeMetric = new Metric(metricType);
 
@@ -477,7 +477,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			metricType, timeRange);
 		Field<BigDecimal> metricField2 = getMetricField(metricType, timeRange);
 
-		return _queryExecutor.queryForList(
+		return queryExecutor.queryForList(
 			recordMap -> {
 				Metric metric = new Metric(metricType);
 
@@ -522,7 +522,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			dslHelper.dateTrunc(
 				DatePart.valueOf(interval.name()),
 				dslHelper.getDateAtTimeZoneField(
-					"eventdate", _timeZoneDog.getTimeZoneId())));
+					"eventdate", timeZoneDog.getTimeZoneId())));
 
 		field = field.as("key");
 
@@ -531,7 +531,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				field, getMetricFieldAliased(metricType, timeRange)),
 			timeRange);
 
-		return _queryExecutor.queryForList(
+		return queryExecutor.queryForList(
 			rowMap -> {
 				Metric metric = new Metric(metricType);
 
@@ -578,7 +578,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				_createIndividualKeywordsWhereClauseCondition(keywords));
 		}
 
-		return _queryExecutor.queryForList(
+		return queryExecutor.queryForList(
 			recordMap -> new Individual(
 				(String)recordMap.get("emailAddress"),
 				(String)recordMap.get("id"),
@@ -654,7 +654,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Condition whereClauseCondition = _createWhereClauseCondition(
 			assetId, assetTitle, channelId, timeRange);
 
-		return _queryExecutor.queryForList(
+		return queryExecutor.queryForList(
 			recordMap -> {
 				Metric metric = new Metric(metricType);
 
@@ -763,16 +763,16 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	protected abstract String getTableName(TimeRange timeRange);
 
 	@Autowired
-	protected QueryExecutor _queryExecutor;
-
-	@Autowired
-	protected TimeZoneDog _timeZoneDog;
-
-	@Autowired
 	protected DSLContext dslContext;
 
 	@Autowired
 	protected DSLHelper dslHelper;
+
+	@Autowired
+	protected QueryExecutor queryExecutor;
+
+	@Autowired
+	protected TimeZoneDog timeZoneDog;
 
 	private Condition _createIndividualKeywordsWhereClauseCondition(
 		String keywords) {
@@ -815,7 +815,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		@Nullable Long channelId, @Nullable String keywords,
 		TimeRange timeRange) {
 
-		ZoneId zoneId = _timeZoneDog.getZoneId();
+		ZoneId zoneId = timeZoneDog.getZoneId();
 
 		List<Condition> conditions = new ArrayList<>();
 
