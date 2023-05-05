@@ -59,6 +59,16 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			4, 2, 5);
+
+		checkResults(
+			_interestCompositionDog.getIndividualCompositionResultBag(
+				null, "e", 1, Sort.asc("count"), 1),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("clicks-and-mortar e-tailers", 2L);
+				}
+			},
+			4, 3, 5);
 	}
 
 	@BQSQLResource(

@@ -47,6 +47,17 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			1, 1, 8);
+
+		checkResults(
+			_siteInterestCompositionDog.getCompositionResultBag(
+				null, 10, 0,
+				TimeRange.of(localDate.minusDays(9), localDate.minusDays(90))),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("compelling action-items", 1L);
+				}
+			},
+			1, 1, 8);
 	}
 
 	@BQSQLResource(resourcePath = "session_interest_score_info.sql")
