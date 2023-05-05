@@ -16,6 +16,16 @@ function upgrade_event_asset_columns {
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_event_merge_statement.sql
 }
 
+function upgrade_event_experiment_id_column {
+	local asah_project_id=${1}
+
+	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_event_experiment_id_column_statement.sql > new_upgrade_event_experiment_id_column_statement.sql
+
+	echo "Upgrade Event ExperimentId Column for Project ID: ${PROJECT_ID}, Asah Project ID: ${asah_project_id}"
+
+	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_event_experiment_id_column_statement.sql
+}
+
 function upgrade_identity_activity_summary {
 	local asah_project_id=${1}
 
@@ -39,6 +49,7 @@ function upgrade_session_urls {
 for i in $(bq ls --datasets=true --max_results=1000 | grep "asah" | grep -v "osbasah" | awk '{$1=$1;print}')
 do :
 	upgrade_event_asset_columns $i
+	upgrade_event_experiment_id_column $i
 	upgrade_identity_activity_summary $i
 	upgrade_session_urls $i
 done
