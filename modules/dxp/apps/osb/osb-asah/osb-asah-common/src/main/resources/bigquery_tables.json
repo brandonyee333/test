@@ -1928,6 +1928,11 @@
 			},
 			{
 				"mode": "NULLABLE",
+				"name": "experimentId",
+				"type": "INT64"
+			},
+			{
+				"mode": "NULLABLE",
 				"name": "indirectAccess",
 				"type": "INT64"
 			},
