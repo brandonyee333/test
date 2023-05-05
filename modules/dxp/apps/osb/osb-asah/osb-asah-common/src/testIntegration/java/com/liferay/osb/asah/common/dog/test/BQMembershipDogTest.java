@@ -14,15 +14,9 @@
 
 package com.liferay.osb.asah.common.dog.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
-import com.liferay.osb.asah.common.json.JSONUtil;
-import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
@@ -31,22 +25,12 @@ import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -58,87 +42,6 @@ import org.springframework.data.domain.Page;
 public class BQMembershipDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
-
-	@Disabled
-	@Test
-	public void testAddMembershipWithActiveStatusAndAnonymousIndividual() {
-		Segment segment1 = new Segment();
-
-		segment1.setId(234L);
-		segment1.setIncludeAnonymousUsers(Boolean.TRUE);
-		segment1.setIsNew(Boolean.TRUE);
-		segment1.setStatus("ACTIVE");
-
-		_segmentRepository.save(segment1);
-
-		Segment segment2 = new Segment();
-
-		segment2.setId(456L);
-		segment2.setIncludeAnonymousUsers(Boolean.TRUE);
-		segment2.setIsNew(Boolean.TRUE);
-		segment2.setStatus("ACTIVE");
-
-		_segmentRepository.save(segment2);
-
-		Individual individual = new Individual();
-
-		individual.setId("123");
-		individual.setSegmentIds(Collections.singleton(456L));
-
-		// TODO Add individual
-
-		BQMembership bqMembership = new BQMembership();
-
-		bqMembership.setCreateDate(
-			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
-		bqMembership.setIdentityId("123");
-		bqMembership.setModifiedDate(
-			DateUtil.toUTCDate("2019-02-11T20:27:36.603Z"));
-		bqMembership.setSegmentId(234L);
-		bqMembership.setStatus("ACTIVE");
-
-		bqMembership = _bqMembershipDog.addBQMembership(bqMembership);
-
-		Assertions.assertNotNull(bqMembership);
-
-		List<BQMembership> bqMemberships = _bqMembershipRepository.findAll();
-
-		Assertions.assertEquals(1, bqMemberships.size());
-
-		JSONAssert.assertEquals(
-			_objectMapper.convertValue(bqMembership, JSONObject.class),
-			_objectMapper.convertValue(bqMemberships.get(0), JSONObject.class),
-			false);
-
-		Assertions.assertNotNull(bqMembership.getId());
-
-		Set<Long> segmentIds = individual.getSegmentIds();
-
-		MatcherAssert.assertThat(
-			new Long[] {234L, 456L},
-			Matchers.arrayContainingInAnyOrder(
-				segmentIds.toArray(new Long[0])));
-	}
-
-	@Disabled
-	@Test
-	public void testAddMembershipWithInactiveStatus() {
-		BQMembership bqMembership = _bqMembershipDog.addBQMembership(
-			_objectMapper.convertValue(
-				JSONUtil.put("status", "INACTIVE"), BQMembership.class));
-
-		Assertions.assertNotNull(bqMembership);
-
-		List<BQMembership> bqMemberships = _bqMembershipRepository.findAll();
-
-		Assertions.assertEquals(1, bqMemberships.size());
-
-		bqMembership = bqMemberships.get(0);
-
-		Assertions.assertEquals("INACTIVE", bqMembership.getStatus());
-
-		Assertions.assertNotNull(bqMembership.getId());
-	}
 
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
@@ -210,62 +113,227 @@ public class BQMembershipDogTest
 
 	@BQSQLResource(resourcePath = "test_bq_memberships.sql")
 	@Test
-	public void testUpdateBQMemberships() {
+	public void testUpdateBQMembershipsWithActivities() {
+		String assetId =
+			"da70dfa4d9f95ac979f921e8e623358236313f334afcd06cddf8a5621cf6a1e9";
+
 		_bqMembershipDog.updateBQMemberships(
-			1L, "contains(demographics/email/value, 'delta.com')", Boolean.TRUE,
+			11L,
+			"(activities.filterByCount(filter='(activityKey eq " +
+				"''WebContent#webContentViewed#" + assetId + "'' and day eq " +
+					"''2022-12-16'')', operator='ge', value=1))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"(not(activities.filterByCount(filter='(activityKey eq " +
+				"''WebContent#webContentViewed#" + assetId + "'' and day eq " +
+					"''2022-12-16'')', operator='ge', value=1)))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"(activities.filterByCount(filter='(activityKey eq " +
+				"''WebContent#webContentViewed#" + assetId + "'' and day gt " +
+					"''2022-12-17'')', operator='ge', value=1))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"(not(activities.filterByCount(filter='(activityKey eq " +
+				"''WebContent#webContentViewed#" + assetId + "'' and day gt " +
+					"''2022-12-17'')', operator='ge', value=1)))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(4L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"(activities.filterByCount(filter='(activityKey eq " +
+				"''WebContent#webContentViewed#" + assetId + "'' and day lt " +
+					"''2022-12-17'')', operator='ge', value=1))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"(not(activities.filterByCount(filter='(activityKey eq " +
+				"''WebContent#webContentViewed#" + assetId + "'' and day lt " +
+					"''2022-12-17'')', operator='ge', value=1)))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		assetId =
+			"0e12831a7047f759733b21f028525039607350b1b1b4fe904595427e72ea0d9b";
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"(activities.filterByCount(filter='(activityKey eq ''Blog#" +
+				"commentPosted#" + assetId + "'' and day lt ''2022-12-17'')'" +
+					", operator='ge', value=1))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_memberships.sql")
+	@Test
+	public void testUpdateBQMembershipsWithCustomFields() {
+		_bqMembershipDog.updateBQMemberships(
+			11L, "contains(custom/Favorite_Food/value, 'Rice')", Boolean.TRUE,
+			1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "not contains(custom/Favorite_Food/value, 'Rice')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "contains(custom/Favorite_Number/value, 3)", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "not contains(custom/Favorite_Number/value, 5)", Boolean.TRUE,
 			1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
-			1L,
-			"(organizations.filter(filter='(id eq ''23k92323l923lf0as'')'))",
+			11L, "custom/Favorite_Number/value ge 3", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"custom/Favorite_Number/value gt 2 and " +
+				"custom/Favorite_Number/value lt 3",
 			Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
-			1L, "userGroupIds eq 'newr87232kjhdsf89'", Boolean.TRUE, 1L);
+			11L, "custom/Favorite_Number/value gt 3", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Favorite_Number/value le 4", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Favorite_Number/value lt 2", Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
-			1L, "groupIds ne '9823423jh23908234'", Boolean.TRUE, 1L);
+			11L, "custom/Hobbies/value eq 'ing'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Hobbies/value eq 'Exercise'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Hobbies/value ne 'Exercise'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Hobbies/value ne 'ing'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(4L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Salary/value ge 120000.30", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Salary/value gt 100000", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Salary/value le 100000.00", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Salary/value lt 100001", Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
-	@BQSQLResource(resourcePath = "test_bq_memberships_activities.sql")
+	@BQSQLResource(resourcePath = "test_bq_memberships.sql")
 	@Test
-	public void testUpdateBQMembershipsWithActivities() {
+	public void testUpdateBQMembershipsWithDateCustomFields() {
 		_bqMembershipDog.updateBQMemberships(
-			1L,
-			"(demographics/firstName/value eq 'Test1' and " +
-				"(activities.filterByCount(filter='(applicationId eq " +
-					"''Blog'' and eventId = ''blogClicked'' and id = " +
-						"''1'')', operator='ge', value=1)))",
-			Boolean.TRUE, 1L);
+			11L, "custom/Joined_Date/value eq '2022-04-30'", Boolean.TRUE, 1L);
 
-		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
 
 		_bqMembershipDog.updateBQMemberships(
-			1L,
-			"(demographics/firstName/value eq 'Test1' and " +
-				"(activities.filterByCount(filter='(applicationId eq " +
-					"''Blog'' and eventId eq ''blogClicked'' and id eq " +
-						"''2'')', operator='ge', value=1)))",
-			Boolean.TRUE, 1L);
+			11L, "custom/Joined_Date/value ge '2022-04-30'", Boolean.TRUE, 1L);
 
-		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Joined_Date/value gt '2022-01-01'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(4L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Joined_Date/value le '2022-06-01'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(4L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "custom/Joined_Date/value lt '2022-05-03'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
-	@BQSQLResource(resourcePath = "test_bq_memberships_custom_fields.sql")
+	@BQSQLResource(resourcePath = "test_bq_memberships.sql")
 	@Test
-	public void testUpdateBQMembershipsWithCustomFields() {
+	public void testUpdateBQMembershipsWithDemographics() {
 		_bqMembershipDog.updateBQMemberships(
-			1L, "(custom/Organization/value eq 'Engineer')", Boolean.TRUE, 1L);
+			11L, "contains(demographics/email/value, 'delta.com')",
+			Boolean.TRUE, 1L);
 
 		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "not(contains(demographics/email/value, 'delta.com'))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "(demographics/firstName/value eq 'Marcus')", Boolean.TRUE,
+			1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "(demographics/jobTitle/value eq 'Engineer')", Boolean.TRUE,
+			1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_memberships_2.sql")
@@ -489,9 +557,143 @@ public class BQMembershipDogTest
 		_assertBQMemberships(bqMemberships, expectedIndividuals);
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_memberships.sql")
+	@Test
+	public void testUpdateBQMembershipsWithMemberships() {
+		_bqMembershipDog.updateBQMemberships(
+			11L, "groupIds ne '9823423jh23908234'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "roleIds eq '32oiaejf8e32433wr'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "roleIds ne '32oiaejf8e32433wr'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "userGroupIds eq 'newr87232kjhdsf89'", Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_memberships.sql")
+	@Test
+	public void testUpdateBQMembershipsWithOrganization() {
+
+		// Custom fields
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"organizations.filter(filter='(custom/Organization_Type/value eq " +
+				"''test'')')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"organizations.filter(filter='(custom/Divisions/value ge 35)')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"organizations.filter(filter='(custom/Divisions/value gt 35)')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "organizations.filter(filter='(custom/Year/value le 2023)')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "organizations.filter(filter='(custom/Year/value lt 2023)')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		// Hierarchy path known/unknown
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "(organizations.filter(filter='(hierarchyPath ne null)'))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "(organizations.filter(filter='(hierarchyPath eq null)'))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(3L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		// Id
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"(organizations.filter(filter='(id eq ''23k92323l923lf0as'')'))",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		// Modified date
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"organizations.filter(filter='(modifiedDate eq ''2022-12-18'')')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"organizations.filter(filter='(modifiedDate gt ''2022-12-17'')')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L,
+			"organizations.filter(filter='(modifiedDate lt ''2022-12-17'')')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		// Name
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "organizations.filter(filter='(name eq ''Organization 1'')')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(1L, _bqMembershipDog.getBQMembershipsCount(1L));
+
+		_bqMembershipDog.updateBQMemberships(
+			11L, "organizations.filter(filter='(name ne ''Organization 1'')')",
+			Boolean.TRUE, 1L);
+
+		Assertions.assertEquals(0L, _bqMembershipDog.getBQMembershipsCount(1L));
+	}
+
 	@BQSQLResource(resourcePath = "test_bq_memberships_sessions.sql")
 	@Test
 	public void testUpdateBQMembershipsWithSessions() {
+		_bqMembershipDog.updateBQMemberships(
+			1L,
+			"(sessions.filter(filter='(contains(context/referrer, " +
+				"''facebook.com'') and between(completeDate, ''2022-08-30'', " +
+					"''2050-09-02''))'))",
+			Boolean.FALSE, 1L);
+
+		Assertions.assertEquals(2L, _bqMembershipDog.getBQMembershipsCount(1L));
+
 		_bqMembershipDog.updateBQMemberships(
 			1L,
 			"(sessions.filter(filter='(contains(context/referrer, " +
@@ -583,11 +785,5 @@ public class BQMembershipDogTest
 
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
-
-	@Autowired
-	private SegmentRepository _segmentRepository;
 
 }
