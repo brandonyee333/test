@@ -54,38 +54,8 @@ public class HistogramDog {
 	}
 
 	public HistogramMetricBag getHistogramMetricBag(
-		MetricType metricType, SearchQueryContext searchQueryContext) {
-
-		AssetMetricRepository assetMetricRepository =
-			_assetMetricRepositoryMap.get(searchQueryContext.getAssetType());
-
-		if (assetMetricRepository == null) {
-			throw new IllegalArgumentException(
-				"There is no asset metric repository for asset type " +
-					searchQueryContext.getAssetType());
-		}
-
-		String assetTitle = null;
-
-		if (searchQueryContext.getAssetType() != AssetType.CUSTOM) {
-			assetTitle = searchQueryContext.getTitle();
-		}
-
-		Interval interval = searchQueryContext.getInterval();
-
-		TimeRange timeRange = searchQueryContext.getTimeRange();
-
-		if ((timeRange == TimeRange.LAST_24_HOURS) ||
-			(timeRange == TimeRange.YESTERDAY)) {
-
-			interval = Interval.HOUR;
-		}
-
-		List<HistogramMetric> histogramMetrics =
-			assetMetricRepository.getHistogramMetrics(
-				searchQueryContext.getAssetId(), assetTitle,
-				Long.valueOf(searchQueryContext.getChannelId()), true, interval,
-				metricType, timeRange);
+		List<HistogramMetric> histogramMetrics, boolean includePrevious,
+		Interval interval, MetricType metricType, TimeRange timeRange) {
 
 		if (histogramMetrics.isEmpty()) {
 			return new HistogramMetricBag();
@@ -93,9 +63,8 @@ public class HistogramDog {
 
 		HistogramMetricBag histogramMetricBag =
 			_metricHelper.createHistogramMetricBag(
-				Clock.system(_timeZoneDog.getZoneId()),
-				searchQueryContext.isIncludePrevious(), interval, metricType,
-				timeRange);
+				Clock.system(_timeZoneDog.getZoneId()), includePrevious,
+				interval, metricType, timeRange);
 
 		Map<String, Metric> metrics = _getMetrics(histogramMetricBag);
 
@@ -131,6 +100,43 @@ public class HistogramDog {
 		}
 
 		return histogramMetricBag;
+	}
+
+	public HistogramMetricBag getHistogramMetricBag(
+		MetricType metricType, SearchQueryContext searchQueryContext) {
+
+		AssetMetricRepository assetMetricRepository =
+			_assetMetricRepositoryMap.get(searchQueryContext.getAssetType());
+
+		if (assetMetricRepository == null) {
+			throw new IllegalArgumentException(
+				"There is no asset metric repository for asset type " +
+					searchQueryContext.getAssetType());
+		}
+
+		String assetTitle = null;
+
+		if (searchQueryContext.getAssetType() != AssetType.CUSTOM) {
+			assetTitle = searchQueryContext.getTitle();
+		}
+
+		Interval interval = searchQueryContext.getInterval();
+
+		TimeRange timeRange = searchQueryContext.getTimeRange();
+
+		if ((timeRange == TimeRange.LAST_24_HOURS) ||
+			(timeRange == TimeRange.YESTERDAY)) {
+
+			interval = Interval.HOUR;
+		}
+
+		return getHistogramMetricBag(
+			assetMetricRepository.getHistogramMetrics(
+				searchQueryContext.getAssetId(), assetTitle,
+				Long.valueOf(searchQueryContext.getChannelId()), true, interval,
+				metricType, timeRange),
+			searchQueryContext.isIncludePrevious(), interval, metricType,
+			timeRange);
 	}
 
 	private Map<String, Metric> _getMetrics(
