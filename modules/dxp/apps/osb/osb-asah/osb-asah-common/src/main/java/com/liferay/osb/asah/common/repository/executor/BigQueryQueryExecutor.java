@@ -401,6 +401,8 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 				_getBigQueryTableName(name));
 		}
 
+		query = query.replaceAll("'([\\w\\d]*?)''([\\w\\d]*?)'", "'$1\\\\'$2'");
+
 		return query.replace("\\''", "\\'");
 	}
 
