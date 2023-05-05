@@ -26,8 +26,9 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
+import com.liferay.osb.asah.test.util.spring.OSBAsahBQSQLTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
@@ -45,7 +46,6 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
@@ -60,12 +60,12 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 /**
  * @author André Miranda
  */
-@Disabled
 @TestExecutionListeners(
 	mergeMode = TestExecutionListeners.MergeMode.REPLACE_DEFAULTS,
 	value = {
 		DependencyInjectionTestExecutionListener.class,
 		MockitoTestExecutionListener.class,
+		OSBAsahBQSQLTestExecutionListener.class,
 		OSBAsahRepositoryTestExecutionListener.class,
 		OSBAsahSQLTestExecutionListener.class
 	}
@@ -232,10 +232,7 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertEquals(3, experiments.size(), experiments.toString());
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
-	)
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -282,10 +279,7 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertEquals("Crazy test", experiment.getName());
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
-	)
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -313,10 +307,7 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			experimentSessionHistogramMetrics.get(2));
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
-	)
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -344,9 +335,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			experimentSessionHistogramMetrics.get(2));
 	}
 
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testGetTotalSessions() {
@@ -356,9 +348,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertEquals(9L, totalSessions);
 	}
 
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testGetVariantUniqueVisitors() {

@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
-import com.liferay.osb.asah.common.model.MetricType;
+import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -109,9 +109,9 @@ public class ExperimentMetricDogTest
 
 		Mockito.when(
 			_experimentDataDog.fetchDichotomousDataPoint(
-				ArgumentMatchers.any(), ArgumentMatchers.any(),
-				ArgumentMatchers.any(), ArgumentMatchers.any(MetricType.class),
-				ArgumentMatchers.any(), ArgumentMatchers.any(TimeRange.class),
+				ArgumentMatchers.any(),
+				ArgumentMatchers.any(PageMetricType.class),
+				ArgumentMatchers.any(TimeRange.class),
 				ArgumentMatchers.eq(dxpVariantId))
 		).thenReturn(
 			new ExperimentDataPoint<>(trials, value)

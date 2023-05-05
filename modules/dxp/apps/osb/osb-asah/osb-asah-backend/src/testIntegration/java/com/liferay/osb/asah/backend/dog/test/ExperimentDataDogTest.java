@@ -20,8 +20,8 @@ import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.time.LocalDate;
@@ -39,15 +39,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author André Miranda
  */
-@Disabled
 public class ExperimentDataDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
 
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
-	)
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -75,10 +72,7 @@ public class ExperimentDataDogTest
 			new Double[] {44000D, 28000D, 1800D});
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
-	)
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -89,15 +83,15 @@ public class ExperimentDataDogTest
 
 		_assertDataPoint(
 			_experimentDataDog.fetchDichotomousDataPoint(
-				1L, "1", 1L, PageMetricType.BOUNCE_RATE,
-				"http://192.168.108.90:8080/",
-				TimeRange.of(localDate.minusDays(2)), null),
-			9, 7D);
+				"http://192.168.108.90:8080/", PageMetricType.BOUNCE,
+				TimeRange.of(localDate.minusDays(2))),
+			10, 8D);
 	}
 
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/pages_info.json"
+		repositoryClass = ExperimentRepository.class,
+		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
 	@Test
 	public void testFetchDichotomousDataPointBounceMetric() {
@@ -105,19 +99,16 @@ public class ExperimentDataDogTest
 
 		ExperimentDataPoint<Double> experimentDataPoint =
 			_experimentDataDog.fetchDichotomousDataPoint(
-				null, null, null, PageMetricType.BOUNCE_RATE, null,
-				TimeRange.of(localDate.minusDays(1), localDate.minusDays(1)),
+				1L, PageMetricType.BOUNCE,
+				TimeRange.of(localDate.minusDays(1), localDate.minusDays(3)),
 				"1");
 
 		Assertions.assertEquals(4, experimentDataPoint.getTrials());
-		Assertions.assertEquals(3.0, experimentDataPoint.getValue(), 0);
+		Assertions.assertEquals(2.0, experimentDataPoint.getValue(), 0);
 	}
 
-
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
-	)
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
+	@Disabled
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -151,10 +142,7 @@ public class ExperimentDataDogTest
 			experimentDataPoints.get(1), 2, new Double[] {44000D, 28000D});
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/experiment_pages_info.json"
-	)
+	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -165,9 +153,8 @@ public class ExperimentDataDogTest
 
 		_assertDataPoint(
 			_experimentDataDog.fetchDichotomousDataPoint(
-				1L, "1", 1L, PageMetricType.BOUNCE_RATE,
-				"http://192.168.108.90:8080/",
-				TimeRange.of(localDate.minusDays(2)), "1"),
+				1L, PageMetricType.BOUNCE, TimeRange.of(localDate.minusDays(2)),
+				"1"),
 			5, 3D);
 	}
 
