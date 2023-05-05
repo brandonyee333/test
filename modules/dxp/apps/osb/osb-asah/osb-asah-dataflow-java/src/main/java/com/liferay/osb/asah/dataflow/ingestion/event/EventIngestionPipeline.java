@@ -628,6 +628,13 @@ public class EventIngestionPipeline {
 			ObjectMapperUtil.writeValueAsString(
 				analyticsEvent.eventProperties));
 		tableRow.set("experienceId", context.get("experienceId"));
+
+		String experimentId = context.get("experimentId");
+
+		if (StringUtils.isNotBlank(experimentId)) {
+			tableRow.set("experimentId", Long.parseLong(experimentId));
+		}
+
 		tableRow.set("id", analyticsEvent.id);
 		tableRow.set("keywords", context.get("keywords"));
 		tableRow.set("languageId", context.get("languageId"));
