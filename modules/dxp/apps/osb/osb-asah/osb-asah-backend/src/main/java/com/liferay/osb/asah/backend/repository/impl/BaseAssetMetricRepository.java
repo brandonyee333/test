@@ -763,6 +763,12 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	protected abstract String getTableName(TimeRange timeRange);
 
 	@Autowired
+	protected QueryExecutor _queryExecutor;
+
+	@Autowired
+	protected TimeZoneDog _timeZoneDog;
+
+	@Autowired
 	protected DSLContext dslContext;
 
 	@Autowired
@@ -1000,11 +1006,5 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		return assetMetric;
 	}
-
-	@Autowired
-	private QueryExecutor _queryExecutor;
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }

@@ -15,24 +15,40 @@
 package com.liferay.osb.asah.backend.repository.impl;
 
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.PageMetric;
+import com.liferay.osb.asah.backend.repository.PageAssetMetricRepository;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
 
 import java.math.BigDecimal;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.jooq.Condition;
+import org.jooq.DatePart;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -40,11 +56,198 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("PageAssetMetricRepository")
 public class PageAssetMetricRepositoryImpl
-	extends BaseAssetMetricRepository<PageMetric> {
+	extends BaseAssetMetricRepository<PageMetric>
+	implements PageAssetMetricRepository {
 
 	@Override
 	public AssetType getAssetType() {
 		return AssetType.PAGE;
+	}
+
+	@Override
+	public List<HistogramMetric> getExperimentHistogramMetrics(
+		Long experimentId, PageMetricType pageMetricType, TimeRange timeRange,
+		@Nullable String variantId) {
+
+		Field field = DSL.timestamp(
+			dslHelper.dateTrunc(
+				DatePart.DAY,
+				dslHelper.getDateAtTimeZoneField(
+					"eventdate", _timeZoneDog.getTimeZoneId())));
+
+		field = field.as("key");
+
+		SelectJoinStep<Record> selectJoinStep = dslContext.select(
+			field, getMetricFieldAliased(pageMetricType, timeRange)
+		).from(
+			getTableName(timeRange)
+		);
+
+		return _queryExecutor.queryForList(
+			rowMap -> {
+				Metric metric = new Metric(pageMetricType);
+
+				BigDecimal bigDecimal = (BigDecimal)rowMap.get(
+					pageMetricType.getName());
+
+				if (bigDecimal == null) {
+					bigDecimal = BigDecimal.ZERO;
+				}
+
+				metric.setValue(bigDecimal.doubleValue());
+
+				return new HistogramMetric(
+					String.valueOf(
+						DateUtil.toLocalDateTime(
+							(Date)rowMap.get("key"), ZoneOffset.UTC)),
+					metric);
+			},
+			selectJoinStep.where(
+				_createWhereClauseCondition(experimentId, timeRange, variantId)
+			).groupBy(
+				field
+			));
+	}
+
+	@Override
+	public Optional<PageMetric> getExperimentPageMetric(
+		Long experimentId, Set<PageMetricType> pageMetricTypes,
+		TimeRange timeRange, String variantId) {
+
+		SelectJoinStep<Record> selectJoinStep = dslContext.select(
+			_getMetricFields(pageMetricTypes, timeRange)
+		).from(
+			getTableName(timeRange)
+		);
+
+		ZoneId zoneId = _timeZoneDog.getZoneId();
+
+		return _queryExecutor.queryForObject(
+			recordMap -> _toPageMetric(pageMetricTypes, recordMap),
+			selectJoinStep.where(
+				DSL.field(
+					"experimentId", Long.class
+				).eq(
+					experimentId
+				),
+				DSL.field(
+					"eventDate"
+				).between(
+					dslHelper.getDateParam(
+						timeRange.getStartLocalDateTime(), zoneId.toString()),
+					dslHelper.getDateParam(
+						timeRange.getEndLocalDateTime(), zoneId.toString())
+				),
+				DSL.field(
+					"variantId"
+				).eq(
+					variantId
+				)));
+	}
+
+	@Override
+	public Optional<PageMetric> getExperimentPageMetric(
+		String canonicalUrl, Set<PageMetricType> pageMetricTypes,
+		TimeRange timeRange) {
+
+		SelectJoinStep<Record> selectJoinStep = dslContext.select(
+			_getMetricFields(pageMetricTypes, timeRange)
+		).from(
+			getTableName(timeRange)
+		);
+
+		ZoneId zoneId = _timeZoneDog.getZoneId();
+
+		return _queryExecutor.queryForObject(
+			recordMap -> _toPageMetric(pageMetricTypes, recordMap),
+			selectJoinStep.where(
+				DSL.field(
+					"canonicalUrl"
+				).eq(
+					canonicalUrl
+				),
+				DSL.field(
+					"eventDate"
+				).between(
+					dslHelper.getDateParam(
+						timeRange.getStartLocalDateTime(), zoneId.toString()),
+					dslHelper.getDateParam(
+						timeRange.getEndLocalDateTime(), zoneId.toString())
+				)));
+	}
+
+	@Override
+	public Long getUniqueSessionsCount(Long experimentId, TimeRange timeRange) {
+		ZoneId zoneId = _timeZoneDog.getZoneId();
+
+		return _queryExecutor.queryForLong(
+			dslContext.select(
+				DSL.countDistinct(DSL.field("sessionId"))
+			).from(
+				getTableName(timeRange)
+			).where(
+				DSL.field(
+					"eventDate"
+				).between(
+					dslHelper.getDateParam(
+						timeRange.getStartLocalDateTime(), zoneId.toString()),
+					dslHelper.getDateParam(
+						timeRange.getEndLocalDateTime(), zoneId.toString())
+				),
+				DSL.field(
+					"experimentId", Long.class
+				).eq(
+					experimentId
+				)
+			));
+	}
+
+	@Override
+	public Long getVariantUniqueVisitors(
+		Long experimentId, TimeRange timeRange, String variantId) {
+
+		ZoneId zoneId = _timeZoneDog.getZoneId();
+
+		return _queryExecutor.queryForLong(
+			dslContext.select(
+				DSL.countDistinct(
+					DSL.coalesce(
+						DSL.field("Identity.individualId"),
+						DSL.field("PageDaily.userId")))
+			).from(
+				getTableName(timeRange)
+			).join(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"Identity"
+				)
+			).on(
+				DSL.field(
+					"PageDaily.userId"
+				).eq(
+					DSL.field("Identity.id")
+				)
+			).where(
+				DSL.field(
+					"eventDate"
+				).between(
+					dslHelper.getDateParam(
+						timeRange.getStartLocalDateTime(), zoneId.toString()),
+					dslHelper.getDateParam(
+						timeRange.getEndLocalDateTime(), zoneId.toString())
+				),
+				DSL.field(
+					"experimentId", Long.class
+				).eq(
+					experimentId
+				),
+				DSL.field(
+					"variantId"
+				).eq(
+					variantId
+				)
+			));
 	}
 
 	@Override
@@ -188,6 +391,79 @@ public class PageAssetMetricRepositoryImpl
 		}
 
 		return "PageDaily";
+	}
+
+	private List<Condition> _createWhereClauseCondition(
+		Long experimentId, TimeRange timeRange, @Nullable String variantId) {
+
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"experimentId", Long.class
+			).eq(
+				experimentId
+			));
+
+		ZoneId zoneId = _timeZoneDog.getZoneId();
+
+		conditions.add(
+			DSL.field(
+				"eventDate"
+			).between(
+				dslHelper.getDateParam(
+					timeRange.getStartLocalDateTime(), zoneId.toString()),
+				dslHelper.getDateParam(
+					timeRange.getEndLocalDateTime(), zoneId.toString())
+			));
+
+		if (variantId != null) {
+			conditions.add(
+				DSL.field(
+					"variantId"
+				).eq(
+					variantId
+				));
+		}
+
+		return conditions;
+	}
+
+	private List<Field<BigDecimal>> _getMetricFields(
+		Set<PageMetricType> pageMetricTypes, TimeRange timeRange) {
+
+		Stream<PageMetricType> stream = pageMetricTypes.stream();
+
+		return stream.map(
+			metricName -> getMetricFieldAliased(metricName, timeRange)
+		).collect(
+			Collectors.toList()
+		);
+	}
+
+	private PageMetric _toPageMetric(
+		Set<PageMetricType> pageMetricTypes, Map<String, Object> recordMap) {
+
+		PageMetric pageMetric = new PageMetric();
+
+		Map<String, BiConsumer<PageMetric, Metric>> assetMetricSetters =
+			getAssetMetricSetters();
+
+		for (PageMetricType pageMetricType : pageMetricTypes) {
+			Metric metric = new Metric(pageMetricType);
+
+			BigDecimal metricValueBigDecimal = (BigDecimal)recordMap.get(
+				pageMetricType.getName());
+
+			metric.setValue(metricValueBigDecimal.doubleValue());
+
+			BiConsumer<PageMetric, Metric> assetMetricSetter =
+				assetMetricSetters.get(pageMetricType.getName());
+
+			assetMetricSetter.accept(pageMetric, metric);
+		}
+
+		return pageMetric;
 	}
 
 }
