@@ -19,32 +19,22 @@ package com.liferay.osb.asah.common.model;
  */
 public enum GoalMetric {
 
-	BOUNCE_RATE(false, true, PageMetricType.BOUNCE_RATE),
-	CLICK_RATE(false, false, PageMetricType.CLICK_THROUGH_RATE),
-	TIME_ON_PAGE(true, false, PageMetricType.TIME_ON_PAGE);
+	BOUNCE_RATE(true, PageMetricType.BOUNCE_RATE),
+	CLICK_RATE(false, PageMetricType.CLICK_THROUGH_RATE);
 
 	public PageMetricType getPageMetricType() {
 		return _pageMetricType;
-	}
-
-	public boolean isContinuous() {
-		return _continuous;
 	}
 
 	public boolean isInverseMetric() {
 		return _inverseMetric;
 	}
 
-	private GoalMetric(
-		boolean continuous, boolean inverseMetric,
-		PageMetricType pageMetricType) {
-
-		_continuous = continuous;
+	private GoalMetric(boolean inverseMetric, PageMetricType pageMetricType) {
 		_inverseMetric = inverseMetric;
 		_pageMetricType = pageMetricType;
 	}
 
-	private final boolean _continuous;
 	private final boolean _inverseMetric;
 	private final PageMetricType _pageMetricType;
 

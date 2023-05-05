@@ -197,40 +197,18 @@ public abstract class BaseExperimentMetricCalculator<T>
 	protected abstract void setVariantsEstimatedSampleSize(
 		double confidenceLevel, List<Variant<T>> variants);
 
-	protected double toSafeDouble(double value) {
-		if (Double.isNaN(value) || Double.isInfinite(value)) {
-			return 0;
-		}
-
-		return value;
-	}
-
 	private BigDecimal[] _calculateConfidenceIntervals(
-		double confidenceLevel, DoubleTensor doubleTensor,
-		GoalMetric goalMetric) {
-
-		double lowerBound;
-		double upperBound;
+		double confidenceLevel, DoubleTensor doubleTensor) {
 
 		Percentile percentile = new Percentile();
 
 		double lowerQuantile = 100 - confidenceLevel;
 		double upperQuantile = confidenceLevel;
 
-		if (goalMetric == GoalMetric.TIME_ON_PAGE) {
-			DoubleTensor normalizedDoubleTensor = _log10exp(doubleTensor);
+		double[] data = doubleTensor.asFlatDoubleArray();
 
-			double[] data = normalizedDoubleTensor.asFlatDoubleArray();
-
-			lowerBound = percentile.evaluate(data, lowerQuantile);
-			upperBound = percentile.evaluate(data, upperQuantile);
-		}
-		else {
-			double[] data = doubleTensor.asFlatDoubleArray();
-
-			lowerBound = percentile.evaluate(data, lowerQuantile);
-			upperBound = percentile.evaluate(data, upperQuantile);
-		}
+		double lowerBound = percentile.evaluate(data, lowerQuantile);
+		double upperBound = percentile.evaluate(data, upperQuantile);
 
 		return new BigDecimal[] {
 			BigDecimal.valueOf(lowerBound), BigDecimal.valueOf(upperBound)
@@ -269,18 +247,8 @@ public abstract class BaseExperimentMetricCalculator<T>
 		);
 	}
 
-	private double _calculateMedian(
-		DoubleTensor doubleTensor, GoalMetric goalMetric) {
-
+	private double _calculateMedian(DoubleTensor doubleTensor) {
 		Percentile percentile = new Percentile();
-
-		if (goalMetric == GoalMetric.TIME_ON_PAGE) {
-			DoubleTensor normalizedDoubleTensor = _log10exp(doubleTensor);
-
-			return percentile.evaluate(
-				normalizedDoubleTensor.asFlatDoubleArray(),
-				_PERCENTILE_FOR_MEDIAN);
-		}
 
 		return percentile.evaluate(
 			doubleTensor.asFlatDoubleArray(), _PERCENTILE_FOR_MEDIAN);
@@ -358,9 +326,9 @@ public abstract class BaseExperimentMetricCalculator<T>
 
 		experimentVariantMetric.setConfidenceIntervals(
 			_calculateConfidenceIntervals(
-				confidenceLevel, variantDoubleTensor, goalMetric));
+				confidenceLevel, variantDoubleTensor));
 		experimentVariantMetric.setMedian(
-			_calculateMedian(variantDoubleTensor, goalMetric));
+			_calculateMedian(variantDoubleTensor));
 		experimentVariantMetric.setProbabilityToWin(
 			_calculateProbabilityToWin(
 				goalMetric, variant, variantDoubleTensor,
@@ -368,8 +336,7 @@ public abstract class BaseExperimentMetricCalculator<T>
 
 		if (!variant.isControl()) {
 			double controlMedian = _calculateMedian(
-				variantDoubleTensorMap.get(controlVariant.getDXPVariantId()),
-				goalMetric);
+				variantDoubleTensorMap.get(controlVariant.getDXPVariantId()));
 
 			experimentVariantMetric.setImprovement(
 				_calculateImprovement(
@@ -419,13 +386,6 @@ public abstract class BaseExperimentMetricCalculator<T>
 
 		return ChronoUnit.DAYS.between(
 			experimentStartedDate.toInstant(), Instant.now());
-	}
-
-	private DoubleTensor _log10exp(DoubleTensor doubleTensor) {
-		return doubleTensor.duplicate(
-		).div(
-			FastMath.log10(FastMath.E)
-		).exp();
 	}
 
 	private static final double _PERCENTILE_FOR_MEDIAN = 50.0;

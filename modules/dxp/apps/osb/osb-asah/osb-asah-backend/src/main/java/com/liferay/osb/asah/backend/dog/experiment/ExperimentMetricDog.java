@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.Goal;
-import com.liferay.osb.asah.common.model.GoalMetric;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 
 import java.util.List;
@@ -60,13 +59,7 @@ public class ExperimentMetricDog {
 				HttpStatus.BAD_REQUEST, "Experiment is missing goal metric");
 		}
 
-		GoalMetric goalMetric = goal.getGoalMetric();
-
-		if (!goalMetric.isContinuous()) {
-			return _dichotomousDataExperimentMetricCalculator;
-		}
-
-		throw new IllegalStateException("Unexpected goal metric " + goalMetric);
+		return _dichotomousDataExperimentMetricCalculator;
 	}
 
 	@Autowired
