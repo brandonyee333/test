@@ -80,7 +80,6 @@ public class PageMetric implements AssetMetric {
 			Objects.equals(_bounceMetric, pageMetric._bounceMetric) &&
 			Objects.equals(_bounceRateMetric, pageMetric._bounceRateMetric) &&
 			Objects.equals(_canonicalUrls, pageMetric._canonicalUrls) &&
-			Objects.equals(_ctpMetric, pageMetric._ctpMetric) &&
 			Objects.equals(_ctrMetric, pageMetric._ctrMetric) &&
 			Objects.equals(_dataSourceId, pageMetric._dataSourceId) &&
 			Objects.equals(
@@ -148,10 +147,6 @@ public class PageMetric implements AssetMetric {
 		return _canonicalUrls;
 	}
 
-	public Metric getCTPMetric() {
-		return _ctpMetric;
-	}
-
 	public Metric getCTRMetric() {
 		return _ctrMetric;
 	}
@@ -211,11 +206,10 @@ public class PageMetric implements AssetMetric {
 	public int hashCode() {
 		return Objects.hash(
 			_assetMetrics, _assetTitle, _avgTimeOnPageMetric, _bounceMetric,
-			_bounceRateMetric, _canonicalUrls, _ctpMetric, _ctrMetric,
-			_dataSourceId, _directAccessMetric, _entrancesMetric,
-			_exitRateMetric, _indirectAccessMetric, _readsMetric,
-			_sessionsMetric, _timeOnPageMetric, _urls, _viewsMetric,
-			_visitorsMetric);
+			_bounceRateMetric, _canonicalUrls, _ctrMetric, _dataSourceId,
+			_directAccessMetric, _entrancesMetric, _exitRateMetric,
+			_indirectAccessMetric, _readsMetric, _sessionsMetric,
+			_timeOnPageMetric, _urls, _viewsMetric, _visitorsMetric);
 	}
 
 	@Override
@@ -268,10 +262,6 @@ public class PageMetric implements AssetMetric {
 	@Override
 	public void setCanonicalUrls(List<String> canonicalUrls) {
 		_canonicalUrls = canonicalUrls;
-	}
-
-	public void setCTPMetric(Metric ctpMetric) {
-		_ctpMetric = ctpMetric;
 	}
 
 	public void setCTRMetric(Metric ctrMetric) {
@@ -381,8 +371,6 @@ public class PageMetric implements AssetMetric {
 	private Metric _bounceMetric = new Metric(PageMetricType.BOUNCE);
 	private Metric _bounceRateMetric = new Metric(PageMetricType.BOUNCE_RATE);
 	private List<String> _canonicalUrls;
-	private Metric _ctpMetric = new Metric(
-		PageMetricType.CLICK_THROUGH_PROBABILITY);
 	private Metric _ctrMetric = new Metric(PageMetricType.CLICK_THROUGH_RATE);
 	private String _dataSourceId;
 	private Metric _directAccessMetric = new Metric(

@@ -181,16 +181,11 @@ public class MetricDogTest
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
 				{
-					add(PageMetricType.CLICK_THROUGH_PROBABILITY.getName());
 					add(PageMetricType.CLICK_THROUGH_RATE.getName());
 				}
 			});
 
 		Assertions.assertNotNull(pageMetric);
-
-		Metric ctpMetric = pageMetric.getCTPMetric();
-
-		Assertions.assertEquals(2, ctpMetric.getValue(), 0);
 
 		Metric ctrMetric = pageMetric.getCTRMetric();
 

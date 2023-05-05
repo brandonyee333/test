@@ -94,9 +94,6 @@ public class PageAssetMetricRepositoryImpl
 					PageMetricType.BOUNCE_RATE.getName(),
 					PageMetric::setBounceRateMetric);
 				put(
-					PageMetricType.CLICK_THROUGH_PROBABILITY.getName(),
-					PageMetric::setCTPMetric);
-				put(
 					PageMetricType.CLICK_THROUGH_RATE.getName(),
 					PageMetric::setCTRMetric);
 				put(
