@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
-import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
+import com.liferay.osb.asah.backend.repository.PageAssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
 import com.liferay.osb.asah.common.dxp.DXPClient;
@@ -30,6 +30,7 @@ import com.liferay.osb.asah.common.model.DXPVariantSettings;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
+import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
@@ -184,7 +185,7 @@ public class ExperimentDog {
 	}
 
 	public List<HistogramMetric> getExperimentSessionHistogramMetrics(
-		Long experimentId, String variantId) {
+		Long experimentId, @Nullable String variantId) {
 
 		Experiment experiment = fetchExperiment(experimentId);
 
@@ -192,29 +193,43 @@ public class ExperimentDog {
 			return Collections.emptyList();
 		}
 
-		SearchQueryContext searchQueryContext = new SearchQueryContext() {
-			{
-				setExperimentId(experimentId);
-				setIncludePrevious(Boolean.FALSE);
-				setTimeRange(
-					_getTimeRange(experiment.getStartedDateLocalDateTime()));
-				setVariantId(variantId);
-			}
-		};
+		TimeRange timeRange = _getTimeRange(
+			experiment.getStartedDateLocalDateTime());
+
+		List<HistogramMetric> histogramMetrics =
+			_pageAssetMetricRepository.getExperimentHistogramMetrics(
+				experimentId, PageMetricType.SESSIONS, timeRange, variantId);
 
 		HistogramMetricBag histogramMetricBag =
 			_histogramDog.getHistogramMetricBag(
-				PageMetricType.SESSIONS, searchQueryContext);
+				histogramMetrics, false, Interval.DAY, PageMetricType.SESSIONS,
+				timeRange);
 
 		return histogramMetricBag.getMetrics();
 	}
 
 	public Long getExperimentSessions(Long experimentId) {
-		return 0L;
+		Experiment experiment = fetchExperiment(experimentId);
+
+		if (experiment == null) {
+			return 0L;
+		}
+
+		return _pageAssetMetricRepository.getUniqueSessionsCount(
+			experimentId,
+			_getTimeRange(experiment.getStartedDateLocalDateTime()));
 	}
 
 	public Long getVariantUniqueVisitors(Long experimentId, String variantId) {
-		return 0L;
+		Experiment experiment = fetchExperiment(experimentId);
+
+		if (experiment == null) {
+			return 0L;
+		}
+
+		return _pageAssetMetricRepository.getVariantUniqueVisitors(
+			experimentId,
+			_getTimeRange(experiment.getStartedDateLocalDateTime()), variantId);
 	}
 
 	public Experiment patchExperiment(
@@ -498,6 +513,9 @@ public class ExperimentDog {
 
 	@Autowired
 	private HistogramDog _histogramDog;
+
+	@Autowired
+	private PageAssetMetricRepository _pageAssetMetricRepository;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;

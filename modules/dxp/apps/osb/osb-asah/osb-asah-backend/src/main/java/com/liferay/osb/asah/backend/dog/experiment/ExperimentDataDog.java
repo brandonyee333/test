@@ -21,11 +21,13 @@ import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.model.Metric;
 import com.liferay.osb.asah.backend.model.PageMetric;
+import com.liferay.osb.asah.backend.repository.PageAssetMetricRepository;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.model.MetricType;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,7 +35,6 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -65,47 +66,29 @@ public class ExperimentDataDog {
 	}
 
 	public ExperimentDataPoint<Double> fetchDichotomousDataPoint(
-		Long dataSourceId, String dxpExperienceId, Long experimentId,
-		MetricType metricType, String pageURL, TimeRange timeRange,
-		String variantId) {
+		Long experimentId, PageMetricType goalPageMetricType,
+		TimeRange timeRange, String variantId) {
 
-		SearchQueryContext searchQueryContext = new SearchQueryContext() {
-			{
-				setDataSourceId(
-					Optional.ofNullable(
-						dataSourceId
-					).map(
-						String::valueOf
-					).orElse(
-						null
-					));
-				setExperienceId(dxpExperienceId);
-				setExperimentId(experimentId);
-				setTimeRange(timeRange);
-				setURL(pageURL);
-				setVariantId(variantId);
-			}
-		};
+		Optional<PageMetric> pageMetricOptional =
+			_pageAssetMetricRepository.getExperimentPageMetric(
+				experimentId,
+				SetUtil.of(goalPageMetricType, PageMetricType.SESSIONS),
+				timeRange, variantId);
 
-		PageMetric pageMetric = _metricDog.getAssetMetric(
-			searchQueryContext,
-			new HashSet<String>() {
-				{
-					add(PageMetricType.BOUNCE.getName());
-					add(PageMetricType.CLICK_THROUGH_RATE.getName());
-					add(PageMetricType.SESSIONS.getName());
-				}
-			});
+		return _toExperimentDataPoint(goalPageMetricType, pageMetricOptional);
+	}
 
-		if (metricType == PageMetricType.CLICK_THROUGH_RATE) {
-			return new ExperimentDataPoint<>(
-				_getMetricValueAsLong(pageMetric.getSessionsMetric()),
-				_getMetricValue(pageMetric.getCTRMetric()));
-		}
+	public ExperimentDataPoint<Double> fetchDichotomousDataPoint(
+		String canonicalUrl, PageMetricType goalPageMetricType,
+		TimeRange timeRange) {
 
-		return new ExperimentDataPoint<>(
-			_getMetricValueAsLong(pageMetric.getSessionsMetric()),
-			_getMetricValue(pageMetric.getBounceMetric()));
+		Optional<PageMetric> pageMetricOptional =
+			_pageAssetMetricRepository.getExperimentPageMetric(
+				canonicalUrl,
+				SetUtil.of(goalPageMetricType, PageMetricType.SESSIONS),
+				timeRange);
+
+		return _toExperimentDataPoint(goalPageMetricType, pageMetricOptional);
 	}
 
 	private List<ExperimentDataPoint<Double[]>> _fetchContinuousDataPoints(
@@ -182,11 +165,35 @@ public class ExperimentDataDog {
 		return value.longValue();
 	}
 
+	private ExperimentDataPoint<Double> _toExperimentDataPoint(
+		PageMetricType goalPageMetricType,
+		Optional<PageMetric> pageMetricOptional) {
+
+		if (!pageMetricOptional.isPresent()) {
+			return null;
+		}
+
+		PageMetric pageMetric = pageMetricOptional.get();
+
+		if (goalPageMetricType == PageMetricType.CLICK_THROUGH_RATE) {
+			return new ExperimentDataPoint<>(
+				_getMetricValueAsLong(pageMetric.getSessionsMetric()),
+				_getMetricValue(pageMetric.getCTRMetric()));
+		}
+
+		return new ExperimentDataPoint<>(
+			_getMetricValueAsLong(pageMetric.getSessionsMetric()),
+			_getMetricValue(pageMetric.getBounceMetric()));
+	}
+
 	@Autowired
 	private HistogramDog _histogramDog;
 
 	@Autowired
 	private MetricDog _metricDog;
+
+	@Autowired
+	private PageAssetMetricRepository _pageAssetMetricRepository;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
