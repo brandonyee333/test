@@ -625,6 +625,11 @@
 				"type": "STRING"
 			},
 			{
+				"mode": "NULLABLE",
+				"name": "experimentId",
+				"type": "INT64"
+			},
+			{
 				"mode": "REQUIRED",
 				"name": "id",
 				"type": "STRING"
