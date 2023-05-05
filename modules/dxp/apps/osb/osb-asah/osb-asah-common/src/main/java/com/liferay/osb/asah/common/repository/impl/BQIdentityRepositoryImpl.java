@@ -98,7 +98,7 @@ public class BQIdentityRepositoryImpl
 			return _queryExecutor.queryForLong(
 				selectSelectStep.where(
 					DSL.field(
-						"Identity.createDate"
+						"Individual.createDate"
 					).ge(
 						_dslHelper.getDateParam(startDate)
 					)));

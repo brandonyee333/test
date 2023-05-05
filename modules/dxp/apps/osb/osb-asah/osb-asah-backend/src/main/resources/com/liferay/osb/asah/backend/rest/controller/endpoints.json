@@ -141,7 +141,7 @@
 			"templated": true
 		},
 		"individuals-count": {
-			"href": "{url}/individuals/count{?includeAnonymousUsers}",
+			"href": "{url}/individuals/count{?includeAnonymousUsers,startDate}",
 			"templated": true
 		},
 		"individuals-distribution": {

@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -48,6 +49,7 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -211,9 +213,13 @@ public class IndividualsRestController extends BaseRestController {
 	@GetMapping("/count")
 	public long getIndividualsCount(
 		@RequestParam(defaultValue = "false", required = false) boolean
-			includeAnonymousUsers) {
+			includeAnonymousUsers,
+		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+		@RequestParam(name = "startDate", required = false)
+		Date startDate) {
 
-		return _bqIndividualDog.countIndividuals(includeAnonymousUsers);
+		return _bqIndividualDog.countIndividuals(
+			includeAnonymousUsers, startDate);
 	}
 
 	@GetMapping("/{id}/individual-segments")

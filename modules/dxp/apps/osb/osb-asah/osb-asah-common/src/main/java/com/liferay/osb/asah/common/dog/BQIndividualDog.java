@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.repository.DataSourceRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -91,8 +92,11 @@ public class BQIndividualDog {
 			channelId);
 	}
 
-	public long countIndividuals(boolean includeAnonymousUsers) {
-		return _bqIdentityRepository.countBQIndividuals(includeAnonymousUsers);
+	public long countIndividuals(
+		boolean includeAnonymousUsers, Date startDate) {
+
+		return _bqIdentityRepository.countBQIndividuals(
+			includeAnonymousUsers, startDate);
 	}
 
 	public Individual fetchBQIndividual(@Nullable Long channelId, String id) {
