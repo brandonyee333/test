@@ -31,6 +31,7 @@ import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ExternalLinkWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
@@ -787,6 +788,10 @@ public class AccountSynchronizer {
 		}
 
 		Map<String, String> properties = account.getProperties();
+
+		if (properties.containsKey("gsOpportunity")) {
+			tags.add(ZendeskTagConstants.GS_OPPORTUNITY);
+		}
 
 		if (properties.containsKey("projectSolution")) {
 			tags.add(_toZendeskTag(properties.get("projectSolution")));

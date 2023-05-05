@@ -19,6 +19,8 @@ package com.liferay.osb.customer.zendesk.connector.constants;
  */
 public class ZendeskTagConstants {
 
+	public static final String GS_OPPORTUNITY = "gs_opportunity";
+
 	public static final String OSB_CUSTOMER = "osb_customer";
 
 	public static final String OSB_KNOWLEDGE_BASE = "osb_kb";
