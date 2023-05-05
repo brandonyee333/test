@@ -483,6 +483,13 @@ public class AnalyticsEventsIngestionNanite {
 		}
 
 		bqEvent.setExperienceId(context.get("experienceId"));
+
+		String experimentId = context.get("experimentId");
+
+		if (StringUtils.isNotBlank(experimentId)) {
+			bqEvent.setExperimentId(Long.valueOf(experimentId));
+		}
+
 		bqEvent.setId(analyticsEvent.getId());
 		bqEvent.setKeywords(context.get("keywords"));
 		bqEvent.setLanguageId(context.get("languageId"));

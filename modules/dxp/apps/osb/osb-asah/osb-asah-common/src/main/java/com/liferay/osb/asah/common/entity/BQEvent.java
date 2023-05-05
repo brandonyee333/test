@@ -227,6 +227,11 @@ public class BQEvent {
 	}
 
 	@BigQueryColumn
+	public Long getExperimentId() {
+		return _experimentId;
+	}
+
+	@BigQueryColumn
 	public String getId() {
 		return _id;
 	}
@@ -297,9 +302,10 @@ public class BQEvent {
 			_applicationId, _assetId, _assetTitle, _browserName, _canonicalUrl,
 			_channelId, _city, _contentLanguageId, _context, _country,
 			_createDate, _dataSourceId, _description, _deviceType, _eventDate,
-			_eventId, _eventProperties, _experienceId, _id, _keywords,
-			_languageId, _platformName, _projectTimeZoneId, _referrer, _region,
-			_sessionId, _timezoneOffset, _title, _url, _userId, _variantId);
+			_eventId, _eventProperties, _experienceId, _experimentId, _id,
+			_keywords, _languageId, _platformName, _projectTimeZoneId,
+			_referrer, _region, _sessionId, _timezoneOffset, _title, _url,
+			_userId, _variantId);
 	}
 
 	public void setApplicationId(String applicationId) {
@@ -384,6 +390,10 @@ public class BQEvent {
 		_experienceId = experienceId;
 	}
 
+	public void setExperimentId(Long experimentId) {
+		_experimentId = experimentId;
+	}
+
 	public void setId(String id) {
 		_id = id;
 	}
@@ -454,6 +464,7 @@ public class BQEvent {
 	private String _eventId;
 	private String _eventProperties;
 	private String _experienceId;
+	private Long _experimentId;
 	private String _id;
 	private String _keywords;
 	private String _languageId;
