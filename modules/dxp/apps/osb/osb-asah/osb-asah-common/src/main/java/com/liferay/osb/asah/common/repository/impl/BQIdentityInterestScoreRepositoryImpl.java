@@ -54,6 +54,7 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Record3;
+import org.jooq.Select;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
@@ -1232,36 +1233,12 @@ public class BQIdentityInterestScoreRepositoryImpl
 				));
 		}
 		else {
-			if (channelId != null) {
-				conditions.add(
-					DSL.field(
-						"recordedDate"
-					).eq(
-						_dslContext.select(
-							DSL.max(DSL.field("recordedDate"))
-						).from(
-							"BQIdentityInterestScore"
-						).where(
-							DSL.field(
-								"channelId"
-							).eq(
-								channelId
-							)
-						)
-					));
-			}
-			else {
-				conditions.add(
-					DSL.field(
-						"recordedDate"
-					).eq(
-						_dslContext.select(
-							DSL.max(DSL.field("recordedDate"))
-						).from(
-							"BQIdentityInterestScore"
-						)
-					));
-			}
+			conditions.add(
+				DSL.field(
+					"recordedDate"
+				).eq(
+					_getMaxRecordedDateSelect(channelId)
+				));
 		}
 
 		return conditions;
@@ -1288,38 +1265,33 @@ public class BQIdentityInterestScoreRepositoryImpl
 				individualId
 			));
 
-		if (channelId != null) {
-			conditions.add(
-				DSL.field(
-					"recordedDate"
-				).eq(
-					_dslContext.select(
-						DSL.max(DSL.field("recordedDate"))
-					).from(
-						"BQIdentityInterestScore"
-					).where(
-						DSL.field(
-							"channelId"
-						).eq(
-							channelId
-						)
-					)
-				));
-		}
-		else {
-			conditions.add(
-				DSL.field(
-					"recordedDate"
-				).eq(
-					_dslContext.select(
-						DSL.max(DSL.field("recordedDate"))
-					).from(
-						"BQIdentityInterestScore"
-					)
-				));
-		}
+		conditions.add(
+			DSL.field(
+				"recordedDate"
+			).eq(
+				_getMaxRecordedDateSelect(channelId)
+			));
 
 		return conditions;
+	}
+
+	private Select<Record1<Object>> _getMaxRecordedDateSelect(Long channelId) {
+		SelectJoinStep<Record1<Object>> selectJoinStep = _dslContext.select(
+			DSL.max(DSL.field("recordedDate"))
+		).from(
+			"BQIdentityInterestScore"
+		);
+
+		if (channelId == null) {
+			return selectJoinStep;
+		}
+
+		return selectJoinStep.where(
+			DSL.field(
+				"channelId"
+			).eq(
+				channelId
+			));
 	}
 
 	private Field _getPeriodField(String period) {
