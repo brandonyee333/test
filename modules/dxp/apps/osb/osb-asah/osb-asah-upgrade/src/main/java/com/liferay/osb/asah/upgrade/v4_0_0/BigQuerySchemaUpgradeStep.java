@@ -105,6 +105,11 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 					"assetTitle", LegacySQLTypeName.STRING
 				).setMode(
 					Field.Mode.NULLABLE
+				).build(),
+				Field.newBuilder(
+					"experimentId", LegacySQLTypeName.INTEGER
+				).setMode(
+					Field.Mode.NULLABLE
 				).build()),
 			"event");
 
