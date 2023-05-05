@@ -65,7 +65,9 @@ public class BQIdentityRepositoryImpl
 	}
 
 	@Override
-	public long countBQIndividuals(boolean includeAnonymousUsers) {
+	public long countBQIndividuals(
+		boolean includeAnonymousUsers, Date startDate) {
+
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
@@ -90,6 +92,16 @@ public class BQIdentityRepositoryImpl
 					DSL.field("Individual.id")
 				)
 			);
+		}
+
+		if (startDate != null) {
+			return _queryExecutor.queryForLong(
+				selectSelectStep.where(
+					DSL.field(
+						"Identity.createDate"
+					).ge(
+						_dslHelper.getDateParam(startDate)
+					)));
 		}
 
 		return _queryExecutor.queryForLong(selectJoinStep);
