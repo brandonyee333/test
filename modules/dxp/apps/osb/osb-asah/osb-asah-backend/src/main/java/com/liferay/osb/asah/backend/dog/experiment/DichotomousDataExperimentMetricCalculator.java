@@ -242,21 +242,21 @@ public class DichotomousDataExperimentMetricCalculator
 		for (Variant variant : variants) {
 			double alphaSuccessRate = globalWeight * totalSuccessRate;
 
-			double alphaVarianteSuccessRate =
+			double alphaVariantSuccessRate =
 				alphaSuccessRate +
 					((1 - globalWeight) * variant.getSuccessRate());
 
 			alphas[i] =
-				(alphaVarianteSuccessRate * variant.getTrials()) + _ALPHA_PRIOR;
+				(alphaVariantSuccessRate * variant.getTrials()) + _ALPHA_PRIOR;
 
 			double betaSuccessRate = globalWeight * (1 - totalSuccessRate);
 
-			double betaVarianteSuccessRate =
+			double betaVariantSuccessRate =
 				betaSuccessRate +
 					((1 - globalWeight) * (1 - variant.getSuccessRate()));
 
 			betas[i] =
-				(betaVarianteSuccessRate * variant.getTrials()) + _BETA_PRIOR;
+				(betaVariantSuccessRate * variant.getTrials()) + _BETA_PRIOR;
 
 			i++;
 		}
