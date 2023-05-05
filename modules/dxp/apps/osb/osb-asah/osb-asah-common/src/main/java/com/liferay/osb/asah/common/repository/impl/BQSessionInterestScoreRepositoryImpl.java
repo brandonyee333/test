@@ -96,9 +96,17 @@ public class BQSessionInterestScoreRepositoryImpl
 				)
 			);
 
+		Condition condition = DSL.noCondition();
+
 		List<Condition> conditions = new ArrayList<>();
 
 		if (channelId != null) {
+			condition = DSL.field(
+				"channelId"
+			).eq(
+				channelId
+			);
+
 			conditions.add(
 				DSL.field(
 					"SessionInterestScore.channelId", Long.class
@@ -145,11 +153,7 @@ public class BQSessionInterestScoreRepositoryImpl
 				).from(
 					"BQSession"
 				).where(
-					DSL.field(
-						"channelId"
-					).eq(
-						channelId
-					)
+					condition
 				)
 			).select(
 				aggregateFunction.as("count"), DSL.field("keyword"),
