@@ -121,6 +121,11 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 					Field.Mode.NULLABLE
 				).build(),
 				Field.newBuilder(
+					"experimentId", LegacySQLTypeName.INTEGER
+				).setMode(
+					Field.Mode.NULLABLE
+				).build(),
+				Field.newBuilder(
 					"reads", LegacySQLTypeName.INTEGER
 				).setMode(
 					Field.Mode.NULLABLE
