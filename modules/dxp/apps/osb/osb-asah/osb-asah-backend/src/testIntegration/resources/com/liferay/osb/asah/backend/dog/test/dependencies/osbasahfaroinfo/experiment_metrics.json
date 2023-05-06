@@ -45,7 +45,7 @@
 		"dxpSegmentId": "2",
 		"dxpSegmentName": "Regular Users",
 		"goal": {
-			"metric": "TIME_ON_PAGE"
+			"metric": "BOUNCE_RATE"
 		},
 		"id": "2",
 		"modifiedDate": "2019-07-02T08:30:42.000Z",
@@ -78,7 +78,7 @@
 			}
 		],
 		"goal": {
-			"metric": "CLICK_RATE",
+			"metric": "BOUNCE_RATE",
 			"target": "button-123"
 		},
 		"id": "3",
