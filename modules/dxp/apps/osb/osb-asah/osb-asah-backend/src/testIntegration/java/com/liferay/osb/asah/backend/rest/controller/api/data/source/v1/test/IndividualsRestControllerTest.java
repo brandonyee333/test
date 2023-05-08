@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.test;
 
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
-import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import io.restassured.http.Method;
@@ -62,11 +62,7 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 			getValidatableResponse(Method.GET, "/api/1.0/individuals"));
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
+	@BQSQLResource(resourcePath = "individuals_with_filter_test.sql")
 	@RepositoryResource(
 		repositoryClass = SegmentRepository.class,
 		resourcePath = "osbasahfaroinfo/individual_segments.json"
