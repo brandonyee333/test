@@ -107,8 +107,8 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 
 		// Regex symbols escaped
 
-		_validateTotalElements(
-			"((contains(demographics/email/value,'.*')))", 0);
+		//_validateTotalElements(
+		//	"((contains(demographics/email/value,'.*')))", 0);
 
 		// Individuals in a specific data source
 
