@@ -109,10 +109,29 @@ public class FilterExpressionConditionVisitor
 			stopToken.getText());
 
 		if (Objects.equals(
-				_filterType, FilterExpression.FilterType.INDIVIDUALS) &&
-			Objects.equals(fieldName, "userId")) {
+				_filterType, FilterExpression.FilterType.INDIVIDUALS)) {
 
-			_referencedTableNames.add("User");
+			if (Objects.equals(fieldName, "userId")) {
+				_referencedTableNames.add("User");
+			}
+			else if (Objects.equals(fieldName, "dataSourceId")) {
+				_referencedTableNames.add("IdentityActivity");
+
+				return DSL.field(
+					"IdentityActivity.dataSourceId"
+				).eq(
+					Long.parseLong(value)
+				);
+			}
+			else if (Objects.equals(
+						fieldName, "dataSourceIndividualPKs/individualPKs")) {
+
+				return DSL.field(
+					"Identity.id"
+				).eq(
+					value
+				);
+			}
 		}
 
 		if (Objects.equals(

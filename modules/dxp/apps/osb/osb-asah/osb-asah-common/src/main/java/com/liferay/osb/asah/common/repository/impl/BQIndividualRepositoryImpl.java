@@ -1210,7 +1210,9 @@ public class BQIndividualRepositoryImpl
 		Long channelId, Boolean includeAnonymousUsers,
 		Set<String> referencedTableNames, SelectJoinStep<R> selectJoinStep) {
 
-		if (channelId != null) {
+		if ((channelId != null) ||
+			referencedTableNames.contains("IdentityActivity")) {
+
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQIdentityActivity"
