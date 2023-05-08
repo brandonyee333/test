@@ -147,6 +147,9 @@ public class DXPEntitiesNanite implements Nanite {
 						_processMessageJSONObject(jsonArray.getJSONObject(i));
 					}
 
+					_messageSubscriber.sendAckIds(
+						Collections.singletonList(message.getAckId()));
+
 					if (_log.isDebugEnabled()) {
 						_log.debug(
 							String.format(
@@ -161,10 +164,6 @@ public class DXPEntitiesNanite implements Nanite {
 						"Unable to process analytics events message " +
 							message.getObject(),
 						exception);
-				}
-				finally {
-					_messageSubscriber.sendAckIds(
-						Collections.singletonList(message.getAckId()));
 				}
 			});
 	}
