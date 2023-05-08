@@ -116,15 +116,6 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 		_updateTableFields(
 			Arrays.asList(
 				Field.newBuilder(
-					"channelId", LegacySQLTypeName.INTEGER
-				).setMode(
-					Field.Mode.NULLABLE
-				).build()),
-			"membership");
-
-		_updateTableFields(
-			Arrays.asList(
-				Field.newBuilder(
 					"ctaClicks", LegacySQLTypeName.INTEGER
 				).setMode(
 					Field.Mode.NULLABLE
