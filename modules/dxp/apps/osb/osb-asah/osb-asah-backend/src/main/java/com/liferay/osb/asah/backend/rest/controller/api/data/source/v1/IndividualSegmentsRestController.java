@@ -304,7 +304,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		List<BQMembership> bqMemberships = new ArrayList<>();
 
 		JSONArray jsonArray = new JSONArray(json);
-		Long channelId = segment.getChannelId();
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			BQMembershipDTO bqMembershipDTO = objectMapper.convertValue(
@@ -316,7 +315,7 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 				BQMembership bqMembership = new BQMembership();
 
-				bqMembership.setChannelId(channelId);
+				bqMembership.setChannelId(segment.getChannelId());
 				bqMembership.setCreateDate(date);
 				bqMembership.setModifiedDate(date);
 				bqMembership.setSegmentId(id);
