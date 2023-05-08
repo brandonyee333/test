@@ -96,17 +96,9 @@ public class BQSessionInterestScoreRepositoryImpl
 				)
 			);
 
-		Condition condition = DSL.noCondition();
-
 		List<Condition> conditions = new ArrayList<>();
 
 		if (channelId != null) {
-			condition = DSL.field(
-				"channelId"
-			).eq(
-				channelId
-			);
-
 			conditions.add(
 				DSL.field(
 					"SessionInterestScore.channelId", Long.class
@@ -153,7 +145,7 @@ public class BQSessionInterestScoreRepositoryImpl
 				).from(
 					"BQSession"
 				).where(
-					condition
+					_geBQSessionCondition(channelId)
 				)
 			).select(
 				aggregateFunction.as("count"), DSL.field("keyword"),
@@ -254,6 +246,18 @@ public class BQSessionInterestScoreRepositoryImpl
 		}
 
 		_queryExecutor.queryExecute(insertValuesStep7);
+	}
+
+	private Condition _geBQSessionCondition(@Nullable Long channelId) {
+		if (channelId == null) {
+			return DSL.noCondition();
+		}
+
+		return DSL.field(
+			"channelId"
+		).eq(
+			channelId
+		);
 	}
 
 	private final DSLContext _dslContext;

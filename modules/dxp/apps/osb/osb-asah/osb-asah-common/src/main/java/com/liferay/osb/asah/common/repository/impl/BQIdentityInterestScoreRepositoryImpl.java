@@ -759,15 +759,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 				));
 		}
 
-		Condition condition = DSL.noCondition();
-
 		if (channelId != null) {
-			condition = DSL.field(
-				"channelId"
-			).eq(
-				channelId
-			);
-
 			conditions.add(
 				DSL.field(
 					"IdentityInterestScore.channelId", Long.class
@@ -861,7 +853,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 						DSL.field("IdentityActivity.identityId")
 					)
 				).where(
-					condition
+					_getBQIdentityCondition(channelId)
 				)
 			).select(
 				countField.as("count"),
@@ -1164,6 +1156,18 @@ public class BQIdentityInterestScoreRepositoryImpl
 		}
 
 		return value.doubleValue();
+	}
+
+	private Condition _getBQIdentityCondition(@Nullable Long channelId) {
+		if (channelId == null) {
+			return DSL.noCondition();
+		}
+
+		return DSL.field(
+			"channelId"
+		).eq(
+			channelId
+		);
 	}
 
 	private <T extends Record> SelectJoinStep<T> _getBQIdentitySelectJoinStep(
