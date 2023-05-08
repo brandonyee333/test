@@ -14,11 +14,6 @@
 
 package com.liferay.osb.asah.stream.curator.bot.nanite.dxpentity;
 
-import com.google.cloud.pubsub.v1.AckReplyConsumer;
-import com.google.cloud.pubsub.v1.MessageReceiver;
-import com.google.protobuf.ByteString;
-import com.google.pubsub.v1.PubsubMessage;
-
 import com.liferay.osb.asah.common.concurrent.BoundedExecutor;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.DXPEntityDog;
@@ -28,12 +23,15 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
-import com.liferay.osb.asah.common.messaging.MessageStreamingSubscriber;
+import com.liferay.osb.asah.common.messaging.MessageSubscriber;
+import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PreDestroy;
@@ -53,19 +51,7 @@ import org.springframework.stereotype.Component;
  * @author Rachael Koestartyo
  */
 @Component
-public class DXPEntitiesNanite implements MessageReceiver, Nanite {
-
-	public void addMessageStreamingSubscriber() {
-		try {
-			_messageStreamingSubscriber.subscribe(
-				_maxOutstandingMessages, this);
-		}
-		catch (Exception exception) {
-			_log.error(exception, exception);
-		}
-
-		_boundedExecutor.awaitPendingTasks();
-	}
+public class DXPEntitiesNanite implements Nanite {
 
 	@Override
 	public long getInterval() {
@@ -73,35 +59,13 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 	}
 
 	@Override
-	public void receiveMessage(
-		PubsubMessage pubsubMessage, AckReplyConsumer ackReplyConsumer) {
-
+	public void run() {
 		try {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Processing message with ID " +
-						pubsubMessage.getMessageId());
-			}
-
-			_processMessage(pubsubMessage);
+			_run();
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);
 		}
-		finally {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Sending ack of message with ID " +
-						pubsubMessage.getMessageId());
-			}
-
-			ackReplyConsumer.ack();
-		}
-	}
-
-	@Override
-	public void run() {
-		addMessageStreamingSubscriber();
 	}
 
 	@PreDestroy
@@ -166,34 +130,43 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 		_dxpEntityDog.updateDXPEntity(dxpEntity);
 	}
 
-	private void _processMessage(PubsubMessage pubsubMessage) {
-		Map<String, String> attributesMap = pubsubMessage.getAttributesMap();
+	private void _processMessage(
+		Message<JSONArray> message, String messageId, String projectId) {
 
-		String projectId = attributesMap.get("projectId");
-
-		_boundedExecutor.runAsync(
+		_runAsync(
+			projectId,
 			() -> {
-				ProjectIdThreadLocal.setProjectId(projectId);
+				try {
+					ProjectIdThreadLocal.setProjectId(projectId);
 
-				long start = System.currentTimeMillis();
+					long start = System.currentTimeMillis();
 
-				ByteString byteString = pubsubMessage.getData();
+					JSONArray jsonArray = message.getObject();
 
-				JSONArray jsonArray = new JSONArray(byteString.toStringUtf8());
+					for (int i = 0; i < jsonArray.length(); i++) {
+						_processMessageJSONObject(jsonArray.getJSONObject(i));
+					}
 
-				for (int i = 0; i < jsonArray.length(); i++) {
-					_processMessageJSONObject(jsonArray.getJSONObject(i));
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							String.format(
+								"Message %s processed in %d ms", messageId,
+								System.currentTimeMillis() - start));
+					}
 				}
+				catch (Exception exception) {
+					_messageSubscriber.registerException(exception, message);
 
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						String.format(
-							"Message %s processed in %d ms",
-							pubsubMessage.getMessageId(),
-							System.currentTimeMillis() - start));
+					_log.error(
+						"Unable to process analytics events message " +
+							message.getObject(),
+						exception);
 				}
-			},
-			KeyReentrantLock.getReentrantLock(getClass(), projectId));
+				finally {
+					_messageSubscriber.sendAckIds(
+						Collections.singletonList(message.getAckId()));
+				}
+			});
 	}
 
 	private void _processMessageJSONObject(JSONObject messageJSONObject) {
@@ -276,6 +249,43 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 		}
 	}
 
+	private void _run() throws Exception {
+		while (true) {
+			long start = System.currentTimeMillis();
+
+			List<Message<JSONArray>> messages = _messageSubscriber.pullMessages(
+				_dxpEntitiesNanitePullMessagesSize, JSONArray::new);
+
+			if (messages.isEmpty()) {
+				break;
+			}
+
+			for (Message<JSONArray> message : messages) {
+				Map<String, String> attributesMap = message.getAttributes();
+
+				_processMessage(
+					message, message.getId(), attributesMap.get("projectId"));
+			}
+
+			if (_log.isDebugEnabled()) {
+				Class<?> clazz = getClass();
+
+				_log.debug(
+					String.format(
+						"%s dispatched %d analytics events messages in %d ms",
+						clazz.getSimpleName(), messages.size(),
+						System.currentTimeMillis() - start));
+			}
+		}
+
+		_boundedExecutor.awaitPendingTasks();
+	}
+
+	private void _runAsync(String projectId, Runnable runnable) {
+		_boundedExecutor.runAsync(
+			runnable, KeyReentrantLock.getReentrantLock(getClass(), projectId));
+	}
+
 	private void _sendDeleteMessage(DXPEntity dxpEntity) {
 		Map<String, String> messageAttributes = new HashMap<>();
 
@@ -323,21 +333,17 @@ public class DXPEntitiesNanite implements MessageReceiver, Nanite {
 	private final BoundedExecutor _boundedExecutor =
 		BoundedExecutor.newBoundedExecutor(15, 10);
 
+	@Value("${osb.asah.dxp.entities.nanite.pull.messages.size:50}")
+	private int _dxpEntitiesNanitePullMessagesSize;
+
 	@Autowired
 	private DXPEntityDog _dxpEntityDog;
-
-	@Value(
-		"${osb.asah.analytics.events.message.processor.streaming.max.outstanding.messages:1000}"
-	)
-	private long _maxOutstandingMessages;
 
 	@Autowired
 	private MessageBus _messageBus;
 
-	@MessageStreamingSubscriber.Autowired(
-		channel = Channel.DXP_ENTITIES_MESSAGE
-	)
-	private MessageStreamingSubscriber _messageStreamingSubscriber;
+	@MessageSubscriber.Autowired(channel = Channel.DXP_ENTITIES_MESSAGE)
+	private MessageSubscriber _messageSubscriber;
 
 	@Autowired
 	private SuppressionDog _suppressionDog;
