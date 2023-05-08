@@ -80,7 +80,7 @@ public class PageMetric implements AssetMetric {
 			Objects.equals(_bounceMetric, pageMetric._bounceMetric) &&
 			Objects.equals(_bounceRateMetric, pageMetric._bounceRateMetric) &&
 			Objects.equals(_canonicalUrls, pageMetric._canonicalUrls) &&
-			Objects.equals(_ctrMetric, pageMetric._ctrMetric) &&
+			Objects.equals(_ctaClicksMetric, pageMetric._ctaClicksMetric) &&
 			Objects.equals(_dataSourceId, pageMetric._dataSourceId) &&
 			Objects.equals(
 				_directAccessMetric, pageMetric._directAccessMetric) &&
@@ -147,8 +147,8 @@ public class PageMetric implements AssetMetric {
 		return _canonicalUrls;
 	}
 
-	public Metric getCTRMetric() {
-		return _ctrMetric;
+	public Metric getCTAClicksMetric() {
+		return _ctaClicksMetric;
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public class PageMetric implements AssetMetric {
 	public int hashCode() {
 		return Objects.hash(
 			_assetMetrics, _assetTitle, _avgTimeOnPageMetric, _bounceMetric,
-			_bounceRateMetric, _canonicalUrls, _ctrMetric, _dataSourceId,
+			_bounceRateMetric, _canonicalUrls, _ctaClicksMetric, _dataSourceId,
 			_directAccessMetric, _entrancesMetric, _exitRateMetric,
 			_indirectAccessMetric, _readsMetric, _sessionsMetric,
 			_timeOnPageMetric, _urls, _viewsMetric, _visitorsMetric);
@@ -264,8 +264,8 @@ public class PageMetric implements AssetMetric {
 		_canonicalUrls = canonicalUrls;
 	}
 
-	public void setCTRMetric(Metric ctrMetric) {
-		_ctrMetric = ctrMetric;
+	public void setCTAClicksMetric(Metric ctaClicksMetric) {
+		_ctaClicksMetric = ctaClicksMetric;
 	}
 
 	@Override
@@ -371,7 +371,7 @@ public class PageMetric implements AssetMetric {
 	private Metric _bounceMetric = new Metric(PageMetricType.BOUNCE);
 	private Metric _bounceRateMetric = new Metric(PageMetricType.BOUNCE_RATE);
 	private List<String> _canonicalUrls;
-	private Metric _ctrMetric = new Metric(PageMetricType.CLICK_THROUGH_RATE);
+	private Metric _ctaClicksMetric = new Metric(PageMetricType.CTA_CLICKS);
 	private String _dataSourceId;
 	private Metric _directAccessMetric = new Metric(
 		PageMetricType.DIRECT_ACCESS);

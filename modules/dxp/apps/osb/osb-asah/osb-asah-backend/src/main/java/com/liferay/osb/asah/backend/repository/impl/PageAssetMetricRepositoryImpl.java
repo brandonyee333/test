@@ -297,8 +297,8 @@ public class PageAssetMetricRepositoryImpl
 					PageMetricType.BOUNCE_RATE.getName(),
 					PageMetric::setBounceRateMetric);
 				put(
-					PageMetricType.CLICK_THROUGH_RATE.getName(),
-					PageMetric::setCTRMetric);
+					PageMetricType.CTA_CLICKS.getName(),
+					PageMetric::setCTAClicksMetric);
 				put(
 					PageMetricType.DIRECT_ACCESS.getName(),
 					PageMetric::setDirectAccessMetric);

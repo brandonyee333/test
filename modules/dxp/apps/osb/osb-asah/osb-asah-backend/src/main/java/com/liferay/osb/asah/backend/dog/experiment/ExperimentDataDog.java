@@ -78,10 +78,10 @@ public class ExperimentDataDog {
 
 		PageMetric pageMetric = pageMetricOptional.get();
 
-		if (goalPageMetricType == PageMetricType.CLICK_THROUGH_RATE) {
+		if (goalPageMetricType == PageMetricType.CTA_CLICKS) {
 			return new ExperimentDataPoint<>(
 				_getMetricValueAsLong(pageMetric.getSessionsMetric()),
-				_getMetricValue(pageMetric.getCTRMetric()));
+				_getMetricValue(pageMetric.getCTAClicksMetric()));
 		}
 
 		return new ExperimentDataPoint<>(

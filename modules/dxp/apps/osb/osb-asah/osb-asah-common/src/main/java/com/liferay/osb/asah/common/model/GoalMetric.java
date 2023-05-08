@@ -20,7 +20,7 @@ package com.liferay.osb.asah.common.model;
 public enum GoalMetric {
 
 	BOUNCE_RATE(true, PageMetricType.BOUNCE),
-	CLICK_RATE(false, PageMetricType.CLICK_THROUGH_RATE);
+	CLICK_RATE(false, PageMetricType.CTA_CLICKS);
 
 	public PageMetricType getPageMetricType() {
 		return _pageMetricType;

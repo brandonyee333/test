@@ -29,7 +29,7 @@ public enum PageMetricType implements MetricType {
 		TrendClassification.Order.ASC),
 	BOUNCE("bounce", "bounceMetric", TrendClassification.Order.DESC),
 	BOUNCE_RATE("bounce", "bounceRateMetric", TrendClassification.Order.DESC),
-	CLICK_THROUGH_RATE("ctaClicks", "ctrMetric", TrendClassification.Order.ASC),
+	CTA_CLICKS("ctaClicks", "ctaClicksMetric", TrendClassification.Order.ASC),
 	DIRECT_ACCESS(
 		"directAccess", "directAccessMetric", TrendClassification.Order.ASC),
 	ENTRANCES("entrances", "entrancesMetric", TrendClassification.Order.ASC),
