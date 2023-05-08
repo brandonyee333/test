@@ -278,6 +278,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 			BQIdentityInterestScore::new,
 			_dslContext.selectDistinct(
 				DSL.field(
+					"IdentityInterestScore.channelId"
+				).as(
+					"channelId"
+				),
+				DSL.field(
 					"IdentityInterestScore.identityId"
 				).as(
 					"identityId"
@@ -521,6 +526,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 			BQIdentityInterestScore::new,
 			_dslContext.selectDistinct(
 				DSL.field(
+					"IdentityInterestScore.channelId"
+				).as(
+					"channelId"
+				),
+				DSL.field(
 					"IdentityInterestScore.identityId"
 				).as(
 					"identityId"
@@ -652,6 +662,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 		String individualId, String keyword, Date recordedDate) {
 
 		SelectSelectStep selectSelectStep = _dslContext.selectDistinct(
+			DSL.field(
+				"IdentityInterestScore.channelId"
+			).as(
+				"channelId"
+			),
 			DSL.field(
 				"IdentityInterestScore.identityId"
 			).as(
