@@ -33,6 +33,15 @@
 	<td>css=vanilla-counter</td>
 	<td></td>
 </tr>
+
+<!-- Liferay Sample Global CSS -->
+
+<tr>
+	<td>GLOBAL_CSS_TITLE_CONTAINER</td>
+	<td>//a[contains(@title,'Go to Liferay DXP')]</td>
+	<td></td>
+</tr>
+
 </tbody>
 </table>
 </body>

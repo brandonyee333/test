@@ -118,4 +118,53 @@ definition {
 		}
 	}
 
+	@description = "Test Liferay Sample Global CSS"
+	@priority = 4
+	test LiferaySampleGlobalCSS {
+		var pageName = "TestPage";
+
+		task ("Given: The Liferay Sample Global CSS is added to a page") {
+			JSONLayout.addPublicLayout(
+				groupName = "Guest",
+				layoutName = ${pageName});
+
+			Navigator.openSitePage(
+				pageName = ${pageName},
+				siteName = "Guest");
+		}
+
+		task ("When: User accesses to Basic Settings of widget page") {
+			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
+
+			PagesAdmin.gotoPageEllipsisMenuItem(
+				menuItem = "Configure",
+				pageName = "${pageName}");
+
+			Navigator.gotoNavTab(navTab = "Design");
+
+			AssertElementPresent(locator1 = "PagesAdmin#NO_CSS_THEME_LOADED");
+		}
+
+		task ("Then: User can add a CSS Extension to widget page") {
+			PagesAdmin.addCSSExtensions(extensionNameList = "Liferay Sample Global CSS");
+
+			AssertVisible(
+				key_tableEntry = "Liferay Sample Global CSS",
+				locator1 = "LexiconTable#TABLE_ENTRY");
+
+			PortletEntry.save();
+		}
+
+		task ("And: User can view the changes on the widget page") {
+			Navigator.openSitePage(
+				pageName = ${pageName},
+				siteName = "Guest");
+
+			OcularAssertElementImage(
+				locator1 = "ClientExtensions#GLOBAL_CSS_TITLE_CONTAINER",
+				value1 = "client_extensions/liferay_dxp_logo.png",
+				value2 = 90);
+		}
+	}
+
 }
