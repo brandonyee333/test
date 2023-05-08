@@ -114,8 +114,7 @@ public class DXPEntitiesNaniteTest
 	private void _processQueuedMessages() throws Exception {
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-		Future<?> future = executorService.submit(
-			_dxpEntitiesNanite::addMessageStreamingSubscriber);
+		Future<?> future = executorService.submit(_dxpEntitiesNanite::run);
 
 		try {
 			future.get(8, TimeUnit.SECONDS);
