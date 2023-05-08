@@ -167,4 +167,174 @@ definition {
 		}
 	}
 
+	@description = "Test Liferay Sample IFrame 1 - Counter App"
+	@priority = 4
+	test CounterApp {
+		task ("When: User adds the Counter App widget") {
+			JSONLayout.addPublicLayout(
+				groupName = "Guest",
+				layoutName = "Test Page");
+
+			Navigator.openSitePage(
+				pageName = "Test Page",
+				siteName = "Guest");
+			
+			Portlet.addPG(portletName = "Counter App");
+		}
+
+		task ("Then: User can add items to the cart") {
+			Default.SelectFrame(locator1 = "IFrame#IFRAME");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_HEADER",
+				value1 = "Items");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_ROW",
+				key_row = "1",
+				value1 = "Zero");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_CART_TOTAL",
+				value1 = "0");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "1");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_CART_TOTAL",
+				value1 = "1");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_QUANTITY_VALUE",
+				key_row = "1",
+				value1 = "1");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "2");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "2");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_CART_TOTAL",
+				value1 = "2");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_QUANTITY_VALUE",
+				key_row = "2",
+				value1 = "2");
+			
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "3");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "3");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "3");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_CART_TOTAL",
+				value1 = "3");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_QUANTITY_VALUE",
+				key_row = "3",
+				value1 = "3");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "4");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "4");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "4");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_INCREMENT",
+				key_row = "4");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_CART_TOTAL",
+				value1 = "4");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_QUANTITY_VALUE",
+				key_row = "4",
+				value1 = "4");
+		}
+
+		task ("And: User can decrease item quantity") {
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_DECREMENT",
+				key_row = "2");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_DECREMENT",
+				key_row = "2");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_ROW",
+				key_row = "2",
+				value1 = "Zero");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_CART_TOTAL",
+				value1 = "3");
+		}
+
+		task ("And: User can delete an item from the list") {
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_DELETE_ROW",
+				key_row = "1");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_CART_TOTAL",
+				value1 = "2");
+
+			Default.AssertElementNotPresent(
+				locator1 = "ClientExtensions#COUNTER_ROW",
+				key_row = "4");
+		}
+
+		task ("And: User can reset the app") {
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_DELETE_ROW",
+				key_row = "1");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_DELETE_ROW",
+				key_row = "1");
+
+			Default.Click(
+				locator1 = "ClientExtensions#COUNTER_DELETE_ROW",
+				key_row = "1");
+
+			Default.AssertElementNotPresent(
+				locator1 = "ClientExtensions#COUNTER_ROW",
+				key_row = "1");
+
+			Default.AssertTextEquals.assertPartialText(
+				locator1 = "ClientExtensions#COUNTER_CART_TOTAL",
+				value1 = "0");
+
+			Default.Click(locator1 = "ClientExtensions#COUNTER_RESET_BUTTON");
+
+			Default.AssertElementPresent(
+				locator1 = "ClientExtensions#COUNTER_ROW",
+				key_row = "4");
+		}
+	}
+
 }
