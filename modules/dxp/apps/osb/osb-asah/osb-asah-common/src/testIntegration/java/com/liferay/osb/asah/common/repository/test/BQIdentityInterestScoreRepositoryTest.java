@@ -48,6 +48,7 @@ public class BQIdentityInterestScoreRepositoryTest
 	public void setUp() {
 		_bqIdentityInterestScore1 = new BQIdentityInterestScore();
 
+		_bqIdentityInterestScore1.setChannelId(1L);
 		_bqIdentityInterestScore1.setIdentityId("374790569167317525");
 		_bqIdentityInterestScore1.setInterested(Boolean.TRUE);
 		_bqIdentityInterestScore1.setInterestScore(1.7676619);
@@ -57,6 +58,7 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		_bqIdentityInterestScore2 = new BQIdentityInterestScore();
 
+		_bqIdentityInterestScore2.setChannelId(1L);
 		_bqIdentityInterestScore2.setIdentityId("374790575409131096");
 		_bqIdentityInterestScore2.setInterested(Boolean.TRUE);
 		_bqIdentityInterestScore2.setInterestScore(2.6149597);
@@ -66,6 +68,7 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		_bqIdentityInterestScore3 = new BQIdentityInterestScore();
 
+		_bqIdentityInterestScore3.setChannelId(1L);
 		_bqIdentityInterestScore3.setIdentityId("374790572703144534");
 		_bqIdentityInterestScore3.setInterested(Boolean.FALSE);
 		_bqIdentityInterestScore3.setInterestScore(0.77022254);
@@ -75,6 +78,7 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		_bqIdentityInterestScore4 = new BQIdentityInterestScore();
 
+		_bqIdentityInterestScore4.setChannelId(1L);
 		_bqIdentityInterestScore4.setIdentityId("374790572703144534");
 		_bqIdentityInterestScore4.setInterested(Boolean.TRUE);
 		_bqIdentityInterestScore4.setInterestScore(1.454685);
@@ -84,6 +88,7 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		_bqIdentityInterestScore5 = new BQIdentityInterestScore();
 
+		_bqIdentityInterestScore5.setChannelId(1L);
 		_bqIdentityInterestScore5.setIdentityId("374790572703144535");
 		_bqIdentityInterestScore5.setInterested(Boolean.TRUE);
 		_bqIdentityInterestScore5.setInterestScore(1.454685);
