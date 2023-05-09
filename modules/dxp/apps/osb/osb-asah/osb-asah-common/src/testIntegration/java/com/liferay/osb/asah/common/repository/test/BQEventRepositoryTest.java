@@ -88,6 +88,19 @@ public class BQEventRepositoryTest
 
 	@BQSQLResource(resourcePath = "test_bq_events.sql")
 	@Test
+	public void testCountBQEvents() {
+		TimeRange timeRange = TimeRange.LAST_24_HOURS;
+
+		Assertions.assertEquals(
+			1,
+			_bqEventRepository.countBQEvents(
+				"Form", "3", 1L, 1L, "fieldBlurred",
+				timeRange.getEndLocalDateTime(),
+				timeRange.getStartLocalDateTime()));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_events.sql")
+	@Test
 	public void testCountBQEventsLast24Hours() {
 		TimeRange timeRange = TimeRange.LAST_24_HOURS;
 
