@@ -15,8 +15,8 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
+import com.liferay.osb.asah.backend.dto.ExperimentVariantDTO;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.graphql.GraphQLTypeWiring;
 
 import graphql.schema.DataFetcher;
@@ -53,10 +53,11 @@ public class ExperimentSessionsHistogramMetricsDataFetcher
 	}
 
 	private String _getDXPVariantId(Object source) {
-		if (source instanceof ExperimentVariant) {
-			ExperimentVariant experimentVariant = (ExperimentVariant)source;
+		if (source instanceof ExperimentVariantDTO) {
+			ExperimentVariantDTO experimentVariantDTO =
+				(ExperimentVariantDTO)source;
 
-			return experimentVariant.getDXPVariantId();
+			return experimentVariantDTO.getDXPVariantId();
 		}
 
 		return null;
