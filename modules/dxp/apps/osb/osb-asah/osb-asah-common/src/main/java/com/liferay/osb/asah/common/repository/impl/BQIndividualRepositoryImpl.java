@@ -84,6 +84,7 @@ public class BQIndividualRepositoryImpl
 		_dslContext = dslContext;
 	}
 
+	@Override
 	public long countBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long datasourceId, @Nullable Long notSegmentId, String query,
@@ -210,6 +211,7 @@ public class BQIndividualRepositoryImpl
 			));
 	}
 
+	@Override
 	public long countIndividualFieldValuesCustom(
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString) {
@@ -232,6 +234,7 @@ public class BQIndividualRepositoryImpl
 			channelId, fieldName, filterString);
 	}
 
+	@Override
 	public long countIndividualFieldValuesDemographics(
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString) {
@@ -668,6 +671,7 @@ public class BQIndividualRepositoryImpl
 			));
 	}
 
+	@Override
 	public List<Long> searchIndividualDataSourceIds(String id) {
 		return _queryExecutor.queryForList(
 			recordMap -> {
@@ -689,6 +693,7 @@ public class BQIndividualRepositoryImpl
 			));
 	}
 
+	@Override
 	public List<String> searchIndividualFieldValuesCustom(
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString, Pageable pageable) {
@@ -711,6 +716,7 @@ public class BQIndividualRepositoryImpl
 			channelId, fieldName, filterString, pageable);
 	}
 
+	@Override
 	public List<String> searchIndividualFieldValuesDemographics(
 		@Nullable Long channelId, String fieldName,
 		@Nullable String filterString, Pageable pageable) {
