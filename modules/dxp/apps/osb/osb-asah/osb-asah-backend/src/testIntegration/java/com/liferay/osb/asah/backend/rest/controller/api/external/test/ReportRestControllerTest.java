@@ -225,7 +225,7 @@ public class ReportRestControllerTest
 		Assertions.assertNotNull(responseEntity);
 
 		_assertDataExportTaskDTO(
-			DateUtil.toUTCDate("2022-04-03T12:00:00.000Z"), _createDate,
+			DateUtil.newBeginningOfDayDate(new Date()), _createDate,
 			responseEntity.getBody(), _fromDate, "1003", null, _startedDate,
 			DataExportTask.Status.COMPLETED, _toDate, DataExportTask.Type.PAGE);
 	}
