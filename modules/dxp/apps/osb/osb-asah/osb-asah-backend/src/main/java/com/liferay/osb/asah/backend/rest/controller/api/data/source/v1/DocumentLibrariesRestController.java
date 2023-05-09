@@ -14,13 +14,10 @@
 
 package com.liferay.osb.asah.backend.rest.controller.api.data.source.v1;
 
-import com.liferay.osb.asah.backend.dog.asset.AssetMetricDog;
-import com.liferay.osb.asah.backend.model.DocumentLibraryMetricType;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
+import com.liferay.osb.asah.common.dog.BQEventDog;
 
 import java.time.LocalDate;
-
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -50,12 +47,10 @@ public class DocumentLibrariesRestController extends BaseRestController {
 		LocalDate startLocalDate) {
 
 		return String.valueOf(
-			_assetMetricDog.getMetricValue(
-				assetId, Optional.ofNullable(channelId), "document-libraries",
-				Optional.ofNullable(dataSourceId),
-				Optional.ofNullable(endLocalDate),
-				DocumentLibraryMetricType.DOWNLOADS,
-				Optional.ofNullable(startLocalDate)));
+			_bqEventDog.countBQEvents(
+				"Document", assetId, Long.valueOf(channelId),
+				Long.valueOf(dataSourceId), endLocalDate, "documentDownloaded",
+				startLocalDate));
 	}
 
 	@GetMapping("/preview-count")
@@ -70,15 +65,13 @@ public class DocumentLibrariesRestController extends BaseRestController {
 		LocalDate startLocalDate) {
 
 		return String.valueOf(
-			_assetMetricDog.getMetricValue(
-				assetId, Optional.ofNullable(channelId), "document-libraries",
-				Optional.ofNullable(dataSourceId),
-				Optional.ofNullable(endLocalDate),
-				DocumentLibraryMetricType.PREVIEWS,
-				Optional.ofNullable(startLocalDate)));
+			_bqEventDog.countBQEvents(
+				"Document", assetId, Long.valueOf(channelId),
+				Long.valueOf(dataSourceId), endLocalDate, "documentPreviewed",
+				startLocalDate));
 	}
 
 	@Autowired
-	private AssetMetricDog _assetMetricDog;
+	private BQEventDog _bqEventDog;
 
 }
