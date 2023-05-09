@@ -71,7 +71,7 @@ public class BQIndividualDog {
 	public long countBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable String filterString,
-		@Nullable Boolean includeAnonymousUsers, @Nullable String keyword,
+		@Nullable Boolean includeAnonymousUsers, @Nullable String interestName,
 		@Nullable Long notSegmentId, @Nullable String query,
 		@Nullable Long segmentId) {
 
@@ -81,8 +81,8 @@ public class BQIndividualDog {
 		}
 
 		return _bqIndividualRepository.countBQIndividuals(
-			accountId, channelId, dataSourceId, keyword, notSegmentId, query,
-			segmentId);
+			accountId, channelId, dataSourceId, interestName, notSegmentId,
+			query, segmentId);
 	}
 
 	public long countBQIndividualsModifiedLast30Days(Long channelId) {
@@ -200,7 +200,7 @@ public class BQIndividualDog {
 	public Page<Individual> searchBQIndividualPage(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable String filterString,
-		@Nullable Boolean includeAnonymousUsers, @Nullable String keyword,
+		@Nullable Boolean includeAnonymousUsers, @Nullable String interestName,
 		@Nullable Long notSegmentId, int page, @Nullable String query,
 		@Nullable Long segmentId, int size, String[] sorts) {
 
@@ -209,18 +209,18 @@ public class BQIndividualDog {
 				Collections.emptyList(), Pageable.unpaged(),
 				countBQIndividuals(
 					accountId, channelId, dataSourceId, filterString,
-					includeAnonymousUsers, keyword, notSegmentId, query,
+					includeAnonymousUsers, interestName, notSegmentId, query,
 					segmentId));
 		}
 
 		return PageableExecutionUtils.getPage(
 			_searchBQIndividuals(
-				accountId, channelId, dataSourceId, filterString, keyword,
+				accountId, channelId, dataSourceId, filterString, interestName,
 				notSegmentId, page, query, segmentId, size, sorts),
 			PageRequest.of(page, size, _getSort(sorts)),
 			() -> countBQIndividuals(
 				accountId, channelId, dataSourceId, filterString,
-				includeAnonymousUsers, keyword, notSegmentId, query,
+				includeAnonymousUsers, interestName, notSegmentId, query,
 				segmentId));
 	}
 
@@ -269,7 +269,7 @@ public class BQIndividualDog {
 	private List<Individual> _searchBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
 		@Nullable Long dataSourceId, @Nullable String filterString,
-		@Nullable String keyword, @Nullable Long notSegmentId, int page,
+		@Nullable String interestName, @Nullable Long notSegmentId, int page,
 		@Nullable String query, @Nullable Long segmentId, int size,
 		String[] sorts) {
 
@@ -280,7 +280,7 @@ public class BQIndividualDog {
 		}
 
 		return _bqIndividualRepository.searchBQIndividuals(
-			accountId, channelId, dataSourceId, keyword, notSegmentId,
+			accountId, channelId, dataSourceId, interestName, notSegmentId,
 			PageRequest.of(page, size, _getSort(sorts)), query, segmentId);
 	}
 

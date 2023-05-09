@@ -87,11 +87,11 @@ public class BQIndividualRepositoryImpl
 	@Override
 	public long countBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
-		@Nullable Long datasourceId, @Nullable String keyword,
+		@Nullable Long datasourceId, @Nullable String interestName,
 		@Nullable Long notSegmentId, String query, @Nullable Long segmentId) {
 
 		SelectJoinStep<Record1<Integer>> selectJoinStep = _getSelectJoinStep(
-			keyword, segmentId,
+			interestName, segmentId,
 			_dslContext.select(DSL.countDistinct(DSL.field("individual.id"))));
 
 		Condition condition = _getQueryCondition(query);
@@ -105,7 +105,7 @@ public class BQIndividualRepositoryImpl
 				));
 		}
 
-		if (!StringUtils.isEmpty(keyword)) {
+		if (!StringUtils.isEmpty(interestName)) {
 			condition = condition.and(
 				DSL.field(
 					"IdentityInterestScore.recordedDate"
@@ -462,7 +462,7 @@ public class BQIndividualRepositoryImpl
 	@Override
 	public List<Individual> searchBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
-		@Nullable Long dataSourceId, @Nullable String keyword,
+		@Nullable Long dataSourceId, @Nullable String interestName,
 		@Nullable Long notSegmentId, Pageable pageable, @Nullable String query,
 		@Nullable Long segmentId) {
 
@@ -470,7 +470,7 @@ public class BQIndividualRepositoryImpl
 			<Record11
 				<Object, Object, Object, Object, Object, Object, Object, Object,
 				 Object, Object, Object>> selectJoinStep = _getSelectJoinStep(
-					keyword, segmentId, _getIndividualSelectJoinStep());
+					interestName, segmentId, _getIndividualSelectJoinStep());
 
 		Condition condition = _getQueryCondition(query);
 
@@ -499,7 +499,7 @@ public class BQIndividualRepositoryImpl
 				_eventDefinitionRepository.getEventDefinitionNames(false)
 			));
 
-		if (!StringUtils.isEmpty(keyword)) {
+		if (!StringUtils.isEmpty(interestName)) {
 			condition = condition.and(
 				DSL.field(
 					"IdentityInterestScore.recordedDate"
@@ -1347,7 +1347,8 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
-		String keyword, Long segmentId, SelectSelectStep<R> selectSelectStep) {
+		String interestName, Long segmentId,
+		SelectSelectStep<R> selectSelectStep) {
 
 		SelectJoinStep<R> selectJoinStep = selectSelectStep.from(
 			DSL.table(
@@ -1369,7 +1370,7 @@ public class BQIndividualRepositoryImpl
 			)
 		);
 
-		if (!StringUtils.isEmpty(keyword)) {
+		if (!StringUtils.isEmpty(interestName)) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"BQIdentityInterestScore"
@@ -1395,7 +1396,7 @@ public class BQIndividualRepositoryImpl
 				DSL.field(
 					"IdentityInterestScore.keyword"
 				).eq(
-					DSL.val(keyword)
+					DSL.val(interestName)
 				)
 			);
 		}

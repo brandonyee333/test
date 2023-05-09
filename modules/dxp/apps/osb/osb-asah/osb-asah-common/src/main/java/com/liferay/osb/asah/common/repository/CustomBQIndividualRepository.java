@@ -32,7 +32,7 @@ public interface CustomBQIndividualRepository {
 
 	public long countBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
-		@Nullable Long dataSourceId, @Nullable String keyword,
+		@Nullable Long dataSourceId, @Nullable String interestName,
 		@Nullable Long notSegmentId, @Nullable String query,
 		@Nullable Long segmentId);
 
@@ -65,7 +65,7 @@ public interface CustomBQIndividualRepository {
 
 	public List<Individual> searchBQIndividuals(
 		@Nullable Long accountId, @Nullable Long channelId,
-		@Nullable Long dataSourceId, @Nullable String keyword,
+		@Nullable Long dataSourceId, @Nullable String interestName,
 		@Nullable Long notSegmentId, Pageable pageable, @Nullable String query,
 		@Nullable Long segmentId);
 
