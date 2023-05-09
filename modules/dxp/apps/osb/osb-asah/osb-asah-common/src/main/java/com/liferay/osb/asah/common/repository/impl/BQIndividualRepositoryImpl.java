@@ -142,17 +142,11 @@ public class BQIndividualRepositoryImpl
 			referencedTableNames.add("Individual");
 		}
 
-		Field<String> selectField = null;
-
-		if (BooleanUtils.isTrue(includeAnonymousUsers)) {
-			selectField = DSL.field("Identity.id", String.class);
-		}
-		else {
-			selectField = DSL.field("Identity.individualId", String.class);
-		}
-
 		SelectJoinStep<Record1<Integer>> selectJoinStep = _dslContext.select(
-			DSL.countDistinct(selectField)
+			DSL.countDistinct(
+				DSL.coalesce(
+					DSL.field("Identity.individualId"),
+					DSL.field("Identity.id")))
 		).from(
 			DSL.table(
 				"BQIdentity"
