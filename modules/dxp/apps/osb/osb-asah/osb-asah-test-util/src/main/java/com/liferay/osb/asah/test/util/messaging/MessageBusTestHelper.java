@@ -95,13 +95,13 @@ public class MessageBusTestHelper {
 
 		Publisher publisher = _createPublisher(channel);
 
+		String orderingKey = null;
+
+		if (channel == Channel.DXP_ENTITIES_MESSAGE) {
+			orderingKey = Channel.DXP_ENTITIES_MESSAGE.name() + "_test";
+		}
+
 		for (int i = 0; i < messagesJSONArray.length(); i++) {
-			String orderingKey = null;
-
-			if (channel == Channel.DXP_ENTITIES_MESSAGE) {
-				orderingKey = Channel.DXP_ENTITIES_MESSAGE.name() + "_test";
-			}
-
 			ApiFuture<String> apiFuture = publisher.publish(
 				_pubSubMessageBusImpl.createPubsubMessage(
 					String.valueOf(messagesJSONArray.getJSONObject(i)),

@@ -147,7 +147,7 @@ public class DXPEntitiesNanite implements Nanite {
 		if ((dxpEntityType == null) ||
 			(dxpEntityType.isUser() &&
 			 _suppressionDog.isSuppressed(
-			 	objectJSONObject.optString("emailAddress"), null))) {
+				 objectJSONObject.optString("emailAddress"), null))) {
 
 			return;
 		}
