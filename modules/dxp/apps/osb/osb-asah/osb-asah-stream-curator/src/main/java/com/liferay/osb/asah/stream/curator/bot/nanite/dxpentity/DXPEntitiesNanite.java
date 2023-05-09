@@ -136,7 +136,28 @@ public class DXPEntitiesNanite implements Nanite {
 		_dxpEntityDog.updateDXPEntity(dxpEntity);
 	}
 
-	private void _processMessage(
+	private void _processMessageJSONObject(JSONObject messageJSONObject) {
+		JSONObject contextJSONObject = messageJSONObject.getJSONObject(
+			"context");
+		JSONObject objectJSONObject = messageJSONObject.getJSONObject("object");
+
+		DXPEntity.Type dxpEntityType = DXPEntity.Type.of(
+			contextJSONObject.getString("type"));
+
+		if ((dxpEntityType == null) ||
+			(dxpEntityType.isUser() &&
+			 _suppressionDog.isSuppressed(
+			 	objectJSONObject.optString("emailAddress"), null))) {
+
+			return;
+		}
+
+		_processObject(
+			contextJSONObject.getString("action"), objectJSONObject,
+			dxpEntityType);
+	}
+
+	private void _processMessages(
 		String projectId, List<Message<JSONObject>> messages) {
 
 		_boundedExecutor.runAsync(
@@ -175,27 +196,6 @@ public class DXPEntitiesNanite implements Nanite {
 				}
 			},
 			KeyReentrantLock.getReentrantLock(getClass(), projectId));
-	}
-
-	private void _processMessageJSONObject(JSONObject messageJSONObject) {
-		JSONObject contextJSONObject = messageJSONObject.getJSONObject(
-			"context");
-		JSONObject objectJSONObject = messageJSONObject.getJSONObject("object");
-
-		DXPEntity.Type dxpEntityType = DXPEntity.Type.of(
-			contextJSONObject.getString("type"));
-
-		if ((dxpEntityType == null) ||
-			(dxpEntityType.isUser() &&
-			 _suppressionDog.isSuppressed(
-				 objectJSONObject.optString("emailAddress"), null))) {
-
-			return;
-		}
-
-		_processObject(
-			contextJSONObject.getString("action"), objectJSONObject,
-			dxpEntityType);
 	}
 
 	private void _processObject(
@@ -281,7 +281,7 @@ public class DXPEntitiesNanite implements Nanite {
 					},
 					LinkedHashMap::new, Collectors.toList())
 			).forEach(
-				this::_processMessage
+				this::_processMessages
 			);
 
 			if (_log.isDebugEnabled()) {
