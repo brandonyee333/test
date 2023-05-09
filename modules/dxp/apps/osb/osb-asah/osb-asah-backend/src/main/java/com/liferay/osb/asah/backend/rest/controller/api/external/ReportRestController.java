@@ -210,6 +210,15 @@ public class ReportRestController extends BaseRestController {
 
 		DataExportTask.Status status = dataExportTask.getStatus();
 
+		if (status == DataExportTask.Status.COMPLETED) {
+			Date dayAfterCompletedDate = DateUtil.addDays(
+				dataExportTask.getCompletedDate(), 1);
+
+			if (dayAfterCompletedDate.before(new Date())) {
+				return _addDataExportTask(fromUTCDate, null, toUTCDate, type);
+			}
+		}
+
 		if (status == DataExportTask.Status.ERROR) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
