@@ -729,6 +729,32 @@ public class BQIndividualDogTest
 					"Bonnie", "alex", "fiona", "Eve", "Adam"
 				}),
 			_getGivenNames(individualPage.getContent()));
+
+		individualPage = _bqIndividualDog.searchBQIndividualPage(
+			null, 1L, null, "(demographics/birthday/value lt '2023-04-29')",
+			false, null, 0, null, null, 10,
+			new String[] {"demographics/jobTitle/value,asc"});
+
+		Assertions.assertEquals(
+			ArrayUtils.toUnmodifiableList(
+				new String[] {
+					"Zinchenko", "Daniel", "Bonnie", "cedric", "Adam", "olivia",
+					"Eve", "alex", "Christina", "fiona"
+				}),
+			_getGivenNames(individualPage.getContent()));
+
+		individualPage = _bqIndividualDog.searchBQIndividualPage(
+			null, 1L, null, "(demographics/birthday/value lt '2023-04-29')",
+			false, null, 0, null, null, 10,
+			new String[] {"demographics/jobTitle/value,desc"});
+
+		Assertions.assertEquals(
+			ArrayUtils.toUnmodifiableList(
+				new String[] {
+					"fiona", "Christina", "alex", "Eve", "olivia", "Adam",
+					"Bonnie", "cedric", "Daniel", "Zinchenko"
+				}),
+			_getGivenNames(individualPage.getContent()));
 	}
 
 	@Disabled
