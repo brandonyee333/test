@@ -25,14 +25,18 @@ import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.messaging.model.Message;
+import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PreDestroy;
 
@@ -66,6 +70,8 @@ public class DXPEntitiesNanite implements Nanite {
 		catch (Exception exception) {
 			_log.error(exception, exception);
 		}
+
+		_boundedExecutor.awaitPendingTasks();
 	}
 
 	@PreDestroy
@@ -131,37 +137,44 @@ public class DXPEntitiesNanite implements Nanite {
 	}
 
 	private void _processMessage(
-		Message<JSONObject> message, String messageId, String projectId) {
+		String projectId, List<Message<JSONObject>> messages) {
 
-		_runAsync(
-			projectId,
+		_boundedExecutor.runAsync(
 			() -> {
 				try {
 					ProjectIdThreadLocal.setProjectId(projectId);
 
 					long start = System.currentTimeMillis();
 
-					_processMessageJSONObject(message.getObject());
+					for (Message<JSONObject> message : messages) {
+						_processMessageJSONObject(message.getObject());
 
-					_messageSubscriber.sendAckIds(
-						Collections.singletonList(message.getAckId()));
+						_messageSubscriber.sendAckIds(
+							Collections.singletonList(message.getAckId()));
+					}
 
 					if (_log.isDebugEnabled()) {
+						Class<?> clazz = getClass();
+
 						_log.debug(
 							String.format(
-								"Message %s processed in %d ms", messageId,
+								"%s processed %d dxp entities in %d ms",
+								clazz.getSimpleName(), messages.size(),
 								System.currentTimeMillis() - start));
 					}
 				}
 				catch (Exception exception) {
-					_messageSubscriber.registerException(exception, message);
+					messages.forEach(
+						message -> _messageSubscriber.registerException(
+							exception, message));
 
 					_log.error(
-						"Unable to process analytics events message " +
-							message.getObject(),
+						"Unable to process dxp entities message " +
+							ListUtil.map(messages, Message::getObject),
 						exception);
 				}
-			});
+			},
+			KeyReentrantLock.getReentrantLock(getClass(), projectId));
 	}
 
 	private void _processMessageJSONObject(JSONObject messageJSONObject) {
@@ -256,30 +269,31 @@ public class DXPEntitiesNanite implements Nanite {
 				break;
 			}
 
-			for (Message<JSONObject> message : messages) {
-				Map<String, String> attributesMap = message.getAttributes();
+			Stream<Message<JSONObject>> stream = messages.stream();
 
-				_processMessage(
-					message, message.getId(), attributesMap.get("projectId"));
-			}
+			stream.collect(
+				Collectors.groupingBy(
+					message -> {
+						Map<String, String> attributesMap =
+							message.getAttributes();
+
+						return attributesMap.get("projectId");
+					},
+					LinkedHashMap::new, Collectors.toList())
+			).forEach(
+				this::_processMessage
+			);
 
 			if (_log.isDebugEnabled()) {
 				Class<?> clazz = getClass();
 
 				_log.debug(
 					String.format(
-						"%s dispatched %d analytics events messages in %d ms",
+						"%s dispatched %d dxp entities messages in %d ms",
 						clazz.getSimpleName(), messages.size(),
 						System.currentTimeMillis() - start));
 			}
 		}
-
-		_boundedExecutor.awaitPendingTasks();
-	}
-
-	private void _runAsync(String projectId, Runnable runnable) {
-		_boundedExecutor.runAsync(
-			runnable, KeyReentrantLock.getReentrantLock(getClass(), projectId));
 	}
 
 	private void _sendDeleteMessage(DXPEntity dxpEntity) {
