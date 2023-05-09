@@ -22,20 +22,24 @@ import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
+import com.liferay.osb.asah.stream.curator.bot.nanite.Nanite;
 import com.liferay.osb.asah.stream.curator.bot.nanite.dxpentity.DXPEntitiesNanite;
+import com.liferay.osb.asah.stream.curator.bot.nanite.test.BaseNaniteTestCase;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,8 +56,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Rachael Koestartyo
  */
 public class DXPEntitiesNaniteTest
-	implements OSBAsahStreamCuratorSpringTestContext,
-			   OSBAsahTestExecutionListenersContext {
+	extends BaseNaniteTestCase
+	implements OSBAsahStreamCuratorSpringTestContext {
 
 	@Disabled
 	@MessageBusChannel(
@@ -87,10 +91,8 @@ public class DXPEntitiesNaniteTest
 	)
 	@Test
 	public void testProcessQueuedMessagesRetainsOrder() throws Exception {
-		_processQueuedMessages();
-
-		List<Message<String>> messages = _messageSubscriber.pullMessages(
-			50, String::valueOf);
+		List<Message<JSONObject>> messages = _messageSubscriber.pullMessages(
+			50, JSONObject::new);
 
 		_messageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
@@ -99,16 +101,38 @@ public class DXPEntitiesNaniteTest
 
 		JSONArray jsonArray = new JSONArray();
 
-		for (Message<String> message : messages) {
-			JSONObject messageJSONObject = new JSONObject(message.getObject());
+		Stream<Message<JSONObject>> stream = messages.stream();
 
-			jsonArray.put(messageJSONObject);
-		}
+		stream.collect(
+			Collectors.groupingBy(
+				message -> {
+					Map<String, String> attributesMap = message.getAttributes();
+
+					return attributesMap.get("projectId");
+				},
+				LinkedHashMap::new, Collectors.toList())
+		).forEach(
+			(id, message) -> _populateJSONArray(jsonArray, id, message)
+		);
 
 		JSONAssert.assertEquals(
 			ResourceUtil.readResourceToJSONArray(
 				"dependencies/dxp_entities_message_1.json", this),
 			jsonArray, true);
+	}
+
+	@Override
+	protected Nanite getNanite() {
+		return _dxpEntitiesNanite;
+	}
+
+	private void _populateJSONArray(
+		JSONArray jsonArray, String projectId,
+		List<Message<JSONObject>> messages) {
+
+		for (Message<JSONObject> message : messages) {
+			jsonArray.put(message.getObject());
+		}
 	}
 
 	private void _processQueuedMessages() throws Exception {
