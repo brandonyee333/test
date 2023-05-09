@@ -134,6 +134,76 @@ public class BQEventRepositoryImpl
 	}
 
 	@Override
+	public Integer countBQEvents(
+		String applicationId, String assetId, Long channelId, Long dataSourceId,
+		String eventId, LocalDateTime rangeEndLocalDateTime,
+		LocalDateTime rangeStartLocalDateTime) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		Condition condition = DSL.and(
+			DSL.field(
+				"applicationId"
+			).eq(
+				applicationId
+			),
+			DSL.field(
+				"assetId"
+			).eq(
+				assetId
+			),
+			DSL.field(
+				"eventId"
+			).eq(
+				eventId
+			));
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.field(
+					"channelId"
+				).eq(
+					channelId
+				));
+		}
+
+		if (dataSourceId != null) {
+			condition = condition.and(
+				DSL.field(
+					"dataSourceId"
+				).eq(
+					dataSourceId
+				));
+		}
+
+		if (rangeEndLocalDateTime != null) {
+			condition = condition.and(
+				DSL.field(
+					"eventDate"
+				).lt(
+					rangeEndLocalDateTime
+				));
+		}
+
+		if (rangeStartLocalDateTime != null) {
+			condition = condition.and(
+				DSL.field(
+					"eventDate"
+				).ge(
+					rangeStartLocalDateTime
+				));
+		}
+
+		return (int)_queryExecutor.queryForLong(
+			selectSelectStep.from(
+				"BQEvent"
+			).where(
+				condition
+			));
+	}
+
+	@Override
 	public long countByEventDefinitionId(long eventDefinitionId) {
 		SelectJoinStep<Record1<Integer>> selectJoinStep =
 			_getEventSelectJoinStep(_dslContext.selectCount());

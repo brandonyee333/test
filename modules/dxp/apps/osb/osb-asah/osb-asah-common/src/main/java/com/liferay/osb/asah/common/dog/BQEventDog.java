@@ -32,6 +32,9 @@ import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.spring.annotation.VisibleForTestingOnly;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -125,6 +128,16 @@ public class BQEventDog {
 		return _bqEventRepository.countBQEvents(
 			channelId, individualId, keywords, timeRange.getEndLocalDateTime(),
 			timeRange.getStartLocalDateTime(), _timeZoneDog.getTimeZoneId());
+	}
+
+	public Integer countBQEvents(
+		String applicationId, String assetId, Long channelId, Long dataSourceId,
+		LocalDate endLocalDate, String eventId, LocalDate startLocalDate) {
+
+		return _bqEventRepository.countBQEvents(
+			assetId, applicationId, channelId, dataSourceId, eventId,
+			endLocalDate.atTime(LocalTime.MAX),
+			startLocalDate.atTime(LocalTime.MIN));
 	}
 
 	public List<BQEventPropertyValue> getRecentBQEventPropertyValues(
