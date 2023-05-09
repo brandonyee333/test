@@ -46,9 +46,17 @@ public class BQIndividualRepositoryTest
 	@Test
 	public void testCountBQIndividuals() {
 		Assertions.assertEquals(
-			1,
+			2,
 			_bqIndividualRepository.countBQIndividuals(
-				null, 11L, null, null, null, _SEGMENT_ID));
+				null, 11L, null, null, null, null, _SEGMENT_ID));
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividuals(
+				null, 11L, null, "all", null, null, _SEGMENT_ID));
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividuals(
+				null, 11L, null, "fail", null, null, _SEGMENT_ID));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
@@ -69,11 +77,11 @@ public class BQIndividualRepositoryTest
 	public void testSearchBQIndividuals() {
 		List<Individual> individuals =
 			_bqIndividualRepository.searchBQIndividuals(
-				null, 11L, null, null,
+				null, 11L, null, "all", null,
 				PageRequest.of(0, 10, Sort.by(Sort.Order.asc("id"))), null,
 				null);
 
-		Assertions.assertEquals(1, individuals.size(), individuals.toString());
+		Assertions.assertEquals(2, individuals.size(), individuals.toString());
 
 		Individual individual = individuals.get(0);
 
