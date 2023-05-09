@@ -76,6 +76,8 @@ USING
 				) AS userGroupIds
 			FROM
 				`{{ dag.default_args['ac_project_id'] }}.user`
+			WHERE
+				emailAddress != 'default@liferay.com'
 		),
 		BQGroupIds AS (
 			SELECT
@@ -235,6 +237,8 @@ USING
 			ON
 				MembershipIds.dataSourceId = User.dataSourceId AND
 				MembershipIds.dxpUserId = User.dxpUserId
+			WHERE
+				User.emailAddress != 'default@liferay.com'
 			GROUP BY
 				User.emailAddress
 		)
@@ -349,6 +353,7 @@ USING
 				)
 			)
 			WHERE
+				emailAddress != 'default@liferay.com' AND
 				rowNumber = 1
 			GROUP BY
 				emailAddress
