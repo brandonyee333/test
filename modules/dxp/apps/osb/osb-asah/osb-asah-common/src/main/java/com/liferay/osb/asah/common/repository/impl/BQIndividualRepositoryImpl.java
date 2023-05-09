@@ -1399,6 +1399,7 @@ public class BQIndividualRepositoryImpl
 				put("birthdate", "birthday");
 				put("demographics/familyName/value", "lastname");
 				put("demographics/givenName/value", "firstname");
+				put("demographics/jobTitle/value", "jobtitle");
 				put("familyName", "lastname");
 				put("givenName", "firstname");
 			}
