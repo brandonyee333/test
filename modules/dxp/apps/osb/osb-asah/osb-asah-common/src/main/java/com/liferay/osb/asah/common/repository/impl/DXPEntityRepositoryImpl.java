@@ -395,11 +395,11 @@ public class DXPEntityRepositoryImpl
 
 	private String _createFieldPath(String fieldName) {
 		String actualFieldName = fieldName;
-		String memberShipField = null;
+		String membershipField = null;
 
 		if (StringUtils.startsWith(fieldName, "fields.memberships.")) {
 			actualFieldName = "fields.memberships.%s";
-			memberShipField =
+			membershipField =
 				StringUtils.splitByWholeSeparator(
 					fieldName, "fields.memberships.")[0];
 		}
@@ -415,8 +415,8 @@ public class DXPEntityRepositoryImpl
 			}
 		}
 
-		if (memberShipField != null) {
-			return String.format(String.join("", keys), memberShipField);
+		if (membershipField != null) {
+			return String.format(String.join("", keys), membershipField);
 		}
 
 		return String.join("", keys);
