@@ -287,27 +287,27 @@ public class BQIndividualDogTest
 			_bqIndividualDog.countBQIndividuals(
 				null, 1L, null,
 				"(sessions.filter(filter='(completeDate gt ''last90Days'')'))",
-				true, null, null, null));
+				true, null, null, null, null));
 		Assertions.assertEquals(
 			3L,
 			_bqIndividualDog.countBQIndividuals(
 				null, 1L, null,
 				"(sessions.filter(filter='(completeDate gt ''last90Days'')'))",
-				false, null, null, null));
+				false, null, null, null, null));
 		Assertions.assertEquals(
 			1L,
 			_bqIndividualDog.countBQIndividuals(
 				null, 1L, null,
 				"(sessions.filter(filter='(completeDate gt ''last90Days'')') " +
 					"and demographics/familyName/value eq 'Test')",
-				true, null, null, null));
+				true, null, null, null, null));
 		Assertions.assertEquals(
 			1L,
 			_bqIndividualDog.countBQIndividuals(
 				null, 1L, null,
 				"(sessions.filter(filter='(completeDate gt ''last90Days'')') " +
 					"and demographics/familyName/value eq 'Test')",
-				false, null, null, null));
+				false, null, null, null, null));
 	}
 
 	@Disabled
@@ -647,7 +647,7 @@ public class BQIndividualDogTest
 	public void testSearchBQIndividuals1() {
 		Page<Individual> individualPage =
 			_bqIndividualDog.searchBQIndividualPage(
-				null, 1L, null, null, false, null, 0, null, null, 10,
+				null, 1L, null, null, false, null, null, 0, null, null, 10,
 				new String[] {"demographics/givenName/value,asc"});
 
 		Assertions.assertEquals(
@@ -659,7 +659,7 @@ public class BQIndividualDogTest
 			_getGivenNames(individualPage.getContent()));
 
 		individualPage = _bqIndividualDog.searchBQIndividualPage(
-			null, 1L, null, null, false, null, 0, null, null, 10,
+			null, 1L, null, null, false, null, null, 0, null, null, 10,
 			new String[] {"demographics/givenName/value,desc"});
 
 		Assertions.assertEquals(
@@ -671,7 +671,7 @@ public class BQIndividualDogTest
 			_getGivenNames(individualPage.getContent()));
 
 		individualPage = _bqIndividualDog.searchBQIndividualPage(
-			null, 1L, null, null, false, null, 0, null, null, 10,
+			null, 1L, null, null, false, null, null, 0, null, null, 10,
 			new String[] {"createDate,asc"});
 
 		Assertions.assertEquals(
@@ -683,7 +683,7 @@ public class BQIndividualDogTest
 			_getGivenNames(individualPage.getContent()));
 
 		individualPage = _bqIndividualDog.searchBQIndividualPage(
-			null, 1L, null, null, false, null, 0, null, null, 10,
+			null, 1L, null, null, false, null, null, 0, null, null, 10,
 			new String[] {"createDate,desc"});
 
 		Assertions.assertEquals(
@@ -696,7 +696,8 @@ public class BQIndividualDogTest
 
 		individualPage = _bqIndividualDog.searchBQIndividualPage(
 			null, 1L, null, "(demographics/birthday/value lt '2023-04-29')",
-			false, null, 0, null, null, 10, new String[] {"createDate,asc"});
+			false, null, null, 0, null, null, 10,
+			new String[] {"createDate,asc"});
 
 		Assertions.assertEquals(
 			ArrayUtils.toUnmodifiableList(
