@@ -33,11 +33,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,7 +40,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -59,7 +53,6 @@ public class DXPEntitiesNaniteTest
 	extends BaseNaniteTestCase
 	implements OSBAsahStreamCuratorSpringTestContext {
 
-	@Disabled
 	@MessageBusChannel(
 		channel = Channel.DXP_ENTITIES_MESSAGE,
 		resourcePath = "dxp_entities_message_2.json"
@@ -69,14 +62,13 @@ public class DXPEntitiesNaniteTest
 		resourcePath = "data_sources.json"
 	)
 	@Test
-	public void testProcessQueuedMessagesAddEntities() throws Exception {
-		_processQueuedMessages();
-
-		ProjectIdThreadLocal.setProjectId("test");
+	public void testProcessQueuedMessagesAddEntities() {
+		runNanite();
 
 		DXPEntity dxpEntity = _dxpEntityDog.fetchByFieldsAndType(
-			Collections.singletonMap("fields.roleId", 39521),
-			DXPEntity.Type.ROLE);
+			Collections.singletonMap(
+				"fields.emailAddress", "scott.lang@test.com"),
+			DXPEntity.Type.USER);
 
 		Assertions.assertNotNull(dxpEntity);
 	}
@@ -132,22 +124,6 @@ public class DXPEntitiesNaniteTest
 
 		for (Message<JSONObject> message : messages) {
 			jsonArray.put(message.getObject());
-		}
-	}
-
-	private void _processQueuedMessages() throws Exception {
-		ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-		Future<?> future = executorService.submit(_dxpEntitiesNanite::run);
-
-		try {
-			future.get(8, TimeUnit.SECONDS);
-		}
-		catch (TimeoutException timeoutException) {
-			future.cancel(true);
-		}
-		finally {
-			executorService.shutdownNow();
 		}
 	}
 
