@@ -179,7 +179,7 @@ public class DXPEntitiesNanite implements Nanite {
 
 						_log.debug(
 							String.format(
-								"%s processed %d dxp entities in %d ms",
+								"%s processed %d DXP entities in %d ms",
 								clazz.getSimpleName(), messages.size(),
 								System.currentTimeMillis() - start));
 					}
@@ -190,7 +190,7 @@ public class DXPEntitiesNanite implements Nanite {
 							exception, message));
 
 					_log.error(
-						"Unable to process dxp entities message " +
+						"Unable to process DXP entities message " +
 							ListUtil.map(messages, Message::getObject),
 						exception);
 				}
@@ -289,7 +289,7 @@ public class DXPEntitiesNanite implements Nanite {
 
 				_log.debug(
 					String.format(
-						"%s dispatched %d dxp entities messages in %d ms",
+						"%s dispatched %d DXP entities messages in %d ms",
 						clazz.getSimpleName(), messages.size(),
 						System.currentTimeMillis() - start));
 			}
