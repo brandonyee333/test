@@ -84,7 +84,9 @@ public abstract class BaseRepository {
 				fieldName = table.getName() + "." + fieldName;
 			}
 
-			if (order.isIgnoreCase()) {
+			if (order.isIgnoreCase() && !fieldName.endsWith("Count") &&
+				!fieldName.endsWith("Date")) {
+
 				fieldName = String.format("LOWER(%s)", fieldName);
 			}
 
