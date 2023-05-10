@@ -6,7 +6,7 @@
 		"OSB_FARO_FRONTEND_URL": "https://analytics-uat.liferay.com"
 	},
 	"id": "osbasahpublisher",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-publisher-20230504-9aba16f",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-publisher-20230510-c2e4a22",
 	"kind": "Deployment",
 	"loadBalancer": {
 		"cdn": false,
