@@ -59,7 +59,7 @@ public class DXPEntitiesNanite implements Nanite {
 
 	@Override
 	public long getInterval() {
-		return -1;
+		return DateUtil.MINUTE;
 	}
 
 	@Override
