@@ -356,9 +356,9 @@ public class ReportRestController extends BaseRestController {
 				{
 					put(
 						"message",
-						"The \"type\" query parameter must be either " +
-							"\"event\", \"individual\", \"page\", or " +
-								"\"segment\".");
+						"The \"type\" query parameter must be either blogs, " +
+							"documents-and-media, forms, individuals, pages, " +
+								"segments, or web-contents.");
 					put("status", "ERROR");
 				}
 			});
