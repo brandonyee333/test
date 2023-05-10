@@ -111,10 +111,7 @@ public class FilterExpressionConditionVisitor
 		if (Objects.equals(
 				_filterType, FilterExpression.FilterType.INDIVIDUALS)) {
 
-			if (Objects.equals(fieldName, "userId")) {
-				_referencedTableNames.add("User");
-			}
-			else if (Objects.equals(fieldName, "dataSourceId")) {
+			if (Objects.equals(fieldName, "dataSourceId")) {
 				_referencedTableNames.add("IdentityActivity");
 
 				return DSL.field(
@@ -131,6 +128,9 @@ public class FilterExpressionConditionVisitor
 				).eq(
 					value
 				);
+			}
+			else if (Objects.equals(fieldName, "userId")) {
+				_referencedTableNames.add("User");
 			}
 		}
 
