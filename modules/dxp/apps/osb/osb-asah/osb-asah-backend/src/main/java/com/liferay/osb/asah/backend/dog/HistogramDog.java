@@ -133,7 +133,7 @@ public class HistogramDog {
 		return getHistogramMetricBag(
 			assetMetricRepository.getHistogramMetrics(
 				searchQueryContext.getAssetId(), assetTitle,
-				Long.valueOf(searchQueryContext.getChannelId()), true, interval,
+				searchQueryContext.getChannelIdAsLong(), true, interval,
 				metricType, timeRange),
 			searchQueryContext.isIncludePrevious(), interval, metricType,
 			timeRange);
