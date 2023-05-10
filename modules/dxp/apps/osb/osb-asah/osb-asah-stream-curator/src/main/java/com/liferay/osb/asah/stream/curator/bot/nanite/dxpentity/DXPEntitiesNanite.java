@@ -158,7 +158,7 @@ public class DXPEntitiesNanite implements Nanite {
 	}
 
 	private void _processMessages(
-		String projectId, List<Message<JSONObject>> messages) {
+		String projectId, List<Message<JSONArray>> messages) {
 
 		_boundedExecutor.runAsync(
 			() -> {
@@ -167,8 +167,13 @@ public class DXPEntitiesNanite implements Nanite {
 
 					long start = System.currentTimeMillis();
 
-					for (Message<JSONObject> message : messages) {
-						_processMessageJSONObject(message.getObject());
+					for (Message<JSONArray> message : messages) {
+						JSONArray jsonArray = message.getObject();
+
+						for (int i = 0; i < jsonArray.length(); i++) {
+							_processMessageJSONObject(
+								jsonArray.getJSONObject(i));
+						}
 
 						_messageSubscriber.sendAckIds(
 							Collections.singletonList(message.getAckId()));
@@ -261,15 +266,14 @@ public class DXPEntitiesNanite implements Nanite {
 		while (true) {
 			long start = System.currentTimeMillis();
 
-			List<Message<JSONObject>> messages =
-				_messageSubscriber.pullMessages(
-					_dxpEntitiesNanitePullMessagesSize, JSONObject::new);
+			List<Message<JSONArray>> messages = _messageSubscriber.pullMessages(
+				_dxpEntitiesNanitePullMessagesSize, JSONArray::new);
 
 			if (messages.isEmpty()) {
 				break;
 			}
 
-			Stream<Message<JSONObject>> stream = messages.stream();
+			Stream<Message<JSONArray>> stream = messages.stream();
 
 			stream.collect(
 				Collectors.groupingBy(
