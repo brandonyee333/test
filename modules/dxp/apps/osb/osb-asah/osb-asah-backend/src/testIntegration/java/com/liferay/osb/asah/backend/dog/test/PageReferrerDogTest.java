@@ -56,6 +56,18 @@ public class PageReferrerDogTest
 				});
 
 		Assertions.assertEquals(1, acquisitionChannels.get("direct"), 0);
+
+		acquisitionChannels = _pageReferrerDog.getAcquisitionChannels(
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com");
+					setDataSourceId("1");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(7);
+				}
+			});
+
+		Assertions.assertEquals(1, acquisitionChannels.get("direct"), 0);
 	}
 
 	@BQSQLResource(resourcePath = "page_referrers_events.sql")
@@ -67,6 +79,21 @@ public class PageReferrerDogTest
 				{
 					setCanonicalUrl("http://liferay.com");
 					setChannelId("1");
+					setDataSourceId("1");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(7);
+				}
+			},
+			10);
+
+		Assertions.assertEquals(
+			0, pageReferrers.size(), pageReferrers.toString());
+
+		pageReferrers = _pageReferrerDog.getPageReferrers(
+			"referrerHost",
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com");
 					setDataSourceId("1");
 					setInterval(Interval.DAY.getKey());
 					setRangeKey(7);
@@ -122,6 +149,21 @@ public class PageReferrerDogTest
 
 		Assertions.assertEquals(
 			0, pageReferrers.size(), pageReferrers.toString());
+
+		pageReferrers = _pageReferrerDog.getPageReferrers(
+			"referrerCanonicalUrl",
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com");
+					setDataSourceId("1");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(7);
+				}
+			},
+			10);
+
+		Assertions.assertEquals(
+			0, pageReferrers.size(), pageReferrers.toString());
 	}
 
 	@BQSQLResource(resourcePath = "page_referrers_events.sql")
@@ -138,6 +180,19 @@ public class PageReferrerDogTest
 						setRangeKey(7);
 					}
 				});
+
+		Assertions.assertEquals(
+			0, socialReferrers.size(), socialReferrers.toString());
+
+		socialReferrers = _pageReferrerDog.getSocialPageReferrers(
+			new SearchQueryContext() {
+				{
+					setCanonicalUrl("http://liferay.com");
+					setDataSourceId("1");
+					setInterval(Interval.DAY.getKey());
+					setRangeKey(7);
+				}
+			});
 
 		Assertions.assertEquals(
 			0, socialReferrers.size(), socialReferrers.toString());
