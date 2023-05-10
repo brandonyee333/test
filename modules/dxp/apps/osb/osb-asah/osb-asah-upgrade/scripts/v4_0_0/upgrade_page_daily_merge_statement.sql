@@ -197,7 +197,7 @@ USING
 				PageEvent
 			WHERE
 				applicationId = 'Page' AND
-				eventId IN('ctaClicked', 'pageRead', 'pageViewed')
+				eventId IN ('ctaClicked', 'pageRead', 'pageViewed')
 			GROUP BY
 				browserName, canonicalUrl, channelId, city, country, deviceType,
 				normalizedEventDate, platformName, region, sessionId, title, userId
