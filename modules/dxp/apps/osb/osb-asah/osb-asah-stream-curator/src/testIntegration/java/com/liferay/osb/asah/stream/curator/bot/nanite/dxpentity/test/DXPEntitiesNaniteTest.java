@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -83,8 +82,8 @@ public class DXPEntitiesNaniteTest
 	)
 	@Test
 	public void testProcessQueuedMessagesRetainsOrder() throws Exception {
-		List<Message<JSONObject>> messages = _messageSubscriber.pullMessages(
-			50, JSONObject::new);
+		List<Message<JSONArray>> messages = _messageSubscriber.pullMessages(
+			50, JSONArray::new);
 
 		_messageSubscriber.sendAckIds(
 			ListUtil.map(messages, Message::getAckId));
@@ -93,7 +92,7 @@ public class DXPEntitiesNaniteTest
 
 		JSONArray jsonArray = new JSONArray();
 
-		Stream<Message<JSONObject>> stream = messages.stream();
+		Stream<Message<JSONArray>> stream = messages.stream();
 
 		stream.collect(
 			Collectors.groupingBy(
@@ -120,10 +119,14 @@ public class DXPEntitiesNaniteTest
 
 	private void _populateJSONArray(
 		JSONArray jsonArray, String projectId,
-		List<Message<JSONObject>> messages) {
+		List<Message<JSONArray>> messages) {
 
-		for (Message<JSONObject> message : messages) {
-			jsonArray.put(message.getObject());
+		for (Message<JSONArray> message : messages) {
+			JSONArray messageJSONArray = message.getObject();
+
+			for (int i = 0; i < messageJSONArray.length(); i++) {
+				jsonArray.put(messageJSONArray.getJSONObject(i));
+			}
 		}
 	}
 
