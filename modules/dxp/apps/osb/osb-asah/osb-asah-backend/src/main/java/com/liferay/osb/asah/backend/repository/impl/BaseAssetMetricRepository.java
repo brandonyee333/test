@@ -77,7 +77,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<T> getAppearsOnMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> canonicalUrlField = DSL.field(
@@ -132,7 +132,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public T getAssetMetric(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		Set<String> selectedMetrics, TimeRange timeRange) {
 
 		Field<Boolean> previousField = DSL.when(
@@ -210,7 +210,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public Long getAssetMetricsCount(
-		Long channelId, @Nullable String keywords, TimeRange timeRange) {
+		@Nullable Long channelId, @Nullable String keywords,
+		TimeRange timeRange) {
 
 		Field<String> assetIdField = DSL.field(
 			getAssetIdFieldName(), String.class);
@@ -239,7 +240,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public AudienceReport getAudienceReport(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
 		Condition whereClauseCondition = _createWhereClauseCondition(
@@ -356,7 +357,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<Metric> getBrowserMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> browserNameField = DSL.coalesce(
@@ -407,7 +408,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<Metric> getDeviceMetrics(
-		String assetId, @Null String assetTitle, Long channelId,
+		String assetId, @Null String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> deviceTypeField = DSL.coalesce(
@@ -486,7 +487,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<Metric> getGeolocationMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
 		Field<String> countryField = DSL.coalesce(
@@ -539,7 +540,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<HistogramMetric> getHistogramMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		boolean includePrevious, Interval interval, MetricType metricType,
 		TimeRange timeRange) {
 
@@ -585,7 +586,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<Individual> getKnownIndividuals(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, Pageable pageable, @Nullable String keywords,
 		TimeRange timeRange) {
 
@@ -673,7 +674,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<Metric> getSegmentMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange) {
 
 		Condition whereClauseCondition = _createWhereClauseCondition(
@@ -834,8 +835,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	private Condition _createWhereClauseCondition(
-		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
-		boolean includePrevious, TimeRange timeRange) {
+		@Nullable String assetId, @Nullable String assetTitle,
+		@Nullable Long channelId, boolean includePrevious,
+		TimeRange timeRange) {
 
 		if (includePrevious) {
 			timeRange = timeRange.getIncludePreviousTimeRange();
@@ -904,8 +906,8 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	private Condition _createWhereClauseCondition(
-		@Nullable String assetId, @Nullable String assetTitle, Long channelId,
-		TimeRange timeRange) {
+		@Nullable String assetId, @Nullable String assetTitle,
+		@Nullable Long channelId, TimeRange timeRange) {
 
 		return _createWhereClauseCondition(
 			assetId, assetTitle, channelId, null, timeRange);

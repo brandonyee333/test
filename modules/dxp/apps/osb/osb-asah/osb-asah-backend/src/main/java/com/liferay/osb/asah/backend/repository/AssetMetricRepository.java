@@ -37,11 +37,11 @@ import org.springframework.lang.Nullable;
 public interface AssetMetricRepository<T extends AssetMetric> {
 
 	public List<T> getAppearsOnMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange);
 
 	public T getAssetMetric(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		Set<String> selectedMetrics, TimeRange timeRange);
 
 	public List<T> getAssetMetrics(
@@ -49,38 +49,39 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		Set<String> selectedMetrics, TimeRange timeRange);
 
 	public Long getAssetMetricsCount(
-		Long channelId, @Nullable String keywords, TimeRange timeRange);
+		@Nullable Long channelId, @Nullable String keywords,
+		TimeRange timeRange);
 
 	public AssetType getAssetType();
 
 	public AudienceReport getAudienceReport(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange);
 
 	public List<Metric> getBrowserMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange);
 
 	public List<Metric> getDeviceMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange);
 
 	public List<Metric> getGeolocationMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange);
 
 	public List<HistogramMetric> getHistogramMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		boolean includePrevious, Interval interval, MetricType metricType,
 		TimeRange timeRange);
 
 	public List<Individual> getKnownIndividuals(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, Pageable pageable, @Nullable String keywords,
 		TimeRange timeRange);
 
 	public List<Metric> getSegmentMetrics(
-		String assetId, @Nullable String assetTitle, Long channelId,
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange);
 
 }
