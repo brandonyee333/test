@@ -20,10 +20,12 @@ import com.google.cloud.bigquery.BigQueryOptions;
 
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 
 /**
  * @author Marcellus Tavares
@@ -52,7 +54,18 @@ public class BigQueryConfiguration {
 	@ConditionalOnGoogleApplicationCredentials
 	@Primary
 	public BigQuery prodBigQuery() {
-		BigQueryOptions bigQueryOptions = BigQueryOptions.getDefaultInstance();
+		String region = _environment.getProperty("gcloud.compute.region");
+
+		if (region == null) {
+			throw new IllegalStateException(
+				"Please set the gcloud.compute.region environment variable");
+		}
+
+		BigQueryOptions.Builder builder = BigQueryOptions.newBuilder();
+
+		BigQueryOptions bigQueryOptions = builder.setLocation(
+			region
+		).build();
 
 		return bigQueryOptions.getService();
 	}
@@ -73,5 +86,8 @@ public class BigQueryConfiguration {
 
 		return bigQueryOptions.getService();
 	}
+
+	@Autowired
+	private Environment _environment;
 
 }
