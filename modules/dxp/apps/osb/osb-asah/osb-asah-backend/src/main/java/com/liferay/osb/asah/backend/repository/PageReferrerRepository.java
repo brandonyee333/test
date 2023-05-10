@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Marcellus Tavares
@@ -28,20 +29,20 @@ import org.springframework.data.domain.Pageable;
 public interface PageReferrerRepository {
 
 	public Map<String, Double> getAcquisitionChannelAccesses(
-		String canonicalUrl, Long channelId, TimeRange timeRange,
+		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
 		ZoneId zoneId);
 
 	public Map<String, Double> getPageReferrerAccesses(
-		String canonicalUrl, Long channelId, TimeRange timeRange,
+		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
 		ZoneId zoneId);
 
 	public Map<String, Double>
 		getSocialPageReferrerAccessesByReferrerCanonicalUrl(
-			String canonicalUrl, Long channelId, Pageable pageable,
+			String canonicalUrl, @Nullable Long channelId, Pageable pageable,
 			TimeRange timeRange, ZoneId zoneId);
 
 	public Map<String, Double> getSocialPageReferrerAccessesByReferrerHost(
-		String canonicalUrl, Long channelId, Pageable pageable,
+		String canonicalUrl, @Nullable Long channelId, Pageable pageable,
 		TimeRange timeRange, ZoneId zoneId);
 
 }

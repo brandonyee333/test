@@ -33,6 +33,7 @@ import org.jooq.impl.DSL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -43,7 +44,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 	@Override
 	public Map<String, Double> getAcquisitionChannelAccesses(
-		String canonicalUrl, Long channelId, TimeRange timeRange,
+		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
 		ZoneId zoneId) {
 
 		Field<String> acquisitionChannelField = DSL.field(
@@ -78,7 +79,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 	@Override
 	public Map<String, Double> getPageReferrerAccesses(
-		String canonicalUrl, Long channelId, TimeRange timeRange,
+		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
 		ZoneId zoneId) {
 
 		Field<BigDecimal> accessesField = DSL.sum(
@@ -121,7 +122,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	@Override
 	public Map<String, Double>
 		getSocialPageReferrerAccessesByReferrerCanonicalUrl(
-			String canonicalUrl, Long channelId, Pageable pageable,
+			String canonicalUrl, @Nullable Long channelId, Pageable pageable,
 			TimeRange timeRange, ZoneId zoneId) {
 
 		Field<String> referrerCanonicalUrl = DSL.field(
@@ -172,7 +173,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 	@Override
 	public Map<String, Double> getSocialPageReferrerAccessesByReferrerHost(
-		String canonicalUrl, Long channelId, Pageable pageable,
+		String canonicalUrl, @Nullable Long channelId, Pageable pageable,
 		TimeRange timeRange, ZoneId zoneId) {
 
 		Field<String> referrerHostField = DSL.field(
@@ -225,15 +226,10 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	protected DSLContext dslContext;
 
 	private Condition _createWhereClauseCondition(
-		String canonicalUrl, Long channelId, TimeRange timeRange,
+		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
 		ZoneId zoneId) {
 
-		return DSL.and(
-			DSL.field(
-				"channelId"
-			).eq(
-				channelId
-			),
+		Condition condition = DSL.and(
 			DSL.field(
 				"canonicalUrl"
 			).eq(
@@ -247,6 +243,17 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 				DateUtil.toUTCLocalDateTime(
 					timeRange.getEndLocalDateTime(), zoneId)
 			));
+
+		if (channelId != null) {
+			condition = condition.and(
+				DSL.field(
+					"channelId"
+				).eq(
+					channelId
+				));
+		}
+
+		return condition;
 	}
 
 	@Autowired

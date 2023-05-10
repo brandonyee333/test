@@ -53,7 +53,7 @@ public class PageReferrerDog {
 
 		return _pageReferrerRepository.getAcquisitionChannelAccesses(
 			searchQueryContext.getCanonicalUrl(),
-			Long.valueOf(searchQueryContext.getChannelId()),
+			searchQueryContext.getChannelIdAsLong(),
 			searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 	}
 
@@ -63,7 +63,7 @@ public class PageReferrerDog {
 		Map<String, Double> pageReferrerAccesses =
 			_pageReferrerRepository.getPageReferrerAccesses(
 				searchQueryContext.getCanonicalUrl(),
-				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getChannelIdAsLong(),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		if (pageReferrerAccesses.isEmpty()) {
@@ -100,7 +100,7 @@ public class PageReferrerDog {
 			return _pageReferrerRepository.
 				getSocialPageReferrerAccessesByReferrerHost(
 					searchQueryContext.getCanonicalUrl(),
-					Long.valueOf(searchQueryContext.getChannelId()),
+					searchQueryContext.getChannelIdAsLong(),
 					PageRequest.of(0, size), searchQueryContext.getTimeRange(),
 					_timeZoneDog.getZoneId());
 		}
@@ -108,7 +108,7 @@ public class PageReferrerDog {
 		return _pageReferrerRepository.
 			getSocialPageReferrerAccessesByReferrerCanonicalUrl(
 				searchQueryContext.getCanonicalUrl(),
-				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getChannelIdAsLong(),
 				PageRequest.of(0, size), searchQueryContext.getTimeRange(),
 				_timeZoneDog.getZoneId());
 	}
@@ -119,9 +119,8 @@ public class PageReferrerDog {
 		Map<String, Double> socialPageReferrerAccessesByReferrerHost =
 			_pageReferrerRepository.getSocialPageReferrerAccessesByReferrerHost(
 				searchQueryContext.getCanonicalUrl(),
-				Long.valueOf(searchQueryContext.getChannelId()),
-				PageRequest.of(0, 20), searchQueryContext.getTimeRange(),
-				_timeZoneDog.getZoneId());
+				searchQueryContext.getChannelIdAsLong(), PageRequest.of(0, 20),
+				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		Map<String, Double> starredSocialReferrers = new HashMap<>();
 
