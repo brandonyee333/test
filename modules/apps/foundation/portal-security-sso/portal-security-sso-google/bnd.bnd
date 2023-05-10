@@ -2,8 +2,6 @@ Bundle-Name: Liferay Portal Security SSO Google
 Bundle-SymbolicName: com.liferay.portal.security.sso.google
 Bundle-Version: 3.0.20
 Import-Package:\
-	!com.fasterxml.jackson.core,\
-	\
 	!com.google.*,\
 	\
 	!org.apache.http.*,\
