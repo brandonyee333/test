@@ -50,14 +50,9 @@ public class BQIndividualMetricDog {
 		LocalDate localDate, MetricType metricType,
 		SearchQueryContext searchQueryContext) {
 
-		Long channelId = null;
-
-		if (searchQueryContext.getChannelId() != null) {
-			channelId = Long.valueOf(searchQueryContext.getChannelId());
-		}
-
 		return _bqIdentityRepository.getBQIndividualsCount(
-			searchQueryContext.isActive(), channelId, localDate, metricType,
+			searchQueryContext.isActive(),
+			searchQueryContext.getChannelIdAsLong(), localDate, metricType,
 			_timeZoneDog.getZoneId());
 	}
 
@@ -152,12 +147,6 @@ public class BQIndividualMetricDog {
 
 		List<Metric> bqIndividualCountMetrics = new ArrayList<>();
 
-		Long channelId = null;
-
-		if (searchQueryContext.getChannelId() != null) {
-			channelId = Long.valueOf(searchQueryContext.getChannelId());
-		}
-
 		LocalDate localDate = LocalDate.now(_timeZoneDog.getZoneId());
 
 		LocalDate previousLocalDate = _getPreviousLocalDate(
@@ -165,7 +154,8 @@ public class BQIndividualMetricDog {
 
 		List<Long> bqIndividualsCounts =
 			_bqIdentityRepository.getBQIndividualsCounts(
-				searchQueryContext.isActive(), channelId,
+				searchQueryContext.isActive(),
+				searchQueryContext.getChannelIdAsLong(),
 				Arrays.asList(localDate, previousLocalDate), metricTypes,
 				_timeZoneDog.getZoneId());
 
