@@ -269,6 +269,12 @@ public class DXPEntitiesNanite implements Nanite {
 			List<Message<JSONArray>> messages = _messageSubscriber.pullMessages(
 				_dxpEntitiesNanitePullMessagesSize, JSONArray::new);
 
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					String.format(
+						"%d DXP entities messages received", messages.size()));
+			}
+
 			if (messages.isEmpty()) {
 				break;
 			}
