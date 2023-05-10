@@ -47,7 +47,7 @@ public class EventHistogramDog {
 		return _createHistogramBag(
 			EventMetricType.TOTAL_EVENTS, searchQueryContext,
 			_bqEventRepository.getBQEventsCountGroupByEventDate(
-				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getChannelIdAsLong(),
 				searchQueryContext.getEntityId(),
 				_getInterval(searchQueryContext),
 				searchQueryContext.getKeywords(),
@@ -64,7 +64,7 @@ public class EventHistogramDog {
 		return _createHistogramBag(
 			EventMetricType.TOTAL_SESSIONS, searchQueryContext,
 			_bqEventRepository.getEventSessionsCountGroupByEventDate(
-				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getChannelIdAsLong(),
 				searchQueryContext.getEntityId(),
 				_getInterval(searchQueryContext),
 				searchQueryContext.getKeywords(),

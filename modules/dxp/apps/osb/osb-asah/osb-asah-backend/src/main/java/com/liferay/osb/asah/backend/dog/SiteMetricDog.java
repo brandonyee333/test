@@ -119,7 +119,7 @@ public class SiteMetricDog {
 
 		Map<String, BigDecimal> sessionsCountGroupedByBrowserName =
 			_bqSessionRepository.getSessionsCountGroupedByBrowserName(
-				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getChannelIdAsLong(),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		Set<Map.Entry<String, BigDecimal>> set =
@@ -158,7 +158,7 @@ public class SiteMetricDog {
 
 		for (Map<String, Object> cohortHeatMapTuple :
 				_bqSessionRepository.getCohortHeatMapTuples(
-					Long.valueOf(searchQueryContext.getChannelId()), interval,
+					searchQueryContext.getChannelIdAsLong(), interval,
 					TimeRange.of(
 						LocalDateTime.now(), startLocalDate.atStartOfDay()),
 					_timeZoneDog.getZoneId())) {
@@ -199,7 +199,7 @@ public class SiteMetricDog {
 
 		List<Map<String, Object>> sessionsCountGroupedByDeviceName =
 			_bqSessionRepository.getSessionsCountGroupedByDeviceName(
-				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getChannelIdAsLong(),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		Stream<Map<String, Object>> stream =
@@ -238,7 +238,7 @@ public class SiteMetricDog {
 
 		Map<String, BigDecimal> sessionsCountGroupedByGeolocation =
 			_bqSessionRepository.getSessionsCountGroupedByGeolocation(
-				Long.valueOf(searchQueryContext.getChannelId()),
+				searchQueryContext.getChannelIdAsLong(),
 				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		Set<Map.Entry<String, BigDecimal>> set =
@@ -346,9 +346,8 @@ public class SiteMetricDog {
 
 		List<SiteVisitorBehaviorMetric> sessionSiteVisitorBehaviorMetrics =
 			_bqSessionRepository.getSiteVisitorBehaviorMetrics(
-				Long.parseLong(searchQueryContext.getChannelId()),
-				includePrevious, searchQueryContext.getTimeRange(),
-				_timeZoneDog.getZoneId());
+				searchQueryContext.getChannelIdAsLong(), includePrevious,
+				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
 
 		Stream<SiteVisitorBehaviorMetric> stream =
 			sessionSiteVisitorBehaviorMetrics.stream();

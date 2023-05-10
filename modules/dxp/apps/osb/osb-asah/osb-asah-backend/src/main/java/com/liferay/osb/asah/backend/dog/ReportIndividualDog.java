@@ -63,7 +63,7 @@ public class ReportIndividualDog {
 
 		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 
 		Sort sort = Sort.by(
@@ -72,7 +72,7 @@ public class ReportIndividualDog {
 		return new ResultBag<>(
 			assetMetricRepository.getKnownIndividuals(
 				searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-				Long.valueOf(searchQueryContext.getChannelId()), metricType,
+				searchQueryContext.getChannelIdAsLong(), metricType,
 				PageRequest.of(start / size, size, sort), keywords,
 				searchQueryContext.getTimeRange()),
 			audienceReport.getKnownIndividualsCount());

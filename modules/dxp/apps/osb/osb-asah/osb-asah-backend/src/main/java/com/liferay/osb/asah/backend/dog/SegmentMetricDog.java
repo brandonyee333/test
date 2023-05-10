@@ -61,7 +61,7 @@ public class SegmentMetricDog {
 
 		List<Metric> segmentMetrics = assetMetricRepository.getSegmentMetrics(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 
 		Double othersMetricValue = 0D;

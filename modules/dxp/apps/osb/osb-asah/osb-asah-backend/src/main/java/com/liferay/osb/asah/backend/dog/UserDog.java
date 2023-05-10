@@ -49,7 +49,7 @@ public class UserDog {
 
 		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 
 		return audienceReport.getAnonymousIndividualsCount();
@@ -63,7 +63,7 @@ public class UserDog {
 
 		return assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 	}
 
@@ -75,7 +75,7 @@ public class UserDog {
 
 		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 
 		return audienceReport.getKnownIndividualsCount();
@@ -89,7 +89,7 @@ public class UserDog {
 
 		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 
 		return audienceReport.getNonsegmentedIndividualsCount();
@@ -103,7 +103,7 @@ public class UserDog {
 
 		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()), metricType,
+			searchQueryContext.getChannelIdAsLong(), metricType,
 			searchQueryContext.getTimeRange());
 
 		return audienceReport.getSegmentedIndividualsCount();

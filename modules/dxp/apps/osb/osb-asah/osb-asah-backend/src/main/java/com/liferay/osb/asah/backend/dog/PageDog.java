@@ -43,7 +43,7 @@ public class PageDog {
 
 		PageMetric pageMetric = _pageMetricAssetMetricRepository.getAssetMetric(
 			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			Long.valueOf(searchQueryContext.getChannelId()),
+			searchQueryContext.getChannelIdAsLong(),
 			Collections.singleton(PageMetricType.INDIRECT_ACCESS.getName()),
 			searchQueryContext.getTimeRange());
 

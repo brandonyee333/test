@@ -54,7 +54,7 @@ public class SiteHistogramDog {
 		List<SiteVisitorBehaviorMetric> siteVisitorBehaviorMetrics =
 			_bqSessionRepository.
 				getSiteVisitorBehaviorMetricsGroupedBySessionStart(
-					Long.parseLong(searchQueryContext.getChannelId()),
+					searchQueryContext.getChannelIdAsLong(),
 					searchQueryContext.isIncludePrevious(),
 					searchQueryContext.getInterval(), timeRange, zoneId);
 

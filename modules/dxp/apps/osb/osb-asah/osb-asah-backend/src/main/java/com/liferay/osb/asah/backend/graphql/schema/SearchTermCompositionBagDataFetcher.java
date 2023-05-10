@@ -38,7 +38,7 @@ public class SearchTermCompositionBagDataFetcher
 		SearchQueryContext searchQueryContext) {
 
 		return _siteMetricDog.getSearchTermsCompositionResultBag(
-			Long.valueOf(searchQueryContext.getChannelId()),
+			searchQueryContext.getChannelIdAsLong(),
 			dataFetchingEnvironment.getArgument("size"),
 			dataFetchingEnvironment.getArgument("start"),
 			searchQueryContext.getTimeRange());
