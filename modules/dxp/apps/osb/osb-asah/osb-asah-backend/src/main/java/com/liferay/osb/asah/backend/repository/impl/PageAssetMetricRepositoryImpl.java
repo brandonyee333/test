@@ -265,7 +265,11 @@ public class PageAssetMetricRepositoryImpl
 		SelectSelectStep<Record> selectSelectStep, TimeRange timeRange) {
 
 		return selectSelectStep.from(
-			getTableName(timeRange)
+			DSL.table(
+				getTableName(timeRange)
+			).as(
+				"metric"
+			)
 		).leftJoin(
 			DSL.table(
 				"BQIdentity"
@@ -276,7 +280,7 @@ public class PageAssetMetricRepositoryImpl
 			DSL.field(
 				"Identity.id"
 			).eq(
-				DSL.field(getTableName(timeRange) + ".userId")
+				DSL.field("metric.userId")
 			)
 		);
 	}
@@ -358,7 +362,7 @@ public class PageAssetMetricRepositoryImpl
 				DSL.countDistinct(
 					DSL.coalesce(
 						DSL.field("Identity.individualId"),
-						DSL.field(getTableName(timeRange) + ".userId"))),
+						DSL.field("metric.userId"))),
 				BigDecimal.class);
 		}
 
