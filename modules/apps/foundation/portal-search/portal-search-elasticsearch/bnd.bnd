@@ -69,3 +69,4 @@ Import-Package:\
 	*
 Liferay-Releng-Module-Group-Title: Elasticsearch
 -dsannotations-options: inherit
+-fixupmessages: Classes found in the wrong directory: ...;is:=ignore
