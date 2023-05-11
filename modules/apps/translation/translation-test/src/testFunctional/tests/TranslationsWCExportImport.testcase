@@ -338,6 +338,8 @@ definition {
 	@description = "This ensures that user can import import translation with embedded bpt/ept tags."
 	@priority = 4
 	test CanImportTranslationWithEmeddedTags {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
 
 		WebContentNavigator.gotoAddCP();

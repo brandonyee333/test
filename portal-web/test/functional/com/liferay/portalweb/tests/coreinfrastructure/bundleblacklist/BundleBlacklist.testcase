@@ -81,7 +81,7 @@ definition {
 
 	@priority = 5
 	test BlacklistModuleLPKG {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "BundleBlacklist#BlacklistModuleLPKG";
 
 		var testRunEnvironment = PropsUtil.get("test.run.environment");
@@ -208,6 +208,7 @@ definition {
 
 	@priority = 3
 	test CanEnableBlacklistedModuleLPKGAfterRestart {
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "BundleBlacklist#CanEnableBlacklistedModuleLPKGAfterRestart";
 
 		var testRunEnvironment = PropsUtil.get("test.run.environment");
@@ -314,6 +315,7 @@ definition {
 
 	@priority = 3
 	test CanRemoveBlacklistedModuleLPKGViaUI {
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "BundleBlacklist#CanRemoveBlacklistedModuleLPKGViaUI";
 
 		var testRunEnvironment = PropsUtil.get("test.run.environment");
@@ -554,6 +556,7 @@ definition {
 
 	@priority = 3
 	test RestartCanNotEnableBlacklistedModuleLPKGViaUI {
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "BundleBlacklist#RestartCanNotEnableBlacklistedModuleLPKGViaUI";
 
 		var testRunEnvironment = PropsUtil.get("test.run.environment");

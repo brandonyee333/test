@@ -80,6 +80,8 @@ definition {
 	@description = "Feature ID: LRAC-4265 | Automation ID: LRAC-10008 | Test Summary: Sample javascript copy"
 	@priority = 5
 	test CanCopySampleJavascript {
+		property portal.acceptance = "poshi-validation";
+
 		var layoutName = "Custom 2";
 		var globalAttributesList = "canonicalUrl,pageTitle,referrer,url";
 
@@ -446,6 +448,8 @@ definition {
 	@description = "Bug: LRAC-9883 | Automation ID: LRAC-10262 | Test Summary: Custom Event is shown when pagination and searching are applied"
 	@priority = 4
 	test CustomEventIsShownWhenPaginatingAndSearching {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Fill fields and create custom event") {
 			var customEventName = ACCustomEvents.generateCustomEventName();
 
@@ -516,6 +520,8 @@ definition {
 	@description = "Feature ID: LRAC-4265 | Automation ID: LRAC-10007 | Test Summary: Search for Custom Event"
 	@priority = 3
 	test CustomEventListSearchable {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Fill fields and create 2 custom events") {
 			var customEventName1 = ACCustomEvents.generateCustomEventName();
 

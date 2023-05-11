@@ -21,6 +21,7 @@ definition {
 	@priority = 4
 	test ExternalDataSourceSmoke {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "poshi-validation";
 		property skip.start.app.server = "true";
 		property test.assert.warning.exceptions = "true";
 		property test.name.skip.portal.instance = "ServiceBuilder#ExternalDataSourceSmoke";
@@ -50,6 +51,7 @@ definition {
 	@priority = 4
 	test RenameFinderColumn {
 		property database.bare.enabled = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.assert.warning.exceptions = "true";
 		property test.name.skip.portal.instance = "ServiceBuilder#RenameFinderColumn";
 

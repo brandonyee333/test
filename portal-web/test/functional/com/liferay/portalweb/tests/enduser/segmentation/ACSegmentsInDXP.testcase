@@ -293,7 +293,7 @@ definition {
 	@description = "LPS-94938 Validate if the user is redirected to the not found Analytics Cloud page, when he tries to see the detail of the imported segment from Analytics Cloud into DXP, one time that the segment does not exist in Analytics Cloud anymore"
 	@priority = 4
 	test RedirectToSegmentPageErrorAC {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "ACSegmentsInDXP#RedirectToSegmentPageErrorAC";
 
 		task ("Update Segments Analytics Cloud in System Settings") {

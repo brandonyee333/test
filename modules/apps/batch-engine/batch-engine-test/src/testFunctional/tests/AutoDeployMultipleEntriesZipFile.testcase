@@ -32,7 +32,7 @@ definition {
 
 	@priority = 4
 	test CanAutoDeployBlogPostingZipWithCsv {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given a blogPosting.zip file") {
 			var filePath = BatchEngine.copyDependenciesDirToFolder(file = "blogPosting");
@@ -67,7 +67,7 @@ definition {
 
 	@priority = 4
 	test CanAutoDeployBlogPostingZipWithJsonT {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given a blogPostingJsonT.zip file") {
 			var filePath = BatchEngine.copyDependenciesDirToFolder(file = "blogPostingJsonT");
@@ -104,7 +104,7 @@ definition {
 
 	@priority = 4
 	test CanAutoDeployMultipleBatchPairsZip {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given a multipleBatchPairs.zip file including blog and object definition") {
 			var filePath = BatchEngine.copyDependenciesDirToFolder(file = "multipleElementsParis");
@@ -151,7 +151,7 @@ definition {
 
 	@priority = 4
 	test CanAutoDeployObjectDefinitionZipWithJsonl {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given an objectDefinition.zip file") {
 			var filePath = BatchEngine.copyDependenciesDirToFolder(file = "objectDefinition");
@@ -187,7 +187,7 @@ definition {
 
 	@priority = 4
 	test CanAutoDeployStructuredWebContentZipWithJson {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given a content structure is created") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");

@@ -2,7 +2,7 @@
 definition {
 
 	property osgi.modules.includes = "frontend-css-cadmin-sample-web";
-	property portal.acceptance = "true";
+	property portal.acceptance = "poshi-validation";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.component.names = "Cadmin";

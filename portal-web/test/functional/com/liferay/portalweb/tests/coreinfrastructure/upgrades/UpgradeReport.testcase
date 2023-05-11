@@ -464,6 +464,7 @@ definition {
 	@description = "LPS-154683: The Upgrade Report should not be deleted on additional upgrade runs."
 	@priority = 4
 	test ReportPersistThroughAdditionalUpgradeRuns {
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "UpgradeReport#ReportPersistThroughAdditionalUpgradeRuns";
 
 		task ("Look for the upgrade report") {
@@ -740,6 +741,7 @@ definition {
 	@description = "LPS-154683: Upgrade Report shows warnings"
 	@priority = 3
 	test WarningsLogged {
+		property portal.acceptance = "poshi-validation";
 		property skip.get.testcase.database.properties = "true";
 		property skip.upgrade-legacy-database = "true";
 		property test.assert.warning.exceptions = "false";

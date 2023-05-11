@@ -2965,7 +2965,7 @@ definition {
 	@description = "This is a use case for LPS-108077. Import encryption certificate from PKCS12 keystore file."
 	@priority = 5
 	test ImportEncryptionCertificateFromPKCS12KeystoreFile {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "SAML#ImportEncryptionCertificateFromPKCS12KeystoreFile";
 
 		task ("Configure samlidp as IdP and samlsp as SP") {
@@ -3195,7 +3195,7 @@ definition {
 	@description = "This is a use case for LPS-108077. Import signing certificate from PKCS12 keystore file."
 	@priority = 5
 	test ImportSigningCertificateFromPKCS12KeystoreFile {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "SAML#ImportSigningCertificateFromPKCS12KeystoreFile";
 
 		task ("Configure samlidp as IdP and samlsp as SP") {

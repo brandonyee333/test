@@ -86,7 +86,7 @@ definition {
 	@description = "This is a use case for LPS-72398. Users could login to Portal when the default language is not English."
 	@priority = 5
 	test LoginWithSpanishOnlyEnabledLocale {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "Login#LoginWithSpanishOnlyEnabledLocale";
 
 		task ("Login and configure spanish as default and current portal language") {
@@ -306,7 +306,7 @@ definition {
 	@description = "This is a use case for LRQA-27622. Users could login using Token Based SSO."
 	@priority = 5
 	test TokenBasedSSOSmoke {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "Login#TokenBasedSSOSmoke";
 
 		task ("Login and reset token based SSO configuration") {

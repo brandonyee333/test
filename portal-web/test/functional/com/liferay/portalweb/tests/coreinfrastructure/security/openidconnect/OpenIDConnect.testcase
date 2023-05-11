@@ -181,6 +181,7 @@ definition {
 	test AssertUserIsLoggedOutWhenAccessTokenIsExpiredByOIDCProvider {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=\"true\"${line.separator}tokenRefreshOffset=\"30\"";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "OpenIDConnect#AssertUserIsLoggedOutWithHigherRefreshToken";
 
 		task ("Startup Keycloak for test") {
@@ -370,6 +371,7 @@ definition {
 	test ExistedUserMapperCanBeEdited {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=\"true\"";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "OpenIDConnect#ExistedUserMapperCanBeEdited";
 
 		var jsonFileName = "keycloak.json";
@@ -930,6 +932,7 @@ definition {
 	test UserAttributesCanBeMappedInOIDCOnInstanceLevel {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=\"true\"";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "OpenIDConnect#UserAttributesCanBeMappedInOIDCOnInstanceLevel";
 
 		task ("Given: User starts Keycloak for test and set debug level") {
@@ -996,6 +999,7 @@ definition {
 	test UserAttributesCanBeMappedInOIDCOnSystemLevel {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=\"true\"";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "OpenIDConnect#UserAttributesCanBeMappedInOIDCOnSystemLevel";
 
 		task ("Given: User starts Keycloak for test and set debug level") {
@@ -1052,6 +1056,7 @@ definition {
 		property custom.properties = "open.id.connect.user.info.processor.impl.issuer=http://127.0.0.1:18080/auth/realms/master${line.separator}open.id.connect.user.info.processor.impl.regular.role=Power User";
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=\"true\"";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "OpenIDConnect#UserRoleCanBeSyncedToKeycloak";
 
 		task ("Given: User starts Keycloak for test and set debug level and custom properties are set accordingly") {
@@ -1248,7 +1253,7 @@ definition {
 	test VerifyUserCouldLoginWithPKCE {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=\"true\"";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "OpenIDConnect#VerifyUserCouldLoginWithPKCE";
 
 		task ("Startup Keycloak for test") {
@@ -1301,7 +1306,7 @@ definition {
 		property minimum.slave.ram = "24";
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=\"true\"";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "OpenIDConnect#VerifyUserIsStillLoggedInAfterAccessTokenExpiresAndRenew";
 
 		task ("Startup Keycloak for test") {

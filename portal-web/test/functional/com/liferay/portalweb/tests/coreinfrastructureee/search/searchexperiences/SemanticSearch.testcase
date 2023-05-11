@@ -791,6 +791,7 @@ definition {
 
 	test ViewTxtaiSystemSettingsTestConfiguration {
 		property custom.properties = "feature.flag.LPS-122920=true";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "SemanticSearch#ViewTxtaiSystemSettingsTestConfiguration";
 		property txtai.enabled = "true";
 

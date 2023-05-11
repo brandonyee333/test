@@ -842,7 +842,7 @@ definition {
 	@description = "This is a test for LPS-67515. It ensures that an exported blog entry with a cover image can be imported to a new site after cleaning the DB."
 	@priority = 4
 	test CanImportEntryWithImageAfterCleaningDB {
-		property portal.acceptance = "false";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "BlogsEntry#CanImportEntryWithImageAfterCleaningDB";
 
 		var testRunEnvironment = PropsUtil.get("test.run.environment");
@@ -948,7 +948,7 @@ definition {
 	@description = "This is a test for LPS-67515. It ensures that an exported blog entry with a small image can be imported to a new site after cleaning the DB."
 	@priority = 4
 	test CanImportEntryWithSmallImageAfterCleaningDB {
-		property portal.acceptance = "false";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "BlogsEntry#CanImportEntryWithSmallImageAfterCleaningDB";
 
 		var testRunEnvironment = PropsUtil.get("test.run.environment");

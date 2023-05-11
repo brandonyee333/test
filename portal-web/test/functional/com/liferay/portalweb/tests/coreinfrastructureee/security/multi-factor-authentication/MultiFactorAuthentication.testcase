@@ -939,6 +939,7 @@ definition {
 		property database.types = "hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "MultiFactorAuthentication#LoginWithOTPEnabledByCompanyId";
 
 		var portalURL = PropsUtil.get("portal.url");

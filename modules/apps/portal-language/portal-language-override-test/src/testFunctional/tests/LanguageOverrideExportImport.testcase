@@ -62,6 +62,8 @@ definition {
 	@description = "This test ensures that separate language keys with overridden translation of the same locale will export successfully"
 	@priority = 4
 	test CanExportMultipleLanguageKeysWithOverride {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given that there are two language keys with en-US override") {
 			LanguageOverride.addLanguageKey(
 				languageKey = "hello-world",
@@ -95,6 +97,8 @@ this-is-a-language-key=This is a language key''',
 	@description = "This test ensures that a user can export overridden translations for a single language key"
 	@priority = 5
 	test CanExportOverriddenTranslations {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given that by default, Export function does not display") {
 			Portlet.viewPortletOptions(optionsName = "Import Translations");
 
@@ -145,6 +149,8 @@ this-is-a-language-key=This is a language key''',
 	@description = "This test ensures that the exported properties file works and can be imported to portal"
 	@priority = 4
 	test CanImportExportedPropertiesFile {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a properties file for overridden translations was already exported") {
 			LanguageOverride.addLanguageKey(
 				languageKey = "hello-world",

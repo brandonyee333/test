@@ -70,6 +70,7 @@ definition {
 	@description = "This is a use case for LPS-83011. Verify if a user can configure asset links when export."
 	@priority = 4
 	test AssetLinksCanBeConfiguredWhenExport {
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "ExportImport#AssetLinksCanBeConfiguredWhenExport";
 
 		task ("Given: User add a new site with 2 WC") {

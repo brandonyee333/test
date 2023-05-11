@@ -3254,6 +3254,8 @@ definition {
 	@description = "This test covers LPS-157175. Check that there is no corrupted filename on downloaded folder."
 	@priority = 3
 	test NoCorruptedNameInDownloadedZip {
+		property portal.acceptance = "poshi-validation";
+
 		JSONFolder.addFolder(
 			dmFolderName = "日本語フォルダ1",
 			groupName = "Guest");

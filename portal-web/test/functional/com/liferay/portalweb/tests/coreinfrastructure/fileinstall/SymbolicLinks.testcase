@@ -16,6 +16,7 @@ definition {
 
 	@priority = 4
 	test SetLiferayHomeToASymbolicLink {
+		property portal.acceptance = "poshi-validation";
 		property skip.start.app.server = "true";
 		property test.assert.warning.exceptions = "true";
 		property test.name.skip.portal.instance = "SymbolicLinks#SetLiferayHomeToASymbolicLink";

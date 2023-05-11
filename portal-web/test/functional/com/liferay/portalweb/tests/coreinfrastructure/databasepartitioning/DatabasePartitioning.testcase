@@ -370,6 +370,7 @@ definition {
 	@priority = 4
 	test ExecuteSchemaValidator {
 		property custom.properties = "database.partition.schema.name.prefix=testPartition${line.separator}virtual.hosts.valid.hosts=localhost,127.0.0.1,www.able.com,www.baker.com";
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "DatabasePartitioning#ExecuteSchemaValidator";
 
 		PortalInstances.openVirtualInstancesAdmin();

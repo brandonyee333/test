@@ -22,6 +22,7 @@ definition {
 
 	@priority = 4
 	test AssertIndexOnStartup {
+		property portal.acceptance = "poshi-validation";
 		property search.environment.suite.exclude = "true";
 		property test.assert.warning.exceptions = "true";
 		property test.name.skip.portal.instance = "Elasticsearch7#AssertIndexOnStartup";
@@ -523,6 +524,7 @@ definition {
 	@priority = 5
 	test SearchWithNonLiferayIndex {
 		property embedded.elasticsearch.only = "true";
+		property portal.acceptance = "poshi-validation";
 		property search.environment.suite.exclude = "true";
 		property test.name.skip.portal.instance = "Elasticsearch7#SearchWithNonLiferayIndex";
 
@@ -577,6 +579,7 @@ definition {
 	@priority = 4
 	test SwitchSidecarToRemote {
 		property embedded.elasticsearch.only = "true";
+		property portal.acceptance = "poshi-validation";
 		property search.environment.suite.exclude = "true";
 		property test.name.skip.portal.instance = "Elasticsearch7#SwitchSidecarToRemote";
 

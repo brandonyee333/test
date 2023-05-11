@@ -331,6 +331,7 @@ definition {
 
 	@priority = 4
 	test CanInvokeMethods {
+		property portal.acceptance = "poshi-validation";
 		property test.name.skip.portal.instance = "Clustering#CanInvokeMethods";
 
 		Groovy.runScriptViaGogoShell(

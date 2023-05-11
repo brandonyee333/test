@@ -1,6 +1,7 @@
 @component-name = "portal-platform-experience-and-design-system"
 definition {
 
+	property portal.acceptance = "poshi-validation";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.component.names = "Theme";
@@ -58,6 +59,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanBeAppliedToPageWhenClassicThemeNotAvailable {
+		property portal.acceptance = "poshi-validation";
 		property portal.upstream = "true";
 		property test.name.skip.portal.instance = "Theme#CanBeAppliedToPageWhenClassicThemeNotAvailable";
 
