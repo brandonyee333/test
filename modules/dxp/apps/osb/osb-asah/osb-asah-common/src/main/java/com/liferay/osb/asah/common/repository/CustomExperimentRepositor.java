@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.entity.Experiment;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.Nullable;
 
@@ -27,7 +26,6 @@ import org.springframework.lang.Nullable;
  */
 public interface CustomExperimentRepositor {
 
-	@Cacheable
 	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
 		Long channelId, @Nullable String keywords, Pageable pageable);
 
