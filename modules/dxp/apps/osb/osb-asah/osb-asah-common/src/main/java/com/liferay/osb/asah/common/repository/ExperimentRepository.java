@@ -25,7 +25,7 @@ import org.springframework.cache.annotation.Cacheable;
  * @author Marcos Martins
  */
 public interface ExperimentRepository
-	extends CustomExperimentRepositor, Repository<Experiment, Long> {
+	extends CustomExperimentRepository, Repository<Experiment, Long> {
 
 	@Cacheable
 	public List<Experiment> findByExperimentStatus(

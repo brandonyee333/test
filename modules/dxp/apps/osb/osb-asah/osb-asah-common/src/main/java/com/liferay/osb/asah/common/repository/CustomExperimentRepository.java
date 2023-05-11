@@ -24,7 +24,7 @@ import org.springframework.lang.Nullable;
 /**
  * @author Ivica Cardic
  */
-public interface CustomExperimentRepositor {
+public interface CustomExperimentRepository {
 
 	public List<Experiment> searchExperimentsByChannelIdAndKeywords(
 		Long channelId, @Nullable String keywords, Pageable pageable);
