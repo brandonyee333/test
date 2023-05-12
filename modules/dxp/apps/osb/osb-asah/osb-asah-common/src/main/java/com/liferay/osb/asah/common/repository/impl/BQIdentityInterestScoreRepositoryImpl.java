@@ -55,6 +55,7 @@ import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Record3;
 import org.jooq.Select;
+import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.SortField;
@@ -812,13 +813,6 @@ public class BQIdentityInterestScoreRepositoryImpl
 			);
 		}
 
-		WindowPartitionByStep<Integer> windowPartitionByStep =
-			DSL.countDistinct(
-				DSL.coalesce(
-					DSL.field("Identity.individualId"),
-					DSL.field("Identity.id"))
-			).over();
-
 		Field<Integer> countField = DSL.countDistinct(
 			DSL.coalesce(
 				DSL.field("IdentityOverview.individualId"),
@@ -827,49 +821,17 @@ public class BQIdentityInterestScoreRepositoryImpl
 		List<Map<String, Object>> records = _queryExecutor.queryForList(
 			Function.identity(),
 			_dslContext.with(
-				"KeywordIdentity"
+				"IdentityActivityOverview"
 			).as(
-				selectSelectStep.where(conditions)
+				_getIdentityActivityOverview(segmentId)
 			).with(
 				"IdentityOverview"
 			).as(
-				DSL.select(
-					DSL.field(
-						"Identity.id"
-					).as(
-						"identityId"
-					),
-					DSL.field(
-						"Identity.individualId"
-					).as(
-						"individualId"
-					),
-					windowPartitionByStep.as("totalCount")
-				).from(
-					DSL.table(
-						"BQIdentity"
-					).as(
-						"Identity"
-					)
-				).join(
-					DSL.select(
-						DSL.field("channelId"), DSL.field("identityId")
-					).from(
-						"BQIdentityActivity"
-					).groupBy(
-						DSL.field("channelId"), DSL.field("identityId")
-					).asTable(
-						"IdentityActivity"
-					)
-				).on(
-					DSL.field(
-						"Identity.id"
-					).eq(
-						DSL.field("IdentityActivity.identityId")
-					)
-				).where(
-					_getBQIdentityCondition(channelId)
-				)
+				_getIdentityOverview(channelId)
+			).with(
+				"KeywordIdentity"
+			).as(
+				selectSelectStep.where(conditions)
 			).select(
 				countField.as("count"),
 				DSL.field(
@@ -1179,7 +1141,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 		}
 
 		return DSL.field(
-			"channelId"
+			"IdentityActivityOverview.channelId"
 		).eq(
 			channelId
 		);
@@ -1296,6 +1258,84 @@ public class BQIdentityInterestScoreRepositoryImpl
 			));
 
 		return conditions;
+	}
+
+	private Select<?> _getIdentityActivityOverview(@Nullable Long segmentId) {
+		Field<Object> channelIdField = DSL.field(
+			"BQIdentityActivity.channelId");
+		Field<Object> identityIdField = DSL.field(
+			"BQIdentityActivity.identityId");
+
+		SelectJoinStep<Record2<Object, Object>> selectJoinStep = DSL.select(
+			channelIdField, identityIdField
+		).from(
+			"BQIdentityActivity"
+		);
+
+		if (segmentId != null) {
+			selectJoinStep = selectJoinStep.join(
+				"BQMembership"
+			).on(
+				DSL.and(
+					DSL.field(
+						"BQIdentityActivity.identityId"
+					).eq(
+						DSL.field("BQMembership.identityId")
+					),
+					DSL.field(
+						"BQMembership.segmentId"
+					).eq(
+						segmentId
+					))
+			);
+		}
+
+		return selectJoinStep.groupBy(channelIdField, identityIdField);
+	}
+
+	private SelectConditionStep<Record3<Object, Object, Integer>>
+		_getIdentityOverview(Long channelId) {
+
+		WindowPartitionByStep<Integer> windowPartitionByStep =
+			DSL.countDistinct(
+				DSL.coalesce(
+					DSL.field("Identity.individualId"),
+					DSL.field("Identity.id"))
+			).over();
+
+		return DSL.select(
+			DSL.field(
+				"Identity.id"
+			).as(
+				"identityId"
+			),
+			DSL.field(
+				"Identity.individualId"
+			).as(
+				"individualId"
+			),
+			windowPartitionByStep.as("totalCount")
+		).from(
+			DSL.table(
+				"BQIdentity"
+			).as(
+				"Identity"
+			)
+		).join(
+			DSL.table(
+				"IdentityActivityOverview"
+			).as(
+				"IdentityActivityOverview"
+			)
+		).on(
+			DSL.field(
+				"Identity.id"
+			).eq(
+				DSL.field("IdentityActivityOverview.identityId")
+			)
+		).where(
+			_getBQIdentityCondition(channelId)
+		);
 	}
 
 	private Select<Record1<Object>> _getMaxRecordedDateSelect(Long channelId) {
