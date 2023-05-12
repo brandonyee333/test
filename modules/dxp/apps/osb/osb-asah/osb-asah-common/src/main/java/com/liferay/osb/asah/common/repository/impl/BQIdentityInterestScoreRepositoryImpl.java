@@ -1332,15 +1332,22 @@ public class BQIdentityInterestScoreRepositoryImpl
 	private Collection<SortField<?>> _getSortFields(Sort sort, Table<?> table) {
 		List<Sort.Order> orders = new ArrayList<>();
 
+		boolean orderedByKeyword = false;
+
 		for (Sort.Order order : sort.toList()) {
 			String fieldName = _fieldNames.getOrDefault(
 				order.getProperty(), order.getProperty());
 
 			if (fieldName.equals("keyword")) {
 				fieldName = "LOWER(keyword)";
+				orderedByKeyword = true;
 			}
 
 			orders.add(new Sort.Order(order.getDirection(), fieldName));
+		}
+
+		if (!orderedByKeyword) {
+			orders.add(new Sort.Order(Sort.Direction.ASC, "LOWER(keyword)"));
 		}
 
 		return getSortFields(null, Sort.by(orders), table);
