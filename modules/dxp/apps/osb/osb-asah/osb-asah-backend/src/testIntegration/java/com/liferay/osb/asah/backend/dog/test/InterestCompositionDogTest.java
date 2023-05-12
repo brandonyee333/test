@@ -127,7 +127,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 2L);
 				}
 			},
-			2, 1, 5);
+			2, 1, 3);
 	}
 
 	@BQSQLResource(
@@ -158,7 +158,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 2L);
 				}
 			},
-			2, 3, 5);
+			2, 3, 3);
 	}
 
 	@BQSQLResource(
@@ -189,7 +189,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("javascript", 1L);
 				}
 			},
-			2, 3, 5);
+			2, 3, 3);
 	}
 
 	@Autowired
