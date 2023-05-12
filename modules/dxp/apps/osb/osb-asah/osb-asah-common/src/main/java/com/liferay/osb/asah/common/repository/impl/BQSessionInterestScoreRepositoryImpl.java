@@ -145,7 +145,7 @@ public class BQSessionInterestScoreRepositoryImpl
 				).from(
 					"BQSession"
 				).where(
-					_geBQSessionCondition(channelId)
+					_geBQSessionCondition(channelId, timeRange)
 				)
 			).select(
 				aggregateFunction.as("count"), DSL.field("keyword"),
@@ -248,16 +248,30 @@ public class BQSessionInterestScoreRepositoryImpl
 		_queryExecutor.queryExecute(insertValuesStep7);
 	}
 
-	private Condition _geBQSessionCondition(@Nullable Long channelId) {
-		if (channelId == null) {
-			return DSL.noCondition();
+	private Condition _geBQSessionCondition(
+		@Nullable Long channelId, @Nullable TimeRange timeRange) {
+
+		Condition condition = DSL.noCondition();
+
+		if (channelId != null) {
+			condition = DSL.field(
+				"channelId"
+			).eq(
+				channelId
+			);
 		}
 
-		return DSL.field(
-			"channelId"
-		).eq(
-			channelId
-		);
+		if (timeRange != null) {
+			condition = condition.and(
+				DSL.field(
+					"sessionStart"
+				).between(
+					DateUtil.toUTCString(timeRange.getStartLocalDateTime()),
+					DateUtil.toUTCString(timeRange.getEndLocalDateTime())
+				));
+		}
+
+		return condition;
 	}
 
 	private final DSLContext _dslContext;
