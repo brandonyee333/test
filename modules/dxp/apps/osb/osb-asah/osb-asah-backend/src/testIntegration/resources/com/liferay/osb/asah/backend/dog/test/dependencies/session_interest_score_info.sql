@@ -1,11 +1,11 @@
-INSERT INTO Session(channelId, id) VALUES(1, '1');
-INSERT INTO Session(channelId, id) VALUES(1, '2');
-INSERT INTO Session(channelId, id) VALUES(1, '3');
-INSERT INTO Session(channelId, id) VALUES(1, '4');
-INSERT INTO Session(channelId, id) VALUES(1, '5');
-INSERT INTO Session(channelId, id) VALUES(1, '6');
-INSERT INTO Session(channelId, id) VALUES(1, '7');
-INSERT INTO Session(channelId, id) VALUES(1, '8');
+INSERT INTO Session(channelId, id, sessionStart) VALUES(1, '1', TIMESTAMP  '${today-400d}');
+INSERT INTO Session(channelId, id, sessionStart) VALUES(1, '2', TIMESTAMP '${today-387d}');
+INSERT INTO Session(channelId, id, sessionStart) VALUES(1, '3', TIMESTAMP '${today-366d}');
+INSERT INTO Session(channelId, id, sessionStart) VALUES(1, '4', TIMESTAMP '${today-364d}');
+INSERT INTO Session(channelId, id, sessionStart) VALUES(1, '5', TIMESTAMP '${today-100d}');
+INSERT INTO Session(channelId, id, sessionStart) VALUES(1, '6', TIMESTAMP '${today-20d}');
+INSERT INTO Session(channelId, id, sessionStart) VALUES(1, '7', TIMESTAMP '${today-1d}');
+INSERT INTO Session(channelId, id, sessionStart) VALUES(1, '8', TIMESTAMP '${today}');
 
 INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, sessionId) VALUES (1, TRUE, 'compelling action-items', DATE(TIMESTAMP  '${today-400d}'), '1');
 INSERT INTO SessionInterestScore(channelId, interested, keyword, recordedDate, sessionId) VALUES (1, TRUE, 'compelling action-items', DATE(TIMESTAMP '${today-387d}'), '2');
