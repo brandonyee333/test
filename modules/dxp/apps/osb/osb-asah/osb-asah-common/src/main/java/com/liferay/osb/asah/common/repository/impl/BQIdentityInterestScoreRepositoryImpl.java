@@ -130,37 +130,71 @@ public class BQIdentityInterestScoreRepositoryImpl
 		@Nullable Long channelId, @Nullable String individualId,
 		@Nullable String keywords) {
 
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
-
 		List<String> individualIds = null;
 
 		if (StringUtils.isNotBlank(individualId)) {
 			individualIds = Arrays.asList(individualId);
 		}
 
+		List<Condition> conditions = _getConditions(
+			channelId, Boolean.TRUE, individualIds, keywords, null);
+
+		conditions.add(
+			DSL.field(
+				"IdentityInterestPage.views", Long.class
+			).gt(
+				0L
+			));
+
 		return _queryExecutor.queryForLong(
-			selectSelectStep.from(
-				DSL.table(
-					"BQIdentityInterestScore"
-				).as(
-					"IdentityInterestScore"
+			_dslContext.with(
+				"DistinctIdentityInterestScore"
+			).as(
+				_dslContext.selectDistinct(
+					DSL.field("individualId"),
+					DSL.field("IdentityInterestScore.keyword")
+				).from(
+					DSL.table(
+						"BQIdentityInterestScore"
+					).as(
+						"IdentityInterestScore"
+					)
+				).join(
+					DSL.table(
+						"BQIdentity"
+					).as(
+						"Identity"
+					)
+				).on(
+					DSL.field(
+						"IdentityInterestScore.identityId"
+					).eq(
+						DSL.field("Identity.id")
+					)
+				).join(
+					DSL.table(
+						"BQIdentityInterestPage"
+					).as(
+						"IdentityInterestPage"
+					)
+				).on(
+					DSL.and(
+						DSL.field(
+							"IdentityInterestPage.identityId"
+						).eq(
+							DSL.field("Identity.id")
+						),
+						DSL.field(
+							"LOWER(IdentityInterestPage.keyword)"
+						).eq(
+							DSL.field("LOWER(IdentityInterestScore.keyword)")
+						))
+				).where(
+					conditions
 				)
-			).join(
-				DSL.table(
-					"BQIdentity"
-				).as(
-					"Identity"
-				)
-			).on(
-				DSL.field(
-					"IdentityInterestScore.identityId"
-				).eq(
-					DSL.field("Identity.id")
-				)
-			).where(
-				_getConditions(
-					channelId, Boolean.TRUE, individualIds, keywords, null)
+			).selectCount(
+			).from(
+				"DistinctIdentityInterestScore"
 			));
 	}
 
