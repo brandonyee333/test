@@ -35,6 +35,7 @@ import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
+import org.jooq.Record1;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -49,6 +50,24 @@ public class ExperimentRepositoryImpl
 
 	public ExperimentRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
+	}
+
+	@Override
+	public long countExperimentsByChannelIdAndKeywords(
+		Long channelId, String keywords) {
+
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return selectSelectStep.from(
+			"Experiment"
+		).where(
+			_getConditions(channelId, keywords)
+		).fetchOptional(
+			0, Long.class
+		).orElse(
+			0L
+		);
 	}
 
 	@Override

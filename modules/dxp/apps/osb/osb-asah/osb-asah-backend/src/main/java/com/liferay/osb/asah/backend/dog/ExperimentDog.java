@@ -57,7 +57,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -176,14 +178,6 @@ public class ExperimentDog {
 		return new ArrayList<>(experiment.getExperimentMetrics());
 	}
 
-	public List<Experiment> getExperiments(
-		Long channelId, @Nullable String keywords, int page, int size,
-		Sort sort) {
-
-		return _experimentRepository.searchExperimentsByChannelIdAndKeywords(
-			channelId, keywords, PageRequest.of(page, size, sort));
-	}
-
 	public List<HistogramMetric> getExperimentSessionHistogramMetrics(
 		Long experimentId, @Nullable String variantId) {
 
@@ -218,6 +212,22 @@ public class ExperimentDog {
 		return _pageAssetMetricRepository.getUniqueSessionsCount(
 			experimentId,
 			_getTimeRange(experiment.getStartedDateLocalDateTime()));
+	}
+
+	public Page<Experiment> getExperimentsPage(
+		Long channelId, @Nullable String keywords, int start, int size,
+		Sort sort) {
+
+		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
+
+		List<Experiment> experiments =
+			_experimentRepository.searchExperimentsByChannelIdAndKeywords(
+				channelId, keywords, pageRequest);
+
+		return PageableExecutionUtils.getPage(
+			experiments, pageRequest,
+			() -> _experimentRepository.countExperimentsByChannelIdAndKeywords(
+				channelId, keywords));
 	}
 
 	public Long getVariantUniqueVisitors(Long experimentId, String variantId) {
