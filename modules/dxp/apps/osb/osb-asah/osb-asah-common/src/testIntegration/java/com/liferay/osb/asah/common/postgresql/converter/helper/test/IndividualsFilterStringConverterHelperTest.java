@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
@@ -1056,10 +1055,6 @@ public class IndividualsFilterStringConverterHelperTest
 
 	@Autowired
 	private DataSourceRepository _dataSourceRepository;
-
-	@Autowired
-	private FaroInfoIndividualsFilterStringConverterHelper
-		_faroInfoIndividualsFilterStringConverterHelper;
 
 	@Autowired
 	private IndividualsFilterStringConverterHelper

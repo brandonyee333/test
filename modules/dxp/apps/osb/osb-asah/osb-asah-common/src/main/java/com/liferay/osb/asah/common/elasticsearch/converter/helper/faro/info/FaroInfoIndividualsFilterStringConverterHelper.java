@@ -15,14 +15,7 @@
 package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
 
 import com.liferay.osb.asah.common.converter.helper.DefaultFilterStringConverterHelper;
-import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.dog.BQIdentityInterestScoreDog;
-import com.liferay.osb.asah.common.dog.DXPEntityDog;
-import com.liferay.osb.asah.common.dog.UserSessionDog;
 
-import java.util.regex.Pattern;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,20 +25,4 @@ import org.springframework.stereotype.Component;
 @Component
 public class FaroInfoIndividualsFilterStringConverterHelper
 	extends DefaultFilterStringConverterHelper {
-
-	private static final Pattern _pattern = Pattern.compile(
-		".*(score eq '(false|true)').*");
-
-	@Autowired
-	private AsahMarkerDog _asahMarkerDog;
-
-	@Autowired
-	private BQIdentityInterestScoreDog _bqIdentityInterestScoreDog;
-
-	@Autowired
-	private DXPEntityDog _dxpEntityDog;
-
-	@Autowired
-	private UserSessionDog _userSessionDog;
-
 }
