@@ -101,7 +101,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		resourcePath = "test_bq_identity_interest_score_repository.sql"
 	)
 	@Test
-	public void testCountByFilterString() {
+	public void testCountByChannelIdAndIndividualIdAndKeywords() {
 		Assertions.assertEquals(
 			2,
 			_bqIdentityInterestScoreRepository.
