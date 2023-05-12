@@ -58,7 +58,8 @@ public class BigQueryConfiguration {
 
 		if (region == null) {
 			throw new IllegalStateException(
-				"Please set the gcloud.compute.region environment variable");
+				"Please set the environment variable " +
+					"\"gcloud.compute.region\"");
 		}
 
 		BigQueryOptions.Builder builder = BigQueryOptions.newBuilder();
