@@ -54,6 +54,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
@@ -223,8 +224,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	)
 	@Test
 	public void testGetExperimentsAll() {
-		List<Experiment> experiments = _experimentDog.getExperiments(
+		Page<Experiment> experimentsPage = _experimentDog.getExperimentsPage(
 			1L, null, 0, 10, Sort.asc("name"));
+
+		List<Experiment> experiments = experimentsPage.getContent();
 
 		Assertions.assertNotNull(experiments);
 		Assertions.assertEquals(3, experiments.size(), experiments.toString());
@@ -266,8 +269,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	)
 	@Test
 	public void testGetExperimentsPaginated() {
-		List<Experiment> experiments = _experimentDog.getExperiments(
+		Page<Experiment> experimentsPage = _experimentDog.getExperimentsPage(
 			1L, null, 1, 1, Sort.asc("name"));
+
+		List<Experiment> experiments = experimentsPage.getContent();
 
 		Assertions.assertNotNull(experiments);
 		Assertions.assertEquals(1, experiments.size(), experiments.toString());
