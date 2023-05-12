@@ -178,6 +178,20 @@ public class ExperimentDog {
 		return new ArrayList<>(experiment.getExperimentMetrics());
 	}
 
+	public Page<Experiment> getExperimentPage(
+		Long channelId, @Nullable String keywords, int start, int size,
+		Sort sort) {
+
+		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
+
+		return PageableExecutionUtils.getPage(
+			_experimentRepository.searchExperimentsByChannelIdAndKeywords(
+				channelId, keywords, pageRequest),
+			pageRequest,
+			() -> _experimentRepository.countExperimentsByChannelIdAndKeywords(
+				channelId, keywords));
+	}
+
 	public List<HistogramMetric> getExperimentSessionHistogramMetrics(
 		Long experimentId, @Nullable String variantId) {
 
@@ -212,22 +226,6 @@ public class ExperimentDog {
 		return _pageAssetMetricRepository.getUniqueSessionsCount(
 			experimentId,
 			_getTimeRange(experiment.getStartedDateLocalDateTime()));
-	}
-
-	public Page<Experiment> getExperimentsPage(
-		Long channelId, @Nullable String keywords, int start, int size,
-		Sort sort) {
-
-		PageRequest pageRequest = PageRequest.of(start / size, size, sort);
-
-		List<Experiment> experiments =
-			_experimentRepository.searchExperimentsByChannelIdAndKeywords(
-				channelId, keywords, pageRequest);
-
-		return PageableExecutionUtils.getPage(
-			experiments, pageRequest,
-			() -> _experimentRepository.countExperimentsByChannelIdAndKeywords(
-				channelId, keywords));
 	}
 
 	public Long getVariantUniqueVisitors(Long experimentId, String variantId) {

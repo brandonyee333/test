@@ -49,12 +49,12 @@ public class ExperimentBagDataFetcher
 		int size = dataFetchingEnvironment.getArgument("size");
 		int start = dataFetchingEnvironment.getArgument("start");
 
-		Page<Experiment> experimentsPage = _experimentDog.getExperimentsPage(
+		Page<Experiment> experimentPage = _experimentDog.getExperimentPage(
 			Long.valueOf(channelId), keywords, start, size, Sort.of(sort));
 
 		return new ResultBag<>(
-			ListUtil.map(experimentsPage.getContent(), ExperimentDTO::new),
-			experimentsPage.getTotalElements());
+			ListUtil.map(experimentPage.getContent(), ExperimentDTO::new),
+			experimentPage.getTotalElements());
 	}
 
 	@Autowired

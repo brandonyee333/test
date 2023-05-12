@@ -224,10 +224,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	)
 	@Test
 	public void testGetExperimentsAll() {
-		Page<Experiment> experimentsPage = _experimentDog.getExperimentsPage(
+		Page<Experiment> experimentPage = _experimentDog.getExperimentPage(
 			1L, null, 0, 10, Sort.asc("name"));
 
-		List<Experiment> experiments = experimentsPage.getContent();
+		List<Experiment> experiments = experimentPage.getContent();
 
 		Assertions.assertNotNull(experiments);
 		Assertions.assertEquals(3, experiments.size(), experiments.toString());
@@ -269,10 +269,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	)
 	@Test
 	public void testGetExperimentsPaginated() {
-		Page<Experiment> experimentsPage = _experimentDog.getExperimentsPage(
+		Page<Experiment> experimentPage = _experimentDog.getExperimentPage(
 			1L, null, 1, 1, Sort.asc("name"));
 
-		List<Experiment> experiments = experimentsPage.getContent();
+		List<Experiment> experiments = experimentPage.getContent();
 
 		Assertions.assertNotNull(experiments);
 		Assertions.assertEquals(1, experiments.size(), experiments.toString());
