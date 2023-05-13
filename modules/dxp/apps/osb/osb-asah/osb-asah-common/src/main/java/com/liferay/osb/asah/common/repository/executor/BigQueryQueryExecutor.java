@@ -49,6 +49,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.jooq.DataType;
+import org.jooq.Param;
 import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.Record1;
@@ -278,6 +280,26 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 	}
 
 	private TableResult _query(Query query) {
+		Map<String, Param<?>> queryParams = query.getParams();
+
+		for (Map.Entry<String, Param<?>> entry : queryParams.entrySet()) {
+			Param<?> param = entry.getValue();
+
+			DataType<?> dataType = param.getDataType();
+
+			if (dataType.isString()) {
+				String value = (String)param.getValue();
+
+				if (value != null) {
+					String key = entry.getKey();
+
+					value = value.replace("'", "\\\\'");
+
+					query.bind(key, value);
+				}
+			}
+		}
+
 		return _query(String.valueOf(query));
 	}
 
@@ -401,9 +423,9 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 				_getBigQueryTableName(name));
 		}
 
-		query = query.replaceAll("'([\\w\\d]*?)''([\\w\\d]*?)'", "'$1\\\\'$2'");
+		query = query.replace("as varchar", "as string");
 
-		return query.replace("\\''", "\\'");
+		return query.replace("\\''", "\'");
 	}
 
 	private static final String[] _FUNCTION_AND_TABLE_NAMES = {
