@@ -47,8 +47,11 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
 		ZoneId zoneId) {
 
-		Field<String> acquisitionChannelField = DSL.field(
-			"acquisitionChannel", String.class);
+		Field<String> acquisitionChannelField = DSL.coalesce(
+			DSL.field("acquisitionChannel", String.class), DSL.val("direct")
+		).as(
+			"acquisitionChannel"
+		);
 
 		Field<BigDecimal> accessesField = DSL.sum(
 			DSL.field("access", Long.class)
