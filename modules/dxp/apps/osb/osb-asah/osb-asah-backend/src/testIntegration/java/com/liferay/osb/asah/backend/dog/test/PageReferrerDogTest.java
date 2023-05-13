@@ -55,7 +55,7 @@ public class PageReferrerDogTest
 					}
 				});
 
-		Assertions.assertEquals(1, acquisitionChannels.get("direct"), 0);
+		Assertions.assertEquals(3, acquisitionChannels.get("direct"), 0);
 
 		acquisitionChannels = _pageReferrerDog.getAcquisitionChannels(
 			new SearchQueryContext() {
@@ -67,7 +67,7 @@ public class PageReferrerDogTest
 				}
 			});
 
-		Assertions.assertEquals(1, acquisitionChannels.get("direct"), 0);
+		Assertions.assertEquals(3, acquisitionChannels.get("direct"), 0);
 	}
 
 	@BQSQLResource(resourcePath = "page_referrers_events.sql")
@@ -87,7 +87,7 @@ public class PageReferrerDogTest
 			10);
 
 		Assertions.assertEquals(
-			0, pageReferrers.size(), pageReferrers.toString());
+			1, pageReferrers.size(), pageReferrers.toString());
 
 		pageReferrers = _pageReferrerDog.getPageReferrers(
 			"referrerHost",
@@ -102,7 +102,7 @@ public class PageReferrerDogTest
 			10);
 
 		Assertions.assertEquals(
-			0, pageReferrers.size(), pageReferrers.toString());
+			1, pageReferrers.size(), pageReferrers.toString());
 	}
 
 	@BQSQLResource(resourcePath = "page_referrers_events.sql")
@@ -148,7 +148,7 @@ public class PageReferrerDogTest
 			10);
 
 		Assertions.assertEquals(
-			0, pageReferrers.size(), pageReferrers.toString());
+			1, pageReferrers.size(), pageReferrers.toString());
 
 		pageReferrers = _pageReferrerDog.getPageReferrers(
 			"referrerCanonicalUrl",
@@ -163,7 +163,7 @@ public class PageReferrerDogTest
 			10);
 
 		Assertions.assertEquals(
-			0, pageReferrers.size(), pageReferrers.toString());
+			1, pageReferrers.size(), pageReferrers.toString());
 	}
 
 	@BQSQLResource(resourcePath = "page_referrers_events.sql")
@@ -182,7 +182,7 @@ public class PageReferrerDogTest
 				});
 
 		Assertions.assertEquals(
-			0, socialReferrers.size(), socialReferrers.toString());
+			1, socialReferrers.size(), socialReferrers.toString());
 
 		socialReferrers = _pageReferrerDog.getSocialPageReferrers(
 			new SearchQueryContext() {
@@ -195,7 +195,7 @@ public class PageReferrerDogTest
 			});
 
 		Assertions.assertEquals(
-			0, socialReferrers.size(), socialReferrers.toString());
+			1, socialReferrers.size(), socialReferrers.toString());
 	}
 
 	@Autowired
