@@ -44,11 +44,6 @@ public class NavigationBarsFragmentCollectionContributor
 	}
 
 	@Reference(
-		target = "(com.liferay.fragment.entry.processor.portlet.alias=nav)"
-	)
-	private PortletAliasRegistration _portletAliasRegistration;
-
-	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.fragment.collection.contributor.navigation.bars)"
 	)
 	private ServletContext _servletContext;

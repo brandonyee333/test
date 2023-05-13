@@ -44,11 +44,6 @@ public class DialectFragmentCollectionContributor
 	}
 
 	@Reference(
-		target = "(com.liferay.fragment.entry.processor.portlet.alias=nav)"
-	)
-	private PortletAliasRegistration _portletAliasRegistration;
-
-	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.fragment.collection.contributor.dialect)"
 	)
 	private ServletContext _servletContext;
