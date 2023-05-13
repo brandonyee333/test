@@ -96,7 +96,7 @@ AS R"""
 			return 'referral';
 		}
 
-		return null;
+		return 'direct';
 	}
 	catch (error) {
 		return null;
