@@ -74,7 +74,13 @@ public class ConditionUtilTest {
 	@Test
 	public void testContainsOperator() {
 		_assertEquals(
-			DSL.condition("LOWER(column1) LIKE '%value1%'"),
+			DSL.condition(
+				DSL.field(
+					DSL.lower(
+						DSL.field("column1", String.class)
+					).like(
+						DSL.inline("%value1%")
+					))),
 			"contains(column1, 'value1')");
 	}
 
@@ -138,7 +144,13 @@ public class ConditionUtilTest {
 						42L
 					),
 					DSL.or(
-						DSL.condition("LOWER(column2) LIKE '%escaped'quote)%'"),
+						DSL.condition(
+							DSL.field(
+								DSL.lower(
+									DSL.field("column2", String.class)
+								).like(
+									DSL.inline("%escaped'quote)%")
+								))),
 						DSL.and(
 							DSL.field(
 								"column3"
