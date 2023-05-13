@@ -75,10 +75,11 @@ public class DSLHelper {
 
 	public Condition containsSubstring(String fieldName, String value) {
 		if (isBigQueryDialect()) {
-			return DSL.condition(
-				String.format(
-					"LOWER(%s) LIKE '%s'", fieldName,
-					"%" + StringUtils.lowerCase(value) + "%"));
+			return DSL.lower(
+				DSL.field(fieldName, String.class)
+			).like(
+				DSL.inline("%" + StringUtils.lowerCase(value) + "%")
+			);
 		}
 
 		return DSL.field(

@@ -404,10 +404,11 @@ public class FilterExpressionConditionVisitor
 					field = DSL.field("SessionUrl");
 				}
 
-				condition = DSL.condition(
-					String.format(
-						"LOWER(%s) LIKE '%s'", field,
-						"%" + StringUtils.lowerCase(value) + "%"));
+				condition = DSL.lower(
+					field
+				).like(
+					DSL.inline("%" + StringUtils.lowerCase(value) + "%")
+				);
 			}
 		}
 		else if (functionName.equalsIgnoreCase("endsWith")) {
