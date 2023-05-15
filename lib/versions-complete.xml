@@ -2645,16 +2645,16 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.openid.connect.impl.jar!accessors-smart.jar</file-name>
-				<version>1.2</version>
+				<version>2.4.2</version>
 				<project-name>ASM based accessors helper used by json-smart</project-name>
-				<project-url>http://www.minidev.net/</project-url>
+				<project-url>https://urielch.github.io/</project-url>
 				<licenses>
 					<license>
 						<license-name>The Apache Software License, Version 2.0</license-name>
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2017-03-26 07:56:43</current-version-publish-date>
+				<current-version-publish-date>2021-04-04 16:18:50</current-version-publish-date>
 				<latest-version-publish-date>2023-03-07 14:09:05</latest-version-publish-date>
 			</library>
 			<library>
@@ -2794,7 +2794,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2009-08-01 12:25:49</current-version-publish-date>
-				<latest-version-publish-date>2023-05-04 21:50:24</latest-version-publish-date>
+				<latest-version-publish-date>2023-05-12 17:41:05</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.openid.jar!httpcore.jar</file-name>
@@ -3403,7 +3403,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2011-03-25 18:20:54</current-version-publish-date>
-				<latest-version-publish-date>2023-05-04 21:50:36</latest-version-publish-date>
+				<latest-version-publish-date>2023-05-12 17:41:19</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.template.soy.jar!guice-multibindings.jar</file-name>
