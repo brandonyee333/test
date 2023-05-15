@@ -54,6 +54,22 @@ public class BQIdentityInterestPageRepositoryTest
 				"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c32f4f" +
 					"d9f4",
 				"individual"));
+
+		Assertions.assertEquals(
+			1,
+			_bqIdentityInterestPageRepository.countActivePagesTransformations(
+				1L, "interestName eq 'Liferay''s Experience'",
+				"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c32f4f" +
+					"d9f4",
+				"individual"));
+
+		Assertions.assertEquals(
+			1,
+			_bqIdentityInterestPageRepository.countActivePagesTransformations(
+				1L, "interestName eq 'You''re'",
+				"ae9fbeefab123032b0ce91e946ec50930aeb2f55116ee887d142a6c32f4f" +
+					"d9f4",
+				"individual"));
 	}
 
 	@BQSQLResource(
