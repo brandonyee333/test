@@ -125,7 +125,7 @@ public class BQIdentityInterestScoreRepositoryTest
 	@Test
 	public void testCountKeywords() {
 		Assertions.assertEquals(
-			2, _bqIdentityInterestScoreRepository.countKeywords(null));
+			3, _bqIdentityInterestScoreRepository.countKeywords(null));
 	}
 
 	@BQSQLResource(
@@ -146,7 +146,7 @@ public class BQIdentityInterestScoreRepositoryTest
 			deleteByKeywordAndRecordedDateGreaterThanEqual(
 				"individual", DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
-		Assertions.assertEquals(5, _bqIdentityInterestScoreRepository.count());
+		Assertions.assertEquals(6, _bqIdentityInterestScoreRepository.count());
 	}
 
 	@BQSQLResource(
@@ -157,7 +157,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		_bqIdentityInterestScoreRepository.deleteByRecordedDateLessThanEqual(
 			DateUtil.toUTCDate("2021-09-13T00:00:00.000Z"));
 
-		Assertions.assertEquals(3, _bqIdentityInterestScoreRepository.count());
+		Assertions.assertEquals(4, _bqIdentityInterestScoreRepository.count());
 	}
 
 	@BQSQLResource(
@@ -241,7 +241,7 @@ public class BQIdentityInterestScoreRepositoryTest
 				DateUtil.toUTCDate("2021-09-14T00:00:00.000Z"), 10);
 
 		Assertions.assertEquals(
-			3, bqIdentityInterestScores.size(),
+			4, bqIdentityInterestScores.size(),
 			bqIdentityInterestScores.toString());
 	}
 
@@ -260,6 +260,18 @@ public class BQIdentityInterestScoreRepositoryTest
 
 		Assertions.assertEquals(
 			Arrays.asList("374790572703144534"), individualIds,
+			individualIds.toString());
+
+		individualIds =
+			_bqIdentityInterestScoreRepository.
+				findIndividualIdsByFilterStringAndIndividualId(
+					new FilterHelper(
+						null, "(keyword eq 'rick''s garage')",
+						_interestFilterStringConverterHelper),
+					"374790575409131096");
+
+		Assertions.assertEquals(
+			Arrays.asList("374790575409131096"), individualIds,
 			individualIds.toString());
 	}
 
@@ -298,8 +310,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		_assertTransformation(
 			"2021-09-13T00:00:00.000Z", 2.6149597, 1, transformations.get(2));
 		_assertTransformation(
-			"2021-09-14T00:00:00.000Z", 1.2265308466666667, 3,
-			transformations.get(3));
+			"2021-09-14T00:00:00.000Z", 1.283569385, 4, transformations.get(3));
 	}
 
 	@BQSQLResource(
@@ -319,7 +330,8 @@ public class BQIdentityInterestScoreRepositoryTest
 		_assertTransformation(
 			"2021-09-05T00:00:00.000Z", 0D, 0, transformations.get(1));
 		_assertTransformation(
-			"2021-09-12T00:00:00.000Z", 1.612442828, 5, transformations.get(2));
+			"2021-09-12T00:00:00.000Z", 1.5861498566666665, 6,
+			transformations.get(2));
 	}
 
 	@BQSQLResource(
@@ -331,11 +343,21 @@ public class BQIdentityInterestScoreRepositoryTest
 			new ArrayList<String>() {
 				{
 					add("compelling metrics");
+					add("rick's garage");
 					add("sales");
 				}
 			},
 			_bqIdentityInterestScoreRepository.getKeywords(
 				null, PageRequest.of(0, 20)));
+
+		Assertions.assertEquals(
+			new ArrayList<String>() {
+				{
+					add("rick's garage");
+				}
+			},
+			_bqIdentityInterestScoreRepository.getKeywords(
+				"rick's", PageRequest.of(0, 20)));
 	}
 
 	@BQSQLResource(
@@ -346,7 +368,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		Assertions.assertEquals(
 			new ArrayList<String>() {
 				{
-					add("sales");
+					add("rick's garage");
 				}
 			},
 			_bqIdentityInterestScoreRepository.getKeywords(
