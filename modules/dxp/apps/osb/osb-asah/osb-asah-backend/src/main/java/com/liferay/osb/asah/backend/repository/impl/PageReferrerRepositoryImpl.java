@@ -105,7 +105,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 						canonicalUrl, channelId, timeRange, zoneId),
 					DSL.field(
 						"referrer"
-					).notEqual(
+					).ne(
 						""
 					))
 			).groupBy(
@@ -147,17 +147,16 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 				DSL.and(
 					_createWhereClauseCondition(
 						canonicalUrl, channelId, timeRange, zoneId),
-					DSL.not(
-						DSL.or(
-							DSL.field(
-								"acquisitionChannel"
-							).in(
-								"organic", "social"
-							),
-							DSL.field(
-								"acquisitionChannel"
-							).isNull())),
-					referrerCanonicalUrl.notEqual(""))
+					DSL.field(
+						"acquisitionChannel"
+					).isNotNull(),
+					DSL.field(
+						"acquisitionChannel"
+					).notIn(
+						"organic", "social"
+					),
+					referrerCanonicalUrl.ne(""),
+					referrerCanonicalUrl.isNotNull())
 			).groupBy(
 				referrerCanonicalUrl
 			).orderBy(
@@ -198,17 +197,15 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 				DSL.and(
 					_createWhereClauseCondition(
 						canonicalUrl, channelId, timeRange, zoneId),
-					DSL.not(
-						DSL.or(
-							DSL.field(
-								"acquisitionChannel"
-							).in(
-								"organic", "social"
-							),
-							DSL.field(
-								"acquisitionChannel"
-							).isNull())),
-					referrerHostField.notEqual(""))
+					DSL.field(
+						"acquisitionChannel"
+					).isNotNull(),
+					DSL.field(
+						"acquisitionChannel"
+					).notIn(
+						"organic", "social"
+					),
+					referrerHostField.ne(""), referrerHostField.isNotNull())
 			).groupBy(
 				referrerHostField
 			).orderBy(
