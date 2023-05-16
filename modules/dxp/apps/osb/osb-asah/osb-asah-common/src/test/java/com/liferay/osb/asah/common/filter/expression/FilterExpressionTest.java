@@ -223,13 +223,11 @@ public class FilterExpressionTest {
 	@Test
 	public void testContainsOperator() {
 		_assertEquals(
-			DSL.condition(
-				DSL.field(
-					DSL.lower(
-						DSL.field("column1", String.class)
-					).like(
-						DSL.inline("%value1%")
-					))),
+			DSL.lower(
+				DSL.field("column1", String.class)
+			).like(
+				DSL.inline("%value1%")
+			),
 			"contains(column1, 'value1')");
 	}
 
@@ -319,13 +317,11 @@ public class FilterExpressionTest {
 				),
 				DSL.and(
 					DSL.or(
-						DSL.condition(
-							DSL.field(
-								DSL.lower(
-									DSL.field("column2", String.class)
-								).like(
-									DSL.inline("%escaped'quote)%")
-								))),
+						DSL.lower(
+							DSL.field("column2", String.class)
+						).like(
+							DSL.inline("%escaped'quote)%")
+						),
 						DSL.and(
 							DSL.field(
 								"column3"
@@ -408,13 +404,11 @@ public class FilterExpressionTest {
 	@Test
 	public void testFreestyle5() {
 		_assertEquals(
-			DSL.condition(
-				DSL.field(
-					DSL.lower(
-						DSL.field("Individual.jobTitle", String.class)
-					).like(
-						DSL.inline("%manager%")
-					))),
+			DSL.lower(
+				DSL.field("Individual.jobTitle", String.class)
+			).like(
+				DSL.inline("%manager%")
+			),
 			"contains(demographics/jobTitle/value, 'manager')", true);
 	}
 
@@ -1484,13 +1478,11 @@ public class FilterExpressionTest {
 			"(demographics/givenName/value ne 'Test')", true);
 
 		_assertEquals(
-			DSL.condition(
-				DSL.field(
-					DSL.lower(
-						DSL.field("Individual.firstName", String.class)
-					).like(
-						DSL.inline("%liferay.com%")
-					))),
+			DSL.lower(
+				DSL.field("Individual.firstName", String.class)
+			).like(
+				DSL.inline("%liferay.com%")
+			),
 			"contains(demographics/givenName/value, 'liferay.com')", true);
 
 		_assertEquals(
@@ -2440,13 +2432,11 @@ public class FilterExpressionTest {
 					).eq(
 						"organizationIds"
 					),
-					DSL.condition(
-						DSL.field(
-							DSL.lower(
-								DSL.field("Organization.treePath", String.class)
-							).like(
-								DSL.inline("%test%")
-							)))
+					DSL.lower(
+						DSL.field("Organization.treePath", String.class)
+					).like(
+						DSL.inline("%test%")
+					)
 				)
 			),
 			"organizations.filter(filter='(contains(hierarchyPath, ''test''))" +
