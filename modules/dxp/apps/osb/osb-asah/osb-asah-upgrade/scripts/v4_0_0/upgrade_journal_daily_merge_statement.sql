@@ -31,7 +31,7 @@ USING
 			city,
 			country,
 			deviceType,
-			TIMESTAMP_TRUNC(eventDate, HOUR) AS eventDate,
+			TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS eventDate,
 			title AS pageTitle,
 			platformName,
 			region,
@@ -41,8 +41,8 @@ USING
 			WebContentEvent
 		GROUP BY
 			assetId, assetTitle, browserName, canonicalUrl, channelId, city,
-			country, TIMESTAMP_TRUNC(eventDate, HOUR), deviceType, platformName,
-			region, title, userId
+			country, TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}'),
+			deviceType, platformName, region, title, userId
 	) AS staging
 ON (
 	staging.assetId = replica.assetId AND
