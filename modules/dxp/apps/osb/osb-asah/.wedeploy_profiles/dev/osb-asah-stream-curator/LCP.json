@@ -6,7 +6,7 @@
 		"OSB_FARO_FRONTEND_URL": "https://analytics-dev.liferay.com"
 	},
 	"id": "osbasahstreamcurator",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-stream-curator-20230512-b249e55",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-stream-curator-20230516-1ba3210",
 	"kind": "Deployment",
 	"memory": 2048,
 	"ports": [

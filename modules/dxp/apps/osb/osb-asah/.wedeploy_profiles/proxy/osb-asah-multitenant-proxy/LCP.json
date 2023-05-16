@@ -1,7 +1,7 @@
 {
 	"cpu": 2,
 	"id": "osbasahmultitenantproxy",
-	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-multitenant-proxy-20230512-b249e55",
+	"image": "liferaycloud/com-liferay-osb-asah-private:osb-asah-multitenant-proxy-20230516-1ba3210",
 	"livenessProbe": {
 		"failureThreshold": 20,
 		"httpGet": {
