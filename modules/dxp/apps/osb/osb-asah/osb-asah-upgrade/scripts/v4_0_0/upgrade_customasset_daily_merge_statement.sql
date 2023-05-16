@@ -94,7 +94,7 @@ USING
 								0
 							END
 					) AS downloads,
-					TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+					TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 					SUM(
 						CASE
 							WHEN
@@ -149,7 +149,7 @@ USING
 						)
 					) AS abandonments,
 					assetPrimaryKey,
-					TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate
+					TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate
 				FROM
 					CustomAssetFinalizedEvent
 				GROUP BY
@@ -159,7 +159,7 @@ USING
 			ReadTime AS (
 				SELECT
 					assetPrimaryKey,
-					TIMESTAMP_TRUNC(maxEventDate, HOUR) AS normalizedEventDate,
+					TIMESTAMP_TRUNC(maxEventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 					SUM(readtime) AS readTime
 				FROM
 					(
@@ -183,7 +183,7 @@ USING
 			SubmissionTime AS (
 				SELECT
 					assetPrimaryKey,
-					TIMESTAMP_TRUNC(minSubmissionDate, HOUR) AS normalizedEventDate,
+					TIMESTAMP_TRUNC(minSubmissionDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 					SUM(submissionTime) AS submissionsTime
 				FROM
 					(
