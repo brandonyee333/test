@@ -77,7 +77,6 @@ definition {
 	}
 
 	@description = "LPS-110117 - Image editing toolbar does not display anymore after adding a link to the image."
-	@ignore = "true"
 	@priority = 4
 	test AddBlogsEntryWithInlineImage {
 		Navigator.openURL();

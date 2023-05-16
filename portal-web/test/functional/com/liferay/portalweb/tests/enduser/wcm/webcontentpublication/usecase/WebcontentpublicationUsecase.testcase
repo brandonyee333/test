@@ -427,7 +427,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-135460. delta parameter is missing from the url if pagination is done trough combo box."
-	@ignore = "true"
 	@priority = 5
 	test AssetPublisherCategoriesNavigation {
 		property testray.component.names = "Training";

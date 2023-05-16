@@ -224,8 +224,7 @@ definition {
 			entryTitle = "Blogs Entry Title");
 	}
 
-	@description = "LPS-115305 - Verify that the asset creator can view the workflow notifications after the task is assigned to another user. This will be ignored until LPS-141915 is fixed."
-	@ignore = "true"
+	@description = "LPS-115305 - Verify that the asset creator can view the workflow notifications after the task is assigned to another user."
 	@priority = 3
 	test CanViewWorkflowNotificationsAssignedToOtherUser {
 		property custom.properties = "jsonws.web.service.paths.excludes=";

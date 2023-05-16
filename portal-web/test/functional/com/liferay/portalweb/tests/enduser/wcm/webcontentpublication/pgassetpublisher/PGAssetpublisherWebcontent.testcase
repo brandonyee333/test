@@ -547,7 +547,6 @@ definition {
 	}
 
 	@description = "LPS-103624 - URLs are not well formed when changing language in classic Display Pages."
-	@ignore = "true"
 	@priority = 4
 	test ViewInContextTranslatedWC {
 		JSONLayout.addWidgetToPublicLayout(
