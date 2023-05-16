@@ -82,7 +82,7 @@ USING
 				canonicalUrl,
 				SUM(1) as comments,
 				channelId,
-				TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+				TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') as normalizedEventDate,
 				title as pageTitle,
 				userId
 			FROM
@@ -95,7 +95,7 @@ USING
 				assetId,
 				canonicalUrl,
 				channelId,
-				TIMESTAMP_TRUNC(eventDate, HOUR) as normalizedEventDate,
+				TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') as normalizedEventDate,
 				title AS pageTitle,
 				SUM(1) AS ratings,
 				SUM(score) AS ratingsScore,
@@ -111,7 +111,7 @@ USING
 				assetTitle,
 				canonicalUrl,
 				channelId,
-				TIMESTAMP_TRUNC(maxEventDate, HOUR) AS normalizedEventDate,
+				TIMESTAMP_TRUNC(maxEventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 				title AS pageTitle,
 				SUM(readtime) AS readTime,
 				userId
@@ -161,7 +161,7 @@ USING
 				) AS clicks,
 				city,
 				country,
-				TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+				TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 				deviceType,
 				platformName,
 				region,
