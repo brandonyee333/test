@@ -29,6 +29,7 @@ import com.liferay.osb.asah.common.dog.BQAssetDog;
 import com.liferay.osb.asah.common.dog.BQFieldMappingDog;
 import com.liferay.osb.asah.common.dog.BQGroupDog;
 import com.liferay.osb.asah.common.dog.BQIdentityDog;
+import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.BQOrganizationDog;
@@ -151,9 +152,10 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
-		// TODO Implement operation
-
-		return _toIndividualDTOPageDTO(Page.empty());
+		return _toIndividualDTOPageDTO(
+			_bqIndividualDog.searchBQIndividualPage(
+				null, null, null, filterString, includeAnonymousUsers, null,
+				null, page, null, id, size, sorts));
 	}
 
 	@Cacheable
@@ -554,6 +556,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private BQIdentityDog _bqIdentityDog;
+
+	@Autowired
+	private BQIndividualDog _bqIndividualDog;
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
