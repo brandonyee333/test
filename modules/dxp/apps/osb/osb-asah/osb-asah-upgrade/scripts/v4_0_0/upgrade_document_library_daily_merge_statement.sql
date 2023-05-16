@@ -74,7 +74,7 @@ USING
 					canonicalUrl,
 					channelId,
 					SUM(1) AS comments,
-					TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+					TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 					title AS pageTitle,
 					userId
 				FROM
@@ -102,7 +102,7 @@ USING
 					) AS downloads,
 					country,
 					deviceType,
-					TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+					TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 					platformName,
 					SUM(
 						CASE
@@ -129,7 +129,7 @@ USING
 					assetId,
 					canonicalUrl,
 					channelId,
-					TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+					TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 					SUM(1) AS ratings,
 					SUM(score) AS ratingsScore,
 					title AS pageTitle,
