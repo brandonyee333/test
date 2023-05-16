@@ -18,7 +18,7 @@ USING
 			)
 			WHERE
 				Event.applicationId = 'Blog' AND
-				Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+				Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
 				Event.eventId IN ('blogClicked', 'blogDepthReached', 'blogViewed') AND
 				entryId.value IS NOT NULL AND entryId.value != ''
 		),
@@ -30,7 +30,7 @@ USING
 			INNER JOIN `${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 				BlogEvent.sessionId = Session.id
 			WHERE
-				Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+				Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
 		),
 		CommentEvent AS (
 			SELECT
