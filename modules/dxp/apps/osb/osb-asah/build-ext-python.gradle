@@ -41,6 +41,11 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		dependsOn installIndirectEnvDependencies
 
 		args = ["install", "--isolated", "-r", "$projectDir/$pythonSource/requirements.txt"]
+
+		if (FileUtil.exists(project, "$pythonSource/constraints.txt")) {
+			args += ["-c", "$projectDir/$pythonSource/constraints.txt"]
+		}
+
 		venvExec = "pip"
 	}
 
