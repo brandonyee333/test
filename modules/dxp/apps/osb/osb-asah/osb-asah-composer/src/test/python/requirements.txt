@@ -1,4 +1,4 @@
 -r ../../main/python/requirements.txt
 -r ../../main/python/requirements-package.txt
-pytest==6.1.2
-pytest-custom_exit_code==0.3.0
+pytest
+pytest-custom_exit_code
