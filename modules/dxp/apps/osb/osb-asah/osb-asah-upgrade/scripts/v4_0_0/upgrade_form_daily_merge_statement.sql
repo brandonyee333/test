@@ -46,7 +46,7 @@ USING
 					city,
 					country,
 					deviceType,
-					TIMESTAMP_TRUNC(eventDate, HOUR) AS normalizedEventDate,
+					TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS normalizedEventDate,
 					platformName,
 					region,
 					title AS pageTitle,
@@ -130,7 +130,7 @@ USING
 			FormEvent.assetId = FormSubmissionTimes.assetId AND
 			FormEvent.canonicalUrl = FormSubmissionTimes.canonicalUrl AND
 			FormEvent.channelId = FormSubmissionTimes.channelId AND
-			TIMESTAMP_TRUNC(eventDate, HOUR) = FormSubmissionTimes.normalizedEventDate AND
+			TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') = FormSubmissionTimes.normalizedEventDate AND
 			FormEvent.title = FormSubmissionTimes.pageTitle AND
 			FormEvent.userId = FormSubmissionTimes.userId)
 		LEFT JOIN `${PROJECT_ID}.${asah_project_id}.session` AS Session ON
