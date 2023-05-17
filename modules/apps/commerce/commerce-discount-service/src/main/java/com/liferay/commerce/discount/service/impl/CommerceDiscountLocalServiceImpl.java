@@ -1824,7 +1824,7 @@ public class CommerceDiscountLocalServiceImpl
 					CommerceDiscountTable.INSTANCE.target.eq(target)));
 		}
 
-		joinStep = joinStep.innerJoinON(
+		joinStep = joinStep.leftJoinOn(
 			CommerceDiscountRelTable.INSTANCE,
 			CommerceDiscountRelTable.INSTANCE.commerceDiscountId.eq(
 				CommerceDiscountTable.INSTANCE.commerceDiscountId));
@@ -1923,6 +1923,18 @@ public class CommerceDiscountLocalServiceImpl
 						_classNameLocalService.getClassNameId(
 							CommercePricingClass.class.getName()))
 				));
+		}
+
+		List<CommerceDiscountTarget> commerceDiscountTargets =
+			_commerceDiscountTargetRegistry.getCommerceDiscountTargets();
+
+		for (CommerceDiscountTarget commerceDiscountTarget :
+				commerceDiscountTargets) {
+
+			predicate = predicate.or(
+				commerceDiscountTarget.targetPredicateContributor(
+					cpDefinitionId, cpInstanceId)
+			).withParentheses();
 		}
 
 		return predicate.withParentheses();
