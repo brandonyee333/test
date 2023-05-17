@@ -77,7 +77,8 @@ public class BQIndividualDog {
 
 		if (StringUtils.isNotBlank(filterString)) {
 			return _bqIndividualRepository.countBQIndividuals(
-				channelId, filterString, includeAnonymousUsers, query);
+				channelId, filterString, includeAnonymousUsers, query,
+				segmentId);
 		}
 
 		return _bqIndividualRepository.countBQIndividuals(

@@ -38,7 +38,8 @@ public interface CustomBQIndividualRepository {
 
 	public long countBQIndividuals(
 		@Nullable Long channelId, String filterString,
-		@Nullable Boolean includeAnonymousUsers, @Nullable String query);
+		@Nullable Boolean includeAnonymousUsers, @Nullable String query,
+		@Nullable Long segmentId);
 
 	public long countBQIndividualsModifiedLast30Days(Long channelId);
 

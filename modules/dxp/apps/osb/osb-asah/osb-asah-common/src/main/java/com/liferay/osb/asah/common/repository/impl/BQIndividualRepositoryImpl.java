@@ -124,7 +124,8 @@ public class BQIndividualRepositoryImpl
 	@Override
 	public long countBQIndividuals(
 		@Nullable Long channelId, @Nullable String filterString,
-		@Nullable Boolean includeAnonymousUsers, @Nullable String query) {
+		@Nullable Boolean includeAnonymousUsers, @Nullable String query,
+		@Nullable Long segmentId) {
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString, true);
@@ -156,7 +157,7 @@ public class BQIndividualRepositoryImpl
 		);
 
 		selectJoinStep = _getSelectJoinStep(
-			channelId, includeAnonymousUsers, referencedTableNames,
+			channelId, includeAnonymousUsers, segmentId, referencedTableNames,
 			selectJoinStep);
 
 		return _queryExecutor.queryForLong(
@@ -611,7 +612,7 @@ public class BQIndividualRepositoryImpl
 		);
 
 		selectJoinStep = _getSelectJoinStep(
-			channelId, null, referencedTableNames, selectJoinStep);
+			channelId, null, null, referencedTableNames, selectJoinStep);
 
 		return _queryExecutor.queryForList(
 			record -> {
@@ -1207,7 +1208,7 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private <R extends Record> SelectJoinStep<R> _getSelectJoinStep(
-		Long channelId, Boolean includeAnonymousUsers,
+		Long channelId, Boolean includeAnonymousUsers, Long segmentId,
 		Set<String> referencedTableNames, SelectJoinStep<R> selectJoinStep) {
 
 		if ((channelId != null) ||
@@ -1341,6 +1342,27 @@ public class BQIndividualRepositoryImpl
 					"Individual.emailAddress"
 				).eq(
 					DSL.field("User.emailAddress")
+				)
+			);
+		}
+
+		if (segmentId != null) {
+			selectJoinStep = selectJoinStep.join(
+				DSL.table(
+					"BQMembership"
+				).as(
+					"Membership"
+				)
+			).on(
+				DSL.field(
+					"Individual.id"
+				).eq(
+					DSL.field("Membership.individualId")
+				),
+				DSL.field(
+					"Membership.segmentId"
+				).eq(
+					segmentId
 				)
 			);
 		}
