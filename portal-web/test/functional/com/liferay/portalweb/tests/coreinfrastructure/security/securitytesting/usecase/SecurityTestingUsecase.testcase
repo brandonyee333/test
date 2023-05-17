@@ -145,7 +145,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 
 		var url = "${portalURL}/c/portal/json_service?serviceClassName=com.liferay.portal.service.AccountServiceUtil&serviceMethodName=getBeanIdentifier&p_auth=";
 
-		Api.gotoPAuthURL();
+		Api.gotoPAuthURL(url = ${url});
 
 		Pause(locator1 = 1000);
 
