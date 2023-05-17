@@ -58,6 +58,16 @@ public class IndividualDTO {
 		_individualCustomFieldDTO = new IndividualFieldDTO(
 			individual.getCustomFields());
 		_individualFieldDTO = new IndividualFieldDTO(individual.getFields());
+
+		_dataSourceIndividualPKDTOs = new HashSet<>();
+
+		for (BQDataSourceUser bqDataSourceUser :
+				individual.getBQDataSourceUsers()) {
+
+			_dataSourceIndividualPKDTOs.add(
+				new DataSourceIndividualPKDTO(bqDataSourceUser));
+		}
+
 		_lastActivityDate = individual.getLastActivityDate();
 		_lastEnrichmentDate = individual.getLastEnrichmentDate();
 		_modifiedDate = individual.getModifiedDate();
