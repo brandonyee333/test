@@ -268,7 +268,7 @@ definition {
 
 	@priority = 4
 	test ChangeBlogsRatingType {
-		Blogs.addEntry(
+		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 
@@ -775,11 +775,11 @@ definition {
 		var entryTitleSpecialCharacter = "true";
 		var privatePageVirtualHostURL = "www.baker.com";
 
+		Navigator.gotoPage(pageName = "Blogs Page");
+
 		Blogs.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = '''Blogs Entry Title `~!@#$%^&*(){}[],.<>/?|''');
-
-		Navigator.gotoPage(pageName = "Blogs Page");
 
 		BlogsNavigator.gotoEntryPG(
 			entryContent = "Blogs Entry Content",
