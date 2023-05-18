@@ -136,6 +136,12 @@ public class IndividualsRestController extends BaseRestController {
 			@RequestParam(name = "sort", required = false) String[] sorts)
 		throws Exception {
 
+		if (StringUtils.contains(
+				filterString, "dataSourceIndividualPKs/individualPKs")) {
+
+			return _toIndividualDTOPageDTO(Page.empty());
+		}
+
 		Page<Individual> individualPage =
 			_bqIndividualDog.searchBQIndividualPage(
 				accountId, channelId, dataSourceId, filterString,
