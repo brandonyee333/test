@@ -35,6 +35,7 @@ definition {
 	@description = "LPS-158522: Upgrade client can connect to Gogo Shell"
 	@priority = 3
 	test CheckUpgradeClientGogoShell {
+		property portal.acceptance = "poshi-validation";
 		AntCommands.runCommand("modules/util/portal-tools-db-upgrade-client/src/testFunctional/ant/build-test-db-upgrade-client.xml", "check-upgrade-client-gogoshell");
 	}
 
@@ -165,6 +166,7 @@ definition {
 	@description = "LPS-163243: The user can execute the upgrade:executeAll command on Gogo shell to execute all remaining upgrade processes"
 	@priority = 3
 	test ExecuteAllPendingUpgradesFromGogoShell {
+		property portal.acceptance = "poshi-validation";
 		property skip.get.testcase.database.properties = "true";
 		property skip.upgrade-legacy-database = "true";
 
