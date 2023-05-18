@@ -666,7 +666,24 @@ public class BQIndividualRepositoryImpl
 			DSL.field("Individual.lastName"),
 			DSL.field("Individual.middleName"),
 			DSL.field("Individual.modifiedDate"),
-			DSL.field("Individual.screenName"));
+			DSL.field("Individual.screenName"),
+			DSL.array(
+				DSL.field(
+					StringUtils.join(
+						"SELECT AS STRUCT ",
+						"UserIdentityActivity.dataSourceId AS ",
+						"dataSourceId,", "ARRAY_AGG(",
+						"UserIdentityActivity.identityId) ",
+						"AS userPKs FROM BQIndividual AS ",
+						"UserIndividual JOIN BQIdentityActivity ",
+						"AS UserIdentityActivity ON ", "UserIndividual.id = ",
+						"UserIdentityActivity.individualId WHERE ",
+						"Individual.id = UserIndividual.id GROUP ",
+						"BY UserIndividual.id, ",
+						"UserIdentityActivity.dataSourceId", "")
+				).as(
+					"dataSourceUsers"
+				)));
 
 		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
 			fields
@@ -725,7 +742,10 @@ public class BQIndividualRepositoryImpl
 
 				bqIndividual.setFields(bqIndividualFields);
 
-				return new Individual(0L, bqIndividual, null, _objectMapper);
+				return new Individual(
+					0L, bqIndividual,
+					(Map<Long, List<String>>)record.get("dataSourceUsers"),
+					null, _objectMapper);
 			},
 			selectJoinStep.where(
 				_getConditions(channelId, filterExpression, query)
