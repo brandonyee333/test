@@ -50,6 +50,8 @@ public class AntCommands implements Callable<Void> {
 			future.get(600, TimeUnit.SECONDS);
 		}
 		catch (ExecutionException | TimeoutException exception) {
+			exception.printStackTrace();
+
 			throw exception;
 		}
 	}
