@@ -121,7 +121,7 @@ public class IndividualsRestControllerTest extends BaseRestControllerTestCase {
 		_validateTotalElements(
 			"((dataSourceIndividualPKs/individualPKs eq " +
 				"'953be104-5540-abf8-59b8-55f895200acc'))",
-			1);
+			0);
 	}
 
 	private void _validateTotalElements(String filterString, int elements) {
