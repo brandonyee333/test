@@ -23,6 +23,8 @@ import com.liferay.osb.asah.common.util.BeanUtils;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 
+import java.math.BigDecimal;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
@@ -48,14 +50,14 @@ public class Individual {
 		ObjectMapper objectMapper) {
 
 		this(
-			activitiesCount, bqIndividual, Collections.emptyMap(),
+			activitiesCount, bqIndividual, Collections.emptyList(),
 			lastActivityDate, objectMapper);
 	}
 
 	public Individual(
 		Long activitiesCount, BQIndividual bqIndividual,
-		Map<Long, List<String>> dataSourceIndividualPKs, Date lastActivityDate,
-		ObjectMapper objectMapper) {
+		List<Map<String, Object>> dataSourceIndividualPKs,
+		Date lastActivityDate, ObjectMapper objectMapper) {
 
 		_activitiesCount = activitiesCount;
 
@@ -123,13 +125,18 @@ public class Individual {
 		}
 
 		if (dataSourceIndividualPKs != null) {
-			for (Map.Entry<Long, List<String>> entry :
-					dataSourceIndividualPKs.entrySet()) {
+			for (Map<String, Object> dataSourceIndividualPK :
+					dataSourceIndividualPKs) {
+
+				BigDecimal bigDecimal = (BigDecimal)dataSourceIndividualPK.get(
+					"dataSourceId");
+				List<String> userPKs = (List<String>)dataSourceIndividualPK.get(
+					"userPKs");
 
 				addBQDataSourceUser(
 					new BQDataSourceUser(
-						Collections.emptySet(), entry.getKey(), null,
-						new HashSet<>(entry.getValue())));
+						Collections.emptySet(), bigDecimal.longValue(), null,
+						new HashSet<>(userPKs)));
 			}
 		}
 

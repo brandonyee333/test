@@ -58,7 +58,6 @@ import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.Record11;
-import org.jooq.Record12;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectFinalStep;
 import org.jooq.SelectForStep;
@@ -351,7 +350,7 @@ public class BQIndividualRepositoryImpl
 					(Date)map.get("lastactivitydate"), _objectMapper);
 			},
 			(SelectJoinStep)_getIndividualSelectOnConditionStep(
-				selectSeekStep1,
+				false, selectSeekStep1,
 				Collections.singletonList(
 					DSL.field(
 						"individuals.id"
@@ -468,76 +467,11 @@ public class BQIndividualRepositoryImpl
 		@Nullable Long notSegmentId, Pageable pageable, @Nullable String query,
 		@Nullable Long segmentId) {
 
-		SelectSelectStep
-			<Record12
-				<Object, Object, Object, Object, Object, Object, Object, Object,
-				 Object, Object, Object, Object[]>> selectSelectStep =
-					_dslContext.select(
-						DSL.coalesce(
-							DSL.field(
-								"SAFE_CAST({0} as INT64)",
-								DSL.sum(
-									DSL.field(
-										"IdentityActivity.activitiescount",
-										Long.class))),
-							0L
-						).as(
-							"activitiescount"
-						),
-						DSL.field(
-							"Individual.createdate"
-						).as(
-							"createdate"
-						),
-						DSL.field(
-							"Individual.emailaddress"
-						).as(
-							"emailaddress"
-						),
-						DSL.field(
-							"Individual.id"
-						).as(
-							"id"
-						),
-						DSL.field("firstname"),
-						DSL.max(
-							DSL.field("IdentityActivity.lastactivitydate")
-						).as(
-							"lastactivitydate"
-						),
-						DSL.field("lastname"), DSL.field("jobtitle"),
-						DSL.field("middlename"),
-						DSL.field(
-							"Individual.modifieddate"
-						).as(
-							"modifieddate"
-						),
-						DSL.field("screenname"),
-						DSL.array(
-							DSL.field(
-								StringUtils.join(
-									"SELECT AS STRUCT ",
-									"UserIdentityActivity.dataSourceId AS ",
-									"dataSourceId,", "ARRAY_AGG(",
-									"UserIdentityActivity.identityId) ",
-									"AS userPKs FROM BQIndividual AS ",
-									"UserIndividual JOIN BQIdentityActivity ",
-									"AS UserIdentityActivity ON ",
-									"UserIndividual.id = ",
-									"UserIdentityActivity.individualId WHERE ",
-									"Individual.id = UserIndividual.id GROUP ",
-									"BY UserIndividual.id, ",
-									"UserIdentityActivity.dataSourceId", "")
-							).as(
-								"dataSourceUsers"
-							)));
-
 		SelectJoinStep
-			<Record12
+			<Record11
 				<Object, Object, Object, Object, Object, Object, Object, Object,
-				 Object, Object, Object, Object[]>> selectJoinStep =
-					_getSelectJoinStep(
-						interestName, segmentId, selectSelectStep);
+				 Object, Object, Object>> selectJoinStep = _getSelectJoinStep(
+					interestName, segmentId, _getIndividualSelectJoinStep());
 
 		Condition condition = _getQueryCondition(query);
 
@@ -606,9 +540,9 @@ public class BQIndividualRepositoryImpl
 			_fieldNameConversionMap, pageable.getSort(), null);
 
 		SelectForUpdateStep
-			<Record12
+			<Record11
 				<Object, Object, Object, Object, Object, Object, Object, Object,
-				 Object, Object, Object, Object[]>> selectFinalStep =
+				 Object, Object, Object>> selectFinalStep =
 					selectJoinStep.where(
 						condition
 					).groupBy(
@@ -637,10 +571,11 @@ public class BQIndividualRepositoryImpl
 
 				return new Individual(
 					activitiesCount.longValue(), new BQIndividual(record),
-					(Map<Long, List<String>>)record.get("dataSourceUsers"),
+					(List<Map<String, Object>>)record.get("dataSourceUsers"),
 					(Date)record.get("lastactivitydate"), _objectMapper);
 			},
-			_getIndividualSelectOnConditionStep(selectFinalStep, sortFields));
+			_getIndividualSelectOnConditionStep(
+				true, selectFinalStep, sortFields));
 	}
 
 	@Override
@@ -667,23 +602,21 @@ public class BQIndividualRepositoryImpl
 			DSL.field("Individual.middleName"),
 			DSL.field("Individual.modifiedDate"),
 			DSL.field("Individual.screenName"),
-			DSL.array(
-				DSL.field(
-					StringUtils.join(
-						"SELECT AS STRUCT ",
-						"UserIdentityActivity.dataSourceId AS ",
-						"dataSourceId,", "ARRAY_AGG(",
-						"UserIdentityActivity.identityId) ",
-						"AS userPKs FROM BQIndividual AS ",
-						"UserIndividual JOIN BQIdentityActivity ",
-						"AS UserIdentityActivity ON ", "UserIndividual.id = ",
-						"UserIdentityActivity.individualId WHERE ",
-						"Individual.id = UserIndividual.id GROUP ",
-						"BY UserIndividual.id, ",
-						"UserIdentityActivity.dataSourceId", "")
-				).as(
-					"dataSourceUsers"
-				)));
+			DSL.field(
+				StringUtils.join(
+					"SELECT AS STRUCT ",
+					"UserIdentityActivity.dataSourceId AS ", "dataSourceId,",
+					"ARRAY_AGG(", "UserIdentityActivity.identityId) ",
+					"AS userPKs FROM BQIndividual AS ",
+					"UserIndividual JOIN BQIdentityActivity ",
+					"AS UserIdentityActivity ON ", "UserIndividual.id = ",
+					"UserIdentityActivity.individualId WHERE ",
+					"Individual.id = UserIndividual.id GROUP ",
+					"BY UserIndividual.id, ",
+					"UserIdentityActivity.dataSourceId", "")
+			).as(
+				"dataSourceUsers"
+			));
 
 		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
 			fields
@@ -744,7 +677,7 @@ public class BQIndividualRepositoryImpl
 
 				return new Individual(
 					0L, bqIndividual,
-					(Map<Long, List<String>>)record.get("dataSourceUsers"),
+					(List<Map<String, Object>>)record.get("dataSourceUsers"),
 					null, _objectMapper);
 			},
 			selectJoinStep.where(
@@ -1183,13 +1116,10 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private SelectFinalStep<?> _getIndividualSelectOnConditionStep(
-		SelectForStep<?> selectSeekStep, Collection<SortField<?>> sortFields) {
+		boolean includeDataSourceUsers, SelectForStep<?> selectSeekStep,
+		Collection<SortField<?>> sortFields) {
 
-		return _dslContext.with(
-			"individuals"
-		).as(
-			selectSeekStep
-		).select(
+		List<Field> fields = Arrays.asList(
 			DSL.field("activitiescount"),
 			DSL.field(
 				"individuals.createdate"
@@ -1245,7 +1175,35 @@ public class BQIndividualRepositoryImpl
 				"Individual.fields"
 			).as(
 				"fields"
-			)
+			));
+
+		if (includeDataSourceUsers) {
+			fields = new ArrayList<>(fields);
+
+			fields.add(
+				DSL.field(
+					StringUtils.join(
+						"ARRAY(SELECT AS STRUCT ",
+						"UserIdentityActivity.dataSourceId AS dataSourceId,",
+						"ARRAY_AGG(UserIdentityActivity.identityId) AS ",
+						"userPKs FROM BQIndividual AS UserIndividual JOIN ",
+						"BQIdentityActivity AS UserIdentityActivity ON ",
+						"UserIndividual.id = ",
+						"UserIdentityActivity.individualId WHERE ",
+						"Individual.id = UserIndividual.id GROUP BY ",
+						"UserIndividual.id, UserIdentityActivity.dataSourceId)",
+						"")
+				).as(
+					"dataSourceUsers"
+				));
+		}
+
+		return _dslContext.with(
+			"individuals"
+		).as(
+			selectSeekStep
+		).select(
+			fields
 		).from(
 			"individuals"
 		).innerJoin(
