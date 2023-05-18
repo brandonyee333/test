@@ -2014,11 +2014,6 @@
 				"type": "INT64"
 			},
 			{
-				"mode": "REQUIRED",
-				"name": "commerceChannelId",
-				"type": "INT64"
-			},
-			{
 				"mode": "NULLABLE",
 				"name": "createDate",
 				"type": "TIMESTAMP"
@@ -2267,11 +2262,6 @@
 			{
 				"mode": "REQUIRED",
 				"name": "channelId",
-				"type": "INT64"
-			},
-			{
-				"mode": "REQUIRED",
-				"name": "commerceChannelId",
 				"type": "INT64"
 			},
 			{
