@@ -47,6 +47,16 @@ public class Individual {
 		Long activitiesCount, BQIndividual bqIndividual, Date lastActivityDate,
 		ObjectMapper objectMapper) {
 
+		this(
+			activitiesCount, bqIndividual, Collections.emptyMap(),
+			lastActivityDate, objectMapper);
+	}
+
+	public Individual(
+		Long activitiesCount, BQIndividual bqIndividual,
+		Map<Long, List<String>> dataSourceIndividualPKs, Date lastActivityDate,
+		ObjectMapper objectMapper) {
+
 		_activitiesCount = activitiesCount;
 
 		if (lastActivityDate != null) {
@@ -110,6 +120,17 @@ public class Individual {
 				});
 
 			_fields = fields;
+		}
+
+		if (dataSourceIndividualPKs != null) {
+			for (Map.Entry<Long, List<String>> entry :
+					dataSourceIndividualPKs.entrySet()) {
+
+				addBQDataSourceUser(
+					new BQDataSourceUser(
+						Collections.emptySet(), entry.getKey(), null,
+						new HashSet<>(entry.getValue())));
+			}
 		}
 
 		_customDemographics = new Demographics(_customFields);
