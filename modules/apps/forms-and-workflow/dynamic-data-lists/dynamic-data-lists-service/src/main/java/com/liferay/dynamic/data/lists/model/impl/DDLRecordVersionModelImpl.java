@@ -323,16 +323,11 @@ public class DDLRecordVersionModelImpl
 
 	private static final Map<String, Function<DDLRecordVersion, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<DDLRecordVersion, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<DDLRecordVersion, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<DDLRecordVersion, Object>>();
-		Map<String, BiConsumer<DDLRecordVersion, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<DDLRecordVersion, ?>>();
 
 		attributeGetterFunctions.put(
 			"recordVersionId",
@@ -344,6 +339,159 @@ public class DDLRecordVersionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"DDMStorageId",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getDDMStorageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"recordSetId",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getRecordSetId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"recordId",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getRecordId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"version",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getVersion();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"displayIndex",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getDisplayIndex();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getStatus();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByUserId",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getStatusByUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByUserName",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getStatusByUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusDate",
+			new Function<DDLRecordVersion, Object>() {
+
+				@Override
+				public Object apply(DDLRecordVersion ddlRecordVersion) {
+					return ddlRecordVersion.getStatusDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<DDLRecordVersion, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<DDLRecordVersion, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<DDLRecordVersion, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"recordVersionId",
 			new BiConsumer<DDLRecordVersion, Object>() {
@@ -355,16 +503,6 @@ public class DDLRecordVersionModelImpl
 
 					ddlRecordVersion.setRecordVersionId(
 						(Long)recordVersionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getGroupId();
 				}
 
 			});
@@ -380,16 +518,6 @@ public class DDLRecordVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<DDLRecordVersion, Object>() {
@@ -399,16 +527,6 @@ public class DDLRecordVersionModelImpl
 					DDLRecordVersion ddlRecordVersion, Object companyIdObject) {
 
 					ddlRecordVersion.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getUserId();
 				}
 
 			});
@@ -424,16 +542,6 @@ public class DDLRecordVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<DDLRecordVersion, Object>() {
@@ -443,16 +551,6 @@ public class DDLRecordVersionModelImpl
 					DDLRecordVersion ddlRecordVersion, Object userNameObject) {
 
 					ddlRecordVersion.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getCreateDate();
 				}
 
 			});
@@ -469,16 +567,6 @@ public class DDLRecordVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"DDMStorageId",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getDDMStorageId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"DDMStorageId",
 			new BiConsumer<DDLRecordVersion, Object>() {
@@ -489,16 +577,6 @@ public class DDLRecordVersionModelImpl
 					Object DDMStorageIdObject) {
 
 					ddlRecordVersion.setDDMStorageId((Long)DDMStorageIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"recordSetId",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getRecordSetId();
 				}
 
 			});
@@ -515,16 +593,6 @@ public class DDLRecordVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"recordId",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getRecordId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"recordId",
 			new BiConsumer<DDLRecordVersion, Object>() {
@@ -537,16 +605,6 @@ public class DDLRecordVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"version",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getVersion();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"version",
 			new BiConsumer<DDLRecordVersion, Object>() {
@@ -556,16 +614,6 @@ public class DDLRecordVersionModelImpl
 					DDLRecordVersion ddlRecordVersion, Object versionObject) {
 
 					ddlRecordVersion.setVersion((String)versionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"displayIndex",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getDisplayIndex();
 				}
 
 			});
@@ -583,16 +631,6 @@ public class DDLRecordVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getStatus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"status",
 			new BiConsumer<DDLRecordVersion, Object>() {
@@ -602,16 +640,6 @@ public class DDLRecordVersionModelImpl
 					DDLRecordVersion ddlRecordVersion, Object statusObject) {
 
 					ddlRecordVersion.setStatus((Integer)statusObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusByUserId",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getStatusByUserId();
 				}
 
 			});
@@ -629,16 +657,6 @@ public class DDLRecordVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"statusByUserName",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getStatusByUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"statusByUserName",
 			new BiConsumer<DDLRecordVersion, Object>() {
@@ -650,16 +668,6 @@ public class DDLRecordVersionModelImpl
 
 					ddlRecordVersion.setStatusByUserName(
 						(String)statusByUserNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusDate",
-			new Function<DDLRecordVersion, Object>() {
-
-				@Override
-				public Object apply(DDLRecordVersion ddlRecordVersion) {
-					return ddlRecordVersion.getStatusDate();
 				}
 
 			});
@@ -677,8 +685,6 @@ public class DDLRecordVersionModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

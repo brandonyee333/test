@@ -737,6 +737,12 @@ public class AccountEnvironmentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		AccountEnvironmentPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile AccountEnvironmentPersistence _persistence;
 
 }

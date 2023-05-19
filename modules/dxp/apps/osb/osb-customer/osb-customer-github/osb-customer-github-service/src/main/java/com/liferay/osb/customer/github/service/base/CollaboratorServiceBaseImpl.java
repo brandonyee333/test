@@ -33,8 +33,6 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -293,11 +291,11 @@ public abstract class CollaboratorServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(collaboratorService);
+		CollaboratorServiceUtil.setService(collaboratorService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		CollaboratorServiceUtil.setService(null);
 	}
 
 	/**
@@ -339,22 +337,6 @@ public abstract class CollaboratorServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CollaboratorService collaboratorService) {
-
-		try {
-			Field field = CollaboratorServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, collaboratorService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -53,8 +53,6 @@ import com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -1118,11 +1116,11 @@ public abstract class BlogsEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(blogsEntryService);
+		BlogsEntryServiceUtil.setService(blogsEntryService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		BlogsEntryServiceUtil.setService(null);
 	}
 
 	/**
@@ -1164,20 +1162,6 @@ public abstract class BlogsEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(BlogsEntryService blogsEntryService) {
-		try {
-			Field field = BlogsEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, blogsEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

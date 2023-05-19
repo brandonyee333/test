@@ -276,6 +276,10 @@ public class TestrayRunLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayRunLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayRunLocalService _service;
 
 }

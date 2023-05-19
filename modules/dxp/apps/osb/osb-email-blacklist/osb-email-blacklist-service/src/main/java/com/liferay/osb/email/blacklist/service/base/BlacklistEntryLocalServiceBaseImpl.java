@@ -51,8 +51,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -616,14 +614,14 @@ public abstract class BlacklistEntryLocalServiceBaseImpl
 			"com.liferay.osb.email.blacklist.model.BlacklistEntry",
 			blacklistEntryLocalService);
 
-		_setLocalServiceUtilService(blacklistEntryLocalService);
+		BlacklistEntryLocalServiceUtil.setService(blacklistEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.email.blacklist.model.BlacklistEntry");
 
-		_setLocalServiceUtilService(null);
+		BlacklistEntryLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -665,22 +663,6 @@ public abstract class BlacklistEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		BlacklistEntryLocalService blacklistEntryLocalService) {
-
-		try {
-			Field field = BlacklistEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, blacklistEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

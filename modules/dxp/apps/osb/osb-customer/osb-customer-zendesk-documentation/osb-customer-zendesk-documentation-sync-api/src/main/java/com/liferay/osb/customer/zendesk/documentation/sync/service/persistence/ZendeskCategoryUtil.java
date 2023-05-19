@@ -339,6 +339,10 @@ public class ZendeskCategoryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ZendeskCategoryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ZendeskCategoryPersistence _persistence;
 
 }

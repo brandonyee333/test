@@ -280,6 +280,10 @@ public class LoopPersonRelLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopPersonRelLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopPersonRelLocalService _service;
 
 }

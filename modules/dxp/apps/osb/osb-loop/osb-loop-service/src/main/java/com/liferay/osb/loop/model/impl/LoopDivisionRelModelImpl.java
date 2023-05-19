@@ -243,15 +243,11 @@ public class LoopDivisionRelModelImpl
 
 	private static final Map<String, Function<LoopDivisionRel, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopDivisionRel, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopDivisionRel, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<LoopDivisionRel, Object>>();
-		Map<String, BiConsumer<LoopDivisionRel, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopDivisionRel, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopDivisionRelId",
@@ -263,6 +259,48 @@ public class LoopDivisionRelModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"childLoopDivisionId",
+			new Function<LoopDivisionRel, Object>() {
+
+				@Override
+				public Object apply(LoopDivisionRel loopDivisionRel) {
+					return loopDivisionRel.getChildLoopDivisionId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loopPersonId",
+			new Function<LoopDivisionRel, Object>() {
+
+				@Override
+				public Object apply(LoopDivisionRel loopDivisionRel) {
+					return loopDivisionRel.getLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentLoopDivisionId",
+			new Function<LoopDivisionRel, Object>() {
+
+				@Override
+				public Object apply(LoopDivisionRel loopDivisionRel) {
+					return loopDivisionRel.getParentLoopDivisionId();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopDivisionRel, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopDivisionRel, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopDivisionRel, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopDivisionRelId",
 			new BiConsumer<LoopDivisionRel, Object>() {
@@ -274,16 +312,6 @@ public class LoopDivisionRelModelImpl
 
 					loopDivisionRel.setLoopDivisionRelId(
 						(Long)loopDivisionRelIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"childLoopDivisionId",
-			new Function<LoopDivisionRel, Object>() {
-
-				@Override
-				public Object apply(LoopDivisionRel loopDivisionRel) {
-					return loopDivisionRel.getChildLoopDivisionId();
 				}
 
 			});
@@ -301,16 +329,6 @@ public class LoopDivisionRelModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"loopPersonId",
-			new Function<LoopDivisionRel, Object>() {
-
-				@Override
-				public Object apply(LoopDivisionRel loopDivisionRel) {
-					return loopDivisionRel.getLoopPersonId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"loopPersonId",
 			new BiConsumer<LoopDivisionRel, Object>() {
@@ -321,16 +339,6 @@ public class LoopDivisionRelModelImpl
 					Object loopPersonIdObject) {
 
 					loopDivisionRel.setLoopPersonId((Long)loopPersonIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"parentLoopDivisionId",
-			new Function<LoopDivisionRel, Object>() {
-
-				@Override
-				public Object apply(LoopDivisionRel loopDivisionRel) {
-					return loopDivisionRel.getParentLoopDivisionId();
 				}
 
 			});
@@ -349,8 +357,6 @@ public class LoopDivisionRelModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -246,19 +246,12 @@ public class LoopParticipantAssignmentModelImpl
 	private static final Map
 		<String, Function<LoopParticipantAssignment, Object>>
 			_attributeGetterFunctions;
-	private static final Map
-		<String, BiConsumer<LoopParticipantAssignment, Object>>
-			_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopParticipantAssignment, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<LoopParticipantAssignment, Object>>();
-		Map<String, BiConsumer<LoopParticipantAssignment, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<LoopParticipantAssignment, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopParticipantAssignmentId",
@@ -273,6 +266,69 @@ public class LoopParticipantAssignmentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"loopDivisionId",
+			new Function<LoopParticipantAssignment, Object>() {
+
+				@Override
+				public Object apply(
+					LoopParticipantAssignment loopParticipantAssignment) {
+
+					return loopParticipantAssignment.getLoopDivisionId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loopPersonId",
+			new Function<LoopParticipantAssignment, Object>() {
+
+				@Override
+				public Object apply(
+					LoopParticipantAssignment loopParticipantAssignment) {
+
+					return loopParticipantAssignment.getLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<LoopParticipantAssignment, Object>() {
+
+				@Override
+				public Object apply(
+					LoopParticipantAssignment loopParticipantAssignment) {
+
+					return loopParticipantAssignment.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<LoopParticipantAssignment, Object>() {
+
+				@Override
+				public Object apply(
+					LoopParticipantAssignment loopParticipantAssignment) {
+
+					return loopParticipantAssignment.getType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map
+		<String, BiConsumer<LoopParticipantAssignment, Object>>
+			_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopParticipantAssignment, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<LoopParticipantAssignment, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopParticipantAssignmentId",
 			new BiConsumer<LoopParticipantAssignment, Object>() {
@@ -284,18 +340,6 @@ public class LoopParticipantAssignmentModelImpl
 
 					loopParticipantAssignment.setLoopParticipantAssignmentId(
 						(Long)loopParticipantAssignmentIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"loopDivisionId",
-			new Function<LoopParticipantAssignment, Object>() {
-
-				@Override
-				public Object apply(
-					LoopParticipantAssignment loopParticipantAssignment) {
-
-					return loopParticipantAssignment.getLoopDivisionId();
 				}
 
 			});
@@ -313,18 +357,6 @@ public class LoopParticipantAssignmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"loopPersonId",
-			new Function<LoopParticipantAssignment, Object>() {
-
-				@Override
-				public Object apply(
-					LoopParticipantAssignment loopParticipantAssignment) {
-
-					return loopParticipantAssignment.getLoopPersonId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"loopPersonId",
 			new BiConsumer<LoopParticipantAssignment, Object>() {
@@ -336,18 +368,6 @@ public class LoopParticipantAssignmentModelImpl
 
 					loopParticipantAssignment.setLoopPersonId(
 						(Long)loopPersonIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<LoopParticipantAssignment, Object>() {
-
-				@Override
-				public Object apply(
-					LoopParticipantAssignment loopParticipantAssignment) {
-
-					return loopParticipantAssignment.getDescription();
 				}
 
 			});
@@ -365,18 +385,6 @@ public class LoopParticipantAssignmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<LoopParticipantAssignment, Object>() {
-
-				@Override
-				public Object apply(
-					LoopParticipantAssignment loopParticipantAssignment) {
-
-					return loopParticipantAssignment.getType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"type",
 			new BiConsumer<LoopParticipantAssignment, Object>() {
@@ -391,8 +399,6 @@ public class LoopParticipantAssignmentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

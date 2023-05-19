@@ -308,6 +308,10 @@ public class CollaboratorLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(CollaboratorLocalService service) {
+		_service = service;
+	}
+
 	private static volatile CollaboratorLocalService _service;
 
 }

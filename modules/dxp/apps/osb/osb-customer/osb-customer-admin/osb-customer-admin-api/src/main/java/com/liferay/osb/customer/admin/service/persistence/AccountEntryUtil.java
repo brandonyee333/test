@@ -765,6 +765,10 @@ public class AccountEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(AccountEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile AccountEntryPersistence _persistence;
 
 }

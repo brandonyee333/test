@@ -1112,6 +1112,12 @@ public class AssetSharingEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		AssetSharingEntryPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile AssetSharingEntryPersistence _persistence;
 
 }

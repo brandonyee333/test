@@ -230,14 +230,10 @@ public class LoopStreamModelImpl
 
 	private static final Map<String, Function<LoopStream, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopStream, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopStream, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LoopStream, Object>>();
-		Map<String, BiConsumer<LoopStream, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopStream, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopStreamId",
@@ -249,6 +245,48 @@ public class LoopStreamModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"loopPersonId",
+			new Function<LoopStream, Object>() {
+
+				@Override
+				public Object apply(LoopStream loopStream) {
+					return loopStream.getLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<LoopStream, Object>() {
+
+				@Override
+				public Object apply(LoopStream loopStream) {
+					return loopStream.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<LoopStream, Object>() {
+
+				@Override
+				public Object apply(LoopStream loopStream) {
+					return loopStream.getDescription();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopStream, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopStream, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopStream, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopStreamId",
 			new BiConsumer<LoopStream, Object>() {
@@ -258,16 +296,6 @@ public class LoopStreamModelImpl
 					LoopStream loopStream, Object loopStreamIdObject) {
 
 					loopStream.setLoopStreamId((Long)loopStreamIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"loopPersonId",
-			new Function<LoopStream, Object>() {
-
-				@Override
-				public Object apply(LoopStream loopStream) {
-					return loopStream.getLoopPersonId();
 				}
 
 			});
@@ -283,16 +311,6 @@ public class LoopStreamModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<LoopStream, Object>() {
-
-				@Override
-				public Object apply(LoopStream loopStream) {
-					return loopStream.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<LoopStream, Object>() {
@@ -300,16 +318,6 @@ public class LoopStreamModelImpl
 				@Override
 				public void accept(LoopStream loopStream, Object nameObject) {
 					loopStream.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<LoopStream, Object>() {
-
-				@Override
-				public Object apply(LoopStream loopStream) {
-					return loopStream.getDescription();
 				}
 
 			});
@@ -326,8 +334,6 @@ public class LoopStreamModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

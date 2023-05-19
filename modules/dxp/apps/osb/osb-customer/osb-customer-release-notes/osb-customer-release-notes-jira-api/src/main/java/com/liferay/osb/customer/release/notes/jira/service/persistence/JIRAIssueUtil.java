@@ -276,6 +276,10 @@ public class JIRAIssueUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(JIRAIssuePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile JIRAIssuePersistence _persistence;
 
 }

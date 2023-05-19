@@ -333,6 +333,10 @@ public class LoopTopicUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopTopicPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopTopicPersistence _persistence;
 
 }

@@ -254,14 +254,10 @@ public class LoopPersonModelImpl
 
 	private static final Map<String, Function<LoopPerson, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopPerson, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopPerson, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LoopPerson, Object>>();
-		Map<String, BiConsumer<LoopPerson, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopPerson, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopPersonId",
@@ -273,6 +269,128 @@ public class LoopPersonModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loopJobTitleId",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getLoopJobTitleId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"managerLoopPersonId",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getManagerLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"personUserId",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getPersonUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"extraData",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getExtraData();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"groupedUserNotificationEventsCount",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getGroupedUserNotificationEventsCount();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"imagePayload",
+			new Function<LoopPerson, Object>() {
+
+				@Override
+				public Object apply(LoopPerson loopPerson) {
+					return loopPerson.getImagePayload();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopPerson, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopPerson, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopPerson, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopPersonId",
 			new BiConsumer<LoopPerson, Object>() {
@@ -282,16 +400,6 @@ public class LoopPersonModelImpl
 					LoopPerson loopPerson, Object loopPersonIdObject) {
 
 					loopPerson.setLoopPersonId((Long)loopPersonIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getCompanyId();
 				}
 
 			});
@@ -307,16 +415,6 @@ public class LoopPersonModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<LoopPerson, Object>() {
@@ -324,16 +422,6 @@ public class LoopPersonModelImpl
 				@Override
 				public void accept(LoopPerson loopPerson, Object userIdObject) {
 					loopPerson.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getUserName();
 				}
 
 			});
@@ -349,16 +437,6 @@ public class LoopPersonModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<LoopPerson, Object>() {
@@ -368,16 +446,6 @@ public class LoopPersonModelImpl
 					LoopPerson loopPerson, Object createDateObject) {
 
 					loopPerson.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getModifiedDate();
 				}
 
 			});
@@ -393,16 +461,6 @@ public class LoopPersonModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"loopJobTitleId",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getLoopJobTitleId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"loopJobTitleId",
 			new BiConsumer<LoopPerson, Object>() {
@@ -412,16 +470,6 @@ public class LoopPersonModelImpl
 					LoopPerson loopPerson, Object loopJobTitleIdObject) {
 
 					loopPerson.setLoopJobTitleId((Long)loopJobTitleIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"managerLoopPersonId",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getManagerLoopPersonId();
 				}
 
 			});
@@ -438,16 +486,6 @@ public class LoopPersonModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"personUserId",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getPersonUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"personUserId",
 			new BiConsumer<LoopPerson, Object>() {
@@ -460,16 +498,6 @@ public class LoopPersonModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"extraData",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getExtraData();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"extraData",
 			new BiConsumer<LoopPerson, Object>() {
@@ -479,16 +507,6 @@ public class LoopPersonModelImpl
 					LoopPerson loopPerson, Object extraDataObject) {
 
 					loopPerson.setExtraData((String)extraDataObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupedUserNotificationEventsCount",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getGroupedUserNotificationEventsCount();
 				}
 
 			});
@@ -506,16 +524,6 @@ public class LoopPersonModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"imagePayload",
-			new Function<LoopPerson, Object>() {
-
-				@Override
-				public Object apply(LoopPerson loopPerson) {
-					return loopPerson.getImagePayload();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"imagePayload",
 			new BiConsumer<LoopPerson, Object>() {
@@ -529,8 +537,6 @@ public class LoopPersonModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

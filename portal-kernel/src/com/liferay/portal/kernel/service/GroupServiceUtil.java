@@ -736,6 +736,10 @@ public class GroupServiceUtil {
 		return _service;
 	}
 
+	public static void setService(GroupService service) {
+		_service = service;
+	}
+
 	private static volatile GroupService _service;
 
 }

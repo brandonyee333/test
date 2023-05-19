@@ -55,8 +55,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -638,14 +636,14 @@ public abstract class MBThreadFlagLocalServiceBaseImpl
 			"com.liferay.message.boards.kernel.model.MBThreadFlag",
 			mbThreadFlagLocalService);
 
-		_setLocalServiceUtilService(mbThreadFlagLocalService);
+		MBThreadFlagLocalServiceUtil.setService(mbThreadFlagLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.message.boards.kernel.model.MBThreadFlag");
 
-		_setLocalServiceUtilService(null);
+		MBThreadFlagLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -687,22 +685,6 @@ public abstract class MBThreadFlagLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		MBThreadFlagLocalService mbThreadFlagLocalService) {
-
-		try {
-			Field field = MBThreadFlagLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, mbThreadFlagLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

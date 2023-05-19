@@ -780,6 +780,10 @@ public class TestrayIssueUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayIssuePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayIssuePersistence _persistence;
 
 }

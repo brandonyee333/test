@@ -58,8 +58,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -768,14 +766,14 @@ public abstract class JournalFeedLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.journal.model.JournalFeed", journalFeedLocalService);
 
-		_setLocalServiceUtilService(journalFeedLocalService);
+		JournalFeedLocalServiceUtil.setService(journalFeedLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.journal.model.JournalFeed");
 
-		_setLocalServiceUtilService(null);
+		JournalFeedLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -817,22 +815,6 @@ public abstract class JournalFeedLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		JournalFeedLocalService journalFeedLocalService) {
-
-		try {
-			Field field = JournalFeedLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, journalFeedLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -69,8 +69,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1590,14 +1588,14 @@ public abstract class TestrayCaseTypeLocalServiceBaseImpl
 			"com.liferay.osb.testray.model.TestrayCaseType",
 			testrayCaseTypeLocalService);
 
-		_setLocalServiceUtilService(testrayCaseTypeLocalService);
+		TestrayCaseTypeLocalServiceUtil.setService(testrayCaseTypeLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.testray.model.TestrayCaseType");
 
-		_setLocalServiceUtilService(null);
+		TestrayCaseTypeLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1639,23 +1637,6 @@ public abstract class TestrayCaseTypeLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		TestrayCaseTypeLocalService testrayCaseTypeLocalService) {
-
-		try {
-			Field field =
-				TestrayCaseTypeLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, testrayCaseTypeLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

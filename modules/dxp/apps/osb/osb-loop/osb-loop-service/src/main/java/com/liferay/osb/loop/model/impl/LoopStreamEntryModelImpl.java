@@ -253,15 +253,11 @@ public class LoopStreamEntryModelImpl
 
 	private static final Map<String, Function<LoopStreamEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopStreamEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopStreamEntry, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<LoopStreamEntry, Object>>();
-		Map<String, BiConsumer<LoopStreamEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopStreamEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopStreamEntryId",
@@ -273,6 +269,78 @@ public class LoopStreamEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"loopPersonId",
+			new Function<LoopStreamEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStreamEntry loopStreamEntry) {
+					return loopStreamEntry.getLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loopStreamId",
+			new Function<LoopStreamEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStreamEntry loopStreamEntry) {
+					return loopStreamEntry.getLoopStreamId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<LoopStreamEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStreamEntry loopStreamEntry) {
+					return loopStreamEntry.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<LoopStreamEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStreamEntry loopStreamEntry) {
+					return loopStreamEntry.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"following",
+			new Function<LoopStreamEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStreamEntry loopStreamEntry) {
+					return loopStreamEntry.getFollowing();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"followingType",
+			new Function<LoopStreamEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStreamEntry loopStreamEntry) {
+					return loopStreamEntry.getFollowingType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopStreamEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopStreamEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopStreamEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopStreamEntryId",
 			new BiConsumer<LoopStreamEntry, Object>() {
@@ -284,16 +352,6 @@ public class LoopStreamEntryModelImpl
 
 					loopStreamEntry.setLoopStreamEntryId(
 						(Long)loopStreamEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"loopPersonId",
-			new Function<LoopStreamEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStreamEntry loopStreamEntry) {
-					return loopStreamEntry.getLoopPersonId();
 				}
 
 			});
@@ -310,16 +368,6 @@ public class LoopStreamEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"loopStreamId",
-			new Function<LoopStreamEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStreamEntry loopStreamEntry) {
-					return loopStreamEntry.getLoopStreamId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"loopStreamId",
 			new BiConsumer<LoopStreamEntry, Object>() {
@@ -330,16 +378,6 @@ public class LoopStreamEntryModelImpl
 					Object loopStreamIdObject) {
 
 					loopStreamEntry.setLoopStreamId((Long)loopStreamIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<LoopStreamEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStreamEntry loopStreamEntry) {
-					return loopStreamEntry.getClassNameId();
 				}
 
 			});
@@ -355,16 +393,6 @@ public class LoopStreamEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<LoopStreamEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStreamEntry loopStreamEntry) {
-					return loopStreamEntry.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<LoopStreamEntry, Object>() {
@@ -377,16 +405,6 @@ public class LoopStreamEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"following",
-			new Function<LoopStreamEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStreamEntry loopStreamEntry) {
-					return loopStreamEntry.getFollowing();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"following",
 			new BiConsumer<LoopStreamEntry, Object>() {
@@ -396,16 +414,6 @@ public class LoopStreamEntryModelImpl
 					LoopStreamEntry loopStreamEntry, Object followingObject) {
 
 					loopStreamEntry.setFollowing((Boolean)followingObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"followingType",
-			new Function<LoopStreamEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStreamEntry loopStreamEntry) {
-					return loopStreamEntry.getFollowingType();
 				}
 
 			});
@@ -424,8 +432,6 @@ public class LoopStreamEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

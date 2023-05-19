@@ -334,6 +334,10 @@ public class TestrayTeamUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayTeamPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayTeamPersistence _persistence;
 
 }

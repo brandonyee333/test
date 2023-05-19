@@ -303,6 +303,10 @@ public class JIRAIssueLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(JIRAIssueLocalService service) {
+		_service = service;
+	}
+
 	private static volatile JIRAIssueLocalService _service;
 
 }

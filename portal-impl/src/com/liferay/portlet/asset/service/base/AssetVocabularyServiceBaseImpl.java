@@ -39,8 +39,6 @@ import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -519,11 +517,11 @@ public abstract class AssetVocabularyServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(assetVocabularyService);
+		AssetVocabularyServiceUtil.setService(assetVocabularyService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		AssetVocabularyServiceUtil.setService(null);
 	}
 
 	/**
@@ -565,22 +563,6 @@ public abstract class AssetVocabularyServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		AssetVocabularyService assetVocabularyService) {
-
-		try {
-			Field field = AssetVocabularyServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetVocabularyService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

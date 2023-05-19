@@ -280,6 +280,12 @@ public class TestrayAssignmentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		TestrayAssignmentPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayAssignmentPersistence _persistence;
 
 }

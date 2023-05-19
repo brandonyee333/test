@@ -297,6 +297,12 @@ public class LoopParticipantAssignmentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(
+		LoopParticipantAssignmentLocalService service) {
+
+		_service = service;
+	}
+
 	private static volatile LoopParticipantAssignmentLocalService _service;
 
 }

@@ -2696,33 +2696,17 @@ public class AccountEntryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByN_C",
 			new String[] {String.class.getName(), String.class.getName()});
 
-		_setAccountEntryUtilPersistence(this);
+		AccountEntryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setAccountEntryUtilPersistence(null);
+		AccountEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(AccountEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setAccountEntryUtilPersistence(
-		AccountEntryPersistence accountEntryPersistence) {
-
-		try {
-			Field field = AccountEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, accountEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

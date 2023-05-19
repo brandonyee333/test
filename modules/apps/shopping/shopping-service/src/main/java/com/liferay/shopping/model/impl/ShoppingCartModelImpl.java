@@ -254,14 +254,10 @@ public class ShoppingCartModelImpl
 
 	private static final Map<String, Function<ShoppingCart, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ShoppingCart, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ShoppingCart, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<ShoppingCart, Object>>();
-		Map<String, BiConsumer<ShoppingCart, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ShoppingCart, ?>>();
 
 		attributeGetterFunctions.put(
 			"cartId",
@@ -273,6 +269,118 @@ public class ShoppingCartModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"itemIds",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getItemIds();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"couponCodes",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getCouponCodes();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"altShipping",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getAltShipping();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"insure",
+			new Function<ShoppingCart, Object>() {
+
+				@Override
+				public Object apply(ShoppingCart shoppingCart) {
+					return shoppingCart.getInsure();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ShoppingCart, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ShoppingCart, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ShoppingCart, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"cartId",
 			new BiConsumer<ShoppingCart, Object>() {
@@ -282,16 +390,6 @@ public class ShoppingCartModelImpl
 					ShoppingCart shoppingCart, Object cartIdObject) {
 
 					shoppingCart.setCartId((Long)cartIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getGroupId();
 				}
 
 			});
@@ -307,16 +405,6 @@ public class ShoppingCartModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<ShoppingCart, Object>() {
@@ -326,16 +414,6 @@ public class ShoppingCartModelImpl
 					ShoppingCart shoppingCart, Object companyIdObject) {
 
 					shoppingCart.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getUserId();
 				}
 
 			});
@@ -351,16 +429,6 @@ public class ShoppingCartModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<ShoppingCart, Object>() {
@@ -370,16 +438,6 @@ public class ShoppingCartModelImpl
 					ShoppingCart shoppingCart, Object userNameObject) {
 
 					shoppingCart.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getCreateDate();
 				}
 
 			});
@@ -395,16 +453,6 @@ public class ShoppingCartModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<ShoppingCart, Object>() {
@@ -414,16 +462,6 @@ public class ShoppingCartModelImpl
 					ShoppingCart shoppingCart, Object modifiedDateObject) {
 
 					shoppingCart.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"itemIds",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getItemIds();
 				}
 
 			});
@@ -439,16 +477,6 @@ public class ShoppingCartModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"couponCodes",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getCouponCodes();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"couponCodes",
 			new BiConsumer<ShoppingCart, Object>() {
@@ -461,16 +489,6 @@ public class ShoppingCartModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"altShipping",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getAltShipping();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"altShipping",
 			new BiConsumer<ShoppingCart, Object>() {
@@ -480,16 +498,6 @@ public class ShoppingCartModelImpl
 					ShoppingCart shoppingCart, Object altShippingObject) {
 
 					shoppingCart.setAltShipping((Integer)altShippingObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"insure",
-			new Function<ShoppingCart, Object>() {
-
-				@Override
-				public Object apply(ShoppingCart shoppingCart) {
-					return shoppingCart.getInsure();
 				}
 
 			});
@@ -506,8 +514,6 @@ public class ShoppingCartModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

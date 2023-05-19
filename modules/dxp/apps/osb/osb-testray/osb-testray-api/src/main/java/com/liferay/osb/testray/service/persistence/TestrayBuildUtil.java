@@ -549,6 +549,10 @@ public class TestrayBuildUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayBuildPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayBuildPersistence _persistence;
 
 }

@@ -249,14 +249,10 @@ public class WallEntryModelImpl
 
 	private static final Map<String, Function<WallEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WallEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<WallEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<WallEntry, Object>>();
-		Map<String, BiConsumer<WallEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WallEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"wallEntryId",
@@ -265,18 +261,6 @@ public class WallEntryModelImpl
 				@Override
 				public Object apply(WallEntry wallEntry) {
 					return wallEntry.getWallEntryId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"wallEntryId",
-			new BiConsumer<WallEntry, Object>() {
-
-				@Override
-				public void accept(
-					WallEntry wallEntry, Object wallEntryIdObject) {
-
-					wallEntry.setWallEntryId((Long)wallEntryIdObject);
 				}
 
 			});
@@ -290,16 +274,6 @@ public class WallEntryModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"groupId",
-			new BiConsumer<WallEntry, Object>() {
-
-				@Override
-				public void accept(WallEntry wallEntry, Object groupIdObject) {
-					wallEntry.setGroupId((Long)groupIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"companyId",
 			new Function<WallEntry, Object>() {
@@ -307,6 +281,90 @@ public class WallEntryModelImpl
 				@Override
 				public Object apply(WallEntry wallEntry) {
 					return wallEntry.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<WallEntry, Object>() {
+
+				@Override
+				public Object apply(WallEntry wallEntry) {
+					return wallEntry.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<WallEntry, Object>() {
+
+				@Override
+				public Object apply(WallEntry wallEntry) {
+					return wallEntry.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WallEntry, Object>() {
+
+				@Override
+				public Object apply(WallEntry wallEntry) {
+					return wallEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WallEntry, Object>() {
+
+				@Override
+				public Object apply(WallEntry wallEntry) {
+					return wallEntry.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"comments",
+			new Function<WallEntry, Object>() {
+
+				@Override
+				public Object apply(WallEntry wallEntry) {
+					return wallEntry.getComments();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<WallEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<WallEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WallEntry, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"wallEntryId",
+			new BiConsumer<WallEntry, Object>() {
+
+				@Override
+				public void accept(
+					WallEntry wallEntry, Object wallEntryIdObject) {
+
+					wallEntry.setWallEntryId((Long)wallEntryIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<WallEntry, Object>() {
+
+				@Override
+				public void accept(WallEntry wallEntry, Object groupIdObject) {
+					wallEntry.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -322,16 +380,6 @@ public class WallEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<WallEntry, Object>() {
-
-				@Override
-				public Object apply(WallEntry wallEntry) {
-					return wallEntry.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<WallEntry, Object>() {
@@ -342,16 +390,6 @@ public class WallEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<WallEntry, Object>() {
-
-				@Override
-				public Object apply(WallEntry wallEntry) {
-					return wallEntry.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<WallEntry, Object>() {
@@ -359,16 +397,6 @@ public class WallEntryModelImpl
 				@Override
 				public void accept(WallEntry wallEntry, Object userNameObject) {
 					wallEntry.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<WallEntry, Object>() {
-
-				@Override
-				public Object apply(WallEntry wallEntry) {
-					return wallEntry.getCreateDate();
 				}
 
 			});
@@ -384,16 +412,6 @@ public class WallEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<WallEntry, Object>() {
-
-				@Override
-				public Object apply(WallEntry wallEntry) {
-					return wallEntry.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<WallEntry, Object>() {
@@ -403,16 +421,6 @@ public class WallEntryModelImpl
 					WallEntry wallEntry, Object modifiedDateObject) {
 
 					wallEntry.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"comments",
-			new Function<WallEntry, Object>() {
-
-				@Override
-				public Object apply(WallEntry wallEntry) {
-					return wallEntry.getComments();
 				}
 
 			});
@@ -427,8 +435,6 @@ public class WallEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

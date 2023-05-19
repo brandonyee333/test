@@ -274,16 +274,11 @@ public class TestrayComponentModelImpl
 
 	private static final Map<String, Function<TestrayComponent, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TestrayComponent, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TestrayComponent, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<TestrayComponent, Object>>();
-		Map<String, BiConsumer<TestrayComponent, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<TestrayComponent, ?>>();
 
 		attributeGetterFunctions.put(
 			"testrayComponentId",
@@ -295,6 +290,119 @@ public class TestrayComponentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"testrayProjectId",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getTestrayProjectId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"testrayTeamId",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getTestrayTeamId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"originationKey",
+			new Function<TestrayComponent, Object>() {
+
+				@Override
+				public Object apply(TestrayComponent testrayComponent) {
+					return testrayComponent.getOriginationKey();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TestrayComponent, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TestrayComponent, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<TestrayComponent, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"testrayComponentId",
 			new BiConsumer<TestrayComponent, Object>() {
@@ -306,16 +414,6 @@ public class TestrayComponentModelImpl
 
 					testrayComponent.setTestrayComponentId(
 						(Long)testrayComponentIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getGroupId();
 				}
 
 			});
@@ -331,16 +429,6 @@ public class TestrayComponentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<TestrayComponent, Object>() {
@@ -350,16 +438,6 @@ public class TestrayComponentModelImpl
 					TestrayComponent testrayComponent, Object companyIdObject) {
 
 					testrayComponent.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getUserId();
 				}
 
 			});
@@ -375,16 +453,6 @@ public class TestrayComponentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<TestrayComponent, Object>() {
@@ -394,16 +462,6 @@ public class TestrayComponentModelImpl
 					TestrayComponent testrayComponent, Object userNameObject) {
 
 					testrayComponent.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getCreateDate();
 				}
 
 			});
@@ -420,16 +478,6 @@ public class TestrayComponentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<TestrayComponent, Object>() {
@@ -440,16 +488,6 @@ public class TestrayComponentModelImpl
 					Object modifiedDateObject) {
 
 					testrayComponent.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"testrayProjectId",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getTestrayProjectId();
 				}
 
 			});
@@ -467,16 +505,6 @@ public class TestrayComponentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"testrayTeamId",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getTestrayTeamId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"testrayTeamId",
 			new BiConsumer<TestrayComponent, Object>() {
@@ -491,16 +519,6 @@ public class TestrayComponentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<TestrayComponent, Object>() {
@@ -510,16 +528,6 @@ public class TestrayComponentModelImpl
 					TestrayComponent testrayComponent, Object nameObject) {
 
 					testrayComponent.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"originationKey",
-			new Function<TestrayComponent, Object>() {
-
-				@Override
-				public Object apply(TestrayComponent testrayComponent) {
-					return testrayComponent.getOriginationKey();
 				}
 
 			});
@@ -538,8 +546,6 @@ public class TestrayComponentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

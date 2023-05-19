@@ -789,33 +789,17 @@ public class JIRAProjectVersionPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_setJIRAProjectVersionUtilPersistence(this);
+		JIRAProjectVersionUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setJIRAProjectVersionUtilPersistence(null);
+		JIRAProjectVersionUtil.setPersistence(null);
 
 		entityCache.removeCache(JIRAProjectVersionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setJIRAProjectVersionUtilPersistence(
-		JIRAProjectVersionPersistence jiraProjectVersionPersistence) {
-
-		try {
-			Field field = JIRAProjectVersionUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, jiraProjectVersionPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

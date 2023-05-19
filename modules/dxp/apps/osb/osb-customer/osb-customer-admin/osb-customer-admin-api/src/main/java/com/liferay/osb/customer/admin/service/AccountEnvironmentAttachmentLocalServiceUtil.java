@@ -380,6 +380,12 @@ public class AccountEnvironmentAttachmentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(
+		AccountEnvironmentAttachmentLocalService service) {
+
+		_service = service;
+	}
+
 	private static volatile AccountEnvironmentAttachmentLocalService _service;
 
 }

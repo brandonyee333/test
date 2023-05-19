@@ -569,6 +569,12 @@ public class TestrayRequirementUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		TestrayRequirementPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayRequirementPersistence _persistence;
 
 }

@@ -791,6 +791,10 @@ public class WSRPConsumerUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(WSRPConsumerPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile WSRPConsumerPersistence _persistence;
 
 }

@@ -241,17 +241,12 @@ public class ShoppingItemFieldModelImpl
 
 	private static final Map<String, Function<ShoppingItemField, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ShoppingItemField, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ShoppingItemField, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<ShoppingItemField, Object>>();
-		Map<String, BiConsumer<ShoppingItemField, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<ShoppingItemField, ?>>();
 
 		attributeGetterFunctions.put(
 			"itemFieldId",
@@ -263,6 +258,69 @@ public class ShoppingItemFieldModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<ShoppingItemField, Object>() {
+
+				@Override
+				public Object apply(ShoppingItemField shoppingItemField) {
+					return shoppingItemField.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"itemId",
+			new Function<ShoppingItemField, Object>() {
+
+				@Override
+				public Object apply(ShoppingItemField shoppingItemField) {
+					return shoppingItemField.getItemId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<ShoppingItemField, Object>() {
+
+				@Override
+				public Object apply(ShoppingItemField shoppingItemField) {
+					return shoppingItemField.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"values",
+			new Function<ShoppingItemField, Object>() {
+
+				@Override
+				public Object apply(ShoppingItemField shoppingItemField) {
+					return shoppingItemField.getValues();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<ShoppingItemField, Object>() {
+
+				@Override
+				public Object apply(ShoppingItemField shoppingItemField) {
+					return shoppingItemField.getDescription();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ShoppingItemField, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ShoppingItemField, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<ShoppingItemField, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"itemFieldId",
 			new BiConsumer<ShoppingItemField, Object>() {
@@ -273,16 +331,6 @@ public class ShoppingItemFieldModelImpl
 					Object itemFieldIdObject) {
 
 					shoppingItemField.setItemFieldId((Long)itemFieldIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<ShoppingItemField, Object>() {
-
-				@Override
-				public Object apply(ShoppingItemField shoppingItemField) {
-					return shoppingItemField.getCompanyId();
 				}
 
 			});
@@ -299,16 +347,6 @@ public class ShoppingItemFieldModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"itemId",
-			new Function<ShoppingItemField, Object>() {
-
-				@Override
-				public Object apply(ShoppingItemField shoppingItemField) {
-					return shoppingItemField.getItemId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"itemId",
 			new BiConsumer<ShoppingItemField, Object>() {
@@ -318,16 +356,6 @@ public class ShoppingItemFieldModelImpl
 					ShoppingItemField shoppingItemField, Object itemIdObject) {
 
 					shoppingItemField.setItemId((Long)itemIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<ShoppingItemField, Object>() {
-
-				@Override
-				public Object apply(ShoppingItemField shoppingItemField) {
-					return shoppingItemField.getName();
 				}
 
 			});
@@ -343,16 +371,6 @@ public class ShoppingItemFieldModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"values",
-			new Function<ShoppingItemField, Object>() {
-
-				@Override
-				public Object apply(ShoppingItemField shoppingItemField) {
-					return shoppingItemField.getValues();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"values",
 			new BiConsumer<ShoppingItemField, Object>() {
@@ -362,16 +380,6 @@ public class ShoppingItemFieldModelImpl
 					ShoppingItemField shoppingItemField, Object valuesObject) {
 
 					shoppingItemField.setValues((String)valuesObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<ShoppingItemField, Object>() {
-
-				@Override
-				public Object apply(ShoppingItemField shoppingItemField) {
-					return shoppingItemField.getDescription();
 				}
 
 			});
@@ -389,8 +397,6 @@ public class ShoppingItemFieldModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

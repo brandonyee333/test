@@ -248,14 +248,10 @@ public class TestrayTeamModelImpl
 
 	private static final Map<String, Function<TestrayTeam, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TestrayTeam, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TestrayTeam, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<TestrayTeam, Object>>();
-		Map<String, BiConsumer<TestrayTeam, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<TestrayTeam, ?>>();
 
 		attributeGetterFunctions.put(
 			"testrayTeamId",
@@ -267,6 +263,98 @@ public class TestrayTeamModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<TestrayTeam, Object>() {
+
+				@Override
+				public Object apply(TestrayTeam testrayTeam) {
+					return testrayTeam.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<TestrayTeam, Object>() {
+
+				@Override
+				public Object apply(TestrayTeam testrayTeam) {
+					return testrayTeam.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TestrayTeam, Object>() {
+
+				@Override
+				public Object apply(TestrayTeam testrayTeam) {
+					return testrayTeam.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TestrayTeam, Object>() {
+
+				@Override
+				public Object apply(TestrayTeam testrayTeam) {
+					return testrayTeam.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TestrayTeam, Object>() {
+
+				@Override
+				public Object apply(TestrayTeam testrayTeam) {
+					return testrayTeam.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<TestrayTeam, Object>() {
+
+				@Override
+				public Object apply(TestrayTeam testrayTeam) {
+					return testrayTeam.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"testrayProjectId",
+			new Function<TestrayTeam, Object>() {
+
+				@Override
+				public Object apply(TestrayTeam testrayTeam) {
+					return testrayTeam.getTestrayProjectId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<TestrayTeam, Object>() {
+
+				@Override
+				public Object apply(TestrayTeam testrayTeam) {
+					return testrayTeam.getName();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TestrayTeam, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TestrayTeam, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<TestrayTeam, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"testrayTeamId",
 			new BiConsumer<TestrayTeam, Object>() {
@@ -276,16 +364,6 @@ public class TestrayTeamModelImpl
 					TestrayTeam testrayTeam, Object testrayTeamIdObject) {
 
 					testrayTeam.setTestrayTeamId((Long)testrayTeamIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<TestrayTeam, Object>() {
-
-				@Override
-				public Object apply(TestrayTeam testrayTeam) {
-					return testrayTeam.getGroupId();
 				}
 
 			});
@@ -301,16 +379,6 @@ public class TestrayTeamModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<TestrayTeam, Object>() {
-
-				@Override
-				public Object apply(TestrayTeam testrayTeam) {
-					return testrayTeam.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<TestrayTeam, Object>() {
@@ -320,16 +388,6 @@ public class TestrayTeamModelImpl
 					TestrayTeam testrayTeam, Object companyIdObject) {
 
 					testrayTeam.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TestrayTeam, Object>() {
-
-				@Override
-				public Object apply(TestrayTeam testrayTeam) {
-					return testrayTeam.getUserId();
 				}
 
 			});
@@ -345,16 +403,6 @@ public class TestrayTeamModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TestrayTeam, Object>() {
-
-				@Override
-				public Object apply(TestrayTeam testrayTeam) {
-					return testrayTeam.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<TestrayTeam, Object>() {
@@ -364,16 +412,6 @@ public class TestrayTeamModelImpl
 					TestrayTeam testrayTeam, Object userNameObject) {
 
 					testrayTeam.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TestrayTeam, Object>() {
-
-				@Override
-				public Object apply(TestrayTeam testrayTeam) {
-					return testrayTeam.getCreateDate();
 				}
 
 			});
@@ -389,16 +427,6 @@ public class TestrayTeamModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<TestrayTeam, Object>() {
-
-				@Override
-				public Object apply(TestrayTeam testrayTeam) {
-					return testrayTeam.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<TestrayTeam, Object>() {
@@ -408,16 +436,6 @@ public class TestrayTeamModelImpl
 					TestrayTeam testrayTeam, Object modifiedDateObject) {
 
 					testrayTeam.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"testrayProjectId",
-			new Function<TestrayTeam, Object>() {
-
-				@Override
-				public Object apply(TestrayTeam testrayTeam) {
-					return testrayTeam.getTestrayProjectId();
 				}
 
 			});
@@ -434,16 +452,6 @@ public class TestrayTeamModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<TestrayTeam, Object>() {
-
-				@Override
-				public Object apply(TestrayTeam testrayTeam) {
-					return testrayTeam.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<TestrayTeam, Object>() {
@@ -455,8 +463,6 @@ public class TestrayTeamModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

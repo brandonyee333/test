@@ -1193,32 +1193,17 @@ public class TestrayRunPersistenceImpl
 				Integer.class.getName()
 			});
 
-		_setTestrayRunUtilPersistence(this);
+		TestrayRunUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setTestrayRunUtilPersistence(null);
+		TestrayRunUtil.setPersistence(null);
 
 		entityCache.removeCache(TestrayRunImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setTestrayRunUtilPersistence(
-		TestrayRunPersistence testrayRunPersistence) {
-
-		try {
-			Field field = TestrayRunUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, testrayRunPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

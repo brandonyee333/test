@@ -307,16 +307,11 @@ public class ShoppingCategoryModelImpl
 
 	private static final Map<String, Function<ShoppingCategory, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ShoppingCategory, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ShoppingCategory, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<ShoppingCategory, Object>>();
-		Map<String, BiConsumer<ShoppingCategory, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<ShoppingCategory, ?>>();
 
 		attributeGetterFunctions.put(
 			"categoryId",
@@ -328,6 +323,109 @@ public class ShoppingCategoryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentCategoryId",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getParentCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<ShoppingCategory, Object>() {
+
+				@Override
+				public Object apply(ShoppingCategory shoppingCategory) {
+					return shoppingCategory.getDescription();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ShoppingCategory, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ShoppingCategory, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<ShoppingCategory, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"categoryId",
 			new BiConsumer<ShoppingCategory, Object>() {
@@ -338,16 +436,6 @@ public class ShoppingCategoryModelImpl
 					Object categoryIdObject) {
 
 					shoppingCategory.setCategoryId((Long)categoryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getGroupId();
 				}
 
 			});
@@ -363,16 +451,6 @@ public class ShoppingCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<ShoppingCategory, Object>() {
@@ -382,16 +460,6 @@ public class ShoppingCategoryModelImpl
 					ShoppingCategory shoppingCategory, Object companyIdObject) {
 
 					shoppingCategory.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getUserId();
 				}
 
 			});
@@ -407,16 +475,6 @@ public class ShoppingCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<ShoppingCategory, Object>() {
@@ -426,16 +484,6 @@ public class ShoppingCategoryModelImpl
 					ShoppingCategory shoppingCategory, Object userNameObject) {
 
 					shoppingCategory.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getCreateDate();
 				}
 
 			});
@@ -452,16 +500,6 @@ public class ShoppingCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<ShoppingCategory, Object>() {
@@ -472,16 +510,6 @@ public class ShoppingCategoryModelImpl
 					Object modifiedDateObject) {
 
 					shoppingCategory.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"parentCategoryId",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getParentCategoryId();
 				}
 
 			});
@@ -499,16 +527,6 @@ public class ShoppingCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<ShoppingCategory, Object>() {
@@ -518,16 +536,6 @@ public class ShoppingCategoryModelImpl
 					ShoppingCategory shoppingCategory, Object nameObject) {
 
 					shoppingCategory.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<ShoppingCategory, Object>() {
-
-				@Override
-				public Object apply(ShoppingCategory shoppingCategory) {
-					return shoppingCategory.getDescription();
 				}
 
 			});
@@ -545,8 +553,6 @@ public class ShoppingCategoryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -246,14 +246,10 @@ public class LoopJobTitleModelImpl
 
 	private static final Map<String, Function<LoopJobTitle, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopJobTitle, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopJobTitle, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LoopJobTitle, Object>>();
-		Map<String, BiConsumer<LoopJobTitle, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopJobTitle, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopJobTitleId",
@@ -265,6 +261,98 @@ public class LoopJobTitleModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<LoopJobTitle, Object>() {
+
+				@Override
+				public Object apply(LoopJobTitle loopJobTitle) {
+					return loopJobTitle.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<LoopJobTitle, Object>() {
+
+				@Override
+				public Object apply(LoopJobTitle loopJobTitle) {
+					return loopJobTitle.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<LoopJobTitle, Object>() {
+
+				@Override
+				public Object apply(LoopJobTitle loopJobTitle) {
+					return loopJobTitle.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<LoopJobTitle, Object>() {
+
+				@Override
+				public Object apply(LoopJobTitle loopJobTitle) {
+					return loopJobTitle.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<LoopJobTitle, Object>() {
+
+				@Override
+				public Object apply(LoopJobTitle loopJobTitle) {
+					return loopJobTitle.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<LoopJobTitle, Object>() {
+
+				@Override
+				public Object apply(LoopJobTitle loopJobTitle) {
+					return loopJobTitle.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<LoopJobTitle, Object>() {
+
+				@Override
+				public Object apply(LoopJobTitle loopJobTitle) {
+					return loopJobTitle.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<LoopJobTitle, Object>() {
+
+				@Override
+				public Object apply(LoopJobTitle loopJobTitle) {
+					return loopJobTitle.getStatus();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopJobTitle, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopJobTitle, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopJobTitle, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopJobTitleId",
 			new BiConsumer<LoopJobTitle, Object>() {
@@ -274,16 +362,6 @@ public class LoopJobTitleModelImpl
 					LoopJobTitle loopJobTitle, Object loopJobTitleIdObject) {
 
 					loopJobTitle.setLoopJobTitleId((Long)loopJobTitleIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<LoopJobTitle, Object>() {
-
-				@Override
-				public Object apply(LoopJobTitle loopJobTitle) {
-					return loopJobTitle.getCompanyId();
 				}
 
 			});
@@ -299,16 +377,6 @@ public class LoopJobTitleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<LoopJobTitle, Object>() {
-
-				@Override
-				public Object apply(LoopJobTitle loopJobTitle) {
-					return loopJobTitle.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<LoopJobTitle, Object>() {
@@ -318,16 +386,6 @@ public class LoopJobTitleModelImpl
 					LoopJobTitle loopJobTitle, Object userIdObject) {
 
 					loopJobTitle.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<LoopJobTitle, Object>() {
-
-				@Override
-				public Object apply(LoopJobTitle loopJobTitle) {
-					return loopJobTitle.getUserName();
 				}
 
 			});
@@ -343,16 +401,6 @@ public class LoopJobTitleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<LoopJobTitle, Object>() {
-
-				@Override
-				public Object apply(LoopJobTitle loopJobTitle) {
-					return loopJobTitle.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<LoopJobTitle, Object>() {
@@ -362,16 +410,6 @@ public class LoopJobTitleModelImpl
 					LoopJobTitle loopJobTitle, Object createDateObject) {
 
 					loopJobTitle.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<LoopJobTitle, Object>() {
-
-				@Override
-				public Object apply(LoopJobTitle loopJobTitle) {
-					return loopJobTitle.getModifiedDate();
 				}
 
 			});
@@ -387,16 +425,6 @@ public class LoopJobTitleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<LoopJobTitle, Object>() {
-
-				@Override
-				public Object apply(LoopJobTitle loopJobTitle) {
-					return loopJobTitle.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<LoopJobTitle, Object>() {
@@ -409,16 +437,6 @@ public class LoopJobTitleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<LoopJobTitle, Object>() {
-
-				@Override
-				public Object apply(LoopJobTitle loopJobTitle) {
-					return loopJobTitle.getDescription();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"description",
 			new BiConsumer<LoopJobTitle, Object>() {
@@ -428,16 +446,6 @@ public class LoopJobTitleModelImpl
 					LoopJobTitle loopJobTitle, Object descriptionObject) {
 
 					loopJobTitle.setDescription((String)descriptionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<LoopJobTitle, Object>() {
-
-				@Override
-				public Object apply(LoopJobTitle loopJobTitle) {
-					return loopJobTitle.getStatus();
 				}
 
 			});
@@ -454,8 +462,6 @@ public class LoopJobTitleModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

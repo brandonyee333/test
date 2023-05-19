@@ -783,6 +783,10 @@ public class ShoppingItemUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ShoppingItemPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ShoppingItemPersistence _persistence;
 
 }

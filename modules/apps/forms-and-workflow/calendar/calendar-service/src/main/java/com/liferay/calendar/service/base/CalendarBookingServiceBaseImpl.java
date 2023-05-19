@@ -50,8 +50,6 @@ import com.liferay.social.kernel.service.persistence.SocialActivityCounterPersis
 import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -1196,11 +1194,11 @@ public abstract class CalendarBookingServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(calendarBookingService);
+		CalendarBookingServiceUtil.setService(calendarBookingService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		CalendarBookingServiceUtil.setService(null);
 	}
 
 	/**
@@ -1242,22 +1240,6 @@ public abstract class CalendarBookingServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		CalendarBookingService calendarBookingService) {
-
-		try {
-			Field field = CalendarBookingServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, calendarBookingService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

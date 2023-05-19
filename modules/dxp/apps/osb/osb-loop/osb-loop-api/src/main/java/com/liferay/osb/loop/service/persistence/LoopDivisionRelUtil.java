@@ -505,6 +505,10 @@ public class LoopDivisionRelUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopDivisionRelPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopDivisionRelPersistence _persistence;
 
 }

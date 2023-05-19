@@ -271,6 +271,10 @@ public class LoopStatsEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopStatsEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopStatsEntryPersistence _persistence;
 
 }

@@ -83,8 +83,6 @@ import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1380,14 +1378,14 @@ public abstract class MBCategoryLocalServiceBaseImpl
 			"com.liferay.message.boards.kernel.model.MBCategory",
 			mbCategoryLocalService);
 
-		_setLocalServiceUtilService(mbCategoryLocalService);
+		MBCategoryLocalServiceUtil.setService(mbCategoryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.message.boards.kernel.model.MBCategory");
 
-		_setLocalServiceUtilService(null);
+		MBCategoryLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1429,22 +1427,6 @@ public abstract class MBCategoryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		MBCategoryLocalService mbCategoryLocalService) {
-
-		try {
-			Field field = MBCategoryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, mbCategoryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

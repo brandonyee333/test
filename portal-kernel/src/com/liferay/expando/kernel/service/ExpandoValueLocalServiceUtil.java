@@ -914,6 +914,10 @@ public class ExpandoValueLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ExpandoValueLocalService service) {
+		_service = service;
+	}
+
 	private static volatile ExpandoValueLocalService _service;
 
 }

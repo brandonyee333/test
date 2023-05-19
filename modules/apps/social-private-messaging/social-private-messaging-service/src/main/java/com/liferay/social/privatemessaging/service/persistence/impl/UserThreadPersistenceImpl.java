@@ -3460,32 +3460,17 @@ public class UserThreadPersistenceImpl
 				Boolean.class.getName()
 			});
 
-		_setUserThreadUtilPersistence(this);
+		UserThreadUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setUserThreadUtilPersistence(null);
+		UserThreadUtil.setPersistence(null);
 
 		entityCache.removeCache(UserThreadImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setUserThreadUtilPersistence(
-		UserThreadPersistence userThreadPersistence) {
-
-		try {
-			Field field = UserThreadUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, userThreadPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

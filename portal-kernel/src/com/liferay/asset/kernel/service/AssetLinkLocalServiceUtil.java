@@ -468,6 +468,10 @@ public class AssetLinkLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AssetLinkLocalService service) {
+		_service = service;
+	}
+
 	private static volatile AssetLinkLocalService _service;
 
 }

@@ -294,14 +294,10 @@ public class TestraySubtaskModelImpl
 
 	private static final Map<String, Function<TestraySubtask, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TestraySubtask, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TestraySubtask, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<TestraySubtask, Object>>();
-		Map<String, BiConsumer<TestraySubtask, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<TestraySubtask, ?>>();
 
 		attributeGetterFunctions.put(
 			"testraySubtaskId",
@@ -313,6 +309,158 @@ public class TestraySubtaskModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"commentMBMessageId",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getCommentMBMessageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"mergedToTestraySubtaskId",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getMergedToTestraySubtaskId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"splitFromTestraySubtaskId",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getSplitFromTestraySubtaskId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"testrayTaskId",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getTestrayTaskId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"score",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getScore();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getStatus();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusUpdateDate",
+			new Function<TestraySubtask, Object>() {
+
+				@Override
+				public Object apply(TestraySubtask testraySubtask) {
+					return testraySubtask.getStatusUpdateDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TestraySubtask, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TestraySubtask, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<TestraySubtask, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"testraySubtaskId",
 			new BiConsumer<TestraySubtask, Object>() {
@@ -324,16 +472,6 @@ public class TestraySubtaskModelImpl
 
 					testraySubtask.setTestraySubtaskId(
 						(Long)testraySubtaskIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getGroupId();
 				}
 
 			});
@@ -349,16 +487,6 @@ public class TestraySubtaskModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<TestraySubtask, Object>() {
@@ -368,16 +496,6 @@ public class TestraySubtaskModelImpl
 					TestraySubtask testraySubtask, Object companyIdObject) {
 
 					testraySubtask.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getUserId();
 				}
 
 			});
@@ -393,16 +511,6 @@ public class TestraySubtaskModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<TestraySubtask, Object>() {
@@ -412,16 +520,6 @@ public class TestraySubtaskModelImpl
 					TestraySubtask testraySubtask, Object userNameObject) {
 
 					testraySubtask.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getCreateDate();
 				}
 
 			});
@@ -437,16 +535,6 @@ public class TestraySubtaskModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<TestraySubtask, Object>() {
@@ -456,16 +544,6 @@ public class TestraySubtaskModelImpl
 					TestraySubtask testraySubtask, Object modifiedDateObject) {
 
 					testraySubtask.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"commentMBMessageId",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getCommentMBMessageId();
 				}
 
 			});
@@ -483,16 +561,6 @@ public class TestraySubtaskModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"mergedToTestraySubtaskId",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getMergedToTestraySubtaskId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"mergedToTestraySubtaskId",
 			new BiConsumer<TestraySubtask, Object>() {
@@ -504,16 +572,6 @@ public class TestraySubtaskModelImpl
 
 					testraySubtask.setMergedToTestraySubtaskId(
 						(Long)mergedToTestraySubtaskIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"splitFromTestraySubtaskId",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getSplitFromTestraySubtaskId();
 				}
 
 			});
@@ -531,16 +589,6 @@ public class TestraySubtaskModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"testrayTaskId",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getTestrayTaskId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"testrayTaskId",
 			new BiConsumer<TestraySubtask, Object>() {
@@ -550,16 +598,6 @@ public class TestraySubtaskModelImpl
 					TestraySubtask testraySubtask, Object testrayTaskIdObject) {
 
 					testraySubtask.setTestrayTaskId((Long)testrayTaskIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getName();
 				}
 
 			});
@@ -575,16 +613,6 @@ public class TestraySubtaskModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"score",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getScore();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"score",
 			new BiConsumer<TestraySubtask, Object>() {
@@ -597,16 +625,6 @@ public class TestraySubtaskModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getStatus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"status",
 			new BiConsumer<TestraySubtask, Object>() {
@@ -616,16 +634,6 @@ public class TestraySubtaskModelImpl
 					TestraySubtask testraySubtask, Object statusObject) {
 
 					testraySubtask.setStatus((Integer)statusObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusUpdateDate",
-			new Function<TestraySubtask, Object>() {
-
-				@Override
-				public Object apply(TestraySubtask testraySubtask) {
-					return testraySubtask.getStatusUpdateDate();
 				}
 
 			});
@@ -644,8 +652,6 @@ public class TestraySubtaskModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

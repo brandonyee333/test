@@ -87,8 +87,6 @@ import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1721,14 +1719,14 @@ public abstract class JournalArticleLocalServiceBaseImpl
 			"com.liferay.journal.model.JournalArticle",
 			journalArticleLocalService);
 
-		_setLocalServiceUtilService(journalArticleLocalService);
+		JournalArticleLocalServiceUtil.setService(journalArticleLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.journal.model.JournalArticle");
 
-		_setLocalServiceUtilService(null);
+		JournalArticleLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1770,22 +1768,6 @@ public abstract class JournalArticleLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		JournalArticleLocalService journalArticleLocalService) {
-
-		try {
-			Field field = JournalArticleLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, journalArticleLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

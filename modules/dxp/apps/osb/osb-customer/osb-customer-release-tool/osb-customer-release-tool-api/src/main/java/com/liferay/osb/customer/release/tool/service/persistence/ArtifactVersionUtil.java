@@ -546,6 +546,10 @@ public class ArtifactVersionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ArtifactVersionPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ArtifactVersionPersistence _persistence;
 
 }

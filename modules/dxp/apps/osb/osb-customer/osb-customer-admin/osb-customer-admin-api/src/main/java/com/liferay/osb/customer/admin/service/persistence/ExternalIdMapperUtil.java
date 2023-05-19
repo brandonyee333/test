@@ -880,6 +880,10 @@ public class ExternalIdMapperUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ExternalIdMapperPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ExternalIdMapperPersistence _persistence;
 
 }

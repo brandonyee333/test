@@ -481,14 +481,10 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 	private static final Map<String, Function<User, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<User, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<User, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<User, Object>>();
-		Map<String, BiConsumer<User, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<User, ?>>();
 
 		attributeGetterFunctions.put(
 			"mvccVersion",
@@ -497,16 +493,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public Object apply(User user) {
 					return user.getMvccVersion();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object mvccVersionObject) {
-					user.setMvccVersion((Long)mvccVersionObject);
 				}
 
 			});
@@ -520,16 +506,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"uuid",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object uuidObject) {
-					user.setUuid((String)uuidObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"userId",
 			new Function<User, Object>() {
@@ -537,16 +513,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public Object apply(User user) {
 					return user.getUserId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"userId",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object userIdObject) {
-					user.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -560,16 +526,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"companyId",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object companyIdObject) {
-					user.setCompanyId((Long)companyIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"createDate",
 			new Function<User, Object>() {
@@ -577,16 +533,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public Object apply(User user) {
 					return user.getCreateDate();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"createDate",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object createDateObject) {
-					user.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -600,16 +546,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"modifiedDate",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object modifiedDateObject) {
-					user.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"defaultUser",
 			new Function<User, Object>() {
@@ -617,16 +553,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public Object apply(User user) {
 					return user.getDefaultUser();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"defaultUser",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object defaultUserObject) {
-					user.setDefaultUser((Boolean)defaultUserObject);
 				}
 
 			});
@@ -640,16 +566,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"contactId",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object contactIdObject) {
-					user.setContactId((Long)contactIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"password",
 			new Function<User, Object>() {
@@ -657,16 +573,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public Object apply(User user) {
 					return user.getPassword();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"password",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object passwordObject) {
-					user.setPassword((String)passwordObject);
 				}
 
 			});
@@ -680,16 +586,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"passwordEncrypted",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object passwordEncryptedObject) {
-					user.setPasswordEncrypted((Boolean)passwordEncryptedObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"passwordReset",
 			new Function<User, Object>() {
@@ -700,16 +596,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"passwordReset",
-			new BiConsumer<User, Object>() {
-
-				@Override
-				public void accept(User user, Object passwordResetObject) {
-					user.setPasswordReset((Boolean)passwordResetObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"passwordModifiedDate",
 			new Function<User, Object>() {
@@ -717,6 +603,428 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public Object apply(User user) {
 					return user.getPasswordModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"digest",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getDigest();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"reminderQueryQuestion",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getReminderQueryQuestion();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"reminderQueryAnswer",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getReminderQueryAnswer();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"graceLoginCount",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getGraceLoginCount();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"screenName",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getScreenName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"emailAddress",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getEmailAddress();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"facebookId",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getFacebookId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"googleUserId",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getGoogleUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"ldapServerId",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLdapServerId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"openId",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getOpenId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"portraitId",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getPortraitId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"languageId",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLanguageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"timeZoneId",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getTimeZoneId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"greeting",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getGreeting();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"comments",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getComments();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"firstName",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getFirstName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"middleName",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getMiddleName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastName",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLastName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"jobTitle",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getJobTitle();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loginDate",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLoginDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loginIP",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLoginIP();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastLoginDate",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLastLoginDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastLoginIP",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLastLoginIP();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastFailedLoginDate",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLastFailedLoginDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"failedLoginAttempts",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getFailedLoginAttempts();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lockout",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLockout();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lockoutDate",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getLockoutDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"agreedToTermsOfUse",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getAgreedToTermsOfUse();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"emailAddressVerified",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getEmailAddressVerified();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<User, Object>() {
+
+				@Override
+				public Object apply(User user) {
+					return user.getStatus();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<User, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<User, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<User, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"mvccVersion",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object mvccVersionObject) {
+					user.setMvccVersion((Long)mvccVersionObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"uuid",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object uuidObject) {
+					user.setUuid((String)uuidObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object userIdObject) {
+					user.setUserId((Long)userIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object companyIdObject) {
+					user.setCompanyId((Long)companyIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object createDateObject) {
+					user.setCreateDate((Date)createDateObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object modifiedDateObject) {
+					user.setModifiedDate((Date)modifiedDateObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"defaultUser",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object defaultUserObject) {
+					user.setDefaultUser((Boolean)defaultUserObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"contactId",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object contactIdObject) {
+					user.setContactId((Long)contactIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"password",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object passwordObject) {
+					user.setPassword((String)passwordObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"passwordEncrypted",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object passwordEncryptedObject) {
+					user.setPasswordEncrypted((Boolean)passwordEncryptedObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"passwordReset",
+			new BiConsumer<User, Object>() {
+
+				@Override
+				public void accept(User user, Object passwordResetObject) {
+					user.setPasswordReset((Boolean)passwordResetObject);
 				}
 
 			});
@@ -733,16 +1041,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"digest",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getDigest();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"digest",
 			new BiConsumer<User, Object>() {
@@ -750,16 +1048,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object digestObject) {
 					user.setDigest((String)digestObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"reminderQueryQuestion",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getReminderQueryQuestion();
 				}
 
 			});
@@ -776,16 +1064,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"reminderQueryAnswer",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getReminderQueryAnswer();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"reminderQueryAnswer",
 			new BiConsumer<User, Object>() {
@@ -799,16 +1077,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"graceLoginCount",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getGraceLoginCount();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"graceLoginCount",
 			new BiConsumer<User, Object>() {
@@ -816,16 +1084,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object graceLoginCountObject) {
 					user.setGraceLoginCount((Integer)graceLoginCountObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"screenName",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getScreenName();
 				}
 
 			});
@@ -839,16 +1097,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"emailAddress",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getEmailAddress();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"emailAddress",
 			new BiConsumer<User, Object>() {
@@ -856,16 +1104,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object emailAddressObject) {
 					user.setEmailAddress((String)emailAddressObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"facebookId",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getFacebookId();
 				}
 
 			});
@@ -879,16 +1117,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"googleUserId",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getGoogleUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"googleUserId",
 			new BiConsumer<User, Object>() {
@@ -896,16 +1124,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object googleUserIdObject) {
 					user.setGoogleUserId((String)googleUserIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"ldapServerId",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLdapServerId();
 				}
 
 			});
@@ -919,16 +1137,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"openId",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getOpenId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"openId",
 			new BiConsumer<User, Object>() {
@@ -936,16 +1144,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object openIdObject) {
 					user.setOpenId((String)openIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"portraitId",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getPortraitId();
 				}
 
 			});
@@ -959,16 +1157,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"languageId",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLanguageId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"languageId",
 			new BiConsumer<User, Object>() {
@@ -976,16 +1164,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object languageIdObject) {
 					user.setLanguageId((String)languageIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"timeZoneId",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getTimeZoneId();
 				}
 
 			});
@@ -999,16 +1177,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"greeting",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getGreeting();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"greeting",
 			new BiConsumer<User, Object>() {
@@ -1016,16 +1184,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object greetingObject) {
 					user.setGreeting((String)greetingObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"comments",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getComments();
 				}
 
 			});
@@ -1039,16 +1197,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"firstName",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getFirstName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"firstName",
 			new BiConsumer<User, Object>() {
@@ -1056,16 +1204,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object firstNameObject) {
 					user.setFirstName((String)firstNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"middleName",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getMiddleName();
 				}
 
 			});
@@ -1079,16 +1217,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"lastName",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLastName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"lastName",
 			new BiConsumer<User, Object>() {
@@ -1096,16 +1224,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object lastNameObject) {
 					user.setLastName((String)lastNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"jobTitle",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getJobTitle();
 				}
 
 			});
@@ -1119,16 +1237,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"loginDate",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLoginDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"loginDate",
 			new BiConsumer<User, Object>() {
@@ -1136,16 +1244,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object loginDateObject) {
 					user.setLoginDate((Date)loginDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"loginIP",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLoginIP();
 				}
 
 			});
@@ -1159,16 +1257,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"lastLoginDate",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLastLoginDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"lastLoginDate",
 			new BiConsumer<User, Object>() {
@@ -1179,16 +1267,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"lastLoginIP",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLastLoginIP();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"lastLoginIP",
 			new BiConsumer<User, Object>() {
@@ -1196,16 +1274,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object lastLoginIPObject) {
 					user.setLastLoginIP((String)lastLoginIPObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastFailedLoginDate",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLastFailedLoginDate();
 				}
 
 			});
@@ -1222,16 +1290,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"failedLoginAttempts",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getFailedLoginAttempts();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"failedLoginAttempts",
 			new BiConsumer<User, Object>() {
@@ -1245,16 +1303,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"lockout",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLockout();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"lockout",
 			new BiConsumer<User, Object>() {
@@ -1262,16 +1310,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				@Override
 				public void accept(User user, Object lockoutObject) {
 					user.setLockout((Boolean)lockoutObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lockoutDate",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getLockoutDate();
 				}
 
 			});
@@ -1285,16 +1323,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"agreedToTermsOfUse",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getAgreedToTermsOfUse();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"agreedToTermsOfUse",
 			new BiConsumer<User, Object>() {
@@ -1303,16 +1331,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				public void accept(User user, Object agreedToTermsOfUseObject) {
 					user.setAgreedToTermsOfUse(
 						(Boolean)agreedToTermsOfUseObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"emailAddressVerified",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getEmailAddressVerified();
 				}
 
 			});
@@ -1329,16 +1347,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<User, Object>() {
-
-				@Override
-				public Object apply(User user) {
-					return user.getStatus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"status",
 			new BiConsumer<User, Object>() {
@@ -1350,8 +1358,6 @@ public class UserModelImpl extends BaseModelImpl<User> implements UserModel {
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -854,6 +854,10 @@ public class WSRPProducerUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(WSRPProducerPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile WSRPProducerPersistence _persistence;
 
 }

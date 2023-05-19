@@ -732,6 +732,10 @@ public class ReleaseNotesUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ReleaseNotesPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ReleaseNotesPersistence _persistence;
 
 }

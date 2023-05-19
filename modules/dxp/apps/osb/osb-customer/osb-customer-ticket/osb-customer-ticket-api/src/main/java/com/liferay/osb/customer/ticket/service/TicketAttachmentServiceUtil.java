@@ -80,6 +80,10 @@ public class TicketAttachmentServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TicketAttachmentService service) {
+		_service = service;
+	}
+
 	private static volatile TicketAttachmentService _service;
 
 }

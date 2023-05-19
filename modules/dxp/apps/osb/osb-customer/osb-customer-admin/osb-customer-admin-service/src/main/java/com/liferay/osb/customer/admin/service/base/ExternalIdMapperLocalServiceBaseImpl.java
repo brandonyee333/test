@@ -59,8 +59,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -940,14 +938,15 @@ public abstract class ExternalIdMapperLocalServiceBaseImpl
 			"com.liferay.osb.customer.admin.model.ExternalIdMapper",
 			externalIdMapperLocalService);
 
-		_setLocalServiceUtilService(externalIdMapperLocalService);
+		ExternalIdMapperLocalServiceUtil.setService(
+			externalIdMapperLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.admin.model.ExternalIdMapper");
 
-		_setLocalServiceUtilService(null);
+		ExternalIdMapperLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -989,23 +988,6 @@ public abstract class ExternalIdMapperLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ExternalIdMapperLocalService externalIdMapperLocalService) {
-
-		try {
-			Field field =
-				ExternalIdMapperLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, externalIdMapperLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -358,6 +358,10 @@ public class JournalArticleImageLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(JournalArticleImageLocalService service) {
+		_service = service;
+	}
+
 	private static volatile JournalArticleImageLocalService _service;
 
 }

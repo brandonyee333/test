@@ -1093,33 +1093,17 @@ public class JIRAProjectPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByKey",
 			new String[] {String.class.getName()});
 
-		_setJIRAProjectUtilPersistence(this);
+		JIRAProjectUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setJIRAProjectUtilPersistence(null);
+		JIRAProjectUtil.setPersistence(null);
 
 		entityCache.removeCache(JIRAProjectImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setJIRAProjectUtilPersistence(
-		JIRAProjectPersistence jiraProjectPersistence) {
-
-		try {
-			Field field = JIRAProjectUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, jiraProjectPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

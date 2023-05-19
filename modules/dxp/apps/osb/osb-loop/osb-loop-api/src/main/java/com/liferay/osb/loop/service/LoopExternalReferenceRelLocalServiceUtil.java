@@ -297,6 +297,12 @@ public class LoopExternalReferenceRelLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(
+		LoopExternalReferenceRelLocalService service) {
+
+		_service = service;
+	}
+
 	private static volatile LoopExternalReferenceRelLocalService _service;
 
 }

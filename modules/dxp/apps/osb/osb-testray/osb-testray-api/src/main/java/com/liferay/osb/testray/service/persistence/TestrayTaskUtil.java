@@ -492,6 +492,10 @@ public class TestrayTaskUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayTaskPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayTaskPersistence _persistence;
 
 }

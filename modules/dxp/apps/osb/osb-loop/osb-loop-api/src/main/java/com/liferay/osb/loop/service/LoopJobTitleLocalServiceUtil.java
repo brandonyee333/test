@@ -276,6 +276,10 @@ public class LoopJobTitleLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopJobTitleLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopJobTitleLocalService _service;
 
 }

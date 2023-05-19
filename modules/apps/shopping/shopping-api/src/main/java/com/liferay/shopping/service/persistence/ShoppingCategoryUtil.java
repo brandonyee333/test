@@ -853,6 +853,10 @@ public class ShoppingCategoryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ShoppingCategoryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ShoppingCategoryPersistence _persistence;
 
 }

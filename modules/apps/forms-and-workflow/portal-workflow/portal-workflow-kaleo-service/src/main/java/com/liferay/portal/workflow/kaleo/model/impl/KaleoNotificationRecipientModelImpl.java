@@ -273,19 +273,12 @@ public class KaleoNotificationRecipientModelImpl
 	private static final Map
 		<String, Function<KaleoNotificationRecipient, Object>>
 			_attributeGetterFunctions;
-	private static final Map
-		<String, BiConsumer<KaleoNotificationRecipient, Object>>
-			_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<KaleoNotificationRecipient, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<KaleoNotificationRecipient, Object>>();
-		Map<String, BiConsumer<KaleoNotificationRecipient, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<KaleoNotificationRecipient, ?>>();
 
 		attributeGetterFunctions.put(
 			"kaleoNotificationRecipientId",
@@ -297,20 +290,6 @@ public class KaleoNotificationRecipientModelImpl
 
 					return kaleoNotificationRecipient.
 						getKaleoNotificationRecipientId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"kaleoNotificationRecipientId",
-			new BiConsumer<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public void accept(
-					KaleoNotificationRecipient kaleoNotificationRecipient,
-					Object kaleoNotificationRecipientIdObject) {
-
-					kaleoNotificationRecipient.setKaleoNotificationRecipientId(
-						(Long)kaleoNotificationRecipientIdObject);
 				}
 
 			});
@@ -326,6 +305,218 @@ public class KaleoNotificationRecipientModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"kaleoDefinitionId",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getKaleoDefinitionId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"kaleoNotificationId",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getKaleoNotificationId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"recipientClassName",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getRecipientClassName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"recipientClassPK",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getRecipientClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"recipientRoleType",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getRecipientRoleType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"recipientScript",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getRecipientScript();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"recipientScriptLanguage",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.
+						getRecipientScriptLanguage();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"recipientScriptContexts",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.
+						getRecipientScriptContexts();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"address",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.getAddress();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"notificationReceptionType",
+			new Function<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public Object apply(
+					KaleoNotificationRecipient kaleoNotificationRecipient) {
+
+					return kaleoNotificationRecipient.
+						getNotificationReceptionType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map
+		<String, BiConsumer<KaleoNotificationRecipient, Object>>
+			_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<KaleoNotificationRecipient, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<KaleoNotificationRecipient, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"kaleoNotificationRecipientId",
+			new BiConsumer<KaleoNotificationRecipient, Object>() {
+
+				@Override
+				public void accept(
+					KaleoNotificationRecipient kaleoNotificationRecipient,
+					Object kaleoNotificationRecipientIdObject) {
+
+					kaleoNotificationRecipient.setKaleoNotificationRecipientId(
+						(Long)kaleoNotificationRecipientIdObject);
+				}
+
+			});
 		attributeSetterBiConsumers.put(
 			"groupId",
 			new BiConsumer<KaleoNotificationRecipient, Object>() {
@@ -336,18 +527,6 @@ public class KaleoNotificationRecipientModelImpl
 					Object groupIdObject) {
 
 					kaleoNotificationRecipient.setGroupId((Long)groupIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getCompanyId();
 				}
 
 			});
@@ -365,18 +544,6 @@ public class KaleoNotificationRecipientModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<KaleoNotificationRecipient, Object>() {
@@ -387,18 +554,6 @@ public class KaleoNotificationRecipientModelImpl
 					Object userIdObject) {
 
 					kaleoNotificationRecipient.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getUserName();
 				}
 
 			});
@@ -416,18 +571,6 @@ public class KaleoNotificationRecipientModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<KaleoNotificationRecipient, Object>() {
@@ -439,18 +582,6 @@ public class KaleoNotificationRecipientModelImpl
 
 					kaleoNotificationRecipient.setCreateDate(
 						(Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getModifiedDate();
 				}
 
 			});
@@ -468,18 +599,6 @@ public class KaleoNotificationRecipientModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"kaleoDefinitionId",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getKaleoDefinitionId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"kaleoDefinitionId",
 			new BiConsumer<KaleoNotificationRecipient, Object>() {
@@ -491,18 +610,6 @@ public class KaleoNotificationRecipientModelImpl
 
 					kaleoNotificationRecipient.setKaleoDefinitionId(
 						(Long)kaleoDefinitionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"kaleoNotificationId",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getKaleoNotificationId();
 				}
 
 			});
@@ -520,18 +627,6 @@ public class KaleoNotificationRecipientModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"recipientClassName",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getRecipientClassName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"recipientClassName",
 			new BiConsumer<KaleoNotificationRecipient, Object>() {
@@ -543,18 +638,6 @@ public class KaleoNotificationRecipientModelImpl
 
 					kaleoNotificationRecipient.setRecipientClassName(
 						(String)recipientClassNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"recipientClassPK",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getRecipientClassPK();
 				}
 
 			});
@@ -572,18 +655,6 @@ public class KaleoNotificationRecipientModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"recipientRoleType",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getRecipientRoleType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"recipientRoleType",
 			new BiConsumer<KaleoNotificationRecipient, Object>() {
@@ -595,18 +666,6 @@ public class KaleoNotificationRecipientModelImpl
 
 					kaleoNotificationRecipient.setRecipientRoleType(
 						(Integer)recipientRoleTypeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"recipientScript",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getRecipientScript();
 				}
 
 			});
@@ -624,19 +683,6 @@ public class KaleoNotificationRecipientModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"recipientScriptLanguage",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.
-						getRecipientScriptLanguage();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"recipientScriptLanguage",
 			new BiConsumer<KaleoNotificationRecipient, Object>() {
@@ -648,19 +694,6 @@ public class KaleoNotificationRecipientModelImpl
 
 					kaleoNotificationRecipient.setRecipientScriptLanguage(
 						(String)recipientScriptLanguageObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"recipientScriptContexts",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.
-						getRecipientScriptContexts();
 				}
 
 			});
@@ -678,18 +711,6 @@ public class KaleoNotificationRecipientModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"address",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.getAddress();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"address",
 			new BiConsumer<KaleoNotificationRecipient, Object>() {
@@ -701,19 +722,6 @@ public class KaleoNotificationRecipientModelImpl
 
 					kaleoNotificationRecipient.setAddress(
 						(String)addressObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"notificationReceptionType",
-			new Function<KaleoNotificationRecipient, Object>() {
-
-				@Override
-				public Object apply(
-					KaleoNotificationRecipient kaleoNotificationRecipient) {
-
-					return kaleoNotificationRecipient.
-						getNotificationReceptionType();
 				}
 
 			});
@@ -732,8 +740,6 @@ public class KaleoNotificationRecipientModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

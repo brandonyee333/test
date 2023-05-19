@@ -328,6 +328,10 @@ public class LoopJobTitleUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopJobTitlePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopJobTitlePersistence _persistence;
 
 }

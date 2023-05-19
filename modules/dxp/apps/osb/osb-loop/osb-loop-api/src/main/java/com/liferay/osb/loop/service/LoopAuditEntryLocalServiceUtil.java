@@ -282,6 +282,10 @@ public class LoopAuditEntryLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopAuditEntryLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopAuditEntryLocalService _service;
 
 }

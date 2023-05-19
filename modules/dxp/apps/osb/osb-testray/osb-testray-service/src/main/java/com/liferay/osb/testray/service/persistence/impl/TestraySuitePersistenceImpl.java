@@ -48,7 +48,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1135,11 +1134,11 @@ public class TestraySuitePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_setTestraySuiteUtilPersistence(this);
+		TestraySuiteUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setTestraySuiteUtilPersistence(null);
+		TestraySuiteUtil.setPersistence(null);
 
 		entityCache.removeCache(TestraySuiteImpl.class.getName());
 
@@ -1148,22 +1147,6 @@ public class TestraySuitePersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		TableMapperFactory.removeTableMapper("OSB_TestraySuites_TestrayCases");
-	}
-
-	private void _setTestraySuiteUtilPersistence(
-		TestraySuitePersistence testraySuitePersistence) {
-
-		try {
-			Field field = TestraySuiteUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, testraySuitePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

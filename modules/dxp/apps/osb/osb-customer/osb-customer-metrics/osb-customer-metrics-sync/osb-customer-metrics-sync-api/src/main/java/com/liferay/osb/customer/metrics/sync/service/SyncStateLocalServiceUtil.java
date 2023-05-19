@@ -289,6 +289,10 @@ public class SyncStateLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(SyncStateLocalService service) {
+		_service = service;
+	}
+
 	private static volatile SyncStateLocalService _service;
 
 }

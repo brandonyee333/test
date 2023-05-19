@@ -252,18 +252,12 @@ public class TestrayProductVersionModelImpl
 
 	private static final Map<String, Function<TestrayProductVersion, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TestrayProductVersion, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TestrayProductVersion, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<TestrayProductVersion, Object>>();
-		Map<String, BiConsumer<TestrayProductVersion, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<TestrayProductVersion, ?>>();
 
 		attributeGetterFunctions.put(
 			"testrayProductVersionId",
@@ -277,6 +271,116 @@ public class TestrayProductVersionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<TestrayProductVersion, Object>() {
+
+				@Override
+				public Object apply(
+					TestrayProductVersion testrayProductVersion) {
+
+					return testrayProductVersion.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<TestrayProductVersion, Object>() {
+
+				@Override
+				public Object apply(
+					TestrayProductVersion testrayProductVersion) {
+
+					return testrayProductVersion.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TestrayProductVersion, Object>() {
+
+				@Override
+				public Object apply(
+					TestrayProductVersion testrayProductVersion) {
+
+					return testrayProductVersion.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TestrayProductVersion, Object>() {
+
+				@Override
+				public Object apply(
+					TestrayProductVersion testrayProductVersion) {
+
+					return testrayProductVersion.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TestrayProductVersion, Object>() {
+
+				@Override
+				public Object apply(
+					TestrayProductVersion testrayProductVersion) {
+
+					return testrayProductVersion.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<TestrayProductVersion, Object>() {
+
+				@Override
+				public Object apply(
+					TestrayProductVersion testrayProductVersion) {
+
+					return testrayProductVersion.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"testrayProjectId",
+			new Function<TestrayProductVersion, Object>() {
+
+				@Override
+				public Object apply(
+					TestrayProductVersion testrayProductVersion) {
+
+					return testrayProductVersion.getTestrayProjectId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<TestrayProductVersion, Object>() {
+
+				@Override
+				public Object apply(
+					TestrayProductVersion testrayProductVersion) {
+
+					return testrayProductVersion.getName();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TestrayProductVersion, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TestrayProductVersion, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<TestrayProductVersion, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"testrayProductVersionId",
 			new BiConsumer<TestrayProductVersion, Object>() {
@@ -288,18 +392,6 @@ public class TestrayProductVersionModelImpl
 
 					testrayProductVersion.setTestrayProductVersionId(
 						(Long)testrayProductVersionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<TestrayProductVersion, Object>() {
-
-				@Override
-				public Object apply(
-					TestrayProductVersion testrayProductVersion) {
-
-					return testrayProductVersion.getGroupId();
 				}
 
 			});
@@ -316,18 +408,6 @@ public class TestrayProductVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<TestrayProductVersion, Object>() {
-
-				@Override
-				public Object apply(
-					TestrayProductVersion testrayProductVersion) {
-
-					return testrayProductVersion.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<TestrayProductVersion, Object>() {
@@ -338,18 +418,6 @@ public class TestrayProductVersionModelImpl
 					Object companyIdObject) {
 
 					testrayProductVersion.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TestrayProductVersion, Object>() {
-
-				@Override
-				public Object apply(
-					TestrayProductVersion testrayProductVersion) {
-
-					return testrayProductVersion.getUserId();
 				}
 
 			});
@@ -366,18 +434,6 @@ public class TestrayProductVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TestrayProductVersion, Object>() {
-
-				@Override
-				public Object apply(
-					TestrayProductVersion testrayProductVersion) {
-
-					return testrayProductVersion.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<TestrayProductVersion, Object>() {
@@ -391,18 +447,6 @@ public class TestrayProductVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TestrayProductVersion, Object>() {
-
-				@Override
-				public Object apply(
-					TestrayProductVersion testrayProductVersion) {
-
-					return testrayProductVersion.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<TestrayProductVersion, Object>() {
@@ -413,18 +457,6 @@ public class TestrayProductVersionModelImpl
 					Object createDateObject) {
 
 					testrayProductVersion.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<TestrayProductVersion, Object>() {
-
-				@Override
-				public Object apply(
-					TestrayProductVersion testrayProductVersion) {
-
-					return testrayProductVersion.getModifiedDate();
 				}
 
 			});
@@ -442,18 +474,6 @@ public class TestrayProductVersionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"testrayProjectId",
-			new Function<TestrayProductVersion, Object>() {
-
-				@Override
-				public Object apply(
-					TestrayProductVersion testrayProductVersion) {
-
-					return testrayProductVersion.getTestrayProjectId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"testrayProjectId",
 			new BiConsumer<TestrayProductVersion, Object>() {
@@ -465,18 +485,6 @@ public class TestrayProductVersionModelImpl
 
 					testrayProductVersion.setTestrayProjectId(
 						(Long)testrayProjectIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<TestrayProductVersion, Object>() {
-
-				@Override
-				public Object apply(
-					TestrayProductVersion testrayProductVersion) {
-
-					return testrayProductVersion.getName();
 				}
 
 			});
@@ -494,8 +502,6 @@ public class TestrayProductVersionModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

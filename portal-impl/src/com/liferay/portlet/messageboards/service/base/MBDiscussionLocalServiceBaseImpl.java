@@ -64,8 +64,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -923,14 +921,14 @@ public abstract class MBDiscussionLocalServiceBaseImpl
 			"com.liferay.message.boards.kernel.model.MBDiscussion",
 			mbDiscussionLocalService);
 
-		_setLocalServiceUtilService(mbDiscussionLocalService);
+		MBDiscussionLocalServiceUtil.setService(mbDiscussionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.message.boards.kernel.model.MBDiscussion");
 
-		_setLocalServiceUtilService(null);
+		MBDiscussionLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -972,22 +970,6 @@ public abstract class MBDiscussionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		MBDiscussionLocalService mbDiscussionLocalService) {
-
-		try {
-			Field field = MBDiscussionLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, mbDiscussionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

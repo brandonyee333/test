@@ -1517,6 +1517,10 @@ public class KaleoInstanceUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(KaleoInstancePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile KaleoInstancePersistence _persistence;
 
 }

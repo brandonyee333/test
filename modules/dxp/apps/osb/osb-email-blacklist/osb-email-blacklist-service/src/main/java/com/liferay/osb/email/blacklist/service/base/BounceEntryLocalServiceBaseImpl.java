@@ -50,8 +50,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -574,14 +572,14 @@ public abstract class BounceEntryLocalServiceBaseImpl
 			"com.liferay.osb.email.blacklist.model.BounceEntry",
 			bounceEntryLocalService);
 
-		_setLocalServiceUtilService(bounceEntryLocalService);
+		BounceEntryLocalServiceUtil.setService(bounceEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.email.blacklist.model.BounceEntry");
 
-		_setLocalServiceUtilService(null);
+		BounceEntryLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -623,22 +621,6 @@ public abstract class BounceEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		BounceEntryLocalService bounceEntryLocalService) {
-
-		try {
-			Field field = BounceEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, bounceEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

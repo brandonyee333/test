@@ -334,6 +334,10 @@ public class JIRAProjectUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(JIRAProjectPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile JIRAProjectPersistence _persistence;
 
 }

@@ -933,6 +933,10 @@ public class ShoppingOrderUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ShoppingOrderPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ShoppingOrderPersistence _persistence;
 
 }

@@ -292,6 +292,12 @@ public class LoopUserNotificationRecordUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		LoopUserNotificationRecordPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile LoopUserNotificationRecordPersistence _persistence;
 
 }

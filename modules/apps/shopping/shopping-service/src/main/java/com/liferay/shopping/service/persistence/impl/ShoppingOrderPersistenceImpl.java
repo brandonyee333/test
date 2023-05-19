@@ -3501,33 +3501,17 @@ public class ShoppingOrderPersistenceImpl
 				String.class.getName()
 			});
 
-		_setShoppingOrderUtilPersistence(this);
+		ShoppingOrderUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setShoppingOrderUtilPersistence(null);
+		ShoppingOrderUtil.setPersistence(null);
 
 		entityCache.removeCache(ShoppingOrderImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setShoppingOrderUtilPersistence(
-		ShoppingOrderPersistence shoppingOrderPersistence) {
-
-		try {
-			Field field = ShoppingOrderUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, shoppingOrderPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -256,9 +256,6 @@ public class LoopUserNotificationSubscriptionModelImpl
 	private static final Map
 		<String, Function<LoopUserNotificationSubscription, Object>>
 			_attributeGetterFunctions;
-	private static final Map
-		<String, BiConsumer<LoopUserNotificationSubscription, Object>>
-			_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopUserNotificationSubscription, Object>>
@@ -266,10 +263,6 @@ public class LoopUserNotificationSubscriptionModelImpl
 				new LinkedHashMap
 					<String,
 					 Function<LoopUserNotificationSubscription, Object>>();
-		Map<String, BiConsumer<LoopUserNotificationSubscription, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<LoopUserNotificationSubscription, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopUserNotificationSubscriptionId",
@@ -285,6 +278,73 @@ public class LoopUserNotificationSubscriptionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"loopPersonId",
+			new Function<LoopUserNotificationSubscription, Object>() {
+
+				@Override
+				public Object apply(
+					LoopUserNotificationSubscription
+						loopUserNotificationSubscription) {
+
+					return loopUserNotificationSubscription.getLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<LoopUserNotificationSubscription, Object>() {
+
+				@Override
+				public Object apply(
+					LoopUserNotificationSubscription
+						loopUserNotificationSubscription) {
+
+					return loopUserNotificationSubscription.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<LoopUserNotificationSubscription, Object>() {
+
+				@Override
+				public Object apply(
+					LoopUserNotificationSubscription
+						loopUserNotificationSubscription) {
+
+					return loopUserNotificationSubscription.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"deliveryType",
+			new Function<LoopUserNotificationSubscription, Object>() {
+
+				@Override
+				public Object apply(
+					LoopUserNotificationSubscription
+						loopUserNotificationSubscription) {
+
+					return loopUserNotificationSubscription.getDeliveryType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map
+		<String, BiConsumer<LoopUserNotificationSubscription, Object>>
+			_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopUserNotificationSubscription, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<LoopUserNotificationSubscription, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopUserNotificationSubscriptionId",
 			new BiConsumer<LoopUserNotificationSubscription, Object>() {
@@ -298,19 +358,6 @@ public class LoopUserNotificationSubscriptionModelImpl
 					loopUserNotificationSubscription.
 						setLoopUserNotificationSubscriptionId(
 							(Long)loopUserNotificationSubscriptionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"loopPersonId",
-			new Function<LoopUserNotificationSubscription, Object>() {
-
-				@Override
-				public Object apply(
-					LoopUserNotificationSubscription
-						loopUserNotificationSubscription) {
-
-					return loopUserNotificationSubscription.getLoopPersonId();
 				}
 
 			});
@@ -329,19 +376,6 @@ public class LoopUserNotificationSubscriptionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<LoopUserNotificationSubscription, Object>() {
-
-				@Override
-				public Object apply(
-					LoopUserNotificationSubscription
-						loopUserNotificationSubscription) {
-
-					return loopUserNotificationSubscription.getClassNameId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classNameId",
 			new BiConsumer<LoopUserNotificationSubscription, Object>() {
@@ -357,19 +391,6 @@ public class LoopUserNotificationSubscriptionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<LoopUserNotificationSubscription, Object>() {
-
-				@Override
-				public Object apply(
-					LoopUserNotificationSubscription
-						loopUserNotificationSubscription) {
-
-					return loopUserNotificationSubscription.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<LoopUserNotificationSubscription, Object>() {
@@ -382,19 +403,6 @@ public class LoopUserNotificationSubscriptionModelImpl
 
 					loopUserNotificationSubscription.setClassPK(
 						(Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"deliveryType",
-			new Function<LoopUserNotificationSubscription, Object>() {
-
-				@Override
-				public Object apply(
-					LoopUserNotificationSubscription
-						loopUserNotificationSubscription) {
-
-					return loopUserNotificationSubscription.getDeliveryType();
 				}
 
 			});
@@ -414,8 +422,6 @@ public class LoopUserNotificationSubscriptionModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

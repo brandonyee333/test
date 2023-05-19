@@ -1363,33 +1363,17 @@ public class ShoppingItemFieldPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByItemId",
 			new String[] {Long.class.getName()});
 
-		_setShoppingItemFieldUtilPersistence(this);
+		ShoppingItemFieldUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setShoppingItemFieldUtilPersistence(null);
+		ShoppingItemFieldUtil.setPersistence(null);
 
 		entityCache.removeCache(ShoppingItemFieldImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setShoppingItemFieldUtilPersistence(
-		ShoppingItemFieldPersistence shoppingItemFieldPersistence) {
-
-		try {
-			Field field = ShoppingItemFieldUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, shoppingItemFieldPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

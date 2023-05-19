@@ -308,14 +308,10 @@ public class UserThreadModelImpl
 
 	private static final Map<String, Function<UserThread, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<UserThread, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<UserThread, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<UserThread, Object>>();
-		Map<String, BiConsumer<UserThread, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<UserThread, ?>>();
 
 		attributeGetterFunctions.put(
 			"userThreadId",
@@ -327,6 +323,108 @@ public class UserThreadModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"mbThreadId",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getMbThreadId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"topMBMessageId",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getTopMBMessageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"read",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getRead();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"deleted",
+			new Function<UserThread, Object>() {
+
+				@Override
+				public Object apply(UserThread userThread) {
+					return userThread.getDeleted();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<UserThread, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<UserThread, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<UserThread, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"userThreadId",
 			new BiConsumer<UserThread, Object>() {
@@ -336,16 +434,6 @@ public class UserThreadModelImpl
 					UserThread userThread, Object userThreadIdObject) {
 
 					userThread.setUserThreadId((Long)userThreadIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getCompanyId();
 				}
 
 			});
@@ -361,16 +449,6 @@ public class UserThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<UserThread, Object>() {
@@ -378,16 +456,6 @@ public class UserThreadModelImpl
 				@Override
 				public void accept(UserThread userThread, Object userIdObject) {
 					userThread.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getUserName();
 				}
 
 			});
@@ -403,16 +471,6 @@ public class UserThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<UserThread, Object>() {
@@ -422,16 +480,6 @@ public class UserThreadModelImpl
 					UserThread userThread, Object createDateObject) {
 
 					userThread.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getModifiedDate();
 				}
 
 			});
@@ -447,16 +495,6 @@ public class UserThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"mbThreadId",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getMbThreadId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"mbThreadId",
 			new BiConsumer<UserThread, Object>() {
@@ -466,16 +504,6 @@ public class UserThreadModelImpl
 					UserThread userThread, Object mbThreadIdObject) {
 
 					userThread.setMbThreadId((Long)mbThreadIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"topMBMessageId",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getTopMBMessageId();
 				}
 
 			});
@@ -491,16 +519,6 @@ public class UserThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"read",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getRead();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"read",
 			new BiConsumer<UserThread, Object>() {
@@ -508,16 +526,6 @@ public class UserThreadModelImpl
 				@Override
 				public void accept(UserThread userThread, Object readObject) {
 					userThread.setRead((Boolean)readObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"deleted",
-			new Function<UserThread, Object>() {
-
-				@Override
-				public Object apply(UserThread userThread) {
-					return userThread.getDeleted();
 				}
 
 			});
@@ -534,8 +542,6 @@ public class UserThreadModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

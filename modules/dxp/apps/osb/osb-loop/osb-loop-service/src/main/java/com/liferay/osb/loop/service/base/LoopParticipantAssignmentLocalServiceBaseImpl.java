@@ -64,8 +64,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1251,14 +1249,15 @@ public abstract class LoopParticipantAssignmentLocalServiceBaseImpl
 			"com.liferay.osb.loop.model.LoopParticipantAssignment",
 			loopParticipantAssignmentLocalService);
 
-		_setLocalServiceUtilService(loopParticipantAssignmentLocalService);
+		LoopParticipantAssignmentLocalServiceUtil.setService(
+			loopParticipantAssignmentLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.model.LoopParticipantAssignment");
 
-		_setLocalServiceUtilService(null);
+		LoopParticipantAssignmentLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1301,24 +1300,6 @@ public abstract class LoopParticipantAssignmentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LoopParticipantAssignmentLocalService
-			loopParticipantAssignmentLocalService) {
-
-		try {
-			Field field =
-				LoopParticipantAssignmentLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, loopParticipantAssignmentLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

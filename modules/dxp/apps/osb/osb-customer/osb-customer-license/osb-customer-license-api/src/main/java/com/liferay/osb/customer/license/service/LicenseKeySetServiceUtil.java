@@ -68,6 +68,10 @@ public class LicenseKeySetServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LicenseKeySetService service) {
+		_service = service;
+	}
+
 	private static volatile LicenseKeySetService _service;
 
 }

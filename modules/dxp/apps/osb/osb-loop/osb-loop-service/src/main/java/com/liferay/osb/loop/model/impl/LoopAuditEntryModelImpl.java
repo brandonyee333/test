@@ -244,14 +244,10 @@ public class LoopAuditEntryModelImpl
 
 	private static final Map<String, Function<LoopAuditEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopAuditEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopAuditEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LoopAuditEntry, Object>>();
-		Map<String, BiConsumer<LoopAuditEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopAuditEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopAuditEntryId",
@@ -263,6 +259,98 @@ public class LoopAuditEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<LoopAuditEntry, Object>() {
+
+				@Override
+				public Object apply(LoopAuditEntry loopAuditEntry) {
+					return loopAuditEntry.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<LoopAuditEntry, Object>() {
+
+				@Override
+				public Object apply(LoopAuditEntry loopAuditEntry) {
+					return loopAuditEntry.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<LoopAuditEntry, Object>() {
+
+				@Override
+				public Object apply(LoopAuditEntry loopAuditEntry) {
+					return loopAuditEntry.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<LoopAuditEntry, Object>() {
+
+				@Override
+				public Object apply(LoopAuditEntry loopAuditEntry) {
+					return loopAuditEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<LoopAuditEntry, Object>() {
+
+				@Override
+				public Object apply(LoopAuditEntry loopAuditEntry) {
+					return loopAuditEntry.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<LoopAuditEntry, Object>() {
+
+				@Override
+				public Object apply(LoopAuditEntry loopAuditEntry) {
+					return loopAuditEntry.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<LoopAuditEntry, Object>() {
+
+				@Override
+				public Object apply(LoopAuditEntry loopAuditEntry) {
+					return loopAuditEntry.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<LoopAuditEntry, Object>() {
+
+				@Override
+				public Object apply(LoopAuditEntry loopAuditEntry) {
+					return loopAuditEntry.getName();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopAuditEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopAuditEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopAuditEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopAuditEntryId",
 			new BiConsumer<LoopAuditEntry, Object>() {
@@ -274,16 +362,6 @@ public class LoopAuditEntryModelImpl
 
 					loopAuditEntry.setLoopAuditEntryId(
 						(Long)loopAuditEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<LoopAuditEntry, Object>() {
-
-				@Override
-				public Object apply(LoopAuditEntry loopAuditEntry) {
-					return loopAuditEntry.getCompanyId();
 				}
 
 			});
@@ -299,16 +377,6 @@ public class LoopAuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<LoopAuditEntry, Object>() {
-
-				@Override
-				public Object apply(LoopAuditEntry loopAuditEntry) {
-					return loopAuditEntry.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<LoopAuditEntry, Object>() {
@@ -318,16 +386,6 @@ public class LoopAuditEntryModelImpl
 					LoopAuditEntry loopAuditEntry, Object userIdObject) {
 
 					loopAuditEntry.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<LoopAuditEntry, Object>() {
-
-				@Override
-				public Object apply(LoopAuditEntry loopAuditEntry) {
-					return loopAuditEntry.getUserName();
 				}
 
 			});
@@ -343,16 +401,6 @@ public class LoopAuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<LoopAuditEntry, Object>() {
-
-				@Override
-				public Object apply(LoopAuditEntry loopAuditEntry) {
-					return loopAuditEntry.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<LoopAuditEntry, Object>() {
@@ -362,16 +410,6 @@ public class LoopAuditEntryModelImpl
 					LoopAuditEntry loopAuditEntry, Object createDateObject) {
 
 					loopAuditEntry.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<LoopAuditEntry, Object>() {
-
-				@Override
-				public Object apply(LoopAuditEntry loopAuditEntry) {
-					return loopAuditEntry.getModifiedDate();
 				}
 
 			});
@@ -387,16 +425,6 @@ public class LoopAuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<LoopAuditEntry, Object>() {
-
-				@Override
-				public Object apply(LoopAuditEntry loopAuditEntry) {
-					return loopAuditEntry.getClassNameId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classNameId",
 			new BiConsumer<LoopAuditEntry, Object>() {
@@ -409,16 +437,6 @@ public class LoopAuditEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<LoopAuditEntry, Object>() {
-
-				@Override
-				public Object apply(LoopAuditEntry loopAuditEntry) {
-					return loopAuditEntry.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<LoopAuditEntry, Object>() {
@@ -428,16 +446,6 @@ public class LoopAuditEntryModelImpl
 					LoopAuditEntry loopAuditEntry, Object classPKObject) {
 
 					loopAuditEntry.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<LoopAuditEntry, Object>() {
-
-				@Override
-				public Object apply(LoopAuditEntry loopAuditEntry) {
-					return loopAuditEntry.getName();
 				}
 
 			});
@@ -454,8 +462,6 @@ public class LoopAuditEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -922,6 +922,10 @@ public class TicketAttachmentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TicketAttachmentPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TicketAttachmentPersistence _persistence;
 
 }

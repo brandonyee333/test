@@ -1219,6 +1219,12 @@ public class WorkflowDefinitionLinkUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		WorkflowDefinitionLinkPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile WorkflowDefinitionLinkPersistence _persistence;
 
 }

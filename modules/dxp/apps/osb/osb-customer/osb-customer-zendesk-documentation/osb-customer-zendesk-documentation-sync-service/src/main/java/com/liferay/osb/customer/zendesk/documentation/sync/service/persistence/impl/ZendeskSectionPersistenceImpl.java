@@ -42,7 +42,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1717,33 +1716,17 @@ public class ZendeskSectionPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByZCI_DK",
 			new String[] {Long.class.getName(), String.class.getName()});
 
-		_setZendeskSectionUtilPersistence(this);
+		ZendeskSectionUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setZendeskSectionUtilPersistence(null);
+		ZendeskSectionUtil.setPersistence(null);
 
 		entityCache.removeCache(ZendeskSectionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setZendeskSectionUtilPersistence(
-		ZendeskSectionPersistence zendeskSectionPersistence) {
-
-		try {
-			Field field = ZendeskSectionUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, zendeskSectionPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

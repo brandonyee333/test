@@ -79,6 +79,10 @@ public class UserThreadServiceUtil {
 		return _service;
 	}
 
+	public static void setService(UserThreadService service) {
+		_service = service;
+	}
+
 	private static volatile UserThreadService _service;
 
 }

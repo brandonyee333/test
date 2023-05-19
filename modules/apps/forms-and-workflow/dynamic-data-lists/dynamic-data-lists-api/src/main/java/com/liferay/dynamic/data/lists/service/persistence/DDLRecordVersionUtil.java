@@ -702,6 +702,10 @@ public class DDLRecordVersionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(DDLRecordVersionPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile DDLRecordVersionPersistence _persistence;
 
 }

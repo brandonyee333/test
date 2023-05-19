@@ -245,19 +245,12 @@ public class LoopUserNotificationRecordModelImpl
 	private static final Map
 		<String, Function<LoopUserNotificationRecord, Object>>
 			_attributeGetterFunctions;
-	private static final Map
-		<String, BiConsumer<LoopUserNotificationRecord, Object>>
-			_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopUserNotificationRecord, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<LoopUserNotificationRecord, Object>>();
-		Map<String, BiConsumer<LoopUserNotificationRecord, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<LoopUserNotificationRecord, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopUserNotificationRecordId",
@@ -269,20 +262,6 @@ public class LoopUserNotificationRecordModelImpl
 
 					return loopUserNotificationRecord.
 						getLoopUserNotificationRecordId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"loopUserNotificationRecordId",
-			new BiConsumer<LoopUserNotificationRecord, Object>() {
-
-				@Override
-				public void accept(
-					LoopUserNotificationRecord loopUserNotificationRecord,
-					Object loopUserNotificationRecordIdObject) {
-
-					loopUserNotificationRecord.setLoopUserNotificationRecordId(
-						(Long)loopUserNotificationRecordIdObject);
 				}
 
 			});
@@ -298,6 +277,83 @@ public class LoopUserNotificationRecordModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"createTime",
+			new Function<LoopUserNotificationRecord, Object>() {
+
+				@Override
+				public Object apply(
+					LoopUserNotificationRecord loopUserNotificationRecord) {
+
+					return loopUserNotificationRecord.getCreateTime();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<LoopUserNotificationRecord, Object>() {
+
+				@Override
+				public Object apply(
+					LoopUserNotificationRecord loopUserNotificationRecord) {
+
+					return loopUserNotificationRecord.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<LoopUserNotificationRecord, Object>() {
+
+				@Override
+				public Object apply(
+					LoopUserNotificationRecord loopUserNotificationRecord) {
+
+					return loopUserNotificationRecord.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"deliveryType",
+			new Function<LoopUserNotificationRecord, Object>() {
+
+				@Override
+				public Object apply(
+					LoopUserNotificationRecord loopUserNotificationRecord) {
+
+					return loopUserNotificationRecord.getDeliveryType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map
+		<String, BiConsumer<LoopUserNotificationRecord, Object>>
+			_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopUserNotificationRecord, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<LoopUserNotificationRecord, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"loopUserNotificationRecordId",
+			new BiConsumer<LoopUserNotificationRecord, Object>() {
+
+				@Override
+				public void accept(
+					LoopUserNotificationRecord loopUserNotificationRecord,
+					Object loopUserNotificationRecordIdObject) {
+
+					loopUserNotificationRecord.setLoopUserNotificationRecordId(
+						(Long)loopUserNotificationRecordIdObject);
+				}
+
+			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<LoopUserNotificationRecord, Object>() {
@@ -308,18 +364,6 @@ public class LoopUserNotificationRecordModelImpl
 					Object userIdObject) {
 
 					loopUserNotificationRecord.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createTime",
-			new Function<LoopUserNotificationRecord, Object>() {
-
-				@Override
-				public Object apply(
-					LoopUserNotificationRecord loopUserNotificationRecord) {
-
-					return loopUserNotificationRecord.getCreateTime();
 				}
 
 			});
@@ -337,18 +381,6 @@ public class LoopUserNotificationRecordModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<LoopUserNotificationRecord, Object>() {
-
-				@Override
-				public Object apply(
-					LoopUserNotificationRecord loopUserNotificationRecord) {
-
-					return loopUserNotificationRecord.getClassNameId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classNameId",
 			new BiConsumer<LoopUserNotificationRecord, Object>() {
@@ -363,18 +395,6 @@ public class LoopUserNotificationRecordModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<LoopUserNotificationRecord, Object>() {
-
-				@Override
-				public Object apply(
-					LoopUserNotificationRecord loopUserNotificationRecord) {
-
-					return loopUserNotificationRecord.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<LoopUserNotificationRecord, Object>() {
@@ -385,18 +405,6 @@ public class LoopUserNotificationRecordModelImpl
 					Object classPKObject) {
 
 					loopUserNotificationRecord.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"deliveryType",
-			new Function<LoopUserNotificationRecord, Object>() {
-
-				@Override
-				public Object apply(
-					LoopUserNotificationRecord loopUserNotificationRecord) {
-
-					return loopUserNotificationRecord.getDeliveryType();
 				}
 
 			});
@@ -415,8 +423,6 @@ public class LoopUserNotificationRecordModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

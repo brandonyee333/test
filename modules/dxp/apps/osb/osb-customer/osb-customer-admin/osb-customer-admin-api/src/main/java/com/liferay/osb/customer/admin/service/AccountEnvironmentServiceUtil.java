@@ -104,6 +104,10 @@ public class AccountEnvironmentServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AccountEnvironmentService service) {
+		_service = service;
+	}
+
 	private static volatile AccountEnvironmentService _service;
 
 }

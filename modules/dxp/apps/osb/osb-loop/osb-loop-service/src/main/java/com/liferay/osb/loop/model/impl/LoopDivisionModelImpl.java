@@ -258,14 +258,10 @@ public class LoopDivisionModelImpl
 
 	private static final Map<String, Function<LoopDivision, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopDivision, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopDivision, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LoopDivision, Object>>();
-		Map<String, BiConsumer<LoopDivision, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopDivision, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopDivisionId",
@@ -277,6 +273,128 @@ public class LoopDivisionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"organizationId",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getOrganizationId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentLoopDivisionId",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getParentLoopDivisionId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"subtype",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getSubtype();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"extraData",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getExtraData();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"imagePayload",
+			new Function<LoopDivision, Object>() {
+
+				@Override
+				public Object apply(LoopDivision loopDivision) {
+					return loopDivision.getImagePayload();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopDivision, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopDivision, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopDivision, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopDivisionId",
 			new BiConsumer<LoopDivision, Object>() {
@@ -286,16 +404,6 @@ public class LoopDivisionModelImpl
 					LoopDivision loopDivision, Object loopDivisionIdObject) {
 
 					loopDivision.setLoopDivisionId((Long)loopDivisionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getCompanyId();
 				}
 
 			});
@@ -311,16 +419,6 @@ public class LoopDivisionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<LoopDivision, Object>() {
@@ -330,16 +428,6 @@ public class LoopDivisionModelImpl
 					LoopDivision loopDivision, Object userIdObject) {
 
 					loopDivision.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getUserName();
 				}
 
 			});
@@ -355,16 +443,6 @@ public class LoopDivisionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<LoopDivision, Object>() {
@@ -374,16 +452,6 @@ public class LoopDivisionModelImpl
 					LoopDivision loopDivision, Object createDateObject) {
 
 					loopDivision.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getModifiedDate();
 				}
 
 			});
@@ -399,16 +467,6 @@ public class LoopDivisionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"organizationId",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getOrganizationId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"organizationId",
 			new BiConsumer<LoopDivision, Object>() {
@@ -418,16 +476,6 @@ public class LoopDivisionModelImpl
 					LoopDivision loopDivision, Object organizationIdObject) {
 
 					loopDivision.setOrganizationId((Long)organizationIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"parentLoopDivisionId",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getParentLoopDivisionId();
 				}
 
 			});
@@ -445,16 +493,6 @@ public class LoopDivisionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"type",
 			new BiConsumer<LoopDivision, Object>() {
@@ -464,16 +502,6 @@ public class LoopDivisionModelImpl
 					LoopDivision loopDivision, Object typeObject) {
 
 					loopDivision.setType((Integer)typeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"subtype",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getSubtype();
 				}
 
 			});
@@ -489,16 +517,6 @@ public class LoopDivisionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"extraData",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getExtraData();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"extraData",
 			new BiConsumer<LoopDivision, Object>() {
@@ -508,16 +526,6 @@ public class LoopDivisionModelImpl
 					LoopDivision loopDivision, Object extraDataObject) {
 
 					loopDivision.setExtraData((String)extraDataObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"imagePayload",
-			new Function<LoopDivision, Object>() {
-
-				@Override
-				public Object apply(LoopDivision loopDivision) {
-					return loopDivision.getImagePayload();
 				}
 
 			});
@@ -534,8 +542,6 @@ public class LoopDivisionModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

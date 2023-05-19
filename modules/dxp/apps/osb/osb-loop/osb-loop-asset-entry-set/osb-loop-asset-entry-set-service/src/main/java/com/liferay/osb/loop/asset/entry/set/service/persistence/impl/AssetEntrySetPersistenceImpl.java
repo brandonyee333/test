@@ -7567,33 +7567,17 @@ public class AssetEntrySetPersistenceImpl
 				Integer.class.getName()
 			});
 
-		_setAssetEntrySetUtilPersistence(this);
+		AssetEntrySetUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setAssetEntrySetUtilPersistence(null);
+		AssetEntrySetUtil.setPersistence(null);
 
 		entityCache.removeCache(AssetEntrySetImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setAssetEntrySetUtilPersistence(
-		AssetEntrySetPersistence assetEntrySetPersistence) {
-
-		try {
-			Field field = AssetEntrySetUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, assetEntrySetPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

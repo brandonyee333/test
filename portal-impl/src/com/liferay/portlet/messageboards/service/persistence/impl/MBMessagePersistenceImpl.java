@@ -21938,32 +21938,17 @@ public class MBMessagePersistenceImpl
 				Long.class.getName(), Integer.class.getName()
 			});
 
-		_setMBMessageUtilPersistence(this);
+		MBMessageUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setMBMessageUtilPersistence(null);
+		MBMessageUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(MBMessageImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setMBMessageUtilPersistence(
-		MBMessagePersistence mbMessagePersistence) {
-
-		try {
-			Field field = MBMessageUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, mbMessagePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	private static final String _SQL_SELECT_MBMESSAGE =

@@ -49,8 +49,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -530,14 +528,14 @@ public abstract class ReleaseNotesLocalServiceBaseImpl
 			"com.liferay.osb.customer.release.notes.model.ReleaseNotes",
 			releaseNotesLocalService);
 
-		_setLocalServiceUtilService(releaseNotesLocalService);
+		ReleaseNotesLocalServiceUtil.setService(releaseNotesLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.release.notes.model.ReleaseNotes");
 
-		_setLocalServiceUtilService(null);
+		ReleaseNotesLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -579,22 +577,6 @@ public abstract class ReleaseNotesLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ReleaseNotesLocalService releaseNotesLocalService) {
-
-		try {
-			Field field = ReleaseNotesLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, releaseNotesLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

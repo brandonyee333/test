@@ -58,6 +58,10 @@ public class EntryServiceUtil {
 		return _service;
 	}
 
+	public static void setService(EntryService service) {
+		_service = service;
+	}
+
 	private static volatile EntryService _service;
 
 }

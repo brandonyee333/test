@@ -100,8 +100,6 @@ import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -2941,14 +2939,14 @@ public abstract class GroupLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Group", groupLocalService);
 
-		_setLocalServiceUtilService(groupLocalService);
+		GroupLocalServiceUtil.setService(groupLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Group");
 
-		_setLocalServiceUtilService(null);
+		GroupLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -2990,22 +2988,6 @@ public abstract class GroupLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		GroupLocalService groupLocalService) {
-
-		try {
-			Field field = GroupLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, groupLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

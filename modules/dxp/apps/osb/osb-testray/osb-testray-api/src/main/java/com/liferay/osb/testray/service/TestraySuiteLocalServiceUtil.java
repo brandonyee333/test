@@ -384,6 +384,10 @@ public class TestraySuiteLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestraySuiteLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestraySuiteLocalService _service;
 
 }

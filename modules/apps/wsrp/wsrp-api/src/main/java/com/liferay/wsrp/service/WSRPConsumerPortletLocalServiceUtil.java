@@ -423,6 +423,10 @@ public class WSRPConsumerPortletLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(WSRPConsumerPortletLocalService service) {
+		_service = service;
+	}
+
 	private static volatile WSRPConsumerPortletLocalService _service;
 
 }

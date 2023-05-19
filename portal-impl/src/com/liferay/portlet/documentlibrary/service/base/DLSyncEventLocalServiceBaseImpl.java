@@ -47,8 +47,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -438,14 +436,14 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 			"com.liferay.document.library.kernel.model.DLSyncEvent",
 			dlSyncEventLocalService);
 
-		_setLocalServiceUtilService(dlSyncEventLocalService);
+		DLSyncEventLocalServiceUtil.setService(dlSyncEventLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.document.library.kernel.model.DLSyncEvent");
 
-		_setLocalServiceUtilService(null);
+		DLSyncEventLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -487,22 +485,6 @@ public abstract class DLSyncEventLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DLSyncEventLocalService dlSyncEventLocalService) {
-
-		try {
-			Field field = DLSyncEventLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlSyncEventLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

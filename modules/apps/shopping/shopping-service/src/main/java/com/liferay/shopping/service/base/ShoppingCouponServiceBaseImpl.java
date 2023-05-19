@@ -37,8 +37,6 @@ import com.liferay.shopping.service.persistence.ShoppingCouponPersistence;
 import com.liferay.shopping.service.persistence.ShoppingItemFinder;
 import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -398,11 +396,11 @@ public abstract class ShoppingCouponServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(shoppingCouponService);
+		ShoppingCouponServiceUtil.setService(shoppingCouponService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		ShoppingCouponServiceUtil.setService(null);
 	}
 
 	/**
@@ -444,22 +442,6 @@ public abstract class ShoppingCouponServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		ShoppingCouponService shoppingCouponService) {
-
-		try {
-			Field field = ShoppingCouponServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, shoppingCouponService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

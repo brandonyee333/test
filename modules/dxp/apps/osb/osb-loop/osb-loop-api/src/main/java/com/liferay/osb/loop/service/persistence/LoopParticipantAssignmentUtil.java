@@ -366,6 +366,12 @@ public class LoopParticipantAssignmentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		LoopParticipantAssignmentPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile LoopParticipantAssignmentPersistence _persistence;
 
 }

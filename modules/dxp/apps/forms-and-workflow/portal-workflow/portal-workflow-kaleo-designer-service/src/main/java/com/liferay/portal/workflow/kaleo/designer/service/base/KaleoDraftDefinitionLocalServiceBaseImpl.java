@@ -49,8 +49,6 @@ import com.liferay.portal.workflow.kaleo.designer.service.persistence.KaleoDraft
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -560,14 +558,15 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 			"com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition",
 			kaleoDraftDefinitionLocalService);
 
-		_setLocalServiceUtilService(kaleoDraftDefinitionLocalService);
+		KaleoDraftDefinitionLocalServiceUtil.setService(
+			kaleoDraftDefinitionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinition");
 
-		_setLocalServiceUtilService(null);
+		KaleoDraftDefinitionLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -610,23 +609,6 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		KaleoDraftDefinitionLocalService kaleoDraftDefinitionLocalService) {
-
-		try {
-			Field field =
-				KaleoDraftDefinitionLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, kaleoDraftDefinitionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

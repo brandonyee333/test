@@ -319,6 +319,10 @@ public class TokenAuthEntryLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TokenAuthEntryLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TokenAuthEntryLocalService _service;
 
 }

@@ -385,6 +385,10 @@ public class UserThreadLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(UserThreadLocalService service) {
+		_service = service;
+	}
+
 	private static volatile UserThreadLocalService _service;
 
 }

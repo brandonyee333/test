@@ -559,6 +559,10 @@ public class TestrayComponentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayComponentPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayComponentPersistence _persistence;
 
 }

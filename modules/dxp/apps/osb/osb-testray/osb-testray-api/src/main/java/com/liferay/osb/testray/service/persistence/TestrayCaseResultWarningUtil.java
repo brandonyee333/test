@@ -472,6 +472,12 @@ public class TestrayCaseResultWarningUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		TestrayCaseResultWarningPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayCaseResultWarningPersistence _persistence;
 
 }

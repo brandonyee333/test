@@ -292,6 +292,10 @@ public class BlacklistEntryLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(BlacklistEntryLocalService service) {
+		_service = service;
+	}
+
 	private static volatile BlacklistEntryLocalService _service;
 
 }

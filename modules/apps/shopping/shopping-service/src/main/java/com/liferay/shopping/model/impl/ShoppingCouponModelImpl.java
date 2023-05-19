@@ -328,14 +328,10 @@ public class ShoppingCouponModelImpl
 
 	private static final Map<String, Function<ShoppingCoupon, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ShoppingCoupon, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ShoppingCoupon, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<ShoppingCoupon, Object>>();
-		Map<String, BiConsumer<ShoppingCoupon, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ShoppingCoupon, ?>>();
 
 		attributeGetterFunctions.put(
 			"couponId",
@@ -347,6 +343,188 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"code",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getCode();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"startDate",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getStartDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"endDate",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getEndDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"active",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getActive();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"limitCategories",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getLimitCategories();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"limitSkus",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getLimitSkus();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"minOrder",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getMinOrder();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"discount",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getDiscount();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"discountType",
+			new Function<ShoppingCoupon, Object>() {
+
+				@Override
+				public Object apply(ShoppingCoupon shoppingCoupon) {
+					return shoppingCoupon.getDiscountType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ShoppingCoupon, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ShoppingCoupon, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ShoppingCoupon, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"couponId",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -356,16 +534,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object couponIdObject) {
 
 					shoppingCoupon.setCouponId((Long)couponIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getGroupId();
 				}
 
 			});
@@ -381,16 +549,6 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -400,16 +558,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object companyIdObject) {
 
 					shoppingCoupon.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getUserId();
 				}
 
 			});
@@ -425,16 +573,6 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -444,16 +582,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object userNameObject) {
 
 					shoppingCoupon.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getCreateDate();
 				}
 
 			});
@@ -469,16 +597,6 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -488,16 +606,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object modifiedDateObject) {
 
 					shoppingCoupon.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"code",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getCode();
 				}
 
 			});
@@ -513,16 +621,6 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -532,16 +630,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object nameObject) {
 
 					shoppingCoupon.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getDescription();
 				}
 
 			});
@@ -557,16 +645,6 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"startDate",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getStartDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"startDate",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -576,16 +654,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object startDateObject) {
 
 					shoppingCoupon.setStartDate((Date)startDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"endDate",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getEndDate();
 				}
 
 			});
@@ -601,16 +669,6 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"active",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getActive();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"active",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -620,16 +678,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object activeObject) {
 
 					shoppingCoupon.setActive((Boolean)activeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"limitCategories",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getLimitCategories();
 				}
 
 			});
@@ -647,16 +695,6 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"limitSkus",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getLimitSkus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"limitSkus",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -666,16 +704,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object limitSkusObject) {
 
 					shoppingCoupon.setLimitSkus((String)limitSkusObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"minOrder",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getMinOrder();
 				}
 
 			});
@@ -691,16 +719,6 @@ public class ShoppingCouponModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"discount",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getDiscount();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"discount",
 			new BiConsumer<ShoppingCoupon, Object>() {
@@ -710,16 +728,6 @@ public class ShoppingCouponModelImpl
 					ShoppingCoupon shoppingCoupon, Object discountObject) {
 
 					shoppingCoupon.setDiscount((Double)discountObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"discountType",
-			new Function<ShoppingCoupon, Object>() {
-
-				@Override
-				public Object apply(ShoppingCoupon shoppingCoupon) {
-					return shoppingCoupon.getDiscountType();
 				}
 
 			});
@@ -736,8 +744,6 @@ public class ShoppingCouponModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

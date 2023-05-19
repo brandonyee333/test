@@ -243,14 +243,10 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 
 	private static final Map<String, Function<Feed, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<Feed, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<Feed, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<Feed, Object>>();
-		Map<String, BiConsumer<Feed, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<Feed, ?>>();
 
 		attributeGetterFunctions.put(
 			"feedId",
@@ -259,16 +255,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				@Override
 				public Object apply(Feed feed) {
 					return feed.getFeedId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"feedId",
-			new BiConsumer<Feed, Object>() {
-
-				@Override
-				public void accept(Feed feed, Object feedIdObject) {
-					feed.setFeedId((Long)feedIdObject);
 				}
 
 			});
@@ -282,16 +268,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"companyId",
-			new BiConsumer<Feed, Object>() {
-
-				@Override
-				public void accept(Feed feed, Object companyIdObject) {
-					feed.setCompanyId((Long)companyIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"userId",
 			new Function<Feed, Object>() {
@@ -299,16 +275,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				@Override
 				public Object apply(Feed feed) {
 					return feed.getUserId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"userId",
-			new BiConsumer<Feed, Object>() {
-
-				@Override
-				public void accept(Feed feed, Object userIdObject) {
-					feed.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -322,16 +288,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"userName",
-			new BiConsumer<Feed, Object>() {
-
-				@Override
-				public void accept(Feed feed, Object userNameObject) {
-					feed.setUserName((String)userNameObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"createDate",
 			new Function<Feed, Object>() {
@@ -339,16 +295,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				@Override
 				public Object apply(Feed feed) {
 					return feed.getCreateDate();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"createDate",
-			new BiConsumer<Feed, Object>() {
-
-				@Override
-				public void accept(Feed feed, Object createDateObject) {
-					feed.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -362,16 +308,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"modifiedDate",
-			new BiConsumer<Feed, Object>() {
-
-				@Override
-				public void accept(Feed feed, Object modifiedDateObject) {
-					feed.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"twitterUserId",
 			new Function<Feed, Object>() {
@@ -379,16 +315,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				@Override
 				public Object apply(Feed feed) {
 					return feed.getTwitterUserId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"twitterUserId",
-			new BiConsumer<Feed, Object>() {
-
-				@Override
-				public void accept(Feed feed, Object twitterUserIdObject) {
-					feed.setTwitterUserId((Long)twitterUserIdObject);
 				}
 
 			});
@@ -402,16 +328,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"twitterScreenName",
-			new BiConsumer<Feed, Object>() {
-
-				@Override
-				public void accept(Feed feed, Object twitterScreenNameObject) {
-					feed.setTwitterScreenName((String)twitterScreenNameObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"lastStatusId",
 			new Function<Feed, Object>() {
@@ -419,6 +335,98 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 				@Override
 				public Object apply(Feed feed) {
 					return feed.getLastStatusId();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<Feed, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<Feed, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<Feed, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"feedId",
+			new BiConsumer<Feed, Object>() {
+
+				@Override
+				public void accept(Feed feed, Object feedIdObject) {
+					feed.setFeedId((Long)feedIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<Feed, Object>() {
+
+				@Override
+				public void accept(Feed feed, Object companyIdObject) {
+					feed.setCompanyId((Long)companyIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<Feed, Object>() {
+
+				@Override
+				public void accept(Feed feed, Object userIdObject) {
+					feed.setUserId((Long)userIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<Feed, Object>() {
+
+				@Override
+				public void accept(Feed feed, Object userNameObject) {
+					feed.setUserName((String)userNameObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<Feed, Object>() {
+
+				@Override
+				public void accept(Feed feed, Object createDateObject) {
+					feed.setCreateDate((Date)createDateObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"modifiedDate",
+			new BiConsumer<Feed, Object>() {
+
+				@Override
+				public void accept(Feed feed, Object modifiedDateObject) {
+					feed.setModifiedDate((Date)modifiedDateObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"twitterUserId",
+			new BiConsumer<Feed, Object>() {
+
+				@Override
+				public void accept(Feed feed, Object twitterUserIdObject) {
+					feed.setTwitterUserId((Long)twitterUserIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"twitterScreenName",
+			new BiConsumer<Feed, Object>() {
+
+				@Override
+				public void accept(Feed feed, Object twitterScreenNameObject) {
+					feed.setTwitterScreenName((String)twitterScreenNameObject);
 				}
 
 			});
@@ -433,8 +441,6 @@ public class FeedModelImpl extends BaseModelImpl<Feed> implements FeedModel {
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

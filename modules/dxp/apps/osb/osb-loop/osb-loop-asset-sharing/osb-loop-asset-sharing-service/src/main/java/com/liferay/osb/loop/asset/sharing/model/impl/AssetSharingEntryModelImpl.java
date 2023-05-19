@@ -247,17 +247,12 @@ public class AssetSharingEntryModelImpl
 
 	private static final Map<String, Function<AssetSharingEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AssetSharingEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AssetSharingEntry, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<AssetSharingEntry, Object>>();
-		Map<String, BiConsumer<AssetSharingEntry, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<AssetSharingEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"classNameId",
@@ -269,6 +264,49 @@ public class AssetSharingEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<AssetSharingEntry, Object>() {
+
+				@Override
+				public Object apply(AssetSharingEntry assetSharingEntry) {
+					return assetSharingEntry.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"sharedToClassNameId",
+			new Function<AssetSharingEntry, Object>() {
+
+				@Override
+				public Object apply(AssetSharingEntry assetSharingEntry) {
+					return assetSharingEntry.getSharedToClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"sharedToClassPK",
+			new Function<AssetSharingEntry, Object>() {
+
+				@Override
+				public Object apply(AssetSharingEntry assetSharingEntry) {
+					return assetSharingEntry.getSharedToClassPK();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AssetSharingEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AssetSharingEntry, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<AssetSharingEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"classNameId",
 			new BiConsumer<AssetSharingEntry, Object>() {
@@ -279,16 +317,6 @@ public class AssetSharingEntryModelImpl
 					Object classNameIdObject) {
 
 					assetSharingEntry.setClassNameId((Long)classNameIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<AssetSharingEntry, Object>() {
-
-				@Override
-				public Object apply(AssetSharingEntry assetSharingEntry) {
-					return assetSharingEntry.getClassPK();
 				}
 
 			});
@@ -304,16 +332,6 @@ public class AssetSharingEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"sharedToClassNameId",
-			new Function<AssetSharingEntry, Object>() {
-
-				@Override
-				public Object apply(AssetSharingEntry assetSharingEntry) {
-					return assetSharingEntry.getSharedToClassNameId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"sharedToClassNameId",
 			new BiConsumer<AssetSharingEntry, Object>() {
@@ -325,16 +343,6 @@ public class AssetSharingEntryModelImpl
 
 					assetSharingEntry.setSharedToClassNameId(
 						(Long)sharedToClassNameIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"sharedToClassPK",
-			new Function<AssetSharingEntry, Object>() {
-
-				@Override
-				public Object apply(AssetSharingEntry assetSharingEntry) {
-					return assetSharingEntry.getSharedToClassPK();
 				}
 
 			});
@@ -353,8 +361,6 @@ public class AssetSharingEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

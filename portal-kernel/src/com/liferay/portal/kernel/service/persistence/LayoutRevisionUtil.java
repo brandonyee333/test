@@ -2775,6 +2775,10 @@ public class LayoutRevisionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LayoutRevisionPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LayoutRevisionPersistence _persistence;
 
 }

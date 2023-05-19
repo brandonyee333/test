@@ -30,8 +30,6 @@ import com.liferay.portal.kernel.service.BaseServiceImpl;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -160,11 +158,11 @@ public abstract class DLTrashServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(dlTrashService);
+		DLTrashServiceUtil.setService(dlTrashService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		DLTrashServiceUtil.setService(null);
 	}
 
 	/**
@@ -198,19 +196,6 @@ public abstract class DLTrashServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(DLTrashService dlTrashService) {
-		try {
-			Field field = DLTrashServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlTrashService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

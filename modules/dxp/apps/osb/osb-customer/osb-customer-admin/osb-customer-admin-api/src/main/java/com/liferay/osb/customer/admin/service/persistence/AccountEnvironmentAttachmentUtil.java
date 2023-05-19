@@ -628,6 +628,12 @@ public class AccountEnvironmentAttachmentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		AccountEnvironmentAttachmentPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile AccountEnvironmentAttachmentPersistence
 		_persistence;
 

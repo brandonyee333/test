@@ -351,14 +351,10 @@ public class MBThreadModelImpl
 
 	private static final Map<String, Function<MBThread, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<MBThread, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<MBThread, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<MBThread, Object>>();
-		Map<String, BiConsumer<MBThread, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<MBThread, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -367,16 +363,6 @@ public class MBThreadModelImpl
 				@Override
 				public Object apply(MBThread mbThread) {
 					return mbThread.getUuid();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"uuid",
-			new BiConsumer<MBThread, Object>() {
-
-				@Override
-				public void accept(MBThread mbThread, Object uuidObject) {
-					mbThread.setUuid((String)uuidObject);
 				}
 
 			});
@@ -390,16 +376,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"threadId",
-			new BiConsumer<MBThread, Object>() {
-
-				@Override
-				public void accept(MBThread mbThread, Object threadIdObject) {
-					mbThread.setThreadId((Long)threadIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"groupId",
 			new Function<MBThread, Object>() {
@@ -407,16 +383,6 @@ public class MBThreadModelImpl
 				@Override
 				public Object apply(MBThread mbThread) {
 					return mbThread.getGroupId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"groupId",
-			new BiConsumer<MBThread, Object>() {
-
-				@Override
-				public void accept(MBThread mbThread, Object groupIdObject) {
-					mbThread.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -430,16 +396,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"companyId",
-			new BiConsumer<MBThread, Object>() {
-
-				@Override
-				public void accept(MBThread mbThread, Object companyIdObject) {
-					mbThread.setCompanyId((Long)companyIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"userId",
 			new Function<MBThread, Object>() {
@@ -447,16 +403,6 @@ public class MBThreadModelImpl
 				@Override
 				public Object apply(MBThread mbThread) {
 					return mbThread.getUserId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"userId",
-			new BiConsumer<MBThread, Object>() {
-
-				@Override
-				public void accept(MBThread mbThread, Object userIdObject) {
-					mbThread.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -470,16 +416,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"userName",
-			new BiConsumer<MBThread, Object>() {
-
-				@Override
-				public void accept(MBThread mbThread, Object userNameObject) {
-					mbThread.setUserName((String)userNameObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"createDate",
 			new Function<MBThread, Object>() {
@@ -490,16 +426,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"createDate",
-			new BiConsumer<MBThread, Object>() {
-
-				@Override
-				public void accept(MBThread mbThread, Object createDateObject) {
-					mbThread.setCreateDate((Date)createDateObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"modifiedDate",
 			new Function<MBThread, Object>() {
@@ -507,6 +433,228 @@ public class MBThreadModelImpl
 				@Override
 				public Object apply(MBThread mbThread) {
 					return mbThread.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"categoryId",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"rootMessageId",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getRootMessageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"rootMessageUserId",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getRootMessageUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"messageCount",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getMessageCount();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"viewCount",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getViewCount();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPostByUserId",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getLastPostByUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPostDate",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getLastPostDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"priority",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getPriority();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"question",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getQuestion();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPublishDate",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getLastPublishDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getStatus();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByUserId",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getStatusByUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByUserName",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getStatusByUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusDate",
+			new Function<MBThread, Object>() {
+
+				@Override
+				public Object apply(MBThread mbThread) {
+					return mbThread.getStatusDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<MBThread, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<MBThread, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<MBThread, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"uuid",
+			new BiConsumer<MBThread, Object>() {
+
+				@Override
+				public void accept(MBThread mbThread, Object uuidObject) {
+					mbThread.setUuid((String)uuidObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"threadId",
+			new BiConsumer<MBThread, Object>() {
+
+				@Override
+				public void accept(MBThread mbThread, Object threadIdObject) {
+					mbThread.setThreadId((Long)threadIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<MBThread, Object>() {
+
+				@Override
+				public void accept(MBThread mbThread, Object groupIdObject) {
+					mbThread.setGroupId((Long)groupIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<MBThread, Object>() {
+
+				@Override
+				public void accept(MBThread mbThread, Object companyIdObject) {
+					mbThread.setCompanyId((Long)companyIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<MBThread, Object>() {
+
+				@Override
+				public void accept(MBThread mbThread, Object userIdObject) {
+					mbThread.setUserId((Long)userIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<MBThread, Object>() {
+
+				@Override
+				public void accept(MBThread mbThread, Object userNameObject) {
+					mbThread.setUserName((String)userNameObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<MBThread, Object>() {
+
+				@Override
+				public void accept(MBThread mbThread, Object createDateObject) {
+					mbThread.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -522,16 +670,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"categoryId",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getCategoryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"categoryId",
 			new BiConsumer<MBThread, Object>() {
@@ -539,16 +677,6 @@ public class MBThreadModelImpl
 				@Override
 				public void accept(MBThread mbThread, Object categoryIdObject) {
 					mbThread.setCategoryId((Long)categoryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"rootMessageId",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getRootMessageId();
 				}
 
 			});
@@ -561,16 +689,6 @@ public class MBThreadModelImpl
 					MBThread mbThread, Object rootMessageIdObject) {
 
 					mbThread.setRootMessageId((Long)rootMessageIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"rootMessageUserId",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getRootMessageUserId();
 				}
 
 			});
@@ -587,16 +705,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"messageCount",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getMessageCount();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"messageCount",
 			new BiConsumer<MBThread, Object>() {
@@ -609,16 +717,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"viewCount",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getViewCount();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"viewCount",
 			new BiConsumer<MBThread, Object>() {
@@ -626,16 +724,6 @@ public class MBThreadModelImpl
 				@Override
 				public void accept(MBThread mbThread, Object viewCountObject) {
 					mbThread.setViewCount((Integer)viewCountObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastPostByUserId",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getLastPostByUserId();
 				}
 
 			});
@@ -651,16 +739,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"lastPostDate",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getLastPostDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"lastPostDate",
 			new BiConsumer<MBThread, Object>() {
@@ -670,16 +748,6 @@ public class MBThreadModelImpl
 					MBThread mbThread, Object lastPostDateObject) {
 
 					mbThread.setLastPostDate((Date)lastPostDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"priority",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getPriority();
 				}
 
 			});
@@ -693,16 +761,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"question",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getQuestion();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"question",
 			new BiConsumer<MBThread, Object>() {
@@ -710,16 +768,6 @@ public class MBThreadModelImpl
 				@Override
 				public void accept(MBThread mbThread, Object questionObject) {
 					mbThread.setQuestion((Boolean)questionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastPublishDate",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getLastPublishDate();
 				}
 
 			});
@@ -735,16 +783,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getStatus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"status",
 			new BiConsumer<MBThread, Object>() {
@@ -752,16 +790,6 @@ public class MBThreadModelImpl
 				@Override
 				public void accept(MBThread mbThread, Object statusObject) {
 					mbThread.setStatus((Integer)statusObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusByUserId",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getStatusByUserId();
 				}
 
 			});
@@ -774,16 +802,6 @@ public class MBThreadModelImpl
 					MBThread mbThread, Object statusByUserIdObject) {
 
 					mbThread.setStatusByUserId((Long)statusByUserIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusByUserName",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getStatusByUserName();
 				}
 
 			});
@@ -800,16 +818,6 @@ public class MBThreadModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"statusDate",
-			new Function<MBThread, Object>() {
-
-				@Override
-				public Object apply(MBThread mbThread) {
-					return mbThread.getStatusDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"statusDate",
 			new BiConsumer<MBThread, Object>() {
@@ -821,8 +829,6 @@ public class MBThreadModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

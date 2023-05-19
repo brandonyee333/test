@@ -499,6 +499,10 @@ public class ShoppingCouponUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ShoppingCouponPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ShoppingCouponPersistence _persistence;
 
 }

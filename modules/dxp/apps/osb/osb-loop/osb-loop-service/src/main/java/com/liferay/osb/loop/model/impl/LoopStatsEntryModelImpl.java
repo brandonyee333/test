@@ -235,14 +235,10 @@ public class LoopStatsEntryModelImpl
 
 	private static final Map<String, Function<LoopStatsEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopStatsEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopStatsEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LoopStatsEntry, Object>>();
-		Map<String, BiConsumer<LoopStatsEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopStatsEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopStatsEntryId",
@@ -254,6 +250,58 @@ public class LoopStatsEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"modifiedTime",
+			new Function<LoopStatsEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStatsEntry loopStatsEntry) {
+					return loopStatsEntry.getModifiedTime();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<LoopStatsEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStatsEntry loopStatsEntry) {
+					return loopStatsEntry.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<LoopStatsEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStatsEntry loopStatsEntry) {
+					return loopStatsEntry.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"score",
+			new Function<LoopStatsEntry, Object>() {
+
+				@Override
+				public Object apply(LoopStatsEntry loopStatsEntry) {
+					return loopStatsEntry.getScore();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopStatsEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopStatsEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopStatsEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopStatsEntryId",
 			new BiConsumer<LoopStatsEntry, Object>() {
@@ -265,16 +313,6 @@ public class LoopStatsEntryModelImpl
 
 					loopStatsEntry.setLoopStatsEntryId(
 						(Long)loopStatsEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedTime",
-			new Function<LoopStatsEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStatsEntry loopStatsEntry) {
-					return loopStatsEntry.getModifiedTime();
 				}
 
 			});
@@ -290,16 +328,6 @@ public class LoopStatsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<LoopStatsEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStatsEntry loopStatsEntry) {
-					return loopStatsEntry.getClassNameId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classNameId",
 			new BiConsumer<LoopStatsEntry, Object>() {
@@ -312,16 +340,6 @@ public class LoopStatsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<LoopStatsEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStatsEntry loopStatsEntry) {
-					return loopStatsEntry.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<LoopStatsEntry, Object>() {
@@ -331,16 +349,6 @@ public class LoopStatsEntryModelImpl
 					LoopStatsEntry loopStatsEntry, Object classPKObject) {
 
 					loopStatsEntry.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"score",
-			new Function<LoopStatsEntry, Object>() {
-
-				@Override
-				public Object apply(LoopStatsEntry loopStatsEntry) {
-					return loopStatsEntry.getScore();
 				}
 
 			});
@@ -357,8 +365,6 @@ public class LoopStatsEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

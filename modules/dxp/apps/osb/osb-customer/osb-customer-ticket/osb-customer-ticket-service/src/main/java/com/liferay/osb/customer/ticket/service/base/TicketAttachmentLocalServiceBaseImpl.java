@@ -49,8 +49,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -539,14 +537,15 @@ public abstract class TicketAttachmentLocalServiceBaseImpl
 			"com.liferay.osb.customer.ticket.model.TicketAttachment",
 			ticketAttachmentLocalService);
 
-		_setLocalServiceUtilService(ticketAttachmentLocalService);
+		TicketAttachmentLocalServiceUtil.setService(
+			ticketAttachmentLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.ticket.model.TicketAttachment");
 
-		_setLocalServiceUtilService(null);
+		TicketAttachmentLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -588,23 +587,6 @@ public abstract class TicketAttachmentLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		TicketAttachmentLocalService ticketAttachmentLocalService) {
-
-		try {
-			Field field =
-				TicketAttachmentLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ticketAttachmentLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

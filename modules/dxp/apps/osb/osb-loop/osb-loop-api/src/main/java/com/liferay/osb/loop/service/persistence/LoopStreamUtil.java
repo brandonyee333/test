@@ -270,6 +270,10 @@ public class LoopStreamUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopStreamPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopStreamPersistence _persistence;
 
 }

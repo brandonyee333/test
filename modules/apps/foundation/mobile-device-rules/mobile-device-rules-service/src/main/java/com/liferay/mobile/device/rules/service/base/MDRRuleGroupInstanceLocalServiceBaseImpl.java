@@ -63,8 +63,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -962,14 +960,15 @@ public abstract class MDRRuleGroupInstanceLocalServiceBaseImpl
 			"com.liferay.mobile.device.rules.model.MDRRuleGroupInstance",
 			mdrRuleGroupInstanceLocalService);
 
-		_setLocalServiceUtilService(mdrRuleGroupInstanceLocalService);
+		MDRRuleGroupInstanceLocalServiceUtil.setService(
+			mdrRuleGroupInstanceLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.mobile.device.rules.model.MDRRuleGroupInstance");
 
-		_setLocalServiceUtilService(null);
+		MDRRuleGroupInstanceLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1012,23 +1011,6 @@ public abstract class MDRRuleGroupInstanceLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		MDRRuleGroupInstanceLocalService mdrRuleGroupInstanceLocalService) {
-
-		try {
-			Field field =
-				MDRRuleGroupInstanceLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, mdrRuleGroupInstanceLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

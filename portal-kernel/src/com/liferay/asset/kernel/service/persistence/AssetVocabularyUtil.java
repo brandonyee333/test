@@ -1581,6 +1581,10 @@ public class AssetVocabularyUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(AssetVocabularyPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile AssetVocabularyPersistence _persistence;
 
 }

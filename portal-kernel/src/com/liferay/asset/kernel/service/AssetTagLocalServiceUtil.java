@@ -820,6 +820,10 @@ public class AssetTagLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AssetTagLocalService service) {
+		_service = service;
+	}
+
 	private static volatile AssetTagLocalService _service;
 
 }

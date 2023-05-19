@@ -884,6 +884,12 @@ public class LoopUserNotificationEventUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		LoopUserNotificationEventPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile LoopUserNotificationEventPersistence _persistence;
 
 }

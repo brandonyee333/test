@@ -57,6 +57,10 @@ public class AccountEnvironmentAttachmentServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AccountEnvironmentAttachmentService service) {
+		_service = service;
+	}
+
 	private static volatile AccountEnvironmentAttachmentService _service;
 
 }

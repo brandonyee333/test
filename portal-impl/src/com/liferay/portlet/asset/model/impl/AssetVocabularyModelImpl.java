@@ -326,15 +326,11 @@ public class AssetVocabularyModelImpl
 
 	private static final Map<String, Function<AssetVocabulary, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AssetVocabulary, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AssetVocabulary, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<AssetVocabulary, Object>>();
-		Map<String, BiConsumer<AssetVocabulary, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<AssetVocabulary, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -346,6 +342,138 @@ public class AssetVocabularyModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"vocabularyId",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getVocabularyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"title",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getTitle();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"settings",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getSettings();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPublishDate",
+			new Function<AssetVocabulary, Object>() {
+
+				@Override
+				public Object apply(AssetVocabulary assetVocabulary) {
+					return assetVocabulary.getLastPublishDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AssetVocabulary, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AssetVocabulary, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<AssetVocabulary, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"uuid",
 			new BiConsumer<AssetVocabulary, Object>() {
@@ -355,16 +483,6 @@ public class AssetVocabularyModelImpl
 					AssetVocabulary assetVocabulary, Object uuidObject) {
 
 					assetVocabulary.setUuid((String)uuidObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"vocabularyId",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getVocabularyId();
 				}
 
 			});
@@ -381,16 +499,6 @@ public class AssetVocabularyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getGroupId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"groupId",
 			new BiConsumer<AssetVocabulary, Object>() {
@@ -400,16 +508,6 @@ public class AssetVocabularyModelImpl
 					AssetVocabulary assetVocabulary, Object groupIdObject) {
 
 					assetVocabulary.setGroupId((Long)groupIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getCompanyId();
 				}
 
 			});
@@ -425,16 +523,6 @@ public class AssetVocabularyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<AssetVocabulary, Object>() {
@@ -444,16 +532,6 @@ public class AssetVocabularyModelImpl
 					AssetVocabulary assetVocabulary, Object userIdObject) {
 
 					assetVocabulary.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getUserName();
 				}
 
 			});
@@ -469,16 +547,6 @@ public class AssetVocabularyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<AssetVocabulary, Object>() {
@@ -488,16 +556,6 @@ public class AssetVocabularyModelImpl
 					AssetVocabulary assetVocabulary, Object createDateObject) {
 
 					assetVocabulary.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getModifiedDate();
 				}
 
 			});
@@ -514,16 +572,6 @@ public class AssetVocabularyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<AssetVocabulary, Object>() {
@@ -533,16 +581,6 @@ public class AssetVocabularyModelImpl
 					AssetVocabulary assetVocabulary, Object nameObject) {
 
 					assetVocabulary.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"title",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getTitle();
 				}
 
 			});
@@ -558,16 +596,6 @@ public class AssetVocabularyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getDescription();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"description",
 			new BiConsumer<AssetVocabulary, Object>() {
@@ -580,16 +608,6 @@ public class AssetVocabularyModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"settings",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getSettings();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"settings",
 			new BiConsumer<AssetVocabulary, Object>() {
@@ -599,16 +617,6 @@ public class AssetVocabularyModelImpl
 					AssetVocabulary assetVocabulary, Object settingsObject) {
 
 					assetVocabulary.setSettings((String)settingsObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastPublishDate",
-			new Function<AssetVocabulary, Object>() {
-
-				@Override
-				public Object apply(AssetVocabulary assetVocabulary) {
-					return assetVocabulary.getLastPublishDate();
 				}
 
 			});
@@ -627,8 +635,6 @@ public class AssetVocabularyModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

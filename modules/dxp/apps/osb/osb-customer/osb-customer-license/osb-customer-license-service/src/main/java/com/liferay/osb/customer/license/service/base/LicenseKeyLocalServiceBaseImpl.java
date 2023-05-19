@@ -52,8 +52,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -635,14 +633,14 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 			"com.liferay.osb.customer.license.model.LicenseKey",
 			licenseKeyLocalService);
 
-		_setLocalServiceUtilService(licenseKeyLocalService);
+		LicenseKeyLocalServiceUtil.setService(licenseKeyLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.license.model.LicenseKey");
 
-		_setLocalServiceUtilService(null);
+		LicenseKeyLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -684,22 +682,6 @@ public abstract class LicenseKeyLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LicenseKeyLocalService licenseKeyLocalService) {
-
-		try {
-			Field field = LicenseKeyLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, licenseKeyLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -54,8 +54,6 @@ import com.liferay.social.networking.service.persistence.WallEntryPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -720,14 +718,14 @@ public abstract class WallEntryLocalServiceBaseImpl
 			"com.liferay.social.networking.model.WallEntry",
 			wallEntryLocalService);
 
-		_setLocalServiceUtilService(wallEntryLocalService);
+		WallEntryLocalServiceUtil.setService(wallEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.networking.model.WallEntry");
 
-		_setLocalServiceUtilService(null);
+		WallEntryLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -769,22 +767,6 @@ public abstract class WallEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		WallEntryLocalService wallEntryLocalService) {
-
-		try {
-			Field field = WallEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, wallEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

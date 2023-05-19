@@ -237,14 +237,10 @@ public class BlacklistEntryModelImpl
 
 	private static final Map<String, Function<BlacklistEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<BlacklistEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<BlacklistEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<BlacklistEntry, Object>>();
-		Map<String, BiConsumer<BlacklistEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<BlacklistEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"blacklistEntryId",
@@ -256,6 +252,38 @@ public class BlacklistEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<BlacklistEntry, Object>() {
+
+				@Override
+				public Object apply(BlacklistEntry blacklistEntry) {
+					return blacklistEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"emailAddress",
+			new Function<BlacklistEntry, Object>() {
+
+				@Override
+				public Object apply(BlacklistEntry blacklistEntry) {
+					return blacklistEntry.getEmailAddress();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<BlacklistEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<BlacklistEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<BlacklistEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"blacklistEntryId",
 			new BiConsumer<BlacklistEntry, Object>() {
@@ -270,16 +298,6 @@ public class BlacklistEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<BlacklistEntry, Object>() {
-
-				@Override
-				public Object apply(BlacklistEntry blacklistEntry) {
-					return blacklistEntry.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<BlacklistEntry, Object>() {
@@ -289,16 +307,6 @@ public class BlacklistEntryModelImpl
 					BlacklistEntry blacklistEntry, Object createDateObject) {
 
 					blacklistEntry.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"emailAddress",
-			new Function<BlacklistEntry, Object>() {
-
-				@Override
-				public Object apply(BlacklistEntry blacklistEntry) {
-					return blacklistEntry.getEmailAddress();
 				}
 
 			});
@@ -315,8 +323,6 @@ public class BlacklistEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

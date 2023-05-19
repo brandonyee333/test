@@ -40,7 +40,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1747,34 +1746,17 @@ public class ZendeskArticleAttachmentPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByZAI_FP",
 			new String[] {Long.class.getName(), String.class.getName()});
 
-		_setZendeskArticleAttachmentUtilPersistence(this);
+		ZendeskArticleAttachmentUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setZendeskArticleAttachmentUtilPersistence(null);
+		ZendeskArticleAttachmentUtil.setPersistence(null);
 
 		entityCache.removeCache(ZendeskArticleAttachmentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setZendeskArticleAttachmentUtilPersistence(
-		ZendeskArticleAttachmentPersistence
-			zendeskArticleAttachmentPersistence) {
-
-		try {
-			Field field = ZendeskArticleAttachmentUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, zendeskArticleAttachmentPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

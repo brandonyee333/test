@@ -3686,30 +3686,17 @@ public class EventPersistenceImpl
 				Long.class.getName()
 			});
 
-		_setEventUtilPersistence(this);
+		EventUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setEventUtilPersistence(null);
+		EventUtil.setPersistence(null);
 
 		entityCache.removeCache(EventImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setEventUtilPersistence(EventPersistence eventPersistence) {
-		try {
-			Field field = EventUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, eventPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

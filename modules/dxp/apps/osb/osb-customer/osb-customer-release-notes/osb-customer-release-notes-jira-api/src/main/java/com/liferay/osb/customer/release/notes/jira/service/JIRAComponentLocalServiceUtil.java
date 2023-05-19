@@ -286,6 +286,10 @@ public class JIRAComponentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(JIRAComponentLocalService service) {
+		_service = service;
+	}
+
 	private static volatile JIRAComponentLocalService _service;
 
 }

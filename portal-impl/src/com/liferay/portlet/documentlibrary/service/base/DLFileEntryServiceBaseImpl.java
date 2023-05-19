@@ -60,8 +60,6 @@ import com.liferay.ratings.kernel.service.persistence.RatingsStatsFinder;
 import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -1496,11 +1494,11 @@ public abstract class DLFileEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(dlFileEntryService);
+		DLFileEntryServiceUtil.setService(dlFileEntryService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		DLFileEntryServiceUtil.setService(null);
 	}
 
 	/**
@@ -1542,20 +1540,6 @@ public abstract class DLFileEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(DLFileEntryService dlFileEntryService) {
-		try {
-			Field field = DLFileEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlFileEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

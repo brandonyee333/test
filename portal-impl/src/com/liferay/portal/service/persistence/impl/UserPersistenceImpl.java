@@ -11021,11 +11021,11 @@ public class UserPersistenceImpl
 				Integer.class.getName()
 			});
 
-		_setUserUtilPersistence(this);
+		UserUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setUserUtilPersistence(null);
+		UserUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(UserImpl.class.getName());
 
@@ -11038,19 +11038,6 @@ public class UserPersistenceImpl
 		TableMapperFactory.removeTableMapper("Users_Roles");
 		TableMapperFactory.removeTableMapper("Users_Teams");
 		TableMapperFactory.removeTableMapper("Users_UserGroups");
-	}
-
-	private void _setUserUtilPersistence(UserPersistence userPersistence) {
-		try {
-			Field field = UserUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, userPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@BeanReference(type = GroupPersistence.class)

@@ -2532,6 +2532,10 @@ public class BookmarksFolderUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(BookmarksFolderPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile BookmarksFolderPersistence _persistence;
 
 }

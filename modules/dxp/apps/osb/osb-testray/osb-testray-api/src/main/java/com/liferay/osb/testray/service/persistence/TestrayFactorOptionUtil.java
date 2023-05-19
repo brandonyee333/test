@@ -354,6 +354,12 @@ public class TestrayFactorOptionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		TestrayFactorOptionPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayFactorOptionPersistence _persistence;
 
 }

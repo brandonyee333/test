@@ -73,6 +73,10 @@ public class BounceableEmailServiceUtil {
 		return _service;
 	}
 
+	public static void setService(BounceableEmailService service) {
+		_service = service;
+	}
+
 	private static volatile BounceableEmailService _service;
 
 }

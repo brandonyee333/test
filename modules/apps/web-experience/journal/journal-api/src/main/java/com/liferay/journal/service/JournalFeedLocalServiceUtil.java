@@ -484,6 +484,10 @@ public class JournalFeedLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(JournalFeedLocalService service) {
+		_service = service;
+	}
+
 	private static volatile JournalFeedLocalService _service;
 
 }

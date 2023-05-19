@@ -779,6 +779,10 @@ public class ZendeskArticleUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ZendeskArticlePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ZendeskArticlePersistence _persistence;
 
 }

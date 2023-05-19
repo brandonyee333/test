@@ -44,8 +44,6 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -943,11 +941,11 @@ public abstract class AccountCustomerServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(accountCustomerService);
+		AccountCustomerServiceUtil.setService(accountCustomerService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		AccountCustomerServiceUtil.setService(null);
 	}
 
 	/**
@@ -981,22 +979,6 @@ public abstract class AccountCustomerServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		AccountCustomerService accountCustomerService) {
-
-		try {
-			Field field = AccountCustomerServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, accountCustomerService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

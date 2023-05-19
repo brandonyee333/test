@@ -710,6 +710,10 @@ public class JIRAComponentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(JIRAComponentPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile JIRAComponentPersistence _persistence;
 
 }

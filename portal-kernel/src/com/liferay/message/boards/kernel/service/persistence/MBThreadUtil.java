@@ -4188,6 +4188,10 @@ public class MBThreadUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(MBThreadPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile MBThreadPersistence _persistence;
 
 }

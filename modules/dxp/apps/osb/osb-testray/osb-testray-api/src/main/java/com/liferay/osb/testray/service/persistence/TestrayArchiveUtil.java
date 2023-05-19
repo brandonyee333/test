@@ -271,6 +271,10 @@ public class TestrayArchiveUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayArchivePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayArchivePersistence _persistence;
 
 }

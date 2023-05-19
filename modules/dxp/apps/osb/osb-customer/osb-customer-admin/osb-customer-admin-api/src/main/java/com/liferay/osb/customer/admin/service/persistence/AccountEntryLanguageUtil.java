@@ -463,6 +463,12 @@ public class AccountEntryLanguageUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		AccountEntryLanguagePersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile AccountEntryLanguagePersistence _persistence;
 
 }

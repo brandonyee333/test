@@ -258,14 +258,10 @@ public class KaleoConditionModelImpl
 
 	private static final Map<String, Function<KaleoCondition, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<KaleoCondition, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<KaleoCondition, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<KaleoCondition, Object>>();
-		Map<String, BiConsumer<KaleoCondition, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<KaleoCondition, ?>>();
 
 		attributeGetterFunctions.put(
 			"kaleoConditionId",
@@ -277,6 +273,128 @@ public class KaleoConditionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"kaleoDefinitionId",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getKaleoDefinitionId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"kaleoNodeId",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getKaleoNodeId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"script",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getScript();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"scriptLanguage",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getScriptLanguage();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"scriptRequiredContexts",
+			new Function<KaleoCondition, Object>() {
+
+				@Override
+				public Object apply(KaleoCondition kaleoCondition) {
+					return kaleoCondition.getScriptRequiredContexts();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<KaleoCondition, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<KaleoCondition, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<KaleoCondition, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"kaleoConditionId",
 			new BiConsumer<KaleoCondition, Object>() {
@@ -288,16 +406,6 @@ public class KaleoConditionModelImpl
 
 					kaleoCondition.setKaleoConditionId(
 						(Long)kaleoConditionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getGroupId();
 				}
 
 			});
@@ -313,16 +421,6 @@ public class KaleoConditionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<KaleoCondition, Object>() {
@@ -332,16 +430,6 @@ public class KaleoConditionModelImpl
 					KaleoCondition kaleoCondition, Object companyIdObject) {
 
 					kaleoCondition.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getUserId();
 				}
 
 			});
@@ -357,16 +445,6 @@ public class KaleoConditionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<KaleoCondition, Object>() {
@@ -376,16 +454,6 @@ public class KaleoConditionModelImpl
 					KaleoCondition kaleoCondition, Object userNameObject) {
 
 					kaleoCondition.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getCreateDate();
 				}
 
 			});
@@ -401,16 +469,6 @@ public class KaleoConditionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<KaleoCondition, Object>() {
@@ -420,16 +478,6 @@ public class KaleoConditionModelImpl
 					KaleoCondition kaleoCondition, Object modifiedDateObject) {
 
 					kaleoCondition.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"kaleoDefinitionId",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getKaleoDefinitionId();
 				}
 
 			});
@@ -447,16 +495,6 @@ public class KaleoConditionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"kaleoNodeId",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getKaleoNodeId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"kaleoNodeId",
 			new BiConsumer<KaleoCondition, Object>() {
@@ -466,16 +504,6 @@ public class KaleoConditionModelImpl
 					KaleoCondition kaleoCondition, Object kaleoNodeIdObject) {
 
 					kaleoCondition.setKaleoNodeId((Long)kaleoNodeIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"script",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getScript();
 				}
 
 			});
@@ -491,16 +519,6 @@ public class KaleoConditionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"scriptLanguage",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getScriptLanguage();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"scriptLanguage",
 			new BiConsumer<KaleoCondition, Object>() {
@@ -512,16 +530,6 @@ public class KaleoConditionModelImpl
 
 					kaleoCondition.setScriptLanguage(
 						(String)scriptLanguageObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"scriptRequiredContexts",
-			new Function<KaleoCondition, Object>() {
-
-				@Override
-				public Object apply(KaleoCondition kaleoCondition) {
-					return kaleoCondition.getScriptRequiredContexts();
 				}
 
 			});
@@ -540,8 +548,6 @@ public class KaleoConditionModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

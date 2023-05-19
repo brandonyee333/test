@@ -764,32 +764,17 @@ public class JIRAIssuePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_setJIRAIssueUtilPersistence(this);
+		JIRAIssueUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setJIRAIssueUtilPersistence(null);
+		JIRAIssueUtil.setPersistence(null);
 
 		entityCache.removeCache(JIRAIssueImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setJIRAIssueUtilPersistence(
-		JIRAIssuePersistence jiraIssuePersistence) {
-
-		try {
-			Field field = JIRAIssueUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, jiraIssuePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

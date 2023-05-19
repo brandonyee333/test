@@ -54,8 +54,6 @@ import com.liferay.social.privatemessaging.service.persistence.UserThreadPersist
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -745,14 +743,14 @@ public abstract class UserThreadLocalServiceBaseImpl
 			"com.liferay.social.privatemessaging.model.UserThread",
 			userThreadLocalService);
 
-		_setLocalServiceUtilService(userThreadLocalService);
+		UserThreadLocalServiceUtil.setService(userThreadLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.privatemessaging.model.UserThread");
 
-		_setLocalServiceUtilService(null);
+		UserThreadLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -794,22 +792,6 @@ public abstract class UserThreadLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		UserThreadLocalService userThreadLocalService) {
-
-		try {
-			Field field = UserThreadLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, userThreadLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

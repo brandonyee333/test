@@ -81,8 +81,6 @@ import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1317,14 +1315,14 @@ public abstract class MBThreadLocalServiceBaseImpl
 			"com.liferay.message.boards.kernel.model.MBThread",
 			mbThreadLocalService);
 
-		_setLocalServiceUtilService(mbThreadLocalService);
+		MBThreadLocalServiceUtil.setService(mbThreadLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.message.boards.kernel.model.MBThread");
 
-		_setLocalServiceUtilService(null);
+		MBThreadLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1366,22 +1364,6 @@ public abstract class MBThreadLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		MBThreadLocalService mbThreadLocalService) {
-
-		try {
-			Field field = MBThreadLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, mbThreadLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -52,8 +52,6 @@ import com.liferay.social.networking.service.persistence.WallEntryPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -662,14 +660,15 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 			"com.liferay.social.networking.model.MeetupsRegistration",
 			meetupsRegistrationLocalService);
 
-		_setLocalServiceUtilService(meetupsRegistrationLocalService);
+		MeetupsRegistrationLocalServiceUtil.setService(
+			meetupsRegistrationLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.social.networking.model.MeetupsRegistration");
 
-		_setLocalServiceUtilService(null);
+		MeetupsRegistrationLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -712,23 +711,6 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		MeetupsRegistrationLocalService meetupsRegistrationLocalService) {
-
-		try {
-			Field field =
-				MeetupsRegistrationLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, meetupsRegistrationLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

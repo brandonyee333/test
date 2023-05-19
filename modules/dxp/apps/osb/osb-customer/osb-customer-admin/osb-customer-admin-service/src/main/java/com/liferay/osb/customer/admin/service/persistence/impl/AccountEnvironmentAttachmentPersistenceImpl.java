@@ -2161,11 +2161,11 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 			"countByAEI_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_setAccountEnvironmentAttachmentUtilPersistence(this);
+		AccountEnvironmentAttachmentUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setAccountEnvironmentAttachmentUtilPersistence(null);
+		AccountEnvironmentAttachmentUtil.setPersistence(null);
 
 		entityCache.removeCache(
 			AccountEnvironmentAttachmentImpl.class.getName());
@@ -2173,24 +2173,6 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setAccountEnvironmentAttachmentUtilPersistence(
-		AccountEnvironmentAttachmentPersistence
-			accountEnvironmentAttachmentPersistence) {
-
-		try {
-			Field field =
-				AccountEnvironmentAttachmentUtil.class.getDeclaredField(
-					"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, accountEnvironmentAttachmentPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -38,8 +38,6 @@ import com.liferay.social.privatemessaging.service.UserThreadService;
 import com.liferay.social.privatemessaging.service.UserThreadServiceUtil;
 import com.liferay.social.privatemessaging.service.persistence.UserThreadPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -613,11 +611,11 @@ public abstract class UserThreadServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(userThreadService);
+		UserThreadServiceUtil.setService(userThreadService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		UserThreadServiceUtil.setService(null);
 	}
 
 	/**
@@ -659,20 +657,6 @@ public abstract class UserThreadServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(UserThreadService userThreadService) {
-		try {
-			Field field = UserThreadServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, userThreadService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

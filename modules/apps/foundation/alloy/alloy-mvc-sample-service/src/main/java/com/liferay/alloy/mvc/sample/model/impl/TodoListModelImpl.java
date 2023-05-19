@@ -239,14 +239,10 @@ public class TodoListModelImpl
 
 	private static final Map<String, Function<TodoList, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TodoList, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TodoList, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<TodoList, Object>>();
-		Map<String, BiConsumer<TodoList, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<TodoList, ?>>();
 
 		attributeGetterFunctions.put(
 			"todoListId",
@@ -255,16 +251,6 @@ public class TodoListModelImpl
 				@Override
 				public Object apply(TodoList todoList) {
 					return todoList.getTodoListId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"todoListId",
-			new BiConsumer<TodoList, Object>() {
-
-				@Override
-				public void accept(TodoList todoList, Object todoListIdObject) {
-					todoList.setTodoListId((Long)todoListIdObject);
 				}
 
 			});
@@ -278,16 +264,6 @@ public class TodoListModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"companyId",
-			new BiConsumer<TodoList, Object>() {
-
-				@Override
-				public void accept(TodoList todoList, Object companyIdObject) {
-					todoList.setCompanyId((Long)companyIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"userId",
 			new Function<TodoList, Object>() {
@@ -295,16 +271,6 @@ public class TodoListModelImpl
 				@Override
 				public Object apply(TodoList todoList) {
 					return todoList.getUserId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"userId",
-			new BiConsumer<TodoList, Object>() {
-
-				@Override
-				public void accept(TodoList todoList, Object userIdObject) {
-					todoList.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -318,16 +284,6 @@ public class TodoListModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"userName",
-			new BiConsumer<TodoList, Object>() {
-
-				@Override
-				public void accept(TodoList todoList, Object userNameObject) {
-					todoList.setUserName((String)userNameObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"createDate",
 			new Function<TodoList, Object>() {
@@ -338,16 +294,6 @@ public class TodoListModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"createDate",
-			new BiConsumer<TodoList, Object>() {
-
-				@Override
-				public void accept(TodoList todoList, Object createDateObject) {
-					todoList.setCreateDate((Date)createDateObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"modifiedDate",
 			new Function<TodoList, Object>() {
@@ -355,6 +301,78 @@ public class TodoListModelImpl
 				@Override
 				public Object apply(TodoList todoList) {
 					return todoList.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<TodoList, Object>() {
+
+				@Override
+				public Object apply(TodoList todoList) {
+					return todoList.getName();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TodoList, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TodoList, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<TodoList, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"todoListId",
+			new BiConsumer<TodoList, Object>() {
+
+				@Override
+				public void accept(TodoList todoList, Object todoListIdObject) {
+					todoList.setTodoListId((Long)todoListIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<TodoList, Object>() {
+
+				@Override
+				public void accept(TodoList todoList, Object companyIdObject) {
+					todoList.setCompanyId((Long)companyIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<TodoList, Object>() {
+
+				@Override
+				public void accept(TodoList todoList, Object userIdObject) {
+					todoList.setUserId((Long)userIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<TodoList, Object>() {
+
+				@Override
+				public void accept(TodoList todoList, Object userNameObject) {
+					todoList.setUserName((String)userNameObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<TodoList, Object>() {
+
+				@Override
+				public void accept(TodoList todoList, Object createDateObject) {
+					todoList.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -370,16 +388,6 @@ public class TodoListModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<TodoList, Object>() {
-
-				@Override
-				public Object apply(TodoList todoList) {
-					return todoList.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<TodoList, Object>() {
@@ -391,8 +399,6 @@ public class TodoListModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

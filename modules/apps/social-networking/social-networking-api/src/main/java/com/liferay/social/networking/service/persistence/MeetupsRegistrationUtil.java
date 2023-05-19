@@ -723,6 +723,12 @@ public class MeetupsRegistrationUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		MeetupsRegistrationPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile MeetupsRegistrationPersistence _persistence;
 
 }

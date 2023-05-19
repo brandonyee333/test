@@ -42,7 +42,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1086,33 +1085,17 @@ public class LoopJobTitlePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByName",
 			new String[] {String.class.getName()});
 
-		_setLoopJobTitleUtilPersistence(this);
+		LoopJobTitleUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setLoopJobTitleUtilPersistence(null);
+		LoopJobTitleUtil.setPersistence(null);
 
 		entityCache.removeCache(LoopJobTitleImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setLoopJobTitleUtilPersistence(
-		LoopJobTitlePersistence loopJobTitlePersistence) {
-
-		try {
-			Field field = LoopJobTitleUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, loopJobTitlePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

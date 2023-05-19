@@ -541,6 +541,12 @@ public class ZendeskArticleAttachmentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		ZendeskArticleAttachmentPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile ZendeskArticleAttachmentPersistence _persistence;
 
 }

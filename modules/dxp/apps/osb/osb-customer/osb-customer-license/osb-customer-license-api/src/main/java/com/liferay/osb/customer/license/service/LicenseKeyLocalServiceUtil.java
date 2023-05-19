@@ -657,6 +657,10 @@ public class LicenseKeyLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LicenseKeyLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LicenseKeyLocalService _service;
 
 }

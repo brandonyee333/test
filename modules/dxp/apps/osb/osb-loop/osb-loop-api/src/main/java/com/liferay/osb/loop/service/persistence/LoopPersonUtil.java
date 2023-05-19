@@ -329,6 +329,10 @@ public class LoopPersonUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopPersonPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopPersonPersistence _persistence;
 
 }

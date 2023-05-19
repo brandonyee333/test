@@ -282,6 +282,10 @@ public class TestrayRoutineLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayRoutineLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayRoutineLocalService _service;
 
 }

@@ -1687,33 +1687,17 @@ public class LoopDivisionPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCI_T",
 			new String[] {Long.class.getName(), Integer.class.getName()});
 
-		_setLoopDivisionUtilPersistence(this);
+		LoopDivisionUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setLoopDivisionUtilPersistence(null);
+		LoopDivisionUtil.setPersistence(null);
 
 		entityCache.removeCache(LoopDivisionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setLoopDivisionUtilPersistence(
-		LoopDivisionPersistence loopDivisionPersistence) {
-
-		try {
-			Field field = LoopDivisionUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, loopDivisionPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -261,14 +261,10 @@ public class TestrayRunModelImpl
 
 	private static final Map<String, Function<TestrayRun, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TestrayRun, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TestrayRun, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<TestrayRun, Object>>();
-		Map<String, BiConsumer<TestrayRun, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<TestrayRun, ?>>();
 
 		attributeGetterFunctions.put(
 			"testrayRunId",
@@ -280,6 +276,158 @@ public class TestrayRunModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"testrayBuildId",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getTestrayBuildId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"externalReferencePK",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getExternalReferencePK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"externalReferenceType",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getExternalReferenceType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"jenkinsJobKey",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getJenkinsJobKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"number",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getNumber();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"environmentHash",
+			new Function<TestrayRun, Object>() {
+
+				@Override
+				public Object apply(TestrayRun testrayRun) {
+					return testrayRun.getEnvironmentHash();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TestrayRun, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TestrayRun, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<TestrayRun, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"testrayRunId",
 			new BiConsumer<TestrayRun, Object>() {
@@ -289,16 +437,6 @@ public class TestrayRunModelImpl
 					TestrayRun testrayRun, Object testrayRunIdObject) {
 
 					testrayRun.setTestrayRunId((Long)testrayRunIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getGroupId();
 				}
 
 			});
@@ -314,16 +452,6 @@ public class TestrayRunModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<TestrayRun, Object>() {
@@ -336,16 +464,6 @@ public class TestrayRunModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<TestrayRun, Object>() {
@@ -353,16 +471,6 @@ public class TestrayRunModelImpl
 				@Override
 				public void accept(TestrayRun testrayRun, Object userIdObject) {
 					testrayRun.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getUserName();
 				}
 
 			});
@@ -378,16 +486,6 @@ public class TestrayRunModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<TestrayRun, Object>() {
@@ -397,16 +495,6 @@ public class TestrayRunModelImpl
 					TestrayRun testrayRun, Object createDateObject) {
 
 					testrayRun.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getModifiedDate();
 				}
 
 			});
@@ -422,16 +510,6 @@ public class TestrayRunModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"testrayBuildId",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getTestrayBuildId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"testrayBuildId",
 			new BiConsumer<TestrayRun, Object>() {
@@ -441,16 +519,6 @@ public class TestrayRunModelImpl
 					TestrayRun testrayRun, Object testrayBuildIdObject) {
 
 					testrayRun.setTestrayBuildId((Long)testrayBuildIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getName();
 				}
 
 			});
@@ -464,16 +532,6 @@ public class TestrayRunModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getDescription();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"description",
 			new BiConsumer<TestrayRun, Object>() {
@@ -483,16 +541,6 @@ public class TestrayRunModelImpl
 					TestrayRun testrayRun, Object descriptionObject) {
 
 					testrayRun.setDescription((String)descriptionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"externalReferencePK",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getExternalReferencePK();
 				}
 
 			});
@@ -509,16 +557,6 @@ public class TestrayRunModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"externalReferenceType",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getExternalReferenceType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"externalReferenceType",
 			new BiConsumer<TestrayRun, Object>() {
@@ -529,16 +567,6 @@ public class TestrayRunModelImpl
 
 					testrayRun.setExternalReferenceType(
 						(Integer)externalReferenceTypeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"jenkinsJobKey",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getJenkinsJobKey();
 				}
 
 			});
@@ -554,16 +582,6 @@ public class TestrayRunModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"number",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getNumber();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"number",
 			new BiConsumer<TestrayRun, Object>() {
@@ -571,16 +589,6 @@ public class TestrayRunModelImpl
 				@Override
 				public void accept(TestrayRun testrayRun, Object numberObject) {
 					testrayRun.setNumber((Long)numberObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"environmentHash",
-			new Function<TestrayRun, Object>() {
-
-				@Override
-				public Object apply(TestrayRun testrayRun) {
-					return testrayRun.getEnvironmentHash();
 				}
 
 			});
@@ -598,8 +606,6 @@ public class TestrayRunModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

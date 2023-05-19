@@ -296,6 +296,10 @@ public class TestrayArchiveLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayArchiveLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayArchiveLocalService _service;
 
 }

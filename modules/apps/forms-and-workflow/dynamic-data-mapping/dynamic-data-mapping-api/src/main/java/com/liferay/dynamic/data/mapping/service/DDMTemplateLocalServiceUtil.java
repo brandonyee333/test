@@ -1365,6 +1365,10 @@ public class DDMTemplateLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(DDMTemplateLocalService service) {
+		_service = service;
+	}
+
 	private static volatile DDMTemplateLocalService _service;
 
 }

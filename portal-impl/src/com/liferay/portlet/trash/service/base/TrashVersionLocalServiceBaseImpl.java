@@ -51,8 +51,6 @@ import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -608,14 +606,14 @@ public abstract class TrashVersionLocalServiceBaseImpl
 			"com.liferay.trash.kernel.model.TrashVersion",
 			trashVersionLocalService);
 
-		_setLocalServiceUtilService(trashVersionLocalService);
+		TrashVersionLocalServiceUtil.setService(trashVersionLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.trash.kernel.model.TrashVersion");
 
-		_setLocalServiceUtilService(null);
+		TrashVersionLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -657,22 +655,6 @@ public abstract class TrashVersionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		TrashVersionLocalService trashVersionLocalService) {
-
-		try {
-			Field field = TrashVersionLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, trashVersionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -13601,32 +13601,17 @@ public class LicenseKeyPersistenceImpl
 				Boolean.class.getName(), Boolean.class.getName()
 			});
 
-		_setLicenseKeyUtilPersistence(this);
+		LicenseKeyUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setLicenseKeyUtilPersistence(null);
+		LicenseKeyUtil.setPersistence(null);
 
 		entityCache.removeCache(LicenseKeyImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setLicenseKeyUtilPersistence(
-		LicenseKeyPersistence licenseKeyPersistence) {
-
-		try {
-			Field field = LicenseKeyUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, licenseKeyPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

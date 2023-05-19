@@ -42,7 +42,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1427,34 +1426,17 @@ public class TestrayCaseResultWarningPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
 			"countByTestrayCaseResultId", new String[] {Long.class.getName()});
 
-		_setTestrayCaseResultWarningUtilPersistence(this);
+		TestrayCaseResultWarningUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setTestrayCaseResultWarningUtilPersistence(null);
+		TestrayCaseResultWarningUtil.setPersistence(null);
 
 		entityCache.removeCache(TestrayCaseResultWarningImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setTestrayCaseResultWarningUtilPersistence(
-		TestrayCaseResultWarningPersistence
-			testrayCaseResultWarningPersistence) {
-
-		try {
-			Field field = TestrayCaseResultWarningUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, testrayCaseResultWarningPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

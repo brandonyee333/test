@@ -376,14 +376,10 @@ public class ShoppingItemModelImpl
 
 	private static final Map<String, Function<ShoppingItem, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<ShoppingItem, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<ShoppingItem, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<ShoppingItem, Object>>();
-		Map<String, BiConsumer<ShoppingItem, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<ShoppingItem, ?>>();
 
 		attributeGetterFunctions.put(
 			"itemId",
@@ -395,6 +391,348 @@ public class ShoppingItemModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"categoryId",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"sku",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getSku();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"properties",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getProperties();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fields",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getFields();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"fieldsQuantities",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getFieldsQuantities();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"minQuantity",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getMinQuantity();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"maxQuantity",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getMaxQuantity();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"price",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getPrice();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"discount",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getDiscount();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"taxable",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getTaxable();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"shipping",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getShipping();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"useShippingFormula",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getUseShippingFormula();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"requiresShipping",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getRequiresShipping();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"stockQuantity",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getStockQuantity();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"featured",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getFeatured();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"sale",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getSale();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"smallImage",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getSmallImage();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"smallImageId",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getSmallImageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"smallImageURL",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getSmallImageURL();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"mediumImage",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getMediumImage();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"mediumImageId",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getMediumImageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"mediumImageURL",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getMediumImageURL();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"largeImage",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getLargeImage();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"largeImageId",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getLargeImageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"largeImageURL",
+			new Function<ShoppingItem, Object>() {
+
+				@Override
+				public Object apply(ShoppingItem shoppingItem) {
+					return shoppingItem.getLargeImageURL();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<ShoppingItem, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<ShoppingItem, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<ShoppingItem, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"itemId",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -404,16 +742,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object itemIdObject) {
 
 					shoppingItem.setItemId((Long)itemIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getGroupId();
 				}
 
 			});
@@ -429,16 +757,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -448,16 +766,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object companyIdObject) {
 
 					shoppingItem.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getUserId();
 				}
 
 			});
@@ -473,16 +781,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -492,16 +790,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object userNameObject) {
 
 					shoppingItem.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getCreateDate();
 				}
 
 			});
@@ -517,16 +805,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -536,16 +814,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object modifiedDateObject) {
 
 					shoppingItem.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"categoryId",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getCategoryId();
 				}
 
 			});
@@ -561,16 +829,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"sku",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getSku();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"sku",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -580,16 +838,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object skuObject) {
 
 					shoppingItem.setSku((String)skuObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getName();
 				}
 
 			});
@@ -605,16 +853,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getDescription();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"description",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -624,16 +862,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object descriptionObject) {
 
 					shoppingItem.setDescription((String)descriptionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"properties",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getProperties();
 				}
 
 			});
@@ -649,16 +877,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"fields",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getFields();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"fields",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -668,16 +886,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object fieldsObject) {
 
 					shoppingItem.setFields((Boolean)fieldsObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"fieldsQuantities",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getFieldsQuantities();
 				}
 
 			});
@@ -694,16 +902,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"minQuantity",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getMinQuantity();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"minQuantity",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -713,16 +911,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object minQuantityObject) {
 
 					shoppingItem.setMinQuantity((Integer)minQuantityObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"maxQuantity",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getMaxQuantity();
 				}
 
 			});
@@ -738,16 +926,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"price",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getPrice();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"price",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -757,16 +935,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object priceObject) {
 
 					shoppingItem.setPrice((Double)priceObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"discount",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getDiscount();
 				}
 
 			});
@@ -782,16 +950,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"taxable",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getTaxable();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"taxable",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -804,16 +962,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"shipping",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getShipping();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"shipping",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -823,16 +971,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object shippingObject) {
 
 					shoppingItem.setShipping((Double)shippingObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"useShippingFormula",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getUseShippingFormula();
 				}
 
 			});
@@ -850,16 +988,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"requiresShipping",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getRequiresShipping();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"requiresShipping",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -870,16 +998,6 @@ public class ShoppingItemModelImpl
 
 					shoppingItem.setRequiresShipping(
 						(Boolean)requiresShippingObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"stockQuantity",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getStockQuantity();
 				}
 
 			});
@@ -895,16 +1013,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"featured",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getFeatured();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"featured",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -914,16 +1022,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object featuredObject) {
 
 					shoppingItem.setFeatured((Boolean)featuredObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"sale",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getSale();
 				}
 
 			});
@@ -939,16 +1037,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"smallImage",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getSmallImage();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"smallImage",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -958,16 +1046,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object smallImageObject) {
 
 					shoppingItem.setSmallImage((Boolean)smallImageObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"smallImageId",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getSmallImageId();
 				}
 
 			});
@@ -983,16 +1061,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"smallImageURL",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getSmallImageURL();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"smallImageURL",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -1002,16 +1070,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object smallImageURLObject) {
 
 					shoppingItem.setSmallImageURL((String)smallImageURLObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"mediumImage",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getMediumImage();
 				}
 
 			});
@@ -1027,16 +1085,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"mediumImageId",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getMediumImageId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"mediumImageId",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -1046,16 +1094,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object mediumImageIdObject) {
 
 					shoppingItem.setMediumImageId((Long)mediumImageIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"mediumImageURL",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getMediumImageURL();
 				}
 
 			});
@@ -1072,16 +1110,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"largeImage",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getLargeImage();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"largeImage",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -1094,16 +1122,6 @@ public class ShoppingItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"largeImageId",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getLargeImageId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"largeImageId",
 			new BiConsumer<ShoppingItem, Object>() {
@@ -1113,16 +1131,6 @@ public class ShoppingItemModelImpl
 					ShoppingItem shoppingItem, Object largeImageIdObject) {
 
 					shoppingItem.setLargeImageId((Long)largeImageIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"largeImageURL",
-			new Function<ShoppingItem, Object>() {
-
-				@Override
-				public Object apply(ShoppingItem shoppingItem) {
-					return shoppingItem.getLargeImageURL();
 				}
 
 			});
@@ -1139,8 +1147,6 @@ public class ShoppingItemModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

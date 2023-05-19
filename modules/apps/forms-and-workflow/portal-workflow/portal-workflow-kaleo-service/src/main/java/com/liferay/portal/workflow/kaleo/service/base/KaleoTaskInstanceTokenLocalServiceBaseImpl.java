@@ -65,8 +65,6 @@ import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTransitionPers
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1267,14 +1265,15 @@ public abstract class KaleoTaskInstanceTokenLocalServiceBaseImpl
 			"com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken",
 			kaleoTaskInstanceTokenLocalService);
 
-		_setLocalServiceUtilService(kaleoTaskInstanceTokenLocalService);
+		KaleoTaskInstanceTokenLocalServiceUtil.setService(
+			kaleoTaskInstanceTokenLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken");
 
-		_setLocalServiceUtilService(null);
+		KaleoTaskInstanceTokenLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1317,23 +1316,6 @@ public abstract class KaleoTaskInstanceTokenLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		KaleoTaskInstanceTokenLocalService kaleoTaskInstanceTokenLocalService) {
-
-		try {
-			Field field =
-				KaleoTaskInstanceTokenLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, kaleoTaskInstanceTokenLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

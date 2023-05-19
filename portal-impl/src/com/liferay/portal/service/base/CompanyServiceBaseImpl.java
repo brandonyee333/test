@@ -57,8 +57,6 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.service.persistence.VirtualHostPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -1462,11 +1460,11 @@ public abstract class CompanyServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(companyService);
+		CompanyServiceUtil.setService(companyService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		CompanyServiceUtil.setService(null);
 	}
 
 	/**
@@ -1508,19 +1506,6 @@ public abstract class CompanyServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(CompanyService companyService) {
-		try {
-			Field field = CompanyServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, companyService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

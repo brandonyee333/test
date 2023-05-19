@@ -2610,33 +2610,17 @@ public class WSRPConsumerPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCompanyId",
 			new String[] {Long.class.getName()});
 
-		_setWSRPConsumerUtilPersistence(this);
+		WSRPConsumerUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setWSRPConsumerUtilPersistence(null);
+		WSRPConsumerUtil.setPersistence(null);
 
 		entityCache.removeCache(WSRPConsumerImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setWSRPConsumerUtilPersistence(
-		WSRPConsumerPersistence wsrpConsumerPersistence) {
-
-		try {
-			Field field = WSRPConsumerUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, wsrpConsumerPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

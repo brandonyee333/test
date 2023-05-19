@@ -39,7 +39,6 @@ import com.liferay.portlet.messageboards.model.impl.MBStatsUserModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -2745,33 +2744,17 @@ public class MBStatsUserPersistenceImpl
 				Integer.class.getName()
 			});
 
-		_setMBStatsUserUtilPersistence(this);
+		MBStatsUserUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setMBStatsUserUtilPersistence(null);
+		MBStatsUserUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(MBStatsUserImpl.class.getName());
 
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_ENTITY);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setMBStatsUserUtilPersistence(
-		MBStatsUserPersistence mbStatsUserPersistence) {
-
-		try {
-			Field field = MBStatsUserUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, mbStatsUserPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	private static final String _SQL_SELECT_MBSTATSUSER =

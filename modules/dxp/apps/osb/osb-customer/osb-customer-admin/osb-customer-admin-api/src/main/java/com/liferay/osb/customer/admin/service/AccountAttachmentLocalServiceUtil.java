@@ -350,6 +350,10 @@ public class AccountAttachmentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AccountAttachmentLocalService service) {
+		_service = service;
+	}
+
 	private static volatile AccountAttachmentLocalService _service;
 
 }

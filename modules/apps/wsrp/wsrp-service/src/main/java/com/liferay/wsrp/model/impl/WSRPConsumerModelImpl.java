@@ -259,14 +259,10 @@ public class WSRPConsumerModelImpl
 
 	private static final Map<String, Function<WSRPConsumer, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WSRPConsumer, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<WSRPConsumer, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<WSRPConsumer, Object>>();
-		Map<String, BiConsumer<WSRPConsumer, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<WSRPConsumer, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -278,6 +274,148 @@ public class WSRPConsumerModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"wsrpConsumerId",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getWsrpConsumerId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"url",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getUrl();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"wsdl",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getWsdl();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"registrationContextString",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getRegistrationContextString();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"registrationPropertiesString",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getRegistrationPropertiesString();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"forwardCookies",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getForwardCookies();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"forwardHeaders",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getForwardHeaders();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"markupCharacterSets",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getMarkupCharacterSets();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPublishDate",
+			new Function<WSRPConsumer, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumer wsrpConsumer) {
+					return wsrpConsumer.getLastPublishDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<WSRPConsumer, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<WSRPConsumer, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<WSRPConsumer, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"uuid",
 			new BiConsumer<WSRPConsumer, Object>() {
@@ -287,16 +425,6 @@ public class WSRPConsumerModelImpl
 					WSRPConsumer wsrpConsumer, Object uuidObject) {
 
 					wsrpConsumer.setUuid((String)uuidObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"wsrpConsumerId",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getWsrpConsumerId();
 				}
 
 			});
@@ -312,16 +440,6 @@ public class WSRPConsumerModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<WSRPConsumer, Object>() {
@@ -331,16 +449,6 @@ public class WSRPConsumerModelImpl
 					WSRPConsumer wsrpConsumer, Object companyIdObject) {
 
 					wsrpConsumer.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getCreateDate();
 				}
 
 			});
@@ -356,16 +464,6 @@ public class WSRPConsumerModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<WSRPConsumer, Object>() {
@@ -375,16 +473,6 @@ public class WSRPConsumerModelImpl
 					WSRPConsumer wsrpConsumer, Object modifiedDateObject) {
 
 					wsrpConsumer.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getName();
 				}
 
 			});
@@ -400,16 +488,6 @@ public class WSRPConsumerModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"url",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getUrl();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"url",
 			new BiConsumer<WSRPConsumer, Object>() {
@@ -422,16 +500,6 @@ public class WSRPConsumerModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"wsdl",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getWsdl();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"wsdl",
 			new BiConsumer<WSRPConsumer, Object>() {
@@ -441,16 +509,6 @@ public class WSRPConsumerModelImpl
 					WSRPConsumer wsrpConsumer, Object wsdlObject) {
 
 					wsrpConsumer.setWsdl((String)wsdlObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"registrationContextString",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getRegistrationContextString();
 				}
 
 			});
@@ -468,16 +526,6 @@ public class WSRPConsumerModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"registrationPropertiesString",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getRegistrationPropertiesString();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"registrationPropertiesString",
 			new BiConsumer<WSRPConsumer, Object>() {
@@ -489,16 +537,6 @@ public class WSRPConsumerModelImpl
 
 					wsrpConsumer.setRegistrationPropertiesString(
 						(String)registrationPropertiesStringObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"forwardCookies",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getForwardCookies();
 				}
 
 			});
@@ -515,16 +553,6 @@ public class WSRPConsumerModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"forwardHeaders",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getForwardHeaders();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"forwardHeaders",
 			new BiConsumer<WSRPConsumer, Object>() {
@@ -535,16 +563,6 @@ public class WSRPConsumerModelImpl
 
 					wsrpConsumer.setForwardHeaders(
 						(String)forwardHeadersObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"markupCharacterSets",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getMarkupCharacterSets();
 				}
 
 			});
@@ -562,16 +580,6 @@ public class WSRPConsumerModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"lastPublishDate",
-			new Function<WSRPConsumer, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumer wsrpConsumer) {
-					return wsrpConsumer.getLastPublishDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"lastPublishDate",
 			new BiConsumer<WSRPConsumer, Object>() {
@@ -586,8 +594,6 @@ public class WSRPConsumerModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

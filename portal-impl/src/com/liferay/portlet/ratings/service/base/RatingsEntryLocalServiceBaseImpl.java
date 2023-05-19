@@ -67,8 +67,6 @@ import com.liferay.ratings.kernel.service.persistence.RatingsStatsPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -968,14 +966,14 @@ public abstract class RatingsEntryLocalServiceBaseImpl
 			"com.liferay.ratings.kernel.model.RatingsEntry",
 			ratingsEntryLocalService);
 
-		_setLocalServiceUtilService(ratingsEntryLocalService);
+		RatingsEntryLocalServiceUtil.setService(ratingsEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.ratings.kernel.model.RatingsEntry");
 
-		_setLocalServiceUtilService(null);
+		RatingsEntryLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1017,22 +1015,6 @@ public abstract class RatingsEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		RatingsEntryLocalService ratingsEntryLocalService) {
-
-		try {
-			Field field = RatingsEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, ratingsEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

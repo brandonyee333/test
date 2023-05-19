@@ -308,6 +308,10 @@ public class ReleaseNotesLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ReleaseNotesLocalService service) {
+		_service = service;
+	}
+
 	private static volatile ReleaseNotesLocalService _service;
 
 }

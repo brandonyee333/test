@@ -347,14 +347,10 @@ public class AssetEntrySetModelImpl
 
 	private static final Map<String, Function<AssetEntrySet, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AssetEntrySet, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AssetEntrySet, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<AssetEntrySet, Object>>();
-		Map<String, BiConsumer<AssetEntrySet, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<AssetEntrySet, ?>>();
 
 		attributeGetterFunctions.put(
 			"assetEntrySetId",
@@ -366,6 +362,218 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createTime",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getCreateTime();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedTime",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getModifiedTime();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"assetEntryId",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getAssetEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentAssetEntrySetId",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getParentAssetEntrySetId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"creatorClassNameId",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getCreatorClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"creatorClassPK",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getCreatorClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"creatorName",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getCreatorName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"assetEntrySetLikesCount",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getAssetEntrySetLikesCount();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"childAssetEntrySetsCount",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getChildAssetEntrySetsCount();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"level",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getLevel();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"payload",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getPayload();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"privateAssetEntrySet",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getPrivateAssetEntrySet();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"stickyTime",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getStickyTime();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"title",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getTitle();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<AssetEntrySet, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySet assetEntrySet) {
+					return assetEntrySet.getStatus();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AssetEntrySet, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AssetEntrySet, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<AssetEntrySet, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"assetEntrySetId",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -376,16 +584,6 @@ public class AssetEntrySetModelImpl
 
 					assetEntrySet.setAssetEntrySetId(
 						(Long)assetEntrySetIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getCompanyId();
 				}
 
 			});
@@ -401,16 +599,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -420,16 +608,6 @@ public class AssetEntrySetModelImpl
 					AssetEntrySet assetEntrySet, Object userIdObject) {
 
 					assetEntrySet.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createTime",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getCreateTime();
 				}
 
 			});
@@ -445,16 +623,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedTime",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getModifiedTime();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedTime",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -467,16 +635,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"assetEntryId",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getAssetEntryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"assetEntryId",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -486,16 +644,6 @@ public class AssetEntrySetModelImpl
 					AssetEntrySet assetEntrySet, Object assetEntryIdObject) {
 
 					assetEntrySet.setAssetEntryId((Long)assetEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"parentAssetEntrySetId",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getParentAssetEntrySetId();
 				}
 
 			});
@@ -513,16 +661,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getClassNameId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classNameId",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -535,16 +673,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -554,16 +682,6 @@ public class AssetEntrySetModelImpl
 					AssetEntrySet assetEntrySet, Object classPKObject) {
 
 					assetEntrySet.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"creatorClassNameId",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getCreatorClassNameId();
 				}
 
 			});
@@ -581,16 +699,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"creatorClassPK",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getCreatorClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"creatorClassPK",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -603,16 +711,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"creatorName",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getCreatorName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"creatorName",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -622,16 +720,6 @@ public class AssetEntrySetModelImpl
 					AssetEntrySet assetEntrySet, Object creatorNameObject) {
 
 					assetEntrySet.setCreatorName((String)creatorNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"assetEntrySetLikesCount",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getAssetEntrySetLikesCount();
 				}
 
 			});
@@ -649,16 +737,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"childAssetEntrySetsCount",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getChildAssetEntrySetsCount();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"childAssetEntrySetsCount",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -670,16 +748,6 @@ public class AssetEntrySetModelImpl
 
 					assetEntrySet.setChildAssetEntrySetsCount(
 						(Integer)childAssetEntrySetsCountObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"level",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getLevel();
 				}
 
 			});
@@ -695,16 +763,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"payload",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getPayload();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"payload",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -714,16 +772,6 @@ public class AssetEntrySetModelImpl
 					AssetEntrySet assetEntrySet, Object payloadObject) {
 
 					assetEntrySet.setPayload((String)payloadObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"privateAssetEntrySet",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getPrivateAssetEntrySet();
 				}
 
 			});
@@ -741,16 +789,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"stickyTime",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getStickyTime();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"stickyTime",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -760,16 +798,6 @@ public class AssetEntrySetModelImpl
 					AssetEntrySet assetEntrySet, Object stickyTimeObject) {
 
 					assetEntrySet.setStickyTime((Long)stickyTimeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"title",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getTitle();
 				}
 
 			});
@@ -785,16 +813,6 @@ public class AssetEntrySetModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"type",
 			new BiConsumer<AssetEntrySet, Object>() {
@@ -804,16 +822,6 @@ public class AssetEntrySetModelImpl
 					AssetEntrySet assetEntrySet, Object typeObject) {
 
 					assetEntrySet.setType((Integer)typeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<AssetEntrySet, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySet assetEntrySet) {
-					return assetEntrySet.getStatus();
 				}
 
 			});
@@ -830,8 +838,6 @@ public class AssetEntrySetModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

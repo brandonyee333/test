@@ -366,6 +366,10 @@ public class AssetSharingEntryLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AssetSharingEntryLocalService service) {
+		_service = service;
+	}
+
 	private static volatile AssetSharingEntryLocalService _service;
 
 }

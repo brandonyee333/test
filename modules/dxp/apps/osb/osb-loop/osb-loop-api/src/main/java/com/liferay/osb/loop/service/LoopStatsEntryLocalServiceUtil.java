@@ -282,6 +282,10 @@ public class LoopStatsEntryLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopStatsEntryLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopStatsEntryLocalService _service;
 
 }

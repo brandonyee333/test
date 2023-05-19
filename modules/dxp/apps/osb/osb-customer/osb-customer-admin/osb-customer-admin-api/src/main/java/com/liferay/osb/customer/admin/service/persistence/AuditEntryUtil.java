@@ -1206,6 +1206,10 @@ public class AuditEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(AuditEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile AuditEntryPersistence _persistence;
 
 }

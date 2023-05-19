@@ -1154,34 +1154,17 @@ public class LoopParticipantAssignmentPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByLDI_LPI",
 			new String[] {Long.class.getName(), Long.class.getName()});
 
-		_setLoopParticipantAssignmentUtilPersistence(this);
+		LoopParticipantAssignmentUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setLoopParticipantAssignmentUtilPersistence(null);
+		LoopParticipantAssignmentUtil.setPersistence(null);
 
 		entityCache.removeCache(LoopParticipantAssignmentImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setLoopParticipantAssignmentUtilPersistence(
-		LoopParticipantAssignmentPersistence
-			loopParticipantAssignmentPersistence) {
-
-		try {
-			Field field = LoopParticipantAssignmentUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, loopParticipantAssignmentPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

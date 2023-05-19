@@ -925,6 +925,12 @@ public class JournalArticleImageUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		JournalArticleImagePersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile JournalArticleImagePersistence _persistence;
 
 }

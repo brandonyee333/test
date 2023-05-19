@@ -130,6 +130,10 @@ public class ShoppingItemServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ShoppingItemService service) {
+		_service = service;
+	}
+
 	private static volatile ShoppingItemService _service;
 
 }

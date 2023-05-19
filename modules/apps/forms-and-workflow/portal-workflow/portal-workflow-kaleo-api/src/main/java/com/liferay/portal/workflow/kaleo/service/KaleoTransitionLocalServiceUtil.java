@@ -337,6 +337,10 @@ public class KaleoTransitionLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(KaleoTransitionLocalService service) {
+		_service = service;
+	}
+
 	private static volatile KaleoTransitionLocalService _service;
 
 }

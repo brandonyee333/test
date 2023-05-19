@@ -351,6 +351,12 @@ public class TestrayFactorCategoryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		TestrayFactorCategoryPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayFactorCategoryPersistence _persistence;
 
 }

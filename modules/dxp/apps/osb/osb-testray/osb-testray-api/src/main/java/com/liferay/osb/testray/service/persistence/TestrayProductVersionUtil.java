@@ -356,6 +356,12 @@ public class TestrayProductVersionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		TestrayProductVersionPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayProductVersionPersistence _persistence;
 
 }

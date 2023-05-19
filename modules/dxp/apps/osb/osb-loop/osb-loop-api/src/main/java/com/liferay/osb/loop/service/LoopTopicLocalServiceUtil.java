@@ -303,6 +303,10 @@ public class LoopTopicLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopTopicLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopTopicLocalService _service;
 
 }

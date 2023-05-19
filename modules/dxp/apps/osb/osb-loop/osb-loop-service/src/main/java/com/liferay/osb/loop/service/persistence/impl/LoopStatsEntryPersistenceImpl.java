@@ -37,8 +37,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -749,33 +747,17 @@ public class LoopStatsEntryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_setLoopStatsEntryUtilPersistence(this);
+		LoopStatsEntryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setLoopStatsEntryUtilPersistence(null);
+		LoopStatsEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(LoopStatsEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setLoopStatsEntryUtilPersistence(
-		LoopStatsEntryPersistence loopStatsEntryPersistence) {
-
-		try {
-			Field field = LoopStatsEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, loopStatsEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

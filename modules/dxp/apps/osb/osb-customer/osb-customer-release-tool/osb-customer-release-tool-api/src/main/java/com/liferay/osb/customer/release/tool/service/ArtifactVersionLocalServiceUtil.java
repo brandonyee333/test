@@ -308,6 +308,10 @@ public class ArtifactVersionLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ArtifactVersionLocalService service) {
+		_service = service;
+	}
+
 	private static volatile ArtifactVersionLocalService _service;
 
 }

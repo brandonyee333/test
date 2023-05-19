@@ -243,17 +243,12 @@ public class AssetEntrySetLikeModelImpl
 
 	private static final Map<String, Function<AssetEntrySetLike, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AssetEntrySetLike, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AssetEntrySetLike, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<AssetEntrySetLike, Object>>();
-		Map<String, BiConsumer<AssetEntrySetLike, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<AssetEntrySetLike, ?>>();
 
 		attributeGetterFunctions.put(
 			"assetEntrySetId",
@@ -265,6 +260,39 @@ public class AssetEntrySetLikeModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<AssetEntrySetLike, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySetLike assetEntrySetLike) {
+					return assetEntrySetLike.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<AssetEntrySetLike, Object>() {
+
+				@Override
+				public Object apply(AssetEntrySetLike assetEntrySetLike) {
+					return assetEntrySetLike.getClassPK();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AssetEntrySetLike, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AssetEntrySetLike, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<AssetEntrySetLike, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"assetEntrySetId",
 			new BiConsumer<AssetEntrySetLike, Object>() {
@@ -276,16 +304,6 @@ public class AssetEntrySetLikeModelImpl
 
 					assetEntrySetLike.setAssetEntrySetId(
 						(Long)assetEntrySetIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<AssetEntrySetLike, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySetLike assetEntrySetLike) {
-					return assetEntrySetLike.getClassNameId();
 				}
 
 			});
@@ -302,16 +320,6 @@ public class AssetEntrySetLikeModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<AssetEntrySetLike, Object>() {
-
-				@Override
-				public Object apply(AssetEntrySetLike assetEntrySetLike) {
-					return assetEntrySetLike.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<AssetEntrySetLike, Object>() {
@@ -325,8 +333,6 @@ public class AssetEntrySetLikeModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

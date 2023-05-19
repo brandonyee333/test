@@ -231,14 +231,10 @@ public class LoopPersonRelModelImpl
 
 	private static final Map<String, Function<LoopPersonRel, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopPersonRel, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopPersonRel, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LoopPersonRel, Object>>();
-		Map<String, BiConsumer<LoopPersonRel, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopPersonRel, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopPersonRelId",
@@ -250,6 +246,48 @@ public class LoopPersonRelModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"childLoopPersonId",
+			new Function<LoopPersonRel, Object>() {
+
+				@Override
+				public Object apply(LoopPersonRel loopPersonRel) {
+					return loopPersonRel.getChildLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentLoopPersonId",
+			new Function<LoopPersonRel, Object>() {
+
+				@Override
+				public Object apply(LoopPersonRel loopPersonRel) {
+					return loopPersonRel.getParentLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<LoopPersonRel, Object>() {
+
+				@Override
+				public Object apply(LoopPersonRel loopPersonRel) {
+					return loopPersonRel.getType();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopPersonRel, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopPersonRel, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopPersonRel, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopPersonRelId",
 			new BiConsumer<LoopPersonRel, Object>() {
@@ -260,16 +298,6 @@ public class LoopPersonRelModelImpl
 
 					loopPersonRel.setLoopPersonRelId(
 						(Long)loopPersonRelIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"childLoopPersonId",
-			new Function<LoopPersonRel, Object>() {
-
-				@Override
-				public Object apply(LoopPersonRel loopPersonRel) {
-					return loopPersonRel.getChildLoopPersonId();
 				}
 
 			});
@@ -287,16 +315,6 @@ public class LoopPersonRelModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"parentLoopPersonId",
-			new Function<LoopPersonRel, Object>() {
-
-				@Override
-				public Object apply(LoopPersonRel loopPersonRel) {
-					return loopPersonRel.getParentLoopPersonId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"parentLoopPersonId",
 			new BiConsumer<LoopPersonRel, Object>() {
@@ -308,16 +326,6 @@ public class LoopPersonRelModelImpl
 
 					loopPersonRel.setParentLoopPersonId(
 						(Long)parentLoopPersonIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<LoopPersonRel, Object>() {
-
-				@Override
-				public Object apply(LoopPersonRel loopPersonRel) {
-					return loopPersonRel.getType();
 				}
 
 			});
@@ -334,8 +342,6 @@ public class LoopPersonRelModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

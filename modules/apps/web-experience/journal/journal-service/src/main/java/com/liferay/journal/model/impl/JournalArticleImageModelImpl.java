@@ -260,17 +260,12 @@ public class JournalArticleImageModelImpl
 
 	private static final Map<String, Function<JournalArticleImage, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<JournalArticleImage, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<JournalArticleImage, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<JournalArticleImage, Object>>();
-		Map<String, BiConsumer<JournalArticleImage, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<JournalArticleImage, ?>>();
 
 		attributeGetterFunctions.put(
 			"articleImageId",
@@ -282,6 +277,99 @@ public class JournalArticleImageModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<JournalArticleImage, Object>() {
+
+				@Override
+				public Object apply(JournalArticleImage journalArticleImage) {
+					return journalArticleImage.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<JournalArticleImage, Object>() {
+
+				@Override
+				public Object apply(JournalArticleImage journalArticleImage) {
+					return journalArticleImage.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"articleId",
+			new Function<JournalArticleImage, Object>() {
+
+				@Override
+				public Object apply(JournalArticleImage journalArticleImage) {
+					return journalArticleImage.getArticleId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"version",
+			new Function<JournalArticleImage, Object>() {
+
+				@Override
+				public Object apply(JournalArticleImage journalArticleImage) {
+					return journalArticleImage.getVersion();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"elInstanceId",
+			new Function<JournalArticleImage, Object>() {
+
+				@Override
+				public Object apply(JournalArticleImage journalArticleImage) {
+					return journalArticleImage.getElInstanceId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"elName",
+			new Function<JournalArticleImage, Object>() {
+
+				@Override
+				public Object apply(JournalArticleImage journalArticleImage) {
+					return journalArticleImage.getElName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"languageId",
+			new Function<JournalArticleImage, Object>() {
+
+				@Override
+				public Object apply(JournalArticleImage journalArticleImage) {
+					return journalArticleImage.getLanguageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"tempImage",
+			new Function<JournalArticleImage, Object>() {
+
+				@Override
+				public Object apply(JournalArticleImage journalArticleImage) {
+					return journalArticleImage.getTempImage();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<JournalArticleImage, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<JournalArticleImage, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<JournalArticleImage, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"articleImageId",
 			new BiConsumer<JournalArticleImage, Object>() {
@@ -293,16 +381,6 @@ public class JournalArticleImageModelImpl
 
 					journalArticleImage.setArticleImageId(
 						(Long)articleImageIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<JournalArticleImage, Object>() {
-
-				@Override
-				public Object apply(JournalArticleImage journalArticleImage) {
-					return journalArticleImage.getGroupId();
 				}
 
 			});
@@ -319,16 +397,6 @@ public class JournalArticleImageModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<JournalArticleImage, Object>() {
-
-				@Override
-				public Object apply(JournalArticleImage journalArticleImage) {
-					return journalArticleImage.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<JournalArticleImage, Object>() {
@@ -339,16 +407,6 @@ public class JournalArticleImageModelImpl
 					Object companyIdObject) {
 
 					journalArticleImage.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"articleId",
-			new Function<JournalArticleImage, Object>() {
-
-				@Override
-				public Object apply(JournalArticleImage journalArticleImage) {
-					return journalArticleImage.getArticleId();
 				}
 
 			});
@@ -365,16 +423,6 @@ public class JournalArticleImageModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"version",
-			new Function<JournalArticleImage, Object>() {
-
-				@Override
-				public Object apply(JournalArticleImage journalArticleImage) {
-					return journalArticleImage.getVersion();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"version",
 			new BiConsumer<JournalArticleImage, Object>() {
@@ -385,16 +433,6 @@ public class JournalArticleImageModelImpl
 					Object versionObject) {
 
 					journalArticleImage.setVersion((Double)versionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"elInstanceId",
-			new Function<JournalArticleImage, Object>() {
-
-				@Override
-				public Object apply(JournalArticleImage journalArticleImage) {
-					return journalArticleImage.getElInstanceId();
 				}
 
 			});
@@ -412,16 +450,6 @@ public class JournalArticleImageModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"elName",
-			new Function<JournalArticleImage, Object>() {
-
-				@Override
-				public Object apply(JournalArticleImage journalArticleImage) {
-					return journalArticleImage.getElName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"elName",
 			new BiConsumer<JournalArticleImage, Object>() {
@@ -435,16 +463,6 @@ public class JournalArticleImageModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"languageId",
-			new Function<JournalArticleImage, Object>() {
-
-				@Override
-				public Object apply(JournalArticleImage journalArticleImage) {
-					return journalArticleImage.getLanguageId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"languageId",
 			new BiConsumer<JournalArticleImage, Object>() {
@@ -455,16 +473,6 @@ public class JournalArticleImageModelImpl
 					Object languageIdObject) {
 
 					journalArticleImage.setLanguageId((String)languageIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"tempImage",
-			new Function<JournalArticleImage, Object>() {
-
-				@Override
-				public Object apply(JournalArticleImage journalArticleImage) {
-					return journalArticleImage.getTempImage();
 				}
 
 			});
@@ -482,8 +490,6 @@ public class JournalArticleImageModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

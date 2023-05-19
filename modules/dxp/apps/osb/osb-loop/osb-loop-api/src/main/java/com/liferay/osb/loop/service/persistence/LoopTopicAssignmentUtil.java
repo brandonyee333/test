@@ -284,6 +284,12 @@ public class LoopTopicAssignmentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		LoopTopicAssignmentPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile LoopTopicAssignmentPersistence _persistence;
 
 }

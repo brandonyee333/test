@@ -317,6 +317,10 @@ public class AssetEntrySetLikeLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AssetEntrySetLikeLocalService service) {
+		_service = service;
+	}
+
 	private static volatile AssetEntrySetLikeLocalService _service;
 
 }

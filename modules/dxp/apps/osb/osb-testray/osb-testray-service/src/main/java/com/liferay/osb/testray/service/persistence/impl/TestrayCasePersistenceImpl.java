@@ -52,7 +52,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -2502,11 +2501,11 @@ public class TestrayCasePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByTPI_N",
 			new String[] {Long.class.getName(), String.class.getName()});
 
-		_setTestrayCaseUtilPersistence(this);
+		TestrayCaseUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setTestrayCaseUtilPersistence(null);
+		TestrayCaseUtil.setPersistence(null);
 
 		entityCache.removeCache(TestrayCaseImpl.class.getName());
 
@@ -2520,22 +2519,6 @@ public class TestrayCasePersistenceImpl
 		TableMapperFactory.removeTableMapper(
 			"OSB_TestrayRequirements_TestrayCases");
 		TableMapperFactory.removeTableMapper("OSB_TestraySuites_TestrayCases");
-	}
-
-	private void _setTestrayCaseUtilPersistence(
-		TestrayCasePersistence testrayCasePersistence) {
-
-		try {
-			Field field = TestrayCaseUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, testrayCasePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -76,8 +76,6 @@ import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1217,14 +1215,14 @@ public abstract class BookmarksFolderLocalServiceBaseImpl
 			"com.liferay.bookmarks.model.BookmarksFolder",
 			bookmarksFolderLocalService);
 
-		_setLocalServiceUtilService(bookmarksFolderLocalService);
+		BookmarksFolderLocalServiceUtil.setService(bookmarksFolderLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.bookmarks.model.BookmarksFolder");
 
-		_setLocalServiceUtilService(null);
+		BookmarksFolderLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1266,23 +1264,6 @@ public abstract class BookmarksFolderLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		BookmarksFolderLocalService bookmarksFolderLocalService) {
-
-		try {
-			Field field =
-				BookmarksFolderLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, bookmarksFolderLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

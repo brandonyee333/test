@@ -49,8 +49,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -517,14 +515,14 @@ public abstract class EventLocalServiceBaseImpl
 			"com.liferay.osb.customer.account.entry.details.model.Event",
 			eventLocalService);
 
-		_setLocalServiceUtilService(eventLocalService);
+		EventLocalServiceUtil.setService(eventLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.account.entry.details.model.Event");
 
-		_setLocalServiceUtilService(null);
+		EventLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -566,22 +564,6 @@ public abstract class EventLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		EventLocalService eventLocalService) {
-
-		try {
-			Field field = EventLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, eventLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

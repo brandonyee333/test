@@ -246,14 +246,10 @@ public class TestrayArchiveModelImpl
 
 	private static final Map<String, Function<TestrayArchive, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TestrayArchive, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TestrayArchive, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<TestrayArchive, Object>>();
-		Map<String, BiConsumer<TestrayArchive, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<TestrayArchive, ?>>();
 
 		attributeGetterFunctions.put(
 			"testrayArchiveId",
@@ -265,6 +261,108 @@ public class TestrayArchiveModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"compressedData",
+			new Function<TestrayArchive, Object>() {
+
+				@Override
+				public Object apply(TestrayArchive testrayArchive) {
+					return testrayArchive.getCompressedData();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TestrayArchive, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TestrayArchive, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<TestrayArchive, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"testrayArchiveId",
 			new BiConsumer<TestrayArchive, Object>() {
@@ -276,16 +374,6 @@ public class TestrayArchiveModelImpl
 
 					testrayArchive.setTestrayArchiveId(
 						(Long)testrayArchiveIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getGroupId();
 				}
 
 			});
@@ -301,16 +389,6 @@ public class TestrayArchiveModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<TestrayArchive, Object>() {
@@ -320,16 +398,6 @@ public class TestrayArchiveModelImpl
 					TestrayArchive testrayArchive, Object companyIdObject) {
 
 					testrayArchive.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getUserId();
 				}
 
 			});
@@ -345,16 +413,6 @@ public class TestrayArchiveModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<TestrayArchive, Object>() {
@@ -364,16 +422,6 @@ public class TestrayArchiveModelImpl
 					TestrayArchive testrayArchive, Object userNameObject) {
 
 					testrayArchive.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getCreateDate();
 				}
 
 			});
@@ -389,16 +437,6 @@ public class TestrayArchiveModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<TestrayArchive, Object>() {
@@ -408,16 +446,6 @@ public class TestrayArchiveModelImpl
 					TestrayArchive testrayArchive, Object modifiedDateObject) {
 
 					testrayArchive.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getClassNameId();
 				}
 
 			});
@@ -433,16 +461,6 @@ public class TestrayArchiveModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<TestrayArchive, Object>() {
@@ -452,16 +470,6 @@ public class TestrayArchiveModelImpl
 					TestrayArchive testrayArchive, Object classPKObject) {
 
 					testrayArchive.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"compressedData",
-			new Function<TestrayArchive, Object>() {
-
-				@Override
-				public Object apply(TestrayArchive testrayArchive) {
-					return testrayArchive.getCompressedData();
 				}
 
 			});
@@ -480,8 +488,6 @@ public class TestrayArchiveModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

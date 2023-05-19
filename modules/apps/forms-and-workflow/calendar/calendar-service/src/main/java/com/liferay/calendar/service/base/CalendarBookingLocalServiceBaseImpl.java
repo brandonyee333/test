@@ -81,8 +81,6 @@ import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1425,14 +1423,14 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 			"com.liferay.calendar.model.CalendarBooking",
 			calendarBookingLocalService);
 
-		_setLocalServiceUtilService(calendarBookingLocalService);
+		CalendarBookingLocalServiceUtil.setService(calendarBookingLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.calendar.model.CalendarBooking");
 
-		_setLocalServiceUtilService(null);
+		CalendarBookingLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1474,23 +1472,6 @@ public abstract class CalendarBookingLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CalendarBookingLocalService calendarBookingLocalService) {
-
-		try {
-			Field field =
-				CalendarBookingLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, calendarBookingLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

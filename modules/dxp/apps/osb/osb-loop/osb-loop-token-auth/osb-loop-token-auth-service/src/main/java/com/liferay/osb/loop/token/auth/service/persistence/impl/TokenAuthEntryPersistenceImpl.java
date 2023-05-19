@@ -42,7 +42,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1633,33 +1632,17 @@ public class TokenAuthEntryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByToken",
 			new String[] {String.class.getName()});
 
-		_setTokenAuthEntryUtilPersistence(this);
+		TokenAuthEntryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setTokenAuthEntryUtilPersistence(null);
+		TokenAuthEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(TokenAuthEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setTokenAuthEntryUtilPersistence(
-		TokenAuthEntryPersistence tokenAuthEntryPersistence) {
-
-		try {
-			Field field = TokenAuthEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, tokenAuthEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

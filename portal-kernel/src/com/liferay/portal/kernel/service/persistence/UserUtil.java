@@ -3689,6 +3689,10 @@ public class UserUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(UserPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile UserPersistence _persistence;
 
 }

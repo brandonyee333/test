@@ -64,6 +64,10 @@ public class AccountCustomerServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AccountCustomerService service) {
+		_service = service;
+	}
+
 	private static volatile AccountCustomerService _service;
 
 }

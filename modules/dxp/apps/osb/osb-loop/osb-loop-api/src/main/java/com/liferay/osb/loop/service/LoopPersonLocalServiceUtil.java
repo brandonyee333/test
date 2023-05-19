@@ -295,6 +295,10 @@ public class LoopPersonLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopPersonLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopPersonLocalService _service;
 
 }

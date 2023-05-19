@@ -2783,33 +2783,17 @@ public class ExternalIdMapperPersistenceImpl
 				String.class.getName()
 			});
 
-		_setExternalIdMapperUtilPersistence(this);
+		ExternalIdMapperUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setExternalIdMapperUtilPersistence(null);
+		ExternalIdMapperUtil.setPersistence(null);
 
 		entityCache.removeCache(ExternalIdMapperImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setExternalIdMapperUtilPersistence(
-		ExternalIdMapperPersistence externalIdMapperPersistence) {
-
-		try {
-			Field field = ExternalIdMapperUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, externalIdMapperPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

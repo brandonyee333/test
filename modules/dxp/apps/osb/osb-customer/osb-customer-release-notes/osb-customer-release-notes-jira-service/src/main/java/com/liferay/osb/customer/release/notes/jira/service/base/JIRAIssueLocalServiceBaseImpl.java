@@ -55,8 +55,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -719,14 +717,14 @@ public abstract class JIRAIssueLocalServiceBaseImpl
 			"com.liferay.osb.customer.release.notes.jira.model.JIRAIssue",
 			jiraIssueLocalService);
 
-		_setLocalServiceUtilService(jiraIssueLocalService);
+		JIRAIssueLocalServiceUtil.setService(jiraIssueLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.release.notes.jira.model.JIRAIssue");
 
-		_setLocalServiceUtilService(null);
+		JIRAIssueLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -768,22 +766,6 @@ public abstract class JIRAIssueLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		JIRAIssueLocalService jiraIssueLocalService) {
-
-		try {
-			Field field = JIRAIssueLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, jiraIssueLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

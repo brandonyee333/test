@@ -320,6 +320,12 @@ public class ZendeskArticleAttachmentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(
+		ZendeskArticleAttachmentLocalService service) {
+
+		_service = service;
+	}
+
 	private static volatile ZendeskArticleAttachmentLocalService _service;
 
 }

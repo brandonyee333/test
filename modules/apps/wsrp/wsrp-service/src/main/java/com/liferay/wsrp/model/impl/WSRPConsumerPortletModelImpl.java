@@ -256,17 +256,12 @@ public class WSRPConsumerPortletModelImpl
 
 	private static final Map<String, Function<WSRPConsumerPortlet, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<WSRPConsumerPortlet, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<WSRPConsumerPortlet, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<WSRPConsumerPortlet, Object>>();
-		Map<String, BiConsumer<WSRPConsumerPortlet, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<WSRPConsumerPortlet, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -278,6 +273,99 @@ public class WSRPConsumerPortletModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"wsrpConsumerPortletId",
+			new Function<WSRPConsumerPortlet, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getWsrpConsumerPortletId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<WSRPConsumerPortlet, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<WSRPConsumerPortlet, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<WSRPConsumerPortlet, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"wsrpConsumerId",
+			new Function<WSRPConsumerPortlet, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getWsrpConsumerId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<WSRPConsumerPortlet, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"portletHandle",
+			new Function<WSRPConsumerPortlet, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getPortletHandle();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPublishDate",
+			new Function<WSRPConsumerPortlet, Object>() {
+
+				@Override
+				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
+					return wsrpConsumerPortlet.getLastPublishDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<WSRPConsumerPortlet, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<WSRPConsumerPortlet, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<WSRPConsumerPortlet, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"uuid",
 			new BiConsumer<WSRPConsumerPortlet, Object>() {
@@ -288,16 +376,6 @@ public class WSRPConsumerPortletModelImpl
 					Object uuidObject) {
 
 					wsrpConsumerPortlet.setUuid((String)uuidObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"wsrpConsumerPortletId",
-			new Function<WSRPConsumerPortlet, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
-					return wsrpConsumerPortlet.getWsrpConsumerPortletId();
 				}
 
 			});
@@ -315,16 +393,6 @@ public class WSRPConsumerPortletModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<WSRPConsumerPortlet, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
-					return wsrpConsumerPortlet.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<WSRPConsumerPortlet, Object>() {
@@ -338,16 +406,6 @@ public class WSRPConsumerPortletModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<WSRPConsumerPortlet, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
-					return wsrpConsumerPortlet.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<WSRPConsumerPortlet, Object>() {
@@ -358,16 +416,6 @@ public class WSRPConsumerPortletModelImpl
 					Object createDateObject) {
 
 					wsrpConsumerPortlet.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<WSRPConsumerPortlet, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
-					return wsrpConsumerPortlet.getModifiedDate();
 				}
 
 			});
@@ -385,16 +433,6 @@ public class WSRPConsumerPortletModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"wsrpConsumerId",
-			new Function<WSRPConsumerPortlet, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
-					return wsrpConsumerPortlet.getWsrpConsumerId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"wsrpConsumerId",
 			new BiConsumer<WSRPConsumerPortlet, Object>() {
@@ -406,16 +444,6 @@ public class WSRPConsumerPortletModelImpl
 
 					wsrpConsumerPortlet.setWsrpConsumerId(
 						(Long)wsrpConsumerIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<WSRPConsumerPortlet, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
-					return wsrpConsumerPortlet.getName();
 				}
 
 			});
@@ -432,16 +460,6 @@ public class WSRPConsumerPortletModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"portletHandle",
-			new Function<WSRPConsumerPortlet, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
-					return wsrpConsumerPortlet.getPortletHandle();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"portletHandle",
 			new BiConsumer<WSRPConsumerPortlet, Object>() {
@@ -453,16 +471,6 @@ public class WSRPConsumerPortletModelImpl
 
 					wsrpConsumerPortlet.setPortletHandle(
 						(String)portletHandleObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastPublishDate",
-			new Function<WSRPConsumerPortlet, Object>() {
-
-				@Override
-				public Object apply(WSRPConsumerPortlet wsrpConsumerPortlet) {
-					return wsrpConsumerPortlet.getLastPublishDate();
 				}
 
 			});
@@ -481,8 +489,6 @@ public class WSRPConsumerPortletModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -251,17 +251,12 @@ public class TestrayFactorOptionModelImpl
 
 	private static final Map<String, Function<TestrayFactorOption, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TestrayFactorOption, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TestrayFactorOption, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<TestrayFactorOption, Object>>();
-		Map<String, BiConsumer<TestrayFactorOption, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<TestrayFactorOption, ?>>();
 
 		attributeGetterFunctions.put(
 			"testrayFactorOptionId",
@@ -273,6 +268,99 @@ public class TestrayFactorOptionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<TestrayFactorOption, Object>() {
+
+				@Override
+				public Object apply(TestrayFactorOption testrayFactorOption) {
+					return testrayFactorOption.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<TestrayFactorOption, Object>() {
+
+				@Override
+				public Object apply(TestrayFactorOption testrayFactorOption) {
+					return testrayFactorOption.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TestrayFactorOption, Object>() {
+
+				@Override
+				public Object apply(TestrayFactorOption testrayFactorOption) {
+					return testrayFactorOption.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TestrayFactorOption, Object>() {
+
+				@Override
+				public Object apply(TestrayFactorOption testrayFactorOption) {
+					return testrayFactorOption.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TestrayFactorOption, Object>() {
+
+				@Override
+				public Object apply(TestrayFactorOption testrayFactorOption) {
+					return testrayFactorOption.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<TestrayFactorOption, Object>() {
+
+				@Override
+				public Object apply(TestrayFactorOption testrayFactorOption) {
+					return testrayFactorOption.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"testrayFactorCategoryId",
+			new Function<TestrayFactorOption, Object>() {
+
+				@Override
+				public Object apply(TestrayFactorOption testrayFactorOption) {
+					return testrayFactorOption.getTestrayFactorCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<TestrayFactorOption, Object>() {
+
+				@Override
+				public Object apply(TestrayFactorOption testrayFactorOption) {
+					return testrayFactorOption.getName();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TestrayFactorOption, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TestrayFactorOption, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<TestrayFactorOption, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"testrayFactorOptionId",
 			new BiConsumer<TestrayFactorOption, Object>() {
@@ -284,16 +372,6 @@ public class TestrayFactorOptionModelImpl
 
 					testrayFactorOption.setTestrayFactorOptionId(
 						(Long)testrayFactorOptionIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<TestrayFactorOption, Object>() {
-
-				@Override
-				public Object apply(TestrayFactorOption testrayFactorOption) {
-					return testrayFactorOption.getGroupId();
 				}
 
 			});
@@ -310,16 +388,6 @@ public class TestrayFactorOptionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<TestrayFactorOption, Object>() {
-
-				@Override
-				public Object apply(TestrayFactorOption testrayFactorOption) {
-					return testrayFactorOption.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<TestrayFactorOption, Object>() {
@@ -330,16 +398,6 @@ public class TestrayFactorOptionModelImpl
 					Object companyIdObject) {
 
 					testrayFactorOption.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TestrayFactorOption, Object>() {
-
-				@Override
-				public Object apply(TestrayFactorOption testrayFactorOption) {
-					return testrayFactorOption.getUserId();
 				}
 
 			});
@@ -356,16 +414,6 @@ public class TestrayFactorOptionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TestrayFactorOption, Object>() {
-
-				@Override
-				public Object apply(TestrayFactorOption testrayFactorOption) {
-					return testrayFactorOption.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<TestrayFactorOption, Object>() {
@@ -379,16 +427,6 @@ public class TestrayFactorOptionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TestrayFactorOption, Object>() {
-
-				@Override
-				public Object apply(TestrayFactorOption testrayFactorOption) {
-					return testrayFactorOption.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<TestrayFactorOption, Object>() {
@@ -399,16 +437,6 @@ public class TestrayFactorOptionModelImpl
 					Object createDateObject) {
 
 					testrayFactorOption.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<TestrayFactorOption, Object>() {
-
-				@Override
-				public Object apply(TestrayFactorOption testrayFactorOption) {
-					return testrayFactorOption.getModifiedDate();
 				}
 
 			});
@@ -426,16 +454,6 @@ public class TestrayFactorOptionModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"testrayFactorCategoryId",
-			new Function<TestrayFactorOption, Object>() {
-
-				@Override
-				public Object apply(TestrayFactorOption testrayFactorOption) {
-					return testrayFactorOption.getTestrayFactorCategoryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"testrayFactorCategoryId",
 			new BiConsumer<TestrayFactorOption, Object>() {
@@ -447,16 +465,6 @@ public class TestrayFactorOptionModelImpl
 
 					testrayFactorOption.setTestrayFactorCategoryId(
 						(Long)testrayFactorCategoryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<TestrayFactorOption, Object>() {
-
-				@Override
-				public Object apply(TestrayFactorOption testrayFactorOption) {
-					return testrayFactorOption.getName();
 				}
 
 			});
@@ -474,8 +482,6 @@ public class TestrayFactorOptionModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

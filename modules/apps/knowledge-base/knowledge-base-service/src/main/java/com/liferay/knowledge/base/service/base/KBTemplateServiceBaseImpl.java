@@ -40,8 +40,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -660,11 +658,11 @@ public abstract class KBTemplateServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(kbTemplateService);
+		KBTemplateServiceUtil.setService(kbTemplateService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		KBTemplateServiceUtil.setService(null);
 	}
 
 	/**
@@ -706,20 +704,6 @@ public abstract class KBTemplateServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(KBTemplateService kbTemplateService) {
-		try {
-			Field field = KBTemplateServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, kbTemplateService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -256,17 +256,12 @@ public class MeetupsRegistrationModelImpl
 
 	private static final Map<String, Function<MeetupsRegistration, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<MeetupsRegistration, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<MeetupsRegistration, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<MeetupsRegistration, Object>>();
-		Map<String, BiConsumer<MeetupsRegistration, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<MeetupsRegistration, ?>>();
 
 		attributeGetterFunctions.put(
 			"meetupsRegistrationId",
@@ -278,6 +273,99 @@ public class MeetupsRegistrationModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<MeetupsRegistration, Object>() {
+
+				@Override
+				public Object apply(MeetupsRegistration meetupsRegistration) {
+					return meetupsRegistration.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<MeetupsRegistration, Object>() {
+
+				@Override
+				public Object apply(MeetupsRegistration meetupsRegistration) {
+					return meetupsRegistration.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<MeetupsRegistration, Object>() {
+
+				@Override
+				public Object apply(MeetupsRegistration meetupsRegistration) {
+					return meetupsRegistration.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<MeetupsRegistration, Object>() {
+
+				@Override
+				public Object apply(MeetupsRegistration meetupsRegistration) {
+					return meetupsRegistration.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<MeetupsRegistration, Object>() {
+
+				@Override
+				public Object apply(MeetupsRegistration meetupsRegistration) {
+					return meetupsRegistration.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"meetupsEntryId",
+			new Function<MeetupsRegistration, Object>() {
+
+				@Override
+				public Object apply(MeetupsRegistration meetupsRegistration) {
+					return meetupsRegistration.getMeetupsEntryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"comments",
+			new Function<MeetupsRegistration, Object>() {
+
+				@Override
+				public Object apply(MeetupsRegistration meetupsRegistration) {
+					return meetupsRegistration.getComments();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<MeetupsRegistration, Object>() {
+
+				@Override
+				public Object apply(MeetupsRegistration meetupsRegistration) {
+					return meetupsRegistration.getStatus();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<MeetupsRegistration, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<MeetupsRegistration, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<MeetupsRegistration, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"meetupsRegistrationId",
 			new BiConsumer<MeetupsRegistration, Object>() {
@@ -289,16 +377,6 @@ public class MeetupsRegistrationModelImpl
 
 					meetupsRegistration.setMeetupsRegistrationId(
 						(Long)meetupsRegistrationIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<MeetupsRegistration, Object>() {
-
-				@Override
-				public Object apply(MeetupsRegistration meetupsRegistration) {
-					return meetupsRegistration.getCompanyId();
 				}
 
 			});
@@ -315,16 +393,6 @@ public class MeetupsRegistrationModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<MeetupsRegistration, Object>() {
-
-				@Override
-				public Object apply(MeetupsRegistration meetupsRegistration) {
-					return meetupsRegistration.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<MeetupsRegistration, Object>() {
@@ -335,16 +403,6 @@ public class MeetupsRegistrationModelImpl
 					Object userIdObject) {
 
 					meetupsRegistration.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<MeetupsRegistration, Object>() {
-
-				@Override
-				public Object apply(MeetupsRegistration meetupsRegistration) {
-					return meetupsRegistration.getUserName();
 				}
 
 			});
@@ -361,16 +419,6 @@ public class MeetupsRegistrationModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<MeetupsRegistration, Object>() {
-
-				@Override
-				public Object apply(MeetupsRegistration meetupsRegistration) {
-					return meetupsRegistration.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<MeetupsRegistration, Object>() {
@@ -381,16 +429,6 @@ public class MeetupsRegistrationModelImpl
 					Object createDateObject) {
 
 					meetupsRegistration.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<MeetupsRegistration, Object>() {
-
-				@Override
-				public Object apply(MeetupsRegistration meetupsRegistration) {
-					return meetupsRegistration.getModifiedDate();
 				}
 
 			});
@@ -408,16 +446,6 @@ public class MeetupsRegistrationModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"meetupsEntryId",
-			new Function<MeetupsRegistration, Object>() {
-
-				@Override
-				public Object apply(MeetupsRegistration meetupsRegistration) {
-					return meetupsRegistration.getMeetupsEntryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"meetupsEntryId",
 			new BiConsumer<MeetupsRegistration, Object>() {
@@ -432,16 +460,6 @@ public class MeetupsRegistrationModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"comments",
-			new Function<MeetupsRegistration, Object>() {
-
-				@Override
-				public Object apply(MeetupsRegistration meetupsRegistration) {
-					return meetupsRegistration.getComments();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"comments",
 			new BiConsumer<MeetupsRegistration, Object>() {
@@ -452,16 +470,6 @@ public class MeetupsRegistrationModelImpl
 					Object commentsObject) {
 
 					meetupsRegistration.setComments((String)commentsObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<MeetupsRegistration, Object>() {
-
-				@Override
-				public Object apply(MeetupsRegistration meetupsRegistration) {
-					return meetupsRegistration.getStatus();
 				}
 
 			});
@@ -479,8 +487,6 @@ public class MeetupsRegistrationModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

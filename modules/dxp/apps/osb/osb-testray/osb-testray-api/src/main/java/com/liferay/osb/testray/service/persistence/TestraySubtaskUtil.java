@@ -719,6 +719,10 @@ public class TestraySubtaskUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestraySubtaskPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestraySubtaskPersistence _persistence;
 
 }

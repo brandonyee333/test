@@ -275,6 +275,10 @@ public class LoopPersonRelUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopPersonRelPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopPersonRelPersistence _persistence;
 
 }

@@ -334,6 +334,10 @@ public class BlacklistEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(BlacklistEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile BlacklistEntryPersistence _persistence;
 
 }

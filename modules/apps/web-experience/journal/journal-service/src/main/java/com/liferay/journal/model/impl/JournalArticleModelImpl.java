@@ -412,14 +412,10 @@ public class JournalArticleModelImpl
 
 	private static final Map<String, Function<JournalArticle, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<JournalArticle, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<JournalArticle, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<JournalArticle, Object>>();
-		Map<String, BiConsumer<JournalArticle, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<JournalArticle, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -428,18 +424,6 @@ public class JournalArticleModelImpl
 				@Override
 				public Object apply(JournalArticle journalArticle) {
 					return journalArticle.getUuid();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"uuid",
-			new BiConsumer<JournalArticle, Object>() {
-
-				@Override
-				public void accept(
-					JournalArticle journalArticle, Object uuidObject) {
-
-					journalArticle.setUuid((String)uuidObject);
 				}
 
 			});
@@ -453,6 +437,350 @@ public class JournalArticleModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"resourcePrimKey",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getResourcePrimKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"folderId",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getFolderId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"treePath",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getTreePath();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"articleId",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getArticleId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"version",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getVersion();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"title",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getTitle();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"urlTitle",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getUrlTitle();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"content",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getContent();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"DDMStructureKey",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getDDMStructureKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"DDMTemplateKey",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getDDMTemplateKey();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"layoutUuid",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getLayoutUuid();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"displayDate",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getDisplayDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"expirationDate",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getExpirationDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"reviewDate",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getReviewDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"indexable",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getIndexable();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"smallImage",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getSmallImage();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"smallImageId",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getSmallImageId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"smallImageURL",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getSmallImageURL();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPublishDate",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getLastPublishDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getStatus();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByUserId",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getStatusByUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByUserName",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getStatusByUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusDate",
+			new Function<JournalArticle, Object>() {
+
+				@Override
+				public Object apply(JournalArticle journalArticle) {
+					return journalArticle.getStatusDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<JournalArticle, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<JournalArticle, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<JournalArticle, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"uuid",
+			new BiConsumer<JournalArticle, Object>() {
+
+				@Override
+				public void accept(
+					JournalArticle journalArticle, Object uuidObject) {
+
+					journalArticle.setUuid((String)uuidObject);
+				}
+
+			});
 		attributeSetterBiConsumers.put(
 			"id",
 			new BiConsumer<JournalArticle, Object>() {
@@ -462,16 +790,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object idObject) {
 
 					journalArticle.setId((Long)idObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"resourcePrimKey",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getResourcePrimKey();
 				}
 
 			});
@@ -489,16 +807,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getGroupId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"groupId",
 			new BiConsumer<JournalArticle, Object>() {
@@ -508,16 +816,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object groupIdObject) {
 
 					journalArticle.setGroupId((Long)groupIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getCompanyId();
 				}
 
 			});
@@ -533,16 +831,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<JournalArticle, Object>() {
@@ -552,16 +840,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object userIdObject) {
 
 					journalArticle.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getUserName();
 				}
 
 			});
@@ -577,16 +855,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<JournalArticle, Object>() {
@@ -596,16 +864,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object createDateObject) {
 
 					journalArticle.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getModifiedDate();
 				}
 
 			});
@@ -621,16 +879,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"folderId",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getFolderId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"folderId",
 			new BiConsumer<JournalArticle, Object>() {
@@ -640,16 +888,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object folderIdObject) {
 
 					journalArticle.setFolderId((Long)folderIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getClassNameId();
 				}
 
 			});
@@ -665,16 +903,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<JournalArticle, Object>() {
@@ -684,16 +912,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object classPKObject) {
 
 					journalArticle.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"treePath",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getTreePath();
 				}
 
 			});
@@ -709,16 +927,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"articleId",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getArticleId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"articleId",
 			new BiConsumer<JournalArticle, Object>() {
@@ -728,16 +936,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object articleIdObject) {
 
 					journalArticle.setArticleId((String)articleIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"version",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getVersion();
 				}
 
 			});
@@ -753,16 +951,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"title",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getTitle();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"title",
 			new BiConsumer<JournalArticle, Object>() {
@@ -772,16 +960,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object titleObject) {
 
 					journalArticle.setTitle((String)titleObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"urlTitle",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getUrlTitle();
 				}
 
 			});
@@ -797,16 +975,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getDescription();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"description",
 			new BiConsumer<JournalArticle, Object>() {
@@ -819,16 +987,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"content",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getContent();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"content",
 			new BiConsumer<JournalArticle, Object>() {
@@ -838,16 +996,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object contentObject) {
 
 					journalArticle.setContent((String)contentObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"DDMStructureKey",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getDDMStructureKey();
 				}
 
 			});
@@ -865,16 +1013,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"DDMTemplateKey",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getDDMTemplateKey();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"DDMTemplateKey",
 			new BiConsumer<JournalArticle, Object>() {
@@ -886,16 +1024,6 @@ public class JournalArticleModelImpl
 
 					journalArticle.setDDMTemplateKey(
 						(String)DDMTemplateKeyObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"layoutUuid",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getLayoutUuid();
 				}
 
 			});
@@ -911,16 +1039,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"displayDate",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getDisplayDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"displayDate",
 			new BiConsumer<JournalArticle, Object>() {
@@ -930,16 +1048,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object displayDateObject) {
 
 					journalArticle.setDisplayDate((Date)displayDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"expirationDate",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getExpirationDate();
 				}
 
 			});
@@ -957,16 +1065,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"reviewDate",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getReviewDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"reviewDate",
 			new BiConsumer<JournalArticle, Object>() {
@@ -976,16 +1074,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object reviewDateObject) {
 
 					journalArticle.setReviewDate((Date)reviewDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"indexable",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getIndexable();
 				}
 
 			});
@@ -1001,16 +1089,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"smallImage",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getSmallImage();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"smallImage",
 			new BiConsumer<JournalArticle, Object>() {
@@ -1020,16 +1098,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object smallImageObject) {
 
 					journalArticle.setSmallImage((Boolean)smallImageObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"smallImageId",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getSmallImageId();
 				}
 
 			});
@@ -1045,16 +1113,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"smallImageURL",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getSmallImageURL();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"smallImageURL",
 			new BiConsumer<JournalArticle, Object>() {
@@ -1065,16 +1123,6 @@ public class JournalArticleModelImpl
 
 					journalArticle.setSmallImageURL(
 						(String)smallImageURLObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastPublishDate",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getLastPublishDate();
 				}
 
 			});
@@ -1092,16 +1140,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getStatus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"status",
 			new BiConsumer<JournalArticle, Object>() {
@@ -1111,16 +1149,6 @@ public class JournalArticleModelImpl
 					JournalArticle journalArticle, Object statusObject) {
 
 					journalArticle.setStatus((Integer)statusObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusByUserId",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getStatusByUserId();
 				}
 
 			});
@@ -1138,16 +1166,6 @@ public class JournalArticleModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"statusByUserName",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getStatusByUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"statusByUserName",
 			new BiConsumer<JournalArticle, Object>() {
@@ -1159,16 +1177,6 @@ public class JournalArticleModelImpl
 
 					journalArticle.setStatusByUserName(
 						(String)statusByUserNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusDate",
-			new Function<JournalArticle, Object>() {
-
-				@Override
-				public Object apply(JournalArticle journalArticle) {
-					return journalArticle.getStatusDate();
 				}
 
 			});
@@ -1185,8 +1193,6 @@ public class JournalArticleModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

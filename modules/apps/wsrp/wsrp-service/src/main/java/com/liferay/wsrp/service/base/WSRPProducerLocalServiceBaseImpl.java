@@ -60,8 +60,6 @@ import com.liferay.wsrp.service.persistence.WSRPProducerPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -880,14 +878,14 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.wsrp.model.WSRPProducer", wsrpProducerLocalService);
 
-		_setLocalServiceUtilService(wsrpProducerLocalService);
+		WSRPProducerLocalServiceUtil.setService(wsrpProducerLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.wsrp.model.WSRPProducer");
 
-		_setLocalServiceUtilService(null);
+		WSRPProducerLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -929,22 +927,6 @@ public abstract class WSRPProducerLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		WSRPProducerLocalService wsrpProducerLocalService) {
-
-		try {
-			Field field = WSRPProducerLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, wsrpProducerLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

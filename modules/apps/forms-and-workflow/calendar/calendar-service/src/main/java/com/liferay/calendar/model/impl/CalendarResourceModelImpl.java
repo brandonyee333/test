@@ -344,16 +344,11 @@ public class CalendarResourceModelImpl
 
 	private static final Map<String, Function<CalendarResource, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<CalendarResource, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<CalendarResource, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap<String, Function<CalendarResource, Object>>();
-		Map<String, BiConsumer<CalendarResource, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<CalendarResource, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -365,6 +360,179 @@ public class CalendarResourceModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"calendarResourceId",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getCalendarResourceId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"resourceBlockId",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getResourceBlockId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classUuid",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getClassUuid();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"code",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getCode();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"active",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getActive();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPublishDate",
+			new Function<CalendarResource, Object>() {
+
+				@Override
+				public Object apply(CalendarResource calendarResource) {
+					return calendarResource.getLastPublishDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<CalendarResource, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<CalendarResource, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<CalendarResource, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"uuid",
 			new BiConsumer<CalendarResource, Object>() {
@@ -374,16 +542,6 @@ public class CalendarResourceModelImpl
 					CalendarResource calendarResource, Object uuidObject) {
 
 					calendarResource.setUuid((String)uuidObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"calendarResourceId",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getCalendarResourceId();
 				}
 
 			});
@@ -401,16 +559,6 @@ public class CalendarResourceModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getGroupId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"groupId",
 			new BiConsumer<CalendarResource, Object>() {
@@ -420,16 +568,6 @@ public class CalendarResourceModelImpl
 					CalendarResource calendarResource, Object groupIdObject) {
 
 					calendarResource.setGroupId((Long)groupIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getCompanyId();
 				}
 
 			});
@@ -445,16 +583,6 @@ public class CalendarResourceModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<CalendarResource, Object>() {
@@ -467,16 +595,6 @@ public class CalendarResourceModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<CalendarResource, Object>() {
@@ -486,16 +604,6 @@ public class CalendarResourceModelImpl
 					CalendarResource calendarResource, Object userNameObject) {
 
 					calendarResource.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getCreateDate();
 				}
 
 			});
@@ -512,16 +620,6 @@ public class CalendarResourceModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<CalendarResource, Object>() {
@@ -532,16 +630,6 @@ public class CalendarResourceModelImpl
 					Object modifiedDateObject) {
 
 					calendarResource.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"resourceBlockId",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getResourceBlockId();
 				}
 
 			});
@@ -559,16 +647,6 @@ public class CalendarResourceModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getClassNameId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classNameId",
 			new BiConsumer<CalendarResource, Object>() {
@@ -579,16 +657,6 @@ public class CalendarResourceModelImpl
 					Object classNameIdObject) {
 
 					calendarResource.setClassNameId((Long)classNameIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getClassPK();
 				}
 
 			});
@@ -604,16 +672,6 @@ public class CalendarResourceModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classUuid",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getClassUuid();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classUuid",
 			new BiConsumer<CalendarResource, Object>() {
@@ -623,16 +681,6 @@ public class CalendarResourceModelImpl
 					CalendarResource calendarResource, Object classUuidObject) {
 
 					calendarResource.setClassUuid((String)classUuidObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"code",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getCode();
 				}
 
 			});
@@ -648,16 +696,6 @@ public class CalendarResourceModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<CalendarResource, Object>() {
@@ -667,16 +705,6 @@ public class CalendarResourceModelImpl
 					CalendarResource calendarResource, Object nameObject) {
 
 					calendarResource.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getDescription();
 				}
 
 			});
@@ -693,16 +721,6 @@ public class CalendarResourceModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"active",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getActive();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"active",
 			new BiConsumer<CalendarResource, Object>() {
@@ -712,16 +730,6 @@ public class CalendarResourceModelImpl
 					CalendarResource calendarResource, Object activeObject) {
 
 					calendarResource.setActive((Boolean)activeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastPublishDate",
-			new Function<CalendarResource, Object>() {
-
-				@Override
-				public Object apply(CalendarResource calendarResource) {
-					return calendarResource.getLastPublishDate();
 				}
 
 			});
@@ -740,8 +748,6 @@ public class CalendarResourceModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

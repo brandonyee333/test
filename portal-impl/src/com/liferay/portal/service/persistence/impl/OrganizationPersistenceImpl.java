@@ -10593,11 +10593,11 @@ public class OrganizationPersistenceImpl
 				String.class.getName()
 			});
 
-		_setOrganizationUtilPersistence(this);
+		OrganizationUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setOrganizationUtilPersistence(null);
+		OrganizationUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(OrganizationImpl.class.getName());
 
@@ -10607,22 +10607,6 @@ public class OrganizationPersistenceImpl
 
 		TableMapperFactory.removeTableMapper("Groups_Orgs");
 		TableMapperFactory.removeTableMapper("Users_Orgs");
-	}
-
-	private void _setOrganizationUtilPersistence(
-		OrganizationPersistence organizationPersistence) {
-
-		try {
-			Field field = OrganizationUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, organizationPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@BeanReference(type = GroupPersistence.class)

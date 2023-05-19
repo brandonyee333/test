@@ -47,6 +47,10 @@ public class AccountEntryLanguageServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AccountEntryLanguageService service) {
+		_service = service;
+	}
+
 	private static volatile AccountEntryLanguageService _service;
 
 }

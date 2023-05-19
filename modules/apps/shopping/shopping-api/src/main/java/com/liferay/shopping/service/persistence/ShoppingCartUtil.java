@@ -664,6 +664,10 @@ public class ShoppingCartUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ShoppingCartPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ShoppingCartPersistence _persistence;
 
 }

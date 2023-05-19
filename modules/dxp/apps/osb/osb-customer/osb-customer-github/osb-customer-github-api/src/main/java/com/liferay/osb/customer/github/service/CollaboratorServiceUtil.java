@@ -47,6 +47,10 @@ public class CollaboratorServiceUtil {
 		return _service;
 	}
 
+	public static void setService(CollaboratorService service) {
+		_service = service;
+	}
+
 	private static volatile CollaboratorService _service;
 
 }

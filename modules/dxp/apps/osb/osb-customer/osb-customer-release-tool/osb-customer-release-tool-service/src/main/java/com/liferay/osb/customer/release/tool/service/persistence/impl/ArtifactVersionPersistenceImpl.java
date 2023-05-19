@@ -1805,33 +1805,17 @@ public class ArtifactVersionPersistenceImpl
 				String.class.getName()
 			});
 
-		_setArtifactVersionUtilPersistence(this);
+		ArtifactVersionUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setArtifactVersionUtilPersistence(null);
+		ArtifactVersionUtil.setPersistence(null);
 
 		entityCache.removeCache(ArtifactVersionImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setArtifactVersionUtilPersistence(
-		ArtifactVersionPersistence artifactVersionPersistence) {
-
-		try {
-			Field field = ArtifactVersionUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, artifactVersionPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

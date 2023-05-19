@@ -292,6 +292,10 @@ public class EventLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(EventLocalService service) {
+		_service = service;
+	}
+
 	private static volatile EventLocalService _service;
 
 }

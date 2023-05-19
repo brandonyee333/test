@@ -1193,6 +1193,10 @@ public class EventUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(EventPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile EventPersistence _persistence;
 
 }

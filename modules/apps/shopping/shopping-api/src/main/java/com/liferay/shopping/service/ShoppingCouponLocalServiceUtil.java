@@ -358,6 +358,10 @@ public class ShoppingCouponLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ShoppingCouponLocalService service) {
+		_service = service;
+	}
+
 	private static volatile ShoppingCouponLocalService _service;
 
 }

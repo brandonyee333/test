@@ -1155,6 +1155,10 @@ public class CollaboratorUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(CollaboratorPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile CollaboratorPersistence _persistence;
 
 }

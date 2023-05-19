@@ -529,6 +529,10 @@ public class ZendeskSectionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(ZendeskSectionPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile ZendeskSectionPersistence _persistence;
 
 }

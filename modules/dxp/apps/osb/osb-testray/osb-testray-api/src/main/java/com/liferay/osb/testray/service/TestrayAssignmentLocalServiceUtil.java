@@ -290,6 +290,10 @@ public class TestrayAssignmentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayAssignmentLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayAssignmentLocalService _service;
 
 }

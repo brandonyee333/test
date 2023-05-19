@@ -75,6 +75,10 @@ public class TokenAuthEntryServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TokenAuthEntryService service) {
+		_service = service;
+	}
+
 	private static volatile TokenAuthEntryService _service;
 
 }

@@ -83,8 +83,6 @@ import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1587,14 +1585,14 @@ public abstract class DLFolderLocalServiceBaseImpl
 			"com.liferay.document.library.kernel.model.DLFolder",
 			dlFolderLocalService);
 
-		_setLocalServiceUtilService(dlFolderLocalService);
+		DLFolderLocalServiceUtil.setService(dlFolderLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.document.library.kernel.model.DLFolder");
 
-		_setLocalServiceUtilService(null);
+		DLFolderLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1636,22 +1634,6 @@ public abstract class DLFolderLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		DLFolderLocalService dlFolderLocalService) {
-
-		try {
-			Field field = DLFolderLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, dlFolderLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

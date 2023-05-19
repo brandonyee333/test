@@ -38,8 +38,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.sql.Timestamp;
 
 import java.util.Collections;
@@ -1924,33 +1922,17 @@ public class BounceEntryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByEA_GtBD",
 			new String[] {String.class.getName(), Date.class.getName()});
 
-		_setBounceEntryUtilPersistence(this);
+		BounceEntryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setBounceEntryUtilPersistence(null);
+		BounceEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(BounceEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setBounceEntryUtilPersistence(
-		BounceEntryPersistence bounceEntryPersistence) {
-
-		try {
-			Field field = BounceEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, bounceEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

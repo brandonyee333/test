@@ -271,6 +271,10 @@ public class TestrayRoutineUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayRoutinePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayRoutinePersistence _persistence;
 
 }

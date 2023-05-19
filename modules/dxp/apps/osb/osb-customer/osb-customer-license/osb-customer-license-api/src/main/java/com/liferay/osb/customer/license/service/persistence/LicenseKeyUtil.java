@@ -4159,6 +4159,10 @@ public class LicenseKeyUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LicenseKeyPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LicenseKeyPersistence _persistence;
 
 }

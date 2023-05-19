@@ -751,6 +751,12 @@ public class KaleoDraftDefinitionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		KaleoDraftDefinitionPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile KaleoDraftDefinitionPersistence _persistence;
 
 }

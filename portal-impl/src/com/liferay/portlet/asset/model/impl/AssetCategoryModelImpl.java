@@ -355,14 +355,10 @@ public class AssetCategoryModelImpl
 
 	private static final Map<String, Function<AssetCategory, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<AssetCategory, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AssetCategory, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<AssetCategory, Object>>();
-		Map<String, BiConsumer<AssetCategory, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<AssetCategory, ?>>();
 
 		attributeGetterFunctions.put(
 			"uuid",
@@ -374,6 +370,168 @@ public class AssetCategoryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"categoryId",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"groupId",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentCategoryId",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getParentCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"leftCategoryId",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getLeftCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"rightCategoryId",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getRightCategoryId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"title",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getTitle();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"vocabularyId",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getVocabularyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"lastPublishDate",
+			new Function<AssetCategory, Object>() {
+
+				@Override
+				public Object apply(AssetCategory assetCategory) {
+					return assetCategory.getLastPublishDate();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<AssetCategory, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<AssetCategory, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<AssetCategory, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"uuid",
 			new BiConsumer<AssetCategory, Object>() {
@@ -383,16 +541,6 @@ public class AssetCategoryModelImpl
 					AssetCategory assetCategory, Object uuidObject) {
 
 					assetCategory.setUuid((String)uuidObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"categoryId",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getCategoryId();
 				}
 
 			});
@@ -408,16 +556,6 @@ public class AssetCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"groupId",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getGroupId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"groupId",
 			new BiConsumer<AssetCategory, Object>() {
@@ -427,16 +565,6 @@ public class AssetCategoryModelImpl
 					AssetCategory assetCategory, Object groupIdObject) {
 
 					assetCategory.setGroupId((Long)groupIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getCompanyId();
 				}
 
 			});
@@ -452,16 +580,6 @@ public class AssetCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<AssetCategory, Object>() {
@@ -471,16 +589,6 @@ public class AssetCategoryModelImpl
 					AssetCategory assetCategory, Object userIdObject) {
 
 					assetCategory.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getUserName();
 				}
 
 			});
@@ -496,16 +604,6 @@ public class AssetCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<AssetCategory, Object>() {
@@ -518,16 +616,6 @@ public class AssetCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<AssetCategory, Object>() {
@@ -537,16 +625,6 @@ public class AssetCategoryModelImpl
 					AssetCategory assetCategory, Object modifiedDateObject) {
 
 					assetCategory.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"parentCategoryId",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getParentCategoryId();
 				}
 
 			});
@@ -564,16 +642,6 @@ public class AssetCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"leftCategoryId",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getLeftCategoryId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"leftCategoryId",
 			new BiConsumer<AssetCategory, Object>() {
@@ -583,16 +651,6 @@ public class AssetCategoryModelImpl
 					AssetCategory assetCategory, Object leftCategoryIdObject) {
 
 					assetCategory.setLeftCategoryId((Long)leftCategoryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"rightCategoryId",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getRightCategoryId();
 				}
 
 			});
@@ -609,16 +667,6 @@ public class AssetCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<AssetCategory, Object>() {
@@ -628,16 +676,6 @@ public class AssetCategoryModelImpl
 					AssetCategory assetCategory, Object nameObject) {
 
 					assetCategory.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"title",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getTitle();
 				}
 
 			});
@@ -653,16 +691,6 @@ public class AssetCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getDescription();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"description",
 			new BiConsumer<AssetCategory, Object>() {
@@ -675,16 +703,6 @@ public class AssetCategoryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"vocabularyId",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getVocabularyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"vocabularyId",
 			new BiConsumer<AssetCategory, Object>() {
@@ -694,16 +712,6 @@ public class AssetCategoryModelImpl
 					AssetCategory assetCategory, Object vocabularyIdObject) {
 
 					assetCategory.setVocabularyId((Long)vocabularyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"lastPublishDate",
-			new Function<AssetCategory, Object>() {
-
-				@Override
-				public Object apply(AssetCategory assetCategory) {
-					return assetCategory.getLastPublishDate();
 				}
 
 			});
@@ -721,8 +729,6 @@ public class AssetCategoryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -437,6 +437,10 @@ public class ShoppingOrderLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ShoppingOrderLocalService service) {
+		_service = service;
+	}
+
 	private static volatile ShoppingOrderLocalService _service;
 
 }

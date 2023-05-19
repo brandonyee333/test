@@ -319,6 +319,10 @@ public class MeetupsRegistrationLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(MeetupsRegistrationLocalService service) {
+		_service = service;
+	}
+
 	private static volatile MeetupsRegistrationLocalService _service;
 
 }

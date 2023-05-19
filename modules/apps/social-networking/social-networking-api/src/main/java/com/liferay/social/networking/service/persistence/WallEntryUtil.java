@@ -796,6 +796,10 @@ public class WallEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(WallEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile WallEntryPersistence _persistence;
 
 }

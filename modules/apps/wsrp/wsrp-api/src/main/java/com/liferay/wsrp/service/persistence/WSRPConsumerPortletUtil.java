@@ -882,6 +882,12 @@ public class WSRPConsumerPortletUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		WSRPConsumerPortletPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile WSRPConsumerPortletPersistence _persistence;
 
 }

@@ -816,6 +816,10 @@ public class KBArticleLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(KBArticleLocalService service) {
+		_service = service;
+	}
+
 	private static volatile KBArticleLocalService _service;
 
 }

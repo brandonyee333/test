@@ -445,6 +445,12 @@ public class ShoppingItemFieldUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		ShoppingItemFieldPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile ShoppingItemFieldPersistence _persistence;
 
 }

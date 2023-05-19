@@ -467,6 +467,12 @@ public class AssetEntrySetLikeUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		AssetEntrySetLikePersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile AssetEntrySetLikePersistence _persistence;
 
 }

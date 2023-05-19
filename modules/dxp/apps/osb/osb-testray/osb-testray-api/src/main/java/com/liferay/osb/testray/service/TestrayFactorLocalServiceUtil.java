@@ -280,6 +280,10 @@ public class TestrayFactorLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayFactorLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayFactorLocalService _service;
 
 }

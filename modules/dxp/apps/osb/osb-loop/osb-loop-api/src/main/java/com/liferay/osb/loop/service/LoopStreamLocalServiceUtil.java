@@ -276,6 +276,10 @@ public class LoopStreamLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopStreamLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopStreamLocalService _service;
 
 }

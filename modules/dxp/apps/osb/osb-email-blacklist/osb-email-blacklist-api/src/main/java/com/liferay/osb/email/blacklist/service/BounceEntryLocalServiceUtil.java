@@ -292,6 +292,10 @@ public class BounceEntryLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(BounceEntryLocalService service) {
+		_service = service;
+	}
+
 	private static volatile BounceEntryLocalService _service;
 
 }

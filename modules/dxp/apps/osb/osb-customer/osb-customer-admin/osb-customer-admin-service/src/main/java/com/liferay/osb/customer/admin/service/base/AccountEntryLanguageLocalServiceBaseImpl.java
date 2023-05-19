@@ -59,8 +59,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -955,14 +953,15 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 			"com.liferay.osb.customer.admin.model.AccountEntryLanguage",
 			accountEntryLanguageLocalService);
 
-		_setLocalServiceUtilService(accountEntryLanguageLocalService);
+		AccountEntryLanguageLocalServiceUtil.setService(
+			accountEntryLanguageLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.admin.model.AccountEntryLanguage");
 
-		_setLocalServiceUtilService(null);
+		AccountEntryLanguageLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1005,23 +1004,6 @@ public abstract class AccountEntryLanguageLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AccountEntryLanguageLocalService accountEntryLanguageLocalService) {
-
-		try {
-			Field field =
-				AccountEntryLanguageLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, accountEntryLanguageLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

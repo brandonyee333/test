@@ -79,8 +79,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1660,14 +1658,14 @@ public abstract class RoleLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.portal.kernel.model.Role", roleLocalService);
 
-		_setLocalServiceUtilService(roleLocalService);
+		RoleLocalServiceUtil.setService(roleLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.portal.kernel.model.Role");
 
-		_setLocalServiceUtilService(null);
+		RoleLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1709,22 +1707,6 @@ public abstract class RoleLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		RoleLocalService roleLocalService) {
-
-		try {
-			Field field = RoleLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, roleLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

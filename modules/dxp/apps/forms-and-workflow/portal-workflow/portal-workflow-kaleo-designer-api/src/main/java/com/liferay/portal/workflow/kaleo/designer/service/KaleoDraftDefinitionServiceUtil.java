@@ -272,6 +272,10 @@ public class KaleoDraftDefinitionServiceUtil {
 		return _service;
 	}
 
+	public static void setService(KaleoDraftDefinitionService service) {
+		_service = service;
+	}
+
 	private static volatile KaleoDraftDefinitionService _service;
 
 }

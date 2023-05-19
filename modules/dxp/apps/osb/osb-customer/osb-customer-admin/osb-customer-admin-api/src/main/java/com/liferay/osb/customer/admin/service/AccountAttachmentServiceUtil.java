@@ -47,6 +47,10 @@ public class AccountAttachmentServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AccountAttachmentService service) {
+		_service = service;
+	}
+
 	private static volatile AccountAttachmentService _service;
 
 }

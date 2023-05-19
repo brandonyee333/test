@@ -302,6 +302,10 @@ public class AccountEntryLanguageLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AccountEntryLanguageLocalService service) {
+		_service = service;
+	}
+
 	private static volatile AccountEntryLanguageLocalService _service;
 
 }

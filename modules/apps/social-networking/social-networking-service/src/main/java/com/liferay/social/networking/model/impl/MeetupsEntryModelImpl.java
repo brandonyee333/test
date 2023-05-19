@@ -259,14 +259,10 @@ public class MeetupsEntryModelImpl
 
 	private static final Map<String, Function<MeetupsEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<MeetupsEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<MeetupsEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<MeetupsEntry, Object>>();
-		Map<String, BiConsumer<MeetupsEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<MeetupsEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"meetupsEntryId",
@@ -278,6 +274,148 @@ public class MeetupsEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"title",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getTitle();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"startDate",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getStartDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"endDate",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getEndDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"totalAttendees",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getTotalAttendees();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"maxAttendees",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getMaxAttendees();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"price",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getPrice();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"thumbnailId",
+			new Function<MeetupsEntry, Object>() {
+
+				@Override
+				public Object apply(MeetupsEntry meetupsEntry) {
+					return meetupsEntry.getThumbnailId();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<MeetupsEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<MeetupsEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<MeetupsEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"meetupsEntryId",
 			new BiConsumer<MeetupsEntry, Object>() {
@@ -287,16 +425,6 @@ public class MeetupsEntryModelImpl
 					MeetupsEntry meetupsEntry, Object meetupsEntryIdObject) {
 
 					meetupsEntry.setMeetupsEntryId((Long)meetupsEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getCompanyId();
 				}
 
 			});
@@ -312,16 +440,6 @@ public class MeetupsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<MeetupsEntry, Object>() {
@@ -331,16 +449,6 @@ public class MeetupsEntryModelImpl
 					MeetupsEntry meetupsEntry, Object userIdObject) {
 
 					meetupsEntry.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getUserName();
 				}
 
 			});
@@ -356,16 +464,6 @@ public class MeetupsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<MeetupsEntry, Object>() {
@@ -375,16 +473,6 @@ public class MeetupsEntryModelImpl
 					MeetupsEntry meetupsEntry, Object createDateObject) {
 
 					meetupsEntry.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getModifiedDate();
 				}
 
 			});
@@ -400,16 +488,6 @@ public class MeetupsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"title",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getTitle();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"title",
 			new BiConsumer<MeetupsEntry, Object>() {
@@ -419,16 +497,6 @@ public class MeetupsEntryModelImpl
 					MeetupsEntry meetupsEntry, Object titleObject) {
 
 					meetupsEntry.setTitle((String)titleObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getDescription();
 				}
 
 			});
@@ -444,16 +512,6 @@ public class MeetupsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"startDate",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getStartDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"startDate",
 			new BiConsumer<MeetupsEntry, Object>() {
@@ -466,16 +524,6 @@ public class MeetupsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"endDate",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getEndDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"endDate",
 			new BiConsumer<MeetupsEntry, Object>() {
@@ -485,16 +533,6 @@ public class MeetupsEntryModelImpl
 					MeetupsEntry meetupsEntry, Object endDateObject) {
 
 					meetupsEntry.setEndDate((Date)endDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"totalAttendees",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getTotalAttendees();
 				}
 
 			});
@@ -511,16 +549,6 @@ public class MeetupsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"maxAttendees",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getMaxAttendees();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"maxAttendees",
 			new BiConsumer<MeetupsEntry, Object>() {
@@ -533,16 +561,6 @@ public class MeetupsEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"price",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getPrice();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"price",
 			new BiConsumer<MeetupsEntry, Object>() {
@@ -552,16 +570,6 @@ public class MeetupsEntryModelImpl
 					MeetupsEntry meetupsEntry, Object priceObject) {
 
 					meetupsEntry.setPrice((Double)priceObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"thumbnailId",
-			new Function<MeetupsEntry, Object>() {
-
-				@Override
-				public Object apply(MeetupsEntry meetupsEntry) {
-					return meetupsEntry.getThumbnailId();
 				}
 
 			});
@@ -578,8 +586,6 @@ public class MeetupsEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

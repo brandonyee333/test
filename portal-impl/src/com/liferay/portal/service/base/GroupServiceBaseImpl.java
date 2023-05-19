@@ -84,8 +84,6 @@ import com.liferay.social.kernel.service.persistence.SocialActivitySettingPersis
 import com.liferay.social.kernel.service.persistence.SocialRequestPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -2843,11 +2841,11 @@ public abstract class GroupServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(groupService);
+		GroupServiceUtil.setService(groupService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		GroupServiceUtil.setService(null);
 	}
 
 	/**
@@ -2889,19 +2887,6 @@ public abstract class GroupServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(GroupService groupService) {
-		try {
-			Field field = GroupServiceUtil.class.getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, groupService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

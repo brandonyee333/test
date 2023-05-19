@@ -401,6 +401,10 @@ public class TestrayComponentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayComponentLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayComponentLocalService _service;
 
 }

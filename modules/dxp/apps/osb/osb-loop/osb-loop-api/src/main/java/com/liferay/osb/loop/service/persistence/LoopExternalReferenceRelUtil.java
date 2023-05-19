@@ -369,6 +369,12 @@ public class LoopExternalReferenceRelUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		LoopExternalReferenceRelPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile LoopExternalReferenceRelPersistence _persistence;
 
 }

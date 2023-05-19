@@ -49,8 +49,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -533,14 +531,14 @@ public abstract class CollaboratorLocalServiceBaseImpl
 			"com.liferay.osb.customer.github.model.Collaborator",
 			collaboratorLocalService);
 
-		_setLocalServiceUtilService(collaboratorLocalService);
+		CollaboratorLocalServiceUtil.setService(collaboratorLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.github.model.Collaborator");
 
-		_setLocalServiceUtilService(null);
+		CollaboratorLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -582,22 +580,6 @@ public abstract class CollaboratorLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		CollaboratorLocalService collaboratorLocalService) {
-
-		try {
-			Field field = CollaboratorLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, collaboratorLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

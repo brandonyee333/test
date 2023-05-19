@@ -300,6 +300,10 @@ public class KaleoNodeLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(KaleoNodeLocalService service) {
+		_service = service;
+	}
+
 	private static volatile KaleoNodeLocalService _service;
 
 }

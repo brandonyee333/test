@@ -50,8 +50,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -549,14 +547,15 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 			"com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry",
 			assetSharingEntryLocalService);
 
-		_setLocalServiceUtilService(assetSharingEntryLocalService);
+		AssetSharingEntryLocalServiceUtil.setService(
+			assetSharingEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.asset.sharing.model.AssetSharingEntry");
 
-		_setLocalServiceUtilService(null);
+		AssetSharingEntryLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -599,23 +598,6 @@ public abstract class AssetSharingEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AssetSharingEntryLocalService assetSharingEntryLocalService) {
-
-		try {
-			Field field =
-				AssetSharingEntryLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetSharingEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

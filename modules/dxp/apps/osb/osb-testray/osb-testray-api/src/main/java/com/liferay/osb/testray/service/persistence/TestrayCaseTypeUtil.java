@@ -552,6 +552,10 @@ public class TestrayCaseTypeUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayCaseTypePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayCaseTypePersistence _persistence;
 
 }

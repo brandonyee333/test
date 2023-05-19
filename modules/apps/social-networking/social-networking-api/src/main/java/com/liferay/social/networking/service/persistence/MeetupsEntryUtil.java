@@ -612,6 +612,10 @@ public class MeetupsEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(MeetupsEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile MeetupsEntryPersistence _persistence;
 
 }

@@ -52,8 +52,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -672,14 +670,14 @@ public abstract class ZendeskArticleLocalServiceBaseImpl
 			"com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle",
 			zendeskArticleLocalService);
 
-		_setLocalServiceUtilService(zendeskArticleLocalService);
+		ZendeskArticleLocalServiceUtil.setService(zendeskArticleLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle");
 
-		_setLocalServiceUtilService(null);
+		ZendeskArticleLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -721,22 +719,6 @@ public abstract class ZendeskArticleLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ZendeskArticleLocalService zendeskArticleLocalService) {
-
-		try {
-			Field field = ZendeskArticleLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, zendeskArticleLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

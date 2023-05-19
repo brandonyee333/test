@@ -538,6 +538,10 @@ public class TestrayFactorUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestrayFactorPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestrayFactorPersistence _persistence;
 
 }

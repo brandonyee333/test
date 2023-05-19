@@ -53,8 +53,6 @@ import com.liferay.shopping.service.persistence.ShoppingItemPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -611,14 +609,14 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 			"com.liferay.shopping.model.ShoppingCoupon",
 			shoppingCouponLocalService);
 
-		_setLocalServiceUtilService(shoppingCouponLocalService);
+		ShoppingCouponLocalServiceUtil.setService(shoppingCouponLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.shopping.model.ShoppingCoupon");
 
-		_setLocalServiceUtilService(null);
+		ShoppingCouponLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -660,22 +658,6 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ShoppingCouponLocalService shoppingCouponLocalService) {
-
-		try {
-			Field field = ShoppingCouponLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, shoppingCouponLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

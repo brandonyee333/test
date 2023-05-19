@@ -55,6 +55,10 @@ public class AssetEntrySetServiceUtil {
 		return _service;
 	}
 
+	public static void setService(AssetEntrySetService service) {
+		_service = service;
+	}
+
 	private static volatile AssetEntrySetService _service;
 
 }

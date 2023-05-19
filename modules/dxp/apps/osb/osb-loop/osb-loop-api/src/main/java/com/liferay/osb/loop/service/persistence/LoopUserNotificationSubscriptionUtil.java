@@ -384,6 +384,12 @@ public class LoopUserNotificationSubscriptionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		LoopUserNotificationSubscriptionPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile LoopUserNotificationSubscriptionPersistence
 		_persistence;
 

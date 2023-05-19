@@ -515,6 +515,10 @@ public class TestrayIssueLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayIssueLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayIssueLocalService _service;
 
 }

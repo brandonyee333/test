@@ -384,6 +384,10 @@ public class WSRPConsumerLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(WSRPConsumerLocalService service) {
+		_service = service;
+	}
+
 	private static volatile WSRPConsumerLocalService _service;
 
 }

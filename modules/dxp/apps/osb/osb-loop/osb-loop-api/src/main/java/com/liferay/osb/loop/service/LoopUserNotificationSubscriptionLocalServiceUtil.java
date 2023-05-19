@@ -313,6 +313,12 @@ public class LoopUserNotificationSubscriptionLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(
+		LoopUserNotificationSubscriptionLocalService service) {
+
+		_service = service;
+	}
+
 	private static volatile LoopUserNotificationSubscriptionLocalService
 		_service;
 

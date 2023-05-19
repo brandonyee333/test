@@ -49,8 +49,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -530,14 +528,14 @@ public abstract class TokenAuthEntryLocalServiceBaseImpl
 			"com.liferay.osb.loop.token.auth.model.TokenAuthEntry",
 			tokenAuthEntryLocalService);
 
-		_setLocalServiceUtilService(tokenAuthEntryLocalService);
+		TokenAuthEntryLocalServiceUtil.setService(tokenAuthEntryLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.token.auth.model.TokenAuthEntry");
 
-		_setLocalServiceUtilService(null);
+		TokenAuthEntryLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -579,22 +577,6 @@ public abstract class TokenAuthEntryLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		TokenAuthEntryLocalService tokenAuthEntryLocalService) {
-
-		try {
-			Field field = TokenAuthEntryLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, tokenAuthEntryLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

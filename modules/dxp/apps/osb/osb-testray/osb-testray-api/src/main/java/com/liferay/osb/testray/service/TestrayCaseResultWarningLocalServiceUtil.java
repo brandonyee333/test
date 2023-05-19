@@ -297,6 +297,12 @@ public class TestrayCaseResultWarningLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(
+		TestrayCaseResultWarningLocalService service) {
+
+		_service = service;
+	}
+
 	private static volatile TestrayCaseResultWarningLocalService _service;
 
 }

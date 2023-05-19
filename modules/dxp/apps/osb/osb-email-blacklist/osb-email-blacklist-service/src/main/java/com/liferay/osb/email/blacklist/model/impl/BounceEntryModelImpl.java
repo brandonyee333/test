@@ -241,14 +241,10 @@ public class BounceEntryModelImpl
 
 	private static final Map<String, Function<BounceEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<BounceEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<BounceEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<BounceEntry, Object>>();
-		Map<String, BiConsumer<BounceEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<BounceEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"bounceEntryId",
@@ -260,6 +256,58 @@ public class BounceEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"emailAddress",
+			new Function<BounceEntry, Object>() {
+
+				@Override
+				public Object apply(BounceEntry bounceEntry) {
+					return bounceEntry.getEmailAddress();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"bounceDate",
+			new Function<BounceEntry, Object>() {
+
+				@Override
+				public Object apply(BounceEntry bounceEntry) {
+					return bounceEntry.getBounceDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"bounceType",
+			new Function<BounceEntry, Object>() {
+
+				@Override
+				public Object apply(BounceEntry bounceEntry) {
+					return bounceEntry.getBounceType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"bounceSubtype",
+			new Function<BounceEntry, Object>() {
+
+				@Override
+				public Object apply(BounceEntry bounceEntry) {
+					return bounceEntry.getBounceSubtype();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<BounceEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<BounceEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<BounceEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"bounceEntryId",
 			new BiConsumer<BounceEntry, Object>() {
@@ -269,16 +317,6 @@ public class BounceEntryModelImpl
 					BounceEntry bounceEntry, Object bounceEntryIdObject) {
 
 					bounceEntry.setBounceEntryId((Long)bounceEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"emailAddress",
-			new Function<BounceEntry, Object>() {
-
-				@Override
-				public Object apply(BounceEntry bounceEntry) {
-					return bounceEntry.getEmailAddress();
 				}
 
 			});
@@ -294,16 +332,6 @@ public class BounceEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"bounceDate",
-			new Function<BounceEntry, Object>() {
-
-				@Override
-				public Object apply(BounceEntry bounceEntry) {
-					return bounceEntry.getBounceDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"bounceDate",
 			new BiConsumer<BounceEntry, Object>() {
@@ -316,16 +344,6 @@ public class BounceEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"bounceType",
-			new Function<BounceEntry, Object>() {
-
-				@Override
-				public Object apply(BounceEntry bounceEntry) {
-					return bounceEntry.getBounceType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"bounceType",
 			new BiConsumer<BounceEntry, Object>() {
@@ -335,16 +353,6 @@ public class BounceEntryModelImpl
 					BounceEntry bounceEntry, Object bounceTypeObject) {
 
 					bounceEntry.setBounceType((String)bounceTypeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"bounceSubtype",
-			new Function<BounceEntry, Object>() {
-
-				@Override
-				public Object apply(BounceEntry bounceEntry) {
-					return bounceEntry.getBounceSubtype();
 				}
 
 			});
@@ -361,8 +369,6 @@ public class BounceEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

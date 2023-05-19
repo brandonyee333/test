@@ -399,6 +399,10 @@ public class TestrayCaseTypeLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayCaseTypeLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayCaseTypeLocalService _service;
 
 }

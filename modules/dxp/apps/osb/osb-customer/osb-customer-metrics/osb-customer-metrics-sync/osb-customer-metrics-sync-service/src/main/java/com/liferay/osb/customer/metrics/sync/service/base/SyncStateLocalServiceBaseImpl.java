@@ -49,8 +49,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -525,14 +523,14 @@ public abstract class SyncStateLocalServiceBaseImpl
 			"com.liferay.osb.customer.metrics.sync.model.SyncState",
 			syncStateLocalService);
 
-		_setLocalServiceUtilService(syncStateLocalService);
+		SyncStateLocalServiceUtil.setService(syncStateLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.customer.metrics.sync.model.SyncState");
 
-		_setLocalServiceUtilService(null);
+		SyncStateLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -574,22 +572,6 @@ public abstract class SyncStateLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		SyncStateLocalService syncStateLocalService) {
-
-		try {
-			Field field = SyncStateLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, syncStateLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

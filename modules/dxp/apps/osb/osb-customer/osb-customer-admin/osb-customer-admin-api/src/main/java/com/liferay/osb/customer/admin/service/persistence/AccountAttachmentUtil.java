@@ -963,6 +963,12 @@ public class AccountAttachmentUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		AccountAttachmentPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile AccountAttachmentPersistence _persistence;
 
 }

@@ -771,33 +771,17 @@ public class LoopPersonRelPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_setLoopPersonRelUtilPersistence(this);
+		LoopPersonRelUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setLoopPersonRelUtilPersistence(null);
+		LoopPersonRelUtil.setPersistence(null);
 
 		entityCache.removeCache(LoopPersonRelImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setLoopPersonRelUtilPersistence(
-		LoopPersonRelPersistence loopPersonRelPersistence) {
-
-		try {
-			Field field = LoopPersonRelUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, loopPersonRelPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

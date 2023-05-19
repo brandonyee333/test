@@ -271,6 +271,10 @@ public class LoopAuditEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopAuditEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopAuditEntryPersistence _persistence;
 
 }

@@ -47,8 +47,6 @@ import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -1015,11 +1013,11 @@ public abstract class BookmarksEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(bookmarksEntryService);
+		BookmarksEntryServiceUtil.setService(bookmarksEntryService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		BookmarksEntryServiceUtil.setService(null);
 	}
 
 	/**
@@ -1061,22 +1059,6 @@ public abstract class BookmarksEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		BookmarksEntryService bookmarksEntryService) {
-
-		try {
-			Field field = BookmarksEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, bookmarksEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

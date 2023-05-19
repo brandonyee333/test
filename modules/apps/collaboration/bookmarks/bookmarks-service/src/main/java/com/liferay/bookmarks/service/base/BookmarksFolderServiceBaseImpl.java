@@ -45,8 +45,6 @@ import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashEntryPersistence;
 import com.liferay.trash.kernel.service.persistence.TrashVersionPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -882,11 +880,11 @@ public abstract class BookmarksFolderServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(bookmarksFolderService);
+		BookmarksFolderServiceUtil.setService(bookmarksFolderService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		BookmarksFolderServiceUtil.setService(null);
 	}
 
 	/**
@@ -928,22 +926,6 @@ public abstract class BookmarksFolderServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		BookmarksFolderService bookmarksFolderService) {
-
-		try {
-			Field field = BookmarksFolderServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, bookmarksFolderService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

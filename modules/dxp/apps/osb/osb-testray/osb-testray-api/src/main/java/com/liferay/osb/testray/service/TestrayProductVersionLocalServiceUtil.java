@@ -292,6 +292,10 @@ public class TestrayProductVersionLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayProductVersionLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayProductVersionLocalService _service;
 
 }

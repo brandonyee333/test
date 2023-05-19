@@ -37,8 +37,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -800,34 +798,17 @@ public class LoopUserNotificationRecordPersistenceImpl
 			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
 			new String[0]);
 
-		_setLoopUserNotificationRecordUtilPersistence(this);
+		LoopUserNotificationRecordUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setLoopUserNotificationRecordUtilPersistence(null);
+		LoopUserNotificationRecordUtil.setPersistence(null);
 
 		entityCache.removeCache(LoopUserNotificationRecordImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setLoopUserNotificationRecordUtilPersistence(
-		LoopUserNotificationRecordPersistence
-			loopUserNotificationRecordPersistence) {
-
-		try {
-			Field field = LoopUserNotificationRecordUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, loopUserNotificationRecordPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

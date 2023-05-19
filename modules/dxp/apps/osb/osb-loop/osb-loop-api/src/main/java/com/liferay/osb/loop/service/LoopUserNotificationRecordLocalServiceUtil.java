@@ -297,6 +297,12 @@ public class LoopUserNotificationRecordLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(
+		LoopUserNotificationRecordLocalService service) {
+
+		_service = service;
+	}
+
 	private static volatile LoopUserNotificationRecordLocalService _service;
 
 }

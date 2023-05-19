@@ -332,6 +332,10 @@ public class SyncStateUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(SyncStatePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile SyncStatePersistence _persistence;
 
 }

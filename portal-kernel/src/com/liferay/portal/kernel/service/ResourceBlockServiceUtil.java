@@ -150,6 +150,10 @@ public class ResourceBlockServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ResourceBlockService service) {
+		_service = service;
+	}
+
 	private static volatile ResourceBlockService _service;
 
 }

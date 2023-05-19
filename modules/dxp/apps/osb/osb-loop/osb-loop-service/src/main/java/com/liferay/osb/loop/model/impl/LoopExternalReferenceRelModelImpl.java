@@ -248,19 +248,12 @@ public class LoopExternalReferenceRelModelImpl
 
 	private static final Map<String, Function<LoopExternalReferenceRel, Object>>
 		_attributeGetterFunctions;
-	private static final Map
-		<String, BiConsumer<LoopExternalReferenceRel, Object>>
-			_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopExternalReferenceRel, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<LoopExternalReferenceRel, Object>>();
-		Map<String, BiConsumer<LoopExternalReferenceRel, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap
-					<String, BiConsumer<LoopExternalReferenceRel, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopExternalReferenceRelId",
@@ -275,6 +268,69 @@ public class LoopExternalReferenceRelModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"classNameId",
+			new Function<LoopExternalReferenceRel, Object>() {
+
+				@Override
+				public Object apply(
+					LoopExternalReferenceRel loopExternalReferenceRel) {
+
+					return loopExternalReferenceRel.getClassNameId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"classPK",
+			new Function<LoopExternalReferenceRel, Object>() {
+
+				@Override
+				public Object apply(
+					LoopExternalReferenceRel loopExternalReferenceRel) {
+
+					return loopExternalReferenceRel.getClassPK();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"externalReferenceName",
+			new Function<LoopExternalReferenceRel, Object>() {
+
+				@Override
+				public Object apply(
+					LoopExternalReferenceRel loopExternalReferenceRel) {
+
+					return loopExternalReferenceRel.getExternalReferenceName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"externalReferencePK",
+			new Function<LoopExternalReferenceRel, Object>() {
+
+				@Override
+				public Object apply(
+					LoopExternalReferenceRel loopExternalReferenceRel) {
+
+					return loopExternalReferenceRel.getExternalReferencePK();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map
+		<String, BiConsumer<LoopExternalReferenceRel, Object>>
+			_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopExternalReferenceRel, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap
+					<String, BiConsumer<LoopExternalReferenceRel, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopExternalReferenceRelId",
 			new BiConsumer<LoopExternalReferenceRel, Object>() {
@@ -286,18 +342,6 @@ public class LoopExternalReferenceRelModelImpl
 
 					loopExternalReferenceRel.setLoopExternalReferenceRelId(
 						(Long)loopExternalReferenceRelIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"classNameId",
-			new Function<LoopExternalReferenceRel, Object>() {
-
-				@Override
-				public Object apply(
-					LoopExternalReferenceRel loopExternalReferenceRel) {
-
-					return loopExternalReferenceRel.getClassNameId();
 				}
 
 			});
@@ -315,18 +359,6 @@ public class LoopExternalReferenceRelModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"classPK",
-			new Function<LoopExternalReferenceRel, Object>() {
-
-				@Override
-				public Object apply(
-					LoopExternalReferenceRel loopExternalReferenceRel) {
-
-					return loopExternalReferenceRel.getClassPK();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"classPK",
 			new BiConsumer<LoopExternalReferenceRel, Object>() {
@@ -337,18 +369,6 @@ public class LoopExternalReferenceRelModelImpl
 					Object classPKObject) {
 
 					loopExternalReferenceRel.setClassPK((Long)classPKObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"externalReferenceName",
-			new Function<LoopExternalReferenceRel, Object>() {
-
-				@Override
-				public Object apply(
-					LoopExternalReferenceRel loopExternalReferenceRel) {
-
-					return loopExternalReferenceRel.getExternalReferenceName();
 				}
 
 			});
@@ -363,18 +383,6 @@ public class LoopExternalReferenceRelModelImpl
 
 					loopExternalReferenceRel.setExternalReferenceName(
 						(String)externalReferenceNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"externalReferencePK",
-			new Function<LoopExternalReferenceRel, Object>() {
-
-				@Override
-				public Object apply(
-					LoopExternalReferenceRel loopExternalReferenceRel) {
-
-					return loopExternalReferenceRel.getExternalReferencePK();
 				}
 
 			});
@@ -393,8 +401,6 @@ public class LoopExternalReferenceRelModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

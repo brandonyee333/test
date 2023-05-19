@@ -111,6 +111,10 @@ public class ShoppingCouponServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ShoppingCouponService service) {
+		_service = service;
+	}
+
 	private static volatile ShoppingCouponService _service;
 
 }

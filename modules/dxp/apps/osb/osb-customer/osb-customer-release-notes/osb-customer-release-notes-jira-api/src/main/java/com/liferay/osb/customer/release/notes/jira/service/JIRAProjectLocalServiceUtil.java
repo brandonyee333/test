@@ -282,6 +282,10 @@ public class JIRAProjectLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(JIRAProjectLocalService service) {
+		_service = service;
+	}
+
 	private static volatile JIRAProjectLocalService _service;
 
 }

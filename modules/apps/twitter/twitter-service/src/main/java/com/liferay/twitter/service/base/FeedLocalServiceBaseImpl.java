@@ -50,8 +50,6 @@ import com.liferay.twitter.service.persistence.FeedPersistence;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -560,14 +558,14 @@ public abstract class FeedLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.twitter.model.Feed", feedLocalService);
 
-		_setLocalServiceUtilService(feedLocalService);
+		FeedLocalServiceUtil.setService(feedLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.twitter.model.Feed");
 
-		_setLocalServiceUtilService(null);
+		FeedLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -609,22 +607,6 @@ public abstract class FeedLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		FeedLocalService feedLocalService) {
-
-		try {
-			Field field = FeedLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, feedLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -407,6 +407,10 @@ public class TestrayRequirementLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TestrayRequirementLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TestrayRequirementLocalService _service;
 
 }

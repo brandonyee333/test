@@ -12948,11 +12948,11 @@ public class AssetCategoryPersistenceImpl
 				String.class.getName(), Long.class.getName()
 			});
 
-		_setAssetCategoryUtilPersistence(this);
+		AssetCategoryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setAssetCategoryUtilPersistence(null);
+		AssetCategoryUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(AssetCategoryImpl.class.getName());
 
@@ -12961,22 +12961,6 @@ public class AssetCategoryPersistenceImpl
 		FinderCacheUtil.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		TableMapperFactory.removeTableMapper("AssetEntries_AssetCategories");
-	}
-
-	private void _setAssetCategoryUtilPersistence(
-		AssetCategoryPersistence assetCategoryPersistence) {
-
-		try {
-			Field field = AssetCategoryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, assetCategoryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@BeanReference(type = AssetEntryPersistence.class)

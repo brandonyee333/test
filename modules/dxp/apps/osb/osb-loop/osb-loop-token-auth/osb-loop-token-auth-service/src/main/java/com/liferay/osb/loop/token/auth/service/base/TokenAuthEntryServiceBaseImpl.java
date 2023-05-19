@@ -33,8 +33,6 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -293,11 +291,11 @@ public abstract class TokenAuthEntryServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(tokenAuthEntryService);
+		TokenAuthEntryServiceUtil.setService(tokenAuthEntryService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		TokenAuthEntryServiceUtil.setService(null);
 	}
 
 	/**
@@ -339,22 +337,6 @@ public abstract class TokenAuthEntryServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		TokenAuthEntryService tokenAuthEntryService) {
-
-		try {
-			Field field = TokenAuthEntryServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, tokenAuthEntryService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

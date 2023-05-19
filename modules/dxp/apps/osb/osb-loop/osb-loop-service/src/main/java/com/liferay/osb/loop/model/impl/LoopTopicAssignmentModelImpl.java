@@ -241,17 +241,12 @@ public class LoopTopicAssignmentModelImpl
 
 	private static final Map<String, Function<LoopTopicAssignment, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopTopicAssignment, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopTopicAssignment, Object>>
 			attributeGetterFunctions =
 				new LinkedHashMap
 					<String, Function<LoopTopicAssignment, Object>>();
-		Map<String, BiConsumer<LoopTopicAssignment, ?>>
-			attributeSetterBiConsumers =
-				new LinkedHashMap<String, BiConsumer<LoopTopicAssignment, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopTopicAssignmentId",
@@ -263,6 +258,79 @@ public class LoopTopicAssignmentModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"loopPersonId",
+			new Function<LoopTopicAssignment, Object>() {
+
+				@Override
+				public Object apply(LoopTopicAssignment loopTopicAssignment) {
+					return loopTopicAssignment.getLoopPersonId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loopTopicId",
+			new Function<LoopTopicAssignment, Object>() {
+
+				@Override
+				public Object apply(LoopTopicAssignment loopTopicAssignment) {
+					return loopTopicAssignment.getLoopTopicId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByDate",
+			new Function<LoopTopicAssignment, Object>() {
+
+				@Override
+				public Object apply(LoopTopicAssignment loopTopicAssignment) {
+					return loopTopicAssignment.getStatusByDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByUserId",
+			new Function<LoopTopicAssignment, Object>() {
+
+				@Override
+				public Object apply(LoopTopicAssignment loopTopicAssignment) {
+					return loopTopicAssignment.getStatusByUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"statusByUserName",
+			new Function<LoopTopicAssignment, Object>() {
+
+				@Override
+				public Object apply(LoopTopicAssignment loopTopicAssignment) {
+					return loopTopicAssignment.getStatusByUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<LoopTopicAssignment, Object>() {
+
+				@Override
+				public Object apply(LoopTopicAssignment loopTopicAssignment) {
+					return loopTopicAssignment.getStatus();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopTopicAssignment, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopTopicAssignment, ?>>
+			attributeSetterBiConsumers =
+				new LinkedHashMap<String, BiConsumer<LoopTopicAssignment, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopTopicAssignmentId",
 			new BiConsumer<LoopTopicAssignment, Object>() {
@@ -274,16 +342,6 @@ public class LoopTopicAssignmentModelImpl
 
 					loopTopicAssignment.setLoopTopicAssignmentId(
 						(Long)loopTopicAssignmentIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"loopPersonId",
-			new Function<LoopTopicAssignment, Object>() {
-
-				@Override
-				public Object apply(LoopTopicAssignment loopTopicAssignment) {
-					return loopTopicAssignment.getLoopPersonId();
 				}
 
 			});
@@ -301,16 +359,6 @@ public class LoopTopicAssignmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"loopTopicId",
-			new Function<LoopTopicAssignment, Object>() {
-
-				@Override
-				public Object apply(LoopTopicAssignment loopTopicAssignment) {
-					return loopTopicAssignment.getLoopTopicId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"loopTopicId",
 			new BiConsumer<LoopTopicAssignment, Object>() {
@@ -321,16 +369,6 @@ public class LoopTopicAssignmentModelImpl
 					Object loopTopicIdObject) {
 
 					loopTopicAssignment.setLoopTopicId((Long)loopTopicIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusByDate",
-			new Function<LoopTopicAssignment, Object>() {
-
-				@Override
-				public Object apply(LoopTopicAssignment loopTopicAssignment) {
-					return loopTopicAssignment.getStatusByDate();
 				}
 
 			});
@@ -348,16 +386,6 @@ public class LoopTopicAssignmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"statusByUserId",
-			new Function<LoopTopicAssignment, Object>() {
-
-				@Override
-				public Object apply(LoopTopicAssignment loopTopicAssignment) {
-					return loopTopicAssignment.getStatusByUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"statusByUserId",
 			new BiConsumer<LoopTopicAssignment, Object>() {
@@ -369,16 +397,6 @@ public class LoopTopicAssignmentModelImpl
 
 					loopTopicAssignment.setStatusByUserId(
 						(Long)statusByUserIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"statusByUserName",
-			new Function<LoopTopicAssignment, Object>() {
-
-				@Override
-				public Object apply(LoopTopicAssignment loopTopicAssignment) {
-					return loopTopicAssignment.getStatusByUserName();
 				}
 
 			});
@@ -396,16 +414,6 @@ public class LoopTopicAssignmentModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<LoopTopicAssignment, Object>() {
-
-				@Override
-				public Object apply(LoopTopicAssignment loopTopicAssignment) {
-					return loopTopicAssignment.getStatus();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"status",
 			new BiConsumer<LoopTopicAssignment, Object>() {
@@ -420,8 +428,6 @@ public class LoopTopicAssignmentModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

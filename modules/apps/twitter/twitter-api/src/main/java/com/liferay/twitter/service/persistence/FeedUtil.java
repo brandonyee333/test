@@ -330,6 +330,10 @@ public class FeedUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(FeedPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile FeedPersistence _persistence;
 
 }

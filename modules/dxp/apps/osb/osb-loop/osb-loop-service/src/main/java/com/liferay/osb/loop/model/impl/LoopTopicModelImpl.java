@@ -253,14 +253,10 @@ public class LoopTopicModelImpl
 
 	private static final Map<String, Function<LoopTopic, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<LoopTopic, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<LoopTopic, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<LoopTopic, Object>>();
-		Map<String, BiConsumer<LoopTopic, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<LoopTopic, ?>>();
 
 		attributeGetterFunctions.put(
 			"loopTopicId",
@@ -272,6 +268,118 @@ public class LoopTopicModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentLoopTopicId",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getParentLoopTopicId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"imagePayload",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getImagePayload();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"mergeTime",
+			new Function<LoopTopic, Object>() {
+
+				@Override
+				public Object apply(LoopTopic loopTopic) {
+					return loopTopic.getMergeTime();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<LoopTopic, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<LoopTopic, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<LoopTopic, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"loopTopicId",
 			new BiConsumer<LoopTopic, Object>() {
@@ -281,16 +389,6 @@ public class LoopTopicModelImpl
 					LoopTopic loopTopic, Object loopTopicIdObject) {
 
 					loopTopic.setLoopTopicId((Long)loopTopicIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getCompanyId();
 				}
 
 			});
@@ -306,16 +404,6 @@ public class LoopTopicModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<LoopTopic, Object>() {
@@ -326,16 +414,6 @@ public class LoopTopicModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<LoopTopic, Object>() {
@@ -343,16 +421,6 @@ public class LoopTopicModelImpl
 				@Override
 				public void accept(LoopTopic loopTopic, Object userNameObject) {
 					loopTopic.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getCreateDate();
 				}
 
 			});
@@ -368,16 +436,6 @@ public class LoopTopicModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<LoopTopic, Object>() {
@@ -387,16 +445,6 @@ public class LoopTopicModelImpl
 					LoopTopic loopTopic, Object modifiedDateObject) {
 
 					loopTopic.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"parentLoopTopicId",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getParentLoopTopicId();
 				}
 
 			});
@@ -413,16 +461,6 @@ public class LoopTopicModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<LoopTopic, Object>() {
@@ -430,16 +468,6 @@ public class LoopTopicModelImpl
 				@Override
 				public void accept(LoopTopic loopTopic, Object nameObject) {
 					loopTopic.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getDescription();
 				}
 
 			});
@@ -455,16 +483,6 @@ public class LoopTopicModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"imagePayload",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getImagePayload();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"imagePayload",
 			new BiConsumer<LoopTopic, Object>() {
@@ -474,16 +492,6 @@ public class LoopTopicModelImpl
 					LoopTopic loopTopic, Object imagePayloadObject) {
 
 					loopTopic.setImagePayload((String)imagePayloadObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"mergeTime",
-			new Function<LoopTopic, Object>() {
-
-				@Override
-				public Object apply(LoopTopic loopTopic) {
-					return loopTopic.getMergeTime();
 				}
 
 			});
@@ -500,8 +508,6 @@ public class LoopTopicModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

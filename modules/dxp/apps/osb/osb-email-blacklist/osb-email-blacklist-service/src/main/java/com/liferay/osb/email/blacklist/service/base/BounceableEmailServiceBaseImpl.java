@@ -34,8 +34,6 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -337,11 +335,11 @@ public abstract class BounceableEmailServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(bounceableEmailService);
+		BounceableEmailServiceUtil.setService(bounceableEmailService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		BounceableEmailServiceUtil.setService(null);
 	}
 
 	/**
@@ -375,22 +373,6 @@ public abstract class BounceableEmailServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		BounceableEmailService bounceableEmailService) {
-
-		try {
-			Field field = BounceableEmailServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, bounceableEmailService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -62,8 +62,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1012,14 +1010,14 @@ public abstract class AssetTagLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.asset.kernel.model.AssetTag", assetTagLocalService);
 
-		_setLocalServiceUtilService(assetTagLocalService);
+		AssetTagLocalServiceUtil.setService(assetTagLocalService);
 	}
 
 	public void destroy() {
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.asset.kernel.model.AssetTag");
 
-		_setLocalServiceUtilService(null);
+		AssetTagLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1061,22 +1059,6 @@ public abstract class AssetTagLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		AssetTagLocalService assetTagLocalService) {
-
-		try {
-			Field field = AssetTagLocalServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, assetTagLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

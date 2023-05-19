@@ -494,6 +494,10 @@ public class TokenAuthEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TokenAuthEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TokenAuthEntryPersistence _persistence;
 
 }

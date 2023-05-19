@@ -305,14 +305,10 @@ public class TokenAuthEntryModelImpl
 
 	private static final Map<String, Function<TokenAuthEntry, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TokenAuthEntry, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TokenAuthEntry, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<TokenAuthEntry, Object>>();
-		Map<String, BiConsumer<TokenAuthEntry, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<TokenAuthEntry, ?>>();
 
 		attributeGetterFunctions.put(
 			"tokenAuthEntryId",
@@ -324,6 +320,98 @@ public class TokenAuthEntryModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<TokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(TokenAuthEntry tokenAuthEntry) {
+					return tokenAuthEntry.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<TokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(TokenAuthEntry tokenAuthEntry) {
+					return tokenAuthEntry.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<TokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(TokenAuthEntry tokenAuthEntry) {
+					return tokenAuthEntry.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<TokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(TokenAuthEntry tokenAuthEntry) {
+					return tokenAuthEntry.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"device",
+			new Function<TokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(TokenAuthEntry tokenAuthEntry) {
+					return tokenAuthEntry.getDevice();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"token",
+			new Function<TokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(TokenAuthEntry tokenAuthEntry) {
+					return tokenAuthEntry.getToken();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loginDate",
+			new Function<TokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(TokenAuthEntry tokenAuthEntry) {
+					return tokenAuthEntry.getLoginDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"loginIP",
+			new Function<TokenAuthEntry, Object>() {
+
+				@Override
+				public Object apply(TokenAuthEntry tokenAuthEntry) {
+					return tokenAuthEntry.getLoginIP();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TokenAuthEntry, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TokenAuthEntry, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<TokenAuthEntry, ?>>();
+
 		attributeSetterBiConsumers.put(
 			"tokenAuthEntryId",
 			new BiConsumer<TokenAuthEntry, Object>() {
@@ -335,16 +423,6 @@ public class TokenAuthEntryModelImpl
 
 					tokenAuthEntry.setTokenAuthEntryId(
 						(Long)tokenAuthEntryIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<TokenAuthEntry, Object>() {
-
-				@Override
-				public Object apply(TokenAuthEntry tokenAuthEntry) {
-					return tokenAuthEntry.getCompanyId();
 				}
 
 			});
@@ -360,16 +438,6 @@ public class TokenAuthEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<TokenAuthEntry, Object>() {
-
-				@Override
-				public Object apply(TokenAuthEntry tokenAuthEntry) {
-					return tokenAuthEntry.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<TokenAuthEntry, Object>() {
@@ -379,16 +447,6 @@ public class TokenAuthEntryModelImpl
 					TokenAuthEntry tokenAuthEntry, Object userIdObject) {
 
 					tokenAuthEntry.setUserId((Long)userIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<TokenAuthEntry, Object>() {
-
-				@Override
-				public Object apply(TokenAuthEntry tokenAuthEntry) {
-					return tokenAuthEntry.getUserName();
 				}
 
 			});
@@ -404,16 +462,6 @@ public class TokenAuthEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<TokenAuthEntry, Object>() {
-
-				@Override
-				public Object apply(TokenAuthEntry tokenAuthEntry) {
-					return tokenAuthEntry.getCreateDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"createDate",
 			new BiConsumer<TokenAuthEntry, Object>() {
@@ -423,16 +471,6 @@ public class TokenAuthEntryModelImpl
 					TokenAuthEntry tokenAuthEntry, Object createDateObject) {
 
 					tokenAuthEntry.setCreateDate((Date)createDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"device",
-			new Function<TokenAuthEntry, Object>() {
-
-				@Override
-				public Object apply(TokenAuthEntry tokenAuthEntry) {
-					return tokenAuthEntry.getDevice();
 				}
 
 			});
@@ -448,16 +486,6 @@ public class TokenAuthEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"token",
-			new Function<TokenAuthEntry, Object>() {
-
-				@Override
-				public Object apply(TokenAuthEntry tokenAuthEntry) {
-					return tokenAuthEntry.getToken();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"token",
 			new BiConsumer<TokenAuthEntry, Object>() {
@@ -470,16 +498,6 @@ public class TokenAuthEntryModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"loginDate",
-			new Function<TokenAuthEntry, Object>() {
-
-				@Override
-				public Object apply(TokenAuthEntry tokenAuthEntry) {
-					return tokenAuthEntry.getLoginDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"loginDate",
 			new BiConsumer<TokenAuthEntry, Object>() {
@@ -489,16 +507,6 @@ public class TokenAuthEntryModelImpl
 					TokenAuthEntry tokenAuthEntry, Object loginDateObject) {
 
 					tokenAuthEntry.setLoginDate((Date)loginDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"loginIP",
-			new Function<TokenAuthEntry, Object>() {
-
-				@Override
-				public Object apply(TokenAuthEntry tokenAuthEntry) {
-					return tokenAuthEntry.getLoginIP();
 				}
 
 			});
@@ -515,8 +523,6 @@ public class TokenAuthEntryModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

@@ -36,8 +36,6 @@ import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -421,11 +419,11 @@ public abstract class JournalFeedServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(journalFeedService);
+		JournalFeedServiceUtil.setService(journalFeedService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		JournalFeedServiceUtil.setService(null);
 	}
 
 	/**
@@ -467,20 +465,6 @@ public abstract class JournalFeedServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(JournalFeedService journalFeedService) {
-		try {
-			Field field = JournalFeedServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, journalFeedService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

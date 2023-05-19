@@ -64,8 +64,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -1258,7 +1256,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 			"com.liferay.osb.loop.model.LoopUserNotificationSubscription",
 			loopUserNotificationSubscriptionLocalService);
 
-		_setLocalServiceUtilService(
+		LoopUserNotificationSubscriptionLocalServiceUtil.setService(
 			loopUserNotificationSubscriptionLocalService);
 	}
 
@@ -1266,7 +1264,7 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 		persistedModelLocalServiceRegistry.unregister(
 			"com.liferay.osb.loop.model.LoopUserNotificationSubscription");
 
-		_setLocalServiceUtilService(null);
+		LoopUserNotificationSubscriptionLocalServiceUtil.setService(null);
 	}
 
 	/**
@@ -1309,24 +1307,6 @@ public abstract class LoopUserNotificationSubscriptionLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		LoopUserNotificationSubscriptionLocalService
-			loopUserNotificationSubscriptionLocalService) {
-
-		try {
-			Field field =
-				LoopUserNotificationSubscriptionLocalServiceUtil.class.
-					getDeclaredField("_service");
-
-			field.setAccessible(true);
-
-			field.set(null, loopUserNotificationSubscriptionLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

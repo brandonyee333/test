@@ -297,6 +297,10 @@ public class JIRAProjectVersionLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(JIRAProjectVersionLocalService service) {
+		_service = service;
+	}
+
 	private static volatile JIRAProjectVersionLocalService _service;
 
 }

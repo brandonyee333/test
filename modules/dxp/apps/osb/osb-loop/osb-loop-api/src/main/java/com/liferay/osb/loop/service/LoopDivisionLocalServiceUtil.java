@@ -286,6 +286,10 @@ public class LoopDivisionLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopDivisionLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopDivisionLocalService _service;
 
 }

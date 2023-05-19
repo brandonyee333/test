@@ -483,6 +483,10 @@ public class TestraySuiteUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(TestraySuitePersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile TestraySuitePersistence _persistence;
 
 }

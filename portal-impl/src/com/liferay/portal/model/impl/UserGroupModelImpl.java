@@ -363,14 +363,10 @@ public class UserGroupModelImpl
 
 	private static final Map<String, Function<UserGroup, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<UserGroup, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<UserGroup, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<UserGroup, Object>>();
-		Map<String, BiConsumer<UserGroup, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<UserGroup, ?>>();
 
 		attributeGetterFunctions.put(
 			"mvccVersion",
@@ -379,18 +375,6 @@ public class UserGroupModelImpl
 				@Override
 				public Object apply(UserGroup userGroup) {
 					return userGroup.getMvccVersion();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			new BiConsumer<UserGroup, Object>() {
-
-				@Override
-				public void accept(
-					UserGroup userGroup, Object mvccVersionObject) {
-
-					userGroup.setMvccVersion((Long)mvccVersionObject);
 				}
 
 			});
@@ -404,16 +388,6 @@ public class UserGroupModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"uuid",
-			new BiConsumer<UserGroup, Object>() {
-
-				@Override
-				public void accept(UserGroup userGroup, Object uuidObject) {
-					userGroup.setUuid((String)uuidObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"userGroupId",
 			new Function<UserGroup, Object>() {
@@ -421,6 +395,130 @@ public class UserGroupModelImpl
 				@Override
 				public Object apply(UserGroup userGroup) {
 					return userGroup.getUserGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"companyId",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"parentUserGroupId",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getParentUserGroupId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"addedByLDAPImport",
+			new Function<UserGroup, Object>() {
+
+				@Override
+				public Object apply(UserGroup userGroup) {
+					return userGroup.getAddedByLDAPImport();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<UserGroup, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<UserGroup, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<UserGroup, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"mvccVersion",
+			new BiConsumer<UserGroup, Object>() {
+
+				@Override
+				public void accept(
+					UserGroup userGroup, Object mvccVersionObject) {
+
+					userGroup.setMvccVersion((Long)mvccVersionObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"uuid",
+			new BiConsumer<UserGroup, Object>() {
+
+				@Override
+				public void accept(UserGroup userGroup, Object uuidObject) {
+					userGroup.setUuid((String)uuidObject);
 				}
 
 			});
@@ -436,16 +534,6 @@ public class UserGroupModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"companyId",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getCompanyId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"companyId",
 			new BiConsumer<UserGroup, Object>() {
@@ -455,16 +543,6 @@ public class UserGroupModelImpl
 					UserGroup userGroup, Object companyIdObject) {
 
 					userGroup.setCompanyId((Long)companyIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getUserId();
 				}
 
 			});
@@ -478,16 +556,6 @@ public class UserGroupModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<UserGroup, Object>() {
@@ -495,16 +563,6 @@ public class UserGroupModelImpl
 				@Override
 				public void accept(UserGroup userGroup, Object userNameObject) {
 					userGroup.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getCreateDate();
 				}
 
 			});
@@ -520,16 +578,6 @@ public class UserGroupModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<UserGroup, Object>() {
@@ -539,16 +587,6 @@ public class UserGroupModelImpl
 					UserGroup userGroup, Object modifiedDateObject) {
 
 					userGroup.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"parentUserGroupId",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getParentUserGroupId();
 				}
 
 			});
@@ -565,16 +603,6 @@ public class UserGroupModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<UserGroup, Object>() {
@@ -582,16 +610,6 @@ public class UserGroupModelImpl
 				@Override
 				public void accept(UserGroup userGroup, Object nameObject) {
 					userGroup.setName((String)nameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getDescription();
 				}
 
 			});
@@ -604,16 +622,6 @@ public class UserGroupModelImpl
 					UserGroup userGroup, Object descriptionObject) {
 
 					userGroup.setDescription((String)descriptionObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"addedByLDAPImport",
-			new Function<UserGroup, Object>() {
-
-				@Override
-				public Object apply(UserGroup userGroup) {
-					return userGroup.getAddedByLDAPImport();
 				}
 
 			});
@@ -631,8 +639,6 @@ public class UserGroupModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

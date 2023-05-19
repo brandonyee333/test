@@ -290,6 +290,10 @@ public class LoopTopicAssignmentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(LoopTopicAssignmentLocalService service) {
+		_service = service;
+	}
+
 	private static volatile LoopTopicAssignmentLocalService _service;
 
 }

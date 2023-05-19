@@ -42,7 +42,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -1108,33 +1107,17 @@ public class BlacklistEntryPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEmailAddress",
 			new String[] {String.class.getName()});
 
-		_setBlacklistEntryUtilPersistence(this);
+		BlacklistEntryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setBlacklistEntryUtilPersistence(null);
+		BlacklistEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(BlacklistEntryImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setBlacklistEntryUtilPersistence(
-		BlacklistEntryPersistence blacklistEntryPersistence) {
-
-		try {
-			Field field = BlacklistEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, blacklistEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

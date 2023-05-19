@@ -286,6 +286,12 @@ public class JIRAProjectVersionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(
+		JIRAProjectVersionPersistence persistence) {
+
+		_persistence = persistence;
+	}
+
 	private static volatile JIRAProjectVersionPersistence _persistence;
 
 }

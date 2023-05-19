@@ -284,6 +284,10 @@ public class FeedLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(FeedLocalService service) {
+		_service = service;
+	}
+
 	private static volatile FeedLocalService _service;
 
 }

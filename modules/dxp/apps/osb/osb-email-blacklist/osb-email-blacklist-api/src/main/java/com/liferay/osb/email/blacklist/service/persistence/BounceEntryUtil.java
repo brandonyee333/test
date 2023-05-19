@@ -636,6 +636,10 @@ public class BounceEntryUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(BounceEntryPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile BounceEntryPersistence _persistence;
 
 }

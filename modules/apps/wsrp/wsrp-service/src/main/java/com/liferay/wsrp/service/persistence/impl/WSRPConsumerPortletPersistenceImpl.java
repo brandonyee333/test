@@ -3029,33 +3029,17 @@ public class WSRPConsumerPortletPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByW_P",
 			new String[] {Long.class.getName(), String.class.getName()});
 
-		_setWSRPConsumerPortletUtilPersistence(this);
+		WSRPConsumerPortletUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setWSRPConsumerPortletUtilPersistence(null);
+		WSRPConsumerPortletUtil.setPersistence(null);
 
 		entityCache.removeCache(WSRPConsumerPortletImpl.class.getName());
 
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-	}
-
-	private void _setWSRPConsumerPortletUtilPersistence(
-		WSRPConsumerPortletPersistence wsrpConsumerPortletPersistence) {
-
-		try {
-			Field field = WSRPConsumerPortletUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, wsrpConsumerPortletPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

@@ -243,14 +243,10 @@ public class TodoItemModelImpl
 
 	private static final Map<String, Function<TodoItem, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<TodoItem, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<TodoItem, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<TodoItem, Object>>();
-		Map<String, BiConsumer<TodoItem, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<TodoItem, ?>>();
 
 		attributeGetterFunctions.put(
 			"todoItemId",
@@ -259,16 +255,6 @@ public class TodoItemModelImpl
 				@Override
 				public Object apply(TodoItem todoItem) {
 					return todoItem.getTodoItemId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"todoItemId",
-			new BiConsumer<TodoItem, Object>() {
-
-				@Override
-				public void accept(TodoItem todoItem, Object todoItemIdObject) {
-					todoItem.setTodoItemId((Long)todoItemIdObject);
 				}
 
 			});
@@ -282,16 +268,6 @@ public class TodoItemModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"companyId",
-			new BiConsumer<TodoItem, Object>() {
-
-				@Override
-				public void accept(TodoItem todoItem, Object companyIdObject) {
-					todoItem.setCompanyId((Long)companyIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"userId",
 			new Function<TodoItem, Object>() {
@@ -299,16 +275,6 @@ public class TodoItemModelImpl
 				@Override
 				public Object apply(TodoItem todoItem) {
 					return todoItem.getUserId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"userId",
-			new BiConsumer<TodoItem, Object>() {
-
-				@Override
-				public void accept(TodoItem todoItem, Object userIdObject) {
-					todoItem.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -322,16 +288,6 @@ public class TodoItemModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"userName",
-			new BiConsumer<TodoItem, Object>() {
-
-				@Override
-				public void accept(TodoItem todoItem, Object userNameObject) {
-					todoItem.setUserName((String)userNameObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"createDate",
 			new Function<TodoItem, Object>() {
@@ -342,16 +298,6 @@ public class TodoItemModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"createDate",
-			new BiConsumer<TodoItem, Object>() {
-
-				@Override
-				public void accept(TodoItem todoItem, Object createDateObject) {
-					todoItem.setCreateDate((Date)createDateObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"modifiedDate",
 			new Function<TodoItem, Object>() {
@@ -359,6 +305,108 @@ public class TodoItemModelImpl
 				@Override
 				public Object apply(TodoItem todoItem) {
 					return todoItem.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"todoListId",
+			new Function<TodoItem, Object>() {
+
+				@Override
+				public Object apply(TodoItem todoItem) {
+					return todoItem.getTodoListId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<TodoItem, Object>() {
+
+				@Override
+				public Object apply(TodoItem todoItem) {
+					return todoItem.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"priority",
+			new Function<TodoItem, Object>() {
+
+				@Override
+				public Object apply(TodoItem todoItem) {
+					return todoItem.getPriority();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"status",
+			new Function<TodoItem, Object>() {
+
+				@Override
+				public Object apply(TodoItem todoItem) {
+					return todoItem.getStatus();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<TodoItem, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<TodoItem, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<TodoItem, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"todoItemId",
+			new BiConsumer<TodoItem, Object>() {
+
+				@Override
+				public void accept(TodoItem todoItem, Object todoItemIdObject) {
+					todoItem.setTodoItemId((Long)todoItemIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"companyId",
+			new BiConsumer<TodoItem, Object>() {
+
+				@Override
+				public void accept(TodoItem todoItem, Object companyIdObject) {
+					todoItem.setCompanyId((Long)companyIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userId",
+			new BiConsumer<TodoItem, Object>() {
+
+				@Override
+				public void accept(TodoItem todoItem, Object userIdObject) {
+					todoItem.setUserId((Long)userIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"userName",
+			new BiConsumer<TodoItem, Object>() {
+
+				@Override
+				public void accept(TodoItem todoItem, Object userNameObject) {
+					todoItem.setUserName((String)userNameObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"createDate",
+			new BiConsumer<TodoItem, Object>() {
+
+				@Override
+				public void accept(TodoItem todoItem, Object createDateObject) {
+					todoItem.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -374,16 +422,6 @@ public class TodoItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"todoListId",
-			new Function<TodoItem, Object>() {
-
-				@Override
-				public Object apply(TodoItem todoItem) {
-					return todoItem.getTodoListId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"todoListId",
 			new BiConsumer<TodoItem, Object>() {
@@ -391,16 +429,6 @@ public class TodoItemModelImpl
 				@Override
 				public void accept(TodoItem todoItem, Object todoListIdObject) {
 					todoItem.setTodoListId((Long)todoListIdObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<TodoItem, Object>() {
-
-				@Override
-				public Object apply(TodoItem todoItem) {
-					return todoItem.getDescription();
 				}
 
 			});
@@ -416,16 +444,6 @@ public class TodoItemModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"priority",
-			new Function<TodoItem, Object>() {
-
-				@Override
-				public Object apply(TodoItem todoItem) {
-					return todoItem.getPriority();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"priority",
 			new BiConsumer<TodoItem, Object>() {
@@ -433,16 +451,6 @@ public class TodoItemModelImpl
 				@Override
 				public void accept(TodoItem todoItem, Object priorityObject) {
 					todoItem.setPriority((Integer)priorityObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"status",
-			new Function<TodoItem, Object>() {
-
-				@Override
-				public Object apply(TodoItem todoItem) {
-					return todoItem.getStatus();
 				}
 
 			});
@@ -457,8 +465,6 @@ public class TodoItemModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

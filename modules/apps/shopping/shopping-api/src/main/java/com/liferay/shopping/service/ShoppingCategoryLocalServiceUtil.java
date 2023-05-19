@@ -405,6 +405,10 @@ public class ShoppingCategoryLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ShoppingCategoryLocalService service) {
+		_service = service;
+	}
+
 	private static volatile ShoppingCategoryLocalService _service;
 
 }

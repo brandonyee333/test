@@ -257,14 +257,10 @@ public class KaleoNodeModelImpl
 
 	private static final Map<String, Function<KaleoNode, Object>>
 		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<KaleoNode, Object>>
-		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<KaleoNode, Object>> attributeGetterFunctions =
 			new LinkedHashMap<String, Function<KaleoNode, Object>>();
-		Map<String, BiConsumer<KaleoNode, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<KaleoNode, ?>>();
 
 		attributeGetterFunctions.put(
 			"kaleoNodeId",
@@ -273,18 +269,6 @@ public class KaleoNodeModelImpl
 				@Override
 				public Object apply(KaleoNode kaleoNode) {
 					return kaleoNode.getKaleoNodeId();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"kaleoNodeId",
-			new BiConsumer<KaleoNode, Object>() {
-
-				@Override
-				public void accept(
-					KaleoNode kaleoNode, Object kaleoNodeIdObject) {
-
-					kaleoNode.setKaleoNodeId((Long)kaleoNodeIdObject);
 				}
 
 			});
@@ -298,16 +282,6 @@ public class KaleoNodeModelImpl
 				}
 
 			});
-		attributeSetterBiConsumers.put(
-			"groupId",
-			new BiConsumer<KaleoNode, Object>() {
-
-				@Override
-				public void accept(KaleoNode kaleoNode, Object groupIdObject) {
-					kaleoNode.setGroupId((Long)groupIdObject);
-				}
-
-			});
 		attributeGetterFunctions.put(
 			"companyId",
 			new Function<KaleoNode, Object>() {
@@ -315,6 +289,150 @@ public class KaleoNodeModelImpl
 				@Override
 				public Object apply(KaleoNode kaleoNode) {
 					return kaleoNode.getCompanyId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userId",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getUserId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"userName",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getUserName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"createDate",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getCreateDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"modifiedDate",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getModifiedDate();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"kaleoDefinitionId",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getKaleoDefinitionId();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"name",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getName();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"metadata",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getMetadata();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"description",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getDescription();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"type",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getType();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"initial",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getInitial();
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"terminal",
+			new Function<KaleoNode, Object>() {
+
+				@Override
+				public Object apply(KaleoNode kaleoNode) {
+					return kaleoNode.getTerminal();
+				}
+
+			});
+
+		_attributeGetterFunctions = Collections.unmodifiableMap(
+			attributeGetterFunctions);
+	}
+
+	private static final Map<String, BiConsumer<KaleoNode, Object>>
+		_attributeSetterBiConsumers;
+
+	static {
+		Map<String, BiConsumer<KaleoNode, ?>> attributeSetterBiConsumers =
+			new LinkedHashMap<String, BiConsumer<KaleoNode, ?>>();
+
+		attributeSetterBiConsumers.put(
+			"kaleoNodeId",
+			new BiConsumer<KaleoNode, Object>() {
+
+				@Override
+				public void accept(
+					KaleoNode kaleoNode, Object kaleoNodeIdObject) {
+
+					kaleoNode.setKaleoNodeId((Long)kaleoNodeIdObject);
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"groupId",
+			new BiConsumer<KaleoNode, Object>() {
+
+				@Override
+				public void accept(KaleoNode kaleoNode, Object groupIdObject) {
+					kaleoNode.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -330,16 +448,6 @@ public class KaleoNodeModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userId",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getUserId();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userId",
 			new BiConsumer<KaleoNode, Object>() {
@@ -350,16 +458,6 @@ public class KaleoNodeModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"userName",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getUserName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"userName",
 			new BiConsumer<KaleoNode, Object>() {
@@ -367,16 +465,6 @@ public class KaleoNodeModelImpl
 				@Override
 				public void accept(KaleoNode kaleoNode, Object userNameObject) {
 					kaleoNode.setUserName((String)userNameObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"createDate",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getCreateDate();
 				}
 
 			});
@@ -392,16 +480,6 @@ public class KaleoNodeModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"modifiedDate",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getModifiedDate();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"modifiedDate",
 			new BiConsumer<KaleoNode, Object>() {
@@ -411,16 +489,6 @@ public class KaleoNodeModelImpl
 					KaleoNode kaleoNode, Object modifiedDateObject) {
 
 					kaleoNode.setModifiedDate((Date)modifiedDateObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"kaleoDefinitionId",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getKaleoDefinitionId();
 				}
 
 			});
@@ -437,16 +505,6 @@ public class KaleoNodeModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"name",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getName();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"name",
 			new BiConsumer<KaleoNode, Object>() {
@@ -457,16 +515,6 @@ public class KaleoNodeModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"metadata",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getMetadata();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"metadata",
 			new BiConsumer<KaleoNode, Object>() {
@@ -474,16 +522,6 @@ public class KaleoNodeModelImpl
 				@Override
 				public void accept(KaleoNode kaleoNode, Object metadataObject) {
 					kaleoNode.setMetadata((String)metadataObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"description",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getDescription();
 				}
 
 			});
@@ -499,16 +537,6 @@ public class KaleoNodeModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"type",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getType();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"type",
 			new BiConsumer<KaleoNode, Object>() {
@@ -519,16 +547,6 @@ public class KaleoNodeModelImpl
 				}
 
 			});
-		attributeGetterFunctions.put(
-			"initial",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getInitial();
-				}
-
-			});
 		attributeSetterBiConsumers.put(
 			"initial",
 			new BiConsumer<KaleoNode, Object>() {
@@ -536,16 +554,6 @@ public class KaleoNodeModelImpl
 				@Override
 				public void accept(KaleoNode kaleoNode, Object initialObject) {
 					kaleoNode.setInitial((Boolean)initialObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
-			"terminal",
-			new Function<KaleoNode, Object>() {
-
-				@Override
-				public Object apply(KaleoNode kaleoNode) {
-					return kaleoNode.getTerminal();
 				}
 
 			});
@@ -560,8 +568,6 @@ public class KaleoNodeModelImpl
 
 			});
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
 		_attributeSetterBiConsumers = Collections.unmodifiableMap(
 			(Map)attributeSetterBiConsumers);
 	}

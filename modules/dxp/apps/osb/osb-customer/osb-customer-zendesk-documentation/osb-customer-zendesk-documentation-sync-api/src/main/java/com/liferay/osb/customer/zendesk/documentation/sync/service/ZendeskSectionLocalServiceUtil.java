@@ -329,6 +329,10 @@ public class ZendeskSectionLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(ZendeskSectionLocalService service) {
+		_service = service;
+	}
+
 	private static volatile ZendeskSectionLocalService _service;
 
 }

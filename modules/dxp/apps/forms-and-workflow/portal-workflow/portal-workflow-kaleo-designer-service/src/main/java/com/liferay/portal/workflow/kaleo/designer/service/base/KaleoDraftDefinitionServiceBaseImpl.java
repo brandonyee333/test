@@ -33,8 +33,6 @@ import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionSe
 import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionServiceUtil;
 import com.liferay.portal.workflow.kaleo.designer.service.persistence.KaleoDraftDefinitionPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -296,11 +294,11 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(kaleoDraftDefinitionService);
+		KaleoDraftDefinitionServiceUtil.setService(kaleoDraftDefinitionService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		KaleoDraftDefinitionServiceUtil.setService(null);
 	}
 
 	/**
@@ -343,23 +341,6 @@ public abstract class KaleoDraftDefinitionServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(
-		KaleoDraftDefinitionService kaleoDraftDefinitionService) {
-
-		try {
-			Field field =
-				KaleoDraftDefinitionServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, kaleoDraftDefinitionService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

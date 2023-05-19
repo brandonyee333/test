@@ -323,6 +323,10 @@ public class TicketAttachmentLocalServiceUtil {
 		return _service;
 	}
 
+	public static void setService(TicketAttachmentLocalService service) {
+		_service = service;
+	}
+
 	private static volatile TicketAttachmentLocalService _service;
 
 }

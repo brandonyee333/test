@@ -517,6 +517,10 @@ public class LoopDivisionUtil {
 		return _persistence;
 	}
 
+	public static void setPersistence(LoopDivisionPersistence persistence) {
+		_persistence = persistence;
+	}
+
 	private static volatile LoopDivisionPersistence _persistence;
 
 }

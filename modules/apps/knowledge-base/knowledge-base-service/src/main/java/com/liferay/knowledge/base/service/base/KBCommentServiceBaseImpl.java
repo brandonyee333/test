@@ -41,8 +41,6 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import com.liferay.ratings.kernel.service.persistence.RatingsEntryPersistence;
 import com.liferay.social.kernel.service.persistence.SocialActivityPersistence;
 
-import java.lang.reflect.Field;
-
 import javax.sql.DataSource;
 
 /**
@@ -729,11 +727,11 @@ public abstract class KBCommentServiceBaseImpl
 	}
 
 	public void afterPropertiesSet() {
-		_setServiceUtilService(kbCommentService);
+		KBCommentServiceUtil.setService(kbCommentService);
 	}
 
 	public void destroy() {
-		_setServiceUtilService(null);
+		KBCommentServiceUtil.setService(null);
 	}
 
 	/**
@@ -775,20 +773,6 @@ public abstract class KBCommentServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setServiceUtilService(KBCommentService kbCommentService) {
-		try {
-			Field field = KBCommentServiceUtil.class.getDeclaredField(
-				"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, kbCommentService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 
