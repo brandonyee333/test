@@ -24,7 +24,7 @@ gcloud composer environments create ${COMPOSER_ENVIRONMENT_NAME} \
 	--async \
 	--enable-master-authorized-networks \
 	--environment-size large \
-	--env-variables LCP_PROJECT_ID=${LCP_PROJECT_ID},GOOGLE_PROJECT_ID=${PROJECT_ID} \
+	--env-variables LCP_PROJECT_ID=${LCP_PROJECT_ID},GOOGLE_PROJECT_ID=${PROJECT_ID},GOOGLE_REGION=${REGION} \
 	--location ${REGION} \
 	--master-authorized-networks ${MASTER_AUTHORIZED_NETWORKS} \
 	--project ${PROJECT_ID} \
