@@ -46,6 +46,7 @@ response = requests.get(
 	Variable.get('osb.asah.backend.url'),
 	headers={
 		'OSB-Asah-Faro-Backend-Security-Signature': Variable.get('osb.asah.faro.backend.security.signature'),
+		'OSB-Asah-Project-ID: osbasah',
 		'User-Agent': 'LiferayAnalyticsCloud'
 	}
 )
