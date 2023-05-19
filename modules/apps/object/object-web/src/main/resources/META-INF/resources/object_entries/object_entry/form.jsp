@@ -113,7 +113,9 @@ portletDisplay.setURLBack(backURL);
 
 				if (field.localizable) {
 					fieldName += '_i18n';
-					value = JSON.parse(value);
+					if(typeof value == 'string'){
+						value = JSON.parse(value);
+					}
 				}
 
 				return Object.assign(obj, {[fieldName]: value});
