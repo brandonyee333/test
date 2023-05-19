@@ -30,7 +30,9 @@ import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -135,28 +137,29 @@ public class IndividualSegmentsRestControllerTest
 				338511451975440187L, "ACTIVE"));
 	}
 
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/individuals.json"
-	)
-	@RepositoryResource(
-		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels_2.json"
-	)
-	@RepositoryResource(
-		repositoryClass = DataSourceRepository.class,
-		resourcePath = "osbasahfaroinfo/data_sources_1.json"
-	)
-	@RepositoryResource(
-		repositoryClass = SegmentRepository.class,
-		resourcePath = "osbasahfaroinfo/individual_segments.json"
-	)
+	@BQSQLResource(resourcePath = "test_get_individuals_bq.sql")
+	@SQLResource(resourcePath = "test_get_individuals.sql")
 	@Test
 	public void testGetIndividuals() throws Exception {
+		JSONObject individualsJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.getIndividualDTOPageDTO(
+				327968823603500666L, null, false, 0, 20, null),
+			JSONObject.class);
 
-		// Include anonymous users
+		JSONObject embeddedJSONObject = individualsJSONObject.getJSONObject(
+			"_embedded");
 
+		JSONArray individualsJSONArray = embeddedJSONObject.getJSONArray(
+			"individuals");
+
+		Assertions.assertEquals(1, individualsJSONArray.length());
+	}
+
+	@BQSQLResource(resourcePath = "test_get_individuals_bq.sql")
+	@Disabled
+	@SQLResource(resourcePath = "test_get_individuals.sql")
+	@Test
+	public void testGetIndividualsIncludeAnonymousUsers() throws Exception {
 		JSONObject individualsJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.getIndividualDTOPageDTO(
 				327968823603500666L, null, true, 0, 20, null),
@@ -167,19 +170,6 @@ public class IndividualSegmentsRestControllerTest
 
 		JSONArray individualsJSONArray = embeddedJSONObject.getJSONArray(
 			"individuals");
-
-		Assertions.assertEquals(2, individualsJSONArray.length());
-
-		// Does not include anonymous users
-
-		individualsJSONObject = _objectMapper.convertValue(
-			_individualSegmentsRestController.getIndividualDTOPageDTO(
-				327968823603500666L, null, false, 0, 20, null),
-			JSONObject.class);
-
-		embeddedJSONObject = individualsJSONObject.getJSONObject("_embedded");
-
-		individualsJSONArray = embeddedJSONObject.getJSONArray("individuals");
 
 		Assertions.assertEquals(1, individualsJSONArray.length());
 	}
