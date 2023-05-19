@@ -24,7 +24,7 @@ with airflow.DAG(
 		'lcp_project_id': os.environ['LCP_PROJECT_ID'],
 		'owner': 'Liferay',
 		'project_id': os.environ['GOOGLE_PROJECT_ID'],
-		'region': 'us-west1',
+		'region': os.environ['GOOGLE_REGION'],
 		'retries': 0,
 		'start_date': datetime.datetime.now() - datetime.timedelta(minutes=1)
 	},

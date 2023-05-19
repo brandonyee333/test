@@ -28,7 +28,7 @@ def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 			'dag_configuration_key': 'interest_score_dag_trigger',
 			'owner': 'Liferay',
 			'project_id': os.environ['GOOGLE_PROJECT_ID'],
-			'region': 'us-west1'
+			'region': os.environ['GOOGLE_REGION']
 		},
 		description=dag_description,
 		max_active_runs=1,
