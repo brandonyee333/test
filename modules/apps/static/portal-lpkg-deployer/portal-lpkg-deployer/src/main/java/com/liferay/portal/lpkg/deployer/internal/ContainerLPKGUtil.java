@@ -30,16 +30,12 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.osgi.framework.BundleContext;
-
 /**
  * @author Matthew Tambara
  */
 public class ContainerLPKGUtil {
 
-	public static List<File> deploy(File lpkgFile, BundleContext bundleContext)
-		throws IOException {
-
+	public static List<File> deploy(File lpkgFile) throws IOException {
 		Path deployerDirPath = Paths.get(
 			PropsValues.MODULE_FRAMEWORK_MARKETPLACE_DIR);
 
