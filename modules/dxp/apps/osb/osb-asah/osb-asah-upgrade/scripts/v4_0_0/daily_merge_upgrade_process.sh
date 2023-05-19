@@ -2,8 +2,7 @@
 
 if [ ! -f project_time_zones ]
 then
-echo "File project_time_zones does not exist.";
-
+echo "File project_time_zones does not exist. Please provide file with project ID as the first column and time zone ID as the second column.";
 exit
 fi
 
@@ -82,7 +81,7 @@ then
 	  upgrade_journal_daily $i $project_time_zone
 	  upgrade_page_daily $i $project_time_zone
 else
-	echo "Unable to find time zone for $i";
+	echo "Unable to find time zone for $i. Skipping project.";
 fi
 
 done
