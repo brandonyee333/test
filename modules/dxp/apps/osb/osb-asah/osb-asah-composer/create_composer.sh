@@ -2,6 +2,9 @@
 
 LCP_PROJECT_ID=${1:-asahdev}
 PROJECT_ID=$(gcloud config get-value project)
+PROJECT_NUMBER=$(gcloud projects list \
+	--filter="${PROJECT_ID}" \
+	--format="value(PROJECT_NUMBER)")
 REGION=$(gcloud config get-value compute/region)
 SERVICE_ACCOUNT=ac-composer-admin@${PROJECT_ID}.iam.gserviceaccount.com
 
@@ -9,6 +12,10 @@ COMPOSER_ENVIRONMENT_NAME=ac-composer-${LCP_PROJECT_ID}
 
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 	--member serviceAccount:${SERVICE_ACCOUNT} \
+	--role roles/composer.ServiceAgentV2Ext
+
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+	--member serviceAccount:service-${PROJECT_NUMBER}@cloudcomposer-accounts.iam.gserviceaccount.com \
 	--role roles/composer.ServiceAgentV2Ext
 
 gcloud composer environments create ${COMPOSER_ENVIRONMENT_NAME} \
