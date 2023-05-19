@@ -28,6 +28,7 @@ USING (
 		Event.assetId IS NULL AND
 		Event.assetTitle IS NULL AND
 		Event.eventId != 'pageViewed'
+	GROUP BY assetId, assetTitle, id
 ) AS staging
 ON (replica.id = staging.id)
 WHEN MATCHED THEN

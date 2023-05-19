@@ -5,6 +5,8 @@ USING (
 		sessionId, ARRAY_AGG(DISTINCT url) AS urls
 	FROM
 		`${PROJECT_ID}.${asah_project_id}.event`
+	WHERE
+		eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 6 HOUR)
 	GROUP
 		BY sessionId
 ) AS staging
