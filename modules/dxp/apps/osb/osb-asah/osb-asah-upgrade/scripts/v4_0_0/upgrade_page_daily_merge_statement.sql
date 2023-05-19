@@ -25,7 +25,7 @@ USING
 			FROM
 				`${PROJECT_ID}.${asah_project_id}.event` AS Event
 			WHERE
-				Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+				DATE(Event.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 		),
 		PageBounces AS (
 			SELECT
@@ -44,7 +44,7 @@ USING
 					PageEvent.sessionId = Session.id
 			WHERE
 				PageEvent.eventId NOT IN ('blogViewed', 'documentPreviewed', 'formViewed', 'pageLoaded', 'pageUnloaded', 'webContentViewed') AND
-				Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+				DATE(Session.sessionStart, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 			GROUP BY
 				channelId, sessionId, userId
 		),
@@ -84,7 +84,7 @@ USING
 					`${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 						PageEvent.sessionId = Session.id
 				WHERE
-					Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+					DATE(Session.sessionStart, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 			) AS EventEntrance
 			WHERE
 				rank = 1
@@ -125,7 +125,7 @@ USING
 					`${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 						PageEvent.sessionId = Session.id
 				WHERE
-					Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+					DATE(Session.sessionStart, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 			) AS EventExit
 			WHERE
 				rank = 1
@@ -166,7 +166,7 @@ USING
 					`${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 						PageEvent.sessionId = Session.id
 				WHERE
-					Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+					DATE(Session.sessionStart, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 			) AS EventTimeOnPage
 			GROUP BY
 				browserName, canonicalUrl, channelId, city, country, deviceType,

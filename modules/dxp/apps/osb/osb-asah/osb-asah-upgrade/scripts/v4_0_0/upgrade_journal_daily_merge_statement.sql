@@ -18,7 +18,7 @@ USING
 					)
 				WHERE
 					Event.applicationId = 'WebContent' AND
-					Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
+					DATE(Event.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}') AND
 					Event.eventId = 'webContentViewed' AND
 					articleId.value IS NOT NULL
 			)

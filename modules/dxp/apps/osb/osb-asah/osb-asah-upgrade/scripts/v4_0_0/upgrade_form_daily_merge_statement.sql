@@ -24,16 +24,16 @@ USING
 					`${PROJECT_ID}.${asah_project_id}.event` AS Event
 				LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS formId ON (
 					Event.id = formId.id AND formId.name = 'formId' AND
-					formId.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
+					DATE(formId.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}') AND
 					formId.value IS NOT NULL
 				)
 				LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS formTitle ON (
 					Event.id = formTitle.id AND formTitle.name = 'title' AND
-					formTitle.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+					DATE(formTitle.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 				)
 				WHERE
 					Event.applicationId = 'Form' AND
-					Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
+					DATE(Event.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}') AND
 					Event.eventId IN ('formSubmitted', 'formViewed') AND
 					formId.value IS NOT NULL
 			),
@@ -135,7 +135,7 @@ USING
 			FormEvent.userId = FormSubmissionTimes.userId)
 		LEFT JOIN `${PROJECT_ID}.${asah_project_id}.session` AS Session ON
 			FormEvent.sessionId = Session.id AND
-			Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+			DATE(Session.sessionStart, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 		GROUP BY
 			assetId, browserName, canonicalUrl, channelId, city, country, deviceType,
 			eventDate, platformName, region, title, userId

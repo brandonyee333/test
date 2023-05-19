@@ -17,7 +17,7 @@ USING
 					)
 				WHERE
 					Event.applicationId = 'Comment' AND
-					Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
+					DATE(Event.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}') AND
 					Event.eventId = 'posted' AND
 					className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
 					classPK.value IS NOT NULL
@@ -37,7 +37,7 @@ USING
 					)
 				WHERE
 					Event.applicationId = 'Document' AND
-					Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
+					DATE(Event.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}') AND
 					Event.eventId IN ('documentDownloaded', 'documentPreviewed') AND
 					fileEntryId.value IS NOT NULL
 			),
@@ -49,20 +49,28 @@ USING
 				FROM
 					`${PROJECT_ID}.${asah_project_id}.event` AS Event
 					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS className ON (
-						Event.id = className.id AND className.name = 'className'
+						Event.id = className.id AND
+						className.name = 'className' AND
+						DATE(className.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 					)
 					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS classPK ON (
-						Event.id = classPK.id AND classPK.name = 'classPK'
+						Event.id = classPK.id AND
+						classPK.name = 'classPK' AND
+						DATE(classPK.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 					)
 					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS ratingType ON (
-						Event.id = ratingType.id AND ratingType.name = 'ratingType'
+						Event.id = ratingType.id AND
+						ratingType.name = 'ratingType' AND
+						DATE(ratingType.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 					)
 					LEFT JOIN `${PROJECT_ID}.${asah_project_id}.eventproperty` AS score ON (
-						Event.id = score.id AND score.name = 'score'
+						Event.id = score.id AND
+						score.name = 'score' AND
+						DATE(score.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 					)
 				WHERE
 					Event.applicationId = 'Ratings' AND
-					Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
+					DATE(Event.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}') AND
 					Event.eventId = 'VOTE' AND
 					className.value = 'com.liferay.document.library.kernel.model.DLFileEntry' AND
 					classPK.value IS NOT NULL AND

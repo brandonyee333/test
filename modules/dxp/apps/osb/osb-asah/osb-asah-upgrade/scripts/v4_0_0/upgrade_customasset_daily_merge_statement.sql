@@ -28,7 +28,7 @@ USING
 						`${PROJECT_ID}.${asah_project_id}.eventproperty`
 					WHERE
 						name = 'assetId' AND
-						eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+						DATE(eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 				) AS assetId ON (
 					Event.id = assetid.id
 				)
@@ -40,7 +40,7 @@ USING
 						`${PROJECT_ID}.${asah_project_id}.eventproperty`
 					WHERE
 						name = 'category' AND
-						eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+						DATE(eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 				) AS category ON (
 					Event.id = category.id
 				)
@@ -52,13 +52,13 @@ USING
 						`${PROJECT_ID}.${asah_project_id}.eventproperty`
 					WHERE
 						name = 'formEnabled' AND
-						eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+						DATE(eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 				) AS formEnabled ON (
 					Event.id = formEnabled.id
 				)
 				WHERE
 					Event.applicationid = 'Custom' AND
-					Event.eventDate < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR) AND
+					DATE(Event.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}') AND
 					assetId.value IS NOT NULL
 			),
 			CustomAssetFinalizedEvent AS (
@@ -68,7 +68,7 @@ USING
 					CustomAssetEvent INNER JOIN `${PROJECT_ID}.${asah_project_id}.session` Session ON
 					CustomAssetEvent.sessionId = Session.id
 				WHERE
-					Session.sessionStart < TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+					DATE(Session.sessionStart, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}')
 			),
 			Metrics AS (
 				SELECT
