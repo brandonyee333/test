@@ -62,6 +62,10 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 			ProjectIdThreadLocal.getProjectId(), "expandovalue");
 		_bigQuerySchemaManager.dropTable(
 			ProjectIdThreadLocal.getProjectId(), "individual");
+		_bigQuerySchemaManager.dropTable(
+			ProjectIdThreadLocal.getProjectId(), "product");
+		_bigQuerySchemaManager.dropTable(
+			ProjectIdThreadLocal.getProjectId(), "product_raw");
 
 		_bigQuerySchemaManager.createTable(
 			ProjectIdThreadLocal.getProjectId(), "expandovalue");
@@ -77,6 +81,10 @@ public class BigQuerySchemaUpgradeStep implements UpgradeStep {
 			ProjectIdThreadLocal.getProjectId(), "membership");
 		_bigQuerySchemaManager.createTable(
 			ProjectIdThreadLocal.getProjectId(), "membershipchange");
+		_bigQuerySchemaManager.createTable(
+			ProjectIdThreadLocal.getProjectId(), "product");
+		_bigQuerySchemaManager.createTable(
+			ProjectIdThreadLocal.getProjectId(), "product_raw");
 		_bigQuerySchemaManager.createTable(
 			ProjectIdThreadLocal.getProjectId(), "sessioninterestscore");
 
