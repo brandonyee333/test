@@ -617,8 +617,7 @@ public class BQIndividualRepositoryImpl
 								"GROUP BY User.dataSourceId)", "")
 						).as(
 							"dataSourceUsers"
-						)
-					);
+						));
 				}
 			}
 		).from(
