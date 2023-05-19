@@ -604,13 +604,10 @@ public class BQIndividualRepositoryImpl
 			DSL.field("Individual.screenName"),
 			DSL.field(
 				StringUtils.join(
-					"ARRAY(SELECT AS STRUCT ",
-					"User.dataSourceId AS dataSourceId,",
-					"ARRAY_AGG(User.uuid) AS userPKs FROM BQIndividual ",
-					"AS UserIndividual JOIN BQUser AS User ON ",
-					"UserIndividual.id = User.individualId WHERE ",
-					"Individual.id = UserIndividual.id GROUP BY ",
-					"UserIndividual.id, User.dataSourceId)", "")
+					"ARRAY(SELECT AS STRUCT User.dataSourceId AS ",
+					"dataSourceId, ARRAY_AGG(User.uuid) AS userPKs FROM ",
+					"BQUser AS User WHERE Individual.id = User.individualId ",
+					"GROUP BY User.dataSourceId)", "")
 			).as(
 				"dataSourceUsers"
 			));
@@ -1181,12 +1178,10 @@ public class BQIndividualRepositoryImpl
 				DSL.field(
 					StringUtils.join(
 						"ARRAY(SELECT AS STRUCT ",
-						"User.dataSourceId AS dataSourceId,",
-						"ARRAY_AGG(User.uuid) AS userPKs FROM BQIndividual ",
-						"AS UserIndividual JOIN BQUser AS User ON ",
-						"UserIndividual.id = User.individualId WHERE ",
-						"Individual.id = UserIndividual.id GROUP BY ",
-						"UserIndividual.id, User.dataSourceId)", "")
+						"User.dataSourceId AS dataSourceId, ",
+						"ARRAY_AGG(User.uuid) AS userPKs FROM BQUser AS User ",
+						"WHERE Individual.id = User.individualId GROUP BY ",
+						"User.dataSourceId)", "")
 				).as(
 					"dataSourceUsers"
 				));
