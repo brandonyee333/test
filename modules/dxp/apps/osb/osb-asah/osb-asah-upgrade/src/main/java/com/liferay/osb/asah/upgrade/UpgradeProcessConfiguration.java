@@ -47,9 +47,9 @@ public class UpgradeProcessConfiguration {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
 		upgradeProcess.addUpgradeSteps(
-			"3.6.0", "3.6.1", _postgreSQLSchemaUpgradeStep);
+			"3.6.0", "3.6.1", _bigQuerySchemaUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.6.1", "3.7.0", _bigQuerySchemaUpgradeStep);
+			"3.6.1", "3.7.0", _postgreSQLSchemaUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"3.7.0", "3.7.1", _asahMarkerMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
