@@ -42,6 +42,7 @@ class DataprocClusterGetOrCreateOperator(BaseOperator):
 
 		cluster_config = ClusterGenerator(
 			project_id=dag.default_args['project_id'],
+			region=dag.default_args['region'],
 			idle_delete_ttl=dag_configuration[
 				'dataproc.cluster.idle_delete_ttl'
 			],
