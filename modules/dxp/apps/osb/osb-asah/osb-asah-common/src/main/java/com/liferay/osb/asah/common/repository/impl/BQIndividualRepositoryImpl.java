@@ -601,19 +601,26 @@ public class BQIndividualRepositoryImpl
 			DSL.field("Individual.lastName"),
 			DSL.field("Individual.middleName"),
 			DSL.field("Individual.modifiedDate"),
-			DSL.field("Individual.screenName"),
-			DSL.field(
-				StringUtils.join(
-					"ARRAY(SELECT AS STRUCT User.dataSourceId AS ",
-					"dataSourceId, ARRAY_AGG(User.uuid) AS userPKs FROM ",
-					"BQUser AS User WHERE Individual.id = User.individualId ",
-					"GROUP BY User.dataSourceId)", "")
-			).as(
-				"dataSourceUsers"
-			));
+			DSL.field("Individual.screenName"));
 
 		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
-			fields
+			new ArrayList<Field>() {
+				{
+					addAll(fields);
+					add(
+						DSL.field(
+							StringUtils.join(
+								"ARRAY(SELECT AS STRUCT User.dataSourceId AS ",
+								"dataSourceId, ARRAY_AGG(User.uuid) AS ",
+								"userPKs FROM BQUser AS User WHERE ",
+								"Individual.id = User.individualId ",
+								"GROUP BY User.dataSourceId)", "")
+						).as(
+							"dataSourceUsers"
+						)
+					);
+				}
+			}
 		).from(
 			DSL.table(
 				"BQIdentity"
