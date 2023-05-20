@@ -2,8 +2,9 @@
 
 if [ ! -f project_time_zones ]
 then
-echo "File project_time_zones does not exist. Please provide file with project ID as the first column and time zone ID as the second column.";
-exit
+	echo "File project_time_zones does not exist. Please provide file with project ID as the first column and time zone ID as the second column.";
+
+	exit
 fi
 
 PROJECT_ID=$(gcloud config get-value project)
@@ -70,18 +71,17 @@ function upgrade_page_daily {
 
 for i in $(bq ls --datasets=true --max_results=1000 | grep "asah" | grep -v "osbasah" | awk '{$1=$1;print}')
 do :
-project_time_zone=$(cat project_time_zones | grep "$i" | awk '{print $2}')
+	project_time_zone=$(cat project_time_zones | grep "$i" | awk '{print $2}')
 
-if [ -n "$project_time_zone" ]
-then
-	  upgrade_blog_daily $i $project_time_zone
-	  upgrade_custom_asset_daily $i $project_time_zone
-	  upgrade_document_library_daily $i $project_time_zone
-	  upgrade_form_daily $i $project_time_zone
-	  upgrade_journal_daily $i $project_time_zone
-	  upgrade_page_daily $i $project_time_zone
-else
-	echo "Unable to find time zone for $i. Skipping project.";
-fi
-
+	if [ -n "$project_time_zone" ]
+	then
+		  upgrade_blog_daily $i $project_time_zone
+		  upgrade_custom_asset_daily $i $project_time_zone
+		  upgrade_document_library_daily $i $project_time_zone
+		  upgrade_form_daily $i $project_time_zone
+		  upgrade_journal_daily $i $project_time_zone
+		  upgrade_page_daily $i $project_time_zone
+	else
+		echo "Unable to find time zone for $i. Skipping project.";
+	fi
 done
