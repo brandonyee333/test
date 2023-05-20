@@ -34,7 +34,7 @@ USING
 		),
 		CommentEvent AS (
 			SELECT
-				Event.*,
+				Event.* EXCEPT(assetId),
 				classPK.value as assetId
 			FROM
 				`${PROJECT_ID}.${asah_project_id}.event` AS Event
@@ -57,7 +57,7 @@ USING
 		),
 		RatingsEvent AS (
 			SELECT
-				Event.*,
+				Event.* EXCEPT(assetId),
 				classPK.value as assetId,
 				CAST(score.value AS FLOAT64) as score
 			FROM
