@@ -12,7 +12,7 @@ function upgrade_blog_daily {
 	local asah_project_id=${1}
 	local asah_project_time_zone=${2}
 
-	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" -e "s/\${asah_project_time_zone}/$asah_project_time_zone/g" upgrade_blog_daily_merge_statement.sql > new_upgrade_blog_daily.sql
+	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s~\${asah_project_time_zone}~$asah_project_time_zone~g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_blog_daily_merge_statement.sql > new_upgrade_blog_daily.sql
 
 	echo "Upgrade BlogDaily for Project ID: ${PROJECT_ID}, Asah Project ID: ${asah_project_id}"
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_blog_daily.sql
@@ -22,7 +22,7 @@ function upgrade_custom_asset_daily {
 	local asah_project_id=${1}
 	local asah_project_time_zone=${2}
 
-	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s/\${asah_project_time_zone}/$asah_project_time_zone/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_customasset_daily_merge_statement.sql > new_upgrade_customasset_daily.sql
+	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s~\${asah_project_time_zone}~$asah_project_time_zone~g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_customasset_daily_merge_statement.sql > new_upgrade_customasset_daily.sql
 
 	echo "Upgrade CustomAssetDaily for Project ID: ${PROJECT_ID}, Asah Project ID: ${asah_project_id}"
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_customasset_daily.sql
@@ -32,7 +32,7 @@ function upgrade_document_library_daily {
 	local asah_project_id=${1}
 	local asah_project_time_zone=${2}
 
-	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s/\${asah_project_time_zone}/$asah_project_time_zone/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_document_library_daily_merge_statement.sql > new_upgrade_document_library_daily.sql
+	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s~\${asah_project_time_zone}~$asah_project_time_zone~g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_document_library_daily_merge_statement.sql > new_upgrade_document_library_daily.sql
 
 	echo "Upgrade DocumentLibraryDaily for Project ID: ${PROJECT_ID}, Asah Project ID: ${asah_project_id}"
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_document_library_daily.sql
@@ -42,7 +42,7 @@ function upgrade_form_daily {
 	local asah_project_id=${1}
 	local asah_project_time_zone=${2}
 
-	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s/\${asah_project_time_zone}/$asah_project_time_zone/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_form_daily_merge_statement.sql > new_upgrade_form_daily.sql
+	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s~\${asah_project_time_zone}~$asah_project_time_zone~g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_form_daily_merge_statement.sql > new_upgrade_form_daily.sql
 
 	echo "Upgrade FormDaily for Project ID: ${PROJECT_ID}, Asah Project ID: ${asah_project_id}"
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_form_daily.sql
@@ -52,7 +52,7 @@ function upgrade_journal_daily {
 	local asah_project_id=${1}
 	local asah_project_time_zone=${2}
 
-	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s/\${asah_project_time_zone}/$asah_project_time_zone/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_journal_daily_merge_statement.sql > new_upgrade_journal_daily.sql
+	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s~\${asah_project_time_zone}~$asah_project_time_zone~g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_journal_daily_merge_statement.sql > new_upgrade_journal_daily.sql
 
 	echo "Upgrade JournalDaily for Project ID: ${PROJECT_ID}, Asah Project ID: ${asah_project_id}"
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_journal_daily.sql
@@ -62,7 +62,7 @@ function upgrade_page_daily {
 	local asah_project_id=${1}
 	local asah_project_time_zone=${2}
 
-	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s/\${asah_project_time_zone}/$asah_project_time_zone/g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_page_daily_merge_statement.sql > new_upgrade_page_daily_merge_statement.sql
+	sed -e "s/\${asah_project_id}/$asah_project_id/g" -e "s~\${asah_project_time_zone}~$asah_project_time_zone~g" -e "s/\${PROJECT_ID}/$PROJECT_ID/g" upgrade_page_daily_merge_statement.sql > new_upgrade_page_daily_merge_statement.sql
 
 	echo "Upgrade Page for Project ID: ${PROJECT_ID}, Asah Project ID: ${asah_project_id}"
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_page_daily_merge_statement.sql
