@@ -31,9 +31,9 @@ name = namespace + name;
 <liferay-util:html-top
 	outputKey="js_maps_openstreet_skip_loading"
 >
-	<link href="https://npmcdn.com/leaflet@0.7.3/dist/leaflet.css" rel="stylesheet" />
+	<link crossorigin="anonymous" href="https://npmcdn.com/leaflet@0.7.3/dist/leaflet.css" integrity="sha384-gnyrAoIOt/4fOO7ZS4MVNUkQl0QlEdzA6z3r/GGT4VO6x+EX/iHjeTsq1jGYVgaB" rel="stylesheet" />
 
-	<script src="https://npmcdn.com/leaflet@0.7.3/dist/leaflet.js" type="text/javascript"></script>
+	<script crossorigin="anonymous" integrity="sha384-dhhyEQPTkSEQ4ADdQCtVl4jFLyvI7S128IW4r59eZ0438I+x3tmktN6DWLdplZUr" src="https://npmcdn.com/leaflet@0.7.3/dist/leaflet.js"></script>
 </liferay-util:html-top>
 
 <aui:script use="liferay-map-openstreetmap">
