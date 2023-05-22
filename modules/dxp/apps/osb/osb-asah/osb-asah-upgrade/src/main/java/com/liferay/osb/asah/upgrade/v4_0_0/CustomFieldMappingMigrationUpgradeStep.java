@@ -82,6 +82,15 @@ public class CustomFieldMappingMigrationUpgradeStep implements UpgradeStep {
 							jsonObject.optJSONObject("dataSourceFieldNames");
 
 						if (dataSourceFieldNamesJSONObject == null) {
+							if (_log.isDebugEnabled()) {
+								_log.debug(
+									String.format(
+										"Skipping field-mapping ID %s " +
+											"because dataSourceFieldNames is " +
+												"null",
+										jsonObject.getString("id")));
+							}
+
 							return;
 						}
 
