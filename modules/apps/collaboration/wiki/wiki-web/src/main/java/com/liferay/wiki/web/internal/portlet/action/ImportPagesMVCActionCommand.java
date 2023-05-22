@@ -14,7 +14,6 @@
 
 package com.liferay.wiki.web.internal.portlet.action;
 
-import com.liferay.petra.io.StreamUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -113,14 +112,7 @@ public class ImportPagesMVCActionCommand extends BaseMVCActionCommand {
 				actionRequest.getParameterMap());
 		}
 		finally {
-			try {
 				StreamUtil.cleanUp(inputStreams);
-			}
-			catch (IOException ioException) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(ioException);
-				}
-			}
 		}
 
 
