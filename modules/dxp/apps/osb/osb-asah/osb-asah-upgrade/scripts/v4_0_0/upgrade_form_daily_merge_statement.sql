@@ -105,7 +105,7 @@ USING
 			FormEvent.city,
 			FormEvent.country,
 			FormEvent.deviceType,
-			TIMESTAMP_TRUNC(eventDate, DAY) AS eventDate,
+			TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS eventDate,
 			SUM(
 				CASE
 					WHEN

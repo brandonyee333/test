@@ -295,7 +295,7 @@ USING
 			deviceType,
 			SUM(directAccess) AS directAccess,
 			SUM(entrances) AS entrances,
-			DATE_TRUNC(eventDate, DAY) AS eventDate,
+			eventDate AS eventDate,
 			SUM(exits) exits,
 			ANY_VALUE(experimentId) AS experimentId,
 			SUM(indirectAccess) AS indirectAccess,
