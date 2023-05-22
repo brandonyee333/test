@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.upgrade.v4_0_0.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.json.JSONUtil;
@@ -68,6 +66,20 @@ public class CustomFieldMappingMigrationUpgradeStepTest
 		_dataSourceRepository.save(dataSource);
 
 		_elasticsearchIndexManager.delete(
+			"test_osbasahfaroinfo_osbasahmarkers");
+
+		_elasticsearchIndexManager.create(
+			ResourceUtil.readResourceToString(
+				"dependencies/osbasahfaroinfo" +
+					"/osbasahmarkers_index_configuration.json",
+				this),
+			"test_osbasahfaroinfo_osbasahmarkers");
+
+		_elasticsearchIndexManager.addAlias(
+			"test_osbasahfaroinfo_osbasahmarkers_alias",
+			"test_osbasahfaroinfo_osbasahmarkers");
+
+		_elasticsearchIndexManager.delete(
 			"test_osbasahfaroinfo_field-mappings");
 
 		_elasticsearchIndexManager.create(
@@ -84,6 +96,8 @@ public class CustomFieldMappingMigrationUpgradeStepTest
 	public void tearDown() throws Exception {
 		_faroInfoElasticsearchInvoker.delete(
 			"field-mappings", QueryBuilders.matchAllQuery());
+		_faroInfoElasticsearchInvoker.delete(
+			"OSBAsahMarkers", QueryBuilders.matchAllQuery());
 
 		_dxpEntityRepository.deleteByType(DXPEntity.Type.EXPANDO_COLUMN);
 
@@ -191,8 +205,5 @@ public class CustomFieldMappingMigrationUpgradeStepTest
 
 	@ElasticsearchInvoker.Autowired(WeDeployDataService.OSB_ASAH_FARO_INFO)
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 }
