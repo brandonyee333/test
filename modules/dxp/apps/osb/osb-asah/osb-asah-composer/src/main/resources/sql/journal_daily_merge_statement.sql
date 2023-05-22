@@ -11,7 +11,7 @@ USING
 			city,
 			country,
 			deviceType,
-			DATE_TRUNC(eventDate, DAY) AS eventDate,
+			TIMESTAMP_TRUNC(eventDate, DAY, '{{ dag.default_args['ac_project_time_zone_id'] }}') AS eventDate,
 			pageTitle,
 			platformName,
 			region,

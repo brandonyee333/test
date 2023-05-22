@@ -13,7 +13,7 @@ USING
 			SUM(comments) AS comments,
 			country,
 			deviceType,
-			DATE_TRUNC(eventDate, DAY) AS eventDate,
+			TIMESTAMP_TRUNC(eventDate, DAY, '{{ dag.default_args['ac_project_time_zone_id'] }}') AS eventDate,
 			pageTitle,
 			platformName,
 			SUM(ratings) AS ratings,

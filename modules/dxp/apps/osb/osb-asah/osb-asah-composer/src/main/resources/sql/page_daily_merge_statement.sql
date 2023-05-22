@@ -13,7 +13,7 @@ USING
 			deviceType,
 			SUM(directAccess) AS directAccess,
 			SUM(entrances) AS entrances,
-			DATE_TRUNC(eventDate, DAY) AS eventDate,
+			TIMESTAMP_TRUNC(eventDate, DAY, '{{ dag.default_args['ac_project_time_zone_id'] }}') AS eventDate,
 			SUM(exits) exits,
 			ANY_VALUE(experimentId) AS experimentId,
 			SUM(indirectAccess) AS indirectAccess,

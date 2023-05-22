@@ -13,7 +13,7 @@ USING
 			country,
 			deviceType,
 			SUM(downloads) AS downloads,
-			DATE_TRUNC(eventDate, DAY) AS eventDate,
+			TIMESTAMP_TRUNC(eventDate, DAY, '{{ dag.default_args['ac_project_time_zone_id'] }}') AS eventDate,
 			pageTitle,
 			platformName,
 			SUM(previews) AS previews,

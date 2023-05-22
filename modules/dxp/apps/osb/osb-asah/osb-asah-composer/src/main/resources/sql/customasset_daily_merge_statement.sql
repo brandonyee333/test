@@ -8,7 +8,7 @@ USING
 			channelId,
 			sum(clicks) as clicks,
 			sum(downloads) as downloads,
-			DATE_TRUNC(eventDate, DAY) as eventDate,
+			TIMESTAMP_TRUNC(eventDate, DAY, '{{ dag.default_args['ac_project_time_zone_id'] }}') AS eventDate,
 			sum(readTime) as readTime,
 			sum(sessions) as sessions,
 			sum(submissions) as submissions,
