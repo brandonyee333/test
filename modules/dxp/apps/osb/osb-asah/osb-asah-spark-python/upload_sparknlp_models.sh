@@ -1,8 +1,11 @@
 #!/bin/bash
 
+PROJECT_ID=$(gcloud config get-value project)
+REGION=$(gcloud config get-value compute/region)
+
 LANGUAGE_DETECTOR=ld_tatoeba_cnn_99_xx_2.7.0_2.4_1607183215533.zip
 POS_TAGGER=pos_anc_en_3.0.0_3.0_1614962126490.zip
-REMOTE_GCP_URI=gs://ac-interest-score/resources
+REMOTE_GCP_URI=gs://${PROJECT_ID}-dataproc-${REGION}/resources/johnsnowlabs
 S3_DOWNLOAD_URI=https://s3.amazonaws.com/auxdata.johnsnowlabs.com/public/models
 TMP_FOLDER=~/.asah/interest-score
 
@@ -38,6 +41,8 @@ function extract_file {
 
 	unzip -q -o ${source_file} -d ${destination_file}
 }
+
+mkdir -p ${TMP_FOLDER}
 
 download_file ${S3_DOWNLOAD_URI}/${LANGUAGE_DETECTOR} ${TMP_FOLDER}/${LANGUAGE_DETECTOR}
 
