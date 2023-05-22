@@ -1,0 +1,359 @@
+[
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "cedula_ciudadania-Integer"
+		},
+		"dateCreated": "2020-09-25T17:25:55.104Z",
+		"dateModified": "2020-10-10T00:42:46.925Z",
+		"displayName": "cedula_ciudadania",
+		"displayType": "",
+		"fieldName": "cedula_ciudadania",
+		"fieldType": "Number",
+		"id": "445755435483080540",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "tipo_notificacion-Decimal"
+		},
+		"dateCreated": "2020-09-25T17:25:55.450Z",
+		"dateModified": "2020-10-10T00:42:47.133Z",
+		"displayName": "tipo_notificacion",
+		"displayType": "input-field",
+		"fieldName": "tipo_notificacion",
+		"fieldType": "Number",
+		"id": "445755436216914916",
+		"ownerType": "organization",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "empresaCarso_campo1_carso-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:55.859Z",
+		"dateModified": "2020-10-10T00:42:47.341Z",
+		"displayName": "empresaCarso_campo1_carso",
+		"displayType": "text-box",
+		"fieldName": "empresaCarso_campo1_carso",
+		"fieldType": "Text",
+		"id": "445755437066357009",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "marca_celular-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:56.199Z",
+		"dateModified": "2020-10-10T00:42:47.521Z",
+		"displayName": "marca_celular",
+		"displayType": "text-box",
+		"fieldName": "marca_celular",
+		"fieldType": "Text",
+		"id": "445755437783497755",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "talla_camiseta-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:56.425Z",
+		"dateModified": "2020-10-10T00:42:47.557Z",
+		"displayName": "talla_camiseta",
+		"displayType": "text-box",
+		"fieldName": "talla_camiseta",
+		"fieldType": "Text",
+		"id": "445755438253591908",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "estado_colaborador-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:56.734Z",
+		"dateModified": "2020-10-10T00:42:47.656Z",
+		"displayName": "estado_colaborador",
+		"displayType": "boolean",
+		"fieldName": "estado_colaborador",
+		"fieldType": "Boolean",
+		"id": "445755438898959756",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "fecha_nacimiento-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:54.189Z",
+		"dateModified": "2020-10-10T00:42:46.403Z",
+		"displayName": "fecha_nacimiento",
+		"displayType": "date",
+		"fieldName": "fecha_nacimiento",
+		"fieldType": "Date",
+		"id": "445755433567969204",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "movil-Integer"
+		},
+		"dateCreated": "2020-09-25T17:25:54.401Z",
+		"dateModified": "2020-10-10T00:42:46.514Z",
+		"displayName": "movil",
+		"displayType": "",
+		"fieldName": "movil",
+		"fieldType": "Number",
+		"id": "445755434010347416",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "gv_zona-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:54.801Z",
+		"dateModified": "2020-10-10T00:42:46.764Z",
+		"displayName": "gv_zona",
+		"displayType": "input-field",
+		"fieldName": "gv_zona",
+		"fieldType": "Text",
+		"id": "445755434849867141",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "linea_de_direccion_1-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:54.910Z",
+		"dateModified": "2020-10-10T00:42:46.813Z",
+		"displayName": "linea_de_direccion_1",
+		"displayType": "input-field",
+		"fieldName": "linea_de_direccion_1",
+		"fieldType": "Text",
+		"id": "445755435077739191",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "nombre_de_usuario-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:55.130Z",
+		"dateModified": "2020-10-10T00:42:46.950Z",
+		"displayName": "nombre_de_usuario",
+		"displayType": "text-box",
+		"fieldName": "nombre_de_usuario",
+		"fieldType": "Text",
+		"id": "445755435537756537",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "acomodacion-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:55.298Z",
+		"dateModified": "2020-10-10T00:42:47.056Z",
+		"displayName": "acomodacion",
+		"displayType": "text-box",
+		"fieldName": "acomodacion",
+		"fieldType": "Text",
+		"id": "445755435891609060",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "alojamiento-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:55.328Z",
+		"dateModified": "2020-10-10T00:42:47.073Z",
+		"displayName": "alojamiento",
+		"displayType": "text-box",
+		"fieldName": "alojamiento",
+		"fieldType": "Text",
+		"id": "445755435950669580",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "companero_alojamiento-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:55.407Z",
+		"dateModified": "2020-10-10T00:42:47.115Z",
+		"displayName": "companero_alojamiento",
+		"displayType": "text-box",
+		"fieldName": "companero_alojamiento",
+		"fieldType": "Text",
+		"id": "445755436131018982",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "departamento-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:55.490Z",
+		"dateModified": "2020-10-10T00:42:47.150Z",
+		"displayName": "departamento",
+		"displayType": "text-box",
+		"fieldName": "departamento",
+		"fieldType": "Text",
+		"id": "445755436292553286",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "direccion_comite-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:55.585Z",
+		"dateModified": "2020-10-10T00:42:47.215Z",
+		"displayName": "direccion_comite",
+		"displayType": "text-box",
+		"fieldName": "direccion_comite",
+		"fieldType": "Text",
+		"id": "445755436492007698",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "445755420866214963",
+			"name": "conectados"
+		},
+		"context": "custom",
+		"dataSourceFieldNames": {
+			"445755420866214963": "alergias-Text"
+		},
+		"dateCreated": "2020-09-25T17:25:55.986Z",
+		"dateModified": "2020-10-10T00:42:47.417Z",
+		"displayName": "alergias",
+		"displayType": "boolean",
+		"fieldName": "alergias",
+		"fieldType": "Boolean",
+		"id": "445755437332296784",
+		"ownerType": "individual",
+		"strategy": {
+			"key": "MOST_RECENT"
+		}
+	}
+]
