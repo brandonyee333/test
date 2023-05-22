@@ -1,19 +1,16 @@
 google:
     project:
-        id: liferaycloud-customer-ac-uat
+        id: $PROJECT_ID
     storage:
         path:
-            analytics-events: gs://analytics-cloud-analytics-events-uat
-            individual-segments: gs://analytics-cloud-individual-segments-uat
-            individuals: gs://analytics-cloud-individuals-uat
-            temporaryGcsBucket: ac-interest-score/temp_write_bucket_for_bq_writes
+            temporaryGcsBucket: ${PROJECT_ID}-dataproc-${REGION}/temp_write_bucket_for_bq_writes
 interest:
     models:
         language-detector:
-            path: "gs://ac-interest-score/resources/ld_tatoeba_cnn_99"
+            path: "gs://${PROJECT_ID}-dataproc-${REGION}/resources/johnsnowlabs"
             threshold: .90
         pos-tagger:
-            path: "gs://ac-interest-score/resources/pos_anc_en"
+            path: "gs://${PROJECT_ID}-dataproc-${REGION}/resources/johnsnowlabs"
 spark:
     jars:
         packages: "com.johnsnowlabs.nlp:spark-nlp_2.12:4.1.0"

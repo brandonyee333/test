@@ -92,7 +92,7 @@ frequent:
                     factor: 0.4
 google:
     storage:
-        bucket: gs://analytics-cloud-dxp-batch-entities-uat
+        bucket: gs://$PROJECT_ID-dxp-entities
 product:
     content:
         recommendation:
