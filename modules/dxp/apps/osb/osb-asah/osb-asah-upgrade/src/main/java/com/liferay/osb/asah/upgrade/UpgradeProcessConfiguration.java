@@ -18,6 +18,7 @@ import com.liferay.osb.asah.upgrade.v4_0_0.AsahMarkerMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.BigQuerySchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.BlockedKeywordMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_0.CustomFieldMappingMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.DataControlTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.DataExportTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.ExperimentMigrationUpgradeStep;
@@ -49,7 +50,9 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"3.6.0", "3.6.1", _bigQuerySchemaUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.6.1", "3.7.0", _postgreSQLSchemaUpgradeStep);
+			"3.6.1", "3.6.2", _customFieldMappingMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"3.6.2", "3.7.0", _postgreSQLSchemaUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"3.7.0", "3.7.1", _asahMarkerMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
@@ -95,6 +98,10 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private BlockedKeywordMigrationUpgradeStep
 		_blockedKeywordMigrationUpgradeStep;
+
+	@Autowired
+	private CustomFieldMappingMigrationUpgradeStep
+		_customFieldMappingMigrationUpgradeStep;
 
 	@Autowired
 	private DataControlTaskMigrationUpgradeStep
