@@ -15,8 +15,6 @@
 package com.liferay.osb.asah.upgrade.v4_0_0;
 
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dog.AsahMarkerDog;
-import com.liferay.osb.asah.common.entity.AsahMarker;
 import com.liferay.osb.asah.common.entity.DXPEntity;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.DXPEntityRepository;
@@ -49,13 +47,14 @@ public class CustomFieldMappingMigrationUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"CustomFieldMappingUpgradeStep");
+		JSONObject osbAsahMarkersJSONObject = _elasticsearchInvoker.fetch(
+			"OSBAsahMarkers", "CustomFieldMappingUpgradeStep");
 
 		String lastInsertedId = "0";
 
-		if (asahMarker != null) {
-			JSONObject contextJSONObject = asahMarker.getContextJSONObject();
+		if (osbAsahMarkersJSONObject != null) {
+			JSONObject contextJSONObject =
+				osbAsahMarkersJSONObject.optJSONObject("context");
 
 			if (contextJSONObject != null) {
 				lastInsertedId = contextJSONObject.optString("id", "0");
@@ -176,11 +175,13 @@ public class CustomFieldMappingMigrationUpgradeStep implements UpgradeStep {
 	}
 
 	private void _updateAsahMarker(Long lastInsertedId) {
-		AsahMarker asahMarker = _asahMarkerDog.fetchAsahMarker(
-			"CustomFieldMappingUpgradeStep");
+		JSONObject osbAsahMarkersJSONObject = _elasticsearchInvoker.fetch(
+			"OSBAsahMarkers", "CustomFieldMappingUpgradeStep");
 
-		if (asahMarker == null) {
-			asahMarker = new AsahMarker("CustomFieldMappingUpgradeStep");
+		if (osbAsahMarkersJSONObject == null) {
+			osbAsahMarkersJSONObject = _elasticsearchInvoker.add(
+				"OSBAsahMarkers",
+				JSONUtil.put("id", "CustomFieldMappingUpgradeStep"));
 		}
 
 		if (_log.isInfoEnabled()) {
@@ -191,25 +192,19 @@ public class CustomFieldMappingMigrationUpgradeStep implements UpgradeStep {
 					lastInsertedId));
 		}
 
-		JSONObject contextJSONObject = asahMarker.getContextJSONObject();
+		JSONObject contextJSONObject = osbAsahMarkersJSONObject.optJSONObject(
+			"context", new JSONObject());
 
 		contextJSONObject.put("id", lastInsertedId);
 
-		asahMarker.setContextJSONObject(contextJSONObject);
+		osbAsahMarkersJSONObject.put("context", contextJSONObject);
 
-		if (asahMarker.isNew()) {
-			_asahMarkerDog.addAsahMarker(asahMarker);
-		}
-		else {
-			_asahMarkerDog.updateAsahMarker(asahMarker);
-		}
+		_elasticsearchInvoker.update(
+			"OSBAsahMarkers", osbAsahMarkersJSONObject);
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		CustomFieldMappingMigrationUpgradeStep.class);
-
-	@Autowired
-	private AsahMarkerDog _asahMarkerDog;
 
 	@Autowired
 	private DXPEntityRepository _dxpEntityRepository;
