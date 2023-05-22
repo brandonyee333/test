@@ -182,7 +182,7 @@ USING
 				) AS memberships
 			FROM
 				`{{ dag.default_args['ac_project_id'] }}.user` AS User
-			LEFT JOIN
+			JOIN
 			(
 				SELECT
 					dataSourceId,
