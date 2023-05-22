@@ -817,7 +817,13 @@ information.
 					</not>
 				</and>
 				<then>
-					<property name="ci.jvmargs" value="${env.ANT_OPTS}" />
+					<propertyregex 
+						property="ci.jvmargs"
+						input="${env.ANT_OPTS}"
+						regexp="(.*)(-Xmx[^\s]+)(.*)"
+						select="\1-Xmx8g\3"
+						defaultValue="${env.ANT_OPTS} -Xmx8g -XX:MetaspaceSize=512m"
+					/>
 				</then>
 			</if>
 
