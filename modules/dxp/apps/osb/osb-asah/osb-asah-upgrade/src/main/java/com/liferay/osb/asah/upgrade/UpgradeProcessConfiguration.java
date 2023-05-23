@@ -54,9 +54,7 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"3.6.2", "3.7.0", _postgreSQLSchemaUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"3.7.0", "3.7.1", _asahMarkerMigrationUpgradeStep);
-		upgradeProcess.addUpgradeSteps(
-			"3.7.1", "3.7.2", _asahTaskMigrationUpgradeStep);
+			"3.7.0", "3.7.2", _asahMarkerMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"3.7.2", "3.7.3", _blockedKeywordMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
