@@ -609,12 +609,7 @@ public class BQIndividualRepositoryImpl
 					addAll(fields);
 					add(
 						DSL.field(
-							StringUtils.join(
-								"ARRAY(SELECT AS STRUCT User.dataSourceId AS ",
-								"dataSourceId, ARRAY_AGG(User.uuid) AS ",
-								"userPKs FROM BQUser AS User WHERE ",
-								"Individual.id = User.individualId ",
-								"GROUP BY User.dataSourceId)", "")
+							_USER_UUID_BY_DATA_SOURCE_ID_STMT
 						).as(
 							"dataSourceUsers"
 						));
@@ -1182,12 +1177,7 @@ public class BQIndividualRepositoryImpl
 
 			fields.add(
 				DSL.field(
-					StringUtils.join(
-						"ARRAY(SELECT AS STRUCT ",
-						"User.dataSourceId AS dataSourceId, ",
-						"ARRAY_AGG(User.uuid) AS userPKs FROM BQUser AS User ",
-						"WHERE Individual.id = User.individualId GROUP BY ",
-						"User.dataSourceId)", "")
+					_USER_UUID_BY_DATA_SOURCE_ID_STMT
 				).as(
 					"dataSourceUsers"
 				));
@@ -1492,6 +1482,11 @@ public class BQIndividualRepositoryImpl
 	private static final String[] _SEARCH_COLUMNS = {
 		"emailAddress", "firstName", "jobTitle", "lastName", "middleName"
 	};
+
+	private static final String _USER_UUID_BY_DATA_SOURCE_ID_STMT =
+		"ARRAY(SELECT AS STRUCT User.dataSourceId AS dataSourceId, " +
+			"ARRAY_AGG(User.uuid) AS userPKs FROM BQUser AS User WHERE " +
+				"Individual.id = User.individualId GROUP BY User.dataSourceId)";
 
 	@Autowired
 	private BQFieldMappingRepository _bqFieldMappingRepository;
