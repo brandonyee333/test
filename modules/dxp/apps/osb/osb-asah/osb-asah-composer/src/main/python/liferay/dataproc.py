@@ -273,9 +273,9 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 			if dag_runs is not None and len(dag_runs) > 0:
 				dag_run = dag_runs[-1]
 
-				execution_date = dag_run.execution_date
+				data_interval_end = dag_run.data_interval_end
 
-				start_date = execution_date.date()
+				start_date = data_interval_end.date()
 
 				start_date = start_date.isoformat()
 
