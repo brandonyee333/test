@@ -7,10 +7,10 @@ google:
 interest:
     models:
         language-detector:
-            path: "gs://${PROJECT_ID}-dataproc-${REGION}/resources/johnsnowlabs"
+            path: "gs://${PROJECT_ID}-dataproc-${REGION}/resources/johnsnowlabs/ld_tatoeba_cnn_99"
             threshold: .90
         pos-tagger:
-            path: "gs://${PROJECT_ID}-dataproc-${REGION}/resources/johnsnowlabs"
+            path: "gs://${PROJECT_ID}-dataproc-${REGION}/resources/johnsnowlabs/pos_anc_en"
 spark:
     jars:
         packages: "com.johnsnowlabs.nlp:spark-nlp_2.12:4.4.2"
