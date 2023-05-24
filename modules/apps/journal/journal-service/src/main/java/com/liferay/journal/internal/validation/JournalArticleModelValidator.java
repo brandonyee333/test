@@ -31,6 +31,7 @@ import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.journal.configuration.JournalFileUploadsConfiguration;
 import com.liferay.journal.constants.JournalArticleConstants;
 import com.liferay.journal.exception.ArticleContentException;
+import com.liferay.journal.exception.ArticleDisplayDateException;
 import com.liferay.journal.exception.ArticleExpirationDateException;
 import com.liferay.journal.exception.ArticleIdException;
 import com.liferay.journal.exception.ArticleSmallImageNameException;
@@ -124,13 +125,26 @@ public class JournalArticleModelValidator
 				throw localeException;
 			}
 
-			if ((expirationDate != null) &&
-				(expirationDate.before(new Date()) ||
-				 ((displayDate != null) &&
-				  expirationDate.before(displayDate)))) {
+			if (displayDate.getYear() > 9999L) {
+				throw new ArticleDisplayDateException(
+					"Display date " + displayDate + " is after year 9999");
+			}
 
-				throw new ArticleExpirationDateException(
-					"Expiration date " + expirationDate + " is in the past");
+			if (expirationDate != null) {
+				if (expirationDate.before(new Date()) ||
+					((displayDate != null) &&
+					 expirationDate.before(displayDate))) {
+
+					throw new ArticleExpirationDateException(
+						"Expiration date " + expirationDate +
+							" is in the past");
+				}
+
+				if (expirationDate.getYear() > 9999L) {
+					throw new ArticleExpirationDateException(
+						"Expiration date " + displayDate +
+							" is after year 9999");
+				}
 			}
 		}
 
