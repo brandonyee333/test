@@ -21,6 +21,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMStructureTable;
 import com.liferay.dynamic.data.mapping.security.permission.DDMPermissionSupport;
 import com.liferay.dynamic.data.mapping.service.base.DDMStructureServiceBaseImpl;
+import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.string.StringPool;
@@ -366,7 +367,8 @@ public class DDMStructureServiceImpl extends DDMStructureServiceBaseImpl {
 			).from(
 				DDMStructureTable.INSTANCE
 			).where(
-				_getPredicate(companyId, groupIds, classNameId)
+				_getPredicate(
+					companyId, groupIds, classNameId, StringPool.BLANK)
 			).orderBy(
 				DDMStructureTable.INSTANCE, orderByComparator
 			).limit(
@@ -380,9 +382,18 @@ public class DDMStructureServiceImpl extends DDMStructureServiceBaseImpl {
 		int status, int start, int end,
 		OrderByComparator<DDMStructure> orderByComparator) {
 
-		return ddmStructureLocalService.getStructures(
-			companyId, groupIds, classNameId, keywords, status, start, end,
-			orderByComparator);
+		return ddmStructurePersistence.dslQuery(
+			DSLQueryFactoryUtil.selectDistinct(
+				DDMStructureTable.INSTANCE.structureId
+			).from(
+				DDMStructureTable.INSTANCE
+			).where(
+				_getPredicate(companyId, groupIds, classNameId, keywords)
+			).orderBy(
+				DDMStructureTable.INSTANCE, orderByComparator
+			).limit(
+				start, end
+			));
 	}
 
 	@Override
@@ -395,7 +406,8 @@ public class DDMStructureServiceImpl extends DDMStructureServiceBaseImpl {
 			).from(
 				DDMStructureTable.INSTANCE
 			).where(
-				_getPredicate(companyId, groupIds, classNameId)
+				_getPredicate(
+					companyId, groupIds, classNameId, StringPool.BLANK)
 			));
 	}
 
@@ -404,8 +416,14 @@ public class DDMStructureServiceImpl extends DDMStructureServiceBaseImpl {
 		long companyId, long[] groupIds, long classNameId, String keywords,
 		int status) {
 
-		return ddmStructureLocalService.getStructuresCount(
-			companyId, groupIds, classNameId, keywords, status);
+		return ddmStructurePersistence.dslQueryCount(
+			DSLQueryFactoryUtil.countDistinct(
+				DDMStructureTable.INSTANCE.structureId
+			).from(
+				DDMStructureTable.INSTANCE
+			).where(
+				_getPredicate(companyId, groupIds, classNameId, keywords)
+			));
 	}
 
 	@Override
@@ -799,7 +817,7 @@ public class DDMStructureServiceImpl extends DDMStructureServiceBaseImpl {
 	}
 
 	private Predicate _getPredicate(
-		long companyId, long[] groupIds, long classNameId) {
+		long companyId, long[] groupIds, long classNameId, String keywords) {
 
 		Predicate predicate = DDMStructureTable.INSTANCE.companyId.eq(
 			companyId
@@ -830,6 +848,38 @@ public class DDMStructureServiceImpl extends DDMStructureServiceBaseImpl {
 
 		if (groupIdsPredicate != null) {
 			predicate = predicate.and(groupIdsPredicate.withParentheses());
+		}
+
+		Predicate keywordsPredicate = null;
+
+		for (String keyword : _customSQL.keywords(keywords, true)) {
+			if (keyword == null) {
+				continue;
+			}
+
+			Predicate keywordPredicate = DSLFunctionFactoryUtil.lower(
+				DSLFunctionFactoryUtil.castText(DDMStructureTable.INSTANCE.name)
+			).like(
+				keyword
+			).or(
+				DSLFunctionFactoryUtil.lower(
+					DSLFunctionFactoryUtil.castClobText(
+						DDMStructureTable.INSTANCE.description)
+				).like(
+					keyword
+				)
+			);
+
+			if (keywordsPredicate == null) {
+				keywordsPredicate = keywordPredicate;
+			}
+			else {
+				keywordsPredicate = keywordsPredicate.or(keywordPredicate);
+			}
+		}
+
+		if (keywordsPredicate != null) {
+			predicate = predicate.and(keywordsPredicate.withParentheses());
 		}
 
 		return predicate;
