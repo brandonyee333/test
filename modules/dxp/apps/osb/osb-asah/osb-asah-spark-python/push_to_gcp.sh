@@ -1,12 +1,11 @@
 #!/bin/bash
 
-export PROJECT_ID=$(gcloud config get-value project)
-export REGION=$(gcloud config get-value compute/region)
+PROJECT_ID=$(gcloud config get-value project)
 
 CURRENT_DATE=$(date)
-#GCP_BUCKET=gs://analytics-cloud-osbasahspark
-export GCP_BUCKET=gs://${PROJECT_ID}-dataproc-${REGION}
+GCP_BUCKET=gs://${PROJECT_ID}-dataproc-${REGION}
 GIT_HASH=$(git rev-parse --short=7 HEAD)
+REGION=$(gcloud config get-value compute/region)
 
 function check_osb_asah_spark {
 	gradlew formatSource
@@ -60,7 +59,7 @@ function gradlew {
 }
 
 function main {
-	#check_osb_asah_spark
+	check_osb_asah_spark
 
 	compile_osb_asah_spark
 
@@ -93,7 +92,7 @@ function replace_yaml_files_env_variables {
 	local resources_build="build/resources/main"
 	local resources_src="src/main/resources"
 
-mkdir -p ${resources_build}
+	mkdir -p ${resources_build}
 
 	for file_name in `ls ${resources_src}/*.yaml | xargs -n 1 basename`
 	do
