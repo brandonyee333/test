@@ -17,7 +17,6 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.repository.AsahMarkerRepository;
-import com.liferay.osb.asah.common.repository.AsahTaskRepository;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.repository.DataControlTaskRepository;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
@@ -105,12 +104,6 @@ public class VerifyProcessRunner {
 		_verifyState(
 			_asahMarkerRepository.count(), expectedAsahMarkersCount,
 			"AsahMarker");
-
-		_verifyState(
-			_asahTaskRepository.count(),
-			_faroInfoElasticsearchInvoker.count(
-				"OSBAsahTasks", QueryBuilders.matchAllQuery()),
-			"AsahTasks");
 
 		_verifyState(
 			_blockedKeywordRepository.count(),
@@ -201,9 +194,6 @@ public class VerifyProcessRunner {
 
 	@Autowired
 	private AsahMarkerRepository _asahMarkerRepository;
-
-	@Autowired
-	private AsahTaskRepository _asahTaskRepository;
 
 	@Autowired
 	private BlockedKeywordRepository _blockedKeywordRepository;
