@@ -136,8 +136,8 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 					}
 				}
 				else {
-					String dataSourceAssetPK = assetJSONObject.getString(
-						"dataSourceAssetPK");
+					String dataSourceAssetPK = String.valueOf(
+						assetJSONObject.get("dataSourceAssetPK"));
 
 					filterString = filterString.replace(
 						assetId, DigestUtils.sha256Hex(dataSourceAssetPK));
@@ -176,12 +176,14 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 					}
 				}
 				else {
-					String dataSourceId = jsonObject.getString("dataSourceId");
+					String dataSourceId = String.valueOf(
+						jsonObject.get("dataSourceId"));
 
 					JSONObject fieldsJSONObject = jsonObject.getJSONObject(
 						"fields");
 
-					String classPK = fieldsJSONObject.getString(classPKName);
+					String classPK = String.valueOf(
+						fieldsJSONObject.get(classPKName));
 
 					filterString = filterString.replace(
 						id,
@@ -221,7 +223,8 @@ public class SegmentFilterUpgradeStep implements UpgradeStep {
 					}
 				}
 				else {
-					String dataSourceId = jsonObject.getString("dataSourceId");
+					String dataSourceId = String.valueOf(
+						jsonObject.get("dataSourceId"));
 
 					String classPK = String.valueOf(
 						jsonObject.get("organizationPK"));
