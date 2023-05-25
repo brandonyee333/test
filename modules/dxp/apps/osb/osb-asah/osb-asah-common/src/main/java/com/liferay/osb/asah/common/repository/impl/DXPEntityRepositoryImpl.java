@@ -269,11 +269,6 @@ public class DXPEntityRepositoryImpl
 	}
 
 	@Override
-	public Optional<DXPEntity> findById(Long id) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String memebershipClassName, Long membershipId) {
 

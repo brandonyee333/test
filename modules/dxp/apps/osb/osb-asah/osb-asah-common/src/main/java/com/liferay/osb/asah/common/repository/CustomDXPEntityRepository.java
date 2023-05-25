@@ -78,8 +78,6 @@ public interface CustomDXPEntityRepository {
 	public List<DXPEntity> findByFieldsAndType(
 		Map<String, Object> fields, DXPEntity.Type type);
 
-	public Optional<DXPEntity> findById(Long id);
-
 	@Cacheable
 	public List<DXPEntity> findByMembershipClassNameAndMembershipId(
 		String memebershipClassName, Long membershipId);
