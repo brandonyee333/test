@@ -54,7 +54,7 @@ interest_score_dag_trigger:
             name: "interest-score-{{ dag.default_args['ac_project_id'] | truncate(20, True, '') }}-{{ ds_nodash }}"
             properties: !!str >
                 {
-                    "dataproc:pip.packages": "spark-nlp==4.1.0,google-cloud-bigquery==3.3.5"
+                    "dataproc:pip.packages": "spark-nlp==4.4.2,google-cloud-bigquery==3.3.5"
                 }
             worker:
                 count: 2
@@ -66,7 +66,7 @@ interest_score_dag_trigger:
             properties: !!str >
                 {
                     "spark.serializer": "org.apache.spark.serializer.KryoSerializer",
-                    "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:4.1.0",
+                    "spark.jars.packages": "com.johnsnowlabs.nlp:spark-nlp_2.12:4.4.2",
                     "spark.jars": "gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar"
                 }
 pubsub_dag_trigger:
