@@ -13,4 +13,4 @@ interest:
             path: "gs://${PROJECT_ID}-dataproc-${REGION}/resources/johnsnowlabs"
 spark:
     jars:
-        packages: "com.johnsnowlabs.nlp:spark-nlp_2.12:4.1.0"
+        packages: "com.johnsnowlabs.nlp:spark-nlp_2.12:4.4.2"
