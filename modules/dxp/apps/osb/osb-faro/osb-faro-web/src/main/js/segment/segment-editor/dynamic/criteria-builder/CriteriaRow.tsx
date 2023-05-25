@@ -84,6 +84,8 @@ const canDrop = (
 	return destGroupId !== startGroupId || destIndex !== startIndex;
 };
 
+console.log('test signing commit');
+
 /**
  * Implements the behavior of what will occur when an item is dropped.
  * Items dropped on top of rows will create a new grouping.
