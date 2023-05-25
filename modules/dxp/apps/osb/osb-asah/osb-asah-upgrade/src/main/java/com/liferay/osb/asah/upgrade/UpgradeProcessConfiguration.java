@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v4_0_0.AsahMarkerMigrationUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_0_0.AsahTaskMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.BigQuerySchemaUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.BlockedKeywordMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.CustomFieldMappingMigrationUpgradeStep;
@@ -86,9 +85,6 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private AsahMarkerMigrationUpgradeStep _asahMarkerMigrationUpgradeStep;
-
-	@Autowired
-	private AsahTaskMigrationUpgradeStep _asahTaskMigrationUpgradeStep;
 
 	@Autowired
 	private BigQuerySchemaUpgradeStep _bigQuerySchemaUpgradeStep;
