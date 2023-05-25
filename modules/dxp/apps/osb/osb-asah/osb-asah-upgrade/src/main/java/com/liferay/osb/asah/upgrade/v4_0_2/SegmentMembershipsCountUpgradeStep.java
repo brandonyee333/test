@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v4_0_1;
+package com.liferay.osb.asah.upgrade.v4_0_2;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;

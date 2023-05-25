@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v4_0_1.test;
+package com.liferay.osb.asah.upgrade.v4_0_2.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
@@ -24,7 +24,7 @@ import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.upgrade.OSBAsahUpgradeSpringTestContext;
-import com.liferay.osb.asah.upgrade.v4_0_1.SegmentMembershipsCountUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_2.SegmentMembershipsCountUpgradeStep;
 
 import java.util.ArrayList;
 import java.util.Date;
