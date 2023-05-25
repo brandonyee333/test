@@ -138,7 +138,7 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	@Scheduled(fixedDelay = DateUtil.HOUR)
+	@Scheduled(fixedDelay = DateUtil.HOUR * 3)
 	public void runUpdateMembershipsNanite() {
 		_asahTaskManager.runNanitesForAllProjects("UpdateMembershipsNanite");
 	}
