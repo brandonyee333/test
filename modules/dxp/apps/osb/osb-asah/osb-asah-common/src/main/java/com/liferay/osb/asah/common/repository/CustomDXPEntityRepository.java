@@ -19,7 +19,6 @@ import com.liferay.osb.asah.common.entity.DXPEntity;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
