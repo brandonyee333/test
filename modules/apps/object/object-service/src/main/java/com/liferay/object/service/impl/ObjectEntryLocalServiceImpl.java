@@ -1509,9 +1509,14 @@ public class ObjectEntryLocalServiceImpl
 			Map<String, String> localizedObjectFieldValue = new HashMap<>();
 
 			for (Object[] localizedValue : localizedValues) {
+				Object value = localizedValue[i];
+
+				if (Validator.isNull(value)) {
+					continue;
+				}
 				localizedObjectFieldValue.put(
 					String.valueOf(localizedValue[objectFieldColumns.size()]),
-					String.valueOf(localizedValue[i]));
+					String.valueOf(value));
 			}
 
 			Column<DynamicObjectDefinitionLocalizationTable, ?>
