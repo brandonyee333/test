@@ -33,11 +33,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 /**
@@ -58,6 +62,22 @@ public class StaticMembershipMigrationUpgradeStep implements UpgradeStep {
 				Long segmentId = segment.getId();
 
 				if (segmentId == null) {
+					continue;
+				}
+
+				List<BQMembership> bqMemberships =
+					_bqMembershipRepository.findBySegmentIdAndStatus(
+						segmentId, "ACTIVE", PageRequest.of(0, 1));
+
+				if (!bqMemberships.isEmpty()) {
+					if (_log.isInfoEnabled()) {
+						_log.info(
+							String.format(
+								"Skipping segment %d as it already has " +
+									"memberships",
+								segmentId));
+					}
+
 					continue;
 				}
 
@@ -126,6 +146,9 @@ public class StaticMembershipMigrationUpgradeStep implements UpgradeStep {
 			_bqMembershipChangeDog.addBQMembershipChange(bqMembershipChange);
 		}
 	}
+
+	private static final Log _log = LogFactory.getLog(
+		StaticMembershipMigrationUpgradeStep.class);
 
 	@Autowired
 	private BQIdentityRepository _bqIdentityRepository;
