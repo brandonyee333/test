@@ -32,6 +32,7 @@ import com.liferay.osb.asah.common.filter.expression.FilterExpressionReferencedO
 import com.liferay.osb.asah.common.filter.expression.FilterExpressionValidatorVisitor;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.postgresql.converter.helper.SegmentFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
@@ -408,10 +409,13 @@ public class SegmentDog {
 		return _updateSegment(getSegment(segmentId), partialSegment);
 	}
 
-	public Segment updateSegmentIndividualCount(
-		Long individualCount, Segment segment) {
+	public Segment updateSegmentMembershipCount(
+		MembershipCountSnapshot membershipCountSnapshot, Segment segment) {
 
-		segment.setIndividualCount(individualCount);
+		segment.setIdentitiesCount(
+			membershipCountSnapshot.getIdentitiesCount());
+		segment.setIndividualsCount(
+			membershipCountSnapshot.getIndividualsCount());
 
 		return _segmentRepository.save(segment);
 	}

@@ -70,7 +70,8 @@ public class Segment implements Persistable<Long> {
 			Objects.equals(_id, segment._id) &&
 			Objects.equals(
 				_includeAnonymousUsers, segment._includeAnonymousUsers) &&
-			Objects.equals(_individualCount, segment._individualCount) &&
+			Objects.equals(_identitiesCount, segment._identitiesCount) &&
+			Objects.equals(_individualsCount, segment._individualsCount) &&
 			Objects.equals(_modifiedDate, segment._modifiedDate) &&
 			Objects.equals(_name, segment._name) &&
 			Objects.equals(_referencedAssetIds, segment._referencedAssetIds) &&
@@ -159,13 +160,18 @@ public class Segment implements Persistable<Long> {
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
+	public Long getIdentitiesCount() {
+		return _identitiesCount;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getIncludeAnonymousUsers() {
 		return _includeAnonymousUsers;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
-	public Long getIndividualCount() {
-		return _individualCount;
+	public Long getIndividualsCount() {
+		return _individualsCount;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -261,8 +267,8 @@ public class Segment implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			_author, _channelId, _createDate, _filterString, _filterMetadata,
-			_id, _includeAnonymousUsers, _individualCount, _modifiedDate, _name,
-			_referencedAssetIds, _referencedDataSourceIds,
+			_id, _includeAnonymousUsers, _identitiesCount, _individualsCount,
+			_modifiedDate, _name, _referencedAssetIds, _referencedDataSourceIds,
 			_referencedFieldMappingFieldNames, _referencedGroupIds,
 			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
 			_referencedUserGroupIds, _referencedUserIds, _scope, _state,
@@ -325,12 +331,16 @@ public class Segment implements Persistable<Long> {
 		_id = id;
 	}
 
+	public void setIdentitiesCount(Long identitiesCount) {
+		_identitiesCount = identitiesCount;
+	}
+
 	public void setIncludeAnonymousUsers(Boolean includeAnonymousUsers) {
 		_includeAnonymousUsers = includeAnonymousUsers;
 	}
 
-	public void setIndividualCount(Long individualCount) {
-		_individualCount = individualCount;
+	public void setIndividualsCount(Long individualsCount) {
+		_individualsCount = individualsCount;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -437,10 +447,13 @@ public class Segment implements Persistable<Long> {
 	private Long _id;
 
 	@Transient
+	private Long _identitiesCount;
+
+	@Transient
 	private Boolean _includeAnonymousUsers;
 
 	@Transient
-	private Long _individualCount;
+	private Long _individualsCount;
 
 	@Transient
 	private Boolean _isNew;

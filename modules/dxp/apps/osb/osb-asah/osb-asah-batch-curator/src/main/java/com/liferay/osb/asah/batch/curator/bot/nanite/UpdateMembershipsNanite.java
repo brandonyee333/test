@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 
 import java.util.List;
 
@@ -77,6 +78,15 @@ public class UpdateMembershipsNanite extends BaseNanite {
 							"and filter %s",
 						segmentId, filterString));
 			}
+
+			MembershipCountSnapshot membershipCountSnapshot =
+				_bqMembershipDog.getMembershipCountSnapshot(segmentId);
+
+			_bqMembershipChangeDog.addBQMembershipChange(
+				membershipCountSnapshot);
+
+			_segmentDog.updateSegmentMembershipCount(
+				membershipCountSnapshot, segment);
 		}
 		catch (Exception exception) {
 			_log.error(
@@ -109,7 +119,14 @@ public class UpdateMembershipsNanite extends BaseNanite {
 		Long segmentId = segment.getId();
 
 		try {
-			_bqMembershipChangeDog.addBQMembershipChange(segmentId);
+			MembershipCountSnapshot membershipCountSnapshot =
+				_bqMembershipDog.getMembershipCountSnapshot(segmentId);
+
+			_bqMembershipChangeDog.addBQMembershipChange(
+				membershipCountSnapshot);
+
+			_segmentDog.updateSegmentMembershipCount(
+				membershipCountSnapshot, segment);
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
