@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 
 import java.time.ZoneId;
 
@@ -108,6 +109,9 @@ public interface CustomBQMembershipRepository {
 
 	@Cacheable
 	public List<Long> findTop20SegmentIdByIndividualId(String individualId);
+
+	@Cacheable
+	public MembershipCountSnapshot getMembershipCountSnapshot(Long segmentId);
 
 	@CacheEvict(allEntries = true)
 	@Modifying

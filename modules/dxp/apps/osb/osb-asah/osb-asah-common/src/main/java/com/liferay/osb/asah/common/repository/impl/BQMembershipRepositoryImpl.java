@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.filter.expression.FilterExpression;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 
@@ -585,6 +586,41 @@ public class BQMembershipRepositoryImpl
 			).limit(
 				20
 			));
+	}
+
+	@Override
+	public MembershipCountSnapshot getMembershipCountSnapshot(Long segmentId) {
+		Map<String, Object> membershipSnapshot = _queryExecutor.queryForMap(
+			_dslContext.select(
+				DSL.countDistinct(
+					DSL.coalesce(
+						DSL.field("individualId"), DSL.field("identityId"))
+				).as(
+					"identitiesCount"
+				),
+				DSL.countDistinct(
+					DSL.field("individualId")
+				).as(
+					"individualsCount"
+				)
+			).from(
+				"BQMembership"
+			).where(
+				DSL.field(
+					"segmentId", Long.class
+				).eq(
+					segmentId
+				)
+			));
+
+		BigDecimal identitiesCountBigDecimal =
+			(BigDecimal)membershipSnapshot.get("identitiesCount");
+		BigDecimal individualsCountBigDecimal =
+			(BigDecimal)membershipSnapshot.get("individualsCount");
+
+		return new MembershipCountSnapshot(
+			identitiesCountBigDecimal.longValue(),
+			individualsCountBigDecimal.longValue(), segmentId);
 	}
 
 	@Override
