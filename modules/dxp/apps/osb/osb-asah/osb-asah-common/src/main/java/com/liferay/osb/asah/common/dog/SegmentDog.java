@@ -408,6 +408,14 @@ public class SegmentDog {
 		return _updateSegment(getSegment(segmentId), partialSegment);
 	}
 
+	public Segment updateSegmentIndividualCount(
+		Long individualCount, Segment segment) {
+
+		segment.setIndividualCount(individualCount);
+
+		return _segmentRepository.save(segment);
+	}
+
 	public Segment updateSegmentState(Segment segment, String state) {
 		segment.setState(state);
 
