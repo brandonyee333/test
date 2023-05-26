@@ -1041,7 +1041,7 @@ definition {
 			value1 = "Invited users will be notified.");
 
 		AssertClick(
-			locator1 = "CalendarEditEvent#SAVE_CHANGES_BUTTON",
+			locator1 = "CalendarEditEvent#SAVE_CHANGES_BUTTON",aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 			value1 = "Save changes.");
 	}
 
