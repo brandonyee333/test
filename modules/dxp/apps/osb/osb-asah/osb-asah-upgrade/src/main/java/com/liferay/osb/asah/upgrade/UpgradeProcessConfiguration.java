@@ -34,6 +34,7 @@ import com.liferay.osb.asah.upgrade.v4_0_0.SuppressionMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_1.SegmentMembershipFilterUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentMembershipsCountUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentReferencedObjectsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_2.StaticMembershipMigrationUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -88,6 +89,8 @@ public class UpgradeProcessConfiguration {
 			"4.0.1", "4.0.2", _segmentMembershipsCountUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.2", "4.0.3", _segmentReferencedObjectsUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"4.0.3", "4.0.4", _staticMembershipMigrationUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -157,6 +160,10 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private SequenceUpgradeStep _sequenceUpgradeStep;
+
+	@Autowired
+	private StaticMembershipMigrationUpgradeStep
+		_staticMembershipMigrationUpgradeStep;
 
 	@Autowired
 	private SuppressionMigrationUpgradeStep _suppressionMigrationUpgradeStep;
