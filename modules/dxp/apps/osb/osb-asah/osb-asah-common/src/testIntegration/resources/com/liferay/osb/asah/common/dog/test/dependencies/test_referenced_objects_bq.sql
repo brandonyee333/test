@@ -11,3 +11,5 @@ INSERT INTO Team (dataSourceId, groupId, id, modifiedDate, name, teamId) VALUES 
 INSERT INTO User (dataSourceId, dxpUserId, emailAddress, id, modifiedDate) VALUES (123456789, 63534, 'test@liferay.com', 'e8931884a5cfc10b436de0bb5c35a0a37b7574c1f854c46a4cf3a7e522f7ecb2', timestamp '${now}');
 
 INSERT INTO UserGroup (dataSourceId, id, modifiedDate, name, userGroupId) VALUES (123456789, 'a5c97f6263b76cc59857c88139a3ed110ccb9bde454d5c2cde6556c12191337e', timestamp '${now}', 'User Group 1', 13426);
+
+INSERT INTO MembershipChange (identitiesCount, segmentId) VALUES (1, 1);

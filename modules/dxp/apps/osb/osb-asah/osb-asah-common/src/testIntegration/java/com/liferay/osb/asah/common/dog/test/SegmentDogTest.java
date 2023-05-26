@@ -24,12 +24,14 @@ import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 /**
  * @author Michael Bowerman
@@ -207,6 +209,31 @@ public class SegmentDogTest
 			referencedFieldMappingFieldNames.contains("Custom_Field"));
 		Assertions.assertTrue(
 			referencedFieldMappingFieldNames.contains("email"));
+	}
+
+	@BQSQLResource(resourcePath = "test_referenced_objects_bq.sql")
+	@SQLResource(resourcePath = "test_referenced_objects.sql")
+	@Test
+	public void testSearchSegment() {
+		Segment segment = new Segment();
+
+		segment.setChannelId(1L);
+		segment.setFilter("demographics/email/value ne null");
+		segment.setId(1L);
+		segment.setIncludeAnonymousUsers(Boolean.FALSE);
+		segment.setIsNew(true);
+		segment.setModifiedDate(new Date());
+		segment.setName("Segment 1");
+		segment.setType(Segment.Type.DYNAMIC);
+
+		_segmentDog.addSegment(segment);
+
+		Page<Segment> segmentsPage = _segmentDog.searchSegmentPage(
+			1L, "individualCount eq 1", 0, 1, null);
+
+		List<Segment> segments = segmentsPage.getContent();
+
+		Assertions.assertEquals(1, segments.size());
 	}
 
 	private Segment _addSegment(Long channelId, String name) {
