@@ -124,6 +124,72 @@ public class StaticMembershipMigrationUpgradeStepTest
 			0, _bqMembershipChangeRepository.countBySegmentId(67890L));
 	}
 
+	@BQSQLResource(
+		resourcePath = "test_static_membership_migration_upgrade_step_bq.sql"
+	)
+	@SQLResource(
+		resourcePath = "test_static_membership_migration_upgrade_step.sql"
+	)
+	@Test
+	public void testUpgradeRerun() throws Exception {
+		JSONArray individualsJSONArray = new JSONArray();
+
+		individualsJSONArray.put(
+			JSONUtil.put(
+				"emailAddressHashed", "id1"
+			).put(
+				"individualSegmentIds", JSONUtil.putAll("12345")
+			));
+		individualsJSONArray.put(
+			JSONUtil.put(
+				"emailAddressHashed", "id2"
+			).put(
+				"individualSegmentIds", JSONUtil.putAll("12345", "67890")
+			));
+		individualsJSONArray.put(
+			JSONUtil.put(
+				"emailAddressHashed", "id3"
+			).put(
+				"individualSegmentIds", JSONUtil.putAll("12345", "67890")
+			));
+
+		_elasticsearchInvoker.add("individuals", individualsJSONArray);
+
+		_staticMembershipMigrationUpgradeStep.upgrade("");
+
+		List<BQMembership> bqMemberships =
+			_bqMembershipRepository.findBySegmentIdAndStatus(
+				12345L, "ACTIVE", PageRequest.of(0, 20));
+
+		Assertions.assertEquals(5L, bqMemberships.size());
+
+		List<BQMembershipChange> bqMembershipChanges =
+			_bqMembershipChangeRepository.findBySegmentId(12345L);
+
+		Assertions.assertEquals(24, bqMembershipChanges.size());
+
+		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
+			Assertions.assertEquals(0, bqMembershipChange.getIdentitiesCount());
+			Assertions.assertEquals(
+				3, bqMembershipChange.getIndividualsCount());
+		}
+
+		_staticMembershipMigrationUpgradeStep.upgrade("");
+
+		Assertions.assertEquals(5L, bqMemberships.size());
+
+		bqMembershipChanges = _bqMembershipChangeRepository.findBySegmentId(
+			12345L);
+
+		Assertions.assertEquals(24, bqMembershipChanges.size());
+
+		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
+			Assertions.assertEquals(0, bqMembershipChange.getIdentitiesCount());
+			Assertions.assertEquals(
+				3, bqMembershipChange.getIndividualsCount());
+		}
+	}
+
 	@Autowired
 	private BQMembershipChangeRepository _bqMembershipChangeRepository;
 
