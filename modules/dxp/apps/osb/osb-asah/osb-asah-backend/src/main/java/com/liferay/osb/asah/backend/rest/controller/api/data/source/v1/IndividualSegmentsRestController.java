@@ -152,6 +152,14 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
+		if (size >= 100) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Skipping requests with a size greater than 99");
+			}
+
+			return _toIndividualDTOPageDTO(Page.empty());
+		}
+
 		return _toIndividualDTOPageDTO(
 			_bqIndividualDog.searchBQIndividualPage(
 				null, null, null, filterString, includeAnonymousUsers, null,
