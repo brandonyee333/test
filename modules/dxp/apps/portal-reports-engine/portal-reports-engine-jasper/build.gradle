@@ -2,7 +2,7 @@ dependencies {
 	compileInclude group: "antlr", name: "antlr", version: "2.7.5"
 	compileInclude group: "com.github.virtuald", name: "curvesapi", version: "1.06"
 	compileInclude group: "com.lowagie", name: "itext", version: "2.1.7"
-	compileInclude group: "commons-codec", name: "commons-codec", version: "1.12"
+	compileInclude group: "commons-codec", name: "commons-codec", version: "1.15"
 	compileInclude group: "commons-digester", name: "commons-digester", version: "2.1"
 	compileInclude group: "net.sf.jasperreports", name: "jasperreports", version: "5.2.0"
 	compileInclude group: "net.sf.jasperreports", name: "jasperreports-fonts", version: "5.6.1"

@@ -2,7 +2,7 @@ dependencies {
 	compileInclude group: "ca.juliusdavies", name: "not-yet-commons-ssl", version: "0.3.17"
 	compileInclude group: "com.liferay", name: "org.apache.velocity", version: "1.6.4.LIFERAY-PATCHED-2"
 	compileInclude group: "com.liferay", name: "org.apache.xalan", version: "2.7.2.LIFERAY-PATCHED-1"
-	compileInclude group: "commons-codec", name: "commons-codec", version: "1.7"
+	compileInclude group: "commons-codec", name: "commons-codec", version: "1.15"
 	compileInclude group: "commons-collections", name: "commons-collections", version: "3.2.2"
 	compileInclude group: "commons-lang", name: "commons-lang", version: "2.6"
 	compileInclude group: "joda-time", name: "joda-time", version: "2.2"
