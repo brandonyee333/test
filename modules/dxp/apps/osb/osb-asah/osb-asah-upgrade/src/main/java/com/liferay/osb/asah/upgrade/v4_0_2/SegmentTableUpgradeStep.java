@@ -14,32 +14,16 @@
 
 package com.liferay.osb.asah.upgrade.v4_0_2;
 
-import com.liferay.osb.asah.common.entity.DXPEntity;
-import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.entity.Segment;
-import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
-import com.liferay.osb.asah.common.repository.DXPEntityRepository;
-import com.liferay.osb.asah.common.repository.SegmentRepository;
-import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
-import com.liferay.osb.asah.upgrade.elasticsearch.ElasticsearchInvoker;
-import com.liferay.osb.asah.upgrade.v4_0_0.PostgreSQLSchemaUpgradeStep;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.annotation.PostConstruct;
+
 import javax.sql.DataSource;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Component;
@@ -48,8 +32,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class SegmentMembershipCountUpgradeStep implements UpgradeStep {
-
+public class SegmentTableUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
@@ -64,11 +47,10 @@ public class SegmentMembershipCountUpgradeStep implements UpgradeStep {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		SegmentMembershipCountUpgradeStep.class);
+		SegmentTableUpgradeStep.class);
 
 	@Autowired
 	@Qualifier("postgreSQLDataSource")
 	private DataSource _dataSource;
-
 
 }
