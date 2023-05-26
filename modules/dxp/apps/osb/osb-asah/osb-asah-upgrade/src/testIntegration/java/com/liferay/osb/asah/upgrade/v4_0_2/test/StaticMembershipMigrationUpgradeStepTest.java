@@ -110,6 +110,8 @@ public class StaticMembershipMigrationUpgradeStepTest
 		List<BQMembershipChange> bqMembershipChanges =
 			_bqMembershipChangeRepository.findBySegmentId(12345L);
 
+		Assertions.assertEquals(24, bqMembershipChanges.size());
+
 		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
 			Assertions.assertEquals(0, bqMembershipChange.getIdentitiesCount());
 			Assertions.assertEquals(
