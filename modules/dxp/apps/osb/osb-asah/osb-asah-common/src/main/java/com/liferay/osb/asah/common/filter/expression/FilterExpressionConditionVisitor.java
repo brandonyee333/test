@@ -1523,6 +1523,7 @@ public class FilterExpressionConditionVisitor
 				put("activities.day", "Event.eventDate");
 				put("channelIds", "IdentityActivity.channelId");
 				put("credentials/type", "credentialType");
+				put("individualCount", "identitiesCount");
 				put("individuals.additionalName", "Individual.middleName");
 				put("individuals.address", "Individual.addresses");
 				put("individuals.birthDate", "Individual.birthday");
