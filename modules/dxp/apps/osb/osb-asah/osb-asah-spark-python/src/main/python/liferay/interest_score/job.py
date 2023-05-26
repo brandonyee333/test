@@ -717,7 +717,7 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 			'extracted_keywords',
 			F.array(
 				F.col('extracted_keywords'),
-				F.array(F.col('keywords')))
+				F.split(F.col('keywords'), ","))
 		).withColumn(
 			'extracted_keywords', F.flatten(F.col('extracted_keywords'))
 		).withColumn(
@@ -728,7 +728,7 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 			'extracted_keywords',
 			F.transform(
 				F.col('extracted_keywords'),
-				lambda x: F.lower(x))
+				lambda x: F.lower(F.trim(x)))
 		).select(
 			'canonicalUrl', 'description', 'extracted_keywords', 'title',
 			'title_and_description'
