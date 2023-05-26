@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
@@ -34,7 +35,8 @@ public interface CustomBQMembershipChangeRepository {
 
 	@CacheEvict(allEntries = true)
 	@Modifying
-	public void addBQMembershipChange(Long segmentId);
+	public void addBQMembershipChange(
+		MembershipCountSnapshot membershipCountSnapshot);
 
 	@Cacheable
 	public long countBQMembershipChanges(

@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.util.ListUtil;
 
@@ -63,7 +64,9 @@ public class BQMembershipDog {
 
 		_bqMembershipRepository.insertAll(bqMemberships);
 
-		_bqMembershipChangeDog.addBQMembershipChange(bqMemberships);
+		BQMembership bqMembership = bqMemberships.get(0);
+
+		_addBQMembershipChange(bqMembership.getSegmentId());
 
 		return bqMemberships;
 	}
@@ -72,7 +75,7 @@ public class BQMembershipDog {
 		_bqMembershipRepository.deleteByIndividualIdAndSegmentId(
 			individualId, segmentId);
 
-		_bqMembershipChangeDog.addBQMembershipChange(segmentId);
+		_addBQMembershipChange(segmentId);
 	}
 
 	public void deleteBQMemberships(List<Long> segmentIds) {
@@ -209,8 +212,11 @@ public class BQMembershipDog {
 
 		_bqMembershipRepository.updateBQMemberships(
 			channelId, filterString, includeAnonymousUsers, segmentId);
+	}
 
-		_bqMembershipChangeDog.addBQMembershipChange(segmentId);
+	private void _addBQMembershipChange(Long segmentId) {
+		_bqMembershipChangeDog.addBQMembershipChange(
+			_bqMembershipRepository.getMembershipCountSnapshot(segmentId));
 	}
 
 	private Sort _getSort(String[] sorts) {

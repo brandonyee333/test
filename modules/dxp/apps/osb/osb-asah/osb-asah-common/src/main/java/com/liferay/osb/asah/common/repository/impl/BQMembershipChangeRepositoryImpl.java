@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.CustomBQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
@@ -69,34 +70,8 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	@Override
-	public void addBQMembershipChange(Long segmentId) {
-		Map<String, Object> membershipSnapshot = _queryExecutor.queryForMap(
-			_dslContext.select(
-				DSL.countDistinct(
-					DSL.coalesce(
-						DSL.field("individualId"), DSL.field("identityId"))
-				).as(
-					"identitiesCount"
-				),
-				DSL.countDistinct(
-					DSL.field("individualId")
-				).as(
-					"individualsCount"
-				)
-			).from(
-				"BQMembership"
-			).where(
-				DSL.field(
-					"segmentId", Long.class
-				).eq(
-					segmentId
-				)
-			));
-
-		BigDecimal identitiesCountBigDecimal =
-			(BigDecimal)membershipSnapshot.get("identitiesCount");
-		BigDecimal individualsCountBigDecimal =
-			(BigDecimal)membershipSnapshot.get("individualsCount");
+	public void addBQMembershipChange(
+		MembershipCountSnapshot membershipCountSnapshot) {
 
 		_queryExecutor.queryExecute(
 			_dslContext.insertInto(
@@ -107,8 +82,10 @@ public class BQMembershipChangeRepositoryImpl
 				DSL.field("individualsCount", Long.class),
 				DSL.field("segmentId", Long.class)
 			).values(
-				DateUtil.newDateString(), identitiesCountBigDecimal.longValue(),
-				individualsCountBigDecimal.longValue(), segmentId
+				DateUtil.newDateString(),
+				membershipCountSnapshot.getIdentitiesCount(),
+				membershipCountSnapshot.getIndividualsCount(),
+				membershipCountSnapshot.getSegmentId()
 			));
 	}
 

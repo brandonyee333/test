@@ -16,9 +16,9 @@ package com.liferay.osb.asah.common.dog;
 
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
-import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
@@ -46,14 +46,11 @@ public class BQMembershipChangeDog {
 		_bqMembershipChangeRepository.insert(bqMembershipChange);
 	}
 
-	public void addBQMembershipChange(List<BQMembership> bqMemberships) {
-		BQMembership bqMembership = bqMemberships.get(0);
+	public void addBQMembershipChange(
+		MembershipCountSnapshot membershipCountSnapshot) {
 
-		addBQMembershipChange(bqMembership.getSegmentId());
-	}
-
-	public void addBQMembershipChange(Long segmentId) {
-		_bqMembershipChangeRepository.addBQMembershipChange(segmentId);
+		_bqMembershipChangeRepository.addBQMembershipChange(
+			membershipCountSnapshot);
 	}
 
 	public void deleteBQMembershipChanges(List<Long> segmentIds) {
