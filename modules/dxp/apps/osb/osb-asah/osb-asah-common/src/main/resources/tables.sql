@@ -329,6 +329,7 @@ CREATE TABLE IF NOT EXISTS Segment (
 	createDate TIMESTAMPTZ,
 	filter TEXT,
 	filterMetadata TEXT,
+	individualCount BIGINT,
 	includeAnonymousUsers BOOLEAN,
 	modifiedDate TIMESTAMPTZ,
 	name TEXT,

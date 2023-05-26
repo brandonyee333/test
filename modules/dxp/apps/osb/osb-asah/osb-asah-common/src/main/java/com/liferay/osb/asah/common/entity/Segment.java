@@ -70,6 +70,7 @@ public class Segment implements Persistable<Long> {
 			Objects.equals(_id, segment._id) &&
 			Objects.equals(
 				_includeAnonymousUsers, segment._includeAnonymousUsers) &&
+			Objects.equals(_individualCount, segment._individualCount) &&
 			Objects.equals(_modifiedDate, segment._modifiedDate) &&
 			Objects.equals(_name, segment._name) &&
 			Objects.equals(_referencedAssetIds, segment._referencedAssetIds) &&
@@ -160,6 +161,11 @@ public class Segment implements Persistable<Long> {
 	@AccessType(AccessType.Type.PROPERTY)
 	public Boolean getIncludeAnonymousUsers() {
 		return _includeAnonymousUsers;
+	}
+
+	@AccessType(AccessType.Type.PROPERTY)
+	public Long getIndividualCount() {
+		return _individualCount;
 	}
 
 	@AccessType(AccessType.Type.PROPERTY)
@@ -255,7 +261,7 @@ public class Segment implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			_author, _channelId, _createDate, _filterString, _filterMetadata,
-			_id, _includeAnonymousUsers, _modifiedDate, _name,
+			_id, _includeAnonymousUsers, _individualCount, _modifiedDate, _name,
 			_referencedAssetIds, _referencedDataSourceIds,
 			_referencedFieldMappingFieldNames, _referencedGroupIds,
 			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
@@ -321,6 +327,10 @@ public class Segment implements Persistable<Long> {
 
 	public void setIncludeAnonymousUsers(Boolean includeAnonymousUsers) {
 		_includeAnonymousUsers = includeAnonymousUsers;
+	}
+
+	public void setIndividualCount(Long individualCount) {
+		_individualCount = individualCount;
 	}
 
 	public void setIsNew(Boolean isNew) {
@@ -428,6 +438,9 @@ public class Segment implements Persistable<Long> {
 
 	@Transient
 	private Boolean _includeAnonymousUsers;
+
+	@Transient
+	private Long _individualCount;
 
 	@Transient
 	private Boolean _isNew;
