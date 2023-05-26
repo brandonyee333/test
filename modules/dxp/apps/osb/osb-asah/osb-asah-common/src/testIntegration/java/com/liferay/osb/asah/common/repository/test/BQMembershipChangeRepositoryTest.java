@@ -20,6 +20,7 @@ import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
+import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -103,7 +104,8 @@ public class BQMembershipChangeRepositoryTest
 	@SQLResource(resourcePath = "test_add_membership_change.sql")
 	@Test
 	public void testAddMembershipChange() {
-		_bqMembershipChangeRepository.addBQMembershipChange(1L);
+		_bqMembershipChangeRepository.addBQMembershipChange(
+			_bqMembershipRepository.getMembershipCountSnapshot(1L));
 
 		List<BQMembershipChange> bqMembershipChanges =
 			_bqMembershipChangeRepository.
@@ -301,6 +303,9 @@ public class BQMembershipChangeRepositoryTest
 
 	@Autowired
 	private BQMembershipChangeRepository _bqMembershipChangeRepository;
+
+	@Autowired
+	private BQMembershipRepository _bqMembershipRepository;
 
 	@Autowired
 	private ChannelRepository _channelRepository;

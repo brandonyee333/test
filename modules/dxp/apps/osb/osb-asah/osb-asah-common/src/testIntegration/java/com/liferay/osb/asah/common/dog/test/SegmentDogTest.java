@@ -221,7 +221,9 @@ public class SegmentDogTest
 		segment.setFilter("demographics/email/value ne null");
 		segment.setId(1L);
 		segment.setIncludeAnonymousUsers(Boolean.FALSE);
-		segment.setIsNew(true);
+		segment.setIdentitiesCount(1L);
+		segment.setIndividualsCount(1L);
+		segment.setIsNew(Boolean.TRUE);
 		segment.setModifiedDate(new Date());
 		segment.setName("Segment 1");
 		segment.setType(Segment.Type.DYNAMIC);
@@ -229,7 +231,7 @@ public class SegmentDogTest
 		_segmentDog.addSegment(segment);
 
 		Page<Segment> segmentsPage = _segmentDog.searchSegmentPage(
-			1L, "individualCount eq 1", 0, 1, null);
+			1L, "individualCount ge 1", 0, 1, null);
 
 		List<Segment> segments = segmentsPage.getContent();
 
