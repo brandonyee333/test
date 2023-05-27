@@ -248,8 +248,7 @@ public class BQMembershipChangeRepositoryTest
 
 		Assertions.assertTrue(bqMembershipChanges.isEmpty());
 
-		List<BQMembershipChange> insertBQMembershipChanges =
-			new ArrayList<>();
+		List<BQMembershipChange> insertBQMembershipChanges = new ArrayList<>();
 
 		BQMembershipChange insertBQMembershipChange = new BQMembershipChange();
 
