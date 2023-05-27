@@ -60,7 +60,7 @@ public class SegmentFilterStringConverterHelperTest {
 			_segmentFilterStringConverterHelper);
 
 		Condition condition1 = DSL.field(
-			"individualCount"
+			"identitiesCount"
 		).eq(
 			3L
 		);
@@ -72,7 +72,7 @@ public class SegmentFilterStringConverterHelperTest {
 			_segmentFilterStringConverterHelper);
 
 		Condition condition2 = DSL.field(
-			"individualCount"
+			"identitiesCount"
 		).gt(
 			3L
 		);
@@ -84,7 +84,7 @@ public class SegmentFilterStringConverterHelperTest {
 			_segmentFilterStringConverterHelper);
 
 		Condition condition3 = DSL.field(
-			"individualCount"
+			"identitiesCount"
 		).lt(
 			3L
 		);
