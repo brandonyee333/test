@@ -141,6 +141,7 @@ public class StaticMembershipMigrationUpgradeStep implements UpgradeStep {
 			Collections.singletonList(segmentId));
 
 		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
+			bqMembershipChange.setIdentitiesCount((long)individualsCount);
 			bqMembershipChange.setIndividualsCount((long)individualsCount);
 		}
 
