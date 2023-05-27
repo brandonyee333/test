@@ -225,6 +225,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(defaultValue = "20") int size,
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
+		if (StringUtils.contains(filterString, "individualCount ge '1'")) {
+			filterString = StringUtils.replace(
+				filterString, "individualCount ge '1'", "individualCount ge 1");
+		}
+
 		Page<Segment> segmentsPage = segmentDog.searchSegmentPage(
 			dataSourceId, filterString, page, Math.max(1, size), sorts);
 
