@@ -125,14 +125,16 @@ public class FilterExpressionReferencedObjectsVisitor
 		if (StringUtils.contains(fieldName, "/")) {
 			String[] identifierParts = StringUtils.split(fieldName, "/");
 
-			if (StringUtils.equals(identifierParts[0], "custom") ||
-				StringUtils.equals(identifierParts[0], "demographics")) {
+			Set<String> referencedFieldMappingFieldNames =
+				_referencedObjectIds.get("referencedFieldMappingFieldNames");
 
-				Set<String> referencedFieldMappingFieldNames =
-					_referencedObjectIds.get(
-						"referencedFieldMappingFieldNames");
-
+			if (StringUtils.equals(identifierParts[0], "custom")) {
 				referencedFieldMappingFieldNames.add(identifierParts[1]);
+			}
+			else if (StringUtils.equals(identifierParts[0], "demographics")) {
+				referencedFieldMappingFieldNames.add(
+					_demographicFieldNames.getOrDefault(
+						identifierParts[1], identifierParts[1]));
 			}
 		}
 
@@ -241,6 +243,17 @@ public class FilterExpressionReferencedObjectsVisitor
 		"referencedOrganizationIds", "referencedRoleIds", "referencedTeamIds",
 		"referencedUserGroupIds", "referencedUserIds"
 	};
+
+	private static final Map<String, String> _demographicFieldNames =
+		new HashMap<String, String>() {
+			{
+				put("additionalName", "middleName");
+				put("birthDate", "birthday");
+				put("email", "emailAddress");
+				put("familyName", "lastName");
+				put("givenName", "firstName");
+			}
+		};
 
 	private final Stack<FilterExpression.FilterType> _filterTypeStack =
 		new Stack<>();
