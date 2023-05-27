@@ -39,9 +39,6 @@ import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.Record2;
-import org.jooq.Select;
-import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.impl.DSL;
 
@@ -362,59 +359,14 @@ public class SegmentRepositoryImpl
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
-		Map<String, String> sortFieldNameConversionMap =
-			_getSortFieldNameConversionMap();
-
-		Select<Record2<Long, Long>> membershipSelect = null;
-
-		for (int i = 0; i < segmentIdIdentityCounts.size(); i++) {
-			Map<String, Long> segmentIdIdentityCount =
-				segmentIdIdentityCounts.get(i);
-
-			if (i == 0) {
-				membershipSelect = DSL.select(
-					DSL.inline(
-						segmentIdIdentityCount.get("segmentId")
-					).as(
-						"segmentId"
-					),
-					DSL.inline(
-						segmentIdIdentityCount.get("identitiesCount")
-					).as(
-						"identitiesCount"
-					));
-			}
-			else {
-				membershipSelect = membershipSelect.unionAll(
-					DSL.select(
-						DSL.inline(segmentIdIdentityCount.get("segmentId")),
-						DSL.inline(
-							segmentIdIdentityCount.get("identitiesCount"))));
-			}
-		}
-
-		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			DSL.table(
-				"Segment"
-			).join(
-				DSL.table(
-					membershipSelect
-				).as(
-					"membership"
-				)
-			).on(
-				DSL.field(
-					"Segment.id"
-				).eq(
-					DSL.field("membership.segmentId")
-				)
-			));
-
-		return selectJoinStep.where(
+		return selectSelectStep.from(
+			"Segment"
+		).where(
 			_getConditions(
 				filterHelper, _getSegmentIds(segmentIdIdentityCounts))
 		).orderBy(
-			getSortFields(sortFieldNameConversionMap, pageable.getSort(), null)
+			getSortFields(
+				_getSortFieldNameConversionMap(), pageable.getSort(), null)
 		).limit(
 			pageable.getPageSize()
 		).offset(

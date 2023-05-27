@@ -61,6 +61,7 @@ public class SegmentRepositoryTest
 		segment1.setAuthorName("Test Test");
 		segment1.setCreateDate(DateUtil.addDays(new Date(), -5));
 		segment1.setFilter("(channelId eq '1')");
+		segment1.setIdentitiesCount(20L);
 		segment1.setName("Segment 1");
 		segment1.setReferencedDataSourceIds(SetUtil.of(5L, 6L));
 		segment1.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
@@ -77,6 +78,7 @@ public class SegmentRepositoryTest
 		segment2.setAuthorName("Marcos Martins");
 		segment2.setCreateDate(DateUtil.addDays(new Date(), -3));
 		segment2.setFilter("(channelId eq '2')");
+		segment2.setIdentitiesCount(30L);
 		segment2.setName("Segment 2");
 		segment2.setReferencedDataSourceIds(SetUtil.of(5L, 6L));
 		segment2.setReferencedFieldMappingFieldNames(SetUtil.of("7", "8"));
