@@ -22,6 +22,7 @@ import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.upgrade.UpgradeStep;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -98,6 +99,8 @@ public class SegmentMembershipsCountUpgradeStep implements UpgradeStep {
 		Date endDate, BQMembershipChange lastBQMembershipChange,
 		Date segmentCreateDate, Date startDate) {
 
+		List<BQMembershipChange> bqMembershipChanges = new ArrayList<>();
+
 		while (startDate.before(endDate)) {
 			BQMembershipChange bqMembershipChange = new BQMembershipChange();
 
@@ -114,10 +117,12 @@ public class SegmentMembershipsCountUpgradeStep implements UpgradeStep {
 				bqMembershipChange.setIndividualsCount(0L);
 			}
 
-			_bqMembershipChangeDog.addBQMembershipChange(bqMembershipChange);
+			bqMembershipChanges.add(bqMembershipChange);
 
 			startDate = DateUtil.addDays(startDate, 1);
 		}
+
+		_bqMembershipChangeRepository.insertAll(bqMembershipChanges);
 	}
 
 	private static final Log _log = LogFactory.getLog(

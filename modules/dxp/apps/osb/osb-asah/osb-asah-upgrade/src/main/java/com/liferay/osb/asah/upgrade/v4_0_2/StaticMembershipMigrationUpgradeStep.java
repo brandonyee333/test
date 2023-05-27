@@ -142,9 +142,9 @@ public class StaticMembershipMigrationUpgradeStep implements UpgradeStep {
 
 		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
 			bqMembershipChange.setIndividualsCount((long)individualsCount);
-
-			_bqMembershipChangeDog.addBQMembershipChange(bqMembershipChange);
 		}
+
+		_bqMembershipChangeRepository.insertAll(bqMembershipChanges);
 	}
 
 	private static final Log _log = LogFactory.getLog(
