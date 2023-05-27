@@ -208,7 +208,7 @@ public class SegmentDogTest
 		Assertions.assertTrue(
 			referencedFieldMappingFieldNames.contains("Custom_Field"));
 		Assertions.assertTrue(
-			referencedFieldMappingFieldNames.contains("email"));
+			referencedFieldMappingFieldNames.contains("emailAddress"));
 	}
 
 	@BQSQLResource(resourcePath = "test_referenced_objects_bq.sql")
