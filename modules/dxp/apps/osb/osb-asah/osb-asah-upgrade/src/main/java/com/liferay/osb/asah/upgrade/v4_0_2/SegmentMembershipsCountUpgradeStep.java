@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
 public class SegmentMembershipsCountUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade(String version) {
 		for (Segment segment : _segmentRepository.findAll()) {
 			Long segmentId = segment.getId();
 
@@ -71,13 +71,9 @@ public class SegmentMembershipsCountUpgradeStep implements UpgradeStep {
 			Date startDate = DateUtil.addDays(
 				bqMembershipChange.getCreateDate(), -30);
 
-			if (startDate.before(segment.getCreateDate())) {
-				startDate = segment.getCreateDate();
-			}
-
 			_populateSegmentMembershipsCount(
 				bqMembershipChange.getCreateDate(), bqMembershipChange,
-				startDate);
+				segment.getCreateDate(), startDate);
 		}
 	}
 
@@ -100,7 +96,7 @@ public class SegmentMembershipsCountUpgradeStep implements UpgradeStep {
 
 	private void _populateSegmentMembershipsCount(
 		Date endDate, BQMembershipChange lastBQMembershipChange,
-		Date startDate) {
+		Date segmentCreateDate, Date startDate) {
 
 		while (startDate.before(endDate)) {
 			BQMembershipChange bqMembershipChange = new BQMembershipChange();
@@ -112,6 +108,11 @@ public class SegmentMembershipsCountUpgradeStep implements UpgradeStep {
 				lastBQMembershipChange.getIndividualsCount());
 			bqMembershipChange.setSegmentId(
 				lastBQMembershipChange.getSegmentId());
+
+			if (startDate.before(segmentCreateDate)) {
+				bqMembershipChange.setIdentitiesCount(0L);
+				bqMembershipChange.setIndividualsCount(0L);
+			}
 
 			_bqMembershipChangeDog.addBQMembershipChange(bqMembershipChange);
 

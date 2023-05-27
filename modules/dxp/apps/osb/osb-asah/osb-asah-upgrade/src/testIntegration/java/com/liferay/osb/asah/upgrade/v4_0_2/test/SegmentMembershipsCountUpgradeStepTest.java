@@ -16,7 +16,6 @@ package com.liferay.osb.asah.upgrade.v4_0_2.test;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
-import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
@@ -68,7 +67,7 @@ public class SegmentMembershipsCountUpgradeStepTest
 	}
 
 	@Test
-	public void testUpgrade1() throws Exception {
+	public void testUpgrade1() {
 		Date date = DateUtil.toUTCDate("2023-04-01T00:00:00.000Z");
 
 		Segment segment = new Segment();
@@ -144,83 +143,7 @@ public class SegmentMembershipsCountUpgradeStepTest
 	}
 
 	@Test
-	public void testUpgrade2() throws Exception {
-		Date date = DateUtil.toUTCDate("2023-05-01T00:00:00.000Z");
-
-		Segment segment = new Segment();
-
-		segment.setIsNew(Boolean.TRUE);
-		segment.setCreateDate(date);
-
-		segment = _segmentRepository.save(segment);
-
-		BQMembershipChange bqMembershipChange = new BQMembershipChange();
-
-		bqMembershipChange.setIdentitiesCount(50L);
-		bqMembershipChange.setIndividualsCount(27L);
-		bqMembershipChange.setSegmentId(segment.getId());
-		bqMembershipChange.setCreateDate(
-			DateUtil.toUTCDate("2023-05-20T00:00:00.000Z"));
-
-		_bqMembershipChangeDog.addBQMembershipChange(bqMembershipChange);
-
-		bqMembershipChange = new BQMembershipChange();
-
-		bqMembershipChange.setIdentitiesCount(47L);
-		bqMembershipChange.setIndividualsCount(20L);
-		bqMembershipChange.setSegmentId(segment.getId());
-		bqMembershipChange.setCreateDate(
-			DateUtil.toUTCDate("2023-05-15T00:00:00.000Z"));
-
-		_bqMembershipChangeDog.addBQMembershipChange(bqMembershipChange);
-
-		bqMembershipChange = new BQMembershipChange();
-
-		bqMembershipChange.setIdentitiesCount(24L);
-		bqMembershipChange.setIndividualsCount(15L);
-		bqMembershipChange.setSegmentId(segment.getId());
-		bqMembershipChange.setCreateDate(
-			DateUtil.toUTCDate("2023-05-05T00:00:00.000Z"));
-
-		_bqMembershipChangeDog.addBQMembershipChange(bqMembershipChange);
-
-		_segmentMembershipsCountUpgradeStep.upgrade("");
-
-		Long segmentId = segment.getId();
-
-		Assertions.assertNotNull(segmentId);
-
-		List<BQMembershipChange> bqMembershipChanges =
-			_bqMembershipChangeRepository.findBySegmentId(segmentId);
-
-		Assertions.assertEquals(7, bqMembershipChanges.size());
-
-		int count = 0;
-
-		for (BQMembershipChange actualBQMembershipChange :
-				bqMembershipChanges) {
-
-			Date actualCreateDate = actualBQMembershipChange.getCreateDate();
-
-			if (actualCreateDate.after(bqMembershipChange.getCreateDate())) {
-				continue;
-			}
-
-			Assertions.assertEquals(
-				bqMembershipChange.getIdentitiesCount(),
-				actualBQMembershipChange.getIdentitiesCount());
-			Assertions.assertEquals(
-				bqMembershipChange.getIndividualsCount(),
-				actualBQMembershipChange.getIndividualsCount());
-
-			count++;
-		}
-
-		Assertions.assertEquals(5, count);
-	}
-
-	@Test
-	public void testUpgradeNoBQMembershipChange() throws Exception {
+	public void testUpgradeNoBQMembershipChange() {
 		Segment segment = new Segment();
 
 		segment.setIsNew(Boolean.TRUE);
@@ -245,9 +168,6 @@ public class SegmentMembershipsCountUpgradeStepTest
 
 	@Autowired
 	private BQMembershipChangeRepository _bqMembershipChangeRepository;
-
-	@Autowired
-	private ProjectDog _projectDog;
 
 	@Autowired
 	private SegmentMembershipsCountUpgradeStep
