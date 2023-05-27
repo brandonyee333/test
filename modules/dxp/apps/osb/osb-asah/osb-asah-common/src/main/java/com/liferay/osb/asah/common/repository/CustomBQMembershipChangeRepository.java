@@ -68,6 +68,8 @@ public interface CustomBQMembershipChangeRepository {
 
 	public BQMembershipChange insert(BQMembershipChange bqMembershipChange);
 
+	public void insertAll(List<BQMembershipChange> bqMembershipChanges);
+
 	@Cacheable
 	public List<BQMembershipChange> searchBQMembershipChanges(
 		FilterHelper filterHelper, Long segmentId, Pageable pageable);

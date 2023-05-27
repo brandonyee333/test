@@ -448,6 +448,30 @@ public class BQMembershipChangeRepositoryImpl
 	}
 
 	@Override
+	public void insertAll(List<BQMembershipChange> bqMembershipChanges) {
+		InsertValuesStep4<Record, Object, Long, Long, Long>
+			insertValuesStep4 = _dslContext.insertInto(
+				DSL.table("BQMembershipChange")
+			).columns(
+				DSL.field("createDate", Object.class),
+				DSL.field("identitiesCount", Long.class),
+				DSL.field("individualsCount", Long.class),
+				DSL.field("segmentId", Long.class)
+			);
+
+		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
+			insertValuesStep4 = insertValuesStep4.values(
+				DateUtil.toUTCString(bqMembershipChange.getCreateDate()),
+				bqMembershipChange.getIdentitiesCount(),
+				bqMembershipChange.getIndividualsCount(),
+				bqMembershipChange.getSegmentId()
+			);
+		}
+
+		_queryExecutor.queryExecute(insertValuesStep4);
+	}
+
+	@Override
 	public List<BQMembershipChange> searchBQMembershipChanges(
 		FilterHelper filterHelper, Long segmentId, Pageable pageable) {
 
