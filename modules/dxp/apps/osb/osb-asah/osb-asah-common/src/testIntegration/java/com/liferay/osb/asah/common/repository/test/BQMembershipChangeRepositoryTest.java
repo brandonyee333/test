@@ -242,6 +242,57 @@ public class BQMembershipChangeRepositoryTest
 	}
 
 	@Test
+	public void testInsertAll() {
+		List<BQMembershipChange> bqMembershipChanges =
+			_bqMembershipChangeRepository.findBySegmentId(1234567L);
+
+		Assertions.assertTrue(bqMembershipChanges.isEmpty());
+
+		List<BQMembershipChange> insertBQMembershipChanges =
+			new ArrayList<>();
+
+		BQMembershipChange insertBQMembershipChange = new BQMembershipChange();
+
+		insertBQMembershipChange.setIndividualsCount(11L);
+		insertBQMembershipChange.setIdentitiesCount(11L);
+		insertBQMembershipChange.setSegmentId(1234567L);
+		insertBQMembershipChange.setCreateDate(DateUtil.newDate());
+
+		insertBQMembershipChanges.add(insertBQMembershipChange);
+
+		insertBQMembershipChange = new BQMembershipChange();
+
+		insertBQMembershipChange.setIndividualsCount(22L);
+		insertBQMembershipChange.setIdentitiesCount(22L);
+		insertBQMembershipChange.setSegmentId(1234567L);
+		insertBQMembershipChange.setCreateDate(DateUtil.newDate());
+
+		insertBQMembershipChanges.add(insertBQMembershipChange);
+
+		insertBQMembershipChange = new BQMembershipChange();
+
+		insertBQMembershipChange.setIndividualsCount(33L);
+		insertBQMembershipChange.setIdentitiesCount(33L);
+		insertBQMembershipChange.setSegmentId(1234567L);
+		insertBQMembershipChange.setCreateDate(DateUtil.newDate());
+
+		insertBQMembershipChanges.add(insertBQMembershipChange);
+
+		_bqMembershipChangeRepository.insertAll(insertBQMembershipChanges);
+
+		bqMembershipChanges = _bqMembershipChangeRepository.findBySegmentId(
+			1234567L);
+
+		Assertions.assertEquals(3, bqMembershipChanges.size());
+
+		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
+			insertBQMembershipChanges.remove(bqMembershipChange);
+		}
+
+		Assertions.assertTrue(insertBQMembershipChanges.isEmpty());
+	}
+
+	@Test
 	public void testSearchMembershipChanges() {
 		Segment segment = _segments.get(0);
 
