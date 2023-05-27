@@ -16,7 +16,6 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.common.dog.ProjectDog;
 import com.liferay.osb.asah.common.entity.Project;
-import com.liferay.osb.asah.common.upgrade.UpgradeState;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.List;
@@ -72,8 +71,6 @@ public class UpgradeProcessRunner {
 					exception);
 			}
 		}
-
-		_upgradeState.complete();
 	}
 
 	private void _run(List<UpgradeStep> upgradeSteps, String version)
@@ -128,8 +125,5 @@ public class UpgradeProcessRunner {
 
 	@Autowired
 	private UpgradeProcess _upgradeProcess;
-
-	@Autowired
-	private UpgradeState _upgradeState;
 
 }

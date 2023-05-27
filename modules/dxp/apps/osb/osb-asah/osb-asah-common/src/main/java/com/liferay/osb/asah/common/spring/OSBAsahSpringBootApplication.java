@@ -14,9 +14,6 @@
 
 package com.liferay.osb.asah.common.spring;
 
-import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,8 +41,4 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 	}
 )
 public class OSBAsahSpringBootApplication {
-
-	@Autowired(required = false)
-	private UpgradeCheck _upgradeCheck;
-
 }

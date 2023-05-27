@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.upgrade.spring;
 
-import com.liferay.osb.asah.common.upgrade.UpgradeCheck;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.jdbc.DataSourceHealthContributorAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
@@ -26,7 +24,6 @@ import org.springframework.boot.autoconfigure.jooq.JooqAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 
 /**
  * @author Shinn Lok
@@ -43,17 +40,10 @@ import org.springframework.context.annotation.FilterType;
 		"com.liferay.osb.asah.common.messaging",
 		"com.liferay.osb.asah.common.postgresql",
 		"com.liferay.osb.asah.common.repository",
-		"com.liferay.osb.asah.common.salesforce",
 		"com.liferay.osb.asah.common.security",
 		"com.liferay.osb.asah.common.spring.cache",
 		"com.liferay.osb.asah.common.spring.http",
-		"com.liferay.osb.asah.common.upgrade",
 		"com.liferay.osb.asah.common.wedeploy", "com.liferay.osb.asah.upgrade"
-	},
-	excludeFilters = {
-		@ComponentScan.Filter(
-			classes = UpgradeCheck.class, type = FilterType.ASSIGNABLE_TYPE
-		)
 	}
 )
 @SpringBootApplication(
