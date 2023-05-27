@@ -113,7 +113,7 @@ public class StaticMembershipMigrationUpgradeStepTest
 		Assertions.assertEquals(24, bqMembershipChanges.size());
 
 		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
-			Assertions.assertEquals(0, bqMembershipChange.getIdentitiesCount());
+			Assertions.assertEquals(3, bqMembershipChange.getIdentitiesCount());
 			Assertions.assertEquals(
 				3, bqMembershipChange.getIndividualsCount());
 		}
@@ -169,7 +169,7 @@ public class StaticMembershipMigrationUpgradeStepTest
 		Assertions.assertEquals(24, bqMembershipChanges.size());
 
 		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
-			Assertions.assertEquals(0, bqMembershipChange.getIdentitiesCount());
+			Assertions.assertEquals(3, bqMembershipChange.getIdentitiesCount());
 			Assertions.assertEquals(
 				3, bqMembershipChange.getIndividualsCount());
 		}
@@ -184,7 +184,7 @@ public class StaticMembershipMigrationUpgradeStepTest
 		Assertions.assertEquals(24, bqMembershipChanges.size());
 
 		for (BQMembershipChange bqMembershipChange : bqMembershipChanges) {
-			Assertions.assertEquals(0, bqMembershipChange.getIdentitiesCount());
+			Assertions.assertEquals(3, bqMembershipChange.getIdentitiesCount());
 			Assertions.assertEquals(
 				3, bqMembershipChange.getIndividualsCount());
 		}
