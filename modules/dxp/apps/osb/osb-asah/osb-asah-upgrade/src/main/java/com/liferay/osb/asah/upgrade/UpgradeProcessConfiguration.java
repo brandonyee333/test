@@ -89,9 +89,9 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"4.0.1", "4.0.2", _segmentTableUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"4.0.2", "4.0.3", _segmentMembershipsCountUpgradeStep);
+			"4.0.2", "4.0.3", _segmentReferencedObjectsUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"4.0.3", "4.0.4", _segmentReferencedObjectsUpgradeStep);
+			"4.0.3", "4.0.4", _segmentMembershipsCountUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.4", "4.0.5", _staticMembershipMigrationUpgradeStep);
 
