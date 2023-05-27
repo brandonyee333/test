@@ -317,7 +317,8 @@ public class IndividualSegmentsRestControllerTest
 	public void testGetSegmentDTOPageDTO1() {
 		PageDTO<SegmentDTO> pageDTO =
 			_individualSegmentsRestController.getSegmentDTOPageDTO(
-				1L, null, 0, 50, new String[0]);
+				1L, "individualCount ge '1' and status = 'ACTIVE'", 0, 50,
+				new String[0]);
 
 		Map<String, SegmentDTO> content = pageDTO.getContent();
 
