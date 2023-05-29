@@ -112,10 +112,8 @@ public class ImportPagesMVCActionCommand extends BaseMVCActionCommand {
 				actionRequest.getParameterMap());
 		}
 		finally {
-				StreamUtil.cleanUp(inputStreams);
+			StreamUtil.cleanUp(inputStreams);
 		}
-
-
 
 		_wikiCacheHelper.clearCache(nodeId);
 
