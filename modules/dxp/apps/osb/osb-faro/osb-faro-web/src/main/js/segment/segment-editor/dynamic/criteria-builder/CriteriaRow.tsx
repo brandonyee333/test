@@ -87,6 +87,7 @@ const canDrop = (
 console.log('test signing commit');
 console.log('test signing commit 2');
 console.log('test signing commit 3');
+console.log('test signing commit 4 without -S');
 
 /**
  * Implements the behavior of what will occur when an item is dropped.
