@@ -986,27 +986,63 @@ definition {
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 
-		for (var searchTerm : list "\"Blogs\",\"Entry\",\"Content\",\"Blogs Entry Content\"") {
-			Navigator.gotoPage(pageName = "Search Page");
+		Navigator.gotoPage(pageName = "Search Page");
 
-			Search.searchPG(searchTerm = ${searchTerm});
+		Search.searchPG(searchTerm = "\"Blogs\"");
 
-			Search.viewSearchResultPG(
-				searchAssetTitle = "Blogs Entry Title",
-				searchAssetType = "Blogs Entry",
-				searchTerm = ${searchTerm});
-		}
+		Search.viewSearchResultPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchAssetType = "Blogs Entry",
+			searchTerm = "\"Blogs\"");
 
-		for (var searchTerm : list "\"Blogs1\",\"Entry1\",\"Content1\",\"Blogs1 Entry1 Content1\"") {
-			Navigator.gotoPage(pageName = "Search Page");
+		Search.searchPG(searchTerm = "\"Entry\"");
 
-			Search.searchPG(searchTerm = ${searchTerm});
+		Search.viewSearchResultPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchAssetType = "Blogs Entry",
+			searchTerm = "\"Entry\"");
 
-			Search.viewSearchNoPG(
-				searchAssetTitle = "Blogs Entry Title",
-				searchNoResults = "true",
-				searchTerm = ${searchTerm});
-		}
+		Search.searchPG(searchTerm = "\"Content\"");
+
+		Search.viewSearchResultPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchAssetType = "Blogs Entry",
+			searchTerm = "\"Content\"");
+
+		Search.searchPG(searchTerm = "\"Blogs Entry Content\"");
+
+		Search.viewSearchResultPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchAssetType = "Blogs Entry",
+			searchTerm = "\"Blogs Entry Content\"");
+
+		Search.searchPG(searchTerm = "\"Blogs1\"");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchNoResults = "true",
+			searchTerm = "\"Blogs1\"");
+
+		Search.searchPG(searchTerm = "\"Entry1\"");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchNoResults = "true",
+			searchTerm = "\"Entry1\"");
+
+		Search.searchPG(searchTerm = "\"Content1\"");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchNoResults = "true",
+			searchTerm = "\"Content1\"");
+
+		Search.searchPG(searchTerm = "\"Blogs1 Entry1 Content1\"");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchNoResults = "true",
+			searchTerm = "\"Blogs1 Entry1 Content1\"");
 	}
 
 	@priority = 4
@@ -1054,27 +1090,63 @@ definition {
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title");
 
-		for (var searchTerm : list "\"Blogs\",\"Entry\",\"Title\",\"Blogs Entry Title\"") {
-			Navigator.gotoPage(pageName = "Search Page");
+		Navigator.gotoPage(pageName = "Search Page");
 
-			Search.searchPG(searchTerm = ${searchTerm});
+		Search.searchPG(searchTerm = "\"Blogs\"");
 
-			Search.viewSearchResultPG(
-				searchAssetTitle = "Blogs Entry Title",
-				searchAssetType = "Blogs Entry",
-				searchTerm = ${searchTerm});
-		}
+		Search.viewSearchResultPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchAssetType = "Blogs Entry",
+			searchTerm = "\"Blogs\"");
 
-		for (var searchTerm : list "\"Blogs1\",\"Entry1\",\"Title1\",\"Blogs1\",\"Entry1\",\"Title1\"") {
-			Navigator.gotoPage(pageName = "Search Page");
+		Search.searchPG(searchTerm = "\"Entry\"");
 
-			Search.searchPG(searchTerm = ${searchTerm});
+		Search.viewSearchResultPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchAssetType = "Blogs Entry",
+			searchTerm = "\"Entry\"");
 
-			Search.viewSearchNoPG(
-				searchAssetTitle = "Blogs Entry Title",
-				searchNoResults = "true",
-				searchTerm = ${searchTerm});
-		}
+		Search.searchPG(searchTerm = "\"Title\"");
+
+		Search.viewSearchResultPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchAssetType = "Blogs Entry",
+			searchTerm = "\"Title\"");
+
+		Search.searchPG(searchTerm = "\"Blogs Entry Title\"");
+
+		Search.viewSearchResultPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchAssetType = "Blogs Entry",
+			searchTerm = "\"Blogs Entry Title\"");
+
+		Search.searchPG(searchTerm = "\"Blogs1\"");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchNoResults = "true",
+			searchTerm = "\"Blogs1\"");
+
+		Search.searchPG(searchTerm = "\"Entry1\"");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchNoResults = "true",
+			searchTerm = "\"Entry1\"");
+
+		Search.searchPG(searchTerm = "\"Title1\"");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchNoResults = "true",
+			searchTerm = "\"Title1\"");
+
+		Search.searchPG(searchTerm = "\"Blogs1 Entry1 Title1\"");
+
+		Search.viewSearchNoPG(
+			searchAssetTitle = "Blogs Entry Title",
+			searchNoResults = "true",
+			searchTerm = "\"Blogs1 Entry1 Title1\"");
 	}
 
 	@priority = 4
