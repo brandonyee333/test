@@ -92,7 +92,7 @@ frequent:
                     factor: 0.4
 google:
     storage:
-        bucket: gs://$PROJECT_ID-dxp-entities
+        bucket: gs://${PROJECT_ID}-dxp-entities
 product:
     content:
         recommendation:
