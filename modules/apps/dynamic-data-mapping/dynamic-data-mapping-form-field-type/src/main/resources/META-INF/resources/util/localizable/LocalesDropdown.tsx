@@ -21,12 +21,34 @@ import React, {useRef, useState} from 'react';
 
 import AvailableLocaleLabel from './AvailableLocaleLabel';
 
+interface LanguageEvent {
+	event: React.MouseEvent<
+		HTMLSpanElement | HTMLButtonElement | HTMLAnchorElement,
+		MouseEvent
+	>;
+	localeId: Liferay.Language.Locale;
+}
+
+interface Locale {
+	displayName: string;
+	icon: string;
+	isDefault?: boolean;
+	isTranslated?: boolean;
+	localeId: Liferay.Language.Locale;
+}
+interface LocalesDropdownProps {
+	availableLocales: Locale[];
+	editingLocale: Locale;
+	fieldName: string;
+	onLanguageClicked: (body: LanguageEvent) => void;
+}
+
 const LocalesDropdown = ({
 	availableLocales,
 	editingLocale,
 	fieldName,
 	onLanguageClicked = () => {},
-}) => {
+}: LocalesDropdownProps) => {
 	const {pages} = useFormState();
 
 	const alignElementRef = useRef(null);
@@ -74,6 +96,9 @@ const LocalesDropdown = ({
 								className="custom-dropdown-item-row"
 								data-testid={`availableLocalesDropdown${localeId}`}
 								key={localeId}
+
+								// @ts-ignore
+
 								name={fieldName + localeId}
 								onClick={(event) => {
 									onLanguageClicked({event, localeId});
