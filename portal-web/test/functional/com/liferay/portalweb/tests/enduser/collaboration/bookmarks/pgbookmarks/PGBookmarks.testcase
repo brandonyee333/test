@@ -201,7 +201,7 @@ definition {
 			bookmarkName = "Test Bookmark Name",
 			bookmarkNameEdit = "Test Bookmark Name Edit",
 			bookmarkURL = "https://www.liferay.com",
-			bookmarkURLEdit = "https://portal.liferay.dev");
+			bookmarkURLEdit = "https://liferay.dev");
 	}
 
 	@priority = 4
