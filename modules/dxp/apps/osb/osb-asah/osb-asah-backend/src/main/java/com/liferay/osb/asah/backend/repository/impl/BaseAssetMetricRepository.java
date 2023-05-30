@@ -138,7 +138,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		Field<Boolean> previousField = DSL.when(
 			DSL.field(
 				"eventDate"
-			).gt(
+			).ge(
 				dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(),
 					timeZoneDog.getTimeZoneId())
