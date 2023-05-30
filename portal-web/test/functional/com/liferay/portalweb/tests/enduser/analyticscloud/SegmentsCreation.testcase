@@ -1624,7 +1624,7 @@ definition {
 		}
 
 		task ("Get URL") {
-			var myURL = Navigator.getCurrentURL();
+			var myURL = etCurrentURL();
 		}
 
 		task ("Switch to new property in AC") {
