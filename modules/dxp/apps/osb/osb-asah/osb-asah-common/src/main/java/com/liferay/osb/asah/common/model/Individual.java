@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.constants.FieldMappingConstants;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIndividual;
@@ -46,18 +44,18 @@ public class Individual {
 	}
 
 	public Individual(
-		Long activitiesCount, BQIndividual bqIndividual, Date lastActivityDate,
-		ObjectMapper objectMapper) {
+		Long activitiesCount, BQIndividual bqIndividual,
+		Date lastActivityDate) {
 
 		this(
 			activitiesCount, bqIndividual, Collections.emptyList(),
-			lastActivityDate, objectMapper);
+			lastActivityDate);
 	}
 
 	public Individual(
 		Long activitiesCount, BQIndividual bqIndividual,
 		List<Map<String, Object>> dataSourceIndividualPKs,
-		Date lastActivityDate, ObjectMapper objectMapper) {
+		Date lastActivityDate) {
 
 		_activitiesCount = activitiesCount;
 

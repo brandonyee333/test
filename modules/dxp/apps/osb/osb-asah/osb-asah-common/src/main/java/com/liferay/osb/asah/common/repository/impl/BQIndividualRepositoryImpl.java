@@ -14,8 +14,6 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.entity.BQFieldMapping;
@@ -369,7 +367,7 @@ public class BQIndividualRepositoryImpl
 
 				return new Individual(
 					activitiesCount.longValue(), new BQIndividual(map),
-					(Date)map.get("lastactivitydate"), _objectMapper);
+					(Date)map.get("lastactivitydate"));
 			},
 			(SelectJoinStep)_getIndividualSelectOnConditionStep(
 				false, selectSeekStep1,
@@ -594,7 +592,7 @@ public class BQIndividualRepositoryImpl
 				return new Individual(
 					activitiesCount.longValue(), new BQIndividual(record),
 					(List<Map<String, Object>>)record.get("dataSourceUsers"),
-					(Date)record.get("lastactivitydate"), _objectMapper);
+					(Date)record.get("lastactivitydate"));
 			},
 			_getIndividualSelectOnConditionStep(
 				true, selectFinalStep, sortFields));
@@ -695,7 +693,7 @@ public class BQIndividualRepositoryImpl
 				return new Individual(
 					0L, bqIndividual,
 					(List<Map<String, Object>>)record.get("dataSourceUsers"),
-					null, _objectMapper);
+					null);
 			},
 			selectJoinStep.where(
 				_getConditions(channelId, filterExpression, query)
@@ -1534,9 +1532,6 @@ public class BQIndividualRepositoryImpl
 				put("givenName", "firstname");
 			}
 		};
-
-	@Autowired
-	private ObjectMapper _objectMapper;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;
