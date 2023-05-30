@@ -53,11 +53,6 @@ public class IndividualDTO {
 	public IndividualDTO(Individual individual) {
 		_activitiesCount = individual.getActivitiesCount();
 		_createDate = individual.getCreateDate();
-		_firstEnrichmentDate = individual.getFirstEnrichmentDate();
-		_id = StringUtil.get(individual.getId(), null);
-		_individualCustomFieldDTO = new IndividualFieldDTO(
-			individual.getCustomFields());
-		_individualFieldDTO = new IndividualFieldDTO(individual.getFields());
 
 		_dataSourceIndividualPKDTOs = new HashSet<>();
 
@@ -68,6 +63,11 @@ public class IndividualDTO {
 				new DataSourceIndividualPKDTO(bqDataSourceUser));
 		}
 
+		_firstEnrichmentDate = individual.getFirstEnrichmentDate();
+		_id = StringUtil.get(individual.getId(), null);
+		_individualCustomFieldDTO = new IndividualFieldDTO(
+			individual.getCustomFields());
+		_individualFieldDTO = new IndividualFieldDTO(individual.getFields());
 		_lastActivityDate = individual.getLastActivityDate();
 		_lastEnrichmentDate = individual.getLastEnrichmentDate();
 		_modifiedDate = individual.getModifiedDate();

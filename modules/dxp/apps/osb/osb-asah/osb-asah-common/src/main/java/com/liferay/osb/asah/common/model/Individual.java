@@ -124,6 +124,8 @@ public class Individual {
 			_fields = fields;
 		}
 
+		_customDemographics = new Demographics(_customFields);
+
 		if (dataSourceIndividualPKs != null) {
 			for (Map<String, Object> dataSourceIndividualPK :
 					dataSourceIndividualPKs) {
@@ -140,7 +142,6 @@ public class Individual {
 			}
 		}
 
-		_customDemographics = new Demographics(_customFields);
 		_demographics = new Demographics(_fields);
 		_emailAddressHashed = bqIndividual.getId();
 		_firstEnrichmentDate = bqIndividual.getCreateDate();
