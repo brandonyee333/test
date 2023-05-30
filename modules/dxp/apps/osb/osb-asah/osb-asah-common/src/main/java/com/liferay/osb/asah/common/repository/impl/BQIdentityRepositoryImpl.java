@@ -319,19 +319,16 @@ public class BQIdentityRepositoryImpl
 
 		if (metricType == IndividualMetricType.ANONYMOUS_INDIVIDUALS) {
 			conditions.add(
-				DSL.or(
-					DSL.field(
-						"Identity.individualId"
-					).isNull(),
-					DSL.field(
-						"Identity.individualId"
-					).notIn(
-						DSL.select(
-							DSL.field("id")
-						).from(
-							DSL.table("BQIndividual")
-						)
-					)));
+				DSL.field(
+					"Individual.id"
+				).isNull());
+		}
+
+		if (metricType == IndividualMetricType.KNOWN_INDIVIDUALS) {
+			conditions.add(
+				DSL.field(
+					"Individual.id"
+				).isNotNull());
 		}
 
 		return conditions;
@@ -341,28 +338,14 @@ public class BQIdentityRepositoryImpl
 		@Nullable Boolean active, @Nullable Long channelId, LocalDate localDate,
 		MetricType metricType, int unionOrder, ZoneId zoneId) {
 
-		Field<Integer> field = null;
-
-		Field<Object> individualIdField = DSL.field("Individual.id");
-
-		if (metricType == IndividualMetricType.ANONYMOUS_INDIVIDUALS) {
-			field = _dslHelper.countIf(individualIdField.isNull());
-		}
-		else if (metricType == IndividualMetricType.KNOWN_INDIVIDUALS) {
-			field = DSL.countDistinct(individualIdField);
-		}
-		else {
-			field = _dslHelper.countIf(
-				individualIdField.isNull()
-			).plus(
-				DSL.countDistinct(individualIdField)
-			);
-		}
-
 		SelectSelectStep<Record2<BigDecimal, Integer>> selectSelectStep =
 			_dslContext.select(
 				DSL.cast(
-					field, BigDecimal.class
+					DSL.countDistinct(
+						DSL.coalesce(
+							DSL.field("Individual.id"),
+							DSL.field("Identity.id"))),
+					BigDecimal.class
 				).as(
 					"count"
 				),
@@ -390,7 +373,7 @@ public class BQIdentityRepositoryImpl
 			DSL.field(
 				"Identity.individualId"
 			).eq(
-				individualIdField
+				DSL.field("Individual.id")
 			)
 		);
 
