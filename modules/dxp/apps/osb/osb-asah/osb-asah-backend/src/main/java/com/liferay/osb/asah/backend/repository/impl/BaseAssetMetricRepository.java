@@ -31,7 +31,6 @@ import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.math.BigDecimal;
 
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import java.util.ArrayList;
@@ -852,7 +851,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		@Nullable Long channelId, @Nullable String keywords,
 		TimeRange timeRange) {
 
-		ZoneId zoneId = timeZoneDog.getZoneId();
+		String timeZoneId = timeZoneDog.getTimeZoneId();
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -888,9 +887,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				"eventDate"
 			).between(
 				dslHelper.getDateParam(
-					timeRange.getStartLocalDateTime(), zoneId.toString()),
+					timeRange.getStartLocalDateTime(), timeZoneId),
 				dslHelper.getDateParam(
-					timeRange.getEndLocalDateTime(), zoneId.toString())
+					timeRange.getEndLocalDateTime(), timeZoneId)
 			));
 
 		if (StringUtils.isNotBlank(keywords)) {
