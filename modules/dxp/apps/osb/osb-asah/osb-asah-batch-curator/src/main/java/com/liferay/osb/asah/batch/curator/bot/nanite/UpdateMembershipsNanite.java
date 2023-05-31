@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
+import com.liferay.osb.asah.common.dog.BQMembershipIndividualDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
@@ -37,9 +38,11 @@ import org.springframework.stereotype.Component;
 public class UpdateMembershipsNanite extends BaseNanite {
 
 	@Override
-	public void run(JSONObject contextJSONObject) throws Exception {
+	public void run(JSONObject contextJSONObject) {
 		_updateDynamicSegmentMemberships();
 		_updateStaticSegmentMembershipChanges();
+
+		_updateMembershipIndividuals();
 	}
 
 	@Override
@@ -100,6 +103,14 @@ public class UpdateMembershipsNanite extends BaseNanite {
 		}
 	}
 
+	private void _updateMembershipIndividuals() {
+		_bqMembershipIndividualDog.updateMembershipIndividuals();
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Updated membership individuals successfully");
+		}
+	}
+
 	private void _updateStaticSegmentMembershipChanges() {
 		int page = 0;
 
@@ -152,6 +163,9 @@ public class UpdateMembershipsNanite extends BaseNanite {
 
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
+	private BQMembershipIndividualDog _bqMembershipIndividualDog;
 
 	@Autowired
 	private SegmentDog _segmentDog;
