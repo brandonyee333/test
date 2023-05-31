@@ -795,19 +795,16 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if (active) {
-			LocalDateTime newDayLocalDateTime = DateUtil.newDayLocalDateTime(
-				TimeZoneDogUtil.getZoneId());
-
-			conditions.add(
-				DSL.field(
-					"IdentityInterestScore.recordedDate"
-				).ge(
-					DateUtil.toUTCString(
-						DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30)),
-						DateUtil.PATTERN_SHORT)
-				));
-		}
+		conditions.add(
+			DSL.field(
+				"IdentityInterestScore.recordedDate"
+			).eq(
+				_dslContext.select(
+					DSL.max(DSL.field("recordedDate"))
+				).from(
+					DSL.table("BQIdentityInterestScore")
+				)
+			));
 
 		if (channelId != null) {
 			conditions.add(
@@ -857,7 +854,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 			_dslContext.with(
 				"IdentityActivityOverview"
 			).as(
-				_getIdentityActivityOverview(segmentId)
+				_getIdentityActivityOverview(active, segmentId)
 			).with(
 				"IdentityOverview"
 			).as(
@@ -1294,7 +1291,9 @@ public class BQIdentityInterestScoreRepositoryImpl
 		return conditions;
 	}
 
-	private Select<?> _getIdentityActivityOverview(@Nullable Long segmentId) {
+	private Select<?> _getIdentityActivityOverview(
+		boolean active, @Nullable Long segmentId) {
+
 		Field<Object> channelIdField = DSL.field(
 			"BQIdentityActivity.channelId");
 		Field<Object> identityIdField = DSL.field(
@@ -1321,6 +1320,23 @@ public class BQIdentityInterestScoreRepositoryImpl
 					).eq(
 						segmentId
 					))
+			);
+		}
+
+		if (active) {
+			LocalDateTime newDayLocalDateTime = DateUtil.newDayLocalDateTime(
+				TimeZoneDogUtil.getZoneId());
+
+			return selectJoinStep.where(
+				DSL.field(
+					"BQIdentityActivity.lastActivityDate"
+				).ge(
+					DateUtil.toUTCString(
+						DateUtil.toUTCDate(newDayLocalDateTime.minusDays(30)),
+						DateUtil.PATTERN_ISO_8601)
+				)
+			).groupBy(
+				channelIdField, identityIdField
 			);
 		}
 
