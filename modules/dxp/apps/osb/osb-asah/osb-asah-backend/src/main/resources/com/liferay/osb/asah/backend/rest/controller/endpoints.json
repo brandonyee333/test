@@ -141,7 +141,11 @@
 			"templated": true
 		},
 		"individuals-count": {
-			"href": "{url}/individuals/count{?includeAnonymousUsers,startDate}",
+			"href": "{url}/individuals/count{?includeAnonymousUsers}",
+			"templated": true
+		},
+		"individuals-created-since-count": {
+			"href": "{url}/individuals/created-since-count{?startDate}",
 			"templated": true
 		},
 		"individuals-distribution": {
