@@ -1,0 +1,227 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.repository.impl;
+
+import com.liferay.osb.asah.common.entity.BQMembershipIndividual;
+import com.liferay.osb.asah.common.repository.CustomBQMembershipIndividualRepository;
+import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
+import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
+import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.jooq.Condition;
+import org.jooq.DSLContext;
+import org.jooq.Select;
+import org.jooq.impl.DSL;
+
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
+import org.springframework.data.domain.Pageable;
+
+/**
+ * @author Marcellus Tavares
+ */
+public class BQMembershipIndividualRepositoryImpl
+	extends BaseRepository implements CustomBQMembershipIndividualRepository {
+
+	public BQMembershipIndividualRepositoryImpl(
+		DSLContext dslContext, Environment environment,
+		QueryExecutor queryExecutor) {
+
+		_dslContext = dslContext;
+		_environment = environment;
+		_queryExecutor = queryExecutor;
+
+		try {
+			_membershipIndividualMergeStatement =
+				ResourceUtil.readResourceToString(
+					"membership_individual_merge_statement.sql", getClass());
+		}
+		catch (Exception exception) {
+			throw new IllegalStateException(exception);
+		}
+	}
+
+	@Override
+	public long countMembershipIndividuals(Long segmentId) {
+		return _queryExecutor.queryForLong(
+			_dslContext.selectCount(
+			).from(
+				"BQMembershipIndividual"
+			).where(
+				DSL.field(
+					"segmemtId"
+				).eq(
+					segmentId
+				)
+			));
+	}
+
+	@Override
+	public List<BQMembershipIndividual> getMembershipIndividuals(
+		Pageable pageable, Long segmentId) {
+
+		return _queryExecutor.queryForList(
+			BQMembershipIndividual::new,
+			_dslContext.selectFrom(
+				DSL.table("BQMembershipIndividual")
+			).where(
+				DSL.field(
+					"segmentId"
+				).eq(
+					segmentId
+				)
+			).orderBy(
+				getSortFields(pageable.getSort(), null)
+			).limit(
+				pageable.getPageSize()
+			).offset(
+				pageable.getOffset()
+			));
+	}
+
+	@Override
+	public void updateMembershipIndividuals() {
+		if (_environment.acceptsProfiles(Profiles.of("prod"))) {
+			_queryExecutor.queryExecute(
+				StringUtils.replace(
+					_membershipIndividualMergeStatement, "${ac_project_id}",
+					ProjectIdThreadLocal.getProjectId()));
+
+			return;
+		}
+
+		_queryExecutor.queryExecute(
+			_dslContext.deleteFrom(
+				DSL.table("BQMembershipIndividual")
+			).where(
+				DSL.trueCondition()
+			));
+
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQMembershipIndividual")
+			).columns(
+				DSL.field("dataSourceUsers"), DSL.field("individualId"),
+				DSL.field("modifiedDate"), DSL.field("segmentId")
+			).select(
+				_getMembershipIndividualsSelect(null)
+			));
+	}
+
+	@Override
+	public void updateMembershipIndividuals(Long segmentId) {
+		_queryExecutor.queryExecute(
+			_dslContext.deleteFrom(
+				DSL.table("BQMembershipIndividual")
+			).where(
+				DSL.field(
+					"segmentId"
+				).eq(
+					segmentId
+				)
+			));
+
+		_queryExecutor.queryExecute(
+			_dslContext.insertInto(
+				DSL.table("BQMembershipIndividual")
+			).columns(
+				DSL.field("dataSourceUsers"), DSL.field("individualId"),
+				DSL.field("modifiedDate"), DSL.field("segmentId")
+			).select(
+				_getMembershipIndividualsSelect(segmentId)
+			));
+	}
+
+	private Select _getMembershipIndividualsSelect(Long segmentId) {
+		List<Condition> conditions = new ArrayList<>();
+
+		conditions.add(
+			DSL.field(
+				"individualId"
+			).isNotNull());
+
+		if (segmentId != null) {
+			conditions.add(
+				DSL.field(
+					"segmentId"
+				).eq(
+					segmentId
+				));
+		}
+
+		return _dslContext.with(
+			"MembershipIndividual"
+		).as(
+			_dslContext.select(
+				DSL.field("individualId"), DSL.field("modifiedDate"),
+				DSL.field("segmentId")
+			).from(
+				"BQMembership"
+			).where(
+				conditions
+			).groupBy(
+				DSL.field("individualId"), DSL.field("modifiedDate"),
+				DSL.field("segmentId")
+			)
+		).select(
+			DSL.field(
+				"ARRAY_AGG((SELECT AS STRUCT User.dataSourceId AS " +
+					"dataSourceId, User.uuid AS uuid))"
+			).as(
+				"dataSourceUser"
+			),
+			DSL.field("MembershipIndividual.individualId"),
+			DSL.max(
+				DSL.field("MembershipIndividual.modifiedDate")
+			).as(
+				"modifiedDate"
+			),
+			DSL.field("MembershipIndividual.segmentId")
+		).from(
+			"MembershipIndividual"
+		).join(
+			DSL.table(
+				"BQUser"
+			).as(
+				"User"
+			)
+		).on(
+			DSL.field(
+				"MembershipIndividual.individualId"
+			).eq(
+				DSL.field("User.individualId")
+			)
+		).where(
+			DSL.field(
+				"User.uuid"
+			).notEqual(
+				""
+			)
+		).groupBy(
+			DSL.field("individualId"), DSL.field("segmentId")
+		);
+	}
+
+	private final DSLContext _dslContext;
+	private final Environment _environment;
+	private final String _membershipIndividualMergeStatement;
+	private final QueryExecutor _queryExecutor;
+
+}
