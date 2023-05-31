@@ -43,6 +43,8 @@ public class ServiceConstants {
 
 	public static final String URL_BATCH_CURATOR;
 
+	public static final String URL_BIG_QUERY;
+
 	public static final String URL_EXTRACTOR;
 
 	public static final String URL_FRONTEND;
@@ -81,6 +83,16 @@ public class ServiceConstants {
 		}
 
 		return internalServiceURL;
+	}
+
+	private static String _getBigQueryURL() {
+		String bigQueryURL = System.getenv("OSB_ASAH_BIG_QUERY_URL");
+
+		if (StringUtils.isNotEmpty(bigQueryURL)) {
+			return bigQueryURL;
+		}
+
+		return "http://localhost:9050";
 	}
 
 	private static Set<String> _getBlockedAnonymousEventProjectIds() {
@@ -173,6 +185,7 @@ public class ServiceConstants {
 		URL_BACKEND = _getURL("BACKEND", "8080", true);
 		URL_BACKEND_INTERNAL = _setInternalURL("BACKEND", "8080");
 		URL_BATCH_CURATOR = _getURL("BATCH_CURATOR", "8080", false);
+		URL_BIG_QUERY = _getBigQueryURL();
 		URL_EXTRACTOR = _getURL("EXTRACTOR", "8080", false);
 		URL_FRONTEND = System.getenv("OSB_FARO_FRONTEND_URL");
 		URL_PUBLISHER = _getURL("PUBLISHER", "8080", true);
