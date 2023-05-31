@@ -267,7 +267,7 @@ public class Segment implements Persistable<Long> {
 	public int hashCode() {
 		return Objects.hash(
 			_author, _channelId, _createDate, _filterString, _filterMetadata,
-			_id, _includeAnonymousUsers, _identitiesCount, _individualsCount,
+			_id, _identitiesCount, _includeAnonymousUsers, _individualsCount,
 			_modifiedDate, _name, _referencedAssetIds, _referencedDataSourceIds,
 			_referencedFieldMappingFieldNames, _referencedGroupIds,
 			_referencedOrganizationIds, _referencedRoleIds, _referencedTeamIds,
