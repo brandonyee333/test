@@ -18,6 +18,7 @@ import com.google.cloud.NoCredentials;
 import com.google.cloud.bigquery.BigQuery;
 import com.google.cloud.bigquery.BigQueryOptions;
 
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.spring.annotation.ConditionalOnGoogleApplicationCredentials;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,7 @@ public class BigQueryConfiguration {
 		BigQueryOptions bigQueryOptions = builder.setCredentials(
 			NoCredentials.getInstance()
 		).setHost(
-			"http://localhost:9050"
+			ServiceConstants.URL_BIG_QUERY
 		).setProjectId(
 			"osbasah"
 		).build();

@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.configuration;
 
 import com.liferay.osb.asah.common.constants.CredentialConstants;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLDataSource;
 import com.liferay.osb.asah.common.postgresql.converter.JSONArrayToPGobjectConverter;
 import com.liferay.osb.asah.common.postgresql.converter.JSONObjectToPGobjectConverter;
@@ -134,7 +135,7 @@ public class JDBCConfiguration extends AbstractJdbcConfiguration {
 		pgSimpleDataSource.setDatabaseName(CredentialConstants.POSTGRESQL_DB);
 		pgSimpleDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		pgSimpleDataSource.setPortNumber(5432);
-		pgSimpleDataSource.setServerName("localhost");
+		pgSimpleDataSource.setServerName(ServiceConstants.POSTGRESQL_SERVER_IP);
 		pgSimpleDataSource.setUser(CredentialConstants.POSTGRESQL_USER);
 
 		DatabasePopulatorUtils.execute(
