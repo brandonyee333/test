@@ -1,5 +1,7 @@
 INSERT INTO Channel (id, createDate, name, state) VALUES (1, timestamp '2020-04-14T08:30:00.000Z', 'Site 1', 'READY');
 
+INSERT INTO ChannelDataSource (channelId, dataSourceId, groupIds) VALUES (1, 123456789, '{123456}');
+
 INSERT INTO DataSource (id, authorId, authorName, createDate, credentialType, enableAllContacts, enableAllSites, login, modifiedDate, name, password, providerType, status, url) VALUES (351238757269547424, 017113, 'giXFdJP xMXmEu', timestamp '2019-01-02T17:09:07.666Z', 'Basic Authentication', true, true, '132g57@zsN.com', timestamp '2019-01-02T17:09:07.666Z', 'Test Data Source 1', '0CvLY8', 'LIFERAY', 'ACTIVE', 'http://2hEmZlYAWcnJ26tg.com');
 INSERT INTO DataSource (id, authorId, authorName, createDate, credentialType, enableAllContacts, enableAllSites, login, modifiedDate, name, password, providerType, status, url) VALUES (351238757269547425, 017113, 'giXFdJP xMXmEu', timestamp '2019-01-02T17:09:07.666Z', 'Basic Authentication', true, true, '132g57@zsN.com', timestamp '2019-01-02T17:09:07.666Z', 'Test Data Source 2', '0CvLY8', 'LIFERAY', 'ACTIVE', 'http://2hEmZlYAWcnJ26tg.com');
 INSERT INTO DataSource (id, name) VALUES (351238757269547426, 'Test Data Source 3');
@@ -7,8 +9,6 @@ INSERT INTO DataSource (id, name) VALUES (366588399828298918, 'Test Data Source 
 INSERT INTO DataSource (id, name) VALUES (366588441118531472, 'Test Data Source 5');
 INSERT INTO DataSource (id, name) VALUES (366588489711802687, 'Test Data Source 6');
 INSERT INTO DataSource (id, name) VALUES (366573382114568984, 'Test Data Source 7');
-
-INSERT INTO ChannelDataSource (channelId, dataSourceId, groupIds) VALUES (1, 123456789, '{123456}');
 
 INSERT INTO Segment (id, authorId, authorName, createDate, filter, filterMetadata, modifiedDate, name, scope, state, status, type) VALUES (327968823603500655, 20139, 'Test Test', timestamp '2018-12-15T16:02:01.824Z', '(((demographics/favoritePokemon/value ne null)))', '32906', timestamp '2018-12-15T16:02:01.824Z', 'Account: 342313459339515838', 'PROJECT', 'READY', 'INACTIVE', 'DYNAMIC');
 INSERT INTO Segment (id, authorId, authorName, createDate, filter, filterMetadata, modifiedDate, name, scope, state, status, type) VALUES (327968823603500656, 20139, 'Test Test', timestamp '2018-12-15T16:02:01.824Z', '(((demographics/jobTitle/value ne null)))', '32907', timestamp '2018-12-15T16:02:01.824Z', 'Test Segment 2', 'PROJECT', 'READY', 'ACTIVE', 'DYNAMIC');
