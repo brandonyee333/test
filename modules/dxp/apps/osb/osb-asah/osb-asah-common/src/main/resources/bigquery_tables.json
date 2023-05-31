@@ -1412,6 +1412,45 @@
 			}
 		]
 	},
+	"membershipindividual": {
+		"clusteringFields": [
+			"segmentId"
+		],
+		"fields": [
+			{
+				"fields": [
+					{
+						"mode": "REQUIRED",
+						"name": "dataSourceId",
+						"type": "INT64"
+					},
+					{
+						"mode": "REQUIRED",
+						"name": "uuid",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "dataSourceUsers",
+				"type": "RECORD"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "individualId",
+				"type": "STRING"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "modifiedDate",
+				"type": "TIMESTAMP"
+			},
+			{
+				"mode": "REQUIRED",
+				"name": "segmentId",
+				"type": "INT64"
+			}
+		]
+	},
 	"order": {
 		"clusteringFields": [
 			"dataSourceId",
