@@ -140,10 +140,30 @@ public class IndividualSegmentsRestControllerTest
 	@BQSQLResource(resourcePath = "test_get_individuals_bq.sql")
 	@SQLResource(resourcePath = "test_get_individuals.sql")
 	@Test
-	public void testGetIndividuals() throws Exception {
+	public void testGetIndividuals1() throws Exception {
 		JSONObject individualsJSONObject = _objectMapper.convertValue(
 			_individualSegmentsRestController.getIndividualDTOPageDTO(
 				327968823603500666L, null, false, 0, 20, null),
+			JSONObject.class);
+
+		JSONObject embeddedJSONObject = individualsJSONObject.getJSONObject(
+			"_embedded");
+
+		System.out.println(embeddedJSONObject.toString());
+
+		JSONArray individualsJSONArray = embeddedJSONObject.getJSONArray(
+			"individuals");
+
+		Assertions.assertEquals(1, individualsJSONArray.length());
+	}
+
+	@BQSQLResource(resourcePath = "test_get_individuals_bq.sql")
+	@SQLResource(resourcePath = "test_get_individuals.sql")
+	@Test
+	public void testGetIndividuals2() throws Exception {
+		JSONObject individualsJSONObject = _objectMapper.convertValue(
+			_individualSegmentsRestController.getIndividualDTOPageDTO(
+				327968823603500666L, null, false, 0, 100, null),
 			JSONObject.class);
 
 		JSONObject embeddedJSONObject = individualsJSONObject.getJSONObject(
