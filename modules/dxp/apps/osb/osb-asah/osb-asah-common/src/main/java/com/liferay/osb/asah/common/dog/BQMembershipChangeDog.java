@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
-import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.ArrayList;
@@ -136,9 +135,6 @@ public class BQMembershipChangeDog {
 
 	@Autowired
 	private BQMembershipChangeRepository _bqMembershipChangeRepository;
-
-	@Autowired
-	private SegmentRepository _segmentRepository;
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
