@@ -55,20 +55,20 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 				1L, "e", 1, Sort.asc("count"), 1),
 			new LinkedHashMap<String, Long>() {
 				{
-					put("compelling metrics", 4L);
+					put("compelling metrics", 2L);
 				}
 			},
-			4, 2, 5);
+			2, 2, 5);
 
 		checkResults(
 			_interestCompositionDog.getIndividualCompositionResultBag(
 				null, "e", 1, Sort.asc("count"), 1),
 			new LinkedHashMap<String, Long>() {
 				{
-					put("clicks-and-mortar e-tailers", 2L);
+					put("compelling metrics", 2L);
 				}
 			},
-			4, 3, 5);
+			2, 2, 5);
 	}
 
 	@BQSQLResource(
@@ -94,11 +94,11 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 			new LinkedHashMap<String, Long>() {
 				{
 					put("clicks-and-mortar e-tailers", 2L);
-					put("compelling metrics", 4L);
-					put("javascript", 2L);
+					put("compelling metrics", 2L);
+					put("javascript", 1L);
 				}
 			},
-			4, 3, 5);
+			2, 3, 5);
 	}
 
 	@BQSQLResource(
@@ -127,7 +127,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 2L);
 				}
 			},
-			2, 1, 3);
+			2, 1, 2);
 	}
 
 	@BQSQLResource(
@@ -158,7 +158,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("compelling metrics", 2L);
 				}
 			},
-			2, 3, 3);
+			2, 3, 2);
 	}
 
 	@BQSQLResource(
@@ -189,7 +189,7 @@ public class InterestCompositionDogTest extends BaseCompositionDogTestCase {
 					put("javascript", 1L);
 				}
 			},
-			2, 3, 3);
+			2, 3, 2);
 	}
 
 	@Autowired
