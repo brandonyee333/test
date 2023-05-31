@@ -32,20 +32,24 @@ import com.liferay.osb.asah.common.dog.BQIdentityDog;
 import com.liferay.osb.asah.common.dog.BQIndividualDog;
 import com.liferay.osb.asah.common.dog.BQMembershipChangeDog;
 import com.liferay.osb.asah.common.dog.BQMembershipDog;
+import com.liferay.osb.asah.common.dog.BQMembershipIndividualDog;
 import com.liferay.osb.asah.common.dog.BQOrganizationDog;
 import com.liferay.osb.asah.common.dog.BQRoleDog;
 import com.liferay.osb.asah.common.dog.BQTeamDog;
 import com.liferay.osb.asah.common.dog.BQUserDog;
 import com.liferay.osb.asah.common.dog.BQUserGroupDog;
 import com.liferay.osb.asah.common.dog.SegmentDog;
+import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQMembership;
 import com.liferay.osb.asah.common.entity.BQMembershipChange;
+import com.liferay.osb.asah.common.entity.BQMembershipIndividual;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Transformation;
 import com.liferay.osb.asah.common.spring.annotation.Cacheable;
 import com.liferay.osb.asah.common.util.ListUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -65,6 +69,7 @@ import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -153,11 +158,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		@RequestParam(name = "sort", required = false) String[] sorts) {
 
 		if (size >= 100) {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Skipping requests with a size greater than 99");
-			}
+			return _toIndividualDTOPageDTO(
+				_toIndividualPage(
+					_bqMembershipIndividualDog.getMembershipIndividualPage(
+						page, id, size, sorts)));
 
-			return _toIndividualDTOPageDTO(Page.empty());
 		}
 
 		return _toIndividualDTOPageDTO(
@@ -527,6 +532,34 @@ public class IndividualSegmentsRestController extends BaseRestController {
 			individualsPage.getTotalPages());
 	}
 
+	private Page<Individual> _toIndividualPage(
+		Page<BQMembershipIndividual> bqMembershipIndividualPage) {
+
+		List<Individual> individuals = new ArrayList<>();
+		for (BQMembershipIndividual bqMembershipIndividual :
+
+				bqMembershipIndividualPage.getContent()) {
+
+			Individual individual = new Individual();
+
+			individual.setId(bqMembershipIndividual.getIndividualId());
+
+			individual.setBQDataSourceUsers(
+				SetUtil.map(
+					bqMembershipIndividual.getDataSourceUsers(),
+					dataSourceUser -> new BQDataSourceUser(
+						Collections.emptySet(),
+						dataSourceUser.getDataSourceId(), null,
+						SetUtil.of(dataSourceUser.getUuid()))));
+
+			individuals.add(individual);
+		}
+
+		return new PageImpl<>(
+			individuals, bqMembershipIndividualPage.getPageable(),
+			bqMembershipIndividualPage.getTotalElements());
+	}
+
 	private <T> JSONObject _toJSONObject(T value) throws Exception {
 		return objectMapper.convertValue(value, JSONObject.class);
 	}
@@ -573,6 +606,9 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 	@Autowired
 	private BQMembershipDog _bqMembershipDog;
+
+	@Autowired
+	private BQMembershipIndividualDog _bqMembershipIndividualDog;
 
 	@Autowired
 	private BQOrganizationDog _bqOrganizationDog;
