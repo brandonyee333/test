@@ -68,6 +68,9 @@ public class BQMembershipDog {
 
 		_addBQMembershipChange(bqMembership.getSegmentId());
 
+		_bqMembershipIndividualDog.updateMembershipIndividuals(
+			bqMembership.getSegmentId());
+
 		return bqMemberships;
 	}
 
@@ -242,6 +245,9 @@ public class BQMembershipDog {
 
 	@Autowired
 	private BQMembershipChangeDog _bqMembershipChangeDog;
+
+	@Autowired
+	private BQMembershipIndividualDog _bqMembershipIndividualDog;
 
 	@Autowired
 	private BQMembershipRepository _bqMembershipRepository;
