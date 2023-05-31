@@ -27,6 +27,7 @@ import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.CustomBQIndividualRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
+import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 import com.liferay.osb.asah.common.util.BQSQLUtil;
 
 import java.math.BigDecimal;
@@ -163,6 +164,27 @@ public class BQIndividualRepositoryImpl
 		return _queryExecutor.queryForLong(
 			selectJoinStep.where(
 				_getConditions(channelId, filterExpression, query)));
+	}
+
+	@Override
+	public long countBQIndividualsCreatedSince(Date startDate) {
+		SelectSelectStep<Record1<Integer>> selectSelectStep =
+			_dslContext.selectCount();
+
+		return _queryExecutor.queryForLong(
+			selectSelectStep.from(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).where(
+				DSL.field(
+					"Individual.createDate"
+				).ge(
+					_dslHelper.getDateParam(startDate)
+				)
+			));
 	}
 
 	@Override
@@ -1492,6 +1514,9 @@ public class BQIndividualRepositoryImpl
 	private BQFieldMappingRepository _bqFieldMappingRepository;
 
 	private final DSLContext _dslContext;
+
+	@Autowired
+	private DSLHelper _dslHelper;
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;

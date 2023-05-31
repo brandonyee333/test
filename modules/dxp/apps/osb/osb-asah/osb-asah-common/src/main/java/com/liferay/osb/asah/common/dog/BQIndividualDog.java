@@ -92,11 +92,13 @@ public class BQIndividualDog {
 			channelId);
 	}
 
-	public long countIndividuals(
-		boolean includeAnonymousUsers, Date startDate) {
+	public long countIndividualCreatedSince(Date startDate) {
+		return _bqIndividualRepository.countBQIndividualsCreatedSince(
+			startDate);
+	}
 
-		return _bqIdentityRepository.countBQIndividuals(
-			includeAnonymousUsers, startDate);
+	public long countIndividuals(boolean includeAnonymousUsers) {
+		return _bqIdentityRepository.countBQIndividuals(includeAnonymousUsers);
 	}
 
 	public Individual fetchBQIndividual(@Nullable Long channelId, String id) {

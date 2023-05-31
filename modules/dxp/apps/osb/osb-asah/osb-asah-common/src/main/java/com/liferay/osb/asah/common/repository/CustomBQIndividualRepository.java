@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Individual;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,8 @@ public interface CustomBQIndividualRepository {
 		@Nullable Long channelId, String filterString,
 		@Nullable Boolean includeAnonymousUsers, @Nullable String query,
 		@Nullable Long segmentId);
+
+	public long countBQIndividualsCreatedSince(Date startDate);
 
 	public long countBQIndividualsModifiedLast30Days(Long channelId);
 
