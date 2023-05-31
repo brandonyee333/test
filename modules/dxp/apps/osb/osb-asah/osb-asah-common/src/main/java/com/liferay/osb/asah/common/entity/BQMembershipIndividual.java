@@ -17,8 +17,6 @@ package com.liferay.osb.asah.common.entity;
 import com.liferay.osb.asah.common.spring.annotation.BigQueryColumn;
 import com.liferay.osb.asah.common.util.BeanUtils;
 
-import java.io.Serializable;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
