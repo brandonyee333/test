@@ -24,7 +24,10 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContex
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -57,6 +60,29 @@ public class BQIndividualRepositoryTest
 			0,
 			_bqIndividualRepository.countBQIndividuals(
 				null, 11L, null, "fail", null, null, _SEGMENT_ID));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_3.sql")
+	@Test
+	public void testCountBQIndividualsCreateSince() {
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividualsCreatedSince(new Date()));
+
+		Assertions.assertEquals(
+			2,
+			_bqIndividualRepository.countBQIndividualsCreatedSince(
+				DateUtils.addDays(new Date(), -10)));
+
+		Assertions.assertEquals(
+			5,
+			_bqIndividualRepository.countBQIndividualsCreatedSince(
+				DateUtils.addDays(new Date(), -20)));
+
+		Assertions.assertEquals(
+			8,
+			_bqIndividualRepository.countBQIndividualsCreatedSince(
+				DateUtils.addDays(new Date(), -30)));
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_1.sql")
