@@ -1425,13 +1425,30 @@
 						"type": "INT64"
 					},
 					{
+						"mode": "REPEATED",
+						"name": "identityId",
+						"type": "STRING"
+					}
+				],
+				"mode": "REPEATED",
+				"name": "dataSourceIdentities",
+				"type": "RECORD"
+			},
+			{
+				"fields": [
+					{
+						"mode": "REQUIRED",
+						"name": "dataSourceId",
+						"type": "INT64"
+					},
+					{
 						"mode": "REQUIRED",
 						"name": "uuid",
 						"type": "STRING"
 					}
 				],
 				"mode": "REPEATED",
-				"name": "dataSourceUsers",
+				"name": "dataSourceUUIDs",
 				"type": "RECORD"
 			},
 			{

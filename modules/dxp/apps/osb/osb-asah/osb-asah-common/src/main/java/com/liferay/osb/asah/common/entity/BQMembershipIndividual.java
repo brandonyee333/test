@@ -48,7 +48,10 @@ public class BQMembershipIndividual {
 			(BQMembershipIndividual)obj;
 
 		if (Objects.equals(
-				_dataSourceUsers, bqMembershipIndividual._dataSourceUsers) &&
+				_dataSourceIdentities,
+				bqMembershipIndividual._dataSourceIdentities) &&
+			Objects.equals(
+				_dataSourceUUIDs, bqMembershipIndividual._dataSourceUUIDs) &&
 			Objects.equals(
 				_individualId, bqMembershipIndividual._individualId) &&
 			Objects.equals(
@@ -62,8 +65,13 @@ public class BQMembershipIndividual {
 	}
 
 	@BigQueryColumn
-	public List<DataSourceUser> getDataSourceUsers() {
-		return _dataSourceUsers;
+	public List<DataSourceIdentity> getDataSourceIdentities() {
+		return _dataSourceIdentities;
+	}
+
+	@BigQueryColumn
+	public List<DataSourceUUID> getDataSourceUUIDs() {
+		return _dataSourceUUIDs;
 	}
 
 	@BigQueryColumn
@@ -90,8 +98,14 @@ public class BQMembershipIndividual {
 		return Objects.hash(_individualId, _modifiedDate, _segmentId);
 	}
 
-	public void setDataSourceUsers(List<DataSourceUser> dataSourceUsers) {
-		_dataSourceUsers = dataSourceUsers;
+	public void setDataSourceIdentities(
+		List<DataSourceIdentity> dataSourceIdentities) {
+
+		_dataSourceIdentities = dataSourceIdentities;
+	}
+
+	public void setDataSourceUUIDs(List<DataSourceUUID> dataSourceUUIDs) {
+		_dataSourceUUIDs = dataSourceUUIDs;
 	}
 
 	public void setIndividualId(String individualId) {
@@ -108,12 +122,64 @@ public class BQMembershipIndividual {
 		_segmentId = segmentId;
 	}
 
-	public static class DataSourceUser {
+	public static class DataSourceIdentity {
 
-		public DataSourceUser() {
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) {
+				return true;
+			}
+
+			if (!(obj instanceof DataSourceIdentity)) {
+				return false;
+			}
+
+			DataSourceIdentity dataSourceIdentity = (DataSourceIdentity)obj;
+
+			if (Objects.equals(
+					_dataSourceId, dataSourceIdentity._dataSourceId) &&
+				Objects.equals(_identityIds, dataSourceIdentity._identityIds)) {
+
+				return true;
+			}
+
+			return false;
 		}
 
-		public DataSourceUser(Long dataSourceId, String uuid) {
+		@BigQueryColumn
+		public Long getDataSourceId() {
+			return _dataSourceId;
+		}
+
+		@BigQueryColumn
+		public List<String> getIdentityIds() {
+			return _identityIds;
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(_dataSourceId, _identityIds);
+		}
+
+		public void setDataSourceId(Long dataSourceId) {
+			_dataSourceId = dataSourceId;
+		}
+
+		public void setIdentityIds(List<String> identityIds) {
+			_identityIds = identityIds;
+		}
+
+		private Long _dataSourceId;
+		private List<String> _identityIds;
+
+	}
+
+	public static class DataSourceUUID {
+
+		public DataSourceUUID() {
+		}
+
+		public DataSourceUUID(Long dataSourceId, String uuid) {
 			_dataSourceId = dataSourceId;
 			_uuid = uuid;
 		}
@@ -124,14 +190,14 @@ public class BQMembershipIndividual {
 				return true;
 			}
 
-			if (!(obj instanceof DataSourceUser)) {
+			if (!(obj instanceof DataSourceUUID)) {
 				return false;
 			}
 
-			DataSourceUser dataSourceUser = (DataSourceUser)obj;
+			DataSourceUUID dataSourceUUID = (DataSourceUUID)obj;
 
-			if (Objects.equals(_dataSourceId, dataSourceUser._dataSourceId) &&
-				Objects.equals(_uuid, dataSourceUser._uuid)) {
+			if (Objects.equals(_dataSourceId, dataSourceUUID._dataSourceId) &&
+				Objects.equals(_uuid, dataSourceUUID._uuid)) {
 
 				return true;
 			}
@@ -167,7 +233,8 @@ public class BQMembershipIndividual {
 
 	}
 
-	private List<DataSourceUser> _dataSourceUsers;
+	private List<DataSourceIdentity> _dataSourceIdentities;
+	private List<DataSourceUUID> _dataSourceUUIDs;
 	private String _individualId;
 	private Date _modifiedDate;
 	private Long _segmentId;
