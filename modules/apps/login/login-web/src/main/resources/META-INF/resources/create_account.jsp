@@ -166,7 +166,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "create-account"));
 						%>
 
 						<c:if test="<%= !autoGenerateScreenName %>">
-							<aui:input autoFocus="<%= true %>" model="<%= User.class %>" name="screenName">
+							<aui:input model="<%= User.class %>" name="screenName">
 
 								<%
 								ScreenNameValidator screenNameValidator = ScreenNameValidatorFactory.getInstance();
@@ -180,11 +180,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "create-account"));
 							</aui:input>
 						</c:if>
 
-						<aui:input autoFocus="<%= autoGenerateScreenName %>" model="<%= User.class %>" name="emailAddress">
-							<c:if test="<%= PrefsPropsUtil.getBoolean(company.getCompanyId(), PropsKeys.USERS_EMAIL_ADDRESS_REQUIRED) %>">
-								<aui:validator name="required" />
-							</c:if>
-						</aui:input>
+						<aui:input model="<%= User.class %>" name="emailAddress" required="<%= PrefsPropsUtil.getBoolean(company.getCompanyId(), PropsKeys.USERS_EMAIL_ADDRESS_REQUIRED) %>" />
 					</clay:col>
 				</clay:row>
 			</div>
@@ -223,29 +219,25 @@ renderResponse.setTitle(LanguageUtil.get(request, "create-account"));
 				</clay:row>
 			</div>
 
-			<div class="form-group">
-				<h3 class="sheet-subtitle"><liferay-ui:message key="password" /></h3>
+			<c:if test="<%= PrefsPropsUtil.getBoolean(company.getCompanyId(), PropsKeys.LOGIN_CREATE_ACCOUNT_ALLOW_CUSTOM_PASSWORD, PropsValues.LOGIN_CREATE_ACCOUNT_ALLOW_CUSTOM_PASSWORD) %>">
+				<div class="form-group">
+					<h3 class="sheet-subtitle"><liferay-ui:message key="password" /></h3>
 
-				<clay:row>
-					<clay:col
-						md="6"
-					>
-						<c:if test="<%= PropsValues.LOGIN_CREATE_ACCOUNT_ALLOW_CUSTOM_PASSWORD %>">
-							<aui:input label="password" name="password1" size="30" type="password" value="">
-								<aui:validator name="required" />
-							</aui:input>
+					<clay:row>
+						<clay:col
+							md="6"
+						>
+							<aui:input label="password" name="password1" required="<%= true %>" size="30" type="password" value="" />
 
-							<aui:input label="enter-again" name="password2" size="30" type="password" value="">
+							<aui:input label="enter-again" name="password2" required="<%= true %>" size="30" type="password" value="">
 								<aui:validator name="equalTo">
 									'#<portlet:namespace />password1'
 								</aui:validator>
-
-								<aui:validator name="required" />
 							</aui:input>
-						</c:if>
-					</clay:col>
-				</clay:row>
-			</div>
+						</clay:col>
+					</clay:row>
+				</div>
+			</c:if>
 
 			<div class="form-group">
 				<h3 class="mb-2 sheet-subtitle"><liferay-ui:message key="verification" /></h3>

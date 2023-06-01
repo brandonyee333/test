@@ -42,18 +42,19 @@ public class ObjectFieldServiceUtil {
 	public static ObjectField addCustomObjectField(
 			String externalReferenceCode, long listTypeDefinitionId,
 			long objectDefinitionId, String businessType, String dbType,
-			String defaultValue, boolean indexed, boolean indexedAsKeyword,
-			String indexedLanguageId, Map<java.util.Locale, String> labelMap,
-			String name, boolean required, boolean state,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
+			Map<java.util.Locale, String> labelMap, boolean localized,
+			String name, String readOnly, String readOnlyConditionExpression,
+			boolean required, boolean state,
 			List<com.liferay.object.model.ObjectFieldSetting>
 				objectFieldSettings)
 		throws PortalException {
 
 		return getService().addCustomObjectField(
 			externalReferenceCode, listTypeDefinitionId, objectDefinitionId,
-			businessType, dbType, defaultValue, indexed, indexedAsKeyword,
-			indexedLanguageId, labelMap, name, required, state,
-			objectFieldSettings);
+			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId,
+			labelMap, localized, name, readOnly, readOnlyConditionExpression,
+			required, state, objectFieldSettings);
 	}
 
 	public static ObjectField deleteObjectField(long objectFieldId)
@@ -80,22 +81,27 @@ public class ObjectFieldServiceUtil {
 	public static ObjectField updateObjectField(
 			String externalReferenceCode, long objectFieldId,
 			long listTypeDefinitionId, String businessType, String dbType,
-			String defaultValue, boolean indexed, boolean indexedAsKeyword,
-			String indexedLanguageId, Map<java.util.Locale, String> labelMap,
-			String name, boolean required, boolean state,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
+			Map<java.util.Locale, String> labelMap, boolean localized,
+			String name, String readOnly, String readOnlyConditionExpression,
+			boolean required, boolean state,
 			List<com.liferay.object.model.ObjectFieldSetting>
 				objectFieldSettings)
 		throws PortalException {
 
 		return getService().updateObjectField(
 			externalReferenceCode, objectFieldId, listTypeDefinitionId,
-			businessType, dbType, defaultValue, indexed, indexedAsKeyword,
-			indexedLanguageId, labelMap, name, required, state,
-			objectFieldSettings);
+			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId,
+			labelMap, localized, name, readOnly, readOnlyConditionExpression,
+			required, state, objectFieldSettings);
 	}
 
 	public static ObjectFieldService getService() {
 		return _service;
+	}
+
+	public static void setService(ObjectFieldService service) {
+		_service = service;
 	}
 
 	private static volatile ObjectFieldService _service;

@@ -19,11 +19,11 @@ import {ResourceName} from '../enum/resourceName';
 export default async function updateMDFRequest(
 	apiOption: ResourceName,
 	mdfRequest: MDFRequest,
-	externalReferenceCodeSF?: string
+	externalReferenceCodeFromSF?: string
 ) {
 	return await liferayFetcher.put(
-		`/o/${LiferayAPIs.OBJECT}/${apiOption}/${mdfRequest.id}`,
+		`/o/${LiferayAPIs.OBJECT}/${apiOption}/by-external-reference-code/${mdfRequest.externalReferenceCode}`,
 		Liferay.authToken,
-		getDTOFromMDFRequest(mdfRequest, externalReferenceCodeSF)
+		getDTOFromMDFRequest(mdfRequest, externalReferenceCodeFromSF)
 	);
 }

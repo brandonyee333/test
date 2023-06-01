@@ -22,6 +22,7 @@ import com.liferay.commerce.product.content.search.web.internal.configuration.CP
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.util.RangeParserUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -54,7 +55,7 @@ public class CPPriceRangeFacetsDisplayContext {
 		_paginationStartParameterName = paginationStartParameterName;
 		_portletSharedSearchResponse = portletSharedSearchResponse;
 
-		_themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
+		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
@@ -143,6 +144,20 @@ public class CPPriceRangeFacetsDisplayContext {
 		}
 
 		return false;
+	}
+
+	public boolean isShowClear(String fieldName) {
+		Optional<String[]> parameterValuesOptional =
+			_portletSharedSearchResponse.getParameterValues(
+				fieldName, _renderRequest);
+
+		return parameterValuesOptional.isPresent();
+	}
+
+	public boolean isStagingEnabled() {
+		Group group = _themeDisplay.getScopeGroup();
+
+		return group.isStaged();
 	}
 
 	public boolean showInputRange() {

@@ -67,12 +67,17 @@
 </tr>
 <tr>
 	<td>REMOTE_APPS_PORTLET_CATEGORY_NAME</td>
-	<td>//div[label[contains(.,'Portlet Category Name')]]/select</td>
+	<td>//div[label[contains(.,'Widget Category Name')]]/select</td>
 	<td></td>
 </tr>
 <tr>
 	<td>REMOTE_APPS_ERROR_WITH_MESSAGE</td>
 	<td>//div[contains(@class, 'alert alert-dismissible alert-danger') and contains(.,'${text}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WARNING_SPECIFIC</td>
+	<td>//div[contains(@class, 'form-feedback-item') and contains(.,'${key_text}')]</td>
 	<td></td>
 </tr>
 </tbody>

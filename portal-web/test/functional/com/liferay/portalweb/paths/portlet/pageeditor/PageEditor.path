@@ -161,7 +161,7 @@
 </tr>
 <tr>
 	<td>COLLECTION_ITEM_PAGINATION_NEXT_BUTTON_NUMERIC</td>
-	<td>//a[contains(@class, 'page-link') and contains(@aria-label,'next')]</td>
+	<td>//div[contains(@class, 'page-link')]//*[name()='svg'][contains(@class,'right')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -171,7 +171,7 @@
 </tr>
 <tr>
 	<td>COLLECTION_ITEM_PAGINATION_PREVIOUS_BUTTON_NUMERIC</td>
-	<td>//a[contains(@class, 'page-link') and contains(@aria-label,'previous')]</td>
+	<td>//div[contains(@class, 'page-link')]//*[name()='svg'][contains(@class,'left')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -305,6 +305,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>VIEWPORT_LOADING_ANIMATION</td>
+	<td>//div[contains(@class,'layout-viewport')]//span[contains(@class,'loading-animation')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>VIEWPORT_HANDLE</td>
 	<td>//div[contains(@class,'page-editor__layout-viewport__handle')]</td>
 	<td></td>
@@ -365,7 +370,7 @@
 </tr>
 <tr>
 	<td>EXPERIENCE_ACTIVE_LABEL_VIEW_CONTROL_MENU</td>
-	<td>//*[contains(@class, 'align-items-center')]//*[contains(text(),'${key_experienceName}')]/parent::span//span[contains(text(),'Active')]</td>
+	<td>//div[contains(@class,'dropdown-menu')]//li//*[contains(text(),'${key_experienceName}')]/parent::div//following-sibling::div//span[normalize-space(text())='Active']</td>
 	<td></td>
 </tr>
 <tr>
@@ -420,7 +425,7 @@
 </tr>
 <tr>
 	<td>EXPERIENCE_INACTIVE_LABEL_VIEW_CONTROL_MENU</td>
-	<td>//*[contains(@class, 'align-items-center')]//*[contains(text(),'${key_experienceName}')]/parent::span//span[contains(text(),'Inactive')]</td>
+	<td>//div[contains(@class,'dropdown-menu')]//li//*[contains(text(),'${key_experienceName}')]/parent::div//following-sibling::div//span[normalize-space(text())='Inactive']</td>
 	<td></td>
 </tr>
 <tr>
@@ -700,32 +705,32 @@
 </tr>
 <tr>
 	<td>FRAGMENTS_AND_WIDGETS_TAB_FRAGMENT</td>
-	<td>//button[normalize-space()='${key_collectionName}']/following-sibling::div/ul/li[contains(@class,'page-editor__fragments-widgets__tab-list-item')][normalize-space()='${key_fragmentName}']</td>
+	<td>//button[normalize-space()='${key_collectionName}']/following-sibling::ul/li[contains(@class,'page-editor__fragments-widgets__tab-list-item')][normalize-space()='${key_fragmentName}']//div[@draggable='true']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENTS_AND_WIDGETS_TAB_FRAGMENT_BUTTON_WITH_ARIA_LABEL</td>
-	<td>//button[normalize-space()='${key_collectionName}']/following-sibling::div/ul/li[contains(@class,'page-editor__fragments-widgets__tab-list-item')][normalize-space()='${key_fragmentName}']//button[@aria-label='${ariaLabel}']</td>
+	<td>//button[normalize-space()='${key_collectionName}']/following-sibling::ul/li[contains(@class,'page-editor__fragments-widgets__tab-list-item')][normalize-space()='${key_fragmentName}']//button[@aria-label='${ariaLabel}']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENTS_AND_WIDGETS_TAB_FRAGMENT_CARD_ITEM</td>
-	<td>//button[normalize-space()='${key_collectionName}']/following-sibling::div/ul/li[contains(@class,'page-editor__fragments-widgets__tab-card-item')][normalize-space()='${key_fragmentName}']</td>
+	<td>//button[normalize-space()='${key_collectionName}']/following-sibling::ul/li[contains(@class,'page-editor__fragments-widgets__tab-card-item')][normalize-space()='${key_fragmentName}']//div[@draggable='true']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENTS_AND_WIDGETS_TAB_FRAGMENT_CARD_ITEM_BUTTON_WITH_ARIA_LABEL</td>
-	<td>//button[normalize-space()='${key_collectionName}']/following-sibling::div/ul/li[contains(@class,'page-editor__fragments-widgets__tab-card-item')][normalize-space()='${key_fragmentName}']//button[@aria-label='${ariaLabel}']</td>
+	<td>//button[normalize-space()='${key_collectionName}']/following-sibling::ul/li[contains(@class,'page-editor__fragments-widgets__tab-card-item')][normalize-space()='${key_fragmentName}']//button[@aria-label='${ariaLabel}']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENTS_AND_WIDGETS_TAB_WIDGET</td>
-	<td>xpath=(//li[contains(@class,'page-editor__fragments-widgets__tab-list-item')][normalize-space()='${key_portletName}'])[${key_indexItem}]</td>
+	<td>xpath=(//li[contains(@class,'page-editor__fragments-widgets__tab-list-item')][normalize-space()='${key_portletName}']//div[@draggable='true'])[${key_indexItem}]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENTS_AND_WIDGETS_TAB_WIDGET_CARD_ITEM</td>
-	<td>//li[contains(@class,'page-editor__fragments-widgets__tab-card-item')][normalize-space()='${key_portletName}']</td>
+	<td>//li[contains(@class,'page-editor__fragments-widgets__tab-card-item')][normalize-space()='${key_portletName}']//div[@draggable='true']</td>
 	<td></td>
 </tr>
 <tr>

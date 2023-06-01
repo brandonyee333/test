@@ -17,13 +17,15 @@
 <%@ include file="/init.jsp" %>
 
 <liferay-layout:render-layout-utility-page-entry
-	type="<%= LayoutUtilityPageEntryTypesConstants.STATUS %>"
+	type="<%= LayoutUtilityPageEntryConstants.TYPE_STATUS %>"
 >
 
 	<%
-	StatusDisplayContext statusDisplayContext = new StatusDisplayContext(request);
+	int status = GetterUtil.getInteger(request.getAttribute("status_code"));
 
-	int status = ParamUtil.getInteger(request, "status");
+	if (status == 0) {
+		status = ParamUtil.getInteger(request, "status");
+	}
 
 	if (status > 0) {
 		response.setStatus(status);
@@ -76,7 +78,7 @@
 		</c:when>
 		<c:when test="<%= statusDisplayContext.isNoSuchResourceException() %>">
 			<liferay-layout:render-layout-utility-page-entry
-				type="<%= LayoutUtilityPageEntryTypesConstants.LAYOUT %>"
+				type="<%= LayoutUtilityPageEntryConstants.TYPE_SC_NOT_FOUND %>"
 			>
 				<div class="container pb-3 pt-3">
 					<h3 class="alert alert-danger">
@@ -89,6 +91,26 @@
 
 					<code class="lfr-url-error"><%= statusDisplayContext.getEscapedURL(themeDisplay) %></code>
 				</div>
+			</liferay-layout:render-layout-utility-page-entry>
+		</c:when>
+		<c:when test="<%= status == HttpServletResponse.SC_INTERNAL_SERVER_ERROR %>">
+			<liferay-layout:render-layout-utility-page-entry
+				type="<%= LayoutUtilityPageEntryConstants.TYPE_SC_INTERNAL_SERVER_ERROR %>"
+			>
+				<h3 class="alert alert-danger">
+					<liferay-ui:message key="internal-server-error" />
+				</h3>
+
+				<liferay-ui:message key="an-error-occurred-while-accessing-the-requested-resource" />
+
+				<br /><br />
+
+				<code class="lfr-url-error"><%= statusDisplayContext.getEscapedURL(themeDisplay) %></code>
+
+				<%
+				statusDisplayContext.logSessionErrors();
+				%>
+
 			</liferay-layout:render-layout-utility-page-entry>
 		</c:when>
 		<c:otherwise>

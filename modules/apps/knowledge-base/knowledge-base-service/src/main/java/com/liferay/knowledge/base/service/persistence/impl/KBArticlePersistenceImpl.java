@@ -23,6 +23,7 @@ import com.liferay.knowledge.base.service.persistence.KBArticlePersistence;
 import com.liferay.knowledge.base.service.persistence.KBArticleUtil;
 import com.liferay.knowledge.base.service.persistence.impl.constants.KBPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -44,6 +45,7 @@ import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
+import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -59,11 +61,15 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -184,18 +190,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByResourcePrimKey;
 				finderArgs = new Object[] {resourcePrimKey};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByResourcePrimKey;
 			finderArgs = new Object[] {
 				resourcePrimKey, start, end, orderByComparator
@@ -204,7 +213,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -260,7 +269,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -563,11 +572,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByResourcePrimKey(long resourcePrimKey) {
-		FinderPath finderPath = _finderPathCountByResourcePrimKey;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByResourcePrimKey;
+
+			finderArgs = new Object[] {resourcePrimKey};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -591,7 +610,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -683,25 +704,28 @@ public class KBArticlePersistenceImpl
 
 		uuid = Objects.toString(uuid, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByUuid;
 				finderArgs = new Object[] {uuid};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByUuid;
 			finderArgs = new Object[] {uuid, start, end, orderByComparator};
 		}
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -768,7 +792,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -1079,11 +1103,21 @@ public class KBArticlePersistenceImpl
 	public int countByUuid(String uuid) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {uuid};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByUuid;
+
+			finderArgs = new Object[] {uuid};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(2);
@@ -1118,7 +1152,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -1203,15 +1239,18 @@ public class KBArticlePersistenceImpl
 
 		uuid = Objects.toString(uuid, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {uuid, groupId};
 		}
 
 		Object result = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			result = finderCache.getResult(
 				_finderPathFetchByUUID_G, finderArgs, this);
 		}
@@ -1264,7 +1303,7 @@ public class KBArticlePersistenceImpl
 				List<KBArticle> list = query.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
+					if (useFinderCache && productionMode) {
 						finderCache.putResult(
 							_finderPathFetchByUUID_G, finderArgs, list);
 					}
@@ -1320,11 +1359,21 @@ public class KBArticlePersistenceImpl
 	public int countByUUID_G(String uuid, long groupId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUUID_G;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {uuid, groupId};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByUUID_G;
+
+			finderArgs = new Object[] {uuid, groupId};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -1363,7 +1412,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -1468,18 +1519,21 @@ public class KBArticlePersistenceImpl
 
 		uuid = Objects.toString(uuid, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByUuid_C;
 				finderArgs = new Object[] {uuid, companyId};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByUuid_C;
 			finderArgs = new Object[] {
 				uuid, companyId, start, end, orderByComparator
@@ -1488,7 +1542,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -1561,7 +1615,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -1898,11 +1952,21 @@ public class KBArticlePersistenceImpl
 	public int countByUuid_C(String uuid, long companyId) {
 		uuid = Objects.toString(uuid, "");
 
-		FinderPath finderPath = _finderPathCountByUuid_C;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {uuid, companyId};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByUuid_C;
+
+			finderArgs = new Object[] {uuid, companyId};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -1941,7 +2005,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -2045,18 +2111,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByR_G;
 				finderArgs = new Object[] {resourcePrimKey, groupId};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByR_G;
 			finderArgs = new Object[] {
 				resourcePrimKey, groupId, start, end, orderByComparator
@@ -2065,7 +2134,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -2127,7 +2196,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -2793,11 +2862,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByR_G(long resourcePrimKey, long groupId) {
-		FinderPath finderPath = _finderPathCountByR_G;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, groupId};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_G;
+
+			finderArgs = new Object[] {resourcePrimKey, groupId};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -2825,7 +2904,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -2961,15 +3042,18 @@ public class KBArticlePersistenceImpl
 	public KBArticle fetchByR_V(
 		long resourcePrimKey, int version, boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {resourcePrimKey, version};
 		}
 
 		Object result = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			result = finderCache.getResult(
 				_finderPathFetchByR_V, finderArgs, this);
 		}
@@ -3011,7 +3095,7 @@ public class KBArticlePersistenceImpl
 				List<KBArticle> list = query.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
+					if (useFinderCache && productionMode) {
 						finderCache.putResult(
 							_finderPathFetchByR_V, finderArgs, list);
 					}
@@ -3065,11 +3149,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByR_V(long resourcePrimKey, int version) {
-		FinderPath finderPath = _finderPathCountByR_V;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, version};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_V;
+
+			finderArgs = new Object[] {resourcePrimKey, version};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -3097,7 +3191,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -3199,18 +3295,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByR_L;
 				finderArgs = new Object[] {resourcePrimKey, latest};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByR_L;
 			finderArgs = new Object[] {
 				resourcePrimKey, latest, start, end, orderByComparator
@@ -3219,7 +3318,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -3281,7 +3380,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -3674,18 +3773,21 @@ public class KBArticlePersistenceImpl
 				resourcePrimKeys[0], latest, start, end, orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(resourcePrimKeys), latest
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(resourcePrimKeys), latest, start, end,
 				orderByComparator
@@ -3694,7 +3796,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByR_L, finderArgs, this);
 
@@ -3762,7 +3864,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByR_L, finderArgs, list);
 				}
@@ -3804,11 +3906,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByR_L(long resourcePrimKey, boolean latest) {
-		FinderPath finderPath = _finderPathCountByR_L;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, latest};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_L;
+
+			finderArgs = new Object[] {resourcePrimKey, latest};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -3836,7 +3948,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -3865,12 +3979,21 @@ public class KBArticlePersistenceImpl
 			resourcePrimKeys = ArrayUtil.sortedUnique(resourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(resourcePrimKeys), latest
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByR_L, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(resourcePrimKeys), latest
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByR_L, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -3911,8 +4034,10 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByR_L, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByR_L, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -4016,18 +4141,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByR_M;
 				finderArgs = new Object[] {resourcePrimKey, main};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByR_M;
 			finderArgs = new Object[] {
 				resourcePrimKey, main, start, end, orderByComparator
@@ -4036,7 +4164,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -4098,7 +4226,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -4490,18 +4618,21 @@ public class KBArticlePersistenceImpl
 				resourcePrimKeys[0], main, start, end, orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(resourcePrimKeys), main
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(resourcePrimKeys), main, start, end,
 				orderByComparator
@@ -4510,7 +4641,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByR_M, finderArgs, this);
 
@@ -4578,7 +4709,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByR_M, finderArgs, list);
 				}
@@ -4620,11 +4751,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByR_M(long resourcePrimKey, boolean main) {
-		FinderPath finderPath = _finderPathCountByR_M;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, main};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_M;
+
+			finderArgs = new Object[] {resourcePrimKey, main};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -4652,7 +4793,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -4681,12 +4824,21 @@ public class KBArticlePersistenceImpl
 			resourcePrimKeys = ArrayUtil.sortedUnique(resourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(resourcePrimKeys), main
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByR_M, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(resourcePrimKeys), main
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByR_M, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -4727,8 +4879,10 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByR_M, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByR_M, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -4833,18 +4987,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByR_S;
 				finderArgs = new Object[] {resourcePrimKey, status};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByR_S;
 			finderArgs = new Object[] {
 				resourcePrimKey, status, start, end, orderByComparator
@@ -4853,7 +5010,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -4915,7 +5072,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -5307,18 +5464,21 @@ public class KBArticlePersistenceImpl
 				resourcePrimKeys[0], status, start, end, orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(resourcePrimKeys), status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(resourcePrimKeys), status, start, end,
 				orderByComparator
@@ -5327,7 +5487,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByR_S, finderArgs, this);
 
@@ -5395,7 +5555,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByR_S, finderArgs, list);
 				}
@@ -5437,11 +5597,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByR_S(long resourcePrimKey, int status) {
-		FinderPath finderPath = _finderPathCountByR_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, status};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_S;
+
+			finderArgs = new Object[] {resourcePrimKey, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -5469,7 +5639,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -5498,12 +5670,21 @@ public class KBArticlePersistenceImpl
 			resourcePrimKeys = ArrayUtil.sortedUnique(resourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(resourcePrimKeys), status
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByR_S, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(resourcePrimKeys), status
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByR_S, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -5544,8 +5725,10 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByR_S, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByR_S, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -5654,18 +5837,21 @@ public class KBArticlePersistenceImpl
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_ERC;
 				finderArgs = new Object[] {groupId, externalReferenceCode};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_ERC;
 			finderArgs = new Object[] {
 				groupId, externalReferenceCode, start, end, orderByComparator
@@ -5674,7 +5860,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -5748,7 +5934,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -6459,11 +6645,21 @@ public class KBArticlePersistenceImpl
 	public int countByG_ERC(long groupId, String externalReferenceCode) {
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
-		FinderPath finderPath = _finderPathCountByG_ERC;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, externalReferenceCode};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_ERC;
+
+			finderArgs = new Object[] {groupId, externalReferenceCode};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -6502,7 +6698,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -6670,18 +6868,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_L;
 				finderArgs = new Object[] {groupId, latest};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_L;
 			finderArgs = new Object[] {
 				groupId, latest, start, end, orderByComparator
@@ -6690,7 +6891,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -6752,7 +6953,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -7410,11 +7611,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByG_L(long groupId, boolean latest) {
-		FinderPath finderPath = _finderPathCountByG_L;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, latest};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_L;
+
+			finderArgs = new Object[] {groupId, latest};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -7442,7 +7653,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -7594,18 +7807,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_M;
 				finderArgs = new Object[] {groupId, main};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_M;
 			finderArgs = new Object[] {
 				groupId, main, start, end, orderByComparator
@@ -7614,7 +7830,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -7676,7 +7892,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -8333,11 +8549,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByG_M(long groupId, boolean main) {
-		FinderPath finderPath = _finderPathCountByG_M;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, main};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_M;
+
+			finderArgs = new Object[] {groupId, main};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -8365,7 +8591,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -8517,18 +8745,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_S;
 				finderArgs = new Object[] {groupId, status};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_S;
 			finderArgs = new Object[] {
 				groupId, status, start, end, orderByComparator
@@ -8537,7 +8768,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -8599,7 +8830,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -9257,11 +9488,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByG_S(long groupId, int status) {
-		FinderPath finderPath = _finderPathCountByG_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, status};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_S;
+
+			finderArgs = new Object[] {groupId, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -9289,7 +9530,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -9442,18 +9685,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByC_L;
 				finderArgs = new Object[] {companyId, latest};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByC_L;
 			finderArgs = new Object[] {
 				companyId, latest, start, end, orderByComparator
@@ -9462,7 +9708,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -9524,7 +9770,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -9847,11 +10093,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByC_L(long companyId, boolean latest) {
-		FinderPath finderPath = _finderPathCountByC_L;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {companyId, latest};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByC_L;
+
+			finderArgs = new Object[] {companyId, latest};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -9879,7 +10135,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -9978,18 +10236,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByC_M;
 				finderArgs = new Object[] {companyId, main};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByC_M;
 			finderArgs = new Object[] {
 				companyId, main, start, end, orderByComparator
@@ -9998,7 +10259,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -10060,7 +10321,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -10382,11 +10643,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByC_M(long companyId, boolean main) {
-		FinderPath finderPath = _finderPathCountByC_M;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {companyId, main};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByC_M;
+
+			finderArgs = new Object[] {companyId, main};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -10414,7 +10685,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -10514,18 +10787,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByC_S;
 				finderArgs = new Object[] {companyId, status};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByC_S;
 			finderArgs = new Object[] {
 				companyId, status, start, end, orderByComparator
@@ -10534,7 +10810,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -10596,7 +10872,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -10919,11 +11195,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByC_S(long companyId, int status) {
-		FinderPath finderPath = _finderPathCountByC_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {companyId, status};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByC_S;
+
+			finderArgs = new Object[] {companyId, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -10951,7 +11237,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -11055,18 +11343,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByP_L;
 				finderArgs = new Object[] {parentResourcePrimKey, latest};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByP_L;
 			finderArgs = new Object[] {
 				parentResourcePrimKey, latest, start, end, orderByComparator
@@ -11075,7 +11366,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -11138,7 +11429,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -11536,18 +11827,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(parentResourcePrimKeys), latest
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(parentResourcePrimKeys), latest, start, end,
 				orderByComparator
@@ -11556,7 +11850,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByP_L, finderArgs, this);
 
@@ -11625,7 +11919,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByP_L, finderArgs, list);
 				}
@@ -11667,11 +11961,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByP_L(long parentResourcePrimKey, boolean latest) {
-		FinderPath finderPath = _finderPathCountByP_L;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {parentResourcePrimKey, latest};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByP_L;
+
+			finderArgs = new Object[] {parentResourcePrimKey, latest};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -11699,7 +12003,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -11729,12 +12035,21 @@ public class KBArticlePersistenceImpl
 				parentResourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(parentResourcePrimKeys), latest
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByP_L, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(parentResourcePrimKeys), latest
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByP_L, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -11775,8 +12090,10 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByP_L, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByP_L, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -11881,18 +12198,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByP_M;
 				finderArgs = new Object[] {parentResourcePrimKey, main};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByP_M;
 			finderArgs = new Object[] {
 				parentResourcePrimKey, main, start, end, orderByComparator
@@ -11901,7 +12221,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -11964,7 +12284,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -12360,18 +12680,21 @@ public class KBArticlePersistenceImpl
 				parentResourcePrimKeys[0], main, start, end, orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(parentResourcePrimKeys), main
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(parentResourcePrimKeys), main, start, end,
 				orderByComparator
@@ -12380,7 +12703,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByP_M, finderArgs, this);
 
@@ -12449,7 +12772,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByP_M, finderArgs, list);
 				}
@@ -12491,11 +12814,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByP_M(long parentResourcePrimKey, boolean main) {
-		FinderPath finderPath = _finderPathCountByP_M;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {parentResourcePrimKey, main};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByP_M;
+
+			finderArgs = new Object[] {parentResourcePrimKey, main};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -12523,7 +12856,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -12553,12 +12888,21 @@ public class KBArticlePersistenceImpl
 				parentResourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(parentResourcePrimKeys), main
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByP_M, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(parentResourcePrimKeys), main
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByP_M, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -12599,8 +12943,10 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByP_M, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByP_M, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -12705,18 +13051,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByP_S;
 				finderArgs = new Object[] {parentResourcePrimKey, status};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByP_S;
 			finderArgs = new Object[] {
 				parentResourcePrimKey, status, start, end, orderByComparator
@@ -12725,7 +13074,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -12788,7 +13137,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -13186,18 +13535,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(parentResourcePrimKeys), status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(parentResourcePrimKeys), status, start, end,
 				orderByComparator
@@ -13206,7 +13558,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByP_S, finderArgs, this);
 
@@ -13275,7 +13627,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByP_S, finderArgs, list);
 				}
@@ -13317,11 +13669,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByP_S(long parentResourcePrimKey, int status) {
-		FinderPath finderPath = _finderPathCountByP_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {parentResourcePrimKey, status};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByP_S;
+
+			finderArgs = new Object[] {parentResourcePrimKey, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(3);
@@ -13349,7 +13711,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -13379,12 +13743,21 @@ public class KBArticlePersistenceImpl
 				parentResourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(parentResourcePrimKeys), status
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByP_S, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(parentResourcePrimKeys), status
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByP_S, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -13425,8 +13798,10 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByP_S, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByP_S, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -13522,15 +13897,18 @@ public class KBArticlePersistenceImpl
 		long resourcePrimKey, long groupId, int version,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {resourcePrimKey, groupId, version};
 		}
 
 		Object result = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			result = finderCache.getResult(
 				_finderPathFetchByR_G_V, finderArgs, this);
 		}
@@ -13577,7 +13955,7 @@ public class KBArticlePersistenceImpl
 				List<KBArticle> list = query.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
+					if (useFinderCache && productionMode) {
 						finderCache.putResult(
 							_finderPathFetchByR_G_V, finderArgs, list);
 					}
@@ -13634,11 +14012,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByR_G_V(long resourcePrimKey, long groupId, int version) {
-		FinderPath finderPath = _finderPathCountByR_G_V;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, groupId, version};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_G_V;
+
+			finderArgs = new Object[] {resourcePrimKey, groupId, version};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -13670,7 +14058,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -13783,18 +14173,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByR_G_L;
 				finderArgs = new Object[] {resourcePrimKey, groupId, latest};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByR_G_L;
 			finderArgs = new Object[] {
 				resourcePrimKey, groupId, latest, start, end, orderByComparator
@@ -13803,7 +14196,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -13870,7 +14263,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -14808,18 +15201,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(resourcePrimKeys), groupId, latest
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(resourcePrimKeys), groupId, latest, start, end,
 				orderByComparator
@@ -14828,7 +15224,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByR_G_L, finderArgs, this);
 
@@ -14901,7 +15297,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByR_G_L, finderArgs, list);
 				}
@@ -14949,11 +15345,21 @@ public class KBArticlePersistenceImpl
 	public int countByR_G_L(
 		long resourcePrimKey, long groupId, boolean latest) {
 
-		FinderPath finderPath = _finderPathCountByR_G_L;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, groupId, latest};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_G_L;
+
+			finderArgs = new Object[] {resourcePrimKey, groupId, latest};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -14985,7 +15391,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -15017,12 +15425,21 @@ public class KBArticlePersistenceImpl
 			resourcePrimKeys = ArrayUtil.sortedUnique(resourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(resourcePrimKeys), groupId, latest
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByR_G_L, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(resourcePrimKeys), groupId, latest
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByR_G_L, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -15067,8 +15484,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByR_G_L, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByR_G_L, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -15323,18 +15743,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByR_G_M;
 				finderArgs = new Object[] {resourcePrimKey, groupId, main};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByR_G_M;
 			finderArgs = new Object[] {
 				resourcePrimKey, groupId, main, start, end, orderByComparator
@@ -15343,7 +15766,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -15410,7 +15833,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -16344,18 +16767,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(resourcePrimKeys), groupId, main
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(resourcePrimKeys), groupId, main, start, end,
 				orderByComparator
@@ -16364,7 +16790,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByR_G_M, finderArgs, this);
 
@@ -16437,7 +16863,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByR_G_M, finderArgs, list);
 				}
@@ -16483,11 +16909,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByR_G_M(long resourcePrimKey, long groupId, boolean main) {
-		FinderPath finderPath = _finderPathCountByR_G_M;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, groupId, main};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_G_M;
+
+			finderArgs = new Object[] {resourcePrimKey, groupId, main};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -16519,7 +16955,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -16551,12 +16989,21 @@ public class KBArticlePersistenceImpl
 			resourcePrimKeys = ArrayUtil.sortedUnique(resourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(resourcePrimKeys), groupId, main
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByR_G_M, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(resourcePrimKeys), groupId, main
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByR_G_M, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -16601,8 +17048,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByR_G_M, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByR_G_M, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -16857,18 +17307,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByR_G_S;
 				finderArgs = new Object[] {resourcePrimKey, groupId, status};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByR_G_S;
 			finderArgs = new Object[] {
 				resourcePrimKey, groupId, status, start, end, orderByComparator
@@ -16877,7 +17330,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -16944,7 +17397,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -17879,18 +18332,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					StringUtil.merge(resourcePrimKeys), groupId, status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				StringUtil.merge(resourcePrimKeys), groupId, status, start, end,
 				orderByComparator
@@ -17899,7 +18355,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByR_G_S, finderArgs, this);
 
@@ -17972,7 +18428,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByR_G_S, finderArgs, list);
 				}
@@ -18016,11 +18472,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByR_G_S(long resourcePrimKey, long groupId, int status) {
-		FinderPath finderPath = _finderPathCountByR_G_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {resourcePrimKey, groupId, status};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByR_G_S;
+
+			finderArgs = new Object[] {resourcePrimKey, groupId, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -18052,7 +18518,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -18082,12 +18550,21 @@ public class KBArticlePersistenceImpl
 			resourcePrimKeys = ArrayUtil.sortedUnique(resourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			StringUtil.merge(resourcePrimKeys), groupId, status
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByR_G_S, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				StringUtil.merge(resourcePrimKeys), groupId, status
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByR_G_S, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -18132,8 +18609,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByR_G_S, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByR_G_S, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -18375,15 +18855,18 @@ public class KBArticlePersistenceImpl
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {groupId, externalReferenceCode, version};
 		}
 
 		Object result = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			result = finderCache.getResult(
 				_finderPathFetchByG_ERC_V, finderArgs, this);
 		}
@@ -18443,7 +18926,7 @@ public class KBArticlePersistenceImpl
 				List<KBArticle> list = query.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
+					if (useFinderCache && productionMode) {
 						finderCache.putResult(
 							_finderPathFetchByG_ERC_V, finderArgs, list);
 					}
@@ -18505,13 +18988,21 @@ public class KBArticlePersistenceImpl
 
 		externalReferenceCode = Objects.toString(externalReferenceCode, "");
 
-		FinderPath finderPath = _finderPathCountByG_ERC_V;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {
-			groupId, externalReferenceCode, version
-		};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_ERC_V;
+
+			finderArgs = new Object[] {groupId, externalReferenceCode, version};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -18554,7 +19045,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -18671,20 +19164,23 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_P_L;
 				finderArgs = new Object[] {
 					groupId, parentResourcePrimKey, latest
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_P_L;
 			finderArgs = new Object[] {
 				groupId, parentResourcePrimKey, latest, start, end,
@@ -18694,7 +19190,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -18762,7 +19258,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -19703,18 +20199,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					groupId, StringUtil.merge(parentResourcePrimKeys), latest
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				groupId, StringUtil.merge(parentResourcePrimKeys), latest,
 				start, end, orderByComparator
@@ -19723,7 +20222,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByG_P_L, finderArgs, this);
 
@@ -19797,7 +20296,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByG_P_L, finderArgs, list);
 				}
@@ -19845,13 +20344,21 @@ public class KBArticlePersistenceImpl
 	public int countByG_P_L(
 		long groupId, long parentResourcePrimKey, boolean latest) {
 
-		FinderPath finderPath = _finderPathCountByG_P_L;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {
-			groupId, parentResourcePrimKey, latest
-		};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_P_L;
+
+			finderArgs = new Object[] {groupId, parentResourcePrimKey, latest};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -19883,7 +20390,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -19916,12 +20425,21 @@ public class KBArticlePersistenceImpl
 				parentResourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			groupId, StringUtil.merge(parentResourcePrimKeys), latest
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByG_P_L, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				groupId, StringUtil.merge(parentResourcePrimKeys), latest
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByG_P_L, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -19966,8 +20484,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByG_P_L, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByG_P_L, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -20225,20 +20746,23 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_P_M;
 				finderArgs = new Object[] {
 					groupId, parentResourcePrimKey, main
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_P_M;
 			finderArgs = new Object[] {
 				groupId, parentResourcePrimKey, main, start, end,
@@ -20248,7 +20772,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -20316,7 +20840,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -21257,18 +21781,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					groupId, StringUtil.merge(parentResourcePrimKeys), main
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				groupId, StringUtil.merge(parentResourcePrimKeys), main, start,
 				end, orderByComparator
@@ -21277,7 +21804,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByG_P_M, finderArgs, this);
 
@@ -21351,7 +21878,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByG_P_M, finderArgs, list);
 				}
@@ -21399,13 +21926,21 @@ public class KBArticlePersistenceImpl
 	public int countByG_P_M(
 		long groupId, long parentResourcePrimKey, boolean main) {
 
-		FinderPath finderPath = _finderPathCountByG_P_M;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {
-			groupId, parentResourcePrimKey, main
-		};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_P_M;
+
+			finderArgs = new Object[] {groupId, parentResourcePrimKey, main};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -21437,7 +21972,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -21470,12 +22007,21 @@ public class KBArticlePersistenceImpl
 				parentResourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			groupId, StringUtil.merge(parentResourcePrimKeys), main
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByG_P_M, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				groupId, StringUtil.merge(parentResourcePrimKeys), main
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByG_P_M, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -21520,8 +22066,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByG_P_M, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByG_P_M, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -21779,20 +22328,23 @@ public class KBArticlePersistenceImpl
 		int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_P_S;
 				finderArgs = new Object[] {
 					groupId, parentResourcePrimKey, status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_P_S;
 			finderArgs = new Object[] {
 				groupId, parentResourcePrimKey, status, start, end,
@@ -21802,7 +22354,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -21870,7 +22422,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -22811,18 +23363,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					groupId, StringUtil.merge(parentResourcePrimKeys), status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				groupId, StringUtil.merge(parentResourcePrimKeys), status,
 				start, end, orderByComparator
@@ -22831,7 +23386,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByG_P_S, finderArgs, this);
 
@@ -22905,7 +23460,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByG_P_S, finderArgs, list);
 				}
@@ -22953,13 +23508,21 @@ public class KBArticlePersistenceImpl
 	public int countByG_P_S(
 		long groupId, long parentResourcePrimKey, int status) {
 
-		FinderPath finderPath = _finderPathCountByG_P_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {
-			groupId, parentResourcePrimKey, status
-		};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_P_S;
+
+			finderArgs = new Object[] {groupId, parentResourcePrimKey, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -22991,7 +23554,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -23024,12 +23589,21 @@ public class KBArticlePersistenceImpl
 				parentResourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			groupId, StringUtil.merge(parentResourcePrimKeys), status
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByG_P_S, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				groupId, StringUtil.merge(parentResourcePrimKeys), status
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByG_P_S, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -23074,8 +23648,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByG_P_S, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByG_P_S, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -23331,18 +23908,21 @@ public class KBArticlePersistenceImpl
 
 		urlTitle = Objects.toString(urlTitle, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_KBFI_UT;
 				finderArgs = new Object[] {groupId, kbFolderId, urlTitle};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_KBFI_UT;
 			finderArgs = new Object[] {
 				groupId, kbFolderId, urlTitle, start, end, orderByComparator
@@ -23351,7 +23931,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -23429,7 +24009,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -24172,11 +24752,21 @@ public class KBArticlePersistenceImpl
 
 		urlTitle = Objects.toString(urlTitle, "");
 
-		FinderPath finderPath = _finderPathCountByG_KBFI_UT;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, kbFolderId, urlTitle};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_KBFI_UT;
+
+			finderArgs = new Object[] {groupId, kbFolderId, urlTitle};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -24219,7 +24809,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -24405,18 +24997,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_KBFI_L;
 				finderArgs = new Object[] {groupId, kbFolderId, latest};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_KBFI_L;
 			finderArgs = new Object[] {
 				groupId, kbFolderId, latest, start, end, orderByComparator
@@ -24425,7 +25020,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -24492,7 +25087,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -25192,11 +25787,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByG_KBFI_L(long groupId, long kbFolderId, boolean latest) {
-		FinderPath finderPath = _finderPathCountByG_KBFI_L;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, kbFolderId, latest};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_KBFI_L;
+
+			finderArgs = new Object[] {groupId, kbFolderId, latest};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -25228,7 +25833,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -25398,18 +26005,21 @@ public class KBArticlePersistenceImpl
 		OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_KBFI_S;
 				finderArgs = new Object[] {groupId, kbFolderId, status};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_KBFI_S;
 			finderArgs = new Object[] {
 				groupId, kbFolderId, status, start, end, orderByComparator
@@ -25418,7 +26028,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -25485,7 +26095,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -26183,11 +26793,21 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countByG_KBFI_S(long groupId, long kbFolderId, int status) {
-		FinderPath finderPath = _finderPathCountByG_KBFI_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, kbFolderId, status};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_KBFI_S;
+
+			finderArgs = new Object[] {groupId, kbFolderId, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -26219,7 +26839,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -26390,6 +27012,9 @@ public class KBArticlePersistenceImpl
 
 		sections = Objects.toString(sections, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -26400,7 +27025,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -26480,7 +27105,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -27471,18 +28096,21 @@ public class KBArticlePersistenceImpl
 				groupId, sectionses[0], latest, start, end, orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					groupId, StringUtil.merge(sectionses), latest
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				groupId, StringUtil.merge(sectionses), latest, start, end,
 				orderByComparator
@@ -27491,7 +28119,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByG_LikeS_L, finderArgs, this);
 
@@ -27579,7 +28207,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByG_LikeS_L, finderArgs,
 						list);
@@ -27628,11 +28256,21 @@ public class KBArticlePersistenceImpl
 	public int countByG_LikeS_L(long groupId, String sections, boolean latest) {
 		sections = Objects.toString(sections, "");
 
-		FinderPath finderPath = _finderPathWithPaginationCountByG_LikeS_L;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, sections, latest};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathWithPaginationCountByG_LikeS_L;
+
+			finderArgs = new Object[] {groupId, sections, latest};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -27675,7 +28313,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -27711,12 +28351,21 @@ public class KBArticlePersistenceImpl
 			sectionses = ArrayUtil.sortedUnique(sectionses);
 		}
 
-		Object[] finderArgs = new Object[] {
-			groupId, StringUtil.merge(sectionses), latest
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByG_LikeS_L, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				groupId, StringUtil.merge(sectionses), latest
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByG_LikeS_L, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -27776,9 +28425,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByG_LikeS_L, finderArgs,
-					count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByG_LikeS_L, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -28070,6 +28721,9 @@ public class KBArticlePersistenceImpl
 
 		sections = Objects.toString(sections, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -28080,7 +28734,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -28160,7 +28814,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -29150,18 +29804,21 @@ public class KBArticlePersistenceImpl
 				groupId, sectionses[0], main, start, end, orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					groupId, StringUtil.merge(sectionses), main
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				groupId, StringUtil.merge(sectionses), main, start, end,
 				orderByComparator
@@ -29170,7 +29827,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByG_LikeS_M, finderArgs, this);
 
@@ -29258,7 +29915,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByG_LikeS_M, finderArgs,
 						list);
@@ -29305,11 +29962,21 @@ public class KBArticlePersistenceImpl
 	public int countByG_LikeS_M(long groupId, String sections, boolean main) {
 		sections = Objects.toString(sections, "");
 
-		FinderPath finderPath = _finderPathWithPaginationCountByG_LikeS_M;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, sections, main};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathWithPaginationCountByG_LikeS_M;
+
+			finderArgs = new Object[] {groupId, sections, main};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -29352,7 +30019,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -29388,12 +30057,21 @@ public class KBArticlePersistenceImpl
 			sectionses = ArrayUtil.sortedUnique(sectionses);
 		}
 
-		Object[] finderArgs = new Object[] {
-			groupId, StringUtil.merge(sectionses), main
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByG_LikeS_M, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				groupId, StringUtil.merge(sectionses), main
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByG_LikeS_M, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -29453,9 +30131,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByG_LikeS_M, finderArgs,
-					count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByG_LikeS_M, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -29747,6 +30427,9 @@ public class KBArticlePersistenceImpl
 
 		sections = Objects.toString(sections, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -29757,7 +30440,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -29837,7 +30520,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -30828,18 +31511,21 @@ public class KBArticlePersistenceImpl
 				groupId, sectionses[0], status, start, end, orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					groupId, StringUtil.merge(sectionses), status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				groupId, StringUtil.merge(sectionses), status, start, end,
 				orderByComparator
@@ -30848,7 +31534,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByG_LikeS_S, finderArgs, this);
 
@@ -30936,7 +31622,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByG_LikeS_S, finderArgs,
 						list);
@@ -30983,11 +31669,21 @@ public class KBArticlePersistenceImpl
 	public int countByG_LikeS_S(long groupId, String sections, int status) {
 		sections = Objects.toString(sections, "");
 
-		FinderPath finderPath = _finderPathWithPaginationCountByG_LikeS_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {groupId, sections, status};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathWithPaginationCountByG_LikeS_S;
+
+			finderArgs = new Object[] {groupId, sections, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(4);
@@ -31030,7 +31726,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -31064,12 +31762,21 @@ public class KBArticlePersistenceImpl
 			sectionses = ArrayUtil.sortedUnique(sectionses);
 		}
 
-		Object[] finderArgs = new Object[] {
-			groupId, StringUtil.merge(sectionses), status
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByG_LikeS_S, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				groupId, StringUtil.merge(sectionses), status
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByG_LikeS_S, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -31129,9 +31836,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByG_LikeS_S, finderArgs,
-					count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByG_LikeS_S, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -31430,20 +32139,23 @@ public class KBArticlePersistenceImpl
 		int start, int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_P_L_S;
 				finderArgs = new Object[] {
 					groupId, parentResourcePrimKey, latest, status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_P_L_S;
 			finderArgs = new Object[] {
 				groupId, parentResourcePrimKey, latest, status, start, end,
@@ -31453,7 +32165,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -31526,7 +32238,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -32511,19 +33223,22 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					groupId, StringUtil.merge(parentResourcePrimKeys), latest,
 					status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				groupId, StringUtil.merge(parentResourcePrimKeys), latest,
 				status, start, end, orderByComparator
@@ -32532,7 +33247,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByG_P_L_S, finderArgs, this);
 
@@ -32611,7 +33326,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByG_P_L_S, finderArgs,
 						list);
@@ -32662,13 +33377,23 @@ public class KBArticlePersistenceImpl
 	public int countByG_P_L_S(
 		long groupId, long parentResourcePrimKey, boolean latest, int status) {
 
-		FinderPath finderPath = _finderPathCountByG_P_L_S;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {
-			groupId, parentResourcePrimKey, latest, status
-		};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_P_L_S;
+
+			finderArgs = new Object[] {
+				groupId, parentResourcePrimKey, latest, status
+			};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(5);
@@ -32704,7 +33429,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -32739,12 +33466,22 @@ public class KBArticlePersistenceImpl
 				parentResourcePrimKeys);
 		}
 
-		Object[] finderArgs = new Object[] {
-			groupId, StringUtil.merge(parentResourcePrimKeys), latest, status
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByG_P_L_S, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				groupId, StringUtil.merge(parentResourcePrimKeys), latest,
+				status
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByG_P_L_S, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -32793,8 +33530,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByG_P_L_S, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByG_P_L_S, finderArgs,
+						count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -33074,20 +33814,23 @@ public class KBArticlePersistenceImpl
 
 		urlTitle = Objects.toString(urlTitle, "");
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindByG_KBFI_UT_ST;
 				finderArgs = new Object[] {
 					groupId, kbFolderId, urlTitle, status
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindByG_KBFI_UT_ST;
 			finderArgs = new Object[] {
 				groupId, kbFolderId, urlTitle, status, start, end,
@@ -33097,7 +33840,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -33180,7 +33923,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -34209,18 +34952,21 @@ public class KBArticlePersistenceImpl
 				orderByComparator);
 		}
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderArgs = new Object[] {
 					groupId, kbFolderId, urlTitle, StringUtil.merge(statuses)
 				};
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderArgs = new Object[] {
 				groupId, kbFolderId, urlTitle, StringUtil.merge(statuses),
 				start, end, orderByComparator
@@ -34229,7 +34975,7 @@ public class KBArticlePersistenceImpl
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				_finderPathWithPaginationFindByG_KBFI_UT_ST, finderArgs, this);
 
@@ -34315,7 +35061,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(
 						_finderPathWithPaginationFindByG_KBFI_UT_ST, finderArgs,
 						list);
@@ -34368,13 +35114,21 @@ public class KBArticlePersistenceImpl
 
 		urlTitle = Objects.toString(urlTitle, "");
 
-		FinderPath finderPath = _finderPathCountByG_KBFI_UT_ST;
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Object[] finderArgs = new Object[] {
-			groupId, kbFolderId, urlTitle, status
-		};
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
 
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByG_KBFI_UT_ST;
+
+			finderArgs = new Object[] {groupId, kbFolderId, urlTitle, status};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler(5);
@@ -34421,7 +35175,9 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(finderPath, finderArgs, count);
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -34456,12 +35212,21 @@ public class KBArticlePersistenceImpl
 			statuses = ArrayUtil.sortedUnique(statuses);
 		}
 
-		Object[] finderArgs = new Object[] {
-			groupId, kbFolderId, urlTitle, StringUtil.merge(statuses)
-		};
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
 
-		Long count = (Long)finderCache.getResult(
-			_finderPathWithPaginationCountByG_KBFI_UT_ST, finderArgs, this);
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderArgs = new Object[] {
+				groupId, kbFolderId, urlTitle, StringUtil.merge(statuses)
+			};
+
+			count = (Long)finderCache.getResult(
+				_finderPathWithPaginationCountByG_KBFI_UT_ST, finderArgs, this);
+		}
 
 		if (count == null) {
 			StringBundler sb = new StringBundler();
@@ -34519,9 +35284,11 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathWithPaginationCountByG_KBFI_UT_ST, finderArgs,
-					count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathWithPaginationCountByG_KBFI_UT_ST,
+						finderArgs, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -34748,6 +35515,10 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(KBArticle kbArticle) {
+		if (kbArticle.getCtCollectionId() != 0) {
+			return;
+		}
+
 		entityCache.putResult(
 			KBArticleImpl.class, kbArticle.getPrimaryKey(), kbArticle);
 
@@ -34797,6 +35568,10 @@ public class KBArticlePersistenceImpl
 		}
 
 		for (KBArticle kbArticle : kbArticles) {
+			if (kbArticle.getCtCollectionId() != 0) {
+				continue;
+			}
+
 			if (entityCache.getResult(
 					KBArticleImpl.class, kbArticle.getPrimaryKey()) == null) {
 
@@ -34973,7 +35748,9 @@ public class KBArticlePersistenceImpl
 					KBArticleImpl.class, kbArticle.getPrimaryKeyObj());
 			}
 
-			if (kbArticle != null) {
+			if ((kbArticle != null) &&
+				ctPersistenceHelper.isRemove(kbArticle)) {
+
 				session.delete(kbArticle);
 			}
 		}
@@ -35076,7 +35853,12 @@ public class KBArticlePersistenceImpl
 		try {
 			session = openSession();
 
-			if (isNew) {
+			if (ctPersistenceHelper.isInsert(kbArticle)) {
+				if (!isNew) {
+					session.evict(
+						KBArticleImpl.class, kbArticle.getPrimaryKeyObj());
+				}
+
 				session.save(kbArticle);
 			}
 			else {
@@ -35088,6 +35870,16 @@ public class KBArticlePersistenceImpl
 		}
 		finally {
 			closeSession(session);
+		}
+
+		if (kbArticle.getCtCollectionId() != 0) {
+			if (isNew) {
+				kbArticle.setNew(false);
+			}
+
+			kbArticle.resetOriginalValues();
+
+			return kbArticle;
 		}
 
 		entityCache.putResult(
@@ -35146,12 +35938,138 @@ public class KBArticlePersistenceImpl
 	/**
 	 * Returns the kb article with the primary key or returns <code>null</code> if it could not be found.
 	 *
+	 * @param primaryKey the primary key of the kb article
+	 * @return the kb article, or <code>null</code> if a kb article with the primary key could not be found
+	 */
+	@Override
+	public KBArticle fetchByPrimaryKey(Serializable primaryKey) {
+		if (ctPersistenceHelper.isProductionMode(KBArticle.class, primaryKey)) {
+			return super.fetchByPrimaryKey(primaryKey);
+		}
+
+		KBArticle kbArticle = null;
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			kbArticle = (KBArticle)session.get(KBArticleImpl.class, primaryKey);
+
+			if (kbArticle != null) {
+				cacheResult(kbArticle);
+			}
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+
+		return kbArticle;
+	}
+
+	/**
+	 * Returns the kb article with the primary key or returns <code>null</code> if it could not be found.
+	 *
 	 * @param kbArticleId the primary key of the kb article
 	 * @return the kb article, or <code>null</code> if a kb article with the primary key could not be found
 	 */
 	@Override
 	public KBArticle fetchByPrimaryKey(long kbArticleId) {
 		return fetchByPrimaryKey((Serializable)kbArticleId);
+	}
+
+	@Override
+	public Map<Serializable, KBArticle> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys) {
+
+		if (ctPersistenceHelper.isProductionMode(KBArticle.class)) {
+			return super.fetchByPrimaryKeys(primaryKeys);
+		}
+
+		if (primaryKeys.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
+		Map<Serializable, KBArticle> map =
+			new HashMap<Serializable, KBArticle>();
+
+		if (primaryKeys.size() == 1) {
+			Iterator<Serializable> iterator = primaryKeys.iterator();
+
+			Serializable primaryKey = iterator.next();
+
+			KBArticle kbArticle = fetchByPrimaryKey(primaryKey);
+
+			if (kbArticle != null) {
+				map.put(primaryKey, kbArticle);
+			}
+
+			return map;
+		}
+
+		if ((databaseInMaxParameters > 0) &&
+			(primaryKeys.size() > databaseInMaxParameters)) {
+
+			Iterator<Serializable> iterator = primaryKeys.iterator();
+
+			while (iterator.hasNext()) {
+				Set<Serializable> page = new HashSet<>();
+
+				for (int i = 0;
+					 (i < databaseInMaxParameters) && iterator.hasNext(); i++) {
+
+					page.add(iterator.next());
+				}
+
+				map.putAll(fetchByPrimaryKeys(page));
+			}
+
+			return map;
+		}
+
+		StringBundler sb = new StringBundler((primaryKeys.size() * 2) + 1);
+
+		sb.append(getSelectSQL());
+		sb.append(" WHERE ");
+		sb.append(getPKDBName());
+		sb.append(" IN (");
+
+		for (Serializable primaryKey : primaryKeys) {
+			sb.append((long)primaryKey);
+
+			sb.append(",");
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		sb.append(")");
+
+		String sql = sb.toString();
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Query query = session.createQuery(sql);
+
+			for (KBArticle kbArticle : (List<KBArticle>)query.list()) {
+				map.put(kbArticle.getPrimaryKeyObj(), kbArticle);
+
+				cacheResult(kbArticle);
+			}
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+
+		return map;
 	}
 
 	/**
@@ -35217,25 +36135,28 @@ public class KBArticlePersistenceImpl
 		int start, int end, OrderByComparator<KBArticle> orderByComparator,
 		boolean useFinderCache) {
 
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			if (useFinderCache) {
+			if (useFinderCache && productionMode) {
 				finderPath = _finderPathWithoutPaginationFindAll;
 				finderArgs = FINDER_ARGS_EMPTY;
 			}
 		}
-		else if (useFinderCache) {
+		else if (useFinderCache && productionMode) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<KBArticle> list = null;
 
-		if (useFinderCache) {
+		if (useFinderCache && productionMode) {
 			list = (List<KBArticle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
@@ -35273,7 +36194,7 @@ public class KBArticlePersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
+				if (useFinderCache && productionMode) {
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
@@ -35306,8 +36227,15 @@ public class KBArticlePersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(
-			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			KBArticle.class);
+
+		Long count = null;
+
+		if (productionMode) {
+			count = (Long)finderCache.getResult(
+				_finderPathCountAll, FINDER_ARGS_EMPTY, this);
+		}
 
 		if (count == null) {
 			Session session = null;
@@ -35319,8 +36247,10 @@ public class KBArticlePersistenceImpl
 
 				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(
-					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				if (productionMode) {
+					finderCache.putResult(
+						_finderPathCountAll, FINDER_ARGS_EMPTY, count);
+				}
 			}
 			catch (Exception exception) {
 				throw processException(exception);
@@ -35354,8 +36284,98 @@ public class KBArticlePersistenceImpl
 	}
 
 	@Override
-	protected Map<String, Integer> getTableColumnsMap() {
+	public Set<String> getCTColumnNames(
+		CTColumnResolutionType ctColumnResolutionType) {
+
+		return _ctColumnNamesMap.getOrDefault(
+			ctColumnResolutionType, Collections.emptySet());
+	}
+
+	@Override
+	public List<String> getMappingTableNames() {
+		return _mappingTableNames;
+	}
+
+	@Override
+	public Map<String, Integer> getTableColumnsMap() {
 		return KBArticleModelImpl.TABLE_COLUMNS_MAP;
+	}
+
+	@Override
+	public String getTableName() {
+		return "KBArticle";
+	}
+
+	@Override
+	public List<String[]> getUniqueIndexColumnNames() {
+		return _uniqueIndexColumnNames;
+	}
+
+	private static final Map<CTColumnResolutionType, Set<String>>
+		_ctColumnNamesMap = new EnumMap<CTColumnResolutionType, Set<String>>(
+			CTColumnResolutionType.class);
+	private static final List<String> _mappingTableNames =
+		new ArrayList<String>();
+	private static final List<String[]> _uniqueIndexColumnNames =
+		new ArrayList<String[]>();
+
+	static {
+		Set<String> ctControlColumnNames = new HashSet<String>();
+		Set<String> ctIgnoreColumnNames = new HashSet<String>();
+		Set<String> ctStrictColumnNames = new HashSet<String>();
+
+		ctControlColumnNames.add("mvccVersion");
+		ctControlColumnNames.add("ctCollectionId");
+		ctStrictColumnNames.add("uuid_");
+		ctStrictColumnNames.add("resourcePrimKey");
+		ctStrictColumnNames.add("groupId");
+		ctStrictColumnNames.add("companyId");
+		ctStrictColumnNames.add("userId");
+		ctStrictColumnNames.add("userName");
+		ctStrictColumnNames.add("createDate");
+		ctIgnoreColumnNames.add("modifiedDate");
+		ctStrictColumnNames.add("externalReferenceCode");
+		ctStrictColumnNames.add("rootResourcePrimKey");
+		ctStrictColumnNames.add("parentResourceClassNameId");
+		ctStrictColumnNames.add("parentResourcePrimKey");
+		ctStrictColumnNames.add("kbFolderId");
+		ctStrictColumnNames.add("version");
+		ctStrictColumnNames.add("title");
+		ctStrictColumnNames.add("urlTitle");
+		ctStrictColumnNames.add("content");
+		ctStrictColumnNames.add("description");
+		ctStrictColumnNames.add("priority");
+		ctStrictColumnNames.add("sections");
+		ctStrictColumnNames.add("latest");
+		ctStrictColumnNames.add("main");
+		ctStrictColumnNames.add("sourceURL");
+		ctStrictColumnNames.add("expirationDate");
+		ctStrictColumnNames.add("reviewDate");
+		ctStrictColumnNames.add("lastPublishDate");
+		ctStrictColumnNames.add("status");
+		ctStrictColumnNames.add("statusByUserId");
+		ctStrictColumnNames.add("statusByUserName");
+		ctStrictColumnNames.add("statusDate");
+
+		_ctColumnNamesMap.put(
+			CTColumnResolutionType.CONTROL, ctControlColumnNames);
+		_ctColumnNamesMap.put(
+			CTColumnResolutionType.IGNORE, ctIgnoreColumnNames);
+		_ctColumnNamesMap.put(
+			CTColumnResolutionType.PK, Collections.singleton("kbArticleId"));
+		_ctColumnNamesMap.put(
+			CTColumnResolutionType.STRICT, ctStrictColumnNames);
+
+		_uniqueIndexColumnNames.add(new String[] {"uuid_", "groupId"});
+
+		_uniqueIndexColumnNames.add(
+			new String[] {"resourcePrimKey", "version"});
+
+		_uniqueIndexColumnNames.add(
+			new String[] {"resourcePrimKey", "groupId", "version"});
+
+		_uniqueIndexColumnNames.add(
+			new String[] {"groupId", "externalReferenceCode", "version"});
 	}
 
 	/**
@@ -36188,29 +37208,14 @@ public class KBArticlePersistenceImpl
 			new String[] {"groupId", "kbFolderId", "urlTitle", "status"},
 			false);
 
-		_setKBArticleUtilPersistence(this);
+		KBArticleUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setKBArticleUtilPersistence(null);
+		KBArticleUtil.setPersistence(null);
 
 		entityCache.removeCache(KBArticleImpl.class.getName());
-	}
-
-	private void _setKBArticleUtilPersistence(
-		KBArticlePersistence kbArticlePersistence) {
-
-		try {
-			Field field = KBArticleUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, kbArticlePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override
@@ -36240,6 +37245,9 @@ public class KBArticlePersistenceImpl
 	}
 
 	@Reference
+	protected CTPersistenceHelper ctPersistenceHelper;
+
+	@Reference
 	protected EntityCache entityCache;
 
 	@Reference
@@ -36258,7 +37266,7 @@ public class KBArticlePersistenceImpl
 		"SELECT COUNT(kbArticle) FROM KBArticle kbArticle WHERE ";
 
 	private static final String _FILTER_ENTITY_TABLE_FILTER_PK_COLUMN =
-		"kbArticle.rootResourcePrimKey";
+		"kbArticle.resourcePrimKey";
 
 	private static final String _FILTER_SQL_SELECT_KBARTICLE_WHERE =
 		"SELECT DISTINCT {kbArticle.*} FROM KBArticle kbArticle WHERE ";

@@ -75,12 +75,12 @@ public class AddressLocalServiceUtil {
 	}
 
 	public static Address copyAddress(
-			long addressId, String className, long classPK,
+			long sourceAddressId, String className, long classPK,
 			ServiceContext serviceContext)
 		throws PortalException {
 
 		return getService().copyAddress(
-			addressId, className, classPK, serviceContext);
+			sourceAddressId, className, classPK, serviceContext);
 	}
 
 	/**
@@ -452,6 +452,10 @@ public class AddressLocalServiceUtil {
 
 	public static AddressLocalService getService() {
 		return _service;
+	}
+
+	public static void setService(AddressLocalService service) {
+		_service = service;
 	}
 
 	private static volatile AddressLocalService _service;

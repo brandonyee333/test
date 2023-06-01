@@ -19,68 +19,63 @@ import com.liferay.document.library.kernel.exception.FileSizeException;
 import com.liferay.document.library.kernel.exception.InvalidFileException;
 import com.liferay.dynamic.data.mapping.form.web.internal.configuration.DDMFormWebConfiguration;
 import com.liferay.dynamic.data.mapping.form.web.internal.configuration.activator.DDMFormWebConfigurationActivator;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.io.File;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
-
 /**
  * @author Carolina Barbosa
  */
-@Component(service = DDMFormUploadValidator.class)
 public class DDMFormUploadValidator {
 
-	public String[] getGuestUploadFileExtensions() {
+	public static String[] getGuestUploadFileExtensions() {
+		DDMFormWebConfigurationActivator ddmFormWebConfigurationActivator =
+			_ddmFormWebConfigurationActivatorSnapshot.get();
+
 		DDMFormWebConfiguration ddmFormWebConfiguration =
-			_ddmFormWebConfigurationActivator.getDDMFormWebConfiguration();
+			ddmFormWebConfigurationActivator.getDDMFormWebConfiguration();
 
 		return StringUtil.split(
 			ddmFormWebConfiguration.guestUploadFileExtensions());
 	}
 
-	public long getGuestUploadMaximumFileSize() {
+	public static long getGuestUploadMaximumFileSize() {
+		DDMFormWebConfigurationActivator ddmFormWebConfigurationActivator =
+			_ddmFormWebConfigurationActivatorSnapshot.get();
+
 		DDMFormWebConfiguration ddmFormWebConfiguration =
-			_ddmFormWebConfigurationActivator.getDDMFormWebConfiguration();
+			ddmFormWebConfigurationActivator.getDDMFormWebConfiguration();
 
 		return ddmFormWebConfiguration.guestUploadMaximumFileSize() *
 			_FILE_LENGTH_MB;
 	}
 
-	public void validateFileExtension(String fileName)
+	public static void validateFileExtension(String fileName)
 		throws FileExtensionException {
 
-		List<String> guestUploadFileExtensions = Arrays.asList(
-			getGuestUploadFileExtensions());
+		String extension = null;
 
-		Stream<String> guestUploadFileExtensionsStream =
-			guestUploadFileExtensions.stream();
-
-		Optional<String> guestUploadFileExtensionOptional =
-			guestUploadFileExtensionsStream.filter(
-				guestUploadFileExtension -> StringUtil.equalsIgnoreCase(
+		for (String guestUploadFileExtension : getGuestUploadFileExtensions()) {
+			if (StringUtil.equalsIgnoreCase(
 					FileUtil.getExtension(fileName),
-					StringUtil.trim(guestUploadFileExtension))
-			).findFirst();
+					StringUtil.trim(guestUploadFileExtension))) {
 
-		if (!guestUploadFileExtensionOptional.isPresent()) {
+				extension = guestUploadFileExtension;
+
+				break;
+			}
+		}
+
+		if (extension == null) {
 			throw new FileExtensionException(
 				"Invalid file extension for " + fileName);
 		}
 	}
 
-	public void validateFileSize(File file, String fileName)
+	public static void validateFileSize(File file, String fileName)
 		throws FileSizeException, InvalidFileException {
 
 		if (file == null) {
@@ -100,21 +95,11 @@ public class DDMFormUploadValidator {
 		}
 	}
 
-	protected void unsetDDMFormWebConfigurationActivator(
-		DDMFormWebConfigurationActivator ddmFormWebConfigurationActivator) {
-
-		_ddmFormWebConfigurationActivator = null;
-	}
-
 	private static final long _FILE_LENGTH_MB = 1024 * 1024;
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unsetDDMFormWebConfigurationActivator"
-	)
-	private volatile DDMFormWebConfigurationActivator
-		_ddmFormWebConfigurationActivator;
+	private static final Snapshot<DDMFormWebConfigurationActivator>
+		_ddmFormWebConfigurationActivatorSnapshot = new Snapshot<>(
+			DDMFormUploadValidator.class,
+			DDMFormWebConfigurationActivator.class, null, true);
 
 }

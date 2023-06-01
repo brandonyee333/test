@@ -15,6 +15,7 @@
 package com.liferay.notification.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 /**
  * Provides a wrapper for {@link NotificationQueueEntryLocalService}.
@@ -284,6 +285,14 @@ public class NotificationQueueEntryLocalServiceWrapper
 			getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public java.util.List<com.liferay.notification.model.NotificationQueueEntry>
+		getNotificationEntries(String type, int status) {
+
+		return _notificationQueueEntryLocalService.getNotificationEntries(
+			type, status);
+	}
+
 	/**
 	 * Returns a range of all the notification queue entries.
 	 *
@@ -353,14 +362,6 @@ public class NotificationQueueEntryLocalServiceWrapper
 	}
 
 	@Override
-	public java.util.List<com.liferay.notification.model.NotificationQueueEntry>
-		getUnsentNotificationEntries(String type) {
-
-		return _notificationQueueEntryLocalService.getUnsentNotificationEntries(
-			type);
-	}
-
-	@Override
 	public com.liferay.notification.model.NotificationQueueEntry
 			resendNotificationQueueEntry(long notificationQueueEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -396,6 +397,11 @@ public class NotificationQueueEntryLocalServiceWrapper
 
 		return _notificationQueueEntryLocalService.updateStatus(
 			notificationQueueEntryId, status);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _notificationQueueEntryLocalService.getBasePersistence();
 	}
 
 	@Override

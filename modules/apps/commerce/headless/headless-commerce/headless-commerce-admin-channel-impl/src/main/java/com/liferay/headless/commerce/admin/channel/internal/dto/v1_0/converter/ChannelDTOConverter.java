@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "dto.class.name=com.liferay.commerce.product.model.CommerceChannel",
-	service = {ChannelDTOConverter.class, DTOConverter.class}
+	service = DTOConverter.class
 )
 public class ChannelDTOConverter
 	implements DTOConverter<CommerceChannel, Channel> {
@@ -48,6 +48,7 @@ public class ChannelDTOConverter
 
 		return new Channel() {
 			{
+				accountId = commerceChannel.getAccountEntryId();
 				currencyCode = commerceChannel.getCommerceCurrencyCode();
 				externalReferenceCode =
 					commerceChannel.getExternalReferenceCode();

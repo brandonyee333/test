@@ -59,15 +59,6 @@ public class CTCollectionServiceWrapper
 	}
 
 	@Override
-	public void discardCTEntries(
-			long ctCollectionId, long modelClassNameId, long modelClassPK)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_ctCollectionService.discardCTEntries(
-			ctCollectionId, modelClassNameId, modelClassPK);
-	}
-
-	@Override
 	public void discardCTEntry(
 			long ctCollectionId, long modelClassNameId, long modelClassPK)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -116,6 +107,15 @@ public class CTCollectionServiceWrapper
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _ctCollectionService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.change.tracking.model.CTProcess moveCTEntries(
+			long fromCTCollectionId, long toCTCollectionId, long[] ctEntryIds)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _ctCollectionService.moveCTEntries(
+			fromCTCollectionId, toCTCollectionId, ctEntryIds);
 	}
 
 	@Override

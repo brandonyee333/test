@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.site.navigation.menu.web.internal.constants.SiteNavigationMenuPortletKeys;
+import com.liferay.site.navigation.constants.SiteNavigationMenuPortletKeys;
 import com.liferay.site.navigation.menu.web.internal.display.context.SiteNavigationMenuDisplayContext;
 
 import java.util.ArrayList;
@@ -53,10 +53,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.name=" + SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU,
 		"mvc.path=-", "mvc.path=/view.jsp"
 	},
-	service = {
-		PortletToolbarContributor.class,
-		SiteNavigationMenuAddPortletToolbarContributor.class
-	}
+	service = PortletToolbarContributor.class
 )
 public class SiteNavigationMenuAddPortletToolbarContributor
 	implements PortletToolbarContributor {

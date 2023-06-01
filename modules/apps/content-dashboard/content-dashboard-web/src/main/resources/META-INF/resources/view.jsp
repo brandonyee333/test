@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext = (ContentDashboardAdminDisplayContext)request.getAttribute(ContentDashboardWebKeys.CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT);
+ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext = (ContentDashboardAdminDisplayContext)request.getAttribute(ContentDashboardAdminDisplayContext.class.getName());
 %>
 
 <div class="cadmin sidebar-wrapper">
@@ -105,7 +105,7 @@ ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext = (Conte
 
 			<clay:management-toolbar
 				cssClass="content-dashboard-management-toolbar"
-				managementToolbarDisplayContext="<%= (ContentDashboardAdminManagementToolbarDisplayContext)request.getAttribute(ContentDashboardWebKeys.CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT) %>"
+				managementToolbarDisplayContext="<%= (ContentDashboardAdminManagementToolbarDisplayContext)request.getAttribute(ContentDashboardAdminManagementToolbarDisplayContext.class.getName()) %>"
 				propsTransformer="js/ContentDashboardManagementToolbarPropsTransformer"
 			/>
 
@@ -287,6 +287,20 @@ ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext = (Conte
 						name="modified-date"
 						value="<%= contentDashboardItem.getModifiedDate() %>"
 					/>
+
+					<liferay-ui:search-container-column-text
+						cssClass="text-nowrap"
+						name="review-date"
+					>
+						<c:choose>
+							<c:when test="<%= contentDashboardItem.getReviewDate() != null %>">
+								<%= contentDashboardAdminDisplayContext.toString(contentDashboardItem.getReviewDate()) %>
+							</c:when>
+							<c:otherwise>
+								-
+							</c:otherwise>
+						</c:choose>
+					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text>
 						<clay:dropdown-actions

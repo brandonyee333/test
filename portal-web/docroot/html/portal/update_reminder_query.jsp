@@ -55,7 +55,7 @@ if (referer.equals(themeDisplay.getPathMain() + "/portal/update_reminder_query")
 			</c:if>
 
 			<aui:fieldset>
-				<aui:select autoFocus="<%= true %>" cssClass="reminder-query-question" label="question" name="reminderQueryQuestion">
+				<aui:select cssClass="reminder-query-question" label="question" name="reminderQueryQuestion">
 
 					<%
 					for (String question : user.getReminderQueryQuestions()) {
@@ -74,7 +74,7 @@ if (referer.equals(themeDisplay.getPathMain() + "/portal/update_reminder_query")
 
 				<c:if test="<%= PrefsPropsUtil.getBoolean(company.getCompanyId(), PropsKeys.USERS_REMINDER_QUERIES_CUSTOM_QUESTION_ENABLED, PropsValues.USERS_REMINDER_QUERIES_CUSTOM_QUESTION_ENABLED) %>">
 					<div class="hide" id="customQuestionContainer">
-						<aui:input autoFocus="<%= true %>" bean="<%= user %>" cssClass="reminder-query-custom" fieldParam="reminderQueryCustomQuestion" label="" model="<%= User.class %>" name="reminderQueryQuestion" />
+						<aui:input bean="<%= user %>" cssClass="reminder-query-custom" fieldParam="reminderQueryCustomQuestion" label="" model="<%= User.class %>" name="reminderQueryQuestion" />
 					</div>
 				</c:if>
 
@@ -86,9 +86,7 @@ if (referer.equals(themeDisplay.getPathMain() + "/portal/update_reminder_query")
 				}
 				%>
 
-				<aui:input autocomplete="off" cssClass="reminder-query-answer" label="answer" maxlength="<%= ModelHintsConstants.TEXT_MAX_LENGTH %>" name="reminderQueryAnswer" showRequiredLabel="<%= false %>" size="50" type='<%= PrefsPropsUtil.getBoolean(company.getCompanyId(), PropsKeys.USERS_REMINDER_QUERIES_DISPLAY_IN_PLAIN_TEXT, PropsValues.USERS_REMINDER_QUERIES_DISPLAY_IN_PLAIN_TEXT) ? "text" : "password" %>' value="<%= answer %>">
-					<aui:validator name="required" />
-				</aui:input>
+				<aui:input autocomplete="off" cssClass="reminder-query-answer" label="answer" maxlength="<%= ModelHintsConstants.TEXT_MAX_LENGTH %>" name="reminderQueryAnswer" required="<%= true %>" showRequiredLabel="<%= false %>" size="50" type='<%= PrefsPropsUtil.getBoolean(company.getCompanyId(), PropsKeys.USERS_REMINDER_QUERIES_DISPLAY_IN_PLAIN_TEXT, PropsValues.USERS_REMINDER_QUERIES_DISPLAY_IN_PLAIN_TEXT) ? "text" : "password" %>' value="<%= answer %>" />
 			</aui:fieldset>
 
 			<aui:button-row>

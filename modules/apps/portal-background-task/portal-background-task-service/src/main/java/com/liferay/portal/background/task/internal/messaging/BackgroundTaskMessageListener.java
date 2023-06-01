@@ -17,6 +17,7 @@ package com.liferay.portal.background.task.internal.messaging;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.background.task.internal.BackgroundTaskImpl;
+import com.liferay.portal.background.task.internal.BackgroundTaskInExecutionUtil;
 import com.liferay.portal.background.task.internal.SerialBackgroundTaskExecutor;
 import com.liferay.portal.background.task.internal.ThreadLocalAwareBackgroundTaskExecutor;
 import com.liferay.portal.background.task.model.BackgroundTask;
@@ -75,8 +76,11 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 		long backgroundTaskId = (Long)message.get(
 			BackgroundTaskConstants.BACKGROUND_TASK_ID);
 
-		try (SafeCloseable safeCloseable =
+		try (SafeCloseable safeCloseable1 =
 				BackgroundTaskThreadLocal.setBackgroundTaskIdWithSafeCloseable(
+					backgroundTaskId);
+			SafeCloseable safeCloseable2 =
+				BackgroundTaskInExecutionUtil.setInExecution(
 					backgroundTaskId)) {
 
 			ServiceContext serviceContext = new ServiceContext();
@@ -186,6 +190,7 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 				responseMessage.put(
 					BackgroundTaskConstants.BACKGROUND_TASK_ID,
 					backgroundTask.getBackgroundTaskId());
+				responseMessage.put("companyId", backgroundTask.getCompanyId());
 				responseMessage.put("name", backgroundTask.getName());
 				responseMessage.put("status", status);
 				responseMessage.put(

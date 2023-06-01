@@ -33,7 +33,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "dto.class.name=com.liferay.object.model.ObjectRelationship",
-	service = {DTOConverter.class, ObjectRelationshipDTOConverter.class}
+	service = DTOConverter.class
 )
 public class ObjectRelationshipDTOConverter
 	implements DTOConverter
@@ -84,6 +84,9 @@ public class ObjectRelationshipDTOConverter
 				parameterObjectFieldId =
 					serviceBuilderObjectRelationship.
 						getParameterObjectFieldId();
+				reverse = serviceBuilderObjectRelationship.isReverse();
+				type = ObjectRelationship.Type.create(
+					serviceBuilderObjectRelationship.getType());
 
 				setParameterObjectFieldName(
 					() -> {
@@ -101,9 +104,6 @@ public class ObjectRelationshipDTOConverter
 
 						return objectField.getName();
 					});
-				reverse = serviceBuilderObjectRelationship.isReverse();
-				type = ObjectRelationship.Type.create(
-					serviceBuilderObjectRelationship.getType());
 			}
 		};
 	}

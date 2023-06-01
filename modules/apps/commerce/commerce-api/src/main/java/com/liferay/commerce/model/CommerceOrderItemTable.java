@@ -82,6 +82,10 @@ public class CommerceOrderItemTable extends BaseTable<CommerceOrderItemTable> {
 	public final Column<CommerceOrderItemTable, Long> CProductId = createColumn(
 		"CProductId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<CommerceOrderItemTable, Long>
+		customerCommerceOrderItemId = createColumn(
+			"customerCommerceOrderItemId", Long.class, Types.BIGINT,
+			Column.FLAG_DEFAULT);
+	public final Column<CommerceOrderItemTable, Long>
 		parentCommerceOrderItemId = createColumn(
 			"parentCommerceOrderItemId", Long.class, Types.BIGINT,
 			Column.FLAG_DEFAULT);
@@ -185,6 +189,10 @@ public class CommerceOrderItemTable extends BaseTable<CommerceOrderItemTable> {
 		createColumn(
 			"priceManuallyAdjusted", Boolean.class, Types.BOOLEAN,
 			Column.FLAG_DEFAULT);
+	public final Column<CommerceOrderItemTable, Boolean> priceOnApplication =
+		createColumn(
+			"priceOnApplication", Boolean.class, Types.BOOLEAN,
+			Column.FLAG_DEFAULT);
 	public final Column<CommerceOrderItemTable, String> printedNote =
 		createColumn(
 			"printedNote", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
@@ -198,6 +206,13 @@ public class CommerceOrderItemTable extends BaseTable<CommerceOrderItemTable> {
 	public final Column<CommerceOrderItemTable, Integer> quantity =
 		createColumn(
 			"quantity", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
+	public final Column<CommerceOrderItemTable, Long> replacedCPInstanceId =
+		createColumn(
+			"replacedCPInstanceId", Long.class, Types.BIGINT,
+			Column.FLAG_DEFAULT);
+	public final Column<CommerceOrderItemTable, String> replacedSku =
+		createColumn(
+			"replacedSku", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<CommerceOrderItemTable, Date> requestedDeliveryDate =
 		createColumn(
 			"requestedDeliveryDate", Date.class, Types.TIMESTAMP,

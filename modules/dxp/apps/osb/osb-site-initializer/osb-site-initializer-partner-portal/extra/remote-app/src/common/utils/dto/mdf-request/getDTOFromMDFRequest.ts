@@ -12,31 +12,46 @@
 import MDFRequestDTO from '../../../interfaces/dto/mdfRequestDTO';
 import MDFRequest from '../../../interfaces/mdfRequest';
 import {Liferay} from '../../../services/liferay';
-import getSummaryActivities from '../../getSummaryActivities';
 
 export function getDTOFromMDFRequest(
 	mdfRequest: MDFRequest,
-	externalReferenceCodeSF?: string
+	externalReferenceCodeFromSF?: string
 ): MDFRequestDTO {
 	return {
-		...getSummaryActivities(mdfRequest.activities),
-		accountExternalReferenceCodeSF:
-			mdfRequest.accountExternalReferenceCodeSF,
+		accountExternalReferenceCode: mdfRequest.accountExternalReferenceCode,
 		additionalOption: mdfRequest.additionalOption,
 		companyName: mdfRequest.company?.name,
-		country: mdfRequest.country,
-		emailAddress: Liferay.ThemeDisplay.getUserEmailAddress(),
-		externalReferenceCodeSF,
-		liferayBusinessSalesGoals: mdfRequest.liferayBusinessSalesGoals?.join(
-			'; '
-		),
-		liferaysUserIdSF: Number(Liferay.ThemeDisplay.getUserId()),
+		currency: mdfRequest.currency,
+		emailAddress: mdfRequest.id
+			? mdfRequest.emailAddress
+			: Liferay.ThemeDisplay.getUserEmailAddress(),
+		externalReferenceCode: externalReferenceCodeFromSF,
+		liferayBusinessSalesGoals: mdfRequest.liferayBusinessSalesGoals?.includes(
+			'Other - Please describe'
+		)
+			? mdfRequest.liferayBusinessSalesGoals
+					?.filter((item) => item !== 'Other - Please describe')
+					.join('; ')
+			: mdfRequest.liferayBusinessSalesGoals?.join('; '),
+		liferayBusinessSalesGoalsOther:
+			mdfRequest?.liferayBusinessSalesGoalsOther,
+		liferaysUserIdSF: mdfRequest.id
+			? mdfRequest.liferaysUserIdSF
+			: Number(Liferay.ThemeDisplay.getUserId()),
+		maxDateActivity: mdfRequest.maxDateActivity,
 		mdfRequestStatus: mdfRequest.mdfRequestStatus,
+		minDateActivity: mdfRequest.minDateActivity,
 		overallCampaignDescription: mdfRequest.overallCampaignDescription,
 		overallCampaignName: mdfRequest.overallCampaignName,
+		partnerCountry: mdfRequest.partnerCountry,
 		r_accToMDFReqs_accountEntryId: mdfRequest.company?.id,
-		r_usrToMDFReqs_userId: Number(Liferay.ThemeDisplay.getUserId()),
+		r_usrToMDFReqs_userId: mdfRequest.id
+			? mdfRequest.r_usrToMDFReqs_userId
+			: Number(Liferay.ThemeDisplay.getUserId()),
+		submitted: mdfRequest.submitted,
 		targetAudienceRoles: mdfRequest.targetAudienceRoles?.join('; '),
 		targetMarkets: mdfRequest.targetMarkets?.join('; '),
+		totalCostOfExpense: mdfRequest.totalCostOfExpense,
+		totalMDFRequestAmount: mdfRequest.totalMDFRequestAmount,
 	};
 }

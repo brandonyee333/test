@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.service;
 import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -162,7 +163,7 @@ public class DDMStructureLocalServiceWrapper
 	 * and description.
 	 *
 	 * @param userId the primary key of the structure's creator/owner
-	 * @param structureId the primary key of the structure to be copied
+	 * @param sourceStructureId the primary key of the structure to be copied
 	 * @param nameMap the new structure's locales and localized names
 	 * @param descriptionMap the new structure's locales and localized
 	 descriptions
@@ -173,24 +174,24 @@ public class DDMStructureLocalServiceWrapper
 	 */
 	@Override
 	public DDMStructure copyStructure(
-			long userId, long structureId,
+			long userId, long sourceStructureId,
 			java.util.Map<java.util.Locale, String> nameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ddmStructureLocalService.copyStructure(
-			userId, structureId, nameMap, descriptionMap, serviceContext);
+			userId, sourceStructureId, nameMap, descriptionMap, serviceContext);
 	}
 
 	@Override
 	public DDMStructure copyStructure(
-			long userId, long structureId,
+			long userId, long sourceStructureId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ddmStructureLocalService.copyStructure(
-			userId, structureId, serviceContext);
+			userId, sourceStructureId, serviceContext);
 	}
 
 	/**
@@ -1377,6 +1378,7 @@ public class DDMStructureLocalServiceWrapper
 	@Override
 	public DDMStructure updateStructure(
 			long userId, long structureId, long parentStructureId,
+			String structureKey,
 			java.util.Map<java.util.Locale, String> nameMap,
 			java.util.Map<java.util.Locale, String> descriptionMap,
 			String definition,
@@ -1384,8 +1386,13 @@ public class DDMStructureLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ddmStructureLocalService.updateStructure(
-			userId, structureId, parentStructureId, nameMap, descriptionMap,
-			definition, serviceContext);
+			userId, structureId, parentStructureId, structureKey, nameMap,
+			descriptionMap, definition, serviceContext);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _ddmStructureLocalService.getBasePersistence();
 	}
 
 	@Override

@@ -46,8 +46,9 @@ public class CommerceChannelServiceImpl extends CommerceChannelServiceBaseImpl {
 
 	@Override
 	public CommerceChannel addCommerceChannel(
-			String externalReferenceCode, long siteGroupId, String name,
-			String type, UnicodeProperties typeSettingsUnicodeProperties,
+			String externalReferenceCode, long accountEntryId, long siteGroupId,
+			String name, String type,
+			UnicodeProperties typeSettingsUnicodeProperties,
 			String commerceCurrencyCode, ServiceContext serviceContext)
 		throws PortalException {
 
@@ -59,15 +60,16 @@ public class CommerceChannelServiceImpl extends CommerceChannelServiceBaseImpl {
 			getPermissionChecker(), null, CPActionKeys.ADD_COMMERCE_CHANNEL);
 
 		return commerceChannelLocalService.addCommerceChannel(
-			externalReferenceCode, siteGroupId, name, type,
+			externalReferenceCode, accountEntryId, siteGroupId, name, type,
 			typeSettingsUnicodeProperties, commerceCurrencyCode,
 			serviceContext);
 	}
 
 	@Override
 	public CommerceChannel addOrUpdateCommerceChannel(
-			String externalReferenceCode, long siteGroupId, String name,
-			String type, UnicodeProperties typeSettingsUnicodeProperties,
+			String externalReferenceCode, long accountEntryId, long siteGroupId,
+			String name, String type,
+			UnicodeProperties typeSettingsUnicodeProperties,
 			String commerceCurrencyCode, ServiceContext serviceContext)
 		throws PortalException {
 
@@ -79,8 +81,8 @@ public class CommerceChannelServiceImpl extends CommerceChannelServiceBaseImpl {
 			getPermissionChecker(), null, CPActionKeys.ADD_COMMERCE_CHANNEL);
 
 		return commerceChannelLocalService.addOrUpdateCommerceChannel(
-			getUserId(), externalReferenceCode, siteGroupId, name, type,
-			typeSettingsUnicodeProperties, commerceCurrencyCode,
+			getUserId(), externalReferenceCode, accountEntryId, siteGroupId,
+			name, type, typeSettingsUnicodeProperties, commerceCurrencyCode,
 			serviceContext);
 	}
 
@@ -154,62 +156,10 @@ public class CommerceChannelServiceImpl extends CommerceChannelServiceBaseImpl {
 	}
 
 	@Override
-	public List<CommerceChannel> getCommerceChannels(int start, int end)
-		throws PortalException {
-
-		PortletResourcePermission portletResourcePermission =
-			_commerceChannelModelResourcePermission.
-				getPortletResourcePermission();
-
-		portletResourcePermission.check(
-			getPermissionChecker(), null, CPActionKeys.VIEW_COMMERCE_CHANNELS);
-
-		return commerceChannelLocalService.getCommerceChannels(start, end);
-	}
-
-	@Override
 	public List<CommerceChannel> getCommerceChannels(long companyId)
 		throws PortalException {
 
-		PortletResourcePermission portletResourcePermission =
-			_commerceChannelModelResourcePermission.
-				getPortletResourcePermission();
-
-		portletResourcePermission.check(
-			getPermissionChecker(), null, CPActionKeys.VIEW_COMMERCE_CHANNELS);
-
-		return commerceChannelLocalService.getCommerceChannels(companyId);
-	}
-
-	@Override
-	public List<CommerceChannel> getCommerceChannels(
-			long companyId, String keywords, int start, int end)
-		throws PortalException {
-
-		PortletResourcePermission portletResourcePermission =
-			_commerceChannelModelResourcePermission.
-				getPortletResourcePermission();
-
-		portletResourcePermission.check(
-			getPermissionChecker(), null, CPActionKeys.VIEW_COMMERCE_CHANNELS);
-
-		return commerceChannelLocalService.getCommerceChannels(
-			companyId, keywords, start, end);
-	}
-
-	@Override
-	public int getCommerceChannelsCount(long companyId, String keywords)
-		throws PortalException {
-
-		PortletResourcePermission portletResourcePermission =
-			_commerceChannelModelResourcePermission.
-				getPortletResourcePermission();
-
-		portletResourcePermission.check(
-			getPermissionChecker(), null, CPActionKeys.VIEW_COMMERCE_CHANNELS);
-
-		return commerceChannelLocalService.getCommerceChannelsCount(
-			companyId, keywords);
+		return commerceChannelPersistence.filterFindByCompanyId(companyId);
 	}
 
 	@Override
@@ -222,13 +172,6 @@ public class CommerceChannelServiceImpl extends CommerceChannelServiceBaseImpl {
 			long companyId, String keywords, int start, int end, Sort sort)
 		throws PortalException {
 
-		PortletResourcePermission portletResourcePermission =
-			_commerceChannelModelResourcePermission.
-				getPortletResourcePermission();
-
-		portletResourcePermission.check(
-			getPermissionChecker(), null, CPActionKeys.VIEW_COMMERCE_CHANNELS);
-
 		return commerceChannelLocalService.search(
 			companyId, keywords, start, end, sort);
 	}
@@ -237,20 +180,14 @@ public class CommerceChannelServiceImpl extends CommerceChannelServiceBaseImpl {
 	public int searchCommerceChannelsCount(long companyId, String keywords)
 		throws PortalException {
 
-		PortletResourcePermission portletResourcePermission =
-			_commerceChannelModelResourcePermission.
-				getPortletResourcePermission();
-
-		portletResourcePermission.check(
-			getPermissionChecker(), null, CPActionKeys.VIEW_COMMERCE_CHANNELS);
-
 		return commerceChannelLocalService.searchCommerceChannelsCount(
 			companyId, keywords);
 	}
 
 	@Override
 	public CommerceChannel updateCommerceChannel(
-			long commerceChannelId, long siteGroupId, String name, String type,
+			long commerceChannelId, long accountEntryId, long siteGroupId,
+			String name, String type,
 			UnicodeProperties typeSettingsUnicodeProperties,
 			String commerceCurrencyCode)
 		throws PortalException {
@@ -259,7 +196,7 @@ public class CommerceChannelServiceImpl extends CommerceChannelServiceBaseImpl {
 			getPermissionChecker(), commerceChannelId, ActionKeys.UPDATE);
 
 		return commerceChannelLocalService.updateCommerceChannel(
-			commerceChannelId, siteGroupId, name, type,
+			commerceChannelId, accountEntryId, siteGroupId, name, type,
 			typeSettingsUnicodeProperties, commerceCurrencyCode);
 	}
 

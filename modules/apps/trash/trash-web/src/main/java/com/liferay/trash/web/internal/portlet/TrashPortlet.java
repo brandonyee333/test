@@ -68,6 +68,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"com.liferay.portlet.css-class-wrapper=portlet-trash",
 		"com.liferay.portlet.display-category=category.hidden",
+		"com.liferay.portlet.header-portlet-css=/css/main.css",
 		"com.liferay.portlet.icon=/icons/trash.png",
 		"com.liferay.portlet.preferences-owned-by-group=true",
 		"com.liferay.portlet.private-request-attributes=false",
@@ -82,7 +83,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.security-role-ref=administrator",
 		"javax.portlet.version=3.0"
 	},
-	service = {Portlet.class, TrashPortlet.class}
+	service = Portlet.class
 )
 public class TrashPortlet extends MVCPortlet {
 

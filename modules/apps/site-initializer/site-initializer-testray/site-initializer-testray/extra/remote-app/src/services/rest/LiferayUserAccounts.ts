@@ -12,13 +12,14 @@
  * details.
  */
 
-import yupSchema from '../../schema/yup';
-import Rest from './Rest';
+import Rest from '~/core/Rest';
+import yupSchema from '~/schema/yup';
+
 import {UserAccount} from './types';
 
 type UserForm = typeof yupSchema.userWithPassword.__outputType;
 
-class LiferayUserAccountsRest extends Rest<UserForm, UserAccount> {
+class LiferayUserAccountsImpl extends Rest<UserForm, UserAccount> {
 	constructor() {
 		super({
 			adapter: ({
@@ -39,8 +40,16 @@ class LiferayUserAccountsRest extends Rest<UserForm, UserAccount> {
 			uri: 'user-accounts',
 		});
 	}
+
+	public async getPagePermission() {
+		const response = await this.getAll();
+
+		const actions = response?.actions ?? {};
+
+		return !!(actions as any)['post-user-account'];
+	}
 }
 
-const liferayUserAccountsRest = new LiferayUserAccountsRest();
+const liferayUserAccountsImpl = new LiferayUserAccountsImpl();
 
-export {liferayUserAccountsRest};
+export {liferayUserAccountsImpl};

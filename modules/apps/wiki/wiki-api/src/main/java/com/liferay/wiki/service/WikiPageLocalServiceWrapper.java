@@ -16,6 +16,7 @@ package com.liferay.wiki.service;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.wiki.model.WikiPage;
 
@@ -833,6 +834,14 @@ public class WikiPageLocalServiceWrapper
 
 	@Override
 	public java.util.List<WikiPage> getPages(
+		long groupId, long nodeId, int status, long statusByUserId) {
+
+		return _wikiPageLocalService.getPages(
+			groupId, nodeId, status, statusByUserId);
+	}
+
+	@Override
+	public java.util.List<WikiPage> getPages(
 		long nodeId, String title, boolean head, int start, int end) {
 
 		return _wikiPageLocalService.getPages(nodeId, title, head, start, end);
@@ -1241,6 +1250,11 @@ public class WikiPageLocalServiceWrapper
 		com.liferay.portal.kernel.service.ServiceContext serviceContext) {
 
 		return _wikiPageLocalService.updateWikiPage(wikiPage, serviceContext);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _wikiPageLocalService.getBasePersistence();
 	}
 
 	@Override

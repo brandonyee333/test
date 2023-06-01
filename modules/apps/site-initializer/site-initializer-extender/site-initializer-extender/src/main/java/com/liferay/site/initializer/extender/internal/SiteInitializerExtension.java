@@ -41,7 +41,11 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.layout.importer.LayoutsImporter;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
+import com.liferay.layout.page.template.service.LayoutPageTemplateStructureRelLocalService;
 import com.liferay.layout.util.LayoutCopyHelper;
+import com.liferay.layout.utility.page.service.LayoutUtilityPageEntryLocalService;
+import com.liferay.list.type.service.ListTypeDefinitionLocalService;
+import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.notification.rest.resource.v1_0.NotificationTemplateResource;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectFieldResource;
@@ -76,6 +80,7 @@ import com.liferay.site.navigation.service.SiteNavigationMenuItemLocalService;
 import com.liferay.site.navigation.service.SiteNavigationMenuLocalService;
 import com.liferay.site.navigation.type.SiteNavigationMenuItemTypeRegistry;
 import com.liferay.style.book.zip.processor.StyleBookEntryZipProcessor;
+import com.liferay.template.service.TemplateEntryLocalService;
 
 import javax.servlet.ServletContext;
 
@@ -101,7 +106,7 @@ public class SiteInitializerExtension {
 		DDMStructureLocalService ddmStructureLocalService,
 		DDMTemplateLocalService ddmTemplateLocalService,
 		DefaultDDMStructureHelper defaultDDMStructureHelper,
-		DLURLHelper dlURLHelper,
+		DependencyManager dependencyManager, DLURLHelper dlURLHelper,
 		DocumentFolderResource.Factory documentFolderResourceFactory,
 		DocumentResource.Factory documentResourceFactory,
 		FragmentsImporter fragmentsImporter,
@@ -116,10 +121,15 @@ public class SiteInitializerExtension {
 		LayoutPageTemplateEntryLocalService layoutPageTemplateEntryLocalService,
 		LayoutPageTemplateStructureLocalService
 			layoutPageTemplateStructureLocalService,
+		LayoutPageTemplateStructureRelLocalService
+			layoutPageTemplateStructureRelLocalService,
 		LayoutSetLocalService layoutSetLocalService,
 		LayoutsImporter layoutsImporter,
+		LayoutUtilityPageEntryLocalService layoutUtilityPageEntryLocalService,
+		ListTypeDefinitionLocalService listTypeDefinitionLocalService,
 		ListTypeDefinitionResource listTypeDefinitionResource,
 		ListTypeDefinitionResource.Factory listTypeDefinitionResourceFactory,
+		ListTypeEntryLocalService listTypeEntryLocalService,
 		ListTypeEntryResource listTypeEntryResource,
 		ListTypeEntryResource.Factory listTypeEntryResourceFactory,
 		NotificationTemplateResource.Factory
@@ -150,6 +160,7 @@ public class SiteInitializerExtension {
 		StyleBookEntryZipProcessor styleBookEntryZipProcessor,
 		TaxonomyCategoryResource.Factory taxonomyCategoryResourceFactory,
 		TaxonomyVocabularyResource.Factory taxonomyVocabularyResourceFactory,
+		TemplateEntryLocalService templateEntryLocalService,
 		ThemeLocalService themeLocalService,
 		UserAccountResource.Factory userAccountResourceFactory,
 		UserGroupLocalService userGroupLocalService,
@@ -157,9 +168,9 @@ public class SiteInitializerExtension {
 		WorkflowDefinitionLinkLocalService workflowDefinitionLinkLocalService,
 		WorkflowDefinitionResource.Factory workflowDefinitionResourceFactory) {
 
-		_dependencyManager = new DependencyManager(bundle.getBundleContext());
+		_dependencyManager = dependencyManager;
 
-		_component = _dependencyManager.createComponent();
+		_component = dependencyManager.createComponent();
 
 		BundleSiteInitializer bundleSiteInitializer = new BundleSiteInitializer(
 			accountResourceFactory, accountRoleLocalService,
@@ -174,8 +185,10 @@ public class SiteInitializerExtension {
 			knowledgeBaseFolderResourceFactory, layoutCopyHelper,
 			layoutLocalService, layoutPageTemplateEntryLocalService,
 			layoutsImporter, layoutPageTemplateStructureLocalService,
-			layoutSetLocalService, listTypeDefinitionResource,
-			listTypeDefinitionResourceFactory, listTypeEntryResource,
+			layoutPageTemplateStructureRelLocalService, layoutSetLocalService,
+			layoutUtilityPageEntryLocalService, listTypeDefinitionLocalService,
+			listTypeDefinitionResource, listTypeDefinitionResourceFactory,
+			listTypeEntryLocalService, listTypeEntryResource,
 			listTypeEntryResourceFactory, notificationTemplateResourceFactory,
 			objectActionLocalService, objectDefinitionLocalService,
 			objectDefinitionResourceFactory, objectEntryLocalService,
@@ -190,8 +203,8 @@ public class SiteInitializerExtension {
 			siteNavigationMenuItemTypeRegistry, siteNavigationMenuLocalService,
 			structuredContentFolderResourceFactory, styleBookEntryZipProcessor,
 			taxonomyCategoryResourceFactory, taxonomyVocabularyResourceFactory,
-			themeLocalService, userAccountResourceFactory,
-			userGroupLocalService, userLocalService,
+			templateEntryLocalService, themeLocalService,
+			userAccountResourceFactory, userGroupLocalService, userLocalService,
 			workflowDefinitionLinkLocalService,
 			workflowDefinitionResourceFactory);
 

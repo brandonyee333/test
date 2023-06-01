@@ -14,10 +14,16 @@
 
 import {openToast, postForm, sub} from 'frontend-js-web';
 
+import openStructureKeyChangesModal from './modals/openStructureKeyChangesModal';
+
 const isElementInnerSelector = (element, ...selectors) =>
 	!selectors.some((selector) => element.closest(selector));
 
-export default function DataEngineLayoutBuilderHandler({namespace}) {
+export default function DataEngineLayoutBuilderHandler({
+	namespace,
+	originalStructureKey,
+	showStructureKeyChangesWarning,
+}) {
 	const form = document.getElementById(`${namespace}fm`);
 
 	// Clean the input if the language is not considered translated when
@@ -87,13 +93,45 @@ export default function DataEngineLayoutBuilderHandler({namespace}) {
 					Liferay.Language.get(
 						'please-enter-a-valid-title-for-the-default-language-x'
 					),
-					defaultLanguageId.replace('_', '-')
+					defaultLanguageId.replaceAll('_', '-')
 				),
 				title: Liferay.Language.get('error'),
 				type: 'danger',
 			});
 
 			nameInput.focus();
+
+			return;
+		}
+
+		const structureKeyInput = document.getElementById(
+			`${namespace}structureKey`
+		);
+
+		if (
+			showStructureKeyChangesWarning &&
+			structureKeyInput.value !== originalStructureKey
+		) {
+			openStructureKeyChangesModal({
+				onSave: () => {
+					clearNameInputIfNeeded(defaultLanguageId);
+
+					postForm(form, {
+						data: {
+							dataDefinition: JSON.stringify({
+								...dataDefinition.serialize(),
+								description,
+								name,
+							}),
+							dataLayout: JSON.stringify({
+								...dataLayout.serialize(),
+								description,
+								name,
+							}),
+						},
+					});
+				},
+			});
 
 			return;
 		}

@@ -255,17 +255,18 @@ public class CPDefinitionLocalServiceUtil {
 			userId, cpDefinitionId, groupId, serviceContext);
 	}
 
-	public static CPDefinition copyCPDefinition(long cpDefinitionId)
+	public static CPDefinition copyCPDefinition(long sourceCPDefinitionId)
 		throws PortalException {
 
-		return getService().copyCPDefinition(cpDefinitionId);
+		return getService().copyCPDefinition(sourceCPDefinitionId);
 	}
 
 	public static CPDefinition copyCPDefinition(
-			long cpDefinitionId, long groupId, int status)
+			long sourceCPDefinitionId, long groupId, int status)
 		throws PortalException {
 
-		return getService().copyCPDefinition(cpDefinitionId, groupId, status);
+		return getService().copyCPDefinition(
+			sourceCPDefinitionId, groupId, status);
 	}
 
 	/**
@@ -717,6 +718,13 @@ public class CPDefinitionLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
+	public static String getLayoutPageTemplateEntryUuid(
+		long groupId, long cpDefinitionId) {
+
+		return getService().getLayoutPageTemplateEntryUuid(
+			groupId, cpDefinitionId);
+	}
+
 	public static String getLayoutUuid(long groupId, long cpDefinitionId) {
 		return getService().getLayoutUuid(groupId, cpDefinitionId);
 	}
@@ -1036,6 +1044,10 @@ public class CPDefinitionLocalServiceUtil {
 
 	public static CPDefinitionLocalService getService() {
 		return _service;
+	}
+
+	public static void setService(CPDefinitionLocalService service) {
+		_service = service;
 	}
 
 	private static volatile CPDefinitionLocalService _service;

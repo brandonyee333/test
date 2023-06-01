@@ -46,7 +46,6 @@ import com.liferay.portal.tools.service.builder.test.service.persistence.ERCGrou
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
@@ -1981,7 +1980,8 @@ public class ERCGroupEntryPersistenceImpl
 				if (ercERCGroupEntry != null) {
 					throw new DuplicateERCGroupEntryExternalReferenceCodeException(
 						"Duplicate erc group entry with external reference code " +
-							ercGroupEntry.getExternalReferenceCode());
+							ercGroupEntry.getExternalReferenceCode() +
+								" and group " + ercGroupEntry.getGroupId());
 				}
 			}
 			else {
@@ -1991,7 +1991,8 @@ public class ERCGroupEntryPersistenceImpl
 
 					throw new DuplicateERCGroupEntryExternalReferenceCodeException(
 						"Duplicate erc group entry with external reference code " +
-							ercGroupEntry.getExternalReferenceCode());
+							ercGroupEntry.getExternalReferenceCode() +
+								" and group " + ercGroupEntry.getGroupId());
 				}
 			}
 		}
@@ -2360,29 +2361,13 @@ public class ERCGroupEntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "groupId"}, false);
 
-		_setERCGroupEntryUtilPersistence(this);
+		ERCGroupEntryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setERCGroupEntryUtilPersistence(null);
+		ERCGroupEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(ERCGroupEntryImpl.class.getName());
-	}
-
-	private void _setERCGroupEntryUtilPersistence(
-		ERCGroupEntryPersistence ercGroupEntryPersistence) {
-
-		try {
-			Field field = ERCGroupEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, ercGroupEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

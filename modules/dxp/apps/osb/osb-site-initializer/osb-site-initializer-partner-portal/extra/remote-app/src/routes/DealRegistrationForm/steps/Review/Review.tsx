@@ -24,7 +24,9 @@ const Review = ({
 	onCancel,
 	onPrevious,
 }: PRMFormikPageProps & DealRegistrationStepProps) => {
-	const {isSubmitting, values} = useFormikContext<DealRegistration>();
+	const {isSubmitting, status: submitted, values} = useFormikContext<
+		DealRegistration
+	>();
 
 	return (
 		<>
@@ -238,6 +240,7 @@ const Review = ({
 					<div className="d-flex justify-content-between mr-auto">
 						<Button
 							className="mr-4"
+							disabled={submitted || isSubmitting}
 							displayType={null}
 							onClick={() => onPrevious?.(StepType.GENERAL)}
 						>
@@ -248,6 +251,7 @@ const Review = ({
 					<div className="d-flex justify-content-between px-2 px-md-0">
 						<Button
 							className="mr-4"
+							disabled={submitted || isSubmitting}
 							displayType="secondary"
 							onClick={onCancel}
 						>
@@ -256,7 +260,7 @@ const Review = ({
 
 						<Button
 							className="inline-item inline-item-after"
-							disabled={isSubmitting}
+							disabled={submitted || isSubmitting}
 							type="submit"
 						>
 							Proceed

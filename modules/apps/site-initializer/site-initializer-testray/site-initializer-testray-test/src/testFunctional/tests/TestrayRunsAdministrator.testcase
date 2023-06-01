@@ -1,12 +1,24 @@
 @component-name = "portal-solutions"
 definition {
 
-	property custom.properties = "feature.flag.LPS-163118=true";
+	property custom.properties = "feature.flag.LPS-163118=true${line.separator}feature.flag.LPS-154672=true";
 	property osgi.modules.includes = "site-initializer-testray";
 	property portal.release = "false";
 	property portal.upstream = "true";
 	property release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS = "true";
 	property testray.main.component.name = "Site Initializer Testray";
+
+	var buildName = "Build 1";
+	var caseName = "Case 1";
+	var caseType = "Case Type 1";
+	var componentName = "Component 1";
+	var environmentFactorsName = "Environment Factors 1";
+	var productVersion = "1.2";
+	var projectName = "Project 1";
+	var runName = "Run 1";
+	var routineName = "Routine 1";
+	var teamName = "Team 1";
+	var testSiteName = "Testray 2";
 
 	setUp {
 		task ("Login and create a Testray Site") {
@@ -14,239 +26,191 @@ definition {
 
 			User.firstLoginPG();
 
-			Testray.addTestraySite();
-
-			Refresh();
+			Testray.addTestraySite(siteName = ${testSiteName});
 		}
 
-		task ("Go to Categories on Manage Sidebar and Add two Category") {
-			ApplicationsMenu.gotoSite(site = "Testray 2");
+		task ("Given that a Testray project, team, component, routine, case type, case, environment factors, product version and build are created via API") {
+			JSONTestray.addProject(
+				projectDescription = "Project Description 1",
+				projectName = ${projectName});
 
+			JSONTestray.addTeam(
+				projectName = ${projectName},
+				teamName = ${teamName});
+
+			JSONTestray.addComponent(
+				componentName = ${componentName},
+				projectName = ${projectName},
+				teamName = ${teamName});
+
+			JSONTestray.addRoutine(
+				projectName = ${projectName},
+				routineName = ${routineName});
+
+			JSONTestray.addCaseType(caseType = ${caseType});
+
+			JSONTestray.addCases(
+				caseName = ${caseName},
+				caseType = ${caseType},
+				componentName = ${componentName},
+				projectName = ${projectName});
+
+			JSONTestray.addEnvironmentFactors(environmentFactorsName = ${environmentFactorsName});
+
+			JSONTestray.addProductVersion(
+				productVersion = ${productVersion},
+				projectName = ${projectName});
+
+			JSONTestray.addBuild(
+				buildName = ${buildName},
+				productVersion = ${productVersion},
+				projectName = ${projectName},
+				routineName = ${routineName});
+		}
+
+		task ("Then I go to Site Testray 2") {
+			ApplicationsMenu.gotoSite(site = ${testSiteName});
+
+			Testray.changePagination(
+				numberItems = 20,
+				valuePagination = 150);
+		}
+	}
+
+	tearDown {
+		JSONTestrayAPI.deleteObjectViaAPI(
+			object = "casetypes",
+			objectName = ${caseType});
+
+		JSONTestrayAPI.deleteObjectViaAPI(
+			object = "factorcategories",
+			objectName = "Category 1");
+
+		JSONTestrayAPI.deleteProject(projectName = ${projectName});
+
+		Testray.testrayApisTearDown();
+
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if (${testPortalInstance} == "true") {
+			PortalInstances.tearDownCP();
+		}
+	}
+
+	@description = "Story ID: LPS-162434 | Test Summary: Verify if as an Administrator I should be able to add and delete a Run"
+	@priority = 5
+	test AdminCanAddAndDeleteRun {
+		property test.name.skip.portal.instance = "TestrayRunsAdministrator#AdminCanAddAndDeleteRun";
+
+		task ("Given that I add a Testray run via API") {
+			JSONTestray.addRun(
+				buildName = ${buildName},
+				runName = ${runName});
+		}
+
+		task ("And I go to the run manage page") {
+			Testray.goToProjectPage(projectName = ${projectName});
+
+			TestrayRoutines.goToRoutine(routineName = ${routineName});
+
+			TestrayBuild.goToBuild(buildName = ${buildName});
+
+			Testray.projectTabNavigator(navTabName = "Runs");
+		}
+
+		task ("When I delete a run") {
+			TestrayRun.deleteRun(runName = 00);
+		}
+
+		task ("Then I should be assert to say that the run no longer appears in the list") {
+			Testray.assertItemNotPresent(text = 00);
+		}
+	}
+
+	@description = "Story ID: LPS-162434 | Test Summary: Verify if as an Administrator I should be able to edit a Run"
+	@priority = 5
+	test AdminCanEditRun {
+		property test.name.skip.portal.instance = "TestrayRunsAdministrator#AdminCanEditRun";
+
+		task ("Given that a Testray categories, options and build is created") {
 			TestrayLayout.clickManageOnSidebar();
 
 			TestrayManage.selectOptionsManage(itemValue = "Categories");
 
-			TestrayManage.addNewCategory(category = "Environments_1 Category A");
+			TestrayManage.addNewCategory(category = "Category 2");
 
-			Testray.checkSuccessAlertAppearsAndDisappears();
-
-			TestrayManage.addNewCategory(category = "Environments_1 Category B");
-
-			Testray.checkSuccessAlertAppearsAndDisappears();
-		}
-
-		task ("Go to Options on Manage Sidebar and Add New Option") {
 			TestrayLayout.clickManageOnSidebar();
 
 			TestrayManage.selectOptionsManage(itemValue = "Options");
 
 			TestrayManage.createNewOption(
-				category = "Environments_1 Category A",
-				option = "Option 1");
-
-			TestrayManage.createNewOption(
-				category = "Environments_1 Category A",
+				category = "Category 1",
 				option = "Option 2");
 
 			TestrayManage.createNewOption(
-				category = "Environments_1 Category B",
+				category = "Category 2",
 				option = "Option 3");
 
 			TestrayManage.closeModalInOptions();
-		}
 
-		task ("Create a project") {
-			Testray.changePagination(
-				numberItems = "20",
-				valuePagination = "150");
+			Testray.goToProjectPage(projectName = ${projectName});
 
-			Testray.createProjectTestray(
-				description = "Projects_1 Description",
-				key_name = "Projects_1 Project");
+			TestrayRoutines.goToRoutine(routineName = ${routineName});
 
-			Testray.changePagination(
-				numberItems = "20",
-				valuePagination = "150");
-		}
+			TestrayRoutines.selectDefaultEnvironmentFactors(
+				categoryField = "Category 1",
+				categoryField2 = "Category 2",
+				listCategory = "Category 2",
+				listOption = "Option 1",
+				listOption2 = "Option 3",
+				routineName = ${routineName});
 
-		task ("Go to created project and add a new team") {
-			TestrayContextMenu.clickContextMenuProjects(name = "Projects_1 Project");
-
-			TestrayContextMenu.selectItemFromProjectsContextMenu(item = "Manage Teams");
-
-			TestrayManage.createTeam(teamName = "Components_1 Team");
-
-			TestrayManage.closeModalInOptions();
-		}
-
-		task ("Go to created project and add a component") {
-			TestrayContextMenu.clickContextMenuProjects(name = "Projects_1 Project");
-
-			TestrayContextMenu.selectItemFromProjectsContextMenu(item = "Manage Components");
-
-			Testray.addNewComponent(
-				componentName = "Components_1 Project 1",
-				teamName = "Components_1 Team");
-
-			TestrayManage.closeModalInOptions();
-		}
-
-		task ("Create a new Routine") {
-			Testray.goToProjectPage(projectName = "Projects_1 Project");
-
-			TestrayRoutines.createRoutine(key_name = "Routines_1 Routine");
-		}
-
-		task ("Go to tab cases and Add a new Case") {
-			Testray.projectTabNavigator(navTabName = "Cases");
-
-			TestrayCases.typeCasesField(
-				caseName = "Cases_1 Case",
-				caseTypeId = "Manual Test",
-				componentId = "Components_1 Project 1",
-				description = "Cases_1 Case Description",
-				duration = "40",
-				priority = "5",
-				steps = "Auto Test Steps");
-		}
-
-		task ("Go to tab routine and add Environmental Factors and create a build") {
-			Testray.projectTabNavigator(navTabName = "Routine");
-
-			TestrayContextMenu.clickContextMenuProjects(name = "Routines_1 Routine");
-
-			TestrayContextMenu.selectItemFromProjectsContextMenu(item = "Select Default Environment Factors");
-
-			TestrayBuild.selectDefaultEnvironmentFactors(
-				label = "Environments_1 Category A",
-				label1 = "Environments_1 Category B",
-				listCategory = "Environments_1 Category A,Environments_1 Category B",
-				listOption = "Option 2",
-				listOption1 = "Option 3");
-
-			TestrayRoutines.goToRoutine(routineName = "Routines_1 Routine");
-
-			TestrayBuild.createBuild(
-				addVersion = "1.2",
-				caseName = "Cases_1 Case",
-				description = "Builds_1 Project Description",
+			TestrayBuild.addBuildViaUI(
+				buildFieldName = "Build 2",
+				caseName = ${caseName},
 				dropdownItem = "New Build",
-				fieldName = "Builds_1 Project",
-				gitHash = "12345",
-				productVersion = "1.2",
-				routine = "Routines_1 Routine");
+				productVersionOption = ${productVersion},
+				routine = ${routineName});
+
+			TestrayBuild.goToBuild(buildName = "Build 2");
 		}
 
-		task ("Go to Testray 2 and change the pagination") {
-			ApplicationsMenu.gotoSite(site = "Testray 2");
-
-			Testray.changePagination(
-				numberItems = "20",
-				valuePagination = "150");
-		}
-	}
-
-	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
-
-		TestrayRoutines.deleteRoutineSetup();
-
-		TestrayManage.deleteAllCategories();
-
-		Testray.deleteAllProjects();
-
-		Testray.tearDownCP();
-
-		ObjectAdmin.deleteAllCustomObjectsViaAPI();
-
-		if ("${testPortalInstance}" == "true") {
-			PortalInstances.tearDownCP();
-		}
-	}
-
-	@description = "This is a test for LPS-160590 - Verify if as an Administrator I should be able to add and delete a Run"
-	@priority = "5"
-	test AdminCanAddAndDeleteRun {
-		task ("Given that the user goes into build") {
-			Testray.goToProjectPage(projectName = "Projects_1 Project");
-
-			TestrayRoutines.goToRoutine(routineName = "Routines_1 Routine");
-
-			TestrayBuild.goToBuild(buildName = "Builds_1 Project");
-		}
-
-		task ("And create run that should appear on the list") {
+		task ("And I go to the run page ") {
 			Testray.projectTabNavigator(navTabName = "Runs");
-
-			TestrayRun.addRun(
-				label = "Environments_1 Category A",
-				label1 = "Environments_1 Category B",
-				listOption = "Option 1",
-				listOption1 = "Option 3");
-
-			Testray.assertItemName(key_name = "01");
-
-			Testray.checkSuccessAlertAppearsAndDisappears();
-		}
-
-		task ("Then run should not appear on the list") {
-			TestrayRun.deleteRun(runName = "01");
-
-			Testray.assertItemNotPresent(key_name = "01");
-		}
-	}
-
-	@description = "This is a test for LPS-163959 - Verify if as an Administrator I should be able to edit a Run"
-	@priority = "5"
-	test AdminCanEditRun {
-		task ("Given that the user goes into build") {
-			Testray.goToProjectPage(projectName = "Projects_1 Project");
-
-			TestrayRoutines.goToRoutine(routineName = "Routines_1 Routine");
-
-			TestrayBuild.goToBuild(buildName = "Builds_1 Project");
-		}
-
-		task ("And edit run") {
-			Testray.projectTabNavigator(navTabName = "Runs");
-
-			TestrayRun.addRun(
-				label = "Environments_1 Category A",
-				label1 = "Environments_1 Category B",
-				listOption = "Option 1",
-				listOption1 = "Option 3");
-
-			Testray.assertItemName(key_name = "01");
 
 			TestrayRun.assertValueRun(valueRun = "Option 1");
-
-			Testray.checkSuccessAlertAppearsAndDisappears();
 		}
 
-		task ("Then run should appear on the list edited") {
+		task ("When I edit a run") {
 			TestrayRun.editRun(
-				label = "Environments_1 Category A",
-				label1 = "Environments_1 Category B",
+				label = "Category 1",
 				listOption = "Option 2",
-				listOption1 = "Option 3",
-				runName = "01");
+				runName = 01);
+		}
 
+		task ("Then I should be assert to say that the option has been edited") {
 			TestrayRun.assertValueRun(valueRun = "Option 2");
+		}
+
+		task ("Delete object") {
+			JSONTestrayAPI.deleteObjectViaAPI(
+				object = "factorcategories",
+				objectName = "Category 2");
 		}
 	}
 
-	@description = "This is a test for LPS-160591 - Verify if as an Administrator I should not be able to add a duplicate run"
-	@ignore = "Test Stub"
-	@priority = "5"
+	@description = "Story ID: LPS-162434 | Test Summary: Verify if as an Administrator I should not be able to add a duplicate run"
+	@ignore = "true"
+	@priority = 5
 	test AdminCanNotAddDuplicateRun {
 
 		// TODO LPS-160591 AdminCanNotAddDuplicateRun pending implementation
 
 	}
 
-	@description = "This is a test for LPS-160592 - Verify if as an administrator I should not be allowed to add runs with identical environments"
-	@ignore = "Test Stub"
-	@priority = "4"
+	@description = "Story ID: LPS-162434 | Test Summary: Verify if as an administrator I should not be allowed to add runs with identical environments"
+	@ignore = "true"
+	@priority = 4
 	test AdminCanNotAddRunWithIdenticalEnvironments {
 
 		// TODO LPS-160592 AdminCanNotAddRunWithIdenticalEnvironments pending implementation

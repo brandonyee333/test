@@ -91,6 +91,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>PRODUCT_DETAIL_UUID</td>
+	<td>//*[contains(text(),'${uuid}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PRODUCT_CARD_COMPARE_CHECKBOX_DISABLED</td>
 	<td>//p[@title='${key_productName}']//../..//input[contains(@aria-label,'Compare') and @disabled]</td>
 	<td></td>
@@ -341,6 +346,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>OVERRIDE_DEFAULT_DISPLAY_PAGE_SIDE_PANEL_CHOOSE_BUTTON</td>
+	<td>//*[contains(.,'${key_tabName}')]//..//button[contains(.,'Choose')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CURRENCY_SELECT</td>
 	<td>//div[label[contains(.,'Store Currency')]]/select</td>
 	<td></td>
@@ -348,6 +358,11 @@
 <tr>
 	<td>CURRENCY_COLUMN_VALUE</td>
 	<td>//td[contains(@class,'lfr-name-column')]//*[text()='${key_entryName}']/../..//td[contains(@class,'${key_columnClassName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>INPUT_FIELD_READ_ONLY</td>
+	<td>//div[label[contains(.,'${key_fieldName}')]]//input[@readonly='readonly']</td>
 	<td></td>
 </tr>
 <tr>
@@ -556,6 +571,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ACCORDION_COLLAPSED_CONTAINS</td>
+	<td>//fieldset[contains(@id,'${key_accordionTitle}')]/a[contains(@class,'collapsed')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ROLE_SELECT_BUTTON</td>
 	<td>//div/h3[contains(.,'${key_roleType}')]//..//button</td>
 	<td></td>
@@ -607,12 +627,37 @@
 </tr>
 <tr>
 	<td>CHANNELS_GENERAL_TAB_EDITS</td>
-	<td>//div[contains(text(),'${key_entryName}')]/following-sibling::div[contains(@class,'item-actions')]//a</td>
+	<td>//div[contains(text(),'${key_entryName}')]/following-sibling::div[contains(@class,'item-actions')]//*</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGINATION_ITEMS_PER_PAGE_SELECT</td>
+	<td>//div[contains(@id,'${key_id}')]//../button[contains(@class,'dropdown-toggle btn btn-unstyled')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>PAGINATION_RESULTS</td>
 	<td>//div[@class='pagination-results']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGINATION_RESULTS_BY_TABLE</td>
+	<td>//div[contains(@id,'${key_id}')]//../div[@class='pagination-results']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGINATION_NEXT_PAGES_BY_TABLE</td>
+	<td>//div[contains(@id,'${key_id}')]//a[contains(@class, 'page-link')][*[name()='svg'][contains(@class,'lexicon-icon-angle-right')]]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGINATION_PREVIOUS_PAGES_BY_TABLE</td>
+	<td>//div[contains(@id,'${key_id}')]//a[contains(@class, 'page-link')][*[name()='svg'][contains(@class,'lexicon-icon-angle-left')]]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGINATION_EXACT_PAGE_BY_TABLE</td>
+	<td>//div[contains(@id,'${key_id}')]//ul[contains(@class,'pagination')]//li[contains(@class,'page-item')]//*[contains(@class,'page-link')][normalize-space(text())='${key_pageNumber}']</td>
 	<td></td>
 </tr>
 <tr>
@@ -671,6 +716,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ELIGIBILITY_RELATION_FIELD_CLEAR_BUTTON</td>
+	<td>//div[h4[contains(.,'${key_eligibilityCardTitle}')]]//input[@type='text']/..//span[contains(@class,'input-group-inset-item')]//button[contains(@class,'btn')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>TABLE_ENTRY_ROW_NUMBER</td>
 	<td>//div[@class='dnd-tbody']/div[contains(@class,'dnd-tr')][${key_rowNumber}]//a</td>
 	<td></td>
@@ -678,6 +728,16 @@
 <tr>
 	<td>TABLE_ENTRY_ROW_FIELD_GENERIC</td>
 	<td>//div[@class= 'dnd-tr'][${key_rowIndex}]//div[@class='dnd-td'][${key_columnIndex}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TABLE_ENTRY_LABEL_FIELD</td>
+	<td>//*[contains(@class, 'table-list-title')]/a[text()='${key_entryTitle}']/../../../div[${key_index}]//span[text()='${key_label}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TABLE_ENTRY_FIELD_VALUE</td>
+	<td>//*[contains(@class, 'table-list-title')]/a[text()='${key_entryTitle}']/../../../div[${key_index}][text()='${key_value}']</td>
 	<td></td>
 </tr>
 <tr>
@@ -706,8 +766,13 @@
 	<td></td>
 </tr>
 <tr>
+	<td>TABLE_ENTRY_DELETE_BUTTON</td>
+	<td>//h4[contains(.,'${key_table}')]//..//div/a[contains(.,'${key_entryName}')]//..//..//../div/*[contains(.,'Delete')] | //div[contains(.,'${key_table}')]//div[@class='dnd-tr'][contains(.,'${key_entryName}')]//*[contains(text(),'Delete')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>TABLE_ENTRY_EDIT_BUTTON</td>
-	<td>//h4[contains(.,'${key_table}')]//..//div/a[contains(.,'${key_entryName}')]//..//..//../div/a[contains(.,'Edit')] | //div[contains(.,'${key_table}')]//div[@class='dnd-tr'][contains(.,'${key_entryName}')]//a[contains(text(),'Edit')]</td>
+	<td>//h4[contains(.,'${key_table}')]//..//div/a[contains(.,'${key_entryName}')]//..//..//../div/*[contains(.,'Edit')] | //div[contains(.,'${key_table}')]//div[@class='dnd-tr'][contains(.,'${key_entryName}')]//*[contains(text(),'Edit')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -885,6 +950,11 @@
 	<td>//div[@class='side-panel-iframe-title']//h3</td>
 	<td></td>
 </tr>
+<tr>
+	<td>SPECIFIC_SIDE_PANEL_CLOSE_BUTTON</td>
+	<td>//div[contains(@class,'side-panel-iframe-title')][normalize-space()='${key_frameTitle}']/..//button[contains(@class,'side-panel-iframe-close')]</td>
+	<td></td>
+</tr>
 
 <!--PRICE-->
 
@@ -1014,6 +1084,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>PRODUCT_DETAIL_CARD_HEADER</td>
+	<td>//div[contains(@class,'card d-flex')]//h4[contains(.,'${key_cardName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PRODUCT_FULL_DESCRIPTION</td>
 	<td>//div/label[@class='control-label' and contains(.,'${key_customFieldName}')]/..//p</td>
 	<td></td>
@@ -1041,6 +1116,11 @@
 <tr>
 	<td>SUBSCRIPTION_FIELD_LABEL</td>
 	<td>//h4[contains(text(), '${key_subscriptionName}')]/..//label[contains(.,'${key_subscriptionFieldLabel}')]/..//select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SUBSCRIPTION_FIELD_LABEL_N</td>
+	<td>xpath=(//h4[contains(text(), '${key_subscriptionName}')]/..//label[contains(.,'${key_subscriptionFieldLabel}')]/..//select)[${key_indexNumber}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -1192,6 +1272,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>VALUE_PRODUCT_STATUS</td>
+	<td>//a[contains(text(),'${key_productName}')]/../../..//div[contains(@class,'dnd-td') and (text()='${key_productRelation}')]/..//*[contains(text(),'${key_productStatus}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ENTRY_SUBSCRIPTIONS</td>
 	<td>//h4[contains(text(),'${key_entryName}')]</td>
 	<td></td>
@@ -1257,6 +1342,50 @@
 	<td>//h4[contains(.,"${key_name}")]//span[contains(@id,'toggle-switch')]//..//..//..//div[contains(@class,'collapse show')]</td>
 	<td></td>
 </tr>
+
+<!--SITEMAP-->
+
+<tr>
+	<td>CATEGORY_SITEMAP_URL</td>
+	<td>//*[text()='${key_basePortalURL}/web/minium/g/${key_categoryName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CATEGORY_SITEMAP_URL_HREF_HREFLANG</td>
+	<td>//*[text()='${key_basePortalURL}/web/minium/g/${key_categoryURLName}']/following-sibling::*[@href = '${key_basePortalURL}/web/minium/g/${key_categoryName}'][@hreflang='${key_categoryNameLang}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CATEGORY_LANGUAGE_SITEMAP_URL</td>
+	<td>//*[text()='${key_basePortalURL}/${key_language}/web/minium/g/${key_categoryName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CATEGORY_LANGUAGE_SITEMAP_URL_HREF_HREFLANG</td>
+	<td>//*[text()='${key_basePortalURL}/${key_language}/web/minium/g/${key_categoryURLName}']/following-sibling::*[@href = '${key_basePortalURL}/${key_language}/web/minium/g/${key_categoryName}'][@hreflang='${key_categoryNameLang}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRODUCT_LANGUAGE_DETAIL_SITEMAP_URL</td>
+	<td>//*[text()='${key_basePortalURL}/${key_language}/web/minium/p/${key_productName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRODUCT_LANGUAGE_DETAIL_SITEMAP_URL_HREF_HREFLANG</td>
+	<td>//*[text()='${key_basePortalURL}/${key_language}/web/minium/p/${key_productURLName}']/following-sibling::*[@href = '${key_basePortalURL}/${key_language}/web/minium/p/${key_productName}'][@hreflang='${key_productNameLang}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRODUCT_DETAIL_SITEMAP_URL</td>
+	<td>//*[text()='${key_basePortalURL}/web/minium/p/${key_productName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRODUCT_DETAIL_SITEMAP_URL_HREF_HREFLANG</td>
+	<td>//*[text()='${key_basePortalURL}/web/minium/p/${key_productURLName}']/following-sibling::*[@href = '${key_basePortalURL}/web/minium/p/${key_productName}'][@hreflang='${key_productNameLang}']</td>
+	<td></td>
+</tr>
+
 </tbody>
 </table>
 </body>

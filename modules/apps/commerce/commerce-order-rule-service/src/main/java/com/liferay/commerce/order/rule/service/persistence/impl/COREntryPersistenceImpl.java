@@ -53,7 +53,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
@@ -7541,7 +7540,8 @@ public class COREntryPersistenceImpl
 				if (ercCOREntry != null) {
 					throw new DuplicateCOREntryExternalReferenceCodeException(
 						"Duplicate cor entry with external reference code " +
-							corEntry.getExternalReferenceCode());
+							corEntry.getExternalReferenceCode() +
+								" and company " + corEntry.getCompanyId());
 				}
 			}
 			else {
@@ -7550,7 +7550,8 @@ public class COREntryPersistenceImpl
 
 					throw new DuplicateCOREntryExternalReferenceCodeException(
 						"Duplicate cor entry with external reference code " +
-							corEntry.getExternalReferenceCode());
+							corEntry.getExternalReferenceCode() +
+								" and company " + corEntry.getCompanyId());
 				}
 			}
 		}
@@ -8010,29 +8011,14 @@ public class COREntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setCOREntryUtilPersistence(this);
+		COREntryUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setCOREntryUtilPersistence(null);
+		COREntryUtil.setPersistence(null);
 
 		entityCache.removeCache(COREntryImpl.class.getName());
-	}
-
-	private void _setCOREntryUtilPersistence(
-		COREntryPersistence corEntryPersistence) {
-
-		try {
-			Field field = COREntryUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, corEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

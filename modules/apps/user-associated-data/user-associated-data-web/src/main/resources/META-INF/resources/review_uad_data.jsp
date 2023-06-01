@@ -167,7 +167,7 @@ renderResponse.setTitle(StringBundler.concat(selectedUser.getFullName(), " - ", 
 												disabled="<%= count == 0 %>"
 												label="<%= StringUtil.appendParentheticalSuffix(uadDisplay.getTypeName(locale), (int)count) %>"
 												name="uadRegistryKey"
-												value="<%= uadDisplay.getTypeClass().getName() %>"
+												value="<%= uadDisplay.getTypeKey() %>"
 											/>
 
 										<%
@@ -204,8 +204,8 @@ renderResponse.setTitle(StringBundler.concat(selectedUser.getFullName(), " - ", 
 				<clay:sheet-section>
 					<c:choose>
 						<c:when test="<%= totalReviewableUADEntitiesCount == 0 %>">
-							<liferay-ui:empty-result-message
-								message="all-data-that-requires-review-has-been-anonymized"
+							<liferay-frontend:empty-result-message
+								title='<%= LanguageUtil.get(resourceBundle, "all-data-that-requires-review-has-been-anonymized") %>'
 							/>
 						</c:when>
 						<c:otherwise>

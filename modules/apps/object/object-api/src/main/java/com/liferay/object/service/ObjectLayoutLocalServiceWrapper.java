@@ -15,6 +15,7 @@
 package com.liferay.object.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 /**
  * Provides a wrapper for {@link ObjectLayoutLocalService}.
@@ -250,6 +251,14 @@ public class ObjectLayoutLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.object.model.ObjectLayout fetchDefaultObjectLayout(
+		long objectDefinitionId) {
+
+		return _objectLayoutLocalService.fetchDefaultObjectLayout(
+			objectDefinitionId);
+	}
+
+	@Override
 	public com.liferay.object.model.ObjectLayout fetchObjectLayout(
 		long objectLayoutId) {
 
@@ -433,6 +442,11 @@ public class ObjectLayoutLocalServiceWrapper
 		com.liferay.object.model.ObjectLayout objectLayout) {
 
 		return _objectLayoutLocalService.updateObjectLayout(objectLayout);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _objectLayoutLocalService.getBasePersistence();
 	}
 
 	@Override

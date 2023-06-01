@@ -22,12 +22,14 @@ import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.info.item.InfoItemFormVariation;
 import com.liferay.info.item.provider.InfoItemFormVariationsProvider;
 import com.liferay.info.localized.InfoLocalizedValue;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 
 import java.util.ArrayList;
@@ -36,9 +38,6 @@ import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Adolfo Pérez
@@ -63,6 +62,9 @@ public class FileEntryInfoItemFormVariationsProvider
 		return new InfoItemFormVariation(
 			groupId, String.valueOf(dlFileEntryType.getFileEntryTypeId()),
 			InfoLocalizedValue.<String>builder(
+			).defaultLocale(
+				LocaleUtil.fromLanguageId(
+					dlFileEntryType.getDefaultLanguageId())
 			).values(
 				dlFileEntryType.getNameMap()
 			).build());
@@ -94,15 +96,17 @@ public class FileEntryInfoItemFormVariationsProvider
 
 		infoItemFormVariations.add(_getBasicDocumentInfoItemFormVariation());
 
-		List<DLFileEntryType> dlFileEntryTypes =
-			_dlFileEntryTypeLocalService.getFileEntryTypes(groupIds);
+		for (DLFileEntryType dlFileEntryType :
+				_dlFileEntryTypeLocalService.getFileEntryTypes(groupIds)) {
 
-		for (DLFileEntryType dlFileEntryType : dlFileEntryTypes) {
 			infoItemFormVariations.add(
 				new InfoItemFormVariation(
 					dlFileEntryType.getGroupId(),
 					String.valueOf(dlFileEntryType.getFileEntryTypeId()),
 					InfoLocalizedValue.<String>builder(
+					).defaultLocale(
+						LocaleUtil.fromLanguageId(
+							dlFileEntryType.getDefaultLanguageId())
 					).values(
 						dlFileEntryType.getNameMap()
 					).build()));
@@ -127,7 +131,8 @@ public class FileEntryInfoItemFormVariationsProvider
 	private long[] _getCurrentAndAncestorSiteGroupIds(long groupId)
 		throws PortalException {
 
-		DepotEntryLocalService depotEntryLocalService = _depotEntryLocalService;
+		DepotEntryLocalService depotEntryLocalService =
+			_depotEntryLocalServiceSnapshot.get();
 
 		if (depotEntryLocalService == null) {
 			return _portal.getCurrentAndAncestorSiteGroupIds(groupId);
@@ -141,12 +146,10 @@ public class FileEntryInfoItemFormVariationsProvider
 				DepotEntry::getGroupId));
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	private volatile DepotEntryLocalService _depotEntryLocalService;
+	private static final Snapshot<DepotEntryLocalService>
+		_depotEntryLocalServiceSnapshot = new Snapshot<>(
+			FileEntryInfoItemFormVariationsProvider.class,
+			DepotEntryLocalService.class, null, true);
 
 	@Reference
 	private DLFileEntryTypeLocalService _dlFileEntryTypeLocalService;

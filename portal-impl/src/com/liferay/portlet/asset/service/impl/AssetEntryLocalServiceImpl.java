@@ -20,8 +20,9 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetLink;
 import com.liferay.asset.kernel.model.AssetLinkConstants;
-import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetTag;
+import com.liferay.asset.kernel.search.AssetSearcherFactoryUtil;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetLinkLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
@@ -40,6 +41,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.search.BaseSearcher;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.Indexer;
@@ -67,7 +69,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.view.count.ViewCountManagerUtil;
 import com.liferay.portlet.asset.service.base.AssetEntryLocalServiceBaseImpl;
 import com.liferay.portlet.asset.service.permission.AssetCategoryPermission;
-import com.liferay.portlet.asset.util.AssetSearcher;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.social.kernel.service.SocialActivityCounterLocalService;
 
@@ -449,7 +450,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			assetEntry.getCompanyId(), user.getUserId(),
 			assetEntry.getClassName(), assetEntry.getClassPK(), 1);
 
-		if (!user.isDefaultUser()) {
+		if (!user.isGuestUser()) {
 			SocialActivityManagerUtil.addActivity(
 				user.getUserId(), assetEntry, SocialActivityConstants.TYPE_VIEW,
 				StringPool.BLANK, 0);
@@ -469,7 +470,7 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 
 		AssetEntry assetEntry = getEntry(className, classPK);
 
-		if (!user.isDefaultUser()) {
+		if (!user.isGuestUser()) {
 			SocialActivityManagerUtil.addActivity(
 				user.getUserId(), assetEntry, SocialActivityConstants.TYPE_VIEW,
 				StringPool.BLANK, 0);
@@ -1194,10 +1195,6 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 	protected Hits doSearch(long[] classNameIds, SearchContext searchContext)
 		throws Exception {
 
-		Indexer<?> indexer = AssetSearcher.getInstance();
-
-		AssetSearcher assetSearcher = (AssetSearcher)indexer;
-
 		AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
 
 		assetEntryQuery.setClassNameIds(classNameIds);
@@ -1209,14 +1206,15 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			searchContext.getGroupIds(), searchContext.getAssetTagNames(),
 			searchContext.isAndSearch(), assetEntryQuery);
 
+		BaseSearcher baseSearcher = AssetSearcherFactoryUtil.createBaseSearcher(
+			assetEntryQuery);
+
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
 		queryConfig.setHighlightEnabled(false);
 		queryConfig.setScoreEnabled(_hasScoreSort(searchContext));
 
-		assetSearcher.setAssetEntryQuery(assetEntryQuery);
-
-		return assetSearcher.search(searchContext);
+		return baseSearcher.search(searchContext);
 	}
 
 	protected long doSearchCount(
@@ -1231,10 +1229,6 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			long[] classNameIds, SearchContext searchContext)
 		throws Exception {
 
-		Indexer<?> indexer = AssetSearcher.getInstance();
-
-		AssetSearcher assetSearcher = (AssetSearcher)indexer;
-
 		AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
 
 		assetEntryQuery.setClassNameIds(classNameIds);
@@ -1246,14 +1240,15 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			searchContext.getGroupIds(), searchContext.getAssetTagNames(),
 			searchContext.isAndSearch(), assetEntryQuery);
 
+		BaseSearcher baseSearcher = AssetSearcherFactoryUtil.createBaseSearcher(
+			assetEntryQuery);
+
 		QueryConfig queryConfig = searchContext.getQueryConfig();
 
 		queryConfig.setHighlightEnabled(false);
 		queryConfig.setScoreEnabled(false);
 
-		assetSearcher.setAssetEntryQuery(assetEntryQuery);
-
-		return assetSearcher.searchCount(searchContext);
+		return baseSearcher.searchCount(searchContext);
 	}
 
 	protected AssetEntryQuery getAssetEntryQuery(
@@ -1313,21 +1308,8 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 			};
 		}
 
-		List<AssetRendererFactory<?>> rendererFactories =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
-				companyId);
-
-		long[] classNameIds = new long[rendererFactories.size()];
-
-		for (int i = 0; i < rendererFactories.size(); i++) {
-			AssetRendererFactory<?> assetRendererFactory =
-				rendererFactories.get(i);
-
-			classNameIds[i] = _classNameLocalService.getClassNameId(
-				assetRendererFactory.getClassName());
-		}
-
-		return classNameIds;
+		return AssetRendererFactoryRegistryUtil.getClassNameIds(
+			companyId, true);
 	}
 
 	protected long[] getTagIds(long[] groupIds, String tagName) {
@@ -1339,11 +1321,22 @@ public class AssetEntryLocalServiceImpl extends AssetEntryLocalServiceBaseImpl {
 	}
 
 	protected void reindex(AssetEntry entry) throws PortalException {
-		String className = PortalUtil.getClassName(entry.getClassNameId());
+		Indexer<Object> indexer = IndexerRegistryUtil.getIndexer(
+			entry.getClassName());
 
-		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(className);
+		if (indexer == null) {
+			return;
+		}
 
-		indexer.reindex(className, entry.getClassPK());
+		AssetRenderer<?> assetRenderer = entry.getAssetRenderer();
+
+		if (assetRenderer == null) {
+			indexer.reindex(entry.getClassName(), entry.getClassPK());
+
+			return;
+		}
+
+		indexer.reindex(assetRenderer.getAssetObject());
 	}
 
 	private List<AssetEntryValidator> _getAssetEntryValidators(

@@ -32,8 +32,6 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.asset.kernel.model.AssetVocabularyConstants" %><%@
-page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.JSPNavigationItemList" %><%@
-page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem" %><%@
 page import="com.liferay.frontend.taglib.form.navigator.constants.FormNavigatorConstants" %><%@
 page import="com.liferay.map.constants.MapProviderWebKeys" %><%@
 page import="com.liferay.petra.string.StringPool" %><%@
@@ -115,6 +113,7 @@ page import="com.liferay.site.admin.web.internal.constants.SiteAdminPortletKeys"
 page import="com.liferay.site.admin.web.internal.constants.SiteAdminWebKeys" %><%@
 page import="com.liferay.site.admin.web.internal.display.context.AddGroupDisplayContext" %><%@
 page import="com.liferay.site.admin.web.internal.display.context.DisplaySettingsDisplayContext" %><%@
+page import="com.liferay.site.admin.web.internal.display.context.MenuAccessConfigurationDisplayContext" %><%@
 page import="com.liferay.site.admin.web.internal.display.context.SelectSiteInitializerDisplayContext" %><%@
 page import="com.liferay.site.admin.web.internal.display.context.SiteAdminDisplayContext" %><%@
 page import="com.liferay.site.admin.web.internal.display.context.SiteAdminManagementToolbarDisplayContext" %><%@
@@ -134,8 +133,9 @@ page import="java.util.TreeMap" %>
 
 <%@ page import="javax.portlet.PortletPreferences" %><%@
 page import="javax.portlet.PortletRequest" %><%@
-page import="javax.portlet.PortletURL" %><%@
-page import="javax.portlet.WindowState" %>
+page import="javax.portlet.PortletURL" %>
+
+<%@ page import="org.osgi.service.cm.ConfigurationException" %>
 
 <liferay-frontend:defineObjects />
 

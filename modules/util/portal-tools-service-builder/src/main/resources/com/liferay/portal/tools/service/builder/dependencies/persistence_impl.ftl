@@ -9,9 +9,9 @@
 </#if>
 
 <#if osgiModule>
-	<#assign ctPersistenceHelper = "ctPersistenceHelper"/>
+	<#assign ctPersistenceHelper = "ctPersistenceHelper" />
 <#else>
-	<#assign ctPersistenceHelper = "CTPersistenceHelperUtil"/>
+	<#assign ctPersistenceHelper = "CTPersistenceHelperUtil" />
 </#if>
 
 <#if serviceBuilder.isVersionGTE_7_3_0() && !entity.isCacheEnabled()>
@@ -257,9 +257,9 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY + ".List2";
 
 	<#if serviceBuilder.isVersionGTE_7_3_0()>
-		<#assign columnBitmaskEnabled = (entity.databaseRegularEntityColumns?size &lt; 64) && !entity.hasEagerBlobColumn()/>
+		<#assign columnBitmaskEnabled = (entity.databaseRegularEntityColumns?size &lt; 64) && !entity.hasEagerBlobColumn() />
 	<#else>
-		<#assign columnBitmaskEnabled = (entity.finderEntityColumns?size &gt; 0) && (entity.finderEntityColumns?size &lt; 64) && !entity.hasEagerBlobColumn()/>
+		<#assign columnBitmaskEnabled = (entity.finderEntityColumns?size &gt; 0) && (entity.finderEntityColumns?size &lt; 64) && !entity.hasEagerBlobColumn() />
 	</#if>
 
 	private FinderPath _finderPathWithPaginationFindAll;
@@ -819,19 +819,23 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				</#if>
 			}
 
-			<#if serviceBuilder.isVersionGTE_7_4_0() && entity.hasExternalReferenceCode()>
+			<#if serviceBuilder.isVersionGTE_7_3_0() && entity.hasExternalReferenceCode()>
 				else {
-					${entity.name} erc${entity.name} = fetchByERC_${entity.externalReferenceCode?cap_first[0..0]}(${entity.variableName}.getExternalReferenceCode(), ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
+					<#if serviceBuilder.isVersionGTE_7_4_0()>
+						${entity.name} erc${entity.name} = fetchByERC_${entity.externalReferenceCode?cap_first[0..0]}(${entity.variableName}.getExternalReferenceCode(), ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
+					<#else>
+						${entity.name} erc${entity.name} = fetchBy${entity.externalReferenceCode?cap_first[0..0]}_ERC(${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id(), ${entity.variableName}.getExternalReferenceCode());
+					</#if>
 
 					if (isNew) {
 						if (erc${entity.name} != null) {
-								throw new ${duplicateEntityExternalReferenceCode}Exception("Duplicate ${entity.humanName} with external reference code " + ${entity.variableName}.getExternalReferenceCode());
+								throw new ${duplicateEntityExternalReferenceCode}Exception("Duplicate ${entity.humanName} with external reference code " + ${entity.variableName}.getExternalReferenceCode() + " and ${entity.externalReferenceCode} " + ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
 						}
 					}
 					else {
 						if ((erc${entity.name} != null) &&
 							(${entity.variableName}.get${entity.PKMethodName}() != erc${entity.name}.get${entity.PKMethodName}())) {
-								throw new ${duplicateEntityExternalReferenceCode}Exception("Duplicate ${entity.humanName} with external reference code " + ${entity.variableName}.getExternalReferenceCode());
+								throw new ${duplicateEntityExternalReferenceCode}Exception("Duplicate ${entity.humanName} with external reference code " + ${entity.variableName}.getExternalReferenceCode() + " and ${entity.externalReferenceCode} " + ${entity.variableName}.get${entity.externalReferenceCode?cap_first}Id());
 						}
 					}
 				}
@@ -2835,7 +2839,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 			</#if>
 		</#list>
 
-		_set${entity.name}UtilPersistence(this);
+		${entity.name}Util.setPersistence(this);
 	}
 
 	<#if dependencyInjectorDS>
@@ -2845,7 +2849,7 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 		public void destroy() {
 	</#if>
 
-		_set${entity.name}UtilPersistence(null);
+		${entity.name}Util.setPersistence(null);
 
 		${entityCache}.removeCache(${entity.name}Impl.class.getName());
 
@@ -2872,19 +2876,6 @@ public class ${entity.name}PersistenceImpl extends BasePersistenceImpl<${entity.
 				</#if>
 			</#if>
 		</#list>
-	}
-
-	private void _set${entity.name}UtilPersistence(${entity.name}Persistence ${entity.variableName}Persistence) {
-		try {
-			Field field = ${entity.name}Util.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, ${entity.variableName}Persistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	<#if dependencyInjectorDS>

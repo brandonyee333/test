@@ -143,7 +143,7 @@ CommerceOrder commerceOrder = commerceOrderContentDisplayContext.getCommerceOrde
 				<div class="col-xl-4">
 
 					<%
-					CommerceAccount commerceAccount = commerceOrder.getCommerceAccount();
+					AccountEntry accountEntry = commerceOrder.getAccountEntry();
 					%>
 
 					<commerce-ui:info-box
@@ -151,14 +151,14 @@ CommerceOrder commerceOrder = commerceOrderContentDisplayContext.getCommerceOrde
 						title='<%= LanguageUtil.get(request, "account-info") %>'
 					>
 						<c:choose>
-							<c:when test="<%= Validator.isNull(commerceAccount) %>">
+							<c:when test="<%= Validator.isNull(accountEntry) %>">
 								<span class="text-muted">
 									<%= StringPool.BLANK %>
 								</span>
 							</c:when>
 							<c:otherwise>
-								<p class="mb-0"><%= commerceAccount.getName() %></p>
-								<p class="mb-0">#<%= commerceAccount.getCommerceAccountId() %></p>
+								<p class="mb-0"><%= accountEntry.getName() %></p>
+								<p class="mb-0">#<%= accountEntry.getAccountEntryId() %></p>
 							</c:otherwise>
 						</c:choose>
 					</commerce-ui:info-box>
@@ -199,7 +199,7 @@ CommerceOrder commerceOrder = commerceOrderContentDisplayContext.getCommerceOrde
 					CommerceAddress billingCommerceAddress = commerceOrder.getBillingAddress();
 					%>
 
-					<c:if test="<%= commerceOrderContentDisplayContext.hasViewBillingAddressPermission(permissionChecker, commerceAccount) %>">
+					<c:if test="<%= commerceOrderContentDisplayContext.hasViewBillingAddressPermission(permissionChecker, accountEntry) %>">
 						<commerce-ui:info-box
 							actionLabel='<%= commerceOrderContentDisplayContext.hasModelPermission(commerceOrder, ActionKeys.UPDATE) ? LanguageUtil.get(request, (billingCommerceAddress == null) ? "add" : "edit") : "" %>'
 							actionTargetId='<%= commerceOrderContentDisplayContext.hasModelPermission(commerceOrder, ActionKeys.UPDATE) ? "billing-address-modal" : "" %>'
@@ -399,3 +399,9 @@ CommerceOrder commerceOrder = commerceOrderContentDisplayContext.getCommerceOrde
 		</commerce-ui:panel>
 	</div>
 </div>
+
+<%@ include file="/pending_commerce_orders/request_quote.jspf" %>
+
+<liferay-frontend:component
+	module="js/view"
+/>

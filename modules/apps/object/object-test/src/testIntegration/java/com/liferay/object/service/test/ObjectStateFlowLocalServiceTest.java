@@ -15,15 +15,18 @@
 package com.liferay.object.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.list.type.entry.util.ListTypeEntryUtil;
 import com.liferay.list.type.model.ListTypeDefinition;
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeDefinitionLocalService;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.constants.ObjectDefinitionConstants;
-import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
 import com.liferay.object.exception.NoSuchObjectStateException;
 import com.liferay.object.field.builder.ObjectFieldBuilder;
+import com.liferay.object.field.builder.PicklistObjectFieldBuilder;
+import com.liferay.object.field.setting.builder.ObjectFieldSettingBuilder;
+import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectFieldSetting;
@@ -43,6 +46,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.test.rule.FeatureFlags;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
@@ -62,6 +66,7 @@ import org.junit.runner.RunWith;
 /**
  * @author Selton Guedes
  */
+@FeatureFlags("LPS-163716")
 @RunWith(Arquillian.class)
 public class ObjectStateFlowLocalServiceTest {
 
@@ -75,8 +80,8 @@ public class ObjectStateFlowLocalServiceTest {
 		_listTypeDefinition =
 			_listTypeDefinitionLocalService.addListTypeDefinition(
 				null, TestPropsValues.getUserId(),
-				LocalizedMapUtil.getLocalizedMap(
-					RandomTestUtil.randomString()));
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				Collections.emptyList());
 
 		_step1ListTypeEntry = _addListTypeEntry("step1");
 		_step2ListTypeEntry = _addListTypeEntry("step2");
@@ -84,7 +89,7 @@ public class ObjectStateFlowLocalServiceTest {
 
 		_objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
-				TestPropsValues.getUserId(), false,
+				TestPropsValues.getUserId(), false, false,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"A" + RandomTestUtil.randomString(), null, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
@@ -92,14 +97,39 @@ public class ObjectStateFlowLocalServiceTest {
 				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT,
 				Collections.emptyList());
 
-		ObjectField objectField = _objectFieldLocalService.addCustomObjectField(
-			null, TestPropsValues.getUserId(),
-			_listTypeDefinition.getListTypeDefinitionId(),
-			_objectDefinition.getObjectDefinitionId(),
-			ObjectFieldConstants.BUSINESS_TYPE_PICKLIST,
-			ObjectFieldConstants.DB_TYPE_STRING, null, false, true, "",
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(), true, true, Collections.emptyList());
+		ObjectField objectField = ObjectFieldUtil.addCustomObjectField(
+			new PicklistObjectFieldBuilder(
+			).userId(
+				TestPropsValues.getUserId()
+			).labelMap(
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString())
+			).listTypeDefinitionId(
+				_listTypeDefinition.getListTypeDefinitionId()
+			).indexedAsKeyword(
+				true
+			).name(
+				StringUtil.randomId()
+			).objectDefinitionId(
+				_objectDefinition.getObjectDefinitionId()
+			).objectFieldSettings(
+				Arrays.asList(
+					new ObjectFieldSettingBuilder(
+					).name(
+						ObjectFieldSettingConstants.NAME_DEFAULT_VALUE
+					).value(
+						_step1ListTypeEntry.getKey()
+					).build(),
+					new ObjectFieldSettingBuilder(
+					).name(
+						ObjectFieldSettingConstants.NAME_DEFAULT_VALUE_TYPE
+					).value(
+						ObjectFieldSettingConstants.VALUE_INPUT_AS_VALUE
+					).build())
+			).required(
+				true
+			).state(
+				true
+			).build());
 
 		_objectStateFlow =
 			_objectStateFlowLocalService.fetchObjectFieldObjectStateFlow(
@@ -281,19 +311,12 @@ public class ObjectStateFlowLocalServiceTest {
 		ListTypeDefinition listTypeDefinition =
 			_listTypeDefinitionLocalService.addListTypeDefinition(
 				null, TestPropsValues.getUserId(),
-				LocalizedMapUtil.getLocalizedMap(
-					RandomTestUtil.randomString()));
-
-		_listTypeEntryLocalService.addListTypeEntry(
-			TestPropsValues.getUserId(),
-			listTypeDefinition.getListTypeDefinitionId(),
-			RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()));
-		_listTypeEntryLocalService.addListTypeEntry(
-			TestPropsValues.getUserId(),
-			listTypeDefinition.getListTypeDefinitionId(),
-			RandomTestUtil.randomString(),
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()));
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				Arrays.asList(
+					ListTypeEntryUtil.createListTypeEntry(
+						RandomTestUtil.randomString()),
+					ListTypeEntryUtil.createListTypeEntry(
+						RandomTestUtil.randomString())));
 
 		ObjectStateFlow objectStateFlow =
 			_objectStateFlowLocalService.updateDefaultObjectStateFlow(
@@ -319,6 +342,8 @@ public class ObjectStateFlowLocalServiceTest {
 
 	@Test
 	public void testUpdateObjectStateTransitions() throws Exception {
+		ListTypeEntry listTypeEntry = _addListTypeEntry("step4");
+
 		List<ObjectState> objectStates =
 			_objectStateLocalService.getObjectStateFlowObjectStates(
 				_objectStateFlow.getObjectStateFlowId());
@@ -343,11 +368,18 @@ public class ObjectStateFlowLocalServiceTest {
 					getObjectStateObjectStateTransitions(
 						objectState.getObjectStateId());
 
+			if (objectStateTransitions.isEmpty()) {
+				continue;
+			}
+
 			objectState.setObjectStateTransitions(
-				Collections.singletonList(objectStateTransitions.get(0)));
-
-			// TODO Besides removing, add a new one too
-
+				Arrays.asList(
+					objectStateTransitions.get(0),
+					_objectStateTransitionLocalService.addObjectStateTransition(
+						TestPropsValues.getUserId(),
+						_objectStateFlow.getObjectStateFlowId(),
+						objectState.getObjectStateId(),
+						listTypeEntry.getListTypeEntryId())));
 		}
 
 		newObjectStateFlow.setObjectStates(newObjectStates);
@@ -363,7 +395,7 @@ public class ObjectStateFlowLocalServiceTest {
 
 	private ListTypeEntry _addListTypeEntry(String key) throws Exception {
 		return _listTypeEntryLocalService.addListTypeEntry(
-			TestPropsValues.getUserId(),
+			null, TestPropsValues.getUserId(),
 			_listTypeDefinition.getListTypeDefinitionId(), key,
 			LocalizedMapUtil.getLocalizedMap(key));
 	}
@@ -372,13 +404,45 @@ public class ObjectStateFlowLocalServiceTest {
 			long listTypeDefinitionId, boolean state)
 		throws Exception {
 
-		return _objectFieldLocalService.addCustomObjectField(
-			null, TestPropsValues.getUserId(), listTypeDefinitionId,
-			_objectDefinition.getObjectDefinitionId(),
-			ObjectFieldConstants.BUSINESS_TYPE_PICKLIST,
-			ObjectFieldConstants.DB_TYPE_STRING, null, false, true, "",
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(), true, state, Collections.emptyList());
+		List<ObjectFieldSetting> objectFieldSettings = Collections.emptyList();
+
+		if (state) {
+			objectFieldSettings = Arrays.asList(
+				new ObjectFieldSettingBuilder(
+				).name(
+					ObjectFieldSettingConstants.NAME_DEFAULT_VALUE
+				).value(
+					_step1ListTypeEntry.getKey()
+				).build(),
+				new ObjectFieldSettingBuilder(
+				).name(
+					ObjectFieldSettingConstants.NAME_DEFAULT_VALUE_TYPE
+				).value(
+					ObjectFieldSettingConstants.VALUE_INPUT_AS_VALUE
+				).build());
+		}
+
+		return ObjectFieldUtil.addCustomObjectField(
+			new PicklistObjectFieldBuilder(
+			).userId(
+				TestPropsValues.getUserId()
+			).labelMap(
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString())
+			).listTypeDefinitionId(
+				listTypeDefinitionId
+			).indexedAsKeyword(
+				true
+			).name(
+				StringUtil.randomId()
+			).objectDefinitionId(
+				_objectDefinition.getObjectDefinitionId()
+			).objectFieldSettings(
+				objectFieldSettings
+			).required(
+				true
+			).state(
+				state
+			).build());
 	}
 
 	private void _assertEquals(

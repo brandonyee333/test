@@ -17,6 +17,7 @@ package com.liferay.fragment.service;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -155,6 +156,22 @@ public class FragmentEntryLinkLocalServiceWrapper
 
 		_fragmentEntryLinkLocalService.deleteFragmentEntryLinks(
 			fragmentEntryLinkIds);
+	}
+
+	@Override
+	public void deleteFragmentEntryLinksByFragmentEntryId(
+		long fragmentEntryId) {
+
+		_fragmentEntryLinkLocalService.
+			deleteFragmentEntryLinksByFragmentEntryId(fragmentEntryId);
+	}
+
+	@Override
+	public void deleteFragmentEntryLinksByFragmentEntryId(
+		long fragmentEntryId, boolean deleted) {
+
+		_fragmentEntryLinkLocalService.
+			deleteFragmentEntryLinksByFragmentEntryId(fragmentEntryId, deleted);
 	}
 
 	@Override
@@ -462,6 +479,22 @@ public class FragmentEntryLinkLocalServiceWrapper
 
 	@Override
 	public java.util.List<FragmentEntryLink> getFragmentEntryLinks(
+		long companyId, String rendererKey) {
+
+		return _fragmentEntryLinkLocalService.getFragmentEntryLinks(
+			companyId, rendererKey);
+	}
+
+	@Override
+	public java.util.List<FragmentEntryLink> getFragmentEntryLinks(
+		long companyId, String[] rendererKeys) {
+
+		return _fragmentEntryLinkLocalService.getFragmentEntryLinks(
+			companyId, rendererKeys);
+	}
+
+	@Override
+	public java.util.List<FragmentEntryLink> getFragmentEntryLinks(
 		String rendererKey) {
 
 		return _fragmentEntryLinkLocalService.getFragmentEntryLinks(
@@ -474,6 +507,15 @@ public class FragmentEntryLinkLocalServiceWrapper
 
 		return _fragmentEntryLinkLocalService.
 			getFragmentEntryLinksByFragmentEntryId(fragmentEntryId);
+	}
+
+	@Override
+	public java.util.List<FragmentEntryLink>
+		getFragmentEntryLinksByFragmentEntryId(
+			long fragmentEntryId, boolean deleted) {
+
+		return _fragmentEntryLinkLocalService.
+			getFragmentEntryLinksByFragmentEntryId(fragmentEntryId, deleted);
 	}
 
 	@Override
@@ -568,6 +610,15 @@ public class FragmentEntryLinkLocalServiceWrapper
 
 		return _fragmentEntryLinkLocalService.
 			getFragmentEntryLinksCountByFragmentEntryId(fragmentEntryId);
+	}
+
+	@Override
+	public int getFragmentEntryLinksCountByFragmentEntryId(
+		long fragmentEntryId, boolean deleted) {
+
+		return _fragmentEntryLinkLocalService.
+			getFragmentEntryLinksCountByFragmentEntryId(
+				fragmentEntryId, deleted);
 	}
 
 	@Override
@@ -739,6 +790,11 @@ public class FragmentEntryLinkLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_fragmentEntryLinkLocalService.updateLatestChanges(fragmentEntryLinkId);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _fragmentEntryLinkLocalService.getBasePersistence();
 	}
 
 	@Override

@@ -21,10 +21,11 @@ import com.liferay.commerce.product.service.CPDefinitionLinkLocalService;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
 import com.liferay.headless.commerce.delivery.catalog.dto.v1_0.Product;
 import com.liferay.headless.commerce.delivery.catalog.dto.v1_0.RelatedProduct;
-import com.liferay.headless.commerce.delivery.catalog.internal.dto.v1_0.converter.RelatedProductDTOConverter;
 import com.liferay.headless.commerce.delivery.catalog.resource.v1_0.RelatedProductResource;
 import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldId;
@@ -80,22 +81,26 @@ public class RelatedProductResourceImpl
 			cpDefinitionLinks =
 				_cpDefinitionLinkLocalService.getCPDefinitionLinks(
 					cpDefinition.getCPDefinitionId(),
+					WorkflowConstants.STATUS_APPROVED,
 					pagination.getStartPosition(), pagination.getEndPosition());
 
 			totalItems =
 				_cpDefinitionLinkLocalService.getCPDefinitionLinksCount(
-					cpDefinition.getCPDefinitionId());
+					cpDefinition.getCPDefinitionId(),
+					WorkflowConstants.STATUS_APPROVED);
 		}
 		else {
 			cpDefinitionLinks =
 				_cpDefinitionLinkLocalService.getCPDefinitionLinks(
 					cpDefinition.getCPDefinitionId(), type,
+					WorkflowConstants.STATUS_APPROVED,
 					pagination.getStartPosition(), pagination.getEndPosition(),
 					null);
 
 			totalItems =
 				_cpDefinitionLinkLocalService.getCPDefinitionLinksCount(
-					cpDefinition.getCPDefinitionId(), type);
+					cpDefinition.getCPDefinitionId(), type,
+					WorkflowConstants.STATUS_APPROVED);
 		}
 
 		return Page.of(
@@ -125,7 +130,10 @@ public class RelatedProductResourceImpl
 	@Reference
 	private CPDefinitionLocalService _cpDefinitionLocalService;
 
-	@Reference
-	private RelatedProductDTOConverter _relatedProductDTOConverter;
+	@Reference(
+		target = "(component.name=com.liferay.headless.commerce.delivery.catalog.internal.dto.v1_0.converter.RelatedProductDTOConverter)"
+	)
+	private DTOConverter<CPDefinitionLink, RelatedProduct>
+		_relatedProductDTOConverter;
 
 }

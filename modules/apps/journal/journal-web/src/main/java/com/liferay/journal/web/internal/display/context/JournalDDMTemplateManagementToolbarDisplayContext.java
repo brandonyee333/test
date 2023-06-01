@@ -162,7 +162,7 @@ public class JournalDDMTemplateManagementToolbarDisplayContext
 
 		User user = themeDisplay.getUser();
 
-		return !user.isDefaultUser();
+		return !user.isGuestUser();
 	}
 
 	@Override
@@ -217,11 +217,6 @@ public class JournalDDMTemplateManagementToolbarDisplayContext
 	@Override
 	protected String[] getDisplayViews() {
 		return new String[] {"list", "icon"};
-	}
-
-	@Override
-	protected String[] getNavigationKeys() {
-		return new String[] {"all"};
 	}
 
 	@Override

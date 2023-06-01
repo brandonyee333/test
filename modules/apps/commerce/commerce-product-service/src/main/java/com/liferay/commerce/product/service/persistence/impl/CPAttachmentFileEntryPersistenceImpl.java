@@ -52,7 +52,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
@@ -7031,7 +7030,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 				if (ercCPAttachmentFileEntry != null) {
 					throw new DuplicateCPAttachmentFileEntryExternalReferenceCodeException(
 						"Duplicate cp attachment file entry with external reference code " +
-							cpAttachmentFileEntry.getExternalReferenceCode());
+							cpAttachmentFileEntry.getExternalReferenceCode() +
+								" and company " +
+									cpAttachmentFileEntry.getCompanyId());
 				}
 			}
 			else {
@@ -7042,7 +7043,9 @@ public class CPAttachmentFileEntryPersistenceImpl
 
 					throw new DuplicateCPAttachmentFileEntryExternalReferenceCodeException(
 						"Duplicate cp attachment file entry with external reference code " +
-							cpAttachmentFileEntry.getExternalReferenceCode());
+							cpAttachmentFileEntry.getExternalReferenceCode() +
+								" and company " +
+									cpAttachmentFileEntry.getCompanyId());
 				}
 			}
 		}
@@ -7853,30 +7856,14 @@ public class CPAttachmentFileEntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setCPAttachmentFileEntryUtilPersistence(this);
+		CPAttachmentFileEntryUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setCPAttachmentFileEntryUtilPersistence(null);
+		CPAttachmentFileEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(CPAttachmentFileEntryImpl.class.getName());
-	}
-
-	private void _setCPAttachmentFileEntryUtilPersistence(
-		CPAttachmentFileEntryPersistence cpAttachmentFileEntryPersistence) {
-
-		try {
-			Field field = CPAttachmentFileEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, cpAttachmentFileEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

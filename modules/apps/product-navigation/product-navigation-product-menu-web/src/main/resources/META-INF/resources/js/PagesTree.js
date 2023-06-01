@@ -18,7 +18,7 @@ import {ClayDropDownWithItems} from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import {fetch, navigate, openModal, openToast} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 const ACTION_COPY_PAGE = 'copy-page';
 const ACTION_DELETE = 'delete';
@@ -89,8 +89,22 @@ export default function PagesTree({
 
 	const [expandedKeys, setExpandedKeys] = useState(selectedLayoutPath);
 
+	useEffect(() => {
+		const activeElement = document.querySelector(
+			'.pages-tree .treeview-link.active'
+		);
+
+		if (activeElement) {
+			activeElement.scrollIntoView({
+				behavior: 'auto',
+				block: 'center',
+				inline: 'center',
+			});
+		}
+	}, []);
+
 	return (
-		<div className="pages-tree">
+		<div className="mx-3 pages-tree">
 			<ClayTreeView
 				defaultItems={items}
 				displayType="dark"
@@ -184,7 +198,8 @@ function TreeItem({config, expand, item, load, namespace, selectedLayoutId}) {
 				{(item) => (
 					<ClayTreeView.Item
 						actions={
-							!config.stagingEnabled && (
+							!config.stagingEnabled &&
+							item.actions && (
 								<ClayDropDownWithItems
 									items={normalizeActions(
 										item.actions,
@@ -304,6 +319,16 @@ function normalizeActions(actions, namespace) {
 												if (response.redirected) {
 													navigate(response.url);
 												}
+
+												openToast({
+													message: Liferay.Language.get(
+														'your-request-processed-successfully'
+													),
+													toastProps: {
+														autoClose: 5000,
+													},
+													type: 'success',
+												});
 											})
 											.catch(() => openErrorToast());
 									},

@@ -10,18 +10,26 @@
  */
 
 import {Liferay} from '../..';
+import LiferayAccountBrief from '../../../../interfaces/liferayAccountBrief';
 import MDFRequestBudget from '../../../../interfaces/mdfRequestBudget';
 import getDTOFromMDFRequestBudget from '../../../../utils/dto/mdf-request-budget/getDTOFromMDFRequestBudget';
 import {LiferayAPIs} from '../../common/enums/apis';
 import liferayFetcher from '../../common/utils/fetcher';
+import {ResourceName} from '../enum/resourceName';
 
 export default async function createMDFRequestActivityBudget(
-	activityId: number,
-	budget: MDFRequestBudget
+	apiOption: ResourceName,
+	budget: MDFRequestBudget,
+	activityExternalReferenceCode: string,
+	company?: LiferayAccountBrief
 ) {
 	return await liferayFetcher.post(
-		`/o/${LiferayAPIs.OBJECT}/budgets`,
+		`/o/${LiferayAPIs.OBJECT}/${apiOption}`,
 		Liferay.authToken,
-		getDTOFromMDFRequestBudget(budget, activityId)
+		getDTOFromMDFRequestBudget(
+			budget,
+			activityExternalReferenceCode,
+			company
+		)
 	);
 }

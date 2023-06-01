@@ -17,11 +17,8 @@ package com.liferay.users.admin.web.internal.change.tracking.spi.reference;
 import com.liferay.change.tracking.spi.reference.TableReferenceDefinition;
 import com.liferay.change.tracking.spi.reference.builder.ChildTableReferenceInfoBuilder;
 import com.liferay.change.tracking.spi.reference.builder.ParentTableReferenceInfoBuilder;
+import com.liferay.portal.kernel.model.CompanyTable;
 import com.liferay.portal.kernel.model.EmailAddressTable;
-import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.model.OrganizationTable;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.model.UserTable;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.EmailAddressPersistence;
 
@@ -46,13 +43,9 @@ public class EmailAddressTableReferenceDefinition
 		ParentTableReferenceInfoBuilder<EmailAddressTable>
 			parentTableReferenceInfoBuilder) {
 
-		parentTableReferenceInfoBuilder.classNameReference(
-			EmailAddressTable.INSTANCE.classPK,
-			OrganizationTable.INSTANCE.organizationId, Organization.class
-		).classNameReference(
-			EmailAddressTable.INSTANCE.classPK, UserTable.INSTANCE.userId,
-			User.class
-		);
+		parentTableReferenceInfoBuilder.singleColumnReference(
+			EmailAddressTable.INSTANCE.companyId,
+			CompanyTable.INSTANCE.companyId);
 	}
 
 	@Override

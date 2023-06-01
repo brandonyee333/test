@@ -15,8 +15,11 @@
 package com.liferay.asset.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.asset.kernel.search.AssetSearcherFactory;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.search.BaseSearcher;
 import com.liferay.portal.kernel.search.SearchContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -25,9 +28,8 @@ import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.asset.util.AssetSearcher;
 
-import java.util.stream.Stream;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -86,11 +88,8 @@ public class AssetSearcherPermissionsTest {
 	}
 
 	protected long[] getClassNameIds(String... classNames) {
-		return Stream.of(
-			classNames
-		).mapToLong(
-			PortalUtil::getClassNameId
-		).toArray();
+		return TransformUtil.transformToLongArray(
+			Arrays.asList(classNames), PortalUtil::getClassNameId);
 	}
 
 	protected SearchContext getSearchContext() {
@@ -106,17 +105,19 @@ public class AssetSearcherPermissionsTest {
 			AssetEntryQuery assetEntryQuery, SearchContext searchContext)
 		throws Exception {
 
-		AssetSearcher assetSearcher = new AssetSearcher();
+		BaseSearcher baseSearcher = _assetSearcherFactory.createBaseSearcher(
+			assetEntryQuery);
 
-		assetSearcher.setAssetEntryQuery(assetEntryQuery);
-
-		assetSearcher.search(searchContext);
+		baseSearcher.search(searchContext);
 	}
 
 	protected void setGuestUser() throws Exception {
 		UserTestUtil.setUser(
-			_userLocalService.getDefaultUser(_group.getCompanyId()));
+			_userLocalService.getGuestUser(_group.getCompanyId()));
 	}
+
+	@Inject
+	private static AssetSearcherFactory _assetSearcherFactory;
 
 	@Inject
 	private static UserLocalService _userLocalService;

@@ -15,6 +15,7 @@
 package com.liferay.trash.web.internal.portlet.configuration.icon;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.trash.TrashHandler;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.trash.constants.TrashPortletKeys;
-import com.liferay.trash.model.TrashEntry;
 import com.liferay.trash.web.internal.display.context.TrashDisplayContext;
 
 import javax.portlet.PortletRequest;
@@ -95,6 +95,10 @@ public class DeleteTrashPortletConfigurationIcon
 
 	@Override
 	public boolean isShow(PortletRequest portletRequest) {
+		if (!CTCollectionThreadLocal.isProductionMode()) {
+			return false;
+		}
+
 		TrashDisplayContext trashDisplayContext = new TrashDisplayContext(
 			_portal.getHttpServletRequest(portletRequest), null, null);
 
@@ -104,10 +108,8 @@ public class DeleteTrashPortletConfigurationIcon
 			return false;
 		}
 
-		TrashEntry trashEntry = trashDisplayContext.getTrashEntry();
-
 		try {
-			if (!trashHandler.isDeletable(trashEntry.getClassPK())) {
+			if (!trashHandler.isDeletable(trashDisplayContext.getClassPK())) {
 				return false;
 			}
 		}

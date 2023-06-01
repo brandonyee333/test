@@ -133,8 +133,8 @@ public class KBArticleLocalServiceUtil {
 			groupId, userId, fileName, tempFolderName, inputStream, mimeType);
 	}
 
-	public static void checkKBArticles() throws PortalException {
-		getService().checkKBArticles();
+	public static void checkKBArticles(long companyId) throws PortalException {
+		getService().checkKBArticles(companyId);
 	}
 
 	/**
@@ -815,6 +815,10 @@ public class KBArticleLocalServiceUtil {
 
 	public static KBArticleLocalService getService() {
 		return _service;
+	}
+
+	public static void setService(KBArticleLocalService service) {
+		_service = service;
 	}
 
 	private static volatile KBArticleLocalService _service;

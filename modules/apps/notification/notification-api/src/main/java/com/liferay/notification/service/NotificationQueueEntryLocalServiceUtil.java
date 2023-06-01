@@ -250,6 +250,12 @@ public class NotificationQueueEntryLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
+	public static List<NotificationQueueEntry> getNotificationEntries(
+		String type, int status) {
+
+		return getService().getNotificationEntries(type, status);
+	}
+
 	/**
 	 * Returns a range of all the notification queue entries.
 	 *
@@ -308,12 +314,6 @@ public class NotificationQueueEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static List<NotificationQueueEntry> getUnsentNotificationEntries(
-		String type) {
-
-		return getService().getUnsentNotificationEntries(type);
-	}
-
 	public static NotificationQueueEntry resendNotificationQueueEntry(
 			long notificationQueueEntryId)
 		throws PortalException {
@@ -348,6 +348,10 @@ public class NotificationQueueEntryLocalServiceUtil {
 
 	public static NotificationQueueEntryLocalService getService() {
 		return _service;
+	}
+
+	public static void setService(NotificationQueueEntryLocalService service) {
+		_service = service;
 	}
 
 	private static volatile NotificationQueueEntryLocalService _service;

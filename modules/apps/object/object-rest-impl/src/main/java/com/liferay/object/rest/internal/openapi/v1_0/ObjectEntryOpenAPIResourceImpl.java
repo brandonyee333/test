@@ -20,6 +20,7 @@ import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.field.setting.util.ObjectFieldSettingUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
+import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.rest.dto.v1_0.FileEntry;
 import com.liferay.object.rest.dto.v1_0.ListEntry;
 import com.liferay.object.rest.internal.resource.v1_0.ObjectEntryRelatedObjectsResourceImpl;
@@ -27,12 +28,15 @@ import com.liferay.object.rest.internal.resource.v1_0.ObjectEntryResourceImpl;
 import com.liferay.object.rest.internal.resource.v1_0.OpenAPIResourceImpl;
 import com.liferay.object.rest.internal.vulcan.openapi.contributor.ObjectEntryOpenAPIContributor;
 import com.liferay.object.rest.openapi.v1_0.ObjectEntryOpenAPIResource;
+import com.liferay.object.rest.openapi.v1_0.ObjectEntryOpenAPIResourceProvider;
 import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
-import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
+import com.liferay.object.system.SystemObjectDefinitionManagerRegistry;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.TreeMapBuilder;
 import com.liferay.portal.vulcan.batch.engine.Field;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
@@ -53,27 +57,48 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.servlet.http.HttpServletRequest;
+
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Luis Miguel Barcos
  */
-@Component(service = ObjectEntryOpenAPIResource.class)
 public class ObjectEntryOpenAPIResourceImpl
 	implements ObjectEntryOpenAPIResource {
 
-	@Override
-	public Map<String, Field> getFields(
-			ObjectDefinition objectDefinition, UriInfo uriInfo)
-		throws Exception {
+	public ObjectEntryOpenAPIResourceImpl(
+		BundleContext bundleContext, DTOConverterRegistry dtoConverterRegistry,
+		ObjectActionLocalService objectActionLocalService,
+		ObjectDefinition objectDefinition,
+		ObjectDefinitionLocalService objectDefinitionLocalService,
+		ObjectEntryOpenAPIResourceProvider objectEntryOpenAPIResourceProvider,
+		ObjectFieldLocalService objectFieldLocalService,
+		ObjectRelationshipLocalService objectRelationshipLocalService,
+		OpenAPIResource openAPIResource,
+		SystemObjectDefinitionManagerRegistry
+			systemObjectDefinitionManagerRegistry) {
 
-		Response response = getOpenAPI(objectDefinition, "json", uriInfo);
+		_bundleContext = bundleContext;
+		_dtoConverterRegistry = dtoConverterRegistry;
+		_objectActionLocalService = objectActionLocalService;
+		_objectDefinition = objectDefinition;
+		_objectDefinitionLocalService = objectDefinitionLocalService;
+		_objectEntryOpenAPIResourceProvider =
+			objectEntryOpenAPIResourceProvider;
+		_objectFieldLocalService = objectFieldLocalService;
+		_objectRelationshipLocalService = objectRelationshipLocalService;
+		_openAPIResource = openAPIResource;
+		_systemObjectDefinitionManagerRegistry =
+			systemObjectDefinitionManagerRegistry;
+	}
+
+	@Override
+	public Map<String, Field> getFields(UriInfo uriInfo) throws Exception {
+		Response response = getOpenAPI(null, "json", uriInfo);
 
 		OpenAPI openAPI = (OpenAPI)response.getEntity();
 
@@ -81,7 +106,7 @@ public class ObjectEntryOpenAPIResourceImpl
 
 		Map<String, Schema> schemas = components.getSchemas();
 
-		Schema schema = schemas.get(objectDefinition.getShortName());
+		Schema schema = schemas.get(_objectDefinition.getShortName());
 
 		if (schema == null) {
 			return Collections.emptyMap();
@@ -121,30 +146,21 @@ public class ObjectEntryOpenAPIResourceImpl
 
 	@Override
 	public Response getOpenAPI(
-			ObjectDefinition objectDefinition, String type, UriInfo uriInfo)
+			HttpServletRequest httpServletRequest, String type, UriInfo uriInfo)
 		throws Exception {
 
-		return _openAPIResource.getOpenAPI(
-			new ObjectEntryOpenAPIContributor(
-				_bundleContext, _dtoConverterRegistry,
-				_objectActionLocalService, objectDefinition,
-				_objectDefinitionLocalService, this,
-				_objectRelationshipLocalService, _openAPIResource,
-				_systemObjectDefinitionMetadataRegistry),
-			_getOpenAPISchemaFilter(objectDefinition),
-			new HashSet<Class<?>>() {
-				{
-					add(ObjectEntryRelatedObjectsResourceImpl.class);
-					add(ObjectEntryResourceImpl.class);
-					add(OpenAPIResourceImpl.class);
-				}
-			},
-			type, uriInfo);
+		return _getOpenAPI(true, type, uriInfo);
 	}
 
-	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
+	@Override
+	public Map<String, Schema> getSchemas() throws Exception {
+		Response response = _getOpenAPI(false, "json", null);
+
+		OpenAPI openAPI = (OpenAPI)response.getEntity();
+
+		Components components = openAPI.getComponents();
+
+		return components.getSchemas();
 	}
 
 	private DTOProperty _getDTOProperty(ObjectField objectField) {
@@ -167,6 +183,26 @@ public class ObjectEntryOpenAPIResourceImpl
 			dtoProperty.setRequired(objectField.isRequired());
 
 			return dtoProperty;
+		}
+		else if (Objects.equals(
+					objectField.getBusinessType(),
+					ObjectFieldConstants.BUSINESS_TYPE_DATE_TIME)) {
+
+			return new DTOProperty(
+				HashMapBuilder.<String, Object>put(
+					"x-parent-map", "properties"
+				).put(
+					"x-timeStorage",
+					ObjectFieldSettingUtil.getValue(
+						ObjectFieldSettingConstants.NAME_TIME_STORAGE,
+						objectField)
+				).build(),
+				objectField.getName(), objectField.getDBType()) {
+
+				{
+					setRequired(objectField.isRequired());
+				}
+			};
 		}
 
 		if (objectField.getListTypeDefinitionId() != 0) {
@@ -197,6 +233,29 @@ public class ObjectEntryOpenAPIResourceImpl
 		};
 	}
 
+	private Response _getOpenAPI(
+			boolean addRelatedSchemas, String type, UriInfo uriInfo)
+		throws Exception {
+
+		return _openAPIResource.getOpenAPI(
+			new ObjectEntryOpenAPIContributor(
+				addRelatedSchemas, _bundleContext, _dtoConverterRegistry,
+				_objectActionLocalService, _objectDefinition,
+				_objectDefinitionLocalService, this,
+				_objectEntryOpenAPIResourceProvider,
+				_objectRelationshipLocalService, _openAPIResource,
+				_systemObjectDefinitionManagerRegistry),
+			_getOpenAPISchemaFilter(_objectDefinition),
+			new HashSet<Class<?>>() {
+				{
+					add(ObjectEntryRelatedObjectsResourceImpl.class);
+					add(ObjectEntryResourceImpl.class);
+					add(OpenAPIResourceImpl.class);
+				}
+			},
+			type, uriInfo);
+	}
+
 	private OpenAPISchemaFilter _getOpenAPISchemaFilter(
 		ObjectDefinition objectDefinition) {
 
@@ -216,9 +275,40 @@ public class ObjectEntryOpenAPIResourceImpl
 
 			dtoProperties.add(_getDTOProperty(objectField));
 
+			if (objectField.isLocalized() &&
+				FeatureFlagManagerUtil.isEnabled("LPS-146755")) {
+
+				dtoProperties.add(
+					new DTOProperty(
+						Collections.singletonMap("x-parent-map", "properties"),
+						objectField.getI18nObjectFieldName(),
+						Map.class.getSimpleName()) {
+
+						{
+							setRequired(objectField.isRequired());
+						}
+					});
+			}
+
 			if (Objects.equals(
 					objectField.getRelationshipType(),
 					ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
+
+				ObjectRelationship objectRelationship =
+					_objectRelationshipLocalService.
+						fetchObjectRelationshipByObjectFieldId2(
+							objectField.getObjectFieldId());
+
+				dtoProperties.add(
+					new DTOProperty(
+						Collections.singletonMap("x-parent-map", "properties"),
+						objectRelationship.getName(),
+						String.class.getSimpleName()) {
+
+						{
+							setRequired(objectField.isRequired());
+						}
+					});
 
 				dtoProperties.add(
 					new DTOProperty(
@@ -279,28 +369,18 @@ public class ObjectEntryOpenAPIResourceImpl
 		return requiredPropertySchemaNames;
 	}
 
-	private BundleContext _bundleContext;
-
-	@Reference
-	private DTOConverterRegistry _dtoConverterRegistry;
-
-	@Reference
-	private ObjectActionLocalService _objectActionLocalService;
-
-	@Reference
-	private ObjectDefinitionLocalService _objectDefinitionLocalService;
-
-	@Reference
-	private ObjectFieldLocalService _objectFieldLocalService;
-
-	@Reference
-	private ObjectRelationshipLocalService _objectRelationshipLocalService;
-
-	@Reference
-	private OpenAPIResource _openAPIResource;
-
-	@Reference
-	private SystemObjectDefinitionMetadataRegistry
-		_systemObjectDefinitionMetadataRegistry;
+	private final BundleContext _bundleContext;
+	private final DTOConverterRegistry _dtoConverterRegistry;
+	private final ObjectActionLocalService _objectActionLocalService;
+	private final ObjectDefinition _objectDefinition;
+	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
+	private final ObjectEntryOpenAPIResourceProvider
+		_objectEntryOpenAPIResourceProvider;
+	private final ObjectFieldLocalService _objectFieldLocalService;
+	private final ObjectRelationshipLocalService
+		_objectRelationshipLocalService;
+	private final OpenAPIResource _openAPIResource;
+	private final SystemObjectDefinitionManagerRegistry
+		_systemObjectDefinitionManagerRegistry;
 
 }

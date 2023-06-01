@@ -17,6 +17,7 @@ package com.liferay.asset.list.service;
 import com.liferay.asset.list.model.AssetListEntrySegmentsEntryRel;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -323,11 +324,11 @@ public class AssetListEntrySegmentsEntryRelLocalServiceWrapper
 	@Override
 	public java.util.List<AssetListEntrySegmentsEntryRel>
 		fetchAssetListEntrySegmentsEntryRels(
-			long assetListEntryId, long[] segmentsEntryId) {
+			long assetListEntryId, long[] segmentsEntryIds) {
 
 		return _assetListEntrySegmentsEntryRelLocalService.
 			fetchAssetListEntrySegmentsEntryRels(
-				assetListEntryId, segmentsEntryId);
+				assetListEntryId, segmentsEntryIds);
 	}
 
 	@Override
@@ -408,6 +409,19 @@ public class AssetListEntrySegmentsEntryRelLocalServiceWrapper
 
 		return _assetListEntrySegmentsEntryRelLocalService.
 			getAssetListEntrySegmentsEntryRels(assetListEntryId, start, end);
+	}
+
+	@Override
+	public java.util.List<AssetListEntrySegmentsEntryRel>
+		getAssetListEntrySegmentsEntryRels(
+			long assetListEntryId, long[] segmentsEntryIds, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator
+				<AssetListEntrySegmentsEntryRel> orderByComparator) {
+
+		return _assetListEntrySegmentsEntryRelLocalService.
+			getAssetListEntrySegmentsEntryRels(
+				assetListEntryId, segmentsEntryIds, start, end,
+				orderByComparator);
 	}
 
 	/**
@@ -540,6 +554,11 @@ public class AssetListEntrySegmentsEntryRelLocalServiceWrapper
 	public void updateVariationsPriority(long[] variationsPriority) {
 		_assetListEntrySegmentsEntryRelLocalService.updateVariationsPriority(
 			variationsPriority);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _assetListEntrySegmentsEntryRelLocalService.getBasePersistence();
 	}
 
 	@Override

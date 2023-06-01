@@ -14,10 +14,10 @@
 
 package com.liferay.commerce.product.definitions.web.internal.portlet.action;
 
+import com.liferay.account.model.AccountGroupRel;
+import com.liferay.account.service.AccountGroupRelLocalService;
 import com.liferay.asset.kernel.exception.AssetCategoryException;
 import com.liferay.asset.kernel.exception.AssetTagException;
-import com.liferay.commerce.account.model.CommerceAccountGroupRel;
-import com.liferay.commerce.account.service.CommerceAccountGroupRelService;
 import com.liferay.commerce.exception.NoSuchCPDefinitionInventoryException;
 import com.liferay.commerce.model.CPDefinitionInventory;
 import com.liferay.commerce.product.configuration.CProductVersionConfiguration;
@@ -297,22 +297,31 @@ public class EditCPDefinitionMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "subscriptionEnabled");
 		int subscriptionLength = ParamUtil.getInteger(
 			actionRequest, "subscriptionLength");
+
 		String subscriptionType = ParamUtil.getString(
 			actionRequest, "subscriptionType");
+
 		UnicodeProperties subscriptionTypeSettingsUnicodeProperties =
 			PropertiesParamUtil.getProperties(
-				actionRequest, "subscriptionTypeSettings--");
+				actionRequest,
+				"subscriptionTypeSettings--" + subscriptionType + "--");
+
 		long maxSubscriptionCycles = ParamUtil.getLong(
 			actionRequest, "maxSubscriptionCycles");
 		boolean deliverySubscriptionEnabled = ParamUtil.getBoolean(
 			actionRequest, "deliverySubscriptionEnabled");
 		int deliverySubscriptionLength = ParamUtil.getInteger(
 			actionRequest, "deliverySubscriptionLength");
+
 		String deliverySubscriptionType = ParamUtil.getString(
 			actionRequest, "deliverySubscriptionType");
+
 		UnicodeProperties deliverySubscriptionTypeSettingsUnicodeProperties =
 			PropertiesParamUtil.getProperties(
-				actionRequest, "deliverySubscriptionTypeSettings--");
+				actionRequest,
+				"deliverySubscriptionTypeSettings--" +
+					deliverySubscriptionType + "--");
+
 		long deliveryMaxSubscriptionCycles = ParamUtil.getLong(
 			actionRequest, "deliveryMaxSubscriptionCycles");
 
@@ -330,11 +339,10 @@ public class EditCPDefinitionMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, long cpDefinitionId)
 		throws PortalException {
 
-		long commerceAccountGroupRelId = ParamUtil.getLong(
+		long accountGroupRelId = ParamUtil.getLong(
 			actionRequest, "commerceAccountGroupRelId");
 
-		_commerceAccountGroupRelService.deleteCommerceAccountGroupRel(
-			commerceAccountGroupRelId);
+		_accountGroupRelLocalService.deleteAccountGroupRel(accountGroupRelId);
 
 		_reindexCPDefinition(cpDefinitionId);
 	}
@@ -651,20 +659,19 @@ public class EditCPDefinitionMVCActionCommand extends BaseMVCActionCommand {
 
 		// Commerce account group rels
 
-		long[] commerceAccountGroupIds = StringUtil.split(
+		long[] accountGroupIds = StringUtil.split(
 			ParamUtil.getString(actionRequest, "commerceAccountGroupIds"), 0L);
 
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			CommerceAccountGroupRel.class.getName(), actionRequest);
+			AccountGroupRel.class.getName(), actionRequest);
 
-		for (long commerceAccountGroupId : commerceAccountGroupIds) {
-			if (commerceAccountGroupId == 0) {
+		for (long accountGroupId : accountGroupIds) {
+			if (accountGroupId == 0) {
 				continue;
 			}
 
-			_commerceAccountGroupRelService.addCommerceAccountGroupRel(
-				CPDefinition.class.getName(), cpDefinitionId,
-				commerceAccountGroupId, serviceContext);
+			_accountGroupRelLocalService.addAccountGroupRel(
+				accountGroupId, CPDefinition.class.getName(), cpDefinitionId);
 		}
 
 		// Commerce channel rels
@@ -703,7 +710,7 @@ public class EditCPDefinitionMVCActionCommand extends BaseMVCActionCommand {
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
 
 	@Reference
-	private CommerceAccountGroupRelService _commerceAccountGroupRelService;
+	private AccountGroupRelLocalService _accountGroupRelLocalService;
 
 	@Reference
 	private CommerceCatalogService _commerceCatalogService;

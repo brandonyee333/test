@@ -1,0 +1,36 @@
+@component-name = "portal-file-install"
+definition {
+
+	property ci.retries.disabled = "true";
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "File Install";
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if (${testPortalInstance} == "true") {
+			PortalInstances.tearDownCP();
+		}
+	}
+
+	@priority = 4
+	test SetLiferayHomeToASymbolicLink {
+		property skip.start.app.server = "true";
+		property test.assert.warning.exceptions = "true";
+		property test.name.skip.portal.instance = "SymbolicLinks#SetLiferayHomeToASymbolicLink";
+
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+
+		var symbolicLink = "${liferayHome}/temp";
+
+		AntCommands.runCommand("build-test.xml", "create-symbolic-link -Dsymbolic.link=${symbolicLink} -Dsymbolic.link.resource=${liferayHome}");
+
+		AntCommands.runCommand("build-test.xml", "portal-ext-properties-update -Dadd.new.properties=true -Dupdate.properties=liferay.home=${symbolicLink}");
+
+		Portlet.startServer(keepOSGiState = "true");
+
+		User.firstLoginPG();
+	}
+
+}

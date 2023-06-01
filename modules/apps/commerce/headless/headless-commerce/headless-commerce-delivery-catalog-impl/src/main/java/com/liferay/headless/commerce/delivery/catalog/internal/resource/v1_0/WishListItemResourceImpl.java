@@ -14,10 +14,9 @@
 
 package com.liferay.headless.commerce.delivery.catalog.internal.resource.v1_0;
 
-import com.liferay.commerce.account.exception.NoSuchAccountException;
-import com.liferay.commerce.account.model.CommerceAccount;
-import com.liferay.commerce.account.service.CommerceAccountLocalService;
-import com.liferay.commerce.account.util.CommerceAccountHelper;
+import com.liferay.account.exception.NoSuchEntryException;
+import com.liferay.account.model.AccountEntry;
+import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.commerce.context.CommerceContext;
 import com.liferay.commerce.context.CommerceContextFactory;
 import com.liferay.commerce.product.exception.NoSuchChannelException;
@@ -25,6 +24,7 @@ import com.liferay.commerce.product.model.CPInstance;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
+import com.liferay.commerce.util.CommerceAccountHelper;
 import com.liferay.commerce.wish.list.model.CommerceWishList;
 import com.liferay.commerce.wish.list.model.CommerceWishListItem;
 import com.liferay.commerce.wish.list.service.CommerceWishListItemService;
@@ -32,10 +32,10 @@ import com.liferay.commerce.wish.list.service.CommerceWishListService;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
 import com.liferay.headless.commerce.delivery.catalog.dto.v1_0.WishList;
 import com.liferay.headless.commerce.delivery.catalog.dto.v1_0.WishListItem;
-import com.liferay.headless.commerce.delivery.catalog.internal.dto.v1_0.converter.WishListItemDTOConverter;
 import com.liferay.headless.commerce.delivery.catalog.resource.v1_0.WishListItemResource;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -90,7 +90,7 @@ public class WishListItemResourceImpl
 
 	@NestedField(parentClass = WishList.class, value = "wishListItems")
 	@Override
-	public Page<WishListItem> getWishListItemsPage(
+	public Page<WishListItem> getWishlistWishListWishListItemsPage(
 			@NestedFieldId("id") Long wishListId, Long accountId,
 			Pagination pagination)
 		throws Exception {
@@ -124,7 +124,7 @@ public class WishListItemResourceImpl
 	}
 
 	@Override
-	public WishListItem postChannelWishListItem(
+	public WishListItem postWishlistWishListWishListItem(
 			Long wishListId, Long accountId, WishListItem wishListItem)
 		throws Exception {
 
@@ -174,7 +174,7 @@ public class WishListItemResourceImpl
 
 		if (countUserCommerceAccounts > 1) {
 			if (accountId == null) {
-				throw new NoSuchAccountException();
+				throw new NoSuchEntryException();
 			}
 		}
 		else {
@@ -183,12 +183,12 @@ public class WishListItemResourceImpl
 					contextUser.getUserId(), commerceChannel.getGroupId());
 
 			if (commerceAccountIds.length == 0) {
-				CommerceAccount commerceAccount =
-					_commerceAccountLocalService.getGuestCommerceAccount(
-						contextUser.getCompanyId());
+				AccountEntry accountEntry =
+					_accountEntryLocalService.getGuestAccountEntry(
+						contextCompany.getCompanyId());
 
 				commerceAccountIds = new long[] {
-					commerceAccount.getCommerceAccountId()
+					accountEntry.getAccountEntryId()
 				};
 			}
 
@@ -213,10 +213,10 @@ public class WishListItemResourceImpl
 	}
 
 	@Reference
-	private CommerceAccountHelper _commerceAccountHelper;
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private CommerceAccountLocalService _commerceAccountLocalService;
+	private CommerceAccountHelper _commerceAccountHelper;
 
 	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;
@@ -239,7 +239,10 @@ public class WishListItemResourceImpl
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;
 
-	@Reference
-	private WishListItemDTOConverter _wishListItemDTOConverter;
+	@Reference(
+		target = "(component.name=com.liferay.headless.commerce.delivery.catalog.internal.dto.v1_0.converter.WishListItemDTOConverter)"
+	)
+	private DTOConverter<CommerceContext, WishListItem>
+		_wishListItemDTOConverter;
 
 }

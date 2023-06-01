@@ -278,6 +278,18 @@ public class LayoutServiceUtil {
 			groupId, folderName, fileName, inputStream, mimeType);
 	}
 
+	public static Layout copyLayout(
+			long groupId, boolean privateLayout,
+			Map<java.util.Locale, String> localeNamesMap, boolean hidden,
+			boolean system, boolean copyPermissions, long sourcePlid,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		return getService().copyLayout(
+			groupId, privateLayout, localeNamesMap, hidden, system,
+			copyPermissions, sourcePlid, serviceContext);
+	}
+
 	/**
 	 * Deletes the layout with the primary key, also deleting the layout's child
 	 * layouts, and associated resources.
@@ -1017,6 +1029,10 @@ public class LayoutServiceUtil {
 
 	public static LayoutService getService() {
 		return _service;
+	}
+
+	public static void setService(LayoutService service) {
+		_service = service;
 	}
 
 	private static volatile LayoutService _service;

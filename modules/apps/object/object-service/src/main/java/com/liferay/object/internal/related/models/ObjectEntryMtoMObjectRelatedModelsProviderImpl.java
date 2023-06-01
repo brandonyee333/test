@@ -45,12 +45,13 @@ public class ObjectEntryMtoMObjectRelatedModelsProviderImpl
 		_objectRelationshipLocalService = objectRelationshipLocalService;
 
 		_className = objectDefinition.getClassName();
+		_companyId = objectDefinition.getCompanyId();
 	}
 
 	@Override
 	public void deleteRelatedModel(
 			long userId, long groupId, long objectRelationshipId,
-			long primaryKey)
+			long primaryKey, String deletionType)
 		throws PortalException {
 
 		List<ObjectEntry> relatedModels = getRelatedModels(
@@ -66,7 +67,7 @@ public class ObjectEntryMtoMObjectRelatedModelsProviderImpl
 				objectRelationshipId);
 
 		if (Objects.equals(
-				objectRelationship.getDeletionType(),
+				deletionType,
 				ObjectRelationshipConstants.DELETION_TYPE_PREVENT) &&
 			!objectRelationship.isReverse()) {
 
@@ -82,7 +83,7 @@ public class ObjectEntryMtoMObjectRelatedModelsProviderImpl
 				objectRelationshipId, primaryKey);
 
 		if (Objects.equals(
-				objectRelationship.getDeletionType(),
+				deletionType,
 				ObjectRelationshipConstants.DELETION_TYPE_CASCADE) &&
 			!objectRelationship.isReverse()) {
 
@@ -107,6 +108,11 @@ public class ObjectEntryMtoMObjectRelatedModelsProviderImpl
 	@Override
 	public String getClassName() {
 		return _className;
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
 	}
 
 	@Override
@@ -159,6 +165,7 @@ public class ObjectEntryMtoMObjectRelatedModelsProviderImpl
 	}
 
 	private final String _className;
+	private final long _companyId;
 	private final ObjectEntryService _objectEntryService;
 	private final ObjectRelationshipLocalService
 		_objectRelationshipLocalService;

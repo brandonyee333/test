@@ -26,6 +26,7 @@ import com.liferay.layout.util.structure.ContainerStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.layout.util.structure.StyledLayoutStructureItem;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONException;
@@ -53,7 +54,6 @@ import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.style.book.model.StyleBookEntry;
@@ -170,6 +170,7 @@ public class LayoutStructureCommonStylesCSSServlet extends HttpServlet {
 
 		PrintWriter printWriter = httpServletResponse.getWriter();
 
+		printWriter.write(".lfr-layout-structure-item-container {padding: 0;}");
 		printWriter.write(".lfr-layout-structure-item-row {overflow: hidden;}");
 
 		JSONObject frontendTokensJSONObject = _getFrontendTokensJSONObject(

@@ -58,12 +58,15 @@ public class ObjectFieldWrapper
 		attributes.put("dbColumnName", getDBColumnName());
 		attributes.put("dbTableName", getDBTableName());
 		attributes.put("dbType", getDBType());
-		attributes.put("defaultValue", getDefaultValue());
 		attributes.put("indexed", isIndexed());
 		attributes.put("indexedAsKeyword", isIndexedAsKeyword());
 		attributes.put("indexedLanguageId", getIndexedLanguageId());
 		attributes.put("label", getLabel());
+		attributes.put("localized", isLocalized());
 		attributes.put("name", getName());
+		attributes.put("readOnly", getReadOnly());
+		attributes.put(
+			"readOnlyConditionExpression", getReadOnlyConditionExpression());
 		attributes.put("relationshipType", getRelationshipType());
 		attributes.put("required", isRequired());
 		attributes.put("state", isState());
@@ -166,12 +169,6 @@ public class ObjectFieldWrapper
 			setDBType(dbType);
 		}
 
-		String defaultValue = (String)attributes.get("defaultValue");
-
-		if (defaultValue != null) {
-			setDefaultValue(defaultValue);
-		}
-
 		Boolean indexed = (Boolean)attributes.get("indexed");
 
 		if (indexed != null) {
@@ -196,10 +193,29 @@ public class ObjectFieldWrapper
 			setLabel(label);
 		}
 
+		Boolean localized = (Boolean)attributes.get("localized");
+
+		if (localized != null) {
+			setLocalized(localized);
+		}
+
 		String name = (String)attributes.get("name");
 
 		if (name != null) {
 			setName(name);
+		}
+
+		String readOnly = (String)attributes.get("readOnly");
+
+		if (readOnly != null) {
+			setReadOnly(readOnly);
+		}
+
+		String readOnlyConditionExpression = (String)attributes.get(
+			"readOnlyConditionExpression");
+
+		if (readOnlyConditionExpression != null) {
+			setReadOnlyConditionExpression(readOnlyConditionExpression);
 		}
 
 		String relationshipType = (String)attributes.get("relationshipType");
@@ -308,16 +324,6 @@ public class ObjectFieldWrapper
 	}
 
 	/**
-	 * Returns the default value of this object field.
-	 *
-	 * @return the default value of this object field
-	 */
-	@Override
-	public String getDefaultValue() {
-		return model.getDefaultValue();
-	}
-
-	/**
 	 * Returns the external reference code of this object field.
 	 *
 	 * @return the external reference code of this object field
@@ -325,6 +331,11 @@ public class ObjectFieldWrapper
 	@Override
 	public String getExternalReferenceCode() {
 		return model.getExternalReferenceCode();
+	}
+
+	@Override
+	public String getI18nObjectFieldName() {
+		return model.getI18nObjectFieldName();
 	}
 
 	/**
@@ -444,6 +455,16 @@ public class ObjectFieldWrapper
 	}
 
 	/**
+	 * Returns the localized of this object field.
+	 *
+	 * @return the localized of this object field
+	 */
+	@Override
+	public boolean getLocalized() {
+		return model.getLocalized();
+	}
+
+	/**
 	 * Returns the modified date of this object field.
 	 *
 	 * @return the modified date of this object field
@@ -471,6 +492,13 @@ public class ObjectFieldWrapper
 	@Override
 	public String getName() {
 		return model.getName();
+	}
+
+	@Override
+	public ObjectDefinition getObjectDefinition()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getObjectDefinition();
 	}
 
 	/**
@@ -506,6 +534,26 @@ public class ObjectFieldWrapper
 	@Override
 	public long getPrimaryKey() {
 		return model.getPrimaryKey();
+	}
+
+	/**
+	 * Returns the read only of this object field.
+	 *
+	 * @return the read only of this object field
+	 */
+	@Override
+	public String getReadOnly() {
+		return model.getReadOnly();
+	}
+
+	/**
+	 * Returns the read only condition expression of this object field.
+	 *
+	 * @return the read only condition expression of this object field
+	 */
+	@Override
+	public String getReadOnlyConditionExpression() {
+		return model.getReadOnlyConditionExpression();
 	}
 
 	/**
@@ -588,6 +636,13 @@ public class ObjectFieldWrapper
 		return model.getUuid();
 	}
 
+	@Override
+	public boolean isDeletionAllowed()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.isDeletionAllowed();
+	}
+
 	/**
 	 * Returns <code>true</code> if this object field is indexed.
 	 *
@@ -606,6 +661,16 @@ public class ObjectFieldWrapper
 	@Override
 	public boolean isIndexedAsKeyword() {
 		return model.isIndexedAsKeyword();
+	}
+
+	/**
+	 * Returns <code>true</code> if this object field is localized.
+	 *
+	 * @return <code>true</code> if this object field is localized; <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isLocalized() {
+		return model.isLocalized();
 	}
 
 	/**
@@ -716,16 +781,6 @@ public class ObjectFieldWrapper
 	@Override
 	public void setDBType(String dbType) {
 		model.setDBType(dbType);
-	}
-
-	/**
-	 * Sets the default value of this object field.
-	 *
-	 * @param defaultValue the default value of this object field
-	 */
-	@Override
-	public void setDefaultValue(String defaultValue) {
-		model.setDefaultValue(defaultValue);
 	}
 
 	/**
@@ -843,6 +898,16 @@ public class ObjectFieldWrapper
 	}
 
 	/**
+	 * Sets whether this object field is localized.
+	 *
+	 * @param localized the localized of this object field
+	 */
+	@Override
+	public void setLocalized(boolean localized) {
+		model.setLocalized(localized);
+	}
+
+	/**
 	 * Sets the modified date of this object field.
 	 *
 	 * @param modifiedDate the modified date of this object field
@@ -907,6 +972,28 @@ public class ObjectFieldWrapper
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		model.setPrimaryKey(primaryKey);
+	}
+
+	/**
+	 * Sets the read only of this object field.
+	 *
+	 * @param readOnly the read only of this object field
+	 */
+	@Override
+	public void setReadOnly(String readOnly) {
+		model.setReadOnly(readOnly);
+	}
+
+	/**
+	 * Sets the read only condition expression of this object field.
+	 *
+	 * @param readOnlyConditionExpression the read only condition expression of this object field
+	 */
+	@Override
+	public void setReadOnlyConditionExpression(
+		String readOnlyConditionExpression) {
+
+		model.setReadOnlyConditionExpression(readOnlyConditionExpression);
 	}
 
 	/**

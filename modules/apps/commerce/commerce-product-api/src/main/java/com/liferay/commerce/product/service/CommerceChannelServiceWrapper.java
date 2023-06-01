@@ -39,8 +39,8 @@ public class CommerceChannelServiceWrapper
 
 	@Override
 	public CommerceChannel addCommerceChannel(
-			String externalReferenceCode, long siteGroupId, String name,
-			String type,
+			String externalReferenceCode, long accountEntryId, long siteGroupId,
+			String name, String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			String commerceCurrencyCode,
@@ -48,15 +48,15 @@ public class CommerceChannelServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _commerceChannelService.addCommerceChannel(
-			externalReferenceCode, siteGroupId, name, type,
+			externalReferenceCode, accountEntryId, siteGroupId, name, type,
 			typeSettingsUnicodeProperties, commerceCurrencyCode,
 			serviceContext);
 	}
 
 	@Override
 	public CommerceChannel addOrUpdateCommerceChannel(
-			String externalReferenceCode, long siteGroupId, String name,
-			String type,
+			String externalReferenceCode, long accountEntryId, long siteGroupId,
+			String name, String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			String commerceCurrencyCode,
@@ -64,7 +64,7 @@ public class CommerceChannelServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _commerceChannelService.addOrUpdateCommerceChannel(
-			externalReferenceCode, siteGroupId, name, type,
+			externalReferenceCode, accountEntryId, siteGroupId, name, type,
 			typeSettingsUnicodeProperties, commerceCurrencyCode,
 			serviceContext);
 	}
@@ -108,35 +108,10 @@ public class CommerceChannelServiceWrapper
 	}
 
 	@Override
-	public java.util.List<CommerceChannel> getCommerceChannels(
-			int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _commerceChannelService.getCommerceChannels(start, end);
-	}
-
-	@Override
 	public java.util.List<CommerceChannel> getCommerceChannels(long companyId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _commerceChannelService.getCommerceChannels(companyId);
-	}
-
-	@Override
-	public java.util.List<CommerceChannel> getCommerceChannels(
-			long companyId, String keywords, int start, int end)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _commerceChannelService.getCommerceChannels(
-			companyId, keywords, start, end);
-	}
-
-	@Override
-	public int getCommerceChannelsCount(long companyId, String keywords)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _commerceChannelService.getCommerceChannelsCount(
-			companyId, keywords);
 	}
 
 	/**
@@ -176,14 +151,15 @@ public class CommerceChannelServiceWrapper
 
 	@Override
 	public CommerceChannel updateCommerceChannel(
-			long commerceChannelId, long siteGroupId, String name, String type,
+			long commerceChannelId, long accountEntryId, long siteGroupId,
+			String name, String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			String commerceCurrencyCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _commerceChannelService.updateCommerceChannel(
-			commerceChannelId, siteGroupId, name, type,
+			commerceChannelId, accountEntryId, siteGroupId, name, type,
 			typeSettingsUnicodeProperties, commerceCurrencyCode);
 	}
 

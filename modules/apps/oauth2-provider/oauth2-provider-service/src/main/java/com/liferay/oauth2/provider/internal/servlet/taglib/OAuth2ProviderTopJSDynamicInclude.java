@@ -16,13 +16,14 @@ package com.liferay.oauth2.provider.internal.servlet.taglib;
 
 import com.liferay.oauth2.provider.constants.ClientProfile;
 import com.liferay.oauth2.provider.model.OAuth2Application;
+import com.liferay.oauth2.provider.redirect.OAuth2RedirectURIInterpolator;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -70,7 +71,11 @@ public class OAuth2ProviderTopJSDynamicInclude implements DynamicInclude {
 				).put(
 					"redirectURIs",
 					_jsonFactory.createJSONArray(
-						oAuth2Application.getRedirectURIsList())
+						OAuth2RedirectURIInterpolator.
+							interpolateRedirectURIsList(
+								httpServletRequest,
+								oAuth2Application.getRedirectURIsList(),
+								_portal))
 				));
 		}
 
@@ -86,7 +91,7 @@ public class OAuth2ProviderTopJSDynamicInclude implements DynamicInclude {
 			url, "/o/oauth2/token';}, getUserAgentApplication: ",
 			"function(externalReferenceCode) {return ",
 			"Liferay.OAuth2._userAgentApplications[externalReferenceCode];}, ",
-			"_userAgentApplications: ", jsonObject.toString(), "}</script>");
+			"_userAgentApplications: ", jsonObject, "}</script>");
 
 		printWriter.write(string);
 	}

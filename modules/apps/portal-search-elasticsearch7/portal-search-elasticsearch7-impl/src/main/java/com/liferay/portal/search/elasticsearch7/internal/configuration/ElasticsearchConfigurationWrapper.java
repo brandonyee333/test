@@ -114,6 +114,10 @@ public class ElasticsearchConfigurationWrapper
 		return _elasticsearchConfiguration.httpSSLEnabled();
 	}
 
+	public int indexMaxResultWindow() {
+		return _elasticsearchConfiguration.indexMaxResultWindow();
+	}
+
 	public String indexNamePrefix() {
 		return _elasticsearchConfiguration.indexNamePrefix();
 	}
@@ -128,6 +132,14 @@ public class ElasticsearchConfigurationWrapper
 
 	public boolean logExceptionsOnly() {
 		return _elasticsearchConfiguration.logExceptionsOnly();
+	}
+
+	public int maxConnections() {
+		return _elasticsearchConfiguration.maxConnections();
+	}
+
+	public int maxConnectionsPerRoute() {
+		return _elasticsearchConfiguration.maxConnectionsPerRoute();
 	}
 
 	public String minimumRequiredNodeVersion() {

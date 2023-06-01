@@ -35,9 +35,9 @@ import com.liferay.dynamic.data.mapping.form.web.internal.constants.DDMFormWebKe
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.helper.DDMFormAdminRequestHelper;
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.helper.FormInstancePermissionCheckerHelper;
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.util.DDMFormAdminActionDropdownItemsProvider;
-import com.liferay.dynamic.data.mapping.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 import com.liferay.dynamic.data.mapping.form.web.internal.search.DDMFormInstanceRowChecker;
 import com.liferay.dynamic.data.mapping.form.web.internal.search.DDMFormInstanceSearch;
+import com.liferay.dynamic.data.mapping.form.web.internal.util.DDMLayoutUtil;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializer;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerSerializeRequest;
 import com.liferay.dynamic.data.mapping.io.DDMFormFieldTypesSerializerSerializeResponse;
@@ -107,6 +107,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -125,11 +126,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
@@ -148,8 +146,6 @@ public class DDMFormAdminDisplayContext {
 
 	public DDMFormAdminDisplayContext(
 		RenderRequest renderRequest, RenderResponse renderResponse,
-		AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
-			addDefaultSharedFormLayoutPortalInstanceLifecycleListener,
 		DDMFormBuilderContextFactory ddmFormBuilderContextFactory,
 		DDMFormBuilderSettingsRetriever ddmFormBuilderSettingsRetriever,
 		DDMFormContextDeserializer<DDMFormValues> ddmFormContextToDDMFormValues,
@@ -172,8 +168,6 @@ public class DDMFormAdminDisplayContext {
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		Portal portal) {
 
-		_addDefaultSharedFormLayoutPortalInstanceLifecycleListener =
-			addDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 		_ddmFormBuilderContextFactory = ddmFormBuilderContextFactory;
 		_ddmFormBuilderSettingsRetriever = ddmFormBuilderSettingsRetriever;
 		_ddmFormContextToDDMFormValues = ddmFormContextToDDMFormValues;
@@ -265,9 +259,9 @@ public class DDMFormAdminDisplayContext {
 		return _ddmFormWebConfiguration.autosaveInterval();
 	}
 
-	public Map<String, String> getAvailableExportExtensions() {
+	public Set<String> getAvailableExportTypes() {
 		return _ddmFormInstanceRecordWriterRegistry.
-			getDDMFormInstanceRecordWriterExtensions();
+			getDDMFormInstanceRecordWriterTypes();
 	}
 
 	public JSONArray getAvailableLanguageIdsJSONArray() {
@@ -715,8 +709,7 @@ public class DDMFormAdminDisplayContext {
 
 		DDMFormBuilderContextRequest ddmFormBuilderContextRequest =
 			DDMFormBuilderContextRequest.with(
-				Optional.ofNullable(null), themeDisplay.getRequest(),
-				themeDisplay.getResponse(),
+				null, themeDisplay.getRequest(), themeDisplay.getResponse(),
 				LocaleUtil.fromLanguageId(getDefaultLanguageId()), true);
 
 		ddmFormBuilderContextRequest.addProperty(
@@ -1149,8 +1142,8 @@ public class DDMFormAdminDisplayContext {
 	}
 
 	public String getSharedFormURL() {
-		return _addDefaultSharedFormLayoutPortalInstanceLifecycleListener.
-			getFormLayoutURL(ddmFormAdminRequestHelper.getThemeDisplay());
+		return DDMLayoutUtil.getFormLayoutURL(
+			ddmFormAdminRequestHelper.getThemeDisplay());
 	}
 
 	public String getShareFormInstanceURL(DDMFormInstance ddmFormInstance) {
@@ -1436,16 +1429,19 @@ public class DDMFormAdminDisplayContext {
 
 		ThemeDisplay themeDisplay = ddmFormAdminRequestHelper.getThemeDisplay();
 
-		return Optional.ofNullable(
-			themeDisplay.getSiteDefaultLocale()
-		).orElse(
-			themeDisplay.getLocale()
-		);
+		Locale defaultLocale = themeDisplay.getSiteDefaultLocale();
+
+		if (defaultLocale == null) {
+			return themeDisplay.getLocale();
+		}
+
+		return defaultLocale;
 	}
 
 	protected String getDisplayStyle(
 		PortletRequest portletRequest,
-		DDMFormWebConfiguration formWebConfiguration, String[] displayViews) {
+		DDMFormWebConfiguration ddmFormWebConfiguration,
+		String[] displayViews) {
 
 		PortalPreferences portalPreferences =
 			PortletPreferencesFactoryUtil.getPortalPreferences(portletRequest);
@@ -1456,7 +1452,7 @@ public class DDMFormAdminDisplayContext {
 		if (Validator.isNull(displayStyle)) {
 			displayStyle = portalPreferences.getValue(
 				DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM_ADMIN, "display-style",
-				formWebConfiguration.defaultDisplayView());
+				ddmFormWebConfiguration.defaultDisplayView());
 		}
 		else if (ArrayUtil.contains(displayViews, displayStyle)) {
 			portalPreferences.setValue(
@@ -1580,14 +1576,10 @@ public class DDMFormAdminDisplayContext {
 			JournalArticleDDMFormFieldTypeConstants.JOURNAL_ARTICLE,
 			LayoutDDMFormFieldTypeConstants.LINK_TO_LAYOUT);
 
-		Stream<DDMFormFieldType> stream = ddmFormFieldTypes.stream();
-
-		return stream.filter(
+		return ListUtil.filter(
+			ddmFormFieldTypes,
 			ddmFormFieldType -> !outOfScopeDDMFormFieldTypes.contains(
-				ddmFormFieldType.getName())
-		).collect(
-			Collectors.toList()
-		);
+				ddmFormFieldType.getName()));
 	}
 
 	private UnsafeConsumer<DropdownItem, Exception> _getAddFormDropdownItem() {
@@ -1793,8 +1785,6 @@ public class DDMFormAdminDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DDMFormAdminDisplayContext.class);
 
-	private final AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
-		_addDefaultSharedFormLayoutPortalInstanceLifecycleListener;
 	private final DDMFormBuilderContextFactory _ddmFormBuilderContextFactory;
 	private DDMFormBuilderSettingsResponse _ddmFormBuilderSettingsResponse;
 	private final DDMFormBuilderSettingsRetriever

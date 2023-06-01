@@ -16,6 +16,7 @@ package com.liferay.style.book.service;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.style.book.model.StyleBookEntry;
 
@@ -88,12 +89,12 @@ public class StyleBookEntryLocalServiceWrapper
 
 	@Override
 	public StyleBookEntry copyStyleBookEntry(
-			long userId, long groupId, long styleBookEntryId,
+			long userId, long groupId, long sourceStyleBookEntryId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _styleBookEntryLocalService.copyStyleBookEntry(
-			userId, groupId, styleBookEntryId, serviceContext);
+			userId, groupId, sourceStyleBookEntryId, serviceContext);
 	}
 
 	/**
@@ -610,6 +611,11 @@ public class StyleBookEntryLocalServiceWrapper
 
 		return _styleBookEntryLocalService.updateStyleBookEntry(
 			draftStyleBookEntry);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _styleBookEntryLocalService.getBasePersistence();
 	}
 
 	@Override

@@ -14,6 +14,7 @@
 
 package com.liferay.roles.admin.web.internal.display.context;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
@@ -41,7 +42,6 @@ import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.impl.ResourceImpl;
@@ -78,7 +78,7 @@ public class EditRolePermissionsSummaryDisplayContext {
 		_roleDisplayContext = roleDisplayContext;
 		_servletContext = servletContext;
 
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
 
@@ -146,8 +146,8 @@ public class EditRolePermissionsSummaryDisplayContext {
 				{
 					setCompanyId(_themeDisplay.getCompanyId());
 					setName(permission.getName());
-					setScope(permission.getScope());
 					setPrimKey(permission.getPrimKey());
+					setScope(permission.getScope());
 				}
 			};
 

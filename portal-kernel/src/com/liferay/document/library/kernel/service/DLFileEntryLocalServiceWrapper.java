@@ -17,6 +17,7 @@ package com.liferay.document.library.kernel.service;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -85,10 +86,10 @@ public class DLFileEntryLocalServiceWrapper
 	}
 
 	@Override
-	public void checkFileEntries(long checkInterval)
+	public void checkFileEntries(long companyId, long checkInterval)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		_dlFileEntryLocalService.checkFileEntries(checkInterval);
+		_dlFileEntryLocalService.checkFileEntries(companyId, checkInterval);
 	}
 
 	@Override
@@ -166,26 +167,26 @@ public class DLFileEntryLocalServiceWrapper
 
 	@Override
 	public DLFileEntry copyFileEntry(
-			long userId, long groupId, long repositoryId, long fileEntryId,
-			long destFolderId, String fileName,
+			long userId, long groupId, long repositoryId,
+			long sourceFileEntryId, long targetFolderId, String fileName,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dlFileEntryLocalService.copyFileEntry(
-			userId, groupId, repositoryId, fileEntryId, destFolderId, fileName,
-			serviceContext);
+			userId, groupId, repositoryId, sourceFileEntryId, targetFolderId,
+			fileName, serviceContext);
 	}
 
 	@Override
 	public void copyFileEntryMetadata(
 			long companyId, long fileEntryTypeId, long fileEntryId,
-			long fromFileVersionId, long toFileVersionId,
+			long sourceFileVersionId, long targetFileVersionId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_dlFileEntryLocalService.copyFileEntryMetadata(
-			companyId, fileEntryTypeId, fileEntryId, fromFileVersionId,
-			toFileVersionId, serviceContext);
+			companyId, fileEntryTypeId, fileEntryId, sourceFileVersionId,
+			targetFileVersionId, serviceContext);
 	}
 
 	/**
@@ -1147,6 +1148,11 @@ public class DLFileEntryLocalServiceWrapper
 
 		return _dlFileEntryLocalService.verifyFileEntryLock(
 			fileEntryId, lockUuid);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _dlFileEntryLocalService.getBasePersistence();
 	}
 
 	@Override

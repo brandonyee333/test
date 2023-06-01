@@ -162,7 +162,7 @@ public class AssetListDisplayContext {
 		}
 
 		SearchContainer<AssetListEntry> assetListEntriesSearchContainer =
-			new SearchContainer(
+			new SearchContainer<>(
 				_renderRequest, _renderResponse.createRenderURL(), null,
 				"there-are-no-collections");
 
@@ -192,8 +192,10 @@ public class AssetListDisplayContext {
 				getAssetListEntriesCount());
 		}
 
-		assetListEntriesSearchContainer.setRowChecker(
-			new EmptyOnClickRowChecker(_renderResponse));
+		if (!isLiveGroup()) {
+			assetListEntriesSearchContainer.setRowChecker(
+				new EmptyOnClickRowChecker(_renderResponse));
+		}
 
 		_assetListEntriesSearchContainer = assetListEntriesSearchContainer;
 
@@ -308,7 +310,7 @@ public class AssetListDisplayContext {
 	}
 
 	public String getClassName(AssetRendererFactory<?> assetRendererFactory) {
-		Class<? extends AssetRendererFactory> clazz =
+		Class<? extends AssetRendererFactory<?>> clazz =
 			_assetRendererFactoryClassProvider.getClass(assetRendererFactory);
 
 		String className = clazz.getName();
@@ -375,6 +377,10 @@ public class AssetListDisplayContext {
 	public String getEditURL(AssetListEntry assetListEntry)
 		throws PortalException {
 
+		if (isLiveGroup()) {
+			return StringPool.BLANK;
+		}
+
 		if (AssetListEntryPermission.contains(
 				_themeDisplay.getPermissionChecker(), assetListEntry,
 				ActionKeys.UPDATE) ||
@@ -428,10 +434,6 @@ public class AssetListDisplayContext {
 		).build();
 	}
 
-	public String getOrderByCol() {
-		return _getOrderByCol();
-	}
-
 	public String getOrderByType() {
 		if (Validator.isNotNull(_orderByType)) {
 			return _orderByType;
@@ -455,7 +457,7 @@ public class AssetListDisplayContext {
 		return _segmentsEntryId;
 	}
 
-	public boolean isShowAddAssetListEntryAction() {
+	public boolean isLiveGroup() {
 		Group group = _themeDisplay.getScopeGroup();
 
 		if (group.isLayout()) {
@@ -469,6 +471,14 @@ public class AssetListDisplayContext {
 			stagingGroupHelper.isStagedPortlet(
 				group, AssetListPortletKeys.ASSET_LIST)) {
 
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isShowAddAssetListEntryAction() {
+		if (isLiveGroup()) {
 			return false;
 		}
 

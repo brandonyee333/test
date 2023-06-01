@@ -14,10 +14,11 @@
 
 package com.liferay.commerce.machine.learning.recommendation.info.collection.provider.test;
 
+import com.liferay.account.constants.AccountConstants;
+import com.liferay.account.model.AccountEntry;
+import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.AssetCategory;
-import com.liferay.commerce.account.model.CommerceAccount;
-import com.liferay.commerce.account.service.CommerceAccountLocalService;
 import com.liferay.commerce.account.test.util.CommerceAccountTestUtil;
 import com.liferay.commerce.constants.CommerceWebKeys;
 import com.liferay.commerce.context.CommerceContext;
@@ -36,6 +37,7 @@ import com.liferay.info.collection.provider.CollectionQuery;
 import com.liferay.info.collection.provider.InfoCollectionProvider;
 import com.liferay.info.collection.provider.RelatedInfoItemCollectionProvider;
 import com.liferay.info.pagination.InfoPage;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -45,7 +47,6 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.search.test.util.IdempotentRetryAssert;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -90,7 +91,8 @@ public class UserCommerceMLRecommendationRelatedInfoItemCollectionProviderTest
 			_group.getGroupId());
 
 		_commerceChannel = CommerceChannelLocalServiceUtil.addCommerceChannel(
-			null, _group.getGroupId(), "Test Channel",
+			null, AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
+			_group.getGroupId(), "Test Channel",
 			CommerceChannelConstants.CHANNEL_TYPE_SITE, null,
 			_commerceCurrency.getCode(), _serviceContext);
 
@@ -189,8 +191,8 @@ public class UserCommerceMLRecommendationRelatedInfoItemCollectionProviderTest
 			new ArrayList<>();
 
 		for (int i = 0; i < _ACCOUNT_COUNT; i++) {
-			CommerceAccount commerceAccount =
-				CommerceAccountTestUtil.addBusinessCommerceAccount(
+			AccountEntry accountEntry =
+				CommerceAccountTestUtil.addBusinessAccountEntry(
 					TestPropsValues.getUserId(), RandomTestUtil.randomString(),
 					RandomTestUtil.randomString() + "@liferay.com",
 					RandomTestUtil.randomString(), _serviceContext);
@@ -221,7 +223,7 @@ public class UserCommerceMLRecommendationRelatedInfoItemCollectionProviderTest
 						_userCommerceMLRecommendationManager.create();
 
 					userCommerceMLRecommendation.setEntryClassPK(
-						commerceAccount.getCommerceAccountId());
+						accountEntry.getAccountEntryId());
 					userCommerceMLRecommendation.setScore(1.0F - (k / 10.0F));
 					userCommerceMLRecommendation.setRecommendedEntryClassPK(
 						recommendedCPDefinition.getCPDefinitionId());
@@ -251,9 +253,8 @@ public class UserCommerceMLRecommendationRelatedInfoItemCollectionProviderTest
 			new MockHttpServletRequest();
 
 		CommerceContext commerceContext = new TestCommerceContext(
-			_commerceCurrency, _commerceChannel, user, _group,
-			_commerceAccountLocalService.getCommerceAccount(commerceAccountId),
-			null);
+			_accountEntryLocalService.getAccountEntry(commerceAccountId),
+			_commerceCurrency, _commerceChannel, user, _group, null);
 
 		mockHttpServletRequest.setAttribute(
 			CommerceWebKeys.COMMERCE_CONTEXT, commerceContext);
@@ -312,7 +313,7 @@ public class UserCommerceMLRecommendationRelatedInfoItemCollectionProviderTest
 	private static final int _ACCOUNT_COUNT = 2;
 
 	@Inject
-	private CommerceAccountLocalService _commerceAccountLocalService;
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	private CommerceCatalog _commerceCatalog;
 	private CommerceChannel _commerceChannel;

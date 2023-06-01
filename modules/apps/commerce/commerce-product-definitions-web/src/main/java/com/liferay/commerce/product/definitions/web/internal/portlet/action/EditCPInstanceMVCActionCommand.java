@@ -187,22 +187,31 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "subscriptionEnabled");
 		int subscriptionLength = ParamUtil.getInteger(
 			actionRequest, "subscriptionLength");
+
 		String subscriptionType = ParamUtil.getString(
 			actionRequest, "subscriptionType");
+
 		UnicodeProperties subscriptionTypeSettingsUnicodeProperties =
 			PropertiesParamUtil.getProperties(
-				actionRequest, "subscriptionTypeSettings--");
+				actionRequest,
+				"subscriptionTypeSettings--" + subscriptionType + "--");
+
 		long maxSubscriptionCycles = ParamUtil.getLong(
 			actionRequest, "maxSubscriptionCycles");
 		boolean deliverySubscriptionEnabled = ParamUtil.getBoolean(
 			actionRequest, "deliverySubscriptionEnabled");
 		int deliverySubscriptionLength = ParamUtil.getInteger(
 			actionRequest, "deliverySubscriptionLength");
+
 		String deliverySubscriptionType = ParamUtil.getString(
 			actionRequest, "deliverySubscriptionType");
+
 		UnicodeProperties deliverySubscriptionTypeSettingsUnicodeProperties =
 			PropertiesParamUtil.getProperties(
-				actionRequest, "deliverySubscriptionTypeSettings--");
+				actionRequest,
+				"deliverySubscriptionTypeSettings--" +
+					deliverySubscriptionType + "--");
+
 		long deliveryMaxSubscriptionCycles = ParamUtil.getLong(
 			actionRequest, "deliveryMaxSubscriptionCycles");
 
@@ -329,6 +338,8 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 			CPInstance.class.getName(), actionRequest);
 
 		if (cpInstanceId > 0) {
+			cpInstance = _cpInstanceService.getCPInstance(cpInstanceId);
+
 			cpInstance = _cpInstanceService.updateCPInstance(
 				externalReferenceCode, cpInstanceId, sku, gtin,
 				manufacturerPartNumber, purchasable, width, height, depth,
@@ -336,9 +347,21 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 				displayDateDay, displayDateYear, displayDateHour,
 				displayDateMinute, expirationDateMonth, expirationDateDay,
 				expirationDateYear, expirationDateHour, expirationDateMinute,
-				neverExpire, unspsc, discontinued, replacementCPInstanceUuid,
-				replacementCProductId, discontinuedDateMonth,
-				discontinuedDateDay, discontinuedDateYear, serviceContext);
+				neverExpire, cpInstance.isOverrideSubscriptionInfo(),
+				cpInstance.isSubscriptionEnabled(),
+				cpInstance.getSubscriptionLength(),
+				cpInstance.getSubscriptionType(),
+				cpInstance.getSubscriptionTypeSettingsUnicodeProperties(),
+				cpInstance.getMaxSubscriptionCycles(),
+				cpInstance.isDeliverySubscriptionEnabled(),
+				cpInstance.getDeliverySubscriptionLength(),
+				cpInstance.getDeliverySubscriptionType(),
+				cpInstance.
+					getDeliverySubscriptionTypeSettingsUnicodeProperties(),
+				cpInstance.getDeliveryMaxSubscriptionCycles(), unspsc,
+				discontinued, replacementCPInstanceUuid, replacementCProductId,
+				discontinuedDateMonth, discontinuedDateDay,
+				discontinuedDateYear, serviceContext);
 		}
 		else {
 			long cpDefinitionId = ParamUtil.getLong(
@@ -476,7 +499,8 @@ public class EditCPInstanceMVCActionCommand extends BaseMVCActionCommand {
 			CPDefinition cpDefinition = cpInstance.getCPDefinition();
 
 			_commercePriceEntryLocalService.addCommercePriceEntry(
-				cpDefinition.getCProductId(), cpInstance.getCPInstanceUuid(),
+				null, cpDefinition.getCProductId(),
+				cpInstance.getCPInstanceUuid(),
 				commercePriceList.getCommercePriceListId(), price, null,
 				serviceContext);
 		}

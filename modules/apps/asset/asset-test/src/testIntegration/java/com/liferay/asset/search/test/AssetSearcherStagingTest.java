@@ -15,9 +15,12 @@
 package com.liferay.asset.search.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.asset.kernel.search.AssetSearcherFactory;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
+import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.ResourceConstants;
@@ -25,6 +28,7 @@ import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.search.BaseSearcher;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
@@ -45,11 +49,10 @@ import com.liferay.portal.search.test.util.SearchTestRule;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
-import com.liferay.portlet.asset.util.AssetSearcher;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -75,6 +78,9 @@ public class AssetSearcherStagingTest {
 	@Before
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup();
+
+		_journalArticleFixture.setDDMStructureLocalService(
+			_ddmStructureLocalService);
 
 		_journalArticleFixture.setGroup(_group);
 
@@ -182,11 +188,8 @@ public class AssetSearcherStagingTest {
 	}
 
 	protected long[] getClassNameIds(String... classNames) {
-		return Stream.of(
-			classNames
-		).mapToLong(
-			PortalUtil::getClassNameId
-		).toArray();
+		return TransformUtil.transformToLongArray(
+			Arrays.asList(classNames), PortalUtil::getClassNameId);
 	}
 
 	protected SearchContext getSearchContext() {
@@ -201,12 +204,17 @@ public class AssetSearcherStagingTest {
 			AssetEntryQuery assetEntryQuery, SearchContext searchContext)
 		throws Exception {
 
-		AssetSearcher assetSearcher = new AssetSearcher();
+		BaseSearcher baseSearcher = _assetSearcherFactory.createBaseSearcher(
+			assetEntryQuery);
 
-		assetSearcher.setAssetEntryQuery(assetEntryQuery);
-
-		return assetSearcher.search(searchContext);
+		return baseSearcher.search(searchContext);
 	}
+
+	@Inject
+	private static AssetSearcherFactory _assetSearcherFactory;
+
+	@Inject
+	private static DDMStructureLocalService _ddmStructureLocalService;
 
 	@Inject
 	private static JournalArticleLocalService _journalArticleLocalService;

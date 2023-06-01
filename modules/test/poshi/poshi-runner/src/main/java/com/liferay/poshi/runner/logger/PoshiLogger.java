@@ -16,12 +16,12 @@ package com.liferay.poshi.runner.logger;
 
 import com.liferay.poshi.core.PoshiContext;
 import com.liferay.poshi.core.PoshiGetterUtil;
-import com.liferay.poshi.core.PoshiStackTraceUtil;
+import com.liferay.poshi.core.PoshiStackTrace;
 import com.liferay.poshi.core.elements.PoshiElement;
 import com.liferay.poshi.core.util.Dom4JUtil;
 import com.liferay.poshi.core.util.FileUtil;
 import com.liferay.poshi.core.util.GetterUtil;
-import com.liferay.poshi.core.util.PropsValues;
+import com.liferay.poshi.core.util.PoshiProperties;
 import com.liferay.poshi.core.util.StringUtil;
 import com.liferay.poshi.runner.exception.PoshiRunnerLoggerException;
 
@@ -39,9 +39,16 @@ import org.dom4j.Element;
 public class PoshiLogger {
 
 	public PoshiLogger(String testNamespacedClassCommandName) throws Exception {
-		_commandLogger = new CommandLogger();
+		_commandLogger = new CommandLogger(testNamespacedClassCommandName);
 
 		_syntaxLogger = _getSyntaxLogger(testNamespacedClassCommandName);
+
+		_testNamespacedClassCommandName = testNamespacedClassCommandName;
+
+		_poshiProperties = PoshiProperties.getPoshiProperties();
+
+		_poshiStackTrace = PoshiStackTrace.getPoshiStackTrace(
+			testNamespacedClassCommandName);
 	}
 
 	public void createPoshiReport() throws IOException {
@@ -68,7 +75,7 @@ public class PoshiLogger {
 					"></ul>",
 				_syntaxLogger.getSyntaxLogText());
 
-			if (PropsValues.TEST_RUN_LOCALLY) {
+			if (_poshiProperties.testRunLocally) {
 				FileUtil.copyFileFromResource(
 					"META-INF/resources/css/main.css",
 					currentDirName + "/test-results/css/main.css");
@@ -85,22 +92,24 @@ public class PoshiLogger {
 			else {
 				indexHTMLContent = StringUtil.replace(
 					indexHTMLContent, "<link href=\"../css/main.css\"",
-					"<link href=\"" + PropsValues.LOGGER_RESOURCES_URL +
+					"<link href=\"" + _poshiProperties.loggerResourcesURL +
 						"/css/main.css\"");
 				indexHTMLContent = StringUtil.replace(
 					indexHTMLContent,
 					"<script defer src=\"../js/component.js\"",
-					"<script defer src=\"" + PropsValues.LOGGER_RESOURCES_URL +
-						"/js/component.js\"");
+					"<script defer src=\"" +
+						_poshiProperties.loggerResourcesURL +
+							"/js/component.js\"");
 				indexHTMLContent = StringUtil.replace(
 					indexHTMLContent, "<script defer src=\"../js/main.js\"",
-					"<script defer src=\"" + PropsValues.LOGGER_RESOURCES_URL +
-						"/js/main.js\"");
+					"<script defer src=\"" +
+						_poshiProperties.loggerResourcesURL + "/js/main.js\"");
 				indexHTMLContent = StringUtil.replace(
 					indexHTMLContent,
 					"<script defer src=\"../js/update_images.js\"",
-					"<script defer src=\"" + PropsValues.LOGGER_RESOURCES_URL +
-						"/js/update_images.js\"");
+					"<script defer src=\"" +
+						_poshiProperties.loggerResourcesURL +
+							"/js/update_images.js\"");
 			}
 		}
 		catch (OutOfMemoryError outOfMemoryError) {
@@ -134,9 +143,7 @@ public class PoshiLogger {
 		sb.append(currentDirName);
 		sb.append("/test-results/");
 		sb.append(
-			StringUtil.replace(
-				PoshiContext.getTestCaseNamespacedClassCommandName(), "#",
-				"_"));
+			StringUtil.replace(_testNamespacedClassCommandName, "#", "_"));
 		sb.append("/index.html");
 
 		FileUtil.write(sb.toString(), indexHTMLContent);
@@ -152,6 +159,10 @@ public class PoshiLogger {
 
 	public int getDetailsLinkId() {
 		return _commandLogger.getDetailsLinkId();
+	}
+
+	public String getTestNamespacedClassCommandName() {
+		return _testNamespacedClassCommandName;
 	}
 
 	public void logExternalMethodCommand(
@@ -269,7 +280,7 @@ public class PoshiLogger {
 
 	private LoggerElement _getSyntaxLoggerElement() {
 		return _syntaxLogger.getSyntaxLoggerElement(
-			PoshiStackTraceUtil.getSimpleStackTrace());
+			_poshiStackTrace.getSimpleStackTrace());
 	}
 
 	private void _linkLoggerElements(
@@ -295,6 +306,9 @@ public class PoshiLogger {
 
 	private final CommandLogger _commandLogger;
 	private int _functionLinkId;
+	private final PoshiProperties _poshiProperties;
+	private final PoshiStackTrace _poshiStackTrace;
 	private final SyntaxLogger _syntaxLogger;
+	private final String _testNamespacedClassCommandName;
 
 }

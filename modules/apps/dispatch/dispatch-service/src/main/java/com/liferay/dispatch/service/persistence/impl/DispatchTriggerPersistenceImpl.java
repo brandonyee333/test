@@ -54,7 +54,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -7223,7 +7222,9 @@ public class DispatchTriggerPersistenceImpl
 				if (ercDispatchTrigger != null) {
 					throw new DuplicateDispatchTriggerExternalReferenceCodeException(
 						"Duplicate dispatch trigger with external reference code " +
-							dispatchTrigger.getExternalReferenceCode());
+							dispatchTrigger.getExternalReferenceCode() +
+								" and company " +
+									dispatchTrigger.getCompanyId());
 				}
 			}
 			else {
@@ -7233,7 +7234,9 @@ public class DispatchTriggerPersistenceImpl
 
 					throw new DuplicateDispatchTriggerExternalReferenceCodeException(
 						"Duplicate dispatch trigger with external reference code " +
-							dispatchTrigger.getExternalReferenceCode());
+							dispatchTrigger.getExternalReferenceCode() +
+								" and company " +
+									dispatchTrigger.getCompanyId());
 				}
 			}
 		}
@@ -7710,30 +7713,14 @@ public class DispatchTriggerPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setDispatchTriggerUtilPersistence(this);
+		DispatchTriggerUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setDispatchTriggerUtilPersistence(null);
+		DispatchTriggerUtil.setPersistence(null);
 
 		entityCache.removeCache(DispatchTriggerImpl.class.getName());
-	}
-
-	private void _setDispatchTriggerUtilPersistence(
-		DispatchTriggerPersistence dispatchTriggerPersistence) {
-
-		try {
-			Field field = DispatchTriggerUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, dispatchTriggerPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

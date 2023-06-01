@@ -55,6 +55,12 @@ renderResponse.setTitle((auditEvent == null) ? "audit-event" : auditEvent.getEve
 				<%= dateFormatDateTime.format(auditEvent.getCreateDate()) %>
 			</aui:field-wrapper>
 
+			<c:if test='<%= FeatureFlagManagerUtil.isEnabled("LPS-177194") %>'>
+				<aui:field-wrapper label="group-id">
+					<%= auditEvent.getGroupId() %>
+				</aui:field-wrapper>
+			</c:if>
+
 			<aui:field-wrapper label="resource-id">
 				<%= auditEvent.getClassPK() %>
 			</aui:field-wrapper>
@@ -89,10 +95,6 @@ renderResponse.setTitle((auditEvent == null) ? "audit-event" : auditEvent.getEve
 
 			<aui:field-wrapper label="server-name">
 				<%= Validator.isNotNull(auditEvent.getServerName()) ? auditEvent.getServerName() : LanguageUtil.get(request, "none") %>
-			</aui:field-wrapper>
-
-			<aui:field-wrapper label="session-id">
-				<%= Validator.isNotNull(auditEvent.getSessionID()) ? auditEvent.getSessionID() : LanguageUtil.get(request, "none") %>
 			</aui:field-wrapper>
 
 			<aui:field-wrapper label="additional-information">

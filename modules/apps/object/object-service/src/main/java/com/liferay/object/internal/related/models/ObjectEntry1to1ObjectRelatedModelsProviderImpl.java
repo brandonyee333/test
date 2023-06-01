@@ -52,12 +52,13 @@ public class ObjectEntry1to1ObjectRelatedModelsProviderImpl
 		_objectRelationshipLocalService = objectRelationshipLocalService;
 
 		_className = objectDefinition.getClassName();
+		_companyId = objectDefinition.getCompanyId();
 	}
 
 	@Override
 	public void deleteRelatedModel(
 			long userId, long groupId, long objectRelationshipId,
-			long primaryKey)
+			long primaryKey, String deletionType)
 		throws PortalException {
 
 		ObjectRelationship objectRelationship =
@@ -74,14 +75,14 @@ public class ObjectEntry1to1ObjectRelatedModelsProviderImpl
 		ObjectEntry objectEntry = relatedModels.get(0);
 
 		if (Objects.equals(
-				objectRelationship.getDeletionType(),
+				deletionType,
 				ObjectRelationshipConstants.DELETION_TYPE_CASCADE)) {
 
 			_objectEntryService.deleteObjectEntry(
 				objectEntry.getObjectEntryId());
 		}
 		else if (Objects.equals(
-					objectRelationship.getDeletionType(),
+					deletionType,
 					ObjectRelationshipConstants.DELETION_TYPE_DISASSOCIATE)) {
 
 			_objectEntryService.updateObjectEntry(
@@ -99,7 +100,7 @@ public class ObjectEntry1to1ObjectRelatedModelsProviderImpl
 				new ServiceContext());
 		}
 		else if (Objects.equals(
-					objectRelationship.getDeletionType(),
+					deletionType,
 					ObjectRelationshipConstants.DELETION_TYPE_PREVENT)) {
 
 			throw new RequiredObjectRelationshipException(
@@ -141,6 +142,11 @@ public class ObjectEntry1to1ObjectRelatedModelsProviderImpl
 	}
 
 	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
 	public String getObjectRelationshipType() {
 		return ObjectRelationshipConstants.TYPE_ONE_TO_ONE;
 	}
@@ -167,6 +173,7 @@ public class ObjectEntry1to1ObjectRelatedModelsProviderImpl
 	}
 
 	private final String _className;
+	private final long _companyId;
 	private final ObjectEntryService _objectEntryService;
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectRelationshipLocalService

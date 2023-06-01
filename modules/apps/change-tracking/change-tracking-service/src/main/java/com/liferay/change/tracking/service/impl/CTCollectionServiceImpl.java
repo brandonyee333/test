@@ -19,6 +19,7 @@ import com.liferay.change.tracking.constants.CTConstants;
 import com.liferay.change.tracking.model.CTAutoResolutionInfo;
 import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.change.tracking.model.CTCollectionTable;
+import com.liferay.change.tracking.model.CTProcess;
 import com.liferay.change.tracking.service.CTProcessLocalService;
 import com.liferay.change.tracking.service.base.CTCollectionServiceBaseImpl;
 import com.liferay.change.tracking.service.persistence.CTAutoResolutionInfoPersistence;
@@ -102,21 +103,6 @@ public class CTCollectionServiceImpl extends CTCollectionServiceBaseImpl {
 	}
 
 	@Override
-	public void discardCTEntries(
-			long ctCollectionId, long modelClassNameId, long modelClassPK)
-		throws PortalException {
-
-		CTCollection ctCollection = ctCollectionPersistence.findByPrimaryKey(
-			ctCollectionId);
-
-		_ctCollectionModelResourcePermission.check(
-			getPermissionChecker(), ctCollection, ActionKeys.UPDATE);
-
-		ctCollectionLocalService.discardCTEntries(
-			ctCollectionId, modelClassNameId, modelClassPK, false);
-	}
-
-	@Override
 	public void discardCTEntry(
 			long ctCollectionId, long modelClassNameId, long modelClassPK)
 		throws PortalException {
@@ -177,6 +163,20 @@ public class CTCollectionServiceImpl extends CTCollectionServiceBaseImpl {
 		);
 
 		return ctCollectionPersistence.dslQueryCount(dslQuery);
+	}
+
+	@Override
+	public CTProcess moveCTEntries(
+			long fromCTCollectionId, long toCTCollectionId, long[] ctEntryIds)
+		throws PortalException {
+
+		_ctCollectionModelResourcePermission.check(
+			getPermissionChecker(), fromCTCollectionId, ActionKeys.UPDATE);
+		_ctCollectionModelResourcePermission.check(
+			getPermissionChecker(), toCTCollectionId, ActionKeys.UPDATE);
+
+		return _ctProcessLocalService.addCTProcess(
+			getUserId(), fromCTCollectionId, toCTCollectionId, ctEntryIds);
 	}
 
 	@Override

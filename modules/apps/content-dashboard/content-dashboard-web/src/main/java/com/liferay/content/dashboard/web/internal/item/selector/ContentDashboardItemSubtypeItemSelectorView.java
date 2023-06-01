@@ -23,7 +23,6 @@ import com.liferay.content.dashboard.item.type.ContentDashboardItemSubtypeFactor
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardItemSubtypeItemSelectorViewDisplayContext;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryRegistry;
 import com.liferay.content.dashboard.web.internal.item.selector.criteria.content.dashboard.type.criterion.ContentDashboardItemSubtypeItemSelectorCriterion;
-import com.liferay.content.dashboard.web.internal.util.ContentDashboardGroupUtil;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalService;
 import com.liferay.info.item.InfoItemClassDetails;
@@ -40,6 +39,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
@@ -58,14 +58,12 @@ import java.io.IOException;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.portlet.PortletURL;
 
@@ -140,35 +138,33 @@ public class ContentDashboardItemSubtypeItemSelectorView
 		_getCheckedContentDashboardItemSubtypesInfoItemReferences(
 			ServletRequest servletRequest) {
 
-		return Stream.of(
-			Optional.ofNullable(
-				servletRequest.getParameterValues(
-					"checkedContentDashboardItemSubtypesPayload")
-			).orElseGet(
-				() -> new String[0]
-			)
-		).map(
-			jsonObjectString -> {
-				try {
-					return _jsonFactory.createJSONObject(jsonObjectString);
-				}
-				catch (JSONException jsonException) {
-					_log.error(jsonException);
+		String[] parameterValues = servletRequest.getParameterValues(
+			"checkedContentDashboardItemSubtypesPayload");
 
-					return null;
-				}
+		if (ArrayUtil.isEmpty(parameterValues)) {
+			return Collections.emptySet();
+		}
+
+		Set<InfoItemReference> infoItemReferences = new HashSet<>();
+
+		for (String parameterValue : parameterValues) {
+			try {
+				JSONObject jsonObject = _jsonFactory.createJSONObject(
+					parameterValue);
+
+				infoItemReferences.add(
+					new InfoItemReference(
+						jsonObject.getString("className"),
+						new ClassNameClassPKInfoItemIdentifier(
+							jsonObject.getString("entryClassName"),
+							jsonObject.getLong("classPK"))));
 			}
-		).filter(
-			Objects::nonNull
-		).map(
-			jsonObject -> new InfoItemReference(
-				jsonObject.getString("className"),
-				new ClassNameClassPKInfoItemIdentifier(
-					jsonObject.getString("entryClassName"),
-					jsonObject.getLong("classPK")))
-		).collect(
-			Collectors.toSet()
-		);
+			catch (JSONException jsonException) {
+				_log.error(jsonException);
+			}
+		}
+
+		return infoItemReferences;
 	}
 
 	private JSONArray _getContentDashboardItemTypesJSONArray(
@@ -194,16 +190,12 @@ public class ContentDashboardItemSubtypeItemSelectorView
 				continue;
 			}
 
-			Optional<ContentDashboardItemSubtypeFactory>
-				contentDashboardItemSubtypeFactoryOptional =
+			ContentDashboardItemSubtypeFactory<?>
+				contentDashboardItemSubtypeFactory =
 					contentDashboardItemFactory.
-						getContentDashboardItemSubtypeFactoryOptional();
+						getContentDashboardItemSubtypeFactory();
 
-			if (contentDashboardItemSubtypeFactoryOptional.isPresent()) {
-				ContentDashboardItemSubtypeFactory
-					contentDashboardItemSubtypeFactory =
-						contentDashboardItemSubtypeFactoryOptional.get();
-
+			if (contentDashboardItemSubtypeFactory != null) {
 				_populateContentDashboardItemTypesJSONArray(
 					className, contentDashboardItemSubtypeFactory,
 					checkedContentDashboardItemSubtypesInfoItemReferences,
@@ -220,15 +212,22 @@ public class ContentDashboardItemSubtypeItemSelectorView
 	}
 
 	private String _getIcon(String className) {
-		return Optional.ofNullable(
-			_infoSearchClassMapperRegistry.getSearchClassName(className)
-		).map(
-			AssetRendererFactoryRegistryUtil::getAssetRendererFactoryByClassName
-		).map(
-			AssetRendererFactory::getIconCssClass
-		).orElseGet(
-			null
-		);
+		String searchClassName =
+			_infoSearchClassMapperRegistry.getSearchClassName(className);
+
+		if (searchClassName == null) {
+			return null;
+		}
+
+		AssetRendererFactory<?> assetRendererFactory =
+			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+				searchClassName);
+
+		if (assetRendererFactory == null) {
+			return null;
+		}
+
+		return assetRendererFactory.getIconCssClass();
 	}
 
 	private String _getInfoItemFormVariationLabel(
@@ -246,11 +245,20 @@ public class ContentDashboardItemSubtypeItemSelectorView
 			return label;
 		}
 
-		String value = _language.format(
-			locale, "x-group-x",
-			new String[] {
-				label, ContentDashboardGroupUtil.getGroupName(group, locale)
-			});
+		String value = null;
+
+		try {
+			value = _language.format(
+				locale, "x-group-x",
+				new String[] {label, group.getDescriptiveName(locale)});
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
+
+			value = _language.format(
+				locale, "x-group-x",
+				new String[] {label, group.getName(locale)});
+		}
 
 		if (value != null) {
 			return value;
@@ -261,7 +269,8 @@ public class ContentDashboardItemSubtypeItemSelectorView
 
 	private void _populateContentDashboardItemTypesJSONArray(
 		String className,
-		ContentDashboardItemSubtypeFactory contentDashboardItemSubtypeFactory,
+		ContentDashboardItemSubtypeFactory<?>
+			contentDashboardItemSubtypeFactory,
 		Set<InfoItemReference>
 			checkedContentDashboardItemSubtypeInfoItemReferences,
 		JSONArray contentDashboardItemTypesJSONArray,
@@ -325,7 +334,7 @@ public class ContentDashboardItemSubtypeItemSelectorView
 				infoItemFormVariations) {
 
 			try {
-				ContentDashboardItemSubtype contentDashboardItemSubtype =
+				ContentDashboardItemSubtype<?> contentDashboardItemSubtype =
 					contentDashboardItemSubtypeFactory.create(
 						Long.valueOf(infoItemFormVariation.getKey()));
 

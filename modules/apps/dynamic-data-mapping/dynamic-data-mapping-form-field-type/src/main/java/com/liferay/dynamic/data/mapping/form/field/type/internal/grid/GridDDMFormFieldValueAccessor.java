@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -40,9 +39,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "ddm.form.field.type.name=" + DDMFormFieldTypeConstants.GRID,
-	service = {
-		DDMFormFieldValueAccessor.class, GridDDMFormFieldValueAccessor.class
-	}
+	service = DDMFormFieldValueAccessor.class
 )
 public class GridDDMFormFieldValueAccessor
 	implements DDMFormFieldValueAccessor<JSONObject> {
@@ -74,12 +71,16 @@ public class GridDDMFormFieldValueAccessor
 
 		Set<String> keys = _getUniqueKeys(jsonObject);
 
-		Set<String> rowValues = _getDDMFormFieldRowValues(
-			ddmFormFieldValue.getDDMFormField());
+		for (String rowValue :
+				_getDDMFormFieldRowValues(
+					ddmFormFieldValue.getDDMFormField())) {
 
-		Stream<String> stream = rowValues.stream();
+			if (!keys.contains(rowValue)) {
+				return true;
+			}
+		}
 
-		return stream.anyMatch(rowValue -> !keys.contains(rowValue));
+		return false;
 	}
 
 	protected JSONObject createJSONObject(String json) {

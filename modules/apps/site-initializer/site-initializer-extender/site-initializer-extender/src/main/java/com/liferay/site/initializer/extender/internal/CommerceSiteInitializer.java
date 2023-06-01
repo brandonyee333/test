@@ -14,16 +14,16 @@
 
 package com.liferay.site.initializer.extender.internal;
 
-import com.liferay.commerce.account.constants.CommerceAccountConstants;
-import com.liferay.commerce.account.util.CommerceAccountRoleHelper;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.initializer.util.CPDefinitionsImporter;
+import com.liferay.commerce.initializer.util.CPOptionCategoriesImporter;
 import com.liferay.commerce.initializer.util.CPOptionsImporter;
 import com.liferay.commerce.initializer.util.CPSpecificationOptionsImporter;
 import com.liferay.commerce.initializer.util.CommerceInventoryWarehousesImporter;
 import com.liferay.commerce.initializer.util.PortletSettingsImporter;
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
 import com.liferay.commerce.model.CommerceOrder;
+import com.liferay.commerce.model.CommerceOrderType;
 import com.liferay.commerce.notification.service.CommerceNotificationTemplateLocalService;
 import com.liferay.commerce.price.list.constants.CommercePriceListConstants;
 import com.liferay.commerce.price.list.model.CommercePriceEntry;
@@ -42,6 +42,8 @@ import com.liferay.commerce.product.service.CPOptionLocalService;
 import com.liferay.commerce.product.service.CommerceCatalogLocalService;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.product.service.CommerceChannelService;
+import com.liferay.commerce.service.CommerceOrderTypeLocalService;
+import com.liferay.commerce.util.CommerceAccountRoleHelper;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Catalog;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.ProductOption;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.ProductSpecification;
@@ -50,6 +52,8 @@ import com.liferay.headless.commerce.admin.catalog.resource.v1_0.ProductOptionRe
 import com.liferay.headless.commerce.admin.catalog.resource.v1_0.ProductSpecificationResource;
 import com.liferay.headless.commerce.admin.channel.dto.v1_0.Channel;
 import com.liferay.headless.commerce.admin.channel.resource.v1_0.ChannelResource;
+import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderType;
+import com.liferay.headless.commerce.admin.order.resource.v1_0.OrderTypeResource;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
@@ -125,6 +129,7 @@ public class CommerceSiteInitializer {
 			bundle, channel.getId(), documentsStringUtilReplaceValues,
 			objectDefinitionIdsStringUtilReplaceValues, serviceContext,
 			servletContext);
+		_addOrUpdateCommerceOrderTypes(serviceContext, servletContext);
 	}
 
 	public void addPortletSettings(
@@ -160,6 +165,42 @@ public class CommerceSiteInitializer {
 
 	public String getCommerceOrderClassName() {
 		return CommerceOrder.class.getName();
+	}
+
+	private void _addCommerceChannelConfiguration(
+			Channel channel, String resourcePath, ServletContext servletContext)
+		throws Exception {
+
+		String json = SiteInitializerUtil.read(resourcePath, servletContext);
+
+		if (json == null) {
+			return;
+		}
+
+		CommerceChannel commerceChannel =
+			_commerceChannelService.getCommerceChannel(channel.getId());
+
+		JSONObject jsonObject = _jsonFactory.createJSONObject(json);
+
+		Map<String, Object> map1 = jsonObject.toMap();
+
+		for (Map.Entry<String, Object> entry1 : map1.entrySet()) {
+			Settings settings = _settingsFactory.getSettings(
+				new GroupServiceSettingsLocator(
+					commerceChannel.getGroupId(), entry1.getKey()));
+
+			ModifiableSettings modifiableSettings =
+				settings.getModifiableSettings();
+
+			Map<String, Object> map2 = (Map<String, Object>)entry1.getValue();
+
+			for (Map.Entry<String, Object> entry2 : map2.entrySet()) {
+				modifiableSettings.setValue(
+					entry2.getKey(), String.valueOf(entry2.getValue()));
+			}
+
+			modifiableSettings.store();
+		}
 	}
 
 	private List<CommerceInventoryWarehouse> _addCommerceInventoryWarehouses(
@@ -607,6 +648,8 @@ public class CommerceSiteInitializer {
 				StringUtil.replaceLast(resourcePath, ".json", ".products.json"),
 				serviceContext, servletContext);
 
+			_addOrUpdateCPOptionCategories(serviceContext, servletContext);
+
 			_addCommerceProductSpecifications(
 				StringUtil.replaceLast(
 					resourcePath, ".json", ".products.specifications.json"),
@@ -669,6 +712,10 @@ public class CommerceSiteInitializer {
 				existingChannel.getId(), channel);
 		}
 
+		_addCommerceChannelConfiguration(
+			channel,
+			StringUtil.replaceLast(resourcePath, ".json", ".config.json"),
+			servletContext);
 		_addDefaultCPDisplayLayout(
 			channel,
 			StringUtil.replaceLast(
@@ -680,27 +727,62 @@ public class CommerceSiteInitializer {
 				resourcePath, ".json", ".model-resource-permissions.json"),
 			serviceContext, servletContext);
 
-		Settings settings = _settingsFactory.getSettings(
-			new GroupServiceSettingsLocator(
-				serviceContext.getScopeGroupId(),
-				CommerceAccountConstants.SERVICE_NAME));
-
-		ModifiableSettings modifiableSettings =
-			settings.getModifiableSettings();
-
-		modifiableSettings.setValue(
-			"commerceSiteType",
-			String.valueOf(CommerceAccountConstants.SITE_TYPE_B2C));
-
-		modifiableSettings.store();
-
 		_commerceAccountRoleHelper.checkCommerceAccountRoles(serviceContext);
 
-		_commerceCurrencyLocalService.importDefaultValues(serviceContext);
+		_commerceCurrencyLocalService.importDefaultValues(true, serviceContext);
 
 		_cpMeasurementUnitLocalService.importDefaultValues(serviceContext);
 
 		return channel;
+	}
+
+	private void _addOrUpdateCommerceOrderTypes(
+			ServiceContext serviceContext, ServletContext servletContext)
+		throws Exception {
+
+		String resourcePath = "/site-initializer/commerce-order-types.json";
+
+		String json = SiteInitializerUtil.read(resourcePath, servletContext);
+
+		if (json == null) {
+			return;
+		}
+
+		OrderTypeResource.Builder builder = _orderTypeResourceFactory.create();
+
+		OrderTypeResource orderTypeResource = builder.user(
+			serviceContext.fetchUser()
+		).build();
+
+		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			OrderType orderType = OrderType.toDTO(
+				String.valueOf(jsonArray.getJSONObject(i)));
+
+			if (orderType == null) {
+				_log.error(
+					"Unable to transform commerce order type from JSON: " +
+						json);
+
+				continue;
+			}
+
+			CommerceOrderType serviceBuilderCommerceOrderType =
+				_commerceOrderTypeLocalService.
+					fetchCommerceOrderTypeByExternalReferenceCode(
+						orderType.getExternalReferenceCode(),
+						serviceContext.getCompanyId());
+
+			if (serviceBuilderCommerceOrderType == null) {
+				orderTypeResource.postOrderType(orderType);
+			}
+			else {
+				orderTypeResource.patchOrderTypeByExternalReferenceCode(
+					serviceBuilderCommerceOrderType.getExternalReferenceCode(),
+					orderType);
+			}
+		}
 	}
 
 	private void _addOrUpdateCommercePriceEntries(
@@ -743,7 +825,8 @@ public class CommerceSiteInitializer {
 
 		if (commercePriceEntry == null) {
 			_commercePriceEntryLocalService.addCommercePriceEntry(
-				cpDefinition.getCProductId(), cpInstance.getCPInstanceUuid(),
+				null, cpDefinition.getCProductId(),
+				cpInstance.getCPInstanceUuid(),
 				commercePriceList.getCommercePriceListId(), price,
 				BigDecimal.ZERO, serviceContext);
 		}
@@ -752,6 +835,26 @@ public class CommerceSiteInitializer {
 				commercePriceEntry.getCommercePriceEntryId(), price,
 				BigDecimal.ZERO, serviceContext);
 		}
+	}
+
+	private void _addOrUpdateCPOptionCategories(
+			ServiceContext serviceContext, ServletContext servletContext)
+		throws Exception {
+
+		String resourcePath =
+			"/site-initializer/commerce-option-categories.json";
+
+		String json = SiteInitializerUtil.read(resourcePath, servletContext);
+
+		if (json == null) {
+			return;
+		}
+
+		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
+
+		_cpOptionCategoriesImporter.importCPOptionCategories(
+			jsonArray, serviceContext.getScopeGroupId(),
+			serviceContext.getUserId());
 	}
 
 	private void _updateCPInstanceProperties(
@@ -847,6 +950,9 @@ public class CommerceSiteInitializer {
 		_commerceNotificationTemplateLocalService;
 
 	@Reference
+	private CommerceOrderTypeLocalService _commerceOrderTypeLocalService;
+
+	@Reference
 	private CommercePriceEntryLocalService _commercePriceEntryLocalService;
 
 	@Reference
@@ -865,6 +971,9 @@ public class CommerceSiteInitializer {
 	private CPMeasurementUnitLocalService _cpMeasurementUnitLocalService;
 
 	@Reference
+	private CPOptionCategoriesImporter _cpOptionCategoriesImporter;
+
+	@Reference
 	private CPOptionLocalService _cpOptionLocalService;
 
 	@Reference
@@ -881,6 +990,9 @@ public class CommerceSiteInitializer {
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private OrderTypeResource.Factory _orderTypeResourceFactory;
 
 	@Reference
 	private PortletSettingsImporter _portletSettingsImporter;

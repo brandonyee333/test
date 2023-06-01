@@ -17,6 +17,7 @@ package com.liferay.document.library.kernel.service;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -88,15 +89,15 @@ public class DLFolderLocalServiceWrapper
 
 	@Override
 	public DLFolder addFolder(
-			long userId, long groupId, long repositoryId, boolean mountPoint,
-			long parentFolderId, String name, String description,
-			boolean hidden,
+			String externalReferenceCode, long userId, long groupId,
+			long repositoryId, boolean mountPoint, long parentFolderId,
+			String name, String description, boolean hidden,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dlFolderLocalService.addFolder(
-			userId, groupId, repositoryId, mountPoint, parentFolderId, name,
-			description, hidden, serviceContext);
+			externalReferenceCode, userId, groupId, repositoryId, mountPoint,
+			parentFolderId, name, description, hidden, serviceContext);
 	}
 
 	@Override
@@ -1019,6 +1020,11 @@ public class DLFolderLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _dlFolderLocalService.verifyInheritableLock(folderId, lockUuid);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _dlFolderLocalService.getBasePersistence();
 	}
 
 	@Override

@@ -95,6 +95,7 @@ const FrontendDataSet = ({
 	sidePanelId,
 	sorting: sortingProp,
 	style,
+	uniformActionsDisplay,
 	views,
 }) => {
 	const wrapperRef = useRef(null);
@@ -150,19 +151,23 @@ const FrontendDataSet = ({
 			...initialActiveView,
 		};
 
-		const filters = initialFilters.map((filter) => {
-			const preloadedData = filter.preloadedData;
+		const filters = initialFilters
+			? initialFilters.map((filter) => {
+					const preloadedData = filter.preloadedData;
 
-			if (preloadedData) {
-				filter.active = true;
-				filter.selectedData = preloadedData;
+					if (preloadedData) {
+						filter.active = true;
+						filter.selectedData = preloadedData;
 
-				filter.odataFilterString = getOdataFilterString(filter);
-				filter.selectedItemsLabel = getFilterSelectedItemsLabel(filter);
-			}
+						filter.odataFilterString = getOdataFilterString(filter);
+						filter.selectedItemsLabel = getFilterSelectedItemsLabel(
+							filter
+						);
+					}
 
-			return filter;
-		});
+					return filter;
+			  })
+			: [];
 
 		const paginationDelta =
 			showPagination &&
@@ -200,8 +205,6 @@ const FrontendDataSet = ({
 		name: activeViewName,
 		...currentViewProps
 	} = activeView;
-
-	const selectable = !!(bulkActions?.length && selectedItemsKey);
 
 	const requestData = useCallback(() => {
 		const activeFiltersOdataStrings = filters.reduce(
@@ -511,6 +514,13 @@ const FrontendDataSet = ({
 					activePage={pageNumber}
 					deltas={pagination?.deltas}
 					ellipsisBuffer={3}
+					labels={{
+						paginationResults: Liferay.Language.get(
+							'showing-x-to-x-of-x-entries'
+						),
+						perPageItems: Liferay.Language.get('x-items'),
+						selectPerPageItems: Liferay.Language.get('x-items'),
+					}}
 					onDeltaChange={(delta) => {
 						setPageNumber(1);
 
@@ -760,7 +770,10 @@ const FrontendDataSet = ({
 				portletId,
 				searchParam,
 				selectItems,
-				selectable,
+				selectable: Boolean(
+					selectedItemsKey &&
+						(bulkActions?.length || selectionType === 'single')
+				),
 				selectedItemsKey,
 				selectedItemsValue,
 				selectionType,
@@ -768,6 +781,7 @@ const FrontendDataSet = ({
 				sorting,
 				style,
 				toggleItemInlineEdit,
+				uniformActionsDisplay,
 				updateDataSetItems,
 				updateItem,
 				updateSearchParam: setSearchParam,
@@ -826,7 +840,6 @@ const FrontendDataSet = ({
 FrontendDataSet.defaultProps = {
 	bulkActions: [],
 	customViews: '{}',
-	filters: [],
 	inlineEditingSettings: null,
 	items: null,
 	itemsActions: null,

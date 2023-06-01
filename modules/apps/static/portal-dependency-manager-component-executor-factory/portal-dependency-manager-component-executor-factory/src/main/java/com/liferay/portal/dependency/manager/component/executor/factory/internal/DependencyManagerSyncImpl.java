@@ -16,13 +16,16 @@ package com.liferay.portal.dependency.manager.component.executor.factory.interna
 
 import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
 import com.liferay.portal.kernel.concurrent.FutureListener;
+import com.liferay.portal.kernel.concurrent.SystemExecutorServiceUtil;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSync;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
 import org.osgi.framework.ServiceRegistration;
@@ -33,13 +36,13 @@ import org.osgi.framework.ServiceRegistration;
 public class DependencyManagerSyncImpl implements DependencyManagerSync {
 
 	public DependencyManagerSyncImpl(
-		ExecutorService executorService,
-		ServiceRegistration<?> componentExecutorFactoryRegistration,
+		BlockingQueue<Future<Void>> blockingQueue,
+		ServiceRegistration<?> componentExecutorFactoryServiceRegistration,
 		long syncTimeout) {
 
-		_executorService = executorService;
-		_componentExecutorFactoryRegistration =
-			componentExecutorFactoryRegistration;
+		_blockingQueue = blockingQueue;
+		_componentExecutorFactoryServiceRegistration =
+			componentExecutorFactoryServiceRegistration;
 		_syncTimeout = syncTimeout;
 	}
 
@@ -57,16 +60,29 @@ public class DependencyManagerSyncImpl implements DependencyManagerSync {
 	}
 
 	@Override
-	public void registerSyncFuture(Future<Void> syncFuture) {
+	public void registerSyncFutureTask(
+		FutureTask<Void> syncFutureTask, String taskName) {
+
 		_addFutureListener(
 			future -> {
+				syncFutureTask.run();
+
 				try {
-					syncFuture.get(_syncTimeout, TimeUnit.SECONDS);
+					syncFutureTask.get(_syncTimeout, TimeUnit.SECONDS);
 				}
 				catch (Exception exception) {
 					_log.error("Unable to sync future", exception);
 				}
 			});
+
+		if (!syncFutureTask.isDone()) {
+			ExecutorService systemExecutorService =
+				SystemExecutorServiceUtil.getExecutorService();
+
+			systemExecutorService.submit(
+				SystemExecutorServiceUtil.renameThread(
+					syncFutureTask, taskName));
+		}
 	}
 
 	@Override
@@ -75,9 +91,9 @@ public class DependencyManagerSyncImpl implements DependencyManagerSync {
 			return;
 		}
 
-		if (_componentExecutorFactoryRegistration != null) {
+		if (_componentExecutorFactoryServiceRegistration != null) {
 			try {
-				_componentExecutorFactoryRegistration.unregister();
+				_componentExecutorFactoryServiceRegistration.unregister();
 			}
 			catch (IllegalStateException illegalStateException) {
 				if (_log.isDebugEnabled()) {
@@ -87,28 +103,18 @@ public class DependencyManagerSyncImpl implements DependencyManagerSync {
 				// Concurrent unregister, no need to do anything
 
 			}
-		}
-
-		if (_executorService != null) {
-			_executorService.shutdown();
 
 			try {
-				if (!_executorService.awaitTermination(
-						_syncTimeout, TimeUnit.SECONDS)) {
+				Future<Void> future = null;
 
-					_executorService.shutdownNow();
-
-					if (_log.isWarnEnabled()) {
-						_log.warn(
-							"Dependency manager sync timeout after waiting " +
-								_syncTimeout + "s");
-					}
+				while ((future = _blockingQueue.poll()) != null) {
+					future.get(_syncTimeout, TimeUnit.SECONDS);
 				}
 			}
-			catch (InterruptedException interruptedException) {
+			catch (Exception exception) {
 				_log.error(
-					"Dependency manager sync interrupted",
-					interruptedException);
+					"Unable to drain depenedency manager's async tasks",
+					exception);
 			}
 		}
 
@@ -132,8 +138,9 @@ public class DependencyManagerSyncImpl implements DependencyManagerSync {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DependencyManagerSyncImpl.class);
 
-	private final ServiceRegistration<?> _componentExecutorFactoryRegistration;
-	private final ExecutorService _executorService;
+	private final BlockingQueue<Future<Void>> _blockingQueue;
+	private final ServiceRegistration<?>
+		_componentExecutorFactoryServiceRegistration;
 	private final DefaultNoticeableFuture<Void> _syncDefaultNoticeableFuture =
 		new DefaultNoticeableFuture<>();
 	private final long _syncTimeout;

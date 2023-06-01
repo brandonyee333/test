@@ -27,6 +27,10 @@ import java.util.List;
  */
 public interface NotificationType {
 
+	public NotificationQueueEntry createNotificationQueueEntry(
+		User user, String body, NotificationContext notificationContext,
+		String subject);
+
 	public List<NotificationRecipientSetting>
 		createNotificationRecipientSettings(
 			long notificationRecipientId, Object[] recipients, User user);
@@ -47,14 +51,24 @@ public interface NotificationType {
 
 	public String getTypeLanguageKey();
 
+	public default void resendNotification(
+			NotificationQueueEntry notificationQueueEntry)
+		throws PortalException {
+	}
+
+	public default void resendNotifications(int status, String type)
+		throws PortalException {
+	}
+
 	public void sendNotification(NotificationContext notificationContext)
 		throws PortalException;
 
-	public default void sendUnsentNotifications() {
-	}
-
 	public Object[] toRecipients(
 		List<NotificationRecipientSetting> notificationRecipientSettings);
+
+	public void validateNotificationQueueEntry(
+			NotificationContext notificationContext)
+		throws PortalException;
 
 	public void validateNotificationTemplate(
 			NotificationContext notificationContext)

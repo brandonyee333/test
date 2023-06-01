@@ -14,9 +14,9 @@
 
 package com.liferay.commerce.notification.test;
 
+import com.liferay.account.constants.AccountConstants;
+import com.liferay.account.model.AccountEntry;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.commerce.account.constants.CommerceAccountConstants;
-import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.account.test.util.CommerceAccountTestUtil;
 import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.commerce.constants.CommerceSubscriptionNotificationConstants;
@@ -35,7 +35,6 @@ import com.liferay.commerce.payment.engine.CommerceSubscriptionEngine;
 import com.liferay.commerce.product.constants.CommerceChannelConstants;
 import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
-import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.commerce.service.CommerceSubscriptionEntryLocalService;
 import com.liferay.commerce.subscription.CommerceSubscriptionEntryHelper;
 import com.liferay.commerce.test.util.CommerceTestUtil;
@@ -100,7 +99,8 @@ public class CommerceSubscriptionsNotificationTest {
 			_group.getCompanyId(), _group.getGroupId(), _user.getUserId());
 
 		_commerceChannel = _commerceChannelLocalService.addCommerceChannel(
-			StringPool.BLANK, _group.getGroupId(),
+			StringPool.BLANK, AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
+			_group.getGroupId(),
 			_group.getName(_serviceContext.getLanguageId()) + " Portal",
 			CommerceChannelConstants.CHANNEL_TYPE_SITE, null,
 			_commerceCurrency.getCode(), _serviceContext);
@@ -111,16 +111,16 @@ public class CommerceSubscriptionsNotificationTest {
 			RandomTestUtil.randomString(),
 			new long[] {_serviceContext.getScopeGroupId()}, _serviceContext);
 
-		_commerceAccount = CommerceAccountTestUtil.addBusinessCommerceAccount(
+		_accountEntry = CommerceAccountTestUtil.addBusinessAccountEntry(
 			_user.getUserId(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString() + "@liferay.com",
 			RandomTestUtil.randomString(), new long[] {_toUser.getUserId()},
 			null, _serviceContext);
 
-		CommerceAccountTestUtil.addCommerceAccountGroupAndAccountRel(
+		CommerceAccountTestUtil.addAccountGroupAndAccountRel(
 			_group.getCompanyId(), RandomTestUtil.randomString(),
-			CommerceAccountConstants.ACCOUNT_GROUP_TYPE_STATIC,
-			_commerceAccount.getCommerceAccountId(), _serviceContext);
+			AccountConstants.ACCOUNT_GROUP_TYPE_STATIC,
+			_accountEntry.getAccountEntryId(), _serviceContext);
 
 		_addCommerceNotificationTemplates();
 	}
@@ -249,7 +249,7 @@ public class CommerceSubscriptionsNotificationTest {
 
 	private static User _user;
 
-	private CommerceAccount _commerceAccount;
+	private AccountEntry _accountEntry;
 
 	@DeleteAfterTestRun
 	private CommerceChannel _commerceChannel;
@@ -275,9 +275,6 @@ public class CommerceSubscriptionsNotificationTest {
 
 	@Inject
 	private CommerceOrderEngine _commerceOrderEngine;
-
-	@Inject
-	private CommerceOrderLocalService _commerceOrderLocalService;
 
 	@Inject
 	private CommerceSubscriptionEngine _commerceSubscriptionEngine;

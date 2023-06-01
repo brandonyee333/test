@@ -20,7 +20,6 @@ import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.content.dashboard.item.ContentDashboardItem;
 import com.liferay.content.dashboard.item.type.ContentDashboardItemSubtypeFactoryRegistry;
 import com.liferay.content.dashboard.web.internal.constants.ContentDashboardPortletKeys;
-import com.liferay.content.dashboard.web.internal.constants.ContentDashboardWebKeys;
 import com.liferay.content.dashboard.web.internal.dao.search.ContentDashboardItemSearchContainerFactory;
 import com.liferay.content.dashboard.web.internal.data.provider.ContentDashboardDataProvider;
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminDisplayContext;
@@ -28,13 +27,13 @@ import com.liferay.content.dashboard.web.internal.display.context.ContentDashboa
 import com.liferay.content.dashboard.web.internal.display.context.ContentDashboardAdminSharingDisplayContext;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryRegistry;
 import com.liferay.content.dashboard.web.internal.item.filter.ContentDashboardItemFilterProviderRegistry;
-import com.liferay.content.dashboard.web.internal.provider.AssetVocabulariesProvider;
 import com.liferay.content.dashboard.web.internal.search.request.ContentDashboardSearchContextBuilder;
 import com.liferay.content.dashboard.web.internal.searcher.ContentDashboardSearchRequestBuilderFactory;
 import com.liferay.content.dashboard.web.internal.servlet.taglib.util.ContentDashboardDropdownItemsProvider;
 import com.liferay.content.dashboard.web.internal.util.ContentDashboardUtil;
 import com.liferay.info.search.InfoSearchClassMapperRegistry;
 import com.liferay.item.selector.ItemSelector;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.constants.LanguageConstants;
@@ -128,9 +127,21 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 		SearchContainer<ContentDashboardItem<?>> searchContainer =
 			contentDashboardItemSearchContainerFactory.create();
 
-		List<AssetVocabulary> assetVocabularies =
-			_assetVocabulariesProvider.getAssetVocabularies(
-				ContentDashboardUtil.getAssetVocabularyIds(renderRequest));
+		List<AssetVocabulary> assetVocabularies = TransformUtil.transformToList(
+			ContentDashboardUtil.getAssetVocabularyIds(renderRequest),
+			assetVocabularyId -> {
+				AssetVocabulary assetVocabulary =
+					_assetVocabularyLocalService.fetchAssetVocabulary(
+						assetVocabularyId);
+
+				if ((assetVocabulary == null) ||
+					(assetVocabulary.getCategoriesCount() <= 0)) {
+
+					return null;
+				}
+
+				return assetVocabulary;
+			});
 
 		ContentDashboardAdminDisplayContext
 			contentDashboardAdminDisplayContext =
@@ -149,7 +160,7 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 					resourceBundle, searchContainer);
 
 		renderRequest.setAttribute(
-			ContentDashboardWebKeys.CONTENT_DASHBOARD_ADMIN_DISPLAY_CONTEXT,
+			ContentDashboardAdminDisplayContext.class.getName(),
 			contentDashboardAdminDisplayContext);
 
 		ContentDashboardAdminManagementToolbarDisplayContext
@@ -164,13 +175,12 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 					_portal.getLocale(renderRequest), _userLocalService);
 
 		renderRequest.setAttribute(
-			ContentDashboardWebKeys.
-				CONTENT_DASHBOARD_ADMIN_MANAGEMENT_TOOLBAR_DISPLAY_CONTEXT,
+			ContentDashboardAdminManagementToolbarDisplayContext.class.
+				getName(),
 			contentDashboardAdminManagementToolbarDisplayContext);
 
 		renderRequest.setAttribute(
-			ContentDashboardWebKeys.
-				CONTENT_DASHBOARD_ADMIN_SHARING_DISPLAY_CONTEXT,
+			ContentDashboardAdminSharingDisplayContext.class.getName(),
 			new ContentDashboardAdminSharingDisplayContext(
 				_contentDashboardItemFactoryRegistry,
 				_portal.getHttpServletRequest(liferayPortletRequest),
@@ -186,9 +196,6 @@ public class ContentDashboardAdminPortlet extends MVCPortlet {
 
 	@Reference
 	private AssetCategoryLocalService _assetCategoryLocalService;
-
-	@Reference
-	private AssetVocabulariesProvider _assetVocabulariesProvider;
 
 	@Reference
 	private AssetVocabularyLocalService _assetVocabularyLocalService;

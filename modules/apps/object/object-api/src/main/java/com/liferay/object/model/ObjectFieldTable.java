@@ -17,6 +17,7 @@ package com.liferay.object.model;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.base.BaseTable;
 
+import java.sql.Clob;
 import java.sql.Types;
 
 import java.util.Date;
@@ -68,8 +69,6 @@ public class ObjectFieldTable extends BaseTable<ObjectFieldTable> {
 		"dbTableName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, String> dbType = createColumn(
 		"dbType", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
-	public final Column<ObjectFieldTable, String> defaultValue = createColumn(
-		"defaultValue", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, Boolean> indexed = createColumn(
 		"indexed", Boolean.class, Types.BOOLEAN, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, Boolean> indexedAsKeyword =
@@ -82,8 +81,16 @@ public class ObjectFieldTable extends BaseTable<ObjectFieldTable> {
 			Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, String> label = createColumn(
 		"label", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<ObjectFieldTable, Boolean> localized = createColumn(
+		"localized", Boolean.class, Types.BOOLEAN, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, String> name = createColumn(
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<ObjectFieldTable, String> readOnly = createColumn(
+		"readOnly", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<ObjectFieldTable, Clob> readOnlyConditionExpression =
+		createColumn(
+			"readOnlyConditionExpression", Clob.class, Types.CLOB,
+			Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, String> relationshipType =
 		createColumn(
 			"relationshipType", String.class, Types.VARCHAR,

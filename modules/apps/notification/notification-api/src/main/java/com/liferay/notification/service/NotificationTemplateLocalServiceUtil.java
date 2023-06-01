@@ -68,6 +68,14 @@ public class NotificationTemplateLocalServiceUtil {
 		return getService().addNotificationTemplate(notificationTemplate);
 	}
 
+	public static NotificationTemplate addNotificationTemplate(
+			String externalReferenceCode, long userId, String type)
+		throws PortalException {
+
+		return getService().addNotificationTemplate(
+			externalReferenceCode, userId, type);
+	}
+
 	/**
 	 * Creates a new notification template with the primary key. Does not add the notification template to the database.
 	 *
@@ -381,6 +389,10 @@ public class NotificationTemplateLocalServiceUtil {
 
 	public static NotificationTemplateLocalService getService() {
 		return _service;
+	}
+
+	public static void setService(NotificationTemplateLocalService service) {
+		_service = service;
 	}
 
 	private static volatile NotificationTemplateLocalService _service;

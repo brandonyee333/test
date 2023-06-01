@@ -14,6 +14,8 @@
 
 package com.liferay.product.navigation.taglib.display.context;
 
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuCategory;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
@@ -31,6 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
 /**
@@ -43,6 +46,10 @@ public class ProductNavigationControlMenuTagDisplayContext {
 
 		_httpServletRequest = httpServletRequest;
 		_pageContext = pageContext;
+
+		_httpServletResponse =
+			PipingServletResponseFactory.createPipingServletResponse(
+				pageContext);
 	}
 
 	public Map<String, List<ProductNavigationControlMenuEntry>>
@@ -207,9 +214,7 @@ public class ProductNavigationControlMenuTagDisplayContext {
 		throws Exception {
 
 		if (productNavigationControlMenuEntry.includeIcon(
-				_httpServletRequest,
-				PipingServletResponseFactory.createPipingServletResponse(
-					_pageContext))) {
+				_httpServletRequest, _httpServletResponse)) {
 
 			return;
 		}
@@ -239,14 +244,20 @@ public class ProductNavigationControlMenuTagDisplayContext {
 
 		iconTag.setLinkCssClass("control-menu-icon " + linkCssClass);
 
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)_httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
 		iconTag.setMessage(
 			productNavigationControlMenuEntry.getLabel(
-				_httpServletRequest.getLocale()));
+				themeDisplay.getLocale()));
+
 		iconTag.setMethod("get");
 		iconTag.setUrl(
 			productNavigationControlMenuEntry.getURL(_httpServletRequest));
 
-		writer.append(iconTag.doTagAsString(_pageContext));
+		writer.append(
+			iconTag.doTagAsString(_httpServletRequest, _httpServletResponse));
 
 		if (useList) {
 			writer.append("</li>");
@@ -257,6 +268,7 @@ public class ProductNavigationControlMenuTagDisplayContext {
 	}
 
 	private final HttpServletRequest _httpServletRequest;
+	private final HttpServletResponse _httpServletResponse;
 	private final PageContext _pageContext;
 	private Map<String, List<ProductNavigationControlMenuEntry>>
 		_productNavigationControlMenuEntriesMap;

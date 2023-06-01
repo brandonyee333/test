@@ -15,16 +15,17 @@
 package com.liferay.portal.template.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.dynamic.data.mapping.kernel.DDMTemplate;
+import com.liferay.dynamic.data.mapping.model.DDMTemplate;
+import com.liferay.dynamic.data.mapping.template.DDMTemplateResource;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
-import com.liferay.portal.kernel.template.DDMTemplateResource;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.test.ConsoleTestUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.template.CacheTemplateResource;
@@ -252,6 +253,48 @@ public class TemplateResourceExternalizationTest {
 	}
 
 	@Test
+	public void testStringTemplateResourceExternalizationWithLargeString()
+		throws Exception {
+
+		String templateId = "testId";
+		String templateContent = RandomTestUtil.randomString(65536);
+
+		StringTemplateResource stringTemplateResource =
+			new StringTemplateResource(templateId, templateContent);
+
+		// writeExternal
+
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		try (ObjectOutput objectOutput = new ObjectOutputStream(
+				unsyncByteArrayOutputStream)) {
+
+			stringTemplateResource.writeExternal(objectOutput);
+		}
+
+		// readExternal
+
+		StringTemplateResource newStringTemplateResource =
+			new StringTemplateResource();
+
+		ObjectInputStream objectInputStream = new ObjectInputStream(
+			new DataInputStream(
+				new UnsyncByteArrayInputStream(
+					unsyncByteArrayOutputStream.toByteArray())));
+
+		newStringTemplateResource.readExternal(objectInputStream);
+
+		Assert.assertEquals(
+			stringTemplateResource.getLastModified(),
+			newStringTemplateResource.getLastModified());
+		Assert.assertEquals(
+			templateContent, newStringTemplateResource.getContent());
+		Assert.assertEquals(
+			templateId, newStringTemplateResource.getTemplateId());
+	}
+
+	@Test
 	public void testURLTemplateResourceExternalization() throws IOException {
 		String templateId = "testId";
 
@@ -312,8 +355,8 @@ public class TemplateResourceExternalizationTest {
 		}
 
 		@Override
-		public Object readObject() {
-			throw new UnsupportedOperationException();
+		public Object readObject() throws IOException {
+			return readUTF();
 		}
 
 	}
@@ -326,8 +369,8 @@ public class TemplateResourceExternalizationTest {
 		}
 
 		@Override
-		public void writeObject(Object object) {
-			throw new UnsupportedOperationException();
+		public void writeObject(Object object) throws IOException {
+			writeUTF(String.valueOf(object));
 		}
 
 	}

@@ -36,9 +36,7 @@
 
 				<aui:model-context model="<%= Company.class %>" />
 
-				<aui:input name="webId">
-					<aui:validator name="required" />
-				</aui:input>
+				<aui:input name="webId" required="<%= true %>" />
 
 				<aui:input fieldParam="virtualHostname" label="virtual-host" model="<%= VirtualHost.class %>" name="hostname" />
 
@@ -69,12 +67,6 @@
 
 					</aui:select>
 				</c:if>
-
-				<liferay-frontend:edit-form-footer>
-					<liferay-frontend:edit-form-buttons
-						submitLabel="add"
-					/>
-				</liferay-frontend:edit-form-footer>
 			</div>
 		</div>
 
@@ -83,6 +75,8 @@
 
 			<p class="text-3 text-center text-secondary"><liferay-ui:message key="the-creation-of-the-site-may-take-some-time-.closing-the-window-will-not-cancel-the-process" /></p>
 		</div>
+
+		<input type="submit" hidden />
 	</liferay-frontend:edit-form>
 </clay:container-fluid>
 

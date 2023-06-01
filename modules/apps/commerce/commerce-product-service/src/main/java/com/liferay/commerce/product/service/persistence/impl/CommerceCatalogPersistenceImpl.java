@@ -54,7 +54,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.ArrayList;
@@ -4528,7 +4527,9 @@ public class CommerceCatalogPersistenceImpl
 				if (ercCommerceCatalog != null) {
 					throw new DuplicateCommerceCatalogExternalReferenceCodeException(
 						"Duplicate commerce catalog with external reference code " +
-							commerceCatalog.getExternalReferenceCode());
+							commerceCatalog.getExternalReferenceCode() +
+								" and company " +
+									commerceCatalog.getCompanyId());
 				}
 			}
 			else {
@@ -4538,7 +4539,9 @@ public class CommerceCatalogPersistenceImpl
 
 					throw new DuplicateCommerceCatalogExternalReferenceCodeException(
 						"Duplicate commerce catalog with external reference code " +
-							commerceCatalog.getExternalReferenceCode());
+							commerceCatalog.getExternalReferenceCode() +
+								" and company " +
+									commerceCatalog.getCompanyId());
 				}
 			}
 		}
@@ -5062,6 +5065,7 @@ public class CommerceCatalogPersistenceImpl
 		ctStrictColumnNames.add("userName");
 		ctStrictColumnNames.add("createDate");
 		ctIgnoreColumnNames.add("modifiedDate");
+		ctStrictColumnNames.add("accountEntryId");
 		ctStrictColumnNames.add("name");
 		ctStrictColumnNames.add("commerceCurrencyCode");
 		ctStrictColumnNames.add("catalogDefaultLanguageId");
@@ -5185,30 +5189,14 @@ public class CommerceCatalogPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setCommerceCatalogUtilPersistence(this);
+		CommerceCatalogUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setCommerceCatalogUtilPersistence(null);
+		CommerceCatalogUtil.setPersistence(null);
 
 		entityCache.removeCache(CommerceCatalogImpl.class.getName());
-	}
-
-	private void _setCommerceCatalogUtilPersistence(
-		CommerceCatalogPersistence commerceCatalogPersistence) {
-
-		try {
-			Field field = CommerceCatalogUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceCatalogPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

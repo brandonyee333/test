@@ -22,7 +22,7 @@ import com.liferay.dynamic.data.mapping.form.web.internal.configuration.activato
 import com.liferay.dynamic.data.mapping.form.web.internal.constants.DDMFormWebKeys;
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.DDMFormDisplayContext;
 import com.liferay.dynamic.data.mapping.form.web.internal.display.context.util.DDMFormInstanceSubmissionLimitStatusUtil;
-import com.liferay.dynamic.data.mapping.form.web.internal.instance.lifecycle.AddDefaultSharedFormLayoutPortalInstanceLifecycleListener;
+import com.liferay.dynamic.data.mapping.form.web.internal.util.DDMLayoutUtil;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMFormInstanceRecordService;
@@ -32,10 +32,12 @@ import com.liferay.dynamic.data.mapping.service.DDMFormInstanceVersionLocalServi
 import com.liferay.dynamic.data.mapping.storage.DDMStorageAdapterRegistry;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValuesValidationException;
+import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
@@ -50,7 +52,6 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -66,18 +67,16 @@ import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Marcellus Tavares
  */
 @Component(
 	property = {
-		"com.liferay.fragment.entry.processor.portlet.alias=form",
 		"com.liferay.portlet.add-default-resource=true",
 		"com.liferay.portlet.application-type=full-page-application",
 		"com.liferay.portlet.application-type=widget",
@@ -142,9 +141,7 @@ public class DDMFormPortlet extends MVCPortlet {
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
-			if (_addDefaultSharedFormLayoutPortalInstanceLifecycleListener.
-					isSharedLayout(themeDisplay)) {
-
+			if (DDMLayoutUtil.isSharedLayout(themeDisplay)) {
 				_saveParametersInSession(actionRequest);
 			}
 		}
@@ -202,6 +199,17 @@ public class DDMFormPortlet extends MVCPortlet {
 		}
 
 		super.render(renderRequest, renderResponse);
+	}
+
+	@Activate
+	protected void activate() {
+		_portletRegistry.registerAlias(
+			_ALIAS, DDMPortletKeys.DYNAMIC_DATA_MAPPING_FORM);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_portletRegistry.unregisterAlias(_ALIAS);
 	}
 
 	@Override
@@ -263,11 +271,9 @@ public class DDMFormPortlet extends MVCPortlet {
 		}
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(DDMFormPortlet.class);
+	private static final String _ALIAS = "form";
 
-	@Reference
-	private AddDefaultSharedFormLayoutPortalInstanceLifecycleListener
-		_addDefaultSharedFormLayoutPortalInstanceLifecycleListener;
+	private static final Log _log = LogFactoryUtil.getLog(DDMFormPortlet.class);
 
 	@Reference
 	private DDMFormFieldTypeServicesRegistry _ddmFormFieldTypeServicesRegistry;
@@ -298,14 +304,8 @@ public class DDMFormPortlet extends MVCPortlet {
 	@Reference
 	private DDMFormValuesMerger _ddmFormValuesMerger;
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unsetDDMFormWebConfigurationActivator"
-	)
-	private volatile DDMFormWebConfigurationActivator
-		_ddmFormWebConfigurationActivator;
+	@Reference
+	private DDMFormWebConfigurationActivator _ddmFormWebConfigurationActivator;
 
 	@Reference
 	private DDMStorageAdapterRegistry _ddmStorageAdapterRegistry;
@@ -330,6 +330,9 @@ public class DDMFormPortlet extends MVCPortlet {
 
 	@Reference
 	private Portal _portal;
+
+	@Reference
+	private PortletRegistry _portletRegistry;
 
 	@Reference(
 		target = "(&(release.bundle.symbolic.name=com.liferay.dynamic.data.mapping.form.web)(&(release.schema.version>=1.0.0)(!(release.schema.version>=2.0.0))))"

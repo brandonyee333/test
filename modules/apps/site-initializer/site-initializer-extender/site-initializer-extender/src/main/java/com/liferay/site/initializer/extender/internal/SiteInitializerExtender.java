@@ -41,7 +41,11 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.layout.importer.LayoutsImporter;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
+import com.liferay.layout.page.template.service.LayoutPageTemplateStructureRelLocalService;
 import com.liferay.layout.util.LayoutCopyHelper;
+import com.liferay.layout.utility.page.service.LayoutUtilityPageEntryLocalService;
+import com.liferay.list.type.service.ListTypeDefinitionLocalService;
+import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.notification.rest.resource.v1_0.NotificationTemplateResource;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectFieldResource;
@@ -80,6 +84,7 @@ import com.liferay.site.navigation.service.SiteNavigationMenuItemLocalService;
 import com.liferay.site.navigation.service.SiteNavigationMenuLocalService;
 import com.liferay.site.navigation.type.SiteNavigationMenuItemTypeRegistry;
 import com.liferay.style.book.zip.processor.StyleBookEntryZipProcessor;
+import com.liferay.template.service.TemplateEntryLocalService;
 
 import java.io.File;
 
@@ -89,6 +94,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+
+import org.apache.felix.dm.DependencyManager;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -129,7 +136,7 @@ public class SiteInitializerExtender
 				_assetListEntryLocalService, bundle,
 				_clientExtensionEntryLocalService, _configurationProvider,
 				_ddmStructureLocalService, _ddmTemplateLocalService,
-				_defaultDDMStructureHelper, _dlURLHelper,
+				_defaultDDMStructureHelper, _dependencyManager, _dlURLHelper,
 				_documentFolderResourceFactory, _documentResourceFactory,
 				_fragmentsImporter, _groupLocalService,
 				_journalArticleLocalService, _jsonFactory,
@@ -137,8 +144,11 @@ public class SiteInitializerExtender
 				_knowledgeBaseFolderResourceFactory, _layoutCopyHelper,
 				_layoutLocalService, _layoutPageTemplateEntryLocalService,
 				_layoutPageTemplateStructureLocalService,
+				_layoutPageTemplateStructureRelLocalService,
 				_layoutSetLocalService, _layoutsImporter,
-				_listTypeDefinitionResource, _listTypeDefinitionResourceFactory,
+				_layoutUtilityPageEntryLocalService,
+				_listTypeDefinitionLocalService, _listTypeDefinitionResource,
+				_listTypeDefinitionResourceFactory, _listTypeEntryLocalService,
 				_listTypeEntryResource, _listTypeEntryResourceFactory,
 				_notificationTemplateResourceFactory, _objectActionLocalService,
 				_objectDefinitionLocalService, _objectDefinitionResourceFactory,
@@ -155,9 +165,10 @@ public class SiteInitializerExtender
 				_siteNavigationMenuLocalService,
 				_structuredContentFolderResourceFactory,
 				_styleBookEntryZipProcessor, _taxonomyCategoryResourceFactory,
-				_taxonomyVocabularyResourceFactory, _themeLocalService,
-				_userAccountResourceFactory, _userGroupLocalService,
-				_userLocalService, _workflowDefinitionLinkLocalService,
+				_taxonomyVocabularyResourceFactory, _templateEntryLocalService,
+				_themeLocalService, _userAccountResourceFactory,
+				_userGroupLocalService, _userLocalService,
+				_workflowDefinitionLinkLocalService,
 				_workflowDefinitionResourceFactory);
 
 		siteInitializerExtension.start();
@@ -186,6 +197,8 @@ public class SiteInitializerExtender
 	@Activate
 	protected void activate(BundleContext bundleContext) throws Exception {
 		_bundleContext = bundleContext;
+
+		_dependencyManager = new DependencyManager(bundleContext);
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE, this);
@@ -240,7 +253,7 @@ public class SiteInitializerExtender
 					null),
 				_clientExtensionEntryLocalService, _configurationProvider,
 				_ddmStructureLocalService, _ddmTemplateLocalService,
-				_defaultDDMStructureHelper, _dlURLHelper,
+				_defaultDDMStructureHelper, _dependencyManager, _dlURLHelper,
 				_documentFolderResourceFactory, _documentResourceFactory,
 				_fragmentsImporter, _groupLocalService,
 				_journalArticleLocalService, _jsonFactory,
@@ -248,8 +261,11 @@ public class SiteInitializerExtender
 				_knowledgeBaseFolderResourceFactory, _layoutCopyHelper,
 				_layoutLocalService, _layoutPageTemplateEntryLocalService,
 				_layoutPageTemplateStructureLocalService,
+				_layoutPageTemplateStructureRelLocalService,
 				_layoutSetLocalService, _layoutsImporter,
-				_listTypeDefinitionResource, _listTypeDefinitionResourceFactory,
+				_layoutUtilityPageEntryLocalService,
+				_listTypeDefinitionLocalService, _listTypeDefinitionResource,
+				_listTypeDefinitionResourceFactory, _listTypeEntryLocalService,
 				_listTypeEntryResource, _listTypeEntryResourceFactory,
 				_notificationTemplateResourceFactory, _objectActionLocalService,
 				_objectDefinitionLocalService, _objectDefinitionResourceFactory,
@@ -271,9 +287,10 @@ public class SiteInitializerExtender
 				_siteNavigationMenuLocalService,
 				_structuredContentFolderResourceFactory,
 				_styleBookEntryZipProcessor, _taxonomyCategoryResourceFactory,
-				_taxonomyVocabularyResourceFactory, _themeLocalService,
-				_userAccountResourceFactory, _userGroupLocalService,
-				_userLocalService, _workflowDefinitionLinkLocalService,
+				_taxonomyVocabularyResourceFactory, _templateEntryLocalService,
+				_themeLocalService, _userAccountResourceFactory,
+				_userGroupLocalService, _userLocalService,
+				_workflowDefinitionLinkLocalService,
 				_workflowDefinitionResourceFactory);
 
 		siteInitializerExtension.start();
@@ -313,6 +330,8 @@ public class SiteInitializerExtender
 
 	@Reference
 	private DefaultDDMStructureHelper _defaultDDMStructureHelper;
+
+	private DependencyManager _dependencyManager;
 
 	@Reference
 	private DLURLHelper _dlURLHelper;
@@ -362,10 +381,21 @@ public class SiteInitializerExtender
 		_layoutPageTemplateStructureLocalService;
 
 	@Reference
+	private LayoutPageTemplateStructureRelLocalService
+		_layoutPageTemplateStructureRelLocalService;
+
+	@Reference
 	private LayoutSetLocalService _layoutSetLocalService;
 
 	@Reference
 	private LayoutsImporter _layoutsImporter;
+
+	@Reference
+	private LayoutUtilityPageEntryLocalService
+		_layoutUtilityPageEntryLocalService;
+
+	@Reference
+	private ListTypeDefinitionLocalService _listTypeDefinitionLocalService;
 
 	@Reference
 	private ListTypeDefinitionResource _listTypeDefinitionResource;
@@ -373,6 +403,9 @@ public class SiteInitializerExtender
 	@Reference
 	private ListTypeDefinitionResource.Factory
 		_listTypeDefinitionResourceFactory;
+
+	@Reference
+	private ListTypeEntryLocalService _listTypeEntryLocalService;
 
 	@Reference
 	private ListTypeEntryResource _listTypeEntryResource;
@@ -466,6 +499,9 @@ public class SiteInitializerExtender
 	@Reference
 	private TaxonomyVocabularyResource.Factory
 		_taxonomyVocabularyResourceFactory;
+
+	@Reference
+	private TemplateEntryLocalService _templateEntryLocalService;
 
 	@Reference
 	private ThemeLocalService _themeLocalService;

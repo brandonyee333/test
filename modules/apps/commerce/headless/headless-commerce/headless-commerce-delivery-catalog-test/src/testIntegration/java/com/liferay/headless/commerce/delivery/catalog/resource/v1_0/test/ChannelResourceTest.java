@@ -14,6 +14,7 @@
 
 package com.liferay.headless.commerce.delivery.catalog.resource.v1_0.test;
 
+import com.liferay.account.constants.AccountConstants;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.commerce.product.constants.CommerceChannelConstants;
 import com.liferay.commerce.product.model.CommerceChannel;
@@ -76,7 +77,7 @@ public class ChannelResourceTest extends BaseChannelResourceTestCase {
 					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
 				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
-				siteGroupId = RandomTestUtil.randomLong();
+				siteGroupId = testGroup.getGroupId();
 				type = CommerceChannelConstants.CHANNEL_TYPE_SITE;
 			}
 		};
@@ -85,26 +86,23 @@ public class ChannelResourceTest extends BaseChannelResourceTestCase {
 	protected Channel testGetChannelsPage_addChannel(Channel channel)
 		throws Exception {
 
-		return _addChannel(channel);
+		return _addCommerceChannel(channel);
 	}
 
 	protected Channel testGraphQLChannel_addChannel() throws Exception {
-		return _addChannel(randomChannel());
+		return _addCommerceChannel(randomChannel());
 	}
 
-	private Channel _addChannel(Channel channel) throws Exception {
+	private Channel _addCommerceChannel(Channel channel) throws Exception {
 		CommerceChannel commerceChannel =
 			_commerceChannelLocalService.addCommerceChannel(
-				channel.getExternalReferenceCode(), channel.getSiteGroupId(),
-				channel.getName(), channel.getType(), null,
-				channel.getCurrencyCode(), _serviceContext);
+				channel.getExternalReferenceCode(),
+				AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
+				channel.getSiteGroupId(), channel.getName(), channel.getType(),
+				null, channel.getCurrencyCode(), _serviceContext);
 
 		_commerceChannels.add(commerceChannel);
 
-		return _toChannel(commerceChannel);
-	}
-
-	private Channel _toChannel(CommerceChannel commerceChannel) {
 		return new Channel() {
 			{
 				currencyCode = commerceChannel.getCommerceCurrencyCode();

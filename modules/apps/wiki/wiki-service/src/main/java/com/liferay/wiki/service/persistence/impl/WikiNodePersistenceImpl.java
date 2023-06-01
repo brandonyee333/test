@@ -54,7 +54,6 @@ import com.liferay.wiki.service.persistence.impl.constants.WikiPersistenceConsta
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.ArrayList;
@@ -5186,7 +5185,8 @@ public class WikiNodePersistenceImpl
 				if (ercWikiNode != null) {
 					throw new DuplicateWikiNodeExternalReferenceCodeException(
 						"Duplicate wiki node with external reference code " +
-							wikiNode.getExternalReferenceCode());
+							wikiNode.getExternalReferenceCode() +
+								" and group " + wikiNode.getGroupId());
 				}
 			}
 			else {
@@ -5195,7 +5195,8 @@ public class WikiNodePersistenceImpl
 
 					throw new DuplicateWikiNodeExternalReferenceCodeException(
 						"Duplicate wiki node with external reference code " +
-							wikiNode.getExternalReferenceCode());
+							wikiNode.getExternalReferenceCode() +
+								" and group " + wikiNode.getGroupId());
 				}
 			}
 		}
@@ -5694,6 +5695,7 @@ public class WikiNodePersistenceImpl
 	static {
 		Set<String> ctControlColumnNames = new HashSet<String>();
 		Set<String> ctIgnoreColumnNames = new HashSet<String>();
+		Set<String> ctMaxColumnNames = new HashSet<String>();
 		Set<String> ctStrictColumnNames = new HashSet<String>();
 
 		ctControlColumnNames.add("mvccVersion");
@@ -5708,7 +5710,7 @@ public class WikiNodePersistenceImpl
 		ctIgnoreColumnNames.add("modifiedDate");
 		ctStrictColumnNames.add("name");
 		ctStrictColumnNames.add("description");
-		ctStrictColumnNames.add("lastPostDate");
+		ctMaxColumnNames.add("lastPostDate");
 		ctStrictColumnNames.add("lastPublishDate");
 		ctStrictColumnNames.add("status");
 		ctStrictColumnNames.add("statusByUserId");
@@ -5719,6 +5721,7 @@ public class WikiNodePersistenceImpl
 			CTColumnResolutionType.CONTROL, ctControlColumnNames);
 		_ctColumnNamesMap.put(
 			CTColumnResolutionType.IGNORE, ctIgnoreColumnNames);
+		_ctColumnNamesMap.put(CTColumnResolutionType.MAX, ctMaxColumnNames);
 		_ctColumnNamesMap.put(
 			CTColumnResolutionType.PK, Collections.singleton("nodeId"));
 		_ctColumnNamesMap.put(
@@ -5893,29 +5896,14 @@ public class WikiNodePersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "groupId"}, false);
 
-		_setWikiNodeUtilPersistence(this);
+		WikiNodeUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setWikiNodeUtilPersistence(null);
+		WikiNodeUtil.setPersistence(null);
 
 		entityCache.removeCache(WikiNodeImpl.class.getName());
-	}
-
-	private void _setWikiNodeUtilPersistence(
-		WikiNodePersistence wikiNodePersistence) {
-
-		try {
-			Field field = WikiNodeUtil.class.getDeclaredField("_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, wikiNodePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

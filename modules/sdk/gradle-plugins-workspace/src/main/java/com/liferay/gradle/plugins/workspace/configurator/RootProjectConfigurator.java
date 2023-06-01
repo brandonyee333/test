@@ -36,6 +36,7 @@ import com.liferay.gradle.plugins.source.formatter.SourceFormatterPlugin;
 import com.liferay.gradle.plugins.workspace.LiferayWorkspaceYarnPlugin;
 import com.liferay.gradle.plugins.workspace.WorkspaceExtension;
 import com.liferay.gradle.plugins.workspace.WorkspacePlugin;
+import com.liferay.gradle.plugins.workspace.docker.DockerPruneImage;
 import com.liferay.gradle.plugins.workspace.internal.configurator.TargetPlatformRootProjectConfigurator;
 import com.liferay.gradle.plugins.workspace.internal.util.FileUtil;
 import com.liferay.gradle.plugins.workspace.internal.util.GradleUtil;
@@ -47,6 +48,8 @@ import com.liferay.gradle.plugins.workspace.task.VerifyProductTask;
 import com.liferay.gradle.util.OSDetector;
 import com.liferay.gradle.util.Validator;
 import com.liferay.gradle.util.copy.StripPathSegmentsAction;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 
 import de.undercouch.gradle.tasks.download.Download;
 
@@ -101,6 +104,7 @@ import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.api.tasks.TaskOutputs;
+import org.gradle.api.tasks.WorkResult;
 import org.gradle.api.tasks.bundling.AbstractArchiveTask;
 import org.gradle.api.tasks.bundling.Compression;
 import org.gradle.api.tasks.bundling.Tar;
@@ -173,6 +177,9 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 	public static final String PROVIDED_MODULES_CONFIGURATION_NAME =
 		"providedModules";
+
+	public static final String PRUNE_DOCKER_IMAGE_TASK_NAME =
+		"pruneDockerImage";
 
 	public static final String PULL_DOCKER_IMAGE_TASK_NAME = "pullDockerImage";
 
@@ -422,7 +429,6 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			project, CLEAN_DOCKER_IMAGE_TASK_NAME, DockerRemoveImage.class);
 
 		dockerRemoveImage.dependsOn(REMOVE_DOCKER_CONTAINER_TASK_NAME);
-
 		dockerRemoveImage.setDescription("Removes the Docker image.");
 		dockerRemoveImage.setGroup(DOCKER_GROUP);
 
@@ -446,6 +452,12 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 			});
 
+		DockerPruneImage dockerPruneImage = GradleUtil.addTask(
+			project, PRUNE_DOCKER_IMAGE_TASK_NAME, DockerPruneImage.class);
+
+		dockerPruneImage.setDescription("Prunes the Docker image.");
+		dockerPruneImage.setGroup(DOCKER_GROUP);
+
 		Project rootProject = project.getRootProject();
 
 		rootProject.afterEvaluate(
@@ -460,9 +472,15 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 					setProperty.add(dockerImageId);
 
-					Property<String> property = dockerRemoveImage.getImageId();
+					Property<String> dockerPruneImageIdProperty =
+						dockerPruneImage.getImageId();
 
-					property.set(dockerImageId);
+					dockerPruneImageIdProperty.set(dockerImageId);
+
+					Property<String> dockerRemoveImageIdProperty =
+						dockerRemoveImage.getImageId();
+
+					dockerRemoveImageIdProperty.set(dockerImageId);
 				}
 
 			});
@@ -555,8 +573,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			project, CREATE_DOCKER_CONTAINER_TASK_NAME,
 			DockerCreateContainer.class);
 
-		dockerCreateContainer.dependsOn(
-			verifyProductTask, dockerBuildImage, dockerRemoveContainer);
+		dockerCreateContainer.dependsOn(verifyProductTask, dockerBuildImage);
 		dockerCreateContainer.mustRunAfter(
 			verifyProductTask, dockerRemoveContainer);
 
@@ -591,22 +608,28 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		DockerCreateContainer.HostConfig hostConfig =
 			dockerCreateContainer.getHostConfig();
 
-		MapProperty<String, String> binds = hostConfig.getBinds();
+		Property<Boolean> autoRemoveProperty = hostConfig.getAutoRemove();
 
-		binds.put(clientExtensionsPath, "/opt/liferay/osgi/client-extensions");
-		binds.put(deployPath, "/mnt/liferay/deploy");
-		binds.put(workPath, "/opt/liferay/work");
+		autoRemoveProperty.set(true);
+
+		MapProperty<String, String> bindsMapProperty = hostConfig.getBinds();
+
+		bindsMapProperty.put(
+			clientExtensionsPath, "/opt/liferay/osgi/client-extensions");
+		bindsMapProperty.put(deployPath, "/mnt/liferay/deploy");
+		bindsMapProperty.put(workPath, "/opt/liferay/work");
 
 		dockerCreateContainer.setDescription(
 			"Creates a Docker container from your built image and mounts " +
 				dockerPath + " to /mnt/liferay.");
 		dockerCreateContainer.setGroup(DOCKER_GROUP);
 
-		ListProperty<String> portBindings = hostConfig.getPortBindings();
+		ListProperty<String> portBindingsListProperty =
+			hostConfig.getPortBindings();
 
-		portBindings.add("8000:8000");
-		portBindings.add("8080:8080");
-		portBindings.add("11311:11311");
+		portBindingsListProperty.add("8000:8000");
+		portBindingsListProperty.add("8080:8080");
+		portBindingsListProperty.add("11311:11311");
 
 		dockerCreateContainer.targetImageId(
 			new Callable<String>() {
@@ -655,6 +678,9 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			"ENV LIFERAY_WORKSPACE_ENVIRONMENT=" +
 				workspaceExtension.getEnvironment());
 
+		dockerfile.instruction(
+			"COPY --chown=liferay:liferay client-extensions /home/liferay" +
+				"/osgi/client-extensions");
 		dockerfile.instruction(
 			"COPY --chown=liferay:liferay deploy /mnt/liferay/deploy");
 		dockerfile.instruction(
@@ -1060,7 +1086,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 						try {
 							URL srcURL = (URL)src;
 
-							if (Objects.equals("file", srcURL.getProtocol())) {
+							if (Objects.equals(srcURL.getProtocol(), "file")) {
 								URI uri = project.uri(src);
 
 								file = project.file(uri);
@@ -1127,18 +1153,44 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		Project project, VerifyProductTask verifyProductTask,
 		Download downloadBundleTask, VerifyBundleTask verifyBundleTask,
 		final WorkspaceExtension workspaceExtension,
-		Configuration configurationBundleSupport,
-		Configuration configurationOsgiModules) {
+		Configuration bundleSupportConfiguration,
+		Configuration osgiModulesConfiguration) {
 
 		InitBundleTask initBundleTask = GradleUtil.addTask(
 			project, INIT_BUNDLE_TASK_NAME, InitBundleTask.class);
 
 		initBundleTask.dependsOn(
 			verifyProductTask, downloadBundleTask, verifyBundleTask);
+		initBundleTask.doLast(
+			new Action<Task>() {
 
+				@Override
+				public void execute(Task task) {
+					File homeDir = workspaceExtension.getHomeDir();
+
+					WorkResult workResult = project.copy(
+						copySpec -> {
+							copySpec.from(
+								new File(
+									workspaceExtension.getConfigsDir(),
+									"common"),
+								new File(
+									workspaceExtension.getConfigsDir(),
+									workspaceExtension.getEnvironment()));
+							copySpec.into(homeDir);
+
+							_configureCopySpecExpandTomcatVersion(
+								copySpec, workspaceExtension);
+						});
+
+					if (workResult.getDidWork()) {
+						project.delete(new File(homeDir, "tomcat"));
+					}
+				}
+
+			});
 		initBundleTask.mustRunAfter(verifyProductTask);
-
-		initBundleTask.setClasspath(configurationBundleSupport);
+		initBundleTask.setClasspath(bundleSupportConfiguration);
 		initBundleTask.setConfigEnvironment(
 			new Callable<String>() {
 
@@ -1181,7 +1233,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		}
 
 		initBundleTask.setGroup(BUNDLE_GROUP);
-		initBundleTask.setProvidedModules(configurationOsgiModules);
+		initBundleTask.setProvidedModules(osgiModulesConfiguration);
 
 		return initBundleTask;
 	}
@@ -1685,6 +1737,24 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		return verifyProductTask;
 	}
 
+	private void _configureCopySpecExpandTomcatVersion(
+		CopySpec copySpec, WorkspaceExtension workspaceExtension) {
+
+		String tomcatVersion = workspaceExtension.getAppServerTomcatVersion();
+
+		copySpec.eachFile(
+			fileCopyDetails -> {
+				String path = fileCopyDetails.getPath();
+
+				fileCopyDetails.setPath(
+					path.replaceAll(
+						"tomcat/",
+						StringBundler.concat(
+							"tomcat-", tomcatVersion,
+							StringPool.FORWARD_SLASH)));
+			});
+	}
+
 	private <T extends AbstractArchiveTask> void _configureDistBundleEnvArchive(
 		Project project, T distBundleArchiveTask, String environment,
 		boolean bundleDistIncludeMetadata, long buildTime) {
@@ -1833,6 +1903,10 @@ public class RootProjectConfigurator implements Plugin<Project> {
 							new File(destinationDir, rootDirName),
 							destinationDir);
 					}
+
+					if (copy.getDidWork()) {
+						project.delete(new File(destinationDir, "tomcat"));
+					}
 				}
 
 			});
@@ -1879,6 +1953,11 @@ public class RootProjectConfigurator implements Plugin<Project> {
 				}
 
 			});
+
+		WorkspaceExtension workspaceExtension = GradleUtil.getExtension(
+			(ExtensionAware)project.getGradle(), WorkspaceExtension.class);
+
+		_configureCopySpecExpandTomcatVersion(copy, workspaceExtension);
 	}
 
 	private void _configureTaskCopyBundlePreserveTimestamps(Copy copy) {

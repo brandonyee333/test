@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessorUtil;
@@ -55,11 +56,9 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -71,9 +70,7 @@ import com.liferay.portal.verify.VerifyProcess;
 import java.io.InputStream;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -84,10 +81,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author     Alexander Chow
  * @deprecated As of Mueller (7.2.x), with no direct replacement
  */
-@Component(
-	property = "verify.process.name=com.liferay.document.library.service",
-	service = VerifyProcess.class
-)
+@Component(service = VerifyProcess.class)
 @Deprecated
 public class DLServiceVerifyProcess extends VerifyProcess {
 
@@ -100,7 +94,7 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 		_updateFileEntryAssets();
 		_updateFolderAssets();
 
-		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-157670"))) {
+		if (FeatureFlagManagerUtil.isEnabled("LPS-157670")) {
 			updateStagedPortletNames();
 		}
 	}
@@ -152,35 +146,29 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 	private void _checkDDMStructureDefinition() throws Exception {
 		_companyLocalService.forEachCompanyId(
 			companyId -> {
-				Map<String, Set<String>> fieldNames =
-					RawMetadataProcessorUtil.getFieldNames();
-
 				Group group = _groupLocalService.getCompanyGroup(companyId);
+				String name =
+					com.liferay.portal.kernel.metadata.RawMetadataProcessor.
+						TIKA_RAW_METADATA;
 
-				for (Map.Entry<String, Set<String>> entry :
-						fieldNames.entrySet()) {
+				DDMStructure ddmStructure =
+					_ddmStructureLocalService.fetchStructure(
+						group.getGroupId(),
+						_portal.getClassNameId(RawMetadataProcessor.class),
+						name);
 
-					String name = entry.getKey();
+				if (ddmStructure != null) {
+					DDMForm ddmForm = DDMFormUtil.buildDDMForm(
+						RawMetadataProcessorUtil.getFieldNames(),
+						_portal.getSiteDefaultLocale(group.getGroupId()));
 
-					DDMStructure ddmStructure =
-						_ddmStructureLocalService.fetchStructure(
-							group.getGroupId(),
-							_portal.getClassNameId(RawMetadataProcessor.class),
-							name);
+					String definition = _serializeJSONDDMForm(ddmForm);
 
-					if (ddmStructure != null) {
-						DDMForm ddmForm = DDMFormUtil.buildDDMForm(
-							entry.getValue(),
-							_portal.getSiteDefaultLocale(group.getGroupId()));
+					if (!definition.equals(ddmStructure.getDefinition())) {
+						ddmStructure.setDDMForm(ddmForm);
 
-						String definition = _serializeJSONDDMForm(ddmForm);
-
-						if (!definition.equals(ddmStructure.getDefinition())) {
-							ddmStructure.setDDMForm(ddmForm);
-
-							_ddmStructureLocalService.updateDDMStructure(
-								ddmStructure);
-						}
+						_ddmStructureLocalService.updateDDMStructure(
+							ddmStructure);
 					}
 				}
 			});

@@ -32,7 +32,7 @@ Set<PublicRenderParameter> publicRenderParameters = (Set<PublicRenderParameter>)
 	<liferay-util:param name="tabs1" value="communication" />
 </liferay-util:include>
 
-<div class="portlet-configuration-edit-communications">
+<div class="cadmin portlet-configuration-edit-communications">
 	<liferay-frontend:edit-form
 		action="<%= editPublicRenderParametersURL %>"
 		cssClass="form"
@@ -65,7 +65,12 @@ Set<PublicRenderParameter> publicRenderParameters = (Set<PublicRenderParameter>)
 				<liferay-ui:error key="duplicateMapping" message="several-shared-parameters-are-mapped-to-the-same-parameter" />
 
 				<div class="alert alert-info">
-					<liferay-ui:message arguments="https://dev.liferay.com/en/discover/portal/-/knowledge_base/7-0/communication-between-apps" key="set-up-the-communication-among-the-portlets-that-use-public-render-parameters" translateArguments="<%= false %>" />
+					<liferay-ui:message key="set-up-the-communication-among-the-portlets-that-use-public-render-parameters" />
+
+					<liferay-learn:message
+						key="general"
+						resource="portlet-configuration-web"
+					/>
 				</div>
 
 				<liferay-ui:search-container

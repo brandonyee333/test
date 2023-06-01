@@ -29,6 +29,7 @@ import com.liferay.object.admin.rest.client.pagination.Pagination;
 import com.liferay.object.admin.rest.client.resource.v1_0.ObjectFieldResource;
 import com.liferay.object.admin.rest.client.serdes.v1_0.ObjectFieldSerDes;
 import com.liferay.petra.function.UnsafeTriConsumer;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -66,8 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -190,6 +189,7 @@ public abstract class BaseObjectFieldResourceTestCase {
 		objectField.setIndexedLanguageId(regex);
 		objectField.setListTypeDefinitionExternalReferenceCode(regex);
 		objectField.setName(regex);
+		objectField.setReadOnlyConditionExpression(regex);
 
 		String json = ObjectFieldSerDes.toJSON(objectField);
 
@@ -203,6 +203,8 @@ public abstract class BaseObjectFieldResourceTestCase {
 		Assert.assertEquals(
 			regex, objectField.getListTypeDefinitionExternalReferenceCode());
 		Assert.assertEquals(regex, objectField.getName());
+		Assert.assertEquals(
+			regex, objectField.getReadOnlyConditionExpression());
 	}
 
 	@Test
@@ -239,7 +241,10 @@ public abstract class BaseObjectFieldResourceTestCase {
 			assertEquals(
 				Arrays.asList(irrelevantObjectField),
 				(List<ObjectField>)page.getItems());
-			assertValid(page);
+			assertValid(
+				page,
+				testGetObjectDefinitionByExternalReferenceCodeObjectFieldsPage_getExpectedActions(
+					irrelevantExternalReferenceCode));
 		}
 
 		ObjectField objectField1 =
@@ -261,11 +266,24 @@ public abstract class BaseObjectFieldResourceTestCase {
 		assertEqualsIgnoringOrder(
 			Arrays.asList(objectField1, objectField2),
 			(List<ObjectField>)page.getItems());
-		assertValid(page);
+		assertValid(
+			page,
+			testGetObjectDefinitionByExternalReferenceCodeObjectFieldsPage_getExpectedActions(
+				externalReferenceCode));
 
 		objectFieldResource.deleteObjectField(objectField1.getId());
 
 		objectFieldResource.deleteObjectField(objectField2.getId());
+	}
+
+	protected Map<String, Map<String, String>>
+			testGetObjectDefinitionByExternalReferenceCodeObjectFieldsPage_getExpectedActions(
+				String externalReferenceCode)
+		throws Exception {
+
+		Map<String, Map<String, String>> expectedActions = new HashMap<>();
+
+		return expectedActions;
 	}
 
 	@Test
@@ -652,7 +670,10 @@ public abstract class BaseObjectFieldResourceTestCase {
 			assertEquals(
 				Arrays.asList(irrelevantObjectField),
 				(List<ObjectField>)page.getItems());
-			assertValid(page);
+			assertValid(
+				page,
+				testGetObjectDefinitionObjectFieldsPage_getExpectedActions(
+					irrelevantObjectDefinitionId));
 		}
 
 		ObjectField objectField1 =
@@ -671,11 +692,35 @@ public abstract class BaseObjectFieldResourceTestCase {
 		assertEqualsIgnoringOrder(
 			Arrays.asList(objectField1, objectField2),
 			(List<ObjectField>)page.getItems());
-		assertValid(page);
+		assertValid(
+			page,
+			testGetObjectDefinitionObjectFieldsPage_getExpectedActions(
+				objectDefinitionId));
 
 		objectFieldResource.deleteObjectField(objectField1.getId());
 
 		objectFieldResource.deleteObjectField(objectField2.getId());
+	}
+
+	protected Map<String, Map<String, String>>
+			testGetObjectDefinitionObjectFieldsPage_getExpectedActions(
+				Long objectDefinitionId)
+		throws Exception {
+
+		Map<String, Map<String, String>> expectedActions = new HashMap<>();
+
+		Map createBatchAction = new HashMap<>();
+		createBatchAction.put("method", "POST");
+		createBatchAction.put(
+			"href",
+			"http://localhost:8080/o/object-admin/v1.0/object-definitions/{objectDefinitionId}/object-fields/batch".
+				replace(
+					"{objectDefinitionId}",
+					String.valueOf(objectDefinitionId)));
+
+		expectedActions.put("createBatch", createBatchAction);
+
+		return expectedActions;
 	}
 
 	@Test
@@ -1382,6 +1427,14 @@ public abstract class BaseObjectFieldResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("localized", additionalAssertFieldName)) {
+				if (objectField.getLocalized() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("name", additionalAssertFieldName)) {
 				if (objectField.getName() == null) {
 					valid = false;
@@ -1394,6 +1447,24 @@ public abstract class BaseObjectFieldResourceTestCase {
 					"objectFieldSettings", additionalAssertFieldName)) {
 
 				if (objectField.getObjectFieldSettings() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("readOnly", additionalAssertFieldName)) {
+				if (objectField.getReadOnly() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"readOnlyConditionExpression", additionalAssertFieldName)) {
+
+				if (objectField.getReadOnlyConditionExpression() == null) {
 					valid = false;
 				}
 
@@ -1449,6 +1520,13 @@ public abstract class BaseObjectFieldResourceTestCase {
 	}
 
 	protected void assertValid(Page<ObjectField> page) {
+		assertValid(page, Collections.emptyMap());
+	}
+
+	protected void assertValid(
+		Page<ObjectField> page,
+		Map<String, Map<String, String>> expectedActions) {
+
 		boolean valid = false;
 
 		java.util.Collection<ObjectField> objectFields = page.getItems();
@@ -1463,6 +1541,20 @@ public abstract class BaseObjectFieldResourceTestCase {
 		}
 
 		Assert.assertTrue(valid);
+
+		Map<String, Map<String, String>> actions = page.getActions();
+
+		for (String key : expectedActions.keySet()) {
+			Map action = actions.get(key);
+
+			Assert.assertNotNull(key + " does not contain an action", action);
+
+			Map expectedAction = expectedActions.get(key);
+
+			Assert.assertEquals(
+				expectedAction.get("method"), action.get("method"));
+			Assert.assertEquals(expectedAction.get("href"), action.get("href"));
+		}
 	}
 
 	protected String[] getAdditionalAssertFieldNames() {
@@ -1672,6 +1764,17 @@ public abstract class BaseObjectFieldResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("localized", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						objectField1.getLocalized(),
+						objectField2.getLocalized())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("name", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						objectField1.getName(), objectField2.getName())) {
@@ -1688,6 +1791,30 @@ public abstract class BaseObjectFieldResourceTestCase {
 				if (!Objects.deepEquals(
 						objectField1.getObjectFieldSettings(),
 						objectField2.getObjectFieldSettings())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("readOnly", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						objectField1.getReadOnly(),
+						objectField2.getReadOnly())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"readOnlyConditionExpression", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						objectField1.getReadOnlyConditionExpression(),
+						objectField2.getReadOnlyConditionExpression())) {
 
 					return false;
 				}
@@ -1784,14 +1911,16 @@ public abstract class BaseObjectFieldResourceTestCase {
 	protected java.lang.reflect.Field[] getDeclaredFields(Class clazz)
 		throws Exception {
 
-		Stream<java.lang.reflect.Field> stream = Stream.of(
-			ReflectionUtil.getDeclaredFields(clazz));
+		return TransformUtil.transform(
+			ReflectionUtil.getDeclaredFields(clazz),
+			field -> {
+				if (field.isSynthetic()) {
+					return null;
+				}
 
-		return stream.filter(
-			field -> !field.isSynthetic()
-		).toArray(
-			java.lang.reflect.Field[]::new
-		);
+				return field;
+			},
+			java.lang.reflect.Field.class);
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -1808,6 +1937,10 @@ public abstract class BaseObjectFieldResourceTestCase {
 		EntityModel entityModel = entityModelResource.getEntityModel(
 			new MultivaluedHashMap());
 
+		if (entityModel == null) {
+			return Collections.emptyList();
+		}
+
 		Map<String, EntityField> entityFieldsMap =
 			entityModel.getEntityFieldsMap();
 
@@ -1817,18 +1950,18 @@ public abstract class BaseObjectFieldResourceTestCase {
 	protected List<EntityField> getEntityFields(EntityField.Type type)
 		throws Exception {
 
-		java.util.Collection<EntityField> entityFields = getEntityFields();
+		return TransformUtil.transform(
+			getEntityFields(),
+			entityField -> {
+				if (!Objects.equals(entityField.getType(), type) ||
+					ArrayUtil.contains(
+						getIgnoredEntityFieldNames(), entityField.getName())) {
 
-		Stream<EntityField> stream = entityFields.stream();
+					return null;
+				}
 
-		return stream.filter(
-			entityField ->
-				Objects.equals(entityField.getType(), type) &&
-				!ArrayUtil.contains(
-					getIgnoredEntityFieldNames(), entityField.getName())
-		).collect(
-			Collectors.toList()
-		);
+				return entityField;
+			});
 	}
 
 	protected String getFilterString(
@@ -1918,6 +2051,11 @@ public abstract class BaseObjectFieldResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("localized")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("name")) {
 			sb.append("'");
 			sb.append(String.valueOf(objectField.getName()));
@@ -1929,6 +2067,20 @@ public abstract class BaseObjectFieldResourceTestCase {
 		if (entityFieldName.equals("objectFieldSettings")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("readOnly")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("readOnlyConditionExpression")) {
+			sb.append("'");
+			sb.append(
+				String.valueOf(objectField.getReadOnlyConditionExpression()));
+			sb.append("'");
+
+			return sb.toString();
 		}
 
 		if (entityFieldName.equals("relationshipType")) {
@@ -2012,7 +2164,10 @@ public abstract class BaseObjectFieldResourceTestCase {
 				listTypeDefinitionExternalReferenceCode =
 					StringUtil.toLowerCase(RandomTestUtil.randomString());
 				listTypeDefinitionId = RandomTestUtil.randomLong();
+				localized = RandomTestUtil.randomBoolean();
 				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				readOnlyConditionExpression = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				required = RandomTestUtil.randomBoolean();
 				state = RandomTestUtil.randomBoolean();
 				system = RandomTestUtil.randomBoolean();

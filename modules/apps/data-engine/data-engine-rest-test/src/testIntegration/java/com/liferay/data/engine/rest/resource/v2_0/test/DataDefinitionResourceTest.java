@@ -30,6 +30,7 @@ import com.liferay.data.engine.rest.resource.exception.DataLayoutValidationExcep
 import com.liferay.data.engine.rest.resource.v2_0.DataDefinitionResource;
 import com.liferay.data.engine.rest.resource.v2_0.test.util.DataDefinitionTestUtil;
 import com.liferay.data.engine.rest.resource.v2_0.test.util.DataLayoutTestUtil;
+import com.liferay.data.engine.rest.resource.v2_0.test.util.content.type.ModelResourceActionTestUtil;
 import com.liferay.data.engine.rest.resource.v2_0.test.util.content.type.TestDataDefinitionContentType;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -37,6 +38,8 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.security.permission.ResourceActions;
+import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -55,7 +58,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,6 +72,20 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class DataDefinitionResourceTest
 	extends BaseDataDefinitionResourceTestCase {
+
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+		BaseDataDefinitionResourceTestCase.setUpClass();
+
+		ModelResourceActionTestUtil.populateModelResourceAction(
+			_resourceActions);
+	}
+
+	@AfterClass
+	public static void tearDownClass() {
+		ModelResourceActionTestUtil.deleteModelResourceAction(
+			_resourceActionLocalService, _resourceActions);
+	}
 
 	@Override
 	@Test
@@ -94,11 +113,6 @@ public class DataDefinitionResourceTest
 					"ddmStructureId", parentDataDefinition.getId()
 				).put(
 					"ddmStructureLayoutId", ""
-				).put(
-					"rows",
-					new String[] {
-						"[{\"columns\":[{\"fields\":[\"Text\"],\"size\": 12}]}]"
-					}
 				).build());
 		}
 
@@ -293,9 +307,11 @@ public class DataDefinitionResourceTest
 		catch (Problem.ProblemException problemException) {
 			Problem problem = problemException.getProblem();
 
-			Assert.assertNull(problem.getDetail());
+			Assert.assertEquals("text2", problem.getDetail());
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
-			Assert.assertEquals("MustNotDuplicateFieldName", problem.getType());
+			Assert.assertEquals(
+				"DataDefinitionValidationException.MustNotDuplicateFieldName",
+				problem.getType());
 		}
 
 		// MustSetAvailableLocales
@@ -313,7 +329,9 @@ public class DataDefinitionResourceTest
 			Problem problem = problemException.getProblem();
 
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
-			Assert.assertEquals("MustSetAvailableLocales", problem.getType());
+			Assert.assertEquals(
+				"DataDefinitionValidationException.MustSetAvailableLocales",
+				problem.getType());
 		}
 
 		// MustSetDefaultLocaleAsAvailableLocale
@@ -331,10 +349,12 @@ public class DataDefinitionResourceTest
 		catch (Problem.ProblemException problemException) {
 			Problem problem = problemException.getProblem();
 
-			Assert.assertNull(problem.getDetail());
+			Assert.assertEquals("es_ES", problem.getDetail());
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
 			Assert.assertEquals(
-				"MustSetDefaultLocaleAsAvailableLocale", problem.getType());
+				"DataDefinitionValidationException." +
+					"MustSetDefaultLocaleAsAvailableLocale",
+				problem.getType());
 		}
 
 		// MustSetFields
@@ -354,7 +374,9 @@ public class DataDefinitionResourceTest
 			Problem problem = problemException.getProblem();
 
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
-			Assert.assertEquals("MustSetFields", problem.getType());
+			Assert.assertEquals(
+				"DataDefinitionValidationException.MustSetFields",
+				problem.getType());
 		}
 
 		_testDataDefinitionContentType.setAllowEmptyDataDefinition(true);
@@ -379,9 +401,11 @@ public class DataDefinitionResourceTest
 		catch (Problem.ProblemException problemException) {
 			Problem problem = problemException.getProblem();
 
-			Assert.assertNull(problem.getDetail());
+			Assert.assertEquals("text1", problem.getDetail());
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
-			Assert.assertEquals("MustSetFieldType", problem.getType());
+			Assert.assertEquals(
+				"DataDefinitionValidationException.MustSetFieldType",
+				problem.getType());
 		}
 
 		// MustSetOptionsForField
@@ -399,9 +423,11 @@ public class DataDefinitionResourceTest
 		catch (Problem.ProblemException problemException) {
 			Problem problem = problemException.getProblem();
 
-			Assert.assertNull(problem.getDetail());
+			Assert.assertEquals("select1", problem.getDetail());
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
-			Assert.assertEquals("MustSetOptionsForField", problem.getType());
+			Assert.assertEquals(
+				"DataDefinitionValidationException.MustSetOptionsForField",
+				problem.getType());
 		}
 
 		// MustSetValidCharactersForFieldName
@@ -419,10 +445,12 @@ public class DataDefinitionResourceTest
 		catch (Problem.ProblemException problemException) {
 			Problem problem = problemException.getProblem();
 
-			Assert.assertNull(problem.getDetail());
+			Assert.assertEquals("#name*", problem.getDetail());
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
 			Assert.assertEquals(
-				"MustSetValidCharactersForFieldName", problem.getType());
+				"DataDefinitionValidationException." +
+					"MustSetValidCharactersForFieldName",
+				problem.getType());
 		}
 
 		// MustSetValidCharactersForFieldType
@@ -440,10 +468,12 @@ public class DataDefinitionResourceTest
 		catch (Problem.ProblemException problemException) {
 			Problem problem = problemException.getProblem();
 
-			Assert.assertNull(problem.getDetail());
+			Assert.assertEquals("text$#", problem.getDetail());
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
 			Assert.assertEquals(
-				"MustSetValidCharactersForFieldType", problem.getType());
+				"DataDefinitionValidationException." +
+					"MustSetValidCharactersForFieldType",
+				problem.getType());
 		}
 
 		// MustSetValidContentType
@@ -459,9 +489,11 @@ public class DataDefinitionResourceTest
 		catch (Problem.ProblemException problemException) {
 			Problem problem = problemException.getProblem();
 
-			Assert.assertNull(problem.getDetail());
+			Assert.assertEquals("INVALID", problem.getDetail());
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
-			Assert.assertEquals("MustSetValidContentType", problem.getType());
+			Assert.assertEquals(
+				"DataDefinitionValidationException.MustSetValidContentType",
+				problem.getType());
 		}
 
 		// MustSetValidName
@@ -479,7 +511,9 @@ public class DataDefinitionResourceTest
 			Problem problem = problemException.getProblem();
 
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
-			Assert.assertEquals("MustSetValidName", problem.getType());
+			Assert.assertEquals(
+				"DataDefinitionValidationException.MustSetValidName",
+				problem.getType());
 		}
 
 		// MustSetValidType
@@ -496,9 +530,11 @@ public class DataDefinitionResourceTest
 		catch (Problem.ProblemException problemException) {
 			Problem problem = problemException.getProblem();
 
-			Assert.assertNull(problem.getDetail());
+			Assert.assertEquals("string", problem.getDetail());
 			Assert.assertEquals("BAD_REQUEST", problem.getStatus());
-			Assert.assertEquals("MustSetValidType", problem.getType());
+			Assert.assertEquals(
+				"DataDefinitionValidationException.MustSetValidType",
+				problem.getType());
 		}
 
 		// Provide default layout name when none is informed
@@ -915,6 +951,12 @@ public class DataDefinitionResourceTest
 	}
 
 	private static final String _CONTENT_TYPE = "test";
+
+	@Inject
+	private static ResourceActionLocalService _resourceActionLocalService;
+
+	@Inject
+	private static ResourceActions _resourceActions;
 
 	@Inject
 	private DataDefinitionResource.Factory _dataDefinitionResourceFactory;

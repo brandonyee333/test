@@ -26,18 +26,21 @@ export default interface MDFRequestDTO
 	> {
 	companyName?: string;
 	emailAddress?: string;
+	externalReferenceCode?: string;
 	externalReferenceCodeSF?: string;
 	liferayBusinessSalesGoals?: string;
+	liferayBusinessSalesGoalsOther?: string;
 	liferaysUserIdSF?: number;
 	mdfReqToActs?: MDFRequestActivityDTO[];
 	mdfReqToMDFClms?: MDFClaimDTO[];
 	r_accToMDFReqs_accountEntry?: AccountEntry;
+	r_accToMDFReqs_accountEntryERC?: string;
 	r_accToMDFReqs_accountEntryId?: number;
 	r_usrToMDFReqs_user?: User;
 	r_usrToMDFReqs_userId?: number;
 	targetAudienceRoles?: string;
 	targetMarkets?: string;
-	totalCostOfExpense?: number;
-	totalMDFRequestAmount?: number;
+	totalCostOfExpense: number;
+	totalMDFRequestAmount: number;
 	totalRequested?: number;
 }

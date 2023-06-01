@@ -312,21 +312,6 @@ public interface ObjectFieldModel
 	public void setDBType(String dbType);
 
 	/**
-	 * Returns the default value of this object field.
-	 *
-	 * @return the default value of this object field
-	 */
-	@AutoEscape
-	public String getDefaultValue();
-
-	/**
-	 * Sets the default value of this object field.
-	 *
-	 * @param defaultValue the default value of this object field
-	 */
-	public void setDefaultValue(String defaultValue);
-
-	/**
 	 * Returns the indexed of this object field.
 	 *
 	 * @return the indexed of this object field
@@ -483,6 +468,27 @@ public interface ObjectFieldModel
 	public void setLabelMap(Map<Locale, String> labelMap, Locale defaultLocale);
 
 	/**
+	 * Returns the localized of this object field.
+	 *
+	 * @return the localized of this object field
+	 */
+	public boolean getLocalized();
+
+	/**
+	 * Returns <code>true</code> if this object field is localized.
+	 *
+	 * @return <code>true</code> if this object field is localized; <code>false</code> otherwise
+	 */
+	public boolean isLocalized();
+
+	/**
+	 * Sets whether this object field is localized.
+	 *
+	 * @param localized the localized of this object field
+	 */
+	public void setLocalized(boolean localized);
+
+	/**
 	 * Returns the name of this object field.
 	 *
 	 * @return the name of this object field
@@ -496,6 +502,37 @@ public interface ObjectFieldModel
 	 * @param name the name of this object field
 	 */
 	public void setName(String name);
+
+	/**
+	 * Returns the read only of this object field.
+	 *
+	 * @return the read only of this object field
+	 */
+	@AutoEscape
+	public String getReadOnly();
+
+	/**
+	 * Sets the read only of this object field.
+	 *
+	 * @param readOnly the read only of this object field
+	 */
+	public void setReadOnly(String readOnly);
+
+	/**
+	 * Returns the read only condition expression of this object field.
+	 *
+	 * @return the read only condition expression of this object field
+	 */
+	@AutoEscape
+	public String getReadOnlyConditionExpression();
+
+	/**
+	 * Sets the read only condition expression of this object field.
+	 *
+	 * @param readOnlyConditionExpression the read only condition expression of this object field
+	 */
+	public void setReadOnlyConditionExpression(
+		String readOnlyConditionExpression);
 
 	/**
 	 * Returns the relationship type of this object field.

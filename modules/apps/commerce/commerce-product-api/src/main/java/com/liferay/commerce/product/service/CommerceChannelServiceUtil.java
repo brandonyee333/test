@@ -39,8 +39,8 @@ public class CommerceChannelServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.commerce.product.service.impl.CommerceChannelServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static CommerceChannel addCommerceChannel(
-			String externalReferenceCode, long siteGroupId, String name,
-			String type,
+			String externalReferenceCode, long accountEntryId, long siteGroupId,
+			String name, String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			String commerceCurrencyCode,
@@ -48,14 +48,14 @@ public class CommerceChannelServiceUtil {
 		throws PortalException {
 
 		return getService().addCommerceChannel(
-			externalReferenceCode, siteGroupId, name, type,
+			externalReferenceCode, accountEntryId, siteGroupId, name, type,
 			typeSettingsUnicodeProperties, commerceCurrencyCode,
 			serviceContext);
 	}
 
 	public static CommerceChannel addOrUpdateCommerceChannel(
-			String externalReferenceCode, long siteGroupId, String name,
-			String type,
+			String externalReferenceCode, long accountEntryId, long siteGroupId,
+			String name, String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			String commerceCurrencyCode,
@@ -63,7 +63,7 @@ public class CommerceChannelServiceUtil {
 		throws PortalException {
 
 		return getService().addOrUpdateCommerceChannel(
-			externalReferenceCode, siteGroupId, name, type,
+			externalReferenceCode, accountEntryId, siteGroupId, name, type,
 			typeSettingsUnicodeProperties, commerceCurrencyCode,
 			serviceContext);
 	}
@@ -100,30 +100,10 @@ public class CommerceChannelServiceUtil {
 		return getService().getCommerceChannelByOrderGroupId(groupId);
 	}
 
-	public static List<CommerceChannel> getCommerceChannels(int start, int end)
-		throws PortalException {
-
-		return getService().getCommerceChannels(start, end);
-	}
-
 	public static List<CommerceChannel> getCommerceChannels(long companyId)
 		throws PortalException {
 
 		return getService().getCommerceChannels(companyId);
-	}
-
-	public static List<CommerceChannel> getCommerceChannels(
-			long companyId, String keywords, int start, int end)
-		throws PortalException {
-
-		return getService().getCommerceChannels(
-			companyId, keywords, start, end);
-	}
-
-	public static int getCommerceChannelsCount(long companyId, String keywords)
-		throws PortalException {
-
-		return getService().getCommerceChannelsCount(companyId, keywords);
 	}
 
 	/**
@@ -157,14 +137,15 @@ public class CommerceChannelServiceUtil {
 	}
 
 	public static CommerceChannel updateCommerceChannel(
-			long commerceChannelId, long siteGroupId, String name, String type,
+			long commerceChannelId, long accountEntryId, long siteGroupId,
+			String name, String type,
 			com.liferay.portal.kernel.util.UnicodeProperties
 				typeSettingsUnicodeProperties,
 			String commerceCurrencyCode)
 		throws PortalException {
 
 		return getService().updateCommerceChannel(
-			commerceChannelId, siteGroupId, name, type,
+			commerceChannelId, accountEntryId, siteGroupId, name, type,
 			typeSettingsUnicodeProperties, commerceCurrencyCode);
 	}
 
@@ -192,6 +173,10 @@ public class CommerceChannelServiceUtil {
 
 	public static CommerceChannelService getService() {
 		return _service;
+	}
+
+	public static void setService(CommerceChannelService service) {
+		_service = service;
 	}
 
 	private static volatile CommerceChannelService _service;

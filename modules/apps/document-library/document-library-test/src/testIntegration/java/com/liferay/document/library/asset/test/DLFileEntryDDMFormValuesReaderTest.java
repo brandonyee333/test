@@ -16,19 +16,21 @@ package com.liferay.document.library.asset.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.DDMFormValuesReader;
+import com.liferay.document.library.asset.DLFileEntryDDMFormValuesReader;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryTypeLocalServiceUtil;
+import com.liferay.document.library.util.DLFileEntryTypeUtil;
 import com.liferay.dynamic.data.mapping.kernel.DDMForm;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormField;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormFieldValue;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
-import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.dynamic.data.mapping.kernel.LocalizedValue;
 import com.liferay.dynamic.data.mapping.kernel.UnlocalizedValue;
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
@@ -45,7 +47,6 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portlet.documentlibrary.asset.DLFileEntryDDMFormValuesReader;
 
 import java.io.ByteArrayInputStream;
 
@@ -103,7 +104,8 @@ public class DLFileEntryDDMFormValuesReaderTest {
 		serviceContext.setAttribute(
 			"fileEntryTypeId", dlFileEntryType.getFileEntryTypeId());
 
-		List<DDMStructure> ddmStructures = dlFileEntryType.getDDMStructures();
+		List<DDMStructure> ddmStructures = DLFileEntryTypeUtil.getDDMStructures(
+			dlFileEntryType);
 
 		Map<String, DDMFormValues> ddmFormValuesMap = createDDMFormValuesMap(
 			ddmStructures.get(0));

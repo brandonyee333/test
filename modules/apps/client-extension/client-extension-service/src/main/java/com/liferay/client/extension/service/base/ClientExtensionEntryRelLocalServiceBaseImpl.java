@@ -58,8 +58,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
-
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -291,20 +289,20 @@ public abstract class ClientExtensionEntryRelLocalServiceBaseImpl
 	@Override
 	public ClientExtensionEntryRel
 		fetchClientExtensionEntryRelByExternalReferenceCode(
-			String externalReferenceCode, long companyId) {
+			String externalReferenceCode, long groupId) {
 
-		return clientExtensionEntryRelPersistence.fetchByERC_C(
-			externalReferenceCode, companyId);
+		return clientExtensionEntryRelPersistence.fetchByERC_G(
+			externalReferenceCode, groupId);
 	}
 
 	@Override
 	public ClientExtensionEntryRel
 			getClientExtensionEntryRelByExternalReferenceCode(
-				String externalReferenceCode, long companyId)
+				String externalReferenceCode, long groupId)
 		throws PortalException {
 
-		return clientExtensionEntryRelPersistence.findByERC_C(
-			externalReferenceCode, companyId);
+		return clientExtensionEntryRelPersistence.findByERC_G(
+			externalReferenceCode, groupId);
 	}
 
 	/**
@@ -611,7 +609,7 @@ public abstract class ClientExtensionEntryRelLocalServiceBaseImpl
 
 	@Deactivate
 	protected void deactivate() {
-		_setLocalServiceUtilService(null);
+		ClientExtensionEntryRelLocalServiceUtil.setService(null);
 	}
 
 	@Override
@@ -628,7 +626,8 @@ public abstract class ClientExtensionEntryRelLocalServiceBaseImpl
 		clientExtensionEntryRelLocalService =
 			(ClientExtensionEntryRelLocalService)aopProxy;
 
-		_setLocalServiceUtilService(clientExtensionEntryRelLocalService);
+		ClientExtensionEntryRelLocalServiceUtil.setService(
+			clientExtensionEntryRelLocalService);
 	}
 
 	/**
@@ -686,24 +685,6 @@ public abstract class ClientExtensionEntryRelLocalServiceBaseImpl
 		}
 		catch (Exception exception) {
 			throw new SystemException(exception);
-		}
-	}
-
-	private void _setLocalServiceUtilService(
-		ClientExtensionEntryRelLocalService
-			clientExtensionEntryRelLocalService) {
-
-		try {
-			Field field =
-				ClientExtensionEntryRelLocalServiceUtil.class.getDeclaredField(
-					"_service");
-
-			field.setAccessible(true);
-
-			field.set(null, clientExtensionEntryRelLocalService);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
 		}
 	}
 

@@ -1,12 +1,14 @@
 @component-name = "portal-solutions"
 definition {
 
-	property custom.properties = "feature.flag.LPS-163118=true";
+	property custom.properties = "feature.flag.LPS-163118=true${line.separator}feature.flag.LPS-154672=true";
 	property osgi.modules.includes = "site-initializer-testray";
 	property portal.release = "false";
 	property portal.upstream = "true";
 	property release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS = "true";
 	property testray.main.component.name = "Site Initializer Testray";
+
+	var testSiteName = "Testray 2";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -15,20 +17,24 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
-
 		Testray.tearDownCP();
 
-		ObjectAdmin.deleteAllCustomObjectsViaAPI();
+		ClientExtensionGeneral.goToRemoteAppsPortlet();
 
-		if ("${testPortalInstance}" == "true") {
+		ClientExtensionGeneral.deleteRemoteApp(tableEntry = "Testray");
+
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
 
 	@description = "This is a test for LPS-152637. Verify if Testray can be created"
-	@priority = "5"
+	@priority = 5
 	test CanBeCreated {
+		property test.name.skip.portal.instance = "TestraySite#CanBeCreated";
+
 		task ("Create Testray") {
 			ApplicationsMenu.gotoPortlet(
 				category = "Sites",
@@ -43,7 +49,7 @@ definition {
 				key_title = "Add Site",
 				locator1 = "IFrame#MODAL_ANY");
 
-			PortletEntry.inputName(name = "Testray 2");
+			PortletEntry.inputName(name = ${testSiteName});
 
 			Button.click(button = "Add");
 
@@ -53,17 +59,20 @@ definition {
 		task ("Go to Testray") {
 			Refresh();
 
-			ApplicationsMenu.gotoSite(site = "Testray 2");
+			ApplicationsMenu.gotoSite(site = ${testSiteName});
+
+			TestrayLayout.assertTabPageTitle(pageTabTitle = "Projects");
 		}
 	}
 
 	@description = "This is a test for LPS-152873. Verify if when Testray is created, Remote Apps will be created for it as well"
-	@priority = "5"
+	@priority = 5
 	test RemoteAppsAreCreatedForTestray {
-		task ("Create Testray") {
-			Testray.addTestraySite();
+		property solutions.acceptance = "true";
+		property test.name.skip.portal.instance = "TestraySite#RemoteAppsAreCreatedForTestray";
 
-			Refresh();
+		task ("Create Testray") {
+			Testray.addTestraySite(siteName = ${testSiteName});
 		}
 
 		task ("Go to Remote Apps Portlet") {
@@ -78,14 +87,17 @@ definition {
 	}
 
 	@description = "This is a test for LPS-152970. Verify if when Testray is created, Style Books will be created for it as well"
-	@priority = "5"
+	@priority = 5
 	test StyleBooksAreCreatedForTestray {
+		property solutions.acceptance = "true";
+		property test.name.skip.portal.instance = "TestraySite#StyleBooksAreCreatedForTestray";
+
 		task ("Create and Go to Testray") {
-			Testray.addTestraySite();
+			Testray.addTestraySite(siteName = ${testSiteName});
 
 			Refresh();
 
-			ApplicationsMenu.gotoSite(site = "Testray 2");
+			ApplicationsMenu.gotoSite(site = ${testSiteName});
 		}
 
 		task ("Assert if style books were created") {

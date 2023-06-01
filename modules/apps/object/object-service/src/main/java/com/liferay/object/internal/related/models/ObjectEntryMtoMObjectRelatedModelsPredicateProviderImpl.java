@@ -15,13 +15,12 @@
 package com.liferay.object.internal.related.models;
 
 import com.liferay.object.constants.ObjectRelationshipConstants;
-import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
-import com.liferay.object.internal.petra.sql.dsl.DynamicObjectRelationshipMappingTable;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntryTable;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.petra.sql.dsl.DynamicObjectDefinitionTable;
+import com.liferay.object.petra.sql.dsl.DynamicObjectRelationshipMappingTable;
 import com.liferay.object.relationship.util.ObjectRelationshipUtil;
-import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
@@ -50,19 +49,14 @@ public class ObjectEntryMtoMObjectRelatedModelsPredicateProviderImpl
 
 	@Override
 	public Predicate getPredicate(
-			ObjectRelationship objectRelationship, Predicate predicate)
+			ObjectRelationship objectRelationship, Predicate predicate,
+			ObjectDefinition relatedObjectDefinition)
 		throws PortalException {
 
 		Column<?, ?> dynamicObjectDefinitionTableColumn =
 			getPKObjectFieldColumn(
 				getDynamicObjectDefinitionTable(objectDefinition),
-				objectDefinition);
-
-		ObjectDefinition relatedObjectDefinition =
-			ObjectDefinitionLocalServiceUtil.getObjectDefinition(
-				_getRelatedObjectDefinitionId(
-					objectDefinition.getObjectDefinitionId(),
-					objectRelationship));
+				objectDefinition.getPKObjectFieldDBColumnName());
 
 		Map<String, String> pkObjectFieldDBColumnNames =
 			ObjectRelationshipUtil.getPKObjectFieldDBColumnNames(
@@ -83,7 +77,8 @@ public class ObjectEntryMtoMObjectRelatedModelsPredicateProviderImpl
 				(Column<DynamicObjectRelationshipMappingTable, ?>)
 					getPKObjectFieldColumn(
 						dynamicObjectRelationshipMappingTable,
-						relatedObjectDefinition);
+						pkObjectFieldDBColumnNames.get(
+							"pkObjectFieldDBColumnName2"));
 
 		DynamicObjectDefinitionTable relatedDynamicObjectDefinitionTable =
 			getDynamicObjectDefinitionTable(relatedObjectDefinition);
@@ -93,7 +88,9 @@ public class ObjectEntryMtoMObjectRelatedModelsPredicateProviderImpl
 		return dynamicObjectDefinitionTableColumn.in(
 			DSLQueryFactoryUtil.select(
 				getPKObjectFieldColumn(
-					dynamicObjectRelationshipMappingTable, objectDefinition)
+					dynamicObjectRelationshipMappingTable,
+					pkObjectFieldDBColumnNames.get(
+						"pkObjectFieldDBColumnName1"))
 			).from(
 				dynamicObjectRelationshipMappingTable
 			).where(
@@ -101,7 +98,8 @@ public class ObjectEntryMtoMObjectRelatedModelsPredicateProviderImpl
 					DSLQueryFactoryUtil.select(
 						getPKObjectFieldColumn(
 							relatedDynamicObjectDefinitionTable,
-							relatedObjectDefinition)
+							relatedObjectDefinition.
+								getPKObjectFieldDBColumnName())
 					).from(
 						relatedDynamicObjectDefinitionTable
 					).innerJoinON(
@@ -120,16 +118,6 @@ public class ObjectEntryMtoMObjectRelatedModelsPredicateProviderImpl
 						predicate
 					))
 			));
-	}
-
-	private long _getRelatedObjectDefinitionId(
-		long objectDefinitionId, ObjectRelationship objectRelationship) {
-
-		if (objectRelationship.getObjectDefinitionId1() != objectDefinitionId) {
-			return objectRelationship.getObjectDefinitionId1();
-		}
-
-		return objectRelationship.getObjectDefinitionId2();
 	}
 
 }

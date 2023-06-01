@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.PortletPreferenceValue;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -330,6 +331,14 @@ public class PortletPreferenceValueLocalServiceWrapper
 	}
 
 	@Override
+	public int getPortletPreferenceValuesCount(
+		long companyId, String name, String smallValue) {
+
+		return _portletPreferenceValueLocalService.
+			getPortletPreferenceValuesCount(companyId, name, smallValue);
+	}
+
+	@Override
 	public javax.portlet.PortletPreferences getPreferences(
 		com.liferay.portal.kernel.model.PortletPreferences portletPreferences) {
 
@@ -353,6 +362,11 @@ public class PortletPreferenceValueLocalServiceWrapper
 
 		return _portletPreferenceValueLocalService.updatePortletPreferenceValue(
 			portletPreferenceValue);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _portletPreferenceValueLocalService.getBasePersistence();
 	}
 
 	@Override

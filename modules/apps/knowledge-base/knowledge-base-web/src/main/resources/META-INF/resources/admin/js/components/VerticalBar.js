@@ -14,13 +14,14 @@
 
 import {ClayButtonWithIcon} from '@clayui/button';
 import {VerticalBar} from '@clayui/core';
+import ClayLoadingIndicator from '@clayui/loading-indicator';
 import {navigate} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 
-import NavigationPanel from './NavigationPanel';
-import SuggestionsPanel from './SuggestionsPanel';
-import TemplatesPanel from './TemplatesPanel';
+const NavigationPanel = React.lazy(() => import('./NavigationPanel'));
+const SuggestionsPanel = React.lazy(() => import('./SuggestionsPanel'));
+const TemplatesPanel = React.lazy(() => import('./TemplatesPanel'));
 
 const CSS_EXPANDED = 'expanded';
 
@@ -61,9 +62,11 @@ const VerticalNavigationBar = ({
 				setVerticalBarOpen(false);
 			}
 			else {
-				setTimeout(() => {
-					setVerticalBarOpen(true);
-				}, DELAY_ANIMATION);
+				if (activePanel !== SUGGESTION_KEY) {
+					setTimeout(() => {
+						setVerticalBarOpen(true);
+					}, DELAY_ANIMATION);
+				}
 			}
 		};
 
@@ -87,9 +90,9 @@ const VerticalNavigationBar = ({
 			closedProductMenuListener?.removeListener();
 			openProductMenuListener?.removeListener();
 
-			productMenu.destroy();
+			productMenu?.destroy();
 		};
-	}, [initialProductMenuOpen, productMenu]);
+	}, [activePanel, initialProductMenuOpen, productMenu]);
 
 	useEffect(() => {
 		parentContainer.classList.toggle(
@@ -190,12 +193,14 @@ const VerticalNavigationBar = ({
 							</div>
 
 							<div className="sidebar-body">
-								<PanelComponent
-									items={item.navigationItems}
-									moveKBObjectURL={moveKBObjectURL}
-									portletNamespace={portletNamespace}
-									selectedItemId={item.selectedItemId}
-								/>
+								<Suspense fallback={<ClayLoadingIndicator />}>
+									<PanelComponent
+										items={item.navigationItems}
+										moveKBObjectURL={moveKBObjectURL}
+										portletNamespace={portletNamespace}
+										selectedItemId={item.selectedItemId}
+									/>
+								</Suspense>
 							</div>
 						</VerticalBar.Panel>
 					);

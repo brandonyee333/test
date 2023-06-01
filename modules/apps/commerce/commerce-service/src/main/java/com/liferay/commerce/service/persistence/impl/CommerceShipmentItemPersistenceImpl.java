@@ -50,7 +50,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -4408,7 +4407,9 @@ public class CommerceShipmentItemPersistenceImpl
 				if (ercCommerceShipmentItem != null) {
 					throw new DuplicateCommerceShipmentItemExternalReferenceCodeException(
 						"Duplicate commerce shipment item with external reference code " +
-							commerceShipmentItem.getExternalReferenceCode());
+							commerceShipmentItem.getExternalReferenceCode() +
+								" and company " +
+									commerceShipmentItem.getCompanyId());
 				}
 			}
 			else {
@@ -4418,7 +4419,9 @@ public class CommerceShipmentItemPersistenceImpl
 
 					throw new DuplicateCommerceShipmentItemExternalReferenceCodeException(
 						"Duplicate commerce shipment item with external reference code " +
-							commerceShipmentItem.getExternalReferenceCode());
+							commerceShipmentItem.getExternalReferenceCode() +
+								" and company " +
+									commerceShipmentItem.getCompanyId());
 				}
 			}
 		}
@@ -4913,30 +4916,14 @@ public class CommerceShipmentItemPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setCommerceShipmentItemUtilPersistence(this);
+		CommerceShipmentItemUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setCommerceShipmentItemUtilPersistence(null);
+		CommerceShipmentItemUtil.setPersistence(null);
 
 		entityCache.removeCache(CommerceShipmentItemImpl.class.getName());
-	}
-
-	private void _setCommerceShipmentItemUtilPersistence(
-		CommerceShipmentItemPersistence commerceShipmentItemPersistence) {
-
-		try {
-			Field field = CommerceShipmentItemUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceShipmentItemPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

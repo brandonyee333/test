@@ -38,9 +38,9 @@ public class ObjectFieldServiceWrapper
 	public com.liferay.object.model.ObjectField addCustomObjectField(
 			String externalReferenceCode, long listTypeDefinitionId,
 			long objectDefinitionId, String businessType, String dbType,
-			String defaultValue, boolean indexed, boolean indexedAsKeyword,
-			String indexedLanguageId,
-			java.util.Map<java.util.Locale, String> labelMap, String name,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
+			java.util.Map<java.util.Locale, String> labelMap, boolean localized,
+			String name, String readOnly, String readOnlyConditionExpression,
 			boolean required, boolean state,
 			java.util.List<com.liferay.object.model.ObjectFieldSetting>
 				objectFieldSettings)
@@ -48,9 +48,9 @@ public class ObjectFieldServiceWrapper
 
 		return _objectFieldService.addCustomObjectField(
 			externalReferenceCode, listTypeDefinitionId, objectDefinitionId,
-			businessType, dbType, defaultValue, indexed, indexedAsKeyword,
-			indexedLanguageId, labelMap, name, required, state,
-			objectFieldSettings);
+			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId,
+			labelMap, localized, name, readOnly, readOnlyConditionExpression,
+			required, state, objectFieldSettings);
 	}
 
 	@Override
@@ -83,9 +83,9 @@ public class ObjectFieldServiceWrapper
 	public com.liferay.object.model.ObjectField updateObjectField(
 			String externalReferenceCode, long objectFieldId,
 			long listTypeDefinitionId, String businessType, String dbType,
-			String defaultValue, boolean indexed, boolean indexedAsKeyword,
-			String indexedLanguageId,
-			java.util.Map<java.util.Locale, String> labelMap, String name,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
+			java.util.Map<java.util.Locale, String> labelMap, boolean localized,
+			String name, String readOnly, String readOnlyConditionExpression,
 			boolean required, boolean state,
 			java.util.List<com.liferay.object.model.ObjectFieldSetting>
 				objectFieldSettings)
@@ -93,9 +93,9 @@ public class ObjectFieldServiceWrapper
 
 		return _objectFieldService.updateObjectField(
 			externalReferenceCode, objectFieldId, listTypeDefinitionId,
-			businessType, dbType, defaultValue, indexed, indexedAsKeyword,
-			indexedLanguageId, labelMap, name, required, state,
-			objectFieldSettings);
+			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId,
+			labelMap, localized, name, readOnly, readOnlyConditionExpression,
+			required, state, objectFieldSettings);
 	}
 
 	@Override

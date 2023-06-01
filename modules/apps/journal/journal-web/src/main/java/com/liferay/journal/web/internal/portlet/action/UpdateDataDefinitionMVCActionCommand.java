@@ -23,6 +23,7 @@ import com.liferay.journal.constants.JournalPortletKeys;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.persistence.JournalArticleUtil;
+import com.liferay.journal.web.internal.exception.DDMStructureValidationModelListenerException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseTransactionalMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -76,6 +77,21 @@ public class UpdateDataDefinitionMVCActionCommand
 					actionRequest, dataDefinitionValidationException.getClass(),
 					dataDefinitionValidationException);
 			}
+			else if (portletException.getCause() instanceof
+						DDMStructureValidationModelListenerException) {
+
+				DDMStructureValidationModelListenerException
+					ddmStructureValidationModelListenerException =
+						(DDMStructureValidationModelListenerException)
+							portletException.getCause();
+
+				SessionErrors.add(
+					actionRequest,
+					ddmStructureValidationModelListenerException.getClass(),
+					ddmStructureValidationModelListenerException);
+
+				hideDefaultErrorMessage(actionRequest);
+			}
 			else {
 				throw portletException;
 			}
@@ -124,8 +140,7 @@ public class UpdateDataDefinitionMVCActionCommand
 			dataDefinitionId, dataDefinition);
 
 		List<JournalArticle> journalArticles =
-			_journalArticleLocalService.getStructureArticles(
-				new String[] {structureKey});
+			_journalArticleLocalService.getStructureArticles(dataDefinitionId);
 
 		for (JournalArticle journalArticle : journalArticles) {
 			JournalArticleUtil.clearCache(journalArticle);

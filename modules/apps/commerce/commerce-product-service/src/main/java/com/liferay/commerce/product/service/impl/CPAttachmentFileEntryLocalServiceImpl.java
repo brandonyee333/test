@@ -141,7 +141,7 @@ public class CPAttachmentFileEntryLocalServiceImpl
 			false);
 
 		Date expirationDate = null;
-		Date now = new Date();
+		Date date = new Date();
 
 		Date displayDate = _portal.getDate(
 			displayDateMonth, displayDateDay, displayDateYear, displayDateHour,
@@ -156,7 +156,7 @@ public class CPAttachmentFileEntryLocalServiceImpl
 		}
 
 		if ((expirationDate != null) &&
-			(expirationDate.before(now) ||
+			(expirationDate.before(date) ||
 			 ((displayDate != null) && expirationDate.before(displayDate)))) {
 
 			throw new CPAttachmentFileEntryExpirationDateException(
@@ -193,7 +193,7 @@ public class CPAttachmentFileEntryLocalServiceImpl
 		cpAttachmentFileEntry.setDisplayDate(displayDate);
 		cpAttachmentFileEntry.setExpirationDate(expirationDate);
 
-		if ((expirationDate == null) || expirationDate.after(now)) {
+		if ((expirationDate == null) || expirationDate.after(date)) {
 			cpAttachmentFileEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 		}
 		else {
@@ -368,10 +368,11 @@ public class CPAttachmentFileEntryLocalServiceImpl
 
 		cpAttachmentFileEntryPersistence.remove(cpAttachmentFileEntry);
 
-		FileEntry fileEntry = _dlAppLocalService.getFileEntry(
-			cpAttachmentFileEntry.getFileEntryId());
+		FileEntry fileEntry = cpAttachmentFileEntry.fetchFileEntry();
 
-		if (fileEntry.getGroupId() == cpAttachmentFileEntry.getGroupId()) {
+		if ((fileEntry != null) &&
+			(fileEntry.getGroupId() == cpAttachmentFileEntry.getGroupId())) {
+
 			List<CPAttachmentFileEntry> cpAttachmentFileEntries =
 				cpAttachmentFileEntryPersistence.findByG_C_F(
 					cpAttachmentFileEntry.getGroupId(), cpDefinitionClassNameId,
@@ -681,7 +682,7 @@ public class CPAttachmentFileEntryLocalServiceImpl
 			cpAttachmentFileEntry.getCDNURL(), true);
 
 		Date expirationDate = null;
-		Date now = new Date();
+		Date date = new Date();
 
 		Date displayDate = _portal.getDate(
 			displayDateMonth, displayDateDay, displayDateYear, displayDateHour,
@@ -696,7 +697,7 @@ public class CPAttachmentFileEntryLocalServiceImpl
 		}
 
 		if ((expirationDate != null) &&
-			(expirationDate.before(now) ||
+			(expirationDate.before(date) ||
 			 ((displayDate != null) && expirationDate.before(displayDate)))) {
 
 			throw new CPAttachmentFileEntryExpirationDateException(
@@ -706,7 +707,7 @@ public class CPAttachmentFileEntryLocalServiceImpl
 		cpAttachmentFileEntry.setDisplayDate(displayDate);
 		cpAttachmentFileEntry.setExpirationDate(expirationDate);
 
-		if ((expirationDate == null) || expirationDate.after(now)) {
+		if ((expirationDate == null) || expirationDate.after(date)) {
 			cpAttachmentFileEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 		}
 		else {
@@ -742,7 +743,7 @@ public class CPAttachmentFileEntryLocalServiceImpl
 		throws PortalException {
 
 		User user = _userLocalService.getUser(userId);
-		Date now = new Date();
+		Date date = new Date();
 
 		CPAttachmentFileEntry cpAttachmentFileEntry =
 			cpAttachmentFileEntryPersistence.findByPrimaryKey(
@@ -750,23 +751,23 @@ public class CPAttachmentFileEntryLocalServiceImpl
 
 		if ((status == WorkflowConstants.STATUS_APPROVED) &&
 			(cpAttachmentFileEntry.getDisplayDate() != null) &&
-			now.before(cpAttachmentFileEntry.getDisplayDate())) {
+			date.before(cpAttachmentFileEntry.getDisplayDate())) {
 
 			status = WorkflowConstants.STATUS_SCHEDULED;
 		}
 
-		Date modifiedDate = serviceContext.getModifiedDate(now);
+		Date modifiedDate = serviceContext.getModifiedDate(date);
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
 			Date expirationDate = cpAttachmentFileEntry.getExpirationDate();
 
-			if ((expirationDate != null) && expirationDate.before(now)) {
+			if ((expirationDate != null) && expirationDate.before(date)) {
 				cpAttachmentFileEntry.setExpirationDate(null);
 			}
 		}
 
 		if (status == WorkflowConstants.STATUS_EXPIRED) {
-			cpAttachmentFileEntry.setExpirationDate(now);
+			cpAttachmentFileEntry.setExpirationDate(date);
 		}
 
 		cpAttachmentFileEntry.setStatus(status);

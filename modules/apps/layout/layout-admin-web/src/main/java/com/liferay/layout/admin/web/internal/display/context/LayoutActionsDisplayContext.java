@@ -14,24 +14,24 @@
 
 package com.liferay.layout.admin.web.internal.display.context;
 
-import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
-import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
+import com.liferay.layout.admin.web.internal.helper.LayoutActionsHelper;
+import com.liferay.layout.admin.web.internal.security.permission.resource.LayoutPageTemplatePermission;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateActionKeys;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
+import com.liferay.layout.utility.page.model.LayoutUtilityPageEntry;
+import com.liferay.layout.utility.page.service.LayoutUtilityPageEntryLocalServiceUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -40,8 +40,8 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.manager.SegmentsExperienceManager;
 import com.liferay.segments.model.SegmentsExperience;
@@ -51,7 +51,6 @@ import com.liferay.taglib.security.PermissionsURLTag;
 import java.util.List;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.ResourceURL;
 import javax.portlet.WindowState;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,12 +62,14 @@ public class LayoutActionsDisplayContext {
 
 	public LayoutActionsDisplayContext(
 		HttpServletRequest httpServletRequest,
+		LayoutActionsHelper layoutActionsHelper,
 		SegmentsExperienceLocalService segmentsExperienceLocalService) {
 
 		_httpServletRequest = httpServletRequest;
+		_layoutActionsHelper = layoutActionsHelper;
 		_segmentsExperienceLocalService = segmentsExperienceLocalService;
 
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
 
@@ -79,7 +80,8 @@ public class LayoutActionsDisplayContext {
 			dropdownGroupItem -> {
 				dropdownGroupItem.setDropdownItems(
 					DropdownItemListBuilder.add(
-						() -> _isShowConfigureAction(layout),
+						() -> _layoutActionsHelper.isShowConfigureAction(
+							layout),
 						dropdownItem -> {
 							dropdownItem.setHref(
 								_getConfigureLayoutURL(layout));
@@ -110,7 +112,7 @@ public class LayoutActionsDisplayContext {
 							dropdownItem.setTarget("_blank");
 						}
 					).add(
-						() -> _isContentLayout(layout),
+						() -> _isShowConvertToPageTemplateAction(layout),
 						dropdownItem -> {
 							dropdownItem.putData(
 								"action", "convertToPageTemplate");
@@ -124,7 +126,8 @@ public class LayoutActionsDisplayContext {
 					).add(
 						() ->
 							_isContentLayout(layout) &&
-							_isShowPermissionsAction(layout),
+							_layoutActionsHelper.isShowPermissionsAction(
+								layout, layout.getGroup()),
 						dropdownItem -> {
 							dropdownItem.putData("action", "permissionLayout");
 							dropdownItem.putData(
@@ -144,7 +147,7 @@ public class LayoutActionsDisplayContext {
 					DropdownItemListBuilder.add(
 						() ->
 							_isContentLayout(layout) &&
-							_isShowDeleteAction(layout),
+							_layoutActionsHelper.isShowDeleteAction(layout),
 						dropdownItem -> {
 							dropdownItem.putData("action", "deleteLayout");
 							dropdownItem.putData(
@@ -212,7 +215,18 @@ public class LayoutActionsDisplayContext {
 		).setParameter(
 			"privateLayout", layout.isPrivateLayout()
 		).setParameter(
-			"selPlid", layout.getPlid()
+			"selPlid",
+			() -> {
+				if (layout.isTypeAssetDisplay() && !layout.isDraftLayout()) {
+					Layout draftLayout = layout.fetchDraftLayout();
+
+					if (draftLayout != null) {
+						return draftLayout.getPlid();
+					}
+				}
+
+				return layout.getPlid();
+			}
 		).buildPortletURL(
 		).toString();
 	}
@@ -253,31 +267,26 @@ public class LayoutActionsDisplayContext {
 	}
 
 	private String _getPreviewLayoutURL(Layout layout) {
-		ResourceURL getPreviewLayoutURL =
-			(ResourceURL)PortalUtil.getControlPanelPortletURL(
-				_httpServletRequest, _themeDisplay.getScopeGroup(),
-				ContentPageEditorPortletKeys.CONTENT_PAGE_EDITOR_PORTLET, 0, 0,
-				PortletRequest.RESOURCE_PHASE);
-
-		getPreviewLayoutURL.setParameter("p_l_mode", Constants.PREVIEW);
-
 		Layout draftLayout = layout;
 
 		if (!layout.isDraftLayout()) {
 			draftLayout = layout.fetchDraftLayout();
 		}
 
-		getPreviewLayoutURL.setParameter(
-			"selPlid", String.valueOf(draftLayout.getPlid()));
-		getPreviewLayoutURL.setParameter(
-			"segmentsExperienceId",
-			String.valueOf(_getSegmentsExperienceId(draftLayout)));
-		getPreviewLayoutURL.setResourceID(
-			"/layout_content_page_editor/get_page_preview");
+		String pagePreviewURL = HttpComponentsUtil.addParameters(
+			_themeDisplay.getPortalURL() + _themeDisplay.getPathMain() +
+				"/portal/get_page_preview",
+			"p_l_mode", Constants.PREVIEW, "p_p_state",
+			WindowState.UNDEFINED.toString(), "segmentsExperienceId",
+			_getSegmentsExperienceId(draftLayout), "selPlid",
+			draftLayout.getPlid());
 
-		return HttpComponentsUtil.setParameter(
-			getPreviewLayoutURL.toString(), "p_p_state",
-			WindowState.UNDEFINED.toString());
+		if (Validator.isNotNull(_themeDisplay.getDoAsUserId())) {
+			pagePreviewURL = PortalUtil.addPreservedParameters(
+				_themeDisplay, pagePreviewURL, false, true);
+		}
+
+		return pagePreviewURL;
 	}
 
 	private long _getSegmentsExperienceId(Layout layout) {
@@ -332,7 +341,16 @@ public class LayoutActionsDisplayContext {
 		}
 
 		if (layoutPageTemplateEntry == null) {
-			_contentLayout = true;
+			LayoutUtilityPageEntry layoutUtilityPageEntry =
+				LayoutUtilityPageEntryLocalServiceUtil.
+					fetchLayoutUtilityPageEntryByPlid(layout.getPlid());
+
+			if (layoutUtilityPageEntry != null) {
+				_contentLayout = false;
+			}
+			else {
+				_contentLayout = true;
+			}
 		}
 		else {
 			_contentLayout = false;
@@ -341,56 +359,27 @@ public class LayoutActionsDisplayContext {
 		return _contentLayout;
 	}
 
-	private boolean _isShowConfigureAction(Layout layout)
+	private boolean _isShowConvertToPageTemplateAction(Layout layout)
 		throws PortalException {
 
-		return LayoutPermissionUtil.containsLayoutUpdatePermission(
-			_themeDisplay.getPermissionChecker(), layout);
-	}
+		if (_isContentLayout(layout) &&
+			LayoutPageTemplatePermission.contains(
+				_themeDisplay.getPermissionChecker(), layout.getGroupId(),
+				LayoutPageTemplateActionKeys.
+					ADD_LAYOUT_PAGE_TEMPLATE_COLLECTION) &&
+			LayoutPageTemplatePermission.contains(
+				_themeDisplay.getPermissionChecker(), layout.getGroupId(),
+				LayoutPageTemplateActionKeys.ADD_LAYOUT_PAGE_TEMPLATE_ENTRY)) {
 
-	private boolean _isShowDeleteAction(Layout layout) throws PortalException {
-		if (StagingUtil.isIncomplete(layout) ||
-			!LayoutPermissionUtil.contains(
-				_themeDisplay.getPermissionChecker(), layout,
-				ActionKeys.DELETE)) {
-
-			return false;
+			return true;
 		}
 
-		Group group = layout.getGroup();
-
-		int layoutsCount = LayoutLocalServiceUtil.getLayoutsCount(
-			group, false, LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
-
-		if (group.isGuest() && !layout.isPrivateLayout() &&
-			layout.isRootLayout() && (layoutsCount == 1)) {
-
-			return false;
-		}
-
-		return true;
-	}
-
-	private boolean _isShowPermissionsAction(Layout layout)
-		throws PortalException {
-
-		if (StagingUtil.isIncomplete(layout)) {
-			return false;
-		}
-
-		Group group = layout.getGroup();
-
-		if (group.isLayoutPrototype()) {
-			return false;
-		}
-
-		return LayoutPermissionUtil.contains(
-			_themeDisplay.getPermissionChecker(), layout,
-			ActionKeys.PERMISSIONS);
+		return false;
 	}
 
 	private Boolean _contentLayout;
 	private final HttpServletRequest _httpServletRequest;
+	private final LayoutActionsHelper _layoutActionsHelper;
 	private final SegmentsExperienceLocalService
 		_segmentsExperienceLocalService;
 	private final ThemeDisplay _themeDisplay;

@@ -14,9 +14,9 @@
 
 package com.liferay.commerce.test.util;
 
-import com.liferay.commerce.account.exception.CommerceAccountTypeException;
-import com.liferay.commerce.account.model.CommerceAccount;
-import com.liferay.commerce.account.service.CommerceAccountLocalServiceUtil;
+import com.liferay.account.constants.AccountConstants;
+import com.liferay.account.model.AccountEntry;
+import com.liferay.commerce.account.test.util.CommerceAccountTestUtil;
 import com.liferay.commerce.constants.CommerceShipmentConstants;
 import com.liferay.commerce.context.CommerceContext;
 import com.liferay.commerce.currency.model.CommerceCurrency;
@@ -74,12 +74,11 @@ import java.util.Map;
  */
 public class CommerceTestUtil {
 
-	public static CommerceAccount addAccount(long groupId, long userId)
+	public static AccountEntry addAccount(long groupId, long userId)
 		throws Exception {
 
-		return CommerceAccountLocalServiceUtil.addPersonalCommerceAccount(
-			userId, StringPool.BLANK, StringPool.BLANK,
-			ServiceContextTestUtil.getServiceContext(groupId));
+		return CommerceAccountTestUtil.addPersonAccountEntry(
+			userId, ServiceContextTestUtil.getServiceContext(groupId));
 	}
 
 	public static CommerceOrder addB2BCommerceOrder(
@@ -114,11 +113,11 @@ public class CommerceTestUtil {
 			userId = serviceContext.getUserId();
 		}
 
-		CommerceAccount commerceAccount =
-			CommerceAccountLocalServiceUtil.getPersonalCommerceAccount(userId);
+		AccountEntry accountEntry =
+			CommerceAccountTestUtil.getPersonAccountEntry(userId);
 
 		return CommerceOrderLocalServiceUtil.addCommerceOrder(
-			userId, groupId, commerceAccount.getCommerceAccountId(),
+			userId, groupId, accountEntry.getAccountEntryId(),
 			commerceCurrency.getCommerceCurrencyId());
 	}
 
@@ -133,21 +132,19 @@ public class CommerceTestUtil {
 			userId = serviceContext.getUserId();
 		}
 
-		CommerceAccount commerceAccount;
+		AccountEntry accountEntry;
 
 		try {
-			commerceAccount =
-				CommerceAccountLocalServiceUtil.addPersonalCommerceAccount(
-					userId, StringPool.BLANK, StringPool.BLANK, serviceContext);
+			accountEntry = CommerceAccountTestUtil.addPersonAccountEntry(
+				userId, serviceContext);
 		}
-		catch (CommerceAccountTypeException commerceAccountTypeException) {
-			commerceAccount =
-				CommerceAccountLocalServiceUtil.getPersonalCommerceAccount(
-					userId);
+		catch (Exception exception) {
+			accountEntry = CommerceAccountTestUtil.getPersonAccountEntry(
+				userId);
 		}
 
 		return CommerceOrderLocalServiceUtil.addCommerceOrder(
-			userId, groupId, commerceAccount.getCommerceAccountId(),
+			userId, groupId, accountEntry.getAccountEntryId(),
 			commerceCurrencyId);
 	}
 
@@ -275,7 +272,8 @@ public class CommerceTestUtil {
 		throws Exception {
 
 		return CommerceChannelLocalServiceUtil.addCommerceChannel(
-			StringPool.BLANK, groupId, RandomTestUtil.randomString(),
+			StringPool.BLANK, AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
+			groupId, RandomTestUtil.randomString(),
 			CommerceChannelConstants.CHANNEL_TYPE_SITE, null,
 			commerceCurrencyCode,
 			ServiceContextTestUtil.getServiceContext(groupId));
@@ -286,8 +284,8 @@ public class CommerceTestUtil {
 		throws Exception {
 
 		return CommerceChannelLocalServiceUtil.addCommerceChannel(
-			StringPool.BLANK, RandomTestUtil.nextLong(),
-			RandomTestUtil.randomString(),
+			StringPool.BLANK, AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
+			RandomTestUtil.nextLong(), RandomTestUtil.randomString(),
 			CommerceChannelConstants.CHANNEL_TYPE_SITE, null,
 			commerceCurrencyCode, ServiceContextTestUtil.getServiceContext());
 	}
@@ -324,8 +322,8 @@ public class CommerceTestUtil {
 				commerceOrder.getGroupId());
 
 		CommerceContext commerceContext = new TestCommerceContext(
-			commerceOrder.getCommerceCurrency(), null, null,
-			serviceContext.getScopeGroup(), null, commerceOrder);
+			null, commerceOrder.getCommerceCurrency(), null, null,
+			serviceContext.getScopeGroup(), commerceOrder);
 
 		return addCommerceOrderItem(
 			commerceOrderId, cpInstanceId, quantity, commerceContext);
@@ -340,7 +338,8 @@ public class CommerceTestUtil {
 			CommerceOrderLocalServiceUtil.getCommerceOrder(commerceOrderId);
 
 		return CommerceOrderItemLocalServiceUtil.addCommerceOrderItem(
-			commerceOrderId, cpInstanceId, null, quantity, 0, commerceContext,
+			commerceOrder.getUserId(), commerceOrderId, cpInstanceId, null,
+			quantity, 0, 0, commerceContext,
 			ServiceContextTestUtil.getServiceContext(
 				commerceOrder.getGroupId()));
 	}

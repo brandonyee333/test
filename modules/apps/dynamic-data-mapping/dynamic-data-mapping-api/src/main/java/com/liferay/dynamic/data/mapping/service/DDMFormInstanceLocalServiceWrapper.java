@@ -17,6 +17,7 @@ package com.liferay.dynamic.data.mapping.service;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -126,15 +127,15 @@ public class DDMFormInstanceLocalServiceWrapper
 	public DDMFormInstance copyFormInstance(
 			long userId, long groupId,
 			java.util.Map<java.util.Locale, String> nameMap,
-			DDMFormInstance ddmFormInstance,
+			DDMFormInstance sourceDDMFormInstance,
 			com.liferay.dynamic.data.mapping.storage.DDMFormValues
 				settingsDDMFormValues,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _ddmFormInstanceLocalService.copyFormInstance(
-			userId, groupId, nameMap, ddmFormInstance, settingsDDMFormValues,
-			serviceContext);
+			userId, groupId, nameMap, sourceDDMFormInstance,
+			settingsDDMFormValues, serviceContext);
 	}
 
 	/**
@@ -658,6 +659,11 @@ public class DDMFormInstanceLocalServiceWrapper
 		return _ddmFormInstanceLocalService.updateFormInstance(
 			ddmFormInstanceId, ddmStructureId, nameMap, descriptionMap,
 			settingsDDMFormValues, serviceContext);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _ddmFormInstanceLocalService.getBasePersistence();
 	}
 
 	@Override

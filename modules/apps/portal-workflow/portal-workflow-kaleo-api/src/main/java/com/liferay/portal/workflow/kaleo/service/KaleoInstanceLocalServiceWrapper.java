@@ -16,6 +16,7 @@ package com.liferay.portal.workflow.kaleo.service;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.portal.workflow.kaleo.model.KaleoInstance;
 
@@ -516,12 +517,16 @@ public class KaleoInstanceLocalServiceWrapper
 	@Override
 	public KaleoInstance updateKaleoInstance(
 			long kaleoInstanceId,
-			java.util.Map<String, java.io.Serializable> workflowContext,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			java.util.Map<String, java.io.Serializable> workflowContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _kaleoInstanceLocalService.updateKaleoInstance(
-			kaleoInstanceId, workflowContext, serviceContext);
+			kaleoInstanceId, workflowContext);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _kaleoInstanceLocalService.getBasePersistence();
 	}
 
 	@Override

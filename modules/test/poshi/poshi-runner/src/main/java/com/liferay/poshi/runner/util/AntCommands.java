@@ -16,7 +16,7 @@ package com.liferay.poshi.runner.util;
 
 import com.liferay.poshi.core.PoshiGetterUtil;
 import com.liferay.poshi.core.util.OSDetector;
-import com.liferay.poshi.core.util.PropsValues;
+import com.liferay.poshi.core.util.PoshiProperties;
 import com.liferay.poshi.core.util.StringUtil;
 
 import java.io.BufferedReader;
@@ -47,12 +47,10 @@ public class AntCommands implements Callable<Void> {
 		Future<Void> future = executorService.submit(antCommands);
 
 		try {
-			future.get(150, TimeUnit.SECONDS);
+			future.get(600, TimeUnit.SECONDS);
 		}
-		catch (ExecutionException executionException) {
-			throw executionException;
-		}
-		catch (TimeoutException timeoutException) {
+		catch (ExecutionException | TimeoutException exception) {
+			throw exception;
 		}
 	}
 
@@ -69,6 +67,8 @@ public class AntCommands implements Callable<Void> {
 
 		String projectDirName = PoshiGetterUtil.getProjectDirName();
 
+		PoshiProperties poshiProperties = PoshiProperties.getPoshiProperties();
+
 		if (!OSDetector.isWindows()) {
 			projectDirName = StringUtil.replace(projectDirName, "\\", "//");
 
@@ -77,7 +77,7 @@ public class AntCommands implements Callable<Void> {
 			sb.append(" ");
 			sb.append(_target);
 			sb.append(" -Dtest.ant.launched.by.selenium=true -Dtest.class=");
-			sb.append(PropsValues.TEST_NAME);
+			sb.append(poshiProperties.testName);
 		}
 		else {
 			sb.append("cmd /c ant -f ");
@@ -85,7 +85,7 @@ public class AntCommands implements Callable<Void> {
 			sb.append(" ");
 			sb.append(_target);
 			sb.append(" -Dtest.ant.launched.by.selenium=true -Dtest.class=");
-			sb.append(PropsValues.TEST_NAME);
+			sb.append(poshiProperties.testName);
 		}
 
 		Process process = runtime.exec(

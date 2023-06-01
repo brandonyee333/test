@@ -17,8 +17,9 @@ package com.liferay.object.admin.rest.resource.v1_0.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectValidationRule;
 import com.liferay.object.constants.ObjectDefinitionConstants;
-import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectValidationRuleConstants;
+import com.liferay.object.field.builder.TextObjectFieldBuilder;
+import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
@@ -51,20 +52,26 @@ public class ObjectValidationRuleResourceTest
 
 		_objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
-				TestPropsValues.getUserId(), false,
+				TestPropsValues.getUserId(), false, false,
 				LocalizedMapUtil.getLocalizedMap(value), value, null, null,
 				LocalizedMapUtil.getLocalizedMap(value),
 				ObjectDefinitionConstants.SCOPE_COMPANY,
 				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT,
 				Collections.emptyList());
 
-		_objectFieldLocalService.addCustomObjectField(
-			null, TestPropsValues.getUserId(), 0,
-			_objectDefinition.getObjectDefinitionId(),
-			ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-			ObjectFieldConstants.DB_TYPE_STRING, null, false, false, null,
-			LocalizedMapUtil.getLocalizedMap("Able"), "able", true, false,
-			Collections.emptyList());
+		ObjectFieldUtil.addCustomObjectField(
+			new TextObjectFieldBuilder(
+			).userId(
+				TestPropsValues.getUserId()
+			).labelMap(
+				LocalizedMapUtil.getLocalizedMap("Able")
+			).name(
+				"able"
+			).objectDefinitionId(
+				_objectDefinition.getObjectDefinitionId()
+			).required(
+				true
+			).build());
 	}
 
 	@After
@@ -123,6 +130,26 @@ public class ObjectValidationRuleResourceTest
 	}
 
 	@Override
+	protected ObjectValidationRule
+			testGetObjectDefinitionByExternalReferenceCodeObjectValidationRulesPage_addObjectValidationRule(
+				String objectDefinitionExternalReferenceCode,
+				ObjectValidationRule objectValidationRule)
+		throws Exception {
+
+		return objectValidationRuleResource.
+			postObjectDefinitionByExternalReferenceCodeObjectValidationRule(
+				objectDefinitionExternalReferenceCode, objectValidationRule);
+	}
+
+	@Override
+	protected String
+			testGetObjectDefinitionByExternalReferenceCodeObjectValidationRulesPage_getExternalReferenceCode()
+		throws Exception {
+
+		return _objectDefinition.getExternalReferenceCode();
+	}
+
+	@Override
 	protected Long
 		testGetObjectDefinitionObjectValidationRulesPage_getObjectDefinitionId() {
 
@@ -160,6 +187,18 @@ public class ObjectValidationRuleResourceTest
 			postObjectDefinitionObjectValidationRule(
 				_objectDefinition.getObjectDefinitionId(),
 				randomObjectValidationRule());
+	}
+
+	@Override
+	protected ObjectValidationRule
+			testPostObjectDefinitionByExternalReferenceCodeObjectValidationRule_addObjectValidationRule(
+				ObjectValidationRule objectValidationRule)
+		throws Exception {
+
+		return objectValidationRuleResource.
+			postObjectDefinitionByExternalReferenceCodeObjectValidationRule(
+				_objectDefinition.getExternalReferenceCode(),
+				objectValidationRule);
 	}
 
 	@Override

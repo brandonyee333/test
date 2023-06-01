@@ -16,9 +16,10 @@ package com.liferay.layout.admin.web.internal.product.navigation.control.menu;
 
 import com.liferay.layout.admin.web.internal.constants.LayoutAdminWebKeys;
 import com.liferay.layout.admin.web.internal.display.context.LayoutActionsDisplayContext;
+import com.liferay.layout.admin.web.internal.helper.LayoutActionsHelper;
+import com.liferay.layout.util.template.LayoutConverterRegistry;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.permission.LayoutPermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -29,6 +30,7 @@ import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationContr
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
+import com.liferay.translation.security.permission.TranslationPermission;
 
 import java.io.IOException;
 
@@ -76,10 +78,18 @@ public class LayoutActionsProductNavigationControlMenuEntry
 			HttpServletResponse httpServletResponse)
 		throws IOException {
 
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		LayoutActionsHelper layoutActionsHelper = new LayoutActionsHelper(
+			_layoutConverterRegistry, themeDisplay, _translationPermission);
+
 		httpServletRequest.setAttribute(
 			LayoutAdminWebKeys.LAYOUT_ACTIONS_DISPLAY_CONTEXT,
 			new LayoutActionsDisplayContext(
-				httpServletRequest, _segmentsExperienceLocalService));
+				httpServletRequest, layoutActionsHelper,
+				_segmentsExperienceLocalService));
 
 		return super.includeIcon(httpServletRequest, httpServletResponse);
 	}
@@ -111,10 +121,9 @@ public class LayoutActionsProductNavigationControlMenuEntry
 		}
 
 		if (layout.isSystem()) {
-			return _layoutPermission.contains(
+			return _layoutPermission.containsLayoutRestrictedUpdatePermission(
 				themeDisplay.getPermissionChecker(),
-				_layoutLocalService.getLayout(layout.getClassPK()),
-				ActionKeys.UPDATE);
+				_layoutLocalService.getLayout(layout.getClassPK()));
 		}
 
 		return super.isShow(httpServletRequest);
@@ -124,6 +133,9 @@ public class LayoutActionsProductNavigationControlMenuEntry
 	protected ServletContext getServletContext() {
 		return _servletContext;
 	}
+
+	@Reference
+	private LayoutConverterRegistry _layoutConverterRegistry;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
@@ -136,5 +148,8 @@ public class LayoutActionsProductNavigationControlMenuEntry
 
 	@Reference(target = "(osgi.web.symbolicname=com.liferay.layout.admin.web)")
 	private ServletContext _servletContext;
+
+	@Reference
+	private TranslationPermission _translationPermission;
 
 }

@@ -16,6 +16,7 @@ package com.liferay.portal.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.ResourcePermission;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -207,11 +208,11 @@ public class ResourcePermissionLocalServiceWrapper
 
 	@Override
 	public void copyModelResourcePermissions(
-			long companyId, String name, long oldPrimKey, long newPrimKey)
+			long companyId, String name, long sourcePrimKey, long targetPrimKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_resourcePermissionLocalService.copyModelResourcePermissions(
-			companyId, name, oldPrimKey, newPrimKey);
+			companyId, name, sourcePrimKey, targetPrimKey);
 	}
 
 	/**
@@ -1171,6 +1172,11 @@ public class ResourcePermissionLocalServiceWrapper
 
 		_resourcePermissionLocalService.updateResourcePermissions(
 			companyId, name, scope, primKey, newPrimKey);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _resourcePermissionLocalService.getBasePersistence();
 	}
 
 	@Override

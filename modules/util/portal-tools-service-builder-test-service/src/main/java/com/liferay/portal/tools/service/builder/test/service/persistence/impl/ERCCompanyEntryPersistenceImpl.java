@@ -46,7 +46,6 @@ import com.liferay.portal.tools.service.builder.test.service.persistence.ERCComp
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.HashMap;
@@ -1725,7 +1724,9 @@ public class ERCCompanyEntryPersistenceImpl
 				if (ercERCCompanyEntry != null) {
 					throw new DuplicateERCCompanyEntryExternalReferenceCodeException(
 						"Duplicate erc company entry with external reference code " +
-							ercCompanyEntry.getExternalReferenceCode());
+							ercCompanyEntry.getExternalReferenceCode() +
+								" and company " +
+									ercCompanyEntry.getCompanyId());
 				}
 			}
 			else {
@@ -1735,7 +1736,9 @@ public class ERCCompanyEntryPersistenceImpl
 
 					throw new DuplicateERCCompanyEntryExternalReferenceCodeException(
 						"Duplicate erc company entry with external reference code " +
-							ercCompanyEntry.getExternalReferenceCode());
+							ercCompanyEntry.getExternalReferenceCode() +
+								" and company " +
+									ercCompanyEntry.getCompanyId());
 				}
 			}
 		}
@@ -2096,29 +2099,13 @@ public class ERCCompanyEntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setERCCompanyEntryUtilPersistence(this);
+		ERCCompanyEntryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setERCCompanyEntryUtilPersistence(null);
+		ERCCompanyEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(ERCCompanyEntryImpl.class.getName());
-	}
-
-	private void _setERCCompanyEntryUtilPersistence(
-		ERCCompanyEntryPersistence ercCompanyEntryPersistence) {
-
-		try {
-			Field field = ERCCompanyEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, ercCompanyEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@ServiceReference(type = EntityCache.class)

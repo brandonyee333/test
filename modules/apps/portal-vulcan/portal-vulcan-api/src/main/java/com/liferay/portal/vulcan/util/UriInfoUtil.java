@@ -14,19 +14,25 @@
 
 package com.liferay.portal.vulcan.util;
 
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.lang.reflect.Field;
+
 import java.net.URI;
+
+import javax.servlet.http.HttpServletRequest;
 
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 /**
  * @author Javier Gamarra
+ * @author Raymond Augé
  */
 public class UriInfoUtil {
 
@@ -37,8 +43,37 @@ public class UriInfoUtil {
 			).build());
 	}
 
+	public static UriBuilder getBaseUriBuilder(
+		HttpServletRequest httpServletRequest, UriInfo uriInfo) {
+
+		UriBuilder uriBuilder = getBaseUriBuilder(uriInfo);
+
+		uriBuilder.host(PortalUtil.getForwardedHost(httpServletRequest));
+		uriBuilder.port(PortalUtil.getForwardedPort(httpServletRequest));
+
+		if (PortalUtil.isSecure(httpServletRequest)) {
+			uriBuilder.scheme(Http.HTTPS);
+		}
+
+		return uriBuilder;
+	}
+
 	public static UriBuilder getBaseUriBuilder(UriInfo uriInfo) {
 		return _updateUriBuilder(uriInfo.getBaseUriBuilder());
+	}
+
+	private static String _getHost(UriBuilder uriBuilder) {
+		try {
+			if (_uriBuilderHostField == null) {
+				_uriBuilderHostField = ReflectionUtil.getDeclaredField(
+					uriBuilder.getClass(), "host");
+			}
+
+			return (String)_uriBuilderHostField.get(uriBuilder);
+		}
+		catch (Exception exception) {
+			return ReflectionUtil.throwException(exception);
+		}
 	}
 
 	private static boolean _isHttpsEnabled() {
@@ -59,11 +94,13 @@ public class UriInfoUtil {
 			uriBuilder.replacePath(PortalUtil.getPathContext(uri.getPath()));
 		}
 
-		if (_isHttpsEnabled()) {
+		if (Validator.isNotNull(_getHost(uriBuilder)) && _isHttpsEnabled()) {
 			uriBuilder.scheme(Http.HTTPS);
 		}
 
 		return uriBuilder;
 	}
+
+	private static volatile Field _uriBuilderHostField;
 
 }

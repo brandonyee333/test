@@ -20,14 +20,14 @@ import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectRelationship;
-import com.liferay.object.rest.internal.resource.v1_0.test.util.HTTPTestUtil;
 import com.liferay.object.rest.internal.resource.v1_0.test.util.ObjectDefinitionTestUtil;
 import com.liferay.object.rest.internal.resource.v1_0.test.util.ObjectEntryTestUtil;
+import com.liferay.object.rest.internal.resource.v1_0.test.util.ObjectRelationshipTestUtil;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.object.system.JaxRsApplicationDescriptor;
-import com.liferay.object.system.SystemObjectDefinitionMetadata;
-import com.liferay.object.system.SystemObjectDefinitionMetadataRegistry;
+import com.liferay.object.system.SystemObjectDefinitionManager;
+import com.liferay.object.system.SystemObjectDefinitionManagerRegistry;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -35,24 +35,19 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
+import com.liferay.portal.kernel.test.util.HTTPTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.util.PropsUtil;
-import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
 import java.util.Collections;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -69,22 +64,6 @@ public class RelatedObjectEntryResourceTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@BeforeClass
-	public static void setUpClass() {
-		PropsUtil.addProperties(
-			UnicodePropertiesBuilder.setProperty(
-				"feature.flag.LPS-153324", "true"
-			).build());
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		PropsUtil.addProperties(
-			UnicodePropertiesBuilder.setProperty(
-				"feature.flag.LPS-153324", "false"
-			).build());
-	}
-
 	@Before
 	public void setUp() throws Exception {
 		_objectDefinition = ObjectDefinitionTestUtil.publishObjectDefinition(
@@ -98,13 +77,13 @@ public class RelatedObjectEntryResourceTest {
 
 		_user = TestPropsValues.getUser();
 
-		_userSystemObjectDefinitionMetadata =
-			_systemObjectDefinitionMetadataRegistry.
-				getSystemObjectDefinitionMetadata("User");
+		_userSystemObjectDefinitionManager =
+			_systemObjectDefinitionManagerRegistry.
+				getSystemObjectDefinitionManager("User");
 
 		_userSystemObjectDefinition =
 			_objectDefinitionLocalService.fetchSystemObjectDefinition(
-				_userSystemObjectDefinitionMetadata.getName());
+				_userSystemObjectDefinitionManager.getName());
 	}
 
 	@After
@@ -114,18 +93,15 @@ public class RelatedObjectEntryResourceTest {
 	}
 
 	@Test
-	public void testDeleteManyToManySystemObjectNotFoundRelatedObject()
+	public void testDeleteManyToManySystemObjectNotFoundRelatedObjectEntry()
 		throws Exception {
 
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 		Long irrelevantUserId = RandomTestUtil.randomLong();
 
-		String name = StringUtil.randomId();
-
 		_objectRelationship = _addObjectRelationship(
-			name, _objectDefinition.getObjectDefinitionId(),
-			_userSystemObjectDefinition.getObjectDefinitionId(),
+			_objectDefinition, _userSystemObjectDefinition,
 			_objectEntry.getPrimaryKey(), _user.getUserId(),
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
@@ -154,17 +130,14 @@ public class RelatedObjectEntryResourceTest {
 	}
 
 	@Test
-	public void testDeleteManyToManySystemObjectRelatedObject()
+	public void testDeleteManyToManySystemObjectRelatedObjectEntry()
 		throws Exception {
 
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
-
-		String name = StringUtil.randomId();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		_objectRelationship = _addObjectRelationship(
-			name, _objectDefinition.getObjectDefinitionId(),
-			_userSystemObjectDefinition.getObjectDefinitionId(),
+			_objectDefinition, _userSystemObjectDefinition,
 			_objectEntry.getPrimaryKey(), _user.getUserId(),
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
@@ -203,17 +176,14 @@ public class RelatedObjectEntryResourceTest {
 	}
 
 	@Test
-	public void testDeleteManyToManySystemObjectRelatedObjectNotFound()
+	public void testDeleteManyToManySystemObjectRelatedObjectEntryNotFound()
 		throws Exception {
 
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
-
-		String name = StringUtil.randomId();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		_objectRelationship = _addObjectRelationship(
-			name, _objectDefinition.getObjectDefinitionId(),
-			_userSystemObjectDefinition.getObjectDefinitionId(),
+			_objectDefinition, _userSystemObjectDefinition,
 			_objectEntry.getPrimaryKey(), _user.getUserId(),
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
@@ -241,22 +211,36 @@ public class RelatedObjectEntryResourceTest {
 		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
 
 		Assert.assertEquals(1, itemsJSONArray.length());
+
+		// Inactive object definition
+
+		_objectDefinition.setActive(false);
+
+		_objectDefinitionLocalService.updateObjectDefinition(_objectDefinition);
+
+		jsonObject = HTTPTestUtil.invoke(
+			null,
+			StringBundler.concat(
+				jaxRsApplicationDescriptor.getRESTContextPath(),
+				StringPool.SLASH, _user.getUserId(), StringPool.SLASH,
+				_objectRelationship.getName(), StringPool.SLASH,
+				_objectEntry.getPrimaryKey()),
+			Http.Method.DELETE);
+
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 	}
 
 	@Test
-	public void testDeleteOneToManySystemObjectNotFoundRelatedObject()
+	public void testDeleteOneToManySystemObjectNotFoundRelatedObjectEntry()
 		throws Exception {
 
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		Long irrelevantUserId = RandomTestUtil.randomLong();
 
-		String name = StringUtil.randomId();
-
 		_objectRelationship = _addObjectRelationship(
-			name, _userSystemObjectDefinition.getObjectDefinitionId(),
-			_objectDefinition.getObjectDefinitionId(), _user.getUserId(),
+			_userSystemObjectDefinition, _objectDefinition, _user.getUserId(),
 			_objectEntry.getPrimaryKey(),
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
@@ -282,20 +266,34 @@ public class RelatedObjectEntryResourceTest {
 		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
 
 		Assert.assertEquals(1, itemsJSONArray.length());
+
+		// Inactive object definition
+
+		_objectDefinition.setActive(false);
+
+		_objectDefinitionLocalService.updateObjectDefinition(_objectDefinition);
+
+		jsonObject = HTTPTestUtil.invoke(
+			null,
+			StringBundler.concat(
+				jaxRsApplicationDescriptor.getRESTContextPath(),
+				StringPool.SLASH, _user.getUserId(), StringPool.SLASH,
+				_objectRelationship.getName(), StringPool.SLASH,
+				_objectEntry.getPrimaryKey()),
+			Http.Method.DELETE);
+
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 	}
 
 	@Test
-	public void testDeleteOneToManySystemObjectRelatedObject()
+	public void testDeleteOneToManySystemObjectRelatedObjectEntry()
 		throws Exception {
 
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
-
-		String name = StringUtil.randomId();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		_objectRelationship = _addObjectRelationship(
-			name, _userSystemObjectDefinition.getObjectDefinitionId(),
-			_objectDefinition.getObjectDefinitionId(), _user.getUserId(),
+			_userSystemObjectDefinition, _objectDefinition, _user.getUserId(),
 			_objectEntry.getPrimaryKey(),
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
@@ -334,17 +332,14 @@ public class RelatedObjectEntryResourceTest {
 	}
 
 	@Test
-	public void testDeleteOneToManySystemObjectRelatedObjectNotFound()
+	public void testDeleteOneToManySystemObjectRelatedObjectEntryNotFound()
 		throws Exception {
 
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
-
-		String name = StringUtil.randomId();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		_objectRelationship = _addObjectRelationship(
-			name, _userSystemObjectDefinition.getObjectDefinitionId(),
-			_objectDefinition.getObjectDefinitionId(), _user.getUserId(),
+			_userSystemObjectDefinition, _objectDefinition, _user.getUserId(),
 			_objectEntry.getPrimaryKey(),
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
@@ -372,19 +367,39 @@ public class RelatedObjectEntryResourceTest {
 		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
 
 		Assert.assertEquals(1, itemsJSONArray.length());
+
+		// Inactive object definition
+
+		_objectRelationship = _addObjectRelationship(
+			_objectDefinition, _userSystemObjectDefinition,
+			_objectEntry.getPrimaryKey(), _user.getUserId(),
+			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
+
+		_objectDefinition.setActive(false);
+
+		_objectDefinitionLocalService.updateObjectDefinition(_objectDefinition);
+
+		jsonObject = HTTPTestUtil.invoke(
+			null,
+			StringBundler.concat(
+				jaxRsApplicationDescriptor.getRESTContextPath(),
+				StringPool.SLASH, _user.getUserId(), StringPool.SLASH,
+				_objectRelationship.getName()),
+			Http.Method.GET);
+
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 	}
 
 	@Test
-	public void testGetSystemObjectNotFoundRelatedObjects() throws Exception {
+	public void testGetNotFoundSystemObjectRelatedObjectEntries()
+		throws Exception {
+
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 		Long irrelevantUserId = RandomTestUtil.randomLong();
 
-		String name = StringUtil.randomId();
-
 		_objectRelationship = _addObjectRelationship(
-			name, _objectDefinition.getObjectDefinitionId(),
-			_userSystemObjectDefinition.getObjectDefinitionId(),
+			_objectDefinition, _userSystemObjectDefinition,
 			_objectEntry.getPrimaryKey(), _user.getUserId(),
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
@@ -400,15 +415,12 @@ public class RelatedObjectEntryResourceTest {
 	}
 
 	@Test
-	public void testGetSystemObjectRelatedObjects() throws Exception {
+	public void testGetSystemObjectRelatedObjectEntries() throws Exception {
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
-
-		String name = StringUtil.randomId();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		_objectRelationship = _addObjectRelationship(
-			name, _objectDefinition.getObjectDefinitionId(),
-			_userSystemObjectDefinition.getObjectDefinitionId(),
+			_objectDefinition, _userSystemObjectDefinition,
 			_objectEntry.getPrimaryKey(), _user.getUserId(),
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
@@ -431,58 +443,66 @@ public class RelatedObjectEntryResourceTest {
 	}
 
 	@Test
-	public void testPutSystemObjectRelatedObject() throws Exception {
-		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
+	public void testGetSystemObjectRelatedObjectEntriesWithPagination()
+		throws Exception {
 
-		String name = StringUtil.randomId();
+		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		_objectRelationship = _addObjectRelationship(
-			name, _objectDefinition.getObjectDefinitionId(),
-			_userSystemObjectDefinition.getObjectDefinitionId(),
+			_objectDefinition, _userSystemObjectDefinition,
 			_objectEntry.getPrimaryKey(), _user.getUserId(),
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
-		String objectFieldValue = RandomTestUtil.randomString();
-
 		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
-			_objectDefinition, _OBJECT_FIELD_NAME, objectFieldValue);
+			_objectDefinition, _OBJECT_FIELD_NAME, _OBJECT_FIELD_VALUE);
+
+		_objectRelationshipLocalService.addObjectRelationshipMappingTableValues(
+			_user.getUserId(), _objectRelationship.getObjectRelationshipId(),
+			objectEntry.getPrimaryKey(), _user.getUserId(),
+			ServiceContextTestUtil.getServiceContext());
 
 		JSONObject jsonObject = HTTPTestUtil.invoke(
 			null,
 			StringBundler.concat(
 				jaxRsApplicationDescriptor.getRESTContextPath(),
 				StringPool.SLASH, _user.getUserId(), StringPool.SLASH,
-				_objectRelationship.getName(), StringPool.SLASH,
-				objectEntry.getPrimaryKey()),
-			Http.Method.PUT);
-
-		Assert.assertEquals(
-			objectFieldValue, jsonObject.getString(_OBJECT_FIELD_NAME));
-
-		jsonObject = HTTPTestUtil.invoke(
-			null,
-			StringBundler.concat(
-				jaxRsApplicationDescriptor.getRESTContextPath(),
-				StringPool.SLASH, _user.getUserId(), StringPool.SLASH,
-				_objectRelationship.getName()),
+				_objectRelationship.getName(), "?page=1&pageSize=1"),
 			Http.Method.GET);
 
-		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
+		Assert.assertEquals(2, jsonObject.getLong("lastPage"));
+		Assert.assertEquals(1, jsonObject.getLong("page"));
+		Assert.assertEquals(1, jsonObject.getLong("pageSize"));
+		Assert.assertEquals(2, jsonObject.getLong("totalCount"));
+	}
 
-		Assert.assertEquals(2, itemsJSONArray.length());
+	@Test
+	public void testPutSystemObjectRelatedObjectEntry() throws Exception {
+		_objectRelationship = _addObjectRelationship(
+			_objectDefinition, _userSystemObjectDefinition,
+			_objectEntry.getPrimaryKey(), _user.getUserId(),
+			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
+
+		_testPutSystemObjectRelatedObjectEntry(_objectRelationship);
+
+		_objectRelationshipLocalService.deleteObjectRelationship(
+			_objectRelationship);
+
+		_objectRelationship = _addObjectRelationship(
+			_userSystemObjectDefinition, _objectDefinition, _user.getUserId(),
+			_objectEntry.getPrimaryKey(),
+			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
+
+		_testPutSystemObjectRelatedObjectEntry(_objectRelationship);
 	}
 
 	@Test
 	public void testPutSystemObjectRelatedObjectNotFound() throws Exception {
 		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
-			_userSystemObjectDefinitionMetadata.getJaxRsApplicationDescriptor();
-
-		String name = StringUtil.randomId();
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
 
 		_objectRelationship = _addObjectRelationship(
-			name, _objectDefinition.getObjectDefinitionId(),
-			_userSystemObjectDefinition.getObjectDefinitionId(),
+			_objectDefinition, _userSystemObjectDefinition,
 			_objectEntry.getPrimaryKey(), _user.getUserId(),
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
@@ -510,26 +530,81 @@ public class RelatedObjectEntryResourceTest {
 		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
 
 		Assert.assertEquals(1, itemsJSONArray.length());
+
+		// Inactive object definition
+
+		String objectFieldValue = RandomTestUtil.randomString();
+
+		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
+			_objectDefinition, _OBJECT_FIELD_NAME, objectFieldValue);
+
+		_objectDefinition.setActive(false);
+
+		_objectDefinitionLocalService.updateObjectDefinition(_objectDefinition);
+
+		jsonObject = HTTPTestUtil.invoke(
+			null,
+			StringBundler.concat(
+				jaxRsApplicationDescriptor.getRESTContextPath(),
+				StringPool.SLASH, _user.getUserId(), StringPool.SLASH,
+				_objectRelationship.getName(), StringPool.SLASH,
+				objectEntry.getPrimaryKey()),
+			Http.Method.PUT);
+
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 	}
 
 	private ObjectRelationship _addObjectRelationship(
-			String name, long objectDefinitionId1, long objectDefinitionId2,
-			long primaryKey1, long primaryKey2, String type)
+			ObjectDefinition objectDefinition1,
+			ObjectDefinition objectDefinition2, long primaryKey1,
+			long primaryKey2, String type)
 		throws Exception {
 
 		ObjectRelationship objectRelationship =
-			_objectRelationshipLocalService.addObjectRelationship(
-				_user.getUserId(), objectDefinitionId1, objectDefinitionId2, 0,
-				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				name, type);
+			ObjectRelationshipTestUtil.addObjectRelationship(
+				objectDefinition1, objectDefinition2, _user.getUserId(), type);
 
-		_objectRelationshipLocalService.addObjectRelationshipMappingTableValues(
-			_user.getUserId(), objectRelationship.getObjectRelationshipId(),
-			primaryKey1, primaryKey2,
-			ServiceContextTestUtil.getServiceContext());
+		ObjectRelationshipTestUtil.relateObjectEntries(
+			primaryKey1, primaryKey2, objectRelationship, _user.getUserId());
 
 		return objectRelationship;
+	}
+
+	private void _testPutSystemObjectRelatedObjectEntry(
+			ObjectRelationship objectRelationship)
+		throws Exception {
+
+		String objectFieldValue = RandomTestUtil.randomString();
+
+		ObjectEntry objectEntry = ObjectEntryTestUtil.addObjectEntry(
+			_objectDefinition, _OBJECT_FIELD_NAME, objectFieldValue);
+
+		JaxRsApplicationDescriptor jaxRsApplicationDescriptor =
+			_userSystemObjectDefinitionManager.getJaxRsApplicationDescriptor();
+
+		JSONObject jsonObject = HTTPTestUtil.invoke(
+			null,
+			StringBundler.concat(
+				jaxRsApplicationDescriptor.getRESTContextPath(),
+				StringPool.SLASH, _user.getUserId(), StringPool.SLASH,
+				objectRelationship.getName(), StringPool.SLASH,
+				objectEntry.getPrimaryKey()),
+			Http.Method.PUT);
+
+		Assert.assertEquals(
+			objectFieldValue, jsonObject.getString(_OBJECT_FIELD_NAME));
+
+		jsonObject = HTTPTestUtil.invoke(
+			null,
+			StringBundler.concat(
+				jaxRsApplicationDescriptor.getRESTContextPath(),
+				StringPool.SLASH, _user.getUserId(), StringPool.SLASH,
+				objectRelationship.getName()),
+			Http.Method.GET);
+
+		JSONArray itemsJSONArray = jsonObject.getJSONArray("items");
+
+		Assert.assertEquals(2, itemsJSONArray.length());
 	}
 
 	private static final String _OBJECT_FIELD_NAME =
@@ -551,11 +626,11 @@ public class RelatedObjectEntryResourceTest {
 	private ObjectRelationshipLocalService _objectRelationshipLocalService;
 
 	@Inject
-	private SystemObjectDefinitionMetadataRegistry
-		_systemObjectDefinitionMetadataRegistry;
+	private SystemObjectDefinitionManagerRegistry
+		_systemObjectDefinitionManagerRegistry;
 
 	private User _user;
 	private ObjectDefinition _userSystemObjectDefinition;
-	private SystemObjectDefinitionMetadata _userSystemObjectDefinitionMetadata;
+	private SystemObjectDefinitionManager _userSystemObjectDefinitionManager;
 
 }

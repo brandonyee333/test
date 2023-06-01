@@ -68,7 +68,7 @@ editDDMStructureURL.setParameter("structureKey", String.valueOf(ddmStructureKey)
 		<clay:container-fluid>
 			<ul class="tbar-nav">
 				<li class="tbar-item tbar-item-expand">
-					<aui:input activeLanguageIds="<%= journalEditDDMStructuresDisplayContext.getAvailableLanguageIds() %>" adminMode="<%= true %>" cssClass="form-control-inline" defaultLanguageId="<%= (ddmForm == null) ? LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()): LocaleUtil.toLanguageId(ddmForm.getDefaultLocale()) %>" label="" languagesDropdownDirection="down" localized="<%= true %>" name="name" placeholder='<%= LanguageUtil.format(request, "untitled-x", "structure") %>' required="<%= true %>" type="text" wrapperCssClass="article-content-title mb-0" />
+					<aui:input activeLanguageIds="<%= journalEditDDMStructuresDisplayContext.getAvailableLanguageIds() %>" adminMode="<%= true %>" cssClass="form-control-inline" defaultLanguageId="<%= (ddmForm == null) ? LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()): LocaleUtil.toLanguageId(ddmForm.getDefaultLocale()) %>" label='<%= LanguageUtil.get(request, "name") %>' labelCssClass="sr-only" languagesDropdownDirection="down" localized="<%= true %>" name="name" placeholder='<%= LanguageUtil.format(request, "untitled-x", "structure") %>' required="<%= true %>" type="text" wrapperCssClass="article-content-title mb-0" />
 				</li>
 				<li class="tbar-item">
 					<div class="journal-article-button-row tbar-section text-right">
@@ -86,6 +86,8 @@ editDDMStructureURL.setParameter("structureKey", String.valueOf(ddmStructureKey)
 			cssClass="container-view"
 		>
 			<div class="contextual-sidebar-mr">
+				<liferay-ui:error exception="<%= DDMStructureValidationModelListenerException.class %>" message="the-structure-key-cannot-be-modified" />
+
 				<c:if test="<%= (ddmStructure != null) && (DDMStorageLinkLocalServiceUtil.getStructureStorageLinksCount(journalEditDDMStructuresDisplayContext.getDDMStructureId()) > 0) %>">
 					<div class="alert alert-warning">
 						<liferay-ui:message key="there-are-content-references-to-this-structure.-you-may-lose-data-if-a-field-name-is-renamed-or-removed" />

@@ -19,6 +19,7 @@ import com.liferay.headless.commerce.admin.site.setting.resource.v1_0.WarehouseR
 import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
@@ -30,6 +31,7 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.ExpressionConvert;
@@ -40,15 +42,16 @@ import com.liferay.portal.odata.sort.SortParser;
 import com.liferay.portal.odata.sort.SortParserProvider;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.batch.engine.VulcanBatchEngineTaskItemDelegate;
+import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineExportTaskResource;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResource;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
-import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -193,10 +196,6 @@ public abstract class BaseWarehouseResourceImpl
 	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
 			@io.swagger.v3.oas.annotations.Parameter(
-				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
-				name = "id"
-			),
-			@io.swagger.v3.oas.annotations.Parameter(
 				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
 				name = "callbackURL"
 			)
@@ -211,9 +210,6 @@ public abstract class BaseWarehouseResourceImpl
 	@javax.ws.rs.Produces("application/json")
 	@Override
 	public Response deleteWarehouseBatch(
-			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
-			@javax.validation.constraints.NotNull @javax.ws.rs.PathParam("id")
-			Long id,
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.ws.rs.QueryParam("callbackURL")
 			String callbackURL,
@@ -306,10 +302,6 @@ public abstract class BaseWarehouseResourceImpl
 	@io.swagger.v3.oas.annotations.Parameters(
 		value = {
 			@io.swagger.v3.oas.annotations.Parameter(
-				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
-				name = "id"
-			),
-			@io.swagger.v3.oas.annotations.Parameter(
 				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
 				name = "callbackURL"
 			)
@@ -324,9 +316,6 @@ public abstract class BaseWarehouseResourceImpl
 	@javax.ws.rs.PUT
 	@Override
 	public Response putWarehouseBatch(
-			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
-			@javax.validation.constraints.NotNull @javax.ws.rs.PathParam("id")
-			Long id,
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.ws.rs.QueryParam("callbackURL")
 			String callbackURL,
@@ -352,7 +341,7 @@ public abstract class BaseWarehouseResourceImpl
 	@Override
 	@SuppressWarnings("PMD.UnusedLocalVariable")
 	public void create(
-			java.util.Collection<Warehouse> warehouses,
+			Collection<Warehouse> warehouses,
 			Map<String, Serializable> parameters)
 		throws Exception {
 
@@ -362,7 +351,7 @@ public abstract class BaseWarehouseResourceImpl
 
 	@Override
 	public void delete(
-			java.util.Collection<Warehouse> warehouses,
+			Collection<Warehouse> warehouses,
 			Map<String, Serializable> parameters)
 		throws Exception {
 
@@ -432,7 +421,7 @@ public abstract class BaseWarehouseResourceImpl
 
 	@Override
 	public void update(
-			java.util.Collection<Warehouse> warehouses,
+			Collection<Warehouse> warehouses,
 			Map<String, Serializable> parameters)
 		throws Exception {
 
@@ -441,10 +430,10 @@ public abstract class BaseWarehouseResourceImpl
 		String updateStrategy = (String)parameters.getOrDefault(
 			"updateStrategy", "UPDATE");
 
-		if ("UPDATE".equalsIgnoreCase(updateStrategy)) {
+		if (StringUtil.equalsIgnoreCase(updateStrategy, "UPDATE")) {
 			warehouseUnsafeConsumer = warehouse -> putWarehouse(
 				warehouse.getId() != null ? warehouse.getId() :
-					Long.parseLong((String)parameters.get("warehouseId")),
+					_parseLong((String)parameters.get("warehouseId")),
 				warehouse);
 		}
 
@@ -465,15 +454,22 @@ public abstract class BaseWarehouseResourceImpl
 		}
 	}
 
+	private Long _parseLong(String value) {
+		if (value != null) {
+			return Long.parseLong(value);
+		}
+
+		return null;
+	}
+
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
 		this.contextAcceptLanguage = contextAcceptLanguage;
 	}
 
 	public void setContextBatchUnsafeConsumer(
 		UnsafeBiConsumer
-			<java.util.Collection<Warehouse>,
-			 UnsafeConsumer<Warehouse, Exception>, Exception>
-				contextBatchUnsafeConsumer) {
+			<Collection<Warehouse>, UnsafeConsumer<Warehouse, Exception>,
+			 Exception> contextBatchUnsafeConsumer) {
 
 		this.contextBatchUnsafeConsumer = contextBatchUnsafeConsumer;
 	}
@@ -540,6 +536,14 @@ public abstract class BaseWarehouseResourceImpl
 
 	public void setSortParserProvider(SortParserProvider sortParserProvider) {
 		this.sortParserProvider = sortParserProvider;
+	}
+
+	public void setVulcanBatchEngineExportTaskResource(
+		VulcanBatchEngineExportTaskResource
+			vulcanBatchEngineExportTaskResource) {
+
+		this.vulcanBatchEngineExportTaskResource =
+			vulcanBatchEngineExportTaskResource;
 	}
 
 	public void setVulcanBatchEngineImportTaskResource(
@@ -650,8 +654,7 @@ public abstract class BaseWarehouseResourceImpl
 	}
 
 	protected <T, R, E extends Throwable> List<R> transform(
-		java.util.Collection<T> collection,
-		UnsafeFunction<T, R, E> unsafeFunction) {
+		Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction) {
 
 		return TransformUtil.transform(collection, unsafeFunction);
 	}
@@ -663,8 +666,8 @@ public abstract class BaseWarehouseResourceImpl
 	}
 
 	protected <T, R, E extends Throwable> R[] transformToArray(
-		java.util.Collection<T> collection,
-		UnsafeFunction<T, R, E> unsafeFunction, Class<?> clazz) {
+		Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction,
+		Class<?> clazz) {
 
 		return TransformUtil.transformToArray(
 			collection, unsafeFunction, clazz);
@@ -676,9 +679,14 @@ public abstract class BaseWarehouseResourceImpl
 		return TransformUtil.transformToList(array, unsafeFunction);
 	}
 
+	protected <T, R, E extends Throwable> long[] transformToLongArray(
+		Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction) {
+
+		return TransformUtil.transformToLongArray(collection, unsafeFunction);
+	}
+
 	protected <T, R, E extends Throwable> List<R> unsafeTransform(
-			java.util.Collection<T> collection,
-			UnsafeFunction<T, R, E> unsafeFunction)
+			Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction)
 		throws E {
 
 		return TransformUtil.unsafeTransform(collection, unsafeFunction);
@@ -692,8 +700,8 @@ public abstract class BaseWarehouseResourceImpl
 	}
 
 	protected <T, R, E extends Throwable> R[] unsafeTransformToArray(
-			java.util.Collection<T> collection,
-			UnsafeFunction<T, R, E> unsafeFunction, Class<?> clazz)
+			Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction,
+			Class<?> clazz)
 		throws E {
 
 		return TransformUtil.unsafeTransformToArray(
@@ -707,10 +715,18 @@ public abstract class BaseWarehouseResourceImpl
 		return TransformUtil.unsafeTransformToList(array, unsafeFunction);
 	}
 
+	protected <T, R, E extends Throwable> long[] unsafeTransformToLongArray(
+			Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction)
+		throws E {
+
+		return TransformUtil.unsafeTransformToLongArray(
+			collection, unsafeFunction);
+	}
+
 	protected AcceptLanguage contextAcceptLanguage;
 	protected UnsafeBiConsumer
-		<java.util.Collection<Warehouse>, UnsafeConsumer<Warehouse, Exception>,
-		 Exception> contextBatchUnsafeConsumer;
+		<Collection<Warehouse>, UnsafeConsumer<Warehouse, Exception>, Exception>
+			contextBatchUnsafeConsumer;
 	protected com.liferay.portal.kernel.model.Company contextCompany;
 	protected HttpServletRequest contextHttpServletRequest;
 	protected HttpServletResponse contextHttpServletResponse;
@@ -724,6 +740,8 @@ public abstract class BaseWarehouseResourceImpl
 	protected ResourcePermissionLocalService resourcePermissionLocalService;
 	protected RoleLocalService roleLocalService;
 	protected SortParserProvider sortParserProvider;
+	protected VulcanBatchEngineExportTaskResource
+		vulcanBatchEngineExportTaskResource;
 	protected VulcanBatchEngineImportTaskResource
 		vulcanBatchEngineImportTaskResource;
 

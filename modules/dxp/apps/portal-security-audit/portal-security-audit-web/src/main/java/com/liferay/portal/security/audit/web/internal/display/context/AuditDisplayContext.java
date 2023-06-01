@@ -14,6 +14,7 @@
 
 package com.liferay.portal.security.audit.web.internal.display.context;
 
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
@@ -36,7 +37,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import javax.portlet.PortletURL;
-import javax.portlet.RenderRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,20 +48,18 @@ public class AuditDisplayContext {
 	public AuditDisplayContext(
 		HttpServletRequest httpServletRequest,
 		LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse,
-		RenderRequest renderRequest, TimeZone timeZone) {
+		LiferayPortletResponse liferayPortletResponse, TimeZone timeZone) {
 
 		_httpServletRequest = httpServletRequest;
 		_liferayPortletRequest = liferayPortletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
-		_renderRequest = renderRequest;
 		_timeZone = timeZone;
 
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		_today = CalendarFactoryUtil.getCalendar(
-			_timeZone, _themeDisplay.getLocale());
+			timeZone, _themeDisplay.getLocale());
 	}
 
 	public SearchContainer<AuditEvent> getSearchContainer() throws Exception {
@@ -69,16 +67,23 @@ public class AuditDisplayContext {
 			return _searchContainer;
 		}
 
-		DisplayTerms displayTerms = new DisplayTerms(_renderRequest);
+		DisplayTerms displayTerms = new DisplayTerms(_liferayPortletRequest);
 
 		_searchContainer = new SearchContainer(
-			_renderRequest, displayTerms, null,
+			_liferayPortletRequest, displayTerms, null,
 			SearchContainer.DEFAULT_CUR_PARAM, SearchContainer.DEFAULT_DELTA,
 			_getPortletURL(),
 			ListUtil.fromArray(
 				"user-id", "user-name", "resource-id", "resource-name",
 				"resource-action", "client-ip", "create-date"),
 			"there-are-no-events");
+
+		int[] range = {QueryUtil.ALL_POS, QueryUtil.ALL_POS};
+
+		if (_paging) {
+			range[0] = _searchContainer.getStart();
+			range[1] = _searchContainer.getEnd();
+		}
 
 		if (displayTerms.isAdvancedSearch()) {
 			Date endDate = PortalUtil.getDate(
@@ -95,18 +100,17 @@ public class AuditDisplayContext {
 
 			_searchContainer.setResultsAndTotal(
 				() -> AuditEventManagerUtil.getAuditEvents(
-					_themeDisplay.getCompanyId(), _getUserId(), _getUserName(),
-					startDate, endDate, _getEventType(), _getClassName(),
-					_getClassPK(), _getClientHost(), _getClientIP(),
-					_getServerName(), _getServerPort(), _getSessionID(),
-					displayTerms.isAndOperator(), _searchContainer.getStart(),
-					_searchContainer.getEnd(),
+					_themeDisplay.getCompanyId(), _getGroupId(), _getUserId(),
+					_getUserName(), startDate, endDate, _getEventType(),
+					_getClassName(), _getClassPK(), _getClientHost(),
+					_getClientIP(), _getServerName(), _getServerPort(), null,
+					displayTerms.isAndOperator(), range[0], range[1],
 					new AuditEventCreateDateComparator()),
 				AuditEventManagerUtil.getAuditEventsCount(
-					_themeDisplay.getCompanyId(), _getUserId(), _getUserName(),
-					startDate, endDate, _getEventType(), _getClassName(),
-					_getClassPK(), _getClientHost(), _getClientIP(),
-					_getServerName(), _getServerPort(), _getSessionID(),
+					_themeDisplay.getCompanyId(), _getGroupId(), _getUserId(),
+					_getUserName(), startDate, endDate, _getEventType(),
+					_getClassName(), _getClassPK(), _getClientHost(),
+					_getClientIP(), _getServerName(), _getServerPort(), null,
 					displayTerms.isAndOperator()));
 		}
 		else {
@@ -117,20 +121,23 @@ public class AuditDisplayContext {
 
 			_searchContainer.setResultsAndTotal(
 				() -> AuditEventManagerUtil.getAuditEvents(
-					_themeDisplay.getCompanyId(), Long.valueOf(number),
-					keywords, null, null, keywords, keywords, keywords,
-					keywords, keywords, keywords, Integer.valueOf(number),
-					keywords, false, _searchContainer.getStart(),
-					_searchContainer.getEnd(),
+					_themeDisplay.getCompanyId(), _getGroupId(),
+					Long.valueOf(number), keywords, null, null, keywords,
+					keywords, keywords, keywords, keywords, keywords,
+					Integer.valueOf(number), null, false, range[0], range[1],
 					new AuditEventCreateDateComparator()),
 				AuditEventManagerUtil.getAuditEventsCount(
-					_themeDisplay.getCompanyId(), Long.valueOf(number),
-					keywords, null, null, keywords, keywords, keywords,
-					keywords, keywords, keywords, Integer.valueOf(number),
-					keywords, false));
+					_themeDisplay.getCompanyId(), _getGroupId(),
+					Long.valueOf(number), keywords, null, null, keywords,
+					keywords, keywords, keywords, keywords, keywords,
+					Integer.valueOf(number), null, false));
 		}
 
 		return _searchContainer;
+	}
+
+	public void setPaging(boolean paging) {
+		_paging = paging;
 	}
 
 	private String _getClassName() {
@@ -249,6 +256,16 @@ public class AuditDisplayContext {
 		return _eventType;
 	}
 
+	private long _getGroupId() {
+		if (_groupId != null) {
+			return _groupId;
+		}
+
+		_groupId = ParamUtil.getInteger(_httpServletRequest, "groupId");
+
+		return _groupId;
+	}
+
 	private PortletURL _getPortletURL() throws Exception {
 		if (_portletURL != null) {
 			return _portletURL;
@@ -282,11 +299,11 @@ public class AuditDisplayContext {
 		).setParameter(
 			"eventType", _getEventType()
 		).setParameter(
+			"groupId", _getGroupId()
+		).setParameter(
 			"serverName", _getServerName()
 		).setParameter(
 			"serverPort", _getServerPort()
-		).setParameter(
-			"sessionID", _getSessionID()
 		).setParameter(
 			"startDateAmPm", _getStartDateAmPm()
 		).setParameter(
@@ -326,16 +343,6 @@ public class AuditDisplayContext {
 		_serverPort = ParamUtil.getInteger(_httpServletRequest, "serverPort");
 
 		return _serverPort;
-	}
-
-	private String _getSessionID() {
-		if (_sessionID != null) {
-			return _sessionID;
-		}
-
-		_sessionID = ParamUtil.getString(_httpServletRequest, "sessionID");
-
-		return _sessionID;
 	}
 
 	private int _getStartDateAmPm() {
@@ -436,15 +443,15 @@ public class AuditDisplayContext {
 	private Integer _endDateMonth;
 	private Integer _endDateYear;
 	private String _eventType;
+	private Integer _groupId;
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletRequest _liferayPortletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
+	private boolean _paging = true;
 	private PortletURL _portletURL;
-	private final RenderRequest _renderRequest;
 	private SearchContainer<AuditEvent> _searchContainer;
 	private String _serverName;
 	private Integer _serverPort;
-	private String _sessionID;
 	private Integer _startDateAmPm;
 	private Integer _startDateDay;
 	private Integer _startDateHour;

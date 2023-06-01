@@ -15,6 +15,7 @@
 package com.liferay.commerce.product.type.virtual.order.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 /**
  * Provides a wrapper for {@link CommerceVirtualOrderItemLocalService}.
@@ -304,6 +305,17 @@ public class CommerceVirtualOrderItemLocalServiceWrapper
 				commerceOrderItemId);
 	}
 
+	@Override
+	public com.liferay.commerce.product.type.virtual.order.model.
+		CommerceVirtualOrderItem
+			fetchCommerceVirtualOrderItemByCommerceOrderItemId(
+				long commerceOrderItemId, boolean useFinderCache) {
+
+		return _commerceVirtualOrderItemLocalService.
+			fetchCommerceVirtualOrderItemByCommerceOrderItemId(
+				commerceOrderItemId, useFinderCache);
+	}
+
 	/**
 	 * Returns the commerce virtual order item matching the UUID and group.
 	 *
@@ -568,6 +580,11 @@ public class CommerceVirtualOrderItemLocalServiceWrapper
 
 		return _commerceVirtualOrderItemLocalService.
 			updateCommerceVirtualOrderItemDates(commerceVirtualOrderItemId);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _commerceVirtualOrderItemLocalService.getBasePersistence();
 	}
 
 	@Override

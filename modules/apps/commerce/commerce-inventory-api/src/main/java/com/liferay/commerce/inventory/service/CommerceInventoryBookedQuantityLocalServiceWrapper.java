@@ -15,6 +15,7 @@
 package com.liferay.commerce.inventory.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 /**
  * Provides a wrapper for {@link CommerceInventoryBookedQuantityLocalService}.
@@ -332,6 +333,19 @@ public class CommerceInventoryBookedQuantityLocalServiceWrapper
 			getCommerceInventoryBookedQuantities(companyId, sku, start, end);
 	}
 
+	@Override
+	public java.util.List
+		<com.liferay.commerce.inventory.model.CommerceInventoryBookedQuantity>
+				getCommerceInventoryBookedQuantities(
+					long companyId, String keywords, String sku, int start,
+					int end)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceInventoryBookedQuantityLocalService.
+			getCommerceInventoryBookedQuantities(
+				companyId, keywords, sku, start, end);
+	}
+
 	/**
 	 * Returns the number of commerce inventory booked quantities.
 	 *
@@ -349,6 +363,15 @@ public class CommerceInventoryBookedQuantityLocalServiceWrapper
 
 		return _commerceInventoryBookedQuantityLocalService.
 			getCommerceInventoryBookedQuantitiesCount(companyId, sku);
+	}
+
+	@Override
+	public int getCommerceInventoryBookedQuantitiesCount(
+			long companyId, String keywords, String sku)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceInventoryBookedQuantityLocalService.
+			getCommerceInventoryBookedQuantitiesCount(companyId, keywords, sku);
 	}
 
 	/**
@@ -426,6 +449,27 @@ public class CommerceInventoryBookedQuantityLocalServiceWrapper
 				userId, commerceInventoryBookedQuantityId, context);
 	}
 
+	@Override
+	public com.liferay.portal.kernel.search.BaseModelSearchResult
+		<com.liferay.commerce.inventory.model.CommerceInventoryBookedQuantity>
+				searchCommerceInventoryBookedQuantities(
+					com.liferay.portal.kernel.search.SearchContext
+						searchContext)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceInventoryBookedQuantityLocalService.
+			searchCommerceInventoryBookedQuantities(searchContext);
+	}
+
+	@Override
+	public int searchCommerceInventoryBookedQuantitiesCount(
+			com.liferay.portal.kernel.search.SearchContext searchContext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _commerceInventoryBookedQuantityLocalService.
+			searchCommerceInventoryBookedQuantitiesCount(searchContext);
+	}
+
 	/**
 	 * Updates the commerce inventory booked quantity in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -459,6 +503,12 @@ public class CommerceInventoryBookedQuantityLocalServiceWrapper
 			updateCommerceInventoryBookedQuantity(
 				userId, commerceInventoryBookedQuantityId, quantity, context,
 				mvccVersion);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _commerceInventoryBookedQuantityLocalService.
+			getBasePersistence();
 	}
 
 	@Override

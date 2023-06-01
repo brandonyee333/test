@@ -53,7 +53,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.ArrayList;
@@ -3434,7 +3433,7 @@ public class JournalFeedPersistenceImpl
 		ctStrictColumnNames.add("feedId");
 		ctStrictColumnNames.add("name");
 		ctStrictColumnNames.add("description");
-		ctStrictColumnNames.add("DDMStructureKey");
+		ctStrictColumnNames.add("DDMStructureId");
 		ctStrictColumnNames.add("DDMTemplateKey");
 		ctStrictColumnNames.add("DDMRendererTemplateKey");
 		ctStrictColumnNames.add("delta");
@@ -3556,30 +3555,14 @@ public class JournalFeedPersistenceImpl
 			new String[] {Long.class.getName(), String.class.getName()},
 			new String[] {"groupId", "feedId"}, false);
 
-		_setJournalFeedUtilPersistence(this);
+		JournalFeedUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setJournalFeedUtilPersistence(null);
+		JournalFeedUtil.setPersistence(null);
 
 		entityCache.removeCache(JournalFeedImpl.class.getName());
-	}
-
-	private void _setJournalFeedUtilPersistence(
-		JournalFeedPersistence journalFeedPersistence) {
-
-		try {
-			Field field = JournalFeedUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, journalFeedPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

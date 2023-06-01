@@ -19,14 +19,13 @@ import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.related.models.ObjectRelatedModelsProvider;
 import com.liferay.object.related.models.ObjectRelatedModelsProviderRegistry;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
+import com.liferay.object.rest.manager.v1_0.DefaultObjectEntryManager;
+import com.liferay.object.rest.manager.v1_0.DefaultObjectEntryManagerProvider;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectRelationshipService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -34,7 +33,6 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.Map;
 
-import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Context;
 
 /**
@@ -65,11 +63,13 @@ public class ObjectEntryRelatedObjectsResourceImpl
 			Long relatedObjectEntryId)
 		throws Exception {
 
-		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerRegistry.getObjectEntryManager(
-				_objectDefinition.getStorageType());
+		DefaultObjectEntryManager defaultObjectEntryManager =
+			DefaultObjectEntryManagerProvider.provide(
+				_objectEntryManagerRegistry.getObjectEntryManager(
+					_objectDefinition.getStorageType()));
 
-		_checkCurrentObjectEntry(objectEntryManager, currentObjectEntryId);
+		_checkCurrentObjectEntry(
+			defaultObjectEntryManager, currentObjectEntryId);
 
 		ObjectRelationship objectRelationship =
 			_objectRelationshipService.getObjectRelationship(
@@ -80,25 +80,20 @@ public class ObjectEntryRelatedObjectsResourceImpl
 			_objectDefinitionLocalService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId2());
 
-		if (relatedObjectDefinition.isSystem()) {
-			if (!GetterUtil.getBoolean(
-					PropsUtil.get("feature.flag.LPS-162966"))) {
-
-				throw new NotFoundException();
-			}
-
+		if (relatedObjectDefinition.isUnmodifiableSystemObject()) {
 			_checkSystemObjectEntry(
 				relatedObjectEntryId, relatedObjectDefinition);
 		}
 		else {
 			_checkRelatedObjectEntry(
-				objectEntryManager, objectRelationshipName,
+				defaultObjectEntryManager, objectRelationshipName,
 				relatedObjectEntryId);
 		}
 
 		ObjectRelatedModelsProvider objectRelatedModelsProvider =
 			_objectRelatedModelsProviderRegistry.getObjectRelatedModelsProvider(
 				relatedObjectDefinition.getClassName(),
+				relatedObjectDefinition.getCompanyId(),
 				objectRelationship.getType());
 
 		objectRelatedModelsProvider.disassociateRelatedModels(
@@ -113,9 +108,10 @@ public class ObjectEntryRelatedObjectsResourceImpl
 			Pagination pagination)
 		throws Exception {
 
-		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerRegistry.getObjectEntryManager(
-				_objectDefinition.getStorageType());
+		DefaultObjectEntryManager defaultObjectEntryManager =
+			DefaultObjectEntryManagerProvider.provide(
+				_objectEntryManagerRegistry.getObjectEntryManager(
+					_objectDefinition.getStorageType()));
 
 		ObjectRelationship objectRelationship =
 			_objectRelationshipService.getObjectRelationship(
@@ -126,20 +122,14 @@ public class ObjectEntryRelatedObjectsResourceImpl
 			_objectDefinitionLocalService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId2());
 
-		if (relatedObjectDefinition.isSystem()) {
-			if (!GetterUtil.getBoolean(
-					PropsUtil.get("feature.flag.LPS-162966"))) {
-
-				throw new NotFoundException();
-			}
-
-			return objectEntryManager.getRelatedSystemObjectEntries(
+		if (relatedObjectDefinition.isUnmodifiableSystemObject()) {
+			return defaultObjectEntryManager.getRelatedSystemObjectEntries(
 				_objectDefinition, currentObjectEntryId, objectRelationshipName,
 				pagination);
 		}
 
 		Page<ObjectEntry> page =
-			objectEntryManager.getObjectEntryRelatedObjectEntries(
+			defaultObjectEntryManager.getObjectEntryRelatedObjectEntries(
 				_getDTOConverterContext(currentObjectEntryId),
 				_objectDefinition, currentObjectEntryId, objectRelationshipName,
 				pagination);
@@ -149,7 +139,8 @@ public class ObjectEntryRelatedObjectsResourceImpl
 			transform(
 				page.getItems(),
 				objectEntry -> _getRelatedObjectEntry(
-					relatedObjectDefinition, objectEntry)));
+					relatedObjectDefinition, objectEntry)),
+			pagination, page.getTotalCount());
 	}
 
 	@Override
@@ -158,9 +149,10 @@ public class ObjectEntryRelatedObjectsResourceImpl
 			Long relatedObjectEntryId)
 		throws Exception {
 
-		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerRegistry.getObjectEntryManager(
-				_objectDefinition.getStorageType());
+		DefaultObjectEntryManager defaultObjectEntryManager =
+			DefaultObjectEntryManagerProvider.provide(
+				_objectEntryManagerRegistry.getObjectEntryManager(
+					_objectDefinition.getStorageType()));
 
 		ObjectRelationship objectRelationship =
 			_objectRelationshipService.getObjectRelationship(
@@ -171,14 +163,8 @@ public class ObjectEntryRelatedObjectsResourceImpl
 			_objectDefinitionLocalService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId2());
 
-		if (relatedObjectDefinition.isSystem()) {
-			if (!GetterUtil.getBoolean(
-					PropsUtil.get("feature.flag.LPS-162966"))) {
-
-				throw new NotFoundException();
-			}
-
-			return objectEntryManager.
+		if (relatedObjectDefinition.isUnmodifiableSystemObject()) {
+			return defaultObjectEntryManager.
 				addSystemObjectRelationshipMappingTableValues(
 					relatedObjectDefinition, objectRelationship,
 					currentObjectEntryId, relatedObjectEntryId);
@@ -186,27 +172,28 @@ public class ObjectEntryRelatedObjectsResourceImpl
 
 		return _getRelatedObjectEntry(
 			relatedObjectDefinition,
-			objectEntryManager.addObjectRelationshipMappingTableValues(
+			defaultObjectEntryManager.addObjectRelationshipMappingTableValues(
 				_getDTOConverterContext(currentObjectEntryId),
 				objectRelationship, currentObjectEntryId,
 				relatedObjectEntryId));
 	}
 
 	private void _checkCurrentObjectEntry(
-			ObjectEntryManager objectEntryManager, long relatedObjectEntryId)
+			DefaultObjectEntryManager defaultObjectEntryManager,
+			long relatedObjectEntryId)
 		throws Exception {
 
-		objectEntryManager.getObjectEntry(
+		defaultObjectEntryManager.getObjectEntry(
 			_getDTOConverterContext(relatedObjectEntryId), _objectDefinition,
 			relatedObjectEntryId);
 	}
 
 	private void _checkRelatedObjectEntry(
-			ObjectEntryManager objectEntryManager,
+			DefaultObjectEntryManager defaultObjectEntryManager,
 			String objectRelationshipName, long relatedObjectEntryId)
 		throws Exception {
 
-		objectEntryManager.getObjectEntry(
+		defaultObjectEntryManager.getObjectEntry(
 			_getDTOConverterContext(relatedObjectEntryId),
 			_getRelatedObjectDefinition(
 				_objectRelationshipService.getObjectRelationship(

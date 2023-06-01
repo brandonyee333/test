@@ -14,7 +14,12 @@
 
 package com.liferay.object.model.impl;
 
+import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectFieldSetting;
+import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,8 +40,39 @@ public class ObjectFieldImpl extends ObjectFieldBaseImpl {
 	}
 
 	@Override
+	public String getI18nObjectFieldName() {
+		return getName() + "_i18n";
+	}
+
+	@Override
+	public ObjectDefinition getObjectDefinition() throws PortalException {
+		return ObjectDefinitionLocalServiceUtil.getObjectDefinition(
+			getObjectDefinitionId());
+	}
+
+	@Override
 	public List<ObjectFieldSetting> getObjectFieldSettings() {
 		return _objectFieldSettings;
+	}
+
+	@Override
+	public boolean isDeletionAllowed() throws PortalException {
+		if (isSystem() || Validator.isNotNull(getRelationshipType())) {
+			return false;
+		}
+
+		ObjectDefinition objectDefinition = getObjectDefinition();
+
+		if (((objectDefinition.isApproved() &&
+			  !FeatureFlagManagerUtil.isEnabled("LPS-179803")) ||
+			 objectDefinition.isUnmodifiableSystemObject()) &&
+			!Objects.equals(
+				objectDefinition.getExtensionDBTableName(), getDBTableName())) {
+
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override

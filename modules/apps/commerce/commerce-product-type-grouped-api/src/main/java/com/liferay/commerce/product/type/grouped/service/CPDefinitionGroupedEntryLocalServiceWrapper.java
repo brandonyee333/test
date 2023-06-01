@@ -15,6 +15,7 @@
 package com.liferay.commerce.product.type.grouped.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 /**
  * Provides a wrapper for {@link CPDefinitionGroupedEntryLocalService}.
@@ -482,6 +483,22 @@ public class CPDefinitionGroupedEntryLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List
+		<com.liferay.commerce.product.type.grouped.model.
+			CPDefinitionGroupedEntry>
+					getEntryCProductCPDefinitionGroupedEntries(
+						long entryCProductId, int start, int end,
+						com.liferay.portal.kernel.util.OrderByComparator
+							<com.liferay.commerce.product.type.grouped.model.
+								CPDefinitionGroupedEntry> orderByComparator)
+				throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _cpDefinitionGroupedEntryLocalService.
+			getEntryCProductCPDefinitionGroupedEntries(
+				entryCProductId, start, end, orderByComparator);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery
 		getExportActionableDynamicQuery(
 			com.liferay.exportimport.kernel.lar.PortletDataContext
@@ -553,6 +570,11 @@ public class CPDefinitionGroupedEntryLocalServiceWrapper
 		return _cpDefinitionGroupedEntryLocalService.
 			updateCPDefinitionGroupedEntry(
 				cpDefinitionGroupedEntryId, priority, quantity);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _cpDefinitionGroupedEntryLocalService.getBasePersistence();
 	}
 
 	@Override

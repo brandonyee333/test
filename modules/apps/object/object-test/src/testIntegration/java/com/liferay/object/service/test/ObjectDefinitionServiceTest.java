@@ -17,6 +17,7 @@ package com.liferay.object.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
+import com.liferay.object.field.builder.TextObjectFieldBuilder;
 import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
@@ -41,7 +42,6 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -211,7 +211,7 @@ public class ObjectDefinitionServiceTest {
 			user.getUserId(), objectDefinition.getObjectDefinitionId());*/
 
 		return _objectDefinitionLocalService.addCustomObjectDefinition(
-			user.getUserId(), false,
+			user.getUserId(), false, false,
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			"A" + RandomTestUtil.randomString(), null, null,
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
@@ -239,7 +239,7 @@ public class ObjectDefinitionServiceTest {
 
 			objectDefinition =
 				_objectDefinitionService.addCustomObjectDefinition(
-					false,
+					false, false,
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString()),
 					"A" + RandomTestUtil.randomString(), null, null,
@@ -320,7 +320,7 @@ public class ObjectDefinitionServiceTest {
 
 			objectDefinition =
 				_objectDefinitionLocalService.addCustomObjectDefinition(
-					user.getUserId(), false,
+					user.getUserId(), false, false,
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString()),
 					"A" + RandomTestUtil.randomString(), null, null,
@@ -357,7 +357,7 @@ public class ObjectDefinitionServiceTest {
 
 			objectDefinition =
 				_objectDefinitionLocalService.addCustomObjectDefinition(
-					ownerUser.getUserId(), false,
+					ownerUser.getUserId(), false, false,
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString()),
 					"A" + RandomTestUtil.randomString(), null, null,
@@ -376,8 +376,9 @@ public class ObjectDefinitionServiceTest {
 				_objectDefinitionService.updateCustomObjectDefinition(
 					null, objectDefinition.getObjectDefinitionId(), 0, 0, 0,
 					false, objectDefinition.isActive(), true, false, false,
-					LocalizedMapUtil.getLocalizedMap("Able"), "Able", null,
-					null, false, LocalizedMapUtil.getLocalizedMap("Ables"),
+					false, LocalizedMapUtil.getLocalizedMap("Able"), "Able",
+					null, null, false,
+					LocalizedMapUtil.getLocalizedMap("Ables"),
 					objectDefinition.getScope());
 		}
 		finally {
@@ -398,7 +399,7 @@ public class ObjectDefinitionServiceTest {
 
 			objectDefinition =
 				_objectDefinitionLocalService.addCustomObjectDefinition(
-					ownerUser.getUserId(), false,
+					ownerUser.getUserId(), false, false,
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString()),
 					"A" + RandomTestUtil.randomString(), null, null,
@@ -413,17 +414,18 @@ public class ObjectDefinitionServiceTest {
 							RandomTestUtil.randomString(),
 							StringUtil.randomId())));
 
-			ObjectField objectField =
-				_objectFieldLocalService.addCustomObjectField(
-					null, ownerUser.getUserId(), 0,
-					objectDefinition.getObjectDefinitionId(),
-					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
-					ObjectFieldConstants.DB_TYPE_STRING, null, false, false,
-					null,
+			ObjectField objectField = ObjectFieldUtil.addCustomObjectField(
+				new TextObjectFieldBuilder(
+				).userId(
+					ownerUser.getUserId()
+				).labelMap(
 					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString()),
-					StringUtil.randomId(), false, false,
-					Collections.emptyList());
+						RandomTestUtil.randomString())
+				).name(
+					StringUtil.randomId()
+				).objectDefinitionId(
+					objectDefinition.getObjectDefinitionId()
+				).build());
 
 			objectDefinition =
 				_objectDefinitionService.updateTitleObjectFieldId(

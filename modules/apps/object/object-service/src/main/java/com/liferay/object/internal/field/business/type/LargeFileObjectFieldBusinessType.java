@@ -16,6 +16,7 @@ package com.liferay.object.internal.field.business.type;
 
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
+import com.liferay.object.model.ObjectDefinition;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.vulcan.extension.PropertyDefinition;
 
@@ -29,9 +30,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "object.field.business.type.key=" + ObjectFieldConstants.BUSINESS_TYPE_LARGE_FILE,
-	service = {
-		LargeFileObjectFieldBusinessType.class, ObjectFieldBusinessType.class
-	}
+	service = ObjectFieldBusinessType.class
 )
 public class LargeFileObjectFieldBusinessType
 	implements ObjectFieldBusinessType {
@@ -62,7 +61,7 @@ public class LargeFileObjectFieldBusinessType
 	}
 
 	@Override
-	public boolean isVisible() {
+	public boolean isVisible(ObjectDefinition objectDefinition) {
 		return false;
 	}
 

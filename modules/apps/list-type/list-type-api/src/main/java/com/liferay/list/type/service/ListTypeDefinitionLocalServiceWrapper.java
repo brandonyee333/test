@@ -15,6 +15,7 @@
 package com.liferay.list.type.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 /**
  * Provides a wrapper for {@link ListTypeDefinitionLocalService}.
@@ -67,11 +68,13 @@ public class ListTypeDefinitionLocalServiceWrapper
 	@Override
 	public com.liferay.list.type.model.ListTypeDefinition addListTypeDefinition(
 			String externalReferenceCode, long userId,
-			java.util.Map<java.util.Locale, String> nameMap)
+			java.util.Map<java.util.Locale, String> nameMap,
+			java.util.List<com.liferay.list.type.model.ListTypeEntry>
+				listTypeEntries)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _listTypeDefinitionLocalService.addListTypeDefinition(
-			externalReferenceCode, userId, nameMap);
+			externalReferenceCode, userId, nameMap, listTypeEntries);
 	}
 
 	/**
@@ -432,11 +435,19 @@ public class ListTypeDefinitionLocalServiceWrapper
 	public com.liferay.list.type.model.ListTypeDefinition
 			updateListTypeDefinition(
 				String externalReferenceCode, long listTypeDefinitionId,
-				java.util.Map<java.util.Locale, String> nameMap)
+				long userId, java.util.Map<java.util.Locale, String> nameMap,
+				java.util.List<com.liferay.list.type.model.ListTypeEntry>
+					listTypeEntries)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _listTypeDefinitionLocalService.updateListTypeDefinition(
-			externalReferenceCode, listTypeDefinitionId, nameMap);
+			externalReferenceCode, listTypeDefinitionId, userId, nameMap,
+			listTypeEntries);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _listTypeDefinitionLocalService.getBasePersistence();
 	}
 
 	@Override

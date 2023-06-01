@@ -50,7 +50,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -2830,7 +2829,9 @@ public class BatchEngineExportTaskPersistenceImpl
 				if (ercBatchEngineExportTask != null) {
 					throw new DuplicateBatchEngineExportTaskExternalReferenceCodeException(
 						"Duplicate batch engine export task with external reference code " +
-							batchEngineExportTask.getExternalReferenceCode());
+							batchEngineExportTask.getExternalReferenceCode() +
+								" and company " +
+									batchEngineExportTask.getCompanyId());
 				}
 			}
 			else {
@@ -2841,7 +2842,9 @@ public class BatchEngineExportTaskPersistenceImpl
 
 					throw new DuplicateBatchEngineExportTaskExternalReferenceCodeException(
 						"Duplicate batch engine export task with external reference code " +
-							batchEngineExportTask.getExternalReferenceCode());
+							batchEngineExportTask.getExternalReferenceCode() +
+								" and company " +
+									batchEngineExportTask.getCompanyId());
 				}
 			}
 		}
@@ -3275,30 +3278,14 @@ public class BatchEngineExportTaskPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setBatchEngineExportTaskUtilPersistence(this);
+		BatchEngineExportTaskUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setBatchEngineExportTaskUtilPersistence(null);
+		BatchEngineExportTaskUtil.setPersistence(null);
 
 		entityCache.removeCache(BatchEngineExportTaskImpl.class.getName());
-	}
-
-	private void _setBatchEngineExportTaskUtilPersistence(
-		BatchEngineExportTaskPersistence batchEngineExportTaskPersistence) {
-
-		try {
-			Field field = BatchEngineExportTaskUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, batchEngineExportTaskPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

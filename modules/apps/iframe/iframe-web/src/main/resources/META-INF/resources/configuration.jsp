@@ -66,7 +66,7 @@ sb.append("\n");
 			collapsible="<%= true %>"
 			label="source"
 		>
-			<aui:input autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) || windowState.equals(LiferayWindowState.POP_UP) %>" cssClass="lfr-input-text-container" label="source-url" name="preferences--src--" prefix="<%= iFramePortletInstanceConfiguration.relative() ? StringPool.TRIPLE_PERIOD : StringPool.BLANK %>" type="text" value="<%= iFramePortletInstanceConfiguration.src() %>" />
+			<aui:input cssClass="lfr-input-text-container" label="source-url" name="preferences--src--" prefix="<%= iFramePortletInstanceConfiguration.relative() ? StringPool.TRIPLE_PERIOD : StringPool.BLANK %>" type="text" value="<%= iFramePortletInstanceConfiguration.src() %>" />
 
 			<aui:input inlineLabel="right" label="relative-to-context-path" labelCssClass="simple-toggle-switch" name="preferences--relative--" type="toggle-switch" value="<%= iFramePortletInstanceConfiguration.relative() %>" />
 		</liferay-frontend:fieldset>
@@ -146,14 +146,12 @@ sb.append("\n");
 			<aui:input helpMessage="resize-automatically-help" inlineLabel="right" label="resize-automatically" labelCssClass="simple-toggle-switch" name="preferences--resizeAutomatically--" type="toggle-switch" value="<%= iFramePortletInstanceConfiguration.resizeAutomatically() %>" />
 
 			<div id="<portlet:namespace />displaySettings">
-				<aui:input name="preferences--heightMaximized--" type="text" value="<%= iFramePortletInstanceConfiguration.heightMaximized() %>">
+				<aui:input name="preferences--heightMaximized--" required="<%= true %>" type="text" value="<%= iFramePortletInstanceConfiguration.heightMaximized() %>">
 					<aui:validator name="digits" />
-					<aui:validator name="required" />
 				</aui:input>
 
-				<aui:input name="preferences--heightNormal--" type="text" value="<%= iFramePortletInstanceConfiguration.heightNormal() %>">
+				<aui:input name="preferences--heightNormal--" required="<%= true %>" type="text" value="<%= iFramePortletInstanceConfiguration.heightNormal() %>">
 					<aui:validator name="digits" />
-					<aui:validator name="required" />
 				</aui:input>
 
 				<aui:input name="preferences--width--" type="text" value="<%= iFramePortletInstanceConfiguration.width() %>" />

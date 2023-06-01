@@ -69,6 +69,7 @@ type TItemsActions = {
 	icon?: string;
 	id?: string;
 	label?: string;
+	onClick?: Function;
 	target?: 'async' | 'headless' | 'link' | 'modal' | 'sidePanel' | 'event';
 };
 
@@ -80,6 +81,7 @@ type TSorting = {
 type TViews = {
 	component?: any;
 	contentRenderer?: string;
+	contentRendererClientExtension?: boolean;
 	contentRendererModuleURL?: string;
 	label?: string;
 	name?: string;
@@ -87,7 +89,7 @@ type TViews = {
 	thumbnail?: string;
 };
 
-interface IFrontendDataSetProps {
+export interface IFrontendDataSetProps {
 	actionParameterName?: string;
 	activeViewSettings?: string;
 	apiURL?: string;
@@ -138,3 +140,8 @@ interface IFrontendDataSetProps {
 	style?: 'default' | 'fluid' | 'stacked';
 	views: TViews[];
 }
+
+export {
+	INTERNAL_CELL_RENDERERS as FDS_INTERNAL_CELL_RENDERERS,
+	InternalCellRenderer as FDSInternalCellRenderer,
+} from './cell_renderers/InternalCellRenderer';

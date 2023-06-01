@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.theme.NavItem;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portlet.display.template.constants.PortletDisplayTemplateConstants;
+import com.liferay.site.navigation.constants.SiteNavigationMenuPortletKeys;
 import com.liferay.site.navigation.menu.web.internal.configuration.SiteNavigationMenuWebTemplateConfiguration;
-import com.liferay.site.navigation.menu.web.internal.constants.SiteNavigationMenuPortletKeys;
 import com.liferay.site.navigation.theme.SiteNavigationMenuNavItem;
 
 import java.util.List;
@@ -33,7 +33,6 @@ import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
@@ -42,7 +41,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.site.navigation.menu.web.internal.configuration.SiteNavigationMenuWebTemplateConfiguration",
-	configurationPolicy = ConfigurationPolicy.OPTIONAL,
 	property = "javax.portlet.name=" + SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU,
 	service = TemplateHandler.class
 )

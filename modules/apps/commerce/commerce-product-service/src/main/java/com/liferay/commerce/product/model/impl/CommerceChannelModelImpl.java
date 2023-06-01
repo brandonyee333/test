@@ -79,8 +79,9 @@ public class CommerceChannelModelImpl
 		{"commerceChannelId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
-		{"siteGroupId", Types.BIGINT}, {"name", Types.VARCHAR},
-		{"type_", Types.VARCHAR}, {"typeSettings", Types.VARCHAR},
+		{"accountEntryId", Types.BIGINT}, {"siteGroupId", Types.BIGINT},
+		{"name", Types.VARCHAR}, {"type_", Types.VARCHAR},
+		{"typeSettings", Types.VARCHAR},
 		{"commerceCurrencyCode", Types.VARCHAR},
 		{"priceDisplayType", Types.VARCHAR},
 		{"discountsTargetNetPrice", Types.BOOLEAN}
@@ -100,6 +101,7 @@ public class CommerceChannelModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("siteGroupId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
@@ -110,7 +112,7 @@ public class CommerceChannelModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table CommerceChannel (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,commerceChannelId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,siteGroupId LONG,name VARCHAR(75) null,type_ VARCHAR(75) null,typeSettings VARCHAR(75) null,commerceCurrencyCode VARCHAR(75) null,priceDisplayType VARCHAR(75) null,discountsTargetNetPrice BOOLEAN,primary key (commerceChannelId, ctCollectionId))";
+		"create table CommerceChannel (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,commerceChannelId LONG not null,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,siteGroupId LONG,name VARCHAR(75) null,type_ VARCHAR(75) null,typeSettings VARCHAR(75) null,commerceCurrencyCode VARCHAR(75) null,priceDisplayType VARCHAR(75) null,discountsTargetNetPrice BOOLEAN,primary key (commerceChannelId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP = "drop table CommerceChannel";
 
@@ -247,121 +249,151 @@ public class CommerceChannelModelImpl
 	public Map<String, Function<CommerceChannel, Object>>
 		getAttributeGetterFunctions() {
 
-		return _attributeGetterFunctions;
+		return AttributeGetterFunctionsHolder._attributeGetterFunctions;
 	}
 
 	public Map<String, BiConsumer<CommerceChannel, Object>>
 		getAttributeSetterBiConsumers() {
 
-		return _attributeSetterBiConsumers;
+		return AttributeSetterBiConsumersHolder._attributeSetterBiConsumers;
 	}
 
-	private static final Map<String, Function<CommerceChannel, Object>>
-		_attributeGetterFunctions;
-	private static final Map<String, BiConsumer<CommerceChannel, Object>>
-		_attributeSetterBiConsumers;
+	private static class AttributeGetterFunctionsHolder {
 
-	static {
-		Map<String, Function<CommerceChannel, Object>>
-			attributeGetterFunctions =
-				new LinkedHashMap<String, Function<CommerceChannel, Object>>();
-		Map<String, BiConsumer<CommerceChannel, ?>> attributeSetterBiConsumers =
-			new LinkedHashMap<String, BiConsumer<CommerceChannel, ?>>();
+		private static final Map<String, Function<CommerceChannel, Object>>
+			_attributeGetterFunctions;
 
-		attributeGetterFunctions.put(
-			"mvccVersion", CommerceChannel::getMvccVersion);
-		attributeSetterBiConsumers.put(
-			"mvccVersion",
-			(BiConsumer<CommerceChannel, Long>)CommerceChannel::setMvccVersion);
-		attributeGetterFunctions.put(
-			"ctCollectionId", CommerceChannel::getCtCollectionId);
-		attributeSetterBiConsumers.put(
-			"ctCollectionId",
-			(BiConsumer<CommerceChannel, Long>)
-				CommerceChannel::setCtCollectionId);
-		attributeGetterFunctions.put("uuid", CommerceChannel::getUuid);
-		attributeSetterBiConsumers.put(
-			"uuid",
-			(BiConsumer<CommerceChannel, String>)CommerceChannel::setUuid);
-		attributeGetterFunctions.put(
-			"externalReferenceCode", CommerceChannel::getExternalReferenceCode);
-		attributeSetterBiConsumers.put(
-			"externalReferenceCode",
-			(BiConsumer<CommerceChannel, String>)
-				CommerceChannel::setExternalReferenceCode);
-		attributeGetterFunctions.put(
-			"commerceChannelId", CommerceChannel::getCommerceChannelId);
-		attributeSetterBiConsumers.put(
-			"commerceChannelId",
-			(BiConsumer<CommerceChannel, Long>)
-				CommerceChannel::setCommerceChannelId);
-		attributeGetterFunctions.put(
-			"companyId", CommerceChannel::getCompanyId);
-		attributeSetterBiConsumers.put(
-			"companyId",
-			(BiConsumer<CommerceChannel, Long>)CommerceChannel::setCompanyId);
-		attributeGetterFunctions.put("userId", CommerceChannel::getUserId);
-		attributeSetterBiConsumers.put(
-			"userId",
-			(BiConsumer<CommerceChannel, Long>)CommerceChannel::setUserId);
-		attributeGetterFunctions.put("userName", CommerceChannel::getUserName);
-		attributeSetterBiConsumers.put(
-			"userName",
-			(BiConsumer<CommerceChannel, String>)CommerceChannel::setUserName);
-		attributeGetterFunctions.put(
-			"createDate", CommerceChannel::getCreateDate);
-		attributeSetterBiConsumers.put(
-			"createDate",
-			(BiConsumer<CommerceChannel, Date>)CommerceChannel::setCreateDate);
-		attributeGetterFunctions.put(
-			"modifiedDate", CommerceChannel::getModifiedDate);
-		attributeSetterBiConsumers.put(
-			"modifiedDate",
-			(BiConsumer<CommerceChannel, Date>)
-				CommerceChannel::setModifiedDate);
-		attributeGetterFunctions.put(
-			"siteGroupId", CommerceChannel::getSiteGroupId);
-		attributeSetterBiConsumers.put(
-			"siteGroupId",
-			(BiConsumer<CommerceChannel, Long>)CommerceChannel::setSiteGroupId);
-		attributeGetterFunctions.put("name", CommerceChannel::getName);
-		attributeSetterBiConsumers.put(
-			"name",
-			(BiConsumer<CommerceChannel, String>)CommerceChannel::setName);
-		attributeGetterFunctions.put("type", CommerceChannel::getType);
-		attributeSetterBiConsumers.put(
-			"type",
-			(BiConsumer<CommerceChannel, String>)CommerceChannel::setType);
-		attributeGetterFunctions.put(
-			"typeSettings", CommerceChannel::getTypeSettings);
-		attributeSetterBiConsumers.put(
-			"typeSettings",
-			(BiConsumer<CommerceChannel, String>)
-				CommerceChannel::setTypeSettings);
-		attributeGetterFunctions.put(
-			"commerceCurrencyCode", CommerceChannel::getCommerceCurrencyCode);
-		attributeSetterBiConsumers.put(
-			"commerceCurrencyCode",
-			(BiConsumer<CommerceChannel, String>)
-				CommerceChannel::setCommerceCurrencyCode);
-		attributeGetterFunctions.put(
-			"priceDisplayType", CommerceChannel::getPriceDisplayType);
-		attributeSetterBiConsumers.put(
-			"priceDisplayType",
-			(BiConsumer<CommerceChannel, String>)
-				CommerceChannel::setPriceDisplayType);
-		attributeGetterFunctions.put(
-			"discountsTargetNetPrice",
-			CommerceChannel::getDiscountsTargetNetPrice);
-		attributeSetterBiConsumers.put(
-			"discountsTargetNetPrice",
-			(BiConsumer<CommerceChannel, Boolean>)
-				CommerceChannel::setDiscountsTargetNetPrice);
+		static {
+			Map<String, Function<CommerceChannel, Object>>
+				attributeGetterFunctions =
+					new LinkedHashMap
+						<String, Function<CommerceChannel, Object>>();
 
-		_attributeGetterFunctions = Collections.unmodifiableMap(
-			attributeGetterFunctions);
-		_attributeSetterBiConsumers = Collections.unmodifiableMap(
-			(Map)attributeSetterBiConsumers);
+			attributeGetterFunctions.put(
+				"mvccVersion", CommerceChannel::getMvccVersion);
+			attributeGetterFunctions.put(
+				"ctCollectionId", CommerceChannel::getCtCollectionId);
+			attributeGetterFunctions.put("uuid", CommerceChannel::getUuid);
+			attributeGetterFunctions.put(
+				"externalReferenceCode",
+				CommerceChannel::getExternalReferenceCode);
+			attributeGetterFunctions.put(
+				"commerceChannelId", CommerceChannel::getCommerceChannelId);
+			attributeGetterFunctions.put(
+				"companyId", CommerceChannel::getCompanyId);
+			attributeGetterFunctions.put("userId", CommerceChannel::getUserId);
+			attributeGetterFunctions.put(
+				"userName", CommerceChannel::getUserName);
+			attributeGetterFunctions.put(
+				"createDate", CommerceChannel::getCreateDate);
+			attributeGetterFunctions.put(
+				"modifiedDate", CommerceChannel::getModifiedDate);
+			attributeGetterFunctions.put(
+				"accountEntryId", CommerceChannel::getAccountEntryId);
+			attributeGetterFunctions.put(
+				"siteGroupId", CommerceChannel::getSiteGroupId);
+			attributeGetterFunctions.put("name", CommerceChannel::getName);
+			attributeGetterFunctions.put("type", CommerceChannel::getType);
+			attributeGetterFunctions.put(
+				"typeSettings", CommerceChannel::getTypeSettings);
+			attributeGetterFunctions.put(
+				"commerceCurrencyCode",
+				CommerceChannel::getCommerceCurrencyCode);
+			attributeGetterFunctions.put(
+				"priceDisplayType", CommerceChannel::getPriceDisplayType);
+			attributeGetterFunctions.put(
+				"discountsTargetNetPrice",
+				CommerceChannel::getDiscountsTargetNetPrice);
+
+			_attributeGetterFunctions = Collections.unmodifiableMap(
+				attributeGetterFunctions);
+		}
+
+	}
+
+	private static class AttributeSetterBiConsumersHolder {
+
+		private static final Map<String, BiConsumer<CommerceChannel, Object>>
+			_attributeSetterBiConsumers;
+
+		static {
+			Map<String, BiConsumer<CommerceChannel, ?>>
+				attributeSetterBiConsumers =
+					new LinkedHashMap<String, BiConsumer<CommerceChannel, ?>>();
+
+			attributeSetterBiConsumers.put(
+				"mvccVersion",
+				(BiConsumer<CommerceChannel, Long>)
+					CommerceChannel::setMvccVersion);
+			attributeSetterBiConsumers.put(
+				"ctCollectionId",
+				(BiConsumer<CommerceChannel, Long>)
+					CommerceChannel::setCtCollectionId);
+			attributeSetterBiConsumers.put(
+				"uuid",
+				(BiConsumer<CommerceChannel, String>)CommerceChannel::setUuid);
+			attributeSetterBiConsumers.put(
+				"externalReferenceCode",
+				(BiConsumer<CommerceChannel, String>)
+					CommerceChannel::setExternalReferenceCode);
+			attributeSetterBiConsumers.put(
+				"commerceChannelId",
+				(BiConsumer<CommerceChannel, Long>)
+					CommerceChannel::setCommerceChannelId);
+			attributeSetterBiConsumers.put(
+				"companyId",
+				(BiConsumer<CommerceChannel, Long>)
+					CommerceChannel::setCompanyId);
+			attributeSetterBiConsumers.put(
+				"userId",
+				(BiConsumer<CommerceChannel, Long>)CommerceChannel::setUserId);
+			attributeSetterBiConsumers.put(
+				"userName",
+				(BiConsumer<CommerceChannel, String>)
+					CommerceChannel::setUserName);
+			attributeSetterBiConsumers.put(
+				"createDate",
+				(BiConsumer<CommerceChannel, Date>)
+					CommerceChannel::setCreateDate);
+			attributeSetterBiConsumers.put(
+				"modifiedDate",
+				(BiConsumer<CommerceChannel, Date>)
+					CommerceChannel::setModifiedDate);
+			attributeSetterBiConsumers.put(
+				"accountEntryId",
+				(BiConsumer<CommerceChannel, Long>)
+					CommerceChannel::setAccountEntryId);
+			attributeSetterBiConsumers.put(
+				"siteGroupId",
+				(BiConsumer<CommerceChannel, Long>)
+					CommerceChannel::setSiteGroupId);
+			attributeSetterBiConsumers.put(
+				"name",
+				(BiConsumer<CommerceChannel, String>)CommerceChannel::setName);
+			attributeSetterBiConsumers.put(
+				"type",
+				(BiConsumer<CommerceChannel, String>)CommerceChannel::setType);
+			attributeSetterBiConsumers.put(
+				"typeSettings",
+				(BiConsumer<CommerceChannel, String>)
+					CommerceChannel::setTypeSettings);
+			attributeSetterBiConsumers.put(
+				"commerceCurrencyCode",
+				(BiConsumer<CommerceChannel, String>)
+					CommerceChannel::setCommerceCurrencyCode);
+			attributeSetterBiConsumers.put(
+				"priceDisplayType",
+				(BiConsumer<CommerceChannel, String>)
+					CommerceChannel::setPriceDisplayType);
+			attributeSetterBiConsumers.put(
+				"discountsTargetNetPrice",
+				(BiConsumer<CommerceChannel, Boolean>)
+					CommerceChannel::setDiscountsTargetNetPrice);
+
+			_attributeSetterBiConsumers = Collections.unmodifiableMap(
+				(Map)attributeSetterBiConsumers);
+		}
+
 	}
 
 	@JSON
@@ -577,6 +609,21 @@ public class CommerceChannelModelImpl
 		}
 
 		_modifiedDate = modifiedDate;
+	}
+
+	@JSON
+	@Override
+	public long getAccountEntryId() {
+		return _accountEntryId;
+	}
+
+	@Override
+	public void setAccountEntryId(long accountEntryId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_accountEntryId = accountEntryId;
 	}
 
 	@JSON
@@ -798,6 +845,7 @@ public class CommerceChannelModelImpl
 		commerceChannelImpl.setUserName(getUserName());
 		commerceChannelImpl.setCreateDate(getCreateDate());
 		commerceChannelImpl.setModifiedDate(getModifiedDate());
+		commerceChannelImpl.setAccountEntryId(getAccountEntryId());
 		commerceChannelImpl.setSiteGroupId(getSiteGroupId());
 		commerceChannelImpl.setName(getName());
 		commerceChannelImpl.setType(getType());
@@ -836,6 +884,8 @@ public class CommerceChannelModelImpl
 			this.<Date>getColumnOriginalValue("createDate"));
 		commerceChannelImpl.setModifiedDate(
 			this.<Date>getColumnOriginalValue("modifiedDate"));
+		commerceChannelImpl.setAccountEntryId(
+			this.<Long>getColumnOriginalValue("accountEntryId"));
 		commerceChannelImpl.setSiteGroupId(
 			this.<Long>getColumnOriginalValue("siteGroupId"));
 		commerceChannelImpl.setName(
@@ -985,6 +1035,8 @@ public class CommerceChannelModelImpl
 			commerceChannelCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
+		commerceChannelCacheModel.accountEntryId = getAccountEntryId();
+
 		commerceChannelCacheModel.siteGroupId = getSiteGroupId();
 
 		commerceChannelCacheModel.name = getName();
@@ -1106,6 +1158,7 @@ public class CommerceChannelModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private long _accountEntryId;
 	private long _siteGroupId;
 	private String _name;
 	private String _type;
@@ -1118,7 +1171,8 @@ public class CommerceChannelModelImpl
 		columnName = _attributeNames.getOrDefault(columnName, columnName);
 
 		Function<CommerceChannel, Object> function =
-			_attributeGetterFunctions.get(columnName);
+			AttributeGetterFunctionsHolder._attributeGetterFunctions.get(
+				columnName);
 
 		if (function == null) {
 			throw new IllegalArgumentException(
@@ -1154,6 +1208,7 @@ public class CommerceChannelModelImpl
 		_columnOriginalValues.put("userName", _userName);
 		_columnOriginalValues.put("createDate", _createDate);
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
+		_columnOriginalValues.put("accountEntryId", _accountEntryId);
 		_columnOriginalValues.put("siteGroupId", _siteGroupId);
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("type_", _type);
@@ -1207,19 +1262,21 @@ public class CommerceChannelModelImpl
 
 		columnBitmasks.put("modifiedDate", 512L);
 
-		columnBitmasks.put("siteGroupId", 1024L);
+		columnBitmasks.put("accountEntryId", 1024L);
 
-		columnBitmasks.put("name", 2048L);
+		columnBitmasks.put("siteGroupId", 2048L);
 
-		columnBitmasks.put("type_", 4096L);
+		columnBitmasks.put("name", 4096L);
 
-		columnBitmasks.put("typeSettings", 8192L);
+		columnBitmasks.put("type_", 8192L);
 
-		columnBitmasks.put("commerceCurrencyCode", 16384L);
+		columnBitmasks.put("typeSettings", 16384L);
 
-		columnBitmasks.put("priceDisplayType", 32768L);
+		columnBitmasks.put("commerceCurrencyCode", 32768L);
 
-		columnBitmasks.put("discountsTargetNetPrice", 65536L);
+		columnBitmasks.put("priceDisplayType", 65536L);
+
+		columnBitmasks.put("discountsTargetNetPrice", 131072L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

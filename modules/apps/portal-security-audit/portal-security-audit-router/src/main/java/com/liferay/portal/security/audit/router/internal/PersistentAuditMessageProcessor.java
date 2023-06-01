@@ -58,16 +58,12 @@ public class PersistentAuditMessageProcessor implements AuditMessageProcessor {
 	@Modified
 	protected void activate(Map<String, Object> properties) {
 		PersistentAuditMessageProcessorConfiguration
-			messageProcessorConfiguration = ConfigurableUtil.createConfigurable(
-				PersistentAuditMessageProcessorConfiguration.class, properties);
+			persistentAuditMessageProcessorConfiguration =
+				ConfigurableUtil.createConfigurable(
+					PersistentAuditMessageProcessorConfiguration.class,
+					properties);
 
-		_enabled = false;
-
-		if ((messageProcessorConfiguration != null) &&
-			messageProcessorConfiguration.enabled()) {
-
-			_enabled = true;
-		}
+		_enabled = persistentAuditMessageProcessorConfiguration.enabled();
 	}
 
 	protected void doProcess(AuditMessage auditMessage) throws Exception {

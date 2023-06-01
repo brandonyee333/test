@@ -21,7 +21,7 @@ CPPriceRangeFacetsDisplayContext cpPriceRangeFacetsDisplayContext = (CPPriceRang
 %>
 
 <c:choose>
-	<c:when test="<%= !cpPriceRangeFacetsDisplayContext.hasCommerceChannel() %>">
+	<c:when test="<%= !cpPriceRangeFacetsDisplayContext.hasCommerceChannel() && !cpPriceRangeFacetsDisplayContext.isStagingEnabled() %>">
 		<div class="alert alert-info mx-auto">
 		<liferay-ui:message key="this-site-does-not-have-a-channel" />
 		</div>
@@ -73,6 +73,10 @@ CPPriceRangeFacetsDisplayContext cpPriceRangeFacetsDisplayContext = (CPPriceRang
 							<aui:form method="post" name='<%= "assetEntriesFacetForm_" + facet.getFieldName() %>'>
 								<aui:input cssClass="facet-parameter-name" name="facet-parameter-name" type="hidden" value="<%= facet.getFieldName() %>" />
 								<aui:input cssClass="start-parameter-name" name="start-parameter-name" type="hidden" value="<%= cpPriceRangeFacetsDisplayContext.getPaginationStartParameterName() %>" />
+
+								<c:if test="<%= cpPriceRangeFacetsDisplayContext.isShowClear(facet.getFieldName()) %>">
+									<aui:button cssClass="btn-link btn-unstyled facet-clear-btn" onClick="Liferay.Search.FacetUtil.clearSelections(event);" value="clear" />
+								</c:if>
 
 								<aui:fieldset>
 									<ul class="list-unstyled">
@@ -140,6 +144,8 @@ CPPriceRangeFacetsDisplayContext cpPriceRangeFacetsDisplayContext = (CPPriceRang
 		</liferay-ui:panel-container>
 	</c:otherwise>
 </c:choose>
+
+<aui:script use="liferay-search-facet-util" />
 
 <liferay-frontend:component
 	context='<%=

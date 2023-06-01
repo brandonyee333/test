@@ -17,10 +17,6 @@ package com.liferay.headless.commerce.admin.account.internal.dto.v1_0.converter;
 import com.liferay.account.constants.AccountConstants;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.service.AccountEntryLocalService;
-import com.liferay.commerce.account.constants.CommerceAccountConstants;
-import com.liferay.commerce.account.model.CommerceAccount;
-import com.liferay.commerce.account.service.CommerceAccountLocalService;
-import com.liferay.commerce.account.service.CommerceAccountService;
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.headless.commerce.admin.account.dto.v1_0.Account;
 import com.liferay.petra.string.StringBundler;
@@ -41,11 +37,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Alessio Antonio Rendina
  */
 @Component(
-	property = "dto.class.name=com.liferay.commerce.account.model.CommerceAccount",
-	service = {AccountDTOConverter.class, DTOConverter.class}
+	property = "dto.class.name=com.liferay.account.model.AccountEntry",
+	service = DTOConverter.class
 )
 public class AccountDTOConverter
-	implements DTOConverter<CommerceAccount, Account> {
+	implements DTOConverter<AccountEntry, Account> {
 
 	@Override
 	public String getContentType() {
@@ -94,7 +90,7 @@ public class AccountDTOConverter
 				name = accountEntry.getName();
 				root =
 					accountEntry.getParentAccountEntryId() ==
-						CommerceAccountConstants.DEFAULT_PARENT_ACCOUNT_ID;
+						AccountConstants.PARENT_ACCOUNT_ENTRY_ID_DEFAULT;
 				taxId = accountEntry.getTaxIdNumber();
 				type = _toCommerceAccountType(accountEntry.getType());
 			}
@@ -120,32 +116,32 @@ public class AccountDTOConverter
 				accountEntryType,
 				AccountConstants.ACCOUNT_ENTRY_TYPE_BUSINESS)) {
 
-			return CommerceAccountConstants.ACCOUNT_TYPE_BUSINESS;
+			return _ACCOUNT_TYPE_BUSINESS;
 		}
 		else if (Objects.equals(
 					accountEntryType,
 					AccountConstants.ACCOUNT_ENTRY_TYPE_GUEST)) {
 
-			return CommerceAccountConstants.ACCOUNT_TYPE_GUEST;
+			return _ACCOUNT_TYPE_GUEST;
 		}
 		else if (Objects.equals(
 					accountEntryType,
 					AccountConstants.ACCOUNT_ENTRY_TYPE_PERSON)) {
 
-			return CommerceAccountConstants.ACCOUNT_TYPE_PERSONAL;
+			return _ACCOUNT_TYPE_PERSONAL;
 		}
 
-		return CommerceAccountConstants.ACCOUNT_TYPE_GUEST;
+		return _ACCOUNT_TYPE_GUEST;
 	}
+
+	private static final int _ACCOUNT_TYPE_BUSINESS = 2;
+
+	private static final int _ACCOUNT_TYPE_GUEST = 0;
+
+	private static final int _ACCOUNT_TYPE_PERSONAL = 1;
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
-
-	@Reference
-	private CommerceAccountLocalService _commerceAccountLocalService;
-
-	@Reference
-	private CommerceAccountService _commerceAccountService;
 
 	@Reference
 	private UserLocalService _userLocalService;

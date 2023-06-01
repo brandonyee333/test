@@ -55,7 +55,6 @@ import com.liferay.portlet.asset.model.impl.AssetCategoryModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.ArrayList;
@@ -12461,7 +12460,8 @@ public class AssetCategoryPersistenceImpl
 				if (ercAssetCategory != null) {
 					throw new DuplicateAssetCategoryExternalReferenceCodeException(
 						"Duplicate asset category with external reference code " +
-							assetCategory.getExternalReferenceCode());
+							assetCategory.getExternalReferenceCode() +
+								" and group " + assetCategory.getGroupId());
 				}
 			}
 			else {
@@ -12471,7 +12471,8 @@ public class AssetCategoryPersistenceImpl
 
 					throw new DuplicateAssetCategoryExternalReferenceCodeException(
 						"Duplicate asset category with external reference code " +
-							assetCategory.getExternalReferenceCode());
+							assetCategory.getExternalReferenceCode() +
+								" and group " + assetCategory.getGroupId());
 				}
 			}
 		}
@@ -13323,29 +13324,13 @@ public class AssetCategoryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "groupId"}, false);
 
-		_setAssetCategoryUtilPersistence(this);
+		AssetCategoryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setAssetCategoryUtilPersistence(null);
+		AssetCategoryUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(AssetCategoryImpl.class.getName());
-	}
-
-	private void _setAssetCategoryUtilPersistence(
-		AssetCategoryPersistence assetCategoryPersistence) {
-
-		try {
-			Field field = AssetCategoryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, assetCategoryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	private static final String _SQL_SELECT_ASSETCATEGORY =

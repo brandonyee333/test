@@ -21,8 +21,8 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.dynamic.data.mapping.test.util.DDMStructureTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMTemplateTestUtil;
+import com.liferay.journal.constants.JournalFolderConstants;
 import com.liferay.journal.model.JournalArticle;
-import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -56,10 +56,10 @@ public class VirtualCPTypeTestUtil {
 			url = "http://www.example.com/download";
 		}
 
-		String sampleUrl = null;
+		String sampleURL = null;
 
 		if (sampleFileEntryId <= 0) {
-			sampleUrl = "http://www.example.com/sample";
+			sampleURL = "http://www.example.com/sample";
 		}
 
 		Map<Locale, String> termsOfUseContentMap = null;
@@ -72,7 +72,7 @@ public class VirtualCPTypeTestUtil {
 			addCPDefinitionVirtualSetting(
 				className, classPK, fileEntryId, url, activationStatus,
 				duration, RandomTestUtil.randomInt(), true, sampleFileEntryId,
-				sampleUrl, true, termsOfUseContentMap,
+				sampleURL, true, termsOfUseContentMap,
 				termsOfUseJournalArticleResourcePrimKey, serviceContext);
 	}
 
@@ -104,11 +104,11 @@ public class VirtualCPTypeTestUtil {
 			PortalUtil.getClassNameId(JournalArticle.class));
 
 		return JournalArticleLocalServiceUtil.addArticle(
-			serviceContext.getUserId(), groupId,
+			null, serviceContext.getUserId(), groupId,
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomLocaleStringMap(),
 			RandomTestUtil.randomLocaleStringMap(), content,
-			ddmStructure.getStructureKey(), ddmTemplate.getTemplateKey(),
+			ddmStructure.getStructureId(), ddmTemplate.getTemplateKey(),
 			serviceContext);
 	}
 

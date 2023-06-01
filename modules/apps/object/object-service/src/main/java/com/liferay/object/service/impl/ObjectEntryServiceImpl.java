@@ -21,9 +21,9 @@ import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.account.service.AccountEntryOrganizationRelLocalService;
 import com.liferay.object.configuration.ObjectConfiguration;
 import com.liferay.object.constants.ObjectActionKeys;
+import com.liferay.object.entry.util.ObjectEntryThreadLocal;
 import com.liferay.object.exception.ObjectDefinitionAccountEntryRestrictedException;
 import com.liferay.object.exception.ObjectEntryCountException;
-import com.liferay.object.internal.entry.util.ObjectEntryThreadLocal;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectField;
@@ -96,7 +96,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 
 		if (!ObjectEntryThreadLocal.isSkipObjectEntryResourcePermission()) {
 			_checkPortletResourcePermission(
-				groupId, objectDefinitionId, ObjectActionKeys.ADD_OBJECT_ENTRY,
+				ObjectActionKeys.ADD_OBJECT_ENTRY, groupId, objectDefinitionId,
 				values);
 		}
 
@@ -118,7 +118,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 
 		if (objectEntry == null) {
 			_checkPortletResourcePermission(
-				groupId, objectDefinitionId, ObjectActionKeys.ADD_OBJECT_ENTRY,
+				ObjectActionKeys.ADD_OBJECT_ENTRY, groupId, objectDefinitionId,
 				values);
 		}
 		else {
@@ -236,7 +236,9 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 		ObjectEntry objectEntry = objectEntryLocalService.getObjectEntry(
 			objectEntryId);
 
-		_checkPermission(ActionKeys.VIEW, objectEntry);
+		if (!ObjectEntryThreadLocal.isSkipObjectEntryResourcePermission()) {
+			_checkPermission(ActionKeys.VIEW, objectEntry);
+		}
 
 		return objectEntry;
 	}
@@ -249,7 +251,9 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 		ObjectEntry objectEntry = objectEntryLocalService.getObjectEntry(
 			externalReferenceCode, companyId, groupId);
 
-		_checkPermission(ActionKeys.VIEW, objectEntry);
+		if (!ObjectEntryThreadLocal.isSkipObjectEntryResourcePermission()) {
+			_checkPermission(ActionKeys.VIEW, objectEntry);
+		}
 
 		return objectEntry;
 	}
@@ -264,10 +268,12 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 			objectEntryLocalService.getOneToManyObjectEntries(
 				groupId, objectRelationshipId, primaryKey, related, start, end);
 
-		for (ObjectEntry objectEntry : objectEntries) {
-			objectEntryService.checkModelResourcePermission(
-				objectEntry.getObjectDefinitionId(),
-				objectEntry.getObjectEntryId(), ActionKeys.VIEW);
+		if (!ObjectEntryThreadLocal.isSkipObjectEntryResourcePermission()) {
+			for (ObjectEntry objectEntry : objectEntries) {
+				objectEntryService.checkModelResourcePermission(
+					objectEntry.getObjectDefinitionId(),
+					objectEntry.getObjectEntryId(), ActionKeys.VIEW);
+			}
 		}
 
 		return objectEntries;
@@ -406,7 +412,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 	}
 
 	private void _checkPortletResourcePermission(
-			long groupId, long objectDefinitionId, String actionId,
+			String actionId, long groupId, long objectDefinitionId,
 			Map<String, Serializable> values)
 		throws PortalException {
 
@@ -540,7 +546,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 	private void _validateSubmissionLimit(long objectDefinitionId, User user)
 		throws PortalException {
 
-		if (!user.isDefaultUser()) {
+		if (!user.isGuestUser()) {
 			return;
 		}
 

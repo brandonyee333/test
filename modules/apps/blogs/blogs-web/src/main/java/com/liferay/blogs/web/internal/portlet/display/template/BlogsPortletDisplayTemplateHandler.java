@@ -27,12 +27,12 @@ import com.liferay.portal.kernel.comment.CommentManager;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portletdisplaytemplate.BasePortletDisplayTemplateHandler;
-import com.liferay.portal.kernel.portletdisplaytemplate.PortletDisplayTemplateManager;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portlet.display.template.constants.PortletDisplayTemplateConstants;
 import com.liferay.taglib.security.PermissionsURLTag;
 import com.liferay.trash.TrashHelper;
 
@@ -64,9 +64,9 @@ public class BlogsPortletDisplayTemplateHandler
 	@Override
 	public Map<String, Object> getCustomContextObjects() {
 		return HashMapBuilder.<String, Object>put(
-			"blogsEntryAssetEntryUtil", _blogsEntryAssetEntryUtil
+			"blogsEntryAssetEntryUtil", new BlogsEntryAssetEntryUtil()
 		).put(
-			"blogsEntryPermission", _blogsEntryPermission
+			"blogsEntryPermission", new BlogsEntryPermission()
 		).put(
 			"blogsEntryUtil", _blogsEntryUtil
 		).put(
@@ -133,7 +133,7 @@ public class BlogsPortletDisplayTemplateHandler
 		fieldsTemplateVariableGroup.empty();
 
 		fieldsTemplateVariableGroup.addCollectionVariable(
-			"blog-entries", List.class, PortletDisplayTemplateManager.ENTRIES,
+			"blog-entries", List.class, PortletDisplayTemplateConstants.ENTRIES,
 			"blog-entry", BlogsEntry.class, "curBlogEntry", "title");
 
 		return templateVariableGroups;
@@ -152,12 +152,6 @@ public class BlogsPortletDisplayTemplateHandler
 	}
 
 	private volatile BlogsConfiguration _blogsConfiguration;
-
-	@Reference
-	private BlogsEntryAssetEntryUtil _blogsEntryAssetEntryUtil;
-
-	@Reference
-	private BlogsEntryPermission _blogsEntryPermission;
 
 	@Reference
 	private BlogsEntryUtil _blogsEntryUtil;

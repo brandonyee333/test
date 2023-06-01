@@ -13,6 +13,8 @@
  */
 
 import React, {useCallback} from 'react';
+import {useParams} from 'react-router-dom';
+import SearchBuilder from '~/core/SearchBuilder';
 
 import DualListBox, {
 	BoxItem,
@@ -34,6 +36,7 @@ const onMapDefault = ({id, name}: any) => ({
 });
 
 type SelectCaseParametersProps = {
+	selectedCaseIds?: number[];
 	setState: any;
 	state: State;
 };
@@ -49,22 +52,39 @@ export type State = {
 
 const SelectCaseParameters: React.FC<SelectCaseParametersProps> = ({
 	setState,
+	state,
 }) => {
+	const {projectId} = useParams();
 	const {data: casetypes} = useFetch<APIResponse<TestrayCaseType>>(
 		'/casetypes',
-		{fields: 'id,name', pageSize: 1000}
+		{params: {fields: 'id,name', pageSize: 1000}}
 	);
 	const {data: components} = useFetch<APIResponse<TestrayComponent>>(
 		'/components',
-		{fields: 'id,name', pageSize: 1000}
+		{
+			params: {
+				fields: 'id,name',
+				filter: SearchBuilder.eq('projectId', projectId as string),
+				pageSize: 1000,
+			},
+		}
 	);
 	const {data: requirements} = useFetch<APIResponse<TestrayRequirement>>(
 		'/requirements',
-		{fields: 'key,summary,id', pageSize: 1000}
+		{
+			params: {
+				fields: 'key,summary,id',
+				filter: SearchBuilder.eq('projectId', projectId as string),
+				pageSize: 1000,
+			},
+		}
 	);
 	const {data: teams} = useFetch<APIResponse<TestrayTeam>>('/teams', {
-		fields: 'id,name',
-		pageSize: 1000,
+		params: {
+			fields: 'id,name',
+			filter: SearchBuilder.eq('projectId', projectId as string),
+			pageSize: 1000,
+		},
 	});
 
 	const getSelectedCaseParameters = useCallback(() => {
@@ -79,29 +99,52 @@ const SelectCaseParameters: React.FC<SelectCaseParametersProps> = ({
 		const testrayRequirements = requirements.items || [];
 		const testrayTeams = teams?.items || [];
 
+		const getMatrixWithoutDuplications = (
+			boxLeftItems: BoxItem[],
+			boxRightItems: BoxItem[]
+		): [BoxItem[], BoxItem[]] => [
+			boxLeftItems.filter(
+				(boxLeft) =>
+					!boxRightItems.some(
+						(boxRight) => boxRight.value === boxLeft.value
+					)
+			),
+			boxRightItems,
+		];
+
 		return {
-			testrayCaseTypes: [testrayCaseTypes.map(onMapDefault), defaultBox],
-			testrayComponents: [
+			testrayCaseTypes: getMatrixWithoutDuplications(
+				testrayCaseTypes.map(onMapDefault),
+				state?.testrayCaseTypes || defaultBox
+			),
+			testrayComponents: getMatrixWithoutDuplications(
 				testrayComponents.map(onMapDefault),
-				defaultBox,
-			],
-			testrayPriorities: [
+				state?.testrayComponents || defaultBox
+			),
+			testrayPriorities: getMatrixWithoutDuplications(
 				[...new Array(5)].map((_, index) => ({
 					label: String(index + 1),
 					value: String(index + 1),
 				})),
-				defaultBox,
-			],
-			testrayRequirements: [
+				state?.testrayPriorities || defaultBox
+			),
+			testrayRequirements: getMatrixWithoutDuplications(
 				testrayRequirements.map(({id, key, summary}) => ({
 					label: `${key} (${summary})`,
 					value: id.toString(),
 				})),
-				defaultBox,
-			],
-			testrayTeams: [testrayTeams.map(onMapDefault), defaultBox],
+				state?.testrayRequirements || defaultBox
+			),
+			testraySubComponents: getMatrixWithoutDuplications(
+				testrayComponents.map(onMapDefault),
+				state?.testraySubComponents || defaultBox
+			),
+			testrayTeams: getMatrixWithoutDuplications(
+				testrayTeams.map(onMapDefault),
+				state?.testrayTeams || defaultBox
+			),
 		};
-	}, [casetypes, components, requirements, teams]);
+	}, [casetypes, components, requirements, state, teams]);
 
 	const selectedCaseParameters = getSelectedCaseParameters();
 
@@ -133,7 +176,7 @@ const SelectCaseParameters: React.FC<SelectCaseParametersProps> = ({
 			/>
 
 			<DualListBox
-				boxes={selectedCaseParameters?.testrayComponents}
+				boxes={selectedCaseParameters?.testraySubComponents}
 				leftLabel={i18n.translate('available-subcomponents')}
 				rightLabel={i18n.translate('current-subcomponents')}
 				setValue={onSetValue('testraySubComponents')}

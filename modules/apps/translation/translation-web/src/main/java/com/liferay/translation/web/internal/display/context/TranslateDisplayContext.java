@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -114,7 +113,7 @@ public class TranslateDisplayContext {
 
 	public String getAutoTranslateURL() {
 		return PortalUtil.getPortalURL(_httpServletRequest) +
-			Portal.PATH_MODULE + "/translation/auto_translate";
+			PortalUtil.getPathModule() + "/translation/auto_translate";
 	}
 
 	public boolean getBooleanValue(
@@ -306,7 +305,7 @@ public class TranslateDisplayContext {
 				_themeDisplay.getCompanyId(), _getGroupId(),
 				TranslationEntry.class.getName())) {
 
-			return "submit-for-publication";
+			return "submit-for-workflow";
 		}
 
 		return "publish";
@@ -466,8 +465,7 @@ public class TranslateDisplayContext {
 
 		List<SegmentsExperience> segmentsExperiences =
 			SegmentsExperienceServiceUtil.getSegmentsExperiences(
-				_groupId, PortalUtil.getClassNameId(_className), _classPK,
-				true);
+				_groupId, _classPK, true);
 
 		List<Map<String, String>> options = new ArrayList<>();
 

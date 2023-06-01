@@ -28,6 +28,7 @@ import com.liferay.headless.commerce.delivery.catalog.client.pagination.Page;
 import com.liferay.headless.commerce.delivery.catalog.client.pagination.Pagination;
 import com.liferay.headless.commerce.delivery.catalog.client.resource.v1_0.WishListItemResource;
 import com.liferay.headless.commerce.delivery.catalog.client.serdes.v1_0.WishListItemSerDes;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -56,6 +57,7 @@ import java.text.DateFormat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -63,8 +65,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.annotation.Generated;
 
@@ -336,22 +336,24 @@ public abstract class BaseWishListItemResourceTestCase {
 	}
 
 	@Test
-	public void testGetWishListItemsPage() throws Exception {
-		Long wishListId = testGetWishListItemsPage_getWishListId();
+	public void testGetWishlistWishListWishListItemsPage() throws Exception {
+		Long wishListId =
+			testGetWishlistWishListWishListItemsPage_getWishListId();
 		Long irrelevantWishListId =
-			testGetWishListItemsPage_getIrrelevantWishListId();
+			testGetWishlistWishListWishListItemsPage_getIrrelevantWishListId();
 
-		Page<WishListItem> page = wishListItemResource.getWishListItemsPage(
-			wishListId, null, Pagination.of(1, 10));
+		Page<WishListItem> page =
+			wishListItemResource.getWishlistWishListWishListItemsPage(
+				wishListId, null, Pagination.of(1, 10));
 
 		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantWishListId != null) {
 			WishListItem irrelevantWishListItem =
-				testGetWishListItemsPage_addWishListItem(
+				testGetWishlistWishListWishListItemsPage_addWishListItem(
 					irrelevantWishListId, randomIrrelevantWishListItem());
 
-			page = wishListItemResource.getWishListItemsPage(
+			page = wishListItemResource.getWishlistWishListWishListItemsPage(
 				irrelevantWishListId, null, Pagination.of(1, 2));
 
 			Assert.assertEquals(1, page.getTotalCount());
@@ -359,16 +361,21 @@ public abstract class BaseWishListItemResourceTestCase {
 			assertEquals(
 				Arrays.asList(irrelevantWishListItem),
 				(List<WishListItem>)page.getItems());
-			assertValid(page);
+			assertValid(
+				page,
+				testGetWishlistWishListWishListItemsPage_getExpectedActions(
+					irrelevantWishListId));
 		}
 
-		WishListItem wishListItem1 = testGetWishListItemsPage_addWishListItem(
-			wishListId, randomWishListItem());
+		WishListItem wishListItem1 =
+			testGetWishlistWishListWishListItemsPage_addWishListItem(
+				wishListId, randomWishListItem());
 
-		WishListItem wishListItem2 = testGetWishListItemsPage_addWishListItem(
-			wishListId, randomWishListItem());
+		WishListItem wishListItem2 =
+			testGetWishlistWishListWishListItemsPage_addWishListItem(
+				wishListId, randomWishListItem());
 
-		page = wishListItemResource.getWishListItemsPage(
+		page = wishListItemResource.getWishlistWishListWishListItemsPage(
 			wishListId, null, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
@@ -376,28 +383,48 @@ public abstract class BaseWishListItemResourceTestCase {
 		assertEqualsIgnoringOrder(
 			Arrays.asList(wishListItem1, wishListItem2),
 			(List<WishListItem>)page.getItems());
-		assertValid(page);
+		assertValid(
+			page,
+			testGetWishlistWishListWishListItemsPage_getExpectedActions(
+				wishListId));
 
 		wishListItemResource.deleteWishListItem(wishListItem1.getId());
 
 		wishListItemResource.deleteWishListItem(wishListItem2.getId());
 	}
 
+	protected Map<String, Map<String, String>>
+			testGetWishlistWishListWishListItemsPage_getExpectedActions(
+				Long wishListId)
+		throws Exception {
+
+		Map<String, Map<String, String>> expectedActions = new HashMap<>();
+
+		return expectedActions;
+	}
+
 	@Test
-	public void testGetWishListItemsPageWithPagination() throws Exception {
-		Long wishListId = testGetWishListItemsPage_getWishListId();
+	public void testGetWishlistWishListWishListItemsPageWithPagination()
+		throws Exception {
 
-		WishListItem wishListItem1 = testGetWishListItemsPage_addWishListItem(
-			wishListId, randomWishListItem());
+		Long wishListId =
+			testGetWishlistWishListWishListItemsPage_getWishListId();
 
-		WishListItem wishListItem2 = testGetWishListItemsPage_addWishListItem(
-			wishListId, randomWishListItem());
+		WishListItem wishListItem1 =
+			testGetWishlistWishListWishListItemsPage_addWishListItem(
+				wishListId, randomWishListItem());
 
-		WishListItem wishListItem3 = testGetWishListItemsPage_addWishListItem(
-			wishListId, randomWishListItem());
+		WishListItem wishListItem2 =
+			testGetWishlistWishListWishListItemsPage_addWishListItem(
+				wishListId, randomWishListItem());
 
-		Page<WishListItem> page1 = wishListItemResource.getWishListItemsPage(
-			wishListId, null, Pagination.of(1, 2));
+		WishListItem wishListItem3 =
+			testGetWishlistWishListWishListItemsPage_addWishListItem(
+				wishListId, randomWishListItem());
+
+		Page<WishListItem> page1 =
+			wishListItemResource.getWishlistWishListWishListItemsPage(
+				wishListId, null, Pagination.of(1, 2));
 
 		List<WishListItem> wishListItems1 =
 			(List<WishListItem>)page1.getItems();
@@ -405,8 +432,9 @@ public abstract class BaseWishListItemResourceTestCase {
 		Assert.assertEquals(
 			wishListItems1.toString(), 2, wishListItems1.size());
 
-		Page<WishListItem> page2 = wishListItemResource.getWishListItemsPage(
-			wishListId, null, Pagination.of(2, 2));
+		Page<WishListItem> page2 =
+			wishListItemResource.getWishlistWishListWishListItemsPage(
+				wishListId, null, Pagination.of(2, 2));
 
 		Assert.assertEquals(3, page2.getTotalCount());
 
@@ -416,92 +444,51 @@ public abstract class BaseWishListItemResourceTestCase {
 		Assert.assertEquals(
 			wishListItems2.toString(), 1, wishListItems2.size());
 
-		Page<WishListItem> page3 = wishListItemResource.getWishListItemsPage(
-			wishListId, null, Pagination.of(1, 3));
+		Page<WishListItem> page3 =
+			wishListItemResource.getWishlistWishListWishListItemsPage(
+				wishListId, null, Pagination.of(1, 3));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(wishListItem1, wishListItem2, wishListItem3),
 			(List<WishListItem>)page3.getItems());
 	}
 
-	protected WishListItem testGetWishListItemsPage_addWishListItem(
-			Long wishListId, WishListItem wishListItem)
+	protected WishListItem
+			testGetWishlistWishListWishListItemsPage_addWishListItem(
+				Long wishListId, WishListItem wishListItem)
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long testGetWishListItemsPage_getWishListId() throws Exception {
+	protected Long testGetWishlistWishListWishListItemsPage_getWishListId()
+		throws Exception {
+
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long testGetWishListItemsPage_getIrrelevantWishListId()
+	protected Long
+			testGetWishlistWishListWishListItemsPage_getIrrelevantWishListId()
 		throws Exception {
 
 		return null;
 	}
 
 	@Test
-	public void testGraphQLGetWishListItemsPage() throws Exception {
-		Long wishListId = testGetWishListItemsPage_getWishListId();
-
-		GraphQLField graphQLField = new GraphQLField(
-			"wishListItems",
-			new HashMap<String, Object>() {
-				{
-					put("page", 1);
-					put("pageSize", 10);
-
-					put("wishListId", wishListId);
-				}
-			},
-			new GraphQLField("items", getGraphQLFields()),
-			new GraphQLField("page"), new GraphQLField("totalCount"));
-
-		JSONObject wishListItemsJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/wishListItems");
-
-		Assert.assertEquals(0, wishListItemsJSONObject.get("totalCount"));
-
-		WishListItem wishListItem1 =
-			testGraphQLGetWishListItemsPage_addWishListItem();
-		WishListItem wishListItem2 =
-			testGraphQLGetWishListItemsPage_addWishListItem();
-
-		wishListItemsJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/wishListItems");
-
-		Assert.assertEquals(2, wishListItemsJSONObject.getLong("totalCount"));
-
-		assertEqualsIgnoringOrder(
-			Arrays.asList(wishListItem1, wishListItem2),
-			Arrays.asList(
-				WishListItemSerDes.toDTOs(
-					wishListItemsJSONObject.getString("items"))));
-	}
-
-	protected WishListItem testGraphQLGetWishListItemsPage_addWishListItem()
-		throws Exception {
-
-		return testGraphQLWishListItem_addWishListItem();
-	}
-
-	@Test
-	public void testPostChannelWishListItem() throws Exception {
+	public void testPostWishlistWishListWishListItem() throws Exception {
 		WishListItem randomWishListItem = randomWishListItem();
 
 		WishListItem postWishListItem =
-			testPostChannelWishListItem_addWishListItem(randomWishListItem);
+			testPostWishlistWishListWishListItem_addWishListItem(
+				randomWishListItem);
 
 		assertEquals(randomWishListItem, postWishListItem);
 		assertValid(postWishListItem);
 	}
 
-	protected WishListItem testPostChannelWishListItem_addWishListItem(
+	protected WishListItem testPostWishlistWishListWishListItem_addWishListItem(
 			WishListItem wishListItem)
 		throws Exception {
 
@@ -651,6 +638,13 @@ public abstract class BaseWishListItemResourceTestCase {
 	}
 
 	protected void assertValid(Page<WishListItem> page) {
+		assertValid(page, Collections.emptyMap());
+	}
+
+	protected void assertValid(
+		Page<WishListItem> page,
+		Map<String, Map<String, String>> expectedActions) {
+
 		boolean valid = false;
 
 		java.util.Collection<WishListItem> wishListItems = page.getItems();
@@ -665,6 +659,20 @@ public abstract class BaseWishListItemResourceTestCase {
 		}
 
 		Assert.assertTrue(valid);
+
+		Map<String, Map<String, String>> actions = page.getActions();
+
+		for (String key : expectedActions.keySet()) {
+			Map action = actions.get(key);
+
+			Assert.assertNotNull(key + " does not contain an action", action);
+
+			Map expectedAction = expectedActions.get(key);
+
+			Assert.assertEquals(
+				expectedAction.get("method"), action.get("method"));
+			Assert.assertEquals(expectedAction.get("href"), action.get("href"));
+		}
 	}
 
 	protected String[] getAdditionalAssertFieldNames() {
@@ -846,14 +854,16 @@ public abstract class BaseWishListItemResourceTestCase {
 	protected java.lang.reflect.Field[] getDeclaredFields(Class clazz)
 		throws Exception {
 
-		Stream<java.lang.reflect.Field> stream = Stream.of(
-			ReflectionUtil.getDeclaredFields(clazz));
+		return TransformUtil.transform(
+			ReflectionUtil.getDeclaredFields(clazz),
+			field -> {
+				if (field.isSynthetic()) {
+					return null;
+				}
 
-		return stream.filter(
-			field -> !field.isSynthetic()
-		).toArray(
-			java.lang.reflect.Field[]::new
-		);
+				return field;
+			},
+			java.lang.reflect.Field.class);
 	}
 
 	protected java.util.Collection<EntityField> getEntityFields()
@@ -870,6 +880,10 @@ public abstract class BaseWishListItemResourceTestCase {
 		EntityModel entityModel = entityModelResource.getEntityModel(
 			new MultivaluedHashMap());
 
+		if (entityModel == null) {
+			return Collections.emptyList();
+		}
+
 		Map<String, EntityField> entityFieldsMap =
 			entityModel.getEntityFieldsMap();
 
@@ -879,18 +893,18 @@ public abstract class BaseWishListItemResourceTestCase {
 	protected List<EntityField> getEntityFields(EntityField.Type type)
 		throws Exception {
 
-		java.util.Collection<EntityField> entityFields = getEntityFields();
+		return TransformUtil.transform(
+			getEntityFields(),
+			entityField -> {
+				if (!Objects.equals(entityField.getType(), type) ||
+					ArrayUtil.contains(
+						getIgnoredEntityFieldNames(), entityField.getName())) {
 
-		Stream<EntityField> stream = entityFields.stream();
+					return null;
+				}
 
-		return stream.filter(
-			entityField ->
-				Objects.equals(entityField.getType(), type) &&
-				!ArrayUtil.contains(
-					getIgnoredEntityFieldNames(), entityField.getName())
-		).collect(
-			Collectors.toList()
-		);
+				return entityField;
+			});
 	}
 
 	protected String getFilterString(

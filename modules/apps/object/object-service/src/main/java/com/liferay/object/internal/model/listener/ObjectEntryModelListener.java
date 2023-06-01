@@ -100,7 +100,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 		}
 
 		_executeObjectActions(
-			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE, null,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE, objectEntry,
 			objectEntry);
 	}
 
@@ -135,7 +135,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 	public void onBeforeCreate(ObjectEntry objectEntry)
 		throws ModelListenerException {
 
-		_validateObjectEntry(objectEntry);
+		_validateObjectEntry(null, objectEntry);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 			ObjectEntry originalObjectEntry, ObjectEntry objectEntry)
 		throws ModelListenerException {
 
-		_validateObjectEntry(objectEntry);
+		_validateObjectEntry(originalObjectEntry, objectEntry);
 	}
 
 	private void _executeObjectActions(
@@ -179,8 +179,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 		ObjectEntry objectEntry) {
 
 		AuditMessage auditMessage = AuditMessageBuilder.buildAuditMessage(
-			eventType, objectEntry.getModelClassName(),
-			objectEntry.getObjectEntryId(), null);
+			eventType, objectEntry, null);
 
 		JSONObject additionalInfoJSONObject = auditMessage.getAdditionalInfo();
 
@@ -312,8 +311,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 			if (StringUtil.equals(EventTypes.UPDATE, eventType)) {
 				_auditRouter.route(
 					AuditMessageBuilder.buildAuditMessage(
-						EventTypes.UPDATE, objectEntry.getModelClassName(),
-						objectEntry.getObjectEntryId(),
+						EventTypes.UPDATE, objectEntry,
 						_getModifiedAttributes(
 							objectDefinition, originalObjectEntry.getValues(),
 							objectEntry.getValues())));
@@ -391,7 +389,8 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 		}
 	}
 
-	private void _validateObjectEntry(ObjectEntry objectEntry)
+	private void _validateObjectEntry(
+			ObjectEntry originalObjectEntry, ObjectEntry objectEntry)
 		throws ModelListenerException {
 
 		try {
@@ -407,7 +406,8 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 					_dtoConverterRegistry, _jsonFactory, null,
 					_objectDefinitionLocalService.getObjectDefinition(
 						objectEntry.getObjectDefinitionId()),
-					objectEntry, null, _userLocalService.getUser(userId)),
+					objectEntry, originalObjectEntry,
+					_userLocalService.getUser(userId)),
 				userId);
 		}
 		catch (PortalException portalException) {

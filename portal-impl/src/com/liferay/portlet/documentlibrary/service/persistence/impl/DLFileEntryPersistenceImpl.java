@@ -55,7 +55,6 @@ import com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.ArrayList;
@@ -15330,7 +15329,8 @@ public class DLFileEntryPersistenceImpl
 				if (ercDLFileEntry != null) {
 					throw new DuplicateDLFileEntryExternalReferenceCodeException(
 						"Duplicate document library file entry with external reference code " +
-							dlFileEntry.getExternalReferenceCode());
+							dlFileEntry.getExternalReferenceCode() +
+								" and group " + dlFileEntry.getGroupId());
 				}
 			}
 			else {
@@ -15340,7 +15340,8 @@ public class DLFileEntryPersistenceImpl
 
 					throw new DuplicateDLFileEntryExternalReferenceCodeException(
 						"Duplicate document library file entry with external reference code " +
-							dlFileEntry.getExternalReferenceCode());
+							dlFileEntry.getExternalReferenceCode() +
+								" and group " + dlFileEntry.getGroupId());
 				}
 			}
 		}
@@ -16373,29 +16374,13 @@ public class DLFileEntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "groupId"}, false);
 
-		_setDLFileEntryUtilPersistence(this);
+		DLFileEntryUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setDLFileEntryUtilPersistence(null);
+		DLFileEntryUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(DLFileEntryImpl.class.getName());
-	}
-
-	private void _setDLFileEntryUtilPersistence(
-		DLFileEntryPersistence dlFileEntryPersistence) {
-
-		try {
-			Field field = DLFileEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, dlFileEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	private static final String _SQL_SELECT_DLFILEENTRY =

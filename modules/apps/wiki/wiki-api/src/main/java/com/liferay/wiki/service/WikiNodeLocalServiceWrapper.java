@@ -16,6 +16,7 @@ package com.liferay.wiki.service;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.wiki.model.WikiNode;
 
@@ -568,13 +569,12 @@ public class WikiNodeLocalServiceWrapper
 
 	@Override
 	public void importPages(
-			long userId, long nodeId, String importer,
-			java.io.InputStream[] inputStreams,
+			long userId, long nodeId, java.io.InputStream[] inputStreams,
 			java.util.Map<String, String[]> options)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_wikiNodeLocalService.importPages(
-			userId, nodeId, importer, inputStreams, options);
+			userId, nodeId, inputStreams, options);
 	}
 
 	@Override
@@ -645,6 +645,11 @@ public class WikiNodeLocalServiceWrapper
 	@Override
 	public WikiNode updateWikiNode(WikiNode wikiNode) {
 		return _wikiNodeLocalService.updateWikiNode(wikiNode);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _wikiNodeLocalService.getBasePersistence();
 	}
 
 	@Override

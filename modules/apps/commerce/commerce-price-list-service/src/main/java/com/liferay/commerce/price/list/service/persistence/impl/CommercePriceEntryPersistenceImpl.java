@@ -52,7 +52,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.sql.Timestamp;
@@ -5865,7 +5864,9 @@ public class CommercePriceEntryPersistenceImpl
 				if (ercCommercePriceEntry != null) {
 					throw new DuplicateCommercePriceEntryExternalReferenceCodeException(
 						"Duplicate commerce price entry with external reference code " +
-							commercePriceEntry.getExternalReferenceCode());
+							commercePriceEntry.getExternalReferenceCode() +
+								" and company " +
+									commercePriceEntry.getCompanyId());
 				}
 			}
 			else {
@@ -5875,7 +5876,9 @@ public class CommercePriceEntryPersistenceImpl
 
 					throw new DuplicateCommercePriceEntryExternalReferenceCodeException(
 						"Duplicate commerce price entry with external reference code " +
-							commercePriceEntry.getExternalReferenceCode());
+							commercePriceEntry.getExternalReferenceCode() +
+								" and company " +
+									commercePriceEntry.getCompanyId());
 				}
 			}
 		}
@@ -6406,17 +6409,18 @@ public class CommercePriceEntryPersistenceImpl
 		ctStrictColumnNames.add("commercePriceListId");
 		ctStrictColumnNames.add("CPInstanceUuid");
 		ctStrictColumnNames.add("CProductId");
-		ctStrictColumnNames.add("price");
-		ctStrictColumnNames.add("promoPrice");
+		ctStrictColumnNames.add("bulkPricing");
 		ctStrictColumnNames.add("discountDiscovery");
 		ctStrictColumnNames.add("discountLevel1");
 		ctStrictColumnNames.add("discountLevel2");
 		ctStrictColumnNames.add("discountLevel3");
 		ctStrictColumnNames.add("discountLevel4");
-		ctStrictColumnNames.add("hasTierPrice");
-		ctStrictColumnNames.add("bulkPricing");
 		ctStrictColumnNames.add("displayDate");
 		ctStrictColumnNames.add("expirationDate");
+		ctStrictColumnNames.add("hasTierPrice");
+		ctStrictColumnNames.add("price");
+		ctStrictColumnNames.add("priceOnApplication");
+		ctStrictColumnNames.add("promoPrice");
 		ctStrictColumnNames.add("lastPublishDate");
 		ctStrictColumnNames.add("status");
 		ctStrictColumnNames.add("statusByUserId");
@@ -6633,30 +6637,14 @@ public class CommercePriceEntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setCommercePriceEntryUtilPersistence(this);
+		CommercePriceEntryUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setCommercePriceEntryUtilPersistence(null);
+		CommercePriceEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(CommercePriceEntryImpl.class.getName());
-	}
-
-	private void _setCommercePriceEntryUtilPersistence(
-		CommercePriceEntryPersistence commercePriceEntryPersistence) {
-
-		try {
-			Field field = CommercePriceEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, commercePriceEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

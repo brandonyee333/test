@@ -15,17 +15,15 @@
 package com.liferay.headless.commerce.admin.catalog.internal.jaxrs.exception.mapper;
 
 import com.liferay.commerce.product.exception.CPOptionValueKeyException;
-import com.liferay.headless.commerce.core.exception.mapper.BaseExceptionMapper;
+import com.liferay.portal.vulcan.jaxrs.exception.mapper.BaseExceptionMapper;
+import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Alessio Antonio Rendina
- * @author Zoltán Takács
+ * @author Crescenzo Rega
  */
 @Component(
 	property = {
@@ -35,18 +33,14 @@ import org.osgi.service.component.annotations.Component;
 	},
 	service = ExceptionMapper.class
 )
-@Provider
 public class OptionValueKeyExceptionMapper
 	extends BaseExceptionMapper<CPOptionValueKeyException> {
 
 	@Override
-	public String getErrorDescription() {
-		return "Duplicate product option value key";
-	}
+	protected Problem getProblem(
+		CPOptionValueKeyException cpOptionValueKeyException) {
 
-	@Override
-	public Response.Status getStatus() {
-		return Response.Status.CONFLICT;
+		return new Problem(cpOptionValueKeyException);
 	}
 
 }

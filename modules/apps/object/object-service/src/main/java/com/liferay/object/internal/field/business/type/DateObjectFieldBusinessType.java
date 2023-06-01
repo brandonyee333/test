@@ -17,10 +17,16 @@ package com.liferay.object.internal.field.business.type;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
+import com.liferay.object.model.ObjectField;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
+import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.extension.PropertyDefinition;
 
 import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -30,7 +36,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "object.field.business.type.key=" + ObjectFieldConstants.BUSINESS_TYPE_DATE,
-	service = {DateObjectFieldBusinessType.class, ObjectFieldBusinessType.class}
+	service = ObjectFieldBusinessType.class
 )
 public class DateObjectFieldBusinessType implements ObjectFieldBusinessType {
 
@@ -47,6 +53,20 @@ public class DateObjectFieldBusinessType implements ObjectFieldBusinessType {
 	@Override
 	public String getDescription(Locale locale) {
 		return _language.get(locale, "add-a-date");
+	}
+
+	@Override
+	public Object getDisplayContextValue(
+			ObjectField objectField, long userId, Map<String, Object> values)
+		throws PortalException {
+
+		String value = MapUtil.getString(values, objectField.getName());
+
+		if (Validator.isNull(value)) {
+			return StringPool.BLANK;
+		}
+
+		return value.replaceAll(" [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}.[0-9]", "");
 	}
 
 	@Override

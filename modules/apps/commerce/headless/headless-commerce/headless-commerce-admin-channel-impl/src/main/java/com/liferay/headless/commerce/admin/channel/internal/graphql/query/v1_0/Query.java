@@ -168,7 +168,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {channelByExternalReferenceCode(externalReferenceCode: ___){currencyCode, externalReferenceCode, id, name, siteGroupId, type}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {channelByExternalReferenceCode(externalReferenceCode: ___){accountId, currencyCode, externalReferenceCode, id, name, siteGroupId, type}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrive information of the given Channel.")
 	public Channel channelByExternalReferenceCode(
@@ -186,7 +186,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {channel(channelId: ___){currencyCode, externalReferenceCode, id, name, siteGroupId, type}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {channel(channelId: ___){accountId, currencyCode, externalReferenceCode, id, name, siteGroupId, type}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrive information of the given Channel.")
 	public Channel channel(@GraphQLName("channelId") Long channelId)
@@ -495,7 +495,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<Channel> items;
@@ -528,7 +528,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<OrderType> items;
@@ -563,7 +563,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<PaymentMethodGroupRelOrderType> items;
@@ -598,7 +598,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<PaymentMethodGroupRelTerm> items;
@@ -633,7 +633,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<ShippingFixedOptionOrderType> items;
@@ -666,7 +666,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<ShippingFixedOptionTerm> items;
@@ -699,7 +699,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<ShippingMethod> items;
@@ -732,7 +732,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<TaxCategory> items;
@@ -765,7 +765,7 @@ public class Query {
 		}
 
 		@GraphQLField
-		protected Map<String, Map> actions;
+		protected Map<String, Map<String, String>> actions;
 
 		@GraphQLField
 		protected java.util.Collection<Term> items;

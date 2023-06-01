@@ -40,7 +40,7 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.upload.UploadServletRequestConfigurationHelperUtil;
+import com.liferay.portal.kernel.upload.configuration.UploadServletRequestConfigurationProviderUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceURL;
@@ -131,21 +130,6 @@ public class DisplayPageActionDropdownItemsProvider {
 						() -> hasUpdatePermission,
 						_getRenameDisplayPageActionUnsafeConsumer()
 					).add(
-						() -> {
-							int count =
-								AssetDisplayPageEntryServiceUtil.
-									getAssetDisplayPageEntriesCount(
-										_layoutPageTemplateEntry.
-											getClassNameId(),
-										_layoutPageTemplateEntry.
-											getClassTypeId(),
-										_layoutPageTemplateEntry.
-											getLayoutPageTemplateEntryId(),
-										_layoutPageTemplateEntry.
-											isDefaultTemplate());
-
-							return count > 0;
-						},
 						_getViewUsagesDisplayPageActionUnsafeConsumer()
 					).build());
 				dropdownGroupItem.setSeparator(true);
@@ -165,9 +149,6 @@ public class DisplayPageActionDropdownItemsProvider {
 			dropdownGroupItem -> {
 				dropdownGroupItem.setDropdownItems(
 					DropdownItemListBuilder.add(
-						() -> hasUpdatePermission,
-						_getConfigureDisplayPageActionUnsafeConsumer()
-					).add(
 						() -> LayoutPageTemplateEntryPermission.contains(
 							_themeDisplay.getPermissionChecker(),
 							_layoutPageTemplateEntry, ActionKeys.PERMISSIONS),
@@ -188,27 +169,6 @@ public class DisplayPageActionDropdownItemsProvider {
 				dropdownGroupItem.setSeparator(true);
 			}
 		).build();
-	}
-
-	private UnsafeConsumer<DropdownItem, Exception>
-		_getConfigureDisplayPageActionUnsafeConsumer() {
-
-		PortletURL editPageURL = PortalUtil.getControlPanelPortletURL(
-			_httpServletRequest, LayoutAdminPortletKeys.GROUP_PAGES,
-			PortletRequest.RENDER_PHASE);
-
-		return dropdownItem -> {
-			dropdownItem.setHref(
-				editPageURL, "mvcRenderCommandName",
-				"/layout_admin/edit_layout", "redirect",
-				_themeDisplay.getURLCurrent(), "backURL",
-				_themeDisplay.getURLCurrent(), "portletResource",
-				LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES,
-				"selPlid", _layoutPageTemplateEntry.getPlid());
-			dropdownItem.setIcon("cog");
-			dropdownItem.setLabel(
-				LanguageUtil.get(_httpServletRequest, "configure"));
-		};
 	}
 
 	private UnsafeConsumer<DropdownItem, Exception>
@@ -351,7 +311,7 @@ public class DisplayPageActionDropdownItemsProvider {
 			).extensions(
 				_layoutPageTemplateAdminWebConfiguration.thumbnailExtensions()
 			).maxFileSize(
-				UploadServletRequestConfigurationHelperUtil.getMaxSize()
+				UploadServletRequestConfigurationProviderUtil.getMaxSize()
 			).portletId(
 				LayoutPageTemplateAdminPortletKeys.LAYOUT_PAGE_TEMPLATES
 			).repositoryName(
@@ -521,6 +481,16 @@ public class DisplayPageActionDropdownItemsProvider {
 		_getViewUsagesDisplayPageActionUnsafeConsumer() {
 
 		return dropdownItem -> {
+			int count =
+				AssetDisplayPageEntryServiceUtil.
+					getAssetDisplayPageEntriesCount(
+						_layoutPageTemplateEntry.getClassNameId(),
+						_layoutPageTemplateEntry.getClassTypeId(),
+						_layoutPageTemplateEntry.getLayoutPageTemplateEntryId(),
+						_layoutPageTemplateEntry.isDefaultTemplate());
+
+			dropdownItem.setDisabled(count == 0);
+
 			dropdownItem.setHref(
 				_renderResponse.createRenderURL(), "mvcRenderCommandName",
 				"/layout_page_template_admin/view_asset_display_page_usages",

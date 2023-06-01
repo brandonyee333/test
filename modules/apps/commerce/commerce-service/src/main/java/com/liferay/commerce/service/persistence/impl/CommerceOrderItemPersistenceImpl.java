@@ -51,7 +51,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
@@ -5399,7 +5398,9 @@ public class CommerceOrderItemPersistenceImpl
 				if (ercCommerceOrderItem != null) {
 					throw new DuplicateCommerceOrderItemExternalReferenceCodeException(
 						"Duplicate commerce order item with external reference code " +
-							commerceOrderItem.getExternalReferenceCode());
+							commerceOrderItem.getExternalReferenceCode() +
+								" and company " +
+									commerceOrderItem.getCompanyId());
 				}
 			}
 			else {
@@ -5409,7 +5410,9 @@ public class CommerceOrderItemPersistenceImpl
 
 					throw new DuplicateCommerceOrderItemExternalReferenceCodeException(
 						"Duplicate commerce order item with external reference code " +
-							commerceOrderItem.getExternalReferenceCode());
+							commerceOrderItem.getExternalReferenceCode() +
+								" and company " +
+									commerceOrderItem.getCompanyId());
 				}
 			}
 		}
@@ -5932,30 +5935,14 @@ public class CommerceOrderItemPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setCommerceOrderItemUtilPersistence(this);
+		CommerceOrderItemUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setCommerceOrderItemUtilPersistence(null);
+		CommerceOrderItemUtil.setPersistence(null);
 
 		entityCache.removeCache(CommerceOrderItemImpl.class.getName());
-	}
-
-	private void _setCommerceOrderItemUtilPersistence(
-		CommerceOrderItemPersistence commerceOrderItemPersistence) {
-
-		try {
-			Field field = CommerceOrderItemUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceOrderItemPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

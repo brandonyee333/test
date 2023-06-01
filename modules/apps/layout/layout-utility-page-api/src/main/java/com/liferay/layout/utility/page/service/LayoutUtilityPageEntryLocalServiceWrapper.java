@@ -17,6 +17,7 @@ package com.liferay.layout.utility.page.service;
 import com.liferay.layout.utility.page.model.LayoutUtilityPageEntry;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -63,22 +64,24 @@ public class LayoutUtilityPageEntryLocalServiceWrapper
 	public LayoutUtilityPageEntry addLayoutUtilityPageEntry(
 			String externalReferenceCode, long userId, long groupId, long plid,
 			long previewFileEntryId, boolean defaultLayoutUtilityPageEntry,
-			String name, String type, long masterLayoutPlid)
+			String name, String type, long masterLayoutPlid,
+			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _layoutUtilityPageEntryLocalService.addLayoutUtilityPageEntry(
 			externalReferenceCode, userId, groupId, plid, previewFileEntryId,
-			defaultLayoutUtilityPageEntry, name, type, masterLayoutPlid);
+			defaultLayoutUtilityPageEntry, name, type, masterLayoutPlid,
+			serviceContext);
 	}
 
 	@Override
 	public LayoutUtilityPageEntry copyLayoutUtilityPageEntry(
-			long userId, long groupId, long layoutUtilityPageEntryId,
+			long userId, long groupId, long sourceLayoutUtilityPageEntryId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _layoutUtilityPageEntryLocalService.copyLayoutUtilityPageEntry(
-			userId, groupId, layoutUtilityPageEntryId, serviceContext);
+			userId, groupId, sourceLayoutUtilityPageEntryId, serviceContext);
 	}
 
 	/**
@@ -280,6 +283,14 @@ public class LayoutUtilityPageEntryLocalServiceWrapper
 	}
 
 	@Override
+	public LayoutUtilityPageEntry fetchLayoutUtilityPageEntry(
+		long groupId, String name, String type) {
+
+		return _layoutUtilityPageEntryLocalService.fetchLayoutUtilityPageEntry(
+			groupId, name, type);
+	}
+
+	@Override
 	public LayoutUtilityPageEntry
 		fetchLayoutUtilityPageEntryByExternalReferenceCode(
 			String externalReferenceCode, long groupId) {
@@ -287,6 +298,12 @@ public class LayoutUtilityPageEntryLocalServiceWrapper
 		return _layoutUtilityPageEntryLocalService.
 			fetchLayoutUtilityPageEntryByExternalReferenceCode(
 				externalReferenceCode, groupId);
+	}
+
+	@Override
+	public LayoutUtilityPageEntry fetchLayoutUtilityPageEntryByPlid(long plid) {
+		return _layoutUtilityPageEntryLocalService.
+			fetchLayoutUtilityPageEntryByPlid(plid);
 	}
 
 	/**
@@ -548,6 +565,11 @@ public class LayoutUtilityPageEntryLocalServiceWrapper
 
 		return _layoutUtilityPageEntryLocalService.updateLayoutUtilityPageEntry(
 			layoutUtilityPageEntryId, name);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _layoutUtilityPageEntryLocalService.getBasePersistence();
 	}
 
 	@Override

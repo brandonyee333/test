@@ -17,6 +17,7 @@ package com.liferay.commerce.shop.by.diagram.service;
 import com.liferay.commerce.shop.by.diagram.model.CSDiagramEntry;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -278,6 +279,17 @@ public class CSDiagramEntryLocalServiceWrapper
 			getCPDefinitionRelatedCSDiagramEntries(cpDefinitionId);
 	}
 
+	@Override
+	public java.util.List<CSDiagramEntry> getCProductCSDiagramEntries(
+			long cProductId, int start, int end,
+			com.liferay.portal.kernel.util.OrderByComparator<CSDiagramEntry>
+				orderByComparator)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _csDiagramEntryLocalService.getCProductCSDiagramEntries(
+			cProductId, start, end, orderByComparator);
+	}
+
 	/**
 	 * Returns a range of all the cs diagram entries.
 	 *
@@ -396,6 +408,11 @@ public class CSDiagramEntryLocalServiceWrapper
 		return _csDiagramEntryLocalService.updateCSDiagramEntry(
 			csDiagramEntryId, cpInstanceId, cProductId, diagram, quantity,
 			sequence, sku, serviceContext);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _csDiagramEntryLocalService.getBasePersistence();
 	}
 
 	@Override

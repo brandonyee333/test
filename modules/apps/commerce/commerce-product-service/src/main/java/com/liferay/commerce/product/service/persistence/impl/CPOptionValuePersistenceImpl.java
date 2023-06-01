@@ -52,7 +52,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.ArrayList;
@@ -3100,7 +3099,8 @@ public class CPOptionValuePersistenceImpl
 				if (ercCPOptionValue != null) {
 					throw new DuplicateCPOptionValueExternalReferenceCodeException(
 						"Duplicate cp option value with external reference code " +
-							cpOptionValue.getExternalReferenceCode());
+							cpOptionValue.getExternalReferenceCode() +
+								" and company " + cpOptionValue.getCompanyId());
 				}
 			}
 			else {
@@ -3110,7 +3110,8 @@ public class CPOptionValuePersistenceImpl
 
 					throw new DuplicateCPOptionValueExternalReferenceCodeException(
 						"Duplicate cp option value with external reference code " +
-							cpOptionValue.getExternalReferenceCode());
+							cpOptionValue.getExternalReferenceCode() +
+								" and company " + cpOptionValue.getCompanyId());
 				}
 			}
 		}
@@ -3766,30 +3767,14 @@ public class CPOptionValuePersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setCPOptionValueUtilPersistence(this);
+		CPOptionValueUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setCPOptionValueUtilPersistence(null);
+		CPOptionValueUtil.setPersistence(null);
 
 		entityCache.removeCache(CPOptionValueImpl.class.getName());
-	}
-
-	private void _setCPOptionValueUtilPersistence(
-		CPOptionValuePersistence cpOptionValuePersistence) {
-
-		try {
-			Field field = CPOptionValueUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, cpOptionValuePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

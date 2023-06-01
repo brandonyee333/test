@@ -133,7 +133,7 @@ public interface JournalFolderService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Object> getFoldersAndArticles(
-		long groupId, long userId, long folderId, String ddmStructureKey,
+		long groupId, long userId, long folderId, long ddmStructureId,
 		int status, Locale locale, int start, int end,
 		OrderByComparator<?> orderByComparator);
 
@@ -154,7 +154,7 @@ public interface JournalFolderService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getFoldersAndArticlesCount(
-		long groupId, long userId, long folderId, String ddmStructureKey,
+		long groupId, long userId, long folderId, long ddmStructureId,
 		int status);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -196,6 +196,12 @@ public interface JournalFolderService extends BaseService {
 			long companyId, long[] groupIds, long folderId, int restrictionType,
 			String keywords, int start, int end,
 			OrderByComparator<DDMStructure> orderByComparator)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int searchDDMStructuresCount(
+			long companyId, long[] groupIds, long folderId, int restrictionType,
+			String keywords)
 		throws PortalException;
 
 	public void subscribe(long groupId, long folderId) throws PortalException;

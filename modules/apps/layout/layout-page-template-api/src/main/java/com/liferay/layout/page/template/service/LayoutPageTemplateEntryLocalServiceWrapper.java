@@ -17,6 +17,7 @@ package com.liferay.layout.page.template.service;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -122,13 +123,13 @@ public class LayoutPageTemplateEntryLocalServiceWrapper
 	@Override
 	public LayoutPageTemplateEntry copyLayoutPageTemplateEntry(
 			long userId, long groupId, long layoutPageTemplateCollectionId,
-			long layoutPageTemplateEntryId,
+			long sourceLayoutPageTemplateEntryId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
+		throws Exception {
 
 		return _layoutPageTemplateEntryLocalService.copyLayoutPageTemplateEntry(
 			userId, groupId, layoutPageTemplateCollectionId,
-			layoutPageTemplateEntryId, serviceContext);
+			sourceLayoutPageTemplateEntryId, serviceContext);
 	}
 
 	/**
@@ -704,6 +705,11 @@ public class LayoutPageTemplateEntryLocalServiceWrapper
 
 		return _layoutPageTemplateEntryLocalService.updateStatus(
 			userId, layoutPageTemplateEntryId, status);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _layoutPageTemplateEntryLocalService.getBasePersistence();
 	}
 
 	@Override

@@ -45,9 +45,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Pablo Molina
  */
-@Component(
-	enabled = false, immediate = true, service = FragmentCollectionFilter.class
-)
+@Component(service = FragmentCollectionFilter.class)
 public class FragmentCollectionFilterTags implements FragmentCollectionFilter {
 
 	@Override

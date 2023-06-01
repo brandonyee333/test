@@ -52,7 +52,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	configurationPid = "com.liferay.antivirus.async.store.configuration.AntivirusAsyncConfiguration",
-	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
+	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	property = "service.ranking:Integer=1000", service = DLStore.class
 )
 public class AntivirusAsyncDLStore implements DLStore {
@@ -152,76 +152,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 	}
 
 	@Override
-	public void addFile(
-			long companyId, long repositoryId, String fileName,
-			boolean validateFileExtension, byte[] bytes)
-		throws PortalException {
-
-		addFile(
-			DLStoreRequest.builder(
-				companyId, repositoryId, fileName
-			).validateFileExtension(
-				validateFileExtension
-			).build(),
-			bytes);
-	}
-
-	@Override
-	public void addFile(
-			long companyId, long repositoryId, String fileName,
-			boolean validateFileExtension, File file)
-		throws PortalException {
-
-		addFile(
-			DLStoreRequest.builder(
-				companyId, repositoryId, fileName
-			).validateFileExtension(
-				validateFileExtension
-			).build(),
-			file);
-	}
-
-	@Override
-	public void addFile(
-			long companyId, long repositoryId, String fileName,
-			boolean validateFileExtension, InputStream inputStream)
-		throws PortalException {
-
-		addFile(
-			DLStoreRequest.builder(
-				companyId, repositoryId, fileName
-			).validateFileExtension(
-				validateFileExtension
-			).build(),
-			inputStream);
-	}
-
-	@Override
-	public void addFile(
-			long companyId, long repositoryId, String fileName, byte[] bytes)
-		throws PortalException {
-
-		addFile(companyId, repositoryId, fileName, true, bytes);
-	}
-
-	@Override
-	public void addFile(
-			long companyId, long repositoryId, String fileName, File file)
-		throws PortalException {
-
-		addFile(companyId, repositoryId, fileName, true, file);
-	}
-
-	@Override
-	public void addFile(
-			long companyId, long repositoryId, String fileName,
-			InputStream inputStream)
-		throws PortalException {
-
-		addFile(companyId, repositoryId, fileName, true, inputStream);
-	}
-
-	@Override
 	public void copyFileVersion(
 			long companyId, long repositoryId, String fileName,
 			String fromVersionLabel, String toVersionLabel)
@@ -285,24 +215,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 			return StreamUtil.toByteArray(
 				_store.getFileAsStream(
 					companyId, repositoryId, fileName, StringPool.BLANK));
-		}
-		catch (IOException ioException) {
-			throw new SystemException(ioException);
-		}
-	}
-
-	@Override
-	public byte[] getFileAsBytes(
-			long companyId, long repositoryId, String fileName,
-			String versionLabel)
-		throws PortalException {
-
-		validate(fileName, false, versionLabel);
-
-		try {
-			return StreamUtil.toByteArray(
-				_store.getFileAsStream(
-					companyId, repositoryId, fileName, versionLabel));
 		}
 		catch (IOException ioException) {
 			throw new SystemException(ioException);
@@ -443,50 +355,6 @@ public class AntivirusAsyncDLStore implements DLStore {
 
 			_store.deleteFile(companyId, repositoryId, fileName, versionLabel);
 		}
-	}
-
-	@Override
-	public void updateFile(
-			long companyId, long repositoryId, String fileName,
-			String fileExtension, boolean validateFileExtension,
-			String versionLabel, String sourceFileName, File file)
-		throws PortalException {
-
-		updateFile(
-			DLStoreRequest.builder(
-				companyId, repositoryId, fileName
-			).fileExtension(
-				fileExtension
-			).validateFileExtension(
-				validateFileExtension
-			).versionLabel(
-				versionLabel
-			).sourceFileName(
-				sourceFileName
-			).build(),
-			file);
-	}
-
-	@Override
-	public void updateFile(
-			long companyId, long repositoryId, String fileName,
-			String fileExtension, boolean validateFileExtension,
-			String versionLabel, String sourceFileName, InputStream inputStream)
-		throws PortalException {
-
-		updateFile(
-			DLStoreRequest.builder(
-				companyId, repositoryId, fileName
-			).fileExtension(
-				fileExtension
-			).validateFileExtension(
-				validateFileExtension
-			).versionLabel(
-				versionLabel
-			).sourceFileName(
-				sourceFileName
-			).build(),
-			inputStream);
 	}
 
 	@Override

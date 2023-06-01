@@ -55,7 +55,7 @@ public class CPDefinitionVirtualSettingServiceImpl
 	public CPDefinitionVirtualSetting addCPDefinitionVirtualSetting(
 			String className, long classPK, long fileEntryId, String url,
 			int activationStatus, long duration, int maxUsages,
-			boolean useSample, long sampleFileEntryId, String sampleUrl,
+			boolean useSample, long sampleFileEntryId, String sampleURL,
 			boolean termsOfUseRequired,
 			Map<Locale, String> termsOfUseContentMap,
 			long termsOfUseJournalArticleResourcePrimKey, boolean override,
@@ -67,7 +67,7 @@ public class CPDefinitionVirtualSettingServiceImpl
 		return cpDefinitionVirtualSettingLocalService.
 			addCPDefinitionVirtualSetting(
 				className, classPK, fileEntryId, url, activationStatus,
-				duration, maxUsages, useSample, sampleFileEntryId, sampleUrl,
+				duration, maxUsages, useSample, sampleFileEntryId, sampleURL,
 				termsOfUseRequired, termsOfUseContentMap,
 				termsOfUseJournalArticleResourcePrimKey, override,
 				serviceContext);
@@ -77,7 +77,7 @@ public class CPDefinitionVirtualSettingServiceImpl
 	public CPDefinitionVirtualSetting addCPDefinitionVirtualSetting(
 			String className, long classPK, long fileEntryId, String url,
 			int activationStatus, long duration, int maxUsages,
-			boolean useSample, long sampleFileEntryId, String sampleUrl,
+			boolean useSample, long sampleFileEntryId, String sampleURL,
 			boolean termsOfUseRequired,
 			Map<Locale, String> termsOfUseContentMap,
 			long termsOfUseJournalArticleResourcePrimKey,
@@ -89,9 +89,20 @@ public class CPDefinitionVirtualSettingServiceImpl
 		return cpDefinitionVirtualSettingLocalService.
 			addCPDefinitionVirtualSetting(
 				className, classPK, fileEntryId, url, activationStatus,
-				duration, maxUsages, useSample, sampleFileEntryId, sampleUrl,
+				duration, maxUsages, useSample, sampleFileEntryId, sampleURL,
 				termsOfUseRequired, termsOfUseContentMap,
 				termsOfUseJournalArticleResourcePrimKey, serviceContext);
+	}
+
+	@Override
+	public CPDefinitionVirtualSetting deleteCPDefinitionVirtualSetting(
+			String className, long classPK)
+		throws PortalException {
+
+		_checkPermission(className, classPK, ActionKeys.UPDATE);
+
+		return cpDefinitionVirtualSettingLocalService.
+			deleteCPDefinitionVirtualSetting(className, classPK);
 	}
 
 	@Override
@@ -114,7 +125,7 @@ public class CPDefinitionVirtualSettingServiceImpl
 	public CPDefinitionVirtualSetting updateCPDefinitionVirtualSetting(
 			long cpDefinitionVirtualSettingId, long fileEntryId, String url,
 			int activationStatus, long duration, int maxUsages,
-			boolean useSample, long sampleFileEntryId, String sampleUrl,
+			boolean useSample, long sampleFileEntryId, String sampleURL,
 			boolean termsOfUseRequired,
 			Map<Locale, String> termsOfUseContentMap,
 			long termsOfUseJournalArticleResourcePrimKey, boolean override,
@@ -133,7 +144,7 @@ public class CPDefinitionVirtualSettingServiceImpl
 			updateCPDefinitionVirtualSetting(
 				cpDefinitionVirtualSettingId, fileEntryId, url,
 				activationStatus, duration, maxUsages, useSample,
-				sampleFileEntryId, sampleUrl, termsOfUseRequired,
+				sampleFileEntryId, sampleURL, termsOfUseRequired,
 				termsOfUseContentMap, termsOfUseJournalArticleResourcePrimKey,
 				override, serviceContext);
 	}
@@ -142,7 +153,7 @@ public class CPDefinitionVirtualSettingServiceImpl
 	public CPDefinitionVirtualSetting updateCPDefinitionVirtualSetting(
 			long cpDefinitionVirtualSettingId, long fileEntryId, String url,
 			int activationStatus, long duration, int maxUsages,
-			boolean useSample, long sampleFileEntryId, String sampleUrl,
+			boolean useSample, long sampleFileEntryId, String sampleURL,
 			boolean termsOfUseRequired,
 			Map<Locale, String> termsOfUseContentMap,
 			long termsOfUseJournalArticleResourcePrimKey,
@@ -161,7 +172,7 @@ public class CPDefinitionVirtualSettingServiceImpl
 			updateCPDefinitionVirtualSetting(
 				cpDefinitionVirtualSettingId, fileEntryId, url,
 				activationStatus, duration, maxUsages, useSample,
-				sampleFileEntryId, sampleUrl, termsOfUseRequired,
+				sampleFileEntryId, sampleURL, termsOfUseRequired,
 				termsOfUseContentMap, termsOfUseJournalArticleResourcePrimKey,
 				serviceContext);
 	}

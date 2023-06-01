@@ -733,6 +733,13 @@ public class CommerceOrderWrapper
 		return wrap(model.cloneWithOriginalValues());
 	}
 
+	@Override
+	public com.liferay.account.model.AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return model.getAccountEntry();
+	}
+
 	/**
 	 * Returns the advance status of this commerce order.
 	 *
@@ -758,14 +765,6 @@ public class CommerceOrderWrapper
 	@Override
 	public long getBillingAddressId() {
 		return model.getBillingAddressId();
-	}
-
-	@Override
-	public com.liferay.commerce.account.model.CommerceAccount
-			getCommerceAccount()
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return model.getCommerceAccount();
 	}
 
 	/**
@@ -895,6 +894,16 @@ public class CommerceOrderWrapper
 	@Override
 	public Date getCreateDate() {
 		return model.getCreateDate();
+	}
+
+	@Override
+	public java.util.List<Long> getCustomerCommerceOrderIds() {
+		return model.getCustomerCommerceOrderIds();
+	}
+
+	@Override
+	public int getCustomerCommerceOrderIdsCount() {
+		return model.getCustomerCommerceOrderIdsCount();
 	}
 
 	/**
@@ -1441,6 +1450,16 @@ public class CommerceOrderWrapper
 		return model.getSubtotalWithTaxAmountMoney();
 	}
 
+	@Override
+	public java.util.List<Long> getSupplierCommerceOrderIds() {
+		return model.getSupplierCommerceOrderIds();
+	}
+
+	@Override
+	public int getSupplierCommerceOrderIdsCount() {
+		return model.getSupplierCommerceOrderIdsCount();
+	}
+
 	/**
 	 * Returns the tax amount of this commerce order.
 	 *
@@ -1738,6 +1757,11 @@ public class CommerceOrderWrapper
 	@Override
 	public boolean isPending() {
 		return model.isPending();
+	}
+
+	@Override
+	public boolean isQuote() {
+		return model.isQuote();
 	}
 
 	/**

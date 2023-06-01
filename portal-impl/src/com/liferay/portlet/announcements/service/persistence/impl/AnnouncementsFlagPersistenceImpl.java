@@ -40,14 +40,15 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsFlagImpl;
 import com.liferay.portlet.announcements.model.impl.AnnouncementsFlagModelImpl;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -1221,6 +1222,23 @@ public class AnnouncementsFlagPersistenceImpl
 					}
 				}
 				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									userId, entryId, value
+								};
+							}
+
+							_log.warn(
+								"AnnouncementsFlagPersistenceImpl.fetchByU_E_V(long, long, int, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
 					AnnouncementsFlag announcementsFlag = list.get(0);
 
 					result = announcementsFlag;
@@ -1948,29 +1966,13 @@ public class AnnouncementsFlagPersistenceImpl
 			},
 			new String[] {"userId", "entryId", "value"}, false);
 
-		_setAnnouncementsFlagUtilPersistence(this);
+		AnnouncementsFlagUtil.setPersistence(this);
 	}
 
 	public void destroy() {
-		_setAnnouncementsFlagUtilPersistence(null);
+		AnnouncementsFlagUtil.setPersistence(null);
 
 		EntityCacheUtil.removeCache(AnnouncementsFlagImpl.class.getName());
-	}
-
-	private void _setAnnouncementsFlagUtilPersistence(
-		AnnouncementsFlagPersistence announcementsFlagPersistence) {
-
-		try {
-			Field field = AnnouncementsFlagUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, announcementsFlagPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	private static final String _SQL_SELECT_ANNOUNCEMENTSFLAG =

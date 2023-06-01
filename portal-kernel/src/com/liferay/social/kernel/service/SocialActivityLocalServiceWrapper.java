@@ -16,6 +16,7 @@ package com.liferay.social.kernel.service;
 
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 import com.liferay.social.kernel.model.SocialActivity;
 
@@ -660,6 +661,14 @@ public class SocialActivityLocalServiceWrapper
 			activitySetId, start, end);
 	}
 
+	@Override
+	public java.util.List<SocialActivity> getApprovedActivities(
+		long classPK, double version) {
+
+		return _socialActivityLocalService.getApprovedActivities(
+			classPK, version);
+	}
+
 	/**
 	 * Returns a range of all the activities done in the group.
 	 *
@@ -1159,6 +1168,11 @@ public class SocialActivityLocalServiceWrapper
 	@Override
 	public SocialActivity updateSocialActivity(SocialActivity socialActivity) {
 		return _socialActivityLocalService.updateSocialActivity(socialActivity);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _socialActivityLocalService.getBasePersistence();
 	}
 
 	@Override

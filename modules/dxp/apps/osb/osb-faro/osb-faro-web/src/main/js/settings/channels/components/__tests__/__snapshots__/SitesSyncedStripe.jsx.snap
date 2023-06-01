@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SitesSyncedStriped should render 1`] = `
+<div>
+  <div
+    class="sites-synced-stripe-root empty"
+  >
+    <div
+      class="title d-flex align-items-center"
+    >
+      Sites Synced: 
+      <span
+        aria-hidden="true"
+        class="spinner-root loading-animation loading-animation-light loading-animation-sm"
+      />
+    </div>
+    <div>
+      Manage sites synced to this property by going to 
+      <b>
+        Instance Settings &gt; Analytics Cloud
+      </b>
+       in your DXP instance.
+    </div>
+  </div>
+</div>
+`;

@@ -19,6 +19,8 @@ import com.liferay.headless.admin.user.resource.v1_0.AccountResource;
 import com.liferay.petra.function.UnsafeBiConsumer;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
@@ -30,6 +32,7 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.ExpressionConvert;
@@ -40,15 +43,16 @@ import com.liferay.portal.odata.sort.SortParser;
 import com.liferay.portal.odata.sort.SortParserProvider;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.batch.engine.VulcanBatchEngineTaskItemDelegate;
+import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineExportTaskResource;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResource;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.ActionUtil;
-import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -125,6 +129,83 @@ public abstract class BaseAccountResourceImpl
 		throws Exception {
 
 		return Page.of(Collections.emptyList());
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-user/v1.0/accounts/export-batch'  -u 'test@liferay.com:test'
+	 */
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "filter"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "search"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "sort"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "callbackURL"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "contentType"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "fieldNames"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Account")}
+	)
+	@javax.ws.rs.Consumes("application/json")
+	@javax.ws.rs.Path("/accounts/export-batch")
+	@javax.ws.rs.POST
+	@javax.ws.rs.Produces("application/json")
+	@Override
+	public Response postAccountsPageExportBatch(
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("search")
+			String search,
+			@javax.ws.rs.core.Context Filter filter,
+			@javax.ws.rs.core.Context Sort[] sorts,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("callbackURL")
+			String callbackURL,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.DefaultValue("JSON")
+			@javax.ws.rs.QueryParam("contentType")
+			String contentType,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("fieldNames")
+			String fieldNames)
+		throws Exception {
+
+		vulcanBatchEngineExportTaskResource.setContextAcceptLanguage(
+			contextAcceptLanguage);
+		vulcanBatchEngineExportTaskResource.setContextCompany(contextCompany);
+		vulcanBatchEngineExportTaskResource.setContextHttpServletRequest(
+			contextHttpServletRequest);
+		vulcanBatchEngineExportTaskResource.setContextUriInfo(contextUriInfo);
+		vulcanBatchEngineExportTaskResource.setContextUser(contextUser);
+		vulcanBatchEngineExportTaskResource.setGroupLocalService(
+			groupLocalService);
+
+		Response.ResponseBuilder responseBuilder = Response.accepted();
+
+		return responseBuilder.entity(
+			vulcanBatchEngineExportTaskResource.postExportTask(
+				Account.class.getName(), callbackURL, contentType, fieldNames)
+		).build();
 	}
 
 	/**
@@ -293,9 +374,7 @@ public abstract class BaseAccountResourceImpl
 		Account existingAccount = getAccountByExternalReferenceCode(
 			externalReferenceCode);
 
-		if (account.getActions() != null) {
-			existingAccount.setActions(account.getActions());
-		}
+		existingAccount.setCustomFields(account.getCustomFields());
 
 		if (account.getDescription() != null) {
 			existingAccount.setDescription(account.getDescription());
@@ -312,10 +391,6 @@ public abstract class BaseAccountResourceImpl
 
 		if (account.getName() != null) {
 			existingAccount.setName(account.getName());
-		}
-
-		if (account.getNumberOfUsers() != null) {
-			existingAccount.setNumberOfUsers(account.getNumberOfUsers());
 		}
 
 		if (account.getOrganizationIds() != null) {
@@ -516,9 +591,7 @@ public abstract class BaseAccountResourceImpl
 
 		Account existingAccount = getAccount(accountId);
 
-		if (account.getActions() != null) {
-			existingAccount.setActions(account.getActions());
-		}
+		existingAccount.setCustomFields(account.getCustomFields());
 
 		if (account.getDescription() != null) {
 			existingAccount.setDescription(account.getDescription());
@@ -535,10 +608,6 @@ public abstract class BaseAccountResourceImpl
 
 		if (account.getName() != null) {
 			existingAccount.setName(account.getName());
-		}
-
-		if (account.getNumberOfUsers() != null) {
-			existingAccount.setNumberOfUsers(account.getNumberOfUsers());
 		}
 
 		if (account.getOrganizationIds() != null) {
@@ -813,6 +882,91 @@ public abstract class BaseAccountResourceImpl
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations/{organizationId}/accounts/export-batch'  -u 'test@liferay.com:test'
+	 */
+	@io.swagger.v3.oas.annotations.Parameters(
+		value = {
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.PATH,
+				name = "organizationId"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "filter"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "search"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "sort"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "callbackURL"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "contentType"
+			),
+			@io.swagger.v3.oas.annotations.Parameter(
+				in = io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY,
+				name = "fieldNames"
+			)
+		}
+	)
+	@io.swagger.v3.oas.annotations.tags.Tags(
+		value = {@io.swagger.v3.oas.annotations.tags.Tag(name = "Account")}
+	)
+	@javax.ws.rs.Consumes("application/json")
+	@javax.ws.rs.Path("/organizations/{organizationId}/accounts/export-batch")
+	@javax.ws.rs.POST
+	@javax.ws.rs.Produces("application/json")
+	@Override
+	public Response postOrganizationAccountsPageExportBatch(
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.validation.constraints.NotNull
+			@javax.ws.rs.PathParam("organizationId")
+			String organizationId,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("search")
+			String search,
+			@javax.ws.rs.core.Context Filter filter,
+			@javax.ws.rs.core.Context Sort[] sorts,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("callbackURL")
+			String callbackURL,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.DefaultValue("JSON")
+			@javax.ws.rs.QueryParam("contentType")
+			String contentType,
+			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
+			@javax.ws.rs.QueryParam("fieldNames")
+			String fieldNames)
+		throws Exception {
+
+		vulcanBatchEngineExportTaskResource.setContextAcceptLanguage(
+			contextAcceptLanguage);
+		vulcanBatchEngineExportTaskResource.setContextCompany(contextCompany);
+		vulcanBatchEngineExportTaskResource.setContextHttpServletRequest(
+			contextHttpServletRequest);
+		vulcanBatchEngineExportTaskResource.setContextUriInfo(contextUriInfo);
+		vulcanBatchEngineExportTaskResource.setContextUser(contextUser);
+		vulcanBatchEngineExportTaskResource.setGroupLocalService(
+			groupLocalService);
+
+		Response.ResponseBuilder responseBuilder = Response.accepted();
+
+		return responseBuilder.entity(
+			vulcanBatchEngineExportTaskResource.postExportTask(
+				Account.class.getName(), callbackURL, contentType, fieldNames)
+		).build();
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -X 'POST' 'http://localhost:8080/o/headless-admin-user/v1.0/organizations/{organizationId}/accounts'  -u 'test@liferay.com:test'
 	 */
 	@io.swagger.v3.oas.annotations.Parameters(
@@ -907,8 +1061,7 @@ public abstract class BaseAccountResourceImpl
 	@Override
 	@SuppressWarnings("PMD.UnusedLocalVariable")
 	public void create(
-			java.util.Collection<Account> accounts,
-			Map<String, Serializable> parameters)
+			Collection<Account> accounts, Map<String, Serializable> parameters)
 		throws Exception {
 
 		UnsafeConsumer<Account, Exception> accountUnsafeConsumer = null;
@@ -916,14 +1069,36 @@ public abstract class BaseAccountResourceImpl
 		String createStrategy = (String)parameters.getOrDefault(
 			"createStrategy", "INSERT");
 
-		if ("INSERT".equalsIgnoreCase(createStrategy)) {
+		if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
 			accountUnsafeConsumer = account -> postAccount(account);
 		}
 
-		if ("UPSERT".equalsIgnoreCase(createStrategy)) {
-			accountUnsafeConsumer =
-				account -> putAccountByExternalReferenceCode(
-					account.getExternalReferenceCode(), account);
+		if (StringUtil.equalsIgnoreCase(createStrategy, "UPSERT")) {
+			String updateStrategy = (String)parameters.getOrDefault(
+				"updateStrategy", "UPDATE");
+
+			if (StringUtil.equalsIgnoreCase(updateStrategy, "UPDATE")) {
+				accountUnsafeConsumer =
+					account -> putAccountByExternalReferenceCode(
+						account.getExternalReferenceCode(), account);
+			}
+
+			if (StringUtil.equalsIgnoreCase(updateStrategy, "PARTIAL_UPDATE")) {
+				accountUnsafeConsumer = account -> {
+					try {
+						Account getAccount = getAccountByExternalReferenceCode(
+							account.getExternalReferenceCode());
+
+						patchAccount(
+							getAccount.getId() != null ? getAccount.getId() :
+								_parseLong((String)parameters.get("accountId")),
+							account);
+					}
+					catch (NoSuchModelException noSuchModelException) {
+						postAccount(account);
+					}
+				};
+			}
 		}
 
 		if (accountUnsafeConsumer == null) {
@@ -944,8 +1119,7 @@ public abstract class BaseAccountResourceImpl
 
 	@Override
 	public void delete(
-			java.util.Collection<Account> accounts,
-			Map<String, Serializable> parameters)
+			Collection<Account> accounts, Map<String, Serializable> parameters)
 		throws Exception {
 
 		for (Account account : accounts) {
@@ -1020,8 +1194,7 @@ public abstract class BaseAccountResourceImpl
 
 	@Override
 	public void update(
-			java.util.Collection<Account> accounts,
-			Map<String, Serializable> parameters)
+			Collection<Account> accounts, Map<String, Serializable> parameters)
 		throws Exception {
 
 		UnsafeConsumer<Account, Exception> accountUnsafeConsumer = null;
@@ -1029,17 +1202,17 @@ public abstract class BaseAccountResourceImpl
 		String updateStrategy = (String)parameters.getOrDefault(
 			"updateStrategy", "UPDATE");
 
-		if ("PARTIAL_UPDATE".equalsIgnoreCase(updateStrategy)) {
+		if (StringUtil.equalsIgnoreCase(updateStrategy, "PARTIAL_UPDATE")) {
 			accountUnsafeConsumer = account -> patchAccount(
 				account.getId() != null ? account.getId() :
-					Long.parseLong((String)parameters.get("accountId")),
+					_parseLong((String)parameters.get("accountId")),
 				account);
 		}
 
-		if ("UPDATE".equalsIgnoreCase(updateStrategy)) {
+		if (StringUtil.equalsIgnoreCase(updateStrategy, "UPDATE")) {
 			accountUnsafeConsumer = account -> putAccount(
 				account.getId() != null ? account.getId() :
-					Long.parseLong((String)parameters.get("accountId")),
+					_parseLong((String)parameters.get("accountId")),
 				account);
 		}
 
@@ -1059,14 +1232,22 @@ public abstract class BaseAccountResourceImpl
 		}
 	}
 
+	private Long _parseLong(String value) {
+		if (value != null) {
+			return Long.parseLong(value);
+		}
+
+		return null;
+	}
+
 	public void setContextAcceptLanguage(AcceptLanguage contextAcceptLanguage) {
 		this.contextAcceptLanguage = contextAcceptLanguage;
 	}
 
 	public void setContextBatchUnsafeConsumer(
 		UnsafeBiConsumer
-			<java.util.Collection<Account>, UnsafeConsumer<Account, Exception>,
-			 Exception> contextBatchUnsafeConsumer) {
+			<Collection<Account>, UnsafeConsumer<Account, Exception>, Exception>
+				contextBatchUnsafeConsumer) {
 
 		this.contextBatchUnsafeConsumer = contextBatchUnsafeConsumer;
 	}
@@ -1133,6 +1314,14 @@ public abstract class BaseAccountResourceImpl
 
 	public void setSortParserProvider(SortParserProvider sortParserProvider) {
 		this.sortParserProvider = sortParserProvider;
+	}
+
+	public void setVulcanBatchEngineExportTaskResource(
+		VulcanBatchEngineExportTaskResource
+			vulcanBatchEngineExportTaskResource) {
+
+		this.vulcanBatchEngineExportTaskResource =
+			vulcanBatchEngineExportTaskResource;
 	}
 
 	public void setVulcanBatchEngineImportTaskResource(
@@ -1246,8 +1435,7 @@ public abstract class BaseAccountResourceImpl
 	}
 
 	protected <T, R, E extends Throwable> List<R> transform(
-		java.util.Collection<T> collection,
-		UnsafeFunction<T, R, E> unsafeFunction) {
+		Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction) {
 
 		return TransformUtil.transform(collection, unsafeFunction);
 	}
@@ -1259,8 +1447,8 @@ public abstract class BaseAccountResourceImpl
 	}
 
 	protected <T, R, E extends Throwable> R[] transformToArray(
-		java.util.Collection<T> collection,
-		UnsafeFunction<T, R, E> unsafeFunction, Class<?> clazz) {
+		Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction,
+		Class<?> clazz) {
 
 		return TransformUtil.transformToArray(
 			collection, unsafeFunction, clazz);
@@ -1272,9 +1460,14 @@ public abstract class BaseAccountResourceImpl
 		return TransformUtil.transformToList(array, unsafeFunction);
 	}
 
+	protected <T, R, E extends Throwable> long[] transformToLongArray(
+		Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction) {
+
+		return TransformUtil.transformToLongArray(collection, unsafeFunction);
+	}
+
 	protected <T, R, E extends Throwable> List<R> unsafeTransform(
-			java.util.Collection<T> collection,
-			UnsafeFunction<T, R, E> unsafeFunction)
+			Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction)
 		throws E {
 
 		return TransformUtil.unsafeTransform(collection, unsafeFunction);
@@ -1288,8 +1481,8 @@ public abstract class BaseAccountResourceImpl
 	}
 
 	protected <T, R, E extends Throwable> R[] unsafeTransformToArray(
-			java.util.Collection<T> collection,
-			UnsafeFunction<T, R, E> unsafeFunction, Class<?> clazz)
+			Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction,
+			Class<?> clazz)
 		throws E {
 
 		return TransformUtil.unsafeTransformToArray(
@@ -1303,10 +1496,18 @@ public abstract class BaseAccountResourceImpl
 		return TransformUtil.unsafeTransformToList(array, unsafeFunction);
 	}
 
+	protected <T, R, E extends Throwable> long[] unsafeTransformToLongArray(
+			Collection<T> collection, UnsafeFunction<T, R, E> unsafeFunction)
+		throws E {
+
+		return TransformUtil.unsafeTransformToLongArray(
+			collection, unsafeFunction);
+	}
+
 	protected AcceptLanguage contextAcceptLanguage;
 	protected UnsafeBiConsumer
-		<java.util.Collection<Account>, UnsafeConsumer<Account, Exception>,
-		 Exception> contextBatchUnsafeConsumer;
+		<Collection<Account>, UnsafeConsumer<Account, Exception>, Exception>
+			contextBatchUnsafeConsumer;
 	protected com.liferay.portal.kernel.model.Company contextCompany;
 	protected HttpServletRequest contextHttpServletRequest;
 	protected HttpServletResponse contextHttpServletResponse;
@@ -1320,6 +1521,8 @@ public abstract class BaseAccountResourceImpl
 	protected ResourcePermissionLocalService resourcePermissionLocalService;
 	protected RoleLocalService roleLocalService;
 	protected SortParserProvider sortParserProvider;
+	protected VulcanBatchEngineExportTaskResource
+		vulcanBatchEngineExportTaskResource;
 	protected VulcanBatchEngineImportTaskResource
 		vulcanBatchEngineImportTaskResource;
 

@@ -15,6 +15,7 @@
 package com.liferay.poshi.core.elements;
 
 import com.liferay.poshi.core.script.PoshiScriptParserException;
+import com.liferay.poshi.core.util.PoshiProperties;
 import com.liferay.poshi.core.util.StringUtil;
 
 import java.net.URL;
@@ -106,15 +107,25 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 				poshiScriptLineNumber +
 					StringUtil.countStartingNewLines(poshiScript);
 
-			Matcher poshiScriptBlockMatcher =
-				PoshiElement.poshiScriptBlockPattern.matcher(
-					previousPoshiScript);
+			if (previousPoshiNode instanceof PoshiElement) {
+				PoshiElement previousPoshiElement =
+					(PoshiElement)previousPoshiNode;
 
-			if (poshiScriptBlockMatcher.find()) {
-				int newLineCount = StringUtil.count(
-					parentPoshiElement.getBlockName(previousPoshiScript), "\n");
+				if (previousPoshiElement.getBlockName() != null) {
+					Matcher poshiScriptBlockMatcher =
+						PoshiElement.poshiScriptBlockPattern.matcher(
+							previousPoshiScript);
 
-				poshiScriptLineNumber = poshiScriptLineNumber - newLineCount;
+					if (poshiScriptBlockMatcher.find()) {
+						int newLineCount = StringUtil.count(
+							parentPoshiElement.getBlockName(
+								previousPoshiScript),
+							"\n");
+
+						poshiScriptLineNumber =
+							poshiScriptLineNumber - newLineCount;
+					}
+				}
 			}
 
 			return poshiScriptLineNumber;
@@ -160,5 +171,8 @@ public interface PoshiNode<A extends Node, B extends PoshiNode<A, B>>
 			throw poshiScriptParserException;
 		}
 	}
+
+	public PoshiProperties poshiProperties =
+		PoshiProperties.getPoshiProperties();
 
 }

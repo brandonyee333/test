@@ -16,15 +16,27 @@ import createMDFRequest from '../../../common/services/liferay/object/mdf-reques
 import updateMDFRequest from '../../../common/services/liferay/object/mdf-requests/updateMDFRequest';
 
 export default async function createMDFRequestProxyAPI(mdfRequest: MDFRequest) {
-	const dtoMDFRequestSFResponse = await createMDFRequest(
-		ResourceName.MDF_REQUEST_SALESFORCE,
-		mdfRequest
-	);
+	let dtoMDFRequestSFResponse: MDFRequestDTO | undefined = undefined;
+
+	if (mdfRequest.externalReferenceCode && mdfRequest.submitted) {
+		dtoMDFRequestSFResponse = await updateMDFRequest(
+			ResourceName.MDF_REQUEST_SALESFORCE,
+			mdfRequest
+		);
+	}
+	else {
+		dtoMDFRequestSFResponse = await createMDFRequest(
+			ResourceName.MDF_REQUEST_SALESFORCE,
+			mdfRequest
+		);
+	}
 
 	let dtoMDFRequestResponse: MDFRequestDTO | undefined = undefined;
 
 	if (dtoMDFRequestSFResponse.externalReferenceCode) {
 		if (mdfRequest.id) {
+			mdfRequest.submitted = true;
+
 			dtoMDFRequestResponse = await updateMDFRequest(
 				ResourceName.MDF_REQUEST_DXP,
 				mdfRequest,
@@ -32,6 +44,8 @@ export default async function createMDFRequestProxyAPI(mdfRequest: MDFRequest) {
 			);
 		}
 		else {
+			mdfRequest.submitted = true;
+
 			dtoMDFRequestResponse = await createMDFRequest(
 				ResourceName.MDF_REQUEST_DXP,
 				mdfRequest,

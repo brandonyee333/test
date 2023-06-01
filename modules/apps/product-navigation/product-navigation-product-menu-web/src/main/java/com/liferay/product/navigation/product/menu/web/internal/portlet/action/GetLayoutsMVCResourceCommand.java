@@ -15,7 +15,10 @@
 package com.liferay.product.navigation.product.menu.web.internal.portlet.action;
 
 import com.liferay.layout.util.LayoutsTree;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
@@ -25,10 +28,10 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.SessionClicks;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.product.navigation.product.menu.constants.ProductNavigationProductMenuPortletKeys;
-import com.liferay.product.navigation.product.menu.constants.ProductNavigationProductMenuWebKeys;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -89,6 +92,24 @@ public class GetLayoutsMVCResourceCommand extends BaseMVCResourceCommand {
 					int end = ParamUtil.getInteger(
 						httpServletRequest, "end", start + pageSize);
 
+					String key = StringBundler.concat(
+						"productMenuPagesTree:", themeDisplay.getScopeGroupId(),
+						StringPool.COLON, privateLayout, ":Pagination");
+
+					String paginationJSON = SessionClicks.get(
+						httpServletRequest.getSession(), key,
+						_jsonFactory.getNullJSON());
+
+					JSONObject paginationJSONObject =
+						_jsonFactory.createJSONObject(paginationJSON);
+
+					int loadedLayoutsCount = paginationJSONObject.getInt(
+						String.valueOf(parentLayoutId), 0);
+
+					if (loadedLayoutsCount > end) {
+						end = loadedLayoutsCount;
+					}
+
 					end = Math.max(start, end);
 
 					if (childLayoutsCount > end) {
@@ -99,18 +120,10 @@ public class GetLayoutsMVCResourceCommand extends BaseMVCResourceCommand {
 				}
 			).put(
 				"items",
-				() -> {
-					httpServletRequest.setAttribute(
-						ProductNavigationProductMenuWebKeys.
-							LOAD_MORE_PARENT_LAYOUT_ID,
-						parentLayoutId);
-
-					return _jsonFactory.createJSONArray(
-						_layoutsTree.getLayoutsJSON(
-							httpServletRequest, themeDisplay.getScopeGroupId(),
-							true, privateLayout, parentLayoutId, null,
-							incomplete, "productMenuPagesTree", null));
-				}
+				_layoutsTree.getLayoutsJSONArray(
+					null, themeDisplay.getScopeGroupId(), httpServletRequest,
+					true, incomplete, true, parentLayoutId, privateLayout,
+					"productMenuPagesTree")
 			));
 	}
 

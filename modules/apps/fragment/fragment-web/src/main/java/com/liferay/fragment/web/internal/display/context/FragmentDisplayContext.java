@@ -19,6 +19,7 @@ import com.liferay.fragment.constants.FragmentPortletKeys;
 import com.liferay.fragment.contributor.FragmentCollectionContributor;
 import com.liferay.fragment.contributor.FragmentCollectionContributorRegistry;
 import com.liferay.fragment.model.FragmentCollection;
+import com.liferay.fragment.model.FragmentComposition;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.fragment.service.FragmentCollectionLocalServiceUtil;
 import com.liferay.fragment.service.FragmentEntryServiceUtil;
@@ -48,6 +49,7 @@ import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.SearchOrderByUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -65,7 +67,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.PortletURL;
@@ -89,9 +90,9 @@ public class FragmentDisplayContext {
 
 		_fragmentCollectionContributorRegistry =
 			(FragmentCollectionContributorRegistry)
-				_httpServletRequest.getAttribute(
+				httpServletRequest.getAttribute(
 					FragmentWebKeys.FRAGMENT_COLLECTION_CONTRIBUTOR_TRACKER);
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
 
@@ -111,6 +112,9 @@ public class FragmentDisplayContext {
 		).add(
 			dropdownItem -> {
 				dropdownItem.putData("action", "openImportView");
+				dropdownItem.putData(
+					"importURL",
+					(String)fragmentCollectionsViewContext.get("importURL"));
 				dropdownItem.putData(
 					"viewImportURL",
 					(String)fragmentCollectionsViewContext.get(
@@ -258,6 +262,18 @@ public class FragmentDisplayContext {
 		contributedEntries.sort(
 			new FragmentCompositionFragmentEntryNameComparator(true));
 
+		if (isSearch()) {
+			contributedEntries = ListUtil.filter(
+				contributedEntries,
+				contributedEntry -> {
+					String lowerCaseName = StringUtil.toLowerCase(
+						_getName(contributedEntry));
+
+					return lowerCaseName.contains(
+						StringUtil.toLowerCase(_getKeywords()));
+				});
+		}
+
 		contributedEntriesSearchContainer.setResultsAndTotal(
 			contributedEntries);
 
@@ -389,6 +405,22 @@ public class FragmentDisplayContext {
 
 				return exportFragmentCollectionsURL.toString();
 			}
+		).put(
+			"importURL",
+			() -> PortletURLBuilder.createActionURL(
+				_renderResponse
+			).setActionName(
+				"/fragment/import"
+			).setRedirect(
+				_themeDisplay.getURLCurrent()
+			).setPortletResource(
+				() -> {
+					PortletDisplay portletDisplay =
+						_themeDisplay.getPortletDisplay();
+
+					return portletDisplay.getId();
+				}
+			).buildString()
 		).put(
 			"viewDeleteFragmentCollectionsURL",
 			() -> PortletURLBuilder.createRenderURL(
@@ -707,15 +739,13 @@ public class FragmentDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		Stream<FragmentCollectionContributor> stream =
-			fragmentCollectionContributors.stream();
+		fragmentCollectionContributors = ListUtil.sort(
+			fragmentCollectionContributors,
+			new FragmentCollectionContributorNameComparator(
+				_themeDisplay.getLocale()));
 
 		FragmentCollectionContributor fragmentCollectionContributor =
-			stream.sorted(
-				new FragmentCollectionContributorNameComparator(
-					_themeDisplay.getLocale())
-			).findFirst(
-			).get();
+			fragmentCollectionContributors.get(0);
 
 		return fragmentCollectionContributor.getFragmentCollectionKey();
 	}
@@ -733,6 +763,19 @@ public class FragmentDisplayContext {
 		_keywords = ParamUtil.getString(_httpServletRequest, "keywords");
 
 		return _keywords;
+	}
+
+	private String _getName(Object object) {
+		if (object instanceof FragmentComposition) {
+			FragmentComposition fragmentComposition =
+				(FragmentComposition)object;
+
+			return fragmentComposition.getName();
+		}
+
+		FragmentEntry fragmentEntry = (FragmentEntry)object;
+
+		return fragmentEntry.getName();
 	}
 
 	private String _getOrderByCol() {

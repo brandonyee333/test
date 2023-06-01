@@ -22,7 +22,6 @@ import com.liferay.commerce.product.service.CPOptionService;
 import com.liferay.commerce.product.service.CPOptionValueService;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Option;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.OptionValue;
-import com.liferay.headless.commerce.admin.catalog.internal.dto.v1_0.converter.OptionValueDTOConverter;
 import com.liferay.headless.commerce.admin.catalog.resource.v1_0.OptionValueResource;
 import com.liferay.headless.commerce.core.util.LanguageUtils;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
@@ -34,6 +33,8 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.MapUtil;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -46,6 +47,7 @@ import java.lang.reflect.Method;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.ws.rs.HttpMethod;
@@ -131,7 +133,7 @@ public class OptionValueResourceImpl
 			pagination, totalItems);
 	}
 
-	@NestedField(parentClass = Option.class, value = "values")
+	@NestedField(parentClass = Option.class, value = "optionValues")
 	@Override
 	public Page<OptionValue> getOptionIdOptionValuesPage(
 			Long id, String search, Pagination pagination, Sort[] sorts)
@@ -181,10 +183,8 @@ public class OptionValueResourceImpl
 	public Response patchOptionValue(Long id, OptionValue optionValue)
 		throws Exception {
 
-		CPOptionValue cpOptionValue = _cpOptionValueService.getCPOptionValue(
-			id);
-
-		_addOrUpdateOptionValue(cpOptionValue.getCPOption(), optionValue);
+		_updateOptionValue(
+			_cpOptionValueService.getCPOptionValue(id), optionValue);
 
 		Response.ResponseBuilder responseBuilder = Response.ok();
 
@@ -206,7 +206,7 @@ public class OptionValueResourceImpl
 					externalReferenceCode);
 		}
 
-		_addOrUpdateOptionValue(cpOptionValue.getCPOption(), optionValue);
+		_updateOptionValue(cpOptionValue, optionValue);
 
 		Response.ResponseBuilder responseBuilder = Response.ok();
 
@@ -378,6 +378,30 @@ public class OptionValueResourceImpl
 		return productOptionValues;
 	}
 
+	private OptionValue _updateOptionValue(
+			CPOptionValue cpOptionValue, OptionValue optionValue)
+		throws Exception {
+
+		Map<String, String> name = optionValue.getName();
+		Map<Locale, String> nameMap = null;
+
+		if (MapUtil.isEmpty(name)) {
+			nameMap = cpOptionValue.getNameMap();
+		}
+		else {
+			nameMap = LanguageUtils.getLocalizedMap(name);
+		}
+
+		cpOptionValue = _cpOptionValueService.updateCPOptionValue(
+			cpOptionValue.getCPOptionValueId(), nameMap,
+			GetterUtil.get(
+				optionValue.getPriority(), cpOptionValue.getPriority()),
+			GetterUtil.get(optionValue.getKey(), cpOptionValue.getKey()),
+			_serviceContextHelper.getServiceContext());
+
+		return _toOptionValue(cpOptionValue.getCPOptionValueId());
+	}
+
 	@Reference
 	private CPOptionService _cpOptionService;
 
@@ -393,8 +417,10 @@ public class OptionValueResourceImpl
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
 
-	@Reference
-	private OptionValueDTOConverter _optionValueDTOConverter;
+	@Reference(
+		target = "(component.name=com.liferay.headless.commerce.admin.catalog.internal.dto.v1_0.converter.OptionValueDTOConverter)"
+	)
+	private DTOConverter<CPOptionValue, OptionValue> _optionValueDTOConverter;
 
 	@Reference
 	private ServiceContextHelper _serviceContextHelper;

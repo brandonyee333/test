@@ -15,20 +15,27 @@ import LiferayPicklist from './liferayPicklist';
 import MDFRequestActivity from './mdfRequestActivity';
 
 export default interface MDFRequest extends Partial<LiferayObject> {
-	accountExternalReferenceCodeSF?: string;
+	accountExternalReferenceCode?: string;
 	activities: MDFRequestActivity[];
 	additionalOption: LiferayPicklist;
 	company?: LiferayAccountBrief;
-	country: LiferayPicklist;
+	currency: LiferayPicklist;
+	emailAddress?: string;
+	externalReferenceCode?: string;
 	liferayBusinessSalesGoals?: string[];
+	liferayBusinessSalesGoalsOther?: string;
+	liferaysUserIdSF?: number;
 	maxDateActivity?: string;
-	mdfRequestStatus?: LiferayPicklist;
+	mdfRequestStatus: LiferayPicklist;
 	minDateActivity?: string;
 	overallCampaignDescription: string;
 	overallCampaignName: string;
+	partnerCountry: LiferayPicklist;
+	r_usrToMDFReqs_userId?: number;
+	submitted?: boolean;
 	targetAudienceRoles?: string[];
 	targetMarkets?: string[];
-	totalCostOfExpense?: number;
-	totalMDFRequestAmount?: number;
+	totalCostOfExpense: number;
+	totalMDFRequestAmount: number;
 	totalRequested?: number;
 }

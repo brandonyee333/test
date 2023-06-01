@@ -16,8 +16,8 @@ package com.liferay.object.internal.filter.parser;
 
 import com.liferay.object.constants.ObjectFilterConstants;
 import com.liferay.object.model.ObjectFilter;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
@@ -55,12 +55,11 @@ public class InclusionOperatorsObjectFilterParser
 
 		List<String> values = new ArrayList<>();
 
-		if (Objects.equals("status", objectFilter.getFilterBy())) {
+		if (Objects.equals(objectFilter.getFilterBy(), "status")) {
 			for (Object value : (Object[])map.get("in")) {
 				values.add(
 					StringBundler.concat(
-						"(x ", excludes ? "ne " : "eq ", String.valueOf(value),
-						")"));
+						"(x ", excludes ? "ne " : "eq ", value, ")"));
 			}
 
 			return StringBundler.concat(

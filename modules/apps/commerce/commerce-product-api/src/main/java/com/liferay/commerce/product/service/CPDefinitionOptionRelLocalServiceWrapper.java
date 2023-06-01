@@ -17,6 +17,7 @@ package com.liferay.commerce.product.service;
 import com.liferay.commerce.product.model.CPDefinitionOptionRel;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -383,6 +384,18 @@ public class CPDefinitionOptionRelLocalServiceWrapper
 	@Override
 	public java.util.Map<Long, java.util.List<Long>>
 			getCPDefinitionOptionRelCPDefinitionOptionValueRelIds(
+				long cpDefinitionId, boolean skuContributorsOnly,
+				com.liferay.portal.kernel.json.JSONArray skuOptionJSONArray)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _cpDefinitionOptionRelLocalService.
+			getCPDefinitionOptionRelCPDefinitionOptionValueRelIds(
+				cpDefinitionId, skuContributorsOnly, skuOptionJSONArray);
+	}
+
+	@Override
+	public java.util.Map<Long, java.util.List<Long>>
+			getCPDefinitionOptionRelCPDefinitionOptionValueRelIds(
 				long cpDefinitionId, boolean skuContributorsOnly, String json)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -671,6 +684,11 @@ public class CPDefinitionOptionRelLocalServiceWrapper
 			cpDefinitionOptionRelId, cpOptionId, nameMap, descriptionMap,
 			ddmFormFieldTypeName, priority, facetable, required, skuContributor,
 			priceType, serviceContext);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _cpDefinitionOptionRelLocalService.getBasePersistence();
 	}
 
 	@Override

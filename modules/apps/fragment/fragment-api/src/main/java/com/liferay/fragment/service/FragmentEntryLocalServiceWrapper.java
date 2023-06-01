@@ -17,6 +17,7 @@ package com.liferay.fragment.service;
 import com.liferay.fragment.model.FragmentEntry;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -81,13 +82,13 @@ public class FragmentEntryLocalServiceWrapper
 
 	@Override
 	public FragmentEntry copyFragmentEntry(
-			long userId, long groupId, long fragmentEntryId,
+			long userId, long groupId, long sourceFragmentEntryId,
 			long fragmentCollectionId,
 			com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _fragmentEntryLocalService.copyFragmentEntry(
-			userId, groupId, fragmentEntryId, fragmentCollectionId,
+			userId, groupId, sourceFragmentEntryId, fragmentCollectionId,
 			serviceContext);
 	}
 
@@ -609,6 +610,15 @@ public class FragmentEntryLocalServiceWrapper
 
 	@Override
 	public FragmentEntry updateFragmentEntry(
+			long fragmentEntryId, boolean cacheable)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fragmentEntryLocalService.updateFragmentEntry(
+			fragmentEntryId, cacheable);
+	}
+
+	@Override
+	public FragmentEntry updateFragmentEntry(
 			long fragmentEntryId, long previewFileEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -649,6 +659,11 @@ public class FragmentEntryLocalServiceWrapper
 
 		return _fragmentEntryLocalService.updateFragmentEntry(
 			fragmentEntryId, name);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _fragmentEntryLocalService.getBasePersistence();
 	}
 
 	@Override

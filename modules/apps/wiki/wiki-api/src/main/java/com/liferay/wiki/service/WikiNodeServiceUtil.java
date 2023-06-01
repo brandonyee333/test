@@ -133,11 +133,11 @@ public class WikiNodeServiceUtil {
 	}
 
 	public static void importPages(
-			long nodeId, String importer, InputStream[] inputStreams,
+			long nodeId, InputStream[] inputStreams,
 			Map<String, String[]> options)
 		throws PortalException {
 
-		getService().importPages(nodeId, importer, inputStreams, options);
+		getService().importPages(nodeId, inputStreams, options);
 	}
 
 	public static WikiNode moveNodeToTrash(long nodeId) throws PortalException {
@@ -169,6 +169,10 @@ public class WikiNodeServiceUtil {
 
 	public static WikiNodeService getService() {
 		return _service;
+	}
+
+	public static void setService(WikiNodeService service) {
+		_service = service;
 	}
 
 	private static volatile WikiNodeService _service;

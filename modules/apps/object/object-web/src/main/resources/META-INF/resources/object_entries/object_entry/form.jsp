@@ -17,11 +17,17 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String backURL = ParamUtil.getString(request, "backURL", String.valueOf(renderResponse.createRenderURL()));
+String redirect = ParamUtil.getString(request, "redirect");
+
+String backURL = ParamUtil.getString(request, "backURL", redirect);
+
+if (Validator.isNull(backURL)) {
+	backURL = String.valueOf(renderResponse.createRenderURL());
+}
 
 ObjectEntryDisplayContext objectEntryDisplayContext = (ObjectEntryDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
-ObjectDefinition objectDefinition = objectEntryDisplayContext.getObjectDefinition();
+ObjectDefinition objectDefinition = objectEntryDisplayContext.getObjectDefinition1();
 ObjectEntry objectEntry = objectEntryDisplayContext.getObjectEntry();
 
 portletDisplay.setShowBackIcon(true);
@@ -86,14 +92,14 @@ portletDisplay.setURLBack(backURL);
 
 			const postPath = scope === 'site' ? pathScopedBySite : contextPath;
 
-			let putPath = scope === 'site' ? pathScopedBySite : contextPath;
+			let patchPath = scope === 'site' ? pathScopedBySite : contextPath;
 
-			putPath = putPath.concat(
+			patchPath = patchPath.concat(
 				'/by-external-reference-code/',
 				`\${externalReferenceCode}`
 			);
 
-			return externalReferenceCode ? putPath : postPath;
+			return externalReferenceCode ? patchPath : postPath;
 		}
 
 		function <portlet:namespace />getValues(fields) {
@@ -191,7 +197,7 @@ portletDisplay.setURLBack(backURL);
 									'Accept': 'application/json',
 									'Content-Type': 'application/json',
 								}),
-								method: externalReferenceCode ? 'PUT' : 'POST',
+								method: externalReferenceCode ? 'PATCH' : 'POST',
 							})
 								.then((response) => {
 									if (response.status === 401) {

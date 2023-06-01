@@ -19,11 +19,11 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.MappingJsonFactory;
 
-import com.liferay.commerce.account.model.CommerceAccount;
-import com.liferay.commerce.account.model.CommerceAccountUserRel;
-import com.liferay.commerce.account.service.CommerceAccountLocalService;
-import com.liferay.commerce.account.service.CommerceAccountUserRelLocalService;
-import com.liferay.commerce.account.service.persistence.CommerceAccountUserRelPK;
+import com.liferay.account.model.AccountEntry;
+import com.liferay.account.model.AccountEntryUserRel;
+import com.liferay.account.service.AccountEntryLocalService;
+import com.liferay.account.service.AccountEntryUserRelLocalService;
+import com.liferay.commerce.util.CommerceAccountHelper;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserConstants;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -173,8 +174,9 @@ public class CommerceUsersImporter {
 				creatorUserId, companyId, autoPassword, password, password,
 				autoScreenName, screenName, emailAddress, locale, firstName,
 				middleName, lastName, prefixListTypeId, suffixListTypeId, male,
-				birthdayMonth, birthdayDay, birthdayYear, jobTitle, groupIds,
-				organizationIds, roleIds, userGroupIds, false, serviceContext);
+				birthdayMonth, birthdayDay, birthdayYear, jobTitle,
+				UserConstants.TYPE_REGULAR, groupIds, organizationIds, roleIds,
+				userGroupIds, false, serviceContext);
 		}
 		else {
 			groupIds = ArrayUtil.append(user.getGroupIds(), groupIds);
@@ -423,24 +425,20 @@ public class CommerceUsersImporter {
 					accountJSONObject.getJSONArray("roles");
 
 				if (accountRolesJSONArray != null) {
-					CommerceAccount commerceAccount =
-						_commerceAccountLocalService.
-							fetchByExternalReferenceCode(
-								serviceContext.getCompanyId(),
+					AccountEntry accountEntry =
+						_accountEntryLocalService.
+							fetchAccountEntryByExternalReferenceCode(
 								_friendlyURLNormalizer.normalize(
-									accountJSONObject.getString("name")));
+									accountJSONObject.getString("name")),
+								serviceContext.getCompanyId());
 
-					CommerceAccountUserRelPK commerceAccountUserRelPK =
-						new CommerceAccountUserRelPK(
-							commerceAccount.getCommerceAccountId(),
-							user.getUserId());
+					AccountEntryUserRel accountEntryUserRel =
+						_accountEntryUserRelLocalService.
+							fetchAccountEntryUserRel(
+								accountEntry.getAccountEntryId(),
+								user.getUserId());
 
-					CommerceAccountUserRel commerceAccountUserRel =
-						_commerceAccountUserRelLocalService.
-							fetchCommerceAccountUserRel(
-								commerceAccountUserRelPK);
-
-					if (commerceAccountUserRel == null) {
+					if (accountEntryUserRel == null) {
 						List<Long> accountRoleIds = new ArrayList<>();
 
 						for (int j = 0; j < accountRolesJSONArray.length();
@@ -457,11 +455,10 @@ public class CommerceUsersImporter {
 
 						long[] userIds = {user.getUserId()};
 
-						_commerceAccountUserRelLocalService.
-							addCommerceAccountUserRels(
-								commerceAccount.getCommerceAccountId(), userIds,
-								null, ArrayUtil.toLongArray(accountRoleIds),
-								serviceContext);
+						_commerceAccountHelper.addAccountEntryUserRels(
+							accountEntry.getAccountEntryId(), userIds, null,
+							ArrayUtil.toLongArray(accountRoleIds),
+							serviceContext);
 					}
 				}
 			}
@@ -472,11 +469,13 @@ public class CommerceUsersImporter {
 		CommerceUsersImporter.class);
 
 	@Reference
-	private CommerceAccountLocalService _commerceAccountLocalService;
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private CommerceAccountUserRelLocalService
-		_commerceAccountUserRelLocalService;
+	private AccountEntryUserRelLocalService _accountEntryUserRelLocalService;
+
+	@Reference
+	private CommerceAccountHelper _commerceAccountHelper;
 
 	@Reference
 	private com.liferay.portal.kernel.util.File _file;

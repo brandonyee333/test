@@ -14,6 +14,7 @@
 
 package com.liferay.headless.commerce.admin.catalog.internal.resource.v1_0;
 
+import com.liferay.account.constants.AccountConstants;
 import com.liferay.commerce.product.exception.NoSuchCPDefinitionException;
 import com.liferay.commerce.product.exception.NoSuchCatalogException;
 import com.liferay.commerce.product.model.CPDefinition;
@@ -22,7 +23,6 @@ import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.commerce.product.service.CommerceCatalogService;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Catalog;
 import com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product;
-import com.liferay.headless.commerce.admin.catalog.internal.dto.v1_0.converter.CatalogDTOConverter;
 import com.liferay.headless.commerce.admin.catalog.internal.odata.entity.v1_0.CatalogEntityModel;
 import com.liferay.headless.commerce.admin.catalog.resource.v1_0.CatalogResource;
 import com.liferay.headless.commerce.core.util.ServiceContextHelper;
@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
@@ -192,7 +193,10 @@ public class CatalogResourceImpl
 			_commerceCatalogService.getCommerceCatalog(id);
 
 		_commerceCatalogService.updateCommerceCatalog(
-			commerceCatalog.getCommerceCatalogId(), catalog.getName(),
+			commerceCatalog.getCommerceCatalogId(),
+			GetterUtil.get(
+				catalog.getAccountId(), commerceCatalog.getAccountEntryId()),
+			catalog.getName(),
 			GetterUtil.get(
 				catalog.getCurrencyCode(),
 				commerceCatalog.getCommerceCurrencyCode()),
@@ -234,13 +238,21 @@ public class CatalogResourceImpl
 
 		if (commerceCatalog == null) {
 			commerceCatalog = _commerceCatalogService.addCommerceCatalog(
-				catalog.getExternalReferenceCode(), catalog.getName(),
-				catalog.getCurrencyCode(), catalog.getDefaultLanguageId(),
+				catalog.getExternalReferenceCode(),
+				GetterUtil.get(
+					catalog.getAccountId(),
+					AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT),
+				catalog.getName(), catalog.getCurrencyCode(),
+				catalog.getDefaultLanguageId(),
 				_serviceContextHelper.getServiceContext());
 		}
 		else {
 			commerceCatalog = _commerceCatalogService.updateCommerceCatalog(
-				commerceCatalog.getCommerceCatalogId(), catalog.getName(),
+				commerceCatalog.getCommerceCatalogId(),
+				GetterUtil.get(
+					catalog.getAccountId(),
+					commerceCatalog.getAccountEntryId()),
+				catalog.getName(),
 				GetterUtil.get(
 					catalog.getCurrencyCode(),
 					commerceCatalog.getCommerceCurrencyCode()),
@@ -293,8 +305,10 @@ public class CatalogResourceImpl
 
 	private static final EntityModel _entityModel = new CatalogEntityModel();
 
-	@Reference
-	private CatalogDTOConverter _catalogDTOConverter;
+	@Reference(
+		target = "(component.name=com.liferay.headless.commerce.admin.catalog.internal.dto.v1_0.converter.CatalogDTOConverter)"
+	)
+	private DTOConverter<CommerceCatalog, Catalog> _catalogDTOConverter;
 
 	@Reference
 	private CommerceCatalogService _commerceCatalogService;

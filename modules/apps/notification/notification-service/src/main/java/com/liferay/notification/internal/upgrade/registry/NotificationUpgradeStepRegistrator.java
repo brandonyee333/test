@@ -19,11 +19,15 @@ import com.liferay.notification.internal.upgrade.v1_1_0.util.NotificationTemplat
 import com.liferay.notification.internal.upgrade.v1_2_0.NotificationQueueEntryUpgradeProcess;
 import com.liferay.notification.internal.upgrade.v2_1_0.NotificationTemplateUpgradeProcess;
 import com.liferay.notification.internal.upgrade.v3_4_0.NotificationRecipientUpgradeProcess;
+import com.liferay.notification.internal.upgrade.v3_7_0.ResourcePermissionUpgradeProcess;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Carolina Barbosa
@@ -93,6 +97,31 @@ public class NotificationUpgradeStepRegistrator
 			"3.4.0", "3.5.0",
 			new com.liferay.notification.internal.upgrade.v3_5_0.
 				NotificationTemplateUpgradeProcess());
+
+		registry.register(
+			"3.5.0", "3.5.1",
+			UpgradeProcessFactory.alterColumnType(
+				"NotificationQueueEntry", "subject", "TEXT"));
+
+		registry.register(
+			"3.5.1", "3.5.2",
+			UpgradeProcessFactory.alterColumnType(
+				"NotificationTemplate", "description", "VARCHAR(255) null"));
+
+		registry.register(
+			"3.5.2", "3.6.0",
+			new com.liferay.notification.internal.upgrade.v3_6_0.
+				NotificationQueueEntryUpgradeProcess(
+					_classNameLocalService, _resourceLocalService));
+
+		registry.register(
+			"3.6.0", "3.7.0", new ResourcePermissionUpgradeProcess());
 	}
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private ResourceLocalService _resourceLocalService;
 
 }

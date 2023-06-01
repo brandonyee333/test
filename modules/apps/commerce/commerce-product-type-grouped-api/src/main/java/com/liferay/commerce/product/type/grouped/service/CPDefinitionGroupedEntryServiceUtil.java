@@ -90,6 +90,24 @@ public class CPDefinitionGroupedEntryServiceUtil {
 			cpDefinitionGroupedEntryId);
 	}
 
+	public static List<CPDefinitionGroupedEntry>
+			getEntryCProductCPDefinitionGroupedEntries(
+				long entryCProductId, int start, int end,
+				OrderByComparator<CPDefinitionGroupedEntry> orderByComparator)
+		throws PortalException {
+
+		return getService().getEntryCProductCPDefinitionGroupedEntries(
+			entryCProductId, start, end, orderByComparator);
+	}
+
+	public static int getEntryCProductCPDefinitionGroupedEntriesCount(
+			long entryCProductId)
+		throws PortalException {
+
+		return getService().getEntryCProductCPDefinitionGroupedEntriesCount(
+			entryCProductId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -109,6 +127,10 @@ public class CPDefinitionGroupedEntryServiceUtil {
 
 	public static CPDefinitionGroupedEntryService getService() {
 		return _service;
+	}
+
+	public static void setService(CPDefinitionGroupedEntryService service) {
+		_service = service;
 	}
 
 	private static volatile CPDefinitionGroupedEntryService _service;

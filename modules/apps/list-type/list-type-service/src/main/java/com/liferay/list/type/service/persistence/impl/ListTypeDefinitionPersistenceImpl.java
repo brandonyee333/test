@@ -52,7 +52,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -2631,7 +2630,9 @@ public class ListTypeDefinitionPersistenceImpl
 				if (ercListTypeDefinition != null) {
 					throw new DuplicateListTypeDefinitionExternalReferenceCodeException(
 						"Duplicate list type definition with external reference code " +
-							listTypeDefinition.getExternalReferenceCode());
+							listTypeDefinition.getExternalReferenceCode() +
+								" and company " +
+									listTypeDefinition.getCompanyId());
 				}
 			}
 			else {
@@ -2641,7 +2642,9 @@ public class ListTypeDefinitionPersistenceImpl
 
 					throw new DuplicateListTypeDefinitionExternalReferenceCodeException(
 						"Duplicate list type definition with external reference code " +
-							listTypeDefinition.getExternalReferenceCode());
+							listTypeDefinition.getExternalReferenceCode() +
+								" and company " +
+									listTypeDefinition.getCompanyId());
 				}
 			}
 		}
@@ -3030,30 +3033,14 @@ public class ListTypeDefinitionPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setListTypeDefinitionUtilPersistence(this);
+		ListTypeDefinitionUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setListTypeDefinitionUtilPersistence(null);
+		ListTypeDefinitionUtil.setPersistence(null);
 
 		entityCache.removeCache(ListTypeDefinitionImpl.class.getName());
-	}
-
-	private void _setListTypeDefinitionUtilPersistence(
-		ListTypeDefinitionPersistence listTypeDefinitionPersistence) {
-
-		try {
-			Field field = ListTypeDefinitionUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, listTypeDefinitionPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

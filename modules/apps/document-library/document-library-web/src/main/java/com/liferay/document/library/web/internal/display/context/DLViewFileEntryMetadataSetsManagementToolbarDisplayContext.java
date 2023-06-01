@@ -99,7 +99,9 @@ public class DLViewFileEntryMetadataSetsManagementToolbarDisplayContext
 					String.valueOf(_dlRequestHelper.getScopeGroupId()));
 
 				dropdownItem.setLabel(
-					LanguageUtil.get(_dlRequestHelper.getRequest(), "new"));
+					LanguageUtil.format(
+						_dlRequestHelper.getRequest(), "new-x",
+						"metadata-set"));
 			}
 		).build();
 	}
@@ -137,11 +139,6 @@ public class DLViewFileEntryMetadataSetsManagementToolbarDisplayContext
 
 			return false;
 		}
-	}
-
-	@Override
-	protected String[] getNavigationKeys() {
-		return new String[] {"all"};
 	}
 
 	@Override

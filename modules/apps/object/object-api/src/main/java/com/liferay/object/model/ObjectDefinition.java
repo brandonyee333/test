@@ -61,6 +61,8 @@ public interface ObjectDefinition
 
 	public String getExtensionDBTableName();
 
+	public String getLocalizationDBTableName();
+
 	public String getOSGiJaxRsName();
 
 	public String getOSGiJaxRsName(String className);
@@ -76,5 +78,7 @@ public interface ObjectDefinition
 	public boolean isApproved();
 
 	public boolean isDefaultStorageType();
+
+	public boolean isUnmodifiableSystemObject();
 
 }

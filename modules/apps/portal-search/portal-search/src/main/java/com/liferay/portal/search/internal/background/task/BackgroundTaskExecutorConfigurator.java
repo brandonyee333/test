@@ -14,9 +14,11 @@
 
 package com.liferay.portal.search.internal.background.task;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskExecutor;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.search.index.ConcurrentReindexManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +40,8 @@ public class BackgroundTaskExecutorConfigurator {
 	protected void activate(BundleContext bundleContext) {
 		BackgroundTaskExecutor reindexPortalBackgroundTaskExecutor =
 			new ReindexPortalBackgroundTaskExecutor(
-				bundleContext, _portalExecutorManager);
+				bundleContext, _concurrentReindexManagerSnapshot.get(),
+				_portalExecutorManager);
 
 		_registerBackgroundTaskExecutor(
 			bundleContext, reindexPortalBackgroundTaskExecutor);
@@ -71,6 +74,11 @@ public class BackgroundTaskExecutorConfigurator {
 
 		_serviceRegistrations.add(serviceRegistration);
 	}
+
+	private static final Snapshot<ConcurrentReindexManager>
+		_concurrentReindexManagerSnapshot = new Snapshot<>(
+			BackgroundTaskExecutorConfigurator.class,
+			ConcurrentReindexManager.class, null, true);
 
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;

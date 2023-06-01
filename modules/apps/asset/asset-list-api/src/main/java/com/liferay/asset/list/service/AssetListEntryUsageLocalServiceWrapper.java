@@ -17,6 +17,7 @@ package com.liferay.asset.list.service;
 import com.liferay.asset.list.model.AssetListEntryUsage;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -132,6 +133,12 @@ public class AssetListEntryUsageLocalServiceWrapper
 
 		return _assetListEntryUsageLocalService.deleteAssetListEntryUsage(
 			assetListEntryUsageId);
+	}
+
+	@Override
+	public void deleteAssetListEntryUsages(long containerType, long plid) {
+		_assetListEntryUsageLocalService.deleteAssetListEntryUsages(
+			containerType, plid);
 	}
 
 	@Override
@@ -294,6 +301,14 @@ public class AssetListEntryUsageLocalServiceWrapper
 		getActionableDynamicQuery() {
 
 		return _assetListEntryUsageLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public java.util.List<AssetListEntryUsage> getAssetEntryListUsages(
+		long containerType, long plid) {
+
+		return _assetListEntryUsageLocalService.getAssetEntryListUsages(
+			containerType, plid);
 	}
 
 	@Override
@@ -528,6 +543,11 @@ public class AssetListEntryUsageLocalServiceWrapper
 
 		return _assetListEntryUsageLocalService.updateAssetListEntryUsage(
 			assetListEntryUsage);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _assetListEntryUsageLocalService.getBasePersistence();
 	}
 
 	@Override

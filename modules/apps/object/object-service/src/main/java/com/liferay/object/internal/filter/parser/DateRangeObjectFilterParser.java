@@ -16,7 +16,7 @@ package com.liferay.object.internal.filter.parser;
 
 import com.liferay.object.constants.ObjectFilterConstants;
 import com.liferay.object.model.ObjectFilter;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
 import java.util.Map;
@@ -43,13 +43,13 @@ public class DateRangeObjectFilterParser implements ObjectFilterParser {
 
 		String filterBy = objectFilter.getFilterBy();
 
-		if (Objects.equals("createDate", objectFilter.getFilterBy()) ||
-			Objects.equals("modifiedDate", objectFilter.getFilterBy())) {
+		if (Objects.equals(objectFilter.getFilterBy(), "createDate") ||
+			Objects.equals(objectFilter.getFilterBy(), "modifiedDate")) {
 
 			ge += "T00:00:00.000Z";
 			le += "T23:59:59.999Z";
 
-			if (Objects.equals("createDate", objectFilter.getFilterBy())) {
+			if (Objects.equals(objectFilter.getFilterBy(), "createDate")) {
 				filterBy = "dateCreated";
 			}
 			else {

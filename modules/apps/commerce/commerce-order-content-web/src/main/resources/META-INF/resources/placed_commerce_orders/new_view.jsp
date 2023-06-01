@@ -77,7 +77,7 @@ CommerceOrder commerceOrder = commerceOrderContentDisplayContext.getCommerceOrde
 				<div class="col-xl-4">
 
 					<%
-					CommerceAccount commerceAccount = commerceOrder.getCommerceAccount();
+					AccountEntry accountEntry = commerceOrder.getAccountEntry();
 					%>
 
 					<commerce-ui:info-box
@@ -85,14 +85,14 @@ CommerceOrder commerceOrder = commerceOrderContentDisplayContext.getCommerceOrde
 						title='<%= LanguageUtil.get(request, "account-info") %>'
 					>
 						<c:choose>
-							<c:when test="<%= Validator.isNull(commerceAccount) %>">
+							<c:when test="<%= Validator.isNull(accountEntry) %>">
 								<span class="text-muted">
 									<%= StringPool.BLANK %>
 								</span>
 							</c:when>
 							<c:otherwise>
-								<p class="mb-0"><%= commerceAccount.getName() %></p>
-								<p class="mb-0">#<%= commerceAccount.getCommerceAccountId() %></p>
+								<p class="mb-0"><%= accountEntry.getName() %></p>
+								<p class="mb-0">#<%= accountEntry.getAccountEntryId() %></p>
 							</c:otherwise>
 						</c:choose>
 					</commerce-ui:info-box>
@@ -122,7 +122,7 @@ CommerceOrder commerceOrder = commerceOrderContentDisplayContext.getCommerceOrde
 					CommerceAddress billingCommerceAddress = commerceOrder.getBillingAddress();
 					%>
 
-					<c:if test="<%= commerceOrderContentDisplayContext.hasViewBillingAddressPermission(permissionChecker, commerceAccount) %>">
+					<c:if test="<%= commerceOrderContentDisplayContext.hasViewBillingAddressPermission(permissionChecker, accountEntry) && (billingCommerceAddress != null) %>">
 						<commerce-ui:info-box
 							elementClasses="py-3"
 							title='<%= LanguageUtil.get(request, "billing-address") %>'
@@ -153,30 +153,32 @@ CommerceOrder commerceOrder = commerceOrderContentDisplayContext.getCommerceOrde
 					CommerceAddress shippingCommerceAddress = commerceOrder.getShippingAddress();
 					%>
 
-					<commerce-ui:info-box
-						elementClasses="py-3"
-						title='<%= LanguageUtil.get(request, "shipping-address") %>'
-					>
-						<p class="mb-0">
-							<%= shippingCommerceAddress.getStreet1() %>
-						</p>
-
-						<c:if test="<%= !Validator.isBlank(shippingCommerceAddress.getStreet2()) %>">
+					<c:if test="<%= shippingCommerceAddress != null %>">
+						<commerce-ui:info-box
+							elementClasses="py-3"
+							title='<%= LanguageUtil.get(request, "shipping-address") %>'
+						>
 							<p class="mb-0">
-								<%= shippingCommerceAddress.getStreet2() %>
+								<%= shippingCommerceAddress.getStreet1() %>
 							</p>
-						</c:if>
 
-						<c:if test="<%= !Validator.isBlank(shippingCommerceAddress.getStreet3()) %>">
+							<c:if test="<%= !Validator.isBlank(shippingCommerceAddress.getStreet2()) %>">
+								<p class="mb-0">
+									<%= shippingCommerceAddress.getStreet2() %>
+								</p>
+							</c:if>
+
+							<c:if test="<%= !Validator.isBlank(shippingCommerceAddress.getStreet3()) %>">
+								<p class="mb-0">
+									<%= shippingCommerceAddress.getStreet3() %>
+								</p>
+							</c:if>
+
 							<p class="mb-0">
-								<%= shippingCommerceAddress.getStreet3() %>
+								<%= commerceOrderContentDisplayContext.getDescriptiveAddress(shippingCommerceAddress) %>
 							</p>
-						</c:if>
-
-						<p class="mb-0">
-							<%= commerceOrderContentDisplayContext.getDescriptiveAddress(shippingCommerceAddress) %>
-						</p>
-					</commerce-ui:info-box>
+						</commerce-ui:info-box>
+					</c:if>
 
 					<commerce-ui:info-box
 						actionLabel='<%= (commerceOrderContentDisplayContext.hasManageCommerceOrderPaymentTermsPermission() && (commerceOrder.getPaymentCommerceTermEntryId() > 0)) ? LanguageUtil.get(request, "view") : null %>'

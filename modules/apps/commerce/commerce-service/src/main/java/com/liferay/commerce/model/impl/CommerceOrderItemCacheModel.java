@@ -80,7 +80,7 @@ public class CommerceOrderItemCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(127);
+		StringBundler sb = new StringBundler(135);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -114,6 +114,8 @@ public class CommerceOrderItemCacheModel
 		sb.append(CPMeasurementUnitId);
 		sb.append(", CProductId=");
 		sb.append(CProductId);
+		sb.append(", customerCommerceOrderItemId=");
+		sb.append(customerCommerceOrderItemId);
 		sb.append(", parentCommerceOrderItemId=");
 		sb.append(parentCommerceOrderItemId);
 		sb.append(", shippingAddressId=");
@@ -172,6 +174,8 @@ public class CommerceOrderItemCacheModel
 		sb.append(name);
 		sb.append(", priceManuallyAdjusted=");
 		sb.append(priceManuallyAdjusted);
+		sb.append(", priceOnApplication=");
+		sb.append(priceOnApplication);
 		sb.append(", printedNote=");
 		sb.append(printedNote);
 		sb.append(", promoPrice=");
@@ -180,6 +184,10 @@ public class CommerceOrderItemCacheModel
 		sb.append(promoPriceWithTaxAmount);
 		sb.append(", quantity=");
 		sb.append(quantity);
+		sb.append(", replacedCPInstanceId=");
+		sb.append(replacedCPInstanceId);
+		sb.append(", replacedSku=");
+		sb.append(replacedSku);
 		sb.append(", requestedDeliveryDate=");
 		sb.append(requestedDeliveryDate);
 		sb.append(", shipSeparately=");
@@ -267,6 +275,8 @@ public class CommerceOrderItemCacheModel
 		commerceOrderItemImpl.setCPInstanceId(CPInstanceId);
 		commerceOrderItemImpl.setCPMeasurementUnitId(CPMeasurementUnitId);
 		commerceOrderItemImpl.setCProductId(CProductId);
+		commerceOrderItemImpl.setCustomerCommerceOrderItemId(
+			customerCommerceOrderItemId);
 		commerceOrderItemImpl.setParentCommerceOrderItemId(
 			parentCommerceOrderItemId);
 		commerceOrderItemImpl.setShippingAddressId(shippingAddressId);
@@ -345,6 +355,7 @@ public class CommerceOrderItemCacheModel
 		}
 
 		commerceOrderItemImpl.setPriceManuallyAdjusted(priceManuallyAdjusted);
+		commerceOrderItemImpl.setPriceOnApplication(priceOnApplication);
 
 		if (printedNote == null) {
 			commerceOrderItemImpl.setPrintedNote("");
@@ -357,6 +368,14 @@ public class CommerceOrderItemCacheModel
 		commerceOrderItemImpl.setPromoPriceWithTaxAmount(
 			promoPriceWithTaxAmount);
 		commerceOrderItemImpl.setQuantity(quantity);
+		commerceOrderItemImpl.setReplacedCPInstanceId(replacedCPInstanceId);
+
+		if (replacedSku == null) {
+			commerceOrderItemImpl.setReplacedSku("");
+		}
+		else {
+			commerceOrderItemImpl.setReplacedSku(replacedSku);
+		}
 
 		if (requestedDeliveryDate == Long.MIN_VALUE) {
 			commerceOrderItemImpl.setRequestedDeliveryDate(null);
@@ -437,6 +456,8 @@ public class CommerceOrderItemCacheModel
 
 		CProductId = objectInput.readLong();
 
+		customerCommerceOrderItemId = objectInput.readLong();
+
 		parentCommerceOrderItemId = objectInput.readLong();
 
 		shippingAddressId = objectInput.readLong();
@@ -480,11 +501,16 @@ public class CommerceOrderItemCacheModel
 		name = objectInput.readUTF();
 
 		priceManuallyAdjusted = objectInput.readBoolean();
+
+		priceOnApplication = objectInput.readBoolean();
 		printedNote = objectInput.readUTF();
 		promoPrice = (BigDecimal)objectInput.readObject();
 		promoPriceWithTaxAmount = (BigDecimal)objectInput.readObject();
 
 		quantity = objectInput.readInt();
+
+		replacedCPInstanceId = objectInput.readLong();
+		replacedSku = objectInput.readUTF();
 		requestedDeliveryDate = objectInput.readLong();
 
 		shipSeparately = objectInput.readBoolean();
@@ -557,6 +583,8 @@ public class CommerceOrderItemCacheModel
 
 		objectOutput.writeLong(CProductId);
 
+		objectOutput.writeLong(customerCommerceOrderItemId);
+
 		objectOutput.writeLong(parentCommerceOrderItemId);
 
 		objectOutput.writeLong(shippingAddressId);
@@ -627,6 +655,8 @@ public class CommerceOrderItemCacheModel
 
 		objectOutput.writeBoolean(priceManuallyAdjusted);
 
+		objectOutput.writeBoolean(priceOnApplication);
+
 		if (printedNote == null) {
 			objectOutput.writeUTF("");
 		}
@@ -638,6 +668,16 @@ public class CommerceOrderItemCacheModel
 		objectOutput.writeObject(promoPriceWithTaxAmount);
 
 		objectOutput.writeInt(quantity);
+
+		objectOutput.writeLong(replacedCPInstanceId);
+
+		if (replacedSku == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(replacedSku);
+		}
+
 		objectOutput.writeLong(requestedDeliveryDate);
 
 		objectOutput.writeBoolean(shipSeparately);
@@ -697,6 +737,7 @@ public class CommerceOrderItemCacheModel
 	public long CPInstanceId;
 	public long CPMeasurementUnitId;
 	public long CProductId;
+	public long customerCommerceOrderItemId;
 	public long parentCommerceOrderItemId;
 	public long shippingAddressId;
 	public BigDecimal decimalQuantity;
@@ -726,10 +767,13 @@ public class CommerceOrderItemCacheModel
 	public long maxSubscriptionCycles;
 	public String name;
 	public boolean priceManuallyAdjusted;
+	public boolean priceOnApplication;
 	public String printedNote;
 	public BigDecimal promoPrice;
 	public BigDecimal promoPriceWithTaxAmount;
 	public int quantity;
+	public long replacedCPInstanceId;
+	public String replacedSku;
 	public long requestedDeliveryDate;
 	public boolean shipSeparately;
 	public boolean shippable;

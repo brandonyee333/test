@@ -16,8 +16,8 @@ package com.liferay.commerce.account.web.internal.display.context;
 
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.service.AccountEntryService;
-import com.liferay.commerce.account.constants.CommerceAccountActionKeys;
 import com.liferay.commerce.account.web.internal.display.context.helper.CommerceAccountRelRequestHelper;
+import com.liferay.commerce.constants.CommerceAccountActionKeys;
 import com.liferay.commerce.model.CommerceShippingMethod;
 import com.liferay.commerce.model.CommerceShippingOptionAccountEntryRel;
 import com.liferay.commerce.product.constants.CommerceChannelAccountEntryRelConstants;
@@ -96,7 +96,7 @@ public class CommerceAccountDisplayContext {
 		_userService = userService;
 
 		long accountEntryId = ParamUtil.getLong(
-			_httpServletRequest, "accountEntryId");
+			httpServletRequest, "accountEntryId");
 
 		_accountEntry = _accountEntryService.fetchAccountEntry(accountEntryId);
 
@@ -104,7 +104,7 @@ public class CommerceAccountDisplayContext {
 			httpServletRequest);
 
 		long commerceChannelId = ParamUtil.getLong(
-			_httpServletRequest, "commerceChannelId");
+			httpServletRequest, "commerceChannelId");
 
 		_commerceChannel = _commerceChannelService.fetchCommerceChannel(
 			commerceChannelId);

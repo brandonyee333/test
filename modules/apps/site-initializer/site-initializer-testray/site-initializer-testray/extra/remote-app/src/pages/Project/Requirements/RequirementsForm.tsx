@@ -13,14 +13,16 @@
  */
 
 import ClayForm from '@clayui/form';
-import {FocusEvent, useEffect} from 'react';
+import {FocusEvent, useEffect, useMemo} from 'react';
 import {useForm} from 'react-hook-form';
 import {useOutletContext, useParams} from 'react-router-dom';
 import {KeyedMutator} from 'swr';
+import {withPagePermission} from '~/hoc/withPagePermission';
 
 import Form from '../../../components/Form';
 import Container from '../../../components/Layout/Container';
 import MarkdownPreview from '../../../components/Markdown';
+import SearchBuilder from '../../../core/SearchBuilder';
 import {useHeader} from '../../../hooks';
 import {useFetch} from '../../../hooks/useFetch';
 import useFormActions from '../../../hooks/useFormActions';
@@ -30,10 +32,8 @@ import {
 	APIResponse,
 	TestrayComponent,
 	TestrayRequirement,
-	createRequirement,
-	updateRequirement,
+	testrayRequirementsImpl,
 } from '../../../services/rest';
-import {searchUtil} from '../../../util/search';
 
 type RequirementsFormType = typeof yupSchema.requirement.__outputType;
 
@@ -57,14 +57,14 @@ const RequirementsForm = () => {
 	const {
 		form: {onClose, onError, onSave, onSubmit},
 	} = useFormActions();
-	useHeader({tabs: [], timeout: 100});
+	useHeader({headerActions: {actions: []}, tabs: [], timeout: 150});
 	const {projectId, requirementId} = useParams();
 	const {
 		mutateTestrayRequirement,
 		testrayRequirement,
 	}: OutletContext = useOutletContext();
 	const {
-		formState: {errors},
+		formState: {errors, isSubmitting},
 		handleSubmit,
 		register,
 		setValue,
@@ -73,28 +73,32 @@ const RequirementsForm = () => {
 		defaultValues: requirementId ? (testrayRequirement as any) : {},
 		resolver: yupResolver(yupSchema.requirement),
 	});
+
 	const {data: testrayComponentsData} = useFetch<
 		APIResponse<TestrayComponent>
-	>(
-		`/components?fields=id,name&filter=${searchUtil.eq(
-			'projectId',
-			projectId as string
-		)}&pageSize=1000`
-	);
+	>('/components', {
+		params: {
+			fields: 'id,name',
+			filter: SearchBuilder.eq('projectId', projectId as string),
+			pageSize: 1000,
+		},
+	});
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const testrayComponents = testrayComponentsData?.items || [];
+	const testrayComponents = useMemo(
+		() => testrayComponentsData?.items ?? [],
+		[testrayComponentsData?.items]
+	);
 
 	const _onSubmit = (form: RequirementsFormType) => {
 		if (!form.id) {
 			form.key = `R-${Math.ceil(Math.random() * 1000)}`;
 		}
 
-		onSubmit(
+		return onSubmit(
 			{...form, projectId},
 			{
-				create: createRequirement,
-				update: updateRequirement,
+				create: (data) => testrayRequirementsImpl.create(data),
+				update: (data, id) => testrayRequirementsImpl.update(data, id),
 			}
 		)
 			.then(mutateTestrayRequirement)
@@ -194,10 +198,14 @@ const RequirementsForm = () => {
 				<Form.Footer
 					onClose={onClose}
 					onSubmit={handleSubmit(_onSubmit)}
+					primaryButtonProps={{loading: isSubmitting}}
 				/>
 			</ClayForm>
 		</Container>
 	);
 };
 
-export default RequirementsForm;
+export default withPagePermission(RequirementsForm, {
+	createPath: '/project/:projectId/requirements/create',
+	restImpl: testrayRequirementsImpl,
+});

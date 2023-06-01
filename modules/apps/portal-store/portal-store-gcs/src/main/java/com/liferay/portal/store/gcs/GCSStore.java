@@ -25,18 +25,22 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.BucketInfo;
+import com.google.cloud.storage.CopyWriter;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileException;
 import com.liferay.document.library.kernel.store.Store;
+import com.liferay.document.library.kernel.store.StoreArea;
+import com.liferay.document.library.kernel.store.StoreAreaProcessor;
 import com.liferay.document.library.kernel.util.comparator.VersionNumberComparator;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -49,12 +53,14 @@ import java.io.InputStream;
 
 import java.nio.channels.Channels;
 
+import java.time.Instant;
+import java.time.temporal.TemporalAmount;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -70,11 +76,11 @@ import org.threeten.bp.Duration;
  */
 @Component(
 	configurationPid = "com.liferay.portal.store.gcs.configuration.GCSStoreConfiguration",
-	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
+	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	property = "store.type=com.liferay.portal.store.gcs.GCSStore",
-	service = Store.class
+	service = {Store.class, StoreAreaProcessor.class}
 )
-public class GCSStore implements Store {
+public class GCSStore implements Store, StoreAreaProcessor {
 
 	@Override
 	public void addFile(
@@ -99,6 +105,96 @@ public class GCSStore implements Store {
 		}
 		catch (IOException ioException) {
 			throw new PortalException("Unable to add file", ioException);
+		}
+	}
+
+	@Override
+	public String cleanUpDeletedStoreArea(
+		long companyId, int deletionQuota, TemporalAmount temporalAmount,
+		String startOffset) {
+
+		if (!FeatureFlagManagerUtil.isEnabled("LPS-174816")) {
+			return StringPool.BLANK;
+		}
+
+		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
+		List<BlobId> deletedBlobIds = new ArrayList<>();
+		int deletedBlobQuota = Math.max(deletionQuota, 1);
+		Instant instant = Instant.now();
+		String lastVisitedBlobName = startOffset;
+
+		int pageSize = deletedBlobQuota * 2;
+		int visitedPageLimit = Math.max(deletedBlobQuota / 10, 10);
+
+		while ((deletedBlobQuota > 0) && (visitedPageLimit > 0)) {
+			boolean emptyPage = true;
+
+			Page<Blob> blobPage = bucket.list(
+				Storage.BlobListOption.fields(
+					Storage.BlobField.ID, Storage.BlobField.NAME,
+					Storage.BlobField.UPDATED),
+				Storage.BlobListOption.pageSize(pageSize),
+				Storage.BlobListOption.prefix(
+					StoreArea.DELETED.getPath(companyId)),
+				Storage.BlobListOption.startOffset(lastVisitedBlobName));
+
+			for (Blob blob : blobPage.getValues()) {
+				Instant updateTimeInstant = Instant.ofEpochMilli(
+					blob.getUpdateTime());
+
+				Instant actualDeletionInstant = updateTimeInstant.plus(
+					temporalAmount);
+
+				if (actualDeletionInstant.isBefore(instant)) {
+					deletedBlobIds.add(blob.getBlobId());
+
+					deletedBlobQuota--;
+				}
+
+				emptyPage = false;
+
+				lastVisitedBlobName = blob.getName();
+			}
+
+			if (deletedBlobIds.size() >= _DELETED_BATCH_SIZE) {
+				_gcsStore.delete(deletedBlobIds);
+
+				deletedBlobIds.clear();
+			}
+
+			if (emptyPage) {
+				lastVisitedBlobName = StringPool.BLANK;
+
+				break;
+			}
+
+			visitedPageLimit--;
+		}
+
+		if (!deletedBlobIds.isEmpty()) {
+			_gcsStore.delete(deletedBlobIds);
+		}
+
+		return lastVisitedBlobName;
+	}
+
+	@Override
+	public void copy(String sourceFileName, String destinationFileName) {
+		if (!FeatureFlagManagerUtil.isEnabled("LPS-174816")) {
+			return;
+		}
+
+		CopyWriter copyWriter = _gcsStore.copy(
+			Storage.CopyRequest.newBuilder(
+			).setSource(
+				_gcsStoreConfiguration.bucketName(), sourceFileName
+			).setTarget(
+				BlobId.of(
+					_gcsStoreConfiguration.bucketName(), destinationFileName)
+			).build());
+
+		while (!copyWriter.isDone()) {
+			copyWriter.copyChunk();
 		}
 	}
 
@@ -153,19 +249,16 @@ public class GCSStore implements Store {
 	public String[] getFileNames(
 		long companyId, long repositoryId, String dirName) {
 
-		Stream<String> stream = Arrays.stream(
-			_getFilePaths(companyId, repositoryId, dirName));
+		String prefix =
+			StoreArea.getCurrentStoreAreaPath(companyId, repositoryId) +
+				StringPool.SLASH;
 
-		String prefix = StringBundler.concat(
-			companyId, StringPool.SLASH, repositoryId, StringPool.SLASH);
-
-		return stream.map(
+		return TransformUtil.transform(
+			_getFilePaths(companyId, repositoryId, dirName),
 			filePath -> filePath.substring(
 				filePath.indexOf(prefix) + prefix.length(),
-				filePath.lastIndexOf(StringPool.SLASH))
-		).toArray(
-			String[]::new
-		);
+				filePath.lastIndexOf(StringPool.SLASH)),
+			String.class);
 	}
 
 	@Override
@@ -192,18 +285,14 @@ public class GCSStore implements Store {
 	public String[] getFileVersions(
 		long companyId, long repositoryId, String fileName) {
 
-		Stream<String> stream = Arrays.stream(
-			_getFilePaths(companyId, repositoryId, fileName));
-
-		return stream.map(
+		return TransformUtil.transform(
+			_getFilePaths(companyId, repositoryId, fileName),
 			path -> {
 				String[] parts = StringUtil.split(path, CharPool.SLASH);
 
 				return parts[parts.length - 1];
-			}
-		).toArray(
-			String[]::new
-		);
+			},
+			String.class);
 	}
 
 	@Override
@@ -271,13 +360,14 @@ public class GCSStore implements Store {
 	private String _getFileKey(
 		long companyId, long repositoryId, String fileName) {
 
-		return StringBundler.concat(
-			companyId, StringPool.SLASH, repositoryId, StringPool.SLASH,
-			fileName);
+		return StoreArea.getCurrentStoreAreaPath(
+			companyId, repositoryId, fileName);
 	}
 
 	private String[] _getFilePaths(
 		long companyId, long repositoryId, String dirName) {
+
+		List<String> filePaths = new ArrayList<>();
 
 		Bucket bucket = _gcsStore.get(_gcsStoreConfiguration.bucketName());
 
@@ -296,23 +386,17 @@ public class GCSStore implements Store {
 
 		Iterable<Blob> blobs = blobPage.iterateAll();
 
-		Stream<Blob> blobStream = StreamSupport.stream(
-			blobs.spliterator(), false);
+		blobs.forEach(blob -> filePaths.add(blob.getName()));
 
-		return blobStream.map(
-			BlobInfo::getName
-		).toArray(
-			String[]::new
-		);
+		return filePaths.toArray(new String[0]);
 	}
 
 	private String _getFileVersionKey(
 		long companyId, long repositoryId, String fileName,
 		String versionLabel) {
 
-		return StringBundler.concat(
-			companyId, StringPool.SLASH, repositoryId, StringPool.SLASH,
-			fileName, StringPool.SLASH, versionLabel);
+		return StoreArea.getCurrentStoreAreaPath(
+			companyId, repositoryId, fileName, versionLabel);
 	}
 
 	private String _getHeadVersionLabel(
@@ -353,7 +437,7 @@ public class GCSStore implements Store {
 	}
 
 	private String _getRepositoryKey(long companyId, long repositoryId) {
-		return companyId + StringPool.SLASH + repositoryId;
+		return StoreArea.getCurrentStoreAreaPath(companyId, repositoryId);
 	}
 
 	private WriteChannel _getWriteChannel(BlobInfo blobInfo) {
@@ -435,6 +519,8 @@ public class GCSStore implements Store {
 
 		_gcsStore = storageOptions.getService();
 	}
+
+	private static final int _DELETED_BATCH_SIZE = 10;
 
 	private static final Log _log = LogFactoryUtil.getLog(GCSStore.class);
 

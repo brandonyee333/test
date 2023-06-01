@@ -176,6 +176,15 @@ public class StyleBookManagementToolbarDisplayContext
 	}
 
 	@Override
+	public Boolean isDisabled() {
+		if (getItemsTotal() > 1) {
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
 	public Boolean isShowCreationMenu() {
 		if (StyleBookPermission.contains(
 				_themeDisplay.getPermissionChecker(),
@@ -186,11 +195,6 @@ public class StyleBookManagementToolbarDisplayContext
 		}
 
 		return false;
-	}
-
-	@Override
-	protected String[] getNavigationKeys() {
-		return new String[] {"all"};
 	}
 
 	@Override

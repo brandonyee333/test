@@ -14,6 +14,7 @@
 
 package com.liferay.object.admin.rest.internal.resource.v1_0;
 
+import com.liferay.notification.service.NotificationTemplateLocalService;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectAction;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.dto.v1_0.util.ObjectActionUtil;
@@ -119,6 +120,7 @@ public class ObjectActionResourceImpl
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
 				searchContext.setAttribute(Field.NAME, search);
+				searchContext.setAttribute("label", search);
 				searchContext.setAttribute(
 					"objectDefinitionId", objectDefinitionId);
 				searchContext.setCompanyId(contextCompany.getCompanyId());
@@ -211,8 +213,12 @@ public class ObjectActionResourceImpl
 					objectAction.getObjectDefinitionId())
 			).build(),
 			contextAcceptLanguage.getPreferredLocale(),
-			_objectDefinitionLocalService, objectAction);
+			_notificationTemplateLocalService, _objectDefinitionLocalService,
+			objectAction);
 	}
+
+	@Reference
+	private NotificationTemplateLocalService _notificationTemplateLocalService;
 
 	@Reference
 	private ObjectActionService _objectActionService;

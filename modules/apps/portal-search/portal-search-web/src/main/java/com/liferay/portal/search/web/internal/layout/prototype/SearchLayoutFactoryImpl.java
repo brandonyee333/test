@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.web.internal.layout.prototype;
 
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -36,17 +37,11 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.search.web.layout.prototype.SearchLayoutPrototypeCustomizer;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Adam Brandizzi
@@ -62,22 +57,21 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 			return;
 		}
 
-		Optional<LayoutPrototype> optional = _findSearchLayoutPrototype(
+		LayoutPrototype layoutPrototype = _findSearchLayoutPrototype(
 			group.getCompanyId());
 
-		optional.ifPresent(
-			layoutPrototype -> createSearchLayout(group, layoutPrototype));
+		if (layoutPrototype != null) {
+			createSearchLayout(group, layoutPrototype);
+		}
 	}
 
 	@Override
-	public void createSearchLayoutPrototype(Company company) {
+	public Layout createSearchLayoutPrototype(Company company) {
 		long companyId = company.getCompanyId();
 
 		try {
-			createSearchLayoutPrototype(
-				companyId, userLocalService.getDefaultUserId(companyId),
-				_getSearchTitleLocalizationMap(),
-				_getSearchDescriptionLocalizationMap());
+			return createSearchLayoutPrototype(
+				companyId, userLocalService.getGuestUserId(companyId));
 		}
 		catch (RuntimeException runtimeException) {
 			throw runtimeException;
@@ -139,47 +133,62 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 		}
 	}
 
-	protected void createSearchLayoutPrototype(
-			long companyId, long defaultUserId, Map<Locale, String> nameMap,
-			Map<Locale, String> descriptionMap)
+	protected Layout createSearchLayoutPrototype(
+			long companyId, long guestUserId)
 		throws Exception {
 
-		String layoutTemplateId = getLayoutTemplateId();
+		for (LayoutPrototype layoutPrototype :
+				layoutPrototypeLocalService.search(
+					companyId, null, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
 
-		List<LayoutPrototype> layoutPrototypes =
-			layoutPrototypeLocalService.search(
-				companyId, null, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			Locale defaultLocale = LocaleUtil.fromLanguageId(
+				_localization.getDefaultLanguageId(layoutPrototype.getName()));
 
-		Layout layout = _addLayoutPrototype(
-			companyId, defaultUserId, nameMap, descriptionMap, layoutTemplateId,
-			layoutPrototypes);
+			String name = LanguageResources.getMessage(
+				defaultLocale, "layout-prototype-search-title");
 
-		if (layout == null) {
-			return;
+			if ((name == null) ||
+				name.equals(layoutPrototype.getName(defaultLocale))) {
+
+				return null;
+			}
 		}
+
+		LayoutPrototype layoutPrototype =
+			layoutPrototypeLocalService.addLayoutPrototype(
+				guestUserId, companyId, _getSearchTitleLocalizationMap(),
+				_getSearchDescriptionLocalizationMap(), true,
+				new ServiceContext());
+
+		Layout layout = layoutPrototype.getLayout();
+
+		LayoutTypePortlet layoutTypePortlet =
+			(LayoutTypePortlet)layout.getLayoutType();
+
+		layoutTypePortlet.setLayoutTemplateId(0, getLayoutTemplateId(), false);
 
 		customize(layout);
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Search Page Template created");
 		}
+
+		return layout;
 	}
 
 	protected void customize(Layout layout) throws Exception {
-		if (searchLayoutPrototypeCustomizer != null) {
-			searchLayoutPrototypeCustomizer.customize(layout);
-		}
-		else {
-			_defaultSearchLayoutPrototypeCustomizer.customize(layout);
-		}
+		SearchLayoutPrototypeCustomizer searchLayoutPrototypeCustomizer =
+			_getSearchLayoutPrototypeCustomizer();
+
+		searchLayoutPrototypeCustomizer.customize(layout);
 	}
 
 	protected String getLayoutTemplateId() {
-		if (searchLayoutPrototypeCustomizer != null) {
-			return searchLayoutPrototypeCustomizer.getLayoutTemplateId();
-		}
+		SearchLayoutPrototypeCustomizer searchLayoutPrototypeCustomizer =
+			_getSearchLayoutPrototypeCustomizer();
 
-		return _defaultSearchLayoutPrototypeCustomizer.getLayoutTemplateId();
+		return searchLayoutPrototypeCustomizer.getLayoutTemplateId();
 	}
 
 	@Reference
@@ -191,68 +200,25 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 	@Reference
 	protected LayoutPrototypeLocalService layoutPrototypeLocalService;
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected volatile SearchLayoutPrototypeCustomizer
-		searchLayoutPrototypeCustomizer;
-
 	@Reference
 	protected UserLocalService userLocalService;
 
-	private Layout _addLayoutPrototype(
-			long companyId, long defaultUserId, Map<Locale, String> nameMap,
-			Map<Locale, String> descriptionMap, String layoutTemplateId,
-			List<LayoutPrototype> layoutPrototypes)
-		throws Exception {
-
-		for (LayoutPrototype layoutPrototype : layoutPrototypes) {
-			Locale defaultLocale = LocaleUtil.fromLanguageId(
-				_localization.getDefaultLanguageId(layoutPrototype.getName()));
-
-			String name = nameMap.get(defaultLocale);
-
-			if ((name == null) ||
-				name.equals(layoutPrototype.getName(defaultLocale))) {
-
-				return null;
-			}
-		}
-
-		LayoutPrototype layoutPrototype =
-			layoutPrototypeLocalService.addLayoutPrototype(
-				defaultUserId, companyId, nameMap, descriptionMap, true,
-				new ServiceContext());
-
-		Layout layout = layoutPrototype.getLayout();
-
-		LayoutTypePortlet layoutTypePortlet =
-			(LayoutTypePortlet)layout.getLayoutType();
-
-		layoutTypePortlet.setLayoutTemplateId(0, layoutTemplateId, false);
-
-		return layout;
-	}
-
-	private Optional<LayoutPrototype> _findSearchLayoutPrototype(
-		long companyId) {
-
+	private LayoutPrototype _findSearchLayoutPrototype(long companyId) {
 		Map<Locale, String> searchTitleLocalizationMap =
 			_getSearchTitleLocalizationMap();
 
-		List<LayoutPrototype> layoutPrototypes =
-			layoutPrototypeLocalService.getLayoutPrototypes(
-				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		for (LayoutPrototype layoutPrototype :
+				layoutPrototypeLocalService.getLayoutPrototypes(
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
 
-		Stream<LayoutPrototype> stream1 = layoutPrototypes.stream();
+			if (_isSearchLayoutPrototype(
+					layoutPrototype, companyId, searchTitleLocalizationMap)) {
 
-		Stream<LayoutPrototype> stream2 = stream1.filter(
-			layoutPrototype -> _isSearchLayoutPrototype(
-				layoutPrototype, companyId, searchTitleLocalizationMap));
+				return layoutPrototype;
+			}
+		}
 
-		return stream2.findAny();
+		return null;
 	}
 
 	private Map<Locale, String> _getFriendlyURLMap() {
@@ -266,6 +232,19 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 
 	private Map<Locale, String> _getSearchDescriptionLocalizationMap() {
 		return _getLocalizationMap("layout-prototype-search-description");
+	}
+
+	private SearchLayoutPrototypeCustomizer
+		_getSearchLayoutPrototypeCustomizer() {
+
+		SearchLayoutPrototypeCustomizer searchLayoutPrototypeCustomizer =
+			_searchLayoutPrototypeCustomizerSnapshot.get();
+
+		if (searchLayoutPrototypeCustomizer != null) {
+			return searchLayoutPrototypeCustomizer;
+		}
+
+		return _defaultSearchLayoutPrototypeCustomizer;
 	}
 
 	private Map<Locale, String> _getSearchTitleLocalizationMap() {
@@ -312,6 +291,11 @@ public class SearchLayoutFactoryImpl implements SearchLayoutFactory {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SearchLayoutFactoryImpl.class);
+
+	private static final Snapshot<SearchLayoutPrototypeCustomizer>
+		_searchLayoutPrototypeCustomizerSnapshot = new Snapshot<>(
+			SearchLayoutFactoryImpl.class,
+			SearchLayoutPrototypeCustomizer.class, null, true);
 
 	private final SearchLayoutPrototypeCustomizer
 		_defaultSearchLayoutPrototypeCustomizer =

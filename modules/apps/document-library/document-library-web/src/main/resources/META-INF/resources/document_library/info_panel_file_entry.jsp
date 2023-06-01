@@ -125,7 +125,7 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 					>
 						<div class="component-title username">
 							<c:if test="<%= owner != null %>">
-								<a href="<%= owner.isDefaultUser() ? StringPool.BLANK : owner.getDisplayURL(themeDisplay) %>"><%= HtmlUtil.escape(owner.getFullName()) %></a>
+								<a href="<%= owner.isGuestUser() ? StringPool.BLANK : owner.getDisplayURL(themeDisplay) %>"><%= HtmlUtil.escape(owner.getFullName()) %></a>
 							</c:if>
 						</div>
 
@@ -535,7 +535,7 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 
 				<%
 				try {
-					List<DDMStructure> ddmStructures = DDMStructureManagerUtil.getClassStructures(company.getCompanyId(), PortalUtil.getClassNameId(RawMetadataProcessor.class), DDMStructureManager.STRUCTURE_COMPARATOR_STRUCTURE_KEY);
+					List<DDMStructure> ddmStructures = DDMStructureLocalServiceUtil.getClassStructures(company.getCompanyId(), PortalUtil.getClassNameId(RawMetadataProcessor.class), StructureStructureKeyComparator.INSTANCE_DESCENDING);
 
 					for (DDMStructure ddmStructure : ddmStructures) {
 						DDMFormValues ddmFormValues = null;

@@ -15,7 +15,9 @@
 package com.liferay.oauth2.provider.internal.configuration;
 
 import com.liferay.oauth2.provider.model.OAuth2Application;
+import com.liferay.oauth2.provider.scope.spi.scope.finder.ScopeFinder;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
+import com.liferay.osgi.util.service.Snapshot;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
@@ -29,12 +31,13 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.osgi.service.component.ComponentConstants;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Raymond Augé
@@ -60,6 +63,9 @@ public abstract class BaseConfigurationFactory {
 			oAuth2Application);
 
 		if (Validator.isNotNull(_configMapName)) {
+			PortalK8sConfigMapModifier portalK8sConfigMapModifier =
+				_portalK8sConfigMapModifierSnapshot.get();
+
 			portalK8sConfigMapModifier.modifyConfigMap(
 				configMapModel -> _extensionProperties.forEach(
 					configMapModel.data()::remove),
@@ -67,7 +73,23 @@ public abstract class BaseConfigurationFactory {
 		}
 	}
 
+	protected String getHomePageURL(String homePageURL, String baseURL) {
+		if (Validator.isNull(homePageURL)) {
+			return baseURL;
+		}
+
+		return homePageURL;
+	}
+
 	protected abstract Log getLog();
+
+	protected String getName(String name, String defaultValue) {
+		if (Validator.isNotNull(name)) {
+			return name;
+		}
+
+		return defaultValue;
+	}
 
 	protected String getServiceAddress(Company company) {
 		return Http.HTTPS_WITH_SLASH.concat(company.getVirtualHostname());
@@ -81,6 +103,9 @@ public abstract class BaseConfigurationFactory {
 
 		String serviceId = GetterUtil.getString(
 			properties.get("ext.lxc.liferay.com.serviceId"));
+
+		PortalK8sConfigMapModifier portalK8sConfigMapModifier =
+			_portalK8sConfigMapModifierSnapshot.get();
 
 		if ((portalK8sConfigMapModifier == null) ||
 			Validator.isNull(serviceId)) {
@@ -135,11 +160,15 @@ public abstract class BaseConfigurationFactory {
 	@Reference
 	protected OAuth2ApplicationLocalService oAuth2ApplicationLocalService;
 
-	@Reference(cardinality = ReferenceCardinality.OPTIONAL)
-	protected PortalK8sConfigMapModifier portalK8sConfigMapModifier;
+	@Reference(policyOption = ReferencePolicyOption.GREEDY)
+	protected Collection<ScopeFinder> scopeFinders;
 
 	@Reference
 	protected UserLocalService userLocalService;
+
+	private static final Snapshot<PortalK8sConfigMapModifier>
+		_portalK8sConfigMapModifierSnapshot = new Snapshot<>(
+			BaseConfigurationFactory.class, PortalK8sConfigMapModifier.class);
 
 	private volatile String _configMapName;
 	private volatile Map<String, String> _extensionProperties;

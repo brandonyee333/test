@@ -23,6 +23,7 @@ import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.StorageType;
 import com.liferay.dynamic.data.mapping.util.DDM;
+import com.liferay.osgi.util.configuration.ConfigurationPersistenceUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
@@ -38,11 +39,9 @@ import com.liferay.portal.kernel.util.Portal;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -58,6 +57,11 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 	extends BasePortalInstanceLifecycleListener {
 
 	@Override
+	public long getLastModifiedTime() {
+		return _lastModifiedTime;
+	}
+
+	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
 		if (!_dlConfiguration.addDefaultStructures()) {
 			return;
@@ -67,13 +71,19 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 	}
 
 	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
+	protected void activate(Map<String, Object> properties) throws Exception {
+		_lastModifiedTime = ConfigurationPersistenceUtil.update(
+			this, properties);
+
 		_dlConfiguration = ConfigurableUtil.createConfigurable(
 			DLConfiguration.class, properties);
 	}
 
 	private void _addDLRawMetadataStructures(long companyId) throws Exception {
+		String name =
+			com.liferay.portal.kernel.metadata.RawMetadataProcessor.
+				TIKA_RAW_METADATA;
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		serviceContext.setAddGroupPermissions(true);
@@ -83,44 +93,36 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 
 		serviceContext.setScopeGroupId(group.getGroupId());
 
-		long defaultUserId = _userLocalService.getDefaultUserId(companyId);
+		long guestUserId = _userLocalService.getGuestUserId(companyId);
 
-		serviceContext.setUserId(defaultUserId);
+		serviceContext.setUserId(guestUserId);
 
-		Locale locale = _portal.getSiteDefaultLocale(group.getGroupId());
+		if (!_ddmStructureLocalService.hasStructure(
+				group.getGroupId(),
+				_portal.getClassNameId(RawMetadataProcessor.class), name)) {
 
-		Map<String, Set<String>> fieldNames =
-			RawMetadataProcessorUtil.getFieldNames();
+			Locale locale = _portal.getSiteDefaultLocale(group.getGroupId());
 
-		for (Map.Entry<String, Set<String>> entry : fieldNames.entrySet()) {
-			String name = entry.getKey();
+			Map<Locale, String> nameMap = HashMapBuilder.put(
+				locale, name
+			).build();
 
-			if (!_ddmStructureLocalService.hasStructure(
-					group.getGroupId(),
-					_portal.getClassNameId(RawMetadataProcessor.class), name)) {
+			Map<Locale, String> descriptionMap = HashMapBuilder.put(
+				locale, name
+			).build();
 
-				Map<Locale, String> nameMap = HashMapBuilder.put(
-					locale, name
-				).build();
+			DDMForm ddmForm = DDMFormUtil.buildDDMForm(
+				RawMetadataProcessorUtil.getFieldNames(), locale);
 
-				Map<Locale, String> descriptionMap = HashMapBuilder.put(
-					locale, name
-				).build();
+			DDMFormLayout ddmFormLayout = _ddm.getDefaultDDMFormLayout(ddmForm);
 
-				DDMForm ddmForm = DDMFormUtil.buildDDMForm(
-					entry.getValue(), locale);
-
-				DDMFormLayout ddmFormLayout = _ddm.getDefaultDDMFormLayout(
-					ddmForm);
-
-				_ddmStructureLocalService.addStructure(
-					defaultUserId, group.getGroupId(),
-					DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID,
-					_portal.getClassNameId(RawMetadataProcessor.class), name,
-					nameMap, descriptionMap, ddmForm, ddmFormLayout,
-					StorageType.DEFAULT.toString(),
-					DDMStructureConstants.TYPE_DEFAULT, serviceContext);
-			}
+			_ddmStructureLocalService.addStructure(
+				guestUserId, group.getGroupId(),
+				DDMStructureConstants.DEFAULT_PARENT_STRUCTURE_ID,
+				_portal.getClassNameId(RawMetadataProcessor.class), name,
+				nameMap, descriptionMap, ddmForm, ddmFormLayout,
+				StorageType.DEFAULT.toString(),
+				DDMStructureConstants.TYPE_DEFAULT, serviceContext);
 		}
 	}
 
@@ -134,6 +136,8 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	private long _lastModifiedTime;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

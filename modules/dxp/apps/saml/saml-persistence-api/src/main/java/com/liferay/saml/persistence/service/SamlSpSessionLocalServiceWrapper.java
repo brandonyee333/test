@@ -15,6 +15,7 @@
 package com.liferay.saml.persistence.service;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 
 /**
  * Provides a wrapper for {@link SamlSpSessionLocalService}.
@@ -275,6 +276,14 @@ public class SamlSpSessionLocalServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.saml.persistence.model.SamlSpSession>
+		fetchSamlSpSessionsBySessionIndex(long companyId, String sessionIndex) {
+
+		return _samlSpSessionLocalService.fetchSamlSpSessionsBySessionIndex(
+			companyId, sessionIndex);
+	}
+
+	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
@@ -431,6 +440,11 @@ public class SamlSpSessionLocalServiceWrapper
 		com.liferay.saml.persistence.model.SamlSpSession samlSpSession) {
 
 		return _samlSpSessionLocalService.updateSamlSpSession(samlSpSession);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _samlSpSessionLocalService.getBasePersistence();
 	}
 
 	@Override

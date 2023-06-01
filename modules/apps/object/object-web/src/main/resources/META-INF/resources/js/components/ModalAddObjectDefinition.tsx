@@ -21,11 +21,13 @@ import {
 	API,
 	FormError,
 	Input,
+	REQUIRED_MSG,
 	Select,
 	useForm,
 } from '@liferay/object-js-components-web';
 import React, {useEffect, useState} from 'react';
 
+import {defaultLanguageId} from '../utils/constants';
 import {
 	firstLetterUppercase,
 	removeAllSpecialCharacters,
@@ -45,13 +47,30 @@ const ModalAddObjectDefinition: React.FC<IProps> = ({
 	apiURL,
 	observer,
 	onClose,
-	storageTypes,
+	storages,
 }) => {
+	const storageSortedByLabel = [...storages].sort(
+		(firstStorage, secondStorage) => {
+			const firstLabel = firstStorage.label.toLowerCase();
+			const secondLabel = secondStorage.label.toLowerCase();
+
+			if (firstLabel < secondLabel) {
+				return -1;
+			}
+			else if (firstLabel > secondLabel) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
+	);
+
 	const initialValues: TInitialValues = {
 		label: '',
 		name: undefined,
 		pluralLabel: '',
-		storageType: storageTypes[0],
+		storage: storageSortedByLabel[0],
 	};
 	const [error, setError] = useState<string>('');
 
@@ -59,9 +78,8 @@ const ModalAddObjectDefinition: React.FC<IProps> = ({
 		label,
 		name,
 		pluralLabel,
-		storageType,
+		storage,
 	}: TInitialValues) => {
-		const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId();
 		const objectDefinition: ObjectDefinition = {
 			label: {
 				[defaultLanguageId]: label,
@@ -75,7 +93,7 @@ const ModalAddObjectDefinition: React.FC<IProps> = ({
 		};
 
 		if (Liferay.FeatureFlags['LPS-135430']) {
-			objectDefinition.storageType = storageType.toLowerCase();
+			objectDefinition.storageType = storage.type;
 		}
 		try {
 			await API.save(apiURL, objectDefinition, 'POST');
@@ -92,13 +110,13 @@ const ModalAddObjectDefinition: React.FC<IProps> = ({
 		const errors: FormError<TInitialValues> = {};
 
 		if (!values.label) {
-			errors.label = Liferay.Language.get('required');
+			errors.label = REQUIRED_MSG;
 		}
 		if (!(values.name ?? values.label)) {
-			errors.name = Liferay.Language.get('required');
+			errors.name = REQUIRED_MSG;
 		}
 		if (!values.pluralLabel) {
-			errors.pluralLabel = Liferay.Language.get('required');
+			errors.pluralLabel = REQUIRED_MSG;
 		}
 
 		return errors;
@@ -111,9 +129,11 @@ const ModalAddObjectDefinition: React.FC<IProps> = ({
 	});
 
 	const selectedStorageType = (storageType: string) => {
-		return storageTypes.find(
-			(item) => item?.toLowerCase() === storageType?.toLowerCase()
+		const chooseStorage = storageSortedByLabel.find(
+			(currentStorage) => currentStorage.type === storageType
 		);
+
+		return chooseStorage?.type;
 	};
 
 	return (
@@ -165,18 +185,21 @@ const ModalAddObjectDefinition: React.FC<IProps> = ({
 							onChange={({target: {value}}) => {
 								setValues({
 									...values,
-									storageType: storageTypes.find(
-										(storageType) => storageType === value
+									storage: storageSortedByLabel.find(
+										(storage) => storage.type === value
 									),
 								});
 							}}
-							options={storageTypes.map((storageType) => {
-								return {label: storageType};
+							options={storageSortedByLabel.map((storage) => {
+								return {
+									key: storage.type,
+									label: storage.label,
+								};
 							})}
 							tooltip={Liferay.Language.get(
 								'object-definition-storage-type-tooltip'
 							)}
-							value={selectedStorageType(values.storageType)}
+							value={selectedStorageType(values.storage.type)}
 						/>
 					)}
 				</ClayModal.Body>
@@ -202,18 +225,23 @@ const ModalAddObjectDefinition: React.FC<IProps> = ({
 	);
 };
 
+type Storage = {
+	label: string;
+	type: string;
+};
+
 interface IProps extends React.HTMLAttributes<HTMLElement> {
 	apiURL: string;
 	observer: Observer;
 	onClose: () => void;
-	storageTypes: string[];
+	storages: Storage[];
 }
 
 type TInitialValues = {
 	label: string;
 	name?: string;
 	pluralLabel: string;
-	storageType: string;
+	storage: Storage;
 };
 
 type ObjectDefinition = {
@@ -227,7 +255,7 @@ type ObjectDefinition = {
 
 type TNormalizeName = (str: string) => string;
 
-const ModalWithProvider: React.FC<IProps> = ({apiURL, storageTypes}) => {
+const ModalWithProvider: React.FC<IProps> = ({apiURL, storages}) => {
 	const [visibleModal, setVisibleModal] = useState<boolean>(false);
 	const {observer, onClose} = useModal({
 		onClose: () => setVisibleModal(false),
@@ -248,7 +276,7 @@ const ModalWithProvider: React.FC<IProps> = ({apiURL, storageTypes}) => {
 					apiURL={apiURL}
 					observer={observer}
 					onClose={onClose}
-					storageTypes={storageTypes}
+					storages={storages}
 				/>
 			)}
 		</ClayModalProvider>

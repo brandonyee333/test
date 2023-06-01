@@ -30,6 +30,7 @@ dependencies {
 	compileOnly project(":apps:segments:segments-api")
 	compileOnly project(":apps:site-navigation:site-navigation-api")
 	compileOnly project(":apps:staging:staging-api")
+	compileOnly project(":apps:static:portal-file-install:portal-file-install-api")
 	compileOnly project(":apps:static:portal:portal-upgrade-api")
 	compileOnly project(":apps:xstream:xstream-configurator-api")
 	compileOnly project(":core:osgi-service-tracker-collections")
@@ -43,5 +44,5 @@ dependencies {
 	testCompile group: "com.github.everit-org.json-schema", name: "org.everit.json.schema", version: "1.11.1"
 	testCompile group: "com.google.re2j", name: "re2j", version: "1.2"
 	testCompile group: "joda-time", name: "joda-time", version: "2.12.1"
-	testCompile group: "org.json", name: "json", version: "20220320"
+	testCompile group: "org.json", name: "json", version: "20230227"
 }

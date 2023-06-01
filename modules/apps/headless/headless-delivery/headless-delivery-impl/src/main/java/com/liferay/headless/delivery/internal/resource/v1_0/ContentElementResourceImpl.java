@@ -15,12 +15,15 @@
 package com.liferay.headless.delivery.internal.resource.v1_0;
 
 import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.search.AssetSearcherFactory;
 import com.liferay.asset.kernel.service.persistence.AssetEntryQuery;
 import com.liferay.asset.util.AssetHelper;
 import com.liferay.headless.delivery.dto.v1_0.ContentElement;
 import com.liferay.headless.delivery.internal.odata.entity.v1_0.ContentElementEntityModel;
 import com.liferay.headless.delivery.resource.v1_0.ContentElementResource;
 import com.liferay.journal.model.JournalArticle;
+import com.liferay.portal.kernel.change.tracking.CTAware;
+import com.liferay.portal.kernel.search.BaseSearcher;
 import com.liferay.portal.kernel.search.BooleanClause;
 import com.liferay.portal.kernel.search.BooleanClauseFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -43,7 +46,6 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 import com.liferay.portal.vulcan.util.SearchUtil;
-import com.liferay.portlet.asset.util.AssetSearcher;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,6 +63,7 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/liferay/rest/v1_0/content-element.properties",
 	scope = ServiceScope.PROTOTYPE, service = ContentElementResource.class
 )
+@CTAware
 public class ContentElementResourceImpl extends BaseContentElementResourceImpl {
 
 	@Override
@@ -91,20 +94,18 @@ public class ContentElementResourceImpl extends BaseContentElementResourceImpl {
 
 		Map<String, Facet> facets = searchContext.getFacets();
 
-		AssetSearcher assetSearcher =
-			(AssetSearcher)AssetSearcher.getInstance();
-
 		AssetEntryQuery assetEntryQuery = new AssetEntryQuery();
 
 		assetEntryQuery.setGroupIds(new long[] {siteId});
 
-		assetSearcher.setAssetEntryQuery(assetEntryQuery);
+		BaseSearcher baseSearcher = _assetSearcherFactory.createBaseSearcher(
+			assetEntryQuery);
 
 		return Page.of(
 			new HashMap<>(), transform(facets.values(), FacetUtil::toFacet),
 			transform(
 				_assetHelper.getAssetEntries(
-					assetSearcher.search(searchContext)),
+					baseSearcher.search(searchContext)),
 				this::_toContentElement),
 			pagination,
 			_assetHelper.searchCount(searchContext, assetEntryQuery));
@@ -235,6 +236,9 @@ public class ContentElementResourceImpl extends BaseContentElementResourceImpl {
 
 	@Reference
 	private AssetHelper _assetHelper;
+
+	@Reference
+	private AssetSearcherFactory _assetSearcherFactory;
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;

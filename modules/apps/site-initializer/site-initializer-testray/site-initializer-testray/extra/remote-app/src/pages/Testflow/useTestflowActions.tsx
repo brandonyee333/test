@@ -34,7 +34,7 @@ const useTestflowActions = () => {
 					`/project/${task.build?.project?.id}/routines/${task.build?.routine?.id}/build/${task.build?.id}`
 				),
 			icon: 'page',
-			name: i18n.translate('view-associete-build'),
+			name: i18n.translate('view-associated-build'),
 		},
 		{
 			action: (task, mutate) =>
@@ -51,10 +51,11 @@ const useTestflowActions = () => {
 			hidden: ({dueStatus}) => dueStatus.key === TaskStatuses.IN_ANALYSIS,
 			icon: 'polls',
 			name: i18n.translate('reanalyze'),
+			permission: 'UPDATE',
 		},
 		{
 			action: (subtask, mutate) =>
-				testrayTaskImpl.remove(subtask.id).then(() =>
+				testrayTaskImpl.removeResource(subtask.id)?.then(() =>
 					updateItemFromList(
 						mutate,
 						0,
@@ -68,6 +69,32 @@ const useTestflowActions = () => {
 			icon: 'trash',
 			name: i18n.translate('delete'),
 			permission: 'DELETE',
+		},
+		{
+			action: (task, mutate) => {
+				const fn =
+					task.subtaskScoreCompleted === task.subtaskScore
+						? () => testrayTaskImpl.complete(task)
+						: () => testrayTaskImpl.abandon(task);
+
+				return fn().then(() =>
+					updateItemFromList(
+						mutate,
+						0,
+						{},
+						{
+							revalidate: true,
+						}
+					)
+				);
+			},
+			hidden: ({dueStatus}) => dueStatus.key !== TaskStatuses.IN_ANALYSIS,
+			icon: 'align-justify',
+			name: (task) =>
+				task.subtaskScoreCompleted === task.subtaskScore
+					? i18n.translate('complete')
+					: i18n.translate('abandon'),
+			permission: 'UPDATE',
 		},
 	] as Action<TestrayTask>[]);
 

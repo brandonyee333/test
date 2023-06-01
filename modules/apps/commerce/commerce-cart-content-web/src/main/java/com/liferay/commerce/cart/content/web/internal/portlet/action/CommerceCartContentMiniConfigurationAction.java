@@ -28,6 +28,7 @@ import com.liferay.commerce.product.util.CPInstanceHelper;
 import com.liferay.commerce.service.CommerceOrderItemService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
@@ -37,7 +38,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletConfig;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -73,8 +73,8 @@ public class CommerceCartContentMiniConfigurationAction
 						_commerceChannelLocalService, _commerceOrderHttpHelper,
 						_commerceOrderItemService,
 						_commerceOrderPriceCalculation,
-						_commerceOrderValidatorRegistry, _cpDefinitionHelper,
-						_cpInstanceHelper,
+						_commerceOrderValidatorRegistry, _configurationProvider,
+						_cpDefinitionHelper, _cpInstanceHelper,
 						_commerceOrderModelResourcePermission,
 						_commerceProductPortletResourcePermission,
 						_percentageFormatter, httpServletRequest, _portal);
@@ -88,15 +88,6 @@ public class CommerceCartContentMiniConfigurationAction
 		}
 
 		super.include(portletConfig, httpServletRequest, httpServletResponse);
-	}
-
-	@Override
-	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.commerce.cart.content.web)",
-		unbind = "-"
-	)
-	public void setServletContext(ServletContext servletContext) {
-		super.setServletContext(servletContext);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -127,6 +118,9 @@ public class CommerceCartContentMiniConfigurationAction
 		target = "(resource.name=" + CPConstants.RESOURCE_NAME_PRODUCT + ")"
 	)
 	private PortletResourcePermission _commerceProductPortletResourcePermission;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	@Reference
 	private CPDefinitionHelper _cpDefinitionHelper;

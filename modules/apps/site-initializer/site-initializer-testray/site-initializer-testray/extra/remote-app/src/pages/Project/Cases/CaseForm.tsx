@@ -16,6 +16,8 @@ import ClayForm, {ClayCheckbox} from '@clayui/form';
 import {useForm} from 'react-hook-form';
 import {useOutletContext, useParams} from 'react-router-dom';
 import {KeyedMutator} from 'swr';
+import SearchBuilder from '~/core/SearchBuilder';
+import {withPagePermission} from '~/hoc/withPagePermission';
 
 import Form from '../../../components/Form';
 import Container from '../../../components/Layout/Container';
@@ -31,7 +33,7 @@ import {
 	TestrayCaseType,
 	TestrayComponent,
 	TestrayProject,
-	testrayCaseRest,
+	testrayCaseImpl,
 } from '../../../services/rest';
 import {DescriptionType} from '../../../types';
 
@@ -67,23 +69,31 @@ const CaseForm = () => {
 		testrayProject: TestrayProject;
 	} = useOutletContext();
 
+	const {projectId} = useParams();
+
 	useHeader({
+		headerActions: {actions: []},
 		tabs: [],
-		timeout: 100,
+		timeout: 150,
 	});
 
 	const {data: testrayComponentsData} = useFetch<
 		APIResponse<TestrayComponent>
 	>('/components', {
-		fields: 'id,name',
-		pageSize: 1000,
+		params: {
+			fields: 'id,name',
+			filter: SearchBuilder.eq('projectId', projectId as string),
+			pageSize: 1000,
+		},
 	});
 
 	const {data: testrayCaseTypesData} = useFetch<APIResponse<TestrayCaseType>>(
 		'/casetypes',
 		{
-			fields: 'id,name',
-			pageSize: 1000,
+			params: {
+				fields: 'id,name',
+				pageSize: 1000,
+			},
 		}
 	);
 
@@ -94,9 +104,8 @@ const CaseForm = () => {
 		form: {onClose, onError, onSave, onSubmit, onSuccess},
 	} = useFormActions();
 
-	const {projectId} = useParams();
 	const {
-		formState: {errors},
+		formState: {errors, isSubmitting},
 		handleSubmit,
 		register,
 		setValue,
@@ -107,7 +116,7 @@ const CaseForm = () => {
 					...testrayCase,
 					caseTypeId: testrayCase.caseType?.id,
 					componentId: testrayCase.component?.id,
-					priority: priorities[0].value,
+					priority: testrayCase.priority,
 			  }
 			: {
 					addAnother: false,
@@ -119,11 +128,11 @@ const CaseForm = () => {
 	const _onSubmit = (form: CaseFormData) => {
 		const addAnother = form?.addAnother === true;
 
-		onSubmit(
+		return onSubmit(
 			{...form, projectId},
 			{
-				create: (data) => testrayCaseRest.create(data),
-				update: (id, data) => testrayCaseRest.update(id, data),
+				create: (data) => testrayCaseImpl.create(data),
+				update: (id, data) => testrayCaseImpl.update(id, data),
 			}
 		)
 			.then(mutateTestrayCase)
@@ -139,11 +148,11 @@ const CaseForm = () => {
 			.catch(onError);
 	};
 
+	const addAnother = watch('addAnother');
 	const caseTypeId = watch('caseTypeId');
 	const componentId = watch('componentId');
 	const description = watch('description');
 	const steps = watch('steps');
-	const addAnother = watch('addAnother');
 
 	const inputProps = {
 		errors,
@@ -269,10 +278,14 @@ const CaseForm = () => {
 				<Form.Footer
 					onClose={onClose}
 					onSubmit={handleSubmit(_onSubmit)}
+					primaryButtonProps={{loading: isSubmitting}}
 				/>
 			</ClayForm>
 		</Container>
 	);
 };
 
-export default CaseForm;
+export default withPagePermission(CaseForm, {
+	createPath: '/project/:projectId/cases/create',
+	restImpl: testrayCaseImpl,
+});

@@ -60,7 +60,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.ArrayList;
@@ -4668,7 +4667,9 @@ public class ClientExtensionEntryPersistenceImpl
 				if (ercClientExtensionEntry != null) {
 					throw new DuplicateClientExtensionEntryExternalReferenceCodeException(
 						"Duplicate client extension entry with external reference code " +
-							clientExtensionEntry.getExternalReferenceCode());
+							clientExtensionEntry.getExternalReferenceCode() +
+								" and company " +
+									clientExtensionEntry.getCompanyId());
 				}
 			}
 			else {
@@ -4678,7 +4679,9 @@ public class ClientExtensionEntryPersistenceImpl
 
 					throw new DuplicateClientExtensionEntryExternalReferenceCodeException(
 						"Duplicate client extension entry with external reference code " +
-							clientExtensionEntry.getExternalReferenceCode());
+							clientExtensionEntry.getExternalReferenceCode() +
+								" and company " +
+									clientExtensionEntry.getCompanyId());
 				}
 			}
 		}
@@ -5364,30 +5367,14 @@ public class ClientExtensionEntryPersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setClientExtensionEntryUtilPersistence(this);
+		ClientExtensionEntryUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setClientExtensionEntryUtilPersistence(null);
+		ClientExtensionEntryUtil.setPersistence(null);
 
 		entityCache.removeCache(ClientExtensionEntryImpl.class.getName());
-	}
-
-	private void _setClientExtensionEntryUtilPersistence(
-		ClientExtensionEntryPersistence clientExtensionEntryPersistence) {
-
-		try {
-			Field field = ClientExtensionEntryUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, clientExtensionEntryPersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override

@@ -1,7 +1,8 @@
 @import 'cadmin-variables';
 @import 'variables';
 
-@import './download-spreadsheet-button';
+@import 'DownloadSpreadsheetButton';
+@import 'VocabulariesSelection';
 
 html#{$cadmin-selector} {
 	.cadmin {
@@ -174,7 +175,6 @@ html#{$cadmin-selector} {
 				text-align: center;
 
 				& img {
-					height: calc(100% - 0.25rem);
 					object-fit: contain;
 					width: 100%;
 				}
@@ -189,7 +189,7 @@ html#{$cadmin-selector} {
 			}
 		}
 
-		@import './manage-collaborators';
+		@import 'ManageCollaborators';
 	}
 
 	.has-control-menu {

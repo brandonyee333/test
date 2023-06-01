@@ -17,6 +17,7 @@ package com.liferay.layout.seo.service;
 import com.liferay.layout.seo.model.LayoutSEOEntry;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.service.ServiceWrapper;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
 
 /**
@@ -57,8 +58,8 @@ public class LayoutSEOEntryLocalServiceWrapper
 
 	@Override
 	public LayoutSEOEntry copyLayoutSEOEntry(
-			long userId, long groupId, boolean privateLayout, long layoutId,
-			boolean canonicalURLEnabled,
+			long userId, long groupId, boolean privateLayout,
+			long sourceLayoutId, boolean canonicalURLEnabled,
 			java.util.Map<java.util.Locale, String> canonicalURLMap,
 			long copyDDMStorageId, boolean openGraphDescriptionEnabled,
 			java.util.Map<java.util.Locale, String> openGraphDescriptionMap,
@@ -69,7 +70,7 @@ public class LayoutSEOEntryLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _layoutSEOEntryLocalService.copyLayoutSEOEntry(
-			userId, groupId, privateLayout, layoutId, canonicalURLEnabled,
+			userId, groupId, privateLayout, sourceLayoutId, canonicalURLEnabled,
 			canonicalURLMap, copyDDMStorageId, openGraphDescriptionEnabled,
 			openGraphDescriptionMap, openGraphImageAltMap,
 			openGraphImageFileEntryId, openGraphTitleEnabled, openGraphTitleMap,
@@ -489,6 +490,11 @@ public class LayoutSEOEntryLocalServiceWrapper
 		return _layoutSEOEntryLocalService.updateLayoutSEOEntry(
 			userId, groupId, privateLayout, layoutId, canonicalURLEnabled,
 			canonicalURLMap, serviceContext);
+	}
+
+	@Override
+	public BasePersistence<?> getBasePersistence() {
+		return _layoutSEOEntryLocalService.getBasePersistence();
 	}
 
 	@Override

@@ -10,7 +10,7 @@ definition {
 
 		User.firstLoginPG();
 
-		JSONGroup.addGroup(groupName = "Test Site Name");
+		HeadlessSite.addSite(siteName = "Test Site Name");
 
 		JSONDepot.addDepot(
 			depotDescription = "This is the description of a depot",
@@ -20,7 +20,7 @@ definition {
 	tearDown {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
-		if ("${testPortalInstance}" == "true") {
+		if (${testPortalInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -33,7 +33,7 @@ definition {
 	}
 
 	@description = "This test ensures that a user can map the display page with Open Graph when using the DM type from AL on a connect site."
-	@priority = "5"
+	@priority = 5
 	@refactordone
 	test CanMapDMWithOpenGraph {
 		var portalURL = PropsUtil.get("portal.url");
@@ -72,13 +72,11 @@ definition {
 			collectionName = "Content Display",
 			fragmentName = "Display Page Content");
 
-		Button.clickPublish();
+		LexiconEntry.gotoHeaderMenuItem(menuItem = "Configure");
 
-		DisplayPageTemplatesAdmin.openToDisplayPageTemplateConfiguration(
-			displayPageTemplateEntryName = "Display Page Template Name",
-			groupName = "Test Site Name",
-			navItem = "Open Graph",
-			siteURLKey = "test-site-name");
+		SelectWindow.selectPopUp(locator1 = "null");
+
+		Navigator.gotoNavNested(navNested = "Open Graph");
 
 		OpenGraph.mapEditableTextToField(
 			field = "File Name",
@@ -124,6 +122,10 @@ definition {
 			mappedFieldValue = "Image Alt is Author Name: ${authorName:Author Name}",
 			textType = "TextArea");
 
+		Navigator.closeWindow();
+
+		PageEditor.publish();
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
 
 		DMDocument.addCP(
@@ -157,7 +159,7 @@ definition {
 	}
 
 	@description = "This test ensures that a user can map the display page with SEO when using the DM type from AL on a connect site."
-	@priority = "5"
+	@priority = 5
 	@refactordone
 	test CanMapDMWithSEO {
 		DepotNavigator.openDepotDocumentTypeAdmin(depotName = "Test Depot Name");
@@ -186,11 +188,15 @@ definition {
 			groupName = "Test Site Name",
 			subType = "DM Document Type Name");
 
-		DisplayPageTemplatesAdmin.openToDisplayPageTemplateConfiguration(
-			displayPageTemplateEntryName = "Display Page Template Name",
-			groupName = "Test Site Name",
-			navItem = "SEO",
-			siteURLKey = "test-site-name");
+		DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+		DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Template Name");
+
+		LexiconEntry.gotoHeaderMenuItem(menuItem = "Configure");
+
+		SelectWindow.selectPopUp(locator1 = "null");
+
+		Navigator.gotoNavNested(navNested = "SEO");
 
 		OpenGraph.mapEditableTextToField(
 			field = "File Name",
@@ -218,10 +224,12 @@ definition {
 			textType = "TextArea");
 	}
 
-	@description = "This test ensures that a user can map the display page with Open Graph when using the WC structure from AL on a connect site."
-	@priority = "5"
+	@description = "This test ensures that a user can map the display page with Open Graph when using the WC structure from AL on a connect site. Skip the instance for performance improvement."
+	@priority = 5
 	@refactordone
 	test CanMapWCWithOpenGraph {
+		property test.name.skip.portal.instance = "DepotDisplayPage#CanMapWCWithOpenGraph";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
@@ -272,13 +280,11 @@ definition {
 			collectionName = "Content Display",
 			fragmentName = "Display Page Content");
 
-		Button.clickPublish();
+		LexiconEntry.gotoHeaderMenuItem(menuItem = "Configure");
 
-		DisplayPageTemplatesAdmin.openToDisplayPageTemplateConfiguration(
-			displayPageTemplateEntryName = "Display Page Template Name",
-			groupName = "Test Site Name",
-			navItem = "Open Graph",
-			siteURLKey = "test-site-name");
+		SelectWindow.selectPopUp(locator1 = "null");
+
+		Navigator.gotoNavNested(navNested = "Open Graph");
 
 		OpenGraph.mapEditableTextToField(
 			field = "Text",
@@ -309,19 +315,19 @@ definition {
 
 		var mappedFieldValue = StringUtil.add("Title is Text: ${", "${textNumber}:Text", "");
 
-		var mappedFieldValue = StringUtil.add("${mappedFieldValue}", "}", "");
+		var mappedFieldValue = StringUtil.add(${mappedFieldValue}, "}", "");
 
 		OpenGraph.viewMappedField(
 			mappedField = "Title",
-			mappedFieldValue = "${mappedFieldValue}");
+			mappedFieldValue = ${mappedFieldValue});
 
 		var mappedFieldValue = StringUtil.add("Description is Text: ${", "${textNumber}:Text", "");
 
-		var mappedFieldValue = StringUtil.add("${mappedFieldValue}", "}", "");
+		var mappedFieldValue = StringUtil.add(${mappedFieldValue}, "}", "");
 
 		OpenGraph.viewMappedField(
 			mappedField = "Description",
-			mappedFieldValue = "${mappedFieldValue}");
+			mappedFieldValue = ${mappedFieldValue});
 
 		OpenGraph.viewMappedField(
 			mappedField = "Image",
@@ -329,12 +335,16 @@ definition {
 
 		var mappedFieldValue = StringUtil.add("Image Alt is Text: ${", "${textNumber}:Text", "");
 
-		var mappedFieldValue = StringUtil.add("${mappedFieldValue}", "}", "");
+		var mappedFieldValue = StringUtil.add(${mappedFieldValue}, "}", "");
 
 		OpenGraph.viewMappedField(
 			mappedField = "ImageAlt",
-			mappedFieldValue = "${mappedFieldValue}",
+			mappedFieldValue = ${mappedFieldValue},
 			textType = "TextArea");
+
+		Navigator.closeWindow();
+
+		PageEditor.publish();
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -369,7 +379,7 @@ definition {
 	}
 
 	@description = "This test ensures that a user can map the display page with SEO when using the WC structure from AL on a connect site."
-	@priority = "5"
+	@priority = 5
 	@refactordone
 	test CanMapWCWithSEO {
 		DepotNavigator.openDepotWebContentStructuresAdmin(depotName = "Test Depot Name");
@@ -412,11 +422,15 @@ definition {
 			groupName = "Test Site Name",
 			subType = "WC Structure Name");
 
-		DisplayPageTemplatesAdmin.openToDisplayPageTemplateConfiguration(
-			displayPageTemplateEntryName = "Display Page Template Name",
-			groupName = "Test Site Name",
-			navItem = "SEO",
-			siteURLKey = "test-site-name");
+		DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+		DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Template Name");
+
+		LexiconEntry.gotoHeaderMenuItem(menuItem = "Configure");
+
+		SelectWindow.selectPopUp(locator1 = "null");
+
+		Navigator.gotoNavNested(navNested = "SEO");
 
 		OpenGraph.mapEditableTextToField(
 			field = "Text",
@@ -436,24 +450,24 @@ definition {
 
 		var mappedFieldValue = StringUtil.add("HTML Title is Text: ${", "${textNumber}:Text", "");
 
-		var mappedFieldValue = StringUtil.add("${mappedFieldValue}", "}", "");
+		var mappedFieldValue = StringUtil.add(${mappedFieldValue}, "}", "");
 
 		OpenGraph.viewMappedField(
 			mappedField = "title",
-			mappedFieldValue = "${mappedFieldValue}");
+			mappedFieldValue = ${mappedFieldValue});
 
 		var mappedFieldValue = StringUtil.add("Description is Text: ${", "${textNumber}:Text", "");
 
-		var mappedFieldValue = StringUtil.add("${mappedFieldValue}", "}", "");
+		var mappedFieldValue = StringUtil.add(${mappedFieldValue}, "}", "");
 
 		OpenGraph.viewMappedField(
 			mappedField = "description",
-			mappedFieldValue = "${mappedFieldValue}",
+			mappedFieldValue = ${mappedFieldValue},
 			textType = "TextArea");
 	}
 
 	@description = "This test ensures that a user can view the image using display page template with DM type from AL on a connect site."
-	@priority = "5"
+	@priority = 5
 	@refactordone
 	test CanViewCustomizeDMFromConnectedSite {
 		property portal.acceptance = "true";
@@ -524,7 +538,7 @@ definition {
 	}
 
 	@description = "This test ensures that a user can view the web content using display page template with WC structure from AL on a connect site."
-	@priority = "5"
+	@priority = 5
 	@refactordone
 	test CanViewCustomizeWCFromConnectedSite {
 		property portal.acceptance = "true";
@@ -607,7 +621,7 @@ definition {
 	}
 
 	@description = "This test ensures that an asset library custom document entry can be displayed with the default display page template on a connected site."
-	@priority = "5"
+	@priority = 5
 	test CanViewDepotDMUsingDepotType {
 		property portal.upstream = "true";
 
@@ -701,7 +715,7 @@ definition {
 	}
 
 	@description = "This test ensures that an asset library document entry created with a type stored in the global site can be displayed with the default display page template on the generic site."
-	@priority = "5"
+	@priority = 5
 	test CanViewDepotDMUsingGlobalType {
 		property portal.upstream = "true";
 
@@ -790,7 +804,7 @@ definition {
 	}
 
 	@description = "This test ensures that an asset library custom article can be displayed with the default display page template on a connected site."
-	@priority = "5"
+	@priority = 5
 	test CanViewDepotWCUsingDepotStructure {
 		JSONLayout.addPublicLayout(
 			groupName = "Test Site Name",
@@ -887,7 +901,7 @@ definition {
 	}
 
 	@description = "This test ensures that an asset library article created with a structure stored in the global site can be displayed with the default display page template on the generic site."
-	@priority = "5"
+	@priority = 5
 	test CanViewDepotWCUsingGlobalStructure {
 		JSONLayout.addPublicLayout(
 			groupName = "Test Site Name",
@@ -979,7 +993,7 @@ definition {
 	}
 
 	@description = "This test ensures that a site document entry created with a type stored in an asset library can be displayed with the default display page template on a connected site."
-	@priority = "5"
+	@priority = 5
 	test CanViewSiteDMUsingDepotType {
 		JSONLayout.addPublicLayout(
 			groupName = "Test Site Name",
@@ -1071,7 +1085,7 @@ definition {
 	}
 
 	@description = "This test ensures that a site article created with a structure stored in an asset library can be displayed with the default display page template on a connected site."
-	@priority = "5"
+	@priority = 5
 	test CanViewSiteWCUsingDepotStructure {
 		JSONLayout.addPublicLayout(
 			groupName = "Test Site Name",

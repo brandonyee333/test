@@ -98,7 +98,7 @@ public class ObjectServiceUpgradeStepRegistrator
 		registry.register(
 			"3.3.0", "3.4.0",
 			UpgradeProcessFactory.addColumns(
-				"ObjectAction", "description STRING null"));
+				"ObjectAction", "description VARCHAR(75) null"));
 
 		registry.register(
 			"3.4.0", "3.5.0",
@@ -258,6 +258,48 @@ public class ObjectServiceUpgradeStepRegistrator
 				}
 
 			});
+
+		registry.register(
+			"3.28.0", "4.0.0",
+			UpgradeProcessFactory.alterColumnType(
+				"ObjectAction", "description", "VARCHAR(75) null"),
+			UpgradeProcessFactory.alterColumnType(
+				"ObjectValidationRule", "script", "TEXT null"));
+
+		registry.register(
+			"4.0.0", "4.1.0",
+			new com.liferay.object.internal.upgrade.v4_1_0.
+				ObjectDefinitionUpgradeProcess());
+
+		registry.register(
+			"4.1.0", "4.1.1",
+			new com.liferay.object.internal.upgrade.v4_1_1.
+				ObjectViewUpgradeProcess());
+
+		registry.register(
+			"4.1.1", "5.0.0",
+			new com.liferay.object.internal.upgrade.v5_0_0.
+				ObjectFieldSettingUpgradeProcess(_portalUUID));
+
+		registry.register(
+			"5.0.0", "5.1.0",
+			new com.liferay.object.internal.upgrade.v5_1_0.
+				ObjectDefinitionUpgradeProcess());
+
+		registry.register(
+			"5.1.0", "5.1.1",
+			new com.liferay.object.internal.upgrade.v5_1_1.
+				ObjectFieldUpgradeProcess());
+
+		registry.register(
+			"5.1.1", "5.2.0",
+			new com.liferay.object.internal.upgrade.v5_2_0.
+				ObjectRelationshipUpgradeProcess());
+
+		registry.register(
+			"5.2.0", "5.3.0",
+			new com.liferay.object.internal.upgrade.v5_3_0.
+				ObjectFieldUpgradeProcess());
 	}
 
 	@Reference

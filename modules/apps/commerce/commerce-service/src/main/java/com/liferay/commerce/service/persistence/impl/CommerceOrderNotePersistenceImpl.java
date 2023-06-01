@@ -50,7 +50,6 @@ import com.liferay.portal.kernel.uuid.PortalUUID;
 
 import java.io.Serializable;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
 import java.util.Date;
@@ -3067,7 +3066,9 @@ public class CommerceOrderNotePersistenceImpl
 				if (ercCommerceOrderNote != null) {
 					throw new DuplicateCommerceOrderNoteExternalReferenceCodeException(
 						"Duplicate commerce order note with external reference code " +
-							commerceOrderNote.getExternalReferenceCode());
+							commerceOrderNote.getExternalReferenceCode() +
+								" and company " +
+									commerceOrderNote.getCompanyId());
 				}
 			}
 			else {
@@ -3077,7 +3078,9 @@ public class CommerceOrderNotePersistenceImpl
 
 					throw new DuplicateCommerceOrderNoteExternalReferenceCodeException(
 						"Duplicate commerce order note with external reference code " +
-							commerceOrderNote.getExternalReferenceCode());
+							commerceOrderNote.getExternalReferenceCode() +
+								" and company " +
+									commerceOrderNote.getCompanyId());
 				}
 			}
 		}
@@ -3512,30 +3515,14 @@ public class CommerceOrderNotePersistenceImpl
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"externalReferenceCode", "companyId"}, false);
 
-		_setCommerceOrderNoteUtilPersistence(this);
+		CommerceOrderNoteUtil.setPersistence(this);
 	}
 
 	@Deactivate
 	public void deactivate() {
-		_setCommerceOrderNoteUtilPersistence(null);
+		CommerceOrderNoteUtil.setPersistence(null);
 
 		entityCache.removeCache(CommerceOrderNoteImpl.class.getName());
-	}
-
-	private void _setCommerceOrderNoteUtilPersistence(
-		CommerceOrderNotePersistence commerceOrderNotePersistence) {
-
-		try {
-			Field field = CommerceOrderNoteUtil.class.getDeclaredField(
-				"_persistence");
-
-			field.setAccessible(true);
-
-			field.set(null, commerceOrderNotePersistence);
-		}
-		catch (ReflectiveOperationException reflectiveOperationException) {
-			throw new RuntimeException(reflectiveOperationException);
-		}
 	}
 
 	@Override
