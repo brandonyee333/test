@@ -162,7 +162,6 @@ public class IndividualSegmentsRestController extends BaseRestController {
 				_toIndividualPage(
 					_bqMembershipIndividualDog.getMembershipIndividualPage(
 						page, id, size, sorts)));
-
 		}
 
 		return _toIndividualDTOPageDTO(
@@ -536,8 +535,8 @@ public class IndividualSegmentsRestController extends BaseRestController {
 		Page<BQMembershipIndividual> bqMembershipIndividualPage) {
 
 		List<Individual> individuals = new ArrayList<>();
-		for (BQMembershipIndividual bqMembershipIndividual :
 
+		for (BQMembershipIndividual bqMembershipIndividual :
 				bqMembershipIndividualPage.getContent()) {
 
 			Individual individual = new Individual();
@@ -546,11 +545,11 @@ public class IndividualSegmentsRestController extends BaseRestController {
 
 			individual.setBQDataSourceUsers(
 				SetUtil.map(
-					bqMembershipIndividual.getDataSourceUsers(),
-					dataSourceUser -> new BQDataSourceUser(
+					bqMembershipIndividual.getDataSourceUUIDs(),
+					dataSourceUUID -> new BQDataSourceUser(
 						Collections.emptySet(),
-						dataSourceUser.getDataSourceId(), null,
-						SetUtil.of(dataSourceUser.getUuid()))));
+						dataSourceUUID.getDataSourceId(), null,
+						SetUtil.of(dataSourceUUID.getUuid()))));
 
 			individuals.add(individual);
 		}

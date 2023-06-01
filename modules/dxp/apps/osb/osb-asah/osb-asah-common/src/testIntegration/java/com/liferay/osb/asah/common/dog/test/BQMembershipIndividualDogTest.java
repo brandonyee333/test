@@ -55,10 +55,10 @@ public class BQMembershipIndividualDogTest
 
 		Assertions.assertEquals("A", membershipIndividual1.getIndividualId());
 
-		List<BQMembershipIndividual.DataSourceUser> dataSourceUsers1 =
-			membershipIndividual1.getDataSourceUsers();
+		List<BQMembershipIndividual.DataSourceUUID> dataSourceUUIDs1 =
+			membershipIndividual1.getDataSourceUUIDs();
 
-		Assertions.assertEquals(2, dataSourceUsers1.size());
+		Assertions.assertEquals(2, dataSourceUUIDs1.size());
 
 		BQMembershipIndividual membershipIndividual2 =
 			membershipIndividuals.get(1);
@@ -67,8 +67,8 @@ public class BQMembershipIndividualDogTest
 
 		Assertions.assertEquals(
 			Arrays.asList(
-				new BQMembershipIndividual.DataSourceUser(1L, "uuid-3")),
-			membershipIndividual2.getDataSourceUsers());
+				new BQMembershipIndividual.DataSourceUUID(1L, "uuid-3")),
+			membershipIndividual2.getDataSourceUUIDs());
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_update_membership_individuals.sql")

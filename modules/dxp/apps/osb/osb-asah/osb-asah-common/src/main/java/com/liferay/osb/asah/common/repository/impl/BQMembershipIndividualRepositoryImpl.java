@@ -66,7 +66,7 @@ public class BQMembershipIndividualRepositoryImpl
 				"BQMembershipIndividual"
 			).where(
 				DSL.field(
-					"segmemtId"
+					"segmentId"
 				).eq(
 					segmentId
 				)
@@ -118,7 +118,7 @@ public class BQMembershipIndividualRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembershipIndividual")
 			).columns(
-				DSL.field("dataSourceUsers"), DSL.field("individualId"),
+				DSL.field("dataSourceUUIDs"), DSL.field("individualId"),
 				DSL.field("modifiedDate"), DSL.field("segmentId")
 			).select(
 				_getMembershipIndividualsSelect(null)
@@ -142,7 +142,7 @@ public class BQMembershipIndividualRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembershipIndividual")
 			).columns(
-				DSL.field("dataSourceUsers"), DSL.field("individualId"),
+				DSL.field("dataSourceUUIDs"), DSL.field("individualId"),
 				DSL.field("modifiedDate"), DSL.field("segmentId")
 			).select(
 				_getMembershipIndividualsSelect(segmentId)
@@ -185,7 +185,7 @@ public class BQMembershipIndividualRepositoryImpl
 				"ARRAY_AGG((SELECT AS STRUCT User.dataSourceId AS " +
 					"dataSourceId, User.uuid AS uuid))"
 			).as(
-				"dataSourceUser"
+				"dataSourceUUIDs"
 			),
 			DSL.field("MembershipIndividual.individualId"),
 			DSL.max(
