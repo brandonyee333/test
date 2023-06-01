@@ -101,35 +101,38 @@ public class UpgradeProcess {
 		public int compare(String versionString1, String versionString2) {
 			int value = 0;
 
-			int[] versionParts1 = _split(versionString1, 3);
-			int[] versionParts2 = _split(versionString2, 3);
+			int[] versionParts1 = _split(versionString1);
+			int[] versionParts2 = _split(versionString2);
 
-			if (versionParts1[0] > versionParts2[0]) {
-				value = 1;
-			}
-			else if (versionParts1[0] < versionParts2[0]) {
-				value = -1;
-			}
-			else if (versionParts1[1] > versionParts2[1]) {
-				value = 1;
-			}
-			else if (versionParts1[1] < versionParts2[1]) {
-				value = -1;
-			}
-			else if (versionParts1[2] > versionParts2[2]) {
-				value = 1;
-			}
-			else if (versionParts1[2] < versionParts2[2]) {
-				value = -1;
+			int max = Math.max(versionParts1.length, versionParts2.length);
+
+			for (int i = 0; i < max; i++) {
+				int v1 = 0;
+
+				if (i < versionParts1.length) {
+					v1 = versionParts1[i];
+				}
+
+				int v2 = 0;
+
+				if (i < versionParts2.length) {
+					v2 = versionParts2[i];
+				}
+
+				value = Integer.compare(v1, v2);
+
+				if (value != 0) {
+					return value;
+				}
 			}
 
 			return value;
 		}
 
-		private int[] _split(String versionString, int arrayLength) {
+		private int[] _split(String versionString) {
 			String[] array = StringUtils.split(versionString, ".");
 
-			int[] newArray = new int[arrayLength];
+			int[] newArray = new int[array.length];
 
 			for (int i = 0; i < newArray.length; i++) {
 				int value = 0;
