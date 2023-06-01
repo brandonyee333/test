@@ -187,7 +187,9 @@ public abstract class BaseAccountResourceTestCase {
 
 		account.setDescription(regex);
 		account.setExternalReferenceCode(regex);
+		account.setLogoURL(regex);
 		account.setName(regex);
+		account.setTaxId(regex);
 
 		String json = AccountSerDes.toJSON(account);
 
@@ -197,7 +199,9 @@ public abstract class BaseAccountResourceTestCase {
 
 		Assert.assertEquals(regex, account.getDescription());
 		Assert.assertEquals(regex, account.getExternalReferenceCode());
+		Assert.assertEquals(regex, account.getLogoURL());
 		Assert.assertEquals(regex, account.getName());
+		Assert.assertEquals(regex, account.getTaxId());
 	}
 
 	@Test
@@ -727,6 +731,11 @@ public abstract class BaseAccountResourceTestCase {
 	}
 
 	@Test
+	public void testPostAccountByExternalReferenceCodeLogo() throws Exception {
+		Assert.assertTrue(false);
+	}
+
+	@Test
 	public void testDeleteAccount() throws Exception {
 		@SuppressWarnings("PMD.UnusedLocalVariable")
 		Account account = testDeleteAccount_addAccount();
@@ -886,6 +895,11 @@ public abstract class BaseAccountResourceTestCase {
 	protected Account testPutAccount_addAccount() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testPostAccountLogo() throws Exception {
+		Assert.assertTrue(false);
 	}
 
 	@Test
@@ -1481,12 +1495,28 @@ public abstract class BaseAccountResourceTestCase {
 	protected void assertValid(Account account) throws Exception {
 		boolean valid = true;
 
+		if (account.getDateCreated() == null) {
+			valid = false;
+		}
+
+		if (account.getDateModified() == null) {
+			valid = false;
+		}
+
 		if (account.getId() == null) {
 			valid = false;
 		}
 
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
+
+			if (Objects.equals("accountIds", additionalAssertFieldName)) {
+				if (account.getAccountIds() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
 
 			if (Objects.equals(
 					"accountUserAccounts", additionalAssertFieldName)) {
@@ -1514,6 +1544,26 @@ public abstract class BaseAccountResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals(
+					"defaultBillingAddressId", additionalAssertFieldName)) {
+
+				if (account.getDefaultBillingAddressId() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"defaultShippingAddressId", additionalAssertFieldName)) {
+
+				if (account.getDefaultShippingAddressId() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("description", additionalAssertFieldName)) {
 				if (account.getDescription() == null) {
 					valid = false;
@@ -1534,6 +1584,22 @@ public abstract class BaseAccountResourceTestCase {
 					"externalReferenceCode", additionalAssertFieldName)) {
 
 				if (account.getExternalReferenceCode() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("logoId", additionalAssertFieldName)) {
+				if (account.getLogoId() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("logoURL", additionalAssertFieldName)) {
+				if (account.getLogoURL() == null) {
 					valid = false;
 				}
 
@@ -1572,8 +1638,24 @@ public abstract class BaseAccountResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("postalAddresses", additionalAssertFieldName)) {
+				if (account.getPostalAddresses() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("status", additionalAssertFieldName)) {
 				if (account.getStatus() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("taxId", additionalAssertFieldName)) {
+				if (account.getTaxId() == null) {
 					valid = false;
 				}
 
@@ -1698,6 +1780,16 @@ public abstract class BaseAccountResourceTestCase {
 		for (String additionalAssertFieldName :
 				getAdditionalAssertFieldNames()) {
 
+			if (Objects.equals("accountIds", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getAccountIds(), account2.getAccountIds())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals(
 					"accountUserAccounts", additionalAssertFieldName)) {
 
@@ -1726,6 +1818,53 @@ public abstract class BaseAccountResourceTestCase {
 				if (!Objects.deepEquals(
 						account1.getCustomFields(),
 						account2.getCustomFields())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("dateCreated", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getDateCreated(), account2.getDateCreated())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("dateModified", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getDateModified(),
+						account2.getDateModified())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"defaultBillingAddressId", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						account1.getDefaultBillingAddressId(),
+						account2.getDefaultBillingAddressId())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"defaultShippingAddressId", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						account1.getDefaultShippingAddressId(),
+						account2.getDefaultShippingAddressId())) {
 
 					return false;
 				}
@@ -1768,6 +1907,26 @@ public abstract class BaseAccountResourceTestCase {
 
 			if (Objects.equals("id", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(account1.getId(), account2.getId())) {
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("logoId", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getLogoId(), account2.getLogoId())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("logoURL", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getLogoURL(), account2.getLogoURL())) {
+
 					return false;
 				}
 
@@ -1817,9 +1976,30 @@ public abstract class BaseAccountResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("postalAddresses", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getPostalAddresses(),
+						account2.getPostalAddresses())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("status", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						account1.getStatus(), account2.getStatus())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("taxId", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						account1.getTaxId(), account2.getTaxId())) {
 
 					return false;
 				}
@@ -1940,6 +2120,11 @@ public abstract class BaseAccountResourceTestCase {
 		sb.append(operator);
 		sb.append(" ");
 
+		if (entityFieldName.equals("accountIds")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("accountUserAccounts")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -1951,6 +2136,78 @@ public abstract class BaseAccountResourceTestCase {
 		}
 
 		if (entityFieldName.equals("customFields")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("dateCreated")) {
+			if (operator.equals("between")) {
+				sb = new StringBundler();
+
+				sb.append("(");
+				sb.append(entityFieldName);
+				sb.append(" gt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(account.getDateCreated(), -2)));
+				sb.append(" and ");
+				sb.append(entityFieldName);
+				sb.append(" lt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(account.getDateCreated(), 2)));
+				sb.append(")");
+			}
+			else {
+				sb.append(entityFieldName);
+
+				sb.append(" ");
+				sb.append(operator);
+				sb.append(" ");
+
+				sb.append(_dateFormat.format(account.getDateCreated()));
+			}
+
+			return sb.toString();
+		}
+
+		if (entityFieldName.equals("dateModified")) {
+			if (operator.equals("between")) {
+				sb = new StringBundler();
+
+				sb.append("(");
+				sb.append(entityFieldName);
+				sb.append(" gt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(account.getDateModified(), -2)));
+				sb.append(" and ");
+				sb.append(entityFieldName);
+				sb.append(" lt ");
+				sb.append(
+					_dateFormat.format(
+						DateUtils.addSeconds(account.getDateModified(), 2)));
+				sb.append(")");
+			}
+			else {
+				sb.append(entityFieldName);
+
+				sb.append(" ");
+				sb.append(operator);
+				sb.append(" ");
+
+				sb.append(_dateFormat.format(account.getDateModified()));
+			}
+
+			return sb.toString();
+		}
+
+		if (entityFieldName.equals("defaultBillingAddressId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("defaultShippingAddressId")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
 		}
@@ -1981,6 +2238,19 @@ public abstract class BaseAccountResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("logoId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("logoURL")) {
+			sb.append("'");
+			sb.append(String.valueOf(account.getLogoURL()));
+			sb.append("'");
+
+			return sb.toString();
+		}
+
 		if (entityFieldName.equals("name")) {
 			sb.append("'");
 			sb.append(String.valueOf(account.getName()));
@@ -2005,8 +2275,21 @@ public abstract class BaseAccountResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("postalAddresses")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("status")) {
 			sb.append(String.valueOf(account.getStatus()));
+
+			return sb.toString();
+		}
+
+		if (entityFieldName.equals("taxId")) {
+			sb.append("'");
+			sb.append(String.valueOf(account.getTaxId()));
+			sb.append("'");
 
 			return sb.toString();
 		}
@@ -2060,15 +2343,22 @@ public abstract class BaseAccountResourceTestCase {
 	protected Account randomAccount() throws Exception {
 		return new Account() {
 			{
+				dateCreated = RandomTestUtil.nextDate();
+				dateModified = RandomTestUtil.nextDate();
+				defaultBillingAddressId = RandomTestUtil.randomLong();
+				defaultShippingAddressId = RandomTestUtil.randomLong();
 				description = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				externalReferenceCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				id = RandomTestUtil.randomLong();
+				logoId = RandomTestUtil.randomLong();
+				logoURL = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				numberOfUsers = RandomTestUtil.randomInt();
 				parentAccountId = RandomTestUtil.randomLong();
 				status = RandomTestUtil.randomInt();
+				taxId = StringUtil.toLowerCase(RandomTestUtil.randomString());
 			}
 		};
 	}

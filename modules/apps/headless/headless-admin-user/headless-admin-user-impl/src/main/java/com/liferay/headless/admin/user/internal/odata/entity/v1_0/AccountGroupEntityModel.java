@@ -15,35 +15,21 @@
 package com.liferay.headless.admin.user.internal.odata.entity.v1_0;
 
 import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.odata.entity.DateTimeEntityField;
 import com.liferay.portal.odata.entity.EntityField;
 import com.liferay.portal.odata.entity.EntityModel;
-import com.liferay.portal.odata.entity.IdEntityField;
 import com.liferay.portal.odata.entity.StringEntityField;
 
 import java.util.Map;
 
 /**
- * @author Drew Brokke
+ * @author Brian I. Kim
  */
-public class AccountEntityModel implements EntityModel {
+public class AccountGroupEntityModel implements EntityModel {
 
-	public AccountEntityModel() {
+	public AccountGroupEntityModel() {
 		_entityFieldsMap = EntityModel.toEntityFieldsMap(
-			new DateTimeEntityField(
-				"dateCreated",
-				locale -> Field.getSortableFieldName(Field.CREATE_DATE),
-				locale -> Field.CREATE_DATE),
-			new DateTimeEntityField(
-				"dateModified",
-				locale -> Field.getSortableFieldName(Field.MODIFIED_DATE),
-				locale -> Field.MODIFIED_DATE),
 			new StringEntityField(
-				"name", locale -> Field.getSortableFieldName(Field.NAME)),
-			new IdEntityField(
-				"organizationIds", locale -> "organizationIds",
-				String::valueOf),
-			new StringEntityField("type", locale -> Field.TYPE));
+				"name", locale -> Field.getSortableFieldName(Field.NAME)));
 	}
 
 	@Override

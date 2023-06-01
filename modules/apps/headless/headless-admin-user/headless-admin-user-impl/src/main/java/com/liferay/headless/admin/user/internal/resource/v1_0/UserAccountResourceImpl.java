@@ -16,6 +16,7 @@ package com.liferay.headless.admin.user.internal.resource.v1_0;
 
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.model.AccountEntryUserRel;
+import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.account.service.AccountEntryUserRelLocalService;
 import com.liferay.account.service.AccountEntryUserRelService;
 import com.liferay.announcements.kernel.service.AnnouncementsDeliveryLocalService;
@@ -26,6 +27,7 @@ import com.liferay.headless.admin.user.dto.v1_0.EmailAddress;
 import com.liferay.headless.admin.user.dto.v1_0.OrganizationBrief;
 import com.liferay.headless.admin.user.dto.v1_0.Phone;
 import com.liferay.headless.admin.user.dto.v1_0.PostalAddress;
+import com.liferay.headless.admin.user.dto.v1_0.RoleBrief;
 import com.liferay.headless.admin.user.dto.v1_0.UserAccount;
 import com.liferay.headless.admin.user.dto.v1_0.UserAccountContactInformation;
 import com.liferay.headless.admin.user.dto.v1_0.WebUrl;
@@ -102,6 +104,7 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.SearchUtil;
 import com.liferay.users.admin.kernel.util.UsersAdmin;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -147,6 +150,17 @@ public class UserAccountResourceImpl
 			_accountResourceDTOConverter.getAccountEntryId(
 				accountExternalReferenceCode),
 			user.getEmailAddress());
+	}
+
+	@Override
+	public void deleteAccountUserAccount(Long accountId, Long userAccountId)
+		throws Exception {
+
+		User user = _userLocalService.getUserById(
+			contextCompany.getCompanyId(), userAccountId);
+
+		deleteAccountUserAccountByEmailAddress(
+			accountId, user.getEmailAddress());
 	}
 
 	@Override
@@ -204,6 +218,35 @@ public class UserAccountResourceImpl
 			externalReferenceCode, contextCompany.getCompanyId());
 
 		deleteUserAccount(user.getUserId());
+	}
+
+	@Override
+	public UserAccount
+			getAccountByExternalReferenceCodeUserAccountByExternalReferenceCode(
+				String accountExternalReferenceCode,
+				String externalReferenceCode)
+		throws Exception {
+
+		AccountEntryUserRel accountEntryUserRel =
+			_accountEntryUserRelLocalService.fetchAccountEntryUserRel(
+				_accountResourceDTOConverter.getAccountEntryId(
+					accountExternalReferenceCode),
+				_userResourceDTOConverter.getUserId(externalReferenceCode));
+
+		return _toUserAccount(
+			_userService.getUserById(accountEntryUserRel.getAccountUserId()));
+	}
+
+	@Override
+	public UserAccount getAccountUserAccount(Long accountId, Long userAccountId)
+		throws Exception {
+
+		AccountEntryUserRel accountEntryUserRel =
+			_accountEntryUserRelLocalService.getAccountEntryUserRel(
+				accountId, userAccountId);
+
+		return _toUserAccount(
+			_userService.getUserById(accountEntryUserRel.getAccountUserId()));
 	}
 
 	@Override
@@ -385,6 +428,30 @@ public class UserAccountResourceImpl
 
 	@Override
 	public void
+			patchAccountByExternalReferenceCodeUserAccountByExternalReferenceCode(
+				String accountExternalReferenceCode,
+				String externalReferenceCode, UserAccount userAccount)
+		throws Exception {
+
+		_updateAccountEntryUserRel(
+			_accountResourceDTOConverter.getObject(
+				accountExternalReferenceCode),
+			_userResourceDTOConverter.getObject(externalReferenceCode),
+			userAccount);
+	}
+
+	@Override
+	public void patchAccountUserAccount(
+			Long accountId, Long userAccountId, UserAccount userAccount)
+		throws Exception {
+
+		_updateAccountEntryUserRel(
+			_accountEntryLocalService.fetchAccountEntry(accountId),
+			_userLocalService.getUserById(userAccountId), userAccount);
+	}
+
+	@Override
+	public void
 			postAccountByExternalReferenceCodeUserAccountByExternalReferenceCode(
 				String accountExternalReferenceCode,
 				String externalReferenceCode)
@@ -412,6 +479,13 @@ public class UserAccountResourceImpl
 			Long accountId, UserAccount userAccount)
 		throws Exception {
 
+		User user = _userResourceDTOConverter.getObject(
+			userAccount.getExternalReferenceCode());
+
+		if (user == null) {
+			userAccount = postUserAccount(userAccount);
+		}
+
 		AccountEntryUserRel accountEntryUserRel =
 			_accountEntryUserRelService.addAccountEntryUserRel(
 				accountId, contextUser.getUserId(),
@@ -422,7 +496,7 @@ public class UserAccountResourceImpl
 				_getSuffixId(userAccount), userAccount.getJobTitle(),
 				ServiceContextFactory.getInstance(contextHttpServletRequest));
 
-		User user = accountEntryUserRel.getUser();
+		user = accountEntryUserRel.getUser();
 
 		_usersAdmin.updateAddresses(
 			Contact.class.getName(), user.getContactId(),
@@ -1202,6 +1276,19 @@ public class UserAccountResourceImpl
 			_getDTOConverterContext(user.getUserId()), user);
 	}
 
+	private void _updateAccountEntryUserRel(
+		AccountEntry accountEntry, User user, UserAccount userAccount) {
+
+		RoleBrief[] roleBriefs = userAccount.getRoleBriefs();
+
+		if (roleBriefs != null) {
+			_userGroupRoleLocalService.addUserGroupRoles(
+				user.getUserId(), accountEntry.getAccountEntryGroupId(),
+				transformToLongArray(
+					Arrays.asList(roleBriefs), RoleBrief::getId));
+		}
+	}
+
 	private void _updatePassword(
 			User user, String currentPassword, String password)
 		throws Exception {
@@ -1242,6 +1329,9 @@ public class UserAccountResourceImpl
 
 	private static final EntityModel _entityModel =
 		new UserAccountEntityModel();
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference(
 		policy = ReferencePolicy.DYNAMIC,

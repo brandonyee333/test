@@ -16,17 +16,23 @@ package com.liferay.headless.admin.user.internal.resource.v1_0;
 
 import com.liferay.account.constants.AccountActionKeys;
 import com.liferay.account.constants.AccountConstants;
+import com.liferay.account.constants.AccountListTypeConstants;
 import com.liferay.account.model.AccountEntry;
+import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.account.service.AccountEntryOrganizationRelLocalService;
 import com.liferay.account.service.AccountEntryService;
+import com.liferay.account.service.AccountEntryUserRelLocalService;
 import com.liferay.headless.admin.user.dto.v1_0.Account;
+import com.liferay.headless.admin.user.dto.v1_0.PostalAddress;
 import com.liferay.headless.admin.user.internal.dto.v1_0.converter.AccountResourceDTOConverter;
 import com.liferay.headless.admin.user.internal.dto.v1_0.converter.OrganizationResourceDTOConverter;
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.CustomFieldsUtil;
+import com.liferay.headless.admin.user.internal.dto.v1_0.util.ServiceBuilderAddressUtil;
 import com.liferay.headless.admin.user.internal.odata.entity.v1_0.AccountEntityModel;
 import com.liferay.headless.admin.user.resource.v1_0.AccountResource;
 import com.liferay.headless.common.spi.service.context.ServiceContextRequestUtil;
 import com.liferay.petra.function.UnsafeConsumer;
+import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -38,10 +44,13 @@ import com.liferay.portal.kernel.search.filter.TermFilter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.odata.entity.EntityModel;
@@ -49,14 +58,19 @@ import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.fields.NestedField;
 import com.liferay.portal.vulcan.fields.NestedFieldSupport;
+import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.SearchUtil;
+import com.liferay.users.admin.kernel.util.UsersAdmin;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -236,8 +250,20 @@ public class AccountResourceImpl
 		AccountEntry accountEntry = _accountEntryService.addAccountEntry(
 			contextUser.getUserId(), _getParentAccountId(account),
 			account.getName(), account.getDescription(), _getDomains(account),
-			null, null, null, _getType(account), _getStatus(account),
-			_getServiceContext(account));
+			null, null, account.getTaxId(), _getType(account),
+			_getStatus(account), _getServiceContext(account));
+
+		if (_isValidId(account.getDefaultBillingAddressId())) {
+			_accountEntryLocalService.updateDefaultBillingAddressId(
+				accountEntry.getAccountEntryId(),
+				account.getDefaultBillingAddressId());
+		}
+
+		if (_isValidId(account.getDefaultShippingAddressId())) {
+			_accountEntryLocalService.updateDefaultShippingAddressId(
+				accountEntry.getAccountEntryId(),
+				account.getDefaultShippingAddressId());
+		}
 
 		accountEntry = _accountEntryService.updateExternalReferenceCode(
 			accountEntry.getAccountEntryId(),
@@ -247,7 +273,41 @@ public class AccountResourceImpl
 			setAccountEntryOrganizationRels(
 				accountEntry.getAccountEntryId(), _getOrganizationIds(account));
 
+		_accountEntryUserRelLocalService.setAccountEntryUserRels(
+			accountEntry.getAccountEntryId(), _getAccountIds(account));
+
+		_usersAdmin.updateAddresses(
+			AccountEntry.class.getName(), accountEntry.getAccountEntryId(),
+			_getAddresses(account));
+
 		return _toAccount(accountEntry);
+	}
+
+	@Override
+	public Response postAccountByExternalReferenceCodeLogo(
+			String externalReferenceCode, MultipartBody multipartBody)
+		throws Exception {
+
+		_updateAccountLogo(
+			_accountResourceDTOConverter.getObject(externalReferenceCode),
+			multipartBody);
+
+		Response.ResponseBuilder responseBuilder = Response.noContent();
+
+		return responseBuilder.build();
+	}
+
+	@Override
+	public Response postAccountLogo(Long accountId, MultipartBody multipartBody)
+		throws Exception {
+
+		_updateAccountLogo(
+			_accountEntryLocalService.getAccountEntry(accountId),
+			multipartBody);
+
+		Response.ResponseBuilder responseBuilder = Response.noContent();
+
+		return responseBuilder.build();
 	}
 
 	@Override
@@ -285,6 +345,12 @@ public class AccountResourceImpl
 			setAccountEntryOrganizationRels(
 				accountId, _getOrganizationIds(account));
 
+		_accountEntryUserRelLocalService.setAccountEntryUserRels(
+			accountId, _getAccountIds(account));
+
+		_usersAdmin.updateAddresses(
+			AccountEntry.class.getName(), accountId, _getAddresses(account));
+
 		return _toAccount(
 			_accountEntryService.updateAccountEntry(
 				accountId, _getParentAccountId(account), account.getName(),
@@ -304,6 +370,33 @@ public class AccountResourceImpl
 				account.getDescription(), _getDomains(account), null, null,
 				null, _getType(account), _getStatus(account),
 				_getServiceContext(account)));
+	}
+
+	private long[] _getAccountIds(Account account) {
+		Long[] accountIds = account.getAccountIds();
+
+		if (accountIds == null) {
+			return new long[0];
+		}
+
+		return ArrayUtil.toArray(accountIds);
+	}
+
+	private List<Address> _getAddresses(Account account) {
+		PostalAddress[] postalAddresses = account.getPostalAddresses();
+
+		if (postalAddresses == null) {
+			return Collections.emptyList();
+		}
+
+		return ListUtil.filter(
+			transformToList(
+				postalAddresses,
+				_postalAddress ->
+					ServiceBuilderAddressUtil.toServiceBuilderAddress(
+						contextCompany.getCompanyId(), _postalAddress,
+						AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS)),
+			Objects::nonNull);
 	}
 
 	private String[] _getDomains(Account account) {
@@ -481,10 +574,36 @@ public class AccountResourceImpl
 		return type;
 	}
 
+	private boolean _isValidId(Long value) {
+		if ((value == null) || (value <= 0)) {
+			return false;
+		}
+
+		return true;
+	}
+
 	private Account _toAccount(AccountEntry accountEntry) throws Exception {
 		return _accountResourceDTOConverter.toDTO(
 			_getDTOConverterContext(accountEntry.getAccountEntryId()));
 	}
+
+	private void _updateAccountLogo(
+			AccountEntry accountEntry, MultipartBody multipartBody)
+		throws Exception {
+
+		_accountEntryService.updateAccountEntry(
+			accountEntry.getAccountEntryId(),
+			accountEntry.getParentAccountEntryId(), accountEntry.getName(),
+			accountEntry.getDescription(), true,
+			StringUtil.split(accountEntry.getDomains()),
+			accountEntry.getEmailAddress(),
+			multipartBody.getBinaryFileAsBytes("image"),
+			accountEntry.getTaxIdNumber(), accountEntry.getStatus(),
+			ServiceContextFactory.getInstance(contextHttpServletRequest));
+	}
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference(
 		policy = ReferencePolicy.DYNAMIC,
@@ -502,11 +621,17 @@ public class AccountResourceImpl
 	private AccountEntryService _accountEntryService;
 
 	@Reference
+	private AccountEntryUserRelLocalService _accountEntryUserRelLocalService;
+
+	@Reference
 	private AccountResourceDTOConverter _accountResourceDTOConverter;
 
 	private final EntityModel _entityModel = new AccountEntityModel();
 
 	@Reference
 	private OrganizationResourceDTOConverter _organizationResourceDTOConverter;
+
+	@Reference
+	private UsersAdmin _usersAdmin;
 
 }
