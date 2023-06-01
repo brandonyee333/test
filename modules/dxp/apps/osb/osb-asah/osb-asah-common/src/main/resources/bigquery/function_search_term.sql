@@ -1,4 +1,4 @@
-CREATE FUNCTION `$[AC_PROJECT_ID].search_term`(searchQueryParams ARRAY<STRING>, url STRING)
+CREATE OR REPLACE FUNCTION `$[AC_PROJECT_ID].search_term`(searchQueryParams ARRAY<STRING>, url STRING)
 RETURNS STRING
 LANGUAGE js
 AS """
