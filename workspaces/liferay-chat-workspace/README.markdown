@@ -7,3 +7,4 @@ This workspace has been established to showcase the latest Liferay client extens
 1.  Chat Message “**Object - Batch** **Type**”: Store chat messages. Each message will be stored twice. One will be owned by the sender and one will be owned by the receiver. 
 2.  Websocket Server “**NodeJS - Service Type**”: A Node.js server will be utilized as a message exchange server for the chat application.
 3.  Chat Widget - **“NG Web Component - Custom Element Type”:** An Angular Web Component which communicates with LR Object API to post messages and connects to the Chat Server to get notified when messages arrive.
+
