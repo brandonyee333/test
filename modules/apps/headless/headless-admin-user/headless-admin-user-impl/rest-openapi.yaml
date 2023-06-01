@@ -5,6 +5,11 @@ components:
             description:
                 An account represents an external account, for example a customer business.
             properties:
+                accountIds:
+                    items:
+                        format: int64
+                        type: integer
+                    type: array
                 accountUserAccounts:
                     description:
                         The users linked to the account
@@ -25,6 +30,24 @@ components:
                     items:
                         $ref: "#/components/schemas/CustomField"
                     type: array
+                dateCreated:
+                    description:
+                        The account's creation date.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                dateModified:
+                    description:
+                        The account's most recent modification date.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                defaultBillingAddressId:
+                    format: int64
+                    type: integer
+                defaultShippingAddressId:
+                    format: int64
+                    type: integer
                 description:
                     type: string
                 domains:
@@ -44,6 +67,11 @@ components:
                     format: int64
                     readOnly: true
                     type: integer
+                logoId:
+                    format: int64
+                    type: integer
+                logoURL:
+                    type: string
                 name:
                     type: string
                 numberOfUsers:
@@ -59,8 +87,17 @@ components:
                 parentAccountId:
                     format: int64
                     type: integer
+                postalAddresses:
+                    description:
+                        The addresses linked to the account
+                    items:
+                        $ref: "#/components/schemas/PostalAddress"
+                    type: array
                 status:
                     type: integer
+                taxId:
+                    example: Abcd1234
+                    type: string
                 type:
                     enum: [business, guest, person, supplier]
             required:
@@ -2315,6 +2352,32 @@ paths:
                                     $ref: "#/components/schemas/AccountGroup"
                                 type: array
             tags: ["AccountGroup"]
+    "/accounts/by-externalReferenceCode/{externalReferenceCode}/logo":
+        post:
+            operationId: postAccountByExternalReferenceCodeLogo
+            parameters:
+                - in: path
+                  name: externalReferenceCode
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: "#/components/schemas/Image"
+                required: true
+            responses:
+                201:
+                    description:
+                        Created
+                204:
+                    description:
+                        Updated
+                400:
+                    description:
+                        Invalid input
+            tags: ["Account"]
     "/accounts/{accountId}":
         delete:
             # @review
@@ -2593,6 +2656,33 @@ paths:
                                     $ref: "#/components/schemas/AccountGroup"
                                 type: array
             tags: ["AccountGroup"]
+    "/accounts/{accountId}/logo":
+        post:
+            operationId: postAccountLogo
+            parameters:
+                - in: path
+                  name: accountId
+                  required: true
+                  schema:
+                      format: int64
+                      type: integer
+            requestBody:
+                content:
+                    multipart/form-data:
+                        schema:
+                            $ref: "#/components/schemas/Image"
+                required: true
+            responses:
+                201:
+                    description:
+                        Created
+                204:
+                    description:
+                        Updated
+                400:
+                    description:
+                        Invalid input
+            tags: ["Account"]
     "/accounts/{accountId}/organizations":
         get:
             description:
