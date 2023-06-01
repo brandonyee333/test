@@ -98,11 +98,19 @@ public class BQMembershipIndividualRepositoryImpl
 
 	@Override
 	public void updateMembershipIndividuals() {
+		Select select = _getMembershipIndividualsSelect(null);
+
 		if (_environment.acceptsProfiles(Profiles.of("prod"))) {
 			_queryExecutor.queryExecute(
-				StringUtils.replace(
-					_membershipIndividualMergeStatement, "${ac_project_id}",
-					ProjectIdThreadLocal.getProjectId()));
+				StringUtils.replaceEach(
+					_membershipIndividualMergeStatement,
+					new String[] {
+						"${ac_project_id}",
+						"${membership_individuals_select_stmt}"
+					},
+					new String[] {
+						ProjectIdThreadLocal.getProjectId(), select.getSQL()
+					}));
 
 			return;
 		}
@@ -121,7 +129,7 @@ public class BQMembershipIndividualRepositoryImpl
 				DSL.field("dataSourceUUIDs"), DSL.field("individualId"),
 				DSL.field("modifiedDate"), DSL.field("segmentId")
 			).select(
-				_getMembershipIndividualsSelect(null)
+				select
 			));
 	}
 
