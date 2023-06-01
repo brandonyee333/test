@@ -32,6 +32,7 @@ import com.liferay.osb.asah.upgrade.v4_0_0.SegmentMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SequenceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SuppressionMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_1.SegmentMembershipFilterUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_2.BQMembershipIndividualUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentMembershipsCountUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentReferencedObjectsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentTableUpgradeStep;
@@ -94,6 +95,8 @@ public class UpgradeProcessConfiguration {
 			"4.0.3", "4.0.4", _segmentMembershipsCountUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.4", "4.0.5", _staticMembershipMigrationUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"4.0.5", "4.0.6", _bqMembershipIndividualUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -107,6 +110,10 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private BlockedKeywordMigrationUpgradeStep
 		_blockedKeywordMigrationUpgradeStep;
+
+	@Autowired
+	private BQMembershipIndividualUpgradeStep
+		_bqMembershipIndividualUpgradeStep;
 
 	@Autowired
 	private CustomFieldMappingMigrationUpgradeStep
