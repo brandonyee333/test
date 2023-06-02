@@ -370,7 +370,7 @@ public class BQIndividualRepositoryImpl
 					(Date)map.get("lastactivitydate"));
 			},
 			(SelectJoinStep)_getIndividualSelectOnConditionStep(
-				false, selectSeekStep1,
+				selectSeekStep1,
 				Collections.singletonList(
 					DSL.field(
 						"individuals.id"
@@ -590,12 +590,10 @@ public class BQIndividualRepositoryImpl
 					String.valueOf(record.get("activitiescount")));
 
 				return new Individual(
-					activitiesCount.longValue(), new BQIndividual(record),
-					(List<Map<String, Object>>)record.get("dataSourceUsers"),
+					activitiesCount.longValue(), new BQIndividual(record), null,
 					(Date)record.get("lastactivitydate"));
 			},
-			_getIndividualSelectOnConditionStep(
-				true, selectFinalStep, sortFields));
+			_getIndividualSelectOnConditionStep(selectFinalStep, sortFields));
 	}
 
 	@Override
@@ -624,17 +622,7 @@ public class BQIndividualRepositoryImpl
 			DSL.field("Individual.screenName"));
 
 		SelectJoinStep<Record> selectJoinStep = _dslContext.select(
-			new ArrayList<Field>() {
-				{
-					addAll(fields);
-					add(
-						DSL.field(
-							_USER_UUID_BY_DATA_SOURCE_ID_STMT
-						).as(
-							"dataSourceUsers"
-						));
-				}
-			}
+			fields
 		).from(
 			DSL.table(
 				"BQIdentity"
@@ -690,10 +678,7 @@ public class BQIndividualRepositoryImpl
 
 				bqIndividual.setFields(bqIndividualFields);
 
-				return new Individual(
-					0L, bqIndividual,
-					(List<Map<String, Object>>)record.get("dataSourceUsers"),
-					null);
+				return new Individual(0L, bqIndividual, null, null);
 			},
 			selectJoinStep.where(
 				_getConditions(channelId, filterExpression, query)
@@ -1131,8 +1116,7 @@ public class BQIndividualRepositoryImpl
 	}
 
 	private SelectFinalStep<?> _getIndividualSelectOnConditionStep(
-		boolean includeDataSourceUsers, SelectForStep<?> selectSeekStep,
-		Collection<SortField<?>> sortFields) {
+		SelectForStep<?> selectSeekStep, Collection<SortField<?>> sortFields) {
 
 		List<Field> fields = Arrays.asList(
 			DSL.field("activitiescount"),
@@ -1191,17 +1175,6 @@ public class BQIndividualRepositoryImpl
 			).as(
 				"fields"
 			));
-
-		if (includeDataSourceUsers) {
-			fields = new ArrayList<>(fields);
-
-			fields.add(
-				DSL.field(
-					_USER_UUID_BY_DATA_SOURCE_ID_STMT
-				).as(
-					"dataSourceUsers"
-				));
-		}
 
 		return _dslContext.with(
 			"individuals"
@@ -1502,11 +1475,6 @@ public class BQIndividualRepositoryImpl
 	private static final String[] _SEARCH_COLUMNS = {
 		"emailAddress", "firstName", "jobTitle", "lastName", "middleName"
 	};
-
-	private static final String _USER_UUID_BY_DATA_SOURCE_ID_STMT =
-		"ARRAY(SELECT AS STRUCT User.dataSourceId AS dataSourceId, " +
-			"ARRAY_AGG(User.uuid) AS userPKs FROM BQUser AS User WHERE " +
-				"Individual.id = User.individualId GROUP BY User.dataSourceId)";
 
 	@Autowired
 	private BQFieldMappingRepository _bqFieldMappingRepository;
