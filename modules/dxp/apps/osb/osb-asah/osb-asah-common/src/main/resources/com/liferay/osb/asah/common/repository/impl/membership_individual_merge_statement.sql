@@ -19,8 +19,7 @@ WHEN NOT MATCHED BY TARGET THEN
 	   source.dataSourceUUIDs,
 	   source.individualId,
 	   source.modifiedDate,
-	   source.segmentId,
-	   source.uuid
+	   source.segmentId
    )
 WHEN NOT MATCHED BY SOURCE THEN
 	DELETE

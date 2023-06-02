@@ -109,7 +109,7 @@ public class BQMembershipIndividualRepositoryImpl
 						"${membership_individuals_select_stmt}"
 					},
 					new String[] {
-						ProjectIdThreadLocal.getProjectId(), select.getSQL()
+						ProjectIdThreadLocal.getProjectId(), select.toString()
 					}));
 
 			return;
