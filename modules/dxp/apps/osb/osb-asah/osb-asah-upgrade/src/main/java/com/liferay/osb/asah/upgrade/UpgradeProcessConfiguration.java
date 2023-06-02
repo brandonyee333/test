@@ -33,6 +33,7 @@ import com.liferay.osb.asah.upgrade.v4_0_0.SequenceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SuppressionMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_1.SegmentMembershipFilterUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.BQMembershipIndividualUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_2.SearchTermFunctionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentMembershipsCountUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentReferencedObjectsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentTableUpgradeStep;
@@ -96,7 +97,10 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"4.0.4", "4.0.5", _staticMembershipMigrationUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"4.0.5", "4.0.6", _bqMembershipIndividualUpgradeStep);
+			"4.0.5", "4.0.6", _bqMembershipIndividualUpgradeStep,
+			_searchTermFunctionUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"4.0.6", "4.0.7", _searchTermFunctionUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -149,6 +153,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private RunLogMigrationUpgradeStep _runLogMigrationUpgradeStep;
+
+	@Autowired
+	private SearchTermFunctionUpgradeStep _searchTermFunctionUpgradeStep;
 
 	@Autowired
 	private SegmentFilterUpgradeStep _segmentFilterUpgradeStep;
