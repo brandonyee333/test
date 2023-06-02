@@ -1,0 +1,19 @@
+{
+  ":configurator:policy" : "force",
+  "com.liferay.oauth2.provider.configuration.OAuth2ProviderApplicationHeadlessServerConfiguration~liferay-chat-socket-server" : {
+    ".serviceAddress" : "localhost:3000",
+    ".serviceScheme" : "http",
+    "baseURL" : "${portalURL}/o/liferay-chat-socket-server",
+    "description" : "",
+    "dxp.lxc.liferay.com.virtualInstanceId" : "default",
+    "homePageURL" : "$[conf:.serviceScheme]://$[conf:.serviceAddress]",
+    "name" : "Liferay Chat Socket Server",
+    "projectName" : "liferay-chat-socket-server",
+    "properties" : [ ],
+    "scopes" : [ "Liferay.Headless.Admin.User.everything.read", "Liferay.Headless.Delivery.everything" ],
+    "sourceCodeURL" : "",
+    "type" : "oAuthApplicationHeadlessServer",
+    "typeSettings" : [ ".serviceScheme=http", "scopes=Liferay.Headless.Admin.User.everything.read\nLiferay.Headless.Delivery.everything", ".serviceAddress=localhost:3000" ],
+    "webContextPath" : "/liferay-chat-socket-server"
+  }
+}

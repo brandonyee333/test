@@ -1,0 +1,15 @@
+{
+  ":configurator:policy" : "force",
+  "com.liferay.client.extension.type.configuration.CETConfiguration~liferay-chat-custom-element" : {
+    "baseURL" : "${portalURL}/o/liferay-chat-custom-element",
+    "description" : "",
+    "dxp.lxc.liferay.com.virtualInstanceId" : "default",
+    "name" : "Liferay Chat Custom Element",
+    "projectName" : "liferay-chat-custom-element",
+    "properties" : [ ],
+    "sourceCodeURL" : "",
+    "type" : "customElement",
+    "typeSettings" : [ "friendlyURLMapping=chat-ui", "instanceable=true", "urls=index.js", "useESM=false", "htmlElementName=liferay-chat-window", "cssURLs=style.css", "portletCategoryName=category.client-extensions" ],
+    "webContextPath" : "/liferay-chat-custom-element"
+  }
+}
