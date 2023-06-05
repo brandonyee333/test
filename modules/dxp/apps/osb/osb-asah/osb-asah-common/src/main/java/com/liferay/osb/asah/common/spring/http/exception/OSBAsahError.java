@@ -36,6 +36,7 @@ public class OSBAsahError {
 			_errorAttributeNames.add("errors");
 			_errorAttributeNames.add("exception");
 			_errorAttributeNames.add("message");
+			_errorAttributeNames.add("messageKey");
 			_errorAttributeNames.add("path");
 			_errorAttributeNames.add("status");
 			_errorAttributeNames.add("timestamp");
@@ -43,6 +44,7 @@ public class OSBAsahError {
 		}
 		else {
 			_errorAttributeNames.add("error");
+			_errorAttributeNames.add("messageKey");
 			_errorAttributeNames.add("path");
 			_errorAttributeNames.add("status");
 			_errorAttributeNames.add("timestamp");
