@@ -100,9 +100,15 @@ FROM
 	FormEvent
 LEFT JOIN FormSubmissionTimes ON (
 	FormEvent.assetId = FormSubmissionTimes.assetId AND
+	FormEvent.browserName = FormSubmissionTimes.browserName AND
 	FormEvent.canonicalUrl = FormSubmissionTimes.canonicalUrl AND
 	FormEvent.channelId = FormSubmissionTimes.channelId AND
+	FormEvent.city = FormSubmissionTimes.city AND
+	FormEvent.country = FormSubmissionTimes.country AND
+	FormEvent.deviceType = FormSubmissionTimes.deviceType AND
 	TIMESTAMP_TRUNC(eventDate, HOUR) = FormSubmissionTimes.normalizedEventDate AND
+	FormEvent.platformName = FormSubmissionTimes.platformName AND
+	FormEvent.region = FormSubmissionTimes.region AND
 	FormEvent.title = FormSubmissionTimes.pageTitle AND
 	FormEvent.userId = FormSubmissionTimes.userId)
 LEFT JOIN `$[AC_PROJECT_ID].session` AS Session ON
