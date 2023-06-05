@@ -105,12 +105,12 @@ public class BQMembershipChangeRepositoryTest
 	@Test
 	public void testAddMembershipChange() {
 		_bqMembershipChangeRepository.addBQMembershipChange(
-			_bqMembershipRepository.getMembershipCountSnapshot(1L));
+			_bqMembershipRepository.getMembershipCountSnapshot(1029384756L));
 
 		List<BQMembershipChange> bqMembershipChanges =
 			_bqMembershipChangeRepository.
 				findLastBQMembershipChangeBySegmentIds(
-					Collections.singletonList(1L));
+					Collections.singletonList(1029384756L));
 
 		Assertions.assertEquals(1, bqMembershipChanges.size());
 
@@ -118,7 +118,7 @@ public class BQMembershipChangeRepositoryTest
 
 		Assertions.assertEquals(5, bqMembershipChange.getIdentitiesCount());
 		Assertions.assertEquals(3, bqMembershipChange.getIndividualsCount());
-		Assertions.assertEquals(1L, bqMembershipChange.getSegmentId());
+		Assertions.assertEquals(1029384756L, bqMembershipChange.getSegmentId());
 	}
 
 	@Test
