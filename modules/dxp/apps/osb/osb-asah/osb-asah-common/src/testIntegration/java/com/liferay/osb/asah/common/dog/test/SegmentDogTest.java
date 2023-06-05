@@ -60,6 +60,24 @@ public class SegmentDogTest
 		Assertions.assertEquals("Name is already used", exception.getMessage());
 	}
 
+	@SQLResource(resourcePath = "test_referenced_objects.sql")
+	@Test
+	public void testEditSegmentName() {
+		_addSegment(1L, "Segment 1");
+
+		Segment segment2 = _addSegment(1L, "Segment 2");
+
+		Exception exception = Assertions.assertThrows(
+			OSBAsahDuplicateNameException.class,
+			() -> {
+				segment2.setName("Segment 1");
+
+				_segmentDog.addSegment(segment2);
+			});
+
+		Assertions.assertEquals("Name is already used", exception.getMessage());
+	}
+
 	@BQSQLResource(resourcePath = "test_referenced_objects_bq.sql")
 	@SQLResource(resourcePath = "test_referenced_objects.sql")
 	@Test
