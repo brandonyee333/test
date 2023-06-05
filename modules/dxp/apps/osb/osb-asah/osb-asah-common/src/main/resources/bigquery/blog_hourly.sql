@@ -36,7 +36,10 @@ WITH
 				)
 			) AND
 			Event.assetId IS NOT NULL AND
-			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			Event.assetTitle IS NOT NULL AND
+			Event.canonicalUrl IS NOT NULL AND
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			Event.title IS NOT NULL
 	),
 	BlogFinalizedEvent AS (
 		SELECT
@@ -75,8 +78,10 @@ WITH
 		WHERE
 			Event.applicationId = 'Comment' AND
 			Event.assetId IS NOT NULL AND
+			Event.canonicalUrl IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			Event.eventId = 'posted'
+			Event.eventId = 'posted' AND
+			Event.title IS NOT NULL
 	),
 	BlogComments AS (
 		SELECT
@@ -123,8 +128,10 @@ WITH
 		WHERE
 			Event.applicationId = 'Ratings' AND
 			Event.assetId IS NOT NULL AND
+			Event.canonicalUrl IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			Event.eventId = 'VOTE'
+			Event.eventId = 'VOTE' AND
+			Event.title IS NOT NULL
 	),
 	BlogRatings AS (
 		SELECT

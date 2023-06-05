@@ -18,8 +18,11 @@ WITH
 		WHERE
 			Event.applicationId = 'Comment' AND
 			Event.assetId IS NOT NULL AND
+			Event.assetTitle IS NOT NULL AND
+			Event.canonicalUrl IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			Event.eventId = 'posted'
+			Event.eventId = 'posted' AND
+			Event.title IS NOT NULL
 	),
 	DocumentEvent AS (
 		SELECT
@@ -48,8 +51,11 @@ WITH
 		WHERE
 			Event.applicationId = 'Document' AND
 			Event.assetId IS NOT NULL AND
+			Event.assetTitle IS NOT NULL AND
+			Event.canonicalUrl IS NOT NULL AND
 			Event.eventId IN ('documentDownloaded', 'documentPreviewed') AND
-			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR)
+			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
+			Event.title IS NOT NULL
 	),
 	DocumentComments AS (
 		SELECT
@@ -120,8 +126,10 @@ WITH
 		WHERE
 			Event.applicationId = 'Ratings' AND
 			Event.assetId IS NOT NULL AND
+			Event.canonicalUrl IS NOT NULL AND
 			Event.eventDate > TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 48 HOUR) AND
-			Event.eventId = 'VOTE'
+			Event.eventId = 'VOTE' AND
+			Event.title IS NOT NULL
 	),
 	DocumentRatings AS (
 		SELECT
