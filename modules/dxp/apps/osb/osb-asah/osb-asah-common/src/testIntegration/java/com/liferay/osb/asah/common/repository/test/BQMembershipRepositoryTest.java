@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.repository.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.entity.BQMembership;
+import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
@@ -347,6 +348,20 @@ public class BQMembershipRepositoryTest
 
 		Assertions.assertEquals(1, segmentIds.size(), segmentIds.toString());
 		Assertions.assertEquals(34, segmentIds.get(0));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_membership_repository_bq.sql")
+	@SQLResource(resourcePath = "test_bq_membership_repository.sql")
+	@Test
+	public void testGetMembershipCountSnapshot() {
+		MembershipCountSnapshot membershipCountSnapshot =
+			_bqMembershipRepository.getMembershipCountSnapshot(34L);
+
+		Assertions.assertEquals(
+			2L, membershipCountSnapshot.getIdentitiesCount());
+		Assertions.assertEquals(
+			1L, membershipCountSnapshot.getIndividualsCount());
+		Assertions.assertEquals(34L, membershipCountSnapshot.getSegmentId());
 	}
 
 	@Autowired
