@@ -487,6 +487,22 @@ public class LayoutsAdminDisplayContext {
 			WorkflowConstants.STATUS_APPROVED, serviceContext);
 	}
 
+	public Long getDraftLayoutPlid() {
+		Layout selLayout = getSelLayout();
+
+		if ((selLayout == null) || selLayout.isDraftLayout()) {
+			return selLayout.getPlid();
+		}
+
+		Layout draftLayout = selLayout.fetchDraftLayout();
+
+		if (draftLayout == null) {
+			return selLayout.getPlid();
+		}
+
+		return draftLayout.getPlid();
+	}
+
 	public String getEditLayoutURL(Layout layout) throws Exception {
 		if (layout.isTypeContent()) {
 			return _getDraftLayoutURL(layout);
