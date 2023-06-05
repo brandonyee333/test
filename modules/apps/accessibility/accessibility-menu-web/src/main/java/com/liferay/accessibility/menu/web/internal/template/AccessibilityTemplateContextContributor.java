@@ -1,0 +1,74 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+
+package com.liferay.accessibility.menu.web.internal.template;
+
+import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySetting;
+import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.template.TemplateContextContributor;
+import com.liferay.portal.kernel.util.GetterUtil;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.osgi.service.component.annotations.Component;
+
+/**
+ * @author Evan Thibodeau
+ */
+@Component(
+	property = "type=" + TemplateContextContributor.TYPE_THEME,
+	service = TemplateContextContributor.class
+)
+public class AccessibilityTemplateContextContributor
+	implements TemplateContextContributor {
+
+	@Override
+	public void prepare(
+		Map<String, Object> contextObjects,
+		HttpServletRequest httpServletRequest) {
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(GetterUtil.getString(contextObjects.get("bodyCssClass")));
+
+		for (AccessibilitySetting accessibilitySetting :
+				AccessibilitySettingsUtil.getAccessibilitySettings(
+					httpServletRequest)) {
+
+			if (_isSettingEnabled(accessibilitySetting)) {
+				sb.append(StringPool.SPACE);
+				sb.append(accessibilitySetting.getClassName());
+			}
+		}
+	}
+
+	private boolean _isSettingEnabled(
+		AccessibilitySetting accessibilitySetting) {
+
+		if (accessibilitySetting.getSessionClicksValue(
+			).equals(
+				"undefined"
+			)) {
+
+			return Boolean.getBoolean(accessibilitySetting.getDefaultValue());
+		}
+
+		return Boolean.getBoolean(accessibilitySetting.getSessionClicksValue());
+	}
+
+}
