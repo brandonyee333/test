@@ -542,7 +542,7 @@ public class LayoutsAdminDisplayContext {
 		).put(
 			"faviconFileEntryId",
 			() -> {
-				Layout selLayout = getSelLayout();
+				Layout selLayout = getLayout();
 
 				if (selLayout != null) {
 					return selLayout.getFaviconFileEntryId();
@@ -565,9 +565,9 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public String getFaviconTitle() {
-		if (getSelLayout() != null) {
+		if (getLayout() != null) {
 			return FaviconUtil.getFaviconTitle(
-				_cetManager, getSelLayout(), themeDisplay.getLocale());
+				_cetManager, getLayout(), themeDisplay.getLocale());
 		}
 
 		return FaviconUtil.getFaviconTitle(
@@ -577,8 +577,8 @@ public class LayoutsAdminDisplayContext {
 	public String getFaviconURL() {
 		String faviconURL = StringPool.BLANK;
 
-		if (getSelLayout() != null) {
-			faviconURL = FaviconUtil.getFaviconURL(_cetManager, getSelLayout());
+		if (getLayout() != null) {
+			faviconURL = FaviconUtil.getFaviconURL(_cetManager, getLayout());
 		}
 
 		if (Validator.isNotNull(faviconURL)) {

@@ -19,7 +19,7 @@
 <%
 Group group = layoutsAdminDisplayContext.getGroup();
 
-Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
+Layout selLayout = layoutsAdminDisplayContext.getLayout();
 
 LayoutType selLayoutType = selLayout.getLayoutType();
 %>

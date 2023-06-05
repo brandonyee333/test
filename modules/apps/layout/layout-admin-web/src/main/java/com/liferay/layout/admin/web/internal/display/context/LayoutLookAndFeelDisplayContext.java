@@ -151,7 +151,7 @@ public class LayoutLookAndFeelDisplayContext {
 					return StringPool.BLANK;
 				}
 
-				Layout selLayout = _layoutsAdminDisplayContext.getSelLayout();
+				Layout selLayout = _layoutsAdminDisplayContext.getLayout();
 
 				Layout masterLayout = LayoutLocalServiceUtil.getLayout(
 					selLayout.getMasterLayoutPlid());
@@ -177,7 +177,7 @@ public class LayoutLookAndFeelDisplayContext {
 			() -> {
 				if (hasMasterLayout()) {
 					Layout selLayout =
-						_layoutsAdminDisplayContext.getSelLayout();
+						_layoutsAdminDisplayContext.getLayout();
 
 					return String.valueOf(selLayout.getMasterLayoutPlid());
 				}
@@ -195,7 +195,7 @@ public class LayoutLookAndFeelDisplayContext {
 		String masterLayoutName = LanguageUtil.get(
 			_httpServletRequest, "blank");
 
-		Layout selLayout = _layoutsAdminDisplayContext.getSelLayout();
+		Layout selLayout = _layoutsAdminDisplayContext.getLayout();
 
 		if (selLayout.getMasterLayoutPlid() > 0) {
 			LayoutPageTemplateEntry layoutPageTemplateEntry =
@@ -241,7 +241,7 @@ public class LayoutLookAndFeelDisplayContext {
 		).put(
 			"styleBookEntryId",
 			() -> {
-				Layout selLayout = _layoutsAdminDisplayContext.getSelLayout();
+				Layout selLayout = _layoutsAdminDisplayContext.getLayout();
 
 				return String.valueOf(selLayout.getStyleBookEntryId());
 			}
@@ -251,7 +251,7 @@ public class LayoutLookAndFeelDisplayContext {
 	}
 
 	public String getStyleBookEntryName() {
-		Layout selLayout = _layoutsAdminDisplayContext.getSelLayout();
+		Layout selLayout = _layoutsAdminDisplayContext.getLayout();
 
 		StyleBookEntry defaultStyleBookEntry =
 			DefaultStyleBookEntryUtil.getDefaultStyleBookEntry(selLayout);

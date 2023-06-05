@@ -19,7 +19,7 @@
 <%
 String themeId = ParamUtil.getString(request, "themeId");
 
-Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
+Layout selLayout = layoutsAdminDisplayContext.getLayout();
 LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 
 Theme selTheme = null;
