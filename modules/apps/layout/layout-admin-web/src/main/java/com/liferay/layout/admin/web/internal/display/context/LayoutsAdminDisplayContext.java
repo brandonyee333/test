@@ -35,6 +35,7 @@ import com.liferay.item.selector.criteria.FileEntryItemSelectorReturnType;
 import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.item.selector.criteria.file.criterion.FileItemSelectorCriterion;
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
+import com.liferay.layout.admin.constants.LayoutScreenNavigationEntryConstants;
 import com.liferay.layout.admin.web.internal.helper.LayoutActionsHelper;
 import com.liferay.layout.admin.web.internal.util.FaviconUtil;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
@@ -683,6 +684,22 @@ public class LayoutsAdminDisplayContext {
 		_keywords = ParamUtil.getString(httpServletRequest, "keywords");
 
 		return _keywords;
+	}
+
+	public Layout getLayout() {
+		Layout selLayout = getSelLayout();
+
+		if ((selLayout != null) && _isADraftLayoutConfiguration() &&
+			_isDraftLayoutModified(selLayout)) {
+
+			if (selLayout.isDraftLayout()) {
+				return getSelLayout();
+			}
+
+			return selLayout.fetchDraftLayout();
+		}
+
+		return selLayout;
 	}
 
 	public String getLayoutConversionPreviewURL(Layout layout) {
@@ -2240,6 +2257,34 @@ public class LayoutsAdminDisplayContext {
 		};
 
 		return _types;
+	}
+
+	private boolean _isADraftLayoutConfiguration() {
+		return StringUtil.equalsIgnoreCase(
+			ParamUtil.getString(
+				_liferayPortletRequest, "screenNavigationEntryKey"),
+			LayoutScreenNavigationEntryConstants.ENTRY_KEY_DESIGN);
+	}
+
+	private boolean _isDraftLayoutModified(Layout layout) {
+		if (layout == null) {
+			return false;
+		}
+
+		if (layout.isPublicLayout()) {
+			layout = layout.fetchDraftLayout();
+		}
+
+		if (layout != null) {
+			UnicodeProperties typeSettingsUnicodeProperties =
+				layout.getTypeSettingsProperties();
+
+			return GetterUtil.getBoolean(
+				typeSettingsUnicodeProperties.getProperty(
+					"designConfigurationModified"));
+		}
+
+		return false;
 	}
 
 	private boolean _matchesHostname(
