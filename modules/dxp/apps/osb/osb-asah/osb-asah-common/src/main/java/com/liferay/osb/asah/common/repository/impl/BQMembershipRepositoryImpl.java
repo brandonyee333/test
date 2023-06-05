@@ -594,17 +594,33 @@ public class BQMembershipRepositoryImpl
 			_dslContext.select(
 				DSL.countDistinct(
 					DSL.coalesce(
-						DSL.field("individualId"), DSL.field("identityId"))
+						DSL.field("Individual.id"), DSL.field("identityId"))
 				).as(
 					"identitiesCount"
 				),
 				DSL.countDistinct(
-					DSL.field("individualId")
+					DSL.field("Individual.id")
 				).as(
 					"individualsCount"
 				)
 			).from(
-				"BQMembership"
+				DSL.table(
+					"BQMembership"
+				).as(
+					"Membership"
+				)
+			).leftJoin(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).on(
+				DSL.field(
+					"Membership.individualId"
+				).eq(
+					DSL.field("Individual.id")
+				)
 			).where(
 				DSL.field(
 					"segmentId", Long.class
