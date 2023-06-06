@@ -62,12 +62,18 @@ public class SegmentDogTest
 
 	@SQLResource(resourcePath = "test_referenced_objects.sql")
 	@Test
-	public void testAddSegmentWithSameName() {
+	public void testEditSegmentNameToAnExistingOne() {
 		_addSegment(1L, "Segment 1");
+
+		Segment segment2 = _addSegment(1L, "Segment 2");
 
 		Exception exception = Assertions.assertThrows(
 			OSBAsahDuplicateNameException.class,
-			() -> _addSegment(1L, "Segment 1"));
+			() -> {
+				segment2.setName("Segment 1");
+
+				_segmentDog.updateSegment(segment2, segment2.getId());
+			});
 
 		Assertions.assertEquals("Name is already used", exception.getMessage());
 	}
