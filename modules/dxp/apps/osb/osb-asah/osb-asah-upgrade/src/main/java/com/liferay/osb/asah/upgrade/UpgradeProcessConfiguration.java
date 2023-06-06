@@ -38,6 +38,7 @@ import com.liferay.osb.asah.upgrade.v4_0_2.SegmentMembershipsCountUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentReferencedObjectsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentTableUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.StaticMembershipMigrationUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_3.HourlyViewsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_4.SegmentUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +103,9 @@ public class UpgradeProcessConfiguration {
 			_searchTermFunctionUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.6", "4.0.7", _searchTermFunctionUpgradeStep);
-		upgradeProcess.addUpgradeSteps("4.0.7", "4.0.8", _segmentUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"4.0.7", "4.0.8", _hourlyViewsUpgradeStep);
+		upgradeProcess.addUpgradeSteps("4.0.8", "4.0.9", _segmentUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -135,6 +138,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private ExperimentMigrationUpgradeStep _experimentMigrationUpgradeStep;
+
+	@Autowired
+	private HourlyViewsUpgradeStep _hourlyViewsUpgradeStep;
 
 	@Autowired
 	private InterestTopicMigrationUpgradeStep
