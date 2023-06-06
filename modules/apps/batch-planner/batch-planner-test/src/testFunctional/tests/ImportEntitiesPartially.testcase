@@ -28,6 +28,8 @@ definition {
 
 	@priority = 3
 	test CannotUpdateRecordWithOnlyAddNewRecords {
+		property portal.acceptance = "ashley";
+
 		task ("Given an account with description field value is created") {
 			var blogPostingId = BlogPostingAPI.getIdOfCreatedBlogPosting(
 				articleBody = "myArticleBody",
@@ -73,7 +75,10 @@ definition {
 
 	@priority = 4
 	test CanPartialUpdateAndCreateEntriesFromJsonWithAddOrUpdateRecordsUpdateChangedRecordFields {
-		property portal.acceptance = "true";
+
+		//property portal.acceptance = "true";
+
+		property portal.acceptance = "ashley";
 
 		task ("Given an account without description field value is created") {
 			AccountAPI.createAccount(
@@ -121,7 +126,10 @@ definition {
 
 	@priority = 4
 	test CanUpdateAndCreateEntriesFromJsonWithAddOrUpdateRecordsOverwrite {
-		property portal.acceptance = "true";
+
+		//property portal.acceptance = "true";
+
+		property portal.acceptance = "ashley";
 
 		task ("Given an account with description field value is created") {
 			AccountAPI.createAccount(
