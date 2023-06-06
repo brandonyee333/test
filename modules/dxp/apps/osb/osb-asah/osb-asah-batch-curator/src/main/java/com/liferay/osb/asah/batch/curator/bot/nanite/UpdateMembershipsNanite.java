@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -66,6 +67,12 @@ public class UpdateMembershipsNanite extends BaseNanite {
 	}
 
 	private void _updateDynamicSegmentMemberships(Segment segment) {
+		if (StringUtils.equalsIgnoreCase("DISABLED", segment.getState()) ||
+			StringUtils.equalsIgnoreCase("INACTIVE", segment.getStatus())) {
+
+			return;
+		}
+
 		String filterString = segment.getFilter();
 		Long segmentId = segment.getId();
 
