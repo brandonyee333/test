@@ -181,6 +181,36 @@ public class DXPBatchEntitiesRestControllerTest
 	}
 
 	@Test
+	public void testGetWithNullIfModifiedSince() throws Exception {
+		Mockito.when(
+			_storage.readSparkJobResult(
+				ArgumentMatchers.isNull(), ArgumentMatchers.anyString())
+		).thenReturn(
+			File.createTempFile(RandomTestUtil.randomString(), null)
+		);
+
+		Mockito.when(
+			_storageFactory.getStorage(
+				ArgumentMatchers.any(StorageConfiguration.class))
+		).thenReturn(
+			_storage
+		);
+
+		HttpHeaders httpHeaders = new HttpHeaders();
+
+		httpHeaders.add(HeaderConstants.DATA_SOURCE_ID, "test-data-source-id");
+		httpHeaders.add(HeaderConstants.PROJECT_ID, "test");
+
+		ResponseEntity<Resource> responseEntity = _exchange(httpHeaders);
+
+		Assertions.assertThat(
+			responseEntity.getStatusCode()
+		).isEqualTo(
+			HttpStatus.valueOf(200)
+		);
+	}
+
+	@Test
 	public void testPost() throws Exception {
 		MultipartBodyBuilder multipartBodyBuilder = new MultipartBodyBuilder();
 
