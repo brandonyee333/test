@@ -14,12 +14,20 @@
 
 package com.liferay.accessibility.menu.web.internal.util;
 
+import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuConfiguration;
+import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuGroupConfiguration;
 import com.liferay.accessibility.menu.web.internal.constants.AccessibilitySettingConstants;
 import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySetting;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SessionClicks;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
 
@@ -72,5 +80,45 @@ public class AccessibilitySettingsUtil {
 								"undefined")));
 				}));
 	}
+
+	public static boolean isShowAccessibilityMenu(
+		HttpServletRequest httpServletRequest,
+		ConfigurationProvider configurationProvider) {
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		try {
+			AccessibilityMenuConfiguration accessibilityMenuConfiguration =
+				configurationProvider.getCompanyConfiguration(
+					AccessibilityMenuConfiguration.class,
+					themeDisplay.getCompanyId());
+
+			if (accessibilityMenuConfiguration.showAccessibilityMenu()) {
+				return true;
+			}
+
+			AccessibilityMenuGroupConfiguration
+				accessibilityMenuGroupConfiguration =
+					configurationProvider.getGroupConfiguration(
+						AccessibilityMenuGroupConfiguration.class,
+						themeDisplay.getScopeGroupId());
+
+			if (accessibilityMenuGroupConfiguration.showAccessibilityMenu()) {
+				return true;
+			}
+		}
+		catch (ConfigurationException configurationException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(configurationException);
+			}
+		}
+
+		return false;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AccessibilitySettingsUtil.class);
 
 }

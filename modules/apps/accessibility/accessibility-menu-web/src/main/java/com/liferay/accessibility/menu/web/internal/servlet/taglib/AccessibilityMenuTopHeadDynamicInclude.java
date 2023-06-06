@@ -14,14 +14,11 @@
 
 package com.liferay.accessibility.menu.web.internal.servlet.taglib;
 
-import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuConfiguration;
-import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuGroupConfiguration;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
+import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.ui.QuickAccessEntry;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -48,29 +45,10 @@ public class AccessibilityMenuTopHeadDynamicInclude extends BaseDynamicInclude {
 			HttpServletResponse httpServletResponse, String key)
 		throws IOException {
 
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
+		if (!AccessibilitySettingsUtil.isShowAccessibilityMenu(
+				httpServletRequest, _configurationProvider)) {
 
-		try {
-			AccessibilityMenuConfiguration accessibilityMenuConfiguration =
-				_configurationProvider.getCompanyConfiguration(
-					AccessibilityMenuConfiguration.class,
-					themeDisplay.getCompanyId());
-
-			AccessibilityMenuGroupConfiguration
-				accessibilityMenuGroupConfiguration =
-					_configurationProvider.getGroupConfiguration(
-						AccessibilityMenuGroupConfiguration.class,
-						themeDisplay.getScopeGroupId());
-
-			if (!accessibilityMenuConfiguration.showAccessibilityMenu() &&
-				!accessibilityMenuGroupConfiguration.showAccessibilityMenu()) {
-				return;
-			}
-		}
-		catch (ConfigurationException e) {
-			e.printStackTrace();
+			return;
 		}
 
 		List<QuickAccessEntry> quickAccessEntries =
@@ -81,16 +59,14 @@ public class AccessibilityMenuTopHeadDynamicInclude extends BaseDynamicInclude {
 			quickAccessEntries = new ArrayList<>();
 
 			httpServletRequest.setAttribute(
-				WebKeys.PORTLET_QUICK_ACCESS_ENTRIES,
-				quickAccessEntries);
+				WebKeys.PORTLET_QUICK_ACCESS_ENTRIES, quickAccessEntries);
 		}
 
 		QuickAccessEntry quickAccessEntry = new QuickAccessEntry();
 
 		quickAccessEntry.setId(StringUtil.randomId());
 		quickAccessEntry.setLabel("Accessibility Menu");
-		quickAccessEntry.setOnClick(
-			"Liferay.fire('openAccessibilityMenu');");
+		quickAccessEntry.setOnClick("Liferay.fire('openAccessibilityMenu');");
 
 		quickAccessEntries.add(quickAccessEntry);
 	}

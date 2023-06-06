@@ -18,6 +18,7 @@ import com.liferay.accessibility.menu.web.internal.display.context.Accessibility
 import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.util.GetterUtil;
 
@@ -26,6 +27,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Evan Thibodeau
@@ -41,6 +43,12 @@ public class AccessibilityTemplateContextContributor
 	public void prepare(
 		Map<String, Object> contextObjects,
 		HttpServletRequest httpServletRequest) {
+
+		if (!AccessibilitySettingsUtil.isShowAccessibilityMenu(
+				httpServletRequest, _configurationProvider)) {
+
+			return;
+		}
 
 		StringBundler sb = new StringBundler(5);
 
@@ -70,5 +78,8 @@ public class AccessibilityTemplateContextContributor
 
 		return Boolean.getBoolean(accessibilitySetting.getSessionClicksValue());
 	}
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 }

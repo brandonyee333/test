@@ -22,7 +22,6 @@ import {getSettingValue} from './util';
 const OPEN_ACCESSIBILITY_MENU_EVENT_NAME = 'openAccessibilityMenu';
 
 const AccessibilityMenu = ({accessibilitySettings}) => {
-	console.log('accessibilitySettings', accessibilitySettings);
 	const {observer, onOpenChange, open} = useModal();
 
 	useEffect(() => {

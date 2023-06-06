@@ -14,19 +14,14 @@
 
 package com.liferay.accessibility.menu.web.internal.servlet.taglib;
 
-import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuConfiguration;
-import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuGroupConfiguration;
 import com.liferay.accessibility.menu.web.internal.constants.AccessibilityMenuPortletKeys;
+import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.taglib.portletext.RuntimeTag;
 import com.liferay.taglib.servlet.PageContextFactoryUtil;
-import com.liferay.taglib.util.IncludeTag;
 
 import java.io.IOException;
 
@@ -52,29 +47,10 @@ public class AccessibilityMenuBodyTopJSPDynamicInclude
 			HttpServletResponse httpServletResponse, String key)
 		throws IOException {
 
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
+		if (!AccessibilitySettingsUtil.isShowAccessibilityMenu(
+				httpServletRequest, _configurationProvider)) {
 
-		try {
-			AccessibilityMenuConfiguration accessibilityMenuConfiguration =
-				_configurationProvider.getCompanyConfiguration(
-					AccessibilityMenuConfiguration.class,
-					themeDisplay.getCompanyId());
-
-			AccessibilityMenuGroupConfiguration
-				accessibilityMenuGroupConfiguration =
-					_configurationProvider.getGroupConfiguration(
-						AccessibilityMenuGroupConfiguration.class,
-						themeDisplay.getScopeGroupId());
-
-			if (!accessibilityMenuConfiguration.showAccessibilityMenu() &&
-				!accessibilityMenuGroupConfiguration.showAccessibilityMenu()) {
-				return;
-			}
-		}
-		catch (ConfigurationException e) {
-			e.printStackTrace();
+			return;
 		}
 
 		PageContext pageContext = PageContextFactoryUtil.create(
@@ -83,7 +59,8 @@ public class AccessibilityMenuBodyTopJSPDynamicInclude
 		try {
 			JspWriter jspWriter = pageContext.getOut();
 
-			jspWriter.write("<div class=\"accessibility-menu\" style=\"display: none;\">");
+			jspWriter.write(
+				"<div class=\"accessibility-menu\" style=\"display: none;\">");
 
 			RuntimeTag runtimeTag = new RuntimeTag();
 
