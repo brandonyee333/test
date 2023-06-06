@@ -238,6 +238,10 @@ public class DXPBatchEntitiesRestController {
 
 	private Date _parseDate(String dateString) {
 		try {
+			if (dateString == null) {
+				return null;
+			}
+
 			Instant instant = Instant.from(
 				_dateTimeFormatter.parse(dateString));
 
