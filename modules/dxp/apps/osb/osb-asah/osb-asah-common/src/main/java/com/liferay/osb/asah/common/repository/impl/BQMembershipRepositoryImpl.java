@@ -635,10 +635,10 @@ public class BQMembershipRepositoryImpl
 
 		BigDecimal identitiesCountBigDecimal =
 			(BigDecimal)membershipSnapshot.getOrDefault(
-				"identitiesCount", new BigDecimal(0));
+				"identitiesCount", BigDecimal.ZERO);
 		BigDecimal individualsCountBigDecimal =
 			(BigDecimal)membershipSnapshot.getOrDefault(
-				"individualsCount", new BigDecimal(0));
+				"individualsCount", BigDecimal.ZERO);
 
 		return new MembershipCountSnapshot(
 			identitiesCountBigDecimal.longValue(),
