@@ -31,6 +31,7 @@ USING
 			userId
 	) AS staging
 ON (
+	DATE(replica.eventDate, '{{ dag.default_args['ac_project_time_zone_id'] }}') = '{{ data_interval_start.to_date_string() }}' AND
 	staging.assetId = replica.assetId AND
 	staging.assetTitle = replica.assetTitle AND
 	COALESCE(staging.browserName, '') = COALESCE(replica.browserName, '') AND

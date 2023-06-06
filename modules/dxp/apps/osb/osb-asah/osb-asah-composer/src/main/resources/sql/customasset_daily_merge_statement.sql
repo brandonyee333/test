@@ -22,6 +22,7 @@ USING
 			assetPrimaryKey, channelId, eventDate
 	) AS staging
 ON (
+	DATE(replica.eventDate, '{{ dag.default_args['ac_project_time_zone_id'] }}') = '{{ data_interval_start.to_date_string() }}' AND
 	staging.assetPrimaryKey = replica.assetPrimaryKey AND
 	staging.channelId = replica.channelId AND
 	staging.eventDate = replica.eventDate
