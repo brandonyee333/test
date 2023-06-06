@@ -28,20 +28,48 @@ import org.springframework.stereotype.Component;
  * @author Marcos Martins
  */
 @Component
-public class FormHourlyViewUpgradeStep implements UpgradeStep {
+public class HourlyViewsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
+		_bigQuerySchemaManager.createOrReplaceView(
+			ProjectIdThreadLocal.getProjectId(), "bloghourly");
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Blog Hourly view successfully updated");
+		}
+
+		_bigQuerySchemaManager.createOrReplaceView(
+			ProjectIdThreadLocal.getProjectId(), "customassethourly");
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Custom Asset Hourly view successfully updated");
+		}
+
+		_bigQuerySchemaManager.createOrReplaceView(
+			ProjectIdThreadLocal.getProjectId(), "documentlibraryhourly");
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Document Library Hourly view successfully updated");
+		}
+
 		_bigQuerySchemaManager.createOrReplaceView(
 			ProjectIdThreadLocal.getProjectId(), "formhourly");
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Form Hourly view successfully updated");
 		}
+
+		_bigQuerySchemaManager.createOrReplaceView(
+			ProjectIdThreadLocal.getProjectId(), "journalhourly");
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Journal Hourly view successfully updated");
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		FormHourlyViewUpgradeStep.class);
+		HourlyViewsUpgradeStep.class);
 
 	@Autowired
 	private BigQuerySchemaManager _bigQuerySchemaManager;
