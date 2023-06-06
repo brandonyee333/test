@@ -629,10 +629,16 @@ public class BQMembershipRepositoryImpl
 				)
 			));
 
+		if (membershipSnapshot == null) {
+			return new MembershipCountSnapshot(0L, 0L, segmentId);
+		}
+
 		BigDecimal identitiesCountBigDecimal =
-			(BigDecimal)membershipSnapshot.get("identitiesCount");
+			(BigDecimal)membershipSnapshot.getOrDefault(
+				"identitiesCount", new BigDecimal(0));
 		BigDecimal individualsCountBigDecimal =
-			(BigDecimal)membershipSnapshot.get("individualsCount");
+			(BigDecimal)membershipSnapshot.getOrDefault(
+				"individualsCount", new BigDecimal(0));
 
 		return new MembershipCountSnapshot(
 			identitiesCountBigDecimal.longValue(),
