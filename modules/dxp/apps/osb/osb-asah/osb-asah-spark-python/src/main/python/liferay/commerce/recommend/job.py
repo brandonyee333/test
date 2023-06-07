@@ -9,7 +9,8 @@
 # distribution rights of the Software.
 #
 
-from liferay.commerce.common import BaseJSONDataFrameReaderSparkJob, \
+from liferay.commerce.common import BaseBigQueryDataFrameReaderSparkJob, \
+	BaseJSONDataFrameReaderSparkJob, \
 	BaseJSONDataFrameWriterSparkJob
 from liferay.commerce.recommend.feature import CommerceFeatureExtractor, \
 	MAPEvaluator
@@ -104,6 +105,28 @@ class FrequentPatternDataPreparationSparkJob(BaseSparkJob):
 		items_data_frame.createOrReplaceTempView('items')
 
 		self.spark_session.catalog.cacheTable('items')
+
+class FrequentPatternOrderBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReaderSparkJob):
+
+	def __init__(self, spark_application):
+		super(FrequentPatternOrderBigQueryDataFrameReaderSparkJob, self).__init__(
+			spark_application,
+			'order'
+		)
+
+	def _get_sql_query(self):
+		configuration = self.spark_application_configuration
+
+		return f"""
+			SELECT
+				order_.id AS orderId,
+				orderItems.sku,
+			FROM
+				`{self.spark_application_args.lcp_project_id}`.order AS order_,
+				UNNEST(orderItems) AS orderItems
+			WHERE
+				datasourceId = {configuration.get('dataSourceId')}
+		"""
 
 class FrequentPatternOrderJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
 
@@ -219,6 +242,28 @@ class FrequentPatternPostProcessRecommendationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('frequent_pattern_recommendation')
 
+class FrequentPatternProductBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReaderSparkJob):
+
+	def __init__(self, spark_application):
+		super(FrequentPatternProductBigQueryDataFrameReaderSparkJob, self).__init__(
+			spark_application,
+			'product'
+		)
+
+	def _get_sql_query(self):
+		configuration = self.spark_application_configuration
+
+		return f"""
+			SELECT
+				product.id AS CPDefinitionId,
+				skus.sku,
+			FROM
+				`{self.spark_application_args.lcp_project_id}`.product AS product,
+				UNNEST(skus) AS skus
+			WHERE
+				datasourceId = {configuration.get('dataSourceId')}
+		"""
+
 class FrequentPatternProductJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
 
 	def __init__(self, spark_application):
@@ -320,6 +365,29 @@ class FrequentPatternRecommendationSparkJob(BaseSparkJob):
 
 		self.spark_session.catalog.cacheTable('frequent_itemsets')
 
+class OrderInteractionBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReaderSparkJob):
+
+	def __init__(self, spark_application):
+		super(OrderInteractionBigQueryDataFrameReaderSparkJob, self).__init__(
+			spark_application,
+			'order_interactions'
+		)
+
+	def _get_sql_query(self):
+		configuration = self.spark_application_configuration
+
+		return f"""
+			SELECT
+				order_.accountId AS commerceAccountId,
+				order_.createDate,
+				orderItems.sku,
+			FROM
+				`{self.spark_application_args.lcp_project_id}`.order AS order_,
+				UNNEST(orderItems) AS orderItems
+			WHERE
+				datasourceId = {configuration.get('dataSourceId')}
+		"""
+
 class OrderInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
 
 	def __init__(self, spark_application):
@@ -336,6 +404,85 @@ class OrderInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJo
 		return data_frame.selectExpr(
 			'accountId as commerceAccountId', 'createDate',
 			'explode(orderItems.sku) as sku'
+		)
+
+class ProductContentBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReaderSparkJob):
+
+	def __init__(self, spark_application):
+		super(ProductContentBigQueryDataFrameReaderSparkJob, self).__init__(
+			spark_application,
+			'products'
+		)
+
+	def _get_specification_keys(self):
+		configuration = self.spark_application_configuration
+
+		data_frame_reader = self.spark_session.read
+
+		data_frame = data_frame_reader.format(
+			"bigquery"
+		).load(
+			f"""
+			SELECT
+				DISTINCT(ps.specificationKey) AS specificationKey
+			FROM
+				`{self.spark_application_args.lcp_project_id}`.product,
+				UNNEST(productSpecifications) AS ps
+			WHERE
+				dataSourceId = {configuration.get('dataSourceId')}
+			"""
+		)
+
+		data_frame = data_frame.dropna()
+
+		return data_frame.rdd.map(lambda r: r[0]).collect()
+
+	def _get_sql_query(self):
+		configuration = self.spark_application_configuration
+
+		locale = configuration.get("commerce.ml.locale")
+
+		query_parts = [
+			f"""
+			SELECT
+				id AS entryClassPK, categoryIds AS assetCategoryIds,
+				SAFE_CAST(JSON_VALUE(description, '$.{locale}') AS STRING) AS description,
+				SAFE_CAST(JSON_VALUE(metaDescription, '$.{locale}') AS STRING) AS metaDescription,
+				SAFE_CAST(JSON_VALUE(metaTitle, '$.{locale}') AS STRING) AS metaTitle,
+				SAFE_CAST(JSON_VALUE(name, '$.{locale}') AS STRING) AS name,
+				productType AS productTypeName,
+			"""
+		]
+
+		for specificationKey in self._get_specification_keys():
+			query_parts += [
+				f"""
+				(
+					SELECT
+						SAFE_CAST(JSON_VALUE(value, '$.{locale}') AS STRING)
+					FROM
+						UNNEST(productSpecifications)
+					WHERE
+						specificationKey = '{specificationKey}'
+				) AS SPECIFICATION_{specificationKey},
+				"""
+			]
+
+		query_parts += [
+			f"""
+			FROM
+				`{self.spark_application_args.lcp_project_id}`.product
+			WHERE
+				datasourceId = {configuration.get('dataSourceId')}
+			"""
+		]
+
+		return ''.join(query_parts)
+
+	def _post_process(self, data_frame):
+		return data_frame.withColumn(
+			'assetCategoryIds',
+			F.col('assetCategoryIds').cast('array<string>')
 		)
 
 class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
@@ -634,6 +781,39 @@ class ProductContentRecommendationSparkJob(BaseSparkJob):
 		)
 
 		self.spark_session.catalog.cacheTable('product_content_recommendations')
+
+class ProductInteractionBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReaderSparkJob):
+
+	def __init__(self, spark_application):
+		super(ProductInteractionBigQueryDataFrameReaderSparkJob, self).__init__(
+			spark_application,
+			'product_interactions'
+		)
+
+	def _get_sql_query(self):
+		configuration = self.spark_application_configuration
+
+		return f"""
+			SELECT
+				id AS CPDefinitionId,
+				categoryIds AS assetCategoryIds,
+				(
+					SELECT
+						ARRAY_AGG(sku)
+					FROM
+						UNNEST(skus)
+				) AS sku_list
+			FROM
+				`{self.spark_application_args.lcp_project_id}`.product
+			WHERE
+				datasourceId = {configuration.get('dataSourceId')}
+		"""
+
+	def _post_process(self, data_frame):
+		return data_frame.withColumn(
+			'assetCategoryIds',
+			F.col('assetCategoryIds').cast('array<string>')
+		)
 
 class ProductInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
 
