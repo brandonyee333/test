@@ -1,11 +1,11 @@
 #!/bin/bash
 
-PROJECT_ID=$(gcloud config get-value project)
+export PROJECT_ID=$(gcloud config get-value project)
+export REGION=$(gcloud config get-value compute/region)
 
 CURRENT_DATE=$(date)
 GCP_BUCKET=gs://${PROJECT_ID}-dataproc-${REGION}
 GIT_HASH=$(git rev-parse --short=7 HEAD)
-REGION=$(gcloud config get-value compute/region)
 
 function check_osb_asah_spark {
 	gradlew formatSource
