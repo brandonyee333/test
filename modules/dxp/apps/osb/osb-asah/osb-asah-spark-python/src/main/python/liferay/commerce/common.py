@@ -9,17 +9,25 @@
 # distribution rights of the Software.
 #
 
-import argparse
-import logging
-import os
-import sys
-
 from abc import ABCMeta, \
 	abstractmethod
+
+from datetime import datetime
+
+from dateutil import parser
 
 from liferay.commerce.configuration import CommerceConfiguration
 from liferay.common.spark import BaseSparkApplication, \
 	BaseSparkJob
+
+from pyspark.sql.window import Window
+
+import argparse
+import logging
+import os
+import pyspark.sql.functions as F
+import pytz
+import sys
 
 class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 
@@ -83,13 +91,17 @@ class BaseJSONDataFrameReaderSparkJob(BaseSparkJob):
 		file_pattern,
 		table_name,
 		cache=True,
-		latest=True
+		id_column='id',
+		latest=True,
+		modified_date_column='modifiedDate'
 	):
 		super(BaseJSONDataFrameReaderSparkJob, self).__init__(spark_application)
 
 		self.cache = cache
 		self.file_pattern = file_pattern
+		self.id_column=id_column
 		self.latest = latest
+		self.modified_date_column = modified_date_column
 		self.table_name = table_name
 
 	def _get_bucket_path(self):
@@ -101,36 +113,89 @@ class BaseJSONDataFrameReaderSparkJob(BaseSparkJob):
 			configuration.get('dataSourceId'), self.file_pattern
 		)
 
-		if self.latest:
-			jvm = self.spark_session._jvm
-			spark_context = self.spark_session.sparkContext
+		jvm = self.spark_session._jvm
+		spark_context = self.spark_session.sparkContext
 
-			file_system = jvm.org.apache.hadoop.fs.FileSystem
+		file_system = jvm.org.apache.hadoop.fs.FileSystem
 
-			file_system_instance = file_system.get(
-				jvm.java.net.URI(bucket_path),
-				spark_context._jsc.hadoopConfiguration()
-			)
-
-			file_status_list = file_system_instance.globStatus(
-				jvm.org.apache.hadoop.fs.Path(
-					'{}*/_SUCCESS'.format(bucket_path)
-				)
-			)
-
-			file_status_list_sorted = sorted(
-				file_status_list, key=lambda f: f.getModificationTime()
-			)
-
-			bucket_path = str(file_status_list_sorted[-1].getPath())
-
-			bucket_path = bucket_path[:-len('_SUCCESS')]
-
-		self.spark_application.log.info(
-			'Loading data from: {}'.format(bucket_path)
+		file_system_instance = file_system.get(
+			jvm.java.net.URI(bucket_path),
+			spark_context._jsc.hadoopConfiguration()
 		)
 
-		return bucket_path
+		located_file_statuses = file_system_instance.listFiles(
+			jvm.org.apache.hadoop.fs.Path(
+				'{}/FULL/'.format(bucket_path)
+			),
+			True
+		)
+
+		file_statuses = []
+		while (located_file_statuses.hasNext()):
+			file_statuses.append(located_file_statuses.next())
+
+		file_statuses_sorted = sorted(
+			file_statuses, key=lambda f: f.getModificationTime()
+		)
+
+		full_bucket_path = str(file_statuses_sorted[-1].getPath())
+
+		full_bucket_path = full_bucket_path[:full_bucket_path.rindex('/') + 1]
+
+		self.spark_application.log.info(
+			'Loading data from: {}'.format(full_bucket_path)
+		)
+
+		try:
+			located_file_statuses = file_system_instance.listFiles(
+				jvm.org.apache.hadoop.fs.Path(
+					'{}/INCREMENTAL/'.format(bucket_path)
+				),
+				True
+			)
+		except Exception as e:
+			self.spark_application.log.warning(e)
+
+			return full_bucket_path
+
+		full_bucket_path_date = parser.isoparse(full_bucket_path.split('/')[-2])
+
+		bucket_paths = [full_bucket_path]
+
+		while (located_file_statuses.hasNext()):
+			file_status = located_file_statuses.next()
+
+			modification_datetime = datetime.fromtimestamp(
+				int(file_status.getModificationTime() / 1000), tz=pytz.UTC)
+
+			if modification_datetime > full_bucket_path_date:
+				file_bucket_path = str(file_status.getPath())
+
+				file_bucket_path = file_bucket_path[:file_bucket_path.rindex('/') + 1]
+
+				self.spark_application.log.info(
+					'Loading data from: {}'.format(file_bucket_path)
+				)
+
+				bucket_paths.append(file_bucket_path)
+
+		return bucket_paths
+
+	def _get_latest(self, data_frame):
+
+		window_spec = Window.partitionBy(self.id_column)
+
+		window_spec = window_spec.orderBy(
+			F.col('modifiedDate').desc()
+		)
+
+		return data_frame.withColumn(
+				'row_number', F.row_number().over(window_spec)
+			).where(
+				'row_number=1'
+			).drop(
+				'row_number'
+		)
 
 	@abstractmethod
 	def _post_process(self, data_frame):
@@ -141,6 +206,8 @@ class BaseJSONDataFrameReaderSparkJob(BaseSparkJob):
 
 		data_frame = data_frame_reader.json(self._get_bucket_path())
 
+		if self.latest:
+			data_frame = self._get_latest(data_frame)
 		data_frame = self._post_process(data_frame)
 
 		data_frame.createOrReplaceTempView(self.table_name)

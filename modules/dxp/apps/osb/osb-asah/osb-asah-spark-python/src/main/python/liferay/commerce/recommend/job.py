@@ -23,6 +23,7 @@ from pyspark.ml.tuning import CrossValidator, \
 	ParamGridBuilder
 from pyspark.sql import Window, \
 	functions as F
+from pyspark.sql.utils import AnalysisException
 
 import logging
 
@@ -112,7 +113,7 @@ class FrequentPatternOrderJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSpa
 			self
 		).__init__(
 			spark_application,
-			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order', 'order'
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Order', 'order'
 		)
 
 	def _post_process(self, data_frame):
@@ -226,7 +227,7 @@ class FrequentPatternProductJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderS
 			self
 		).__init__(
 			spark_application,
-			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Product',
 			'product'
 		)
 
@@ -327,7 +328,7 @@ class OrderInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJo
 			self
 		).__init__(
 			spark_application,
-			'com.liferay.headless.commerce.admin.order.dto.v1_0.Order',
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Order',
 			'order_interactions'
 		)
 
@@ -342,23 +343,23 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 	def __init__(self, spark_application):
 		super(ProductContentJSONDataFrameReaderSparkJob, self).__init__(
 			spark_application,
-			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Product',
 			'products'
 		)
 
-	def _get_product_specification_ids(self, products_data_frame):
+	def _get_product_specification_keys(self, products_data_frame):
 		data_frame = products_data_frame.select(
 			F.explode('productSpecifications').alias('productSpecifications')
 		)
 
-		data_frame = data_frame.select('productSpecifications.specificationId')
+		data_frame = data_frame.select('productSpecifications.specificationKey')
 
 		data_frame = data_frame.distinct()
 
 		return data_frame.rdd.map(lambda r: r[0]).collect()
 
 	def _get_product_specifications_data_frame(self, products_data_frame):
-		product_specification_ids = self._get_product_specification_ids(
+		product_specification_keys = self._get_product_specification_keys(
 			products_data_frame
 		)
 
@@ -371,17 +372,17 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 
 		specification_data_frames = []
 
-		for product_specification_id in product_specification_ids:
+		for product_specification_key in product_specification_keys:
 			specification_column_name = "SPECIFICATION_" + str(
-				product_specification_id
+				product_specification_key
 			)
 
 			data_frame = product_specifications_data_frame.withColumn(
 				specification_column_name,
 				F.when(
 					product_specifications_data_frame[
-						'productSpecifications.specificationId'] ==
-					product_specification_id,
+						'productSpecifications.specificationKey'] ==
+					product_specification_key,
 					F.col('productSpecifications.value').getItem(locale)
 				)
 			)
@@ -404,11 +405,19 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 
 		return product_specification_data_frame
 
+	def _has_column(self, data_frame, column_name):
+		try:
+			data_frame[column_name]
+
+			return True
+		except AnalysisException:
+			return False
+
 	def _post_process(self, product_data_frame):
 		locale = self.spark_application_configuration.get("commerce.ml.locale")
 
 		products_data_frame = product_data_frame.selectExpr(
-			"CAST(categories.id AS array<string>) assetCategoryIds",
+			"CAST(categoryIds AS array<string>) assetCategoryIds",
 			"description.{} AS description".format(locale),
 			"metaDescription.{} AS metaDescription".format(locale),
 			"metaTitle.{} AS metaTitle".format(locale),
@@ -416,11 +425,16 @@ class ProductContentJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob)
 			"id"
 		)
 
-		return products_data_frame.join(
-			self._get_product_specifications_data_frame(product_data_frame),
-			how='left_outer',
-			on=["id"]
-		).withColumnRenamed("id", 'entryClassPK')
+		if self._has_column(
+			product_data_frame, 'productSpecifications.specificationKey'
+		):
+			return products_data_frame.join(
+				self._get_product_specifications_data_frame(product_data_frame),
+				how='left_outer',
+				on=["id"]
+			).withColumnRenamed("id", 'entryClassPK')
+		else:
+			return products_data_frame.withColumnRenamed("id", 'entryClassPK')
 
 class ProductContentPipelineSparkJob(BaseSparkJob):
 
@@ -629,13 +643,14 @@ class ProductInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSpark
 			self
 		).__init__(
 			spark_application,
-			'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product',
+			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Product',
 			'product_interactions'
 		)
 
 	def _post_process(self, data_frame):
 		return data_frame.selectExpr(
-			"id AS CPDefinitionId", "categories.id AS assetCategoryIds",
+			"id AS CPDefinitionId",
+			"CAST(categoryIds AS array<string>) assetCategoryIds",
 			"skus.sku AS sku_list"
 		)
 
