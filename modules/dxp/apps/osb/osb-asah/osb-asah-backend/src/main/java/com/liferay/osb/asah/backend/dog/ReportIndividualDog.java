@@ -16,7 +16,6 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
-import com.liferay.osb.asah.backend.model.AudienceReport;
 import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.backend.repository.AssetMetricRepository;
 import com.liferay.osb.asah.common.model.MetricType;
@@ -61,11 +60,6 @@ public class ReportIndividualDog {
 					searchQueryContext.getAssetType());
 		}
 
-		AudienceReport audienceReport = assetMetricRepository.getAudienceReport(
-			searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
-			searchQueryContext.getChannelIdAsLong(), metricType,
-			searchQueryContext.getTimeRange());
-
 		Sort sort = Sort.by(
 			Sort.Order.asc("firstName"), Sort.Order.asc("lastName"));
 
@@ -75,7 +69,10 @@ public class ReportIndividualDog {
 				searchQueryContext.getChannelIdAsLong(), metricType,
 				PageRequest.of(start / size, size, sort), keywords,
 				searchQueryContext.getTimeRange()),
-			audienceReport.getKnownIndividualsCount());
+			assetMetricRepository.getKnownIndividualsCount(
+				searchQueryContext.getAssetId(), searchQueryContext.getTitle(),
+				searchQueryContext.getChannelIdAsLong(), metricType, keywords,
+				searchQueryContext.getTimeRange()));
 	}
 
 	private final Map<AssetType, AssetMetricRepository>
