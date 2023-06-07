@@ -45,7 +45,7 @@ public class AccessibilitySetting {
 		return className;
 	}
 
-	public String getDefaultValue() {
+	public AccessibilitySettingValue getDefaultValue() {
 		return defaultValue;
 	}
 
@@ -57,7 +57,7 @@ public class AccessibilitySetting {
 		return label;
 	}
 
-	public String getSessionClicksValue() {
+	public AccessibilitySettingValue getSessionClicksValue() {
 		return sessionClicksValue;
 	}
 
@@ -65,7 +65,7 @@ public class AccessibilitySetting {
 		this.className = className;
 	}
 
-	public void setDefaultValue(String defaultValue) {
+	public void setDefaultValue(AccessibilitySettingValue defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 
@@ -77,7 +77,9 @@ public class AccessibilitySetting {
 		this.label = label;
 	}
 
-	public void setSessionClicksValue(String sessionClicksValue) {
+	public void setSessionClicksValue(
+		AccessibilitySettingValue sessionClicksValue) {
+
 		this.sessionClicksValue = sessionClicksValue;
 	}
 
@@ -85,7 +87,7 @@ public class AccessibilitySetting {
 	protected String className;
 
 	@JsonProperty
-	protected String defaultValue;
+	protected AccessibilitySettingValue defaultValue;
 
 	@JsonProperty
 	protected String key;
@@ -94,6 +96,6 @@ public class AccessibilitySetting {
 	protected String label;
 
 	@JsonProperty
-	protected String sessionClicksValue;
+	protected AccessibilitySettingValue sessionClicksValue;
 
 }

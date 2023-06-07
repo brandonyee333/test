@@ -17,6 +17,7 @@ package com.liferay.accessibility.menu.web.internal.util;
 import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuConfiguration;
 import com.liferay.accessibility.menu.web.internal.constants.AccessibilitySettingConstants;
 import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySetting;
+import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySettingValue;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -48,17 +49,18 @@ public class AccessibilitySettingsUtil {
 					accessibilitySetting.setClassName(
 						"c-prefers-link-underline");
 					accessibilitySetting.setDefaultValue(
-						Boolean.toString(true));
+						AccessibilitySettingValue.TRUE);
 					accessibilitySetting.setKey(
 						AccessibilitySettingConstants.
 							ACCESSIBILITY_SETTING_SHOW_UNDERLINE);
 					accessibilitySetting.setSessionClicksValue(
-						GetterUtil.getString(
-							SessionClicks.get(
-								httpServletRequest,
-								AccessibilitySettingConstants.
-									ACCESSIBILITY_SETTING_SHOW_UNDERLINE,
-								"undefined")));
+						AccessibilitySettingValue.toAccessibilitySettingValue(
+							GetterUtil.getString(
+								SessionClicks.get(
+									httpServletRequest,
+									AccessibilitySettingConstants.
+										ACCESSIBILITY_SETTING_SHOW_UNDERLINE,
+									"undefined"))));
 				}),
 			AccessibilitySetting.create(
 				LanguageUtil.get(httpServletRequest, "prefers-reduced-motion"),
@@ -66,17 +68,18 @@ public class AccessibilitySettingsUtil {
 					accessibilitySetting.setClassName(
 						"c-prefers-reduced-motion");
 					accessibilitySetting.setDefaultValue(
-						Boolean.toString(false));
+						AccessibilitySettingValue.FALSE);
 					accessibilitySetting.setKey(
 						AccessibilitySettingConstants.
 							ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION);
 					accessibilitySetting.setSessionClicksValue(
-						GetterUtil.getString(
-							SessionClicks.get(
-								httpServletRequest,
-								AccessibilitySettingConstants.
-									ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION,
-								"undefined")));
+						AccessibilitySettingValue.toAccessibilitySettingValue(
+							GetterUtil.getString(
+								SessionClicks.get(
+									httpServletRequest,
+									AccessibilitySettingConstants.
+										ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION,
+									"undefined"))));
 				}));
 	}
 

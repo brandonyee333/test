@@ -30,7 +30,7 @@ export function getSettingValue(defaultValue, sessionClicksValue, key) {
 			localStorage.TYPES.FUNCTIONAL
 		);
 
-		if (localStorageValue in SETTINGS_STRING_VALUES_MAP) {
+		if (localStorageValue !== null) {
 			return SETTINGS_STRING_VALUES_MAP[localStorageValue];
 		}
 		else {

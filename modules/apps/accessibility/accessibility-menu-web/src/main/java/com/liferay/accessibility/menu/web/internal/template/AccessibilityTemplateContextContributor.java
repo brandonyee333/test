@@ -15,6 +15,7 @@
 package com.liferay.accessibility.menu.web.internal.template;
 
 import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySetting;
+import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySettingValue;
 import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -68,15 +69,17 @@ public class AccessibilityTemplateContextContributor
 	private boolean _isSettingEnabled(
 		AccessibilitySetting accessibilitySetting) {
 
-		if (accessibilitySetting.getSessionClicksValue(
-			).equals(
-				"undefined"
-			)) {
+		AccessibilitySettingValue sessionClicksAccessibilitySettingValue =
+			accessibilitySetting.getSessionClicksValue();
 
-			return Boolean.getBoolean(accessibilitySetting.getDefaultValue());
+		if (!sessionClicksAccessibilitySettingValue.equals(
+				AccessibilitySettingValue.UNDEFINED)) {
+
+			return sessionClicksAccessibilitySettingValue.toBoolean();
 		}
 
-		return Boolean.getBoolean(accessibilitySetting.getSessionClicksValue());
+		return accessibilitySetting.getDefaultValue(
+		).toBoolean();
 	}
 
 	@Reference
