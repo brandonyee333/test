@@ -12,9 +12,13 @@
  * details.
  */
 
+import ClayAlert from '@clayui/alert';
+import ClayButton from '@clayui/button';
 import ClayModal, {useModal} from '@clayui/modal';
+import {checkCookieConsentForTypes} from '@liferay/cookies-banner-web';
+import {COOKIE_TYPES, checkConsent} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import AccessibilitySetting from './AccessibilitySetting';
 import {getSettingValue, toggleClassName} from './util';
@@ -22,6 +26,11 @@ import {getSettingValue, toggleClassName} from './util';
 const OPEN_ACCESSIBILITY_MENU_EVENT_NAME = 'openAccessibilityMenu';
 
 const AccessibilityMenu = ({accessibilitySettings}) => {
+	const [
+		hasFunctionalCookiesConsent,
+		setHasFunctionalCookiesConsent,
+	] = useState(checkConsent(COOKIE_TYPES.FUNCTIONAL));
+
 	const {observer, onOpenChange, open} = useModal();
 
 	useEffect(() => {
@@ -48,6 +57,19 @@ const AccessibilityMenu = ({accessibilitySettings}) => {
 		};
 	}, [accessibilitySettings, onOpenChange]);
 
+	const reviewCookies = () => {
+		checkCookieConsentForTypes(COOKIE_TYPES.FUNCTIONAL)
+			.then(() => {
+				setHasFunctionalCookiesConsent(true);
+			})
+			.catch(() => {
+				setHasFunctionalCookiesConsent(false);
+			});
+	};
+
+	const isSettingsDisabled =
+		!hasFunctionalCookiesConsent && !themeDisplay.isSignedIn();
+
 	return (
 		<>
 			{open && (
@@ -57,8 +79,39 @@ const AccessibilityMenu = ({accessibilitySettings}) => {
 					</ClayModal.Header>
 
 					<ClayModal.Body>
-						{accessibilitySettings.map((setting) => (
+						{isSettingsDisabled && (
+							<ClayAlert
+								className="mb-4"
+								displayType="info"
+								title={`${Liferay.Language.get('info')}:`}
+							>
+								{Liferay.Language.get(
+									'accessibility-menu-cookies-alert'
+								)}
+
+								<ClayAlert.Footer>
+									<ClayButton.Group>
+										<ClayButton
+											alert
+											onClick={reviewCookies}
+										>
+											{Liferay.Language.get(
+												'review-cookies'
+											)}
+										</ClayButton>
+									</ClayButton.Group>
+								</ClayAlert.Footer>
+							</ClayAlert>
+						)}
+
+						{accessibilitySettings.map((setting, index) => (
 							<AccessibilitySetting
+								className={
+									index + 1 < accessibilitySettings.length
+										? 'mb-3'
+										: ''
+								}
+								disabled={isSettingsDisabled}
 								key={setting.key}
 								setting={setting}
 							/>

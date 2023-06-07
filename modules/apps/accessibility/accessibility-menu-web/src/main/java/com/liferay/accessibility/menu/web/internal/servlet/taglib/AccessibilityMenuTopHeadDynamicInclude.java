@@ -15,6 +15,7 @@
 package com.liferay.accessibility.menu.web.internal.servlet.taglib;
 
 import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
@@ -65,7 +66,8 @@ public class AccessibilityMenuTopHeadDynamicInclude extends BaseDynamicInclude {
 		QuickAccessEntry quickAccessEntry = new QuickAccessEntry();
 
 		quickAccessEntry.setId(StringUtil.randomId());
-		quickAccessEntry.setLabel("Accessibility Menu");
+		quickAccessEntry.setLabel(
+			LanguageUtil.get(httpServletRequest, "open-accessibility-menu"));
 		quickAccessEntry.setOnClick("Liferay.fire('openAccessibilityMenu');");
 
 		quickAccessEntries.add(quickAccessEntry);

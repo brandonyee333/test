@@ -13,34 +13,29 @@
  */
 
 import {ClayToggle} from '@clayui/form';
-import {checkCookieConsentForTypes} from '@liferay/cookies-banner-web';
 import {localStorage, setSessionValue} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 
-import {
-	SETTINGS_STRING_VALUES_MAP,
-	getSettingValue,
-	toggleClassName,
-} from './util';
+import {getSettingValue, toggleClassName} from './util';
 
 const KEY_EVENT = 'Enter';
 
-const AccessibilitySetting = ({setting}) => {
-	const {className, defaultValue, key, label, sessionClicksValue} = setting;
+const AccessibilitySetting = (props) => {
+	const {
+		className,
+		defaultValue,
+		key,
+		label,
+		sessionClicksValue,
+	} = props.setting;
+
+	const [value, setValue] = useState(() =>
+		getSettingValue(defaultValue, sessionClicksValue, key)
+	);
+	const [disabled, setDisabled] = useState(false);
 
 	const toggleRef = useRef();
-
-	const [value, setValue] = useState(
-		SETTINGS_STRING_VALUES_MAP[sessionClicksValue]
-	);
-	const [disabled, setDisabled] = useState(true);
-
-	useEffect(() => {
-		setValue(getSettingValue(defaultValue, sessionClicksValue, key));
-
-		setDisabled(false);
-	}, [defaultValue, key, sessionClicksValue]);
 
 	const afterValueSet = (value) => {
 		toggleClassName(className, value);
@@ -61,38 +56,19 @@ const AccessibilitySetting = ({setting}) => {
 			});
 		}
 		else {
-			checkCookieConsentForTypes(localStorage.TYPES.FUNCTIONAL, {
-				alertMessage: Liferay.Language.get(
-					'accessibility-menu-cookies-alert'
-				),
-				customTitle: Liferay.Language.get(
-					'accessibility-menu-cookies-title'
-				),
-			})
-				.then(() => {
-					localStorage.setItem(
-						key,
-						value,
-						localStorage.TYPES.FUNCTIONAL
-					);
+			localStorage.setItem(key, value, localStorage.TYPES.FUNCTIONAL);
 
-					afterValueSet(value);
-				})
-				.catch(() => {
-					setDisabled(false);
-
-					toggleRef.current.focus();
-				});
+			afterValueSet(value);
 		}
 	};
 
 	return (
-		<div className="c-mb-3">
+		<div className={props.className}>
 			<ClayToggle
-				disabled={disabled}
+				disabled={props.disabled || disabled}
 				label={label}
 				onKeyDown={(event) => {
-					if (event.key === KEY_EVENT) {
+					if (!disabled && event.key === KEY_EVENT) {
 						handleToggle(!value);
 					}
 				}}
@@ -105,6 +81,8 @@ const AccessibilitySetting = ({setting}) => {
 };
 
 AccessibilitySetting.propTypes = {
+	className: PropTypes.string,
+	disabled: PropTypes.bool,
 	setting: PropTypes.shape({
 		className: PropTypes.string,
 		defaultValue: PropTypes.string,
