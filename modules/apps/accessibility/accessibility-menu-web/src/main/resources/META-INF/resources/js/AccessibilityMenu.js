@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import React, {useEffect} from 'react';
 
 import AccessibilitySetting from './AccessibilitySetting';
-import {getSettingValue} from './util';
+import {getSettingValue, toggleClassName} from './util';
 
 const OPEN_ACCESSIBILITY_MENU_EVENT_NAME = 'openAccessibilityMenu';
 
@@ -25,25 +25,26 @@ const AccessibilityMenu = ({accessibilitySettings}) => {
 	const {observer, onOpenChange, open} = useModal();
 
 	useEffect(() => {
-		Liferay.on(OPEN_ACCESSIBILITY_MENU_EVENT_NAME, () =>
-			onOpenChange(true)
-		);
+		const openAccessibilityMenu = () => onOpenChange(true);
+
+		Liferay.on(OPEN_ACCESSIBILITY_MENU_EVENT_NAME, openAccessibilityMenu);
 
 		accessibilitySettings.forEach((setting) => {
-			document
-				.querySelector('body')
-				.classList.toggle(
-					setting.className,
-					getSettingValue(
-						setting.defaultValue,
-						setting.sessionClicksValue,
-						setting.key
-					)
-				);
+			toggleClassName(
+				setting.className,
+				getSettingValue(
+					setting.defaultValue,
+					setting.sessionClicksValue,
+					setting.key
+				)
+			);
 		});
 
 		return () => {
-			Liferay.detach(OPEN_ACCESSIBILITY_MENU_EVENT_NAME, onOpenChange);
+			Liferay.detach(
+				OPEN_ACCESSIBILITY_MENU_EVENT_NAME,
+				openAccessibilityMenu
+			);
 		};
 	}, [accessibilitySettings, onOpenChange]);
 

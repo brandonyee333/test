@@ -13,16 +13,23 @@
  */
 
 import {ClayToggle} from '@clayui/form';
+import {checkCookieConsentForTypes} from '@liferay/cookies-banner-web';
 import {localStorage, setSessionValue} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
-import {SETTINGS_STRING_VALUES_MAP, getSettingValue} from './util';
+import {
+	SETTINGS_STRING_VALUES_MAP,
+	getSettingValue,
+	toggleClassName,
+} from './util';
 
 const KEY_EVENT = 'Enter';
 
 const AccessibilitySetting = ({setting}) => {
 	const {className, defaultValue, key, label, sessionClicksValue} = setting;
+
+	const toggleRef = useRef();
 
 	const [value, setValue] = useState(
 		SETTINGS_STRING_VALUES_MAP[sessionClicksValue]
@@ -36,30 +43,46 @@ const AccessibilitySetting = ({setting}) => {
 	}, [defaultValue, key, sessionClicksValue]);
 
 	const afterValueSet = (value) => {
-		document.querySelector('body').classList.toggle(className, value);
+		toggleClassName(className, value);
 
 		setValue(value);
 
 		setDisabled(false);
+
+		toggleRef.current.focus();
 	};
 
 	const handleToggle = (value) => {
 		setDisabled(true);
 
 		if (themeDisplay.isSignedIn()) {
-			setSessionValue(key, value).then((response) => {
-				console.log('response', response);
+			setSessionValue(key, value).then(() => {
 				afterValueSet(value);
 			});
 		}
 		else {
-			localStorage.setItem(
-				key,
-				value,
-				localStorage.TYPES.PERSONALIZATION
-			);
+			checkCookieConsentForTypes(localStorage.TYPES.FUNCTIONAL, {
+				alertMessage: Liferay.Language.get(
+					'accessibility-menu-cookies-alert'
+				),
+				customTitle: Liferay.Language.get(
+					'accessibility-menu-cookies-title'
+				),
+			})
+				.then(() => {
+					localStorage.setItem(
+						key,
+						value,
+						localStorage.TYPES.FUNCTIONAL
+					);
 
-			afterValueSet(value);
+					afterValueSet(value);
+				})
+				.catch(() => {
+					setDisabled(false);
+
+					toggleRef.current.focus();
+				});
 		}
 	};
 
@@ -74,6 +97,7 @@ const AccessibilitySetting = ({setting}) => {
 					}
 				}}
 				onToggle={handleToggle}
+				ref={toggleRef}
 				toggled={value}
 			/>
 		</div>

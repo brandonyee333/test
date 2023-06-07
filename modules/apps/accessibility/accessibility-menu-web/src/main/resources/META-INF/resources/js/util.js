@@ -27,7 +27,7 @@ export function getSettingValue(defaultValue, sessionClicksValue, key) {
 	) {
 		const localStorageValue = localStorage.getItem(
 			key,
-			localStorage.TYPES.PERSONALIZATION
+			localStorage.TYPES.FUNCTIONAL
 		);
 
 		if (localStorageValue in SETTINGS_STRING_VALUES_MAP) {
@@ -39,4 +39,8 @@ export function getSettingValue(defaultValue, sessionClicksValue, key) {
 	}
 
 	return SETTINGS_STRING_VALUES_MAP[sessionClicksValue];
+}
+
+export function toggleClassName(className, value) {
+	document.querySelector('body').classList.toggle(className, value);
 }

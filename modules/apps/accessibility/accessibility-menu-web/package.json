@@ -7,6 +7,7 @@
 		"@clayui/layout": "3.93.0",
 		"@clayui/modal": "3.95.2",
 		"@clayui/progress-bar": "3.65.0",
+		"@liferay/cookies-banner-web": "*",
 		"@liferay/frontend-js-react-web": "*",
 		"frontend-js-web": "*",
 		"prop-types": "15.7.2",
