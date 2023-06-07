@@ -45,7 +45,7 @@ public class AccessibilityMenuTopHeadDynamicInclude extends BaseDynamicInclude {
 			HttpServletResponse httpServletResponse, String key)
 		throws IOException {
 
-		if (!AccessibilitySettingsUtil.isShowAccessibilityMenu(
+		if (!AccessibilitySettingsUtil.isAccessibilityMenuEnabled(
 				httpServletRequest, _configurationProvider)) {
 
 			return;

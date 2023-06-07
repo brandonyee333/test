@@ -15,7 +15,6 @@
 package com.liferay.accessibility.menu.web.internal.util;
 
 import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuConfiguration;
-import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuGroupConfiguration;
 import com.liferay.accessibility.menu.web.internal.constants.AccessibilitySettingConstants;
 import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySetting;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -81,7 +80,7 @@ public class AccessibilitySettingsUtil {
 				}));
 	}
 
-	public static boolean isShowAccessibilityMenu(
+	public static boolean isAccessibilityMenuEnabled(
 		HttpServletRequest httpServletRequest,
 		ConfigurationProvider configurationProvider) {
 
@@ -91,21 +90,11 @@ public class AccessibilitySettingsUtil {
 
 		try {
 			AccessibilityMenuConfiguration accessibilityMenuConfiguration =
-				configurationProvider.getCompanyConfiguration(
+				configurationProvider.getGroupConfiguration(
 					AccessibilityMenuConfiguration.class,
-					themeDisplay.getCompanyId());
+					themeDisplay.getScopeGroupId());
 
-			if (accessibilityMenuConfiguration.showAccessibilityMenu()) {
-				return true;
-			}
-
-			AccessibilityMenuGroupConfiguration
-				accessibilityMenuGroupConfiguration =
-					configurationProvider.getGroupConfiguration(
-						AccessibilityMenuGroupConfiguration.class,
-						themeDisplay.getScopeGroupId());
-
-			if (accessibilityMenuGroupConfiguration.showAccessibilityMenu()) {
+			if (accessibilityMenuConfiguration.enableAccessibilityMenu()) {
 				return true;
 			}
 		}

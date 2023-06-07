@@ -44,7 +44,7 @@ public class AccessibilityTemplateContextContributor
 		Map<String, Object> contextObjects,
 		HttpServletRequest httpServletRequest) {
 
-		if (!AccessibilitySettingsUtil.isShowAccessibilityMenu(
+		if (!AccessibilitySettingsUtil.isAccessibilityMenuEnabled(
 				httpServletRequest, _configurationProvider)) {
 
 			return;

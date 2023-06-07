@@ -14,28 +14,25 @@
 
 package com.liferay.accessibility.menu.web.internal.configuration;
 
-import aQute.bnd.annotation.metatype.Meta;
+import com.liferay.configuration.admin.category.ConfigurationCategory;
 
-import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Evan Thibodeau
  */
-@ExtendedObjectClassDefinition(
-	category = "accessibility",
-	scope = ExtendedObjectClassDefinition.Scope.GROUP
-)
-@Meta.OCD(
-	id = "com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuConfiguration",
-	localization = "content/Language",
-	name = "accessibility-menu-configuration-name"
-)
-public interface AccessibilityMenuConfiguration {
+@Component(service = ConfigurationCategory.class)
+public class AccessibilityConfigurationCategory
+	implements ConfigurationCategory {
 
-	@Meta.AD(
-		deflt = "false", description = "enable-accessibility-menu-description",
-		name = "enable-accessibility-menu", required = false
-	)
-	public boolean enableAccessibilityMenu();
+	@Override
+	public String getCategoryKey() {
+		return "accessibility";
+	}
+
+	@Override
+	public String getCategorySection() {
+		return "platform";
+	}
 
 }
