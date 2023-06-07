@@ -14,7 +14,15 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 
-import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import java.io.Serializable;
 
@@ -26,9 +34,12 @@ import java.util.Map;
 
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubMessage;
 
+import org.codehaus.jackson.map.util.ISO8601DateFormat;
+
 /**
  * @author Riccardo Ferrari
  */
+@JsonDeserialize(builder = DXPEntityPubsubMessage.Builder.class)
 public class DXPEntityPubsubMessage implements Serializable {
 
 	public DXPEntityPubsubMessage(
@@ -71,8 +82,8 @@ public class DXPEntityPubsubMessage implements Serializable {
 			}
 
 			Map<String, Long> commerceChannelIdChannelIdsJSONFormatted =
-				ObjectMapperUtil.readValue(
-					Map.class, commerceChannelIdChannelIdsString);
+				_objectMapper.readValue(
+					commerceChannelIdChannelIdsString, Map.class);
 
 			Map<Long, Long> commerceChannelIdChannelIds = new HashMap<>();
 
@@ -113,6 +124,59 @@ public class DXPEntityPubsubMessage implements Serializable {
 		public boolean isLast() {
 			return Boolean.parseBoolean(getOrDefault("last", "false"));
 		}
+
+		private static final ObjectMapper _objectMapper;
+
+		static {
+			_objectMapper = new ObjectMapper() {
+				{
+					configure(
+						DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+						false);
+					configure(
+						DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY,
+						true);
+					configure(DeserializationFeature.USE_LONG_FOR_INTS, true);
+					configure(
+						MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
+					configure(
+						SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+					setDateFormat(new ISO8601DateFormat());
+					setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+					setSerializationInclusion(JsonInclude.Include.NON_NULL);
+					setVisibility(
+						PropertyAccessor.FIELD,
+						JsonAutoDetect.Visibility.PUBLIC_ONLY);
+					setVisibility(
+						PropertyAccessor.GETTER,
+						JsonAutoDetect.Visibility.PUBLIC_ONLY);
+				}
+			};
+		}
+
+	}
+
+	@JsonPOJOBuilder
+	public static class Builder {
+
+		public DXPEntityPubsubMessage build() {
+			return new DXPEntityPubsubMessage(_attributes, _payload);
+		}
+
+		public Builder withAttributes(Map<String, String> attributes) {
+			_attributes = attributes;
+
+			return this;
+		}
+
+		public Builder withPayload(String payload) {
+			_payload = payload;
+
+			return this;
+		}
+
+		private Map<String, String> _attributes;
+		private String _payload;
 
 	}
 
