@@ -15,7 +15,7 @@
 package com.liferay.accessibility.menu.web.internal.servlet.taglib;
 
 import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.servlet.taglib.BaseDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
@@ -67,7 +67,7 @@ public class AccessibilityMenuTopHeadDynamicInclude extends BaseDynamicInclude {
 
 		quickAccessEntry.setId(StringUtil.randomId());
 		quickAccessEntry.setLabel(
-			LanguageUtil.get(httpServletRequest, "open-accessibility-menu"));
+			_language.get(httpServletRequest, "open-accessibility-menu"));
 		quickAccessEntry.setOnClick("Liferay.fire('openAccessibilityMenu');");
 
 		quickAccessEntries.add(quickAccessEntry);
@@ -80,5 +80,8 @@ public class AccessibilityMenuTopHeadDynamicInclude extends BaseDynamicInclude {
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
+
+	@Reference
+	private Language _language;
 
 }
