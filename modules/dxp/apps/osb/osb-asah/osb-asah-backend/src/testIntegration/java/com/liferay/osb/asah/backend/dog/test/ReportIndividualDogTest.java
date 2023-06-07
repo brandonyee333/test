@@ -92,6 +92,20 @@ public class ReportIndividualDogTest
 		Assertions.assertEquals("Test2 Test2", individual.getName());
 		Assertions.assertEquals(
 			"test2@liferay.com", individual.getEmailAddress());
+
+		individualResultBag = _reportIndividualDog.getIndividualResultBag(
+			"Test1", BlogMetricType.VIEWS, searchQueryContext, 10, 0);
+
+		Assertions.assertEquals(
+			1, individualResultBag.getTotal(), individualResultBag.toString());
+
+		individuals = individualResultBag.getResults();
+
+		individual = individuals.get(0);
+
+		Assertions.assertEquals("Test1 Test1", individual.getName());
+		Assertions.assertEquals(
+			"test1@liferay.com", individual.getEmailAddress());
 	}
 
 	@RepositoryResource(
