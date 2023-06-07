@@ -672,6 +672,68 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	}
 
 	@Override
+	public long getKnownIndividualsCount(
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
+		MetricType metricType, @Nullable String keywords, TimeRange timeRange) {
+
+		Table<Record> individualTable = DSL.table(
+			"BQIndividual"
+		).as(
+			"individual"
+		);
+
+		Condition whereClauseCondition = _createWhereClauseCondition(
+			assetId, assetTitle, channelId, timeRange);
+
+		if (StringUtils.isNotBlank(keywords)) {
+			whereClauseCondition = whereClauseCondition.and(
+				_createIndividualKeywordsWhereClauseCondition(keywords));
+		}
+
+		return queryExecutor.queryForLong(
+			dslContext.select(
+				DSL.countDistinct(
+					DSL.field("individual.emailAddress"),
+					DSL.field("individual.firstName"),
+					DSL.field("individual.id"),
+					DSL.field("individual.lastName"))
+			).from(
+				DSL.table(
+					getTableName(timeRange)
+				).as(
+					"metric"
+				)
+			).join(
+				DSL.table(
+					"BQIdentity"
+				).as(
+					"identity"
+				)
+			).on(
+				DSL.field(
+					"identity.id"
+				).eq(
+					DSL.field("metric.userId")
+				)
+			).join(
+				individualTable
+			).on(
+				DSL.field(
+					"individual.id"
+				).eq(
+					DSL.field("identity.individualId")
+				)
+			).where(
+				whereClauseCondition.and(
+					DSL.field(
+						metricType.getFieldName()
+					).gt(
+						0
+					))
+			));
+	}
+
+	@Override
 	public List<Metric> getSegmentMetrics(
 		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange) {

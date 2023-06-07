@@ -80,6 +80,10 @@ public interface AssetMetricRepository<T extends AssetMetric> {
 		MetricType metricType, Pageable pageable, @Nullable String keywords,
 		TimeRange timeRange);
 
+	public long getKnownIndividualsCount(
+		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
+		MetricType metricType, @Nullable String keywords, TimeRange timeRange);
+
 	public List<Metric> getSegmentMetrics(
 		String assetId, @Nullable String assetTitle, @Nullable Long channelId,
 		MetricType metricType, TimeRange timeRange);
