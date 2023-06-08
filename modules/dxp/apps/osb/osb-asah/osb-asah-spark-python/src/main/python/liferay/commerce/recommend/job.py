@@ -376,16 +376,36 @@ class OrderInteractionBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReade
 	def _get_sql_query(self):
 		configuration = self.spark_application_configuration
 
+		user_interaction_order_history_length = configuration.get(
+			'user.interaction.order.history.length'
+		)
+
 		return f"""
+			WITH temp_order AS
+			(
+				SELECT
+					accountId AS commerceAccountId,
+					createDate,
+					orderItems,
+					ROW_NUMBER() OVER(
+						PARTITION BY
+							accountId
+						ORDER BY
+							createDate DESC, id DESC
+					) AS row_num
+				FROM
+					`{self.spark_application_args.lcp_project_id}`.order
+				WHERE
+					datasourceId = {configuration.get('dataSourceId')}
+			)
 			SELECT
-				order_.accountId AS commerceAccountId,
-				order_.createDate,
+				temp_order.commerceAccountId,
+				temp_order.createDate,
 				orderItems.sku,
 			FROM
-				`{self.spark_application_args.lcp_project_id}`.order AS order_,
-				UNNEST(orderItems) AS orderItems
+				temp_order, UNNEST(temp_order.orderItems) as orderItems
 			WHERE
-				datasourceId = {configuration.get('dataSourceId')}
+				row_num <= {user_interaction_order_history_length}
 		"""
 
 class OrderInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
@@ -401,9 +421,26 @@ class OrderInteractionJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJo
 		)
 
 	def _post_process(self, data_frame):
+		configuration = self.spark_application_configuration
+
 		return data_frame.selectExpr(
-			'accountId as commerceAccountId', 'createDate',
-			'explode(orderItems.sku) as sku'
+			'accountId AS commerceAccountId', 'createDate',
+			'orderItems.sku AS sku_list',
+			'ROW_NUMBER() OVER('
+			'	PARTITION BY '
+			'		accountId '
+			'	ORDER BY '
+			'		createDate DESC, id DESC'
+			') AS rank'
+		).where(
+			'rank <= {}'.format(
+					configuration.get('user.interaction.order.history.length')
+			)
+		).selectExpr(
+			'*',
+			'EXPLODE(sku_list) AS sku'
+		).drop(
+			'sku_list', 'rank'
 		)
 
 class ProductContentBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReaderSparkJob):
