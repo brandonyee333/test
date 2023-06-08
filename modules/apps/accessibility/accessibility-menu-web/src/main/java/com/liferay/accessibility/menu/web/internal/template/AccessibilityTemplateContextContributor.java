@@ -14,7 +14,7 @@
 
 package com.liferay.accessibility.menu.web.internal.template;
 
-import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySetting;
+import com.liferay.accessibility.menu.web.internal.model.AccessibilitySetting;
 import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;

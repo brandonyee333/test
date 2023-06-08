@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.accessibility.menu.web.internal.display.context;
+package com.liferay.accessibility.menu.web.internal.model;
 
 /**
  * @author Evan Thibodeau

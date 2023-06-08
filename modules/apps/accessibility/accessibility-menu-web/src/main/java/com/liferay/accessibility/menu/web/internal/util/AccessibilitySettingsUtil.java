@@ -16,7 +16,7 @@ package com.liferay.accessibility.menu.web.internal.util;
 
 import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuConfiguration;
 import com.liferay.accessibility.menu.web.internal.constants.AccessibilitySettingConstants;
-import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySetting;
+import com.liferay.accessibility.menu.web.internal.model.AccessibilitySetting;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
