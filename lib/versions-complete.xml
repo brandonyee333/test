@@ -211,7 +211,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2018-06-01 18:57:23</current-version-publish-date>
-				<latest-version-publish-date>2023-05-02 15:38:59</latest-version-publish-date>
+				<latest-version-publish-date>2023-06-01 16:30:42</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.comment.sanitizer.jar!error_prone_annotations.jar</file-name>
@@ -1223,48 +1223,6 @@
 				<latest-version-publish-date>2022-11-26 09:45:01</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.petra.json.web.service.client.jar!jackson-annotations.jar</file-name>
-				<version>2.10.3</version>
-				<project-name>Jackson-annotations</project-name>
-				<project-url>http://github.com/FasterXML/jackson</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-03-03 03:09:42</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 20:34:02</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.petra.json.web.service.client.jar!jackson-core.jar</file-name>
-				<version>2.10.3</version>
-				<project-name>Jackson-core</project-name>
-				<project-url>https://github.com/FasterXML/jackson-core</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-03-03 03:12:41</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 22:17:36</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.petra.json.web.service.client.jar!jackson-databind.jar</file-name>
-				<version>2.10.5.1</version>
-				<project-name>jackson-databind</project-name>
-				<project-url>http://github.com/FasterXML/jackson</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-12-02 03:47:50</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 23:27:37</latest-version-publish-date>
-			</library>
-			<library>
 				<file-name>com.liferay.petra.json.web.service.client.jar!signpost-commonshttp4.jar</file-name>
 				<version>1.2.1.2</version>
 				<project-name>signpost-commonshttp4</project-name>
@@ -1344,7 +1302,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2008-01-20 20:44:07</current-version-publish-date>
-				<latest-version-publish-date>2023-05-13 15:10:40</latest-version-publish-date>
+				<latest-version-publish-date>2023-06-03 16:39:15</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.mobile.device.detection.fiftyonedegrees.jar!device-detection-core.jar</file-name>
@@ -1757,7 +1715,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2021-03-29 15:04:09</current-version-publish-date>
-				<latest-version-publish-date>2023-03-08 16:03:36</latest-version-publish-date>
+				<latest-version-publish-date>2023-06-07 20:56:15</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch.jar!antlr-runtime.jar</file-name>
@@ -1813,7 +1771,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2018-06-01 18:57:23</current-version-publish-date>
-				<latest-version-publish-date>2023-05-02 15:38:59</latest-version-publish-date>
+				<latest-version-publish-date>2023-06-01 16:30:42</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch.jar!commons-cli.jar</file-name>
@@ -1841,7 +1799,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2012-06-12 22:22:06</current-version-publish-date>
-				<latest-version-publish-date>2023-05-13 15:10:40</latest-version-publish-date>
+				<latest-version-publish-date>2023-06-03 16:39:15</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch.jar!commons-lang.jar</file-name>
@@ -1941,7 +1899,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch.jar!jackson-core.jar</file-name>
-				<version>2.10.3</version>
+				<version>2.13.4</version>
 				<project-name>Jackson-core</project-name>
 				<project-url>https://github.com/FasterXML/jackson-core</project-url>
 				<licenses>
@@ -1950,7 +1908,7 @@
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2020-03-03 03:12:41</current-version-publish-date>
+				<current-version-publish-date>2022-09-03 22:06:44</current-version-publish-date>
 				<latest-version-publish-date>2023-05-30 22:17:36</latest-version-publish-date>
 			</library>
 			<library>
@@ -2318,7 +2276,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.antisamy.jar!antisamy.jar</file-name>
-				<version>1.6.4</version>
+				<version>1.6.8</version>
 				<project-name>OWASP AntiSamy</project-name>
 				<project-url>https://github.com/nahsra/antisamy</project-url>
 				<licenses>
@@ -2327,7 +2285,7 @@
 						<license-url>https://opensource.org/licenses/BSD-3-Clause</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2021-07-03 16:39:47</current-version-publish-date>
+				<current-version-publish-date>2022-04-24 14:00:40</current-version-publish-date>
 				<latest-version-publish-date>2023-04-12 13:10:37</latest-version-publish-date>
 			</library>
 			<library>
@@ -2397,46 +2355,57 @@
 				<latest-version-publish-date>2020-08-28 12:02:55</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.portal.security.antisamy.jar!httpclient.jar</file-name>
-				<version>4.5.13</version>
+				<file-name>com.liferay.portal.security.antisamy.jar!httpclient5.jar</file-name>
+				<version>5.1.3</version>
 				<project-name>Apache HttpClient</project-name>
-				<project-url>http://hc.apache.org/httpcomponents-client</project-url>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2020-10-03 14:47:41</current-version-publish-date>
-				<latest-version-publish-date>2022-11-30 18:40:54</latest-version-publish-date>
+				<current-version-publish-date>2022-01-27 12:50:07</current-version-publish-date>
+				<latest-version-publish-date>2022-12-03 15:28:13</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.portal.security.antisamy.jar!httpcore.jar</file-name>
-				<version>4.4.14</version>
-				<project-name>HttpComponents Apache HttpCore</project-name>
-				<project-url>http://hc.apache.org/httpcomponents-core-ga</project-url>
+				<file-name>com.liferay.portal.security.antisamy.jar!httpcore5-h2.jar</file-name>
+				<version>5.1.3</version>
+				<project-name>Apache HttpComponents Core HTTP/2</project-name>
 				<licenses>
 					<license>
 						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2020-11-26 19:07:49</current-version-publish-date>
-				<latest-version-publish-date>2022-11-26 09:45:01</latest-version-publish-date>
+				<current-version-publish-date>2021-12-19 20:08:12</current-version-publish-date>
+				<latest-version-publish-date>2023-01-07 08:03:45</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.portal.security.antisamy.jar!nekohtml.jar</file-name>
-				<version>1.9.22</version>
-				<project-name>Neko HTML</project-name>
-				<project-url>http://nekohtml.sourceforge.net/</project-url>
+				<file-name>com.liferay.portal.security.antisamy.jar!httpcore5.jar</file-name>
+				<version>5.1.3</version>
+				<project-name>Apache HttpComponents Core HTTP/1.1</project-name>
 				<licenses>
 					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2015-04-17 12:42:42</current-version-publish-date>
-				<latest-version-publish-date>2015-04-17 12:42:42</latest-version-publish-date>
+				<current-version-publish-date>2021-12-19 20:07:46</current-version-publish-date>
+				<latest-version-publish-date>2023-01-07 08:03:28</latest-version-publish-date>
+			</library>
+			<library>
+				<file-name>com.liferay.portal.security.antisamy.jar!neko-htmlunit.jar</file-name>
+				<version>2.61.0</version>
+				<project-name>HtmlUnit NekoHtml</project-name>
+				<project-url>http://htmlunit.sourceforge.net</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
+					</license>
+				</licenses>
+				<current-version-publish-date>2022-04-18 15:59:26</current-version-publish-date>
+				<latest-version-publish-date>2023-01-22 16:31:43</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.antisamy.jar!xml-apis-ext.jar</file-name>
@@ -2628,20 +2597,6 @@
 				</licenses>
 				<current-version-publish-date>2022-06-09 19:33:36</current-version-publish-date>
 				<latest-version-publish-date>2022-06-09 19:33:36</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.security.sso.google.jar!jackson-core.jar</file-name>
-				<version>2.10.3</version>
-				<project-name>Jackson-core</project-name>
-				<project-url>https://github.com/FasterXML/jackson-core</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-03-03 03:12:41</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 22:17:36</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.ntlm.jar!jcifs.jar</file-name>
@@ -3126,8 +3081,8 @@
 						<license-url>https://aws.amazon.com/apache2.0</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2022-08-10 20:08:59</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 20:41:04</latest-version-publish-date>
+				<current-version-publish-date>2022-08-18 20:21:17</current-version-publish-date>
+				<latest-version-publish-date>2023-06-07 20:36:42</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-kms.jar</file-name>
@@ -3140,8 +3095,8 @@
 						<license-url>https://aws.amazon.com/apache2.0</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2022-08-10 20:08:47</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 20:41:37</latest-version-publish-date>
+				<current-version-publish-date>2022-08-18 20:22:18</current-version-publish-date>
+				<latest-version-publish-date>2023-06-07 20:35:33</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-s3.jar</file-name>
@@ -3154,8 +3109,8 @@
 						<license-url>https://aws.amazon.com/apache2.0</license-url>
 					</license>
 				</licenses>
-				<current-version-publish-date>2022-08-10 20:09:40</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 20:39:55</latest-version-publish-date>
+				<current-version-publish-date>2022-08-18 20:21:31</current-version-publish-date>
+				<latest-version-publish-date>2023-06-07 20:36:53</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!commons-codec.jar</file-name>
@@ -3226,48 +3181,6 @@
 				</licenses>
 				<current-version-publish-date>2018-01-24 18:57:30</current-version-publish-date>
 				<latest-version-publish-date>2019-09-25 21:17:57</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.store.s3.jar!jackson-annotations.jar</file-name>
-				<version>2.10.3</version>
-				<project-name>Jackson-annotations</project-name>
-				<project-url>http://github.com/FasterXML/jackson</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-03-03 03:09:42</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 20:34:02</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.store.s3.jar!jackson-core.jar</file-name>
-				<version>2.10.3</version>
-				<project-name>Jackson-core</project-name>
-				<project-url>https://github.com/FasterXML/jackson-core</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-03-03 03:12:41</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 22:17:36</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.store.s3.jar!jackson-databind.jar</file-name>
-				<version>2.10.5.1</version>
-				<project-name>jackson-databind</project-name>
-				<project-url>http://github.com/FasterXML/jackson</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-12-02 03:47:50</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 23:27:37</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!jackson-dataformat-cbor.jar</file-name>
@@ -3362,7 +3275,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2018-06-01 18:57:23</current-version-publish-date>
-				<latest-version-publish-date>2023-05-02 15:38:59</latest-version-publish-date>
+				<latest-version-publish-date>2023-06-01 16:30:42</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.portal.template.soy.jar!commons-lang3.jar</file-name>
@@ -3597,48 +3510,6 @@
 				<latest-version-publish-date>2021-08-08 16:30:11</latest-version-publish-date>
 			</library>
 			<library>
-				<file-name>com.liferay.push.notifications.sender.apple.jar!jackson-annotations.jar</file-name>
-				<version>2.10.3</version>
-				<project-name>Jackson-annotations</project-name>
-				<project-url>http://github.com/FasterXML/jackson</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-03-03 03:09:42</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 20:34:02</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.push.notifications.sender.apple.jar!jackson-core.jar</file-name>
-				<version>2.10.3</version>
-				<project-name>Jackson-core</project-name>
-				<project-url>https://github.com/FasterXML/jackson-core</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-03-03 03:12:41</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 22:17:36</latest-version-publish-date>
-			</library>
-			<library>
-				<file-name>com.liferay.push.notifications.sender.apple.jar!jackson-databind.jar</file-name>
-				<version>2.10.5.1</version>
-				<project-name>jackson-databind</project-name>
-				<project-url>http://github.com/FasterXML/jackson</project-url>
-				<licenses>
-					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
-					</license>
-				</licenses>
-				<current-version-publish-date>2020-12-02 03:47:50</current-version-publish-date>
-				<latest-version-publish-date>2023-05-30 23:27:37</latest-version-publish-date>
-			</library>
-			<library>
 				<file-name>com.liferay.push.notifications.sender.apple.jar!netty-all.jar</file-name>
 				<version>4.1.62.Final</version>
 				<project-name>Netty/All-in-One</project-name>
@@ -3856,7 +3727,7 @@
 					</license>
 				</licenses>
 				<current-version-publish-date>2017-08-31 22:21:13</current-version-publish-date>
-				<latest-version-publish-date>2023-05-18 08:04:51</latest-version-publish-date>
+				<latest-version-publish-date>2023-06-06 07:36:35</latest-version-publish-date>
 			</library>
 			<library>
 				<file-name>com.liferay.rss.util.jar!icu4j.jar</file-name>
@@ -6215,15 +6086,15 @@
 			</library>
 			<library>
 				<file-name>lib/portal/jackson-annotations.jar</file-name>
-				<version>2.9.10</version>
+				<version>2.13.4</version>
 			</library>
 			<library>
 				<file-name>lib/portal/jackson-core.jar</file-name>
-				<version>2.9.10</version>
+				<version>2.13.4</version>
 			</library>
 			<library>
 				<file-name>lib/portal/jackson-databind.jar</file-name>
-				<version>2.9.10.6</version>
+				<version>2.13.4.2</version>
 			</library>
 			<library>
 				<file-name>lib/portal/jai_codec.jar</file-name>
@@ -7217,19 +7088,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>lib/portal/soap.jar</file-name>
-				<version>2.2</version>
-				<project-name>Apache Simple Object Access Protocol</project-name>
-				<project-url>http://archive.apache.org/dist/ws/soap</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License 1.1</license-name>
-						<license-url>http://www.apache.org/licenses/LICENSE-1.1</license-url>
-						<copyright-notice>Copyright (c) 1999 The Apache Software Foundation. All rights reserved.</copyright-notice>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>lib/portal/sparse-bit-set.jar</file-name>
 				<version>1.2</version>
 				<project-name>SparseBitSet</project-name>
@@ -7842,7 +7700,7 @@
 			</library>
 			<library>
 				<file-name>lib/portal/xstream.jar</file-name>
-				<version>1.4.19</version>
+				<version>1.4.20</version>
 				<project-name>XStream</project-name>
 				<project-url>http://xstream.codehaus.org</project-url>
 				<licenses>
