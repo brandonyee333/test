@@ -13,20 +13,26 @@ from abc import ABCMeta, \
 	abstractmethod
 
 from liferay.commerce.configuration import CommerceConfiguration
-from liferay.commerce.recommend.job import ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob, \
+from liferay.commerce.recommend.job import \
+	ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob, \
 	CutLineageSparkJob, \
 	FrequentPatternDataPreparationSparkJob, \
+	FrequentPatternOrderBigQueryDataFrameReaderSparkJob, \
 	FrequentPatternOrderJSONDataFrameReaderSparkJob, \
 	FrequentPatternPostProcessRecommendationSparkJob, \
+	FrequentPatternProductBigQueryDataFrameReaderSparkJob, \
 	FrequentPatternProductJSONDataFrameReaderSparkJob, \
 	FrequentPatternRecommendationJSONDataFrameWriterSparkJob, \
 	FrequentPatternRecommendationSparkJob, \
+	OrderInteractionBigQueryDataFrameReaderSparkJob, \
 	OrderInteractionJSONDataFrameReaderSparkJob, \
 	ProductContentJSONDataFrameReaderSparkJob, \
 	ProductContentPipelineSparkJob, \
+	ProductContentBigQueryDataFrameReaderSparkJob, \
 	ProductContentRecommendationJSONDataFrameWriter, \
 	ProductContentRecommendationPreparationSparkJob, \
 	ProductContentRecommendationSparkJob, \
+	ProductInteractionBigQueryDataFrameReaderSparkJob, \
 	ProductInteractionJSONDataFrameReaderSparkJob, \
 	ProductInteractionRecommendationJSONDataFrameWriterSparkJob, \
 	ProductInteractionRecommendationSparkJob, \
@@ -107,9 +113,24 @@ class FrequentPatternRecommendationApplication(BaseCommerceSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = list()
 
-		jobs.append(FrequentPatternOrderJSONDataFrameReaderSparkJob(self))
+		commerce_data_source = self.configuration.get('commerce.data.source')
 
-		jobs.append(FrequentPatternProductJSONDataFrameReaderSparkJob(self))
+		if commerce_data_source == 'bigquery':
+			self.log.info("Loading data from: BigQuery")
+
+			jobs.append(
+				FrequentPatternOrderBigQueryDataFrameReaderSparkJob(self)
+			)
+
+			jobs.append(
+				FrequentPatternProductBigQueryDataFrameReaderSparkJob(self)
+			)
+		else:
+			self.log.info("Loading data from: GCS")
+
+			jobs.append(FrequentPatternOrderJSONDataFrameReaderSparkJob(self))
+
+			jobs.append(FrequentPatternProductJSONDataFrameReaderSparkJob(self))
 
 		jobs.append(FrequentPatternDataPreparationSparkJob(self))
 
@@ -137,7 +158,16 @@ class ProductContentRecommendationApplication(BaseCommerceSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = list()
 
-		jobs.append(ProductContentJSONDataFrameReaderSparkJob(self))
+		commerce_data_source = self.configuration.get('commerce.data.source')
+
+		if commerce_data_source == 'bigquery':
+			self.log.info("Loading data from: BigQuery")
+
+			jobs.append(ProductContentBigQueryDataFrameReaderSparkJob(self))
+		else:
+			self.log.info("Loading data from: GCS")
+
+			jobs.append(ProductContentJSONDataFrameReaderSparkJob(self))
 
 		jobs.append(ProductContentPipelineSparkJob(self))
 
@@ -162,9 +192,20 @@ class UserInteractionRecommendationApplication(BaseCommerceSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = list()
 
-		jobs.append(ProductInteractionJSONDataFrameReaderSparkJob(self))
+		commerce_data_source = self.configuration.get('commerce.data.source')
 
-		jobs.append(OrderInteractionJSONDataFrameReaderSparkJob(self))
+		if commerce_data_source == 'bigquery':
+			self.log.info("Loading data from: BigQuery")
+
+			jobs.append(ProductInteractionBigQueryDataFrameReaderSparkJob(self))
+
+			jobs.append(OrderInteractionBigQueryDataFrameReaderSparkJob(self))
+		else:
+			self.log.info("Loading data from: GCS")
+
+			jobs.append(ProductInteractionJSONDataFrameReaderSparkJob(self))
+
+			jobs.append(OrderInteractionJSONDataFrameReaderSparkJob(self))
 
 		jobs.append(UserInteractionDataPreparationSparkJob(self))
 
