@@ -58,24 +58,11 @@ public class AccessibilityTemplateContextContributor
 				AccessibilitySettingsUtil.getAccessibilitySettings(
 					httpServletRequest)) {
 
-			if (_isSettingEnabled(accessibilitySetting)) {
+			if (accessibilitySetting.isEnabled()) {
 				sb.append(StringPool.SPACE);
 				sb.append(accessibilitySetting.getClassName());
 			}
 		}
-	}
-
-	private boolean _isSettingEnabled(
-		AccessibilitySetting accessibilitySetting) {
-
-		Boolean sessionClicksValue =
-			accessibilitySetting.getSessionClicksValue();
-
-		if (sessionClicksValue != null) {
-			return sessionClicksValue;
-		}
-
-		return accessibilitySetting.getDefaultValue();
 	}
 
 	@Reference

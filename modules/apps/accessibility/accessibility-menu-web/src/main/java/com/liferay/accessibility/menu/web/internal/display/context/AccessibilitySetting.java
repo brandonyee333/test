@@ -41,7 +41,7 @@ public class AccessibilitySetting {
 		return className;
 	}
 
-	public Boolean getDefaultValue() {
+	public boolean getDefaultValue() {
 		return defaultValue;
 	}
 
@@ -57,11 +57,19 @@ public class AccessibilitySetting {
 		return sessionClicksValue;
 	}
 
+	public boolean isEnabled() {
+		if (sessionClicksValue != null) {
+			return sessionClicksValue;
+		}
+
+		return defaultValue;
+	}
+
 	public void setClassName(String className) {
 		this.className = className;
 	}
 
-	public void setDefaultValue(Boolean defaultValue) {
+	public void setDefaultValue(boolean defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 
@@ -78,7 +86,7 @@ public class AccessibilitySetting {
 	}
 
 	protected String className;
-	protected Boolean defaultValue;
+	protected boolean defaultValue;
 	protected String key;
 	protected String label;
 	protected Boolean sessionClicksValue;
