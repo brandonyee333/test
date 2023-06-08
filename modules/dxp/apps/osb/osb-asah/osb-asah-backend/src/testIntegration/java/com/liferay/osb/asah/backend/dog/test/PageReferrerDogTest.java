@@ -20,15 +20,12 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.PageReferrerMetric;
 import com.liferay.osb.asah.common.model.Interval;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
-import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
-import com.liferay.osb.asah.test.util.repository.CrudBQPageRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,11 +103,6 @@ public class PageReferrerDogTest
 	}
 
 	@BQSQLResource(resourcePath = "page_referrers_events.sql")
-	@Disabled
-	@RepositoryResource(
-		repositoryClass = CrudBQPageRepository.class,
-		resourcePath = "osbasahcerebroinfo/pages_info_2.json"
-	)
 	@Test
 	public void testPageReferrerMetrics() {
 		List<PageReferrerMetric> pageReferrerMetrics =
@@ -120,6 +112,7 @@ public class PageReferrerDogTest
 						setCanonicalUrl("http://liferay.com");
 						setChannelId("1");
 						setDataSourceId("1");
+						setTitle("Home - Liferay DXP");
 					}
 				});
 
