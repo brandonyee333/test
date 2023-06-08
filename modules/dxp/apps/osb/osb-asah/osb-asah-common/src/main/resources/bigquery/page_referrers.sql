@@ -4,6 +4,7 @@ SELECT
 	TIMESTAMP_TRUNC(eventDate, HOUR) AS eventDate,
 	canonicalUrl,
 	referrer,
+	title,
 	userId,
 	REGEXP_SUBSTR(referrer, r':\/\/(?:www[0-9]?\.)?(.[^/:]+)') AS referrerHost,
 	REGEXP_REPLACE(referrer, r'\?.[^#]+(#.*)?', '\\1') AS referrerCanonicalUrl,
@@ -15,5 +16,5 @@ WHERE
 	applicationId = 'Page' AND
 	eventId = 'pageViewed'
 GROUP BY
-	channelId, dataSourceId, eventDate, canonicalUrl, referrer, userId,
+	channelId, dataSourceId, eventDate, canonicalUrl, referrer, title, userId,
 	acquisitionChannel, referrerHost, referrerCanonicalUrl
