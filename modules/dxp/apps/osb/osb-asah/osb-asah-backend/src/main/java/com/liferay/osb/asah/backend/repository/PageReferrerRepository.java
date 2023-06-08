@@ -34,7 +34,7 @@ public interface PageReferrerRepository {
 
 	public Map<String, Double> getPageReferrerAccesses(
 		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
-		ZoneId zoneId);
+		@Nullable String title, ZoneId zoneId);
 
 	public Map<String, Double>
 		getSocialPageReferrerAccessesByReferrerCanonicalUrl(

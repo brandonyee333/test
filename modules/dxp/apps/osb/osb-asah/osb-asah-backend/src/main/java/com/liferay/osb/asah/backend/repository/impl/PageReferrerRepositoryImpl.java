@@ -26,6 +26,8 @@ import java.time.ZoneId;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
@@ -67,7 +69,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 				"BQPageReferrers"
 			).where(
 				_createWhereClauseCondition(
-					canonicalUrl, channelId, timeRange, zoneId)
+					canonicalUrl, channelId, timeRange, null, zoneId)
 			).groupBy(
 				acquisitionChannelField
 			).orderBy(
@@ -83,7 +85,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 	@Override
 	public Map<String, Double> getPageReferrerAccesses(
 		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
-		ZoneId zoneId) {
+		@Nullable String title, ZoneId zoneId) {
 
 		Field<BigDecimal> accessesField = DSL.sum(
 			DSL.field("access", Long.class)
@@ -102,7 +104,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			).where(
 				DSL.and(
 					_createWhereClauseCondition(
-						canonicalUrl, channelId, timeRange, zoneId),
+						canonicalUrl, channelId, timeRange, title, zoneId),
 					DSL.field(
 						"referrer"
 					).ne(
@@ -146,7 +148,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			).where(
 				DSL.and(
 					_createWhereClauseCondition(
-						canonicalUrl, channelId, timeRange, zoneId),
+						canonicalUrl, channelId, timeRange, null, zoneId),
 					DSL.field(
 						"acquisitionChannel"
 					).isNotNull(),
@@ -196,7 +198,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 			).where(
 				DSL.and(
 					_createWhereClauseCondition(
-						canonicalUrl, channelId, timeRange, zoneId),
+						canonicalUrl, channelId, timeRange, null, zoneId),
 					DSL.field(
 						"acquisitionChannel"
 					).isNotNull(),
@@ -227,7 +229,7 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 
 	private Condition _createWhereClauseCondition(
 		String canonicalUrl, @Nullable Long channelId, TimeRange timeRange,
-		ZoneId zoneId) {
+		String title, ZoneId zoneId) {
 
 		Condition condition = DSL.and(
 			DSL.field(
@@ -250,6 +252,15 @@ public class PageReferrerRepositoryImpl implements PageReferrerRepository {
 					"channelId"
 				).eq(
 					channelId
+				));
+		}
+
+		if (StringUtils.isNotBlank(title)) {
+			condition = condition.and(
+				DSL.field(
+					"title"
+				).eq(
+					title
 				));
 		}
 

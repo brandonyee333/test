@@ -64,7 +64,8 @@ public class PageReferrerDog {
 			_pageReferrerRepository.getPageReferrerAccesses(
 				searchQueryContext.getCanonicalUrl(),
 				searchQueryContext.getChannelIdAsLong(),
-				searchQueryContext.getTimeRange(), _timeZoneDog.getZoneId());
+				searchQueryContext.getTimeRange(),
+				searchQueryContext.getTitle(), _timeZoneDog.getZoneId());
 
 		if (pageReferrerAccesses.isEmpty()) {
 			return Collections.emptyList();
