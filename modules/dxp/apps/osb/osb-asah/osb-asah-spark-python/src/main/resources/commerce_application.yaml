@@ -1,4 +1,6 @@
 commerce:
+    data:
+        source: bigquery
     ml:
         locale: en_US
 forecast:
