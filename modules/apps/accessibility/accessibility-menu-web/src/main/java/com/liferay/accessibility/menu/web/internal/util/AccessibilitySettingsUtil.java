@@ -42,37 +42,25 @@ public class AccessibilitySettingsUtil {
 		HttpServletRequest httpServletRequest) {
 
 		return ListUtil.fromArray(
-			AccessibilitySetting.create(
+			new AccessibilitySetting(
+				"c-prefers-link-underline", true,
+				AccessibilitySettingConstants.
+					ACCESSIBILITY_SETTING_SHOW_UNDERLINE,
 				LanguageUtil.get(
 					httpServletRequest, "show-underline-effect-in-links"),
-				accessibilitySetting -> {
-					accessibilitySetting.setClassName(
-						"c-prefers-link-underline");
-					accessibilitySetting.setDefaultValue(true);
-					accessibilitySetting.setKey(
-						AccessibilitySettingConstants.
-							ACCESSIBILITY_SETTING_SHOW_UNDERLINE);
-					accessibilitySetting.setSessionClicksValue(
-						_getSessionClicksValue(
-							httpServletRequest,
-							AccessibilitySettingConstants.
-								ACCESSIBILITY_SETTING_SHOW_UNDERLINE));
-				}),
-			AccessibilitySetting.create(
+				_getSessionClicksValue(
+					httpServletRequest,
+					AccessibilitySettingConstants.
+						ACCESSIBILITY_SETTING_SHOW_UNDERLINE)),
+			new AccessibilitySetting(
+				"c-prefers-reduced-motion", false,
+				AccessibilitySettingConstants.
+					ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION,
 				LanguageUtil.get(httpServletRequest, "prefers-reduced-motion"),
-				accessibilitySetting -> {
-					accessibilitySetting.setClassName(
-						"c-prefers-reduced-motion");
-					accessibilitySetting.setDefaultValue(false);
-					accessibilitySetting.setKey(
-						AccessibilitySettingConstants.
-							ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION);
-					accessibilitySetting.setSessionClicksValue(
-						_getSessionClicksValue(
-							httpServletRequest,
-							AccessibilitySettingConstants.
-								ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION));
-				}));
+				_getSessionClicksValue(
+					httpServletRequest,
+					AccessibilitySettingConstants.
+						ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION)));
 	}
 
 	public static boolean isAccessibilityMenuEnabled(

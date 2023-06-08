@@ -14,27 +14,20 @@
 
 package com.liferay.accessibility.menu.web.internal.display.context;
 
-import java.util.function.Consumer;
-
 /**
  * @author Evan Thibodeau
  */
 public class AccessibilitySetting {
 
-	public static AccessibilitySetting create(
-		String label,
-		Consumer<AccessibilitySetting> accessibilitySettingConsumer) {
+	public AccessibilitySetting(
+		String className, boolean defaultValue, String key, String label,
+		Boolean sessionClicksValue) {
 
-		AccessibilitySetting accessibilitySetting = new AccessibilitySetting(
-			label);
-
-		accessibilitySettingConsumer.accept(accessibilitySetting);
-
-		return accessibilitySetting;
-	}
-
-	public AccessibilitySetting(String label) {
+		this.className = className;
+		this.defaultValue = defaultValue;
+		this.key = key;
 		this.label = label;
+		this.sessionClicksValue = sessionClicksValue;
 	}
 
 	public String getClassName() {
