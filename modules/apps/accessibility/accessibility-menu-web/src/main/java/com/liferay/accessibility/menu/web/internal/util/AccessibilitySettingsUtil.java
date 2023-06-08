@@ -17,7 +17,6 @@ package com.liferay.accessibility.menu.web.internal.util;
 import com.liferay.accessibility.menu.web.internal.configuration.AccessibilityMenuConfiguration;
 import com.liferay.accessibility.menu.web.internal.constants.AccessibilitySettingConstants;
 import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySetting;
-import com.liferay.accessibility.menu.web.internal.display.context.AccessibilitySettingValue;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -27,6 +26,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.SessionClicks;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.List;
@@ -48,38 +48,30 @@ public class AccessibilitySettingsUtil {
 				accessibilitySetting -> {
 					accessibilitySetting.setClassName(
 						"c-prefers-link-underline");
-					accessibilitySetting.setDefaultValue(
-						AccessibilitySettingValue.TRUE);
+					accessibilitySetting.setDefaultValue(true);
 					accessibilitySetting.setKey(
 						AccessibilitySettingConstants.
 							ACCESSIBILITY_SETTING_SHOW_UNDERLINE);
 					accessibilitySetting.setSessionClicksValue(
-						AccessibilitySettingValue.toAccessibilitySettingValue(
-							GetterUtil.getString(
-								SessionClicks.get(
-									httpServletRequest,
-									AccessibilitySettingConstants.
-										ACCESSIBILITY_SETTING_SHOW_UNDERLINE,
-									"undefined"))));
+						_getSessionClicksValue(
+							httpServletRequest,
+							AccessibilitySettingConstants.
+								ACCESSIBILITY_SETTING_SHOW_UNDERLINE));
 				}),
 			AccessibilitySetting.create(
 				LanguageUtil.get(httpServletRequest, "prefers-reduced-motion"),
 				accessibilitySetting -> {
 					accessibilitySetting.setClassName(
 						"c-prefers-reduced-motion");
-					accessibilitySetting.setDefaultValue(
-						AccessibilitySettingValue.FALSE);
+					accessibilitySetting.setDefaultValue(false);
 					accessibilitySetting.setKey(
 						AccessibilitySettingConstants.
 							ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION);
 					accessibilitySetting.setSessionClicksValue(
-						AccessibilitySettingValue.toAccessibilitySettingValue(
-							GetterUtil.getString(
-								SessionClicks.get(
-									httpServletRequest,
-									AccessibilitySettingConstants.
-										ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION,
-									"undefined"))));
+						_getSessionClicksValue(
+							httpServletRequest,
+							AccessibilitySettingConstants.
+								ACCESSIBILITY_SETTING_PREFERS_REDUCED_MOTION));
 				}));
 	}
 
@@ -108,6 +100,20 @@ public class AccessibilitySettingsUtil {
 		}
 
 		return false;
+	}
+
+	private static Boolean _getSessionClicksValue(
+		HttpServletRequest httpServletRequest, String accessibilitySettingKey) {
+
+		String sessionClicksValueString = GetterUtil.getString(
+			SessionClicks.get(
+				httpServletRequest, accessibilitySettingKey, null));
+
+		if (Validator.isNull(sessionClicksValueString)) {
+			return null;
+		}
+
+		return GetterUtil.getBoolean(sessionClicksValueString);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

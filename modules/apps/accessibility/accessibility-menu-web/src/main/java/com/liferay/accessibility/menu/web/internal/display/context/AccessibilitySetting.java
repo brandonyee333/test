@@ -45,7 +45,7 @@ public class AccessibilitySetting {
 		return className;
 	}
 
-	public AccessibilitySettingValue getDefaultValue() {
+	public Boolean getDefaultValue() {
 		return defaultValue;
 	}
 
@@ -57,7 +57,7 @@ public class AccessibilitySetting {
 		return label;
 	}
 
-	public AccessibilitySettingValue getSessionClicksValue() {
+	public Boolean getSessionClicksValue() {
 		return sessionClicksValue;
 	}
 
@@ -65,7 +65,7 @@ public class AccessibilitySetting {
 		this.className = className;
 	}
 
-	public void setDefaultValue(AccessibilitySettingValue defaultValue) {
+	public void setDefaultValue(Boolean defaultValue) {
 		this.defaultValue = defaultValue;
 	}
 
@@ -77,9 +77,7 @@ public class AccessibilitySetting {
 		this.label = label;
 	}
 
-	public void setSessionClicksValue(
-		AccessibilitySettingValue sessionClicksValue) {
-
+	public void setSessionClicksValue(Boolean sessionClicksValue) {
 		this.sessionClicksValue = sessionClicksValue;
 	}
 
@@ -87,7 +85,7 @@ public class AccessibilitySetting {
 	protected String className;
 
 	@JsonProperty
-	protected AccessibilitySettingValue defaultValue;
+	protected Boolean defaultValue;
 
 	@JsonProperty
 	protected String key;
@@ -96,6 +94,6 @@ public class AccessibilitySetting {
 	protected String label;
 
 	@JsonProperty
-	protected AccessibilitySettingValue sessionClicksValue;
+	protected Boolean sessionClicksValue;
 
 }

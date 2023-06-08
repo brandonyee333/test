@@ -24,7 +24,7 @@ AccessibilityMenuDisplayContext accessibilityMenuDisplayContext = new Accessibil
 	module="js/AccessibilityMenu"
 	props='<%=
 		HashMapBuilder.<String, Object>put(
-			"accessibilitySettings", accessibilityMenuDisplayContext.getAccessibilitySettings()
+			"accessibilitySettings", accessibilityMenuDisplayContext.getAccessibilitySettingsJSONArray()
 		).build()
 	%>'
 />

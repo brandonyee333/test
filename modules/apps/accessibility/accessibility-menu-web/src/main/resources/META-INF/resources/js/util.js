@@ -14,31 +14,22 @@
 
 import {localStorage} from 'frontend-js-web';
 
-export const SETTINGS_STRING_VALUES_MAP = {
-	false: false,
-	true: true,
-	undefined,
-};
-
 export function getSettingValue(defaultValue, sessionClicksValue, key) {
-	if (
-		!themeDisplay.isSignedIn() ||
-		SETTINGS_STRING_VALUES_MAP[sessionClicksValue] === undefined
-	) {
+	if (themeDisplay.isSignedIn() && sessionClicksValue !== null) {
+		return sessionClicksValue;
+	}
+	else {
 		const localStorageValue = localStorage.getItem(
 			key,
 			localStorage.TYPES.FUNCTIONAL
 		);
 
 		if (localStorageValue !== null) {
-			return SETTINGS_STRING_VALUES_MAP[localStorageValue];
-		}
-		else {
-			return SETTINGS_STRING_VALUES_MAP[defaultValue];
+			return localStorageValue;
 		}
 	}
 
-	return SETTINGS_STRING_VALUES_MAP[sessionClicksValue];
+	return defaultValue;
 }
 
 export function toggleClassName(className, value) {

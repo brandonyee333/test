@@ -17,6 +17,8 @@ package com.liferay.accessibility.menu.web.internal.display.context;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.accessibility.menu.web.internal.util.AccessibilitySettingsUtil;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONUtil;
 
 import java.util.List;
 
@@ -40,6 +42,24 @@ public class AccessibilityMenuDisplayContext {
 			AccessibilitySettingsUtil.getAccessibilitySettings(
 				_httpServletRequest),
 			List.class);
+	}
+
+	public JSONArray getAccessibilitySettingsJSONArray() throws Exception {
+		return JSONUtil.toJSONArray(
+			AccessibilitySettingsUtil.getAccessibilitySettings(
+				_httpServletRequest),
+			accessibilitySetting -> JSONUtil.put(
+				"className", accessibilitySetting.getClassName()
+			).put(
+				"defaultValue", accessibilitySetting.getDefaultValue()
+			).put(
+				"key", accessibilitySetting.getKey()
+			).put(
+				"label", accessibilitySetting.getLabel()
+			).put(
+				"sessionClicksValue",
+				accessibilitySetting.getSessionClicksValue()
+			));
 	}
 
 	private final HttpServletRequest _httpServletRequest;
