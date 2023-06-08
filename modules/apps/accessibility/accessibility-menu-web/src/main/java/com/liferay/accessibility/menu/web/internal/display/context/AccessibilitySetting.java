@@ -14,15 +14,11 @@
 
 package com.liferay.accessibility.menu.web.internal.display.context;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.function.Consumer;
 
 /**
  * @author Evan Thibodeau
  */
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class AccessibilitySetting {
 
 	public static AccessibilitySetting create(
@@ -81,19 +77,10 @@ public class AccessibilitySetting {
 		this.sessionClicksValue = sessionClicksValue;
 	}
 
-	@JsonProperty
 	protected String className;
-
-	@JsonProperty
 	protected Boolean defaultValue;
-
-	@JsonProperty
 	protected String key;
-
-	@JsonProperty
 	protected String label;
-
-	@JsonProperty
 	protected Boolean sessionClicksValue;
 
 }
