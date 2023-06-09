@@ -608,7 +608,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				(String)recordMap.get("emailAddress"),
 				(String)recordMap.get("id"),
 				recordMap.get("firstName") + " " + recordMap.get("lastName")),
-			dslContext.selectDistinct(
+			dslContext.select(
 				DSL.field(
 					"individual.emailAddress"
 				).as(
@@ -662,6 +662,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					).gt(
 						0
 					))
+			).groupBy(
+				DSL.field("emailAddress"), DSL.field("firstName"),
+				DSL.field("id"), DSL.field("lastName")
 			).orderBy(
 				_getSortFields(pageable.getSort())
 			).limit(
@@ -691,45 +694,70 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		}
 
 		return queryExecutor.queryForLong(
-			dslContext.select(
-				DSL.countDistinct(
-					DSL.field("individual.emailAddress"),
-					DSL.field("individual.firstName"),
-					DSL.field("individual.id"),
-					DSL.field("individual.lastName"))
-			).from(
-				DSL.table(
-					getTableName(timeRange)
-				).as(
-					"metric"
-				)
-			).join(
-				DSL.table(
-					"BQIdentity"
-				).as(
-					"identity"
-				)
-			).on(
-				DSL.field(
-					"identity.id"
-				).eq(
-					DSL.field("metric.userId")
-				)
-			).join(
-				individualTable
-			).on(
-				DSL.field(
-					"individual.id"
-				).eq(
-					DSL.field("identity.individualId")
-				)
-			).where(
-				whereClauseCondition.and(
+			dslContext.with(
+				"KnownIndividuals"
+			).as(
+				dslContext.select(
 					DSL.field(
-						metricType.getFieldName()
-					).gt(
-						0
-					))
+						"individual.emailAddress"
+					).as(
+						"emailAddress"
+					),
+					DSL.field(
+						"individual.firstName"
+					).as(
+						"firstName"
+					),
+					DSL.field(
+						"individual.id"
+					).as(
+						"id"
+					),
+					DSL.field(
+						"individual.lastName"
+					).as(
+						"lastName"
+					)
+				).from(
+					DSL.table(
+						getTableName(timeRange)
+					).as(
+						"metric"
+					)
+				).join(
+					DSL.table(
+						"BQIdentity"
+					).as(
+						"identity"
+					)
+				).on(
+					DSL.field(
+						"identity.id"
+					).eq(
+						DSL.field("metric.userId")
+					)
+				).join(
+					individualTable
+				).on(
+					DSL.field(
+						"individual.id"
+					).eq(
+						DSL.field("identity.individualId")
+					)
+				).where(
+					whereClauseCondition.and(
+						DSL.field(
+							metricType.getFieldName()
+						).gt(
+							0
+						))
+				).groupBy(
+					DSL.field("emailAddress"), DSL.field("firstName"),
+					DSL.field("id"), DSL.field("lastName")
+				)
+			).selectCount(
+			).from(
+				"KnownIndividuals"
 			));
 	}
 
