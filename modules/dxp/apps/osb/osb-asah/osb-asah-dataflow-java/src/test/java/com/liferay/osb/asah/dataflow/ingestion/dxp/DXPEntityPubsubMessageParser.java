@@ -36,7 +36,7 @@ public class DXPEntityPubsubMessageParser
 		}
 		catch (Exception exception) {
 			throw new RuntimeException(
-				"Unable to parse DXP Entity Pubsub Message", exception);
+				"Unable to parse DXP entity pubsub message", exception);
 		}
 	}
 
