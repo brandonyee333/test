@@ -115,43 +115,6 @@ public class ElasticsearchIndexWriter extends BaseIndexWriter {
 		return _spellCheckIndexWriter;
 	}
 
-	private String _getIndexNameNext(long companyId) {
-		if (!FeatureFlagManagerUtil.isEnabled("LPS-177664")) {
-			return null;
-		}
-
-		Company company = _companyLocalService.fetchCompany(companyId);
-
-		if (company == null) {
-			return null;
-		}
-
-		String indexNameNext = company.getIndexNameNext();
-
-		if (Validator.isBlank(indexNameNext)) {
-			return null;
-		}
-
-		return indexNameNext;
-	}
-
-	private Set<String> _getIndexNames(SearchContext searchContext) {
-		Set<String> indexNames = new HashSet<>();
-
-		String indexNameCurrent = _indexNameBuilder.getIndexName(
-			searchContext.getCompanyId());
-
-		indexNames.add(indexNameCurrent);
-
-		String indexNameNext = _getIndexNameNext(searchContext.getCompanyId());
-
-		if (indexNameNext != null) {
-			indexNames.add(indexNameNext);
-		}
-
-		return indexNames;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		ElasticsearchIndexWriter.class);
 
