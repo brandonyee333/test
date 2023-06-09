@@ -66,345 +66,48 @@ public class ElasticsearchIndexWriter extends BaseIndexWriter {
 
 	@Override
 	public void addDocument(SearchContext searchContext, Document document) {
-		for (String indexName : _getIndexNames(searchContext)) {
-			IndexDocumentRequest indexDocumentRequest =
-				new IndexDocumentRequest(indexName, document);
-
-			indexDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-			if (PortalRunMode.isTestMode() ||
-				searchContext.isCommitImmediately()) {
-
-				indexDocumentRequest.setRefresh(true);
-			}
-
-			try {
-				_searchEngineAdapter.execute(indexDocumentRequest);
-			}
-			catch (RuntimeException runtimeException) {
-				if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-					_log.error(runtimeException);
-				}
-				else {
-					throw runtimeException;
-				}
-			}
-		}
 	}
 
 	@Override
 	public void addDocuments(
 		SearchContext searchContext, Collection<Document> documents) {
-
-		BulkDocumentRequest bulkDocumentRequest = new BulkDocumentRequest();
-
-		if (PortalRunMode.isTestMode() || searchContext.isCommitImmediately()) {
-			bulkDocumentRequest.setRefresh(true);
-		}
-
-		for (String indexName : _getIndexNames(searchContext)) {
-			documents.forEach(
-				document -> {
-					IndexDocumentRequest indexDocumentRequest =
-						new IndexDocumentRequest(indexName, document);
-
-					indexDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-					bulkDocumentRequest.addBulkableDocumentRequest(
-						indexDocumentRequest);
-				});
-		}
-
-		BulkDocumentResponse bulkDocumentResponse =
-			_searchEngineAdapter.execute(bulkDocumentRequest);
-
-		if (bulkDocumentResponse.hasErrors()) {
-			if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-				_log.error("Bulk add failed");
-			}
-			else {
-				throw new SystemException("Bulk add failed");
-			}
-		}
 	}
 
 	@Override
 	public void commit(SearchContext searchContext) {
-		for (String indexName : _getIndexNames(searchContext)) {
-			RefreshIndexRequest refreshIndexRequest = new RefreshIndexRequest(
-				indexName);
-
-			try {
-				_searchEngineAdapter.execute(refreshIndexRequest);
-			}
-			catch (RuntimeException runtimeException) {
-				if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-					_log.error(runtimeException);
-				}
-				else {
-					throw runtimeException;
-				}
-			}
-		}
 	}
 
 	@Override
 	public void deleteDocument(SearchContext searchContext, String uid) {
-		for (String indexName : _getIndexNames(searchContext)) {
-			DeleteDocumentRequest deleteDocumentRequest =
-				new DeleteDocumentRequest(indexName, uid);
-
-			if (PortalRunMode.isTestMode() ||
-				searchContext.isCommitImmediately()) {
-
-				deleteDocumentRequest.setRefresh(true);
-			}
-
-			deleteDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-			try {
-				_searchEngineAdapter.execute(deleteDocumentRequest);
-			}
-			catch (RuntimeException runtimeException) {
-				ElasticsearchExceptionHandler elasticsearchExceptionHandler =
-					new ElasticsearchExceptionHandler(
-						_log,
-						_elasticsearchConfigurationWrapper.logExceptionsOnly());
-
-				elasticsearchExceptionHandler.handleDeleteDocumentException(
-					runtimeException);
-			}
-		}
 	}
 
 	@Override
 	public void deleteDocuments(
 		SearchContext searchContext, Collection<String> uids) {
-
-		BulkDocumentRequest bulkDocumentRequest = new BulkDocumentRequest();
-
-		if (PortalRunMode.isTestMode() || searchContext.isCommitImmediately()) {
-			bulkDocumentRequest.setRefresh(true);
-		}
-
-		for (String indexName : _getIndexNames(searchContext)) {
-			uids.forEach(
-				uid -> {
-					DeleteDocumentRequest deleteDocumentRequest =
-						new DeleteDocumentRequest(indexName, uid);
-
-					deleteDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-					bulkDocumentRequest.addBulkableDocumentRequest(
-						deleteDocumentRequest);
-				});
-		}
-
-		BulkDocumentResponse bulkDocumentResponse =
-			_searchEngineAdapter.execute(bulkDocumentRequest);
-
-		if (bulkDocumentResponse.hasErrors()) {
-			if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-				_log.error("Bulk delete failed");
-			}
-			else {
-				throw new SystemException("Bulk delete failed");
-			}
-		}
 	}
 
 	@Override
 	public void deleteEntityDocuments(
 		SearchContext searchContext, String className) {
-
-		for (String indexName : _getIndexNames(searchContext)) {
-			try {
-				BooleanQuery booleanQuery = new BooleanQueryImpl();
-
-				booleanQuery.add(new MatchAllQuery(), BooleanClauseOccur.MUST);
-
-				BooleanFilter booleanFilter = new BooleanFilter();
-
-				booleanFilter.add(
-					new TermFilter(Field.ENTRY_CLASS_NAME, className),
-					BooleanClauseOccur.MUST);
-
-				booleanQuery.setPreBooleanFilter(booleanFilter);
-
-				DeleteByQueryDocumentRequest deleteByQueryDocumentRequest =
-					new DeleteByQueryDocumentRequest(booleanQuery, indexName);
-
-				if (PortalRunMode.isTestMode() ||
-					searchContext.isCommitImmediately()) {
-
-					deleteByQueryDocumentRequest.setRefresh(true);
-				}
-
-				_searchEngineAdapter.execute(deleteByQueryDocumentRequest);
-			}
-			catch (ParseException parseException) {
-				throw new SystemException(parseException);
-			}
-			catch (RuntimeException runtimeException) {
-				if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-					_log.error(runtimeException);
-				}
-				else {
-					throw runtimeException;
-				}
-			}
-		}
 	}
 
 	@Override
 	public void partiallyUpdateDocument(
 		SearchContext searchContext, Document document) {
-
-		for (String indexName : _getIndexNames(searchContext)) {
-			UpdateDocumentRequest updateDocumentRequest =
-				new UpdateDocumentRequest(
-					indexName, document.getUID(), document);
-
-			updateDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-			if (PortalRunMode.isTestMode() ||
-				searchContext.isCommitImmediately()) {
-
-				updateDocumentRequest.setRefresh(true);
-			}
-
-			try {
-				_searchEngineAdapter.execute(updateDocumentRequest);
-			}
-			catch (RuntimeException runtimeException) {
-				if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-					_log.error(runtimeException);
-				}
-				else {
-					throw runtimeException;
-				}
-			}
-		}
 	}
 
 	@Override
 	public void partiallyUpdateDocuments(
 		SearchContext searchContext, Collection<Document> documents) {
-
-		BulkDocumentRequest bulkDocumentRequest = new BulkDocumentRequest();
-
-		if (PortalRunMode.isTestMode() || searchContext.isCommitImmediately()) {
-			bulkDocumentRequest.setRefresh(true);
-		}
-
-		for (String indexName : _getIndexNames(searchContext)) {
-			documents.forEach(
-				document -> {
-					UpdateDocumentRequest updateDocumentRequest =
-						new UpdateDocumentRequest(
-							indexName, document.getUID(), document);
-
-					updateDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-					bulkDocumentRequest.addBulkableDocumentRequest(
-						updateDocumentRequest);
-				});
-		}
-
-		BulkDocumentResponse bulkDocumentResponse =
-			_searchEngineAdapter.execute(bulkDocumentRequest);
-
-		if (bulkDocumentResponse.hasErrors()) {
-			if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-				_log.error("Bulk partial update failed");
-			}
-			else {
-				throw new SystemException("Bulk partial update failed");
-			}
-		}
 	}
 
 	@Override
 	public void updateDocument(SearchContext searchContext, Document document) {
-		BulkDocumentRequest bulkDocumentRequest = new BulkDocumentRequest();
-
-		if (PortalRunMode.isTestMode() || searchContext.isCommitImmediately()) {
-			bulkDocumentRequest.setRefresh(true);
-		}
-
-		for (String indexName : _getIndexNames(searchContext)) {
-			DeleteDocumentRequest deleteDocumentRequest =
-				new DeleteDocumentRequest(indexName, document.getUID());
-
-			deleteDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-			bulkDocumentRequest.addBulkableDocumentRequest(
-				deleteDocumentRequest);
-
-			IndexDocumentRequest indexDocumentRequest =
-				new IndexDocumentRequest(indexName, document);
-
-			indexDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-			bulkDocumentRequest.addBulkableDocumentRequest(
-				indexDocumentRequest);
-		}
-
-		BulkDocumentResponse bulkDocumentResponse =
-			_searchEngineAdapter.execute(bulkDocumentRequest);
-
-		if (bulkDocumentResponse.hasErrors()) {
-			if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-				_log.error("Update failed");
-			}
-			else {
-				throw new SystemException("Update failed");
-			}
-		}
 	}
 
 	@Override
 	public void updateDocuments(
 		SearchContext searchContext, Collection<Document> documents) {
-
-		BulkDocumentRequest bulkDocumentRequest = new BulkDocumentRequest();
-
-		if (PortalRunMode.isTestMode() || searchContext.isCommitImmediately()) {
-			bulkDocumentRequest.setRefresh(true);
-		}
-
-		for (String indexName : _getIndexNames(searchContext)) {
-			documents.forEach(
-				document -> {
-					DeleteDocumentRequest deleteDocumentRequest =
-						new DeleteDocumentRequest(indexName, document.getUID());
-
-					deleteDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-					bulkDocumentRequest.addBulkableDocumentRequest(
-						deleteDocumentRequest);
-
-					IndexDocumentRequest indexDocumentRequest =
-						new IndexDocumentRequest(indexName, document);
-
-					indexDocumentRequest.setType(DocumentTypes.LIFERAY);
-
-					bulkDocumentRequest.addBulkableDocumentRequest(
-						indexDocumentRequest);
-				});
-		}
-
-		BulkDocumentResponse bulkDocumentResponse =
-			_searchEngineAdapter.execute(bulkDocumentRequest);
-
-		if (bulkDocumentResponse.hasErrors()) {
-			if (_elasticsearchConfigurationWrapper.logExceptionsOnly()) {
-				_log.error("Bulk update failed");
-			}
-			else {
-				throw new SystemException("Bulk update failed");
-			}
-		}
 	}
 
 	@Override
