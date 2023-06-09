@@ -19,9 +19,6 @@ import com.liferay.osb.asah.dataflow.ingestion.dxp.entity.DXPEntityPubsubMessage
 
 import org.apache.beam.sdk.transforms.DoFn;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author Riccardo Ferrari
  */
@@ -38,12 +35,9 @@ public class DXPEntityPubsubMessageParser
 			processContext.output(dxpEntityPubsubMessage);
 		}
 		catch (Exception exception) {
-			_logger.error(
+			throw new RuntimeException(
 				"Unable to parse DXP Entity Pubsub Message", exception);
 		}
 	}
-
-	private static final Logger _logger = LoggerFactory.getLogger(
-		DXPEntityPubsubMessageParser.class);
 
 }
