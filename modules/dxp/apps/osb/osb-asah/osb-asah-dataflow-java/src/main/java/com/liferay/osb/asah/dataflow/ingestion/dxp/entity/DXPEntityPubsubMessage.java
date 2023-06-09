@@ -14,33 +14,33 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.dxp.entity;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
+import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
+
+import java.io.IOException;
 import java.io.Serializable;
 
 import java.nio.charset.StandardCharsets;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.beam.sdk.io.gcp.pubsub.PubsubMessage;
 
-import org.codehaus.jackson.map.util.ISO8601DateFormat;
-
 /**
  * @author Riccardo Ferrari
  */
-@JsonDeserialize(builder = DXPEntityPubsubMessage.Builder.class)
 public class DXPEntityPubsubMessage implements Serializable {
+
+	public DXPEntityPubsubMessage() {
+	}
 
 	public DXPEntityPubsubMessage(
 		Map<String, String> attributes, String payload) {
@@ -63,7 +63,18 @@ public class DXPEntityPubsubMessage implements Serializable {
 		return _payload;
 	}
 
+	public void setAttributes(Attributes attributes) {
+		_attributes = attributes;
+	}
+
+	public void setPayload(String payload) {
+		_payload = payload;
+	}
+
 	public static class Attributes extends HashMap<String, String> {
+
+		public Attributes() {
+		}
 
 		public Attributes(Map<String, String> attributes) {
 			if (attributes != null) {
@@ -81,20 +92,9 @@ public class DXPEntityPubsubMessage implements Serializable {
 				return Collections.emptyMap();
 			}
 
-			Map<String, Long> commerceChannelIdChannelIdsJSONFormatted =
-				_objectMapper.readValue(
-					commerceChannelIdChannelIdsString, Map.class);
-
-			Map<Long, Long> commerceChannelIdChannelIds = new HashMap<>();
-
-			for (Entry<String, Long> entry :
-					commerceChannelIdChannelIdsJSONFormatted.entrySet()) {
-
-				commerceChannelIdChannelIds.put(
-					Long.parseLong(entry.getKey()), entry.getValue());
-			}
-
-			return commerceChannelIdChannelIds;
+			return ObjectMapperUtil.readValue(
+				CommerceChannelIdChannelIdMap.class,
+				commerceChannelIdChannelIdsString);
 		}
 
 		public long getCount() {
@@ -125,62 +125,54 @@ public class DXPEntityPubsubMessage implements Serializable {
 			return Boolean.parseBoolean(getOrDefault("last", "false"));
 		}
 
-		private static final ObjectMapper _objectMapper;
+	}
 
-		static {
-			_objectMapper = new ObjectMapper() {
-				{
-					configure(
-						DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-						false);
-					configure(
-						DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY,
-						true);
-					configure(DeserializationFeature.USE_LONG_FOR_INTS, true);
-					configure(
-						MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
-					configure(
-						SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
-					setDateFormat(new ISO8601DateFormat());
-					setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-					setSerializationInclusion(JsonInclude.Include.NON_NULL);
-					setVisibility(
-						PropertyAccessor.FIELD,
-						JsonAutoDetect.Visibility.PUBLIC_ONLY);
-					setVisibility(
-						PropertyAccessor.GETTER,
-						JsonAutoDetect.Visibility.PUBLIC_ONLY);
-				}
-			};
+	@JsonDeserialize(using = CommerceChannelIdChannelIdMapDeserializer.class)
+	public static class CommerceChannelIdChannelIdMap
+		extends HashMap<Long, Long> {
+	}
+
+	public static class CommerceChannelIdChannelIdMapDeserializer
+		extends StdDeserializer<CommerceChannelIdChannelIdMap> {
+
+		public CommerceChannelIdChannelIdMapDeserializer() {
+			this(CommerceChannelIdChannelIdMap.class);
+		}
+
+		@Override
+		public CommerceChannelIdChannelIdMap deserialize(
+				JsonParser jsonParser,
+				DeserializationContext deserializationContext)
+			throws IOException {
+
+			CommerceChannelIdChannelIdMap commerceChannelIdChannelIdMap =
+				new CommerceChannelIdChannelIdMap();
+
+			JsonNode jsonNode = deserializationContext.readTree(jsonParser);
+
+			Iterator<String> iterator = jsonNode.fieldNames();
+
+			while (iterator.hasNext()) {
+				String commerceChannelIdAsString = iterator.next();
+
+				JsonNode valueJsonNode = jsonNode.get(
+					commerceChannelIdAsString);
+
+				commerceChannelIdChannelIdMap.put(
+					Long.valueOf(commerceChannelIdAsString),
+					valueJsonNode.asLong());
+			}
+
+			return commerceChannelIdChannelIdMap;
+		}
+
+		protected CommerceChannelIdChannelIdMapDeserializer(Class<?> clazz) {
+			super(clazz);
 		}
 
 	}
 
-	@JsonPOJOBuilder
-	public static class Builder {
-
-		public DXPEntityPubsubMessage build() {
-			return new DXPEntityPubsubMessage(_attributes, _payload);
-		}
-
-		public Builder withAttributes(Map<String, String> attributes) {
-			_attributes = attributes;
-
-			return this;
-		}
-
-		public Builder withPayload(String payload) {
-			_payload = payload;
-
-			return this;
-		}
-
-		private Map<String, String> _attributes;
-		private String _payload;
-
-	}
-
-	private final Attributes _attributes;
-	private final String _payload;
+	private Attributes _attributes;
+	private String _payload;
 
 }
