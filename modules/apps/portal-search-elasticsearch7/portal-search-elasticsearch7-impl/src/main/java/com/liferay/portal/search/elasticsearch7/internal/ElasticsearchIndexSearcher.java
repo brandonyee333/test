@@ -73,20 +73,6 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 		return _querySuggester;
 	}
 
-	protected void setIndexNames(
-		BaseSearchRequest baseSearchRequest, SearchRequest searchRequest,
-		SearchContext searchContext) {
-
-		baseSearchRequest.setIndexNames(
-			_getIndexes(searchRequest, searchContext));
-	}
-
-	protected void setQuery(
-		BaseSearchRequest baseSearchRequest, SearchRequest searchRequest) {
-
-		baseSearchRequest.setQuery(searchRequest.getQuery());
-	}
-
 	private Hits _getHits() {
 		Hits hits = new HitsImpl();
 
@@ -104,21 +90,6 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 		hits.setStart(0);
 
 		return hits;
-	}
-
-	private String[] _getIndexes(
-		SearchRequest searchRequest, SearchContext searchContext) {
-
-		List<String> indexes = searchRequest.getIndexes();
-
-		if (!indexes.isEmpty()) {
-			return indexes.toArray(new String[0]);
-		}
-
-		String indexName = _indexNameBuilder.getIndexName(
-			searchContext.getCompanyId());
-
-		return new String[] {indexName};
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
