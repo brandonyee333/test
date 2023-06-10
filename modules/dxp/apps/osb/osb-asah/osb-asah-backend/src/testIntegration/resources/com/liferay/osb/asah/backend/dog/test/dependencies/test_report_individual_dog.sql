@@ -1,0 +1,35 @@
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-1d}', '41f29995-30f1-4b4f-86bc-8b885240753f', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-2d}', '6c81d6c9-413c-4afb-83c4-37d8ba77f027', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-3d}', 'b52101db-0a3c-45cd-ba2c-0de89869d8ec', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-4d}', '48cbbae8-9d4e-423c-9425-7faf8c94d9cd', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-5d}', 'deb7da87-155d-49f5-b541-e9e2d3cfdde7', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-6d}', 'b6bbfc6d-9c48-427d-bece-fffb526b113e', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-7d}', 'd67560f8-3fd8-4adc-98c6-b483ff4af19d', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-8d}', '9ec42281-44db-4f74-8e30-465307b52efd', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-9d}', 'f9b5031b-c817-479e-8fed-a9ad190c22a1', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-10d}', '8fe5cef1-0f02-437a-941c-ddc284494889', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-11d}', 'a660e1bd-4dea-466c-9ce2-243050dd3e1f', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-12d}', 'ace23f34-fa1f-469e-b5f6-6da50043f6d3', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-13d}', 'a11f7df2-0ec0-4215-b338-d6963d3209f1', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-14d}', '3ad0e272-a2cd-456d-a3cb-ed59a87a7bae', 1);
+INSERT INTO BlogDaily (assetId, eventDate, userId, views) VALUES ('1', timestamp '${now-15d}', '93a603e2-75f4-40cc-a92d-247d23da5244', 1);
+
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-1d}', '41f29995-30f1-4b4f-86bc-8b885240753f', '4');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-2d}', '6c81d6c9-413c-4afb-83c4-37d8ba77f027', '2');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-3d}', 'b52101db-0a3c-45cd-ba2c-0de89869d8ec', '3');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-4d}', '48cbbae8-9d4e-423c-9425-7faf8c94d9cd', '4');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-5d}', 'deb7da87-155d-49f5-b541-e9e2d3cfdde7', '4');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-6d}', 'b6bbfc6d-9c48-427d-bece-fffb526b113e', '1');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-7d}', 'd67560f8-3fd8-4adc-98c6-b483ff4af19d', '1');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-8d}', '9ec42281-44db-4f74-8e30-465307b52efd', '4');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-9d}', 'f9b5031b-c817-479e-8fed-a9ad190c22a1', '1');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-10d}', '8fe5cef1-0f02-437a-941c-ddc284494889', '4');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-11d}', 'a660e1bd-4dea-466c-9ce2-243050dd3e1f', '3');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-12d}', 'ace23f34-fa1f-469e-b5f6-6da50043f6d3', '2');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-13d}', 'a11f7df2-0ec0-4215-b338-d6963d3209f1', '1');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-14d}', '3ad0e272-a2cd-456d-a3cb-ed59a87a7bae', '3');
+INSERT INTO Identity_Raw (createDate, id, individualId) VALUES (timestamp '${now-15d}', '93a603e2-75f4-40cc-a92d-247d23da5244', '4');
+
+INSERT INTO Individual (id, emailAddress, firstName, lastName) VALUES ('1', 'john@acme.com', 'John', 'Doe');
+INSERT INTO Individual (id, emailAddress, firstName, lastName) VALUES ('2', 'test1@liferay.com', 'Test1', 'Test1');
+INSERT INTO Individual (id, emailAddress, firstName, lastName) VALUES ('4', 'test2@liferay.com', 'Test2', 'Test2');

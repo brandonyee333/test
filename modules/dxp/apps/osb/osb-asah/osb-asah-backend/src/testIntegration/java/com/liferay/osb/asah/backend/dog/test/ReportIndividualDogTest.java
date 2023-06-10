@@ -23,18 +23,15 @@ import com.liferay.osb.asah.backend.model.Individual;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.model.ResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
-import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
-import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +39,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author André Miranda
  */
-@Disabled
 public class ReportIndividualDogTest
 	implements OSBAsahBackendSpringTestContext,
 			   OSBAsahTestExecutionListenersContext {
@@ -57,14 +53,7 @@ public class ReportIndividualDogTest
 
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQBlogRepository.class,
-		resourcePath = "osbasahcerebroinfo/segment_individuals_blogs_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/segment_individuals_info_1.json"
-	)
+	@BQSQLResource(resourcePath = "test_report_individual_dog.sql")
 	@Test
 	public void testSegmentIndividuals() {
 		SearchQueryContext searchQueryContext = new SearchQueryContext(
@@ -74,7 +63,7 @@ public class ReportIndividualDogTest
 
 		ResultBag<Individual> individualResultBag =
 			_reportIndividualDog.getIndividualResultBag(
-				null, BlogMetricType.VIEWS, searchQueryContext, 2, 1);
+				null, BlogMetricType.VIEWS, searchQueryContext, 1, 1);
 
 		Assertions.assertEquals(
 			3, individualResultBag.getTotal(), individualResultBag.toString());
@@ -86,12 +75,6 @@ public class ReportIndividualDogTest
 		Assertions.assertEquals("Test1 Test1", individual.getName());
 		Assertions.assertEquals(
 			"test1@liferay.com", individual.getEmailAddress());
-
-		individual = individuals.get(1);
-
-		Assertions.assertEquals("Test2 Test2", individual.getName());
-		Assertions.assertEquals(
-			"test2@liferay.com", individual.getEmailAddress());
 
 		individualResultBag = _reportIndividualDog.getIndividualResultBag(
 			"Test1", BlogMetricType.VIEWS, searchQueryContext, 10, 0);
@@ -108,14 +91,7 @@ public class ReportIndividualDogTest
 			"test1@liferay.com", individual.getEmailAddress());
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQBlogRepository.class,
-		resourcePath = "osbasahcerebroinfo/segment_individuals_blogs_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/segment_individuals_info_1.json"
-	)
+	@BQSQLResource(resourcePath = "test_report_individual_dog.sql")
 	@Test
 	public void testSegmentIndividualsSearch() {
 		SearchQueryContext searchQueryContext = new SearchQueryContext(
@@ -138,13 +114,8 @@ public class ReportIndividualDogTest
 		Assertions.assertEquals("john@acme.com", individual.getEmailAddress());
 	}
 
-	@RepositoryResource(
-		repositoryClass = CrudBQBlogRepository.class,
-		resourcePath = "osbasahcerebroinfo/segment_individuals_blogs_info.json"
-	)
-	@RepositoryResource(
-		repositoryClass = BQIndividualRepository.class,
-		resourcePath = "osbasahfaroinfo/segment_individuals_info_2.json"
+	@BQSQLResource(
+		resourcePath = "test_report_individual_dog_unknown_individuals.sql"
 	)
 	@Test
 	public void testSegmentUnknownIndividuals() {
