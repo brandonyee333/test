@@ -20,7 +20,6 @@ import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.repository.CustomAssetRepository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
@@ -135,42 +134,6 @@ public class AssetRepositoryImpl
 			DSL.field("keyword")
 		).fetch(
 			record -> new AssetKeyword(record.intoMap())
-		);
-	}
-
-	private Table<Record> _getAssetTable(
-		String assetType, Collection<String> canonicalUrls) {
-
-		return _dslContext.select(
-			DSL.asterisk(),
-			DSL.rowNumber(
-			).over(
-				DSL.partitionBy(
-					DSL.field("Asset.canonicalURL")
-				).orderBy(
-					DSL.field(
-						"Asset.id"
-					).desc()
-				)
-			).as(
-				"rownumber"
-			)
-		).from(
-			"Asset"
-		).where(
-			DSL.and(
-				DSL.field(
-					"Asset.assetType"
-				).eq(
-					assetType
-				),
-				DSL.field(
-					"Asset.canonicalURL"
-				).in(
-					canonicalUrls
-				))
-		).asTable(
-			"Asset"
 		);
 	}
 
