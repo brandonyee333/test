@@ -14,21 +14,10 @@
 
 package com.liferay.osb.asah.common.converter.helper;
 
-import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
-import com.liferay.osb.asah.common.util.StringUtil;
-
-import java.sql.Timestamp;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-
 import java.util.Collections;
 import java.util.Map;
 
 import org.jooq.Condition;
-import org.jooq.Field;
-import org.jooq.impl.DSL;
 
 /**
  * @author Michael Bowerman
@@ -49,58 +38,6 @@ public class DefaultFilterStringConverterHelper
 		throws Exception {
 
 		return null;
-	}
-
-	public Condition getTimeFrameCondition(
-		String fieldName, String operator, boolean processString,
-		String valueString) {
-
-		String value = valueString;
-
-		if (processString) {
-			value = (String)StringUtil.toObject(valueString);
-		}
-
-		if ((value == null) || value.equalsIgnoreCase("ever")) {
-			return null;
-		}
-
-		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(TimeZoneDogUtil.getZoneId()), LocalTime.MIDNIGHT);
-
-		if (value.equalsIgnoreCase("last24Hours")) {
-			localDateTime = localDateTime.minusHours(24);
-		}
-		else if (value.equalsIgnoreCase("last28Days")) {
-			localDateTime = localDateTime.minusDays(28);
-		}
-		else if (value.equalsIgnoreCase("last30Days")) {
-			localDateTime = localDateTime.minusDays(30);
-		}
-		else if (value.equalsIgnoreCase("last7Days")) {
-			localDateTime = localDateTime.minusDays(7);
-		}
-		else if (value.equalsIgnoreCase("last90Days")) {
-			localDateTime = localDateTime.minusDays(90);
-		}
-		else if (value.equalsIgnoreCase("yesterday")) {
-			localDateTime = localDateTime.minusDays(1);
-		}
-		else {
-			return null;
-		}
-
-		Field<Object> field = DSL.field(fieldName);
-
-		Condition condition = field.gt(Timestamp.valueOf(localDateTime));
-
-		if (!operator.equals("eq") && !operator.equals("ge") &&
-			!operator.equals("gt")) {
-
-			return DSL.not(condition);
-		}
-
-		return condition;
 	}
 
 }

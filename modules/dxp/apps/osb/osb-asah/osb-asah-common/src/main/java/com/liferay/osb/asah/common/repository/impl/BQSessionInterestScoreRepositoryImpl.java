@@ -19,10 +19,8 @@ import com.liferay.osb.asah.common.entity.BQSessionInterestScore;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.TimeRange;
-import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.CustomBQSessionInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
-import com.liferay.osb.asah.common.repository.helper.DSLHelper;
 
 import java.math.BigDecimal;
 
@@ -53,13 +51,6 @@ public class BQSessionInterestScoreRepositoryImpl
 
 	public BQSessionInterestScoreRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
-
-		InterestFilterStringConverterHelper
-			interestFilterStringConverterHelper =
-				new InterestFilterStringConverterHelper();
-
-		_fieldNames =
-			interestFilterStringConverterHelper.getFieldNameConversionMap();
 	}
 
 	@Override
@@ -275,11 +266,6 @@ public class BQSessionInterestScoreRepositoryImpl
 	}
 
 	private final DSLContext _dslContext;
-
-	@Autowired
-	private DSLHelper _dslHelper;
-
-	private final Map<String, String> _fieldNames;
 
 	@Autowired
 	private QueryExecutor _queryExecutor;

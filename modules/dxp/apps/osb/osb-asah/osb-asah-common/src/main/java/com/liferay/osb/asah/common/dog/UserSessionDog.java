@@ -16,7 +16,6 @@ package com.liferay.osb.asah.common.dog;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoSessionsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.entity.BQSession;
 import com.liferay.osb.asah.common.repository.BQSessionRepository;
 import com.liferay.osb.asah.common.repository.helper.FilterHelper;
@@ -83,10 +82,6 @@ public class UserSessionDog {
 
 	@Autowired
 	private BQSessionRepository _bqSessionRepository;
-
-	@Autowired
-	private FaroInfoSessionsFilterStringConverterHelper
-		_faroInfoSessionsFilterStringConverterHelper;
 
 	@Autowired
 	private ObjectMapper _objectMapper;

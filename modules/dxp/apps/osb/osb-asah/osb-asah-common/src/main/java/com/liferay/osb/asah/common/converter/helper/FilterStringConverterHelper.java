@@ -38,8 +38,4 @@ public interface FilterStringConverterHelper {
 		return null;
 	}
 
-	public default Object processValue(String fieldName, String valueString) {
-		return null;
-	}
-
 }

@@ -21,7 +21,6 @@ import com.liferay.osb.asah.common.model.Distribution;
 import com.liferay.osb.asah.common.model.Field;
 import com.liferay.osb.asah.common.model.Individual;
 import com.liferay.osb.asah.common.model.Sort;
-import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQFieldMappingRepository;
 import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
@@ -57,16 +56,12 @@ public class BQIndividualDog {
 		BQFieldMappingRepository bqFieldMappingRepository,
 		BQIdentityRepository bqIdentityRepository,
 		BQIndividualRepository bqIndividualRepository,
-		DataSourceRepository dataSourceRepository,
-		IndividualsFilterStringConverterHelper
-			individualsFilterStringConverterHelper) {
+		DataSourceRepository dataSourceRepository) {
 
 		_bqFieldMappingRepository = bqFieldMappingRepository;
 		_bqIdentityRepository = bqIdentityRepository;
 		_bqIndividualRepository = bqIndividualRepository;
 		_dataSourceRepository = dataSourceRepository;
-		_individualsFilterStringConverterHelper =
-			individualsFilterStringConverterHelper;
 	}
 
 	public long countBQIndividuals(
@@ -308,7 +303,5 @@ public class BQIndividualDog {
 	private final BQIdentityRepository _bqIdentityRepository;
 	private final BQIndividualRepository _bqIndividualRepository;
 	private final DataSourceRepository _dataSourceRepository;
-	private final IndividualsFilterStringConverterHelper
-		_individualsFilterStringConverterHelper;
 
 }
