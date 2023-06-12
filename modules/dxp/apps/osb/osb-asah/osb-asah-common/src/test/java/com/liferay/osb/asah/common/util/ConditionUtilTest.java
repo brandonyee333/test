@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.common.util;
 
 import com.liferay.osb.asah.common.filter.expression.FilterExpressionParserException;
-import com.liferay.osb.asah.common.postgresql.converter.helper.IndividualsFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.util.ConditionUtil;
 
 import org.antlr.v4.runtime.misc.ParseCancellationException;
@@ -260,32 +259,6 @@ public class ConditionUtilTest {
 	@Test
 	public void testIncompleteExpressionThrowsException() {
 		_assertThrowsException("column1 eq ");
-	}
-
-	@Test
-	public void testIndividualsEqAndNull() {
-		Condition expectedCondition = DSL.and(
-			DSL.field(
-				"IdentityActivity.channelId"
-			).eq(
-				506297979389450553L
-			),
-			DSL.field(
-				"Individual.emailAddress"
-			).isNotNull(),
-			DSL.field(
-				"Individual.emailAddress"
-			).ne(
-				""
-			));
-
-		Condition actualCondition = ConditionUtil.toCondition(
-			"(channelIds eq '506297979389450553' and " +
-				"(demographics/email/value ne null))",
-			new IndividualsFilterStringConverterHelper());
-
-		Assertions.assertEquals(
-			expectedCondition.toString(), actualCondition.toString());
 	}
 
 	@Test
