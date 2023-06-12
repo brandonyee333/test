@@ -16,29 +16,20 @@ package com.liferay.osb.asah.common.repository.impl;
 
 import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.AssetKeyword;
-import com.liferay.osb.asah.common.model.Transformation;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.repository.CustomAssetRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
-import com.liferay.osb.asah.common.util.MatcherUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.StringUtils;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
-import org.jooq.Field;
 import org.jooq.Record;
 import org.jooq.Record1;
-import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
 import org.jooq.SelectSelectStep;
 import org.jooq.Table;
@@ -58,143 +49,30 @@ public class AssetRepositoryImpl
 	}
 
 	@Override
-	public long countAssetKeywords(String keyword) {
-		SelectSelectStep<Record1<Integer>> selectCount =
-			_dslContext.selectCount();
-
-		return selectCount.from(
-			_getAssetKeywordSelectStep(keyword)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
-	@Override
-	public long countByAssetTypeAndCanonicalURLIn(
-		String assetType, Collection<String> canonicalUrls) {
-
-		SelectSelectStep<Record1<Integer>> selectCount =
-			_dslContext.selectCount();
-
-		return selectCount.from(
-			_getAssetTable(assetType, canonicalUrls)
-		).where(
-			DSL.field(
-				"Asset.rownumber"
-			).eq(
-				1
-			)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
-	@Override
 	public long countByAssetTypeAndFilterStringAndKeywords(
-		String assetType, FilterHelper filterHelper,
-		@Nullable String keywords) {
+		String assetType, String filterString, @Nullable String keywords) {
 
 		SelectSelectStep<Record1<Integer>> selectSelectStep =
 			_dslContext.selectCount();
 
 		return selectSelectStep.from(
-			_getAssetTable(assetType, filterHelper, keywords)
+			_getAssetTable(assetType, filterString, keywords)
 		).fetchOptional(
 			0, Long.class
 		).orElse(
 			0L
-		);
-	}
-
-	@Override
-	public long countByFilterString(FilterHelper filterHelper) {
-		SelectSelectStep<Record1<Integer>> selectSelectStep =
-			_dslContext.selectCount();
-
-		return selectSelectStep.from(
-			_getAssetTable(null, filterHelper, null)
-		).fetchOptional(
-			0, Long.class
-		).orElse(
-			0L
-		);
-	}
-
-	@Override
-	public List<Asset> findByAssetTypeAndAssetKeywordNotNull(
-		Long assetId, String assetType, int size) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			_getAssetTableKeywordNotNull(assetId, assetType));
-
-		return selectJoinStep.orderBy(
-			DSL.field(
-				"id"
-			).asc()
-		).limit(
-			size
-		).fetch(
-			this::_toAsset
-		);
-	}
-
-	@Override
-	public List<Asset> findByAssetTypeAndCanonicalURLIn(
-		String assetType, Collection<String> canonicalUrls, Pageable pageable) {
-
-		return _dslContext.select(
-			DSL.table(
-				"Asset"
-			).asterisk()
-		).from(
-			_getAssetTable(assetType, canonicalUrls)
-		).where(
-			DSL.field(
-				"Asset.rownumber"
-			).eq(
-				1
-			)
-		).orderBy(
-			getSortFields(pageable.getSort(), DSL.table("Asset"))
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			this::_toAsset
-		);
-	}
-
-	@Override
-	public List<Asset> findByAssetTypeAndFilterString(
-		String assetType, FilterHelper filterHelper) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.from(
-			_getAssetTable(assetType, filterHelper, null)
-		).orderBy(
-			DSL.field("title")
-		).fetch(
-			this::_toAsset
 		);
 	}
 
 	@Override
 	public List<Asset> findByAssetTypeAndFilterStringAndKeywords(
-		String assetType, FilterHelper filterHelper, String keywords,
+		String assetType, String filterString, String keywords,
 		Pageable pageable) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from(
-			_getAssetTable(assetType, filterHelper, keywords));
+			_getAssetTable(assetType, filterString, keywords));
 
 		return selectJoinStep.orderBy(
 			getSortFields(pageable.getSort(), null)
@@ -234,210 +112,8 @@ public class AssetRepositoryImpl
 		);
 	}
 
-	@Override
-	public List<Asset> findByFilterString(
-		FilterHelper filterHelper, Pageable pageable) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.from(
-			_getAssetTable(null, filterHelper, null)
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-			this::_toAsset
-		);
-	}
-
-	@Override
-	public List<String> findDataSourceAssetPKByKeyword(String keyword) {
-		return _dslContext.select(
-			DSL.field("dataSourceAssetPK", String.class)
-		).from(
-			"Asset"
-		).join(
-			"AssetKeyword"
-		).on(
-			DSL.field(
-				"AssetKeyword.assetId"
-			).eq(
-				DSL.field("Asset.id")
-			)
-		).where(
-			DSL.field(
-				"AssetKeyword.keyword"
-			).eq(
-				keyword
-			)
-		).fetchInto(
-			String.class
-		);
-	}
-
-	@Override
-	public List<String> findKeywordByAssetType(String assetType) {
-		Field<String> keywordField = DSL.field(
-			"AssetKeyword.keyword", String.class);
-
-		return _dslContext.selectDistinct(
-			keywordField
-		).from(
-			"Asset"
-		).join(
-			"AssetKeyword"
-		).on(
-			DSL.field(
-				"AssetKeyword.assetId"
-			).eq(
-				DSL.field("Asset.id")
-			)
-		).where(
-			DSL.field(
-				"assetType"
-			).eq(
-				assetType
-			)
-		).orderBy(
-			keywordField
-		).fetchInto(
-			String.class
-		);
-	}
-
-	@Override
-	public List<String> getAssetKeywords(String keyword, Pageable pageable) {
-		return _getAssetKeywordSelectStep(
-			keyword
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getPageSize()
-		).offset(
-			pageable.getOffset()
-		).fetch(
-		).map(
-			Record1::value1
-		);
-	}
-
-	@Override
-	public List<Transformation> getAssetTransformations(
-		String apply, FilterHelper filterHelper, Pageable pageable) {
-
-		Matcher matcher = MatcherUtil.getMatcher(apply);
-
-		if (!matcher.matches()) {
-			throw new IllegalArgumentException(
-				"Apply string " + apply + " does not match pattern " +
-					MatcherUtil.getGroupByPattern());
-		}
-
-		String containsField = matcher.group("containsField");
-		String groupByField = matcher.group("groupByField");
-
-		Condition condition = filterHelper.getCondition();
-
-		condition = condition.and(
-			_getIncludeCondition(containsField, groupByField));
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.select();
-
-		return selectSelectStep.select(
-			DSL.field(
-				groupByField
-			).as(
-				"terms"
-			),
-			DSL.count(
-				DSL.field("id")
-			).as(
-				"totalelements"
-			)
-		).from(
-			"Asset"
-		).where(
-			condition
-		).orderBy(
-			getSortFields(pageable.getSort(), null)
-		).limit(
-			pageable.getOffset()
-		).fetch(
-			record -> new Transformation(
-				new Transformation.Term(
-					Collections.singletonMap(
-						groupByField, record.get("terms"))),
-				(Integer)record.get("totalelements"))
-		);
-	}
-
-	@Override
-	public Map<String, Set<String>> getByAssetTypeAndChannelIdAndDatasourceId(
-		String assetType, @Nullable Long channelId,
-		@Nullable Long dataSourceId) {
-
-		Map<String, Set<String>> assets = new HashMap<>();
-
-		Condition condition = DSL.and(
-			DSL.field(
-				"Asset.assetType"
-			).eq(
-				assetType
-			),
-			DSL.field(
-				"AssetKeyword.keyword"
-			).isNotNull());
-
-		if (channelId != null) {
-			condition = condition.and(
-				DSL.condition(
-					String.format("%s = any (Asset.channelIds)", channelId)));
-		}
-
-		if (dataSourceId != null) {
-			condition = condition.and(
-				DSL.field(
-					"Asset.dataSourceId"
-				).eq(
-					dataSourceId
-				));
-		}
-
-		_dslContext.select(
-			DSL.field("AssetKeyword.assetId", Long.class),
-			DSL.field("AssetKeyword.keyword", String.class)
-		).from(
-			DSL.table("Asset")
-		).innerJoin(
-			DSL.table("AssetKeyword")
-		).on(
-			DSL.field(
-				"Asset.id"
-			).eq(
-				DSL.field("AssetKeyword.assetId")
-			)
-		).where(
-			condition
-		).fetch(
-		).forEach(
-			record -> {
-				Set<String> assetIds = assets.getOrDefault(
-					record.value2(), new HashSet<>());
-
-				assetIds.add(String.valueOf(record.value1()));
-
-				assets.put(record.value2(), assetIds);
-			}
-		);
-
-		return assets;
-	}
-
-	private boolean _containsAssetKeywordFilter(FilterHelper filterHelper) {
-		if (StringUtils.contains(filterHelper.getFilterString(), "keywords/")) {
+	private boolean _containsAssetKeywordFilter(String filterString) {
+		if (StringUtils.contains(filterString, "keywords/")) {
 			return true;
 		}
 
@@ -459,38 +135,6 @@ public class AssetRepositoryImpl
 			DSL.field("keyword")
 		).fetch(
 			record -> new AssetKeyword(record.intoMap())
-		);
-	}
-
-	private SelectConditionStep<Record1<String>> _getAssetKeywordSelectStep(
-		String keyword) {
-
-		Condition condition = null;
-
-		Field<String> field = DSL.field("AssetKeyword.keyword", String.class);
-
-		if (StringUtils.isEmpty(keyword)) {
-			condition = field.isNotNull();
-		}
-		else {
-			condition = field.likeIgnoreCase("%" + keyword + "%");
-		}
-
-		SelectSelectStep<Record1<String>> selectSelectStep =
-			_dslContext.selectDistinct(field);
-
-		return selectSelectStep.from(
-			DSL.table("Asset")
-		).innerJoin(
-			DSL.table("AssetKeyword")
-		).on(
-			DSL.field(
-				"Asset.id"
-			).eq(
-				DSL.field("AssetKeyword.assetId")
-			)
-		).where(
-			condition
 		);
 	}
 
@@ -531,7 +175,7 @@ public class AssetRepositoryImpl
 	}
 
 	private Table<Record> _getAssetTable(
-		String assetType, FilterHelper filterHelper, String keyword) {
+		String assetType, String filterString, String keyword) {
 
 		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
 			DSL.table(
@@ -540,7 +184,7 @@ public class AssetRepositoryImpl
 
 		SelectJoinStep<Record> selectJoinStep = selectSelectStep.from("Asset");
 
-		if (_containsAssetKeywordFilter(filterHelper)) {
+		if (_containsAssetKeywordFilter(filterString)) {
 			selectJoinStep = selectJoinStep.join(
 				DSL.table(
 					"assetkeyword"
@@ -557,44 +201,12 @@ public class AssetRepositoryImpl
 		}
 
 		return selectJoinStep.where(
-			_getConditions(null, assetType, filterHelper, keyword)
-		).asTable();
-	}
-
-	private Table<Record> _getAssetTableKeywordNotNull(
-		Long assetId, String assetType) {
-
-		SelectSelectStep<Record> selectSelectStep = _dslContext.selectDistinct(
-			DSL.table(
-				"Asset"
-			).asterisk());
-
-		return selectSelectStep.from(
-			"Asset"
-		).join(
-			DSL.table(
-				"assetkeyword"
-			).as(
-				"keywords"
-			)
-		).on(
-			DSL.field(
-				"id"
-			).eq(
-				DSL.field("keywords.assetid")
-			)
-		).where(
-			_getConditions(assetId, assetType, FilterHelper.EMPTY, null)
-		).and(
-			DSL.field(
-				"keywords.keyword"
-			).isNotNull()
+			_getConditions(null, assetType, filterString, keyword)
 		).asTable();
 	}
 
 	private List<Condition> _getConditions(
-		Long assetId, String assetType, FilterHelper filterHelper,
-		String keyword) {
+		Long assetId, String assetType, String filterString, String keyword) {
 
 		List<Condition> conditions = new ArrayList<>();
 
@@ -641,25 +253,14 @@ public class AssetRepositoryImpl
 					)));
 		}
 
-		if (StringUtils.isNotBlank(filterHelper.getFilterString())) {
-			conditions.add(filterHelper.getCondition());
+		if (StringUtils.isNotBlank(filterString)) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString);
+
+			conditions.add(filterExpression.getCondition());
 		}
 
 		return conditions;
-	}
-
-	private Condition _getIncludeCondition(
-		String containsField, String fieldName) {
-
-		if (containsField == null) {
-			return DSL.noCondition();
-		}
-
-		return DSL.field(
-			fieldName
-		).containsIgnoreCase(
-			containsField
-		);
 	}
 
 	private Asset _toAsset(Record assetRecord) {

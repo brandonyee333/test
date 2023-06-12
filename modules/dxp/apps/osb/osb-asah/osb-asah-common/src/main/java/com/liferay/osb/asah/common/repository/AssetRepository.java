@@ -16,18 +16,9 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.Asset;
 
-import java.util.Optional;
-
-import org.springframework.cache.annotation.Cacheable;
-
 /**
  * @author Marcellus Tavares
  */
 public interface AssetRepository
 	extends CustomAssetRepository, Repository<Asset, Long> {
-
-	@Cacheable
-	public Optional<Asset> findByDataSourceAssetPKAndDataSourceId(
-		String dataSourceAssetPK, Long dataSourceId);
-
 }
