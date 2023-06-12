@@ -305,7 +305,29 @@ public class BQIndividualRepositoryTest
 
 		List<Individual> individuals =
 			_bqIndividualRepository.searchBQIndividuals(
-				11L, "individualSegmentIds eq '1'", PageRequest.of(0, 5), null);
+				11L, "individualSegmentIds eq '1'", PageRequest.of(0, 5), null,
+				null);
+
+		Individual individual = individuals.get(0);
+
+		Assertions.assertEquals(
+			"5970d88ec4ed505177361de1b17a3f2debf7c4f630c14f075a823ec97942692a",
+			individual.getEmailAddressHashed());
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_2.sql")
+	@Test
+	public void testSearchBQIndividualsIndividualSegmentIdsFilter2() {
+		Assertions.assertEquals(
+			1,
+			_bqIndividualRepository.countBQIndividuals(
+				11L, "contains(demographics/emailAddress/value, '.com')", false,
+				null, 1L));
+
+		List<Individual> individuals =
+			_bqIndividualRepository.searchBQIndividuals(
+				11L, "contains(demographics/emailAddress/value, '.com')",
+				PageRequest.of(0, 5), null, 1L);
 
 		Individual individual = individuals.get(0);
 
