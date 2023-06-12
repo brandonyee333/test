@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.IdentityInterestScore;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -78,7 +77,7 @@ public interface CustomBQIdentityInterestScoreRepository {
 		@Nullable Date recordedDate, int size);
 
 	public List<String> findIndividualIdsByFilterStringAndIndividualId(
-		FilterHelper filterHelper, @Nullable String individualId);
+		@Nullable String filterString, String individualId);
 
 	public BQIdentityInterestScore getByIndividualIdAndKeywordAndRecordedDate(
 		String individualId, String keyword, Date recordedDate);
@@ -94,7 +93,7 @@ public interface CustomBQIdentityInterestScoreRepository {
 		String individualId, int size);
 
 	public List<Map<String, Object>> getTransformations(
-		Date fromDate, @Nullable FilterHelper filterHelper, String period,
+		Date fromDate, @Nullable String filterString, String period,
 		Date toDate);
 
 	public BQIdentityInterestScore insert(

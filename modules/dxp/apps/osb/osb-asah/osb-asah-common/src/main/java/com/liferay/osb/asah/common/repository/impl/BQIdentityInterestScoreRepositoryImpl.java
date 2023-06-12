@@ -17,14 +17,13 @@ package com.liferay.osb.asah.common.repository.impl;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.util.TimeZoneDogUtil;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
+import com.liferay.osb.asah.common.filter.expression.FilterExpression;
 import com.liferay.osb.asah.common.model.Composition;
 import com.liferay.osb.asah.common.model.CompositionResultBag;
 import com.liferay.osb.asah.common.model.IdentityInterestScore;
-import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.CustomBQIdentityInterestScoreRepository;
 import com.liferay.osb.asah.common.repository.executor.QueryExecutor;
 import com.liferay.osb.asah.common.repository.helper.DSLHelper;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.math.BigDecimal;
 
@@ -77,12 +76,13 @@ public class BQIdentityInterestScoreRepositoryImpl
 	public BQIdentityInterestScoreRepositoryImpl(DSLContext dslContext) {
 		_dslContext = dslContext;
 
-		InterestFilterStringConverterHelper
-			interestFilterStringConverterHelper =
-				new InterestFilterStringConverterHelper();
-
-		_fieldNames =
-			interestFilterStringConverterHelper.getFieldNameConversionMap();
+		_fieldNames = new HashMap<String, String>() {
+			{
+				put("dateRecorded", "recordedDate");
+				put("name", "keyword");
+				put("ownerId", "individualId");
+			}
+		};
 	}
 
 	@Override
@@ -655,7 +655,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 	@Override
 	public List<String> findIndividualIdsByFilterStringAndIndividualId(
-		FilterHelper filterHelper, String individualId) {
+		@Nullable String filterString, String individualId) {
 
 		Field<String> field = DSL.field("individualId", String.class);
 
@@ -681,10 +681,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 		List<Condition> conditions = _getConditions(
 			null, null, individualIds, null, null);
 
-		if ((filterHelper != null) &&
-			!StringUtils.isEmpty(filterHelper.getFilterString())) {
+		if (!StringUtils.isEmpty(filterString)) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString);
 
-			conditions.add(filterHelper.getCondition());
+			conditions.add(filterExpression.getCondition());
 		}
 
 		return _queryExecutor.queryForList(
@@ -1029,7 +1030,7 @@ public class BQIdentityInterestScoreRepositoryImpl
 
 	@Override
 	public List<Map<String, Object>> getTransformations(
-		Date fromDate, @Nullable FilterHelper filterHelper, String period,
+		Date fromDate, @Nullable String filterString, String period,
 		Date toDate) {
 
 		Field<OffsetDateTime> periodField = _getPeriodField(period);
@@ -1057,8 +1058,11 @@ public class BQIdentityInterestScoreRepositoryImpl
 				DSL.field("generatedDate")
 			));
 
-		if (filterHelper != null) {
-			conditions.add(filterHelper.getCondition());
+		if (StringUtils.isNotBlank(filterString)) {
+			FilterExpression filterExpression = new FilterExpression(
+				filterString);
+
+			conditions.add(filterExpression.getCondition());
 		}
 
 		DatePart datePart = DatePart.DAY;

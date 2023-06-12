@@ -18,9 +18,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dog.util.SortUtil;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
 import com.liferay.osb.asah.common.model.IdentityInterestScore;
-import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -81,16 +79,6 @@ public class BQIdentityInterestScoreDog {
 						channelId, individualId, keywords));
 	}
 
-	public List<String> getIndividualIds(
-		String filterString, String individualId) {
-
-		return _bqIdentityInterestScoreRepository.
-			findIndividualIdsByFilterStringAndIndividualId(
-				new FilterHelper(
-					null, filterString, _interestFilterStringConverterHelper),
-				individualId);
-	}
-
 	public Page<String> getKeywordsPage(String keywords, int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size);
 
@@ -134,16 +122,9 @@ public class BQIdentityInterestScoreDog {
 
 		return new JSONArray(
 			_bqIdentityInterestScoreRepository.getTransformations(
-				fromDate,
-				new FilterHelper(
-					null, filterString,
-					new InterestFilterStringConverterHelper()),
-				period, toDate));
+				fromDate, filterString, period, toDate));
 	}
 
-	private static final InterestFilterStringConverterHelper
-		_interestFilterStringConverterHelper =
-			new InterestFilterStringConverterHelper();
 	private static final Pattern _periodPattern = Pattern.compile(
 		"compute\\((?<period>\\w+)\\((?<fieldName>\\w+)\\)\\)");
 

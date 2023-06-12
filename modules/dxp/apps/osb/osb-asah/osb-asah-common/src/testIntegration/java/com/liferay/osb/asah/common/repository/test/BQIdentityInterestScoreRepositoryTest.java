@@ -17,9 +17,7 @@ package com.liferay.osb.asah.common.repository.test;
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQIdentityInterestScore;
-import com.liferay.osb.asah.common.postgresql.converter.helper.InterestFilterStringConverterHelper;
 import com.liferay.osb.asah.common.repository.BQIdentityInterestScoreRepository;
-import com.liferay.osb.asah.common.repository.helper.FilterHelper;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -253,10 +251,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		List<String> individualIds =
 			_bqIdentityInterestScoreRepository.
 				findIndividualIdsByFilterStringAndIndividualId(
-					new FilterHelper(
-						null, "(keyword eq 'sales')",
-						_interestFilterStringConverterHelper),
-					"374790572703144534");
+					"(keyword eq 'sales')", "374790572703144534");
 
 		Assertions.assertEquals(
 			Arrays.asList("374790572703144534"), individualIds,
@@ -265,10 +260,7 @@ public class BQIdentityInterestScoreRepositoryTest
 		individualIds =
 			_bqIdentityInterestScoreRepository.
 				findIndividualIdsByFilterStringAndIndividualId(
-					new FilterHelper(
-						null, "(keyword eq 'rick''s garage')",
-						_interestFilterStringConverterHelper),
-					"374790575409131096");
+					"(keyword eq 'rick''s garage')", "374790575409131096");
 
 		Assertions.assertEquals(
 			Arrays.asList("374790575409131096"), individualIds,
@@ -425,9 +417,5 @@ public class BQIdentityInterestScoreRepositoryTest
 	@Autowired
 	private BQIdentityInterestScoreRepository
 		_bqIdentityInterestScoreRepository;
-
-	@Autowired
-	private InterestFilterStringConverterHelper
-		_interestFilterStringConverterHelper;
 
 }
