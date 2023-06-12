@@ -16,6 +16,8 @@ package com.liferay.osb.asah.backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 /**
  * @author Riccardo Ferrari
  */
@@ -24,12 +26,13 @@ public class ProjectDetailDTO {
 
 	public ProjectDetailDTO(
 		Boolean accountsSelected, Boolean commerceChannelsSelected,
-		Boolean contactsSelected, String id, Boolean sitesSelected,
-		String timeZoneId) {
+		Boolean contactsSelected, List<Long> dataSourceIds, String id,
+		Boolean sitesSelected, String timeZoneId) {
 
 		_accountsSelected = accountsSelected;
 		_commerceChannelsSelected = commerceChannelsSelected;
 		_contactsSelected = contactsSelected;
+		_dataSourceIds = dataSourceIds;
 		_id = id;
 		_sitesSelected = sitesSelected;
 		_timeZoneId = timeZoneId;
@@ -47,6 +50,10 @@ public class ProjectDetailDTO {
 		return _contactsSelected;
 	}
 
+	public List<Long> getDataSourceIds() {
+		return _dataSourceIds;
+	}
+
 	public String getId() {
 		return _id;
 	}
@@ -62,6 +69,7 @@ public class ProjectDetailDTO {
 	private final Boolean _accountsSelected;
 	private final Boolean _commerceChannelsSelected;
 	private final Boolean _contactsSelected;
+	private final List<Long> _dataSourceIds;
 	private final String _id;
 	private final Boolean _sitesSelected;
 	private final String _timeZoneId;

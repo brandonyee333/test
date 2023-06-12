@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.logging.Log;
@@ -59,7 +60,9 @@ public class ProjectsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/details")
-	public List<ProjectDetailDTO> getProjectDetailDTOs() {
+	public List<ProjectDetailDTO> getProjectDetailDTOs(
+		@RequestParam(defaultValue = "false") boolean expand) {
+
 		List<ProjectDetailDTO> projectDetailDTOs = new ArrayList<>();
 
 		ProjectIdThreadLocal.forProjects(
@@ -68,11 +71,20 @@ public class ProjectsRestController extends BaseRestController {
 				boolean accountsSelected = false;
 				boolean commerceChannelsSelected = false;
 				boolean contactsSelected = false;
+				List<Long> dataSourceIds = new ArrayList<>();
 				boolean sitesSelected = false;
 
 				try {
 					for (DataSource dataSource :
 							_dataSourceDog.getDataSources()) {
+
+						if (Objects.equals(
+								dataSource.getState(), "DISCONNECTED") &&
+							Objects.equals(
+								dataSource.getStatus(), "INACTIVE")) {
+
+							continue;
+						}
 
 						if (BooleanUtils.isTrue(
 								dataSource.getAccountsSelected())) {
@@ -92,6 +104,10 @@ public class ProjectsRestController extends BaseRestController {
 							contactsSelected = true;
 						}
 
+						if (expand) {
+							dataSourceIds.add(dataSource.getId());
+						}
+
 						if (BooleanUtils.isTrue(
 								dataSource.getSitesSelected())) {
 
@@ -99,7 +115,7 @@ public class ProjectsRestController extends BaseRestController {
 						}
 
 						if (accountsSelected && commerceChannelsSelected &&
-							contactsSelected && sitesSelected) {
+							contactsSelected && !expand && sitesSelected) {
 
 							break;
 						}
@@ -115,8 +131,9 @@ public class ProjectsRestController extends BaseRestController {
 				projectDetailDTOs.add(
 					new ProjectDetailDTO(
 						accountsSelected, commerceChannelsSelected,
-						contactsSelected, ProjectIdThreadLocal.getProjectId(),
-						sitesSelected, preference.getValue()));
+						contactsSelected, dataSourceIds,
+						ProjectIdThreadLocal.getProjectId(), sitesSelected,
+						preference.getValue()));
 			});
 
 		return projectDetailDTOs;
