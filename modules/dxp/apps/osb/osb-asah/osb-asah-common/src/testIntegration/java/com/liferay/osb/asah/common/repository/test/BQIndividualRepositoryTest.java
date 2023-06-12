@@ -64,6 +64,20 @@ public class BQIndividualRepositoryTest
 
 	@BQSQLResource(resourcePath = "test_bq_individual_repository_3.sql")
 	@Test
+	public void testCountBQIndividualsAfterNewStartDate() {
+		Assertions.assertEquals(
+			8,
+			_bqIndividualRepository.countBQIndividualsCreatedSince(
+				DateUtils.addDays(new Date(), -30)));
+
+		Assertions.assertEquals(
+			0,
+			_bqIndividualRepository.countBQIndividualsCreatedSince(
+				DateUtils.addYears(new Date(), 1)));
+	}
+
+	@BQSQLResource(resourcePath = "test_bq_individual_repository_3.sql")
+	@Test
 	public void testCountBQIndividualsCreateSince() {
 		Assertions.assertEquals(
 			0,
