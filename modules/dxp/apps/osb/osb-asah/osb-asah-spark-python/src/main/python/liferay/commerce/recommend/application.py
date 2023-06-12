@@ -9,10 +9,6 @@
 # distribution rights of the Software.
 #
 
-from abc import ABCMeta, \
-	abstractmethod
-
-from liferay.commerce.configuration import CommerceConfiguration
 from liferay.commerce.recommend.job import \
 	ContextUserInteractionRecommendationJSONDataFrameWriterSparkJob, \
 	CutLineageSparkJob, \
@@ -38,72 +34,13 @@ from liferay.commerce.recommend.job import \
 	ProductInteractionRecommendationSparkJob, \
 	UserInteractionCollaborativeFilteringSparkJob, \
 	UserInteractionDataPreparationSparkJob
+from liferay.commerce.common import BaseCommerceSparkApplication
 from liferay.commerce.udf import TanimotoCoefficientUDFFunction, \
 	ToDenseVectorUDFFunction, \
 	VectorDotProductUDFFunction, \
 	VectorMergeUDFFunction, \
 	VectorNormUDFFunction
-from liferay.common.spark import BaseSparkApplication, \
-	SparkJobPipeline
-
-import argparse
-import logging
-import os
-import sys
-
-class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
-
-	def __init__(self):
-		super(BaseCommerceSparkApplication, self).__init__()
-
-		self.configuration = CommerceConfiguration(self.args.configuration)
-
-		self.log = self._initialize_logging()
-
-		spark_context = self.spark_session.sparkContext
-
-		spark_conf = spark_context.getConf()
-
-		for key, value in spark_conf.getAll():
-			if key.startswith('spark.yarn.appMasterEnv.'):
-				env_key = key[len('spark.yarn.appMasterEnv.'):]
-
-				os.environ[env_key] = value
-
-	def _create_argument_parser(self):
-		argument_parser = argparse.ArgumentParser(
-			usage='{} liferay.commerce.recommend.<ApplicationName> '
-			'--configuration <Configuration Path> '
-			'--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
-		)
-
-		argument_parser.add_argument('application')
-		argument_parser.add_argument('--configuration', required=True)
-		argument_parser.add_argument('--lcp-project-id', required=True)
-
-		return argument_parser
-
-	@abstractmethod
-	def _create_spark_job_pipeline(self):
-		pass
-
-	def _initialize_logging(self):
-		logging.basicConfig(
-			format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-			level=logging.INFO
-		)
-
-		return logging.getLogger(self.__class__.__name__)
-
-	def start(self):
-		spark_job_pipeline = self._create_spark_job_pipeline()
-
-		try:
-			spark_job_pipeline.run()
-		except Exception as e:
-			self.log.error(e)
-
-			raise e
+from liferay.common.spark import SparkJobPipeline
 
 class FrequentPatternRecommendationApplication(BaseCommerceSparkApplication):
 

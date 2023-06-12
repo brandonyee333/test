@@ -122,10 +122,10 @@ class FrequentPatternOrderBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameR
 				order_.id AS orderId,
 				orderItems.sku,
 			FROM
-				`{self.spark_application_args.lcp_project_id}`.order AS order_,
+				`{self.spark_application_args.ac_project_id}`.order AS order_,
 				UNNEST(orderItems) AS orderItems
 			WHERE
-				datasourceId = {configuration.get('dataSourceId')}
+				datasourceId = {self.spark_application_args.data_source_id}
 		"""
 
 class FrequentPatternOrderJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
@@ -258,10 +258,10 @@ class FrequentPatternProductBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFram
 				product.id AS CPDefinitionId,
 				skus.sku,
 			FROM
-				`{self.spark_application_args.lcp_project_id}`.product AS product,
+				`{self.spark_application_args.ac_project_id}`.product AS product,
 				UNNEST(skus) AS skus
 			WHERE
-				datasourceId = {configuration.get('dataSourceId')}
+				datasourceId = {self.spark_application_args.data_source_id}
 		"""
 
 class FrequentPatternProductJSONDataFrameReaderSparkJob(BaseJSONDataFrameReaderSparkJob):
@@ -394,9 +394,9 @@ class OrderInteractionBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReade
 							createDate DESC, id DESC
 					) AS row_num
 				FROM
-					`{self.spark_application_args.lcp_project_id}`.order
+					`{self.spark_application_args.ac_project_id}`.order
 				WHERE
-					datasourceId = {configuration.get('dataSourceId')}
+					datasourceId = {self.spark_application_args.data_source_id}
 			)
 			SELECT
 				temp_order.commerceAccountId,
@@ -463,10 +463,10 @@ class ProductContentBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReaderS
 			SELECT
 				DISTINCT(ps.specificationKey) AS specificationKey
 			FROM
-				`{self.spark_application_args.lcp_project_id}`.product,
+				`{self.spark_application_args.ac_project_id}`.product,
 				UNNEST(productSpecifications) AS ps
 			WHERE
-				dataSourceId = {configuration.get('dataSourceId')}
+				dataSourceId = {self.spark_application_args.data_source_id}
 			"""
 		)
 
@@ -508,9 +508,9 @@ class ProductContentBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameReaderS
 		query_parts += [
 			f"""
 			FROM
-				`{self.spark_application_args.lcp_project_id}`.product
+				`{self.spark_application_args.ac_project_id}`.product
 			WHERE
-				datasourceId = {configuration.get('dataSourceId')}
+				datasourceId = {self.spark_application_args.data_source_id}
 			"""
 		]
 
@@ -841,9 +841,9 @@ class ProductInteractionBigQueryDataFrameReaderSparkJob(BaseBigQueryDataFrameRea
 						UNNEST(skus)
 				) AS sku_list
 			FROM
-				`{self.spark_application_args.lcp_project_id}`.product
+				`{self.spark_application_args.ac_project_id}`.product
 			WHERE
-				datasourceId = {configuration.get('dataSourceId')}
+				datasourceId = {self.spark_application_args.data_source_id}
 		"""
 
 	def _post_process(self, data_frame):

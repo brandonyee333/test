@@ -89,13 +89,15 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 	def _create_argument_parser(self):
 		argument_parser = argparse.ArgumentParser(
 			usage='{} liferay.commerce.recommend.<ApplicationName> '
+			'--ac-project-id <AC Project ID> '
 			'--configuration <Configuration Path> '
-			'--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
+			'--data-source-id <Data Source ID>'.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
+		argument_parser.add_argument('--ac-project-id', required=True)
 		argument_parser.add_argument('--configuration', required=True)
-		argument_parser.add_argument('--lcp-project-id', required=True)
+		argument_parser.add_argument('--data-source-id', required=True)
 
 		return argument_parser
 
