@@ -283,7 +283,7 @@ public class BQIndividualDog {
 		if (StringUtils.isNotBlank(filterString)) {
 			return _bqIndividualRepository.searchBQIndividuals(
 				channelId, filterString,
-				PageRequest.of(page, size, _getSort(sorts)), query);
+				PageRequest.of(page, size, _getSort(sorts)), query, segmentId);
 		}
 
 		return _bqIndividualRepository.searchBQIndividuals(

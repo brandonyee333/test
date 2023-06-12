@@ -599,7 +599,7 @@ public class BQIndividualRepositoryImpl
 	@Override
 	public List<Individual> searchBQIndividuals(
 		@Nullable Long channelId, String filterString, Pageable pageable,
-		@Nullable String query) {
+		@Nullable String query, @Nullable Long segmentId) {
 
 		FilterExpression filterExpression = new FilterExpression(
 			filterString, true);
@@ -632,7 +632,7 @@ public class BQIndividualRepositoryImpl
 		);
 
 		selectJoinStep = _getSelectJoinStep(
-			channelId, null, null, referencedTableNames, selectJoinStep);
+			channelId, null, segmentId, referencedTableNames, selectJoinStep);
 
 		return _queryExecutor.queryForList(
 			record -> {
