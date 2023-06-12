@@ -340,13 +340,14 @@ definition {
 			groupName = "Site Name",
 			layoutName = "Documents and Media Page");
 
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Documents and Media Page",
+			widgetName = "Documents and Media");
+
 		Navigator.gotoSitePage(
 			pageName = "Documents and Media Page",
 			siteName = "Site Name");
-
-		Portlet.addPG(
-			pageName = "Documents and Media Page",
-			portletName = "Documents and Media");
 
 		DMDocument.enableActionsMenuOnPortlet();
 
@@ -374,13 +375,13 @@ definition {
 			roleTitle = "Update DM Role",
 			userEmailAddress = "userea@liferay.com");
 
-		CustomFields.openCustomFieldAdmin();
+		User.openUsersAdmin();
 
 		User.editPasswordCP(
 			userEmailAddress = "userea@liferay.com",
 			userScreenName = "usersn");
 
-		User.openUsersAdmin();
+		CustomFields.openCustomFieldAdmin();
 
 		CustomFields.addCP(
 			customFieldName = "Note",
