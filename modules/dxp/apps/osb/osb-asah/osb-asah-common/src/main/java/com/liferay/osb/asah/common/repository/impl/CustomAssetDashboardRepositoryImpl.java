@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.common.repository.impl;
 
-import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.repository.CustomCustomAssetDashboardRepository;
+import com.liferay.osb.asah.common.util.QueryUtil;
 
 import java.util.ArrayList;
 import java.util.List;

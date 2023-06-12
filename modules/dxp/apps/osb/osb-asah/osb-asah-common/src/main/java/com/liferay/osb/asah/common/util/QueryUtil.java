@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.common.elasticsearch;
+package com.liferay.osb.asah.common.util;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
