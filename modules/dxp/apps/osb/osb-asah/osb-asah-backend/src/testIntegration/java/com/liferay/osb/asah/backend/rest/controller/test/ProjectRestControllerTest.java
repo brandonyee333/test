@@ -47,7 +47,7 @@ public class ProjectRestControllerTest
 	@Test
 	public void testGetProjectDetails() {
 		List<ProjectDetailDTO> projectDetailDTOs =
-			_projectsRestController.getProjectDetailDTOs(false);
+			_projectsRestController.getProjectDetailDTOs();
 
 		Assertions.assertEquals(1, projectDetailDTOs.size());
 

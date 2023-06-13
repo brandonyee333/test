@@ -60,9 +60,7 @@ public class ProjectsRestController extends BaseRestController {
 	}
 
 	@GetMapping("/details")
-	public List<ProjectDetailDTO> getProjectDetailDTOs(
-		@RequestParam(defaultValue = "false") boolean expand) {
-
+	public List<ProjectDetailDTO> getProjectDetailDTOs() {
 		List<ProjectDetailDTO> projectDetailDTOs = new ArrayList<>();
 
 		ProjectIdThreadLocal.forProjects(
@@ -104,20 +102,12 @@ public class ProjectsRestController extends BaseRestController {
 							contactsSelected = true;
 						}
 
-						if (expand) {
-							dataSourceIds.add(dataSource.getId());
-						}
+						dataSourceIds.add(dataSource.getId());
 
 						if (BooleanUtils.isTrue(
 								dataSource.getSitesSelected())) {
 
 							sitesSelected = true;
-						}
-
-						if (accountsSelected && commerceChannelsSelected &&
-							contactsSelected && !expand && sitesSelected) {
-
-							break;
 						}
 					}
 				}
