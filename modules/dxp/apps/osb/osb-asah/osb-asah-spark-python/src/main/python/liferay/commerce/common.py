@@ -165,8 +165,8 @@ class BaseJSONDataFrameReaderSparkJob(BaseSparkJob):
 
 		bucket_path = '{}/{}/{}/{}/'.format(
 			configuration.get('google.storage.bucket'),
-			self.spark_application.args.lcp_project_id,
-			configuration.get('dataSourceId'), self.file_pattern
+			self.spark_application.args.ac_project_id,
+			self.spark_application_args.data_source_id, self.file_pattern
 		)
 
 		jvm = self.spark_session._jvm
@@ -284,8 +284,8 @@ class BaseJSONDataFrameWriterSparkJob(BaseSparkJob):
 
 		return '{}/{}/{}/{}/'.format(
 			configuration.get('google.storage.bucket'),
-			self.spark_application.args.lcp_project_id,
-			configuration.get('dataSourceId'), self.target_folder
+			self.spark_application.args.ac_project_id,
+			self.spark_application_args.data_source_id, self.target_folder
 		)
 
 	def _pre_process(self, data_frame):
