@@ -39,6 +39,7 @@ import com.liferay.osb.asah.upgrade.v4_0_2.SegmentReferencedObjectsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentTableUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.StaticMembershipMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_3.HourlyViewsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_4.FormHourlyViewUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_4.PageReferrersViewUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_4.SegmentUpgradeStep;
 
@@ -109,6 +110,8 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps("4.0.8", "4.0.9", _segmentUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.9", "4.0.10", _pageReferrersViewUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"4.0.10", "4.0.11", _formHourlyViewUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -141,6 +144,9 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private ExperimentMigrationUpgradeStep _experimentMigrationUpgradeStep;
+
+	@Autowired
+	private FormHourlyViewUpgradeStep _formHourlyViewUpgradeStep;
 
 	@Autowired
 	private HourlyViewsUpgradeStep _hourlyViewsUpgradeStep;
