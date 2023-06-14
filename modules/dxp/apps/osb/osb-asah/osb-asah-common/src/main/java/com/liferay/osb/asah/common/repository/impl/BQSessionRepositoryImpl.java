@@ -469,7 +469,7 @@ public class BQSessionRepositoryImpl
 		Field<Boolean> previousField = DSL.when(
 			DSL.field(
 				"Session.sessionStart"
-			).gt(
+			).ge(
 				_dslHelper.getDateParam(
 					timeRange.getStartLocalDateTime(), zoneId.toString())
 			),
