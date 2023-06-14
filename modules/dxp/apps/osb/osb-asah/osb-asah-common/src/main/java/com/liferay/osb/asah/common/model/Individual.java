@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.common.model;
 
 import com.liferay.osb.asah.common.constants.FieldMappingConstants;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.entity.BQDataSourceUser;
 import com.liferay.osb.asah.common.entity.BQIndividual;
 import com.liferay.osb.asah.common.util.BeanUtils;
@@ -32,6 +33,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.util.CollectionUtils;
 
@@ -115,6 +119,18 @@ public class Individual {
 							getOrDefault(field.getName(), field.getName());
 
 					field.setName(displayName);
+
+					if (displayName.endsWith("Date")) {
+						long value = NumberUtils.toLong(
+							(String)field.getValue());
+
+						if ((value > 0) ||
+							StringUtils.equals("0", (String)field.getValue())) {
+
+							field.setValue(
+								DateUtil.toUTCString(new Date(value)));
+						}
+					}
 
 					field.setSourceName(field.getName());
 				});
