@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.rest.controller.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
+import com.liferay.osb.asah.backend.dto.FieldDTO;
 import com.liferay.osb.asah.backend.dto.IndividualDTO;
 import com.liferay.osb.asah.backend.dto.PageDTO;
 import com.liferay.osb.asah.backend.dto.SegmentDTO;
@@ -32,6 +33,7 @@ import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -152,6 +154,42 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(
 			DateUtil.toUTCDate("2019-03-11T17:10:00.666Z"),
 			individualDTO.getLastActivityDate());
+	}
+
+	@BQSQLResource(resourcePath = "test_get_individuals_date_fields_bq.sql")
+	@Test
+	public void testGetIndividualsDateFields() throws Exception {
+		IndividualDTO individualDTO =
+			_individualsRestController.getIndividualDTO("123", null, null);
+
+		IndividualDTO.IndividualFieldDTO individualFieldDTO =
+			individualDTO.getIndividualFieldDTO();
+
+		Map<String, Object> fields = individualFieldDTO.getField();
+
+		List<FieldDTO> fieldDTOs = (List<FieldDTO>)fields.get("birthDate");
+
+		FieldDTO birthDateFieldDTO = fieldDTOs.get(0);
+
+		Assertions.assertEquals(
+			"1970-01-01T00:00:00.000Z",
+			String.valueOf(birthDateFieldDTO.getValue()));
+
+		fieldDTOs = (List<FieldDTO>)fields.get("createDate");
+
+		FieldDTO createDateFieldDTO = fieldDTOs.get(0);
+
+		Assertions.assertEquals(
+			"2021-11-11T18:17:39.072Z",
+			String.valueOf(createDateFieldDTO.getValue()));
+
+		fieldDTOs = (List<FieldDTO>)fields.get("modifiedDate");
+
+		FieldDTO modifiedDateFieldDTO = fieldDTOs.get(0);
+
+		Assertions.assertEquals(
+			"2021-11-11T18:18:13.657Z",
+			String.valueOf(modifiedDateFieldDTO.getValue()));
 	}
 
 	@BQSQLResource(resourcePath = "test_get_individuals_distribution_bq.sql")
