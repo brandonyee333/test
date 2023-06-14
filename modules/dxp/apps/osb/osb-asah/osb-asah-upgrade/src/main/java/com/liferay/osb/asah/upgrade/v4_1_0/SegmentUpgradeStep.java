@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v4_0_4;
+package com.liferay.osb.asah.upgrade.v4_1_0;
 
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.SegmentRepository;

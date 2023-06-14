@@ -39,9 +39,9 @@ import com.liferay.osb.asah.upgrade.v4_0_2.SegmentReferencedObjectsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentTableUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.StaticMembershipMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_3.HourlyViewsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_0_4.FormHourlyViewUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_0_4.PageReferrersViewUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_0_4.SegmentUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_1_0.FormHourlyViewUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_1_0.PageReferrersViewUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_1_0.SegmentUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

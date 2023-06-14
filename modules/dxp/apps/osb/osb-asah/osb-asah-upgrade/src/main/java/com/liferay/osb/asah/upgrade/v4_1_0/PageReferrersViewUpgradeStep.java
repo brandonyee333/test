@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v4_0_4;
+package com.liferay.osb.asah.upgrade.v4_1_0;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
@@ -28,20 +28,20 @@ import org.springframework.stereotype.Component;
  * @author Leslie Wong
  */
 @Component
-public class FormHourlyViewUpgradeStep implements UpgradeStep {
+public class PageReferrersViewUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
 		_bigQuerySchemaManager.createOrReplaceView(
-			ProjectIdThreadLocal.getProjectId(), "formhourly");
+			ProjectIdThreadLocal.getProjectId(), "pagereferrers");
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Form Hourly view successfully updated");
+			_log.info("Page Referrers view successfully updated");
 		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		FormHourlyViewUpgradeStep.class);
+		PageReferrersViewUpgradeStep.class);
 
 	@Autowired
 	private BigQuerySchemaManager _bigQuerySchemaManager;
