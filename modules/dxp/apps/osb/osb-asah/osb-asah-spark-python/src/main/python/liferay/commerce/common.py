@@ -20,6 +20,7 @@ from liferay.commerce.configuration import CommerceConfiguration
 from liferay.common.spark import BaseSparkApplication, \
 	BaseSparkJob
 
+from pyspark import SparkConf
 from pyspark.sql.window import Window
 
 import argparse
@@ -100,6 +101,21 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 		argument_parser.add_argument('--data-source-id', required=True)
 
 		return argument_parser
+
+	def _create_spark_conf(self):
+		spark_conf = SparkConf()
+
+		spark_conf.set('materializationDataset', self.args.ac_project_id)
+		spark_conf.set(
+			'temporaryGcsBucket',
+			'{}/temp_write_bucket_for_bq_writes'.format(
+				self.configuration.get(
+					'google.storage.bucket'
+				)
+			))
+		spark_conf.set('viewsEnabled', 'true')
+
+		return spark_conf
 
 	@abstractmethod
 	def _create_spark_job_pipeline(self):
