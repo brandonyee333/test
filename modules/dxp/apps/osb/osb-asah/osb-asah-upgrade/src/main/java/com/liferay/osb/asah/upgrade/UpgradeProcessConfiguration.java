@@ -33,13 +33,13 @@ import com.liferay.osb.asah.upgrade.v4_0_0.SequenceUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_0.SuppressionMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_1.SegmentMembershipFilterUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.BQMembershipIndividualUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_0_2.SearchTermFunctionUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentMembershipsCountUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentReferencedObjectsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.SegmentTableUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_2.StaticMembershipMigrationUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_0_3.HourlyViewsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_1_0.FormHourlyViewUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_3.SearchTermFunctionUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_0_4.FormHourlyViewUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_1_0.PageReferrersViewUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_1_0.SegmentUpgradeStep;
 
@@ -107,11 +107,11 @@ public class UpgradeProcessConfiguration {
 			"4.0.6", "4.0.7", _searchTermFunctionUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.7", "4.0.8", _hourlyViewsUpgradeStep);
-		upgradeProcess.addUpgradeSteps("4.0.8", "4.0.9", _segmentUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"4.0.9", "4.0.10", _pageReferrersViewUpgradeStep);
+			"4.0.8", "4.0.9", _formHourlyViewUpgradeStep);
+		upgradeProcess.addUpgradeSteps("4.0.9", "4.0.10", _segmentUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"4.0.10", "4.0.11", _formHourlyViewUpgradeStep);
+			"4.0.10", "4.0.11", _pageReferrersViewUpgradeStep);
 
 		return upgradeProcess;
 	}

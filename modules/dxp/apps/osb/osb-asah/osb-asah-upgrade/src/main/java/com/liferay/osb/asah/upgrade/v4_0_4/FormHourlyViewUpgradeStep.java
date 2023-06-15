@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.upgrade.v4_1_0;
+package com.liferay.osb.asah.upgrade.v4_0_4;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
