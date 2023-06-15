@@ -1,3 +1,4 @@
+/* eslint-disable quote-props */
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -39,7 +40,7 @@ export async function getAccountRolesOnAPI(accountId: number) {
     `/o/headless-admin-user/v1.0/accounts/${accountId}/account-roles`,
     {
       headers: {
-        "accept": 'application/json',
+        accept: 'application/json',
         'x-csrf-token': Liferay.authToken,
       },
     }
@@ -57,7 +58,7 @@ export async function createNewUser(requestBody: requestBody) {
       body: JSON.stringify(requestBody),
       headers: {
         'Content-Type': 'application/json',
-        "accept": 'application/json',
+        accept: 'application/json',
         'x-csrf-token': Liferay.authToken,
       },
       method: 'POST',
@@ -84,7 +85,7 @@ export async function addExistentUserIntoAccount(
       `/o/headless-admin-user/v1.0/accounts/${accountId}/user-accounts/by-email-address/${userEmail}`,
       {
         headers: {
-          "accept": 'application/json',
+          accept: 'application/json',
           'x-csrf-token': Liferay.authToken,
         },
         method: 'POST',
@@ -103,7 +104,7 @@ export async function getUserByEmail(userEmail: String) {
       `/o/headless-admin-user/v1.0/user-accounts?filter=emailAddress eq '${userEmail}'`,
       {
         headers: {
-          "accept": 'application/json',
+          accept: 'application/json',
           'x-csrf-token': Liferay.authToken,
         },
       }
@@ -126,7 +127,7 @@ export async function getUserByEmail(userEmail: String) {
   }
 }
 
-export async function callRolesApi(
+export async function callAccountRolesApi(
   accountId: number,
   roleId: number,
   userId: number
@@ -136,7 +137,7 @@ export async function callRolesApi(
     {
       headers: {
         'Content-Type': 'application/json',
-        "accept": 'application/json',
+        accept: 'application/json',
         'x-csrf-token': Liferay.authToken,
       },
       method: 'POST',
@@ -165,11 +166,45 @@ export async function addAdditionalInfo(
     body: JSON.stringify(additionalInfoBody),
     headers: {
       'Content-Type': 'application/json',
-      "accept": 'application/json',
+      accept: 'application/json',
       'x-csrf-token': Liferay.authToken,
     },
     method: 'POST',
   });
+}
+
+export async function addAdminRegularRole(userID: number) {
+  let adminRegularRole: RoleBrief[] = [];
+  const responseGetRegularRoles = await fetch(
+    `/o/headless-admin-user/v1.0/roles`,
+    {
+      headers: {
+        accept: 'application/json',
+        'x-csrf-token': Liferay.authToken,
+      },
+    }
+  );
+
+  if (responseGetRegularRoles.ok) {
+    const regularRoles = await responseGetRegularRoles.json();
+
+    adminRegularRole = regularRoles.items.filter(
+      (role: RoleBrief) => role.name === 'Account Administrator (Regular)'
+    );
+  }
+  if (adminRegularRole.length >= 0) {
+    return fetch(
+      `/o/headless-admin-user/v1.0/roles/${adminRegularRole[0].id}/association/user-account/${userID}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          accept: 'application/json',
+          'x-csrf-token': Liferay.authToken,
+        },
+        method: 'POST',
+      }
+    );
+  }
 }
 
 export { getSiteURL };
