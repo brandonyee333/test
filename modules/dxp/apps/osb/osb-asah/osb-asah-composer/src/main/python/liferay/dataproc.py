@@ -85,29 +85,6 @@ class DataprocClusterGetOrCreateOperator(BaseOperator):
 
 		return dataproc_create_cluster_operator.execute(Context(kwargs))
 
-
-class DataprocShortCircuitOperator(ShortCircuitOperator):
-
-	RESOURCE_NAMES = [
-		'com.liferay.headless.commerce.machine.learning.dto.v1_0.Product'
-	]
-
-	def __init__(self, **kwargs):
-		super().__init__(
-			python_callable=self._validate,
-			op_args=None,
-			op_kwargs=None,
-			templates_dict=None,
-			templates_exts=None,
-			provide_context=True,
-			**kwargs)
-
-	def _validate(self, dag_run: DagRun):
-		resource_name = dag_run.conf['resourceName']
-
-		return resource_name in self.RESOURCE_NAMES
-
-
 class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 
 	RESOURCE_NAME_APPLICATION_MAP = {
