@@ -69,7 +69,6 @@ public class BQIndividualRepositoryTest
 			8,
 			_bqIndividualRepository.countBQIndividualsCreatedSince(
 				DateUtils.addDays(new Date(), -30)));
-
 		Assertions.assertEquals(
 			0,
 			_bqIndividualRepository.countBQIndividualsCreatedSince(
@@ -82,17 +81,14 @@ public class BQIndividualRepositoryTest
 		Assertions.assertEquals(
 			0,
 			_bqIndividualRepository.countBQIndividualsCreatedSince(new Date()));
-
 		Assertions.assertEquals(
 			2,
 			_bqIndividualRepository.countBQIndividualsCreatedSince(
 				DateUtils.addDays(new Date(), -10)));
-
 		Assertions.assertEquals(
 			5,
 			_bqIndividualRepository.countBQIndividualsCreatedSince(
 				DateUtils.addDays(new Date(), -20)));
-
 		Assertions.assertEquals(
 			8,
 			_bqIndividualRepository.countBQIndividualsCreatedSince(
