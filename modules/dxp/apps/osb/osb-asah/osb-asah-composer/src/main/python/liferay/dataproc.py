@@ -111,23 +111,25 @@ class DataprocShortCircuitOperator(ShortCircuitOperator):
 class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 
 	RESOURCE_NAME_APPLICATION_MAP = {
-		'com.liferay.headless.commerce.admin.order.dto.v1_0.Order':
+		'com.liferay.headless.commerce.machine.learning.dto.v1_0.Order':
 			'liferay.commerce.recommend.UserInteractionRecommendationApplication',
-		'com.liferay.headless.commerce.admin.catalog.dto.v1_0.Product':
-			'liferay.commerce.recommend.ProductContentRecommendationApplication',
 		'com.liferay.headless.commerce.machine.learning.dto.v1_0.Product':
 			'liferay.commerce.recommend.ProductContentRecommendationApplication',
 	}
 
-	def __init__(self, cluster_name: str, **kwargs):
+	def __init__(self, cluster_name: str, data_source_id: str, resource_name: str, **kwargs):
 		super().__init__(**kwargs)
 
 		self.log.warning(cluster_name)
 
 		self._cluster_name = cluster_name
 
+		self._data_source_id = data_source_id
+
+		self._resource_name = resource_name
+
 	def _get_application_name(
-		self, datasource_id: str, lcp_project_id: str, resource_name: str
+		self, ac_project_id: str, data_source_id: str, resource_name: str
 	):
 
 		application_name = self.RESOURCE_NAME_APPLICATION_MAP.get(resource_name)
@@ -135,11 +137,12 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 		if application_name is not None:
 			application_name = application_name.split('.')[-1]
 
-		return '{}-{}-{}-{}'.format(
-			lcp_project_id,
+		application_name = application_name[0:20]
+
+		return '{}-{}-{}'.format(
+			ac_project_id,
 			application_name.lower(),
-			datasource_id,
-			int(time.time())
+			data_source_id
 		)
 
 	def do_execute(self, dag: DAG, dag_run: DagRun, **kwargs):
@@ -155,21 +158,23 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 			cluster_name=cluster_name,
 			region=dag.default_args['region'],
 			job_name=self._get_application_name(
-				datasource_id=dag_run.conf['datasourceId'],
-				lcp_project_id=dag.default_args['lcp_project_id'],
-				resource_name=dag_run.conf['resourceName']
+				ac_project_id=dag.default_args['ac_project_id'],
+				data_source_id=self._data_source_id,
+				resource_name=self._resource_name
 			),
 			main='gs://{}/osb-asah-spark-python-driver.py'.format(
 				dag_configuration['dataproc.bucket']
 			),
 			arguments=[
 				self.RESOURCE_NAME_APPLICATION_MAP.get(
-					dag_run.conf['resourceName']
+					self._resource_name
 				),
-				'--lcp-project-id',
-				dag.default_args['lcp_project_id'],
+				'--ac-project-id',
+				dag.default_args['ac_project_id'],
 				'--configuration',
-				dag_configuration['dataproc.pyspark.configuration']
+				dag_configuration['dataproc.pyspark.configuration'],
+				'--data-source-id',
+				self._data_source_id
 			],
 			archives=[
 				'gs://{}/resources/{}'.format(
