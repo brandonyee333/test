@@ -8,12 +8,12 @@
 # permissions and limitations under the License, including but not limited to
 # distribution rights of the Software.
 #
+
 from airflow.configuration import conf
 from airflow.models import DagRun
 from airflow.operators.python import ShortCircuitOperator
 from airflow.providers.common.sql.sensors.sql import SqlSensor
 from airflow.providers.google.cloud.hooks.bigquery import BigQueryHook
-
 from airflow.providers.google.cloud.operators.bigquery import \
 	BigQueryInsertJobOperator
 
