@@ -816,7 +816,7 @@ definition {
 				userScreenName = "usersn");
 
 			JSONUser.setFirstPassword(
-				newPassword = "test",
+				agreeToTermsAndAnswerReminderQuery = "true",
 				requireReset = "false",
 				userEmailAddress = "userea@liferay.com");
 
