@@ -73,11 +73,6 @@ definition {
 			id = "element-text",
 			text = "Welcome to Liferay");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Instance Settings");
-
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Localization",
 			configurationName = "Language",
@@ -256,10 +251,7 @@ definition {
 			userLastName = "userln",
 			userScreenName = "usersn");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Users and Organizations");
+		User.openUsersAdmin();
 
 		UserNavigator.gotoUser(userScreenName = "usersn");
 
@@ -276,10 +268,7 @@ definition {
 
 		PortalSettings.configureTimeZone(timeZone = "(UTC) Coordinated Universal Time");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Users and Organizations");
+		User.openUsersAdmin();
 
 		UserNavigator.gotoUser(userScreenName = "usersn");
 
@@ -406,10 +395,7 @@ definition {
 			portalInstanceId = "www.able.com",
 			virtualHost = "www.able.com");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "System",
-			panel = "Control Panel",
-			portlet = "Virtual Instances");
+		PortalInstances.openVirtualInstancesAdmin();
 
 		PortalInstances.viewCP(virtualHost = "www.able.com");
 
@@ -615,10 +601,6 @@ definition {
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "Locale#RestrictDefaultLocale";
 
-		task ("Create test site") {
-			HeadlessSite.addSite(siteName = "Test Site Name");
-		}
-
 		task ("Sign in via UI") {
 			User.firstLoginUI(
 				localization = "ES",
@@ -698,11 +680,6 @@ definition {
 
 		User.firstLoginPG();
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Instance Settings");
-
 		SystemSettings.gotoConfiguration(
 			configurationCategory = "Localization",
 			configurationName = "Time Zone",
@@ -724,10 +701,7 @@ definition {
 			}
 		}
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Users and Organizations");
+		User.openUsersAdmin();
 
 		UserNavigator.gotoUser(userScreenName = "test");
 
@@ -846,10 +820,7 @@ definition {
 				requireReset = "false",
 				userEmailAddress = "userea@liferay.com");
 
-			ApplicationsMenu.gotoPortlet(
-				category = "Security",
-				panel = "Control Panel",
-				portlet = "Password Policies");
+			PasswordPolicies.openPasswordPoliciesAdmin();
 
 			PasswordPolicies.enableLockout(
 				lockoutDuration = "5 Minutes",
@@ -902,10 +873,7 @@ definition {
 			}
 		}
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Users and Organizations");
+		User.openUsersAdmin();
 
 		UserNavigator.gotoUser(userScreenName = "test");
 
@@ -973,10 +941,7 @@ definition {
 			portalInstanceId = "www.able.com",
 			virtualHost = "www.able.com");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "System",
-			panel = "Control Panel",
-			portlet = "Virtual Instances");
+		PortalInstances.openVirtualInstancesAdmin();
 
 		PortalInstances.viewCP(virtualHost = "www.able.com");
 
@@ -1079,9 +1044,7 @@ definition {
 
 		Site.configureCurrentLanguagesCP(defaultSiteLanguage = "Spanish (Spain)");
 
-		ProductMenu.gotoPortlet(
-			category = "Site Builder",
-			portlet = "Pages");
+		PagesAdmin.openPagesAdmin(siteURLKey = "site-name");
 
 		PagesAdmin.addPage(pageName = "Test Page");
 
@@ -1091,10 +1054,7 @@ definition {
 			userLastName = "userln",
 			userScreenName = "usersn");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Users and Organizations");
+		User.openUsersAdmin();
 
 		User.editPasswordCP(
 			userEmailAddress = "userea@liferay.com",
@@ -1104,10 +1064,7 @@ definition {
 			groupName = "Site Name",
 			userEmailAddress = "userea@liferay.com");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Users and Organizations");
+		User.openUsersAdmin();
 
 		User.editDisplaySettingsCP(
 			languageName = "中文 (中国)",
