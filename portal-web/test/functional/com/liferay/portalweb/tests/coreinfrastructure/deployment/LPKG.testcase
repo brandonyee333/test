@@ -19,6 +19,7 @@ definition {
 
 	@priority = 3
 	test DeployRestartRequiredLPKG {
+		property portal.acceptance = "poshi-validation";
 		property skip.start.app.server = "true";
 		property test.name.skip.portal.instance = "LPKG#DeployRestartRequiredLPKG";
 
