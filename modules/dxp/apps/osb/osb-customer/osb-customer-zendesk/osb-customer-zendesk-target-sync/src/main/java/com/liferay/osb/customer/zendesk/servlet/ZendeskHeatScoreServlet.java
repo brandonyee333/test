@@ -12,8 +12,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
-import java.io.IOException;
-
 import java.text.SimpleDateFormat;
 
 import java.time.Instant;
@@ -45,7 +43,7 @@ public class ZendeskHeatScoreServlet extends ZendeskBaseServlet {
 
 	public void postHeatScore(
 			HttpServletRequest request, HttpServletResponse response)
-		throws IOException, PortalException {
+		throws PortalException {
 
 		JSONObject jsonObject = getRequestJSONObject(request);
 

@@ -14,8 +14,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.io.IOException;
-
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
@@ -48,14 +46,14 @@ public class ZendeskJiraServlet extends ZendeskBaseServlet {
 
 	public void postJiraIssue(
 			HttpServletRequest request, HttpServletResponse response)
-		throws IOException, PortalException {
+		throws PortalException {
 
 		postJiraTicket(request, response);
 	}
 
 	public void postJiraTicket(
 			HttpServletRequest request, HttpServletResponse response)
-		throws IOException, PortalException {
+		throws PortalException {
 
 		JSONObject jsonObject = getRequestJSONObject(request);
 
