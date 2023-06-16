@@ -13,6 +13,7 @@ from airflow.models import Variable
 from airflow.providers.google.cloud.operators.bigquery import \
 	BigQueryCheckOperator
 
+from liferay.bigquery import BigQueryShortCircuitOperator
 from liferay.dataproc import DataprocClusterGetOrCreateOperator, \
 	DataprocSubmitCommercePySparkJobOperator
 
@@ -21,7 +22,7 @@ import os
 import pendulum
 import requests
 
-def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description, data_source_ids, resource_name, schedule_interval: str):
+def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description, data_source_ids, resource_name, schedule_interval: str, table_name: str):
 	with airflow.DAG(
 		dag_id=dag_id,
 		default_args={
@@ -39,11 +40,35 @@ def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description, 
 		schedule_interval=schedule_interval,
 		start_date=pendulum.now(ac_project_time_zone_id) - pendulum.duration(days=2)
 	) as dag:
+		bigquery_short_circuit_operator_all = BigQueryShortCircuitOperator(
+			task_id='bigquery_short_circuit_operator_all',
+			sql=f"""
+				SELECT
+					COUNT(*)
+				FROM
+					{dag.default_args['ac_project_id']}.{table_name}
+				WHERE
+					datasourceId in ({', '.join(map(lambda d: str(d), data_source_ids))})
+			"""
+		)
+
 		cluster_get_or_create = DataprocClusterGetOrCreateOperator(
 			task_id='dataproc_cluster_get_or_create'
 		)
 
 		for data_source_id in data_source_ids:
+			bigquery_short_circuit_operator = BigQueryShortCircuitOperator(
+				task_id='bigquery_short_circuit_operator_{}'.format(data_source_id),
+				sql=f"""
+					SELECT
+						COUNT(*)
+					FROM
+						{ dag.default_args['ac_project_id'] }.{table_name}
+					WHERE
+						datasourceId = {str(data_source_id)}
+				"""
+			)
+
 			dataproc_submit_commerce_pyspark_job = \
 				DataprocSubmitCommercePySparkJobOperator(
 					task_id='dataproc_submit_commerce_pyspark_job_{}'.format(data_source_id),
@@ -52,7 +77,7 @@ def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description, 
 					resource_name=resource_name
 				)
 
-			cluster_get_or_create >> dataproc_submit_commerce_pyspark_job
+			bigquery_short_circuit_operator_all >> cluster_get_or_create >> bigquery_short_circuit_operator >> dataproc_submit_commerce_pyspark_job
 
 		return dag
 
@@ -74,7 +99,8 @@ for project in response.json():
 			'Commerce Content Recommender DAG For {}'.format(project.get('id')),
 			project.get('dataSourceIds'),
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Product',
-			'0 1 * * 7'
+			'0 1 * * 7',
+			'product'
 		)
 
 		dag_id = 'commerce_user_interaction_recommender_{}'.format(project.get('id'))
@@ -84,5 +110,6 @@ for project in response.json():
 			'Commerce User Interaction Recommender DAG For {}'.format(project.get('id')),
 			project.get('dataSourceIds'),
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Order',
-			'0 1 * * *'
+			'0 1 * * *',
+			'order'
 		)
