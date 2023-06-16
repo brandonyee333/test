@@ -18,6 +18,7 @@ import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.commerce.constants.CommerceShipmentFDSNames;
 import com.liferay.commerce.constants.CommerceWebKeys;
 import com.liferay.commerce.context.CommerceContext;
+import com.liferay.commerce.context.CommerceGroupThreadLocal;
 import com.liferay.commerce.frontend.model.Icon;
 import com.liferay.commerce.frontend.model.OrderItem;
 import com.liferay.commerce.inventory.engine.CommerceInventoryEngine;
@@ -30,6 +31,8 @@ import com.liferay.commerce.model.CommerceShippingEngine;
 import com.liferay.commerce.model.CommerceShippingMethod;
 import com.liferay.commerce.model.CommerceShippingOption;
 import com.liferay.commerce.product.model.CPDefinition;
+import com.liferay.commerce.product.model.CommerceChannel;
+import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.service.CommerceOrderItemService;
 import com.liferay.commerce.service.CommerceShipmentItemService;
@@ -42,6 +45,9 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
+import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -78,6 +84,14 @@ public class CommerceShippableOrderItemsFDSDataProvider
 		CommerceShipment commerceShipment =
 			_commerceShipmentService.getCommerceShipment(commerceShipmentId);
 
+		CommerceChannel commerceChannel =
+			_commerceChannelLocalService.fetchCommerceChannelByGroupClassPK(
+				commerceShipment.getGroupId());
+
+		if (commerceChannel != null) {
+			CommerceGroupThreadLocal.set(commerceChannel.getGroup());
+		}
+
 		List<CommerceOrderItem> commerceOrderItems =
 			_commerceOrderItemService.getCommerceOrderItems(
 				commerceShipment.getGroupId(),
@@ -91,6 +105,13 @@ public class CommerceShippableOrderItemsFDSDataProvider
 			}
 
 			CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
+
+			if (!_commerceOrderModelResourcePermission.contains(
+					PermissionThreadLocal.getPermissionChecker(),
+					commerceOrder.getCommerceOrderId(), ActionKeys.VIEW)) {
+
+				continue;
+			}
 
 			String iconName = _getAddressMatchIcon(
 				commerceShipment, commerceOrder);
@@ -230,10 +251,19 @@ public class CommerceShippableOrderItemsFDSDataProvider
 	private CommerceAddressService _commerceAddressService;
 
 	@Reference
+	private CommerceChannelLocalService _commerceChannelLocalService;
+
+	@Reference
 	private CommerceInventoryEngine _commerceInventoryEngine;
 
 	@Reference
 	private CommerceOrderItemService _commerceOrderItemService;
+
+	@Reference(
+		target = "(model.class.name=com.liferay.commerce.model.CommerceOrder)"
+	)
+	private ModelResourcePermission<CommerceOrder>
+		_commerceOrderModelResourcePermission;
 
 	@Reference
 	private CommerceShipmentItemService _commerceShipmentItemService;

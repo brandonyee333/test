@@ -14,20 +14,29 @@
 
 package com.liferay.commerce.internal.security.permission.resource;
 
+import com.liferay.account.constants.AccountConstants;
+import com.liferay.account.constants.AccountRoleConstants;
 import com.liferay.account.model.AccountEntry;
+import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.commerce.constants.CommerceAccountActionKeys;
 import com.liferay.commerce.context.CommerceContextThreadLocal;
 import com.liferay.commerce.context.CommerceGroupThreadLocal;
 import com.liferay.commerce.internal.util.AccountEntryUtil;
 import com.liferay.commerce.product.constants.CommerceChannelAccountEntryRelConstants;
+import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.model.CommerceChannelAccountEntryRel;
 import com.liferay.commerce.product.service.CommerceChannelAccountEntryRelLocalService;
+import com.liferay.commerce.product.service.CommerceChannelLocalService;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
+import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -91,7 +100,9 @@ public class AccountEntryModelResourcePermission
 		throws PortalException {
 
 		if (_accountEntryModelResourcePermission.contains(
-				permissionChecker, accountEntryId, actionId)) {
+				permissionChecker, accountEntryId, actionId) ||
+			(actionId.equals(ActionKeys.VIEW) &&
+			 _hasSupplierPermission(permissionChecker))) {
 
 			return true;
 		}
@@ -156,10 +167,58 @@ public class AccountEntryModelResourcePermission
 			getPortletResourcePermission();
 	}
 
+	private boolean _hasSupplierAccount(
+			PermissionChecker permissionChecker,
+			CommerceChannel commerceChannel)
+		throws PortalException {
+
+		List<AccountEntry> accountEntries =
+			_accountEntryLocalService.getUserAccountEntries(
+				permissionChecker.getUserId(), 0L, StringPool.BLANK,
+				new String[] {AccountConstants.ACCOUNT_ENTRY_TYPE_SUPPLIER},
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		for (AccountEntry accountEntry : accountEntries) {
+			if ((accountEntry.getAccountEntryId() ==
+					commerceChannel.getAccountEntryId()) &&
+				_userGroupRoleLocalService.hasUserGroupRole(
+					permissionChecker.getUserId(),
+					accountEntry.getAccountEntryGroupId(),
+					AccountRoleConstants.ROLE_NAME_ACCOUNT_SUPPLIER)) {
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean _hasSupplierPermission(PermissionChecker permissionChecker)
+		throws PortalException {
+
+		CommerceChannel commerceChannel =
+			_commerceChannelLocalService.fetchCommerceChannel(
+				AccountEntryUtil.getCommerceChannelId(
+					CommerceContextThreadLocal.get(),
+					CommerceGroupThreadLocal.get()));
+
+		if ((commerceChannel != null) &&
+			(commerceChannel.getAccountEntryId() > 0) &&
+			_hasSupplierAccount(permissionChecker, commerceChannel)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	private static final List<String> _permissions = Arrays.asList(
 		"MANAGE_ADDRESSES", "MANAGE_USERS", "UPDATE", "VIEW",
 		"VIEW_ACCOUNT_GROUPS", "VIEW_ACCOUNT_ROLES", "VIEW_ADDRESSES",
 		"VIEW_USERS");
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference(
 		target = "(component.name=com.liferay.account.internal.security.permission.resource.AccountEntryModelResourcePermission)"
@@ -170,5 +229,11 @@ public class AccountEntryModelResourcePermission
 	@Reference
 	private CommerceChannelAccountEntryRelLocalService
 		_commerceChannelAccountEntryRelLocalService;
+
+	@Reference
+	private CommerceChannelLocalService _commerceChannelLocalService;
+
+	@Reference
+	private UserGroupRoleLocalService _userGroupRoleLocalService;
 
 }
