@@ -67,7 +67,7 @@ dependencies {
 	elasticsearchPlugins ext: "zip", group: "org.elasticsearch.plugin", name: "analysis-smartcn", version: elasticsearchVersion
 	elasticsearchPlugins ext: "zip", group: "org.elasticsearch.plugin", name: "analysis-stempel", version: elasticsearchVersion
 
-	testImplementation : "ch.qos.reload4j", name: "reload4j", version: "1.2.18.4"
+	testImplementation group: "ch.qos.reload4j", name: "reload4j", version: "1.2.18.4"
 	testImplementation group: "com.liferay.portal", name: "com.liferay.util.java", version: "default"
 	testImplementation group: "commons-configuration", name: "commons-configuration", version: "1.10"
 	testImplementation group: "easyconf", name: "easyconf", version: "0.9.5"
