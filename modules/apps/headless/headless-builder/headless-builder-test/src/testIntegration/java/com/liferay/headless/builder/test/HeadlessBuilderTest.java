@@ -22,24 +22,30 @@ import com.liferay.headless.builder.test.info.item.provider.TestEntryInfoItemFie
 import com.liferay.headless.builder.test.info.item.provider.TestEntryInfoItemFormProvider;
 import com.liferay.headless.builder.test.info.item.provider.TestEntryInfoItemObjectProvider;
 import com.liferay.headless.builder.test.model.TestEntry;
+import com.liferay.headless.builder.test.object.util.ObjectDefinitionTestUtil;
 import com.liferay.headless.builder.test.object.util.ObjectEntryTestUtil;
 import com.liferay.headless.builder.test.object.util.ObjectRelationshipTestUtil;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.object.exception.NoSuchObjectDefinitionException;
+import com.liferay.object.field.util.ObjectFieldUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
 import com.liferay.petra.function.UnsafeRunnable;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.ContentTypes;
@@ -63,6 +69,7 @@ import java.nio.charset.StandardCharsets;
 
 import java.text.SimpleDateFormat;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -100,6 +107,26 @@ public class HeadlessBuilderTest {
 
 	@Before
 	public void setUp() throws Exception {
+
+		// Create dummy objects used as information for the REST APIs responses.
+
+		_objectDefinition = ObjectDefinitionTestUtil.publishObjectDefinition(
+			Collections.singletonList(
+				ObjectFieldUtil.createObjectField(
+					"Text", "String", true, true, null,
+					RandomTestUtil.randomString(), _OBJECT_FIELD_NAME, false)));
+
+		_objectField = _objectFieldLocalService.getObjectField(
+			_objectDefinition.getObjectDefinitionId(), _OBJECT_FIELD_NAME);
+
+		_objectEntry = ObjectEntryTestUtil.addObjectEntry(
+			_objectDefinition,
+			HashMapBuilder.<String, Serializable>put(
+				_OBJECT_FIELD_NAME, _OBJECT_FIELD_VALUE
+			).build());
+
+		// Check all the Headless Builder infrastructure exists
+
 		_apiApplicationObjectDefinition = _getObjectDefinition(
 			"MSOD_API_APPLICATION");
 		_apiEndpointObjectDefinition = _getObjectDefinition(
@@ -150,8 +177,10 @@ public class HeadlessBuilderTest {
 				_apiSchemaObjectDefinition.getObjectDefinitionId(),
 				"responseAPISchemaToAPIEndpoints");
 
+		// Create Headless Builder REST APIs information
+
 		_apiSchemaObjectEntry = _createApiSchemaObjectEntry(
-			"mainObjectDefintionERC", "MySchema");
+			_objectDefinition.getExternalReferenceCode(), "MySchema");
 
 		_apiApplicationObjectEntry1 = _createApiApplicationObjectEntry(
 			"base-url-one", "ApiApplication1");
@@ -190,7 +219,7 @@ public class HeadlessBuilderTest {
 			TestPropsValues.getUserId());
 
 		_apiPropertyObjectEntry = _createApiPropertyObjectEntry(
-			"myProperty", "objectFieldERC");
+			_API_PROPERTY_NAME_VALUE, _objectField.getExternalReferenceCode());
 
 		ObjectRelationshipTestUtil.relateObjectEntries(
 			_apiSchemaObjectEntry.getObjectEntryId(),
@@ -270,6 +299,9 @@ public class HeadlessBuilderTest {
 			_apiApplicationObjectEntry1.getObjectEntryId());
 		_objectEntryLocalService.deleteObjectEntry(
 			_apiApplicationObjectEntry2.getObjectEntryId());
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			_objectDefinition.getObjectDefinitionId());
 	}
 
 	@FeatureFlags("LPS-171047")
@@ -314,6 +346,73 @@ public class HeadlessBuilderTest {
 					).toString(),
 					jsonObject.toString(), true);
 			});
+	}
+
+	@Test
+	public void testHeadlessBuilderApplicationReturnExpectedSchema()
+		throws Exception {
+
+		CountDownLatch addedCountLatch = new CountDownLatch(1);
+
+		Bundle bundle = FrameworkUtil.getBundle(getClass());
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServiceTracker<?, ?> serviceTracker =
+			new ServiceTracker<Application, Application>(
+				bundleContext, Application.class, null) {
+
+				@Override
+				public Application addingService(
+					ServiceReference<Application> serviceReference) {
+
+					String property = (String)serviceReference.getProperty(
+						"osgi.jaxrs.application.base");
+
+					if (property.contains(_API_APPLICATION_BASE_URL_VALUE)) {
+						addedCountLatch.countDown();
+
+						return super.addingService(serviceReference);
+					}
+
+					return null;
+				}
+
+			};
+
+		try {
+			serviceTracker.open();
+
+			_headlessBuilderApplicationManager.publishApplication(
+				_apiApplicationObjectEntry1.getExternalReferenceCode());
+
+			addedCountLatch.await(1, TimeUnit.MINUTES);
+
+			String apiApplication1baseURL =
+				(String)_getObjectEntryPropertyValue(
+					_apiApplicationObjectEntry1, _API_APPLICATION_BASE_URL);
+			String apiEndpoint1Path = (String)_getObjectEntryPropertyValue(
+				_apiEndpointObjectEntry1, _API_ENDPOINT_PATH);
+
+			JSONObject jsonObject = _invoke(
+				apiApplication1baseURL + apiEndpoint1Path, Http.Method.GET);
+
+			JSONArray jsonArray = jsonObject.getJSONArray("items");
+
+			Assert.assertNotNull(jsonArray);
+			Assert.assertEquals(1, jsonArray.length());
+
+			JSONObject itemJSONObject = jsonArray.getJSONObject(0);
+
+			Assert.assertEquals(
+				_OBJECT_FIELD_VALUE,
+				itemJSONObject.get(_API_PROPERTY_NAME_VALUE));
+		}
+		finally {
+			serviceTracker.close();
+			_headlessBuilderApplicationManager.unpublishApplication(
+				_apiApplicationObjectEntry1.getExternalReferenceCode());
+		}
 	}
 
 	@Test
@@ -678,13 +777,9 @@ public class HeadlessBuilderTest {
 
 	private static final String _API_ENDPOINT_SCOPE = "scope";
 
-	// TODO Missing tests:
-	//  Create multiple api applications with multiple endpoints
-	//  that should be accessible but not others
-	//  Create same endpoints in different applications with
-	//  different responses and ensure that the responses are ok
-
 	private static final String _API_PROPERTY_NAME = "name";
+
+	private static final String _API_PROPERTY_NAME_VALUE = "myProperty";
 
 	private static final String _API_PROPERTY_OBJECT_FIELD_ERC =
 		"objectFieldERC";
@@ -693,6 +788,18 @@ public class HeadlessBuilderTest {
 		"mainObjectDefinitionERC";
 
 	private static final String _API_SCHEMA_NAME = "name";
+
+	private static final String _OBJECT_FIELD_NAME =
+		"x" + RandomTestUtil.randomString();
+
+	private static final String _OBJECT_FIELD_VALUE =
+		RandomTestUtil.randomString();
+
+	// TODO Missing tests:
+	//  Create multiple api applications with multiple endpoints
+	//  that should be accessible but not others
+	//  Create same endpoints in different applications with
+	//  different responses and ensure that the responses are ok
 
 	private ObjectRelationship _apiApplicationAPIEndpointsObjectRelationship;
 	private ObjectRelationship _apiApplicationAPISchemasObjectRelationship;
@@ -725,12 +832,20 @@ public class HeadlessBuilderTest {
 		_infoItemFieldValuesProviderServiceRegistration;
 	private ServiceRegistration<?> _infoItemFormProviderServiceRegistration;
 	private ServiceRegistration<?> _infoItemObjectProviderServiceRegistration;
+	private ObjectDefinition _objectDefinition;
 
 	@Inject
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
+	private ObjectEntry _objectEntry;
+
 	@Inject
 	private ObjectEntryLocalService _objectEntryLocalService;
+
+	private ObjectField _objectField;
+
+	@Inject
+	private ObjectFieldLocalService _objectFieldLocalService;
 
 	@Inject
 	private ObjectRelationshipLocalService _objectRelationshipLocalService;
