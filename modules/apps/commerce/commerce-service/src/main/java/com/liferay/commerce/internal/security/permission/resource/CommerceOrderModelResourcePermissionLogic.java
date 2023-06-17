@@ -85,18 +85,15 @@ public class CommerceOrderModelResourcePermissionLogic
 
 		if (permissionChecker.isCompanyAdmin(commerceOrder.getCompanyId()) ||
 			permissionChecker.isGroupAdmin(commerceOrder.getGroupId()) ||
+			(_hasAncestorPermission(
+				permissionChecker, accountEntry.getAccountEntryGroupId(),
+				CommerceOrderActionKeys.MANAGE_COMMERCE_ORDERS) &&
+			 _hasSupplierPermission(permissionChecker, commerceOrder)) ||
 			((accountEntry.getAccountEntryId() !=
 				AccountConstants.ACCOUNT_ENTRY_ID_GUEST) &&
 			 _hasAncestorPermission(
 				 permissionChecker, accountEntry.getAccountEntryGroupId(),
 				 CommerceOrderActionKeys.MANAGE_COMMERCE_ORDERS))) {
-
-			return true;
-		}
-
-		if ((actionId.equals(ActionKeys.UPDATE) ||
-			 actionId.equals(ActionKeys.VIEW)) &&
-			_hasSupplierPermission(permissionChecker, commerceOrder)) {
 
 			return true;
 		}
