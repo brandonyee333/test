@@ -228,6 +228,18 @@ public class PageAssetMetricRepositoryImpl
 				).eq(
 					DSL.field("Identity.id")
 				)
+			).leftJoin(
+				DSL.table(
+					"BQIndividual"
+				).as(
+					"Individual"
+				)
+			).on(
+				DSL.field(
+					"Individual.id"
+				).eq(
+					DSL.field("Identity.individualId")
+				)
 			).where(
 				DSL.field(
 					"eventDate"
@@ -281,6 +293,18 @@ public class PageAssetMetricRepositoryImpl
 				"Identity.id"
 			).eq(
 				DSL.field("metric.userId")
+			)
+		).leftJoin(
+			DSL.table(
+				"BQIndividual"
+			).as(
+				"Individual"
+			)
+		).on(
+			DSL.field(
+				"Individual.id"
+			).eq(
+				DSL.field("Identity.individualId")
 			)
 		);
 	}
@@ -361,7 +385,7 @@ public class PageAssetMetricRepositoryImpl
 			return DSL.cast(
 				DSL.countDistinct(
 					DSL.coalesce(
-						DSL.field("Identity.individualId"),
+						DSL.field("Individual.id"),
 						DSL.field("metric.userId"))),
 				BigDecimal.class);
 		}
