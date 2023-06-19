@@ -51,9 +51,20 @@ public class SessionReplicationHttpSessionWrapper extends HttpSessionWrapper {
 		Set<String> scrubbedNames = (Set<String>)super.getAttribute(
 			_SCRUBBED_NAMES_NAME);
 
-		if ((value == null) || (scrubbedNames == null) ||
-			!scrubbedNames.contains(name)) {
+		if(value == null){
+			_log.warn("####VALUE is NULL");
 
+			return value;
+		}
+
+		if(scrubbedNames == null){
+			_log.warn("####scrubbedNames is NULL");
+
+			return value;
+		}
+
+		if(!scrubbedNames.contains(name)){
+			_log.warn("####scrubbedNames doesn't contain : " + name);
 			return value;
 		}
 
