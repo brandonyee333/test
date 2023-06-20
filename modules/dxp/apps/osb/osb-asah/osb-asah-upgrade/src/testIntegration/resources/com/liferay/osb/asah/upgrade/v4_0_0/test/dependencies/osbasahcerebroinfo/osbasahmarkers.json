@@ -1,8 +1,0 @@
-[
-	{
-		"context": {
-			"lastSuccessfulSessionFinalizerDate": "${now-30m}"
-		},
-		"id": "SessionNanite"
-	}
-]
