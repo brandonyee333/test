@@ -36,6 +36,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -73,7 +74,8 @@ public class ExperimentDog {
 
 	public Experiment addExperiment(Experiment experiment) {
 		experiment.setChannelId(_getChannelId(experiment));
-		experiment.setId(null);
+		experiment.setId(_timeOrderedUuidGenerator.generateIdAsLong());
+		experiment.setIsNew(Boolean.TRUE);
 
 		if (experiment.getModifiedDate() == null) {
 			experiment.setModifiedDate(experiment.getCreateDate());
@@ -524,6 +526,9 @@ public class ExperimentDog {
 
 	@Autowired
 	private PageAssetMetricRepository _pageAssetMetricRepository;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
