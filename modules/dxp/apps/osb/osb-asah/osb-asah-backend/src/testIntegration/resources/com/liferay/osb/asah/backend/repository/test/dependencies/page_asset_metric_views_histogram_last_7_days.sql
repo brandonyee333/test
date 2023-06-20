@@ -1,0 +1,3 @@
+INSERT INTO PageDaily (canonicalUrl, channelId, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 'Beryl Delivery', 1);
+INSERT INTO PageDaily (canonicalUrl, channelId, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 'Beryl Delivery', 1);
+INSERT INTO PageDaily (canonicalUrl, channelId, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, TIMESTAMP(DATETIME_TRUNC(timestamp '${today-4d}', HOUR)), 'Beryl Delivery', 1);

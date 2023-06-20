@@ -1,0 +1,9 @@
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'France', DATETIME_TRUNC(TIMESTAMP '${now-10d}', HOUR), 'Beryl Delivery', 3);
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'France', DATETIME_TRUNC(TIMESTAMP '${now-29d}', HOUR), 'Beryl Delivery', 6);
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'France', DATETIME_TRUNC(TIMESTAMP '${now-45d}', HOUR), 'Beryl Delivery', 9);
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'Japan', DATETIME_TRUNC(TIMESTAMP '${now-40d}', HOUR), 'Beryl Delivery', 8);
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'Japan', DATETIME_TRUNC(TIMESTAMP '${now-5d}', HOUR), 'Beryl Delivery', 2);
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'Japan', DATETIME_TRUNC(TIMESTAMP '${today-1h}', HOUR), 'Beryl Delivery', 5);
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'United States', DATETIME_TRUNC(TIMESTAMP '${now-15d}', HOUR), 'Beryl Delivery', 4);
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'United States', DATETIME_TRUNC(TIMESTAMP '${now-1d}', HOUR), 'Beryl Delivery', 1);
+INSERT INTO PageDaily (canonicalUrl, channelId, country, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, 'United States', DATETIME_TRUNC(TIMESTAMP '${now-31d}', HOUR), 'Beryl Delivery', 7);

@@ -1,0 +1,4 @@
+INSERT INTO PageDaily (canonicalUrl, channelId, eventDate, title, views) VALUES ('https://www.beryl.com/products/commercial/irrigation/FF-2100', 1, DATETIME_TRUNC(timestamp '${now-5d}', HOUR), 'FF-2100', 1);
+INSERT INTO PageDaily (canonicalUrl, channelId, eventDate, title, views) VALUES ('https://should.not.return.com', 1, DATETIME_TRUNC(timestamp '${now-8d}', HOUR), 'Should Not Return', 1);
+INSERT INTO PageDaily (canonicalUrl, channelId, eventDate, title, views) VALUES ('https://www.beryl.com/products/commercial/irrigation', 1, DATETIME_TRUNC(timestamp '${today-4d}', HOUR), 'Irrigation', 1);
+INSERT INTO PageDaily (canonicalUrl, channelId, eventDate, title, views) VALUES ('https://www.beryl.com/delivery', 1, DATETIME_TRUNC(timestamp '${today-6d}', HOUR), 'Delivery', 1);
