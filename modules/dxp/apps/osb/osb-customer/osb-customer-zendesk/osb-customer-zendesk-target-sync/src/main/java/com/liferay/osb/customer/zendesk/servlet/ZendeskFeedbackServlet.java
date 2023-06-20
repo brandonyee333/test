@@ -14,17 +14,24 @@
 
 package com.liferay.osb.customer.zendesk.servlet;
 
+import com.liferay.osb.customer.zendesk.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
@@ -69,6 +76,43 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 		updateZendeskTicketToken(ticketId, ticketTokenFieldId, token);
 	}
 
+	@Override
+	protected boolean isAuthorized(HttpServletRequest request) {
+		if (!request.isSecure()) {
+			return false;
+		}
+
+		try {
+			String ticketToken = request.getHeader("Ticket-Token");
+
+			long ticketId = GetterUtil.getLong(
+				ticketToken.substring(
+					0, ticketToken.indexOf(StringPool.UNDERLINE)));
+
+			ZendeskTicket zendeskTicket =
+				_zendeskTicketWebService.getZendeskTicket(ticketId);
+
+			Map<Long, String> customFields = zendeskTicket.getCustomFields();
+
+			if (ticketToken.equals(
+					customFields.get(
+						ZendeskConnectorConfigurationValues.
+							ZENDESK_TICKET_TOKEN_CUSTOM_FIELD_ID))) {
+
+				return true;
+			}
+		}
+		catch (PortalException pe) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(pe, pe);
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
 	protected JSONObject updateZendeskTicketToken(
 			long ticketId, long ticketTokenFieldId, String token)
 		throws PortalException {
@@ -102,7 +146,13 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 			"/api/v2/tickets/" + ticketId + ".json", jsonObject.toString());
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		ZendeskFeedbackServlet.class);
+
 	@Reference
 	private ZendeskBaseWebService _zendeskBaseWebService;
+
+	@Reference
+	private ZendeskTicketWebService _zendeskTicketWebService;
 
 }
