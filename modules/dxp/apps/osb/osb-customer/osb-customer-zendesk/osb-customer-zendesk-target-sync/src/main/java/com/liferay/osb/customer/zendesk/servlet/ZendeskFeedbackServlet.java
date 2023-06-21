@@ -82,6 +82,13 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 			return false;
 		}
 
+		String method = request.getMethod();
+		String pathInfo = request.getPathInfo();
+
+		if (method.equals("POST") && pathInfo.equals("/ticket-token/")) {
+			return super.isAuthorized(request);
+		}
+
 		try {
 			String ticketToken = request.getHeader("Ticket-Token");
 
