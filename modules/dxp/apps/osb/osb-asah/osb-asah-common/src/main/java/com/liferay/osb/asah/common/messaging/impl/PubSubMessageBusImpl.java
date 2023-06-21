@@ -88,11 +88,11 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	public ProjectName getProjectName() {
-		return ProjectName.of(_gcpProjectId);
+		return ProjectName.of(_gcloudProjectId);
 	}
 
 	public ProjectTopicName getProjectTopicName(Channel channel) {
-		return ProjectTopicName.of(_gcpProjectId, _getTopicId(channel));
+		return ProjectTopicName.of(_gcloudProjectId, _getTopicId(channel));
 	}
 
 	public PubSubClientFactory getPubSubClientFactory() {
@@ -385,7 +385,7 @@ public class PubSubMessageBusImpl implements MessageBus {
 		Channel channel, String name) {
 
 		return ProjectSubscriptionName.of(
-			_gcpProjectId,
+			_gcloudProjectId,
 			_getTopicId(channel) + "_" + StringUtils.replace(name, "$", "_"));
 	}
 
@@ -405,8 +405,8 @@ public class PubSubMessageBusImpl implements MessageBus {
 
 	private final Map<Channel, Publisher> _channels = new ConcurrentHashMap<>();
 
-	@Value("${osb.asah.message.bus.gcloud.project.id:liferaycloud-customer-ac}")
-	private String _gcpProjectId;
+	@Value("${osb.asah.gcloud.project.id:liferaycloud-customer-ac}")
+	private String _gcloudProjectId;
 
 	private final Map<MessageListener, Subscriber> _messageListeners =
 		new ConcurrentHashMap<>();
