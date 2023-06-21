@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.entity.Suppression;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.SuppressionRepository;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.util.Date;
 import java.util.Optional;
@@ -47,7 +48,9 @@ public class SuppressionDog {
 		suppression.setDataControlTaskCreateDate(dataControlTaskCreateDate);
 		suppression.setDataControlTaskStatus(dataControlTaskStatus);
 		suppression.setEmailAddress(emailAddress);
+		suppression.setId(_timeOrderedUuidGenerator.generateIdAsLong());
 		suppression.setIndividualId(DigestUtils.sha256Hex(emailAddress));
+		suppression.setIsNew(Boolean.TRUE);
 
 		return _suppressionRepository.save(suppression);
 	}
@@ -104,5 +107,8 @@ public class SuppressionDog {
 
 	@Autowired
 	private SuppressionRepository _suppressionRepository;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
