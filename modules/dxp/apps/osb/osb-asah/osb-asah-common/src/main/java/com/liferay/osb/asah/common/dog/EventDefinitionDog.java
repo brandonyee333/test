@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.BQEventRepository;
 import com.liferay.osb.asah.common.repository.EventDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.util.Date;
 import java.util.List;
@@ -82,6 +83,8 @@ public class EventDefinitionDog {
 		eventDefinition.setApplicationId(applicationId);
 		eventDefinition.setDescription(description);
 		eventDefinition.setDisplayName(_getDisplayName(displayName, name));
+		eventDefinition.setId(_timeOrderedUuidGenerator.generateIdAsLong());
+		eventDefinition.setIsNew(Boolean.TRUE);
 		eventDefinition.setName(name);
 		eventDefinition.setType(type);
 
@@ -348,5 +351,8 @@ public class EventDefinitionDog {
 
 	@Autowired
 	private EventDefinitionRepository _eventDefinitionRepository;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
