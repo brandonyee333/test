@@ -18,6 +18,7 @@ import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.repository.BlockedKeywordRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.util.Collections;
 import java.util.Date;
@@ -123,7 +124,16 @@ public class BlockedKeywordDog {
 		return stream.filter(
 			keyword -> !existingKeywords.contains(keyword)
 		).map(
-			keyword -> new BlockedKeyword(date, keyword)
+			keyword -> {
+				BlockedKeyword blockedKeyword = new BlockedKeyword(
+					date, keyword);
+
+				blockedKeyword.setId(
+					_timeOrderedUuidGenerator.generateIdAsLong());
+				blockedKeyword.setIsNew(Boolean.TRUE);
+
+				return blockedKeyword;
+			}
 		).collect(
 			Collectors.toList()
 		);
@@ -158,5 +168,8 @@ public class BlockedKeywordDog {
 
 	@Autowired
 	private BlockedKeywordRepository _blockedKeywordRepository;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
