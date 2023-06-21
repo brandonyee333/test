@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.entity.DataExportTask;
 import com.liferay.osb.asah.common.repository.DataExportTaskRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.io.File;
 
@@ -48,6 +49,8 @@ public class DataExportTaskDog {
 
 		dataExportTask.setCreateDate(new Date());
 		dataExportTask.setFromDate(fromDate);
+		dataExportTask.setId(_timeOrderedUuidGenerator.generateIdAsLong());
+		dataExportTask.setIsNew(Boolean.TRUE);
 		dataExportTask.setStatus(DataExportTask.Status.PENDING);
 		dataExportTask.setToDate(toDate);
 		dataExportTask.setType(type);
@@ -120,5 +123,8 @@ public class DataExportTaskDog {
 
 	@Value("${osb.asah.batch.curator.data.export.path:/export}")
 	private String _exportPath;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
