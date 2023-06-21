@@ -145,6 +145,10 @@ public class RunLogDog {
 			jsonObjectKeyValuePairs);
 	}
 
+	public void resetRunLogs() {
+		_runLogRepository.updateStatus("STARTED", "INTERRUPTED");
+	}
+
 	public void updateRunLogContextJSONObject(
 		JSONObject contextJSONObject, Long runLogId,
 		WeDeployDataService weDeployDataService) {

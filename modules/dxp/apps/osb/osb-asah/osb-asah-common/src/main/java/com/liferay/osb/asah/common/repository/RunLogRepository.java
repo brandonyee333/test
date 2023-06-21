@@ -17,6 +17,7 @@ package com.liferay.osb.asah.common.repository;
 import com.liferay.osb.asah.common.entity.RunLog;
 
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -28,5 +29,11 @@ public interface RunLogRepository
 
 	@Modifying
 	public void deleteByDataSourceId(@Param("dataSourceId") Long dataSourceId);
+
+	@Modifying
+	@Query("UPDATE RunLog SET status = :status WHERE status = :previousStatus")
+	public void updateStatus(
+		@Param("previousStatus") String previousStatus,
+		@Param("status") String status);
 
 }

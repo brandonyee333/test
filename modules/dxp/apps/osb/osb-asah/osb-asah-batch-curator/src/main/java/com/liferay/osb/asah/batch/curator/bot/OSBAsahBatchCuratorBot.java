@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.dog.ProjectDog;
+import com.liferay.osb.asah.common.dog.RunLogDog;
 import com.liferay.osb.asah.common.entity.AsahTask;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.lock.KeyReentrantLock;
@@ -162,6 +163,8 @@ public class OSBAsahBatchCuratorBot {
 
 			// TODO
 
+			_runLogDog.resetRunLogs();
+
 			_asahTaskManager.runNanites("DeleteTempFilesNanite");
 
 			_asahTaskManager.scheduleAsahTasks();
@@ -237,6 +240,9 @@ public class OSBAsahBatchCuratorBot {
 
 	@Autowired
 	private ProjectDog _projectDog;
+
+	@Autowired
+	private RunLogDog _runLogDog;
 
 	private final MultiValuedMap<String, String> _scheduledTasks =
 		new HashSetValuedHashMap<>();
