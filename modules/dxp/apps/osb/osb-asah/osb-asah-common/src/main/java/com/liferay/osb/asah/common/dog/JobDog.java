@@ -31,6 +31,7 @@ import com.liferay.osb.asah.common.model.JobType;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.JobRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -69,6 +70,9 @@ public class JobDog {
 		LocalDateTime nowLocalDateTime = LocalDateTime.now(ZoneOffset.UTC);
 
 		job.setCreateLocalDateTime(nowLocalDateTime);
+
+		job.setId(_timeOrderedUuidGenerator.generateIdAsLong());
+		job.setIsNew(Boolean.TRUE);
 		job.setModifiedLocalDateTime(nowLocalDateTime);
 
 		job.setName(name);
@@ -308,5 +312,8 @@ public class JobDog {
 
 	@Autowired
 	private RecommendationDog _recommendationDog;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
