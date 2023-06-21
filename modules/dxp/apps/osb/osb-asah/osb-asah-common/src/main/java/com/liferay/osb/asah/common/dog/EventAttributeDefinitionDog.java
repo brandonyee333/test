@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.repository.EventAttributeDefinitionRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.util.ArrayUtil;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -73,6 +74,9 @@ public class EventAttributeDefinitionDog {
 			Collections.singleton(
 				new EventDefinitionEventAttributeDefinition(
 					eventDefinitionId, sampleValue)));
+		eventAttributeDefinition.setId(
+			_timeOrderedUuidGenerator.generateIdAsLong());
+		eventAttributeDefinition.setIsNew(Boolean.TRUE);
 		eventAttributeDefinition.setName(name);
 		eventAttributeDefinition.setType(EventAttributeDefinition.Type.LOCAL);
 
@@ -325,5 +329,8 @@ public class EventAttributeDefinitionDog {
 	@Autowired
 	private EventAttributeDefinitionRepository
 		_eventAttributeDefinitionRepository;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 }
