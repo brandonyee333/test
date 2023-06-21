@@ -37,6 +37,7 @@ import com.liferay.osb.asah.common.spring.http.exception.OSBAsahNameException;
 import com.liferay.osb.asah.common.util.GetterUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
 import com.liferay.osb.asah.common.util.StringUtil;
+import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
 import java.math.BigDecimal;
 
@@ -118,6 +119,8 @@ public class EventAnalysisDog {
 			_log.error(exception, exception);
 		}
 
+		eventAnalysis.setId(_timeOrderedUuidGenerator.generateIdAsLong());
+		eventAnalysis.setIsNew(Boolean.TRUE);
 		eventAnalysis.setModifiedByUserId(userId);
 		eventAnalysis.setModifiedByUserName(userName);
 		eventAnalysis.setModifiedDate(date);
@@ -664,6 +667,9 @@ public class EventAnalysisDog {
 
 	@Autowired
 	private ObjectMapper _objectMapper;
+
+	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
+		new TimeOrderedUuidGenerator();
 
 	@Autowired
 	private TimeZoneDog _timeZoneDog;
