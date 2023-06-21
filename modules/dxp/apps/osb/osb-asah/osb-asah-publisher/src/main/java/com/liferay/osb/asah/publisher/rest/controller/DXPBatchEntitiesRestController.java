@@ -229,8 +229,8 @@ public class DXPBatchEntitiesRestController {
 
 		builder.googleBucket(
 			StringUtils.replace(
-				_dxpBatchEntitiesBucketTemplate, "{region}",
-				System.getenv("LCP_PROJECT_CLUSTER")));
+				_dxpBatchEntitiesBucketTemplate, "{googleProjectId}",
+				_gcloudProjectId));
 		builder.googleBucketFolder(googleBucketFolder);
 
 		return builder.build();
@@ -339,7 +339,7 @@ public class DXPBatchEntitiesRestController {
 	private ClamAVScanner _clamAVScanner;
 
 	@Value(
-		"${osb.asah.dxp.batch.entities.google.bucket:analytics-cloud-dxp-batch-entities-{region}}"
+		"${osb.asah.dxp.batch.entities.google.bucket:-{googleProjectId}-dxp-entities}"
 	)
 	private String _dxpBatchEntitiesBucketTemplate;
 
@@ -350,6 +350,9 @@ public class DXPBatchEntitiesRestController {
 
 	@Autowired
 	private DXPEntitiesChannels _dxpEntitiesChannels;
+
+	@Value("${osb.asah.gcloud.project.id:liferaycloud-customer-ac}")
+	private String _gcloudProjectId;
 
 	@Autowired
 	private MessageBus _messageBus;
