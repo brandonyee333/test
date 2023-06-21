@@ -90,6 +90,9 @@ public class DataControlTaskDog {
 				dataControlTask.setBatchId(batchId);
 				dataControlTask.setCreateDate(date);
 				dataControlTask.setEmailAddress(emailAddress);
+				dataControlTask.setId(
+					_timeOrderedUuidGenerator.generateIdAsLong());
+				dataControlTask.setIsNew(Boolean.TRUE);
 				dataControlTask.setOwnerId(ownerId);
 				dataControlTask.setStatus(
 					DataControlTaskStatus.PENDING.toString());
