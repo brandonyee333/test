@@ -125,7 +125,9 @@ public class DataExportNanite extends BaseNanite {
 				dataExportTask.getId(), DataExportTask.Status.COMPLETED);
 		}
 		catch (Exception exception) {
-			_log.error(exception, exception);
+			_log.error(
+				"Unable to run data export on task " + dataExportTask.getId(),
+				exception);
 
 			_dataExportTaskDog.updateDataExportTask(
 				dataExportTask.getId(), DataExportTask.Status.ERROR);
