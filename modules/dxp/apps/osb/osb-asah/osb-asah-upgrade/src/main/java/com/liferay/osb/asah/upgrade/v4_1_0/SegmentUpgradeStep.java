@@ -47,10 +47,10 @@ public class SegmentUpgradeStep implements UpgradeStep {
 					filterString, "dataSourceAccountPKs/accountPKs",
 					"demographics/address", "demographics/city",
 					"demographics/country", "demographics/department",
-					"demographics/division", "demographics/fullName",
-					"demographics/gender", "demographics/portraitId",
-					"demographics/region", "demographics/role",
-					"demographics/state")) {
+					"demographics/division", "demographics/employmentStatus",
+					"demographics/fullName", "demographics/gender",
+					"demographics/portraitId", "demographics/region",
+					"demographics/role", "demographics/state")) {
 
 				segment.setState("DISABLED");
 
