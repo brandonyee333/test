@@ -18,6 +18,10 @@ public class ZendeskTicket {
 	public ZendeskTicket() {
 	}
 
+	public long getAssigneeId() {
+		return _assigneeId;
+	}
+
 	public Map<Long, String> getCustomFields() {
 		return _customFields;
 	}
@@ -58,6 +62,10 @@ public class ZendeskTicket {
 		return false;
 	}
 
+	public void setAssigneeId(long assigneeId) {
+		_assigneeId = assigneeId;
+	}
+
 	public void setCustomFields(Map<Long, String> customFields) {
 		_customFields = customFields;
 	}
@@ -90,6 +98,7 @@ public class ZendeskTicket {
 		_zendeskTicketId = zendeskTicketId;
 	}
 
+	private long _assigneeId;
 	private Map<Long, String> _customFields;
 	private String _description;
 	private long _requesterId;

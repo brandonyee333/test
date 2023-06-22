@@ -21,6 +21,7 @@ import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -30,8 +31,10 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import java.text.SimpleDateFormat;
 
@@ -58,6 +61,43 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 	service = Servlet.class
 )
 public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
+
+	public void getTicketInfo(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException, PortalException {
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
+		String ticketToken = request.getHeader("Ticket-Token");
+
+		long ticketId = GetterUtil.getLong(
+			ticketToken.substring(
+				0, ticketToken.indexOf(StringPool.UNDERLINE)));
+
+		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
+			ticketId);
+
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(
+			zendeskTicket.getAssigneeId());
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("assigneeName", zendeskUser.getName());
+		jsonObject.put("status", zendeskTicket.getStatus());
+
+		jsonObject.put(
+			"ticketTitle",
+			StringBundler.concat(
+				zendeskTicket.getSubject(), " (#", String.valueOf(ticketId),
+				")"));
+
+		PrintWriter printWriter = response.getWriter();
+
+		printWriter.write(jsonObject.toString());
+
+		printWriter.close();
+	}
 
 	public void postSurveyForm(
 			HttpServletRequest request, HttpServletResponse response)

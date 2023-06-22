@@ -290,6 +290,8 @@ public class ZendeskConverter {
 	public ZendeskTicket toZendeskTicket(JSONObject jsonObject) {
 		ZendeskTicket zendeskTicket = new ZendeskTicket();
 
+		zendeskTicket.setAssigneeId(jsonObject.getLong("assignee_id"));
+
 		JSONArray customFieldsJSONArray = jsonObject.getJSONArray(
 			"custom_fields");
 
