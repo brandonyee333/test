@@ -39,7 +39,7 @@ ON (
 	COALESCE(staging.city, '') = COALESCE(replica.city, '') AND
 	COALESCE(staging.country, '') = COALESCE(replica.country, '') AND
 	COALESCE(staging.deviceType, '') = COALESCE(replica.deviceType, '') AND
-	staging.eventDate = replica.eventDate AND
+	DATE(staging.eventDate) = DATE(replica.eventDate) AND
 	staging.pageTitle = replica.pageTitle AND
 	COALESCE(staging.platformName, '') = COALESCE(replica.platformName, '') AND
 	COALESCE(staging.region, '') = COALESCE(replica.region, '') AND
