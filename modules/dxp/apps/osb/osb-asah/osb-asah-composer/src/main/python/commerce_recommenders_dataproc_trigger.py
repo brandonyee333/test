@@ -92,12 +92,17 @@ response = requests.get(
 
 for project in response.json():
 	if project.get('commerceChannelsSelected'):
+		data_source_ids = project.get('dataSourceIds')
+
+		if data_source_ids is None:
+			continue
+
 		dag_id = 'commerce_product_content_recommender_{}'.format(project.get('id'))
 
 		globals()[dag_id] = create_dag(
 			project.get('id'), project.get('timeZoneId'), dag_id,
 			'Commerce Content Recommender DAG For {}'.format(project.get('id')),
-			project.get('dataSourceIds'),
+			data_source_ids,
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Product',
 			'0 1 * * 7',
 			'product'
@@ -108,7 +113,7 @@ for project in response.json():
 		globals()[dag_id] = create_dag(
 			project.get('id'), project.get('timeZoneId'), dag_id,
 			'Commerce User Interaction Recommender DAG For {}'.format(project.get('id')),
-			project.get('dataSourceIds'),
+			data_source_ids,
 			'com.liferay.headless.commerce.machine.learning.dto.v1_0.Order',
 			'0 1 * * *',
 			'order'
