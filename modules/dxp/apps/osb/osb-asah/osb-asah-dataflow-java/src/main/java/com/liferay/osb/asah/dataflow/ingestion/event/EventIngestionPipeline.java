@@ -532,6 +532,12 @@ public class EventIngestionPipeline {
 		return withKeys.withKeyType(TypeDescriptor.of(String.class));
 	}
 
+	private static String _formatFieldValue(String fieldValue) {
+		return StringUtils.replaceAll(
+			fieldValue,
+			"^(\\\\+n|\\\\+r|\\\\+t|\\s)+|(\\\\+n|\\\\+r|\\\\+t|\\s)+$", "");
+	}
+
 	private static String _getAssetId(AnalyticsEvent analyticsEvent) {
 		if (Objects.equals(analyticsEvent.applicationId, "Page")) {
 			Map<String, String> context = analyticsEvent.context;
@@ -597,8 +603,9 @@ public class EventIngestionPipeline {
 		TableRow tableRow = new TableRow();
 
 		tableRow.set("applicationId", analyticsEvent.applicationId);
-		tableRow.set("assetId", _getAssetId(analyticsEvent));
-		tableRow.set("assetTitle", _getAssetTitle(analyticsEvent));
+		tableRow.set("assetId", _formatFieldValue(_getAssetId(analyticsEvent)));
+		tableRow.set(
+			"assetTitle", _formatFieldValue(_getAssetTitle(analyticsEvent)));
 
 		Map<String, String> context = analyticsEvent.context;
 
@@ -613,7 +620,8 @@ public class EventIngestionPipeline {
 		tableRow.set("createDate", analyticsEvent.createDate);
 		tableRow.set(
 			"dataSourceId", Long.parseLong(analyticsEvent.dataSourceId));
-		tableRow.set("description", context.get("description"));
+		tableRow.set(
+			"description", _formatFieldValue(context.get("description")));
 		tableRow.set("deviceType", context.get("deviceType"));
 
 		if (StringUtils.isNotBlank(analyticsEvent.emailAddressHashed)) {
@@ -636,7 +644,7 @@ public class EventIngestionPipeline {
 		}
 
 		tableRow.set("id", analyticsEvent.id);
-		tableRow.set("keywords", context.get("keywords"));
+		tableRow.set("keywords", _formatFieldValue(context.get("keywords")));
 		tableRow.set("languageId", context.get("languageId"));
 		tableRow.set("platformName", context.get("platformName"));
 		tableRow.set("projectId", analyticsEvent.projectId);
@@ -645,7 +653,7 @@ public class EventIngestionPipeline {
 		tableRow.set("region", context.get("region"));
 		tableRow.set("sessionId", sessionId);
 		tableRow.set("timezoneOffset", context.get("timezoneOffset"));
-		tableRow.set("title", context.get("title"));
+		tableRow.set("title", _formatFieldValue(context.get("title")));
 		tableRow.set("url", context.get("url"));
 		tableRow.set("userId", analyticsEvent.userId);
 		tableRow.set("variantId", context.get("variantId"));
