@@ -6,6 +6,7 @@
 package com.liferay.portal.template.xsl.internal;
 
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
+import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
@@ -68,7 +69,8 @@ public class XSLTemplate implements Template {
 		_preventLocalConnections =
 			xslEngineConfiguration.preventLocalConnections();
 
-		_transformerFactory = TransformerFactory.newInstance();
+		_transformerFactory =
+			SecureXMLFactoryProviderUtil.newTransformerFactory();
 
 		try {
 			_transformerFactory.setFeature(
