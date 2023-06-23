@@ -945,7 +945,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 		List<Condition> conditions = new ArrayList<>();
 
-		if (assetId != null) {
+		if (StringUtils.isNotBlank(assetId)) {
 			conditions.add(
 				DSL.field(
 					getAssetIdFieldName()
@@ -954,7 +954,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 				));
 		}
 
-		if (assetTitle != null) {
+		if (StringUtils.isNotBlank(assetTitle)) {
 			conditions.add(
 				DSL.field(
 					getAssetTitleFieldName()
