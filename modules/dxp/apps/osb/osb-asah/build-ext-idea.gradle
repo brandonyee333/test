@@ -5,7 +5,7 @@ import org.yaml.snakeyaml.Yaml
 
 buildscript {
 	dependencies {
-		classpath group: "org.yaml", name: "snakeyaml", version: "1.31"
+		classpath group: "org.yaml", name: "snakeyaml", version: "2.0"
 	}
 
 	repositories {
