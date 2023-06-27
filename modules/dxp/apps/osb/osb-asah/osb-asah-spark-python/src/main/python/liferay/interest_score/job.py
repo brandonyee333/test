@@ -526,7 +526,7 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		chunker.setInputCols(column_names)
 		chunker.setOutputCol(output_column_name)
 		chunker.setRegexParsers([
-			'<JJ>*<NN>+',
+			'<JJ>*<NN[PS]*>+',
 		])
 
 		return chunker
