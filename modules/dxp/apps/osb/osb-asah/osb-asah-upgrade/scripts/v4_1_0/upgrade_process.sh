@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ $# -ne 1 ]
+then
+echo "Please provide the project ID to upgrade";
+
+exit
+fi
+
 PROJECT_ID=$(gcloud config get-value project)
 
 function upgrade_event_asset_columns {
@@ -62,12 +69,9 @@ function upgrade_page_asset_daily_columns {
 	bq --project_id ${PROJECT_ID} query --use_legacy_sql=false < new_upgrade_page_daily_statement.sql
 }
 
-for i in $(bq ls --datasets=true --max_results=1000 | grep "asah" | grep -v "osbasah" | grep -v "_bkp" | awk '{$1=$1;print}')
-do :
-	upgrade_event_asset_columns $i
-	upgrade_blog_asset_daily_columns $i
-	upgrade_document_library_asset_daily_columns $i
-	upgrade_form_asset_daily_columns $i
-	upgrade_journal_asset_daily_columns $i
-	upgrade_page_asset_daily_columns $i
-done
+upgrade_event_asset_columns $1
+upgrade_blog_asset_daily_columns $1
+upgrade_document_library_asset_daily_columns $1
+upgrade_form_asset_daily_columns $1
+upgrade_journal_asset_daily_columns $1
+upgrade_page_asset_daily_columns $1
