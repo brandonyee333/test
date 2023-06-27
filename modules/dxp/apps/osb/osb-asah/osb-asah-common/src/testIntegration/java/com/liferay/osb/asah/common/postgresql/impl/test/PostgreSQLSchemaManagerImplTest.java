@@ -16,6 +16,7 @@ package com.liferay.osb.asah.common.postgresql.impl.test;
 
 import com.liferay.osb.asah.common.OSBAsahCommonSpringTestContext;
 import com.liferay.osb.asah.common.constants.CredentialConstants;
+import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.entity.Project;
 import com.liferay.osb.asah.common.postgresql.PostgreSQLSchemaManager;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
@@ -75,7 +76,7 @@ public class PostgreSQLSchemaManagerImplTest
 		pgSimpleDataSource.setDatabaseName(CredentialConstants.POSTGRESQL_DB);
 		pgSimpleDataSource.setPassword(CredentialConstants.POSTGRESQL_PASSWORD);
 		pgSimpleDataSource.setPortNumber(5432);
-		pgSimpleDataSource.setServerName("localhost");
+		pgSimpleDataSource.setServerName(ServiceConstants.POSTGRESQL_SERVER_IP);
 		pgSimpleDataSource.setUser(CredentialConstants.POSTGRESQL_USER);
 
 		DatabasePopulatorUtils.execute(
