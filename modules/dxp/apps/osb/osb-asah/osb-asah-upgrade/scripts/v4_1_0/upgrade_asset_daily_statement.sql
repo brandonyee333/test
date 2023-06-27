@@ -4,6 +4,4 @@ SET
 	assetTitle = TRIM(assetTitle),
 	pageTitle = TRIM(pageTitle)
 WHERE
-	CONTAINS_SUBSTR(assetId, '\n') OR
-	CONTAINS_SUBSTR(assetTitle, '\n') OR
-	CONTAINS_SUBSTR(pageTitle, '\n');
+	true

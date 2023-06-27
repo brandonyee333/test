@@ -6,8 +6,4 @@ SET
 	keywords = TRIM(keywords),
 	title = TRIM(title)
 WHERE
-	CONTAINS_SUBSTR(assetId, '\n') OR
-	CONTAINS_SUBSTR(assetTitle, '\n') OR
-	CONTAINS_SUBSTR(description, '\n') OR
-	CONTAINS_SUBSTR(keywords, '\n') OR
-	CONTAINS_SUBSTR(title, '\n')
+	true
