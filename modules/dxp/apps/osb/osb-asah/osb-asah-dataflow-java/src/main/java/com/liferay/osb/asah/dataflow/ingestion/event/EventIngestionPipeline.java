@@ -249,8 +249,24 @@ public class EventIngestionPipeline {
 		@ProcessElement
 		public void processElement(ProcessContext processContext) {
 			try {
+				String element = processContext.element();
+
+				boolean newlineDetected = false;
+
+				if (StringUtils.isNotBlank(element) &&
+					element.contains("\\n")) {
+
+					newlineDetected = true;
+				}
+
 				AnalyticsEvent analyticsEvent = ObjectMapperUtil.readValue(
-					AnalyticsEvent.class, processContext.element());
+					AnalyticsEvent.class, element);
+
+				if (newlineDetected && _logger.isInfoEnabled()) {
+					_logger.info(
+						"Detected newline in event message for " +
+							analyticsEvent.projectId);
+				}
 
 				processContext.output(analyticsEvent);
 			}
