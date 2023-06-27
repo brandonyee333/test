@@ -19,7 +19,8 @@ import java.util.List;
 public interface ZendeskTicketCommentWebService {
 
 	public ZendeskTicketComment addAgentZendeskTicketComment(
-			long zendeskTicketId, long zendeskUserId, String body)
+			long zendeskTicketId, long zendeskUserId, String body,
+			boolean isPublic)
 		throws PortalException;
 
 	public void addEndUserZendeskTicketComment(

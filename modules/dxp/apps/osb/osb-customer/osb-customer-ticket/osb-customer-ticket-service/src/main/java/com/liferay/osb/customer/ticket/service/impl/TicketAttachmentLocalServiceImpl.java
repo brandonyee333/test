@@ -103,7 +103,7 @@ public class TicketAttachmentLocalServiceImpl
 		else {
 			_zendeskTicketCommentWebService.addAgentZendeskTicketComment(
 				zendeskTicketId, zendeskUser.getZendeskUserId(),
-				zendeskTicketCommentBody);
+				zendeskTicketCommentBody, true);
 		}
 
 		return ticketAttachment;

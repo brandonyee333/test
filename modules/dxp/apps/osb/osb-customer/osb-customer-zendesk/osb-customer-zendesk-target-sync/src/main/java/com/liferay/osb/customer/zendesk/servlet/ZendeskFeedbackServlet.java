@@ -17,7 +17,10 @@ package com.liferay.osb.customer.zendesk.servlet;
 import com.liferay.osb.customer.zendesk.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -26,6 +29,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.text.SimpleDateFormat;
@@ -54,6 +59,56 @@ import org.osgi.service.http.whiteboard.HttpWhiteboardConstants;
 )
 public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 
+	public void postSurveyForm(
+			HttpServletRequest request, HttpServletResponse response)
+		throws PortalException {
+
+		JSONObject jsonObject = getRequestJSONObject(request);
+
+		String ces1Rating = jsonObject.getString("ces1_rating");
+		String csat1Rating = jsonObject.getString("csat1_rating");
+		String satisfactionComment = jsonObject.getString(
+			"ticket_satisfaction_comment");
+
+		_validateResponses(ces1Rating, csat1Rating);
+
+		String ticketToken = request.getHeader("Ticket-Token");
+
+		long ticketId = GetterUtil.getLong(
+			ticketToken.substring(
+				0, ticketToken.indexOf(StringPool.UNDERLINE)));
+
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
+			ZendeskConnectorConfigurationValues.ZENDESK_AUTH_USER_EMAIL);
+
+		_zendeskTicketCommentWebService.addAgentZendeskTicketComment(
+			ticketId, zendeskUser.getZendeskUserId(),
+			buildTicketCommentBody(
+				ces1Rating, csat1Rating, satisfactionComment),
+			false);
+
+		JSONObject tagsJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		tagsJSONArray.put(ces1Rating);
+		tagsJSONArray.put(csat1Rating);
+
+		tagsJSONObject.put("tags", tagsJSONArray);
+
+		tagsJSONObject.put("safe_update", true);
+
+		SimpleDateFormat updateStampFormat = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		tagsJSONObject.put(
+			"updated_stamp", updateStampFormat.format(new Date()));
+
+		_zendeskBaseWebService.put(
+			"/api/v2/tickets/" + ticketId + "/tags.json",
+			tagsJSONObject.toString());
+	}
+
 	public void postTicketToken(
 			HttpServletRequest request, HttpServletResponse response)
 		throws PortalException {
@@ -74,6 +129,21 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 			ticketId + StringPool.UNDERLINE + PortalUUIDUtil.generate();
 
 		updateZendeskTicketToken(ticketId, ticketTokenFieldId, token);
+	}
+
+	protected String buildTicketCommentBody(
+		String ces1Rating, String csat1Rating, String satisfactionComment) {
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("CES 1 Rating: ");
+		sb.append(ces1Rating);
+		sb.append("<br />CSAT 1 Rating: ");
+		sb.append(csat1Rating);
+		sb.append("<br /><br />Ticket Satisfaction Comment: <br />");
+		sb.append(HtmlUtil.escape(satisfactionComment));
+
+		return sb.toString();
 	}
 
 	@Override
@@ -153,6 +223,18 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 			"/api/v2/tickets/" + ticketId + ".json", jsonObject.toString());
 	}
 
+	private void _validateResponses(String ces1Rating, String csat1Rating) {
+		if (!ces1Rating.matches("ces1_[1-5]")) {
+			throw new IllegalArgumentException(
+				"Invalid ces1 value: " + ces1Rating);
+		}
+
+		if (!csat1Rating.matches("csat1_[1-5]")) {
+			throw new IllegalArgumentException(
+				"Invalid csat value: " + csat1Rating);
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ZendeskFeedbackServlet.class);
 
@@ -160,6 +242,12 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 	private ZendeskBaseWebService _zendeskBaseWebService;
 
 	@Reference
+	private ZendeskTicketCommentWebService _zendeskTicketCommentWebService;
+
+	@Reference
 	private ZendeskTicketWebService _zendeskTicketWebService;
+
+	@Reference
+	private ZendeskUserWebService _zendeskUserWebService;
 
 }
