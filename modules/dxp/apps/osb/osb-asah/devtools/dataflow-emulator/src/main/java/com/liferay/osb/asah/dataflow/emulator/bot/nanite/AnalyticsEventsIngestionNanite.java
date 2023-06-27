@@ -180,6 +180,12 @@ public class AnalyticsEventsIngestionNanite {
 		}
 	}
 
+	private String _formatFieldValue(String fieldValue) {
+		return StringUtils.replaceAll(
+			fieldValue,
+			"^(\\\\+n|\\\\+r|\\\\+t|\\s)+|(\\\\+n|\\\\+r|\\\\+t|\\s)+$", "");
+	}
+
 	private String _getAssetId(AnalyticsEvent analyticsEvent) {
 		if (Objects.equals(analyticsEvent.getApplicationId(), "Page")) {
 			Map<String, String> context = analyticsEvent.getContext();
@@ -303,7 +309,26 @@ public class AnalyticsEventsIngestionNanite {
 		return stream.map(
 			message -> {
 				try {
-					return AnalyticsEvent.toAnalyticsEvent(message.getObject());
+					boolean containsNewline = false;
+
+					String messageObject = message.getObject();
+
+					if (StringUtils.isNotBlank(messageObject) &&
+						messageObject.contains("\\n")) {
+
+						containsNewline = true;
+					}
+
+					AnalyticsEvent analyticsEvent =
+						AnalyticsEvent.toAnalyticsEvent(messageObject);
+
+					if (containsNewline && _log.isInfoEnabled()) {
+						_log.info(
+							"Detected newline in event message for " +
+								analyticsEvent.getProjectId());
+					}
+
+					return analyticsEvent;
 				}
 				catch (Exception exception) {
 					_log.error(exception, exception);
@@ -449,8 +474,9 @@ public class AnalyticsEventsIngestionNanite {
 
 		Map<String, String> context = analyticsEvent.getContext();
 
-		bqEvent.setAssetId(_getAssetId(analyticsEvent));
-		bqEvent.setAssetTitle(_getAssetTitle(analyticsEvent));
+		bqEvent.setAssetId(_formatFieldValue(_getAssetId(analyticsEvent)));
+		bqEvent.setAssetTitle(
+			_formatFieldValue(_getAssetTitle(analyticsEvent)));
 		bqEvent.setApplicationId(analyticsEvent.getApplicationId());
 		bqEvent.setBrowserName(context.get("browserName"));
 		bqEvent.setCanonicalUrl(context.get("canonicalUrl"));
@@ -468,7 +494,7 @@ public class AnalyticsEventsIngestionNanite {
 		bqEvent.setCountry("Local Network");
 		bqEvent.setCreateDate(analyticsEvent.getCreateDate());
 		bqEvent.setDataSourceId(Long.valueOf(analyticsEvent.getDataSourceId()));
-		bqEvent.setDescription(context.get("description"));
+		bqEvent.setDescription(_formatFieldValue(context.get("description")));
 		bqEvent.setDeviceType(context.get("deviceType"));
 		bqEvent.setEventDate(analyticsEvent.getEventDate());
 		bqEvent.setEventId(analyticsEvent.getEventId());
@@ -491,7 +517,7 @@ public class AnalyticsEventsIngestionNanite {
 		}
 
 		bqEvent.setId(analyticsEvent.getId());
-		bqEvent.setKeywords(context.get("keywords"));
+		bqEvent.setKeywords(_formatFieldValue(context.get("keywords")));
 		bqEvent.setLanguageId(context.get("languageId"));
 		bqEvent.setPlatformName(context.get("platformName"));
 		bqEvent.setProjectTimeZoneId(analyticsEvent.getProjectTimeZoneId());
@@ -499,7 +525,7 @@ public class AnalyticsEventsIngestionNanite {
 		bqEvent.setRegion("Local Network");
 		bqEvent.setSessionId(sessionContext.id);
 		bqEvent.setTimezoneOffset(context.get("timezoneOffset"));
-		bqEvent.setTitle(context.get("title"));
+		bqEvent.setTitle(_formatFieldValue(context.get("title")));
 		bqEvent.setUrl(context.get("url"));
 		bqEvent.setUserId(analyticsEvent.getUserId());
 		bqEvent.setVariantId(context.get("variantId"));
