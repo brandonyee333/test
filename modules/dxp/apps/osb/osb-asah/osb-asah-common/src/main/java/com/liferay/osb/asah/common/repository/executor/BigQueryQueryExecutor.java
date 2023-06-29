@@ -294,6 +294,9 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 					String key = entry.getKey();
 
 					value = value.replace("'", "\\\\'");
+					value = value.replace("\n", "\\n");
+					value = value.replace("\r", "\\r");
+					value = value.replace("\t", "\\t");
 
 					query.bind(key, value);
 				}
