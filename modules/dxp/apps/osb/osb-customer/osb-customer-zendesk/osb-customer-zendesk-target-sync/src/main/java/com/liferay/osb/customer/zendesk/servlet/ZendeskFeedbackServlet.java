@@ -79,7 +79,7 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 				0, ticketToken.indexOf(StringPool.UNDERLINE)));
 
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
-			ZendeskConnectorConfigurationValues.ZENDESK_AUTH_USER_EMAIL);
+			ZendeskConnectorConfigurationValues.ZENDESK_ADMIN_USER_EMAIL);
 
 		_zendeskTicketCommentWebService.addAgentZendeskTicketComment(
 			ticketId, zendeskUser.getZendeskUserId(),

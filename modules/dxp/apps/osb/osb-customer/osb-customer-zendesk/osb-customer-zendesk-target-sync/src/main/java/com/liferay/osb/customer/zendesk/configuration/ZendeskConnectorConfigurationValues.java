@@ -12,6 +12,9 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskConnectorConfigurationValues {
 
+	public static final String ZENDESK_ADMIN_USER_EMAIL = GetterUtil.getString(
+		ZendeskConnectorConfigurationUtil.get("zendesk.admin.user.email"));
+
 	public static final String ZENDESK_AUTH_USER_EMAIL = GetterUtil.getString(
 		ZendeskConnectorConfigurationUtil.get("zendesk.auth.user.email"));
 
