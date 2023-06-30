@@ -463,7 +463,7 @@ definition {
 	macro addViaCKEditor {
 		PortletEntry.inputTitle(title = ${webContentTitle});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${webContentContent});
 	}

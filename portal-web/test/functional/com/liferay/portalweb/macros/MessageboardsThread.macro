@@ -14,7 +14,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditor(
+		Type.typeEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -30,7 +30,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditor(
+		Type.typeEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -107,7 +107,7 @@ definition {
 			}
 		}
 		else {
-			Type.typeCKEditorWaitForCKEditor(
+			Type.typeEditorWaitForEditor(
 				locator1 = "CKEditor#BODY_FIELD",
 				value1 = ${threadBody});
 		}
@@ -126,7 +126,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -152,7 +152,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -182,7 +182,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -204,7 +204,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditor(
+		Type.typeEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -224,7 +224,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -253,7 +253,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -271,7 +271,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubjectEdit});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBodyEdit});
 
@@ -326,7 +326,7 @@ definition {
 		}
 
 		if (isSet(threadBodyEdit)) {
-			Type.typeCKEditorWaitForCKEditor(
+			Type.typeEditorWaitForEditor(
 				locator1 = "CKEditor#BODY_FIELD",
 				value1 = ${threadBodyEdit});
 		}
@@ -346,7 +346,7 @@ definition {
 		}
 
 		if (isSet(threadBodyEdit)) {
-			Type.typeCKEditorWaitForCKEditor(
+			Type.typeEditorWaitForEditor(
 				locator1 = "CKEditor#BODY_FIELD",
 				value1 = ${threadBodyEdit});
 		}
@@ -415,7 +415,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -541,7 +541,7 @@ definition {
 				locator1 = "TextInput#SUBJECT",
 				value1 = ${explanationSubject});
 
-			Type.typeCKEditorWaitForCKEditor(
+			Type.typeEditorWaitForEditor(
 				locator1 = "CKEditor#BODY_FIELD",
 				value1 = ${explanationBody});
 		}
@@ -584,7 +584,7 @@ definition {
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Quick Reply");
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadReplyBody});
 
@@ -603,7 +603,7 @@ definition {
 			key_threadSubject = ${threadSubject},
 			locator1 = "MessageBoardsThread#THREAD_REPLY_BUTTON");
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadReplyBody});
 
@@ -648,7 +648,7 @@ definition {
 				value1 = "Reply to Main Thread");
 		}
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadReplyBody});
 
@@ -705,7 +705,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSubject});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadBody});
 
@@ -752,7 +752,7 @@ definition {
 			locator1 = "TextInput#SUBJECT",
 			value1 = ${threadSplitReplySubject});
 
-		Type.typeCKEditorWaitForCKEditor(
+		Type.typeEditorWaitForEditor(
 			locator1 = "CKEditor#BODY_FIELD",
 			value1 = ${threadSplitReplyBody});
 
