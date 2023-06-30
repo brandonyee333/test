@@ -66,8 +66,7 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 			HttpServletRequest request, HttpServletResponse response)
 		throws IOException, PortalException {
 
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		doOptions(request, response);
 
 		String ticketToken = request.getHeader("Ticket-Token");
 
@@ -78,13 +77,20 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 		ZendeskTicket zendeskTicket = _zendeskTicketWebService.getZendeskTicket(
 			ticketId);
 
+		String status = zendeskTicket.getStatus();
+
+		if (status.equalsIgnoreCase("closed")) {
+			response.setStatus(HttpServletResponse.SC_CONFLICT);
+
+			return;
+		}
+
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUser(
 			zendeskTicket.getAssigneeId());
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("assigneeName", zendeskUser.getName());
-		jsonObject.put("status", zendeskTicket.getStatus());
 
 		jsonObject.put(
 			"ticketTitle",
@@ -95,6 +101,7 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 		PrintWriter printWriter = response.getWriter();
 
 		printWriter.write(jsonObject.toString());
+		printWriter.flush();
 
 		printWriter.close();
 	}
@@ -102,6 +109,8 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 	public void postSurveyForm(
 			HttpServletRequest request, HttpServletResponse response)
 		throws PortalException {
+
+		doOptions(request, response);
 
 		JSONObject jsonObject = getRequestJSONObject(request);
 
@@ -187,6 +196,22 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 	}
 
 	@Override
+	protected void doOptions(
+		HttpServletRequest httpServletRequest,
+		HttpServletResponse httpServletResponse) {
+
+		httpServletResponse.setHeader(
+			"Access-Control-Allow-Origin",
+			ZendeskConnectorConfigurationValues.ZENDESK_SUBDOMAIN);
+		httpServletResponse.setHeader(
+			"Access-Control-Allow-Methods", "GET, POST");
+		httpServletResponse.setHeader(
+			"Access-Control-Allow-Headers", "Content-Type, Ticket-Token");
+
+		httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+	}
+
+	@Override
 	protected boolean isAuthorized(HttpServletRequest request) {
 		if (!request.isSecure()) {
 			return false;
@@ -228,6 +253,21 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 		}
 
 		return false;
+	}
+
+	@Override
+	protected void service(
+			HttpServletRequest request, HttpServletResponse response)
+		throws IOException {
+
+		String requestMethod = request.getMethod();
+
+		if (requestMethod.equals("OPTIONS")) {
+			doOptions(request, response);
+		}
+		else {
+			super.service(request, response);
+		}
 	}
 
 	protected JSONObject updateZendeskTicketToken(

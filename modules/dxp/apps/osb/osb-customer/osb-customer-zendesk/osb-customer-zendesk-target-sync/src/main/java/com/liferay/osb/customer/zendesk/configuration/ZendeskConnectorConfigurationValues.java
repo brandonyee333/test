@@ -18,6 +18,9 @@ public class ZendeskConnectorConfigurationValues {
 	public static final String ZENDESK_AUTH_USER_EMAIL = GetterUtil.getString(
 		ZendeskConnectorConfigurationUtil.get("zendesk.auth.user.email"));
 
+	public static final String ZENDESK_SUBDOMAIN = GetterUtil.getString(
+		ZendeskConnectorConfigurationUtil.get("zendesk.subdomain"));
+
 	public static final Long ZENDESK_TICKET_TOKEN_CUSTOM_FIELD_ID =
 		GetterUtil.getLong(
 			ZendeskConnectorConfigurationUtil.get(
