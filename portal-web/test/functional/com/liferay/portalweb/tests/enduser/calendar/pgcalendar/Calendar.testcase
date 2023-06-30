@@ -1304,8 +1304,6 @@ definition {
 
 		CalendarNavigator.gotoView(viewType = "Day");
 
-		CalendarNavigator.gotoAddEvent();
-
 		CalendarScheduler.gotoAddViaDayView();
 
 		CalendarEvent.viewUnavailableCalendarsNotPresent(unavailableCalendarList = "Site Name");
