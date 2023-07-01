@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.util.CollectionUtils;
 
@@ -124,12 +123,7 @@ public class Individual {
 						long value = NumberUtils.toLong(
 							(String)field.getValue());
 
-						if ((value > 0) ||
-							StringUtils.equals("0", (String)field.getValue())) {
-
-							field.setValue(
-								DateUtil.toUTCString(new Date(value)));
-						}
+						field.setValue(DateUtil.toUTCString(new Date(value)));
 					}
 
 					field.setSourceName(field.getName());
