@@ -407,25 +407,45 @@ public class BQSessionRepositoryImpl
 
 		return _queryExecutor.queryForList(
 			Function.identity(),
-			_dslContext.select(
-				deviceTypeField, platformNameField,
-				DSL.count(
+			_dslContext.with(
+				"SessionsByDevice"
+			).as(
+				_dslContext.select(
+					deviceTypeField, platformNameField,
+					DSL.count(
+					).as(
+						"count"
+					)
+				).from(
+					DSL.table(
+						"BQSession"
+					).as(
+						"Session"
+					)
+				).where(
+					_createWhereClauseCondition(channelId, timeRange, zoneId)
+				).groupBy(
+					deviceTypeField, platformNameField
+				)
+			).select(
+				DSL.asterisk(),
+				DSL.sum(
+					DSL.field("count", Long.class)
+				).over(
+				).partitionBy(
+					deviceTypeField
 				).as(
-					"count"
+					"deviceTypeCount"
 				)
 			).from(
-				DSL.table(
-					"BQSession"
-				).as(
-					"Session"
-				)
-			).where(
-				_createWhereClauseCondition(channelId, timeRange, zoneId)
-			).groupBy(
-				deviceTypeField, platformNameField
+				"SessionsByDevice"
 			).orderBy(
+				DSL.field(
+					"deviceTypeCount"
+				).desc(),
 				deviceTypeField,
-				DSL.count(
+				DSL.field(
+					"count"
 				).desc()
 			));
 	}
