@@ -190,6 +190,21 @@ public class IndividualsRestControllerTest
 		Assertions.assertEquals(
 			"2021-11-11T18:18:13.657Z",
 			String.valueOf(modifiedDateFieldDTO.getValue()));
+
+		individualDTO = _individualsRestController.getIndividualDTO(
+			"124", null, null);
+
+		individualFieldDTO = individualDTO.getIndividualFieldDTO();
+
+		fields = individualFieldDTO.getField();
+
+		fieldDTOs = (List<FieldDTO>)fields.get("birthDate");
+
+		birthDateFieldDTO = fieldDTOs.get(0);
+
+		Assertions.assertEquals(
+			"1964-06-30T12:00:00.000Z",
+			String.valueOf(birthDateFieldDTO.getValue()));
 	}
 
 	@BQSQLResource(resourcePath = "test_get_individuals_distribution_bq.sql")
