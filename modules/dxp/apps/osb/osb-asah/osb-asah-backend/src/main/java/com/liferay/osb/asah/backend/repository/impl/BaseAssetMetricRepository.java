@@ -463,22 +463,41 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 				return null;
 			},
-			dslContext.select(
-				deviceTypeField, metricField1, platformNameField
-			).from(
-				DSL.table(
-					getTableName(timeRange)
-				).as(
-					"metric"
+			dslContext.with(
+				"MetricsByDevice"
+			).as(
+				dslContext.select(
+					deviceTypeField, metricField1, platformNameField
+				).from(
+					DSL.table(
+						getTableName(timeRange)
+					).as(
+						"metric"
+					)
+				).where(
+					_createWhereClauseCondition(
+						assetId, assetTitle, channelId, timeRange)
+				).groupBy(
+					deviceTypeField, platformNameField
+				).having(
+					metricField2.greaterThan(BigDecimal.ZERO)
 				)
-			).where(
-				_createWhereClauseCondition(
-					assetId, assetTitle, channelId, timeRange)
-			).groupBy(
-				deviceTypeField, platformNameField
-			).having(
-				metricField2.greaterThan(BigDecimal.ZERO)
+			).select(
+				DSL.asterisk(),
+				DSL.sum(
+					metricField1
+				).over(
+				).partitionBy(
+					deviceTypeField
+				).as(
+					"deviceTypeCount"
+				)
+			).from(
+				"MetricsByDevice"
 			).orderBy(
+				DSL.field(
+					"deviceTypeCount"
+				).desc(),
 				deviceTypeField, metricField1.desc()
 			));
 
