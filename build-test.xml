@@ -2509,6 +2509,13 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 
 			<get-test-app-server-lib-portal-dir />
 
+			<propertycopy from="jdbc.${database.type}.driver" name="jdbc.driver" />
+
+			<copy
+				file="${test.app.server.lib.portal.dir}/${jdbc.driver}"
+				tofile="${app.server.lib.global.dir}/${jdbc.driver}"
+			/>
+
 			<if>
 				<equals arg1="${app.server.type}" arg2="tomcat" />
 				<then>
@@ -2571,13 +2578,6 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 				<elseif>
 					<equals arg1="${app.server.type}" arg2="wildfly" />
 					<then>
-						<propertycopy from="jdbc.${database.type}.driver" name="jdbc.driver" />
-
-						<copy
-							file="${test.app.server.lib.portal.dir}/${jdbc.driver}"
-							tofile="${app.server.lib.global.dir}/${jdbc.driver}"
-						/>
-
 						<echo file="${app.server.lib.global.dir}/module.xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <module name="com.liferay.portal" xmlns="urn:jboss:module:1.5">
 	<resources>
@@ -2646,11 +2646,6 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 						<equals arg1="${database.type}" arg2="mysql" />
 					</and>
 					<then>
-						<copy
-							file="${test.app.server.lib.portal.dir}/${jdbc.mysql.driver}"
-							tofile="${app.server.lib.global.dir}/${jdbc.mysql.driver}"
-						/>
-
 						<echo file="${app.server.weblogic.instance.dir}/config/jdbc/Liferay_Data_Source-jdbc.xml">
 							<![CDATA[
 								<?xml version='1.0' encoding='UTF-8'?>
@@ -2705,11 +2700,6 @@ sendPasswordCaptchaEnabled=&quot;false&quot;</echo>
 						<equals arg1="${database.type}" arg2="mysql" />
 					</and>
 					<then>
-						<copy
-							file="${test.app.server.lib.portal.dir}/${jdbc.mysql.driver}"
-							tofile="${app.server.lib.global.dir}/${jdbc.mysql.driver}"
-						/>
-
 						<replace
 							file="${app.server.websphere.instance.dir}/config/cells/liferay-cell/resources.xml"
 						>
