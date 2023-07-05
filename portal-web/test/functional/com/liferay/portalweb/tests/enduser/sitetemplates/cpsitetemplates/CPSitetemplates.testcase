@@ -1703,7 +1703,7 @@ definition {
 				pageName = "Page1",
 				siteTemplateName = "Site Template Name");
 
-			AssertConfirm.waitForConfirmation(value1 = "The friendly URL of the page you are trying to save conflicts with a friendly URL of a page in the site template, from which this site was created. Are you sure you want to configure the page with this friendly URL?");
+			AssertConfirm.waitForConfirmation(value1 = "The friendly URL of the site template page you are trying to save conflicts with some of the own pages of the sites created from this site template. Are you sure you want to configure the site template page with this friendly URL?");
 		}
 
 		task ("And Add user in default site only can access site template") {
