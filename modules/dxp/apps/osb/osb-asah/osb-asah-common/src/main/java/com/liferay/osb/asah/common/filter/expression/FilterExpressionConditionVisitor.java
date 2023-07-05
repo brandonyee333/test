@@ -417,7 +417,10 @@ public class FilterExpressionConditionVisitor
 			condition = field.similarTo("%" + param.getValue());
 		}
 		else if (functionName.equalsIgnoreCase("isInterested")) {
-			condition = _getIsInterestedCondition(field.toString());
+			Param param = (Param)parameters.get(1);
+
+			condition = _getIsInterestedCondition(
+				StringUtil.unquote((String)param.getValue()));
 		}
 		else if (functionName.equalsIgnoreCase("isMember")) {
 			Param param = (Param)parameters.get(1);
