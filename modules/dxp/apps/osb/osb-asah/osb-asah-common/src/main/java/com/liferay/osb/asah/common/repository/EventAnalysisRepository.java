@@ -22,6 +22,7 @@ import java.util.Set;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -29,6 +30,11 @@ import org.springframework.data.repository.query.Param;
  */
 public interface EventAnalysisRepository
 	extends CustomEventAnalysisRepository, Repository<EventAnalysis, Long> {
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	@Query("DELETE FROM EventAnalysis WHERE channelId IN (:channelIds)")
+	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
 
 	@CacheEvict(allEntries = true)
 	@Modifying

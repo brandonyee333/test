@@ -25,6 +25,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 
 /**
@@ -42,6 +43,7 @@ public interface SegmentRepository
 
 	@CacheEvict(allEntries = true)
 	@Modifying
+	@Query("DELETE FROM Segment WHERE channelId IN (:channelIds)")
 	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
 
 	@Cacheable

@@ -16,10 +16,23 @@ package com.liferay.osb.asah.common.repository;
 
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 
+import java.util.Set;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.jdbc.repository.query.Modifying;
+import org.springframework.data.jdbc.repository.query.Query;
+import org.springframework.data.repository.query.Param;
+
 /**
  * @author André Miranda
  */
 public interface CustomAssetDashboardRepository
 	extends CustomCustomAssetDashboardRepository,
 			Repository<CustomAssetDashboard, String> {
+
+	@CacheEvict(allEntries = true)
+	@Modifying
+	@Query("DELETE FROM CustomAssetDashboard WHERE channelId IN (:channelIds)")
+	public void deleteByChannelIdIn(@Param("channelIds") Set<Long> channelIds);
+
 }
