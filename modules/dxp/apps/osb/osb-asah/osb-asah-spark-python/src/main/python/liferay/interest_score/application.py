@@ -27,6 +27,7 @@ from liferay.interest_score.job import \
 from pyspark import SparkConf
 
 import argparse
+import os
 import sys
 
 class InterestScoreApplication(BaseSparkApplication):
@@ -46,7 +47,17 @@ class InterestScoreApplication(BaseSparkApplication):
 		argument_parser.add_argument('--ac-project-id', required=True)
 		argument_parser.add_argument('--configuration', required=True)
 		argument_parser.add_argument(
-			'--job-parameters', default='[]', required=False)
+			'--environment-variable',
+			action='append',
+			default=[],
+			nargs='*',
+			required=False
+		)
+		argument_parser.add_argument(
+			'--job-parameters',
+			default='[]',
+			required=False
+		)
 
 		return argument_parser
 
@@ -58,11 +69,36 @@ class InterestScoreApplication(BaseSparkApplication):
 		spark_conf.set('materializationDataset', self.args.ac_project_id)
 		spark_conf.set(
 			'spark.jars.packages',
-			self.configuration.get('spark.jars.packages'))
+			self.configuration.get('spark.jars.packages')
+		)
 		spark_conf.set(
 			'temporaryGcsBucket',
-			self.configuration.get('google.storage.path.temporaryGcsBucket'))
+			self.configuration.get('google.storage.path.temporaryGcsBucket')
+		)
 		spark_conf.set('viewsEnabled', 'true')
+
+		for environment_variable in self.args.environment_variable:
+			key, value = environment_variable[0].split('=')
+
+			key = key.strip()
+			key = key.upper()
+			key = key.replace('.', '_')
+
+			value = value.strip()
+
+			self.log.info("Setting ENV Variable {} to: {}".format(key, value))
+
+			os.environ[key] = value
+
+			spark_conf.set(
+				f'spark.executorEnv.{key}',
+				value
+			)
+
+			spark_conf.set(
+				f'spark.yarn.appMasterEnv.{key}',
+				value
+			)
 
 		return spark_conf
 
