@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.CustomAssetDashboardDog;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -38,6 +39,10 @@ public class CustomAssetDashboardDogTest
 			   OSBAsahTestExecutionListenersContext {
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_channel_info.json"
+	)
+	@RepositoryResource(
 		repositoryClass = CustomAssetDashboardRepository.class,
 		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
 	)
@@ -47,6 +52,10 @@ public class CustomAssetDashboardDogTest
 			_customAssetDashboardDog.fetchCustomAssetDashboard("0"));
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_channel_info.json"
+	)
 	@RepositoryResource(
 		repositoryClass = CustomAssetDashboardRepository.class,
 		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
@@ -65,6 +74,10 @@ public class CustomAssetDashboardDogTest
 			"Asset Title 1", customAssetDashboard.getAssetTitle());
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_channel_info.json"
+	)
 	@RepositoryResource(
 		repositoryClass = CustomAssetDashboardRepository.class,
 		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
@@ -85,6 +98,10 @@ public class CustomAssetDashboardDogTest
 			3, customAssetDashboards.size(), customAssetDashboards.toString());
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_channel_info.json"
+	)
 	@RepositoryResource(
 		repositoryClass = CustomAssetDashboardRepository.class,
 		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"
@@ -111,6 +128,10 @@ public class CustomAssetDashboardDogTest
 			"Asset Title 2", customAssetDashboard.getAssetTitle());
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_channel_info.json"
+	)
 	@RepositoryResource(
 		repositoryClass = CustomAssetDashboardRepository.class,
 		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"

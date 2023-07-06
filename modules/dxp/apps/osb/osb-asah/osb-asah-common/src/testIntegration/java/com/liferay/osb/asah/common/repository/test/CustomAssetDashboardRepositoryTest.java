@@ -14,7 +14,9 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
@@ -47,7 +49,16 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard1.setAssetTitle("Gartner Banner 2021");
 		customAssetDashboard1.setCreateDate(new Date());
 		customAssetDashboard1.setCategory("default");
-		customAssetDashboard1.setChannelId(1L);
+
+		Channel channel1 = new Channel("Channel Test 1");
+
+		channel1.setId(1L);
+		channel1.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel1);
+
+		customAssetDashboard1.setChannelId(channel1.getId());
+
 		customAssetDashboard1.setDataSourceId(1L);
 		customAssetDashboard1.setId("1");
 		customAssetDashboard1.setIsNew(Boolean.TRUE);
@@ -58,7 +69,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard2.setAssetTitle("Home page logo");
 		customAssetDashboard2.setCreateDate(new Date());
 		customAssetDashboard2.setCategory("default");
-		customAssetDashboard2.setChannelId(1L);
+		customAssetDashboard2.setChannelId(channel1.getId());
 		customAssetDashboard2.setDataSourceId(1L);
 		customAssetDashboard2.setId("2");
 		customAssetDashboard2.setIsNew(Boolean.TRUE);
@@ -69,7 +80,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard3.setAssetTitle("Page Footer");
 		customAssetDashboard3.setCreateDate(new Date());
 		customAssetDashboard3.setCategory("default");
-		customAssetDashboard3.setChannelId(1L);
+		customAssetDashboard3.setChannelId(channel1.getId());
 		customAssetDashboard3.setDataSourceId(1L);
 		customAssetDashboard3.setId("3");
 		customAssetDashboard3.setIsNew(Boolean.TRUE);
@@ -80,7 +91,16 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard4.setAssetTitle("Navigation Content");
 		customAssetDashboard4.setCreateDate(new Date());
 		customAssetDashboard4.setCategory("default");
-		customAssetDashboard4.setChannelId(2L);
+
+		Channel channel2 = new Channel("Channel Test 1");
+
+		channel2.setId(2L);
+		channel2.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel2);
+
+		customAssetDashboard4.setChannelId(channel2.getId());
+
 		customAssetDashboard4.setDataSourceId(2L);
 		customAssetDashboard4.setId("4");
 		customAssetDashboard4.setIsNew(Boolean.TRUE);
@@ -91,7 +111,16 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard5.setAssetTitle("16-654-jmtr_jun2022");
 		customAssetDashboard5.setCreateDate(new Date());
 		customAssetDashboard5.setCategory("default");
-		customAssetDashboard5.setChannelId(3L);
+
+		Channel channel3 = new Channel("Channel Test 1");
+
+		channel3.setId(3L);
+		channel3.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel3);
+
+		customAssetDashboard5.setChannelId(channel3.getId());
+
 		customAssetDashboard5.setDataSourceId(3L);
 		customAssetDashboard5.setId("5");
 		customAssetDashboard5.setIsNew(Boolean.TRUE);
@@ -102,7 +131,16 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard6.setAssetTitle("16-654-jmtr.jun2022");
 		customAssetDashboard6.setCreateDate(new Date());
 		customAssetDashboard6.setCategory("default");
-		customAssetDashboard6.setChannelId(4L);
+
+		Channel channel4 = new Channel("Channel Test 1");
+
+		channel4.setId(4L);
+		channel4.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel4);
+
+		customAssetDashboard6.setChannelId(channel4.getId());
+
 		customAssetDashboard6.setDataSourceId(4L);
 		customAssetDashboard6.setId("6");
 		customAssetDashboard6.setIsNew(Boolean.TRUE);
@@ -113,7 +151,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard7.setAssetTitle("16-654-jmtr/jun2022");
 		customAssetDashboard7.setCreateDate(new Date());
 		customAssetDashboard7.setCategory("default");
-		customAssetDashboard7.setChannelId(4L);
+		customAssetDashboard7.setChannelId(channel4.getId());
 		customAssetDashboard7.setDataSourceId(4L);
 		customAssetDashboard7.setId("7");
 		customAssetDashboard7.setIsNew(Boolean.TRUE);
@@ -226,6 +264,9 @@ public class CustomAssetDashboardRepositoryTest
 
 		return _customAssetDashboardRepository;
 	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private CustomAssetDashboardRepository _customAssetDashboardRepository;

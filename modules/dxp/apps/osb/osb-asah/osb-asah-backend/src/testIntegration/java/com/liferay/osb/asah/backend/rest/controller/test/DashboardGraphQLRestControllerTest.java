@@ -14,12 +14,17 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 /**
  * @author André Miranda
  */
+@RepositoryResource(
+	repositoryClass = ChannelRepository.class,
+	resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_channel_info.json"
+)
 @RepositoryResource(
 	repositoryClass = CustomAssetDashboardRepository.class,
 	resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_info.json"

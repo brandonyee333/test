@@ -105,7 +105,8 @@ public class BQMembershipChangeRepositoryTest
 	@Test
 	public void testAddMembershipChange() {
 		_bqMembershipChangeRepository.addBQMembershipChange(
-			_bqMembershipRepository.getMembershipCountSnapshot(1029384756L));
+			_bqMembershipRepository.getMembershipCountSnapshot(
+				1L, 1029384756L));
 
 		List<BQMembershipChange> bqMembershipChanges =
 			_bqMembershipChangeRepository.

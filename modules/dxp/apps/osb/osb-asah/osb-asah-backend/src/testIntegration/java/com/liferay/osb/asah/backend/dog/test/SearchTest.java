@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.model.AssetType;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.model.Sort;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
@@ -59,6 +60,10 @@ public class SearchTest
 			2, _metricDog.getAssetMetricsCount(searchQueryContext));
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahcerebroinfo/custom_asset_dashboards_channel_info.json"
+	)
 	@RepositoryResource(
 		repositoryClass = CustomAssetDashboardRepository.class,
 		resourcePath = "osbasahcerebroinfo/search_custom_asset_dashboards_info.json"
