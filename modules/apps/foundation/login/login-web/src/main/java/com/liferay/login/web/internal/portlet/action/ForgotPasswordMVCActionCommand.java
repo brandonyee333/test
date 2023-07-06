@@ -16,7 +16,6 @@ import com.liferay.portal.kernel.exception.RequiredReminderQueryException;
 import com.liferay.portal.kernel.exception.SendPasswordException;
 import com.liferay.portal.kernel.exception.UserActiveException;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
-import com.liferay.portal.kernel.exception.UserLockoutException;
 import com.liferay.portal.kernel.exception.UserReminderQueryException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -167,8 +166,7 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 			else if (e instanceof NoSuchUserException ||
 					 e instanceof RequiredReminderQueryException ||
 					 e instanceof SendPasswordException ||
-					 e instanceof UserActiveException ||
-					 e instanceof UserLockoutException) {
+					 e instanceof UserActiveException) {
 
 				if (PropsValues.LOGIN_SECURE_FORGOT_PASSWORD) {
 					HttpServletRequest httpServletRequest =
