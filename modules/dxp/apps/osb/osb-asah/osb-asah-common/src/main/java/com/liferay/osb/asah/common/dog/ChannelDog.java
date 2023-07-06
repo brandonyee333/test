@@ -17,7 +17,6 @@ package com.liferay.osb.asah.common.dog;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
-import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.http.ChannelHttp;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
@@ -109,29 +108,16 @@ public class ChannelDog {
 
 	@Transactional
 	public void clearChannels(Set<Long> channelIds) throws Exception {
-		List<Long> channelSegmentIds = _getChannelSegmentIds(channelIds);
-
 		_customAssetDashboardRepository.deleteByChannelIdIn(channelIds);
 		_eventAnalysisRepository.deleteByChannelIdIn(channelIds);
 		_experimentRepository.deleteByChannelIdIn(channelIds);
 		_segmentRepository.deleteByChannelIdIn(channelIds);
 
-		String bigQueryClearChannelTemplate = ResourceUtil.readResourceToString(
-			"dependencies/bigquery_clear_channel.sql", getClass());
-
-		if (channelSegmentIds.isEmpty()) {
-			bigQueryClearChannelTemplate =
-				bigQueryClearChannelTemplate.replaceAll(".*BQMembership.*", "");
-		}
-
 		_bigQueryQueryExecutor.queryExecute(
-			StringUtils.replaceEach(
-				bigQueryClearChannelTemplate,
-				new String[] {"$CHANNEL_IDS$", "$SEGMENT_IDS$"},
-				new String[] {
-					StringUtils.join(channelIds, ","),
-					StringUtils.join(channelSegmentIds, ",")
-				}));
+			StringUtils.replace(
+				ResourceUtil.readResourceToString(
+					"dependencies/clear_channel_statement.sql", getClass()),
+				"${channel_ids}", StringUtils.join(channelIds, ",")));
 	}
 
 	public void deleteChannels(Set<Long> channelIds) throws Exception {
@@ -366,27 +352,6 @@ public class ChannelDog {
 		}
 
 		return name;
-	}
-
-	private List<Long> _getChannelSegmentIds(Set<Long> channelIds) {
-		List<Long> segmentIds = new ArrayList<>();
-
-		int page = 0;
-
-		while (true) {
-			List<Segment> segments = _segmentRepository.findByChannelIdIn(
-				channelIds, PageRequest.of(page++, 50));
-
-			if (segments.isEmpty()) {
-				break;
-			}
-
-			for (Segment segment : segments) {
-				segmentIds.add(segment.getId());
-			}
-		}
-
-		return segmentIds;
 	}
 
 	private Sort _getSort(String[] sorts) {
