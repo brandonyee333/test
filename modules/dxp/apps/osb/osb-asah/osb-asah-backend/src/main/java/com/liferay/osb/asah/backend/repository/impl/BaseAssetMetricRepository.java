@@ -173,8 +173,9 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 
 	@Override
 	public List<T> getAssetMetrics(
-		@Nullable Long channelId, @Nullable String keywords, Pageable pageable,
-		Set<String> selectedMetrics, TimeRange timeRange) {
+		@Nullable Long channelId, @Nullable String keywords,
+		@Nullable String terms, Pageable pageable, Set<String> selectedMetrics,
+		TimeRange timeRange) {
 
 		List<Field<? extends Object>> fields = new ArrayList<>(
 			_getMetricFields(selectedMetrics, timeRange));
@@ -195,7 +196,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			rowMap -> _toMetric(rowMap, selectedMetrics),
 			selectJoinStep.where(
 				_createWhereClauseCondition(
-					null, null, channelId, keywords, timeRange)
+					null, null, channelId, keywords, terms, timeRange)
 			).groupBy(
 				assetIdField, assetTitleField
 			).orderBy(
@@ -210,7 +211,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 	@Override
 	public Long getAssetMetricsCount(
 		@Nullable Long channelId, @Nullable String keywords,
-		TimeRange timeRange) {
+		@Nullable String terms, TimeRange timeRange) {
 
 		Field<String> assetIdField = DSL.field(
 			getAssetIdFieldName(), String.class);
@@ -230,7 +231,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 					)
 				).where(
 					_createWhereClauseCondition(
-						null, null, channelId, keywords, timeRange)
+						null, null, channelId, keywords, terms, timeRange)
 				).groupBy(
 					assetIdField, assetTitleField
 				)
@@ -941,13 +942,13 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		}
 
 		return _createWhereClauseCondition(
-			assetId, assetTitle, channelId, null, timeRange);
+			assetId, assetTitle, channelId, null, null, timeRange);
 	}
 
 	private Condition _createWhereClauseCondition(
 		@Nullable String assetId, @Nullable String assetTitle,
 		@Nullable Long channelId, @Nullable String keywords,
-		TimeRange timeRange) {
+		@Nullable String terms, TimeRange timeRange) {
 
 		String timeZoneId = timeZoneDog.getTimeZoneId();
 
@@ -994,6 +995,15 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			conditions.add(getKeywordSearchCondition(keywords));
 		}
 
+		if (StringUtils.isNotBlank(terms)) {
+			conditions.add(
+				DSL.lower(
+					DSL.field(getAssetTitleFieldName(), String.class)
+				).like(
+					StringUtils.wrap(StringUtils.lowerCase(terms), "%")
+				));
+		}
+
 		return DSL.and(conditions);
 	}
 
@@ -1002,7 +1012,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		@Nullable Long channelId, TimeRange timeRange) {
 
 		return _createWhereClauseCondition(
-			assetId, assetTitle, channelId, null, timeRange);
+			assetId, assetTitle, channelId, null, null, timeRange);
 	}
 
 	private Long _getLongValue(
