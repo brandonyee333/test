@@ -16,6 +16,8 @@ package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v4_1_0.PageReferrersViewUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_1_0.SegmentUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_1_1.BQMembershipUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_1_1.CustomAssetDashboardUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,9 +36,19 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps("4.0.9", "4.0.10", _segmentUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.10", "4.0.11", _pageReferrersViewUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"4.0.11", "4.0.12", _bqMembershipUpgradeStep);
+		upgradeProcess.addUpgradeSteps(
+			"4.0.12", "4.0.13", _customAssetDashboardUpgradeStep);
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private BQMembershipUpgradeStep _bqMembershipUpgradeStep;
+
+	@Autowired
+	private CustomAssetDashboardUpgradeStep _customAssetDashboardUpgradeStep;
 
 	@Autowired
 	private PageReferrersViewUpgradeStep _pageReferrersViewUpgradeStep;

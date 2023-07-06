@@ -1392,6 +1392,11 @@
 		"fields": [
 			{
 				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
+			{
+				"mode": "REQUIRED",
 				"name": "createDate",
 				"type": "TIMESTAMP"
 			},
@@ -1417,6 +1422,11 @@
 			"segmentId"
 		],
 		"fields": [
+			{
+				"mode": "REQUIRED",
+				"name": "channelId",
+				"type": "INT64"
+			},
 			{
 				"fields": [
 					{
