@@ -978,31 +978,53 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 	def __init__(self, spark_application):
 		self._log = logging.getLogger(self.__class__.__name__)
 
+		interest_models_path = spark_application.configuration.get(
+			'interest.models.path')
+
+		language_detector_lang = spark_application.configuration.get(
+			'interest.models.language_detector.lang')
+
+		language_detector_name = spark_application.configuration.get(
+			'interest.models.language_detector.name')
+
 		try:
-			language_detector_path = spark_application.configuration.get(
-				'interest.models.language-detector.path')
-
 			self._language_detector = LanguageDetectorDL.load(
-				language_detector_path)
-
+				'{}/{}_{}'.format(
+					interest_models_path,
+					language_detector_name,
+					language_detector_lang)
+			)
 		except Exception as exception:
 			self._log.warning(
 				'Unable to load Language Detector {}'.format(exception))
 
 			self._language_detector = LanguageDetectorDL.pretrained(
-				'ld_tatoeba_cnn_99', 'xx')
+				lang=language_detector_lang,
+				name=language_detector_name
+			)
+
+		pos_tagger_lang = spark_application.configuration.get(
+			'interest.models.pos_tagger.lang')
+
+		pos_tagger_name = spark_application.configuration.get(
+			'interest.models.pos_tagger.name')
 
 		try:
-			pos_tagger_path = spark_application.configuration.get(
-				'interest.models.pos-tagger.path')
-
-			self._part_of_speech_tagger = PerceptronModel.load(pos_tagger_path)
+			self._part_of_speech_tagger = PerceptronModel.load(
+				'{}/{}_{}'.format(
+					interest_models_path,
+					pos_tagger_name,
+					pos_tagger_lang
+				)
+			)
 		except Exception as exception:
 			self._log.warning(
 				'Unable to load Part of Speech Tagger {}'.format(exception))
 
 			self._part_of_speech_tagger = PerceptronModel.pretrained(
-				"pos_anc", "en")
+				lang=pos_tagger_lang,
+				name=pos_tagger_name
+			)
 
 		super(KeywordsExtractionSparkJob, self).__init__(spark_application)
 
