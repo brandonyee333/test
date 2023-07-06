@@ -24,7 +24,6 @@ from pyspark import SparkConf
 from pyspark.sql.window import Window
 
 import argparse
-import logging
 import os
 import pyspark.sql.functions as F
 import pytz
@@ -75,8 +74,6 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 
 		self.configuration = CommerceConfiguration(self.args.configuration)
 
-		self.log = self._initialize_logging()
-
 		spark_context = self.spark_session.sparkContext
 
 		spark_conf = spark_context.getConf()
@@ -120,14 +117,6 @@ class BaseCommerceSparkApplication(BaseSparkApplication, metaclass=ABCMeta):
 	@abstractmethod
 	def _create_spark_job_pipeline(self):
 		pass
-
-	def _initialize_logging(self):
-		logging.basicConfig(
-			format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-			level=logging.INFO
-		)
-
-		return logging.getLogger(self.__class__.__name__)
 
 	def start(self):
 		spark_job_pipeline = self._create_spark_job_pipeline()

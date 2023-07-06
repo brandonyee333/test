@@ -9,6 +9,7 @@
 # distribution rights of the Software.
 #
 
+import logging
 from abc import ABCMeta, \
 	abstractmethod
 
@@ -22,6 +23,8 @@ class BaseSparkApplication(object):
 	__metaclass__ = ABCMeta
 
 	def __init__(self):
+		self.log = self._initialize_logging()
+
 		argument_parser = self._create_argument_parser()
 
 		self.args = argument_parser.parse_args()
@@ -42,6 +45,14 @@ class BaseSparkApplication(object):
 
 	def _create_spark_conf(self):
 		return SparkConf()
+
+	def _initialize_logging(self):
+		logging.basicConfig(
+			format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+			level=logging.INFO
+		)
+
+		return logging.getLogger(self.__class__.__name__)
 
 	@abstractmethod
 	def start(self):
