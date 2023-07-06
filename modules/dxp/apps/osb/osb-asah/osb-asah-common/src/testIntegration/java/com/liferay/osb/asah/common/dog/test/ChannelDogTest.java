@@ -23,14 +23,17 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.repository.AssetRepository;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.SetUtil;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
+import com.liferay.osb.asah.test.util.annotation.SQLResource;
 import com.liferay.osb.asah.test.util.repository.CrudBQBlogRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +77,17 @@ public class ChannelDogTest
 		Assertions.assertEquals("channel1 (1)", channel.getName());
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_clear_channels.sql")
+	@SQLResource(resourcePath = "test_clear_channels.sql")
+	@Test
+	public void testClearChannels() throws Exception {
+		_channelDog.clearChannels(SetUtil.of(1L, 2L));
+
+		Assertions.assertEquals(1, _customAssetDashboardRepository.count());
+		Assertions.assertEquals(1, _experimentRepository.count());
+		Assertions.assertEquals(1, _segmentRepository.count());
+	}
+
 	@Disabled
 	@RepositoryResource(
 		repositoryClass = CrudBQBlogRepository.class,
@@ -97,7 +111,7 @@ public class ChannelDogTest
 	)
 	@Test
 	public void testDeleteChannels() throws Exception {
-		_channelDog.deleteChannels(Arrays.asList(1L, 3L), null, null);
+		_channelDog.deleteChannels(SetUtil.of(1L, 3L));
 
 		Assertions.assertEquals(2, _assetRepository.count());
 
@@ -340,6 +354,12 @@ public class ChannelDogTest
 
 	@Autowired
 	private ChannelRepository _channelRepository;
+
+	@Autowired
+	private CustomAssetDashboardRepository _customAssetDashboardRepository;
+
+	@Autowired
+	private ExperimentRepository _experimentRepository;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;
