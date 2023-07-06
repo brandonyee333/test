@@ -14,19 +14,20 @@
 
 package com.liferay.osb.asah.common.dog;
 
-import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
-import com.liferay.osb.asah.common.entity.Asset;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.ChannelDataSource;
 import com.liferay.osb.asah.common.entity.DataSource;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.http.ChannelHttp;
-import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
+import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
+import com.liferay.osb.asah.common.repository.EventAnalysisRepository;
+import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
+import com.liferay.osb.asah.common.repository.executor.BigQueryQueryExecutor;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
+import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.StringUtil;
 import com.liferay.osb.asah.common.util.TimeOrderedUuidGenerator;
 
@@ -39,7 +40,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import org.apache.commons.collections4.IterableUtils;
 import org.apache.commons.lang3.ArrayUtils;
@@ -56,6 +56,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Geyson Silva
@@ -106,55 +107,35 @@ public class ChannelDog {
 			dataSourceId, channelNamesByGroupIds.keySet());
 	}
 
-	public void clearChannels(
-			List<Long> channelIds,
-			Consumer<Integer> processedCountMonitorConsumer,
-			Consumer<Integer> queueMonitorConsumer)
-		throws Exception {
+	@Transactional
+	public void clearChannels(Set<Long> channelIds) throws Exception {
+		List<Long> channelSegmentIds = _getChannelSegmentIds(channelIds);
 
-		_deleteAssets(channelIds);
+		_customAssetDashboardRepository.deleteByChannelIdIn(channelIds);
+		_eventAnalysisRepository.deleteByChannelIdIn(channelIds);
+		_experimentRepository.deleteByChannelIdIn(channelIds);
+		_segmentRepository.deleteByChannelIdIn(channelIds);
 
-		// TODO delete data
+		String bigQueryClearChannelTemplate = ResourceUtil.readResourceToString(
+			"dependencies/bigquery_clear_channel.sql", getClass());
 
-		_deleteIndividualReferences(
-			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
-
-		List<Segment> segments = new ArrayList<>();
-
-		int page = 0;
-
-		while (true) {
-			List<Segment> curSegments = _segmentRepository.findByChannelIdIn(
-				new HashSet<>(channelIds), PageRequest.of(page++, 500));
-
-			if (curSegments.isEmpty()) {
-				break;
-			}
-
-			segments.addAll(curSegments);
+		if (channelSegmentIds.isEmpty()) {
+			bigQueryClearChannelTemplate =
+				bigQueryClearChannelTemplate.replaceAll(".*BQMembership.*", "");
 		}
 
-		if (segments.isEmpty()) {
-			return;
-		}
-
-		_segmentRepository.deleteAll(segments);
-
-		_asahTaskDog.scheduleAsahTask(
-			"DeleteIndividualSegmentTasksNanite",
-			JSONUtil.put(
-				"individualSegmentIds",
-				JSONUtil.toJSONArray(segments, Segment::getId)));
+		_bigQueryQueryExecutor.queryExecute(
+			StringUtils.replaceEach(
+				bigQueryClearChannelTemplate,
+				new String[] {"$CHANNEL_IDS$", "$SEGMENT_IDS$"},
+				new String[] {
+					StringUtils.join(channelIds, ","),
+					StringUtils.join(channelSegmentIds, ",")
+				}));
 	}
 
-	public void deleteChannels(
-			List<Long> channelIds,
-			Consumer<Integer> processedCountMonitorConsumer,
-			Consumer<Integer> queueMonitorConsumer)
-		throws Exception {
-
-		clearChannels(
-			channelIds, processedCountMonitorConsumer, queueMonitorConsumer);
+	public void deleteChannels(Set<Long> channelIds) throws Exception {
+		clearChannels(channelIds);
 
 		_channelRepository.deleteByIdIn(new HashSet<>(channelIds));
 	}
@@ -343,47 +324,6 @@ public class ChannelDog {
 		_channelRepository.saveAll(channels);
 	}
 
-	private void _deleteAssets(List<Long> channelIds) throws Exception {
-		while (true) {
-			List<Asset> assets = _assetDog.getAssets(channelIds, 0, 10000);
-
-			if (assets.isEmpty()) {
-				break;
-			}
-
-			assets.forEach(
-				asset -> {
-					Set<Long> assetChannelIds = asset.getChannelIds();
-
-					assetChannelIds.removeAll(channelIds);
-
-					if (assetChannelIds.isEmpty()) {
-						_assetDog.deleteAsset(
-							asset,
-							DateUtil.newDayLocalDateTimeString(
-								_timeZoneDog.getZoneId()));
-					}
-					else {
-						_assetDog.updateAsset(asset);
-					}
-				});
-
-			if (assets.size() < 10000) {
-				break;
-			}
-		}
-	}
-
-	private void _deleteIndividualReferences(
-			List<Long> channelIds,
-			Consumer<Integer> processedCountMonitorConsumer,
-			Consumer<Integer> queueMonitorConsumer)
-		throws Exception {
-
-		// TODO delete individual references
-
-	}
-
 	private Set<ChannelDataSource> _getChannelDataSources(
 		Map<Long, Set<Long>> dataSources) {
 
@@ -426,6 +366,27 @@ public class ChannelDog {
 		}
 
 		return name;
+	}
+
+	private List<Long> _getChannelSegmentIds(Set<Long> channelIds) {
+		List<Long> segmentIds = new ArrayList<>();
+
+		int page = 0;
+
+		while (true) {
+			List<Segment> segments = _segmentRepository.findByChannelIdIn(
+				channelIds, PageRequest.of(page++, 50));
+
+			if (segments.isEmpty()) {
+				break;
+			}
+
+			for (Segment segment : segments) {
+				segmentIds.add(segment.getId());
+			}
+		}
+
+		return segmentIds;
 	}
 
 	private Sort _getSort(String[] sorts) {
@@ -508,10 +469,7 @@ public class ChannelDog {
 	private static final Log _log = LogFactory.getLog(ChannelDog.class);
 
 	@Autowired
-	private AsahTaskDog _asahTaskDog;
-
-	@Autowired
-	private AssetDog _assetDog;
+	private BigQueryQueryExecutor _bigQueryQueryExecutor;
 
 	@Autowired
 	private ChannelHttp _channelHttp;
@@ -520,15 +478,21 @@ public class ChannelDog {
 	private ChannelRepository _channelRepository;
 
 	@Autowired
+	private CustomAssetDashboardRepository _customAssetDashboardRepository;
+
+	@Autowired
 	private DataSourceRepository _dataSourceRepository;
+
+	@Autowired
+	private EventAnalysisRepository _eventAnalysisRepository;
+
+	@Autowired
+	private ExperimentRepository _experimentRepository;
 
 	@Autowired
 	private SegmentRepository _segmentRepository;
 
 	private final TimeOrderedUuidGenerator _timeOrderedUuidGenerator =
 		new TimeOrderedUuidGenerator();
-
-	@Autowired
-	private TimeZoneDog _timeZoneDog;
 
 }
