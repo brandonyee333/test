@@ -11,7 +11,9 @@
 
 from liferay.common.spark import BaseSparkApplication, \
 	SparkJobPipeline
-from liferay.interest_score.job import IdentityInterestScoreBigQueryDataFrameWriterSparkJob, \
+from liferay.interest_score.job import \
+	DLKeywordsExtractionSparkJob, \
+	IdentityInterestScoreBigQueryDataFrameWriterSparkJob, \
 	IdentityInterestScorePageBigQueryDataFrameWriterSparkJob, \
 	IdentityInterestScorePageSparkJob, \
 	IdentityInterestScorePrepareAnalyticsEventsWithKeywordsSparkJob, \
@@ -69,7 +71,17 @@ class InterestScoreApplication(BaseSparkApplication):
 
 		jobs.append(ReadAnalyticsEventsSparkJob(self))
 
-		jobs.append(KeywordsExtractionSparkJob(self))
+		keywords_extraction_method = self.configuration.get(
+			'interest.keywords.extraction.method')
+
+		if keywords_extraction_method == 'base':
+			self.log.info("Using base keywords extraction method")
+
+			jobs.append(KeywordsExtractionSparkJob(self))
+		else:
+			self.log.info("Using deep learning keywords extraction method")
+
+			jobs.append(DLKeywordsExtractionSparkJob(self))
 
 		jobs.append(IdentityInterestScorePrepareAnalyticsEventsWithKeywordsSparkJob(self))
 
