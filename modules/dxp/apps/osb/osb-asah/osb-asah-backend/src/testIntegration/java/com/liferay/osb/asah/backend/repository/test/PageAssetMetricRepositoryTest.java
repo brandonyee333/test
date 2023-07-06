@@ -25,6 +25,7 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -137,6 +138,26 @@ public class PageAssetMetricRepositoryTest
 				SetUtil.of(PageMetricType.VIEWS.getName()),
 				TimeRange.LAST_24_HOURS),
 			PageMetric::getViewsMetric);
+	}
+
+	@BQSQLResource(
+		resourcePath = "page_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetViewsAssetMetricsFilteringByTerms() {
+		List<PageMetric> assetMetrics = _assetMetricRepository.getAssetMetrics(
+			1L, null, null, PageRequest.of(0, 10),
+			SetUtil.of(PageMetricType.VIEWS.getName()),
+			TimeRange.LAST_24_HOURS);
+
+		Assertions.assertEquals(2, assetMetrics.size());
+
+		assetMetrics = _assetMetricRepository.getAssetMetrics(
+			1L, null, "title 1", PageRequest.of(0, 10),
+			SetUtil.of(PageMetricType.VIEWS.getName()),
+			TimeRange.LAST_24_HOURS);
+
+		Assertions.assertEquals(1, assetMetrics.size());
 	}
 
 	@BQSQLResource(
