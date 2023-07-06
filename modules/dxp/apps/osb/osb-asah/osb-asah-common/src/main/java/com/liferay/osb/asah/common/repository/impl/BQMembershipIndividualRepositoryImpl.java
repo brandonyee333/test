@@ -178,17 +178,18 @@ public class BQMembershipIndividualRepositoryImpl
 			"MembershipIndividual"
 		).as(
 			_dslContext.select(
-				DSL.field("individualId"), DSL.field("modifiedDate"),
-				DSL.field("segmentId")
+				DSL.field("channelId"), DSL.field("individualId"),
+				DSL.field("modifiedDate"), DSL.field("segmentId")
 			).from(
 				"BQMembership"
 			).where(
 				conditions
 			).groupBy(
-				DSL.field("individualId"), DSL.field("modifiedDate"),
-				DSL.field("segmentId")
+				DSL.field("channelId"), DSL.field("individualId"),
+				DSL.field("modifiedDate"), DSL.field("segmentId")
 			)
 		).select(
+			DSL.field("MembershipIndividual.channelId"),
 			DSL.field(
 				"ARRAY_AGG((SELECT AS STRUCT User.dataSourceId AS " +
 					"dataSourceId, User.uuid AS uuid))"
@@ -223,7 +224,8 @@ public class BQMembershipIndividualRepositoryImpl
 				""
 			)
 		).groupBy(
-			DSL.field("individualId"), DSL.field("segmentId")
+			DSL.field("channelId"), DSL.field("individualId"),
+			DSL.field("segmentId")
 		);
 	}
 

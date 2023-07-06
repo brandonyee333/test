@@ -111,7 +111,8 @@ public interface CustomBQMembershipRepository {
 	public List<Long> findTop20SegmentIdByIndividualId(String individualId);
 
 	@Cacheable
-	public MembershipCountSnapshot getMembershipCountSnapshot(Long segmentId);
+	public MembershipCountSnapshot getMembershipCountSnapshot(
+		Long channelId, Long segmentId);
 
 	@CacheEvict(allEntries = true)
 	@Modifying

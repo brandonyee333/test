@@ -66,7 +66,8 @@ public class BQMembershipDog {
 
 		BQMembership bqMembership = bqMemberships.get(0);
 
-		_addBQMembershipChange(bqMembership.getSegmentId());
+		_addBQMembershipChange(
+			bqMembership.getChannelId(), bqMembership.getSegmentId());
 
 		_bqMembershipIndividualDog.updateMembershipIndividuals(
 			bqMembership.getSegmentId());
@@ -74,11 +75,11 @@ public class BQMembershipDog {
 		return bqMemberships;
 	}
 
-	public void deleteBQMembership(String individualId, Long segmentId) {
+	public void deleteBQMembership(String individualId, Segment segment) {
 		_bqMembershipRepository.deleteByIndividualIdAndSegmentId(
-			individualId, segmentId);
+			individualId, segment.getId());
 
-		_addBQMembershipChange(segmentId);
+		_addBQMembershipChange(segment.getChannelId(), segment.getId());
 	}
 
 	public void deleteBQMemberships(List<Long> segmentIds) {
@@ -151,8 +152,9 @@ public class BQMembershipDog {
 			individualId);
 	}
 
-	public MembershipCountSnapshot getMembershipCountSnapshot(Long segmentId) {
-		return _bqMembershipRepository.getMembershipCountSnapshot(segmentId);
+	public MembershipCountSnapshot getMembershipCountSnapshot(Segment segment) {
+		return _bqMembershipRepository.getMembershipCountSnapshot(
+			segment.getChannelId(), segment.getId());
 	}
 
 	public Map<Long, JSONObject> getMembershipsJSONObjects(
@@ -210,16 +212,17 @@ public class BQMembershipDog {
 	}
 
 	public void updateBQMemberships(
-		Long channelId, String filterString, Boolean includeAnonymousUsers,
-		Long segmentId) {
+		String filterString, Boolean includeAnonymousUsers, Segment segment) {
 
 		_bqMembershipRepository.updateBQMemberships(
-			channelId, filterString, includeAnonymousUsers, segmentId);
+			segment.getChannelId(), filterString, includeAnonymousUsers,
+			segment.getId());
 	}
 
-	private void _addBQMembershipChange(Long segmentId) {
+	private void _addBQMembershipChange(Long channelId, Long segmentId) {
 		_bqMembershipChangeDog.addBQMembershipChange(
-			_bqMembershipRepository.getMembershipCountSnapshot(segmentId));
+			_bqMembershipRepository.getMembershipCountSnapshot(
+				channelId, segmentId));
 	}
 
 	private Sort _getSort(String[] sorts) {

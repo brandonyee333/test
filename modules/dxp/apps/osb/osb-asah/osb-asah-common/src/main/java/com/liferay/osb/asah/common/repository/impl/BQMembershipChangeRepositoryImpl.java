@@ -77,11 +77,12 @@ public class BQMembershipChangeRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembershipChange")
 			).columns(
-				DSL.field("createDate"),
+				DSL.field("channelId", Long.class), DSL.field("createDate"),
 				DSL.field("identitiesCount", Long.class),
 				DSL.field("individualsCount", Long.class),
 				DSL.field("segmentId", Long.class)
 			).values(
+				membershipCountSnapshot.getChannelId(),
 				DateUtil.newDateString(),
 				membershipCountSnapshot.getIdentitiesCount(),
 				membershipCountSnapshot.getIndividualsCount(),

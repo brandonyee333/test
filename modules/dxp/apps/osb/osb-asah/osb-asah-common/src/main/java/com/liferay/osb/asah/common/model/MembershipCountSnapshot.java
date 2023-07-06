@@ -22,8 +22,10 @@ import java.util.Objects;
 public class MembershipCountSnapshot {
 
 	public MembershipCountSnapshot(
-		long identitiesCount, long individualsCount, long segmentId) {
+		long channelId, long identitiesCount, long individualsCount,
+		long segmentId) {
 
+		_channelId = channelId;
 		_identitiesCount = identitiesCount;
 		_individualsCount = individualsCount;
 		_segmentId = segmentId;
@@ -42,7 +44,8 @@ public class MembershipCountSnapshot {
 		MembershipCountSnapshot membershipCountSnapshot =
 			(MembershipCountSnapshot)obj;
 
-		if (Objects.equals(
+		if (Objects.equals(_channelId, membershipCountSnapshot._channelId) &&
+			Objects.equals(
 				_identitiesCount, membershipCountSnapshot._identitiesCount) &&
 			Objects.equals(
 				_individualsCount, membershipCountSnapshot._individualsCount) &&
@@ -52,6 +55,10 @@ public class MembershipCountSnapshot {
 		}
 
 		return false;
+	}
+
+	public long getChannelId() {
+		return _channelId;
 	}
 
 	public long getIdentitiesCount() {
@@ -68,9 +75,11 @@ public class MembershipCountSnapshot {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_identitiesCount, _individualsCount, _segmentId);
+		return Objects.hash(
+			_channelId, _identitiesCount, _individualsCount, _segmentId);
 	}
 
+	private final long _channelId;
 	private final long _identitiesCount;
 	private final long _individualsCount;
 	private final long _segmentId;

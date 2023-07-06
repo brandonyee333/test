@@ -589,7 +589,9 @@ public class BQMembershipRepositoryImpl
 	}
 
 	@Override
-	public MembershipCountSnapshot getMembershipCountSnapshot(Long segmentId) {
+	public MembershipCountSnapshot getMembershipCountSnapshot(
+		Long channelId, Long segmentId) {
+
 		Map<String, Object> membershipSnapshot = _queryExecutor.queryForMap(
 			_dslContext.select(
 				DSL.countDistinct(
@@ -623,6 +625,11 @@ public class BQMembershipRepositoryImpl
 				)
 			).where(
 				DSL.field(
+					"channelId", Long.class
+				).eq(
+					channelId
+				),
+				DSL.field(
 					"segmentId", Long.class
 				).eq(
 					segmentId
@@ -630,7 +637,7 @@ public class BQMembershipRepositoryImpl
 			));
 
 		if (membershipSnapshot == null) {
-			return new MembershipCountSnapshot(0L, 0L, segmentId);
+			return new MembershipCountSnapshot(channelId, 0L, 0L, segmentId);
 		}
 
 		BigDecimal identitiesCountBigDecimal =
@@ -641,7 +648,7 @@ public class BQMembershipRepositoryImpl
 				"individualsCount", BigDecimal.ZERO);
 
 		return new MembershipCountSnapshot(
-			identitiesCountBigDecimal.longValue(),
+			channelId, identitiesCountBigDecimal.longValue(),
 			individualsCountBigDecimal.longValue(), segmentId);
 	}
 

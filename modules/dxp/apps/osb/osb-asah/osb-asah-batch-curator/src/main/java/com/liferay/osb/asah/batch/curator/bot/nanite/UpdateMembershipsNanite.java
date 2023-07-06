@@ -74,23 +74,21 @@ public class UpdateMembershipsNanite extends BaseNanite {
 		}
 
 		String filterString = segment.getFilter();
-		Long segmentId = segment.getId();
 
 		try {
 			_bqMembershipDog.updateBQMemberships(
-				segment.getChannelId(), filterString,
-				segment.getIncludeAnonymousUsers(), segmentId);
+				filterString, segment.getIncludeAnonymousUsers(), segment);
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					String.format(
 						"Updated memberships successfully for segment ID %s " +
 							"and filter %s",
-						segmentId, filterString));
+						segment.getId(), filterString));
 			}
 
 			MembershipCountSnapshot membershipCountSnapshot =
-				_bqMembershipDog.getMembershipCountSnapshot(segmentId);
+				_bqMembershipDog.getMembershipCountSnapshot(segment);
 
 			_bqMembershipChangeDog.addBQMembershipChange(
 				membershipCountSnapshot);
@@ -103,7 +101,7 @@ public class UpdateMembershipsNanite extends BaseNanite {
 				String.format(
 					"Unable to update memberships for segment ID %s and " +
 						"filter %s",
-					segmentId, filterString));
+					segment.getId(), filterString));
 		}
 		finally {
 			_segmentDog.updateSegmentState(segment, "READY");
@@ -138,7 +136,7 @@ public class UpdateMembershipsNanite extends BaseNanite {
 
 		try {
 			MembershipCountSnapshot membershipCountSnapshot =
-				_bqMembershipDog.getMembershipCountSnapshot(segmentId);
+				_bqMembershipDog.getMembershipCountSnapshot(segment);
 
 			_bqMembershipChangeDog.addBQMembershipChange(
 				membershipCountSnapshot);
