@@ -8,6 +8,9 @@ interest:
     filter:
         entity:
             type: true
+    keywords:
+        extraction:
+            method: base
     models:
         embeddings:
             lang: "en"
