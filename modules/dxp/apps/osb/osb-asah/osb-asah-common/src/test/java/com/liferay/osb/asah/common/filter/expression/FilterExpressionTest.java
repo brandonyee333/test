@@ -1865,7 +1865,7 @@ public class FilterExpressionTest {
 	}
 
 	@Test
-	public void testInterestFilterExpressionTrue() {
+	public void testInterestFilterExpressionTrue1() {
 		_assertEquals(
 			DSL.or(
 				DSL.field(
@@ -1947,6 +1947,91 @@ public class FilterExpressionTest {
 				)),
 			"(interests.filter(filter='(name eq ''analytics'' and score eq " +
 				"''true'')'))");
+	}
+
+	@Test
+	public void testInterestFilterExpressionTrue2() {
+		_assertEquals(
+			DSL.or(
+				DSL.field(
+					"Identity.id", String.class
+				).in(
+					DSL.selectDistinct(
+						DSL.field("Identity.id", String.class)
+					).from(
+						DSL.table(
+							"BQIdentity"
+						).as(
+							"Identity"
+						)
+					).join(
+						DSL.table(
+							"BQIdentityInterestScore"
+						).as(
+							"Interest"
+						)
+					).on(
+						DSL.field(
+							"Identity.id", String.class
+						).eq(
+							DSL.field("Interest.identityId", String.class)
+						)
+					).where(
+						DSL.and(
+							DSL.field(
+								"Interest.keyword", String.class
+							).eq(
+								"analytics test"
+							),
+							DSL.field(
+								"Interest.interested", Boolean.class
+							).eq(
+								true
+							))
+					)
+				),
+				DSL.field(
+					"Individual.id", String.class
+				).in(
+					DSL.selectDistinct(
+						DSL.field("Identity.individualId", String.class)
+					).from(
+						DSL.table(
+							"BQIdentity"
+						).as(
+							"Identity"
+						)
+					).join(
+						DSL.table(
+							"BQIdentityInterestScore"
+						).as(
+							"Interest"
+						)
+					).on(
+						DSL.field(
+							"Identity.id", String.class
+						).eq(
+							DSL.field("Interest.identityId", String.class)
+						)
+					).where(
+						DSL.and(
+							DSL.field(
+								"Interest.keyword", String.class
+							).eq(
+								"analytics test"
+							),
+							DSL.field(
+								"Interest.interested", Boolean.class
+							).eq(
+								true
+							),
+							DSL.field(
+								"Identity.individualId"
+							).isNotNull())
+					)
+				)),
+			"(interests.filter(filter='(name eq ''analytics test'' and score " +
+				"eq ''true'')'))");
 	}
 
 	@Test
