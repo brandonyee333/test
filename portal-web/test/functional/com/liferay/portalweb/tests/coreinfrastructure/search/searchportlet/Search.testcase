@@ -321,8 +321,6 @@ definition {
 		property custom.properties = "enterprise.product.notification.enabled=true";
 		property test.run.environment = "EE";
 
-		SelectFrame(value1 = "relative=top");
-
 		AssertTextEquals.assertPartialText(
 			locator1 = "Modal#HEADER",
 			value1 = "Terms of Use");
