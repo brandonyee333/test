@@ -114,7 +114,7 @@ public class FormAssetMetricRepositoryTest
 		assertAssetMetrics(
 			new Double[] {7D, 6D},
 			_assetMetricRepository.getAssetMetrics(
-				1L, null, PageRequest.of(0, 10),
+				1L, null, null, PageRequest.of(0, 10),
 				SetUtil.of(FormMetricType.VIEWS.getName()),
 				TimeRange.LAST_24_HOURS),
 			FormMetric::getViewsMetric);

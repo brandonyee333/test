@@ -99,7 +99,7 @@ public class MetricDog {
 
 		return assetMetricRepository.getAssetMetricsCount(
 			searchQueryContext.getChannelIdAsLong(),
-			searchQueryContext.getKeywords(),
+			searchQueryContext.getKeywords(), searchQueryContext.getTerms(),
 			searchQueryContext.getTimeRange());
 	}
 
@@ -164,8 +164,9 @@ public class MetricDog {
 
 		return assetMetricRepository.getAssetMetrics(
 			searchQueryContext.getChannelIdAsLong(),
-			searchQueryContext.getKeywords(), PageRequest.of(page, size, sort),
-			selectedMetrics, searchQueryContext.getTimeRange());
+			searchQueryContext.getKeywords(), searchQueryContext.getTerms(),
+			PageRequest.of(page, size, sort), selectedMetrics,
+			searchQueryContext.getTimeRange());
 	}
 
 	private final Map<AssetType, AssetMetricRepository>
