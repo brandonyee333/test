@@ -60,7 +60,6 @@ definition {
 		}
 	}
 
-	@summary = "Navigate to Product Menu > Sites > Navigation > Public Pages > ${page}"
 	macro gotoEditPage {
 		ProductMenuHelper.openProductMenu();
 

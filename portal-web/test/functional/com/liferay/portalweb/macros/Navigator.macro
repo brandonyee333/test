@@ -106,7 +106,6 @@ definition {
 		AssertElementPresent(locator1 = "NavUnderline#ACTIVE_NAV_UNDERLINE_LINK");
 	}
 
-	@summary = "Navigate to the page named '${pageName}'"
 	macro gotoPage {
 		Navigator.openURL();
 
@@ -125,7 +124,6 @@ definition {
 		Navigator._gotoPage(pageName = ${pageName});
 	}
 
-	@summary = "Navigate to the page named '${pageName}'"
 	macro gotoPrivateStagedSitePage {
 		Navigator.openPrivateStagedSiteURL(siteNameURL = ${siteName});
 
@@ -154,7 +152,6 @@ definition {
 		Navigator._gotoPage(pageName = ${pageName});
 	}
 
-	@summary = "Navigate to the page named '${pageName}'"
 	macro gotoStagedSitePage {
 		Navigator.openStagingSiteURL(siteName = ${siteName});
 

@@ -211,7 +211,6 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Input a small image with the url '${templateSmallImageURL}'"
 	macro inputSmallImage {
 		Panel.expandPanel(panelHeading = "Details");
 
