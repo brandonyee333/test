@@ -798,6 +798,7 @@ definition {
 
 	test ConfigureViewInContextLinkBehavior {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "brooke"; 
 
 		DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "guest");
 
