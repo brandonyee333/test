@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.repository.test;
 
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
@@ -22,6 +23,7 @@ import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.ExperimentType;
 import com.liferay.osb.asah.common.model.Goal;
 import com.liferay.osb.asah.common.model.GoalMetric;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 
@@ -53,7 +55,15 @@ public class ExperimentRepositoryTest
 	public void setUp() {
 		Experiment experiment = new Experiment();
 
-		experiment.setChannelId(1L);
+		Channel channel1 = new Channel("Channel Test 1");
+
+		channel1.setId(1L);
+		channel1.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel1);
+
+		experiment.setChannelId(channel1.getId());
+
 		experiment.setCreateDate(new Date());
 		experiment.setConfidenceLevel(95.0);
 		experiment.setDataSourceId(2L);
@@ -168,6 +178,9 @@ public class ExperimentRepositoryTest
 
 		return _experimentRepository;
 	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private ExperimentRepository _experimentRepository;

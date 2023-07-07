@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.Sort;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
@@ -74,6 +75,10 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -98,6 +103,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -116,6 +125,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -126,6 +139,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertNull(experiment);
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -138,6 +155,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 				95, null, 0L));
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
@@ -168,6 +189,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -179,6 +204,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
@@ -189,6 +218,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			() -> _experimentDog.getExperimentMetric(2L));
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
@@ -219,6 +252,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -236,6 +273,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -264,6 +305,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -285,6 +330,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -314,6 +363,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 
 	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -342,6 +395,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 
 	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -354,6 +411,10 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 	}
 
 	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"

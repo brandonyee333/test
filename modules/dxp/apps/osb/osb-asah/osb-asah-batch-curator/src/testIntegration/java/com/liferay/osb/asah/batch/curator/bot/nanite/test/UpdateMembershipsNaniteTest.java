@@ -27,6 +27,7 @@ import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
 import java.util.Date;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -40,8 +41,15 @@ import org.springframework.context.annotation.Import;
 public class UpdateMembershipsNaniteTest
 	implements OSBAsahBatchCuratorSpringTestContext {
 
+	@AfterEach
+	public void tearDown() {
+		_segmentRepository.deleteAll();
+
+		_channelRepository.deleteAll();
+	}
+
 	@Test
-	public void testRun() throws Exception {
+	public void testRun() {
 		ProjectIdThreadLocal.setProjectId("test");
 
 		Segment segment = new Segment();

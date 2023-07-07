@@ -14,12 +14,17 @@
 
 package com.liferay.osb.asah.backend.rest.controller.test;
 
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 /**
  * @author Geyson Silva
  */
+@RepositoryResource(
+	repositoryClass = ChannelRepository.class,
+	resourcePath = "osbasahfaroinfo/channels_2.json"
+)
 @RepositoryResource(
 	repositoryClass = ExperimentRepository.class,
 	resourcePath = "osbasahfaroinfo/experiments.json"

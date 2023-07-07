@@ -355,7 +355,7 @@ public class BQMembershipRepositoryTest
 	@Test
 	public void testGetMembershipCountSnapshot() {
 		MembershipCountSnapshot membershipCountSnapshot =
-			_bqMembershipRepository.getMembershipCountSnapshot(null, 34L);
+			_bqMembershipRepository.getMembershipCountSnapshot(34L, 34L);
 
 		Assertions.assertEquals(
 			2L, membershipCountSnapshot.getIdentitiesCount());

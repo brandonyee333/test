@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentDataPoint;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -41,6 +42,10 @@ public class ExperimentDataDogTest
 
 	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -56,6 +61,10 @@ public class ExperimentDataDogTest
 	}
 
 	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -75,6 +84,10 @@ public class ExperimentDataDogTest
 	}
 
 	@BQSQLResource(resourcePath = "bq_experiment_pages.sql")
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
