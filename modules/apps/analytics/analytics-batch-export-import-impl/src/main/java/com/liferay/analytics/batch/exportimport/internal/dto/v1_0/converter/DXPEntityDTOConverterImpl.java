@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -186,8 +185,7 @@ public class DXPEntityDTOConverterImpl implements DXPEntityDTOConverter {
 					new Field() {
 						{
 							name = "columnId";
-							value = GetterUtil.getString(
-								expandoColumn.getColumnId());
+							value = String.valueOf(expandoColumn.getColumnId());
 						}
 					});
 				add(
@@ -204,8 +202,7 @@ public class DXPEntityDTOConverterImpl implements DXPEntityDTOConverter {
 
 							Date modifiedDate = expandoColumn.getModifiedDate();
 
-							value = GetterUtil.getString(
-								modifiedDate.getTime());
+							value = String.valueOf(modifiedDate.getTime());
 						}
 					});
 				add(
