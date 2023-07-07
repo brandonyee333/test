@@ -16,6 +16,10 @@ package com.liferay.osb.asah.backend.rest.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.QueryJobConfiguration;
+
+import com.liferay.osb.asah.common.constants.HeaderConstants;
 import com.liferay.osb.asah.common.dog.AsahTaskDog;
 import com.liferay.osb.asah.common.entity.BlockedKeyword;
 import com.liferay.osb.asah.common.entity.Channel;
@@ -38,6 +42,7 @@ import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
@@ -50,6 +55,7 @@ import java.util.zip.ZipOutputStream;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -63,12 +69,14 @@ import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -82,6 +90,32 @@ import org.springframework.web.bind.annotation.RestController;
 	"com.liferay.osb.asah.backend.rest.controller.AdminRestController"
 )
 public class AdminRestController extends BaseRestController {
+
+	@PostMapping("/data")
+	public ResponseEntity<String> addData(
+		@RequestBody String sql,
+		@RequestHeader(value = HeaderConstants.PROJECT_ID) String projectId) {
+
+		QueryJobConfiguration queryJobConfiguration =
+			QueryJobConfiguration.newBuilder(
+				TestExecutionListenerUtil.replaceSQLVariables(sql)
+			).setDefaultDataset(
+				projectId
+			).build();
+
+		try {
+			_bigQuery.query(queryJobConfiguration);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			return new ResponseEntity<>(
+				ExceptionUtils.getStackTrace(exception),
+				HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 
 	@CacheEvict(evictAll = true)
 	@DeleteMapping("/cache")
@@ -300,6 +334,9 @@ public class AdminRestController extends BaseRestController {
 
 	@Autowired
 	private AsahTaskDog _asahTaskDog;
+
+	@Autowired
+	private BigQuery _bigQuery;
 
 	@Autowired
 	private BlockedKeywordRepository _blockedKeywordRepository;
