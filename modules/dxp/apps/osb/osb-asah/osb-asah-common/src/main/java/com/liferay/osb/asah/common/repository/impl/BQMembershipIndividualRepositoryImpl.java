@@ -126,8 +126,9 @@ public class BQMembershipIndividualRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembershipIndividual")
 			).columns(
-				DSL.field("dataSourceUUIDs"), DSL.field("individualId"),
-				DSL.field("modifiedDate"), DSL.field("segmentId")
+				DSL.field("channelId"), DSL.field("dataSourceUUIDs"),
+				DSL.field("individualId"), DSL.field("modifiedDate"),
+				DSL.field("segmentId")
 			).select(
 				select
 			));
@@ -150,8 +151,9 @@ public class BQMembershipIndividualRepositoryImpl
 			_dslContext.insertInto(
 				DSL.table("BQMembershipIndividual")
 			).columns(
-				DSL.field("dataSourceUUIDs"), DSL.field("individualId"),
-				DSL.field("modifiedDate"), DSL.field("segmentId")
+				DSL.field("channelId"), DSL.field("dataSourceUUIDs"),
+				DSL.field("individualId"), DSL.field("modifiedDate"),
+				DSL.field("segmentId")
 			).select(
 				_getMembershipIndividualsSelect(segmentId)
 			));

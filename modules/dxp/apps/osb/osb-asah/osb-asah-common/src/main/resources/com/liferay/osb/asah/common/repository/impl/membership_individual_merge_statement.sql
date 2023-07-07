@@ -10,16 +10,18 @@ ON (
 )
 WHEN NOT MATCHED BY TARGET THEN
 	INSERT (
+		`channelId`,
 		`dataSourceUUIDs`,
 		`individualId`,
 		`modifiedDate`,
 		`segmentId`
 	)
 	VALUES (
-	   source.dataSourceUUIDs,
-	   source.individualId,
-	   source.modifiedDate,
-	   source.segmentId
+		source.channelId,
+		source.dataSourceUUIDs,
+		source.individualId,
+		source.modifiedDate,
+		source.segmentId
    )
 WHEN NOT MATCHED BY SOURCE THEN
 	DELETE
