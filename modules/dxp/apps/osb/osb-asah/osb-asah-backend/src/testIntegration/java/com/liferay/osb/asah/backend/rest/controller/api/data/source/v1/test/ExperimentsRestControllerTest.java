@@ -67,7 +67,7 @@ public class ExperimentsRestControllerTest
 
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels.json"
+		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -84,7 +84,7 @@ public class ExperimentsRestControllerTest
 
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels.json"
+		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -175,7 +175,7 @@ public class ExperimentsRestControllerTest
 
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels.json"
+		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
@@ -211,7 +211,7 @@ public class ExperimentsRestControllerTest
 
 	@RepositoryResource(
 		repositoryClass = ChannelRepository.class,
-		resourcePath = "osbasahfaroinfo/channels.json"
+		resourcePath = "osbasahfaroinfo/channels_2.json"
 	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,

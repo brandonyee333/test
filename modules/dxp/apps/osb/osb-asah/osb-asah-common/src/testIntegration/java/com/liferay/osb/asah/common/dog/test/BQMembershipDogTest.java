@@ -62,6 +62,7 @@ public class BQMembershipDogTest
 
 		Segment segment = new Segment();
 
+		segment.setChannelId(1L);
 		segment.setId(338511398116723458L);
 
 		_bqMembershipDog.deleteBQMembership("abc338511398389279307", segment);
