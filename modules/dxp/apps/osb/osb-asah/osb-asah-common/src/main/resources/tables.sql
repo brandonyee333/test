@@ -11,6 +11,14 @@ CREATE TABLE IF NOT EXISTS AsahTask (
 	projectId TEXT
 );
 
+CREATE TABLE IF NOT EXISTS AuditEvent (
+	id BIGSERIAL PRIMARY KEY,
+	createDate TIMESTAMPTZ,
+	type TEXT,
+	userId TEXT,
+	userName TEXT
+);
+
 CREATE TABLE IF NOT EXISTS BlockedKeyword (
 	id BIGSERIAL PRIMARY KEY,
 	createDate TIMESTAMPTZ,
