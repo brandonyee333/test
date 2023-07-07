@@ -797,6 +797,8 @@ definition {
 	}
 
 	test ConfigureViewInContextLinkBehavior {
+		property ci.retries.disabled = "true";
+
 		DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "guest");
 
 		DisplayPageTemplatesAdmin.addDisplayPage(
