@@ -870,6 +870,14 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 		return "assetTitle";
 	}
 
+	protected Condition getKeywordSearchCondition(String keywords) {
+		return DSL.lower(
+			DSL.field(getAssetTitleFieldName(), String.class)
+		).like(
+			StringUtils.wrap(StringUtils.lowerCase(keywords), "%")
+		);
+	}
+
 	protected abstract Field<BigDecimal> getMetricField(
 		MetricType metricType, TimeRange timeRange);
 
@@ -983,12 +991,7 @@ public abstract class BaseAssetMetricRepository<T extends AssetMetric>
 			));
 
 		if (StringUtils.isNotBlank(keywords)) {
-			conditions.add(
-				DSL.lower(
-					DSL.field(getAssetTitleFieldName(), String.class)
-				).like(
-					StringUtils.wrap(StringUtils.lowerCase(keywords), "%")
-				));
+			conditions.add(getKeywordSearchCondition(keywords));
 		}
 
 		return DSL.and(conditions);

@@ -40,6 +40,8 @@ import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.jooq.Condition;
 import org.jooq.DatePart;
 import org.jooq.Field;
@@ -357,6 +359,21 @@ public class PageAssetMetricRepositoryImpl
 	@Override
 	protected String getAssetTitleFieldName() {
 		return "title";
+	}
+
+	@Override
+	protected Condition getKeywordSearchCondition(String keywords) {
+		return DSL.or(
+			DSL.lower(
+				DSL.field(getAssetTitleFieldName(), String.class)
+			).like(
+				StringUtils.wrap(StringUtils.lowerCase(keywords), "%")
+			),
+			DSL.lower(
+				DSL.field("canonicalUrl", String.class)
+			).like(
+				StringUtils.wrap(StringUtils.lowerCase(keywords), "%")
+			));
 	}
 
 	@Override
