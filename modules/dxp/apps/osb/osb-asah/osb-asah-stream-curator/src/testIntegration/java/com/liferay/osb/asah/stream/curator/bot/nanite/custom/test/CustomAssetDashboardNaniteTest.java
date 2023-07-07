@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.entity.CustomAssetDashboard;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.CustomAssetDashboardRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.stream.curator.OSBAsahStreamCuratorSpringTestContext;
@@ -34,7 +35,9 @@ import org.apache.commons.collections4.IterableUtils;
 
 import org.json.JSONArray;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.skyscreamer.jsonassert.JSONAssert;
@@ -47,6 +50,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class CustomAssetDashboardNaniteTest
 	extends BaseNaniteTestCase
 	implements OSBAsahStreamCuratorSpringTestContext {
+
+	@BeforeEach
+	public void setUp() {
+		com.liferay.osb.asah.common.entity.Channel channel =
+			new com.liferay.osb.asah.common.entity.Channel();
+
+		channel.setId(1L);
+		channel.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel);
+	}
+
+	@AfterEach
+	public void tearDown() {
+		_channelRepository.deleteById(1L);
+	}
 
 	@MessageBusChannel(
 		channel = Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
@@ -135,6 +154,9 @@ public class CustomAssetDashboardNaniteTest
 	protected Nanite getNanite() {
 		return _customAssetDashboardNanite;
 	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private CustomAssetDashboardNanite _customAssetDashboardNanite;

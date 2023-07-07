@@ -22,6 +22,7 @@ import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.model.PageMetricType;
 import com.liferay.osb.asah.common.model.TimeRange;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
@@ -51,6 +52,10 @@ public class ExperimentMetricDogTest
 	implements OSBAsahBackendSpringTestContext {
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
@@ -69,6 +74,10 @@ public class ExperimentMetricDogTest
 	}
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiment_metrics.json"
 	)
@@ -86,6 +95,10 @@ public class ExperimentMetricDogTest
 		Assertions.assertNull(experimentMetric.getEstimatedDaysLeft());
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiment_metrics.json"

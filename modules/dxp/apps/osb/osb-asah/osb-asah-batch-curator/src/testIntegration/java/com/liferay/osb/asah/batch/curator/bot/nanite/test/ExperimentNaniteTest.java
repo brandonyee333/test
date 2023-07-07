@@ -17,22 +17,26 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 import com.liferay.osb.asah.batch.curator.bot.nanite.ExperimentNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.dxp.DXPClient;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.http.ExperimentHttp;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.model.ExperimentStatus;
 import com.liferay.osb.asah.common.model.GoalMetric;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.faro.FaroInfoTestUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahRepositoryTestExecutionListener;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSQLTestExecutionListener;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
 import org.json.JSONObject;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,13 +61,29 @@ import org.springframework.test.context.TestExecutionListeners;
 public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 	@BeforeEach
-	public void setUp() throws Exception {
+	public void setUp() {
+		Channel channel = new Channel();
+
+		channel.setId(1234567890L);
+		channel.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel);
+
 		Experiment experiment = FaroInfoTestUtil.buildExperiment(
 			ExperimentStatus.RUNNING, GoalMetric.CLICK_RATE, 1L);
 
+		experiment.setChannelId(1234567890L);
 		experiment.setIsNew(Boolean.TRUE);
 
 		_experimentRepository.save(experiment);
+	}
+
+	@AfterEach
+	public void tearDown() {
+		_experimentRepository.deleteByChannelIdIn(
+			Collections.singleton(1234567890L));
+
+		_channelRepository.deleteById(1234567890L);
 	}
 
 	@Test
@@ -124,6 +144,8 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 	public void testFinishedExperimentWinnerBounceRate() throws Exception {
 		Experiment experiment = FaroInfoTestUtil.buildExperiment(
 			ExperimentStatus.RUNNING, GoalMetric.BOUNCE_RATE, 1L);
+
+		experiment.setChannelId(1234567890L);
 
 		_experimentRepository.save(experiment);
 
@@ -215,6 +237,9 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 		Assertions.assertEquals(
 			winnerDXPVariantId, experiment.getWinnerDXPVariantId());
 	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@MockBean
 	private DXPClient _dxpClient;

@@ -17,7 +17,9 @@ package com.liferay.osb.asah.backend.graphql.schema.test;
 import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dto.ExperimentDTO;
 import com.liferay.osb.asah.backend.graphql.schema.ExperimentDataFetcher;
+import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Experiment;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.ExperimentRepository;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
 
@@ -41,6 +43,13 @@ public class ExperimentDataFetcherTest
 
 	@Test
 	public void testGet() {
+		Channel channel = new Channel();
+
+		channel.setId(12345L);
+		channel.setIsNew(Boolean.TRUE);
+
+		_channelRepository.save(channel);
+
 		Experiment experiment = new Experiment();
 
 		experiment.setChannelId(12345L);
@@ -90,6 +99,9 @@ public class ExperimentDataFetcherTest
 
 		return dataFetchingEnvironmentBuilder.build();
 	}
+
+	@Autowired
+	private ChannelRepository _channelRepository;
 
 	@Autowired
 	private ExperimentDataFetcher _experimentDataFetcher;

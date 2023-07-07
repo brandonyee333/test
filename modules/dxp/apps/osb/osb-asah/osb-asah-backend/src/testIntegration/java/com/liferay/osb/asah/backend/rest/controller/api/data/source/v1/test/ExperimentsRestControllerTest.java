@@ -66,6 +66,10 @@ public class ExperimentsRestControllerTest
 	implements OSBAsahBackendSpringTestContext {
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -78,6 +82,10 @@ public class ExperimentsRestControllerTest
 		Mockito.verifyNoInteractions(_dxpClient);
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
@@ -166,6 +174,10 @@ public class ExperimentsRestControllerTest
 	}
 
 	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
+	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"
 	)
@@ -197,6 +209,10 @@ public class ExperimentsRestControllerTest
 			actualExperimentDTO.getExperimentVariantDTOs());
 	}
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = ExperimentRepository.class,
 		resourcePath = "osbasahfaroinfo/experiments.json"

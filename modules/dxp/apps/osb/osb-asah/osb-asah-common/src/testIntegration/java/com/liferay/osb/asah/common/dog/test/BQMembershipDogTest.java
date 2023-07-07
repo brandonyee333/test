@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.faro.info.dog.test.BaseFaroInfoDogTestCase;
 import com.liferay.osb.asah.common.repository.BQIndividualRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipChangeRepository;
 import com.liferay.osb.asah.common.repository.BQMembershipRepository;
+import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
@@ -44,6 +45,10 @@ public class BQMembershipDogTest
 	extends BaseFaroInfoDogTestCase
 	implements OSBAsahTestExecutionListenersContext {
 
+	@RepositoryResource(
+		repositoryClass = ChannelRepository.class,
+		resourcePath = "osbasahfaroinfo/channels.json"
+	)
 	@RepositoryResource(
 		repositoryClass = BQMembershipRepository.class,
 		resourcePath = "osbasahfaroinfo/bq_memberships.json"
@@ -848,7 +853,7 @@ public class BQMembershipDogTest
 			Boolean.TRUE, segment);
 
 		Assertions.assertEquals(
-			1L, _bqMembershipDog.getBQMembershipsCount(segment.getId()));
+			2L, _bqMembershipDog.getBQMembershipsCount(segment.getId()));
 
 		_bqMembershipDog.updateBQMemberships(
 			"(sessions.filter(filter='(contains(context/url, ''url2.com'') " +
