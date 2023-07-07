@@ -32,6 +32,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClearChannelsNanite extends BaseNanite {
 
+	@Override
+	public boolean isLogRunEnabled() {
+		return true;
+	}
+
 	@CacheEvict(evictAll = true)
 	@Override
 	public void run(JSONObject contextJSONObject) throws Exception {
