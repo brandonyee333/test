@@ -2,7 +2,8 @@
 
 if [ "$#" -ne 1 ]
 then
-	echo "Please provide the project ID to upgrade"
+	echo "Please specify the project ID to upgrade."
+
 	exit 1
 fi
 
