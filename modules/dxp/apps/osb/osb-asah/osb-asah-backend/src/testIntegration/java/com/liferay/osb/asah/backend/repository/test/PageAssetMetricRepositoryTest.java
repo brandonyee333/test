@@ -112,6 +112,34 @@ public class PageAssetMetricRepositoryTest
 	}
 
 	@BQSQLResource(
+		resourcePath = "page_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetViewsAssetMetricsWithKeywords1() {
+		assertAssetMetrics(
+			new Double[] {7D},
+			_assetMetricRepository.getAssetMetrics(
+				1L, "Title 1", PageRequest.of(0, 10),
+				SetUtil.of(PageMetricType.VIEWS.getName()),
+				TimeRange.LAST_24_HOURS),
+			PageMetric::getViewsMetric);
+	}
+
+	@BQSQLResource(
+		resourcePath = "page_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetViewsAssetMetricsWithKeywords2() {
+		assertAssetMetrics(
+			new Double[] {6D},
+			_assetMetricRepository.getAssetMetrics(
+				1L, "delivery", PageRequest.of(0, 10),
+				SetUtil.of(PageMetricType.VIEWS.getName()),
+				TimeRange.LAST_24_HOURS),
+			PageMetric::getViewsMetric);
+	}
+
+	@BQSQLResource(
 		resourcePath = "page_asset_metric_views_histogram_last_7_days.sql"
 	)
 	@Test

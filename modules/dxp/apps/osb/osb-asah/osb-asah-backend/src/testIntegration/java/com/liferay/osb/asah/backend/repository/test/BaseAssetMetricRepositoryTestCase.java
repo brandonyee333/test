@@ -120,7 +120,7 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 		Stream<T> stream = metrics.stream();
 
 		MatcherAssert.assertThat(
-			new Double[] {7D, 6D},
+			expectedMetricValues,
 			Matchers.arrayContainingInAnyOrder(
 				stream.map(
 					mapperFunction
