@@ -19,7 +19,7 @@ import os
 import pendulum
 import requests
 
-def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
+def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description, params=None):
 	with airflow.DAG(
 		dag_id=dag_id,
 		default_args={
@@ -32,6 +32,7 @@ def create_dag(ac_project_id, ac_project_time_zone_id, dag_id, dag_description):
 		},
 		description=dag_description,
 		max_active_runs=1,
+		params=params,
 		schedule_interval='0 1 * * *',
 		start_date=pendulum.now(ac_project_time_zone_id) - pendulum.duration(days=2)
 	) as dag:
@@ -61,8 +62,10 @@ response = requests.get(
 for project in response.json():
 	dag_id = 'interest_score_{}'.format(project.get('id'))
 
+	params = None
+
 	if project.get('sitesSelected'):
 		globals()[dag_id] = create_dag(
 			project.get('id'), project.get('timeZoneId'), dag_id,
-			'Interest Score DAG For {}'.format(project.get('id'))
+			'Interest Score DAG For {}'.format(project.get('id'), params)
 		)

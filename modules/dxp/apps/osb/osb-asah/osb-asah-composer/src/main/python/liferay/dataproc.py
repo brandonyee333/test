@@ -181,11 +181,39 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 		self._cluster_name = cluster_name
 
 	def do_execute(self, dag: DAG, dag_run: DagRun, **kwargs):
+		context = Context(kwargs)
+
 		cluster_name = self.render_template(
-			content=self._cluster_name, context=Context(kwargs)
+			content=self._cluster_name, context=context
 		)
 
-		dag_configuration = kwargs[dag.dag_id]
+		dag_configuration = context[dag.dag_id]
+
+		arguments = [
+			'liferay.interest_score.InterestScoreApplication',
+			'--ac-project-id',
+			dag.default_args['ac_project_id'],
+			'--configuration',
+			dag_configuration['dataproc.pyspark.configuration'],
+			'--job-parameters',
+			self._get_job_parameters(dag, dag_run)
+		]
+
+		if context.get('params') is not None:
+			try:
+				environment_variables = context.get('params')
+				self.log.warning(str(environment_variables))
+
+				for environment_variable in environment_variables.items():
+
+					environment_key, environment_value = environment_variable
+
+					arguments += [
+						'--environment-variable',
+						f'{environment_key}={environment_value}'
+					]
+			except Exception as e:
+				self.log.warning("Error parsing parameters: " + str(e))
 
 		dataproc_submit_pyspark_job_operator = DataprocSubmitPySparkJobOperator(
 			task_id='dataproc_submit_pyspark_job',
@@ -198,15 +226,7 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 			main='gs://{}/osb-asah-spark-python-driver.py'.format(
 				dag_configuration['dataproc.bucket']
 			),
-			arguments=[
-				'liferay.interest_score.InterestScoreApplication',
-				'--ac-project-id',
-				dag.default_args['ac_project_id'],
-				'--configuration',
-				dag_configuration['dataproc.pyspark.configuration'],
-				'--job-parameters',
-				self._get_job_parameters(dag, dag_run)
-			],
+			arguments=arguments,
 			archives=[
 				'gs://{}/resources/{}'.format(
 					dag_configuration['dataproc.bucket'],
@@ -223,7 +243,7 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 			]
 		)
 
-		dataproc_submit_pyspark_job_operator.execute(Context(kwargs))
+		dataproc_submit_pyspark_job_operator.execute(context)
 
 	def _get_application_name(self, ac_project_id: str):
 
