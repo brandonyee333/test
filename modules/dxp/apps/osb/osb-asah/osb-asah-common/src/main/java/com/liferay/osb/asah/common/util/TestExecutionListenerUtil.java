@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.test.util.spring;
+package com.liferay.osb.asah.common.util;
 
 import com.liferay.osb.asah.common.date.DateUtil;
 

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.test.util.spring;
 
+import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 import java.io.File;

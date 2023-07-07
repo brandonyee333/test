@@ -23,6 +23,7 @@ import com.google.cloud.bigquery.TableDefinition;
 import com.google.cloud.bigquery.TableId;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
+import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.io.File;

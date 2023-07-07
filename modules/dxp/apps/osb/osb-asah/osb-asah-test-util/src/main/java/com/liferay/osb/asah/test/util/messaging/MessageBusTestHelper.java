@@ -30,8 +30,8 @@ import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
-import com.liferay.osb.asah.test.util.spring.TestExecutionListenerUtil;
 
 import java.util.Collections;
 import java.util.List;
