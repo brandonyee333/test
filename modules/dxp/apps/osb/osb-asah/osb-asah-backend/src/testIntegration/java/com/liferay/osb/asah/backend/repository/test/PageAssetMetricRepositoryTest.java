@@ -145,19 +145,19 @@ public class PageAssetMetricRepositoryTest
 	)
 	@Test
 	public void testGetViewsAssetMetricsFilteringByTerms() {
-		List<PageMetric> assetMetrics = _assetMetricRepository.getAssetMetrics(
+		List<PageMetric> pageMetrics = _assetMetricRepository.getAssetMetrics(
 			1L, null, null, PageRequest.of(0, 10),
 			SetUtil.of(PageMetricType.VIEWS.getName()),
 			TimeRange.LAST_24_HOURS);
 
-		Assertions.assertEquals(2, assetMetrics.size());
+		Assertions.assertEquals(2, pageMetrics.size());
 
-		assetMetrics = _assetMetricRepository.getAssetMetrics(
+		pageMetrics = _assetMetricRepository.getAssetMetrics(
 			1L, null, "title 1", PageRequest.of(0, 10),
 			SetUtil.of(PageMetricType.VIEWS.getName()),
 			TimeRange.LAST_24_HOURS);
 
-		Assertions.assertEquals(1, assetMetrics.size());
+		Assertions.assertEquals(1, pageMetrics.size());
 	}
 
 	@BQSQLResource(
