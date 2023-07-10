@@ -141,10 +141,12 @@ public class AttachmentObjectFieldBusinessType
 			fileEntryId = MapUtil.getLong((Map<String, Object>)value, "id");
 		}
 		else {
-			JSONObject jsonObject = jsonFactory.createJSONObject(
-				MapUtil.getString(values, objectField.getName()));
+			if (fileEntryId != 0) {
+				JSONObject jsonObject = jsonFactory.createJSONObject(
+					MapUtil.getString(values, objectField.getName()));
 
-			fileEntryId = GetterUtil.getLong(jsonObject.get("id"));
+				fileEntryId = GetterUtil.getLong(jsonObject.get("id"));
+			}
 		}
 
 		if (fileEntryId > 0) {
