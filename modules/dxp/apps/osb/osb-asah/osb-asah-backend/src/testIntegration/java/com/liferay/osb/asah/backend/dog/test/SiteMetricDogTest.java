@@ -369,6 +369,39 @@ public class SiteMetricDogTest
 		DogTestUtil.assertMetric(2, browserMetrics, "Phone", "IOS");
 	}
 
+	@BQSQLResource(resourcePath = "test_bq_sessions_site_technology.sql")
+	@Test
+	public void testDeviceMetricsOrdering() {
+		List<Metric> deviceMetrics = _siteMetricDog.getDeviceMetrics(
+			SiteMetricType.SESSIONS,
+			_getSearchQueryContext(TimeRange.LAST_30_DAYS));
+
+		Map<Pair<String, String>, Double> actualDevices = new LinkedHashMap<>();
+
+		for (Metric deviceMetric : deviceMetrics) {
+			for (Metric platformMetric : deviceMetric.getMetrics()) {
+				actualDevices.put(
+					Pair.of(
+						deviceMetric.getValueKey(),
+						platformMetric.getValueKey()),
+					platformMetric.getValue());
+			}
+		}
+
+		Map<Pair<String, String>, Double> expectedDevices =
+			new LinkedHashMap<Pair<String, String>, Double>() {
+				{
+					put(Pair.of("Phone", "IOS"), 2D);
+					put(Pair.of("Phone", "Android"), 1D);
+					put(Pair.of("E-Book Reader", "Android"), 2D);
+					put(Pair.of("Desktop", "Linux"), 1D);
+					put(Pair.of("Tablet", "Android"), 1D);
+				}
+			};
+
+		Assertions.assertEquals(expectedDevices, actualDevices);
+	}
+
 	@BQSQLResource(resourcePath = "test_bq_sessions_site_geolocation.sql")
 	@Test
 	public void testGeolocationMetrics1() {

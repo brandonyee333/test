@@ -7,3 +7,6 @@ INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, pla
 INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Desktop', DATETIME_TRUNC(TIMESTAMP '${now-12d}', HOUR), 'Ubuntu', 1);
 INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Mobile', DATETIME_TRUNC(TIMESTAMP '${now-4d}', HOUR), 'Android', 3);
 INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Mobile', DATETIME_TRUNC(TIMESTAMP '${now-18d}', HOUR), 'IOS', 9);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Tablet', DATETIME_TRUNC(TIMESTAMP '${now-18d}', HOUR), 'IOS', 9);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Tablet', DATETIME_TRUNC(TIMESTAMP '${now-18d}', HOUR), 'Android', 9);
+INSERT INTO DocumentLibraryDaily (assetId, channelId, deviceType, eventDate, platformName, previews) VALUES ('e131fabc', 1, 'Phone', DATETIME_TRUNC(TIMESTAMP '${now-18d}', HOUR), 'IOS', 9);
