@@ -110,8 +110,8 @@ class InterestScoreApplication(BaseSparkApplication):
 		keywords_extraction_method = self.configuration.get(
 			'interest.keywords.extraction.method')
 
-		if keywords_extraction_method == 'base':
-			self.log.info("Using base keywords extraction method")
+		if keywords_extraction_method == 'default':
+			self.log.info("Using default keywords extraction method")
 
 			jobs.append(KeywordsExtractionSparkJob(self))
 		else:

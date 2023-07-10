@@ -10,7 +10,7 @@ interest:
             type: true
     keywords:
         extraction:
-            method: base
+            method: default
     models:
         embeddings:
             lang: "en"
