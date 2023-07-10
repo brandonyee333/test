@@ -59,6 +59,11 @@ response = requests.get(
 	}
 )
 
+dl_keyword_extraction_enabled_workspaces = [
+	'asahda2fcb11192544c8ad6c4d14cfd37214',
+	'uatb71b092fd41e44a2aeda2f9d24569edf'
+]
+
 for project in response.json():
 	project_id = project.get('id')
 
@@ -66,7 +71,7 @@ for project in response.json():
 
 	params = None
 
-	if project_id == 'uatb71b092fd41e44a2aeda2f9d24569edf':
+	if project_id in dl_keyword_extraction_enabled_workspaces:
 		params = {
 			'INTEREST_KEYWORDS_EXTRACTION_METHOD': 'dl'
 		}
