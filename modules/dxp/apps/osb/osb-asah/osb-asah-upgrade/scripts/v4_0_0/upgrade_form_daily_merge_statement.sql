@@ -33,6 +33,8 @@ USING
 				)
 				WHERE
 					Event.applicationId = 'Form' AND
+					Event.assetId IS NOT NULL AND
+					Event.canonicalUrl IS NOT NULL AND
 					DATE(Event.eventDate, '${asah_project_time_zone}') < CURRENT_DATE('${asah_project_time_zone}') AND
 					Event.eventId IN ('formSubmitted', 'formViewed') AND
 					formId.value IS NOT NULL
@@ -54,7 +56,19 @@ USING
 					SUM(UNIX_SECONDS(eventDate) - UNIX_SECONDS(previousFormViewedEventDate)) * 1000 submissionsTime
 				FROM (
 					SELECT
-						*,
+						FormEvent.assetId,
+						FormEvent.browserName,
+						FormEvent.canonicalUrl,
+						FormEvent.channelId,
+						FormEvent.city,
+						FormEvent.country,
+						FormEvent.deviceType,
+						FormEvent.eventDate,
+						FormEvent.eventId,
+						FormEvent.platformName,
+						FormEvent.region,
+						FormEvent.title,
+						FormEvent.userId,
 						MAX(CASE WHEN eventId = 'formViewed' THEN eventDate END)
 						OVER (
 							PARTITION BY
@@ -76,26 +90,8 @@ USING
 		SELECT
 			GREATEST(
 				0,
-				SUM(
-					CASE
-						WHEN
-							eventId = 'formViewed' AND Session.id IS NOT NULL
-						THEN
-							1
-						ELSE
-							0
-					END
-				) -
-				SUM(
-					CASE
-						WHEN
-							eventId = 'formSubmitted' AND Session.id IS NOT NULL
-						THEN
-							1
-						ELSE
-							0
-					END
-				)
+				COUNTIF(eventId = 'formViewed' AND Session.id IS NOT NULL) -
+				COUNTIF(eventId = 'formSubmitted' AND Session.id IS NOT NULL)
 			) AS abandonments,
 			FormEvent.assetId,
 			COALESCE(MAX(FormEvent.assetTitle), '') AS assetTitle,
@@ -106,31 +102,28 @@ USING
 			FormEvent.country,
 			FormEvent.deviceType,
 			TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') AS eventDate,
-			SUM(
-				CASE
-					WHEN
-						eventId = 'formViewed' AND
-						Session.id IS NOT NULL
-					THEN
-						1
-					ELSE
-						0
-				END
+			COUNTIF(eventId = 'formViewed' AND Session.id IS NOT NULL
 			) AS finalizedFormViews,
-			FormEvent.title AS pageTitle,
 			FormEvent.platformName,
 			FormEvent.region,
-			SUM(CASE WHEN eventId = 'formSubmitted' THEN 1 END) AS submissions,
+			FormEvent.title AS pageTitle,
+			COUNTIF(eventId = 'formSubmitted') AS submissions,
 			MAX(FormSubmissionTimes.submissionsTime) AS submissionsTime,
 			FormEvent.userId,
-			SUM(CASE WHEN eventId = 'formViewed' THEN 1 END) AS views
+			COUNTIF(eventId = 'formViewed') AS views
 		FROM
 			FormEvent
 		LEFT JOIN FormSubmissionTimes ON (
 			FormEvent.assetId = FormSubmissionTimes.assetId AND
+			FormEvent.browserName = FormSubmissionTimes.browserName AND
 			FormEvent.canonicalUrl = FormSubmissionTimes.canonicalUrl AND
 			FormEvent.channelId = FormSubmissionTimes.channelId AND
+			FormEvent.city = FormSubmissionTimes.city AND
+			FormEvent.country = FormSubmissionTimes.country AND
+			FormEvent.deviceType = FormSubmissionTimes.deviceType AND
 			TIMESTAMP_TRUNC(eventDate, DAY, '${asah_project_time_zone}') = FormSubmissionTimes.normalizedEventDate AND
+			FormEvent.platformName = FormSubmissionTimes.platformName AND
+			FormEvent.region = FormSubmissionTimes.region AND
 			FormEvent.title = FormSubmissionTimes.pageTitle AND
 			FormEvent.userId = FormSubmissionTimes.userId)
 		LEFT JOIN `${PROJECT_ID}.${asah_project_id}.session` AS Session ON
