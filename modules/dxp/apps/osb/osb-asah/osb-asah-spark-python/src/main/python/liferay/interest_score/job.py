@@ -226,8 +226,10 @@ class DLKeywordsExtractionSparkJob(BaseSparkJob):
 
 		return embeddings
 
-	def _create_finisher_stage(self, column_names, output_column_name,
-							   includeMetadata=False):
+	def _create_finisher_stage(
+			self, column_names, output_column_name, includeMetadata=False
+		):
+
 		finisher = Finisher()
 
 		finisher.setCleanAnnotations(False)
@@ -414,7 +416,6 @@ class DLKeywordsExtractionSparkJob(BaseSparkJob):
 		return pipeline
 
 	def _get_sample_analytics_event_by_canonical_url(self, analytics_events_data_frame):
-
 		window = Window.partitionBy('canonicalUrl')
 
 		sample_data_frame = analytics_events_data_frame.withColumn(

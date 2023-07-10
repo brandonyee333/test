@@ -202,10 +202,10 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 		if context.get('params') is not None:
 			try:
 				environment_variables = context.get('params')
+
 				self.log.warning(str(environment_variables))
 
 				for environment_variable in environment_variables.items():
-
 					environment_key, environment_value = environment_variable
 
 					arguments += [
