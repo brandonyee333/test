@@ -14,6 +14,10 @@
 
 package com.liferay.osb.asah.dataflow.ingestion.event;
 
+import com.google.api.services.bigquery.model.TableRow;
+
+import com.liferay.osb.asah.dataflow.common.ObjectMapperUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,12 +32,26 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.apache.beam.sdk.coders.AvroCoder;
+import org.apache.beam.sdk.coders.IterableCoder;
+import org.apache.beam.sdk.coders.KvCoder;
+import org.apache.beam.sdk.coders.StringUtf8Coder;
+import org.apache.beam.sdk.extensions.avro.coders.AvroCoder;
 import org.apache.beam.sdk.testing.PAssert;
 import org.apache.beam.sdk.testing.TestPipeline;
+import org.apache.beam.sdk.testing.TestStream;
 import org.apache.beam.sdk.transforms.Create;
+import org.apache.beam.sdk.transforms.GroupByKey;
 import org.apache.beam.sdk.transforms.ParDo;
+import org.apache.beam.sdk.transforms.WithKeys;
+import org.apache.beam.sdk.transforms.windowing.FixedWindows;
+import org.apache.beam.sdk.transforms.windowing.IntervalWindow;
+import org.apache.beam.sdk.transforms.windowing.Window;
+import org.apache.beam.sdk.values.KV;
 import org.apache.beam.sdk.values.PCollection;
+import org.apache.beam.sdk.values.TimestampedValue;
+
+import org.joda.time.Duration;
+import org.joda.time.Instant;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -158,6 +176,193 @@ public class EventIngestionPipelineTest {
 		);
 
 		testPipeline.run();
+	}
+
+	@Test
+	public void testEventBigQueryTableRowParser() {
+		Map<String, String> context = Collections.singletonMap(
+			"title", "\n\n\n\tLiferay \\Analytics JS Client Test Page\n\n\t");
+
+		Map<String, String> properties = Collections.singletonMap(
+			"referrer", "http://www.google.com");
+
+		AnalyticsEvent analyticsEvent = _createAnalyticsEvent(
+			"Page", "123", "", context, "2017-11-10T09:36:00.365Z",
+			"350121114030678021", "", "2017-11-10T09:34:45.345Z", "pageViewed",
+			properties, "1", "test", "UTC",
+			"aedfa915-c7a1-4309-abcf-024e247d414c");
+
+		Instant baseTime = new Instant(0);
+
+		PCollection<TableRow> pCollection = testPipeline.apply(
+			TestStream.create(
+				KvCoder.of(
+					StringUtf8Coder.of(),
+					IterableCoder.of(AvroCoder.of(AnalyticsEvent.class)))
+			).advanceWatermarkTo(
+				baseTime
+			).addElements(
+				TimestampedValue.of(
+					KV.of(
+						"session-1", Collections.singletonList(analyticsEvent)),
+					baseTime.plus(Duration.standardSeconds(30)))
+			).advanceWatermarkToInfinity()
+		).apply(
+			Window.into(FixedWindows.of(Duration.standardMinutes(3L)))
+		).apply(
+			"Create Event Table Rows",
+			ParDo.of(new EventIngestionPipeline.EventBigQueryTableRowParser())
+		);
+
+		TableRow tableRow = new TableRow();
+
+		tableRow.set("applicationId", analyticsEvent.applicationId);
+		tableRow.set("assetId", null);
+		tableRow.set("assetTitle", "Liferay \\\\Analytics JS Client Test Page");
+		tableRow.set("browserName", null);
+		tableRow.set("canonicalUrl", null);
+		tableRow.set("channelId", 123L);
+		tableRow.set("city", null);
+		tableRow.set("contentLanguageId", null);
+		tableRow.set("context", ObjectMapperUtil.writeValueAsString(context));
+		tableRow.set("country", null);
+		tableRow.set("createDate", "2017-11-10T09:36:00.365Z");
+		tableRow.set("dataSourceId", 350121114030678021L);
+		tableRow.set("description", null);
+		tableRow.set("deviceType", null);
+		tableRow.set("eventDate", "2017-11-10T09:34:45.345Z");
+		tableRow.set("eventId", "pageViewed");
+		tableRow.set(
+			"eventProperties", ObjectMapperUtil.writeValueAsString(properties));
+		tableRow.set("experienceId", null);
+		tableRow.set("id", "1");
+		tableRow.set("keywords", null);
+		tableRow.set("languageId", null);
+		tableRow.set("platformName", null);
+		tableRow.set("projectId", "test");
+		tableRow.set("projectTimeZoneId", "UTC");
+		tableRow.set("referrer", null);
+		tableRow.set("region", null);
+		tableRow.set(
+			"sessionId",
+			"b7dbcc73168d4f5ce2ce1836250a1253cda62a46619b1e7da5d763c63d2543af");
+		tableRow.set("timezoneOffset", null);
+		tableRow.set("title", "Liferay \\\\Analytics JS Client Test Page");
+		tableRow.set("url", null);
+		tableRow.set("userId", "aedfa915-c7a1-4309-abcf-024e247d414c");
+		tableRow.set("variantId", null);
+
+		IntervalWindow intervalWindow = new IntervalWindow(
+			new Instant(0), new Instant(180000));
+
+		PAssert.that(
+			pCollection
+		).inWindow(
+			intervalWindow
+		).containsInAnyOrder(
+			Collections.singletonList(tableRow)
+		);
+
+		testPipeline.run(
+		).waitUntilFinish();
+	}
+
+	@Test
+	public void testEventBigQueryTableRowParserWithEscapedCharacters()
+		throws IOException {
+
+		String analyticsEventsJSON = _readResourceAsString(
+			"dependencies/test_analytics_event_parser_escape_characters.json");
+
+		Instant baseTime = new Instant(0);
+
+		PCollection<TableRow> pCollection = testPipeline.apply(
+			TestStream.create(
+				StringUtf8Coder.of()
+			).advanceWatermarkTo(
+				baseTime
+			).addElements(
+				TimestampedValue.of(
+					analyticsEventsJSON,
+					baseTime.plus(Duration.standardSeconds(30)))
+			).advanceWatermarkToInfinity()
+		).apply(
+			"Parse Analytics Events",
+			ParDo.of(new EventIngestionPipeline.AnalyticsEventParser())
+		).apply(
+			"Add Session Key", WithKeys.of("session-1")
+		).apply(
+			Window.into(FixedWindows.of(Duration.standardMinutes(3L)))
+		).apply(
+			GroupByKey.create()
+		).apply(
+			"Create Event Table Rows",
+			ParDo.of(new EventIngestionPipeline.EventBigQueryTableRowParser())
+		);
+
+		Map<String, String> context = Collections.singletonMap(
+			"title", "\n\n\n\tLiferay \\Analytics JS Client Test Page\n\n\t");
+
+		Map<String, String> properties = Collections.singletonMap(
+			"referrer", "http://www.google.com");
+
+		AnalyticsEvent analyticsEvent = _createAnalyticsEvent(
+			"Page", "123", "", context, "2017-11-10T09:36:00.365Z",
+			"350121114030678021", "", "2017-11-10T09:34:45.345Z", "pageViewed",
+			properties, "1", "test", "UTC",
+			"aedfa915-c7a1-4309-abcf-024e247d414c");
+
+		TableRow tableRow = new TableRow();
+
+		tableRow.set("applicationId", analyticsEvent.applicationId);
+		tableRow.set("assetId", null);
+		tableRow.set("assetTitle", "Liferay \\\\Analytics JS Client Test Page");
+		tableRow.set("browserName", null);
+		tableRow.set("canonicalUrl", null);
+		tableRow.set("channelId", 123L);
+		tableRow.set("city", null);
+		tableRow.set("contentLanguageId", null);
+		tableRow.set("context", ObjectMapperUtil.writeValueAsString(context));
+		tableRow.set("country", null);
+		tableRow.set("createDate", "2017-11-10T09:36:00.365Z");
+		tableRow.set("dataSourceId", 350121114030678021L);
+		tableRow.set("description", null);
+		tableRow.set("deviceType", null);
+		tableRow.set("eventDate", "2017-11-10T09:34:45.345Z");
+		tableRow.set("eventId", "pageViewed");
+		tableRow.set(
+			"eventProperties", ObjectMapperUtil.writeValueAsString(properties));
+		tableRow.set("experienceId", null);
+		tableRow.set("id", "1");
+		tableRow.set("keywords", null);
+		tableRow.set("languageId", null);
+		tableRow.set("platformName", null);
+		tableRow.set("projectId", "test");
+		tableRow.set("projectTimeZoneId", "UTC");
+		tableRow.set("referrer", null);
+		tableRow.set("region", null);
+		tableRow.set(
+			"sessionId",
+			"b7dbcc73168d4f5ce2ce1836250a1253cda62a46619b1e7da5d763c63d2543af");
+		tableRow.set("timezoneOffset", null);
+		tableRow.set("title", "Liferay \\\\Analytics JS Client Test Page");
+		tableRow.set("url", null);
+		tableRow.set("userId", "aedfa915-c7a1-4309-abcf-024e247d414c");
+		tableRow.set("variantId", null);
+
+		IntervalWindow intervalWindow = new IntervalWindow(
+			new Instant(0), new Instant(180000));
+
+		PAssert.that(
+			pCollection
+		).inWindow(
+			intervalWindow
+		).containsInAnyOrder(
+			Collections.singletonList(tableRow)
+		);
+
+		testPipeline.run(
+		).waitUntilFinish();
 	}
 
 	@Rule
