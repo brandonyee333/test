@@ -4,80 +4,200 @@
 	<import file="build-test.xml" />
 
 	<macrodef name="create-analytics-cloud-docker-compose">
+		<attribute default="false" name="docker.compose.build" />
+		<attribute name="docker.compose.file.name" />
+
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
 
-			<delete file="${analytics.cloud.asah.dir}/docker-compose.test.yml" />
+			<var name="docker.compose.file.path" unset="true" />
 
-			<copy
-				file="${analytics.cloud.asah.dir}/docker-compose.yml"
-				tofile="${analytics.cloud.asah.dir}/docker-compose.test.yml"
-			/>
+			<property name="docker.compose.file.path" value="${analytics.cloud.asah.dir}/docker-compose.temp.yml" />
 
-			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
+			<delete file="${docker.compose.file.path}" />
 
-			<replaceregexp
-				file="${analytics.cloud.docker.test.yaml}"
-				match="container_name: faro"
-				replace="container_name: ${analytics.cloud.faro.container.name}"
-			/>
+			<get-analytics-cloud-faro-image-name />
 
-			<replaceregexp
-				file="${analytics.cloud.docker.test.yaml}"
-				match="\&quot;8080:8080\&quot;"
-				replace="&quot;${analytics.cloud.faro.dxp.port}:8080&quot;"
-			/>
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
 
-			<replaceregexp
-				file="${analytics.cloud.docker.test.yaml}"
-				match="\&quot;9090:8080\&quot;"
-				replace="&quot;${analytics.cloud.asah.trino.port}:8080&quot;"
-			/>
+					import java.util.regex.Matcher;
+					import java.util.regex.Pattern;
 
-			<replaceregexp
-				file="${analytics.cloud.docker.test.yaml}"
-				match="\&quot;11311:11311\&quot;"
-				replace="&quot;${analytics.cloud.faro.osgi.console.port}:11311&quot;"
-			/>
+					import org.yaml.snakeyaml.Yaml;
 
-			<replaceregexp
-				file="${analytics.cloud.docker.test.yaml}"
-				match="http://wedeploy-elasticsearch:9200"
-				replace="http://wedeploy-elasticsearch:${analytics.cloud.asah.elasticsearch.port}"
-			/>
+					Pattern hostnamePattern = Pattern.compile("(cloud-[^\\.]+|test-\\d+-\\d+-\\d+)(\\.lax\\.liferay\\.com)?");
 
-			<replaceregexp
-				file="${analytics.cloud.docker.test.yaml}"
-				match="\&quot;9200:9200\&quot;"
-				replace="&quot;${analytics.cloud.asah.elasticsearch.port}:9200&quot;"
-			/>
+					public Map getNetworksMap() {
+						String hostname = project.getProperty("env.HOSTNAME");
 
-			<local name="short.hostname" />
+						if (JenkinsResultsParserUtil.isNullOrEmpty(hostname)) {
+							return null;
+						}
 
-			<propertyregex
-				input="${env.HOSTNAME}"
-				override="true"
-				property="short.hostname"
-				regexp="(cloud-[^\.]+|test-\d+-\d+-\d+)(\.lax\.liferay\.com)?"
-				replace="\1"
-			/>
+						Matcher hostnameMatcher = hostnamePattern.matcher(hostname);
 
-			<if>
-				<isset property="short.hostname" />
-				<then>
-					<echo append="true" file="${analytics.cloud.docker.test.yaml}"><![CDATA[
-networks:
-    default:
-        external:
-            name: ${short.hostname}]]></echo>
-				</then>
-			</if>
+						if (!hostnameMatcher.find()) {
+							return null;
+						}
+
+						Map externalMap = new HashMap();
+
+						externalMap.put("name", hostnameMatcher.group(1));
+
+						Map defaultMap = new HashMap();
+
+						defaultMap.put("external", externalMap);
+
+						Map networksMap = new HashMap();
+
+						networksMap.put("default", defaultMap);
+
+						return networksMap;
+					}
+
+					Yaml yaml = new Yaml();
+
+					Map map = yaml.load(new FileInputStream(new File(project.getProperty("analytics.cloud.asah.dir"), "@{docker.compose.file.name}")));
+
+					for (String key : map.keySet()) {
+						if (!key.equals("services")) {
+							continue;
+						}
+
+						Object servicesMapObject = map.get(key);
+
+						if (!(servicesMapObject instanceof Map)) {
+							continue;
+						}
+
+						Map servicesMap = (Map)servicesMapObject;
+
+						for (String serviceName : servicesMap.keySet()) {
+							Object serviceObject = servicesMap.get(serviceName);
+
+							if (!(serviceObject instanceof Map)) {
+								continue;
+							}
+
+							Map serviceMap = (Map)serviceObject;
+
+							if (Objects.equals("@{docker.compose.build}", "true")) {
+								serviceMap.remove("build");
+
+								if (!serviceMap.containsKey("image")) {
+									serviceMap.put("image", "com-liferay-osb-asah-private-" + serviceName + ":latest");
+								}
+							}
+
+							List ports = new ArrayList();
+
+							Object portsObject = serviceMap.get("ports");
+
+							if (portsObject instanceof List) {
+								ports.addAll((List)portsObject);
+							}
+
+							if (serviceName.equals("osbasahupgrade")) {
+								ports.add(project.getProperty("analytics.cloud.asah.upgrade.port") + ":8080");
+
+								serviceMap.put("image", project.getProperty("analytics.cloud.faro.image.name"));
+							}
+							else if (serviceName.equals("osbfarofrontend")) {
+								ports.remove("8080:8080");
+								ports.remove("11311:11311");
+
+								ports.add(project.getProperty("analytics.cloud.faro.dxp.port") + ":8080");
+								ports.add(project.getProperty("analytics.cloud.faro.osgi.console.port") + ":11311");
+							}
+							else if (serviceName.equals("test_elasticsearch")) {
+								ports.remove("9200:9200");
+
+								ports.add(project.getProperty("analytics.cloud.asah.elasticsearch.port") + ":9200");
+							}
+
+							serviceMap.put("ports", ports);
+						}
+					}
+
+					Map networksMap = getNetworksMap();
+
+					if (networksMap != null) {
+						map.put("networks", networksMap);
+					}
+
+					File dockerComposeFile = new File(project.getProperty("docker.compose.file.path"));
+
+					PrintWriter printWriter = new PrintWriter(dockerComposeFile);
+
+					yaml.dump(map, printWriter);
+
+					project.setProperty("docker.compose.file.path", JenkinsResultsParserUtil.getCanonicalPath(dockerComposeFile));
+				]]>
+			</beanshell>
+
+			<print-file file.name="${docker.compose.file.path}" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="get-analytics-cloud-faro-image-name">
+		<sequential>
+			<var name="analytics.cloud.faro.image.name" unset="true" />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+					import java.util.regex.Matcher;
+					import java.util.regex.Pattern;
+
+					import org.yaml.snakeyaml.Yaml;
+
+					Pattern dockerImageUserPattern = Pattern.compile("def dockerImageUser = \"([^\"]+)\"");
+					Pattern dockerImageIdPattern = Pattern.compile("def dockerImageId = \"([^\"]+)\"");
+
+					public String getFaroImageName() {
+						File faroBuildGradleFile = new File(project.getProperty("analytics.cloud.faro.dir"), "build-ext.gradle");
+
+						if (!faroBuildGradleFile.exists()) {
+							faroBuildGradleFile = new File(project.getProperty("analytics.cloud.faro.dir"), "build.gradle");
+						}
+
+						String content = JenkinsResultsParserUtil.read(faroBuildGradleFile);
+
+						String dockerImageUser = null;
+
+						Matcher dockerImageUserMatcher = dockerImageUserPattern.matcher(content);
+
+						if (dockerImageUserMatcher.find()) {
+							dockerImageUser = dockerImageUserMatcher.group(1);
+						}
+
+						String dockerImageId = null;
+
+						Matcher dockerImageIdMatcher = dockerImageIdPattern.matcher(content);
+
+						if (dockerImageIdMatcher.find()) {
+							dockerImageId = dockerImageIdMatcher.group(1);
+						}
+
+						if (JenkinsResultsParserUtil.isNullOrEmpty(dockerImageUser)) {
+							return dockerImageId + ":latest";
+						}
+
+						return dockerImageUser + "/" + dockerImageId + ":latest";
+					}
+
+					project.setProperty("analytics.cloud.faro.image.name", getFaroImageName());
+				]]>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
 	<macrodef name="print-analytics-cloud-logs">
 		<sequential>
-			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
+			<create-analytics-cloud-docker-compose docker.compose.file.name="docker-compose.yml" />
 
 			<local name="container.names" />
 
@@ -89,7 +209,7 @@ networks:
 					import java.util.regex.Pattern;
 
 					public static List getContainerNames() {
-						File dockerComposeFile = new File(project.getProperty("analytics.cloud.docker.test.yaml"));
+						File dockerComposeFile = new File(project.getProperty("docker.compose.file.path"));
 
 						if (!dockerComposeFile.exists()) {
 							return new ArrayList();
@@ -206,21 +326,13 @@ networks:
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
 
-			<create-analytics-cloud-docker-compose />
-
-			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
+			<create-analytics-cloud-docker-compose docker.compose.file.name="docker-compose.yml" />
 
 			<local name="analytics.cloud.faro.build.gradle" />
 
 			<condition else="${analytics.cloud.faro.dir}/build.gradle" property="analytics.cloud.faro.build.gradle" value="${analytics.cloud.faro.dir}/build-ext.gradle">
 				<available file="${analytics.cloud.faro.dir}/build-ext.gradle" />
 			</condition>
-
-			<replaceregexp
-				file="${analytics.cloud.faro.build.gradle}"
-				match="def dockerContainerId = \&quot;([^\&quot;]+)\&quot;"
-				replace="def dockerContainerId = \&quot;${analytics.cloud.faro.container.name}\&quot;"
-			/>
 
 			<replaceregexp
 				file="${analytics.cloud.faro.build.gradle}"
@@ -252,7 +364,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 						./gradlew clean assemble -Dliferay.ci=true
 
-						docker-compose --file=${analytics.cloud.docker.test.yaml} --project-name=${analytics.cloud.project.name} build
+						docker-compose --file=${docker.compose.file.path} --project-name=${analytics.cloud.project.name} build
 					</execute>
 				</then>
 			</if>
@@ -269,25 +381,8 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 					<property location="${project.dir}/gradlew" name="portal.gradlew" />
 
-					<loadfile
-						property="analytics.cloud.docker.test.yaml.content"
-						srcfile="${analytics.cloud.docker.test.yaml}"
-					/>
-
-					<propertyregex
-						input="${analytics.cloud.docker.test.yaml.content}"
-						override="true"
-						property="analytics.cloud.faro.tag.name"
-						regexp="[\S\s]*image: (liferay\/com-liferay-osb-faro\:[^\s]+)[\S\s]*"
-						replace="\1"
-					/>
-
 					<execute dir="${analytics.cloud.faro.dir}">
-						${portal.gradlew} createDocker -Pcom.liferay.osb.faro.environment.name=local -Dliferay.ci=true
-
-						docker tag ${analytics.cloud.faro.image.name} ${analytics.cloud.faro.tag.name}
-
-						docker rm ${analytics.cloud.faro.container.name}
+						${portal.gradlew} buildAppDockerImage
 					</execute>
 				</then>
 			</if>
@@ -299,7 +394,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 
 				touch local.env
 
-				docker-compose --file=${analytics.cloud.docker.test.yaml} --project-name=${analytics.cloud.project.name} up --detach
+				docker-compose --file=${docker.compose.file.path} --project-name=${analytics.cloud.project.name} up --detach
 
 				while [[ -n $(docker ps | grep "health: starting") ]] || [[ -n $(docker ps | grep "unhealthy") ]]
 				do
@@ -308,14 +403,14 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 					sleep 30
 				done
 
-				while [[ -z $(docker logs ${analytics.cloud.faro.container.name} | grep "Completed demo data creation") ]]
+				while [[ -z $(docker logs faro | grep "Completed demo data creation") ]]
 				do
 					echo "Waiting for faro to startup."
 
 					sleep 15
 				done
 
-				docker logs ${analytics.cloud.faro.container.name}
+				docker logs faro
 
 				docker container prune -f
 				docker image prune -f
@@ -369,32 +464,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
 
-			<replaceregexp
-				file="${analytics.cloud.asah.dir}/docker-compose.integration-test.yml"
-				match="\&quot;9200:9200\&quot;"
-				replace="&quot;${analytics.cloud.asah.elasticsearch.port}:9200&quot;"
-			/>
-
-			<local name="short.hostname" />
-
-			<propertyregex
-				input="${env.HOSTNAME}"
-				override="true"
-				property="short.hostname"
-				regexp="(cloud-[^\.]+|test-\d+-\d+-\d+)(\.lax\.liferay\.com)?"
-				replace="\1"
-			/>
-
-			<if>
-				<isset property="short.hostname" />
-				<then>
-					<echo append="true" file="${analytics.cloud.asah.dir}/docker-compose.integration-test.yml"><![CDATA[
-networks:
-    default:
-        external:
-            name: ${short.hostname}]]></echo>
-				</then>
-			</if>
+			<create-analytics-cloud-docker-compose docker.compose.file.name="docker-compose.integration-test.yml" />
 
 			<pull-docker-image-dependencies
 				analytics.cloud.image.names.excludes="${analytics.cloud.asah.image.names.excludes}"
@@ -402,7 +472,7 @@ networks:
 			/>
 
 			<execute dir="${analytics.cloud.asah.dir}">
-				docker-compose -f docker-compose.integration-test.yml up -d
+				docker-compose --file=${docker.compose.file.path} up -d
 
 				docker ps
 			</execute>
@@ -464,16 +534,14 @@ if (Os.isFamily(Os.FAMILY_WINDOWS)) {
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
 
-			<create-analytics-cloud-docker-compose />
-
-			<property location="${analytics.cloud.asah.dir}/docker-compose.test.yml" name="analytics.cloud.docker.test.yaml" />
+			<create-analytics-cloud-docker-compose docker.compose.file.name="docker-compose.yml" />
 
 			<execute dir="${analytics.cloud.asah.dir}">
 				docker ps -a
 
 				touch local.env
 
-				docker-compose --file=${analytics.cloud.docker.test.yaml} --project-name=${analytics.cloud.project.name} down --volumes
+				docker-compose --file=${docker.compose.file.path} --project-name=${analytics.cloud.project.name} down --volumes
 
 				docker container prune -f
 				docker image prune -f
@@ -486,10 +554,12 @@ if (Os.isFamily(Os.FAMILY_WINDOWS)) {
 		<sequential>
 			<fail message="Please set the property ${env.DOCKER_ENABLED}." unless="env.DOCKER_ENABLED" />
 
+			<create-analytics-cloud-docker-compose docker.compose.file.name="docker-compose.integration-test.yml" />
+
 			<execute dir="${analytics.cloud.asah.dir}">
 				docker ps -a
 
-				docker-compose -f docker-compose.integration-test.yml down --volumes
+				docker-compose --file=${docker.compose.file.path} down --volumes
 
 				docker container prune -f
 				docker image prune -f
