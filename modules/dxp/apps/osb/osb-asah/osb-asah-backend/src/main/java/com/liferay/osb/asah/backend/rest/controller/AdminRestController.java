@@ -42,7 +42,7 @@ import com.liferay.osb.asah.common.repository.PreferenceRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.spring.annotation.CacheEvict;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
+import com.liferay.osb.asah.common.util.ResourceTemplateUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.io.File;
@@ -98,7 +98,7 @@ public class AdminRestController extends BaseRestController {
 
 		QueryJobConfiguration queryJobConfiguration =
 			QueryJobConfiguration.newBuilder(
-				TestExecutionListenerUtil.replaceSQLVariables(sql)
+				ResourceTemplateUtil.replaceSQLVariables(sql)
 			).setDefaultDataset(
 				projectId
 			).build();

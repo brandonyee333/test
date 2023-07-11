@@ -23,7 +23,7 @@ import com.google.cloud.bigquery.TableDefinition;
 import com.google.cloud.bigquery.TableId;
 
 import com.liferay.osb.asah.common.bigquery.BigQuerySchemaManager;
-import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
+import com.liferay.osb.asah.common.util.ResourceTemplateUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.io.File;
@@ -168,7 +168,7 @@ public class OSBAsahBQSQLTestExecutionListener
 			File file = classPathResource.getFile();
 
 			String replaceSQLVariables =
-				TestExecutionListenerUtil.replaceSQLVariables(
+				ResourceTemplateUtil.replaceSQLVariables(
 					new String(
 						Files.readAllBytes(file.toPath()),
 						StandardCharsets.UTF_8));

@@ -22,7 +22,7 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.repository.DataSourceRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
+import com.liferay.osb.asah.common.util.ResourceTemplateUtil;
 import com.liferay.osb.asah.publisher.OSBAsahPublisherSpringTestContext;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
@@ -88,7 +88,7 @@ public class AnalyticsEventsRestControllerTest
 	public void testPushAnalyticsEventsMessage() throws Exception {
 		String newDateString = DateUtil.newDateString();
 
-		String body = TestExecutionListenerUtil.replaceVariables(
+		String body = ResourceTemplateUtil.replaceVariables(
 			ResourceUtil.readResourceToString(
 				"dependencies/analytics_events_message_1.json", this),
 			newDateString);
@@ -118,7 +118,7 @@ public class AnalyticsEventsRestControllerTest
 
 	@Test
 	public void testPushAnalyticsEventsMessageIfDuplicate() throws Exception {
-		String body = TestExecutionListenerUtil.replaceVariables(
+		String body = ResourceTemplateUtil.replaceVariables(
 			ResourceUtil.readResourceToString(
 				"dependencies/analytics_events_message_with_id.json", this));
 
@@ -144,7 +144,7 @@ public class AnalyticsEventsRestControllerTest
 		throws Exception {
 
 		ResponseEntity<String> responseEntity = _exchange(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies" +
 						"/analytics_events_message_duplicated_events_1.json",
@@ -159,7 +159,7 @@ public class AnalyticsEventsRestControllerTest
 		String newDateString = DateUtil.newDateString();
 
 		responseEntity = _exchange(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies" +
 						"/analytics_events_message_duplicated_events_2.json",
@@ -190,7 +190,7 @@ public class AnalyticsEventsRestControllerTest
 	@Test
 	public void testPushAnalyticsEventsMessageIfEmptyEvents() throws Exception {
 		ResponseEntity<String> responseEntity = _exchange(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies/analytics_events_message_empty_events.json",
 					this)));
@@ -247,7 +247,7 @@ public class AnalyticsEventsRestControllerTest
 		throws Exception {
 
 		ResponseEntity<String> responseEntity = _exchange(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies" +
 						"/analytics_events_message_invalid_data_source_id.json",
@@ -271,7 +271,7 @@ public class AnalyticsEventsRestControllerTest
 		String newDateString = DateUtil.newDateString();
 
 		ResponseEntity<String> responseEntity = _exchange(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies/analytics_events_message_invalid_events.json",
 					this),
@@ -309,7 +309,7 @@ public class AnalyticsEventsRestControllerTest
 
 		String newDateString = DateUtil.newDateString();
 
-		String body = TestExecutionListenerUtil.replaceVariables(
+		String body = ResourceTemplateUtil.replaceVariables(
 			ResourceUtil.readResourceToString(
 				"dependencies/analytics_events_message_2.json", this),
 			newDateString);
@@ -352,7 +352,7 @@ public class AnalyticsEventsRestControllerTest
 
 		String newDateString = DateUtil.newDateString();
 
-		String body = TestExecutionListenerUtil.replaceVariables(
+		String body = ResourceTemplateUtil.replaceVariables(
 			ResourceUtil.readResourceToString(
 				"dependencies/analytics_events_message_4.json", this),
 			newDateString);
@@ -401,7 +401,7 @@ public class AnalyticsEventsRestControllerTest
 		throws Exception {
 
 		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					expectedCapturedMessagesResourceName, this),
 				newDateString));

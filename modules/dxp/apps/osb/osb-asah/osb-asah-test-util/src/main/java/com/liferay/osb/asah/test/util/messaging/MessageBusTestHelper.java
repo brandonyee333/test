@@ -30,7 +30,7 @@ import com.liferay.osb.asah.common.messaging.model.Message;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ListUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
+import com.liferay.osb.asah.common.util.ResourceTemplateUtil;
 import com.liferay.osb.asah.test.util.annotation.MessageBusChannel;
 
 import java.util.Collections;
@@ -122,7 +122,7 @@ public class MessageBusTestHelper {
 		throws Exception {
 
 		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies/" + messageBusChannel.resourcePath(),
 					clazz)));

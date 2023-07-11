@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.osb.asah.common.repository.BigQueryRepository;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
-import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
+import com.liferay.osb.asah.common.util.ResourceTemplateUtil;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 
 import java.lang.reflect.Method;
@@ -172,7 +172,7 @@ public class OSBAsahRepositoryTestExecutionListener
 			repositoryResource.repositoryClass());
 
 		JSONArray jsonArray = new JSONArray(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies/" + repositoryResource.resourcePath(),
 					clazz)));

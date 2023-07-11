@@ -14,7 +14,7 @@
 
 package com.liferay.osb.asah.test.util.spring;
 
-import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
+import com.liferay.osb.asah.common.util.ResourceTemplateUtil;
 import com.liferay.osb.asah.test.util.annotation.SQLResource;
 
 import java.io.File;
@@ -168,7 +168,7 @@ public class OSBAsahSQLTestExecutionListener
 			File file = classPathResource.getFile();
 
 			String replaceSQLVariables =
-				TestExecutionListenerUtil.replaceSQLVariables(
+				ResourceTemplateUtil.replaceSQLVariables(
 					new String(
 						Files.readAllBytes(file.toPath()),
 						StandardCharsets.UTF_8));

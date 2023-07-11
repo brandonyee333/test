@@ -26,7 +26,7 @@ import com.liferay.osb.asah.common.repository.BQIdentityRepository;
 import com.liferay.osb.asah.common.repository.InterestTopicRepository;
 import com.liferay.osb.asah.common.spring.http.exception.OSBAsahException;
 import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
-import com.liferay.osb.asah.common.util.TestExecutionListenerUtil;
+import com.liferay.osb.asah.common.util.ResourceTemplateUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.annotation.RepositoryResource;
 import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
@@ -168,7 +168,7 @@ public class InterestsRestControllerTest
 	@Test
 	public void testGetInterestTransformations() throws Exception {
 		JSONAssert.assertEquals(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies/expected_interest_transformations.json",
 					this)),
@@ -188,7 +188,7 @@ public class InterestsRestControllerTest
 		throws Exception {
 
 		JSONAssert.assertEquals(
-			TestExecutionListenerUtil.replaceVariables(
+			ResourceTemplateUtil.replaceVariables(
 				ResourceUtil.readResourceToString(
 					"dependencies" +
 						"/expected_interest_transformations_filtered.json",
