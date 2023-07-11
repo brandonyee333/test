@@ -549,9 +549,11 @@ public class EventIngestionPipeline {
 	}
 
 	private static String _formatFieldValue(String fieldValue) {
-		return StringUtils.replaceAll(
-			fieldValue,
-			"^(\\\\+n|\\\\+r|\\\\+t|\\s)+|(\\\\+n|\\\\+r|\\\\+t|\\s)+$", "");
+		return StringUtils.trim(
+			StringUtils.replaceAll(
+				fieldValue,
+				"^(\\\\+n|\\\\+r|\\\\+t|\\s)+|(\\\\+n|\\\\+r|\\\\+t|\\s)+$",
+				""));
 	}
 
 	private static String _getAssetId(AnalyticsEvent analyticsEvent) {
