@@ -293,6 +293,8 @@ public class BigQueryQueryExecutor implements QueryExecutor {
 				if (value != null) {
 					String key = entry.getKey();
 
+					value = value.replace("\\", "\\\\");
+
 					value = value.replace("'", "\\\\'");
 					value = value.replace("\n", "\\n");
 					value = value.replace("\r", "\\r");
