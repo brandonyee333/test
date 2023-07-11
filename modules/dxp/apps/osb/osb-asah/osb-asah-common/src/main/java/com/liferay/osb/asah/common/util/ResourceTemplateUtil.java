@@ -33,7 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @author André Miranda
  */
-public class TestExecutionListenerUtil {
+public class ResourceTemplateUtil {
 
 	public static String replaceSQLVariables(String sql) {
 		LocalDateTime localDateTime = LocalDateTime.now(Clock.systemUTC());
