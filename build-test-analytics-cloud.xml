@@ -328,18 +328,6 @@
 
 			<create-analytics-cloud-docker-compose docker.compose.file.name="docker-compose.yml" />
 
-			<local name="analytics.cloud.faro.build.gradle" />
-
-			<condition else="${analytics.cloud.faro.dir}/build.gradle" property="analytics.cloud.faro.build.gradle" value="${analytics.cloud.faro.dir}/build-ext.gradle">
-				<available file="${analytics.cloud.faro.dir}/build-ext.gradle" />
-			</condition>
-
-			<replaceregexp
-				file="${analytics.cloud.faro.build.gradle}"
-				match="network \&quot;([^\&quot;]+)\&quot;"
-				replace="network \&quot;${analytics.cloud.project.name}_default\&quot;"
-			/>
-
 			<replaceregexp
 				file="${analytics.cloud.faro.dir}/osb-faro-docker/local/Dockerfile"
 				match="FARO_URL=http://localhost:8080"
