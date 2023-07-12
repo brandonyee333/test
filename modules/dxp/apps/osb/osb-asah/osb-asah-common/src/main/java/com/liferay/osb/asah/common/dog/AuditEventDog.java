@@ -34,10 +34,10 @@ public class AuditEventDog {
 		AuditEvent auditEvent = new AuditEvent();
 
 		auditEvent.setCreateDate(new Date());
+		auditEvent.setIsNew(Boolean.TRUE);
 		auditEvent.setType(type);
 		auditEvent.setUserId(userId);
 		auditEvent.setUserName(userName);
-		auditEvent.setIsNew(Boolean.TRUE);
 
 		return _auditEventRepository.save(auditEvent);
 	}
