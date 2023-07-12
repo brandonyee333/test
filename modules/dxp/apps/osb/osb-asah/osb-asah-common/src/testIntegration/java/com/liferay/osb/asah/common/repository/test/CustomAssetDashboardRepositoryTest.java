@@ -92,7 +92,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard4.setCreateDate(new Date());
 		customAssetDashboard4.setCategory("default");
 
-		Channel channel2 = new Channel("Channel Test 1");
+		Channel channel2 = new Channel("Channel Test 2");
 
 		channel2.setId(2L);
 		channel2.setIsNew(Boolean.TRUE);
@@ -112,7 +112,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard5.setCreateDate(new Date());
 		customAssetDashboard5.setCategory("default");
 
-		Channel channel3 = new Channel("Channel Test 1");
+		Channel channel3 = new Channel("Channel Test 3");
 
 		channel3.setId(3L);
 		channel3.setIsNew(Boolean.TRUE);
@@ -132,7 +132,7 @@ public class CustomAssetDashboardRepositoryTest
 		customAssetDashboard6.setCreateDate(new Date());
 		customAssetDashboard6.setCategory("default");
 
-		Channel channel4 = new Channel("Channel Test 1");
+		Channel channel4 = new Channel("Channel Test 4");
 
 		channel4.setId(4L);
 		channel4.setIsNew(Boolean.TRUE);
