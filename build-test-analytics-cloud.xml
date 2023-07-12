@@ -14,6 +14,8 @@
 
 			<for list="${docker.compose.image.names}" param="docker.compose.image.name">
 				<sequential>
+					<echo>docker.compose.image.name=@{docker.compose.image.name}</echo>
+
 					<if>
 						<not>
 							<available file="${project.dir}/@{docker.compose.image.name}.tar" />
@@ -168,8 +170,9 @@
 									serviceMap.put("image", dockerComposeImageName + ":latest");
 								}
 							}
-
-							dockerComposeImageNames.add(dockerComposeImageName);
+							else if (!serviceMap.containsKey("image")) {
+								dockerComposeImageNames.add(dockerComposeImageName);
+							}
 
 							List ports = new ArrayList();
 
@@ -182,13 +185,13 @@
 							if (serviceName.equals("osbasahupgrade")) {
 								ports.add(project.getProperty("analytics.cloud.asah.upgrade.port") + ":8080");
 
-								serviceMap.put("image", project.getProperty("analytics.cloud.faro.image.name") + ":latest");
-
 								dockerComposeImageNames.add(project.getProperty("analytics.cloud.faro.image.name"));
 							}
 							else if (serviceName.equals("osbfarofrontend")) {
 								ports.remove("8080:8080");
 								ports.remove("11311:11311");
+
+								serviceMap.put("image", project.getProperty("analytics.cloud.faro.image.name") + ":latest");
 
 								ports.add(project.getProperty("analytics.cloud.faro.dxp.port") + ":8080");
 								ports.add(project.getProperty("analytics.cloud.faro.osgi.console.port") + ":11311");
