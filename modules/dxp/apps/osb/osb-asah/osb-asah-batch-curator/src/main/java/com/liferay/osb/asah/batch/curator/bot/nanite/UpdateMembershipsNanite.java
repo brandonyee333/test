@@ -109,7 +109,11 @@ public class UpdateMembershipsNanite extends BaseNanite {
 							ExceptionUtils.getStackFrames(exception), 10))));
 		}
 		finally {
-			_segmentDog.updateSegmentState(segment, "READY");
+			if (StringUtils.equalsIgnoreCase(
+					segment.getState(), "IN_PROGRESS")) {
+
+				_segmentDog.updateSegmentState(segment, "READY");
+			}
 		}
 	}
 
