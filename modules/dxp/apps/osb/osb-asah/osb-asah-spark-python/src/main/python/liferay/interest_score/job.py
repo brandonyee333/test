@@ -33,7 +33,6 @@ from sparknlp.base import DocumentAssembler, \
 import json
 import logging
 
-
 class BaseBigQueryDataFrameWriterSparkJob(BaseSparkJob):
 
 	def __init__(self, spark_application, bigquery_dataset, mode='append', table_name=None):
