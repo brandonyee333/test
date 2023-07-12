@@ -43,9 +43,9 @@ public class UpdateMembershipsNaniteTest
 
 	@AfterEach
 	public void tearDown() {
-		_segmentRepository.deleteAll();
-
 		_channelRepository.deleteAll();
+
+		_segmentRepository.deleteAll();
 	}
 
 	@Test
