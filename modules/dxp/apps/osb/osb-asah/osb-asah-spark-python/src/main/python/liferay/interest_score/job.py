@@ -9,9 +9,6 @@
 # distribution rights of the Software.
 #
 
-import json
-import logging
-
 from abc import ABCMeta, \
 	abstractmethod
 
@@ -32,6 +29,10 @@ from sparknlp.annotator import Chunker, \
 	Tokenizer
 from sparknlp.base import DocumentAssembler, \
 	Finisher
+
+import json
+import logging
+
 
 class BaseBigQueryDataFrameWriterSparkJob(BaseSparkJob):
 

@@ -9,13 +9,14 @@
 # distribution rights of the Software.
 #
 
-import logging
-import pandas as pd
 from abc import abstractmethod
 
 from liferay.commerce.forecast.constants import ModelSelectionCriterion
 
 from multiprocessing import cpu_count
+
+import logging
+import pandas as pd
 
 class BaseCommerceForecast(object):
 

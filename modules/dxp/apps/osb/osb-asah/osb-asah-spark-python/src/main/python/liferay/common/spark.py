@@ -9,7 +9,6 @@
 # distribution rights of the Software.
 #
 
-import logging
 from abc import ABCMeta, \
 	abstractmethod
 
@@ -17,6 +16,8 @@ from liferay.common.configuration import Configuration
 
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
+
+import logging
 
 class BaseSparkApplication(object):
 
