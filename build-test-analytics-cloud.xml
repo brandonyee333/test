@@ -6,7 +6,7 @@
 	<macrodef name="build-analytics-cloud-docker-images">
 		<sequential>
 			<create-analytics-cloud-docker-compose
-				docker.compose.run="false"
+				docker.compose.build="true"
 				docker.compose.file.name="docker-compose.yml"
 			/>
 
@@ -16,7 +16,7 @@
 				<sequential>
 					<if>
 						<not>
-							<file available="${project.dir}/@{docker.compose.image.name}.tar" />
+							<available file="${project.dir}/@{docker.compose.image.name}.tar" />
 						</not>
 						<then>
 							<property name="analytics.cloud.build" value="true" />
@@ -56,8 +56,8 @@
 
 					<for list="${docker.compose.image.names}" param="docker.compose.image.name">
 						<sequential>
-							<execute dir="${analytics.cloud.faro.dir}">
-								docker save -o ${project.dir}/@{docker.compose.image.name}.tar @{docker.compose.image.name}:latest
+							<execute dir="${project.dir}">
+								docker save -o @{docker.compose.image.name}.tar @{docker.compose.image.name}:latest
 							</execute>
 						</sequential>
 					</for>
@@ -65,8 +65,8 @@
 				<else>
 					<for list="${docker.compose.image.names}" param="docker.compose.image.name">
 						<sequential>
-							<execute dir="${analytics.cloud.faro.dir}">
-								docker load -i ${project.dir}/@{docker.compose.image.name}.tar
+							<execute dir="${project.dir}">
+								docker load -i @{docker.compose.image.name}.tar
 							</execute>
 						</sequential>
 					</for>
@@ -76,7 +76,7 @@
 	</macrodef>
 
 	<macrodef name="create-analytics-cloud-docker-compose">
-		<attribute default="true" name="docker.compose.run" />
+		<attribute default="false" name="docker.compose.build" />
 		<attribute name="docker.compose.file.name" />
 
 		<sequential>
@@ -129,6 +129,8 @@
 						return networksMap;
 					}
 
+					System.out.println("docker.compose.build=@{docker.compose.build}");
+
 					Yaml yaml = new Yaml();
 
 					Map map = yaml.load(new FileInputStream(new File(project.getProperty("analytics.cloud.asah.dir"), "@{docker.compose.file.name}")));
@@ -159,7 +161,7 @@
 
 							String dockerComposeImageName = "com-liferay-osb-asah-private-" + serviceName;
 
-							if (!Objects.equals("@{docker.compose.run}", "true")) {
+							if (!Objects.equals("@{docker.compose.build}", "true")) {
 								serviceMap.remove("build");
 
 								if (!serviceMap.containsKey("image")) {
