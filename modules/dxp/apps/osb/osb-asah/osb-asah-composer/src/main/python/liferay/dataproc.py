@@ -41,14 +41,10 @@ class DataprocClusterGetOrCreateOperator(BaseOperator):
 		self.log.info("cluster_name: {}".format(cluster_name))
 
 		cluster_config = ClusterGenerator(
-			project_id=dag.default_args['project_id'],
-			region=dag.default_args['region'],
 			idle_delete_ttl=dag_configuration[
 				'dataproc.cluster.idle_delete_ttl'
 			],
 			image_version=dag_configuration['dataproc.cluster.image_version'],
-			num_masters=dag_configuration['dataproc.cluster.master.count'],
-			num_workers=dag_configuration['dataproc.cluster.worker.count'],
 			master_disk_size=dag_configuration[
 				'dataproc.cluster.master.disk_size'
 			],
@@ -61,9 +57,14 @@ class DataprocClusterGetOrCreateOperator(BaseOperator):
 			metadata=json.loads(
 				dag_configuration['dataproc.cluster.metadata']
 			),
+			num_masters=dag_configuration['dataproc.cluster.master.count'],
+			num_workers=dag_configuration['dataproc.cluster.worker.count'],
+			project_id=dag.default_args['project_id'],
 			properties=json.loads(
 				dag_configuration['dataproc.cluster.properties']
 			),
+			region=dag.default_args['region'],
+			use_if_exists=True,
 			worker_disk_size=dag_configuration[
 				'dataproc.cluster.worker.disk_size'
 			],
@@ -72,8 +73,7 @@ class DataprocClusterGetOrCreateOperator(BaseOperator):
 			],
 			worker_machine_type=dag_configuration[
 				'dataproc.cluster.worker.machine_type'
-			],
-			use_if_exists=True
+			]
 		).make()
 
 		dataproc_create_cluster_operator = DataprocCreateClusterOperator(
@@ -130,18 +130,12 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 		dag_configuration = kwargs[dag.dag_id]
 
 		dataproc_submit_pyspark_job_operator = DataprocSubmitPySparkJobOperator(
-			task_id='dataproc_submit_pyspark_job',
-			project_id=dag.default_args['project_id'],
-			cluster_name=cluster_name,
-			region=dag.default_args['region'],
-			job_name=self._get_application_name(
-				ac_project_id=dag.default_args['ac_project_id'],
-				data_source_id=self._data_source_id,
-				resource_name=self._resource_name
-			),
-			main='gs://{}/osb-asah-spark-python-driver.py'.format(
-				dag_configuration['dataproc.bucket']
-			),
+			archives=[
+				'gs://{}/resources/{}'.format(
+					dag_configuration['dataproc.bucket'],
+					dag_configuration['dataproc.pyspark.configuration']
+				)
+			],
 			arguments=[
 				self.RESOURCE_NAME_APPLICATION_MAP.get(
 					self._resource_name
@@ -153,20 +147,26 @@ class DataprocSubmitCommercePySparkJobOperator(BaseOperator):
 				'--data-source-id',
 				self._data_source_id
 			],
-			archives=[
-				'gs://{}/resources/{}'.format(
-					dag_configuration['dataproc.bucket'],
-					dag_configuration['dataproc.pyspark.configuration']
-				)
-			],
+			cluster_name=cluster_name,
 			dataproc_properties=json.loads(
 				dag_configuration['dataproc.pyspark.properties']
 			),
+			job_name=self._get_application_name(
+				ac_project_id=dag.default_args['ac_project_id'],
+				data_source_id=self._data_source_id,
+				resource_name=self._resource_name
+			),
+			main='gs://{}/osb-asah-spark-python-driver.py'.format(
+				dag_configuration['dataproc.bucket']
+			),
+			project_id=dag.default_args['project_id'],
 			pyfiles=[
 				'gs://{}/osb-asah-spark-python.zip'.format(
 					dag_configuration['dataproc.bucket']
 				)
-			]
+			],
+			region=dag.default_args['region'],
+			task_id='dataproc_submit_pyspark_job'
 		)
 
 		dataproc_submit_pyspark_job_operator.execute(Context(kwargs))
@@ -216,31 +216,31 @@ class DataprocSubmitInterestScorePySparkJobOperator(BaseOperator):
 				self.log.warning("Error parsing parameters: " + str(e))
 
 		dataproc_submit_pyspark_job_operator = DataprocSubmitPySparkJobOperator(
-			task_id='dataproc_submit_pyspark_job',
-			project_id=dag.default_args['project_id'],
-			cluster_name=cluster_name,
-			region=dag.default_args['region'],
-			job_name=self._get_application_name(
-				ac_project_id=dag.default_args['ac_project_id']
-			),
-			main='gs://{}/osb-asah-spark-python-driver.py'.format(
-				dag_configuration['dataproc.bucket']
-			),
-			arguments=arguments,
 			archives=[
 				'gs://{}/resources/{}'.format(
 					dag_configuration['dataproc.bucket'],
 					dag_configuration['dataproc.pyspark.configuration']
 				)
 			],
+			arguments=arguments,
+			cluster_name=cluster_name,
 			dataproc_properties=json.loads(
 				dag_configuration['dataproc.pyspark.properties']
 			),
+			job_name=self._get_application_name(
+				ac_project_id=dag.default_args['ac_project_id']
+			),
+			main='gs://{}/osb-asah-spark-python-driver.py'.format(
+				dag_configuration['dataproc.bucket']
+			),
+			project_id=dag.default_args['project_id'],
 			pyfiles=[
 				'gs://{}/osb-asah-spark-python.zip'.format(
 					dag_configuration['dataproc.bucket']
 				)
-			]
+			],
+			region=dag.default_args['region'],
+			task_id='dataproc_submit_pyspark_job'
 		)
 
 		dataproc_submit_pyspark_job_operator.execute(context)
