@@ -133,7 +133,7 @@
 
 					Map map = yaml.load(new FileInputStream(new File(project.getProperty("analytics.cloud.asah.dir"), "@{docker.compose.file.name}")));
 
-					List dockerComposeImageNames = ArrayList();
+					List dockerComposeImageNames = new ArrayList();
 
 					for (String key : map.keySet()) {
 						if (!key.equals("services")) {
