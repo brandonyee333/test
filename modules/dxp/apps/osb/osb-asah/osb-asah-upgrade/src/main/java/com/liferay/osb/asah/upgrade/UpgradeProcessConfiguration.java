@@ -33,13 +33,13 @@ public class UpgradeProcessConfiguration {
 	public UpgradeProcess upgradeProcess() {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
-		upgradeProcess.addUpgradeSteps("4.0.9", "4.0.10", _segmentUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.10", "4.0.11", _pageReferrersViewUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.11", "4.0.12", _bqMembershipUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
 			"4.0.12", "4.0.13", _postgreSQLUpgradeStep);
+		upgradeProcess.addUpgradeSteps("4.0.13", "4.0.14", _segmentUpgradeStep);
 
 		return upgradeProcess;
 	}
