@@ -101,7 +101,8 @@ public class UpdateMembershipsNanite extends BaseNanite {
 				String.format(
 					"Unable to update memberships for segment ID %s and " +
 						"filter %s",
-					segment.getId(), filterString));
+					segment.getId(), filterString),
+				exception);
 		}
 		finally {
 			_segmentDog.updateSegmentState(segment, "READY");
