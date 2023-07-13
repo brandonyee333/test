@@ -1193,7 +1193,7 @@ public class WebServerServlet extends HttpServlet {
 
 	protected void sendPortletFileEntry(
 			HttpServletRequest request, HttpServletResponse response,
-			String[] pathArray, String path)
+			String path, String[] pathArray)
 		throws Exception {
 
 		FileEntry fileEntry = getPortletFileEntry(request, pathArray);
@@ -1471,7 +1471,7 @@ public class WebServerServlet extends HttpServlet {
 					}
 					else if (PATH_PORTLET_FILE_ENTRY.equals(pathArray[0])) {
 						sendPortletFileEntry(
-							request, response, pathArray, path);
+							request, response, path, pathArray);
 					}
 					else {
 						if (PropsValues.
