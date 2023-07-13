@@ -48,10 +48,10 @@ public class UpgradeProcessConfiguration {
 	private BQMembershipUpgradeStep _bqMembershipUpgradeStep;
 
 	@Autowired
-	private PostgreSQLUpgradeStep _postgreSQLUpgradeStep;
+	private PageReferrersViewUpgradeStep _pageReferrersViewUpgradeStep;
 
 	@Autowired
-	private PageReferrersViewUpgradeStep _pageReferrersViewUpgradeStep;
+	private PostgreSQLUpgradeStep _postgreSQLUpgradeStep;
 
 	@Autowired
 	private SegmentUpgradeStep _segmentUpgradeStep;
