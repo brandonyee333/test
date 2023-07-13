@@ -390,8 +390,6 @@ public class AnalyticsEventsIngestionNanite {
 
 			_writeBQEvent(analyticsEvent, sessionContext);
 			_writeBQEventProperties(analyticsEvent);
-
-			_sendAnalyticsEvent(analyticsEvent);
 		}
 		catch (Exception exception) {
 			_log.error(
@@ -413,16 +411,6 @@ public class AnalyticsEventsIngestionNanite {
 			}
 
 			_processAnalyticsEvent(analyticsEvent);
-		}
-	}
-
-	private void _sendAnalyticsEvent(AnalyticsEvent analyticsEvent) {
-		String analyticsEventJSON = analyticsEvent.toJSON();
-
-		for (Channel channel :
-				_analyticsEventsChannels.getChannels(analyticsEvent)) {
-
-			_messageBus.sendMessage(channel, analyticsEventJSON);
 		}
 	}
 
@@ -669,9 +657,6 @@ public class AnalyticsEventsIngestionNanite {
 
 	@Value("${session.window.allowed.lateness:1}")
 	private long _allowedLateness;
-
-	@Autowired
-	private AnalyticsEventsChannels _analyticsEventsChannels;
 
 	@Autowired
 	private BQEventPropertyRepository _bqEventPropertyRepository;
