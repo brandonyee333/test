@@ -36,12 +36,12 @@ public class AuditEventDogTest
 		AuditEvent auditEvent = _auditEventDog.addAuditEvent(
 			AuditEvent.Type.CLEAR_CHANNEL, "1", "Test Test");
 
-		Assertions.assertEquals("1", auditEvent.getUserId());
-		Assertions.assertEquals("Test Test", auditEvent.getUserName());
-		Assertions.assertEquals(
-			AuditEvent.Type.CLEAR_CHANNEL, auditEvent.getType());
 		Assertions.assertNotNull(auditEvent.getCreateDate());
 		Assertions.assertNotNull(auditEvent.getId());
+		Assertions.assertEquals(
+			AuditEvent.Type.CLEAR_CHANNEL, auditEvent.getType());
+		Assertions.assertEquals("1", auditEvent.getUserId());
+		Assertions.assertEquals("Test Test", auditEvent.getUserName());
 	}
 
 	@Autowired
