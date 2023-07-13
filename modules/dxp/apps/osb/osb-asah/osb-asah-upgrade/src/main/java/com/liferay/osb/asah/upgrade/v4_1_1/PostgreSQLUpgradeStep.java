@@ -31,13 +31,13 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class CustomAssetDashboardUpgradeStep implements UpgradeStep {
+public class PostgreSQLUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
 		DatabasePopulatorUtils.execute(
 			new ResourceDatabasePopulator(
-				new ClassPathResource("constraints_4.1.1.sql")),
+				new ClassPathResource("upgrade_4.1.1.sql")),
 			_dataSource);
 
 		if (_log.isInfoEnabled()) {
@@ -46,7 +46,7 @@ public class CustomAssetDashboardUpgradeStep implements UpgradeStep {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		CustomAssetDashboardUpgradeStep.class);
+		PostgreSQLUpgradeStep.class);
 
 	@Autowired
 	private DataSource _dataSource;

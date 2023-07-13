@@ -17,7 +17,7 @@ package com.liferay.osb.asah.upgrade;
 import com.liferay.osb.asah.upgrade.v4_1_0.PageReferrersViewUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_1_0.SegmentUpgradeStep;
 import com.liferay.osb.asah.upgrade.v4_1_1.BQMembershipUpgradeStep;
-import com.liferay.osb.asah.upgrade.v4_1_1.CustomAssetDashboardUpgradeStep;
+import com.liferay.osb.asah.upgrade.v4_1_1.PostgreSQLUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +39,7 @@ public class UpgradeProcessConfiguration {
 		upgradeProcess.addUpgradeSteps(
 			"4.0.11", "4.0.12", _bqMembershipUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"4.0.12", "4.0.13", _customAssetDashboardUpgradeStep);
+			"4.0.12", "4.0.13", _postgreSQLUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -48,7 +48,7 @@ public class UpgradeProcessConfiguration {
 	private BQMembershipUpgradeStep _bqMembershipUpgradeStep;
 
 	@Autowired
-	private CustomAssetDashboardUpgradeStep _customAssetDashboardUpgradeStep;
+	private PostgreSQLUpgradeStep _postgreSQLUpgradeStep;
 
 	@Autowired
 	private PageReferrersViewUpgradeStep _pageReferrersViewUpgradeStep;
