@@ -1193,7 +1193,7 @@ public class WebServerServlet extends HttpServlet {
 
 	protected void sendPortletFileEntry(
 			HttpServletRequest request, HttpServletResponse response,
-			String[] pathArray)
+			String[] pathArray, String path)
 		throws Exception {
 
 		FileEntry fileEntry = getPortletFileEntry(request, pathArray);
@@ -1203,6 +1203,10 @@ public class WebServerServlet extends HttpServlet {
 		}
 
 		String fileName = HttpUtil.decodeURL(HtmlUtil.escape(pathArray[2]));
+
+		if (Validator.isNull(fileName)) {
+			throw new NoSuchFileEntryException("Invalid path " + path);
+		}
 
 		if (fileEntry.isInTrash()) {
 			fileName = TrashUtil.getOriginalTitle(fileName);
@@ -1466,7 +1470,8 @@ public class WebServerServlet extends HttpServlet {
 						sendFile(request, response, user, pathArray);
 					}
 					else if (PATH_PORTLET_FILE_ENTRY.equals(pathArray[0])) {
-						sendPortletFileEntry(request, response, pathArray);
+						sendPortletFileEntry(
+							request, response, pathArray, path);
 					}
 					else {
 						if (PropsValues.
