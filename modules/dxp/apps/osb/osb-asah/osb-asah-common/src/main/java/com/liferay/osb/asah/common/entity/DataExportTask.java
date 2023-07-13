@@ -199,7 +199,7 @@ public class DataExportTask implements Persistable<Long> {
 
 	public static enum Type {
 
-		EVENT, INDIVIDUAL, PAGE, SEGMENT
+		EVENT, IDENTITY, INDIVIDUAL, PAGE, SEGMENT
 
 	}
 
