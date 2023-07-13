@@ -68,8 +68,8 @@ public interface CommerceInventoryBookedQuantityLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public CommerceInventoryBookedQuantity addCommerceBookedQuantity(
-			long userId, String sku, int quantity, Date expirationDate,
-			Map<String, String> context)
+			long userId, String sku, String unitOfMeasureKey, int quantity,
+			Date expirationDate, Map<String, String> context)
 		throws PortalException;
 
 	/**
