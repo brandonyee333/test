@@ -22,7 +22,10 @@ import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.repository.ChannelRepository;
 import com.liferay.osb.asah.common.repository.SegmentRepository;
 import com.liferay.osb.asah.common.util.ProjectIdThreadLocal;
+import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 import com.liferay.osb.asah.test.util.configuration.JDBCTestConfiguration;
+import com.liferay.osb.asah.test.util.spring.OSBAsahTestExecutionListenersContext;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.util.Date;
 import java.util.Optional;
@@ -39,15 +42,17 @@ import org.springframework.context.annotation.Import;
  */
 @Import(JDBCTestConfiguration.class)
 public class UpdateMembershipsNaniteTest
-	implements OSBAsahBatchCuratorSpringTestContext {
+	implements OSBAsahBatchCuratorSpringTestContext,
+			   OSBAsahTestExecutionListenersContext {
 
 	@AfterEach
 	public void tearDown() {
-		_channelRepository.deleteAll();
-
 		_segmentRepository.deleteAll();
+
+		_channelRepository.deleteAll();
 	}
 
+	@BQSQLResource
 	@Test
 	public void testRun() {
 		ProjectIdThreadLocal.setProjectId("test");
@@ -56,12 +61,14 @@ public class UpdateMembershipsNaniteTest
 
 		segment.setAuthorName("Test Test");
 
-		Channel channel1 = _addChannel(10, "Liferay Brazil");
+		Channel channel1 = _addChannel(
+			RandomTestUtil.randomNumber(), "Test Channel");
 
 		segment.setChannelId(channel1.getId());
 
 		segment.setCreateDate(DateUtil.addDays(new Date(), -5));
-		segment.setFilter("(channelId eq '10')");
+		segment.setFilter(
+			String.format("(channelId eq '%s')", channel1.getId()));
 		segment.setIsNew(Boolean.TRUE);
 		segment.setName("Segment 1");
 		segment.setState("IN_PROGRESS");
