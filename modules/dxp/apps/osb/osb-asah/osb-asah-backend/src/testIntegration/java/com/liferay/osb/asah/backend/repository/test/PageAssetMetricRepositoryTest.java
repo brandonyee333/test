@@ -116,34 +116,6 @@ public class PageAssetMetricRepositoryTest
 		resourcePath = "page_asset_metric_views_histogram_last_24_hours.sql"
 	)
 	@Test
-	public void testGetViewsAssetMetricsWithKeywords1() {
-		assertAssetMetrics(
-			new Double[] {7D},
-			_assetMetricRepository.getAssetMetrics(
-				1L, "Title 1", PageRequest.of(0, 10),
-				SetUtil.of(PageMetricType.VIEWS.getName()),
-				TimeRange.LAST_24_HOURS),
-			PageMetric::getViewsMetric);
-	}
-
-	@BQSQLResource(
-		resourcePath = "page_asset_metric_views_histogram_last_24_hours.sql"
-	)
-	@Test
-	public void testGetViewsAssetMetricsWithKeywords2() {
-		assertAssetMetrics(
-			new Double[] {6D},
-			_assetMetricRepository.getAssetMetrics(
-				1L, "delivery", PageRequest.of(0, 10),
-				SetUtil.of(PageMetricType.VIEWS.getName()),
-				TimeRange.LAST_24_HOURS),
-			PageMetric::getViewsMetric);
-	}
-
-	@BQSQLResource(
-		resourcePath = "page_asset_metric_views_histogram_last_24_hours.sql"
-	)
-	@Test
 	public void testGetViewsAssetMetricsFilteringByTerms() {
 		List<PageMetric> pageMetrics = _assetMetricRepository.getAssetMetrics(
 			1L, null, null, PageRequest.of(0, 10),
@@ -158,6 +130,34 @@ public class PageAssetMetricRepositoryTest
 			TimeRange.LAST_24_HOURS);
 
 		Assertions.assertEquals(1, pageMetrics.size());
+	}
+
+	@BQSQLResource(
+		resourcePath = "page_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetViewsAssetMetricsWithKeywords1() {
+		assertAssetMetrics(
+			new Double[] {7D},
+			_assetMetricRepository.getAssetMetrics(
+				1L, "Title 1", null, PageRequest.of(0, 10),
+				SetUtil.of(PageMetricType.VIEWS.getName()),
+				TimeRange.LAST_24_HOURS),
+			PageMetric::getViewsMetric);
+	}
+
+	@BQSQLResource(
+		resourcePath = "page_asset_metric_views_histogram_last_24_hours.sql"
+	)
+	@Test
+	public void testGetViewsAssetMetricsWithKeywords2() {
+		assertAssetMetrics(
+			new Double[] {6D},
+			_assetMetricRepository.getAssetMetrics(
+				1L, "delivery", null, PageRequest.of(0, 10),
+				SetUtil.of(PageMetricType.VIEWS.getName()),
+				TimeRange.LAST_24_HOURS),
+			PageMetric::getViewsMetric);
 	}
 
 	@BQSQLResource(
