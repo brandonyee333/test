@@ -282,6 +282,27 @@ public class EventIngestionPipeline {
 
 	}
 
+	public static class AnalyticsEventsTableRowMapper
+		extends DoFn<KV<String, Iterable<AnalyticsEvent>>, TableRow> {
+
+		@ProcessElement
+		public void process(
+			IntervalWindow intervalWindow, PaneInfo paneInfo,
+			ProcessContext processContext) {
+
+			KV<String, Iterable<AnalyticsEvent>> element =
+				processContext.element();
+
+			String sessionId = DigestUtils.sha256Hex(
+				element.getKey() + "#" + intervalWindow.start());
+
+			for (AnalyticsEvent analyticsEvent : element.getValue()) {
+				_outputEventTableRow(analyticsEvent, processContext, sessionId);
+			}
+		}
+
+	}
+
 	public static class BackupPubsubMessages extends PTransform<PBegin, PDone> {
 
 		public BackupPubsubMessages(
@@ -320,27 +341,6 @@ public class EventIngestionPipeline {
 
 	}
 
-	public static class EventBigQueryTableRowParser
-		extends DoFn<KV<String, Iterable<AnalyticsEvent>>, TableRow> {
-
-		@ProcessElement
-		public void process(
-			IntervalWindow intervalWindow, PaneInfo paneInfo,
-			ProcessContext processContext) {
-
-			KV<String, Iterable<AnalyticsEvent>> element =
-				processContext.element();
-
-			String sessionId = DigestUtils.sha256Hex(
-				element.getKey() + "#" + intervalWindow.start());
-
-			for (AnalyticsEvent analyticsEvent : element.getValue()) {
-				_outputEventTableRow(analyticsEvent, processContext, sessionId);
-			}
-		}
-
-	}
-
 	public static class EventBigQueryWriter
 		extends PTransform
 			<PCollection<KV<String, Iterable<AnalyticsEvent>>>, WriteResult> {
@@ -351,7 +351,7 @@ public class EventIngestionPipeline {
 
 			return pCollection.apply(
 				"Create Event Table Rows",
-				ParDo.of(new EventBigQueryTableRowParser())
+				ParDo.of(new AnalyticsEventsTableRowMapper())
 			).apply(
 				"Write Event Rows to Big Query",
 				BigQueryIO.writeTableRows(

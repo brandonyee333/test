@@ -179,7 +179,7 @@ public class EventIngestionPipelineTest {
 	}
 
 	@Test
-	public void testEventBigQueryTableRowParser() {
+	public void testAnalyticsEventsTableRowMapper() {
 		Map<String, String> context = Collections.singletonMap(
 			"title", "\n\n\n\tLiferay \\Analytics JS Client Test Page\n\n\t");
 
@@ -211,7 +211,7 @@ public class EventIngestionPipelineTest {
 			Window.into(FixedWindows.of(Duration.standardMinutes(3L)))
 		).apply(
 			"Create Event Table Rows",
-			ParDo.of(new EventIngestionPipeline.EventBigQueryTableRowParser())
+			ParDo.of(new EventIngestionPipeline.AnalyticsEventsTableRowMapper())
 		);
 
 		TableRow tableRow = new TableRow();
@@ -297,7 +297,7 @@ public class EventIngestionPipelineTest {
 			GroupByKey.create()
 		).apply(
 			"Create Event Table Rows",
-			ParDo.of(new EventIngestionPipeline.EventBigQueryTableRowParser())
+			ParDo.of(new EventIngestionPipeline.AnalyticsEventsTableRowMapper())
 		);
 
 		Map<String, String> context = Collections.singletonMap(
