@@ -16,6 +16,7 @@ package com.liferay.feature.flag.web.internal.company.feature.flags;
 
 import com.liferay.feature.flag.web.internal.constants.FeatureFlagConstants;
 import com.liferay.feature.flag.web.internal.model.FeatureFlag;
+import com.liferay.feature.flag.web.internal.model.FeatureFlagType;
 import com.liferay.feature.flag.web.internal.model.FeatureFlagWrapper;
 import com.liferay.feature.flag.web.internal.model.PreferenceAwareFeatureFlag;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -83,7 +84,21 @@ public class CompanyFeatureFlags {
 		if (_featureFlagsMap.containsKey(key)) {
 			FeatureFlag featureFlag = _featureFlagsMap.get(key);
 
+			FeatureFlagType featureFlagType = featureFlag.getFeatureFlagType();
+
+			if (featureFlagType.equals(FeatureFlagType.DEPRECATION)) {
+				return !featureFlag.isEnabled();
+			}
+
 			return featureFlag.isEnabled();
+		}
+
+		FeatureFlagType featureFlagType = FeatureFlagType.toFeatureFlagType(
+			PropsUtil.get(FeatureFlagConstants.getKey(key, "type")));
+
+		if (featureFlagType.equals(FeatureFlagType.DEPRECATION)) {
+			return !GetterUtil.getBoolean(
+				PropsUtil.get(FeatureFlagConstants.getKey(key)));
 		}
 
 		return GetterUtil.getBoolean(
