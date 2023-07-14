@@ -53,7 +53,8 @@ public class CompanyFeatureFlagsTest {
 	@Before
 	public void setUp() throws Exception {
 		_expectedFeatureFlags = new FeatureFlag[] {
-			_betaFeatureFlag, _devFeatureFlag, _releaseFeatureFlag
+			_betaFeatureFlag, _deprecationFeatureFlag, _devFeatureFlag,
+			_releaseFeatureFlag
 		};
 
 		Map<String, FeatureFlag> featureFlagsMap = new HashMap<>();
@@ -108,9 +109,21 @@ public class CompanyFeatureFlagsTest {
 		com.liferay.portal.kernel.util.PropsUtil.setProps(new PropsImpl());
 
 		for (FeatureFlag expectedFeatureFlag : _expectedFeatureFlags) {
-			Assert.assertEquals(
-				expectedFeatureFlag.isEnabled(),
-				_companyFeatureFlags.isEnabled(expectedFeatureFlag.getKey()));
+			FeatureFlagType featureFlagType =
+				expectedFeatureFlag.getFeatureFlagType();
+
+			if (featureFlagType.equals(FeatureFlagType.DEPRECATION)) {
+				Assert.assertEquals(
+					!expectedFeatureFlag.isEnabled(),
+					_companyFeatureFlags.isEnabled(
+						expectedFeatureFlag.getKey()));
+			}
+			else {
+				Assert.assertEquals(
+					expectedFeatureFlag.isEnabled(),
+					_companyFeatureFlags.isEnabled(
+						expectedFeatureFlag.getKey()));
+			}
 		}
 
 		String randomKey = _createKey();
@@ -121,6 +134,11 @@ public class CompanyFeatureFlagsTest {
 			FeatureFlagConstants.getKey(randomKey), Boolean.TRUE.toString());
 
 		Assert.assertTrue(_companyFeatureFlags.isEnabled(randomKey));
+
+		PropsUtil.set(
+			FeatureFlagConstants.getKey(randomKey, "type"), "deprecation");
+
+		Assert.assertFalse(_companyFeatureFlags.isEnabled(randomKey));
 	}
 
 	private FeatureFlag _createFeatureFlag(FeatureFlagType featureFlagType) {
@@ -139,6 +157,8 @@ public class CompanyFeatureFlagsTest {
 	private final FeatureFlag _betaFeatureFlag = _createFeatureFlag(
 		FeatureFlagType.BETA);
 	private CompanyFeatureFlags _companyFeatureFlags;
+	private final FeatureFlag _deprecationFeatureFlag = _createFeatureFlag(
+		FeatureFlagType.DEPRECATION);
 	private final FeatureFlag _devFeatureFlag = _createFeatureFlag(
 		FeatureFlagType.DEV);
 	private FeatureFlag[] _expectedFeatureFlags;
