@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.servlet;
 
 import com.liferay.osb.customer.zendesk.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskFeedbackConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketCommentWebService;
@@ -186,9 +187,9 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 		StringBundler sb = new StringBundler(6);
 
 		sb.append("CES 1 Rating: ");
-		sb.append(ces1Rating);
+		sb.append(ZendeskFeedbackConstants.getRatingLabel(ces1Rating));
 		sb.append("<br />CSAT 1 Rating: ");
-		sb.append(csat1Rating);
+		sb.append(ZendeskFeedbackConstants.getRatingLabel(csat1Rating));
 		sb.append("<br /><br />Ticket Satisfaction Comment: <br />");
 		sb.append(HtmlUtil.escape(satisfactionComment));
 
