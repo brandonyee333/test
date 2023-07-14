@@ -21,7 +21,6 @@ import com.liferay.osb.asah.backend.model.HistogramMetricBag;
 import com.liferay.osb.asah.backend.repository.PageAssetMetricRepository;
 import com.liferay.osb.asah.common.date.dog.TimeZoneDog;
 import com.liferay.osb.asah.common.dog.DataSourceDog;
-import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
@@ -89,7 +88,7 @@ public class ExperimentDog {
 			getExperiment(experimentId));
 	}
 
-	public boolean deleteExperiment(Long experimentId, boolean updateDXP) {
+	public boolean deleteExperiment(Long experimentId) {
 		Experiment experiment = getExperiment(experimentId);
 
 		ExperimentStatus experimentStatus = experiment.getExperimentStatus();
@@ -100,11 +99,6 @@ public class ExperimentDog {
 				String.format(
 					"Unable to delete an experiment in the %s status",
 					experimentStatus));
-		}
-
-		if (updateDXP) {
-			_dxpClient.deleteDXPExperiment(
-				experiment.getDataSourceId(), experiment.getId());
 		}
 
 		try {
@@ -243,8 +237,7 @@ public class ExperimentDog {
 	}
 
 	public Experiment patchExperiment(
-		Experiment experiment, ExperimentSettings experimentSettings,
-		boolean updateDXP) {
+		Experiment experiment, ExperimentSettings experimentSettings) {
 
 		Experiment existingExperiment = getExperiment(
 			Optional.ofNullable(
@@ -274,12 +267,6 @@ public class ExperimentDog {
 				existingExperiment, experiment.getExperimentStatus());
 			_setPublishedDXPVariantId(
 				existingExperiment, experiment.getPublishedDXPVariantId());
-
-			if (updateDXP) {
-				_setExperimentStatusDXP(
-					existingExperiment, experimentSettings,
-					experiment.getExperimentStatus());
-			}
 		}
 
 		if (experiment.getName() != null) {
@@ -459,36 +446,6 @@ public class ExperimentDog {
 		}
 	}
 
-	private void _setExperimentStatusDXP(
-		Experiment experiment, ExperimentSettings experimentSettings,
-		ExperimentStatus experimentStatus) {
-
-		if (experimentStatus != ExperimentStatus.RUNNING) {
-			String dxpVariantId = null;
-
-			if (experimentStatus == ExperimentStatus.COMPLETED) {
-				dxpVariantId = experiment.getPublishedDXPVariantId();
-			}
-
-			_dxpClient.updateDXPExperimentStatus(
-				experiment.getDataSourceId(), experiment.getId(),
-				experimentStatus, dxpVariantId);
-
-			return;
-		}
-
-		if (experimentSettings == null) {
-			throw new OSBAsahException(
-				HttpStatus.BAD_REQUEST,
-				"Confidence level and variants' traffic split must be valid");
-		}
-
-		_dxpClient.runDXPExperiment(
-			experimentSettings.getConfidenceLevel(),
-			experiment.getDataSourceId(),
-			experimentSettings.getDXPVariantsSettings(), experiment.getId());
-	}
-
 	private void _setPublishedDXPVariantId(
 		Experiment experiment, String publishedDXPVariantId) {
 
@@ -511,9 +468,6 @@ public class ExperimentDog {
 
 	@Autowired
 	private DataSourceDog _dataSourceDog;
-
-	@Autowired
-	private DXPClient _dxpClient;
 
 	@Autowired
 	private ExperimentMetricDog _experimentMetricDog;

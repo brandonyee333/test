@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
@@ -222,22 +221,15 @@ public class ExperimentNanite extends BaseNanite {
 			ExperimentStatus experimentStatus =
 				ExperimentStatus.FINISHED_WINNER;
 
-			String winnerDXPVariantId = null;
-
 			if (experimentVariantMetric == null) {
 				experimentStatus = ExperimentStatus.FINISHED_NO_WINNER;
 			}
 			else {
-				winnerDXPVariantId = experimentVariantMetric.getDXPVariantId();
-
-				experiment.setWinnerDXPVariantId(winnerDXPVariantId);
+				experiment.setWinnerDXPVariantId(
+					experimentVariantMetric.getDXPVariantId());
 			}
 
 			experiment.setExperimentStatus(experimentStatus);
-
-			_dxpClient.updateDXPExperimentStatus(
-				experiment.getDataSourceId(), experiment.getId(),
-				experimentStatus, winnerDXPVariantId);
 		}
 
 		if (_log.isDebugEnabled()) {
@@ -248,9 +240,6 @@ public class ExperimentNanite extends BaseNanite {
 	}
 
 	private static final Log _log = LogFactory.getLog(ExperimentNanite.class);
-
-	@Autowired
-	private DXPClient _dxpClient;
 
 	@Autowired
 	private ExperimentHttp _experimentHttp;

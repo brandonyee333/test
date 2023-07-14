@@ -16,7 +16,6 @@ package com.liferay.osb.asah.batch.curator.bot.nanite.test;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ExperimentNanite;
 import com.liferay.osb.asah.common.date.DateUtil;
-import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.entity.Channel;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
@@ -103,14 +102,6 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 						new double[] {20, 32}, false, "2"))
 			),
 			null);
-
-		Mockito.verify(
-			_dxpClient
-		).updateDXPExperimentStatus(
-			ArgumentMatchers.eq(1L), ArgumentMatchers.eq(1L),
-			ArgumentMatchers.eq(ExperimentStatus.FINISHED_NO_WINNER),
-			ArgumentMatchers.isNull()
-		);
 	}
 
 	@Test
@@ -130,14 +121,6 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 						new double[] {15, 28}, false, "20"))
 			),
 			"10");
-
-		Mockito.verify(
-			_dxpClient
-		).updateDXPExperimentStatus(
-			ArgumentMatchers.eq(1L), ArgumentMatchers.eq(1L),
-			ArgumentMatchers.eq(ExperimentStatus.FINISHED_WINNER),
-			ArgumentMatchers.eq("10")
-		);
 	}
 
 	@Test
@@ -164,14 +147,6 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 						new double[] {15, 28}, false, "20"))
 			),
 			"20");
-
-		Mockito.verify(
-			_dxpClient
-		).updateDXPExperimentStatus(
-			ArgumentMatchers.eq(1L), ArgumentMatchers.eq(1L),
-			ArgumentMatchers.eq(ExperimentStatus.FINISHED_WINNER),
-			ArgumentMatchers.eq("20")
-		);
 	}
 
 	@Test
@@ -240,9 +215,6 @@ public class ExperimentNaniteTest extends BaseNaniteTestCase {
 
 	@Autowired
 	private ChannelRepository _channelRepository;
-
-	@MockBean
-	private DXPClient _dxpClient;
 
 	@MockBean
 	private ExperimentHttp _experimentHttp;

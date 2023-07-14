@@ -21,7 +21,6 @@ import com.liferay.osb.asah.backend.dto.ExperimentVariantsDTO;
 import com.liferay.osb.asah.backend.dto.GoalDTO;
 import com.liferay.osb.asah.backend.model.ExperimentSettings;
 import com.liferay.osb.asah.backend.rest.controller.api.data.source.v1.ExperimentsRestController;
-import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentVariant;
 import com.liferay.osb.asah.common.model.DXPVariantSettings;
@@ -42,10 +41,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
@@ -78,8 +74,6 @@ public class ExperimentsRestControllerTest
 		_experimentsRestController.deleteExperiment(1L);
 
 		Assertions.assertNull(_experimentDog.fetchExperiment(1L));
-
-		Mockito.verifyNoInteractions(_dxpClient);
 	}
 
 	@RepositoryResource(
@@ -256,9 +250,6 @@ public class ExperimentsRestControllerTest
 
 		return experimentVariant;
 	}
-
-	@MockBean
-	private DXPClient _dxpClient;
 
 	@Autowired
 	private ExperimentDog _experimentDog;

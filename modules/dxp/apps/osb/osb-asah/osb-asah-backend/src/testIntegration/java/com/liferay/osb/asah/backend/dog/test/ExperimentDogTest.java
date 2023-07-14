@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.OSBAsahBackendSpringTestContext;
 import com.liferay.osb.asah.backend.dog.ExperimentDog;
 import com.liferay.osb.asah.backend.dog.experiment.ExperimentMetricDog;
 import com.liferay.osb.asah.backend.model.HistogramMetric;
-import com.liferay.osb.asah.common.dxp.DXPClient;
 import com.liferay.osb.asah.common.entity.Experiment;
 import com.liferay.osb.asah.common.entity.ExperimentMetric;
 import com.liferay.osb.asah.common.entity.ExperimentVariantMetric;
@@ -48,9 +47,6 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -91,13 +87,7 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 		Assertions.assertEquals(
 			ExperimentStatus.DRAFT, experiment.getExperimentStatus());
 
-		_experimentDog.deleteExperiment(2L, true);
-
-		Mockito.verify(
-			_dxpClient, Mockito.times(1)
-		).deleteDXPExperiment(
-			ArgumentMatchers.eq(333962835564819755L), ArgumentMatchers.eq(2L)
-		);
+		_experimentDog.deleteExperiment(2L);
 
 		Assertions.assertNull(_experimentDog.fetchExperiment(2L));
 	}
@@ -120,8 +110,7 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			ExperimentStatus.RUNNING, experiment.getExperimentStatus());
 
 		Assertions.assertThrows(
-			OSBAsahException.class,
-			() -> _experimentDog.deleteExperiment(1L, true));
+			OSBAsahException.class, () -> _experimentDog.deleteExperiment(1L));
 	}
 
 	@RepositoryResource(
@@ -494,9 +483,6 @@ public class ExperimentDogTest implements OSBAsahBackendSpringTestContext {
 			toDoubleFunction
 		).toArray();
 	}
-
-	@MockBean
-	private DXPClient _dxpClient;
 
 	@Autowired
 	private ExperimentDog _experimentDog;

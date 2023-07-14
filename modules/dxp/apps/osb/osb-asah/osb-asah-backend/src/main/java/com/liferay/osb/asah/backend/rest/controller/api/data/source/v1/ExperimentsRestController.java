@@ -59,7 +59,7 @@ public class ExperimentsRestController extends BaseRestController {
 
 	@DeleteMapping("/{id}")
 	public void deleteExperiment(@PathVariable Long id) {
-		_experimentDog.deleteExperiment(id, false);
+		_experimentDog.deleteExperiment(id);
 	}
 
 	@GetMapping("/{id}/calculate-metrics")
@@ -91,7 +91,7 @@ public class ExperimentsRestController extends BaseRestController {
 			experimentSettings = _createExperimentSettings(experiment);
 		}
 
-		_experimentDog.patchExperiment(experiment, experimentSettings, false);
+		_experimentDog.patchExperiment(experiment, experimentSettings);
 	}
 
 	@PostMapping

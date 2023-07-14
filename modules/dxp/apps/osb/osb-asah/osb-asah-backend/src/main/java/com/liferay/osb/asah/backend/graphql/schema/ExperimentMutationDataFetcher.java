@@ -53,8 +53,7 @@ public class ExperimentMutationDataFetcher
 
 		return new ExperimentDTO(
 			_experimentDog.patchExperiment(
-				experiment, createExperimentSettings(experimentSettingsMap),
-				true));
+				experiment, createExperimentSettings(experimentSettingsMap)));
 	}
 
 	@Autowired
