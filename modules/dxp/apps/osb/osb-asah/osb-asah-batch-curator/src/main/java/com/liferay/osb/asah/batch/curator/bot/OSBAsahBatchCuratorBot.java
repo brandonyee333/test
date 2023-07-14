@@ -108,11 +108,6 @@ public class OSBAsahBatchCuratorBot {
 		_asahTaskManager.runNanitesForAllProjects("DXPEntityNanite");
 	}
 
-	@Scheduled(fixedDelay = DateUtil.HOUR * 24)
-	public void runExperimentNanite() {
-		_asahTaskManager.runNanitesForAllProjects("ExperimentNanite");
-	}
-
 	@Scheduled(fixedDelay = DateUtil.MINUTE * 5)
 	public void runImmediateAsahTask() {
 		for (Project project : _projectDog.getProjects()) {
@@ -157,6 +152,10 @@ public class OSBAsahBatchCuratorBot {
 		return () -> _asahTaskManager.runNanites("DeleteTempFilesNanite");
 	}
 
+	private Runnable _getExperimentRunnable() {
+		return () -> _asahTaskManager.runNanites("ExperimentNanite");
+	}
+
 	private void _init(String projectId) {
 		try {
 			ProjectIdThreadLocal.setProjectId(projectId);
@@ -179,14 +178,13 @@ public class OSBAsahBatchCuratorBot {
 		}
 	}
 
-	private void _scheduleNanite(Runnable runnable, String scheduledTaskId) {
+	private void _scheduleNanite(
+		String cronExpression, Runnable runnable, String scheduledTaskId) {
+
 		String projectId = ProjectIdThreadLocal.getProjectId();
 
 		String scopedScheduledTaskId = String.format(
 			"%s#%s", projectId, scheduledTaskId);
-
-		String cronExpression = _buildCronExpression(
-			RandomUtils.nextInt(0, 60), RandomUtils.nextInt(0, 16));
 
 		String timeZoneId = _timeZoneDog.getTimeZoneId();
 
@@ -206,7 +204,14 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	private void _scheduleNanites() {
-		_scheduleNanite(_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
+		_scheduleNanite(
+			_buildCronExpression(
+				RandomUtils.nextInt(0, 60), RandomUtils.nextInt(0, 16)),
+			_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
+
+		_scheduleNanite(
+			_buildCronExpression(0, 0), _getExperimentRunnable(),
+			"ExperimentNanite");
 	}
 
 	private void _unscheduleNanites() {
