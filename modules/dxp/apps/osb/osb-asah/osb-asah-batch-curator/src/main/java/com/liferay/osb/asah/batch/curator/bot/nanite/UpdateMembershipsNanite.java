@@ -21,9 +21,11 @@ import com.liferay.osb.asah.common.dog.SegmentDog;
 import com.liferay.osb.asah.common.entity.Segment;
 import com.liferay.osb.asah.common.model.MembershipCountSnapshot;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -100,9 +102,12 @@ public class UpdateMembershipsNanite extends BaseNanite {
 			_log.error(
 				String.format(
 					"Unable to update memberships for segment ID %s and " +
-						"filter %s",
-					segment.getId(), filterString),
-				exception);
+						"filter %s:\n%s",
+					segment.getId(), filterString,
+					StringUtils.join(
+						Arrays.copyOf(
+							ExceptionUtils.getStackFrames(exception), 10),
+						"\n")));
 		}
 		finally {
 			_segmentDog.updateSegmentState(segment, "READY");
