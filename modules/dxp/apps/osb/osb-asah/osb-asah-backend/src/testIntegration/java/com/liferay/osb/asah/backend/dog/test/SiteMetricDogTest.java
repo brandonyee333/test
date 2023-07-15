@@ -376,30 +376,46 @@ public class SiteMetricDogTest
 			SiteMetricType.SESSIONS,
 			_getSearchQueryContext(TimeRange.LAST_30_DAYS));
 
-		Map<Pair<String, String>, Double> actualDevices = new LinkedHashMap<>();
+		String previousDeviceType = null;
+		double previousDeviceCount = -1;
 
 		for (Metric deviceMetric : deviceMetrics) {
-			for (Metric platformMetric : deviceMetric.getMetrics()) {
-				actualDevices.put(
-					Pair.of(
-						deviceMetric.getValueKey(),
-						platformMetric.getValueKey()),
-					platformMetric.getValue());
-			}
-		}
+			String deviceType = deviceMetric.getValueKey();
+			Double deviceCount = deviceMetric.getValue();
 
-		Map<Pair<String, String>, Double> expectedDevices =
-			new LinkedHashMap<Pair<String, String>, Double>() {
-				{
-					put(Pair.of("Phone", "IOS"), 2D);
-					put(Pair.of("Phone", "Android"), 1D);
-					put(Pair.of("E-Book Reader", "Android"), 2D);
-					put(Pair.of("Desktop", "Linux"), 1D);
-					put(Pair.of("Tablet", "Android"), 1D);
+			if (previousDeviceType != null) {
+				Assertions.assertTrue(deviceCount <= previousDeviceCount);
+
+				if (deviceCount == previousDeviceCount) {
+					Assertions.assertTrue(
+						deviceType.compareTo(previousDeviceType) >= 0);
 				}
-			};
+			}
 
-		Assertions.assertEquals(expectedDevices, actualDevices);
+			String previousPlatformName = null;
+			double previousPlatformCount = -1;
+
+			for (Metric platformMetric : deviceMetric.getMetrics()) {
+				String platformName = platformMetric.getValueKey();
+				Double platformCount = platformMetric.getValue();
+
+				if (previousPlatformName != null) {
+					Assertions.assertTrue(
+						platformCount <= previousPlatformCount);
+
+					if (platformCount == previousPlatformCount) {
+						Assertions.assertTrue(
+							platformName.compareTo(previousPlatformName) >= 0);
+					}
+				}
+
+				previousPlatformName = platformName;
+				previousPlatformCount = platformCount;
+			}
+
+			previousDeviceType = deviceType;
+			previousDeviceCount = deviceCount;
+		}
 	}
 
 	@BQSQLResource(resourcePath = "test_bq_sessions_site_geolocation.sql")

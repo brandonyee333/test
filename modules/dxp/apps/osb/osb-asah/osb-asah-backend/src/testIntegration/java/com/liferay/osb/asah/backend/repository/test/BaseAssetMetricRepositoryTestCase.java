@@ -129,6 +129,49 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 				).toArray()));
 	}
 
+	protected void assertDeviceMetricsOrdering(List<Metric> deviceMetrics) {
+		String previousDeviceType = null;
+		double previousDeviceCount = -1;
+
+		for (Metric deviceMetric : deviceMetrics) {
+			String deviceType = deviceMetric.getValueKey();
+			Double deviceCount = deviceMetric.getValue();
+
+			if (previousDeviceType != null) {
+				Assertions.assertTrue(deviceCount <= previousDeviceCount);
+
+				if (deviceCount == previousDeviceCount) {
+					Assertions.assertTrue(
+						deviceType.compareTo(previousDeviceType) >= 0);
+				}
+			}
+
+			String previousPlatformName = null;
+			double previousPlatformCount = -1;
+
+			for (Metric platformMetric : deviceMetric.getMetrics()) {
+				String platformName = platformMetric.getValueKey();
+				Double platformCount = platformMetric.getValue();
+
+				if (previousPlatformName != null) {
+					Assertions.assertTrue(
+						platformCount <= previousPlatformCount);
+
+					if (platformCount == previousPlatformCount) {
+						Assertions.assertTrue(
+							platformName.compareTo(previousPlatformName) >= 0);
+					}
+				}
+
+				previousPlatformName = platformName;
+				previousPlatformCount = platformCount;
+			}
+
+			previousDeviceType = deviceType;
+			previousDeviceCount = deviceCount;
+		}
+	}
+
 	protected void assertHistogramMetrics(
 		Set<Double> expectedMetricValues,
 		List<HistogramMetric> histogramMetrics) {

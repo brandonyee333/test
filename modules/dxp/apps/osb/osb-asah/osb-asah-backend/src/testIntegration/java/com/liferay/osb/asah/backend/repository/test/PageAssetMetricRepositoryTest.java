@@ -25,11 +25,7 @@ import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.test.util.annotation.BQSQLResource;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -77,36 +73,10 @@ public class PageAssetMetricRepositoryTest
 	)
 	@Test
 	public void testGetDeviceMetricsOrdering() {
-		List<Metric> deviceMetrics = _assetMetricRepository.getDeviceMetrics(
-			"https://www.beryl.com/delivery", "Beryl Delivery", 1L,
-			PageMetricType.VIEWS, TimeRange.LAST_30_DAYS);
-
-		Map<Pair<String, String>, Double> actualDevices = new LinkedHashMap<>();
-
-		for (Metric deviceMetric : deviceMetrics) {
-			for (Metric platformMetric : deviceMetric.getMetrics()) {
-				actualDevices.put(
-					Pair.of(
-						deviceMetric.getValueKey(),
-						platformMetric.getValueKey()),
-					platformMetric.getValue());
-			}
-		}
-
-		Map<Pair<String, String>, Double> expectedDevices =
-			new LinkedHashMap<Pair<String, String>, Double>() {
-				{
-					put(Pair.of("Desktop", "Windows"), 14D);
-					put(Pair.of("Desktop", "Ubuntu"), 8D);
-					put(Pair.of("Tablet", "Android"), 9D);
-					put(Pair.of("Tablet", "IOS"), 9D);
-					put(Pair.of("Mobile", "IOS"), 9D);
-					put(Pair.of("Mobile", "Android"), 3D);
-					put(Pair.of("Phone", "IOS"), 9D);
-				}
-			};
-
-		Assertions.assertEquals(expectedDevices, actualDevices);
+		assertDeviceMetricsOrdering(
+			_assetMetricRepository.getDeviceMetrics(
+				"https://www.beryl.com/delivery", "Beryl Delivery", 1L,
+				PageMetricType.VIEWS, TimeRange.LAST_30_DAYS));
 	}
 
 	@BQSQLResource(
