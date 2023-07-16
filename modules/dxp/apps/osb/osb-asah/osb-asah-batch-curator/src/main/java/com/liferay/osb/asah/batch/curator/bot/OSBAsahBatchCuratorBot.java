@@ -208,7 +208,6 @@ public class OSBAsahBatchCuratorBot {
 			_buildCronExpression(
 				RandomUtils.nextInt(0, 60), RandomUtils.nextInt(0, 16)),
 			_getDeleteTempFilesRunnable(), "DeleteTempFilesNanite");
-
 		_scheduleNanite(
 			_buildCronExpression(0, 0), _getExperimentRunnable(),
 			"ExperimentNanite");
