@@ -182,7 +182,6 @@ public class EventIngestionPipelineTest {
 	public void testAnalyticsEventsTableRowMapper() {
 		Map<String, String> context = Collections.singletonMap(
 			"title", "\n\n\n\tLiferay \\Analytics JS Client Test Page\n\n\t");
-
 		Map<String, String> properties = Collections.singletonMap(
 			"referrer", "http://www.google.com");
 
@@ -213,6 +212,9 @@ public class EventIngestionPipelineTest {
 			"Create Event Table Rows",
 			ParDo.of(new EventIngestionPipeline.AnalyticsEventsTableRowMapper())
 		);
+
+		IntervalWindow intervalWindow = new IntervalWindow(
+			new Instant(0), new Instant(180000));
 
 		TableRow tableRow = new TableRow();
 
@@ -251,9 +253,6 @@ public class EventIngestionPipelineTest {
 		tableRow.set("url", null);
 		tableRow.set("userId", "aedfa915-c7a1-4309-abcf-024e247d414c");
 		tableRow.set("variantId", null);
-
-		IntervalWindow intervalWindow = new IntervalWindow(
-			new Instant(0), new Instant(180000));
 
 		PAssert.that(
 			pCollection
