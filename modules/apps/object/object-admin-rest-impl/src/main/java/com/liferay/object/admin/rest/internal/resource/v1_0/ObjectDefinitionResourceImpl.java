@@ -1119,9 +1119,6 @@ public class ObjectDefinitionResourceImpl
 	private ObjectViewResource.Factory _objectViewResourceFactory;
 
 	@Reference
-	private ObjectViewService _objectViewService;
-
-	@Reference
 	private SystemObjectDefinitionManagerRegistry
 		_systemObjectDefinitionManagerRegistry;
 
