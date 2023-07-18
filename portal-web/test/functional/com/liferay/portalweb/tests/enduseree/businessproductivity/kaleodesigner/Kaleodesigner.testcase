@@ -61,7 +61,7 @@ definition {
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "TestEndNode Node Description",
 			nodeName = "TestEndNode",
-			nodeNodeLabel = "TestEndNode",
+			nodeNodeLabel = "End",
 			nodeType = "end");
 
 		KaleoDesigner.viewNodeType(
@@ -300,7 +300,7 @@ definition {
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "TestStartNode Node Description",
 			nodeName = "TestStartNode",
-			nodeNodeLabel = "TestStartNode",
+			nodeNodeLabel = "Start",
 			nodeType = "start");
 
 		KaleoDesigner.selectNode(nodeNodeLabel = "TestStartNode");
@@ -771,26 +771,29 @@ definition {
 
 		KaleoDesigner.addNewDefinitionViaKDCP(workflowDefinitionTitle = "New Workflow Definition Title");
 
+		KaleoDesigner.selectNode(nodeNodeLabel = "StartNode");
+
+		KaleoDesigner.deleteNode(nodeNodeLabel = "StartNode");
+
 		KaleoDesigner.selectNode(nodeNodeLabel = "EndNode");
 
 		KaleoDesigner.deleteNode(nodeNodeLabel = "EndNode");
 
+		KaleoDesigner.addNodeViaViewTab(
+			nodeDescription = "End Node Description",
+			nodeName = "End",
+			nodeNodeLabel = "Task",
+			nodeType = "task");
+
 		KaleoDesigner.addConnectorAndNodeViaViewTab(
-			connectorName = "Approve",
-			newNode = "Task",
-			newNodeDescription = "End Node Description",
-			newNodeName = "End",
-			newNodeType = "task",
-			nodeType = "start");
-
-		KaleoDesigner.deleteConnector(connectorLabel = "Approve");
-
-		KaleoDesigner.addConnectorViaViewTab(
 			connectorName = "Reverse",
-			nodeType = "task",
-			nodeTypeDestination = "start2");
+			newNode = "Start",
+			newNodeDescription = "Start Node Description",
+			newNodeName = "Start",
+			newNodeType = "start",
+			nodeType = "task");
 
-		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The StartNode node cannot have an incoming transition.");
+		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The Start node cannot have an incoming transition.");
 	}
 
 	@priority = 3
@@ -1005,7 +1008,7 @@ definition {
 		KaleoDesigner.addNodeViaViewTab(
 			nodeDescription = "TestStartNode Node Description",
 			nodeName = "TestStartNode",
-			nodeNodeLabel = "TestStartNode",
+			nodeNodeLabel = "Start",
 			nodeType = "start");
 
 		KaleoDesigner.publishInvalidWorkflowDefinitionViaWorkflowCP(errorMessage = "The workflow has too many start nodes (state nodes StartNode and TestStartNode).");
