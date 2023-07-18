@@ -125,12 +125,13 @@ USING
 			rowNumber = 1
 	) AS staging
 ON
-	staging.columnId = replica.columnId AND
+	(staging.columnId = replica.columnId OR replica.columnId = CONCAT(staging.name, '-', staging.dataType)) AND
 	staging.dataSourceId = replica.dataSourceId AND
 	staging.projectId = replica.projectId
 WHEN MATCHED AND staging.deleted IS NULL THEN
 	UPDATE SET
 		replica.className = staging.className,
+		replica.columnId = staging.columnId,
 		replica.dataType = staging.dataType,
 		replica.displayType = staging.displayType,
 		replica.modifiedDate = staging.modifiedDate,
