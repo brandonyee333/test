@@ -1,5 +1,14 @@
 @default = "dragAndDropToObject"
 definition {
+	function dragAndDrop {
+		WaitForSPARefresh();
+
+		selenium.dragAndDrop();
+
+		selenium.assertJavaScriptErrors();
+
+		selenium.assertLiferayErrors();
+	}
 
 	function dragAndDropPortletToObject {
 		WaitForSPARefresh();
@@ -85,6 +94,16 @@ definition {
 		selenium.mouseMoveAt(${locator2}, "0,0");
 
 		selenium.mouseRelease();
+
+		selenium.assertJavaScriptErrors();
+
+		selenium.assertLiferayErrors();
+	}
+
+	function dragAtAndDrop {
+		WaitForSPARefresh();
+
+		selenium.dragAtAndDrop(${locator1}, ${locator2}, ${value1});
 
 		selenium.assertJavaScriptErrors();
 
