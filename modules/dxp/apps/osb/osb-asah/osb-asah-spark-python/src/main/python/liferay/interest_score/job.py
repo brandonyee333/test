@@ -687,10 +687,15 @@ class IdentityInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 			end_date_sql_string = f'"{end_date}"'
 			start_date_sql_string = f'"{start_date}"'
 		else:
-			end_date_sql_string = 'CURRENT_DATE()'
-			start_date_sql_string = 'date_sub(CURRENT_DATE(), {})'.format(
-				self._initial_run_day_range
-			)
+			end_date_sql_string = f'''
+				FROM_UNIX_TIMESTAMP(CURRENT_DATE(), {time_zone})
+			'''
+			start_date_sql_string = f'''
+				DATE_SUB(
+					FROM_UNIX_TIMESTAMP(CURRENT_DATE(), {time_zone}),
+					{self._initial_run_day_range}
+				)
+			'''
 
 		return f"""
 			SELECT
@@ -703,8 +708,8 @@ class IdentityInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 			FROM
 				individual_interest_score
 			WHERE
-				from_utc_timestamp(event_date, "{time_zone}") >= {start_date_sql_string} AND
-				from_utc_timestamp(event_date, "{time_zone}") < {end_date_sql_string}
+				event_date >= {start_date_sql_string} AND
+				event_date < {end_date_sql_string}
 			GROUP BY
 				channelId,
 				identityId,
@@ -741,21 +746,31 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 
 		self._decay_threshold_weight = self._interest_score_decay_rate ** 14
 
-	def _get_date_range_sql_command(self, end_date=None, start_date=None):
+	def _get_date_range_sql_command(self, end_date=None, start_date=None, time_zone=None):
 		if end_date and start_date:
-			end_date_sql_string = "TO_DATE('{}')".format(end_date)
-			start_date_sql_string = "DATE_ADD(to_date('{}'), -{})".format(
-				start_date, self._max_days_delta
-			)
+			end_date_sql_string = f"""TO_DATE('{end_date}')"""
+			start_date_sql_string = f"""
+				DATE_ADD(TO_DATE('{start_date}'), -{self._max_days_delta})
+			"""
 		else:
-			end_date_sql_string = 'CURRENT_DATE()'
-			start_date_sql_string ="DATE_ADD(CURRENT_DATE(), -{})".format(
-				self._max_days_delta + self._initial_run_day_range
-			)
+			end_date_sql_string = f"""
+				TO_DATE(FROM_UTC_TIMESTAMP(CURRENT_DATE(), '{time_zone}'))
+			"""
+			start_date_sql_string = f"""
+				TO_DATE(
+					DATE_ADD(
+						FROM_UTC_TIMESTAMP(CURRENT_DATE(), '{time_zone}'),
+						-{self._max_days_delta + self._initial_run_day_range}
+					)
+				)
+			"""
 
-		return "SELECT SEQUENCE({}, {}, INTERVAL 1 DAY) AS event_date".format(
-			start_date_sql_string, end_date_sql_string
-		)
+		return f"""
+			SELECT SEQUENCE(
+				{start_date_sql_string}, {end_date_sql_string}, INTERVAL 1 DAY
+			) AS event_date
+		"""
+
 
 	def _get_job_parameter(self, parameter_name, default_value=None):
 		job_parameters = json.loads(self.spark_application_args.job_parameters)
@@ -890,10 +905,11 @@ class IndividualInterestScoreSparkJob(BaseSparkJob):
 			) * self._decay_threshold_weight
 		)
 
-		end_date = self._get_job_parameter('endDate')
-		start_date = self._get_job_parameter('startDate')
-
-		sql_command = self._get_date_range_sql_command(end_date, start_date)
+		sql_command = self._get_date_range_sql_command(
+			end_date=self._get_job_parameter('endDate'),
+			start_date=self._get_job_parameter('startDate'),
+			time_zone=self._get_job_parameter('timeZone')
+		)
 
 		date_range_data_frame = self.spark_session.sql(
 			sql_command
@@ -1368,10 +1384,15 @@ class SessionInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 			end_date_sql_string = f'"{end_date}"'
 			start_date_sql_string = f'"{start_date}"'
 		else:
-			end_date_sql_string = 'CURRENT_DATE()'
-			start_date_sql_string = 'DATE_SUB(CURRENT_DATE(), {})'.format(
-				self._initial_run_day_range
-			)
+			end_date_sql_string = f'''
+				FROM_UNIX_TIMESTAMP(CURRENT_DATE(), {time_zone})
+			'''
+			start_date_sql_string = f'''
+				DATE_SUB(
+					FROM_UNIX_TIMESTAMP(CURRENT_DATE(), {time_zone}),
+					{self._initial_run_day_range}
+				)
+			'''
 
 		return f"""
 			SELECT
@@ -1385,7 +1406,7 @@ class SessionInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 			FROM
 				individual_interest_score
 			WHERE
-				from_utc_timestamp(event_date, "{time_zone}") >= {start_date_sql_string} AND
-				from_utc_timestamp(event_date, "{time_zone}") < {end_date_sql_string} AND
+				event_date >= {start_date_sql_string} AND
+				event_date < {end_date_sql_string} AND
 				sessionId IS NOT NULL
 		"""
