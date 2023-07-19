@@ -206,27 +206,31 @@ public class ExperimentNanite extends BaseNanite {
 
 		_putOrReplaceMetric(experimentMetrics, experimentMetric);
 
+		Goal goal = experiment.getGoal();
+
+		ExperimentVariantMetric experimentVariantMetric =
+			_getWinnerExperimentVariantMetric(
+				experimentMetric.getExperimentVariantMetrics(),
+				goal.getGoalMetric());
+
+		if (experimentVariantMetric == null) {
+			experiment.setWinnerDXPVariantId(null);
+		}
+		else {
+			experiment.setWinnerDXPVariantId(
+				experimentVariantMetric.getDXPVariantId());
+		}
+
 		Long estimatedDaysLeft = experimentMetric.getEstimatedDaysLeft();
 
 		if ((estimatedDaysLeft != null) && (estimatedDaysLeft <= 0)) {
 			experiment.setFinishedDate(new Date());
-
-			Goal goal = experiment.getGoal();
-
-			ExperimentVariantMetric experimentVariantMetric =
-				_getWinnerExperimentVariantMetric(
-					experimentMetric.getExperimentVariantMetrics(),
-					goal.getGoalMetric());
 
 			ExperimentStatus experimentStatus =
 				ExperimentStatus.FINISHED_WINNER;
 
 			if (experimentVariantMetric == null) {
 				experimentStatus = ExperimentStatus.FINISHED_NO_WINNER;
-			}
-			else {
-				experiment.setWinnerDXPVariantId(
-					experimentVariantMetric.getDXPVariantId());
 			}
 
 			experiment.setExperimentStatus(experimentStatus);
