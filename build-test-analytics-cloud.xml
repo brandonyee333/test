@@ -362,6 +362,10 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 			</trycatch>
 
 			<delete file="${analytics.cloud.start.sh}" />
+
+			<echo>!!!PAUSE FOR TESTING!!!</echo>
+
+			<sleep seconds="7200" />
 		</sequential>
 	</macrodef>
 
