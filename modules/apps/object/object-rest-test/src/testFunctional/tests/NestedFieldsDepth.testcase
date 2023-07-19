@@ -1,6 +1,7 @@
 @component-name = "portal-headless"
 definition {
 
+	property custom.properties = "feature.flag.LPS-178642=true${line.separator}feature.flag.LPS-184413=true${line.separator}feature.flag.LPS-167253=true${line.separator}feature.flag.LPS-186757=true";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.component.names = "Object";
@@ -119,41 +120,37 @@ definition {
 				relationshipName = "usersUniversities",
 				userAccountId = ${userId});
 
-			ObjectDefinitionAPI.relateObjectEntriesByName(
-				child_plural_label = "subjects",
-				childEntryName = "Math",
-				parent_plural_label = "universities",
-				parentEntryName = "Liferay",
-				relationshipName = "universitySubjects");
+			//ObjectDefinitionAPI.relateObjectEntriesByName(
+			//	child_plural_label = "subjects",
+			//	childEntryName = "Math",
+			//	parent_plural_label = "universities",
+			//	parentEntryName = "Liferay",
+			//	relationshipName = "universitySubjects");
+			//ObjectDefinitionAPI.relateObjectEntries(
+			//	en_US_plural_label = "subjects",
+			//	objectEntry1 = ${subjectEntryId},
+			//	objectEntry2 = ${userId},
+			//	relationshipName = "subjectsUsers");
+			//UserAccountAPI.relateObjectEntries(
+			//	customObjectId = ${bookEntryId},
+			//	relationshipName = "userBooks",
+			//	userAccountId = ${userId});
+			//ObjectDefinitionAPI.relateObjectEntriesByName(
+			//	child_plural_label = "authors",
+			//	childEntryName = "Alice",
+			//	parent_plural_label = "books",
+			//	parentEntryName = "Functions",
+			//	relationshipName = "booksAuthors");
+			//UserAccountAPI.relateObjectEntries(
+			//	customObjectId = ${studentEntryId},
+			//	relationshipName = "userStudents",
+			//	userAccountId = ${userId});
+			//ObjectDefinitionAPI.relateObjectEntries(
+			//	en_US_plural_label = "students",
+			//	objectEntry1 = ${studentEntryId},
+			//	objectEntry2 = ${universityEntryId},
+			//	relationshipName = "studentsUniversities");
 
-			ObjectDefinitionAPI.relateObjectEntries(
-				en_US_plural_label = "subjects",
-				objectEntry1 = ${subjectEntryId},
-				objectEntry2 = ${userId},
-				relationshipName = "subjectsUsers");
-
-			UserAccountAPI.relateObjectEntries(
-				customObjectId = ${bookEntryId},
-				relationshipName = "userBooks",
-				userAccountId = ${userId});
-
-			ObjectDefinitionAPI.relateObjectEntriesByName(
-				child_plural_label = "authors",
-				childEntryName = "Alice",
-				parent_plural_label = "books",
-				parentEntryName = "Functions",
-				relationshipName = "booksAuthors");
-
-			UserAccountAPI.relateObjectEntries(
-				customObjectId = ${studentEntryId},
-				relationshipName = "userStudents",
-				userAccountId = ${userId});
-
-			ObjectDefinitionAPI.relateObjectEntries(
-				en_US_plural_label = "students",
-				objectEntry1 = ${studentEntryId},
-				objectEntry2 = ${universityEntryId},
-				relationshipName = "studentsUniversities");
 		}
 	}
 
@@ -166,6 +163,18 @@ definition {
 
 		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCPNoSelenium();
+		}
+	}
+
+	@disable-webdriver = "true"
+	@priority = 4
+	test CanGetCorrectResults {
+		task ("Test") {
+			var universityName = JSONUtil.getWithJSONPath(${staticResponse}, "$.name");
+
+			TestUtils.assertEquals(
+				actual = ${universityName},
+				expected = "Liferay");
 		}
 	}
 
