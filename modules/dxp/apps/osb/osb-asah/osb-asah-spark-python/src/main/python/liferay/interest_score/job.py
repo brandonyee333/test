@@ -97,6 +97,8 @@ class BaseSQLCommandSparkJob(BaseSparkJob, metaclass=ABCMeta):
 
 		data_frame.createOrReplaceTempView(self._temp_view)
 
+		self.spark_session.catalog.cacheTable(self._temp_view)
+
 
 class DLKeywordsExtractionSparkJob(BaseSparkJob):
 
@@ -582,6 +584,8 @@ class DLKeywordsExtractionSparkJob(BaseSparkJob):
 			'extracted_keywords'
 		)
 
+		self.spark_session.catalog.cacheTable('extracted_keywords')
+
 class IdentityInterestScoreBigQueryDataFrameWriterSparkJob(BaseBigQueryDataFrameWriterSparkJob):
 
 	def __init__(self, spark_application):
@@ -674,6 +678,8 @@ class IdentityInterestScorePrepareAnalyticsEventsWithKeywordsSparkJob(BaseSparkJ
 
 		analytics_events_with_keywords_data_frame.createOrReplaceTempView(
 			'analytics_events_with_keywords')
+
+		self.spark_session.catalog.cacheTable('analytics_events_with_keywords')
 
 class IdentityInterestScoreSQLCommandSparkJob(BaseSQLCommandSparkJob):
 
@@ -1262,6 +1268,8 @@ class KeywordsExtractionSparkJob(BaseSparkJob):
 		extracted_keywords_data_frame.createOrReplaceTempView(
 			'extracted_keywords')
 
+		self.spark_session.catalog.cacheTable('extracted_keywords')
+
 class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 	def __init__(self, spark_application):
@@ -1360,6 +1368,8 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 
 		event_data_frame.createOrReplaceTempView(
 			'analytics_events')
+
+		self.spark_session.catalog.cacheTable('analytics_events')
 
 class SessionInterestScoreBigQuerydataFrameWriterSparkJob(BaseBigQueryDataFrameWriterSparkJob):
 
