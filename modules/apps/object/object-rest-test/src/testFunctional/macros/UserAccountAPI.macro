@@ -417,7 +417,9 @@ definition {
 
 		var response = JSONCurlUtil.put(${curl});
 
-		return ${response};
+		static var staticResponse = ${response};
+
+		return ${staticResponse};
 	}
 
 	macro setUpGlobalUserAccountId {
