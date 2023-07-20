@@ -130,12 +130,12 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 	}
 
 	protected void assertDeviceMetricsOrdering(List<Metric> deviceMetrics) {
-		String previousDeviceType = null;
 		double previousDeviceCount = -1;
+		String previousDeviceType = null;
 
 		for (Metric deviceMetric : deviceMetrics) {
-			String deviceType = deviceMetric.getValueKey();
 			Double deviceCount = deviceMetric.getValue();
+			String deviceType = deviceMetric.getValueKey();
 
 			if (previousDeviceType != null) {
 				Assertions.assertTrue(deviceCount <= previousDeviceCount);
@@ -146,12 +146,13 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 				}
 			}
 
-			String previousPlatformName = null;
 			double previousPlatformCount = -1;
+			String previousPlatformName = null;
 
 			for (Metric platformMetric : deviceMetric.getMetrics()) {
-				String platformName = platformMetric.getValueKey();
 				Double platformCount = platformMetric.getValue();
+
+				String platformName = platformMetric.getValueKey();
 
 				if (previousPlatformName != null) {
 					Assertions.assertTrue(
@@ -163,12 +164,12 @@ public abstract class BaseAssetMetricRepositoryTestCase<T extends AssetMetric>
 					}
 				}
 
-				previousPlatformName = platformName;
 				previousPlatformCount = platformCount;
+				previousPlatformName = platformName;
 			}
 
-			previousDeviceType = deviceType;
 			previousDeviceCount = deviceCount;
+			previousDeviceType = deviceType;
 		}
 	}
 
