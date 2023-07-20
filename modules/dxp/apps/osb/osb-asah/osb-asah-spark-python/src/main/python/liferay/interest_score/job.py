@@ -99,7 +99,6 @@ class BaseSQLCommandSparkJob(BaseSparkJob, metaclass=ABCMeta):
 
 		self.spark_session.catalog.cacheTable(self._temp_view)
 
-
 class DLKeywordsExtractionSparkJob(BaseSparkJob):
 
 	def __init__(self, spark_application):
