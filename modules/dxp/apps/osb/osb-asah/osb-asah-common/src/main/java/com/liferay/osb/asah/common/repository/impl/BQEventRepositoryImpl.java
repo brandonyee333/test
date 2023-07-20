@@ -1198,7 +1198,7 @@ public class BQEventRepositoryImpl
 			).eq(
 				"pageViewed"
 			),
-			searchTermField.isNotNull());
+			searchTermField.isNotNull(), DSL.trim(searchTermField).notEqual(""));
 	}
 
 	private SelectJoinStep<Record> _getBQEventPropertyValuesSelectJoinStep(
