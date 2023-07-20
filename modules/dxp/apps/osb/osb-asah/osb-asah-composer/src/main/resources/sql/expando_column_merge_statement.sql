@@ -36,7 +36,7 @@ USING
 				) AS className,
 				(
 					SELECT
-						SAFE_CAST(value AS STRING)
+						CASE WHEN SAFE_CAST(value AS STRING) = '' THEN NULL ELSE SAFE_CAST(value AS STRING) END
 					FROM
 						UNNEST(expandoColumn.fields)
 					WHERE
@@ -131,7 +131,7 @@ ON
 WHEN MATCHED AND staging.deleted IS NULL THEN
 	UPDATE SET
 		replica.className = staging.className,
-		replica.columnId = staging.columnId,
+		replica.columnId = COALESCE(staging.columnId, CONCAT(staging.name, '-', staging.dataType)),
 		replica.dataType = staging.dataType,
 		replica.displayType = staging.displayType,
 		replica.modifiedDate = staging.modifiedDate,
@@ -152,7 +152,7 @@ WHEN NOT MATCHED BY TARGET AND staging.deleted IS NULL THEN
 	)
 	VALUES (
 		staging.className,
-		staging.columnId,
+		COALESCE(staging.columnId, CONCAT(staging.name, '-', staging.dataType)),
 		staging.dataSourceId,
 		staging.dataType,
 		staging.displayType,
