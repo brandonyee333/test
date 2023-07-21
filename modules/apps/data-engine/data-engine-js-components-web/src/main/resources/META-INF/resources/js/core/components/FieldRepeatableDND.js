@@ -58,9 +58,11 @@ const FieldRepeatableDND = ({children, field, index, nestedFieldIndex}) => {
 				{field.label}
 			</div>
 
-			{typeof children === 'function'
-				? children({field, index})
-				: children}
+			<div draggable={true} onDragStart={event => event.preventDefault()}>
+				{typeof children === 'function'
+					? children({field, index})
+					: children}
+			</div>
 		</div>
 	);
 };
