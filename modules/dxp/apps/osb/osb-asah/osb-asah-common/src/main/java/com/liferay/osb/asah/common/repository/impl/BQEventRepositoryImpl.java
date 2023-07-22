@@ -1200,7 +1200,7 @@ public class BQEventRepositoryImpl
 			),
 			searchTermField.isNotNull(),
 			DSL.trim(
-				searchTermField
+				DSL.coalesce(searchTermField, "")
 			).notEqual(
 				""
 			));
