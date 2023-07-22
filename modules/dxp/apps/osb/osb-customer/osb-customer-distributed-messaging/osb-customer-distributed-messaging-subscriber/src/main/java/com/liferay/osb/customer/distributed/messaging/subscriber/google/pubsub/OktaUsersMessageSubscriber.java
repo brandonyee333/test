@@ -17,10 +17,10 @@ import com.liferay.osb.customer.zendesk.synchronizer.CustomerSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Company;
+import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
@@ -77,8 +77,9 @@ public class OktaUsersMessageSubscriber
 	private void _createUser(JSONObject jsonObject) throws Exception {
 		JSONObject profileJSONObject = jsonObject.getJSONObject("profile");
 
-		Contact contact = _contactWebService.fetchContactByUuid(
-			profileJSONObject.getString("uuid"));
+		com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact contact =
+			_contactWebService.fetchContactByUuid(
+				profileJSONObject.getString("uuid"));
 
 		if (contact == null) {
 			return;
@@ -215,8 +216,7 @@ public class OktaUsersMessageSubscriber
 			else {
 				ServiceContext serviceContext = new ServiceContext();
 
-				com.liferay.portal.kernel.model.Contact contact =
-					user.getContact();
+				Contact contact = user.getContact();
 
 				serviceContext.setUuid(contact.getUserUuid());
 
@@ -244,7 +244,7 @@ public class OktaUsersMessageSubscriber
 			return;
 		}
 
-		com.liferay.portal.kernel.model.Contact contact = user.getContact();
+		Contact contact = user.getContact();
 
 		Calendar calendar = Calendar.getInstance();
 
