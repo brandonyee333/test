@@ -55,7 +55,7 @@ public class UserKeywordQueryContributor implements KeywordQueryContributor {
 		queryHelper.addSearchTerm(
 			booleanQuery, searchContext, "country", false);
 		queryHelper.addSearchTerm(
-			booleanQuery, searchContext, "emailAddress", false);
+			booleanQuery, searchContext, "emailAddress.text", false);
 		queryHelper.addSearchTerm(
 			booleanQuery, searchContext, "firstName", false);
 		queryHelper.addSearchTerm(
@@ -79,7 +79,7 @@ public class UserKeywordQueryContributor implements KeywordQueryContributor {
 				keywords = StringUtil.toLowerCase(keywords);
 
 				booleanQuery.add(
-					_getTrailingWildcardQuery("emailAddress", keywords),
+					_getTrailingWildcardQuery("emailAddress.text", keywords),
 					BooleanClauseOccur.SHOULD);
 				booleanQuery.add(
 					_getTrailingWildcardQuery("emailAddressDomain", keywords),
