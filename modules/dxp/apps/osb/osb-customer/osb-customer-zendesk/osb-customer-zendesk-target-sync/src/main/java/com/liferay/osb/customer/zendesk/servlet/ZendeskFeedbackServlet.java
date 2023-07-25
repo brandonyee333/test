@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
 import java.io.IOException;
@@ -144,6 +145,10 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 		tagsJSONArray.put(ces1Rating);
 		tagsJSONArray.put(csat1Rating);
 
+		if (Validator.isNotNull(satisfactionComment)) {
+			tagsJSONArray.put(ZendeskFeedbackConstants.SURVEY_COMMENT);
+		}
+
 		tagsJSONObject.put("tags", tagsJSONArray);
 
 		tagsJSONObject.put("safe_update", true);
@@ -190,8 +195,11 @@ public class ZendeskFeedbackServlet extends ZendeskBaseServlet {
 		sb.append(ZendeskFeedbackConstants.getRatingLabel(ces1Rating));
 		sb.append("<br />CSAT 1 Rating: ");
 		sb.append(ZendeskFeedbackConstants.getRatingLabel(csat1Rating));
-		sb.append("<br /><br />Ticket Satisfaction Comment: <br />");
-		sb.append(HtmlUtil.escape(satisfactionComment));
+
+		if (Validator.isNotNull(satisfactionComment)) {
+			sb.append("<br /><br />Ticket Satisfaction Comment: <br />");
+			sb.append(HtmlUtil.escape(satisfactionComment));
+		}
 
 		return sb.toString();
 	}

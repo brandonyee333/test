@@ -35,6 +35,8 @@ public interface ZendeskFeedbackConstants {
 
 	public static final String CSAT1_2 = "csat1_2";
 
+	public static final String SURVEY_COMMENT = "survey_comment";
+
 	public static String getRatingLabel(String rating) {
 		if (rating.equals(CES1_1)) {
 			return "strongly-disagree";
