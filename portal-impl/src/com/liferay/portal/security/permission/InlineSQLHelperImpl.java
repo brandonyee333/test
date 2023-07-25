@@ -592,7 +592,8 @@ public class InlineSQLHelperImpl implements InlineSQLHelper {
 		try {
 			if (ResourcePermissionLocalServiceUtil.hasResourcePermission(
 					companyId, className, ResourceConstants.SCOPE_COMPANY,
-					String.valueOf(companyId), getRoleIds(0),
+					String.valueOf(companyId),
+					getRoleIds(ArrayUtil.append(groupIds, 0)),
 					ActionKeys.VIEW)) {
 
 				return sql;
