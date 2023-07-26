@@ -411,7 +411,7 @@ definition {
 	}
 
 	macro viewImageFieldViaWCD {
-		AssertElementPresent(locator1 = "WCD#WEB_CONTENT_IMAGE_PNG");
+		AssertVisible(locator1 = "WCD#WEB_CONTENT_IMAGE_PNG");
 	}
 
 	macro viewRecycleBinMessage {
