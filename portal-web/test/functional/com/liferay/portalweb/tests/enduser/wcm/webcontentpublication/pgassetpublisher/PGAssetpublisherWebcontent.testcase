@@ -590,7 +590,9 @@ definition {
 
 		LanguagePortlet.selectLanguagePG(language = "German (Germany)");
 
-		AssetPublisherPortlet.viewAssetPG(
+		Navigator.gotoPage(pageName = "Asset Publisher Page");
+
+		AssetPublisherPortlet.viewAssetDetailsPG(
 			assetContent = "WC WebContent German Content",
 			assetTitle = "WC WebContent German Title");
 	}
