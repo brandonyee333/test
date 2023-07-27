@@ -218,6 +218,15 @@ public class NodePlugin implements Plugin<Project> {
 
 			});
 
+		downloadNodeTask.setPnpmUrl(
+			new Callable<String>() {
+
+				@Override
+				public String call() throws Exception {
+					return nodeExtension.getPnpmUrl();
+				}
+			});
+
 		downloadNodeTask.setYarnUrl(
 			new Callable<String>() {
 
