@@ -57,12 +57,17 @@ node {
 	yarnVersion = "1.22.19"
 }
 
+println("liferay.ci=" + System.getProperty("liferay.ci"))
+println("liferay.ci=" + System.getProperty("liferay.ci"))
+println("liferay.ci=" + System.getProperty("liferay.ci"))
+println("liferay.ci=" + System.getProperty("liferay.ci"))
+
 packageRunWebpack {
 	if (project.hasProperty("faroEnvironmentName")) {
 		environment "FARO_ENVIRONMENT_NAME", faroEnvironmentName
 	}
 
-	enabled = ((System.getProperty("user.name") != "root") || (System.getProperty("liferay.ci") == "true"))
+	enabled = ((System.getProperty("user.name") != "root") || (true))
 
 	inputs.dir "src/main/css"
 	inputs.dir "src/main/images"
