@@ -399,11 +399,6 @@ definition {
 			userName = PropsUtil.get("email.address.2"),
 			userPassword = PropsUtil.get("email.password.2"));
 
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Server Administration");
-
 		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
 		ProductMenu.gotoPortlet(

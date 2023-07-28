@@ -549,11 +549,6 @@ definition {
 
 		PortalSettings.editVirtualHostCP(virtualHostName = "www.able.com");
 
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Instance Settings");
-
 		PortalSettings.editConfigurationAuthenticationGeneral(enableRequireStrangers = "true");
 
 		ProductMenu.gotoPortlet(
