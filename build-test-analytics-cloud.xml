@@ -283,7 +283,7 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 					/>
 
 					<execute dir="${analytics.cloud.faro.dir}">
-						${portal.gradlew} createDocker
+						${portal.gradlew} createDocker -Pcom.liferay.osb.faro.environment.name=local -Dliferay.ci=true
 
 						docker tag ${analytics.cloud.faro.image.name} ${analytics.cloud.faro.tag.name}
 
@@ -362,10 +362,6 @@ OSB_FARO_FRONTEND_URL=${analytics.cloud.faro.frontend.url}</echo>
 			</trycatch>
 
 			<delete file="${analytics.cloud.start.sh}" />
-
-			<echo>!!!PAUSE FOR TESTING!!!</echo>
-
-			<sleep seconds="7200" />
 		</sequential>
 	</macrodef>
 
