@@ -777,9 +777,11 @@ definition {
 			navTab = "Upload Image",
 			uploadFileName = "Document_1.jpg");
 
-		Button.clickPublish();
+		ScrollWebElementIntoView(locator1 = "Button#PUBLISH");
 
-		Pause(locator1 = 30000);
+		Click(locator1 = "Button#PUBLISH");
+
+		Alert.viewSuccessMessage();
 
 		BlogsNavigator.gotoEntryCP(entryTitle = "Blogs Entry Title");
 
