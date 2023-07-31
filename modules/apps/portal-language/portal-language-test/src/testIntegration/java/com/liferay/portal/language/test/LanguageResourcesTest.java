@@ -66,35 +66,14 @@ public class LanguageResourcesTest {
 	public void testLanguageResource() {
 		String key = "year";
 
-		String defaultValue = _language.get(new Locale("", ""), key);
-		String frenchValue = _language.get(LocaleUtil.FRANCE, key);
-
-		Locale defaultLocale = LocaleUtil.FRANCE;
-
-		LocaleUtil.setDefault(
-			defaultLocale.getLanguage(), defaultLocale.getCountry(),
-			defaultLocale.getVariant());
+		String expectedTranslation = "Year";
 
 		Assert.assertEquals(
-			frenchValue, _language.get(LocaleUtil.getDefault(), key, null));
+			expectedTranslation, _language.get(_locale, key, null));
 
-		Locale locale = new Locale("ps", "AF");
+		_serviceRegistration1 = _register(_VALUE_1, 0, _languageId);
 
-		_serviceRegistration1 = _bundleContext.registerService(
-			ResourceBundle.class, new TestResourceBundle(_VALUE_1),
-			HashMapDictionaryBuilder.<String, Object>put(
-				Constants.SERVICE_RANKING, 0
-			).put(
-				"language.id", _language.getLanguageId(locale)
-			).build());
-
-		Assert.assertEquals(
-			_VALUE_1,
-			_language.get(locale, TestResourceBundle.class.getName(), null));
-		Assert.assertEquals(defaultValue, _language.get(locale, key, null));
-
-		LocaleUtil.setDefault(
-			_locale.getLanguage(), _locale.getCountry(), _locale.getVariant());
+		_assertValue(_VALUE_1, _locale);
 	}
 
 	@Test
@@ -155,19 +134,64 @@ public class LanguageResourcesTest {
 		_assertValue(null);
 	}
 
+	@Test
+	public void testLanguageResourceUsingSupportedLocale() {
+		String key = "year";
+
+		String expectedTranslation = "Année";
+
+		Locale locale = LocaleUtil.FRANCE;
+
+		Assert.assertEquals(
+			expectedTranslation, _language.get(locale, key, null));
+
+		_serviceRegistration1 = _register(
+			_VALUE_1, 0, _language.getLanguageId(locale));
+
+		_assertValue(_VALUE_1, locale);
+	}
+
+	@Test
+	public void testLanguageResourceUsingUnsupportedLocale() {
+		String key = "year";
+
+		String expectedBaseLanguagePropertiesTranslation = "Year";
+
+		Locale locale = new Locale("ps", "AF");
+
+		Assert.assertEquals(
+			expectedBaseLanguagePropertiesTranslation,
+			_language.get(locale, key, null));
+
+		_serviceRegistration1 = _register(
+			_VALUE_1, 0, _language.getLanguageId(locale));
+
+		_assertValue(_VALUE_1, locale);
+	}
+
 	private void _assertValue(String expectedValue) {
+		_assertValue(expectedValue, _locale);
+	}
+
+	private void _assertValue(String expectedValue, Locale locale) {
 		Assert.assertEquals(
 			expectedValue,
-			_language.get(_locale, TestResourceBundle.class.getName(), null));
+			_language.get(locale, TestResourceBundle.class.getName(), null));
 	}
 
 	private ServiceRegistration<?> _register(String value, int serviceRanking) {
+		return _register(value, serviceRanking, _languageId);
+	}
+
+	private ServiceRegistration<?> _register(
+		String value, int serviceRanking, String languageId) {
+
 		return _bundleContext.registerService(
 			ResourceBundle.class, new TestResourceBundle(value),
 			HashMapDictionaryBuilder.<String, Object>put(
 				Constants.SERVICE_RANKING, serviceRanking
 			).put(
-				"language.id", _languageId
+				"language.id", languageId
 			).build());
 	}
 
