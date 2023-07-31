@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -171,6 +172,12 @@ public class SoyPortletHelperTest {
 
 		@Override
 		public void prepare(HttpServletRequest request) {
+		}
+
+		@Override
+		public void prepareTaglib(
+			HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
 		}
 
 		@Override

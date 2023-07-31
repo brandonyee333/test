@@ -27,15 +27,13 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Sergio González
  */
-@Component(immediate = true, service = TiffOrientationTransformer.class)
 public class TiffOrientationTransformer {
 
-	public RenderedImage transform(Supplier<InputStream> inputStreamSupplier)
+	public static RenderedImage transform(
+			Supplier<InputStream> inputStreamSupplier)
 		throws PortalException {
 
 		try {
