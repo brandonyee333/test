@@ -3,12 +3,12 @@ File portalKernelClassesDir = file("../../../../../../portal-kernel/classes")
 
 if (portalImplClassesDir.exists() && portalKernelClassesDir.exists()) {
 	dependencies {
-		provided files(portalImplClassesDir, portalKernelClassesDir)
+		compileOnly files(portalImplClassesDir, portalKernelClassesDir)
 	}
 }
 else {
 	dependencies {
-		provided group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-		provided group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+		compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+		compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	}
 }
