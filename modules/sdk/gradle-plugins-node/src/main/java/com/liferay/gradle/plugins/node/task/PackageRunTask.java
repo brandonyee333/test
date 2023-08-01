@@ -8,6 +8,7 @@ package com.liferay.gradle.plugins.node.task;
 import com.liferay.gradle.plugins.node.internal.util.GradleUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.gradle.api.tasks.CacheableTask;
 
@@ -30,7 +31,7 @@ public class PackageRunTask extends ExecutePackageManagerTask {
 	protected List<String> getCompleteArgs() {
 		List<String> completeArgs = super.getCompleteArgs();
 
-		if (isUseNpm()) {
+		if (Objects.equals(getUsingNPM(), "npm")) {
 			completeArgs.add("run-script");
 		}
 		else {
