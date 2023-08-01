@@ -1598,3 +1598,30 @@ This affects anyone using these API methods.
 ### Why was this change made?
 
 These methods are no longer called by Liferay internally.
+
+---------------------------------------
+
+## Updated Virtual Hosts Defaults
+- **Date:** 2023-JULY-07
+- **JIRA Ticket:** [LPS-184385](https://issues.liferay.com/browse/LPS-184385)
+
+### What changed?
+Virtual Host defaults were changed from a wildcard value to specified values.
+
+Previous:
+```
+virtual.hosts.valid.hosts=*
+```
+New:
+```
+virtual.hosts.valid.hosts=localhost,127.0.0.1,[::1],[0:0:0:0:0:0:0:1]
+```
+
+### Who is affected?
+This affects all who use the wildcard value with the `virtual.hosts.valid.hosts` portal property.
+
+### How should I update my code?
+Please include the proper virtual hosts in the portal property.
+
+### Why was this change made?
+The wildcard is an insecure default.  This change reflects that the product should use secure defaults until otherwise changed by the end user.
