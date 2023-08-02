@@ -38,11 +38,11 @@ public class DefaultZendeskTicketCommentWebService
 
 	public ZendeskTicketComment addAgentZendeskTicketComment(
 			long zendeskTicketId, long zendeskUserId, String htmlBody,
-			boolean isPublic)
+			boolean publ1c)
 		throws PortalException {
 
 		JSONObject jsonObject = getAgentTicketCommentJSONObject(
-			zendeskUserId, htmlBody, isPublic);
+			zendeskUserId, htmlBody, publ1c);
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.put(
 			StringBundler.concat(
@@ -106,13 +106,13 @@ public class DefaultZendeskTicketCommentWebService
 	}
 
 	protected JSONObject getAgentTicketCommentJSONObject(
-		long zendeskUserId, String htmlBody, boolean isPublic) {
+		long zendeskUserId, String htmlBody, boolean publ1c) {
 
 		JSONObject commentJSONObject = JSONFactoryUtil.createJSONObject();
 
 		commentJSONObject.put("author_id", zendeskUserId);
 		commentJSONObject.put("html_body", htmlBody);
-		commentJSONObject.put("public", isPublic);
+		commentJSONObject.put("public", publ1c);
 
 		JSONObject ticketJSONObject = JSONFactoryUtil.createJSONObject();
 

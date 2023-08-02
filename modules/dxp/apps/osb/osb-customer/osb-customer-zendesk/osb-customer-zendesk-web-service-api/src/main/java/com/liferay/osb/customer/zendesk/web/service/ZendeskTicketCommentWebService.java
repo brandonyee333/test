@@ -20,7 +20,7 @@ public interface ZendeskTicketCommentWebService {
 
 	public ZendeskTicketComment addAgentZendeskTicketComment(
 			long zendeskTicketId, long zendeskUserId, String body,
-			boolean isPublic)
+			boolean publ1c)
 		throws PortalException;
 
 	public void addEndUserZendeskTicketComment(
