@@ -33,9 +33,13 @@ definition {
 	function assertPartialTextCaseSensitive {
 		selenium.waitForVisible();
 
-		selenium.waitForTextMatches(argument1 = "${locator1}" argument2=".*${value1}.*");
+		selenium.waitForTextMatches(
+			argument1 = "${locator1}",
+			argument2 = (".*" + StringUtil.regexReplaceAll(${value1}, "([\\\\^\\$\\{\\}\\[\\]\\(\\)\\.\\*\\+\\?\\|\\<\\>\\-\\&\\%])", "\\\\$1") + ".*"));
 
-		selenium.assertTextMatches(argument1 = "${locator1}" argument2 = ".*${value1}.*");
+		selenium.assertTextMatches(
+			argument1 = "${locator1}",
+			argument2 = (".*"+ StringUtil.regexReplaceAll(${value1}, "([\\\\^\\$\\{\\}\\[\\]\\(\\)\\.\\*\\+\\?\\|\\<\\>\\-\\&\\%])", "\\\\$1") + ".*"));
 	}
 
 	function assertText {
