@@ -43,11 +43,11 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -57,7 +57,7 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.math.BigDecimal;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -236,223 +236,278 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 			value = infoFormParameterMap.get(infoField.getName());
 		}
 		else {
-			value = GetterUtil.getString(
-				_getValue(
-					httpServletRequest, infoField, infoForm.getName(), locale),
-				value);
+			value = _getValue(
+				value, httpServletRequest, infoField, infoForm.getName(),
+				locale);
 		}
 
 		InputTemplateNode inputTemplateNode = new InputTemplateNode(
 			errorMessage, inputHelpText, inputLabel, name, required,
 			inputShowHelpText, inputShowLabel, infoFieldType.getName(), value);
 
-		if (infoFieldType instanceof FileInfoFieldType) {
-			String allowedFileExtensions = (String)infoField.getAttribute(
-				FileInfoFieldType.ALLOWED_FILE_EXTENSIONS);
+		_addInputTemplateNodeAttributes(
+			fragmentEntryLink, httpServletRequest, infoField, inputTemplateNode,
+			label, locale, value);
 
-			if (allowedFileExtensions == null) {
-				allowedFileExtensions = StringPool.BLANK;
+		return inputTemplateNode;
+	}
+
+	private void _addFileInfoFieldTypeInputTemplateNodeAttributes(
+		FragmentEntryLink fragmentEntryLink,
+		HttpServletRequest httpServletRequest, InfoField infoField,
+		InputTemplateNode inputTemplateNode, String value) {
+
+		String allowedFileExtensions = (String)infoField.getAttribute(
+			FileInfoFieldType.ALLOWED_FILE_EXTENSIONS);
+
+		if (allowedFileExtensions == null) {
+			allowedFileExtensions = StringPool.BLANK;
+		}
+
+		if (Validator.isNotNull(allowedFileExtensions)) {
+			StringBundler sb = new StringBundler();
+
+			for (String allowedFileExtension :
+					StringUtil.split(allowedFileExtensions)) {
+
+				sb.append(StringPool.PERIOD);
+				sb.append(allowedFileExtension.trim());
+				sb.append(StringPool.COMMA);
 			}
 
-			if (Validator.isNotNull(allowedFileExtensions)) {
-				StringBundler sb = new StringBundler();
+			sb.setIndex(sb.index() - 1);
 
-				for (String allowedFileExtension :
-						StringUtil.split(allowedFileExtensions)) {
+			allowedFileExtensions = sb.toString();
+		}
 
-					sb.append(StringPool.PERIOD);
-					sb.append(allowedFileExtension.trim());
-					sb.append(StringPool.COMMA);
-				}
+		inputTemplateNode.addAttribute(
+			"allowedFileExtensions", allowedFileExtensions);
 
-				sb.setIndex(sb.index() - 1);
+		Long maximumFileSize = (Long)infoField.getAttribute(
+			FileInfoFieldType.MAX_FILE_SIZE);
 
-				allowedFileExtensions = sb.toString();
+		if (maximumFileSize == null) {
+			maximumFileSize = 0L;
+		}
+
+		inputTemplateNode.addAttribute("maxFileSize", maximumFileSize);
+
+		FileInfoFieldType.FileSourceType fileSourceType =
+			(FileInfoFieldType.FileSourceType)infoField.getAttribute(
+				FileInfoFieldType.FILE_SOURCE);
+
+		if (fileSourceType == null) {
+			return;
+		}
+
+		String fileName = null;
+		FileEntry fileEntry = null;
+		boolean selectFromDocumentLibrary = false;
+
+		if (Validator.isNotNull(value)) {
+			fileEntry = _fetchFileEntry(GetterUtil.getLong(value));
+		}
+
+		if (fileSourceType ==
+				FileInfoFieldType.FileSourceType.DOCUMENTS_AND_MEDIA) {
+
+			selectFromDocumentLibrary = true;
+
+			if (fileEntry != null) {
+				fileName = fileEntry.getFileName();
 			}
+		}
+		else if (fileSourceType ==
+					FileInfoFieldType.FileSourceType.USER_COMPUTER) {
+
+			if (fileEntry != null) {
+				fileName = TempFileEntryUtil.getOriginalTempFileName(
+					fileEntry.getFileName());
+			}
+		}
+
+		if (fileName != null) {
+			inputTemplateNode.addAttribute("fileName", fileName);
+		}
+
+		inputTemplateNode.addAttribute(
+			"selectFromDocumentLibrary", selectFromDocumentLibrary);
+
+		if (selectFromDocumentLibrary) {
+			FileItemSelectorCriterion fileItemSelectorCriterion =
+				new FileItemSelectorCriterion();
+
+			fileItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+				new FileEntryItemSelectorReturnType());
 
 			inputTemplateNode.addAttribute(
-				"allowedFileExtensions", allowedFileExtensions);
+				"selectFromDocumentLibraryURL",
+				String.valueOf(
+					_itemSelector.getItemSelectorURL(
+						RequestBackedPortletURLFactoryUtil.create(
+							httpServletRequest),
+						fragmentEntryLink.getNamespace() + "selectFileEntry",
+						fileItemSelectorCriterion)));
+		}
+	}
 
-			Long maximumFileSize = (Long)infoField.getAttribute(
-				FileInfoFieldType.MAX_FILE_SIZE);
+	private void _addInputTemplateNodeAttributes(
+		FragmentEntryLink fragmentEntryLink,
+		HttpServletRequest httpServletRequest, InfoField infoField,
+		InputTemplateNode inputTemplateNode, String label, Locale locale,
+		String value) {
 
-			if (maximumFileSize == null) {
-				maximumFileSize = 0L;
-			}
-
-			inputTemplateNode.addAttribute("maxFileSize", maximumFileSize);
-
-			FileInfoFieldType.FileSourceType fileSourceType =
-				(FileInfoFieldType.FileSourceType)infoField.getAttribute(
-					FileInfoFieldType.FILE_SOURCE);
-
-			if (fileSourceType != null) {
-				String fileName = null;
-				FileEntry fileEntry = null;
-				boolean selectFromDocumentLibrary = false;
-
-				if (Validator.isNotNull(value)) {
-					fileEntry = _fetchFileEntry(GetterUtil.getLong(value));
-				}
-
-				if (fileSourceType ==
-						FileInfoFieldType.FileSourceType.DOCUMENTS_AND_MEDIA) {
-
-					selectFromDocumentLibrary = true;
-
-					if (fileEntry != null) {
-						fileName = fileEntry.getFileName();
-					}
-				}
-				else if (fileSourceType ==
-							FileInfoFieldType.FileSourceType.USER_COMPUTER) {
-
-					if (fileEntry != null) {
-						fileName = TempFileEntryUtil.getOriginalTempFileName(
-							fileEntry.getFileName());
-					}
-				}
-
-				if (fileName != null) {
-					inputTemplateNode.addAttribute("fileName", fileName);
-				}
-
-				inputTemplateNode.addAttribute(
-					"selectFromDocumentLibrary", selectFromDocumentLibrary);
-
-				if (selectFromDocumentLibrary) {
-					FileItemSelectorCriterion fileItemSelectorCriterion =
-						new FileItemSelectorCriterion();
-
-					fileItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
-						new FileEntryItemSelectorReturnType());
-
-					RequestBackedPortletURLFactory
-						requestBackedPortletURLFactory =
-							RequestBackedPortletURLFactoryUtil.create(
-								httpServletRequest);
-
-					inputTemplateNode.addAttribute(
-						"selectFromDocumentLibraryURL",
-						String.valueOf(
-							_itemSelector.getItemSelectorURL(
-								requestBackedPortletURLFactory,
-								fragmentEntryLink.getNamespace() +
-									"selectFileEntry",
-								fileItemSelectorCriterion)));
-				}
-			}
+		if (infoField.getInfoFieldType() instanceof FileInfoFieldType) {
+			_addFileInfoFieldTypeInputTemplateNodeAttributes(
+				fragmentEntryLink, httpServletRequest, infoField,
+				inputTemplateNode, value);
 		}
 		else if (infoField.getInfoFieldType() instanceof
 					LongTextInfoFieldType) {
 
-			inputTemplateNode.addAttribute(
-				"maxLength",
-				infoField.getAttribute(LongTextInfoFieldType.MAX_LENGTH));
+			_addLongTextInfoFieldTypeInputTemplateNodeAttributes(
+				infoField, inputTemplateNode);
 		}
 		else if (infoField.getInfoFieldType() instanceof
 					MultiselectInfoFieldType) {
 
-			inputTemplateNode.addAttribute(
-				"options",
-				TransformUtil.transform(
-					(List<OptionInfoFieldType>)infoField.getAttribute(
-						MultiselectInfoFieldType.OPTIONS),
-					optionInfoFieldType -> new InputTemplateNode.Option(
-						optionInfoFieldType.getLabel(locale),
-						optionInfoFieldType.getValue())));
+			_addMultiselectInfoFieldTypeInputTemplateNodeAttributes(
+				infoField, inputTemplateNode, locale);
 		}
 		else if (infoField.getInfoFieldType() instanceof NumberInfoFieldType) {
-			String dataType = "integer";
-
-			if (GetterUtil.getBoolean(
-					infoField.getAttribute(NumberInfoFieldType.DECIMAL))) {
-
-				dataType = "decimal";
-
-				Integer decimalPartMaxLength = (Integer)infoField.getAttribute(
-					NumberInfoFieldType.DECIMAL_PART_MAX_LENGTH);
-
-				if (decimalPartMaxLength != null) {
-					inputTemplateNode.addAttribute(
-						"step", _getStep(decimalPartMaxLength));
-				}
-			}
-
-			inputTemplateNode.addAttribute("dataType", dataType);
-
-			BigDecimal maxValue = (BigDecimal)infoField.getAttribute(
-				NumberInfoFieldType.MAX_VALUE);
-
-			if (maxValue != null) {
-				inputTemplateNode.addAttribute("max", maxValue);
-			}
-
-			BigDecimal minValue = (BigDecimal)infoField.getAttribute(
-				NumberInfoFieldType.MIN_VALUE);
-
-			if (minValue != null) {
-				inputTemplateNode.addAttribute("min", minValue);
-			}
+			_addNumberInfoFieldTypeInputTemplateNodeAttributes(
+				infoField, inputTemplateNode);
 		}
 		else if (infoField.getInfoFieldType() instanceof
 					RelationshipInfoFieldType) {
 
-			inputTemplateNode.addAttribute(
-				"relationshipLabelFieldName",
-				infoField.getAttribute(
-					RelationshipInfoFieldType.LABEL_FIELD_NAME));
-
-			inputTemplateNode.addAttribute(
-				"relationshipURL",
-				infoField.getAttribute(RelationshipInfoFieldType.URL));
-
-			inputTemplateNode.addAttribute(
-				"relationshipValueFieldName",
-				infoField.getAttribute(
-					RelationshipInfoFieldType.VALUE_FIELD_NAME));
-
-			if (Validator.isNotNull(label)) {
-				inputTemplateNode.addAttribute("selectedOptionLabel", label);
-			}
+			_addRelationshipInfoFieldTypeInputTemplateNodeAttributes(
+				infoField, inputTemplateNode, label);
 		}
 		else if (infoField.getInfoFieldType() instanceof SelectInfoFieldType) {
-			List<InputTemplateNode.Option> options = new ArrayList<>();
-
-			List<OptionInfoFieldType> optionInfoFieldTypes =
-				(List<OptionInfoFieldType>)infoField.getAttribute(
-					SelectInfoFieldType.OPTIONS);
-
-			if (optionInfoFieldTypes == null) {
-				optionInfoFieldTypes = Collections.emptyList();
-			}
-
-			for (OptionInfoFieldType optionInfoFieldType :
-					optionInfoFieldTypes) {
-
-				options.add(
-					new InputTemplateNode.Option(
-						optionInfoFieldType.getLabel(locale),
-						optionInfoFieldType.getValue()));
-
-				if ((value != null) &&
-					value.equals(optionInfoFieldType.getValue())) {
-
-					inputTemplateNode.addAttribute(
-						"selectedOptionLabel",
-						optionInfoFieldType.getLabel(locale));
-				}
-			}
-
-			inputTemplateNode.addAttribute("options", options);
+			_addSelectInfoFieldTypeInputTemplateNodeAttributes(
+				infoField, inputTemplateNode, locale, value);
 		}
 		else if (infoField.getInfoFieldType() instanceof TextInfoFieldType) {
-			inputTemplateNode.addAttribute(
-				"maxLength",
-				infoField.getAttribute(TextInfoFieldType.MAX_LENGTH));
+			_addTextInfoFieldTypeInputTemplateNodeAttributes(
+				infoField, inputTemplateNode);
+		}
+	}
+
+	private void _addLongTextInfoFieldTypeInputTemplateNodeAttributes(
+		InfoField infoField, InputTemplateNode inputTemplateNode) {
+
+		inputTemplateNode.addAttribute(
+			"maxLength",
+			infoField.getAttribute(LongTextInfoFieldType.MAX_LENGTH));
+	}
+
+	private void _addMultiselectInfoFieldTypeInputTemplateNodeAttributes(
+		InfoField infoField, InputTemplateNode inputTemplateNode,
+		Locale locale) {
+
+		inputTemplateNode.addAttribute(
+			"options",
+			TransformUtil.transform(
+				(List<OptionInfoFieldType>)infoField.getAttribute(
+					MultiselectInfoFieldType.OPTIONS),
+				optionInfoFieldType -> new InputTemplateNode.Option(
+					optionInfoFieldType.getLabel(locale),
+					optionInfoFieldType.getValue())));
+	}
+
+	private void _addNumberInfoFieldTypeInputTemplateNodeAttributes(
+		InfoField infoField, InputTemplateNode inputTemplateNode) {
+
+		String dataType = "integer";
+
+		if (GetterUtil.getBoolean(
+				infoField.getAttribute(NumberInfoFieldType.DECIMAL))) {
+
+			dataType = "decimal";
+
+			Integer decimalPartMaxLength = (Integer)infoField.getAttribute(
+				NumberInfoFieldType.DECIMAL_PART_MAX_LENGTH);
+
+			if (decimalPartMaxLength != null) {
+				inputTemplateNode.addAttribute(
+					"step", _getStep(decimalPartMaxLength));
+			}
 		}
 
-		return inputTemplateNode;
+		inputTemplateNode.addAttribute("dataType", dataType);
+
+		BigDecimal maxValue = (BigDecimal)infoField.getAttribute(
+			NumberInfoFieldType.MAX_VALUE);
+
+		if (maxValue != null) {
+			inputTemplateNode.addAttribute("max", maxValue);
+		}
+
+		BigDecimal minValue = (BigDecimal)infoField.getAttribute(
+			NumberInfoFieldType.MIN_VALUE);
+
+		if (minValue != null) {
+			inputTemplateNode.addAttribute("min", minValue);
+		}
+	}
+
+	private void _addRelationshipInfoFieldTypeInputTemplateNodeAttributes(
+		InfoField infoField, InputTemplateNode inputTemplateNode,
+		String label) {
+
+		inputTemplateNode.addAttribute(
+			"relationshipLabelFieldName",
+			infoField.getAttribute(RelationshipInfoFieldType.LABEL_FIELD_NAME));
+		inputTemplateNode.addAttribute(
+			"relationshipURL",
+			infoField.getAttribute(RelationshipInfoFieldType.URL));
+		inputTemplateNode.addAttribute(
+			"relationshipValueFieldName",
+			infoField.getAttribute(RelationshipInfoFieldType.VALUE_FIELD_NAME));
+
+		if (Validator.isNotNull(label)) {
+			inputTemplateNode.addAttribute("selectedOptionLabel", label);
+		}
+	}
+
+	private void _addSelectInfoFieldTypeInputTemplateNodeAttributes(
+		InfoField infoField, InputTemplateNode inputTemplateNode, Locale locale,
+		String value) {
+
+		List<InputTemplateNode.Option> options = new ArrayList<>();
+
+		List<OptionInfoFieldType> optionInfoFieldTypes =
+			(List<OptionInfoFieldType>)infoField.getAttribute(
+				SelectInfoFieldType.OPTIONS);
+
+		if (optionInfoFieldTypes == null) {
+			optionInfoFieldTypes = Collections.emptyList();
+		}
+
+		for (OptionInfoFieldType optionInfoFieldType : optionInfoFieldTypes) {
+			options.add(
+				new InputTemplateNode.Option(
+					optionInfoFieldType.getLabel(locale),
+					optionInfoFieldType.getValue()));
+
+			if ((value != null) &&
+				value.equals(optionInfoFieldType.getValue())) {
+
+				inputTemplateNode.addAttribute(
+					"selectedOptionLabel",
+					optionInfoFieldType.getLabel(locale));
+			}
+		}
+
+		inputTemplateNode.addAttribute("options", options);
+	}
+
+	private void _addTextInfoFieldTypeInputTemplateNodeAttributes(
+		InfoField infoField, InputTemplateNode inputTemplateNode) {
+
+		inputTemplateNode.addAttribute(
+			"maxLength", infoField.getAttribute(TextInfoFieldType.MAX_LENGTH));
 	}
 
 	private FileEntry _fetchFileEntry(long fileEntryId) {
@@ -515,9 +570,9 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 
 	private List<String> _getSelectedOptions(
 		Locale locale, List<OptionInfoFieldType> optionInfoFieldTypes,
-		ArrayList<KeyLocalizedLabelPair> values) {
+		List<KeyLocalizedLabelPair> values) {
 
-		ArrayList<String> selectedOptions = new ArrayList<>();
+		List<String> selectedOptions = new ArrayList<>();
 
 		for (KeyLocalizedLabelPair keyLocalizedLabelPair : values) {
 			for (OptionInfoFieldType optionInfoFieldType :
@@ -553,11 +608,11 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 	}
 
 	private String _getValue(
-		HttpServletRequest httpServletRequest, InfoField infoField,
-		String infoFormName, Locale locale) {
+		String defaultValue, HttpServletRequest httpServletRequest,
+		InfoField infoField, String infoFormName, Locale locale) {
 
 		if (httpServletRequest == null) {
-			return StringPool.BLANK;
+			return defaultValue;
 		}
 
 		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =
@@ -565,14 +620,14 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 				LayoutDisplayPageWebKeys.LAYOUT_DISPLAY_PAGE_OBJECT_PROVIDER);
 
 		if (layoutDisplayPageObjectProvider == null) {
-			return StringPool.BLANK;
+			return defaultValue;
 		}
 
 		String className = _infoSearchClassMapperRegistry.getClassName(
 			layoutDisplayPageObjectProvider.getClassName());
 
 		if (!Objects.equals(className, infoFormName)) {
-			return StringPool.BLANK;
+			return defaultValue;
 		}
 
 		InfoItemFieldValuesProvider<Object> infoItemFieldValuesProvider =
@@ -586,7 +641,7 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 						layoutDisplayPageObjectProvider.getClassName());
 			}
 
-			return StringPool.BLANK;
+			return defaultValue;
 		}
 
 		InfoItemFieldValues infoItemFieldValues =
@@ -597,22 +652,35 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 			infoItemFieldValues.getInfoFieldValue(infoField.getName());
 
 		if (infoFieldValue == null) {
-			return StringPool.BLANK;
+			return defaultValue;
 		}
 
 		if (infoField.getInfoFieldType() == DateInfoFieldType.INSTANCE) {
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd");
+			try {
+				DateFormat dateFormat =
+					DateFormatFactoryUtil.getSimpleDateFormat(
+						"yyyy-MM-dd", locale);
 
-			return simpleDateFormat.format(infoFieldValue.getValue());
+				return dateFormat.format(infoFieldValue.getValue());
+			}
+			catch (Exception exception) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"Unable to parse date from " +
+							infoFieldValue.getValue(),
+						exception);
+				}
+			}
+
+			return StringPool.BLANK;
 		}
 
 		if (infoField.getInfoFieldType() == MultiselectInfoFieldType.INSTANCE) {
-			ArrayList<KeyLocalizedLabelPair> values =
-				(ArrayList<KeyLocalizedLabelPair>)infoFieldValue.getValue();
+			List<KeyLocalizedLabelPair> values =
+				(List<KeyLocalizedLabelPair>)infoFieldValue.getValue();
 
 			if (ListUtil.isEmpty(values)) {
-				return StringPool.BLANK;
+				return defaultValue;
 			}
 
 			List<OptionInfoFieldType> optionInfoFieldTypes =
@@ -625,11 +693,11 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 		}
 
 		if (infoField.getInfoFieldType() == SelectInfoFieldType.INSTANCE) {
-			ArrayList<KeyLocalizedLabelPair> values =
-				(ArrayList<KeyLocalizedLabelPair>)infoFieldValue.getValue();
+			List<KeyLocalizedLabelPair> values =
+				(List<KeyLocalizedLabelPair>)infoFieldValue.getValue();
 
 			if (ListUtil.isEmpty(values)) {
-				return StringPool.BLANK;
+				return defaultValue;
 			}
 
 			List<OptionInfoFieldType> optionInfoFieldTypes =
@@ -643,8 +711,8 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 
 		Object value = infoFieldValue.getValue();
 
-		if (value == null) {
-			return StringPool.BLANK;
+		if (Validator.isNull(value)) {
+			return defaultValue;
 		}
 
 		return String.valueOf(value);

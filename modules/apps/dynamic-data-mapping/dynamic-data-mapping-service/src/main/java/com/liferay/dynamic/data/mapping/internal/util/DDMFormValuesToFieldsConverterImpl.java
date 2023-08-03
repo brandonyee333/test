@@ -51,6 +51,7 @@ public class DDMFormValuesToFieldsConverterImpl
 			DDMFormValuesConverterUtil.addMissingDDMFormFieldValues(
 				ddmForm.getDDMFormFields(),
 				ddmFormValues.getDDMFormFieldValuesMap(true)));
+		ddmFormValues.setDefaultLocale(ddmForm.getDefaultLocale());
 
 		Map<String, Set<Locale>> ddmFormFieldAvailableLocales =
 			_getDDMFormFieldAvailableLocales(

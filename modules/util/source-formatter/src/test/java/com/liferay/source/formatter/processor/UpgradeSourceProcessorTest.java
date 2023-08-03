@@ -36,6 +36,12 @@ public class UpgradeSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testUpgradeGetClassNamesMethodCheck() throws Exception {
+		test("upgrade/UpgradeJavaGetClassNamesMethodCheck.testjava");
+		test("upgrade/UpgradeJSPFGetClassNamesMethodCheck.testjspf");
+	}
+
+	@Test
 	public void testUpgradeGetImagePreviewURLMethodCheck() throws Exception {
 		test("upgrade/UpgradeJavaGetImagePreviewURLMethodCheck.testjava");
 		test("upgrade/UpgradeJSPGetImagePreviewURLMethodCheck.testjsp");
@@ -101,6 +107,11 @@ public class UpgradeSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testUpgradeJavaCookieUtilCheck() throws Exception {
+		test("upgrade/UpgradeJavaCookieUtilCheck.testjava");
+	}
+
+	@Test
 	public void testUpgradeJavaExtractTextMethodCheck() throws Exception {
 		test("upgrade/UpgradeJavaExtractTextMethodCheck.testjava");
 	}
@@ -116,6 +127,15 @@ public class UpgradeSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testUpgradeJavaFetchCPDefinitionByCProductExternalReferenceCodeCheck()
+		throws Exception {
+
+		test(
+			"upgrade/UpgradeJavaFetchCPDefinitionByCProductExternal" +
+				"ReferenceCodeCheck.testjava");
+	}
+
+	@Test
 	public void testUpgradeJavaGetFileMethodCheck() throws Exception {
 		test("upgrade/UpgradeJavaGetFileMethodCheck.testjava");
 	}
@@ -125,6 +145,11 @@ public class UpgradeSourceProcessorTest extends BaseSourceProcessorTestCase {
 		throws Exception {
 
 		test("upgrade/UpgradeJavaGetLayoutDisplayPageProviderCheck.testjava");
+	}
+
+	@Test
+	public void testUpgradeJavaIndexerCheck() throws Exception {
+		test("upgrade/UpgradeJavaIndexerCheck.testjava");
 	}
 
 	@Test

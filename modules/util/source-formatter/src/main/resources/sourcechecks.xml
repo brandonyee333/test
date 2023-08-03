@@ -602,6 +602,10 @@
 			<category name="Styling" />
 			<description name="Applies rules to enforce consistency in code style." />
 		</check>
+		<check name="JavaUpgradeFetchCPDefinitionByCProductExternalReferenceCodeCheck">
+			<category name="Upgrade" />
+			<description name="Reorder parameters in the fetchCPDefinitionByCProductExternalReferenceCode method" />
+		</check>
 		<check name="JavaUpgradeModelPermissionsCheck">
 			<category name="Upgrade" />
 			<description name="Replace setGroupPermissions and setGuestPermissions by new implementation" />
@@ -1597,6 +1601,10 @@
 			<description name="Checks if the property value `-includeresource` or `Include-Resource` exists and removes it" />
 			<weight>1</weight>
 		</check>
+		<check name="UpgradeGetClassNamesMethodCheck">
+			<category name="Upgrade" />
+			<description name="Run code migration of method from 'getClassNames' to 'getSearchClassNames'" />
+		</check>
 		<check name="UpgradeGetImagePreviewURLMethodCheck">
 			<category name="Upgrade" />
 			<description name="Replaces the references of the method 'DLUtil.getImagePreviewURL' with the method 'getImagePreviewURL' of 'DLURLHelper' class" />
@@ -1643,6 +1651,10 @@
 			<description name="Replaces the old methods of class `CommerceRegion` with the new equivalents in the `Region` class." />
 			<weight>1</weight>
 		</check>
+		<check name="UpgradeJavaCookieUtilCheck">
+			<category name="Upgrade" />
+			<description name="Replace CookieUtilCheck.get by CookiesManagerUtil.getCookieValue and reorder parameters" />
+		</check>
 		<check name="UpgradeJavaExtractTextMethodCheck">
 			<category name="Upgrade" />
 			<description name="Replaces the references of the method `HtmlUtil.extractText(` with the method `extractText(` of `HtmlParser` class" />
@@ -1665,6 +1677,10 @@
 			<category name="Upgrade" />
 			<description name="Replace getLayoutDisplayPageProvider by getLayoutDisplayPageProviderByClassName" />
 			<weight>1</weight>
+		</check>
+		<check name="UpgradeJavaIndexerCheck">
+			<category name="Upgrade" />
+			<description name="Replace Indexer by Indexer&lt;?&gt;" />
 		</check>
 		<check name="UpgradeJavaMultiVMPoolUtilCheck">
 			<category name="Upgrade" />
