@@ -1,10 +1,8 @@
 dependencies {
-	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
-	testIntegrationCompile group: "com.liferay", name: "org.hibernate.core", version: "3.6.10.LIFERAY-PATCHED-7"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	testIntegrationCompile project(":apps:collaboration:message-boards:message-boards-web")
-	testIntegrationCompile project(":apps:web-experience:trash:trash-test-util")
-	testIntegrationCompile project(":core:petra:petra-string")
-	testIntegrationCompile project(":core:registry-api")
+	testIntegrationImplementation group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
+	testIntegrationImplementation group: "com.liferay", name: "org.hibernate.core", version: "3.6.10.LIFERAY-PATCHED-7"
+	testIntegrationImplementation group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	testIntegrationImplementation project(":apps:collaboration:message-boards:message-boards-web")
+	testIntegrationImplementation project(":apps:web-experience:trash:trash-test-util")
+	testIntegrationImplementation project(":core:registry-api")
 }

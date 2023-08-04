@@ -1,12 +1,9 @@
 dependencies {
-	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	testIntegrationCompile project(":apps:adaptive-media:adaptive-media-api")
-	testIntegrationCompile project(":apps:adaptive-media:adaptive-media-image-api")
-	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-api")
-	testIntegrationCompile project(":apps:web-experience:journal:journal-api")
-	testIntegrationCompile project(":core:petra:petra-concurrent")
-	testIntegrationCompile project(":core:petra:petra-memory")
-	testIntegrationCompile project(":core:registry-api")
+	testIntegrationImplementation group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
+	testIntegrationImplementation group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	testIntegrationImplementation project(":apps:adaptive-media:adaptive-media-api")
+	testIntegrationImplementation project(":apps:adaptive-media:adaptive-media-image-api")
+	testIntegrationImplementation project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-api")
+	testIntegrationImplementation project(":apps:web-experience:journal:journal-api")
+	testIntegrationImplementation project(":core:registry-api")
 }

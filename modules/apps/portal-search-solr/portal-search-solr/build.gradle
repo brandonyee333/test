@@ -28,10 +28,10 @@ dependencies {
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype")
 	compileOnly project(":core:petra:petra-string")
 
-	testCompile group: "commons-collections", name: "commons-collections", version: "3.2.2"
-	testCompile project(":apps:foundation:portal-search:portal-search")
-	testCompile project(":apps:foundation:portal-search:portal-search-test-util")
-	testCompile project(":core:petra:petra-memory")
+	testImplementation group: "commons-collections", name: "commons-collections", version: "3.2.2"
+	testImplementation project(":apps:foundation:portal-search:portal-search")
+	testImplementation project(":apps:foundation:portal-search:portal-search-test-util")
+	testImplementation project(":core:petra:petra-memory")
 }
 
 test {

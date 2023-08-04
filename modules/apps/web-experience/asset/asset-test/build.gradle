@@ -1,13 +1,12 @@
 dependencies {
-	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	testIntegrationCompile project(":apps:collaboration:bookmarks:bookmarks-api")
-	testIntegrationCompile project(":apps:collaboration:bookmarks:bookmarks-test-util")
-	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
-	testIntegrationCompile project(":apps:foundation:portal-search:portal-search-test-util")
-	testIntegrationCompile project(":apps:web-experience:asset:asset-categories-admin-web")
-	testIntegrationCompile project(":apps:web-experience:journal:journal-api")
-	testIntegrationCompile project(":apps:web-experience:journal:journal-test-util")
-	testIntegrationCompile project(":core:registry-api")
+	testIntegrationImplementation group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
+	testIntegrationImplementation group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	testIntegrationImplementation project(":apps:collaboration:bookmarks:bookmarks-api")
+	testIntegrationImplementation project(":apps:collaboration:bookmarks:bookmarks-test-util")
+	testIntegrationImplementation project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
+	testIntegrationImplementation project(":apps:foundation:portal-search:portal-search-test-util")
+	testIntegrationImplementation project(":apps:web-experience:asset:asset-categories-admin-web")
+	testIntegrationImplementation project(":apps:web-experience:journal:journal-api")
+	testIntegrationImplementation project(":apps:web-experience:journal:journal-test-util")
+	testIntegrationImplementation project(":core:registry-api")
 }

@@ -10,5 +10,5 @@ dependencies {
 	compileOnly project(":apps:static:portal:portal-profile-api")
 	compileOnly project(":core:petra:petra-string")
 
-	testCompile project(":apps:foundation:portal-cache:portal-cache-test-util")
+	testImplementation project(":apps:foundation:portal-cache:portal-cache-test-util")
 }

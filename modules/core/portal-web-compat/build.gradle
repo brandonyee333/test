@@ -1,7 +1,7 @@
 apply plugin: "com.liferay.osgi.portal.compat.defaults.plugin"
 
 dependencies {
-	testCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	testImplementation group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 }
 
 deploy {

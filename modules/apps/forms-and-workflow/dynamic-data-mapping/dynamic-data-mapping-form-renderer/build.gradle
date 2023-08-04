@@ -9,7 +9,7 @@ dependencies {
 	compileOnly project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-form-field-type")
 	compileOnly project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-io")
 
-	testCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
+	testImplementation project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
 }
 
 task wrapSoyTemplates

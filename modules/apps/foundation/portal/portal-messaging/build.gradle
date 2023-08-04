@@ -8,5 +8,5 @@ dependencies {
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-persistence")
 
-	testCompile project(":core:registry-api")
+	testImplementation project(":core:registry-api")
 }

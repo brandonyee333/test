@@ -1,18 +1,16 @@
 dependencies {
-	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	testIntegrationCompile group: "org.osgi", name: "org.osgi.service.cm", version: "1.5.0"
-	testIntegrationCompile project(":apps:collaboration:blogs:blogs-test-util")
-	testIntegrationCompile project(":apps:forms-and-workflow:calendar:calendar-api")
-	testIntegrationCompile project(":apps:forms-and-workflow:calendar:calendar-service")
-	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
-	testIntegrationCompile project(":apps:foundation:portal-instances:portal-instances-api")
-	testIntegrationCompile project(":apps:foundation:portal-search:portal-search")
-	testIntegrationCompile project(":apps:foundation:portal-search:portal-search-api")
-	testIntegrationCompile project(":apps:foundation:portal-search:portal-search-test-util")
-	testIntegrationCompile project(":apps:static:osgi:osgi-util")
-	testIntegrationCompile project(":apps:web-experience:journal:journal-api")
-	testIntegrationCompile project(":apps:web-experience:journal:journal-service")
-	testIntegrationCompile project(":core:petra:petra-string")
+	testIntegrationImplementation group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
+	testIntegrationImplementation group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	testIntegrationImplementation group: "org.osgi", name: "org.osgi.service.cm", version: "1.5.0"
+	testIntegrationImplementation project(":apps:collaboration:blogs:blogs-test-util")
+	testIntegrationImplementation project(":apps:forms-and-workflow:calendar:calendar-api")
+	testIntegrationImplementation project(":apps:forms-and-workflow:calendar:calendar-service")
+	testIntegrationImplementation project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
+	testIntegrationImplementation project(":apps:foundation:portal-instances:portal-instances-api")
+	testIntegrationImplementation project(":apps:foundation:portal-search:portal-search")
+	testIntegrationImplementation project(":apps:foundation:portal-search:portal-search-api")
+	testIntegrationImplementation project(":apps:foundation:portal-search:portal-search-test-util")
+	testIntegrationImplementation project(":apps:static:osgi:osgi-util")
+	testIntegrationImplementation project(":apps:web-experience:journal:journal-api")
+	testIntegrationImplementation project(":apps:web-experience:journal:journal-service")
 }

@@ -1,7 +1,7 @@
 dependencies {
-	compile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	compile group: "log4j", name: "log4j", version: "1.2.17"
-	compile group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+	api group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	api group: "log4j", name: "log4j", version: "1.2.17"
+	api group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
 }
 
 liferay {

@@ -1,15 +1,14 @@
 dependencies {
-	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	testIntegrationCompile group: "org.osgi", name: "org.osgi.service.cm", version: "1.5.0"
-	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-lists:dynamic-data-lists-api")
-	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-api")
-	testIntegrationCompile project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
-	testIntegrationCompile project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-api")
-	testIntegrationCompile project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-definition-api")
-	testIntegrationCompile project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-runtime-api")
-	testIntegrationCompile project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-service")
-	testIntegrationCompile project(":apps:web-experience:journal:journal-api")
-	testIntegrationCompile project(":core:registry-api")
+	testIntegrationImplementation group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
+	testIntegrationImplementation group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	testIntegrationImplementation group: "org.osgi", name: "org.osgi.service.cm", version: "1.5.0"
+	testIntegrationImplementation project(":apps:forms-and-workflow:dynamic-data-lists:dynamic-data-lists-api")
+	testIntegrationImplementation project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-api")
+	testIntegrationImplementation project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-test-util")
+	testIntegrationImplementation project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-api")
+	testIntegrationImplementation project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-definition-api")
+	testIntegrationImplementation project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-runtime-api")
+	testIntegrationImplementation project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-service")
+	testIntegrationImplementation project(":apps:web-experience:journal:journal-api")
+	testIntegrationImplementation project(":core:registry-api")
 }

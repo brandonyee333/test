@@ -11,10 +11,10 @@ dependencies {
 	compileOnly project(":apps:foundation:petra:petra-encryptor")
 	compileOnly project(":core:petra:petra-lang")
 
-	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
-	testIntegrationCompile group: "javax.portlet", name: "portlet-api", version: "2.0"
-	testIntegrationCompile group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
-	testIntegrationCompile group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
-	testIntegrationCompile group: "org.osgi", name: "osgi.core", version: "6.0.0"
-	testIntegrationCompile group: "org.springframework", name: "spring-web", version: "4.3.30.RELEASE"
+	testIntegrationImplementation group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
+	testIntegrationImplementation group: "javax.portlet", name: "portlet-api", version: "2.0"
+	testIntegrationImplementation group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
+	testIntegrationImplementation group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+	testIntegrationImplementation group: "org.osgi", name: "osgi.core", version: "6.0.0"
+	testIntegrationImplementation group: "org.springframework", name: "spring-web", version: "4.3.30.RELEASE"
 }
