@@ -619,7 +619,7 @@ definition {
 	@description = "This is a test for LPS-105943. When convert a widget page with a non-standard layout, there will be a warning message shown in conversion preview"
 	@priority = 5
 	test ConvertWidgetPageWithNonStandardLayout {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 
 		task ("Upload the custom layout") {
