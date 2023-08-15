@@ -571,17 +571,9 @@ definition {
 	test ViewSecureContentAndPageAsSiteMember {
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "SitepagesUsecase#ViewSecureContentAndPageAsSiteMember";
+		property test.smtp.server.enabled = "true";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Server Administration");
-
-		ServerAdministration.configureMailServerSettings(
-			userName = PropsUtil.get("email.address.2"),
-			userPassword = PropsUtil.get("email.password.2"));
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -589,7 +581,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = PropsUtil.get("email.address.4"),
+			userEmailAddress = PropsUtil.get("email.address.2"),
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -631,7 +623,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = PropsUtil.get("email.address.4"),
+			userEmailAddress = PropsUtil.get("email.address.2"),
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -664,7 +656,7 @@ definition {
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = PropsUtil.get("email.address.4"),
+			userLoginEmailAddress = PropsUtil.get("email.address.2"),
 			userLoginFullName = "userfn1 userln1");
 
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
@@ -693,58 +685,33 @@ definition {
 
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
 
-		Pause(locator1 = 30000);
+		MockMock.viewMail(
+			asset = "Blogs Entry",
+			content = "Blogs Entry Title G7B1",
+			recipient = "userfn1 userln1",
+			sender = "Joe Bloggs",
+			subject = "Test Test Published \"Blogs Entry Title G7B1\" on ${siteName} Blogs");
 
-		Gmail.login(
-			userEmailAddress = PropsUtil.get("email.address.4"),
-			userPassword = PropsUtil.get("email.password.4"));
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.viewMail(
-			emailFromUserName = "Joe Bloggs",
-			gmailAssetType = "G7B1",
-			gmailMessageBody = "Blogs Entry Title G7B1",
-			gmailMessageTitle = "Test Test Published \"Blogs Entry Title G7B1\" on ${siteName} Blogs");
-
-		Gmail.openMessageContinueReadingButton(
-			contentTitle = "Blogs Entry Title G7B1",
-			pageName = "Blog and Message Board Page",
-			siteName = ${siteName});
+		MockMock.clickBodyLink(
+			asset = "Blogs Entry Title G7B1",
+			bodyLink = "CONTINUE READING");
 
 		var blogEntryURL = selenium.getLocation();
 
-		Close();
+		MockMock.viewMail(
+			asset = "MB",
+			content = "MB Thread Message Subject G7MB2",
+			recipient = "test@liferay.com",
+			sender = "Test Test",
+			subject = "Home - ${siteName} New Message: MB Thread Message Subject G7MB2");
 
-		SelectWindow(locator1 = "null");
-
-		Navigator.gotoPage(pageName = "Blog and Message Board Page");
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.viewMail(
-			emailFromUserName = "Test Test",
-			gmailAssetType = "G7MB2",
-			gmailMessageBody = "MB Thread Message Body",
-			gmailMessageTitle = "Home - ${siteName} New Message: MB Thread Message Subject G7MB2");
-
-		Gmail.openMessageLink(
-			contentTitle = "MB Thread Message Subject G7MB2",
-			gmailAssetType = "Message Boards",
-			pageName = "Blog and Message Board Page",
-			siteName = ${siteName});
+		MockMock.clickBodyLink(
+			asset = "MB Thread Message Subject G7MB2",
+			bodyLink = "CONTINUE READING");
 
 		var messageBoardsThreadURL = selenium.getLocation();
 
-		Close();
-
-		SelectWindow(locator1 = "null");
-
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.deleteSpecificMail(gmailMessageTitleList = "Test Test Published \"Blogs Entry Title G7B1\" on ${siteName} Blogs, Message Boards Home - ${siteName} New Message: MB Thread Message Subject G7MB2,Your New Account,Your New Password,G7B1,G7MB2");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea2@liferay.com",
@@ -785,18 +752,10 @@ definition {
 	test ViewSecureContentAndPageAsUser {
 		property dummy.socket.proxy.disabled = "true";
 		property test.name.skip.portal.instance = "SitepagesUsecase#ViewSecureContentAndPageAsUser";
+		property test.smtp.server.enabled = "true";
 		property testray.component.names = "Training";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "Server Administration");
-
-		ServerAdministration.configureMailServerSettings(
-			userName = PropsUtil.get("email.address.2"),
-			userPassword = PropsUtil.get("email.password.2"));
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -804,7 +763,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.addCP(
-			userEmailAddress = PropsUtil.get("email.address.4"),
+			userEmailAddress = PropsUtil.get("email.address.2"),
 			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
@@ -837,7 +796,7 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.editPasswordCP(
-			userEmailAddress = PropsUtil.get("email.address.4"),
+			userEmailAddress = PropsUtil.get("email.address.2"),
 			userScreenName = "usersn1");
 
 		ProductMenu.gotoPortlet(
@@ -870,7 +829,7 @@ definition {
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
 
 		User.logoutAndLoginPG(
-			userLoginEmailAddress = PropsUtil.get("email.address.4"),
+			userLoginEmailAddress = PropsUtil.get("email.address.2"),
 			userLoginFullName = "userfn1 userln1");
 
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
@@ -899,58 +858,33 @@ definition {
 
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
 
-		Pause(locator1 = 30000);
+		MockMock.viewMail(
+			asset = "Blogs Entry",
+			content = "Blogs Entry Title G7B3",
+			recipient = "userfn1 userln1",
+			sender = "Joe Bloggs",
+			subject = "Test Test Published \"Blogs Entry Title G7B3\" on ${siteName} Blogs");
 
-		Gmail.login(
-			userEmailAddress = PropsUtil.get("email.address.4"),
-			userPassword = PropsUtil.get("email.password.4"));
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.viewMail(
-			emailFromUserName = "Joe Bloggs",
-			gmailAssetType = "G7B3",
-			gmailMessageBody = "Blogs Entry Title G7B3",
-			gmailMessageTitle = "Test Test Published \"Blogs Entry Title G7B3\" on ${siteName} Blogs");
-
-		Gmail.openMessageContinueReadingButton(
-			contentTitle = "Blogs Entry Title G7B3",
-			pageName = "Blog and Message Board Page",
-			siteName = ${siteName});
+		MockMock.clickBodyLink(
+			asset = "Blogs Entry Title G7B3",
+			bodyLink = "CONTINUE READING");
 
 		var blogEntryURL = selenium.getLocation();
 
-		Close();
+		MockMock.viewMail(
+			asset = "MB",
+			content = "MB Thread Message Subject G7MB4",
+			recipient = "userfn1 userln1",
+			sender = "Joe Bloggs",
+			subject = "Test Test Published \"MB Thread Message Subject G7MB4\" on ${siteName} Blogs");
 
-		SelectWindow(locator1 = "null");
-
-		Navigator.gotoPage(pageName = "Blog and Message Board Page");
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.viewMail(
-			emailFromUserName = "Test Test",
-			gmailAssetType = "G7MB4",
-			gmailMessageBody = "MB Thread Message Body",
-			gmailMessageTitle = "Home - ${siteName} New Message: MB Thread Message Subject G7MB4");
-
-		Gmail.openMessageLink(
-			contentTitle = "MB Thread Message Subject G7MB4",
-			gmailAssetType = "Message Boards",
-			pageName = "Blog and Message Board Page",
-			siteName = ${siteName});
+		MockMock.clickBodyLink(
+			asset = "MB Thread Message Subject G7MB4",
+			bodyLink = "CONTINUE READING");
 
 		var messageBoardsThreadURL = selenium.getLocation();
 
-		Close();
-
-		SelectWindow(locator1 = "null");
-
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.deleteSpecificMail(gmailMessageTitleList = "Test Test Published \"Blogs Entry Title G7B3\" on ${siteName} Blogs, Message Boards Home - ${siteName} New Message: MB Thread Message Subject G7MB4,Your New Account,Your New Password,G7B3,G7MB4");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea2@liferay.com",
