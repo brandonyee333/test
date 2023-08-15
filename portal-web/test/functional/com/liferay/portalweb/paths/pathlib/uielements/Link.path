@@ -26,6 +26,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ANY</td>
+	<td>//a[contains(.,'${key_text}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CONFIGURE_TWITTER</td>
 	<td>//a[contains(.,'Please configure your Twitter screen name.')]</td>
 	<td></td>
