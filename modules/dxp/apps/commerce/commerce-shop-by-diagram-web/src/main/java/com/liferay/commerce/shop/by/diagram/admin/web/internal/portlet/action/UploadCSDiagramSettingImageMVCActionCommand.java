@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.commerce.shop.by.diagram.admin.web.internal.portlet.action;
+package com.liferay.commerce.shop.by.diagram.web.internal.portlet.action;
 
 import com.liferay.commerce.product.constants.CPPortletKeys;
 import com.liferay.commerce.shop.by.diagram.admin.web.internal.upload.CSDiagramSettingImageUploadFileEntryHandler;
