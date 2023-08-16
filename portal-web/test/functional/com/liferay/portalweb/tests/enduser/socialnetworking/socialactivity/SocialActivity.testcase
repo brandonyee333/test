@@ -152,6 +152,8 @@ definition {
 	@priority = 5
 	@refactorneeded
 	test ViewDraftWikiPageViaActivities {
+		property portal.acceptance = "poshi-validation";
+
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
 			layoutName = "Activities Page");

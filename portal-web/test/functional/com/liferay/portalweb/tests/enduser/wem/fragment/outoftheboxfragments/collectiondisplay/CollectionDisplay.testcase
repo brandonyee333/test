@@ -2259,6 +2259,8 @@ definition {
 	@description = "This is a test for LPS-150318 and LPS-152245. Fragments used in nested elements and nested tabs within collection display are not given unique fragment ids."
 	@priority = 3
 	test ViewUniqueFragmentIdsInNestedElementsAndNestedTabs {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a fragment is given unique ID") {
 			task ("Add a fragment collection via JSON") {
 				JSONFragment.addFragmentCollection(

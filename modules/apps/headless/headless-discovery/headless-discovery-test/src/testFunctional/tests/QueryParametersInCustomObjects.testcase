@@ -202,6 +202,8 @@ definition {
 
 	@priority = 3
 	test CanUseRestrictFieldsParameterInCustomObjectEntry {
+		property portal.acceptance = "poshi-validation";
+
 		task ("When in API Explorer o/c/managers requesting getManager with {managerId} with restrictFields=name,id") {
 			APIExplorer.navigateToOpenAPI(customObjectPlural = "managers");
 

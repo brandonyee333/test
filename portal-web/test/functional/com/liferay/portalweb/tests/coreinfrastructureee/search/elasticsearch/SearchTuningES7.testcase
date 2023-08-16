@@ -261,6 +261,8 @@ definition {
 
 	@priority = 4
 	test AssertResultRankingsWithSynonyms {
+		property portal.acceptance = "poshi-validation";
+
 		for (var webContentTitle : list "Article 1,Article 2,Journal 1,Journal 2") {
 			JSONWebcontent.addWebContent(
 				content = "",

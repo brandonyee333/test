@@ -168,7 +168,7 @@ definition {
 
 	@priority = 3
 	test CannotGetKeywordsAndCategoriesWhenCategorizationNotEnabled {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("when I navigate to c/university endpoint postUniversity") {
 			ObjectDefinitionAPI.updateObjectDefinitionById(

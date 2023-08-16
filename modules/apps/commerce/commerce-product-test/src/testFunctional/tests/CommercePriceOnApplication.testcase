@@ -823,7 +823,7 @@ definition {
 	@description = "COMMERCE-11726 | As an admin user, I want to not be able to override a Price List with a 'Price on Application' set for the sku"
 	@priority = 5
 	test CannotSkuPriceOnApplicationSetOverridePriceList {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given the admin navigates to a product's sku details") {
 			CommerceProducts.openProductsAdmin();
@@ -892,7 +892,7 @@ definition {
 	@description = "COMMERCE-11726 | As an admin user, I want to not be able to override a Promotion with a 'Price on Application' set for the sku"
 	@priority = 5
 	test CannotSkuPriceOnApplicationSetOverridePromotion {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given the admin navigates to a product's sku details") {
 			CommerceProducts.openProductsAdmin();

@@ -249,7 +249,7 @@ definition {
 	@description = "COMMERCE-9931 and COMMERCE-9937. A default currency can be deleted and should not be visible in the Minium site."
 	@priority = 4
 	test CanDeleteDefaultCurrency {
-		property portal.acceptance = "false";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given an account with a default Currency") {
 			Account.openAccountsAdmin();
@@ -881,7 +881,7 @@ definition {
 	@description = "COMMERCE-9936. A disabled default currency should not be usable."
 	@priority = 4
 	test CannotUseDisabledCurrency {
-		property portal.acceptance = "false";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given an account with a default Currency") {
 			Account.openAccountsAdmin();
@@ -2474,7 +2474,7 @@ definition {
 	@description = "COMMERCE-9925. Default currency rules works on the storefront"
 	@priority = 4
 	test DefaultCurrencyRulesCanWorkOnStoreFront {
-		property portal.acceptance = "false";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Given a second account (first one is created at setup)") {
 			CommerceEntry.addAccountEntryUser(

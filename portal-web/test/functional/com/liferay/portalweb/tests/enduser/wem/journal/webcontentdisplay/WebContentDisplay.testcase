@@ -1006,7 +1006,7 @@ Welcome to Liferay Community Edition Portal 7.4.0 CE GA1''';
 	@priority = 5
 	@uitest
 	test UndeployWebContentDisplayModuleViaGogoShell {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

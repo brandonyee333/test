@@ -4738,6 +4738,8 @@ definition {
 
 	@description = "This is a use case for LPS-147329."
 	test ViewOOTBElementsLocalization {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Assert the title and description of an OOTB Element within the Blueprint query builder add element sidebar are not using language keys") {
 			Blueprints.openBlueprintsAdmin();
 
@@ -4818,6 +4820,8 @@ definition {
 	}
 
 	test ViewQueryBuilderAssetCategoryMultiselectField {
+		property portal.acceptance = "poshi-validation";
+
 		JSONCategory.addVocabulary(
 			groupName = "Guest",
 			title = "Test Vocabulary");
@@ -5480,6 +5484,8 @@ definition {
 	}
 
 	test ViewUnsavedChangesAlertForElements {
+		property portal.acceptance = "poshi-validation";
+
 		Blueprints.openBlueprintsAdmin();
 
 		Navigator.gotoNavItem(navItem = "Elements");

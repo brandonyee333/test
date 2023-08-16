@@ -716,6 +716,8 @@ definition {
 	@description = "This test ensures that users can replace the attachment for an article via the new configuration pane."
 	@priority = 5
 	test CanReplaceArticleAttachment {
+		property portal.acceptance = "poshi-validation";
+
 		JSONKnowledgeBase.addkBArticle(
 			groupName = "Guest",
 			kbArticleContent = "Knowledge Base Article Content",
