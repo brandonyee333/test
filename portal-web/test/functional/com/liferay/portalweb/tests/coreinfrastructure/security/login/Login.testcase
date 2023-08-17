@@ -115,8 +115,8 @@ definition {
 
 		var googleClientID = PropsUtil.get("google.client.id.3");
 		var googleClientSecret = PropsUtil.get("google.client.secret.3");
-		var userEmailAddress = PropsUtil.get("email.address.1");
-		var userPassword = PropsUtil.get("email.password.1");
+		var userEmailAddress = PropsUtil.get("email.address.3");
+		var userPassword = PropsUtil.get("email.password.3");
 
 		User.firstLoginPG();
 
