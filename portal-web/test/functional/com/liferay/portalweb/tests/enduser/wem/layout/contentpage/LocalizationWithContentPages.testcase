@@ -376,6 +376,8 @@ definition {
 	@description = "This is a use case for LPS-162223. The page creator can change locale in edit mode and date format mapped to text editable field will be changed."
 	@priority = 3
 	test ViewLocalizedDateFormatInPageEditor {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a page creator maps the publish date field of web content to a fragment") {
 			JSONWebcontent.addWebContent(
 				content = "Webcontent Content",
