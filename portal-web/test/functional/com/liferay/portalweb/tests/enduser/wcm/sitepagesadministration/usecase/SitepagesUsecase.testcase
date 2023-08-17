@@ -700,10 +700,10 @@ definition {
 		var messageBoardsThreadURL = MockMock.getBodySpecificText(
 			asset = "MB",
 			content = "MB Thread Message Subject G7MB2",
-			extractFirstText = "<br />",
+			extractFirstText = " http://localhost:8080",
 			recipient = "test@liferay.com",
 			sender = "Test Test",
-			specificText = "${siteName} Message Boards<br />",
+			specificText = "${siteName} Message Boards ",
 			subject = "Home - ${siteName} New Message: MB Thread Message Subject G7MB2");
 
 		MockMock._backtoInbox();
@@ -872,18 +872,20 @@ definition {
 
 		var blogEntryURL = selenium.getLocation();
 
-		MockMock.viewMail(
+		var messageBoardsThreadURL = MockMock.getBodySpecificText(
 			asset = "MB",
 			content = "MB Thread Message Subject G7MB4",
-			recipient = "userfn1 userln1",
-			sender = "Joe Bloggs",
-			subject = "Test Test Published \"MB Thread Message Subject G7MB4\" on ${siteName} Blogs");
+			extractFirstText = " http://localhost:8080",
+			recipient = "test@liferay.com",
+			sender = "Test Test",
+			specificText = "${siteName} Message Boards ",
+			subject = "Home - ${siteName} New Message: MB Thread Message Subject G7MB4");
 
-		MockMock.clickBodyLink(
-			asset = "MB Thread Message Subject G7MB4",
-			bodyLink = "CONTINUE READING");
+		MockMock._backtoInbox();
 
-		var messageBoardsThreadURL = selenium.getLocation();
+		Click(
+			key_text = "Delete all",
+			locator1 = "Link#ANY");
 
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
 
