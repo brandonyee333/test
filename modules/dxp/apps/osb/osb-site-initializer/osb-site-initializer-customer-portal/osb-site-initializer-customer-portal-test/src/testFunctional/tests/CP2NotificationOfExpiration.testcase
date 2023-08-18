@@ -188,7 +188,6 @@ definition {
 				field = "IP Address");
 
 			DoubleClick(locator1 = "CP2ActivationKeys#EXPIRATION_CHECKBOX");
-			haduken
 			var generateButtom = "Generate ${numberOfActivationKeys} Keys";
 
 			CustomerPortal.clickAtButton(text = "Generate 1 Key");
