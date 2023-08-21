@@ -177,7 +177,7 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 
 			printWriter.write(
 				_buildFragmentHTML(
-					fdsViewObjectEntry, fdsViewObjectDefinition,
+					fdsViewObjectDefinition, fdsViewObjectEntry, 
 					fragmentRendererContext, httpServletRequest));
 		}
 		catch (Exception exception) {
@@ -186,8 +186,8 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 	}
 
 	private String _buildFragmentHTML(
-			ObjectEntry fdsViewObjectEntry,
 			ObjectDefinition fdsViewObjectDefinition,
+			ObjectEntry fdsViewObjectEntry,
 			FragmentRendererContext fragmentRendererContext,
 			HttpServletRequest httpServletRequest)
 		throws Exception {
@@ -234,7 +234,7 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 				"pagination", _getPaginationJSONObject(fdsViewObjectEntry)
 			).put(
 				"sorting",
-				_getSortsJSONArray(fdsViewObjectEntry, fdsViewObjectDefinition)
+				_getSortingsJSONArray(fdsViewObjectDefinition, fdsViewObjectEntry)
 			).put(
 				"style", "fluid"
 			).put(
@@ -282,14 +282,14 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 
 	private JSONArray _getFieldsJSONArray(
 			FragmentEntryLink fragmentEntryLink,
-			ObjectDefinition objectDefinition, ObjectEntry objectEntry)
+			ObjectDefinition fdsViewObjectDefinition, ObjectEntry fdsViewObjectEntry)
 		throws Exception {
 
 		List<ObjectEntry> fdsFieldObjectEntries = new ArrayList<>(
 			_getRelatedObjectEntries(
-				objectDefinition, objectEntry, "fdsViewFDSFieldRelationship"));
+				fdsViewObjectDefinition, fdsViewObjectEntry, "fdsViewFDSFieldRelationship"));
 
-		Map<String, Object> fdsViewProperties = objectEntry.getProperties();
+		Map<String, Object> fdsViewProperties = fdsViewObjectEntry.getProperties();
 
 		List<Long> fdsFieldIds = ListUtil.toList(
 			Arrays.asList(
@@ -405,41 +405,41 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 		return relatedObjectEntriesPage.getItems();
 	}
 
-	private JSONArray _getSortsJSONArray(
-		ObjectEntry fdsViewObjectEntry, ObjectDefinition objectDefinition) {
+	private JSONArray _getSortingsJSONArray(
+		ObjectDefinition fdsViewObjectDefinition, ObjectEntry fdsViewObjectEntry) {
 
 		try {
-			List<ObjectEntry> fdsSortObjectEntries = new ArrayList<>(
+			List<ObjectEntry> fdsSortingObjectEntries = new ArrayList<>(
 				_getRelatedObjectEntries(
-					objectDefinition, fdsViewObjectEntry,
+					fdsViewObjectDefinition, fdsViewObjectEntry,
 					"fdsViewFDSSortRelationship"));
 
-			if (ListUtil.isEmpty(fdsSortObjectEntries)) {
+			if (ListUtil.isEmpty(fdsSortingObjectEntries)) {
 				return _jsonFactory.createJSONArray();
 			}
 
 			return JSONUtil.toJSONArray(
-				fdsSortObjectEntries,
-				(ObjectEntry fdsSortObjectEntry) -> _getSortsJSONObject(
-					fdsSortObjectEntry));
+				fdsSortingObjectEntries,
+				(ObjectEntry fdsSortingObjectEntry) -> _getSortingsJSONObject(
+					fdsSortingObjectEntry));
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to create FDSSort from FDSView", exception);
+				_log.warn("Unable to create FDSSorting from FDSView", exception);
 			}
 
 			return _jsonFactory.createJSONArray();
 		}
 	}
 
-	private JSONObject _getSortsJSONObject(ObjectEntry fdsSortObjectEntry) {
-		Map<String, Object> fdsSortProperties =
-			fdsSortObjectEntry.getProperties();
+	private JSONObject _getSortingsJSONObject(ObjectEntry fdsSortingObjectEntry) {
+		Map<String, Object> fdsSortingProperties =
+			fdsSortingObjectEntry.getProperties();
 
 		return JSONUtil.put(
-			"direction", fdsSortProperties.get("sortingDirection")
+			"direction", fdsSortingProperties.get("sortingDirection")
 		).put(
-			"key", fdsSortProperties.get("fieldName")
+			"key", fdsSortingProperties.get("fieldName")
 		);
 	}
 
