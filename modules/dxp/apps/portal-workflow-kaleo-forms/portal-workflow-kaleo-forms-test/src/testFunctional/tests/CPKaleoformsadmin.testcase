@@ -40,6 +40,8 @@ definition {
 
 	@priority = 3
 	test AddFieldSetWithDocumentsAndMediaField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -98,6 +100,7 @@ definition {
 
 	@priority = 3
 	test AddProcessWithNewFieldSetAndWorkflowViaSourceTab {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -410,6 +413,8 @@ definition {
 
 	@priority = 4
 	test DeleteCreateFormViaKaleoFormsAdmin {
+		property portal.acceptance = "poshi-validation";
+
 		var kfProcessName = "Kaleo Forms Process";
 
 		Navigator.openURL();
@@ -488,6 +493,8 @@ definition {
 
 	@priority = 3
 	test DeleteEditFormViaKaleoFormsAdmin {
+		property portal.acceptance = "poshi-validation";
+
 		var kfProcessName = "Kaleo Forms Process";
 
 		Navigator.openURL();
@@ -566,6 +573,8 @@ definition {
 
 	@priority = 4
 	test DeleteFieldSet {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -594,6 +603,8 @@ definition {
 
 	@priority = 4
 	test DeleteForm {
+		property portal.acceptance = "poshi-validation";
+
 		var kfFieldSetName = ${kfFieldSetName};
 		var kfProcessDescription = "Kaleo Forms Process Description";
 		var kfProcessName = "Kaleo Forms Process";
@@ -757,6 +768,8 @@ definition {
 
 	@priority = 3
 	test DeleteProcessRecords {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -900,6 +913,8 @@ definition {
 
 	@priority = 4
 	test EditCreateTaskForm {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1063,6 +1078,7 @@ definition {
 	@description = "This is a use case for LPS-49037."
 	@priority = 3
 	test EditProcessFieldSetPaginationAndViewSelectedForm {
+		property portal.acceptance = "poshi-validation";
 		property portal.upstream = "true";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
@@ -1149,7 +1165,7 @@ definition {
 
 	@priority = 5
 	test EditProcessForms {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		Navigator.openURL();
 
@@ -1245,6 +1261,8 @@ definition {
 
 	@priority = 3
 	test EditProcessNewDetails {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1324,6 +1342,7 @@ definition {
 	@priority = 4
 	test EditProcessNewFieldSet {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "poshi-validation";
 
 		Navigator.openURL();
 
@@ -1599,7 +1618,7 @@ definition {
 
 	@priority = 5
 	test EditSingleApproverWorkflowViaSourceTabViaAddProcess {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1751,6 +1770,7 @@ definition {
 	@priority = 4
 	test EditUploadedWorkflowViaViewTabViaAddProcess {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1849,6 +1869,8 @@ definition {
 	@description = "This is a use case for LPS-49107."
 	@priority = 4
 	test ExportAllProcessRecordsCSV {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1968,6 +1990,8 @@ definition {
 	@description = "This is a use case for LPS-49107."
 	@priority = 4
 	test ExportAllProcessRecordsXML {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2087,6 +2111,8 @@ definition {
 	@description = "This is a use case for LPS-49107."
 	@priority = 4
 	test ExportApprovedProcessRecordsCSV {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2207,6 +2233,8 @@ definition {
 	@description = "This is a use case for LPS-49107."
 	@priority = 4
 	test ExportApprovedProcessRecordsXML {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2326,6 +2354,8 @@ definition {
 
 	@priority = 4
 	test SearchProcessRecords {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2469,6 +2499,8 @@ definition {
 	@description = "This is a use case for LPS-50363."
 	@priority = 3
 	test ViewCanAddFieldsAfterSaveAndContinue {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2552,6 +2584,8 @@ definition {
 
 	@priority = 3
 	test ViewFieldSetCreateHeaderTitle {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2603,6 +2637,8 @@ definition {
 	@description = "This is a use case for LPS-47352."
 	@priority = 3
 	test ViewNoUnpublishedWorkflowMessage {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2639,6 +2675,8 @@ definition {
 
 	@priority = 3
 	test ViewProcessRecordDetails {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2778,6 +2816,8 @@ definition {
 	@description = "This is a use case for LPS-49475."
 	@priority = 3
 	test ViewSelectedFieldSetWithPagination {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		for (var kfFieldSetName : list "Field1,Field2,Field3,Field4,Field5,Field6") {
@@ -2844,6 +2884,8 @@ definition {
 
 	@priority = 3
 	test ViewUnpublishedWorkflowDefinitionsMenulist {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(

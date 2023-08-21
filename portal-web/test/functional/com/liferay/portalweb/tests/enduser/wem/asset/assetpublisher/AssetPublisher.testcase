@@ -122,7 +122,7 @@ definition {
 	@priority = 5
 	@uitest
 	test AddDDLViaAssetPublisherThenAddAssociatedWidgetToPage {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Add a Data Definition entry") {
 			DDLList.openDynamicDataListsAdmin(siteURLKey = "test-site-name");

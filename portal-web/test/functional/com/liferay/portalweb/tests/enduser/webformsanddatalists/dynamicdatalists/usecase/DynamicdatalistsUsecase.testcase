@@ -40,6 +40,8 @@ definition {
 
 	@priority = 3
 	test AddDataDefinitionWithoutANameAndAssertErrorMessage {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -119,6 +121,8 @@ definition {
 
 	@priority = 4
 	test AddRecord {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -210,6 +214,8 @@ definition {
 	@description = "This is a use case for LPS-51513."
 	@priority = 3
 	test AddRecordBlankDateField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -309,6 +315,8 @@ definition {
 	@description = "This is a use case for LPS-66229."
 	@priority = 3
 	test AddRecordWithBlankDocumentsAndMediaField {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(
@@ -356,6 +364,8 @@ definition {
 	@description = "This is a use case for LPS-66229."
 	@priority = 3
 	test AddRecordWithBlankLinkToPageField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Create a DDL containing a Link to Page") {
 			PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
@@ -511,6 +521,8 @@ definition {
 	@description = "This is a use case for LPS-65069."
 	@priority = 5
 	test AddRecordWithRepeatableTextField {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP();
@@ -583,6 +595,8 @@ definition {
 
 	@priority = 4
 	test AddRepeatableFieldAndAssertOrderInTranslation {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -692,6 +706,7 @@ definition {
 	@priority = 4
 	test AddRepeatableFieldAsNonAdminUser {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		JSONRole.addRegularRole(
 			roleKey = "DDMRegRole Name",
@@ -776,6 +791,8 @@ definition {
 	@description = "This is a use case for LPS-68216."
 	@priority = 4
 	test AddSelectFieldWithTranslationAndViewInSpreadsheetView {
+		property portal.acceptance = "poshi-validation";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		Navigator.openURL();
@@ -879,6 +896,8 @@ definition {
 	@description = "This is a use case for LPS-50549."
 	@priority = 4
 	test AddXSSToHTMLField {
+		property portal.acceptance = "poshi-validation";
+
 		var ddlRecordFieldData1 = '''<img src=x onerror=alert(/xss/) />''';
 		var ddlRecordFieldData2 = ''''+alert('xss')+'"+alert("xss")+"''';
 
@@ -1023,6 +1042,8 @@ definition {
 
 	@priority = 3
 	test AssertDecimalFieldInvalidDataErrorMessage {
+		property portal.acceptance = "poshi-validation";
+
 		PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 		PagesAdmin.addPage(pageName = "Dynamic Data Lists Display Page");
@@ -1074,6 +1095,8 @@ definition {
 	@description = "This is a use case for LPS-48736."
 	@priority = 3
 	test AssertFieldAfterNavigatingToManageTemplates {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1118,6 +1141,8 @@ definition {
 
 	@priority = 4
 	test AssertGuestCannotEditRecord {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(
@@ -1259,6 +1284,8 @@ definition {
 
 	@priority = 3
 	test AssertIntegerFieldInvalidDataErrorMessage {
+		property portal.acceptance = "poshi-validation";
+
 		PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 		PagesAdmin.addPage(pageName = "Dynamic Data Lists Display Page");
@@ -1309,6 +1336,8 @@ definition {
 
 	@priority = 4
 	test AssertNumberFieldInvalidDataErrorMessage {
+		property portal.acceptance = "poshi-validation";
+
 		PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 		PagesAdmin.addPage(pageName = "Dynamic Data Lists Display Page");
@@ -1359,6 +1388,8 @@ definition {
 
 	@priority = 4
 	test AssertUserCannotDeleteEntryAfterPermissionRemoved {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		JSONUser.addUser(
@@ -1605,6 +1636,8 @@ definition {
 
 	@priority = 3
 	test DeleteStructure {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1681,6 +1714,7 @@ definition {
 	@description = "This is a use case for LPS-59154 and LPS-62523."
 	@priority = 3
 	test EditDefaultLanguageAndPublishRecord {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1856,6 +1890,8 @@ definition {
 	@description = "This is a use case for LPS-59272."
 	@priority = 3
 	test EditListRecordWithNestedFieldViaSpreadsheetView {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1943,6 +1979,8 @@ definition {
 
 	@priority = 4
 	test FormTemplateUniqueField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Create a Data Definition containing a boolean field and a text field") {
 			DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
@@ -2019,6 +2057,7 @@ definition {
 	@description = "This is a use case for LPS-65479."
 	@priority = 4
 	test RemoveRepeatableDateField {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -2085,6 +2124,8 @@ definition {
 
 	@priority = 3
 	test RemoveRepeatableFieldAndAssertOrderInTranslation {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2190,6 +2231,7 @@ definition {
 	@priority = 4
 	test RolesPermissionsDynamicDataLists {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		PortalSettings.openInstanceSettingsAdmin();
 
@@ -2347,6 +2389,8 @@ definition {
 	@description = "This is a use case for LPS-69667."
 	@priority = 2
 	test SelectLinkToPagePage {
+		property portal.acceptance = "poshi-validation";
+
 		for (var pageNumber : list "1,2,3,4,5,6,7,8,9,10,11,12") {
 			JSONLayout.addPublicLayout(
 				groupName = "Guest",
@@ -2414,6 +2458,8 @@ definition {
 	@description = "This is a use case for LPS-48743."
 	@priority = 3
 	test TemplateAddDeletedField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Create a Data Definition containing a boolean field and a text field") {
 			DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
@@ -2488,6 +2534,7 @@ definition {
 	@description = "This is a use case for LPS-52865."
 	@priority = 4
 	test ViewCannotSaveWithDuplicateFieldNames {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -2565,6 +2612,8 @@ definition {
 	@description = "This is a use case for LPS-48913."
 	@priority = 3
 	test ViewFieldsNestedInDDLRecord {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2647,6 +2696,8 @@ definition {
 	@description = "This is a use case for LPS-48591."
 	@priority = 3
 	test ViewFormTemplateFieldsAfterBackNavigation {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2715,6 +2766,8 @@ definition {
 	@description = "This is a use case for LPS-57993"
 	@priority = 3
 	test ViewMultipleDDLRecordsInAssetPublisherAndSortByModifiedDate {
+		property portal.acceptance = "poshi-validation";
+
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",
 			portlet = "Pages");
@@ -2797,6 +2850,8 @@ definition {
 	@description = "This is a use case for LPS-51538."
 	@priority = 3
 	test ViewNestedFieldDoesNotDisplayInRecordTable {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2879,6 +2934,8 @@ definition {
 	@description = "This is a use case for LPS-48969."
 	@priority = 3
 	test ViewNestedFieldEntryWithBlankParentField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2957,6 +3014,7 @@ definition {
 	@description = "This is a use case for LPS-63290 and LPS-72216."
 	@priority = 4
 	test ViewRepeatableNestedFields {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -3025,6 +3083,8 @@ definition {
 	@description = "This is a use case for LPS-60155."
 	@priority = 5
 	test ViewRequiredNestedDocumentsAndMediaField {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -3092,6 +3152,7 @@ definition {
 	@description = "This is a use case for LPS-51684."
 	@priority = 4
 	test ViewUniqueFieldLabels {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

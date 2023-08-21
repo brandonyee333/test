@@ -43,6 +43,8 @@ definition {
 
 	@priority = 3
 	test AddFormTemplate {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Create a Data Definition containing a boolean field and a text field") {
 			DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
@@ -144,6 +146,8 @@ definition {
 
 	@priority = 4
 	test AddList {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -172,6 +176,8 @@ definition {
 
 	@priority = 5
 	test AddListRecord {
+		property portal.acceptance = "poshi-validation";
+
 		var ddlDataDefinitionName = "Data Definition Name";
 		var ddlListName = "List Name";
 		var ddlRecordFieldData = "Text";
@@ -221,6 +227,8 @@ definition {
 	@description = "This is a use case for LPS-58893."
 	@priority = 3
 	test AddListWithDocumentsAndMediaField {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition");
@@ -267,6 +275,8 @@ definition {
 	@description = "This is a use case for LPS-59565."
 	@priority = 3
 	test AddRecordNested {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "DDL Nested Definition");
@@ -315,6 +325,7 @@ definition {
 	@priority = 3
 	test AddVelocityDisplayTemplate {
 		property custom.properties = "freemarker.engine.restricted.variables=${line.separator}restricted.variables=";
+		property portal.acceptance = "poshi-validation";
 
 		var ddlDisplayTemplateScript = '''
 				#set ($records = $ddlDisplayTemplateHelper.getRecords($reserved_record_set_id))${line.separator}${line.separator}
@@ -394,6 +405,8 @@ definition {
 
 	@priority = 4
 	test ConfigureEditableListPG {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -427,7 +440,7 @@ definition {
 
 	@priority = 5
 	test ConfigureSpreadsheetListPG {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
@@ -462,6 +475,8 @@ definition {
 
 	@priority = 4
 	test DeleteListRecord {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -500,6 +515,8 @@ definition {
 	@description = "This is a use case for LPS-58319."
 	@priority = 2
 	test EditFormTemplateLabelAndViewRecord {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition");
@@ -561,6 +578,8 @@ definition {
 
 	@priority = 4
 	test EditList {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -596,6 +615,8 @@ definition {
 
 	@priority = 4
 	test EditListRecord {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -648,6 +669,8 @@ definition {
 
 	@priority = 4
 	test EditListRecordViaRecordView {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -707,6 +730,8 @@ definition {
 
 	@priority = 4
 	test SearchDynamicDataListsRecords {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -785,6 +810,7 @@ definition {
 	@priority = 4
 	test SearchDynamicDataListsRecordsAsUserWithNoPermissions {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		JSONRole.addRegularRole(
 			roleKey = "No Permissions Role",
@@ -876,6 +902,8 @@ definition {
 
 	@priority = 4
 	test SelectList {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -931,6 +959,8 @@ definition {
 
 	@priority = 3
 	test ViewBooleanFieldPredefinedValue {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Boolean Predefined Value Data Definition Name");
@@ -1091,6 +1121,8 @@ definition {
 
 	@priority = 3
 	test ViewDecimalFieldPredefinedValue {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Decimal Predefined Value Data Definition Name");
@@ -1164,6 +1196,8 @@ definition {
 
 	@priority = 4
 	test ViewDefaultGuestViewPermissions {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(
@@ -1217,6 +1251,8 @@ definition {
 
 	@priority = 3
 	test ViewIntegerFieldPredefinedValue {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Integer Predefined Value Data Definition Name");
@@ -1292,6 +1328,8 @@ definition {
 
 	@priority = 3
 	test ViewListRecordAndAssertAnchorLink {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition Name");
@@ -1332,7 +1370,7 @@ definition {
 	@priority = 5
 	test ViewListRecordWithUploadedFreeMarkerDisplayTemplate {
 		property custom.properties = "freemarker.engine.restricted.variables=${line.separator}restricted.variables=";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property testray.component.names = "Training";
 
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
@@ -1404,6 +1442,7 @@ definition {
 	@priority = 3
 	test ViewListRecordWithUploadedVelocityDisplayTemplate {
 		property custom.properties = "freemarker.engine.restricted.variables=${line.separator}restricted.variables=";
+		property portal.acceptance = "poshi-validation";
 
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
@@ -1478,6 +1517,7 @@ definition {
 	@priority = 4
 	test ViewListRecordWithVelocityDisplayTemplate {
 		property custom.properties = "freemarker.engine.restricted.variables=${line.separator}restricted.variables=";
+		property portal.acceptance = "poshi-validation";
 
 		var ddlDisplayTemplateScript = '''
 				#set ($records = $ddlDisplayTemplateHelper.getRecords($reserved_record_set_id))${line.separator}${line.separator}
@@ -1568,6 +1608,8 @@ definition {
 
 	@priority = 3
 	test ViewNumberFieldPredefinedValue {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Number Predefined Value Data Definition Name");
@@ -1675,6 +1717,8 @@ definition {
 
 	@priority = 3
 	test ViewTextBoxFieldPredefinedValue {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Text Box Predefined Value Data Definition Name");
@@ -1748,6 +1792,8 @@ definition {
 
 	@priority = 4
 	test ViewTextFieldPredefinedValue {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Text Predefined Value Data Definition Name");

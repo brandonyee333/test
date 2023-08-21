@@ -31,6 +31,8 @@ definition {
 	@priority = 3
 	test Demo1 {
 		ProductMenu.gotoPortlet(
+			property portal.acceptance = "poshi-validation";
+
 			category = "Content & Data",
 			portlet = "Dynamic Data Lists");
 

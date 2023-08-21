@@ -1974,6 +1974,8 @@ definition {
 	@description = "This ensures that the entry can be moved to another folder via drag and drop."
 	@priority = 4
 	test CanMoveEntryToFolderViaDragAndDrop {
+		property portal.acceptance = "poshi-validation";
+
 		JSONFolder.addFolder(
 			dmFolderDescription = "DM Folder1 Description",
 			dmFolderName = "DM Folder Name",

@@ -353,7 +353,7 @@ definition {
 	@description = "This is a use case for LPS-61212."
 	@priority = 5
 	test EditDDLRecordViaMyWorkflowTasks {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		Navigator.openURL();
 
@@ -506,6 +506,8 @@ definition {
 
 	@priority = 4
 	test RejectDynamicdatalistCP {
+		property portal.acceptance = "poshi-validation";
+
 		var ddlDataDefinitionName = "DDL Definition";
 		var ddlListName = "DDL List";
 		var ddlRecordFieldData = "Record Text";

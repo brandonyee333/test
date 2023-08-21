@@ -27,6 +27,8 @@ definition {
 
 	@priority = 4
 	test PublishPublicationWithDeletedListAndRecord {
+		property portal.acceptance = "poshi-validation";
+
 		HeadlessSite.addSite(siteName = "Site Name");
 
 		PagesAdmin.openPagesAdmin(siteURLKey = "Site Name");
@@ -160,6 +162,8 @@ definition {
 
 	@priority = 3
 	test PublishPublicationWithDisplayTemplate {
+		property portal.acceptance = "poshi-validation";
+
 		JSONPublications.addPublication(publicationName = "Publication Name");
 
 		JSONPublications.selectPublication(publicationName = "Publication Name");
@@ -272,6 +276,8 @@ definition {
 
 	@priority = 4
 	test PublishPublicationWithEditedListAndRecord {
+		property portal.acceptance = "poshi-validation";
+
 		HeadlessSite.addSite(siteName = "Site Name");
 
 		PagesAdmin.openPagesAdmin(siteURLKey = "Site Name");
@@ -438,6 +444,8 @@ definition {
 
 	@priority = 3
 	test PublishPublicationWithFormTemplate {
+		property portal.acceptance = "poshi-validation";
+
 		JSONPublications.addPublication(publicationName = "Publication Name");
 
 		JSONPublications.selectPublication(publicationName = "Publication Name");
@@ -547,6 +555,8 @@ definition {
 
 	@priority = 4
 	test PublishPublicationWithNewListAndRecord {
+		property portal.acceptance = "poshi-validation";
+
 		JSONPublications.addPublication(publicationName = "Publication Name");
 
 		JSONPublications.selectPublication(publicationName = "Publication Name");
@@ -648,6 +658,8 @@ definition {
 
 	@priority = 4
 	test ResolveConflictingPublicationsByDiscarding {
+		property portal.acceptance = "poshi-validation";
+
 		HeadlessSite.addSite(siteName = "Site Name");
 
 		PagesAdmin.openPagesAdmin(siteURLKey = "Site Name");

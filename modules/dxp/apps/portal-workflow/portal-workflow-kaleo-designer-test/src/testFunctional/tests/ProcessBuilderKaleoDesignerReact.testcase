@@ -5356,6 +5356,7 @@ definition {
 	@description = "This is a use case for LPS-47352 and LPS-48912."
 	@priority = 3
 	test ViewWorkflowDefinitionButtonsViaKaleoFormsAdmin {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

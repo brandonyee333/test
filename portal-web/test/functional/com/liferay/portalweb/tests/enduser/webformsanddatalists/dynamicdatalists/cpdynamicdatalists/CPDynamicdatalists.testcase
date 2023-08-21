@@ -34,6 +34,8 @@ definition {
 
 	@priority = 4
 	test AddDisplayTemplateFreeMarker {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -64,6 +66,8 @@ definition {
 
 	@priority = 5
 	test AddDisplayTemplateVelocity {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -94,6 +98,8 @@ definition {
 
 	@priority = 5
 	test AddFormTemplate {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Create a Data Definition containing a boolean field and a text field") {
 			DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
@@ -175,6 +181,8 @@ definition {
 
 	@priority = 4
 	test AddList {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -637,6 +645,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithBooleanField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -712,6 +722,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithDateField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -788,6 +800,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithDecimalField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -867,6 +881,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithDocumentsAndMediaField {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition");
@@ -922,6 +938,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithGeolocationField {
+		property portal.acceptance = "poshi-validation";
+
 		DDLList.openDynamicDataListsAdmin(siteURLKey = "guest");
 
 		DDLDataDefinition.addCP(ddlDataDefinitionName = "Data Definition");
@@ -971,6 +989,8 @@ definition {
 
 	@priority = 5
 	test AddListRecordWithHTMLField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1043,6 +1063,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithIntegerField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1125,6 +1147,8 @@ definition {
 	@description = "This is a use case for LPS-65726"
 	@priority = 5
 	test AddListRecordWithLinkToPageField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a list with a Link to page field") {
 			ProductMenu.gotoPortlet(
 				category = "Site Builder",
@@ -1218,6 +1242,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithNumberField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1293,6 +1319,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithRadioField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1369,6 +1397,8 @@ definition {
 	@description = "This is a use case for LPS-65248"
 	@priority = 4
 	test AddListRecordWithRequiredBooleanField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1446,6 +1476,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithSelectField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1521,6 +1553,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithTextBoxField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1596,6 +1630,8 @@ definition {
 
 	@priority = 4
 	test AddListRecordWithTextField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1671,6 +1707,8 @@ definition {
 
 	@priority = 3
 	test CopyDataDefinition {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1747,6 +1785,8 @@ definition {
 
 	@priority = 3
 	test CopyDataDefinitionWithCopyDisplayTemplates {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1834,6 +1874,8 @@ definition {
 
 	@priority = 3
 	test CopyDataDefinitionWithCopyFormTemplates {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -1930,6 +1972,8 @@ definition {
 
 	@priority = 4
 	test CopyDataDefinitionWithCopyFormTemplatesAndCopyDisplayTemplates {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2027,6 +2071,8 @@ definition {
 
 	@priority = 4
 	test DeleteDataDefinition {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2053,6 +2099,8 @@ definition {
 
 	@priority = 4
 	test DeleteDisplayTemplateFreeMarker {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2093,6 +2141,8 @@ definition {
 
 	@priority = 4
 	test DeleteDisplayTemplateVelocity {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2133,6 +2183,8 @@ definition {
 
 	@priority = 4
 	test DeleteFormTemplate {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2173,7 +2225,7 @@ definition {
 
 	@priority = 5
 	test DeleteList {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		Navigator.openURL();
 
@@ -2213,6 +2265,8 @@ definition {
 
 	@priority = 5
 	test DeleteListRecord {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2270,6 +2324,8 @@ definition {
 
 	@priority = 5
 	test EditBooleanFieldFieldLabel {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2365,6 +2421,8 @@ definition {
 
 	@priority = 4
 	test EditBooleanFieldName {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2460,6 +2518,8 @@ definition {
 
 	@priority = 4
 	test EditBooleanFieldShowLabel {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2545,6 +2605,8 @@ definition {
 
 	@priority = 4
 	test EditBooleanFieldTip {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2585,7 +2647,7 @@ definition {
 
 	@priority = 5
 	test EditDataDefinition {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		Navigator.openURL();
 
@@ -2645,6 +2707,8 @@ definition {
 
 	@priority = 4
 	test EditDisplayTemplateFreeMarker {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2698,6 +2762,8 @@ definition {
 
 	@priority = 4
 	test EditDisplayTemplateVelocity {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2751,6 +2817,8 @@ definition {
 
 	@priority = 4
 	test EditFormTemplate {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2839,6 +2907,8 @@ definition {
 
 	@priority = 4
 	test EditList {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -2892,7 +2962,7 @@ definition {
 
 	@priority = 5
 	test EditListRecord {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		Navigator.openURL();
 
@@ -2969,6 +3039,8 @@ definition {
 
 	@priority = 4
 	test EditListRecordViaRecordView {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3042,6 +3114,8 @@ definition {
 
 	@priority = 4
 	test EditRadioFieldOptions {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3086,6 +3160,8 @@ definition {
 
 	@priority = 3
 	test EditRadioFieldOptionsWithUTF8Characters {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3130,6 +3206,8 @@ definition {
 
 	@priority = 5
 	test EditSelectFieldOptions {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3174,6 +3252,8 @@ definition {
 
 	@priority = 3
 	test EditSelectFieldOptionsWithUTF8Characters {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3325,6 +3405,8 @@ definition {
 
 	@priority = 3
 	test ViewBooleanFieldPredefinedValue {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3438,6 +3520,8 @@ definition {
 
 	@priority = 3
 	test ViewCannotAddNonAlphanumericCharactersToFieldName {
+		property portal.acceptance = "poshi-validation";
+
 		var character1 = '''`''';
 		var character2 = '''~''';
 		var character3 = '''!''';
@@ -3499,6 +3583,8 @@ definition {
 
 	@priority = 3
 	test ViewFormTemplateFieldReadOnlyWithEditMode {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3552,6 +3638,8 @@ definition {
 
 	@priority = 3
 	test ViewFormTemplateFields {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3588,6 +3676,8 @@ definition {
 
 	@priority = 3
 	test ViewFormTemplateFieldsAfterSaveAndContinue {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3626,6 +3716,8 @@ definition {
 
 	@priority = 3
 	test ViewListRecordAndAssertAnchorLink {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3706,6 +3798,8 @@ definition {
 
 	@priority = 3
 	test ViewNoDuplicatesInOriginalAfterCopy {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(

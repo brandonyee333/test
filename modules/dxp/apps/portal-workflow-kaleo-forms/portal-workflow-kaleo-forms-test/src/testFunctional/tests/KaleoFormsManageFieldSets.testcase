@@ -77,6 +77,8 @@ definition {
 	@description = "Verify that the user can create a new field set on Manage FIeld Sets Area."
 	@priority = 5
 	test CanCreateANewFieldSet {
+		property portal.acceptance = "poshi-validation";
+
 		Click(locator1 = "Button#PLUS");
 
 		KaleoFormsManageFieldSets.createNewFieldSet(

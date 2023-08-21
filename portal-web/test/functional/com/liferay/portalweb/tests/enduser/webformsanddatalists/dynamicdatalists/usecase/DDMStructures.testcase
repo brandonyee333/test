@@ -502,6 +502,8 @@ definition {
 	@description = "This is a use case for LPS-69335."
 	@priority = 4
 	test ViewFieldTranslationsWithNestedTextField {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
