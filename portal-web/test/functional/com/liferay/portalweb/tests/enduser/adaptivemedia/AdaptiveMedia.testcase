@@ -14,7 +14,7 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 	}
 
 	@priority = 5
@@ -628,7 +628,7 @@ definition {
 
 	@priority = 4
 	test ViewNoImageResolutionInNewVirtualInstance {
-		property test.name.skip.portal.instance = "AdaptiveMedia#ViewNoImageResolutionInNewVirtualInstance";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

@@ -23,9 +23,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -176,7 +176,7 @@ definition {
 	@priority = 3
 	test AddWebContentFeed {
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "RSS#AddWebContentFeed";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openURL();
 
@@ -449,7 +449,7 @@ definition {
 	@priority = 3
 	test EnableRSSFeedFromAssetpublisher {
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "RSS#AddWebContentFeed";
+		property test.liferay.virtual.instance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -544,7 +544,7 @@ definition {
 
 	@priority = 4
 	test UpdateRSSFeedViaAssetpublisher {
-		property test.name.skip.portal.instance = "RSS#UpdateRSSFeedViaAssetpublisher";
+		property test.liferay.virtual.instance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 

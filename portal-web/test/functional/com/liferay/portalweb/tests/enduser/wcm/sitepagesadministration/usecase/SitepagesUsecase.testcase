@@ -12,9 +12,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -246,7 +246,7 @@ definition {
 	@priority = 5
 	test SitesPrivatePagesPermissions {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "SitepagesUsecase#SitesPrivatePagesPermissions";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -386,7 +386,7 @@ definition {
 	@priority = 3
 	test ViewSecureContentAndPageAsGuest {
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "SitepagesUsecase#ViewSecureContentAndPageAsGuest";
+		property test.liferay.virtual.instance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -570,7 +570,7 @@ definition {
 	@priority = 3
 	test ViewSecureContentAndPageAsSiteMember {
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "SitepagesUsecase#ViewSecureContentAndPageAsSiteMember";
+		property test.liferay.virtual.instance = "false";
 		property test.smtp.server.enabled = "true";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
@@ -752,7 +752,7 @@ definition {
 	@priority = 5
 	test ViewSecureContentAndPageAsUser {
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "SitepagesUsecase#ViewSecureContentAndPageAsUser";
+		property test.liferay.virtual.instance = "false";
 		property test.smtp.server.enabled = "true";
 		property testray.component.names = "Training";
 

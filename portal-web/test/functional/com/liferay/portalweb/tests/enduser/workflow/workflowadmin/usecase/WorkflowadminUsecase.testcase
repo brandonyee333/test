@@ -12,9 +12,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -295,7 +295,7 @@ definition {
 	@priority = 5
 	test AddDDLRecordWithDoubleApproverDefinition {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "WorkflowadminUsecase#AddDDLRecordWithDoubleApproverDefinition";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -457,7 +457,7 @@ definition {
 
 	@priority = 3
 	test AddDocumentsAndMediaWithScriptedAssignmentDefinition {
-		property test.name.skip.portal.instance = "WorkflowadminUsecase#AddDocumentsAndMediaWithScriptedAssignmentDefinition";
+		property test.liferay.virtual.instance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -744,7 +744,7 @@ definition {
 
 	@priority = 4
 	test AddWebContentWithCategorySpecificDefinition {
-		property test.name.skip.portal.instance = "WorkflowadminUsecase#AddWebContentWithCategorySpecificDefinition";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1075,7 +1075,7 @@ definition {
 
 	@priority = 3
 	test DeactivateAndActivateUploadedDefinition {
-		property test.name.skip.portal.instance = "WorkflowadminUsecase#DeactivateAndActivateUploadedDefinition";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1103,7 +1103,7 @@ definition {
 
 	@priority = 5
 	test DeactivateAndDeleteUploadedDefinition {
-		property test.name.skip.portal.instance = "WorkflowadminUsecase#DeactivateAndDeleteUploadedDefinition";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

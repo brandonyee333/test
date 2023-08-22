@@ -12,9 +12,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -27,7 +27,7 @@ definition {
 	@priority = 5
 	test AvailableSiteLocalesSubsetNotAllowed {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#AvailableSiteLocalesSubsetOfAvailablePortalLocales";
+		property test.liferay.virtual.instance = "false";
 
 		Page.add(pageName = "Language Test Page");
 
@@ -57,7 +57,7 @@ definition {
 	@priority = 3
 	test LocalizationStyle0 {
 		property custom.properties = "locale.prepend.friendly.url.style=0";
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle0";
+		property test.liferay.virtual.instance = "false";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -87,7 +87,7 @@ definition {
 	@priority = 3
 	test LocalizationStyle1 {
 		property custom.properties = "locale.prepend.friendly.url.style=1";
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle1";
+		property test.liferay.virtual.instance = "false";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -117,7 +117,7 @@ definition {
 	@priority = 3
 	test LocalizationStyle2 {
 		property custom.properties = "locale.prepend.friendly.url.style=2";
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizationStyle2";
+		property test.liferay.virtual.instance = "false";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -146,7 +146,7 @@ definition {
 
 	@priority = 3
 	test LocalizeCountryName {
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#LocalizeCountryName";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -220,7 +220,7 @@ definition {
 
 	@priority = 3
 	test NoLocalePrependedWhenLocaleMatchMyPreferredLocalization {
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#NoLocalePrependedWhenLocaleMatchMyPreferredLocalization";
+		property test.liferay.virtual.instance = "false";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -346,7 +346,7 @@ definition {
 
 	@priority = 4
 	test PortletInteractionLocalization {
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#PortletInteractionLocalization";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -491,7 +491,7 @@ definition {
 	@description = "This is a use case for LPS-59345"
 	@priority = 4
 	test RedirectLocalizedFriendlyURL {
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#RedirectLocalizedFriendlyURL";
+		property test.liferay.virtual.instance = "false";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -539,7 +539,7 @@ definition {
 	@priority = 5
 	test SiteTemplateLocalization {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#SiteTemplateLocalization";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -598,7 +598,7 @@ definition {
 
 	@priority = 4
 	test ViewAvailableSiteLocaleAlternatives {
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#ViewAvailableSiteLocaleAlternatives";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -682,7 +682,7 @@ definition {
 	@priority = 4
 	test ViewEditURLLocale {
 		property custom.properties = "locale.use.default.if.not.available=true";
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#ViewEditURLLocale";
+		property test.liferay.virtual.instance = "false";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -770,7 +770,7 @@ definition {
 	@priority = 5
 	test ViewSiteLocalizationAfterDeletingOriginalLocale {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "SitelocalizationUsecase#ViewSiteLocalizationAfterDeletingOriginalLocale";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

@@ -65,9 +65,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -99,7 +99,7 @@ definition {
 	@description = "This is a use case for LPS-72304 and LPS-72866."
 	@priority = 4
 	test StagingSharepointRepositoryPG {
-		property test.name.skip.portal.instance = "StagingSharepoint#StagingSharepointRepositoryPG";
+		property test.liferay.virtual.instance = "false";
 
 		var sharepointVMHostName = PropsUtil.get("cmis.repository.vm.host.name");
 

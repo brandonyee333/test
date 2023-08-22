@@ -13,9 +13,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -140,7 +140,7 @@ definition {
 	@priority = 5
 	test AddJoinXORWorkflowDefinitionViaViewTab {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "Kaleodesigner#AddJoinXORWorkflowDefinitionViaViewTab";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -229,7 +229,7 @@ definition {
 	@priority = 5
 	test AddNewWorkflowDefinitionViaViewTab {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "Kaleodesigner#AddNewWorkflowDefinitionViaViewTab";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -423,7 +423,7 @@ definition {
 	@description = "This is a use case for LPS-124984."
 	@priority = 5
 	test AssertReceiveNotificationAfterEditSingleApprover {
-		property test.name.skip.portal.instance = "Kaleodesigner#AssertReceiveNotificationAfterEditSingleApprover";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -470,7 +470,7 @@ definition {
 	@description = "This is a use case for LPS-37209."
 	@priority = 4
 	test ConfigureTaskTimersViaSourceTab {
-		property test.name.skip.portal.instance = "Kaleodesigner#ConfigureTaskTimersViaSourceTab";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -712,7 +712,7 @@ definition {
 	@description = "This is a use case for LPS-71924."
 	@priority = 5
 	test PublishDefaultWorkflowDefinition {
-		property test.name.skip.portal.instance = "Kaleodesigner#PublishDefaultWorkflowDefinition";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -731,7 +731,7 @@ definition {
 	@description = "This is a use case for LPS-43214 and LPS-50269."
 	@priority = 3
 	test PublishFromSourceTabAndViewNameChange {
-		property test.name.skip.portal.instance = "Kaleodesigner#PublishFromSourceTabAndViewNameChange";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1047,7 +1047,7 @@ definition {
 	@description = "This is a use case for LPS-76517."
 	@priority = 3
 	test PublishWorkflowDefinitionWithNoNameLineAndViewErrorMessage {
-		property test.name.skip.portal.instance = "Kaleodesigner#PublishWorkflowDefinitionWithNoNameLineAndViewErrorMessage";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1287,7 +1287,7 @@ definition {
 
 	@priority = 4
 	test ViewAndPublishWorkflowDefinitionDraftViaKDCP {
-		property test.name.skip.portal.instance = "Kaleodesigner#ViewAndPublishWorkflowDefinitionDraftViaKDCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1331,7 +1331,7 @@ definition {
 	@description = "This is a use case for LPS-48590."
 	@priority = 4
 	test ViewSourceXMLNotErasedWhenInvalid {
-		property test.name.skip.portal.instance = "Kaleodesigner#ViewSourceXMLNotErasedWhenInvalid";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

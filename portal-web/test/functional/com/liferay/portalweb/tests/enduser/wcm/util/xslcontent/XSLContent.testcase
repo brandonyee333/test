@@ -41,9 +41,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -57,7 +57,7 @@ definition {
 
 	@priority = 4
 	test AddXSL {
-		property test.name.skip.portal.instance = "XSLContent#AddXSL";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -173,7 +173,7 @@ definition {
 	@priority = 4
 	test ConfigurePortletWithCorruptXML {
 		property ignore.errors = "must be terminated by the matching end-tag";
-		property test.name.skip.portal.instance = "XSLContent#ConfigurePortletWithCorruptXML";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -279,7 +279,7 @@ definition {
 	@priority = 4
 	test ConfigurePortletWithCorruptXSL {
 		property ignore.errors = "must be terminated by the matching end-tag";
-		property test.name.skip.portal.instance = "XSLContent#ConfigurePortletWithCorruptXSL";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -384,7 +384,7 @@ definition {
 
 	@priority = 4
 	test ConfigurePortletWithIncorrectVersionXmlAndXsl {
-		property test.name.skip.portal.instance = "XSLContent#ConfigurePortletWithIncorrectVersionXmlAndXsl";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -491,7 +491,7 @@ definition {
 
 	@priority = 4
 	test ViewXSLDefaultContent {
-		property test.name.skip.portal.instance = "XSLContent#ViewXSLDefaultContent";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoSitePage(
 			pageName = "Test Page Name",

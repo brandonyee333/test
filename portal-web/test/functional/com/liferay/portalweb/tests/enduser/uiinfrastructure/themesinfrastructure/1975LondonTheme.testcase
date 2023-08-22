@@ -12,9 +12,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
@@ -22,7 +22,7 @@ definition {
 	@priority = 5
 	test AddThemeSite {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "1975LondonTheme#AddThemeSite";
+		property test.liferay.virtual.instance = "false";
 		property theme.file.name = "1975-london-theme.war";
 
 		var themeContainsResources = PropsUtil.get("theme.contains.resources");
@@ -73,7 +73,7 @@ definition {
 
 	@priority = 5
 	test AddThemeSitePage {
-		property test.name.skip.portal.instance = "1975LondonTheme#AddThemeSitePage";
+		property test.liferay.virtual.instance = "false";
 		property theme.file.name = "1975-london-theme.war";
 
 		Page.add(pageName = "Themes Page");

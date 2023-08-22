@@ -10,7 +10,7 @@ definition {
 	@priority = 4
 	test BasicConfigurationVisualLook {
 		property database.types = "mysql";
-		property test.name.skip.portal.instance = "SetupWizard#BasicConfigurationVisualLook";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.viewDefaultPortalNamePG();
 
@@ -24,7 +24,7 @@ definition {
 	@priority = 5
 	test HypersonicToHypersonic {
 		property database.types = "hypersonic";
-		property test.name.skip.portal.instance = "SetupWizard#HypersonicToHypersonic";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -44,7 +44,7 @@ definition {
 	@priority = 5
 	test HypersonicToMySQL {
 		property database.types = "mysql";
-		property test.name.skip.portal.instance = "SetupWizard#HypersonicToMySQL";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -64,7 +64,7 @@ definition {
 	@priority = 4
 	test HypersonicWithSpecialContent {
 		property database.types = "hypersonic";
-		property test.name.skip.portal.instance = "SetupWizard#HypersonicWithSpecialContent";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePortalNamePG(portalName = "");
 
@@ -131,7 +131,7 @@ definition {
 	@priority = 5
 	test ViewConfiguredSetupWizardValue {
 		property database.types = "mysql";
-		property test.name.skip.portal.instance = "SetupWizard#ViewConfiguredSetupWizardValue";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.viewDefaultPortalNamePG();
 

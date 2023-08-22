@@ -36,9 +36,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -61,7 +61,7 @@ definition {
 	@priority = 5
 	test AddGlobalUserSegmentToSiteViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddGlobalUserSegmentToSiteViaUserSegmentContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -130,7 +130,7 @@ definition {
 	@priority = 5
 	test AddParentSiteUserSegmentToChildSiteViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddParentSiteUserSegmentToChildSiteViaUserSegmentContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -241,7 +241,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentBehaviorContentVisitedCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentBehaviorContentVisitedCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -296,7 +296,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentBehaviorPageVisitedCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentBehaviorPageVisitedCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -334,7 +334,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentBehaviorPreviouslyVisitedSiteContainsCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentBehaviorPreviouslyVisitedSiteContainsCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -375,7 +375,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentBehaviorPreviouslyVisitedSiteStartsWithCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentBehaviorPreviouslyVisitedSiteStartsWithCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -414,7 +414,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentBehaviorScorePointsCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentBehaviorScorePointsCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -450,7 +450,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentBlankCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentBlankCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -471,7 +471,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleBehaviorContentVisitedCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleBehaviorContentVisitedCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -543,7 +543,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleBehaviorPageVisitedCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleBehaviorPageVisitedCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -593,7 +593,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleUserAttributesCustomFieldCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleUserAttributesCustomFieldCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -650,7 +650,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleUserAttributesOrganizationMemberCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleUserAttributesOrganizationMemberCP";
+		property test.liferay.virtual.instance = "false";
 
 		for (var orgName : list "Organization Name 1,Organization Name 2") {
 			ProductMenu.gotoPortlet(
@@ -702,7 +702,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleUserAttributesOrganizationRoleCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleUserAttributesOrganizationRoleCP";
+		property test.liferay.virtual.instance = "false";
 
 		for (var orgName : list "Organization Name 1,Organization Name 2") {
 			ProductMenu.gotoPortlet(
@@ -760,7 +760,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleUserAttributesRegularRoleCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleUserAttributesRegularRoleCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -803,7 +803,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleUserAttributesSiteMemberCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleUserAttributesSiteMemberCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -846,7 +846,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleUserAttributesSiteRoleCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleUserAttributesSiteRoleCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -893,7 +893,7 @@ definition {
 	@priority = 4
 	test AddUserSegmentMultipleUserAttributesUserGroupMemberCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentMultipleUserAttributesUserGroupMemberCP";
+		property test.liferay.virtual.instance = "false";
 
 		for (var userGroupName : list "User Group Name 1,User Group Name 2") {
 			ProductMenu.gotoPortlet(
@@ -945,7 +945,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSocialFacebookAgeCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSocialFacebookAgeCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -984,7 +984,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSocialFacebookCityCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSocialFacebookCityCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1020,7 +1020,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSocialFacebookEducationCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSocialFacebookEducationCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1059,7 +1059,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSocialFacebookFriendsCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSocialFacebookFriendsCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1098,7 +1098,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSocialFacebookGenderCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSocialFacebookGenderCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1134,7 +1134,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSocialFacebookPageLikeCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSocialFacebookPageLikeCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1170,7 +1170,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSystemAttributesBrowserCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSystemAttributesBrowserCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1206,7 +1206,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSystemAttributesDeviceCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSystemAttributesDeviceCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1255,7 +1255,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSystemAttributesLocationCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSystemAttributesLocationCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1294,7 +1294,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSystemAttributesOperatingSystemCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSystemAttributesOperatingSystemCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1330,7 +1330,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentSystemAttributesTimeCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentSystemAttributesTimeCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1369,7 +1369,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesAgeCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesAgeCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1410,7 +1410,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesCustomFieldCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesCustomFieldCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1459,7 +1459,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesGenderCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesGenderCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1495,7 +1495,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesOrganizationMemberCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesOrganizationMemberCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1540,7 +1540,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesOrganizationRoleCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesOrganizationRoleCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1588,7 +1588,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesRegularRoleCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesRegularRoleCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1626,7 +1626,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesSiteMemberCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesSiteMemberCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1664,7 +1664,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesSiteRoleCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesSiteRoleCP";
+		property test.liferay.virtual.instance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -1705,7 +1705,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesUserGroupMemberCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesUserGroupMemberCP";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1748,7 +1748,7 @@ definition {
 	@priority = 5
 	test AddUserSegmentUserAttributesUserSignedInCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#AddUserSegmentUserAttributesUserSignedInCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1782,7 +1782,7 @@ definition {
 	@priority = 5
 	test DeleteUserSegmentCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#DeleteUserSegmentCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1810,7 +1810,7 @@ definition {
 	@priority = 5
 	test EditUserSegmentCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#EditUserSegmentCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1856,7 +1856,7 @@ definition {
 	@priority = 5
 	test UserSegmentContentViewReport {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#UserSegmentContentViewReport";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1933,7 +1933,7 @@ definition {
 	@priority = 5
 	test ViewRulesAppliedUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUserSegment#ViewRulesAppliedUserSegmentContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

@@ -12,9 +12,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -118,7 +118,7 @@ definition {
 
 	@priority = 5
 	test AddFormWithSpanishAsDefaultPortalLanguage {
-		property test.name.skip.portal.instance = "Forms#AddFormWithSpanishAsDefaultPortalLanguage";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -197,7 +197,7 @@ definition {
 
 	@priority = 5
 	test ConfigureDataProviderWithSelectField {
-		property test.name.skip.portal.instance = "Forms#ConfigureDataProviderWithSelectField";
+		property test.liferay.virtual.instance = "false";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -600,7 +600,7 @@ definition {
 	@description = "This is a use case for LPS-50757."
 	@priority = 4
 	test EditAllFormFieldsTypesUsedBySystemSettings {
-		property test.name.skip.portal.instance = "Forms#EditAllFormFieldsTypesUsedBySystemSettings";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openURL();
 
@@ -773,7 +773,7 @@ definition {
 	@description = "This is a use case for LPS-59749"
 	@priority = 3
 	test EditFormsConfigurationViaSystemSettings {
-		property test.name.skip.portal.instance = "Forms#EditFormsConfigurationViaSystemSettings";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1193,7 +1193,7 @@ definition {
 
 	@priority = 4
 	test SubmitFormAndViewEmailNotification {
-		property test.name.skip.portal.instance = "Forms#SubmitFormAndViewEmailNotification";
+		property test.liferay.virtual.instance = "false";
 		property test.smtp.server.enabled = "true";
 
 		Navigator.openURL();
@@ -3047,7 +3047,7 @@ definition {
 	@description = "This is a use case for LPS-126817."
 	@priority = 5
 	test ViewSelectFromListOptionValueWithCharacter {
-		property test.name.skip.portal.instance = "Forms#ViewSelectFromListOptionValueWithCharacter";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openURL();
 

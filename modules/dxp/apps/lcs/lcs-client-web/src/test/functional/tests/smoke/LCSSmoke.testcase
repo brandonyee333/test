@@ -17,7 +17,7 @@
 		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
 
 		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
+			<equals arg1="${testLiferayVirtualInstance}" arg2="true" />
 			<then>
 				<execute macro="PortalInstances#tearDownCP" />
 			</then>

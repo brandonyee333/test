@@ -28,9 +28,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -1814,7 +1814,7 @@ definition {
 
 	@priority = 5
 	test DeleteEventRegular {
-		property test.name.skip.portal.instance = "Calendar#DeleteEventRegular";
+		property test.liferay.virtual.instance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -1866,7 +1866,7 @@ definition {
 	@priority = 5
 	test DeleteEventRepeatingAllFollowing {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "Calendar#DeleteEventRepeatingAllFollowing";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2642,7 +2642,7 @@ definition {
 	@description = "This is a use case for LPS-58649."
 	@priority = 3
 	test EditLanguageSelectorAndViewEvent {
-		property test.name.skip.portal.instance = "Calendar#EditLanguageSelectorAndViewEvent";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3174,7 +3174,7 @@ definition {
 	@priority = 5
 	test SearchForOtherCalendars {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "Calendar#SearchForOtherCalendars";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
@@ -3422,7 +3422,7 @@ definition {
 
 	@priority = 4
 	test ViewAvailableCalendars {
-		property test.name.skip.portal.instance = "Calendar#ViewAvailableCalendars";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -3510,7 +3510,7 @@ definition {
 
 	@priority = 5
 	test ViewCalendarTimeZoneDefaults {
-		property test.name.skip.portal.instance = "Calendar#ViewCalendarTimeZoneDefaults";
+		property test.liferay.virtual.instance = "false";
 
 		UserBar.gotoMyAccount();
 
@@ -3657,7 +3657,7 @@ definition {
 	@description = "This is a use case for LPS-59251."
 	@priority = 3
 	test ViewDisplayedSiteCalendarEventsAsGuest {
-		property test.name.skip.portal.instance = "Calendar#ViewDisplayedSiteCalendarEventsAsGuest";
+		property test.liferay.virtual.instance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -4093,7 +4093,7 @@ definition {
 	@description = "This is a use case for LPS-54786."
 	@priority = 3
 	test ViewShowMoreLocalization {
-		property test.name.skip.portal.instance = "Calendar#ViewShowMoreLocalization";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 

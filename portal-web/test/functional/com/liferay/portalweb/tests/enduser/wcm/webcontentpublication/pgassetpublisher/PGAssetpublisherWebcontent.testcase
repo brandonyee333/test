@@ -18,9 +18,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -51,7 +51,7 @@ definition {
 
 	@priority = 4
 	test AddWebContentWithGlobalScopeViaCPToLiferayAP {
-		property test.name.skip.portal.instance = "PGAssetpublisherWebcontent#AddWebContentWithGlobalScopeViaCPToLiferayAP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -260,7 +260,7 @@ definition {
 
 	@priority = 3
 	test AddWebContentWithStructureAndGlobalScopeViaCPToLiferayAP {
-		property test.name.skip.portal.instance = "PGAssetpublisherWebcontent#AddWebContentWithStructureAndGlobalScopeViaCPToLiferayAP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -600,7 +600,7 @@ definition {
 	@description = "This is a use case for LPS-49853."
 	@priority = 5
 	test ViewWebContentViaAPAsGuestWithViewPermission {
-		property test.name.skip.portal.instance = "PGAssetpublisherWebcontent#ViewWebContentViaAPAsGuestWithViewPermission";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",

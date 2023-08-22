@@ -20,7 +20,7 @@ definition {
 	@priority = 5
 	test InstallFixPackViaRollingRestart {
 		property portal.fixpack.release = "true";
-		property test.name.skip.portal.instance = "RollingRestartEE#InstallFixPackViaRollingRestart";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsole();
 
@@ -168,7 +168,7 @@ definition {
 	test InstallFixPackWithMultipleClusters {
 		property app.server.bundles.size = "2";
 		property portal.fixpack.release = "true";
-		property test.name.skip.portal.instance = "RollingRestartEE#InstallFixPackWithMultipleClusters";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsole();
 
@@ -391,7 +391,7 @@ definition {
 		property app.server.bundles.size = "2";
 		property portal.fixpack.release = "true";
 		property skip.install-patch = "true";
-		property test.name.skip.portal.instance = "RollingRestartEE#RevertFixPackWithMultipleClusters";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsole();
 

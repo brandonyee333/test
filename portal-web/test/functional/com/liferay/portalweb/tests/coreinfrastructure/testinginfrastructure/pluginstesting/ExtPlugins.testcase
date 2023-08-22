@@ -9,9 +9,9 @@ definition {
 	property testray.main.component.name = "Test Plugins";
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -28,7 +28,7 @@ definition {
 	@ignore = "true"
 	@priority = 5
 	test ViewSampleExtPluginValidationViaDeploy {
-		property test.name.skip.portal.instance = "ExtPlugins#ViewSampleExtPluginValidationViaDeploy";
+		property test.liferay.virtual.instance = "false";
 
 		Portlet.assertServerStartup();
 

@@ -17,9 +17,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -32,7 +32,7 @@ definition {
 	@priority = 5
 	test AddAndDeleteBlogEntriesOnSeparateNodes {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "ClusteringEE#AddAndDeleteBlogEntriesOnSeparateNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsole();
 
@@ -152,7 +152,7 @@ definition {
 
 	@priority = 5
 	test ShutdownAndStartupNodes {
-		property test.name.skip.portal.instance = "ClusteringEE#ShutdownAndStartupNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsole();
 
@@ -214,7 +214,7 @@ definition {
 
 	@priority = 4
 	test ValidateDocumentOnSeparateNodes {
-		property test.name.skip.portal.instance = "ClusteringEE#ValidateDocumentOnSeparateNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsole();
 
@@ -266,7 +266,7 @@ definition {
 	@description = "This is a use case for LPS-142472."
 	@priority = 4
 	test ValidatePublishOnTwoNodes {
-		property test.name.skip.portal.instance = "ClusteringEE#ValidatePublishOnTwoNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsole();
 
@@ -362,7 +362,7 @@ definition {
 	@ignore = "true"
 	@priority = 4
 	test ValidateSchedulerOnSeparateNodes {
-		property test.name.skip.portal.instance = "ClusteringEE#ValidateSchedulerOnSeparateNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsole();
 

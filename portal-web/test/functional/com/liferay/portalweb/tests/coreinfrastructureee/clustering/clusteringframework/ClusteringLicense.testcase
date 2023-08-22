@@ -13,9 +13,9 @@ definition {
 	property testray.main.component.name = "Clustering";
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 	}
@@ -26,7 +26,7 @@ definition {
 		property custom.properties = "license.cluster.overload.node.auto.shut.down=false";
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property skip.start-app-server = "false";
-		property test.name.skip.portal.instance = "ClusteringLicense#ClusterCanRecoverByShuttingDownAnyNodeWithManualRecovery";
+		property test.liferay.virtual.instance = "false";
 
 		Pause(locator1 = 360000);
 
@@ -70,7 +70,7 @@ definition {
 		property commerce.enabled = "false";
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property skip.start-app-server = "false";
-		property test.name.skip.portal.instance = "ClusteringLicense#ExceedDoubleNodeLimit";
+		property test.liferay.virtual.instance = "false";
 
 		for (var nodeNumber : list "8,9,10,11") {
 			User.loginPG(
@@ -113,7 +113,7 @@ definition {
 	test LimitPreviouslyValidatedClusterNodes {
 		property commerce.enabled = "false";
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
-		property test.name.skip.portal.instance = "ClusteringLicense#LimitPreviouslyValidatedClusterNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.startSpecificServer(
 			deleteLiferayHome = "true",
@@ -210,7 +210,7 @@ definition {
 		property commerce.enabled = "false";
 		property custom.properties = "license.cluster.overload.node.auto.shut.down=false";
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
-		property test.name.skip.portal.instance = "ClusteringLicense#LimitPreviouslyValidatedClusterNodesWithManualRecovery";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.startSpecificServer(
 			deleteLiferayHome = "true",
@@ -280,7 +280,7 @@ definition {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property skip.start-app-server = "false";
-		property test.name.skip.portal.instance = "ClusteringLicense#ViewNodeLimit";
+		property test.liferay.virtual.instance = "false";
 
 		AssertElementNotPresent(locator1 = "Message#ERROR");
 
@@ -383,7 +383,7 @@ definition {
 		property custom.properties = "license.cluster.overload.node.auto.shut.down=false";
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property skip.start-app-server = "false";
-		property test.name.skip.portal.instance = "ClusteringLicense#ViewNodeLimitWithManualRecovery";
+		property test.liferay.virtual.instance = "false";
 
 		for (var nodeNumber : list "8,9,10") {
 			Clustering.viewTextPresentOnSpecificNode(

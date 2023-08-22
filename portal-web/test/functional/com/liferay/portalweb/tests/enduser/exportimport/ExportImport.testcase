@@ -12,9 +12,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -77,7 +77,7 @@ definition {
 
 	@priority = 4
 	test EditExportTemplate {
-		property test.name.skip.portal.instance = "ExportImport#EditExportTemplate";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openURL();
 
@@ -266,7 +266,7 @@ definition {
 
 	@priority = 5
 	test ExportImportDDLViaGlobal {
-		property test.name.skip.portal.instance = "ExportImport#ExportImportDDLViaGlobal";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -377,7 +377,7 @@ definition {
 	@priority = 3
 	test ExportImportGlobalDDMStructureViaInstances {
 		property portal.release = "false";
-		property test.name.skip.portal.instance = "ExportImport#ExportImportGlobalDDMStructureViaInstances";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -560,7 +560,7 @@ definition {
 
 	@priority = 3
 	test ExportImportPortletWithADT {
-		property test.name.skip.portal.instance = "ExportImport#ExportImportPortletWithADT";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openURL();
 
@@ -626,7 +626,7 @@ definition {
 	@priority = 5
 	test ExportImportPrivatePage {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "ExportImport#ExportImportPrivatePage";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		Page.add(
@@ -961,7 +961,7 @@ definition {
 	@priority = 5
 	test ExportImportSmoke {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "ExportImport#ExportImportSmoke";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		LAR.configureExportSiteCP();
@@ -999,7 +999,7 @@ definition {
 	@priority = 5
 	test ExportImportValidation {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "ExportImport#ExportImportValidation";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		Navigator.openURL();
@@ -1151,7 +1151,7 @@ definition {
 	@priority = 3
 	test ExportImportWebContentCircularReference {
 		property portal.upstream = "quarantine";
-		property test.name.skip.portal.instance = "ExportImport#ExportImportWebContentCircularReference";
+		property test.liferay.virtual.instance = "false";
 
 		JSONGroup.addGroup(groupName = "Site Name");
 
@@ -1331,7 +1331,7 @@ definition {
 	@priority = 5
 	test ExportViaGuest {
 		property portal.release = "false";
-		property test.name.skip.portal.instance = "ExportImport#ExportViaGuest";
+		property test.liferay.virtual.instance = "false";
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
@@ -1366,7 +1366,7 @@ definition {
 	@description = "This is a use case for LPS-88831, LPS-88889 and LPS-88890."
 	@priority = 4
 	test ExportWebContentWithDeletedReference {
-		property test.name.skip.portal.instance = "ExportImport#ExportWebContentWithDeletedReference";
+		property test.liferay.virtual.instance = "false";
 
 		JSONGroup.addGroup(groupName = "Site Name");
 
@@ -1478,7 +1478,7 @@ definition {
 	@ignore = "true"
 	@priority = 3
 	test ImportSiteWithMissingReferenceOfPreloadedEntry {
-		property test.name.skip.portal.instance = "ExportImport#ImportSiteWithMissingReferenceOfPreloadedEntry";
+		property test.liferay.virtual.instance = "false";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "Global");
 
@@ -1817,7 +1817,7 @@ definition {
 	@description = "This is a test for LPS-91233."
 	@priority = 3
 	test PublishWebContentWithBrokenLink {
-		property test.name.skip.portal.instance = "ExportImport#PublishWebContentWithBrokenLink";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

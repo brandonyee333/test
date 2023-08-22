@@ -13,7 +13,7 @@ definition {
 	@priority = 4
 	test HSQLtoDB2 {
 		property database.types = "db2";
-		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoDB2";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -36,7 +36,7 @@ definition {
 	test HSQLtoDB2SampleDataDisabled {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "db2";
-		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoDB2SampleDataDisabled";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
@@ -57,7 +57,7 @@ definition {
 	@priority = 4
 	test HSQLtoOracle {
 		property database.types = "oracle";
-		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoOracle";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -80,7 +80,7 @@ definition {
 	test HSQLtoOracleSampleDataDisabled {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "oracle";
-		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoOracleSampleDataDisabled";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
@@ -101,7 +101,7 @@ definition {
 	@priority = 4
 	test HSQLtoSybase {
 		property database.types = "sybase";
-		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoSybase";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -124,7 +124,7 @@ definition {
 	test HSQLtoSybaseSampleDataDisabled {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "sybase";
-		property test.name.skip.portal.instance = "SetupWizardHSQL#HSQLtoSybaseSampleDataDisabled";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			addSampleData = "false",

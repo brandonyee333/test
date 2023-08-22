@@ -12,9 +12,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -179,7 +179,7 @@ definition {
 	@description = "This is a use case for LPS-77387."
 	@priority = 4
 	test AddStructureViaLocaleURL {
-		property test.name.skip.portal.instance = "CPWebcontent#AddStructureViaLocaleURL";
+		property test.liferay.virtual.instance = "false";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -902,7 +902,7 @@ definition {
 
 	@priority = 4
 	test AddWebContentWithImageField {
-		property test.name.skip.portal.instance = "CPWebcontent#AddWebContentWithImageField";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openURL();
 
@@ -1250,7 +1250,7 @@ definition {
 	@description = "This is a use case for LPS-83319. The user could change default language of web content after enable Changeable Default Language."
 	@priority = 5
 	test ChangeWebContentDefaultLanguage {
-		property test.name.skip.portal.instance = "CPWebcontent#ChangeWebContentDefaultLanguage";
+		property test.liferay.virtual.instance = "false";
 
 		JSONGroup.addGroup(groupName = "Test Site Name");
 

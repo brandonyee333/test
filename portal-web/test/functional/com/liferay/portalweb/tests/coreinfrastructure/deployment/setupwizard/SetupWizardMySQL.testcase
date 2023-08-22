@@ -10,7 +10,7 @@ definition {
 
 	@priority = 4
 	test MySQLtoMySQL {
-		property test.name.skip.portal.instance = "SetupWizardMySQL#MySQLtoMySQL";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configureDefaultPG();
 
@@ -21,7 +21,7 @@ definition {
 
 	@priority = 4
 	test MySQLtoMySQLEditedAdministratorUser {
-		property test.name.skip.portal.instance = "SetupWizardMySQL#MySQLtoMySQLEditedAdministratorUser";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.viewDefaultPortalNamePG();
 
@@ -93,7 +93,7 @@ definition {
 	test MySQLtoMySQLLportal1 {
 		property databases.size = "1";
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "SetupWizardMySQL#MySQLtoMySQLLportal1";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -118,7 +118,7 @@ definition {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property databases.size = "1";
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "SetupWizardMySQL#MySQLtoMySQLLportal1SampleDataDisabled";
+		property test.liferay.virtual.instance = "false";
 
 		SetupWizard.configurePG(
 			addSampleData = "false",

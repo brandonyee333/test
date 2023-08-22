@@ -12,7 +12,7 @@ definition {
 	test TrainingDemo1 {
 		property database.types = "hypersonic";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
-		property test.name.skip.portal.instance = "TrainingHSQL#TrainingDemo1";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		SetupWizard.configurePG(
@@ -1437,7 +1437,7 @@ definition {
 	test TrainingDemo2 {
 		property database.types = "hypersonic";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
-		property test.name.skip.portal.instance = "TrainingHSQL#TrainingDemo2";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		SetupWizard.configurePG(
@@ -2194,7 +2194,7 @@ Brainstorming:
 	test TrainingDemo3 {
 		property database.types = "hypersonic";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
-		property test.name.skip.portal.instance = "TrainingHSQL#TrainingDemo3";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		SetupWizard.configurePG(
@@ -3324,7 +3324,7 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 	test TrainingDemo4 {
 		property database.types = "hypersonic";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
-		property test.name.skip.portal.instance = "TrainingHSQL#TrainingDemo4";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		SetupWizard.configurePG(

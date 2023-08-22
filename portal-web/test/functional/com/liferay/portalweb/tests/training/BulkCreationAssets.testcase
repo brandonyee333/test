@@ -13,9 +13,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -36,7 +36,7 @@ definition {
 	@priority = 5
 	test AddBlogsWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddBlogsWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -69,7 +69,7 @@ definition {
 	@priority = 5
 	test AddCategoriesWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddCategoriesWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -104,7 +104,7 @@ definition {
 	@priority = 5
 	test AddDocumentsWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddDocumentsWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -137,7 +137,7 @@ definition {
 	@priority = 5
 	test AddOrganizationsWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddOrganizationsWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -174,7 +174,7 @@ definition {
 	@priority = 5
 	test AddPagesWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddPagesWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -205,7 +205,7 @@ definition {
 	@priority = 5
 	test AddSitesWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddSitesWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -235,7 +235,7 @@ definition {
 	@priority = 5
 	test AddThreadsWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddThreadsWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -269,7 +269,7 @@ definition {
 	@priority = 5
 	test AddUsersWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddUsersWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -299,7 +299,7 @@ definition {
 	@priority = 5
 	test AddWebcontentArticlesWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddWebcontentArticlesWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -334,7 +334,7 @@ definition {
 	@priority = 5
 	test AddWikisWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
-		property test.name.skip.portal.instance = "BulkCreationAssets#AddWikisWithDummyFactory";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 

@@ -36,7 +36,7 @@ definition {
 
 	@priority = 5
 	test ViewEntry {
-		property test.name.skip.portal.instance = "OSGiTwitterportlet#ViewEntry";
+		property test.liferay.virtual.instance = "false";
 
 		UserBar.gotoProfile();
 

@@ -13,9 +13,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -67,7 +67,7 @@ definition {
 	test ElasticsearchRemoteClusterSmokeTest {
 		property remote.elasticsearch.cluster.size = "2";
 		property remote.elasticsearch.enabled = "true";
-		property test.name.skip.portal.instance = "Elasticsearch#ElasticsearchRemoteClusterSmokeTest";
+		property test.liferay.virtual.instance = "false";
 
 		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = 2);
 

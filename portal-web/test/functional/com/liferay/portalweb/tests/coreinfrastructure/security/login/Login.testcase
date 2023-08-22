@@ -11,7 +11,7 @@ definition {
 
 	@priority = 4
 	test CASSmoke {
-		property test.name.skip.portal.instance = "Login#CASSmoke";
+		property test.liferay.virtual.instance = "false";
 		property web.plugins.includes = "cas-web";
 
 		var portalURL = PropsUtil.get("portal.url");
@@ -69,7 +69,7 @@ definition {
 	@priority = 4
 	test FacebookSSOSmoke {
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "Login#FacebookSSOSmoke";
+		property test.liferay.virtual.instance = "false";
 
 		var facebookApplicationID = PropsUtil.get("facebook.application.id");
 		var facebookApplicationSecret = PropsUtil.get("facebook.application.secret");
@@ -111,7 +111,7 @@ definition {
 	@priority = 4
 	test GoogleSSOSmoke {
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "Login#GoogleSSOSmoke";
+		property test.liferay.virtual.instance = "false";
 
 		var googleClientID = PropsUtil.get("google.client.id.3");
 		var googleClientSecret = PropsUtil.get("google.client.secret.3");
@@ -151,7 +151,7 @@ definition {
 
 	@priority = 4
 	test Login {
-		property test.name.skip.portal.instance = "Login#Login";
+		property test.liferay.virtual.instance = "false";
 
 		User.firstLoginPG();
 
@@ -191,7 +191,7 @@ definition {
 	@ignore = "true"
 	@priority = 5
 	test LoginWithSpanishOnlyEnabledLocale {
-		property test.name.skip.portal.instance = "Login#LoginWithSpanishOnlyEnabledLocale";
+		property test.liferay.virtual.instance = "false";
 
 		User.firstLoginPG();
 
@@ -220,7 +220,7 @@ definition {
 	@priority = 4
 	test OpenIDSmoke {
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "Login#OpenIDSmoke";
+		property test.liferay.virtual.instance = "false";
 
 		// LRQA-43015
 
@@ -260,7 +260,7 @@ definition {
 	test OpenSSOSmoke {
 		property dummy.socket.proxy.disabled = "true";
 		property openam.enabled = "true";
-		property test.name.skip.portal.instance = "Login#OpenSSOSmoke";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSpecificURL(url = "http://test.able.com:8080/openam");
 
@@ -316,7 +316,7 @@ definition {
 
 	@priority = 5
 	test TokenBasedSSOSmoke {
-		property test.name.skip.portal.instance = "Login#TokenBasedSSOSmoke";
+		property test.liferay.virtual.instance = "false";
 
 		User.firstLoginPG();
 

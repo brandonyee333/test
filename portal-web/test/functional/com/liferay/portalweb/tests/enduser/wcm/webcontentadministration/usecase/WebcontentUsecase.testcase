@@ -14,9 +14,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -328,7 +328,7 @@ definition {
 		property custom.properties = "editor.wysiwyg.portal-impl.portlet.ddm.text_html.ftl=ckeditor";
 		property dummy.socket.proxy.disabled = "true";
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "WebcontentUsecase#AddAudioViaWebContent";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -985,7 +985,7 @@ definition {
 	test AddVideoViaWebContent {
 		property custom.properties = "editor.wysiwyg.portal-impl.portlet.ddm.text_html.ftl=ckeditor";
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "WebcontentUsecase#AddVideoViaWebContent";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1059,7 +1059,7 @@ definition {
 
 	@priority = 5
 	test AddWebContentFromImportedStructureAndTemplate {
-		property test.name.skip.portal.instance = "WebcontentUsecase#AddWebContentFromImportedStructureAndTemplate";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -1134,7 +1134,7 @@ definition {
 
 	@priority = 4
 	test AddWebContentRemoveGuestViewPermission {
-		property test.name.skip.portal.instance = "WebcontentUsecase#AddWebContentRemoveGuestViewPermission";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -2019,7 +2019,7 @@ definition {
 
 	@priority = 5
 	test MoveImportedWebContentArticlesToFolders {
-		property test.name.skip.portal.instance = "WebcontentUsecase#MoveImportedWebContentArticlesToFolders";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -2325,7 +2325,7 @@ definition {
 	@description = "This is a use case for LPS-71941."
 	@priority = 5
 	test UndeployWebContentDisplayModuleViaGogoShell {
-		property test.name.skip.portal.instance = "WebcontentUsecase#UndeployWebContentDisplayModuleViaGogoShell";
+		property test.liferay.virtual.instance = "false";
 
 		Page.add(pageName = "Web Content Display Page");
 
@@ -3085,7 +3085,7 @@ definition {
 
 	@priority = 4
 	test WebContentAdministrationLocalization {
-		property test.name.skip.portal.instance = "WebcontentUsecase#WebContentAdministrationLocalization";
+		property test.liferay.virtual.instance = "false";
 
 		Open(locator1 = "/en/web/guest/home");
 

@@ -36,9 +36,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -53,7 +53,7 @@ definition {
 	@priority = 5
 	test AddBlankCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#AddBlankCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -106,7 +106,7 @@ definition {
 	@priority = 5
 	test AddCampaignContentCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#AddCampaignContentCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -194,7 +194,7 @@ definition {
 	@priority = 5
 	test AddCampaignCustomFormCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#AddCampaignCustomFormCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -270,7 +270,7 @@ definition {
 	@priority = 5
 	test AddCampaignDDLFormCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#AddCampaignDDLFormCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -361,7 +361,7 @@ definition {
 	@priority = 5
 	test AddCampaignLinkCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#AddCampaignLinkCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -448,7 +448,7 @@ definition {
 	@priority = 5
 	test AddCampaignPageCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#AddCampaignPageCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -523,7 +523,7 @@ definition {
 	@priority = 5
 	test AddCampaignYouTubeCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#AddCampaignYouTubeCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -610,7 +610,7 @@ definition {
 	@priority = 5
 	test DeleteCampaignCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#DeleteCampaignCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -657,7 +657,7 @@ definition {
 	@priority = 5
 	test EditCampaignCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#EditCampaignCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -808,7 +808,7 @@ definition {
 	@priority = 3
 	test ViewInactiveCampaignCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingCampaign#ViewInactiveCampaignCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

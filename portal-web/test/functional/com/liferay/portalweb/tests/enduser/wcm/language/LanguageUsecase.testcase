@@ -28,9 +28,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -40,7 +40,7 @@ definition {
 
 	@priority = 4
 	test AddWCWithMultipleTranslations {
-		property test.name.skip.portal.instance = "LanguageUsecase#AddWCWithMultipleTranslations";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -123,7 +123,7 @@ definition {
 	@priority = 5
 	test AddWCWithTranslation {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "LanguageUsecase#AddWCWithTranslation";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -179,7 +179,7 @@ definition {
 
 	@priority = 4
 	test MoveCurrentLanguagesToAvailable {
-		property test.name.skip.portal.instance = "LanguageUsecase#MoveCurrentLanguagesToAvailable";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoSitePage(
 			pageName = "Test Page Name",
@@ -210,7 +210,7 @@ definition {
 	@ignore = "true"
 	@priority = 4
 	test ViewChangedDefaultPortalLanguageViaWebContent {
-		property test.name.skip.portal.instance = "LanguageUsecase#ViewChangedDefaultPortalLanguageViaWebContent";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -259,7 +259,7 @@ definition {
 
 	@priority = 4
 	test ViewDisplayOptionsViaLanguagePortlet {
-		property test.name.skip.portal.instance = "LanguageUsecase#ViewDisplayOptionsViaLanguagePortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoSitePage(
 			pageName = "Test Page Name",
@@ -318,7 +318,7 @@ definition {
 
 	@priority = 4
 	test ViewRemovedCurrentPortalLanguagesViaLanguagePortlet {
-		property test.name.skip.portal.instance = "LanguageUsecase#ViewRemovedCurrentPortalLanguagesViaLanguagePortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoSitePage(
 			pageName = "Test Page Name",
@@ -348,7 +348,7 @@ definition {
 
 	@priority = 4
 	test ViewRemovedCurrentSiteLanguagesViaLanguagePortlet {
-		property test.name.skip.portal.instance = "LanguageUsecase#ViewRemovedCurrentSiteLanguagesViaLanguagePortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoSitePage(
 			pageName = "Test Page Name",

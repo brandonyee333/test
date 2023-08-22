@@ -25,9 +25,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -406,7 +406,7 @@ definition {
 	test DemoTrackbackURL {
 		property custom.properties = "blogs.trackback.enabled=true";
 		property dummy.socket.proxy.disabled = "true";
-		property test.name.skip.portal.instance = "BlogsUsecase#DemoTrackbackURL";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -769,7 +769,7 @@ definition {
 
 	@priority = 3
 	test ViewBlogsEntriesWithSpecialCharactersOnPublicAndPrivateVirtualHostPages {
-		property test.name.skip.portal.instance = "BlogsUsecase#ViewBlogsEntriesWithSpecialCharactersOnPublicAndPrivateVirtualHostPages";
+		property test.liferay.virtual.instance = "false";
 
 		var entryTitleSpecialCharacter = "true";
 		var privatePageVirtualHostURL = "www.baker.com";

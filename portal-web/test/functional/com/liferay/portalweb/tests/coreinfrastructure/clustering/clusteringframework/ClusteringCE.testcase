@@ -18,9 +18,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -33,7 +33,7 @@ definition {
 	@priority = 5
 	test AddAndDeleteBlogEntriesOnSeparateNodes {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "ClusteringCE#AddAndDeleteBlogEntriesOnSeparateNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsoleCE();
 
@@ -153,7 +153,7 @@ definition {
 
 	@priority = 5
 	test ShutdownAndStartupNodes {
-		property test.name.skip.portal.instance = "ClusteringCE#ShutdownAndStartupNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsoleCE();
 
@@ -215,7 +215,7 @@ definition {
 
 	@priority = 4
 	test ValidateDocumentOnSeparateNodes {
-		property test.name.skip.portal.instance = "ClusteringCE#ValidateDocumentOnSeparateNodes";
+		property test.liferay.virtual.instance = "false";
 
 		Clustering.viewClusterStatusInConsoleCE();
 

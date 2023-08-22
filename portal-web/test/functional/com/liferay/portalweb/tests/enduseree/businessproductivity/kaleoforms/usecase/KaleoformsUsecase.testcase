@@ -16,9 +16,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -694,7 +694,7 @@ definition {
 
 	@priority = 5
 	test AssignRolePermissionsApprovePG {
-		property test.name.skip.portal.instance = "KaleoformsUsecase#AssignRolePermissionsApprovePG";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1043,7 +1043,7 @@ definition {
 
 	@priority = 5
 	test AssignRolePermissionsRejectPG {
-		property test.name.skip.portal.instance = "KaleoformsUsecase#AssignRolePermissionsRejectPG";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1217,7 +1217,7 @@ definition {
 
 	@priority = 4
 	test AssignRolePermissionsSubmitProcessPG {
-		property test.name.skip.portal.instance = "KaleoformsUsecase#AssignRolePermissionsSubmitProcessPG";
+		property test.liferay.virtual.instance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -2093,7 +2093,7 @@ definition {
 
 	@priority = 4
 	test CompleteProcessWithEditedSingleApproverWorkflow {
-		property test.name.skip.portal.instance = "KaleoformsUsecase#CompleteProcessWithEditedSingleApproverWorkflow";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openURL();
 
@@ -2222,7 +2222,7 @@ definition {
 	@priority = 5
 	test CompleteProcessWithUploadedDefinition {
 		property portal.acceptance = "true";
-		property test.name.skip.portal.instance = "KaleoformsUsecase#CompleteProcessWithUploadedDefinition";
+		property test.liferay.virtual.instance = "false";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -3214,7 +3214,7 @@ definition {
 
 	@priority = 4
 	test EditProcessWorkflowAfterFormSubmission {
-		property test.name.skip.portal.instance = "KaleoformsUsecase#EditProcessWorkflowAfterFormSubmission";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -3380,7 +3380,7 @@ definition {
 
 	@priority = 4
 	test EditProcessWorkflowBeforeFormSubmission {
-		property test.name.skip.portal.instance = "KaleoformsUsecase#EditProcessWorkflowBeforeFormSubmission";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

@@ -12,9 +12,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -542,7 +542,7 @@ definition {
 
 	@priority = 5
 	test ViewURLValidateNoXSS {
-		property test.name.skip.portal.instance = "XSSUsecase#ViewURLValidateNoXSS";
+		property test.liferay.virtual.instance = "false";
 
 		var maliciousURL1 = '''
 				http://localhost:8080/c/portal/flash?title=abc</title><script%0d%0a>alert(3.1415926)</script%0d%0a><title>aaa

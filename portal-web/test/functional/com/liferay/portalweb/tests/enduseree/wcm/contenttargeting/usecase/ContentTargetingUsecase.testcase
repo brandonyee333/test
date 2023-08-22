@@ -36,9 +36,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -53,7 +53,7 @@ definition {
 	@priority = 4
 	test CampaignAddMultipleWithPrioritiesViaCampaignDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CampaignAddMultipleWithPrioritiesViaCampaignDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -231,7 +231,7 @@ definition {
 	@priority = 5
 	test CampaignAddViaCampaignContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CampaignAddViaCampaignContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -332,7 +332,7 @@ definition {
 	@priority = 4
 	test CampaignDeleteMultiple {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CampaignDeleteMultiple";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -403,7 +403,7 @@ definition {
 	@priority = 4
 	test CampaignViewContentViewsReports {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CampaignViewContentViewsReports";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -652,7 +652,7 @@ definition {
 	@priority = 4
 	test CampaignViewOtherwiseDisplayContentViaCampaignDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CampaignViewOtherwiseDisplayContentViaCampaignDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -774,7 +774,7 @@ definition {
 	@priority = 4
 	test CampaignViewOtherwiseDontDisplayViaCampaignDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CampaignViewOtherwiseDontDisplayViaCampaignDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -875,7 +875,7 @@ definition {
 	@priority = 3
 	test CampaignViewStatusCP {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CampaignViewStatusCP";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -983,7 +983,7 @@ definition {
 	@priority = 4
 	test CampaignViewTrackingActionReports {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CampaignViewTrackingActionReports";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1214,7 +1214,7 @@ definition {
 	@priority = 4
 	test CTValidationExportImport {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CTValidationExportImport";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1302,7 +1302,7 @@ definition {
 	@priority = 4
 	test CTValidationStaging {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#CTValidationStaging";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1378,7 +1378,7 @@ definition {
 	@priority = 4
 	test ExportImportDeletions {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#ExportImportDeletions";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1523,7 +1523,7 @@ definition {
 	@priority = 5
 	test ExportImportSmoke {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#ExportImportSmoke";
+		property test.liferay.virtual.instance = "false";
 
 		LAR.setupContentTargeting();
 
@@ -1586,7 +1586,7 @@ definition {
 	@priority = 4
 	test ExportImportViewOnlyContentCTWithReferencedWCImported {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#ExportImportViewOnlyContentCTWithReferencedWCImported";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1740,7 +1740,7 @@ definition {
 	@priority = 4
 	test StagingContentTargeting {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#StagingContentTargeting";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1943,7 +1943,7 @@ definition {
 	@priority = 4
 	test StagingCTDeletions {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#StagingCTDeletions";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2010,7 +2010,7 @@ definition {
 	@priority = 4
 	test StagingCTDisabled {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#StagingCTDisabled";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2116,7 +2116,7 @@ definition {
 	@priority = 4
 	test StagingCTEnabled {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#StagingCTEnabled";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2238,7 +2238,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddCategorizationToContent {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddCategorizationToContent";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2280,7 +2280,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddFromGlobalSiteViaCampaign {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddFromGlobalSiteViaCampaign";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -2334,7 +2334,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddFromParentSiteViaCampaign {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddFromParentSiteViaCampaign";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2408,7 +2408,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddGlobalCategorizationToSiteContent {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddGlobalCategorizationToSiteContent";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -2445,7 +2445,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddMultipleViaUserContentDisplayPortletPG {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddMultipleViaUserContentDisplayPortletPG";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -2619,7 +2619,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddParentSiteCategorizationToChildSiteContent {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddParentSiteCategorizationToChildSiteContent";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -2665,7 +2665,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddWithAllViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddWithAllViaUserSegmentContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2768,7 +2768,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddWithAnyViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddWithAnyViaUserSegmentContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2870,7 +2870,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddWithBelongsViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddWithBelongsViaUserSegmentContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2987,7 +2987,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddWithDoesNotBelongViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddWithDoesNotBelongViaUserSegmentContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3116,7 +3116,7 @@ definition {
 	@priority = 4
 	test UserSegmentAddWithOtherwiseDontDisplayAnythingViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentAddWithOtherwiseDontDisplayAnythingViaUserSegmentContentDisplayPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3181,7 +3181,7 @@ definition {
 	@priority = 4
 	test UserSegmentDeleteMultiple {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentDeleteMultiple";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3236,7 +3236,7 @@ definition {
 	@ignore = "true"
 	@priority = 4
 	test UserSegmentDisableAnonymousUserAnalytics {
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentDisableAnonymousUserAnalytics";
+		property test.liferay.virtual.instance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -3411,7 +3411,7 @@ definition {
 	@priority = 4
 	test UserSegmentSimulateRulesViaSimulatorPG {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentSimulateRulesViaSimulatorPG";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3516,7 +3516,7 @@ definition {
 	@ignore = "true"
 	@priority = 4
 	test UserSegmentViewAnonymousUserDefaultBehavior {
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentViewAnonymousUserDefaultBehavior";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3643,7 +3643,7 @@ definition {
 	@priority = 4
 	test UserSegmentViewAnyContentWithCategorizationViaContentListPortletAndExportImportLAR {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentViewAnyContentWithCategorizationViaContentListPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3752,7 +3752,7 @@ definition {
 	@priority = 4
 	test UserSegmentViewInSimulatorPG {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentViewInSimulatorPG";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3844,7 +3844,7 @@ definition {
 	@priority = 4
 	test UserSegmentViewSpecificContentWithCategorizationViaContentListPortlet {
 		property content.targeting.release = "true";
-		property test.name.skip.portal.instance = "ContentTargetingUsecase#UserSegmentViewSpecificContentWithCategorizationViaContentListPortlet";
+		property test.liferay.virtual.instance = "false";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

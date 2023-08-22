@@ -17,9 +17,9 @@ definition {
 	}
 
 	tearDown {
-		var testPortalInstance = PropsUtil.get("test.portal.instance");
+		var testLiferayVirtualInstance = PropsUtil.get("test.liferay.virtual.instance");
 
-		if (${testPortalInstance} == "true") {
+		if (${testLiferayVirtualInstance} == "true") {
 			PortalInstances.tearDownCP();
 		}
 		else {
@@ -37,7 +37,7 @@ definition {
 	test EmbeddedClusterSmokeTest {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
-		property test.name.skip.portal.instance = "Elasticsearch6EE#EmbeddedClusterSmokeTest";
+		property test.liferay.virtual.instance = "false";
 
 		// Verify the total number of Elasticsearch replicas is two as there are two nodes/bundles running
 		// LPS-67744
@@ -143,7 +143,7 @@ definition {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
 		property remote.elasticsearch6.enabled = "true";
-		property test.name.skip.portal.instance = "Elasticsearch6EE#PortalClusterSmokeTest";
+		property test.liferay.virtual.instance = "false";
 
 		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = 1);
 
@@ -233,7 +233,7 @@ definition {
 		property elastic.xpack.enabled = "true";
 		property osgi.modules.includes = "portal-search-elasticsearch6-xpack-monitoring,portal-search-elasticsearch6-xpack-security";
 		property remote.elasticsearch6.enabled = "true";
-		property test.name.skip.portal.instance = "Elasticsearch6EE#XPackSmokeTest";
+		property test.liferay.virtual.instance = "false";
 
 		Page.add(pageName = "X-Pack Monitoring Page");
 
