@@ -133,7 +133,10 @@ public class DB2DB extends BaseDB {
 
 			String tempColumnName = "temp" + columnName;
 
-			if (newColumnType.endsWith("not null")) {
+			if (StringUtil.endsWith(newColumnType, "not null") &&
+				!StringUtil.containsIgnoreCase(
+					newColumnType, "default", StringPool.SPACE)) {
+
 				runSQL(
 					StringBundler.concat(
 						"alter table ", tableName, " add ", tempColumnName,
@@ -504,6 +507,23 @@ public class DB2DB extends BaseDB {
 						"alter table @table@ alter column @old-column@ set " +
 							"data type @type@;",
 						REWORD_TEMPLATE, template);
+
+					String defaultValue = template[template.length - 2];
+
+					if (Validator.isBlank(defaultValue)) {
+						line = line.concat(
+							StringUtil.replace(
+								"alter table @table@ alter column " +
+									"@old-column@ drop default;",
+								REWORD_TEMPLATE, template));
+					}
+					else {
+						line = line.concat(
+							StringUtil.replace(
+								"alter table @table@ alter column " +
+									"@old-column@ set default @default@;",
+								REWORD_TEMPLATE, template));
+					}
 
 					String nullable = template[template.length - 1];
 

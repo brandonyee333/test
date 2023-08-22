@@ -944,7 +944,9 @@ public class ObjectDefinitionResourceImpl
 				).put(
 					"update",
 					() -> {
-						if (objectDefinition.isUnmodifiableSystemObject()) {
+						if (!FeatureFlagManagerUtil.isEnabled("LPS-148856") &&
+							objectDefinition.isUnmodifiableSystemObject()) {
+
 							return null;
 						}
 
@@ -999,6 +1001,12 @@ public class ObjectDefinitionResourceImpl
 							null),
 						objectField),
 					ObjectField.class);
+
+				if (FeatureFlagManagerUtil.isEnabled("LPS-148856")) {
+					objectFolderExternalReferenceCode =
+						objectDefinition.getObjectFolderExternalReferenceCode();
+				}
+
 				objectLayouts = transformToArray(
 					_objectLayoutLocalService.getObjectLayouts(
 						objectDefinition.getObjectDefinitionId()),
@@ -1080,14 +1088,22 @@ public class ObjectDefinitionResourceImpl
 						return serviceBuilderObjectField.getName();
 					});
 
-				if (FeatureFlagManagerUtil.isEnabled("LPS-148856")) {
-					setObjectFolderExternalReferenceCode(
+				if (FeatureFlagManagerUtil.isEnabled("LPS-187142")) {
+					setRootObjectDefinitionExternalReferenceCode(
 						() -> {
-							ObjectFolder objectFolder =
-								_objectFolderLocalService.getObjectFolder(
-									objectDefinition.getObjectFolderId());
+							com.liferay.object.model.ObjectDefinition
+								serviceBuilderObjectDefinition =
+									_objectDefinitionLocalService.
+										fetchObjectDefinition(
+											objectDefinition.
+												getRootObjectDefinitionId());
 
-							return objectFolder.getExternalReferenceCode();
+							if (serviceBuilderObjectDefinition == null) {
+								return null;
+							}
+
+							return serviceBuilderObjectDefinition.
+								getExternalReferenceCode();
 						});
 				}
 

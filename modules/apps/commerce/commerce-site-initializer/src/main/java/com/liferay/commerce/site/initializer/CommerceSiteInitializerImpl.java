@@ -48,6 +48,7 @@ import com.liferay.headless.commerce.admin.channel.resource.v1_0.ChannelResource
 import com.liferay.headless.commerce.admin.order.dto.v1_0.OrderType;
 import com.liferay.headless.commerce.admin.order.resource.v1_0.OrderTypeResource;
 import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -61,10 +62,11 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
+import com.liferay.portal.kernel.settings.ArchivedSettingsFactory;
+import com.liferay.portal.kernel.settings.FallbackKeysSettingsUtil;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.settings.ModifiableSettings;
 import com.liferay.portal.kernel.settings.Settings;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -214,7 +216,7 @@ public class CommerceSiteInitializerImpl implements CommerceSiteInitializer {
 		Map<String, Object> map1 = jsonObject.toMap();
 
 		for (Map.Entry<String, Object> entry1 : map1.entrySet()) {
-			Settings settings = _settingsFactory.getSettings(
+			Settings settings = FallbackKeysSettingsUtil.getSettings(
 				new GroupServiceSettingsLocator(
 					commerceChannel.getGroupId(), entry1.getKey()));
 
@@ -574,7 +576,7 @@ public class CommerceSiteInitializerImpl implements CommerceSiteInitializer {
 		CommerceChannel commerceChannel =
 			_commerceChannelService.getCommerceChannel(channel.getId());
 
-		Settings settings = _settingsFactory.getSettings(
+		Settings settings = FallbackKeysSettingsUtil.getSettings(
 			new GroupServiceSettingsLocator(
 				commerceChannel.getGroupId(),
 				CPConstants.RESOURCE_NAME_CP_DISPLAY_LAYOUT));
@@ -840,7 +842,7 @@ public class CommerceSiteInitializerImpl implements CommerceSiteInitializer {
 		CommercePriceEntry commercePriceEntry =
 			_commercePriceEntryLocalService.fetchCommercePriceEntry(
 				commercePriceList.getCommercePriceListId(),
-				cpInstance.getCPInstanceUuid());
+				cpInstance.getCPInstanceUuid(), StringPool.BLANK);
 
 		BigDecimal price = cpInstance.getPrice();
 
@@ -954,6 +956,9 @@ public class CommerceSiteInitializerImpl implements CommerceSiteInitializer {
 	private AdminAccountGroupResource.Factory _adminAccountGroupResourceFactory;
 
 	@Reference
+	private ArchivedSettingsFactory _archivedSettingsFactory;
+
+	@Reference
 	private CatalogResource.Factory _catalogResourceFactory;
 
 	@Reference
@@ -1039,8 +1044,5 @@ public class CommerceSiteInitializerImpl implements CommerceSiteInitializer {
 
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
-
-	@Reference
-	private SettingsFactory _settingsFactory;
 
 }

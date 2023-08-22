@@ -7,6 +7,14 @@
 		<isset property="env.AXIS_VARIABLE" />
 	</condition>
 
+	<math
+		datatype="int"
+		operand1="${test.class.timeout.minutes}"
+		operand2="60"
+		operation="*"
+		result="test.class.timeout.seconds"
+	/>
+
 	<macrodef name="check-jenkins-console">
 		<sequential>
 			<if>
@@ -722,6 +730,113 @@ mariadb.executable=${mariadb.executable}]]></echo>
 					<var name="test.batch.app.server.start.executable.arg.line" value="jacoco ${test.batch.app.server.start.executable.arg.line}" />
 				</then>
 			</if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="get-test-project-information">
+		<attribute default="" name="test.class" />
+
+		<sequential>
+			<var name="test.name" unset="true" />
+			<var name="test.project.name" unset="true" />
+			<var name="test.project.results.dir" unset="true" />
+
+			<local name="test.class.file" />
+			<local name="test.class.file.path" />
+			<local name="test.class.java" />
+
+			<propertyregex
+				casesensitive="true"
+				input="@{test.class}"
+				property="test.class.java"
+				regexp="\.class"
+				replace="\.java"
+			/>
+
+			<first id="test.class.file">
+				<fileset
+					dir="modules"
+					includes="**/${test.class.java}"
+				/>
+			</first>
+
+			<property name="test.class.file.path" value="${toString:test.class.file}" />
+
+			<beanshell>
+				<![CDATA[
+					import com.liferay.jenkins.results.parser.JenkinsResultsParserUtil;
+
+					import java.util.Properties;
+					import java.util.regex.Matcher;
+					import java.util.regex.Pattern;
+
+					public static File getBndFile(File file) {
+						if (file == null) {
+							return null;
+						}
+
+						File canonicalFile = JenkinsResultsParserUtil.getCanonicalFile(file);
+
+						File parentFile = canonicalFile.getParentFile();
+
+						if ((parentFile == null) || !parentFile.exists()) {
+							return file;
+						}
+
+						if (!canonicalFile.isDirectory()) {
+							return getBndFile(parentFile);
+						}
+
+						File bndFile = new File(canonicalFile, "bnd.bnd");
+
+						if (!bndFile.exists()) {
+							return getBndFile(parentFile);
+						}
+
+						return bndFile;
+					}
+
+					public static String getTestName(String testClassFilePath) {
+						Pattern pattern = Pattern.compile("/([^/]+)\\.java");
+
+						Matcher matcher = pattern.matcher(testClassFilePath);
+
+						if (matcher.find()) {
+							return matcher.group(1);
+						}
+
+						return null;
+					}
+
+					public static String getTestProjectName(File bndFile) {
+						Properties bndFileProperties = JenkinsResultsParserUtil.getProperties(new File[] {bndFile});
+
+						String bundleSymbolicName = bndFileProperties.getProperty("Bundle-SymbolicName");
+
+						File modulesPropertiesFile = new File(project.getProperty("project.dir") + "/modules/modules.properties");
+
+						Properties modulesProperties = JenkinsResultsParserUtil.getProperties(new File[] {modulesPropertiesFile});
+
+						return modulesProperties.getProperty("project.name[" + bundleSymbolicName + "]");
+					}
+
+					public static String getTestProjectResultsDir(File bndFile) {
+						String testProjectName = getTestProjectName(bndFile);
+
+						File testProjectResultsDir = new File(project.getProperty("project.dir") + "/modules/" + testProjectName.replaceAll(":", "/") + "/test-results/");
+
+						return JenkinsResultsParserUtil.getCanonicalPath(testProjectResultsDir);
+					}
+
+					String testClassFilePath = project.getProperty("test.class.file.path");
+
+					File bndFile = getBndFile(new File(testClassFilePath));
+
+					project.setProperty("test.name", getTestName(testClassFilePath));
+					project.setProperty("test.project.name", getTestProjectName(bndFile));
+					project.setProperty("test.project.results.dir", getTestProjectResultsDir(bndFile));
+				]]>
+			</beanshell>
 		</sequential>
 	</macrodef>
 
@@ -2409,11 +2524,15 @@ log.sanitizer.enabled=false</echo>
 
 							<lstopwatch action="start" name="test.execution.duration" />
 
-							<gradle-execute dir="modules" refreshdependencies="@{refreshdependencies}" task="testIntegration">
-								<arg value="--continue" />
-								<arg value="-Dbuild.exclude.ant.plugin=true" />
-								<arg value="-Dtest.class.group.index=${axis.variable}" />
-							</gradle-execute>
+							<for list="${test.class.group}" param="test.class">
+								<sequential>
+									<run-modules-junit-test test.class="@{test.class}" test.task="testIntegration">
+										<arg value="--continue" />
+										<arg value="-Dbuild.exclude.ant.plugin=true" />
+										<arg value="-Dtest.class.group.index=${axis.variable}" />
+									</run-modules-junit-test>
+								</sequential>
+							</for>
 
 							<lstopwatch action="total" name="test.execution.duration" />
 
@@ -2584,6 +2703,86 @@ log.sanitizer.enabled=false</echo>
 					<stop-suite-search-engine />
 				</test-tear-down>
 			</run-batch-test>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="run-modules-junit-test">
+		<attribute name="test.class" />
+		<attribute name="test.task" />
+
+		<element implicit="true" name="args" optional="true" />
+
+		<sequential>
+			<var name="test.timeout" unset="true" />
+
+			<trycatch property="test.failure.message">
+				<try>
+					<get-test-project-information test.class="@{test.class}" />
+
+					<limit failonerror="true" maxwait="${test.class.timeout.seconds}" property="test.timeout" value="FAILURE: ${test.project.name}:@{test.task} --tests ${test.name} failed to complete in ${test.class.timeout.minutes} minutes">
+						<gradle-execute dir="modules" task="${test.project.name}:@{test.task}" test.name="${test.name}">
+							<args />
+						</gradle-execute>
+					</limit>
+
+					<move
+						flatten="true"
+						todir="modules/test-results"
+					>
+						<fileset
+							dir="${test.project.results.dir}"
+							includes="**/TEST-*.xml"
+						/>
+					</move>
+				</try>
+				<catch>
+					<var name="junit.failure.message" value="" />
+
+					<if>
+						<isset property="test.timeout" />
+						<then>
+							<var name="junit.failure.message" value="${test.timeout}${line.separator}" />
+						</then>
+					</if>
+
+					<var name="junit.failure.message" value="${junit.failure.message}${test.failure.message}" />
+
+					<echo>${junit.failure.message}</echo>
+
+					<var name="junit.failure.message.element" unset="true" />
+
+					<property name="junit.failure.message" value="${test.failure.message}${test.timeout}" />
+
+					<get-junit-failure-message-element />
+
+					<local name="test.class.name" />
+
+					<propertyregex
+						input="@{test.class}"
+						override="true"
+						property="test.class.name"
+						regexp="(.*)\.class"
+						replace="\1"
+					/>
+
+					<propertyregex
+						global="true"
+						input="${test.class.name}"
+						override="true"
+						property="test.class.name"
+						regexp="/"
+						replace="."
+					/>
+
+					<generate-backend-batch-junit-report
+						junit.failure.count="1"
+						junit.failure.message.element="${junit.failure.message.element}"
+						test.class.name="${test.class.name}"
+						test.command.name="testCompile"
+						test.results.dir="modules/test-results"
+					/>
+				</catch>
+			</trycatch>
 		</sequential>
 	</macrodef>
 
@@ -3314,7 +3513,7 @@ information. Make sure to commit in all build-lib-versions results.
 			<test-set-up>
 				<setup-test-environment />
 
-				<prepare-database-upgrade-configuration />
+				<prepare-database-upgrade-properties />
 			</test-set-up>
 		</run-batch-test>
 	</target>
@@ -6842,14 +7041,18 @@ information. Make sure to commit in all format-javadoc results.
 					</then>
 				</if>
 
-				<gradle-execute dir="modules" task="test">
-					<arg value="--continue" />
-					<arg value="-Dbuild.exclude.ant.plugin=true" />
-					<arg if:true="${run.solr.unit.tests}" value="-Dcom.liferay.portal.search.solr8.test.unit.started=true" />
-					<arg value="-Djunit.code.coverage=${test.batch.code.coverage}" />
-					<arg if:set="project.templates.test.builds" value="-Dproject.templates.test.builds=${project.templates.test.builds}" />
-					<arg value="-Dtest.class.group.index=${axis.variable}" />
-				</gradle-execute>
+				<for list="${test.class.group}" param="test.class">
+					<sequential>
+						<run-modules-junit-test test.class="@{test.class}" test.task="test">
+							<arg value="--continue" />
+							<arg value="-Dbuild.exclude.ant.plugin=true" />
+							<arg if:true="${run.solr.unit.tests}" value="-Dcom.liferay.portal.search.solr8.test.unit.started=true" />
+							<arg value="-Djunit.code.coverage=${test.batch.code.coverage}" />
+							<arg if:set="project.templates.test.builds" value="-Dproject.templates.test.builds=${project.templates.test.builds}" />
+							<arg value="-Dtest.class.group.index=${axis.variable}" />
+						</run-modules-junit-test>
+					</sequential>
+				</for>
 
 				<lstopwatch action="total" name="test.execution.duration" />
 			</test-action>
@@ -7620,7 +7823,7 @@ ${output.content}</echo>
 
 								<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.build.rest.task}">
 									<arg value="-DbuildREST.forceClientVersionDescription=false" />
-									<arg value="-DbuildREST.skipReadOnly=${build.rest.skip.read.only}" />
+									<arg value="-Dskip.read.only=${build.rest.skip.read.only}" />
 									<arg value="-Pcom.liferay.portal.tools.rest.builder.ignore.local=false" />
 								</gradle-execute>
 							</sequential>
@@ -7631,7 +7834,7 @@ ${output.content}</echo>
 
 						<gradle-execute dir="modules" forcedcacheenabled="false" task="buildREST">
 							<arg value="-DbuildREST.forceClientVersionDescription=false" />
-							<arg value="-DbuildREST.skipReadOnly=${build.rest.skip.read.only}" />
+							<arg value="-Dskip.read.only=${build.rest.skip.read.only}" />
 							<arg value="-Pcom.liferay.portal.tools.rest.builder.ignore.local=false" />
 						</gradle-execute>
 					</else>
@@ -7882,7 +8085,7 @@ tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/
 										<echo>Executing Gradle tasks: @{modules.build.service.task}</echo>
 
 										<gradle-execute dir="modules" forcedcacheenabled="false" task="@{modules.build.service.task}">
-											<arg value="-DbuildService.skipReadOnly=${build.services.skip.read.only}" />
+											<arg value="-Dskip.read.only=${build.services.skip.read.only}" />
 											<arg value="-Pcom.liferay.portal.tools.service.builder.ignore.local=false" />
 										</gradle-execute>
 									</sequential>

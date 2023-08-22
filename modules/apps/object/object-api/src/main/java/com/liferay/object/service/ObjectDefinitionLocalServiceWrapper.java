@@ -193,6 +193,14 @@ public class ObjectDefinitionLocalServiceWrapper
 	}
 
 	@Override
+	public void deployInactiveObjectDefinition(
+		com.liferay.object.model.ObjectDefinition objectDefinition) {
+
+		_objectDefinitionLocalService.deployInactiveObjectDefinition(
+			objectDefinition);
+	}
+
+	@Override
 	public void deployObjectDefinition(
 		com.liferay.object.model.ObjectDefinition objectDefinition) {
 
@@ -627,6 +635,25 @@ public class ObjectDefinitionLocalServiceWrapper
 
 		return _objectDefinitionLocalService.updateObjectDefinition(
 			objectDefinition);
+	}
+
+	@Override
+	public com.liferay.object.model.ObjectDefinition updateObjectFolderId(
+			long objectDefinitionId, long objectFolderId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectDefinitionLocalService.updateObjectFolderId(
+			objectDefinitionId, objectFolderId);
+	}
+
+	@Override
+	public com.liferay.object.model.ObjectDefinition
+			updateRootObjectDefinitionId(
+				long objectDefinitionId, long rootObjectDefinitionId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectDefinitionLocalService.updateRootObjectDefinitionId(
+			objectDefinitionId, rootObjectDefinitionId);
 	}
 
 	@Override

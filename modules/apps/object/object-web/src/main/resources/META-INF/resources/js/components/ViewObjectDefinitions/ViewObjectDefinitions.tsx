@@ -3,15 +3,13 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import ClayButton from '@clayui/button';
-import ClayIcon from '@clayui/icon';
-import ClayList from '@clayui/list';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import {FrontendDataSet} from '@liferay/frontend-data-set-web';
 import {
 	API,
 	Card,
 	getLocalizableLabel,
+	stringToURLParameterFormat,
 } from '@liferay/object-js-components-web';
 import {createResourceURL} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
@@ -26,6 +24,7 @@ import CardHeader from './CardHeader';
 import objectDefinitionModifiedDateDataRenderer from './FDSDataRenderers/ObjectDefinitionModifiedDateDataRenderer';
 import objectDefinitionStatusDataRenderer from './FDSDataRenderers/ObjectDefinitionStatusDataRenderer';
 import objectDefinitionSystemDataRenderer from './FDSDataRenderers/ObjectDefinitionSystemDataRenderer';
+import FoldersListSideBar from './FoldersListSidebar';
 import {ModalAddFolder} from './ModalAddFolder';
 import {ModalAddObjectDefinition} from './ModalAddObjectDefinition';
 import {ModalDeleteObjectDefinition} from './ModalDeleteObjectDefinition';
@@ -33,12 +32,12 @@ import {ModalEditFolder} from './ModalEditFolder';
 import {deleteObjectDefinition, getFolderActions} from './objectDefinitionUtil';
 
 import './ViewObjectDefinitions.scss';
-import {defaultLanguageId} from '../../utils/constants';
 import {ModalDeleteFolder} from './ModalDeleteFolder';
 import {ModalMoveObjectDefinition} from './ModalMoveObjectDefinition';
 
 interface ViewObjectDefinitionsProps extends IFDSTableProps {
 	baseResourceURL: string;
+	modelBuilderURL: string;
 	objectFolderPermissionsURL: string;
 	storages: LabelTypeObject[];
 }
@@ -60,8 +59,10 @@ export interface DeletedObjectDefinition extends ObjectDefinition {
 export default function ViewObjectDefinitions({
 	apiURL,
 	baseResourceURL,
+	creationMenu,
 	id,
 	items,
+	modelBuilderURL,
 	objectFolderPermissionsURL,
 	sorting,
 	storages,
@@ -121,12 +122,13 @@ export default function ViewObjectDefinitions({
 			</div>
 		);
 	}
-
 	const getURL = () => {
 		let url: string = '';
 
 		if (selectedFolder.externalReferenceCode) {
-			url = `/o/object-admin/v1.0/object-folders/by-external-reference-code/${selectedFolder.externalReferenceCode}/object-definitions`;
+			url = `/o/object-admin/v1.0/object-definitions?${stringToURLParameterFormat(
+				`filter=objectFolderExternalReferenceCode eq '${selectedFolder.externalReferenceCode}'`
+			)}`;
 		}
 
 		return url;
@@ -135,17 +137,7 @@ export default function ViewObjectDefinitions({
 	const dataSetProps = {
 		...defaultDataSetProps,
 		apiURL: Liferay.FeatureFlags['LPS-148856'] ? getURL() : apiURL,
-		creationMenu: {
-			primaryItems: [
-				{
-					href: 'addObjectDefinition',
-					id: 'addObjectDefinition',
-					label: Liferay.Language.get('create-new-object'),
-					target: 'event',
-					type: 'item',
-				},
-			],
-		},
+		creationMenu,
 		customDataRenderers: {
 			objectDefinitionLabelDataRenderer,
 			objectDefinitionModifiedDateDataRenderer,
@@ -319,67 +311,12 @@ export default function ViewObjectDefinitions({
 						/>
 					) : (
 						<>
-							<div className="lfr__object-web-view-object-definitions-folder-list-container">
-								<div className="lfr__object-web-view-object-definitions-folder-list-header">
-									<span className="lfr__object-web-view-object-definitions-folder-list-title mb-0">
-										{Liferay.Language.get(
-											'object-folders'
-										).toUpperCase()}
-									</span>
-
-									<div className="d-flex">
-										<ClayButton
-											aria-label={Liferay.Language.get(
-												'add-object-folder'
-											)}
-											className="component-action"
-											displayType="unstyled"
-											monospaced
-											onClick={() =>
-												setShowModal(
-													(
-														previousState: ViewObjectDefinitionsModals
-													) => ({
-														...previousState,
-														addFolder: true,
-													})
-												)
-											}
-										>
-											<ClayIcon symbol="plus" />
-										</ClayButton>
-									</div>
-								</div>
-
-								<ClayList className="lfr__object-web-view-object-definitions-folder-list">
-									{foldersList.map((currentFolder) => (
-										<ClayList.Item
-											action
-											active={
-												selectedFolder.externalReferenceCode ===
-												currentFolder.externalReferenceCode
-											}
-											className="cursor-pointer lfr__object-web-view-object-definitions-folder-list-item"
-											flex
-											key={currentFolder.name}
-											onClick={() => {
-												setSelectedFolder(
-													currentFolder
-												);
-											}}
-										>
-											<span className="lfr__object-web-view-object-definitions-folder-list-item-label">
-												{getLocalizableLabel(
-													defaultLanguageId,
-													currentFolder.label,
-													currentFolder.name
-												)}
-											</span>
-										</ClayList.Item>
-									))}
-								</ClayList>
-							</div>
-
+							<FoldersListSideBar
+								foldersList={foldersList as Folder[]}
+								selectedFolder={selectedFolder as Folder}
+								setSelectedFolder={setSelectedFolder}
+								setShowModal={setShowModal}
+							/>
 							<Card
 								className="lfr__object-web-view-object-definitions-card"
 								customHeader={
@@ -396,6 +333,7 @@ export default function ViewObjectDefinitions({
 											) as IItem[]
 										}
 										label={selectedFolder.label}
+										modelBuilderURL={modelBuilderURL}
 									/>
 								}
 								viewMode="no-header-border"

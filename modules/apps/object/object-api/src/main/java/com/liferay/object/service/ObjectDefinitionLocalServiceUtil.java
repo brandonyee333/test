@@ -179,6 +179,12 @@ public class ObjectDefinitionLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
+	public static void deployInactiveObjectDefinition(
+		ObjectDefinition objectDefinition) {
+
+		getService().deployInactiveObjectDefinition(objectDefinition);
+	}
+
 	public static void deployObjectDefinition(
 		ObjectDefinition objectDefinition) {
 
@@ -538,6 +544,22 @@ public class ObjectDefinitionLocalServiceUtil {
 		ObjectDefinition objectDefinition) {
 
 		return getService().updateObjectDefinition(objectDefinition);
+	}
+
+	public static ObjectDefinition updateObjectFolderId(
+			long objectDefinitionId, long objectFolderId)
+		throws PortalException {
+
+		return getService().updateObjectFolderId(
+			objectDefinitionId, objectFolderId);
+	}
+
+	public static ObjectDefinition updateRootObjectDefinitionId(
+			long objectDefinitionId, long rootObjectDefinitionId)
+		throws PortalException {
+
+		return getService().updateRootObjectDefinitionId(
+			objectDefinitionId, rootObjectDefinitionId);
 	}
 
 	public static ObjectDefinition updateSystemObjectDefinition(

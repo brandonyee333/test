@@ -5,10 +5,12 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.constants.ObjectFolderConstants;
 import com.liferay.object.exception.ObjectFolderLabelException;
 import com.liferay.object.exception.ObjectFolderNameException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectFolder;
+import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.base.ObjectFolderLocalServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
 import com.liferay.portal.aop.AopService;
@@ -18,6 +20,8 @@ import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
@@ -121,17 +125,17 @@ public class ObjectFolderLocalServiceImpl
 		}
 
 		ObjectFolder uncategorizedObjectFolder =
-			objectFolderPersistence.findByERC_C(
-				"uncategorized", objectFolder.getCompanyId());
+			objectFolderPersistence.findByC_N(
+				objectFolder.getCompanyId(),
+				ObjectFolderConstants.NAME_UNCATEGORIZED);
 
 		for (ObjectDefinition objectDefinition :
 				_objectDefinitionPersistence.findByObjectFolderId(
 					objectFolder.getObjectFolderId())) {
 
-			objectDefinition.setObjectFolderId(
+			_objectDefinitionLocalService.updateObjectFolderId(
+				objectDefinition.getObjectDefinitionId(),
 				uncategorizedObjectFolder.getObjectFolderId());
-
-			_objectDefinitionPersistence.update(objectDefinition);
 		}
 
 		return objectFolder;
@@ -169,7 +173,19 @@ public class ObjectFolderLocalServiceImpl
 		objectFolder.setExternalReferenceCode(externalReferenceCode);
 		objectFolder.setLabelMap(labelMap, LocaleUtil.getSiteDefault());
 
-		return objectFolderPersistence.update(objectFolder);
+		objectFolder = objectFolderPersistence.update(objectFolder);
+
+		for (ObjectDefinition objectDefinition :
+				_objectDefinitionPersistence.findByObjectFolderId(
+					objectFolder.getObjectFolderId())) {
+
+			Indexer<ObjectDefinition> indexer =
+				IndexerRegistryUtil.nullSafeGetIndexer(ObjectDefinition.class);
+
+			indexer.reindex(objectDefinition);
+		}
+
+		return objectFolder;
 	}
 
 	private void _validateLabel(Map<Locale, String> labelMap)
@@ -209,6 +225,9 @@ public class ObjectFolderLocalServiceImpl
 			throw new ObjectFolderNameException.MustNotBeDuplicate(name);
 		}
 	}
+
+	@Reference
+	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;

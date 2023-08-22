@@ -1598,3 +1598,48 @@ This affects anyone using these API methods.
 ### Why was this change made?
 
 These methods are no longer called by Liferay internally.
+
+---------------------------------------
+
+## Remove interface `com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker` under portal-kernel.
+- **Date:** 2023-August-11
+- **JIRA Ticket:** [LPS-182671](https://liferay.atlassian.net/browse/LPS-182671)
+
+### What changed?
+Interface `com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker` and related support logic is removed.
+
+### Who is affected?
+
+This affects anyone implementing this interface class.
+
+### How should I update my code?
+
+Implement `com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission` instead.
+
+### Why was this change made?
+
+Interface `com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker` was deprecated since 7.1 and no longer used by Liferay internally.
+
+---------------------------------------
+
+## Removed destination liferay/hot_deploy
+- **Date:** 2023-August-4
+- **JIRA Ticket:** [LPS-192680](https://liferay.atlassian.net/browse/LPS-192680)
+
+### What changed?
+
+Message bus destination `liferay/hot_deploy` and test rule `DestinationAwaitClassTestRule` are removed.
+
+### Who is affected?
+
+- Anyone who is registering `com.liferay.portal.kernel.messaging.MessageListener` to the destination to listener to hot deploy events;
+- Anyone who is using custom instance of `DestinationAwaitClassTestRule`.
+
+### How should I update my code?
+
+- Register `HotDeployListener` to listen to hot deploy events;
+- Manually implement the logic to sync with any destination
+
+### Why was this change made?
+
+This destination is no longer used in Liferay.

@@ -7,6 +7,7 @@ package com.liferay.commerce.product.internal.upgrade.registry;
 
 import com.liferay.account.settings.AccountEntryGroupSettings;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.commerce.product.internal.upgrade.v1_10_1.CommerceSiteTypeUpgradeProcess;
 import com.liferay.commerce.product.internal.upgrade.v1_11_0.CPAttachmentFileEntryGroupUpgradeProcess;
 import com.liferay.commerce.product.internal.upgrade.v1_11_1.CPDisplayLayoutUpgradeProcess;
@@ -44,7 +45,6 @@ import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.RepositoryLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactory;
 import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.BaseUuidUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
@@ -134,7 +134,7 @@ public class CommerceProductServiceUpgradeStepRegistrator
 			"1.10.0", "1.10.1",
 			new CommerceSiteTypeUpgradeProcess(
 				_classNameLocalService, _groupLocalService,
-				_configurationProvider, _settingsFactory));
+				_configurationProvider));
 
 		registry.register(
 			"1.10.1", "1.11.0",
@@ -384,6 +384,11 @@ public class CommerceProductServiceUpgradeStepRegistrator
 			UpgradeProcessFactory.alterColumnType(
 				"CPDefinitionOptionValueRel", "quantity", "BIGDECIMAL null"));
 
+		registry.register(
+			"5.6.0", "5.7.0",
+			new com.liferay.commerce.product.internal.upgrade.v5_7_0.
+				CPDefinitionLinkUpgradeProcess(_assetEntryLocalService));
+
 		if (_log.isInfoEnabled()) {
 			_log.info("Commerce product upgrade step registrator finished");
 		}
@@ -397,6 +402,9 @@ public class CommerceProductServiceUpgradeStepRegistrator
 
 	@Reference
 	private AssetCategoryLocalService _assetCategoryLocalService;
+
+	@Reference
+	private AssetEntryLocalService _assetEntryLocalService;
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
@@ -433,8 +441,5 @@ public class CommerceProductServiceUpgradeStepRegistrator
 
 	@Reference
 	private ResourcePermissionLocalService _resourcePermissionLocalService;
-
-	@Reference
-	private SettingsFactory _settingsFactory;
 
 }

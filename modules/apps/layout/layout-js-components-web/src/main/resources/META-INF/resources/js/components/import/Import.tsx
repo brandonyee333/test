@@ -6,38 +6,49 @@
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayCheckbox} from '@clayui/form';
 import ClayLayout from '@clayui/layout';
+import ClayLink from '@clayui/link';
 import ClayToolbar from '@clayui/toolbar';
 import classNames from 'classnames';
+import {useId} from 'frontend-js-components-web';
 import {fetch, navigate, openToast, sub} from 'frontend-js-web';
 import React, {useRef, useState} from 'react';
 
-import ImportResults, {ImportResultsData} from './ImportResults';
+import ImportResults, {Results, getResultsText} from './ImportResults';
 
 interface Props {
 	backURL: string;
+	helpLink?: {
+		href: string;
+		message: string;
+	};
 	importURL: string;
 	portletNamespace: string;
 }
 
+const FILE_TEXTS = {
+	initial: Liferay.Language.get('no-file-selected'),
+	loaded: Liferay.Language.get(
+		'the-file-was-loaded.-click-the-import-button-to-import-it'
+	),
+};
+
 const ZIP_EXTENSION = '.zip';
 
-function Import({backURL, importURL, portletNamespace}: Props) {
+function Import({backURL, helpLink, importURL, portletNamespace}: Props) {
 	const [error, setError] = useState<string | null>(null);
 	const [overwrite, setOverwrite] = useState<boolean>(true);
 	const [file, setFile] = useState<File | null>(null);
 	const [fileName, setFileName] = useState<string | null>(null);
-	const [
-		importResults,
-		setImportResults,
-	] = useState<ImportResultsData | null>(null);
+	const [fileText, setFileText] = useState<string>(FILE_TEXTS.initial);
+	const [importResults, setImportResults] = useState<Results | null>(null);
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
+	const fileInputId = useId();
+	const fileButtonDescriptionId = useId();
+
 	const validateFile = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (!event.target.files || event.target.files?.length === 0) {
-			setFile(null);
-			setFileName(null);
-
 			return;
 		}
 
@@ -53,9 +64,11 @@ function Import({backURL, importURL, portletNamespace}: Props) {
 
 		if (fileExtension === ZIP_EXTENSION) {
 			setError(null);
+			setFileText(FILE_TEXTS.loaded);
 		}
 		else {
 			setError(Liferay.Language.get('only-zip-files-are-allowed'));
+			setFileText(FILE_TEXTS.initial);
 		}
 	};
 
@@ -66,6 +79,7 @@ function Import({backURL, importURL, portletNamespace}: Props) {
 	const importOtherFile = () => {
 		setImportResults(null);
 		setFileName(null);
+		setFileText(FILE_TEXTS.initial);
 	};
 
 	const importFile = () => {
@@ -83,13 +97,8 @@ function Import({backURL, importURL, portletNamespace}: Props) {
 			method: 'POST',
 		})
 			.then((response) => response.json())
-			.then(({importResults}) => {
-				if (
-					!importResults ||
-					(!importResults.imported &&
-						!importResults['imported-draft'] &&
-						!importResults.invalid)
-				) {
+			.then(({importResults = {}}) => {
+				if (!Object.keys(importResults).length) {
 					navigate(backURL);
 					openToast({
 						message: sub(
@@ -101,7 +110,10 @@ function Import({backURL, importURL, portletNamespace}: Props) {
 						type: 'danger',
 					});
 				}
+
 				setImportResults(importResults);
+				setFileText(getResultsText(importResults));
+
 				setFile(null);
 			})
 			.catch(() => {
@@ -170,6 +182,10 @@ function Import({backURL, importURL, portletNamespace}: Props) {
 			</ClayToolbar>
 
 			<ClayLayout.ContainerFluid view>
+				<span aria-live="assertive" className="sr-only">
+					{fileText}
+				</span>
+
 				{importResults ? (
 					<ImportResults
 						fileName={fileName}
@@ -184,9 +200,23 @@ function Import({backURL, importURL, portletNamespace}: Props) {
 							{Liferay.Language.get('import-file')}
 						</h2>
 
-						<p className="c-mb-0 text-secondary">
+						<p
+							className="c-mb-0 text-secondary"
+							id={fileButtonDescriptionId}
+						>
 							{Liferay.Language.get(
 								'select-a-zip-file-containing-one-or-multiple-entries'
+							)}
+
+							{helpLink && (
+								<span className="ml-1">
+									<ClayLink
+										href={helpLink.href}
+										target="_blank"
+									>
+										{helpLink.message}
+									</ClayLink>
+								</span>
 							)}
 						</p>
 
@@ -195,28 +225,29 @@ function Import({backURL, importURL, portletNamespace}: Props) {
 								'has-error': error,
 							})}
 						>
-							<label htmlFor={`${portletNamespace}file`}>
+							<label htmlFor={fileInputId}>
 								{Liferay.Language.get('file-upload')}
 							</label>
 
 							<input
 								accept={ZIP_EXTENSION}
 								hidden
-								id={`${portletNamespace}file`}
+								id={fileInputId}
 								onChange={validateFile}
 								ref={fileInputRef}
 								type="file"
 							/>
 
 							<ClayButton
+								aria-describedby={fileButtonDescriptionId}
 								className="d-block"
 								displayType="secondary"
 								onClick={() => fileInputRef.current?.click()}
 								size="sm"
 							>
 								{file
-									? Liferay.Language.get('replace-files')
-									: Liferay.Language.get('select-files')}
+									? Liferay.Language.get('replace-file')
+									: Liferay.Language.get('select-file')}
 							</ClayButton>
 
 							{error && (

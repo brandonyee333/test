@@ -20,7 +20,11 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.publish.PublicationContainer;
+import org.gradle.api.publish.PublishingExtension;
+import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
+import org.gradle.api.publish.maven.tasks.PublishToMavenRepository;
 import org.gradle.api.publish.plugins.PublishingPlugin;
 import org.gradle.api.tasks.TaskContainer;
 import org.gradle.api.tasks.ant.AntTarget;
@@ -71,6 +75,8 @@ public class LiferayAntDefaultsPlugin implements Plugin<Project> {
 
 				@Override
 				public void execute(Project project) {
+					_configureExtensionPublishing(project);
+
 					GradlePluginsDefaultsUtil.setProjectSnapshotVersion(
 						project);
 
@@ -79,6 +85,8 @@ public class LiferayAntDefaultsPlugin implements Plugin<Project> {
 					// to know if we are publishing a snapshot or not.
 
 					_configureTaskPublish(project, updateVersionTask);
+
+					_configurePublishing(project);
 				}
 
 			});
@@ -165,8 +173,49 @@ public class LiferayAntDefaultsPlugin implements Plugin<Project> {
 		GradleUtil.applyPlugin(project, MavenPublishPlugin.class);
 	}
 
+	private void _configureExtensionPublishing(final Project project) {
+		PublishingExtension publishingExtension = GradleUtil.getExtension(
+			project, PublishingExtension.class);
+
+		publishingExtension.publications(
+			new Action<PublicationContainer>() {
+
+				@Override
+				public void execute(PublicationContainer publicationContainer) {
+					MavenPublication mavenPublication =
+						publicationContainer.maybeCreate(
+							"maven", MavenPublication.class);
+
+					mavenPublication.setArtifactId(
+						GradleUtil.getArchivesBaseName(project));
+					mavenPublication.setGroupId(
+						String.valueOf(project.getGroup()));
+
+					mavenPublication.artifact(_getWarFile(project));
+				}
+
+			});
+	}
+
 	private void _configureProject(Project project) {
 		project.setGroup(GradleUtil.getProjectGroup(project, _GROUP));
+	}
+
+	private void _configurePublishing(Project project) {
+		TaskContainer taskContainer = project.getTasks();
+
+		taskContainer.withType(
+			PublishToMavenRepository.class,
+			new Action<PublishToMavenRepository>() {
+
+				@Override
+				public void execute(
+					PublishToMavenRepository publishToMavenRepository) {
+
+					publishToMavenRepository.dependsOn(_WAR_TASK_NAME);
+				}
+
+			});
 	}
 
 	private void _configureTaskPublish(
@@ -182,6 +231,18 @@ public class LiferayAntDefaultsPlugin implements Plugin<Project> {
 		publishTask.finalizedBy(updatePluginVersionTask);
 	}
 
+	private File _getWarFile(Project project) {
+		File portalRootDir = GradleUtil.getRootDir(
+			project.getRootProject(), "portal-impl");
+
+		return new File(
+			new File(portalRootDir, "tools/sdk/dist"),
+			GradleUtil.getArchivesBaseName(project) + "-" +
+				project.getVersion() + ".war");
+	}
+
 	private static final String _GROUP = "com.liferay.plugins";
+
+	private static final String _WAR_TASK_NAME = "war";
 
 }

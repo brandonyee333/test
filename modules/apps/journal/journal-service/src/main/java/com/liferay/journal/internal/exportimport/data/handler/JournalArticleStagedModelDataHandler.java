@@ -918,7 +918,8 @@ public class JournalArticleStagedModelDataHandler
 						expirationDateHour, expirationDateMinute, neverExpire,
 						reviewDateMonth, reviewDateDay, reviewDateYear,
 						reviewDateHour, reviewDateMinute, neverReview,
-						article.isIndexable(), article.isSmallImage(),
+						article.isIndexable(), article.isSmallImage(), 0,
+						article.getSmallImageSource(),
 						article.getSmallImageURL(), smallFile, null, articleURL,
 						serviceContext);
 				}
@@ -935,7 +936,8 @@ public class JournalArticleStagedModelDataHandler
 						expirationDateHour, expirationDateMinute, neverExpire,
 						reviewDateMonth, reviewDateDay, reviewDateYear,
 						reviewDateHour, reviewDateMinute, neverReview,
-						article.isIndexable(), article.isSmallImage(),
+						article.isIndexable(), article.isSmallImage(), 0,
+						article.getSmallImageSource(),
 						article.getSmallImageURL(), smallFile, null, articleURL,
 						serviceContext);
 
@@ -977,7 +979,8 @@ public class JournalArticleStagedModelDataHandler
 						expirationDateHour, expirationDateMinute, neverExpire,
 						reviewDateMonth, reviewDateDay, reviewDateYear,
 						reviewDateHour, reviewDateMinute, neverReview,
-						article.isIndexable(), article.isSmallImage(),
+						article.isIndexable(), article.isSmallImage(), 0,
+						article.getSmallImageSource(),
 						article.getSmallImageURL(), smallFile, null, articleURL,
 						serviceContext);
 				}
@@ -993,7 +996,8 @@ public class JournalArticleStagedModelDataHandler
 						expirationDateHour, expirationDateMinute, neverExpire,
 						reviewDateMonth, reviewDateDay, reviewDateYear,
 						reviewDateHour, reviewDateMinute, neverReview,
-						article.isIndexable(), article.isSmallImage(),
+						article.isIndexable(), article.isSmallImage(), 0,
+						article.getSmallImageSource(),
 						article.getSmallImageURL(), smallFile, null, articleURL,
 						serviceContext);
 				}
@@ -1042,9 +1046,9 @@ public class JournalArticleStagedModelDataHandler
 					expirationDateHour, expirationDateMinute, neverExpire,
 					reviewDateMonth, reviewDateDay, reviewDateYear,
 					reviewDateHour, reviewDateMinute, neverReview,
-					article.isIndexable(), article.isSmallImage(),
-					article.getSmallImageURL(), smallFile, null, articleURL,
-					serviceContext);
+					article.isIndexable(), article.isSmallImage(), 0,
+					article.getSmallImageSource(), article.getSmallImageURL(),
+					smallFile, null, articleURL, serviceContext);
 			}
 
 			_journalArticleLocalService.updateAsset(

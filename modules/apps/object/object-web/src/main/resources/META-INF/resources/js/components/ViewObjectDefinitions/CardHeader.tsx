@@ -15,6 +15,7 @@ interface CardHeaderProps {
 	externalReferenceCode?: string;
 	items: IItem[];
 	label?: LocalizedValue<string>;
+	modelBuilderURL: string;
 	name?: string;
 }
 
@@ -22,15 +23,16 @@ export default function CardHeader({
 	externalReferenceCode,
 	items,
 	label,
+	modelBuilderURL,
 	name,
 }: CardHeaderProps) {
 	return (
 		<div className="lfr__object-web-view-object-definitions-card-header">
 			<div>
 				<div className="d-flex lfr__object-web-view-object-definitions-title-kebab">
-					<h3 className="mb-0">
+					<span className="lfr__object-web-view-object-definitions-title mb-0">
 						{getLocalizableLabel(defaultLanguageId, label, name)}
-					</h3>
+					</span>
 
 					<ClayDropDownWithItems
 						className="lfr__object-web-view-object-definitions-actions"
@@ -72,6 +74,11 @@ export default function CardHeader({
 				aria-label={Liferay.Language.get('view-in-model-builder')}
 				className="lfr__object-web-view-object-definitions-view-in-model-builder-button"
 				displayType="secondary"
+				onClick={() => {
+					window.location.href =
+						`${modelBuilderURL}` +
+						`&folderERC=${externalReferenceCode}`;
+				}}
 			>
 				{Liferay.Language.get('view-in-model-builder')}
 			</ClayButton>

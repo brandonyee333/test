@@ -169,6 +169,10 @@ public class PoshiContext {
 		return classCommandNames;
 	}
 
+	public static Map<String, Element> getCommandElements() {
+		return _commandElements;
+	}
+
 	public static String getDefaultNamespace() {
 		return _DEFAULT_NAMESPACE;
 	}
@@ -462,6 +466,10 @@ public class PoshiContext {
 		return requiredPoshiPropertyNames;
 	}
 
+	public static Map<String, Element> getRootElements() {
+		return _rootElements;
+	}
+
 	public static List<Element> getRootVarElements(
 		String classType, String className, String namespace) {
 
@@ -500,10 +508,7 @@ public class PoshiContext {
 				}
 			}
 
-			if (!properties.containsKey("test.liferay.virtual.instance") ||
-				Boolean.parseBoolean(
-					(String)properties.get("test.liferay.virtual.instance"))) {
-
+			if (!_isTestRunIndividually(properties)) {
 				properties.remove("test.class.method.name");
 			}
 
@@ -1059,6 +1064,22 @@ public class PoshiContext {
 		if (ignorableCommandNames.contains(commandName) ||
 			(rootElement.attributeValue("ignore") != null)) {
 
+			return true;
+		}
+
+		return false;
+	}
+
+	private static boolean _isTestRunIndividually(Properties properties) {
+		String testRunType = (String)properties.get("test.run.type");
+
+		if (Validator.isNotNull(testRunType) && testRunType.equals("single")) {
+			return true;
+		}
+
+		String testScope = (String)properties.get("test.scope");
+
+		if (Validator.isNotNull(testScope) && testScope.equals("global")) {
 			return true;
 		}
 

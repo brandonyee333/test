@@ -66,8 +66,16 @@ public class TestIntegrationBasePlugin implements Plugin<Project> {
 		Test testIntegrationTask = _addTaskTestIntegration(
 			project, testIntegrationSourceSet);
 
-		_configureEclipse(project, testIntegrationSourceSet);
-		_configureIdea(project, testIntegrationSourceSet);
+		project.afterEvaluate(
+			new Action<Project>() {
+
+				@Override
+				public void execute(Project project) {
+					_configureEclipse(project, testIntegrationSourceSet);
+					_configureIdea(project, testIntegrationSourceSet);
+				}
+
+			});
 
 		_configureTaskCheck(testIntegrationTask);
 	}
@@ -278,11 +286,11 @@ public class TestIntegrationBasePlugin implements Plugin<Project> {
 	}
 
 	private void _configureIdeaModule(
-		Project project, final SourceSet testIntegrationSourceSet) {
+		Project project, SourceSet testIntegrationSourceSet) {
 
 		IdeaModel ideaModel = GradleUtil.getExtension(project, IdeaModel.class);
 
-		final IdeaModule ideaModule = ideaModel.getModule();
+		IdeaModule ideaModule = ideaModel.getModule();
 
 		Map<String, Map<String, Collection<Configuration>>> scopes =
 			ideaModule.getScopes();
@@ -297,23 +305,15 @@ public class TestIntegrationBasePlugin implements Plugin<Project> {
 				testIntegrationSourceSet.
 					getRuntimeClasspathConfigurationName()));
 
-		project.afterEvaluate(
-			new Action<Project>() {
+		Set<File> testSrcDirs = new LinkedHashSet<>(
+			ideaModule.getTestSourceDirs());
 
-				@Override
-				public void execute(Project project) {
-					Set<File> testSrcDirs = new LinkedHashSet<>(
-						ideaModule.getTestSourceDirs());
+		SourceDirectorySet sourceDirectorySet =
+			testIntegrationSourceSet.getAllSource();
 
-					SourceDirectorySet sourceDirectorySet =
-						testIntegrationSourceSet.getAllSource();
+		testSrcDirs.addAll(sourceDirectorySet.getSrcDirs());
 
-					testSrcDirs.addAll(sourceDirectorySet.getSrcDirs());
-
-					ideaModule.setTestSourceDirs(testSrcDirs);
-				}
-
-			});
+		ideaModule.setTestSourceDirs(testSrcDirs);
 	}
 
 	private void _configureTaskCheck(Test test) {

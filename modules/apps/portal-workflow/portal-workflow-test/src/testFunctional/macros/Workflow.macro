@@ -6,6 +6,25 @@ definition {
 		MenuItem.click(menuItem = "Pending");
 	}
 
+	macro _matchTaskCase {
+		var key_workflowAssetTitle = ${workflowAssetTitle};
+		var key_workflowTask = ${workflowTask};
+
+		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
+
+		if (IsTextNotEqual(locator1 = "MyWorkflowTasks#ASSIGNED_TO_ME_TABLE_TASK", value1 = ${workflowTask})) {
+			var workflowTask = StringUtil.upperCaseFirstLetter(${workflowTask});
+
+			if (isSet(workflowDefinitionTask)) {
+				var workflowDefinitionTask = StringUtil.upperCaseFirstLetter(${workflowDefinitionTask});
+
+				return ${workflowDefinitionTask};
+			}
+		}
+
+		return ${workflowTask};
+	}
+
 	macro _tearDownWorkflow {
 		var noWorkflow = "No Workflow";
 
@@ -383,7 +402,7 @@ definition {
 	macro configureWorkflow {
 		var key_workflowResourceValue = ${workflowResourceValue};
 
-		if (!(IsElementPresent(locator1 = "Pagination#ICON_DISABLED", type = "angle-right"))) {
+		if (!(IsElementPresent(locator1 = "Pagination#ICON_DISABLED", type = "angle-right")) && (IsElementPresent(locator1 = "Pagination#FIRST_LINK"))) {
 			Pagination.changePagination(itemsPerPage = 40);
 		}
 

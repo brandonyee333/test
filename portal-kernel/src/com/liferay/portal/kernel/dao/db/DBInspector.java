@@ -175,11 +175,19 @@ public class DBInspector {
 			}
 
 			if (!expectedColumnNullable) {
+				String expectedColumnDefaultValue = _getColumnDefaultValue(
+					columnType);
+				String actualColumnDefaultValue = _getColumnDefaultValue(
+					resultSet.getString("COLUMN_DEF"), DB::getDefaultValue);
+
+				if (Validator.isNull(expectedColumnDefaultValue) &&
+					Validator.isNull(actualColumnDefaultValue)) {
+
+					return true;
+				}
+
 				return StringUtil.equals(
-					_getColumnDefaultValue(columnType),
-					_getColumnDefaultValue(
-						resultSet.getString("COLUMN_DEF"),
-						DB::getDefaultValue));
+					expectedColumnDefaultValue, actualColumnDefaultValue);
 			}
 
 			return true;
@@ -325,7 +333,7 @@ public class DBInspector {
 		Matcher matcher = _columnDefaultClausePattern.matcher(columnType);
 
 		if (matcher.find()) {
-			return matcher.group(1);
+			return StringUtil.unquote(matcher.group(1));
 		}
 
 		return null;
@@ -415,7 +423,7 @@ public class DBInspector {
 	private static final Log _log = LogFactoryUtil.getLog(DBInspector.class);
 
 	private static final Pattern _columnDefaultClausePattern = Pattern.compile(
-		".*DEFAULT '?(.*[^'])'? NOT NULL", Pattern.CASE_INSENSITIVE);
+		".*DEFAULT ((?:'[^']+')|(?:\\S+)) NOT NULL", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _columnSizePattern = Pattern.compile(
 		"^\\w+(?:\\((\\d+)\\))?.*", Pattern.CASE_INSENSITIVE);
 	private static final Pattern _columnTypePattern = Pattern.compile(

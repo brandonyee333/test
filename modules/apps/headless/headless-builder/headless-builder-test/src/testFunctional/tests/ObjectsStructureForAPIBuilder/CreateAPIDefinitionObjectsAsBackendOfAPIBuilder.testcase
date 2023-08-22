@@ -11,6 +11,8 @@ definition {
 		TestCase.setUpPortalInstance();
 
 		User.firstLoginUI();
+
+		SearchAdministration.executeReindex();
 	}
 
 	tearDown {
@@ -27,12 +29,12 @@ definition {
 	test CanChangeApiApplicationStatus {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given API application with applicationStatus 'unpublished', baseURL 'my-app', and title 'My App' created") {
 			var response = ApplicationAPI.createAPIApplication(
 				baseURL = "my-app",
-				statusKey = "unpublished",
-				statusName = "unpublished",
+				status = "unpublished",
 				title = "My APP");
 		}
 
@@ -66,6 +68,7 @@ definition {
 	test CanCreateApiApplicationWithValidBaseUrl {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I send request to post API application baseURL 'my-app-1234', and title 'My App'") {
 			APIExplorer.navigateToOpenAPI(
@@ -95,6 +98,7 @@ definition {
 	test CanCreateUnpublishedApiApplication {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When in ‘headless-builder/applications’ I request postAPIApplication with applicationStatus 'unpublished', baseURL 'my-app', and title 'My App'") {
 			APIExplorer.navigateToOpenAPI(
@@ -122,12 +126,12 @@ definition {
 	test CanDeleteApiApplication {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given API application with baseURL 'my-app', and title 'My App' created") {
 			var response = ApplicationAPI.createAPIApplication(
 				baseURL = "my-app",
-				statusKey = "published",
-				statusName = "published",
+				status = "published",
 				title = "My APP");
 		}
 
@@ -165,6 +169,7 @@ definition {
 	test CannotCreateApiApplicationWithInvalidBaseUrl {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I create API application baseURL 'my app 1234', and title 'My App'") {
 			APIExplorer.navigateToOpenAPI(
@@ -204,12 +209,12 @@ definition {
 	test CannotModifyApiApplicationWithInvalidStatusValue {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given API application with applicationStatus 'unpublished', baseURL 'my-app', and title 'My App' created") {
 			var response = ApplicationAPI.createAPIApplication(
 				baseURL = "my-app",
-				statusKey = "unpublished",
-				statusName = "unpublished",
+				status = "unpublished",
 				title = "My APP");
 		}
 
@@ -245,6 +250,7 @@ definition {
 	test CanSeeApiApplicationSchema {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI of 'headless-builder/applications' application") {
 			APIExplorer.navigateToOpenAPI(
@@ -263,6 +269,7 @@ definition {
 	test CanSeeApiApplicationSchemaFields {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI of 'headless-builder/applications' application") {
 			APIExplorer.navigateToOpenAPI(
@@ -281,6 +288,7 @@ definition {
 	test CanSeeApiApplicationSchemaNestedFields {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI of 'headless-builder/applications'") {
 			APIExplorer.navigateToOpenAPI(
@@ -299,6 +307,7 @@ definition {
 	test CanSeeApiEndpointSchema {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/endpoints' application") {
 			APIExplorer.navigateToOpenAPI(
@@ -317,6 +326,7 @@ definition {
 	test CanSeeApiEndpointSchemaFields {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/endpoints' application") {
 			APIExplorer.navigateToOpenAPI(
@@ -335,6 +345,7 @@ definition {
 	test CanSeeApiEndpointSchemaNestedFields {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/endpoints' application") {
 			APIExplorer.navigateToOpenAPI(
@@ -353,6 +364,7 @@ definition {
 	test CanSeeApiPropertySchema {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/properties'") {
 			APIExplorer.navigateToOpenAPI(
@@ -371,6 +383,7 @@ definition {
 	test CanSeeApiPropertySchemaFields {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/properties'") {
 			APIExplorer.navigateToOpenAPI(
@@ -389,6 +402,7 @@ definition {
 	test CanSeeApiPropertySchemaNestedFields {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/properties' application") {
 			APIExplorer.navigateToOpenAPI(
@@ -407,6 +421,7 @@ definition {
 	test CanSeeApiSchemaSchema {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/schemas'") {
 			APIExplorer.navigateToOpenAPI(
@@ -425,6 +440,7 @@ definition {
 	test CanSeeApiSchemaSchemaFields {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/schemas' application") {
 			APIExplorer.navigateToOpenAPI(
@@ -443,6 +459,7 @@ definition {
 	test CanSeeApiSchemaSchemaNestedFields {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI 'headless-builder/schemas' application") {
 			APIExplorer.navigateToOpenAPI(
@@ -461,6 +478,7 @@ definition {
 	test CanSeeHeadlessBuilderApplications {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I navigate to OpenAPI Explorer") {
 			APIExplorer.navigateToOpenAPI();

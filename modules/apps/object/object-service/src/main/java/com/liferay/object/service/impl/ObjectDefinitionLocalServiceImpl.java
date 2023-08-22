@@ -14,7 +14,9 @@ import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
+import com.liferay.object.constants.ObjectFolderConstants;
 import com.liferay.object.constants.ObjectRelationshipConstants;
+import com.liferay.object.deployer.InactiveObjectDefinitionDeployer;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.exception.NoSuchObjectFieldException;
 import com.liferay.object.exception.ObjectDefinitionAccountEntryRestrictedException;
@@ -28,6 +30,7 @@ import com.liferay.object.exception.ObjectDefinitionLabelException;
 import com.liferay.object.exception.ObjectDefinitionModifiableException;
 import com.liferay.object.exception.ObjectDefinitionNameException;
 import com.liferay.object.exception.ObjectDefinitionPluralLabelException;
+import com.liferay.object.exception.ObjectDefinitionRootObjectDefinitionIdException;
 import com.liferay.object.exception.ObjectDefinitionScopeException;
 import com.liferay.object.exception.ObjectDefinitionStatusException;
 import com.liferay.object.exception.ObjectDefinitionVersionException;
@@ -37,6 +40,7 @@ import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.field.setting.util.ObjectFieldSettingUtil;
 import com.liferay.object.internal.dao.db.ObjectDBManagerUtil;
 import com.liferay.object.internal.definition.util.ObjectDefinitionUtil;
+import com.liferay.object.internal.deployer.InactiveObjectDefinitionDeployerImpl;
 import com.liferay.object.internal.deployer.ObjectDefinitionDeployerImpl;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionLocalizationTableFactory;
 import com.liferay.object.model.ObjectAction;
@@ -55,7 +59,6 @@ import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
-import com.liferay.object.service.ObjectFolderLocalService;
 import com.liferay.object.service.ObjectLayoutLocalService;
 import com.liferay.object.service.ObjectLayoutTabLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
@@ -64,6 +67,7 @@ import com.liferay.object.service.ObjectViewLocalService;
 import com.liferay.object.service.base.ObjectDefinitionLocalServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectEntryPersistence;
 import com.liferay.object.service.persistence.ObjectFieldPersistence;
+import com.liferay.object.service.persistence.ObjectFolderPersistence;
 import com.liferay.object.service.persistence.ObjectRelationshipPersistence;
 import com.liferay.object.system.SystemObjectDefinitionManager;
 import com.liferay.petra.lang.SafeCloseable;
@@ -198,6 +202,8 @@ public class ObjectDefinitionLocalServiceImpl
 		objectDefinition.setCompanyId(user.getCompanyId());
 		objectDefinition.setUserId(user.getUserId());
 		objectDefinition.setUserName(user.getFullName());
+		objectDefinition.setObjectFolderId(
+			_getObjectFolderId(user.getCompanyId(), objectFolderId));
 
 		objectDefinition.setActive(false);
 		objectDefinition.setLabel(externalReferenceCode);
@@ -488,6 +494,36 @@ public class ObjectDefinitionLocalServiceImpl
 	}
 
 	@Override
+	public void deployInactiveObjectDefinition(
+		ObjectDefinition objectDefinition) {
+
+		undeployObjectDefinition(objectDefinition);
+
+		for (Map.Entry
+				<InactiveObjectDefinitionDeployer,
+				 Map<Long, List<ServiceRegistration<?>>>> entry :
+					_inactiveObjectDefinitionsServiceRegistrationsMaps.
+						entrySet()) {
+
+			InactiveObjectDefinitionDeployer inactiveObjectDefinitionDeployer =
+				entry.getKey();
+			Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
+				entry.getValue();
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(
+						objectDefinition.getCompanyId())) {
+
+				serviceRegistrationsMap.computeIfAbsent(
+					objectDefinition.getObjectDefinitionId(),
+					objectDefinitionId ->
+						inactiveObjectDefinitionDeployer.deploy(
+							objectDefinition));
+			}
+		}
+	}
+
+	@Override
 	public void deployObjectDefinition(ObjectDefinition objectDefinition) {
 		undeployObjectDefinition(objectDefinition);
 
@@ -714,6 +750,11 @@ public class ObjectDefinitionLocalServiceImpl
 				_workflowStatusModelPreFilterContributor,
 				_userGroupRoleLocalService));
 
+		_addingInactiveObjectDefinitionDeployer(
+			new InactiveObjectDefinitionDeployerImpl(
+				_bundleContext, _objectEntryService, _objectFieldLocalService,
+				_objectRelationshipLocalService));
+
 		_objectDefinitionDeployerServiceTracker = new ServiceTracker<>(
 			_bundleContext, ObjectDefinitionDeployer.class,
 			new ServiceTrackerCustomizer
@@ -857,6 +898,45 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
+	public ObjectDefinition updateObjectFolderId(
+			long objectDefinitionId, long objectFolderId)
+		throws PortalException {
+
+		ObjectDefinition objectDefinition =
+			objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
+
+		objectDefinition.setObjectFolderId(objectFolderId);
+
+		return objectDefinitionPersistence.update(objectDefinition);
+	}
+
+	@Override
+	public ObjectDefinition updateRootObjectDefinitionId(
+			long objectDefinitionId, long rootObjectDefinitionId)
+		throws PortalException {
+
+		ObjectDefinition objectDefinition =
+			objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
+
+		ObjectDefinition rootObjectDefinition =
+			objectDefinitionPersistence.findByPrimaryKey(
+				rootObjectDefinitionId);
+
+		if ((objectDefinitionId != rootObjectDefinitionId) &&
+			(rootObjectDefinition.getRootObjectDefinitionId() == 0)) {
+
+			throw new ObjectDefinitionRootObjectDefinitionIdException(
+				"Object definition " + rootObjectDefinitionId +
+					" is not a root object definition");
+		}
+
+		objectDefinition.setRootObjectDefinitionId(rootObjectDefinitionId);
+
+		return objectDefinitionPersistence.update(objectDefinition);
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
 	public ObjectDefinition updateSystemObjectDefinition(
 			String externalReferenceCode, long objectDefinitionId,
 			long objectFolderId, long titleObjectFieldId)
@@ -908,6 +988,29 @@ public class ObjectDefinitionLocalServiceImpl
 		if (_objectDefinitionDeployerServiceTracker != null) {
 			_objectDefinitionDeployerServiceTracker.close();
 		}
+	}
+
+	private void _addingInactiveObjectDefinitionDeployer(
+		InactiveObjectDefinitionDeployer inactiveObjectDefinitionDeployer) {
+
+		Map<Long, List<ServiceRegistration<?>>> serviceRegistrationsMap =
+			new ConcurrentHashMap<>();
+
+		for (ObjectDefinition objectDefinition :
+				_getInactiveObjectDefinitions()) {
+
+			try (SafeCloseable safeCloseable =
+					CompanyThreadLocal.setWithSafeCloseable(
+						objectDefinition.getCompanyId())) {
+
+				serviceRegistrationsMap.put(
+					objectDefinition.getObjectDefinitionId(),
+					inactiveObjectDefinitionDeployer.deploy(objectDefinition));
+			}
+		}
+
+		_inactiveObjectDefinitionsServiceRegistrationsMaps.put(
+			inactiveObjectDefinitionDeployer, serviceRegistrationsMap);
 	}
 
 	private ObjectDefinitionDeployer _addingObjectDefinitionDeployer(
@@ -1264,6 +1367,17 @@ public class ObjectDefinitionLocalServiceImpl
 			prefix, companyId, StringPool.UNDERLINE, shortName);
 	}
 
+	private List<ObjectDefinition> _getInactiveObjectDefinitions() {
+		List<ObjectDefinition> objectDefinitions = new ArrayList<>();
+
+		_companyLocalService.forEachCompanyId(
+			companyId -> objectDefinitions.addAll(
+				objectDefinitionLocalService.getObjectDefinitions(
+					companyId, false, WorkflowConstants.STATUS_APPROVED)));
+
+		return objectDefinitions;
+	}
+
 	private String _getName(String name, boolean system) {
 		name = StringUtil.trim(name);
 
@@ -1289,14 +1403,13 @@ public class ObjectDefinitionLocalServiceImpl
 		throws PortalException {
 
 		if (objectFolderId == 0) {
-			ObjectFolder objectFolder =
-				_objectFolderLocalService.getObjectFolder(
-					companyId, "Uncategorized");
+			ObjectFolder objectFolder = _objectFolderPersistence.findByC_N(
+				companyId, ObjectFolderConstants.NAME_UNCATEGORIZED);
 
 			return objectFolder.getObjectFolderId();
 		}
 
-		_objectFolderLocalService.getObjectFolder(objectFolderId);
+		_objectFolderPersistence.findByPrimaryKey(objectFolderId);
 
 		return objectFolderId;
 	}
@@ -1526,7 +1639,7 @@ public class ObjectDefinitionLocalServiceImpl
 
 		if (objectDefinition.isApproved()) {
 			if (!active && originalActive) {
-				objectDefinitionLocalService.undeployObjectDefinition(
+				objectDefinitionLocalService.deployInactiveObjectDefinition(
 					objectDefinition);
 			}
 			else if (active) {
@@ -1983,6 +2096,12 @@ public class ObjectDefinitionLocalServiceImpl
 	@Reference
 	private GroupLocalService _groupLocalService;
 
+	private final Map
+		<InactiveObjectDefinitionDeployer,
+		 Map<Long, List<ServiceRegistration<?>>>>
+			_inactiveObjectDefinitionsServiceRegistrationsMaps =
+				Collections.synchronizedMap(new LinkedHashMap<>());
+
 	@Reference
 	private Language _language;
 
@@ -2021,7 +2140,7 @@ public class ObjectDefinitionLocalServiceImpl
 	private ObjectFieldPersistence _objectFieldPersistence;
 
 	@Reference
-	private ObjectFolderLocalService _objectFolderLocalService;
+	private ObjectFolderPersistence _objectFolderPersistence;
 
 	@Reference
 	private ObjectLayoutLocalService _objectLayoutLocalService;

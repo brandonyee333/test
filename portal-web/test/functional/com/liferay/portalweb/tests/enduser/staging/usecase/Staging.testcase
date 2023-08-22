@@ -33,6 +33,7 @@ definition {
 	@priority = 5
 	test ActivateStagingAfterChangingInstanceLanguageToSpanish {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Localization",
@@ -87,6 +88,7 @@ definition {
 	test ActivateStagingPageVersioningWithCustomDefaultLanguage {
 		property release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addPrivateLayout(
 			groupName = "Site Name",
@@ -224,6 +226,7 @@ definition {
 	@priority = 3
 	test AssertCannotPublishUnselectedChildPage {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given: Enable local staging with a blank site") {
 			JSONStaging.enableLocalStaging(groupName = "Site Name");
@@ -273,6 +276,7 @@ definition {
 	@priority = 4
 	test CanEnableLocalStagingOnInheritedSite {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given: Create a site with new site template with disable llow site administrators to modify pages associated with this site template, even when propagation of changes is enabled and Ready for Propagation,the testcase is blocked by LPS-146160.") {
 			SiteTemplates.addCP(
@@ -309,6 +313,7 @@ definition {
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
 		property databases.size = "1";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given: Add 10 content pages with 2 Grid modules and 2 WCD in each") {
 			for (var pageCount : list "1,2,3") {
@@ -536,6 +541,7 @@ definition {
 	@priority = 3
 	test ConfigureDDMStructureViaAPWhenNotStagedAssets {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.name = "Data Engine";
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -583,10 +589,67 @@ definition {
 			selectedAsset = "Web Content Article");
 	}
 
+	@description = "This is a use case for LPS-189191. TC-1: Verify that the admin could configure staging to ignore previews and thumbnails during the local staging publish process."
+	@priority = 4
+	test ConfigureIgnorePreviewsAndThumbnails {
+		property custom.properties = "feature.flag.LPS-189187=true";
+		property test.liferay.virtual.instance = "false";
+
+		task ("Given: Verify that the checkbox Include Thumbnails And Previews During Staging is checked by default") {
+			StagingNavigator.openToConfigInSystemSettings(portlet = "Export/Import, Staging");
+
+			AssertChecked.assertCheckedNotVisible(
+				key_settingFieldName = "Include Thumbnails And Previews During Staging",
+				locator1 = "SystemSettings#SETTING_FIELD_NAME_CHECKBOX");
+
+			SystemSettings.viewSettingsText(settingsText = "If checked, then the generated previews and thumbnails will be included during staging process.");
+
+			StagingNavigator.openToConfigInInstanceSettings(portlet = "Export/Import, Staging");
+
+			AssertChecked.assertCheckedNotVisible(
+				key_settingFieldName = "Include Thumbnails And Previews During Staging",
+				locator1 = "SystemSettings#SETTING_FIELD_NAME_CHECKBOX");
+
+			SystemSettings.viewSettingsText(settingsText = "If checked, then the generated previews and thumbnails will be included during staging process.");
+		}
+
+		task ("And: Enable local staging and add a new file to DM") {
+			JSONStaging.enableLocalStaging(groupName = "Site Name");
+
+			JSONDocument.addFileWithUploadedFile(
+				dmDocumentDescription = "DM Document Description",
+				dmDocumentTitle = "DM Document Title",
+				groupName = "Site Name-staging",
+				mimeType = "image/jpeg",
+				sourceFileName = "Document_1.jpg");
+		}
+
+		task ("When: Create a new publish process") {
+			Navigator.gotoStagedSitePage(
+				pageName = "Staging Test Page",
+				siteName = "Site Name");
+
+			Staging.gotoPublishToLive();
+		}
+
+		task ("Then: Assert the Previews and Thumbnails are displayed under DM item") {
+			Staging.configurePublishToLive(
+				checkContentNameList = "Documents and Media",
+				includeThumbnailsAndPreviewsDuringStaging = "true");
+
+			Staging.publishToLive();
+
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
+
+			DMDocument.viewPG(dmDocumentTitle = "DM Document Title");
+		}
+	}
+
 	@description = "This is a use case for LPS-92039 and LPS-92636."
 	@priority = 3
 	test CreateWidgetTemplateWhenNotStagedADT {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ApplicationDisplayTemplates.openWidgetTemplatesAdmin(siteURLKey = "site-name");
 
@@ -795,6 +858,70 @@ definition {
 			uploadFrom = "dependencies");
 	}
 
+	@description = "This is a use case for LPS-189191. TC-2 and TC-4: Verify that the instance setting is able to overwrite the system setting via osgi file to ignore previews and thumbnails during the local staging publish process."
+	@priority = 4
+	test InstanceSettingOfPreviewsAndThumbnailsCanOverwriteSystemSetting {
+		property custom.properties = "feature.flag.LPS-189187=true";
+		property test.liferay.virtual.instance = "false";
+
+		task ("Given: Instance setting overwrite system setting via osgi file") {
+			var companyId = JSONCompany.getCompanyId();
+
+			OSGiConfig.deployOSGiConfigFile(
+				osgiConfigFileName = "com.liferay.exportimport.configuration.ExportImportServiceConfiguration.scoped~companyId.config",
+				osgiConfigs = "companyId=L\"${companyId}\",includeThumbnailsAndPreviewsDuringStaging=B\"false\"");
+
+			OSGiConfig.waitForOSGiConfig();
+
+			StagingNavigator.openToConfigInSystemSettings(portlet = "Export/Import, Staging");
+
+			AssertChecked.assertCheckedNotVisible(
+				key_settingFieldName = "Include Thumbnails And Previews During Staging",
+				locator1 = "SystemSettings#SETTING_FIELD_NAME_CHECKBOX");
+
+			StagingNavigator.openToConfigInInstanceSettings(portlet = "Export/Import, Staging");
+
+			AssertNotChecked.assertNotCheckedNotVisible(
+				key_settingFieldName = "Include Thumbnails And Previews During Staging",
+				locator1 = "SystemSettings#SETTING_FIELD_NAME_CHECKBOX");
+		}
+
+		task ("And: Enable local staging and add a new file to DM") {
+			JSONStaging.enableLocalStaging(groupName = "Site Name");
+
+			JSONDocument.addFileWithUploadedFile(
+				dmDocumentDescription = "DM Document Description",
+				dmDocumentTitle = "DM Document Title",
+				groupName = "Site Name-staging",
+				mimeType = "image/jpeg",
+				sourceFileName = "Document_1.jpg");
+		}
+
+		task ("When: Create a new publish process") {
+			Navigator.gotoStagedSitePage(
+				pageName = "Staging Test Page",
+				siteName = "Site Name");
+
+			Staging.gotoPublishToLive();
+		}
+
+		task ("Then: Assert the Previews and Thumbnails are not displayed under DM item") {
+			Staging.configurePublishToLive(
+				checkContentNameList = "Documents and Media",
+				includeThumbnailsAndPreviewsDuringStaging = "false");
+
+			Staging.publishToLive();
+
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
+
+			DMDocument.viewPG(dmDocumentTitle = "DM Document Title");
+		}
+
+		task ("And: Verify the new LAR does not contain adaptive-media folder") {
+			Staging.validateFolderNotExist();
+		}
+	}
+
 	@priority = 5
 	test NotStagedAssets {
 		property portal.acceptance = "true";
@@ -826,6 +953,7 @@ definition {
 	@priority = 4
 	test PublishChildPageWithoutItsParentPage {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
@@ -894,6 +1022,7 @@ definition {
 		property databases.size = "1";
 		property minimum.slave.ram = "24";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.name = "Data Engine";
 
 		HeadlessSite.addSite(
@@ -1046,10 +1175,10 @@ definition {
 	}
 
 	@description = "This is a test for LPS-149374. TC-4: Verify if Publish Displayed Content by Default is set to false, DDL content will not be published via portlet if content is unchecked in the staging process."
-	@ignore = "true"
 	@priority = 4
 	test PublishDDLViaPortletWithoutContent {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given: Unable the publish displayed content by default function and enable local staging") {
 			SystemSettings.openSystemSettingsAdmin();
@@ -1259,6 +1388,7 @@ definition {
 	@priority = 4
 	test PublishReviewedPageRevision {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
@@ -1460,6 +1590,7 @@ definition {
 	test PublishTemplateWithPages {
 		property release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addPrivateLayout(
 			groupName = "Site Name",
@@ -1486,6 +1617,7 @@ definition {
 	@priority = 4
 	test PublishViaPortletWithoutContent {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given: Unable the publish displayed content by default function and enable local staging") {
 			SystemSettings.openSystemSettingsAdmin();
@@ -1695,6 +1827,7 @@ definition {
 		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
 		property databases.size = "1";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var companyId = JSONCompany.getCompanyId(portalURL = "http://localhost:9080");
 
@@ -1805,6 +1938,7 @@ definition {
 	@priority = 3
 	test PublishWebContentWithUnchangedReferencedContent {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addWidgetToPublicLayout(
 			groupName = "Site Name",
@@ -2022,6 +2156,7 @@ definition {
 	test StagingMultipleDM {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		JSONLayout.addWidgetToPublicLayout(
@@ -2079,6 +2214,7 @@ definition {
 	test StagingOnlyApprovedPublishToLive {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		JSONLayout.addPublicLayout(
@@ -2250,6 +2386,7 @@ definition {
 		property databases.size = "1";
 		property minimum.slave.ram = "24";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		APNavigator.openToConfigInSystemSettings(portlet = "Asset Publisher");
 
@@ -2330,6 +2467,7 @@ definition {
 	@priority = 4
 	test StagingWithPublishTemplate {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
@@ -2364,6 +2502,10 @@ definition {
 		Portlet.addPG(portletName = "Documents and Media");
 
 		DMDocument.enableActionsMenuOnPortlet();
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Test Page 1",
+			siteName = "Site Name");
 
 		DMDocument.addPG(
 			dmDocumentDescription = "DM Document Description",
@@ -2476,6 +2618,7 @@ definition {
 	@priority = 3
 	test StagingWithReplicateIndividualDeletionsByDefault {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",
@@ -2538,8 +2681,7 @@ definition {
 			webContentTitle = "Web Content Title 2");
 	}
 
-	@description = "This is a use case for LPS-164933. Verify that it's possible to view the HTML Title and Description in SEO after changing the page name. Blocked by LPS-164933."
-	@ignore = "true"
+	@description = "This is a use case for LPS-164933. Verify that it's possible to view the HTML Title and Description in SEO after changing the page name."
 	@priority = 4
 	test TitleAndDescriptionAreViewableInSEOAfterChangingPageName {
 		task ("Given: Enable local staging with page versioning") {
@@ -2603,6 +2745,7 @@ definition {
 	@priority = 3
 	test ValidateFriendlyURLWithSpecialCharacters {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
 
@@ -2635,6 +2778,7 @@ definition {
 	@priority = 4
 	test ViewHistoryVersionWithDeletedUser {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
@@ -2722,6 +2866,7 @@ definition {
 	@priority = 4
 	test ViewLastPublishDateBehaviourAfterInitialPublication {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONWebcontent.addWebContent(
 			content = "Web Content Content",
@@ -2804,6 +2949,7 @@ definition {
 	@priority = 4
 	test ViewPageOrderWithStaging {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
@@ -2830,6 +2976,7 @@ definition {
 	@priority = 2
 	test ViewParentPageNameAfterPublishChangesInChildPage {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
@@ -2962,6 +3109,7 @@ definition {
 	@priority = 5
 	test ViewPublishDocumentTypeWithConfiguredAssetType {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addWidgetToPublicLayout(
 			groupName = "Site Name",
@@ -3043,6 +3191,7 @@ definition {
 	@priority = 3
 	test ViewPublishWCWithConfiguredCategoriesFilter {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONLayout.addWidgetToPublicLayout(
 			groupName = "Site Name",
@@ -3148,6 +3297,7 @@ definition {
 	@priority = 4
 	test ViewSimplePublicationAfterDeleteDocumentInGlobal {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		PageTemplatesAdmin.openPageTemplatesAdmin(siteURLKey = "global");
 

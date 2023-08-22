@@ -134,7 +134,13 @@ public class LayoutReportsProductNavigationControlMenuEntry
 		IconTag iconTag = new IconTag();
 
 		iconTag.setCssClass("icon-monospaced");
-		iconTag.setSymbol("info-circle");
+
+		if (FeatureFlagManagerUtil.isEnabled("LPS-187284")) {
+			iconTag.setSymbol("search-experiences");
+		}
+		else {
+			iconTag.setSymbol("info-circle");
+		}
 
 		try {
 			values.put(
@@ -331,32 +337,41 @@ public class LayoutReportsProductNavigationControlMenuEntry
 						ProductNavigationControlMenuEntryConstants.
 							SESSION_CLICKS_KEY)
 				).put(
-					() -> {
-						if (!FeatureFlagManagerUtil.isEnabled("LPS-187284")) {
-							return "layoutReportsDataURL";
-						}
-
-						return "layoutReportsTabsURL";
-					},
+					"layoutReportsDataURL",
 					() -> {
 						ThemeDisplay themeDisplay =
 							(ThemeDisplay)httpServletRequest.getAttribute(
 								WebKeys.THEME_DISPLAY);
 
-						if (!FeatureFlagManagerUtil.isEnabled("LPS-187284")) {
-							return HttpComponentsUtil.addParameters(
-								StringBundler.concat(
-									themeDisplay.getPortalURL(),
-									themeDisplay.getPathMain(),
-									"/layout_reports",
-									"/get_layout_reports_data"),
-								"p_l_id", themeDisplay.getPlid());
+						if (FeatureFlagManagerUtil.isEnabled("LPS-187284")) {
+							String layoutReportsDataURL =
+								HttpComponentsUtil.addParameters(
+									StringBundler.concat(
+										themeDisplay.getPortalURL(),
+										themeDisplay.getPathMain(),
+										"/layout_reports",
+										"/get_layout_reports_data"),
+									"p_l_id", themeDisplay.getPlid());
+
+							long segmentsExperienceId = ParamUtil.getLong(
+								_portal.getOriginalServletRequest(
+									httpServletRequest),
+								"segmentsExperienceId", -1);
+
+							if (segmentsExperienceId == -1) {
+								return layoutReportsDataURL;
+							}
+
+							return HttpComponentsUtil.addParameter(
+								layoutReportsDataURL, "segmentsExperienceId",
+								segmentsExperienceId);
 						}
 
 						return HttpComponentsUtil.addParameters(
-							themeDisplay.getPortalURL() +
-								themeDisplay.getPathMain() +
-									"/layout_reports/get_layout_reports_tabs",
+							StringBundler.concat(
+								themeDisplay.getPortalURL(),
+								themeDisplay.getPathMain(), "/layout_reports",
+								"/get_google_page_speed_data"),
 							"p_l_id", themeDisplay.getPlid());
 					}
 				).build(),

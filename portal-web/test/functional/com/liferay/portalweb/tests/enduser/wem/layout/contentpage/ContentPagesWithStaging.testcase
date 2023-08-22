@@ -229,6 +229,7 @@ definition {
 	@priority = 4
 	test CannotViewSiteMapOfStagingSiteAsGuest {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Add a content page") {
 			JSONLayout.addPublicLayout(
@@ -1241,9 +1242,7 @@ definition {
 		}
 
 		task ("View the naturalWidth doesn't change") {
-			TestUtils.assertEquals(
-				actual = ${editedNaturalWidth},
-				expected = ${naturalWidth});
+			StringUtil.assertEquals(${naturalWidth}, ${editedNaturalWidth});
 		}
 
 		task ("View the naturalHeight becomes smaller") {
@@ -1269,9 +1268,7 @@ definition {
 		}
 
 		task ("View the naturalWidth doesn't change") {
-			TestUtils.assertEquals(
-				actual = ${editedNaturalWidth},
-				expected = ${naturalWidth});
+			StringUtil.assertEquals(${naturalWidth}, ${editedNaturalWidth});
 		}
 
 		task ("View the naturalHeight becomes smaller") {
@@ -1301,9 +1298,7 @@ definition {
 		}
 
 		task ("View the naturalWidth doesn't change") {
-			TestUtils.assertEquals(
-				actual = ${editedNaturalWidth},
-				expected = ${naturalWidth});
+			StringUtil.assertEquals(${naturalWidth}, ${editedNaturalWidth});
 		}
 
 		task ("View the naturalHeight becomes smaller") {

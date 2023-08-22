@@ -17,6 +17,7 @@ import com.liferay.poshi.core.util.CharPool;
 import com.liferay.poshi.core.util.FileUtil;
 import com.liferay.poshi.core.util.GetterUtil;
 import com.liferay.poshi.core.util.OSDetector;
+import com.liferay.poshi.core.util.RegexUtil;
 import com.liferay.poshi.core.util.StringPool;
 import com.liferay.poshi.core.util.StringUtil;
 import com.liferay.poshi.core.util.Validator;
@@ -4253,7 +4254,7 @@ public abstract class BaseWebDriverImpl implements LiferaySelenium, WebDriver {
 			public boolean evaluate() throws Exception {
 				String text = getText(locator);
 
-				return text.matches(regex);
+				return text.matches(RegexUtil.escapeRegexChars(regex));
 			}
 
 		};

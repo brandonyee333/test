@@ -88,6 +88,8 @@ public class PoshiProperties extends Properties {
 
 	public static final String PROXY_SERVER_PORT = "proxy.server.port";
 
+	public static final String REPORT_TYPE = "report.type";
+
 	public static final String SAVE_SCREENSHOT = "save.screenshot";
 
 	public static final String SAVE_WEB_PAGE = "save.web.page";
@@ -320,6 +322,7 @@ public class PoshiProperties extends Properties {
 		getProperty(PROXY_SERVER_ENABLED));
 	public int proxyServerPort = GetterUtil.getInteger(
 		getProperty(PROXY_SERVER_PORT));
+	public Boolean reportType = GetterUtil.getBoolean(getProperty(REPORT_TYPE));
 	public boolean saveScreenshot = GetterUtil.getBoolean(
 		getProperty(SAVE_SCREENSHOT));
 	public boolean saveWebPage = GetterUtil.getBoolean(

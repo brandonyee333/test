@@ -7,7 +7,9 @@ const wrapper = fragmentElement;
 
 const fileInput = document.getElementById(`${fragmentNamespace}-file-upload`);
 const fileName = wrapper.querySelector('.forms-file-upload-file-name');
-const removeButton = wrapper.querySelector("[type='button']");
+const removeButton = document.getElementById(
+	`${fragmentNamespace}-file-upload-remove-button`
+);
 const selectButton = wrapper.querySelector('.btn-secondary');
 
 function showRemoveButton() {
@@ -54,5 +56,15 @@ else {
 
 	if (input.attributes.selectFromDocumentLibrary) {
 		selectButton.addEventListener('click', onSelectFile);
+	}
+	else {
+		selectButton.addEventListener('click', () => {
+			fileInput.type = 'file';
+			fileInput.click();
+		});
+	}
+
+	if (fileName.innerText !== '') {
+		showRemoveButton();
 	}
 }

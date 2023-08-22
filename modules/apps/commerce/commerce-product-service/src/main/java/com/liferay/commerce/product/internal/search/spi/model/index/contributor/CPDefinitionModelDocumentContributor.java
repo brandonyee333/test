@@ -8,6 +8,7 @@ package com.liferay.commerce.product.internal.search.spi.model.index.contributor
 import com.liferay.account.constants.AccountConstants;
 import com.liferay.account.model.AccountGroupRel;
 import com.liferay.account.service.AccountGroupRelLocalService;
+import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.commerce.media.CommerceMediaResolver;
 import com.liferay.commerce.price.list.constants.CommercePriceListConstants;
 import com.liferay.commerce.price.list.model.CommercePriceEntry;
@@ -30,7 +31,6 @@ import com.liferay.commerce.product.service.CPDefinitionLinkLocalService;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
 import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.commerce.product.service.CommerceChannelRelLocalService;
-import com.liferay.commerce.util.CommerceBigDecimalUtil;
 import com.liferay.friendly.url.model.FriendlyURLEntry;
 import com.liferay.friendly.url.service.FriendlyURLEntryLocalService;
 import com.liferay.petra.function.transform.TransformUtil;
@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.BigDecimalUtil;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -105,6 +106,12 @@ public class CPDefinitionModelDocumentContributor
 			document.addKeyword(
 				CPField.ACCOUNT_GROUP_FILTER_ENABLED,
 				cpDefinition.isAccountGroupFilterEnabled());
+			document.addKeyword(
+				CPField.ASSET_CATEGORY_NAMES,
+				_toLowerCaseStringArray(
+					_assetCategoryLocalService.getCategoryNames(
+						CPDefinition.class.getName(),
+						cpDefinition.getCPDefinitionId())));
 
 			BigDecimal basePrice = _getBasePrice(cpDefinition.getCPInstances());
 
@@ -551,12 +558,12 @@ public class CPDefinitionModelDocumentContributor
 			BigDecimal promoPrice = cpInstance.getPromoPrice();
 
 			if ((promoPrice.compareTo(BigDecimal.ZERO) > 0) &&
-				CommerceBigDecimalUtil.lt(promoPrice, price)) {
+				BigDecimalUtil.lt(promoPrice, price)) {
 
 				price = promoPrice;
 			}
 
-			if (CommerceBigDecimalUtil.lt(price, lowestPrice)) {
+			if (BigDecimalUtil.lt(price, lowestPrice)) {
 				lowestPrice = price;
 			}
 		}
@@ -646,11 +653,22 @@ public class CPDefinitionModelDocumentContributor
 		return false;
 	}
 
+	private String[] _toLowerCaseStringArray(String[] categoryNames) {
+		for (int i = 0; i < categoryNames.length; i++) {
+			categoryNames[i] = categoryNames[i].toLowerCase();
+		}
+
+		return categoryNames;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CPDefinitionModelDocumentContributor.class);
 
 	@Reference
 	private AccountGroupRelLocalService _accountGroupRelLocalService;
+
+	@Reference
+	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;

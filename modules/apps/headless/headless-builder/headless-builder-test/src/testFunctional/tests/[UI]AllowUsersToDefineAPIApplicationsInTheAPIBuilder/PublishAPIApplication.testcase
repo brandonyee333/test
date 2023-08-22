@@ -12,6 +12,8 @@ definition {
 
 		User.firstLoginUI();
 
+		SearchAdministration.executeReindex();
+
 		task ("Given create an API application through Control Panel > Object > API Builder") {
 			APIBuilderUI.createAPIApplication(
 				addByPlus = "true",
@@ -33,6 +35,7 @@ definition {
 	test CanBackToAPIBuilderAfterCancel {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("And Given I edit the API application") {
 			APIBuilderUI.goToEditAPIApplicationPage(key_title = "App-test");
@@ -53,6 +56,7 @@ definition {
 	test CanGetPublishedStatusInResponse {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("And given publish the API application in edit application wizard") {
 			APIBuilderUI.publishApplication(key_title = "App-test");
@@ -75,6 +79,7 @@ definition {
 	test CanGetUpdatedTitleInResponseAfterPublish {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given I publish an API application") {
 			APIBuilderUI.publishApplication(key_title = "App-test");
@@ -107,6 +112,7 @@ definition {
 	test CanPromptCancelChangesDialog {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("And Given I edit the title of the API application") {
 			APIBuilderUI.goToEditAPIApplicationPage(key_title = "App-test");
@@ -133,6 +139,7 @@ definition {
 	test CanPublishAPIApplication {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I click Publish button in edit application wizard") {
 			APIBuilderUI.publishApplication(key_title = "App-test");
@@ -150,6 +157,7 @@ definition {
 	test CanPublishAPIApplicationWithChangePublicationStatus {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I click Change Publication Status") {
 			APIBuilderUI.changePublicationStatus(key_title = "App-test");
@@ -167,6 +175,7 @@ definition {
 	test CanUpdateTitleAfterRePublish {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("Given I publish an API application") {
 			APIBuilderUI.publishApplication(key_title = "App-test");
@@ -200,6 +209,7 @@ definition {
 	test GetAvailableButtonsAfterPublish {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I publish the API application in edit application wizard") {
 			APIBuilderUI.publishApplication(key_title = "App-test");
@@ -216,6 +226,7 @@ definition {
 	test GetAvailableButtonsBeforePublish {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		task ("When I edit the API application") {
 			APIBuilderUI.goToEditAPIApplicationPage(key_title = "App-test");

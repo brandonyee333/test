@@ -43,6 +43,17 @@ public class HypersonicDB extends BaseDB {
 	}
 
 	@Override
+	public String getDefaultValue(String columnDef) {
+		String defaultValue = super.getDefaultValue(columnDef);
+
+		if (defaultValue.equals("NULL")) {
+			return null;
+		}
+
+		return defaultValue;
+	}
+
+	@Override
 	public String getPopulateSQL(String databaseName, String sqlContent) {
 		return StringPool.BLANK;
 	}
@@ -222,6 +233,23 @@ public class HypersonicDB extends BaseDB {
 						"alter table @table@ alter column @old-column@ @type@;",
 						REWORD_TEMPLATE, template);
 
+					String defaultValue = template[template.length - 2];
+
+					if (Validator.isBlank(defaultValue)) {
+						line = line.concat(
+							StringUtil.replace(
+								"alter table @table@ alter column " +
+									"@old-column@ set default null;",
+								REWORD_TEMPLATE, template));
+					}
+					else {
+						line = line.concat(
+							StringUtil.replace(
+								"alter table @table@ alter column " +
+									"@old-column@ set default @default@;",
+								REWORD_TEMPLATE, template));
+					}
+
 					String nullable = template[template.length - 1];
 
 					if (!Validator.isBlank(nullable)) {
@@ -229,6 +257,13 @@ public class HypersonicDB extends BaseDB {
 							StringUtil.replace(
 								"alter table @table@ alter column " +
 									"@old-column@ set @nullable@;",
+								REWORD_TEMPLATE, template));
+					}
+					else {
+						line = line.concat(
+							StringUtil.replace(
+								"alter table @table@ alter column " +
+									"@old-column@ set null;",
 								REWORD_TEMPLATE, template));
 					}
 				}

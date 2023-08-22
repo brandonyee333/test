@@ -304,9 +304,10 @@ public class EditInfoItemStrutsActionTest {
 		ListTypeEntry listTypeEntry2 = _listTypeEntries.get(1);
 
 		UploadPortletRequest uploadPortletRequest = _getUploadPortletRequest(
-			null, null, "-99999999999999.9999999999999999",
-			Boolean.TRUE.toString(), 0, "2023-03-01", "2023-03-01T11:08", null,
-			"-999.9999999999999", "-123456", "-9007199254740991",
+			RandomTestUtil.randomString(), null,
+			"-99999999999999.9999999999999999", Boolean.TRUE.toString(), 0,
+			"2023-03-01", "2023-03-01T11:08", null, "-999.9999999999999",
+			"-123456", "-9007199254740991",
 			Arrays.asList(listTypeEntry1.getKey(), listTypeEntry2.getKey()),
 			listTypeEntry1.getKey(), "<p>TITLE</p>", null, null);
 
@@ -332,7 +333,7 @@ public class EditInfoItemStrutsActionTest {
 		ListTypeEntry listTypeEntry3 = _listTypeEntries.get(2);
 
 		uploadPortletRequest = _getUploadPortletRequest(
-			null, null, "99999999999999.9999999999999999",
+			"file", null, "99999999999999.9999999999999999",
 			Boolean.FALSE.toString(), objectEntry.getObjectEntryId(),
 			"2020-03-01", "2023-03-01T11:11", null, "999.9999999999999",
 			"123456", "9007199254740991",
@@ -350,6 +351,17 @@ public class EditInfoItemStrutsActionTest {
 			objectEntry.getObjectEntryId());
 
 		Map<String, Serializable> values = objectEntry.getValues();
+
+		long fileEntryId = GetterUtil.getLong(values.get("myAttachment"));
+
+		DLFileEntry dlFileEntry = _dlFileEntryLocalService.fetchDLFileEntry(
+			fileEntryId);
+
+		Assert.assertEquals(
+			"file",
+			StringUtil.removeSubstring(
+				_textExtractor.extractText(dlFileEntry.getContentStream(), -1),
+				StringPool.NEW_LINE));
 
 		Assert.assertEquals(
 			Boolean.FALSE.toString(), String.valueOf(values.get("myBoolean")));
@@ -476,6 +488,76 @@ public class EditInfoItemStrutsActionTest {
 
 		Assert.assertEquals(
 			Boolean.FALSE.toString(), String.valueOf(values.get("myBoolean")));
+	}
+
+	@FeatureFlags("LPS-183727")
+	@Test
+	public void testUpdateInfoItemWithEmptyValues() throws Exception {
+		MockHttpServletResponse mockHttpServletResponse =
+			new MockHttpServletResponse();
+
+		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
+
+		PipingServletResponse pipingServletResponse = new PipingServletResponse(
+			mockHttpServletResponse, unsyncStringWriter);
+
+		ListTypeEntry listTypeEntry = _listTypeEntries.get(0);
+
+		UploadPortletRequest uploadPortletRequest = _getUploadPortletRequest(
+			null, null, "-99999999999999.9999999999999999",
+			Boolean.TRUE.toString(), 0, "2023-03-01", null, null,
+			"-999.9999999999999", "-123456", "-9007199254740991", null,
+			listTypeEntry.getKey(), "<p>TITLE</p>", null, null);
+
+		_processEvents(uploadPortletRequest, mockHttpServletResponse, _user);
+
+		_editInfoItemStrutsAction.execute(
+			uploadPortletRequest, pipingServletResponse);
+
+		mockHttpServletResponse = new MockHttpServletResponse();
+
+		unsyncStringWriter = new UnsyncStringWriter();
+
+		pipingServletResponse = new PipingServletResponse(
+			mockHttpServletResponse, unsyncStringWriter);
+
+		List<ObjectEntry> objectEntries =
+			_objectEntryLocalService.getObjectEntries(
+				0, _objectDefinition.getObjectDefinitionId(), QueryUtil.ALL_POS,
+				QueryUtil.ALL_POS);
+
+		ObjectEntry objectEntry = objectEntries.get(0);
+
+		uploadPortletRequest = _getUploadPortletRequest(
+			null, null, StringPool.BLANK, StringPool.BLANK,
+			objectEntry.getObjectEntryId(), StringPool.BLANK, null, null,
+			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, null,
+			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, null);
+
+		uploadPortletRequest.getParameterMap();
+
+		_processEvents(uploadPortletRequest, mockHttpServletResponse, _user);
+
+		_editInfoItemStrutsAction.execute(
+			uploadPortletRequest, pipingServletResponse);
+
+		objectEntry = _objectEntryLocalService.fetchObjectEntry(
+			objectEntry.getObjectEntryId());
+
+		Map<String, Serializable> values = objectEntry.getValues();
+
+		Assert.assertEquals(
+			Boolean.FALSE.toString(), String.valueOf(values.get("myBoolean")));
+		Assert.assertNull(values.get("myDate"));
+		Assert.assertEquals("0.0", String.valueOf(values.get("myDecimal")));
+		Assert.assertEquals("0", String.valueOf(values.get("myInteger")));
+		Assert.assertEquals("0", String.valueOf(values.get("myLongInteger")));
+		Assert.assertEquals(
+			StringPool.BLANK, String.valueOf(values.get("myPicklist")));
+		Assert.assertEquals(
+			"0E-16", String.valueOf(values.get("myPrecisionDecimal")));
+		Assert.assertEquals(
+			StringPool.BLANK, String.valueOf(values.get("myRichText")));
 	}
 
 	private Layout _addLayout() throws Exception {
@@ -818,7 +900,7 @@ public class EditInfoItemStrutsActionTest {
 				).put(
 					"myDate",
 					() -> {
-						if (Validator.isNotNull(dateValueInput)) {
+						if (dateValueInput != null) {
 							return Collections.singletonList(dateValueInput);
 						}
 

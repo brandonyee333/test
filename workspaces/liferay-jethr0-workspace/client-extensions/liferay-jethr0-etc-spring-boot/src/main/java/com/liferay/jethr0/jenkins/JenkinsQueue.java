@@ -54,10 +54,16 @@ public class JenkinsQueue {
 		_jenkinsServerRepository.initializeRelationships();
 
 		invoke();
+
+		_initialized = true;
 	}
 
 	public void invoke() {
 		update();
+	}
+
+	public boolean isInitialized() {
+		return _initialized;
 	}
 
 	@Scheduled(cron = "${liferay.jethr0.jenkins.queue.update.cron}")
@@ -117,6 +123,8 @@ public class JenkinsQueue {
 
 	@Autowired
 	private BuildRunRepository _buildRunRepository;
+
+	private boolean _initialized;
 
 	@Autowired
 	private JenkinsCohortRepository _jenkinsCohortRepository;

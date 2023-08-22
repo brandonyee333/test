@@ -63,7 +63,7 @@ import com.liferay.portal.kernel.service.ThemeLocalService;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
-import com.liferay.portal.kernel.settings.SettingsFactory;
+import com.liferay.portal.kernel.settings.ArchivedSettingsFactory;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.language.override.service.PLOEntryLocalService;
@@ -72,6 +72,7 @@ import com.liferay.segments.service.SegmentsEntryLocalService;
 import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.site.initializer.SiteInitializer;
 import com.liferay.site.initializer.extender.CommerceSiteInitializer;
+import com.liferay.site.initializer.extender.OSBSiteInitializer;
 import com.liferay.site.navigation.service.SiteNavigationMenuItemLocalService;
 import com.liferay.site.navigation.service.SiteNavigationMenuLocalService;
 import com.liferay.site.navigation.type.SiteNavigationMenuItemTypeRegistry;
@@ -152,7 +153,8 @@ public class SiteInitializerExtension {
 		SAPEntryLocalService sapEntryLocalService,
 		SegmentsEntryLocalService segmentsEntryLocalService,
 		SegmentsExperienceLocalService segmentsExperienceLocalService,
-		ServletContext servletContext, SettingsFactory settingsFactory,
+		ServletContext servletContext,
+		ArchivedSettingsFactory archivedSettingsFactory,
 		SiteNavigationMenuItemLocalService siteNavigationMenuItemLocalService,
 		SiteNavigationMenuItemTypeRegistry siteNavigationMenuItemTypeRegistry,
 		SiteNavigationMenuLocalService siteNavigationMenuLocalService,
@@ -201,7 +203,7 @@ public class SiteInitializerExtension {
 			ploEntryLocalService, portal, resourceActionLocalService,
 			resourcePermissionLocalService, roleLocalService,
 			sapEntryLocalService, segmentsEntryLocalService,
-			segmentsExperienceLocalService, settingsFactory,
+			segmentsExperienceLocalService, archivedSettingsFactory,
 			siteNavigationMenuItemLocalService,
 			siteNavigationMenuItemTypeRegistry, siteNavigationMenuLocalService,
 			structuredContentFolderResourceFactory, styleBookEntryZipProcessor,
@@ -224,6 +226,14 @@ public class SiteInitializerExtension {
 		serviceDependency.setCallbacks("setCommerceSiteInitializer", null);
 		serviceDependency.setRequired(false);
 		serviceDependency.setService(CommerceSiteInitializer.class);
+
+		_component.add(serviceDependency);
+
+		serviceDependency = _dependencyManager.createServiceDependency();
+
+		serviceDependency.setCallbacks("setOSBSiteInitializer", null);
+		serviceDependency.setRequired(false);
+		serviceDependency.setService(OSBSiteInitializer.class);
 
 		_component.add(serviceDependency);
 
