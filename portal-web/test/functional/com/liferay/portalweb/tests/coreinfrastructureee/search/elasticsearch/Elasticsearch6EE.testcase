@@ -38,6 +38,7 @@ definition {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		// Verify the total number of Elasticsearch replicas is two as there are two nodes/bundles running
 		// LPS-67744
@@ -144,6 +145,7 @@ definition {
 		property cluster.enabled = "true";
 		property remote.elasticsearch6.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = 1);
 
@@ -234,6 +236,7 @@ definition {
 		property osgi.modules.includes = "portal-search-elasticsearch6-xpack-monitoring,portal-search-elasticsearch6-xpack-security";
 		property remote.elasticsearch6.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Page.add(pageName = "X-Pack Monitoring Page");
 

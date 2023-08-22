@@ -13,6 +13,7 @@ definition {
 		property database.types = "mysql";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		SetupWizard.configurePG(
@@ -1437,6 +1438,7 @@ definition {
 		property database.types = "mysql";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		SetupWizard.configurePG(
@@ -2193,6 +2195,7 @@ Brainstorming:
 		property database.types = "mysql";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		SetupWizard.configurePG(
@@ -3322,6 +3325,7 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 		property database.types = "mysql";
 		property liferay.training.dependency.jars = "02-content-management/exercise-src/01-engaging-users-with-content/com.liferay.training.contentloader.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		SetupWizard.configurePG(

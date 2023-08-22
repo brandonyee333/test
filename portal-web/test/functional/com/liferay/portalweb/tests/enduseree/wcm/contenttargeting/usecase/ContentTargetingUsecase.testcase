@@ -54,6 +54,7 @@ definition {
 	test CampaignAddMultipleWithPrioritiesViaCampaignDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -232,6 +233,7 @@ definition {
 	test CampaignAddViaCampaignContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -333,6 +335,7 @@ definition {
 	test CampaignDeleteMultiple {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -404,6 +407,7 @@ definition {
 	test CampaignViewContentViewsReports {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -653,6 +657,7 @@ definition {
 	test CampaignViewOtherwiseDisplayContentViaCampaignDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -775,6 +780,7 @@ definition {
 	test CampaignViewOtherwiseDontDisplayViaCampaignDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -876,6 +882,7 @@ definition {
 	test CampaignViewStatusCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -984,6 +991,7 @@ definition {
 	test CampaignViewTrackingActionReports {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1215,6 +1223,7 @@ definition {
 	test CTValidationExportImport {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1303,6 +1312,7 @@ definition {
 	test CTValidationStaging {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1379,6 +1389,7 @@ definition {
 	test ExportImportDeletions {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1524,6 +1535,7 @@ definition {
 	test ExportImportSmoke {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		LAR.setupContentTargeting();
 
@@ -1587,6 +1599,7 @@ definition {
 	test ExportImportViewOnlyContentCTWithReferencedWCImported {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1741,6 +1754,7 @@ definition {
 	test StagingContentTargeting {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1944,6 +1958,7 @@ definition {
 	test StagingCTDeletions {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2011,6 +2026,7 @@ definition {
 	test StagingCTDisabled {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2117,6 +2133,7 @@ definition {
 	test StagingCTEnabled {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2239,6 +2256,7 @@ definition {
 	test UserSegmentAddCategorizationToContent {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2281,6 +2299,7 @@ definition {
 	test UserSegmentAddFromGlobalSiteViaCampaign {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -2335,6 +2354,7 @@ definition {
 	test UserSegmentAddFromParentSiteViaCampaign {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2409,6 +2429,7 @@ definition {
 	test UserSegmentAddGlobalCategorizationToSiteContent {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -2446,6 +2467,7 @@ definition {
 	test UserSegmentAddMultipleViaUserContentDisplayPortletPG {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -2620,6 +2642,7 @@ definition {
 	test UserSegmentAddParentSiteCategorizationToChildSiteContent {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -2666,6 +2689,7 @@ definition {
 	test UserSegmentAddWithAllViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2769,6 +2793,7 @@ definition {
 	test UserSegmentAddWithAnyViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2871,6 +2896,7 @@ definition {
 	test UserSegmentAddWithBelongsViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -2988,6 +3014,7 @@ definition {
 	test UserSegmentAddWithDoesNotBelongViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3117,6 +3144,7 @@ definition {
 	test UserSegmentAddWithOtherwiseDontDisplayAnythingViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3182,6 +3210,7 @@ definition {
 	test UserSegmentDeleteMultiple {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3237,6 +3266,7 @@ definition {
 	@priority = 4
 	test UserSegmentDisableAnonymousUserAnalytics {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -3412,6 +3442,7 @@ definition {
 	test UserSegmentSimulateRulesViaSimulatorPG {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3517,6 +3548,7 @@ definition {
 	@priority = 4
 	test UserSegmentViewAnonymousUserDefaultBehavior {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3644,6 +3676,7 @@ definition {
 	test UserSegmentViewAnyContentWithCategorizationViaContentListPortletAndExportImportLAR {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3753,6 +3786,7 @@ definition {
 	test UserSegmentViewInSimulatorPG {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -3845,6 +3879,7 @@ definition {
 	test UserSegmentViewSpecificContentWithCategorizationViaContentListPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

@@ -14,6 +14,7 @@ definition {
 	test HSQLtoDB2 {
 		property database.types = "db2";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -37,6 +38,7 @@ definition {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "db2";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
@@ -58,6 +60,7 @@ definition {
 	test HSQLtoOracle {
 		property database.types = "oracle";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -81,6 +84,7 @@ definition {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "oracle";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SetupWizard.configurePG(
 			addSampleData = "false",
@@ -102,6 +106,7 @@ definition {
 	test HSQLtoSybase {
 		property database.types = "sybase";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SetupWizard.configurePG(
 			administratorEmail = "test@liferay.com",
@@ -125,6 +130,7 @@ definition {
 		property custom.properties = "setup.wizard.add.sample.data=true";
 		property database.types = "sybase";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SetupWizard.configurePG(
 			addSampleData = "false",

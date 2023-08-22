@@ -27,6 +27,7 @@ definition {
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property skip.start-app-server = "false";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Pause(locator1 = 360000);
 
@@ -71,6 +72,7 @@ definition {
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property skip.start-app-server = "false";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		for (var nodeNumber : list "8,9,10,11") {
 			User.loginPG(
@@ -114,6 +116,7 @@ definition {
 		property commerce.enabled = "false";
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Clustering.startSpecificServer(
 			deleteLiferayHome = "true",
@@ -211,6 +214,7 @@ definition {
 		property custom.properties = "license.cluster.overload.node.auto.shut.down=false";
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Clustering.startSpecificServer(
 			deleteLiferayHome = "true",
@@ -281,6 +285,7 @@ definition {
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property skip.start-app-server = "false";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		AssertElementNotPresent(locator1 = "Message#ERROR");
 
@@ -384,6 +389,7 @@ definition {
 		property dxp.license.file = "dxp-license-virtual-cluster.xml";
 		property skip.start-app-server = "false";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		for (var nodeNumber : list "8,9,10") {
 			Clustering.viewTextPresentOnSpecificNode(

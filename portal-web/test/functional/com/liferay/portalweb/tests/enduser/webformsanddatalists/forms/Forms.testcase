@@ -119,6 +119,7 @@ definition {
 	@priority = 5
 	test AddFormWithSpanishAsDefaultPortalLanguage {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -198,6 +199,7 @@ definition {
 	@priority = 5
 	test ConfigureDataProviderWithSelectField {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -601,6 +603,7 @@ definition {
 	@priority = 4
 	test EditAllFormFieldsTypesUsedBySystemSettings {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openURL();
 
@@ -774,6 +777,7 @@ definition {
 	@priority = 3
 	test EditFormsConfigurationViaSystemSettings {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Content",
@@ -1194,6 +1198,7 @@ definition {
 	@priority = 4
 	test SubmitFormAndViewEmailNotification {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property test.smtp.server.enabled = "true";
 
 		Navigator.openURL();
@@ -3048,6 +3053,7 @@ definition {
 	@priority = 5
 	test ViewSelectFromListOptionValueWithCharacter {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openURL();
 

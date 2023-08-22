@@ -757,6 +757,7 @@ definition {
 		property plugins.deployment.type = "osgi";
 		property portal.release = "false";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -1074,6 +1075,7 @@ definition {
 		property osgi.app.includes = "document-library-google-docs";
 		property plugins.deployment.type = "osgi";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -1604,6 +1606,7 @@ definition {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.acceptance = "false";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(

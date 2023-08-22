@@ -296,6 +296,7 @@ definition {
 	test AddDDLRecordWithDoubleApproverDefinition {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -458,6 +459,7 @@ definition {
 	@priority = 3
 	test AddDocumentsAndMediaWithScriptedAssignmentDefinition {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -745,6 +747,7 @@ definition {
 	@priority = 4
 	test AddWebContentWithCategorySpecificDefinition {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1076,6 +1079,7 @@ definition {
 	@priority = 3
 	test DeactivateAndActivateUploadedDefinition {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1104,6 +1108,7 @@ definition {
 	@priority = 5
 	test DeactivateAndDeleteUploadedDefinition {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

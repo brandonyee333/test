@@ -29,6 +29,7 @@ definition {
 		property apacheds.enabled = "true";
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -49,6 +50,7 @@ definition {
 	@priority = 3
 	test ViewAuthenticationCAS {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -61,6 +63,7 @@ definition {
 	@priority = 3
 	test ViewAuthenticationGeneral {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -73,6 +76,7 @@ definition {
 	@priority = 5
 	test ViewAuthenticationLDAP {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -86,6 +90,7 @@ definition {
 	@priority = 3
 	test ViewAuthenticationNTLM {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -98,6 +103,7 @@ definition {
 	@priority = 3
 	test ViewAuthenticationOpenID {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -110,6 +116,7 @@ definition {
 	@priority = 3
 	test ViewAuthenticationOpenSSO {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -122,6 +129,7 @@ definition {
 	@priority = 3
 	test ViewInstanceSettingEnableLDAPAuthNotAffectSystemSetting {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

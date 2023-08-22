@@ -117,6 +117,7 @@ definition {
 	test SolrSmokeTest {
 		property environment.acceptance = "false";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		/* <description message="This smoke test is to ensure that Liferay is successfully running on a remote Solr by asserting the Solr administration dashboard and performing searches in portal. Note by default, an embedded Elasticsearch is deployed in portal." />
 
@@ -191,6 +192,7 @@ definition {
 	test SolrWithSolrCloudSmokeTest {
 		property solr.solrcloud.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Solr.viewSolrwithSolrCloudEnabledInConsole();
 
@@ -256,6 +258,7 @@ definition {
 	test SolrWithSSLAuthenticationSmokeTest {
 		property solr.ssl.authentication.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openURL();
 
@@ -317,6 +320,7 @@ definition {
 		property index.on.startup = "false";
 		property solr.logging.info.level = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

@@ -37,6 +37,7 @@ definition {
 	test AddBlogsWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -70,6 +71,7 @@ definition {
 	test AddCategoriesWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -105,6 +107,7 @@ definition {
 	test AddDocumentsWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -138,6 +141,7 @@ definition {
 	test AddOrganizationsWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -175,6 +179,7 @@ definition {
 	test AddPagesWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -206,6 +211,7 @@ definition {
 	test AddSitesWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -236,6 +242,7 @@ definition {
 	test AddThreadsWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -270,6 +277,7 @@ definition {
 	test AddUsersWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -300,6 +308,7 @@ definition {
 	test AddWebcontentArticlesWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 
@@ -335,6 +344,7 @@ definition {
 	test AddWikisWithDummyFactory {
 		property liferay.training.dependency.jars = "tools/dummy-factory/liferay.dummy.factory-0.17.0.jar";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 		property timeout.explicit.wait = "600";
 

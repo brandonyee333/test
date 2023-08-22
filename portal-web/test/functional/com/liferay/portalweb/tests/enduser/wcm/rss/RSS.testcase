@@ -177,6 +177,7 @@ definition {
 	test AddWebContentFeed {
 		property dummy.socket.proxy.disabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openURL();
 
@@ -450,6 +451,7 @@ definition {
 	test EnableRSSFeedFromAssetpublisher {
 		property dummy.socket.proxy.disabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -545,6 +547,7 @@ definition {
 	@priority = 4
 	test UpdateRSSFeedViaAssetpublisher {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 

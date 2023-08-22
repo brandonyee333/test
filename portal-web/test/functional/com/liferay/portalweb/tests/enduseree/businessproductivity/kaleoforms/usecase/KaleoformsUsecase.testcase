@@ -695,6 +695,7 @@ definition {
 	@priority = 5
 	test AssignRolePermissionsApprovePG {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1044,6 +1045,7 @@ definition {
 	@priority = 5
 	test AssignRolePermissionsRejectPG {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1218,6 +1220,7 @@ definition {
 	@priority = 4
 	test AssignRolePermissionsSubmitProcessPG {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -2094,6 +2097,7 @@ definition {
 	@priority = 4
 	test CompleteProcessWithEditedSingleApproverWorkflow {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openURL();
 
@@ -2223,6 +2227,7 @@ definition {
 	test CompleteProcessWithUploadedDefinition {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -3215,6 +3220,7 @@ definition {
 	@priority = 4
 	test EditProcessWorkflowAfterFormSubmission {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -3381,6 +3387,7 @@ definition {
 	@priority = 4
 	test EditProcessWorkflowBeforeFormSubmission {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

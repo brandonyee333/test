@@ -20,6 +20,7 @@ definition {
 	@priority = 5
 	test AddUserInheritedRolesAsSAMLAttributeStatements {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
@@ -142,6 +143,7 @@ definition {
 	@priority = 4
 	test AssertSignedSAMLMetadata {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
@@ -168,6 +170,7 @@ definition {
 	@priority = 4
 	test AssertSSOIdleSessionTakesPrecedenceOverIdPSessionTimeout {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property web.xml.timeout = "2";
 
 		SAML.configureLiferaySAMLAsIdP(
@@ -255,6 +258,7 @@ definition {
 	@priority = 4
 	test AssertSSOSessionExistsAfterSPSessionTimeout {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property web.xml.timeout = "2";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
@@ -303,6 +307,7 @@ definition {
 	@priority = 4
 	test AssertSSOSessionExpiresAfterMaximumSessionAge {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property web.xml.timeout = "2";
 
 		SAML.configureLiferaySAMLAsIdP(
@@ -358,6 +363,7 @@ definition {
 	@priority = 4
 	test SPInitiatedSSOWithScreenNameIdentifier {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
@@ -400,6 +406,7 @@ definition {
 	@priority = 5
 	test ValidateVulnerabilitiesXMLAttacks {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
@@ -482,6 +489,7 @@ definition {
 	@priority = 4
 	test ViewIdPInitiatedSSO {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
@@ -536,6 +544,7 @@ definition {
 	@priority = 4
 	test ViewIdPInitiatedSSOWithRememberMeChecked {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
@@ -591,6 +600,7 @@ definition {
 	@priority = 4
 	test ViewSingleLogoutHTTPPostBindingInConsole {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
@@ -637,6 +647,7 @@ definition {
 		property app.server.bundles.size = "2";
 		property databases.size = "2";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
@@ -712,6 +723,7 @@ definition {
 	@priority = 4
 	test ViewSPInitiatedSSO {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 

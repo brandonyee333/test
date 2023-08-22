@@ -345,6 +345,7 @@ definition {
 	@priority = 4
 	test AddMBThreadWithInvalidAttachmentSize {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
@@ -450,6 +451,7 @@ definition {
 	@priority = 5
 	test EditMBThreadSubjectAndBody {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 

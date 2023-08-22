@@ -62,6 +62,7 @@ definition {
 	test AddGlobalUserSegmentToSiteViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteLanding(siteURLKey = "Global");
 
@@ -131,6 +132,7 @@ definition {
 	test AddParentSiteUserSegmentToChildSiteViaUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -242,6 +244,7 @@ definition {
 	test AddUserSegmentBehaviorContentVisitedCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -297,6 +300,7 @@ definition {
 	test AddUserSegmentBehaviorPageVisitedCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -335,6 +339,7 @@ definition {
 	test AddUserSegmentBehaviorPreviouslyVisitedSiteContainsCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -376,6 +381,7 @@ definition {
 	test AddUserSegmentBehaviorPreviouslyVisitedSiteStartsWithCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -415,6 +421,7 @@ definition {
 	test AddUserSegmentBehaviorScorePointsCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -451,6 +458,7 @@ definition {
 	test AddUserSegmentBlankCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -472,6 +480,7 @@ definition {
 	test AddUserSegmentMultipleBehaviorContentVisitedCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -544,6 +553,7 @@ definition {
 	test AddUserSegmentMultipleBehaviorPageVisitedCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -594,6 +604,7 @@ definition {
 	test AddUserSegmentMultipleUserAttributesCustomFieldCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -651,6 +662,7 @@ definition {
 	test AddUserSegmentMultipleUserAttributesOrganizationMemberCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		for (var orgName : list "Organization Name 1,Organization Name 2") {
 			ProductMenu.gotoPortlet(
@@ -703,6 +715,7 @@ definition {
 	test AddUserSegmentMultipleUserAttributesOrganizationRoleCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		for (var orgName : list "Organization Name 1,Organization Name 2") {
 			ProductMenu.gotoPortlet(
@@ -761,6 +774,7 @@ definition {
 	test AddUserSegmentMultipleUserAttributesRegularRoleCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -804,6 +818,7 @@ definition {
 	test AddUserSegmentMultipleUserAttributesSiteMemberCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -847,6 +862,7 @@ definition {
 	test AddUserSegmentMultipleUserAttributesSiteRoleCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -894,6 +910,7 @@ definition {
 	test AddUserSegmentMultipleUserAttributesUserGroupMemberCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		for (var userGroupName : list "User Group Name 1,User Group Name 2") {
 			ProductMenu.gotoPortlet(
@@ -946,6 +963,7 @@ definition {
 	test AddUserSegmentSocialFacebookAgeCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -985,6 +1003,7 @@ definition {
 	test AddUserSegmentSocialFacebookCityCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1021,6 +1040,7 @@ definition {
 	test AddUserSegmentSocialFacebookEducationCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1060,6 +1080,7 @@ definition {
 	test AddUserSegmentSocialFacebookFriendsCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1099,6 +1120,7 @@ definition {
 	test AddUserSegmentSocialFacebookGenderCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1135,6 +1157,7 @@ definition {
 	test AddUserSegmentSocialFacebookPageLikeCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1171,6 +1194,7 @@ definition {
 	test AddUserSegmentSystemAttributesBrowserCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1207,6 +1231,7 @@ definition {
 	test AddUserSegmentSystemAttributesDeviceCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1256,6 +1281,7 @@ definition {
 	test AddUserSegmentSystemAttributesLocationCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1295,6 +1321,7 @@ definition {
 	test AddUserSegmentSystemAttributesOperatingSystemCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1331,6 +1358,7 @@ definition {
 	test AddUserSegmentSystemAttributesTimeCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1370,6 +1398,7 @@ definition {
 	test AddUserSegmentUserAttributesAgeCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1411,6 +1440,7 @@ definition {
 	test AddUserSegmentUserAttributesCustomFieldCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1460,6 +1490,7 @@ definition {
 	test AddUserSegmentUserAttributesGenderCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1496,6 +1527,7 @@ definition {
 	test AddUserSegmentUserAttributesOrganizationMemberCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1541,6 +1573,7 @@ definition {
 	test AddUserSegmentUserAttributesOrganizationRoleCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1589,6 +1622,7 @@ definition {
 	test AddUserSegmentUserAttributesRegularRoleCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1627,6 +1661,7 @@ definition {
 	test AddUserSegmentUserAttributesSiteMemberCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1665,6 +1700,7 @@ definition {
 	test AddUserSegmentUserAttributesSiteRoleCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -1706,6 +1742,7 @@ definition {
 	test AddUserSegmentUserAttributesUserGroupMemberCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -1749,6 +1786,7 @@ definition {
 	test AddUserSegmentUserAttributesUserSignedInCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1783,6 +1821,7 @@ definition {
 	test DeleteUserSegmentCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1811,6 +1850,7 @@ definition {
 	test EditUserSegmentCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1857,6 +1897,7 @@ definition {
 	test UserSegmentContentViewReport {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -1934,6 +1975,7 @@ definition {
 	test ViewRulesAppliedUserSegmentContentDisplayPortlet {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

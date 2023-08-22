@@ -729,6 +729,7 @@ definition {
 	@priority = 3
 	test ViewKBArticleWithEditedStarRatings {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openURL();
 
@@ -864,6 +865,7 @@ definition {
 	@priority = 4
 	test ViewKBArticleWithStarRatings {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openURL();
 

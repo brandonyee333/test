@@ -36,6 +36,7 @@ definition {
 		property remote.elasticsearch.cluster.size = "2";
 		property remote.elasticsearch6.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = 2);
 
@@ -104,6 +105,7 @@ definition {
 	test UpdateSystemSettingsWithoutPortalRestart {
 		property remote.elasticsearch6.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var elasticsearchVersion = Elasticsearch.getRemoteServerVersion();
 		var liferayHome = PropsUtil.get("liferay.home.dir.name");

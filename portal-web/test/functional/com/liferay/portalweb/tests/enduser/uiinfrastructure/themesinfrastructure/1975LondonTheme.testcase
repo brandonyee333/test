@@ -23,6 +23,7 @@ definition {
 	test AddThemeSite {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property theme.file.name = "1975-london-theme.war";
 
 		var themeContainsResources = PropsUtil.get("theme.contains.resources");
@@ -74,6 +75,7 @@ definition {
 	@priority = 5
 	test AddThemeSitePage {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property theme.file.name = "1975-london-theme.war";
 
 		Page.add(pageName = "Themes Page");

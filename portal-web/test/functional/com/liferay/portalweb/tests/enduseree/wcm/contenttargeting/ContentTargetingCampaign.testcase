@@ -54,6 +54,7 @@ definition {
 	test AddBlankCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -107,6 +108,7 @@ definition {
 	test AddCampaignContentCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -195,6 +197,7 @@ definition {
 	test AddCampaignCustomFormCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -271,6 +274,7 @@ definition {
 	test AddCampaignDDLFormCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -362,6 +366,7 @@ definition {
 	test AddCampaignLinkCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -449,6 +454,7 @@ definition {
 	test AddCampaignPageCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -524,6 +530,7 @@ definition {
 	test AddCampaignYouTubeCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -611,6 +618,7 @@ definition {
 	test DeleteCampaignCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -658,6 +666,7 @@ definition {
 	test EditCampaignCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -809,6 +818,7 @@ definition {
 	test ViewInactiveCampaignCP {
 		property content.targeting.release = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

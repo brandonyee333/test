@@ -34,6 +34,7 @@ definition {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		// Verify the total number of Elasticsearch replicas is two as there are two nodes/bundles running
 		// LRQA-28998
@@ -140,6 +141,7 @@ definition {
 		property cluster.enabled = "true";
 		property remote.elasticsearch.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Elasticsearch.viewClusterStatusViaClusterHealthAPI(numberOfNodes = 1);
 
@@ -234,6 +236,7 @@ definition {
 		property portal.ssl.enabled = "true";
 		property remote.elasticsearch.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Page.add(pageName = "Marvel Page");
 
@@ -260,6 +263,7 @@ definition {
 		property plugins.deployment.type = "osgi";
 		property remote.elasticsearch.enabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Page.add(pageName = "Marvel Page");
 

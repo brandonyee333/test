@@ -180,6 +180,7 @@ definition {
 	@priority = 4
 	test AddStructureViaLocaleURL {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -903,6 +904,7 @@ definition {
 	@priority = 4
 	test AddWebContentWithImageField {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.openURL();
 
@@ -1251,6 +1253,7 @@ definition {
 	@priority = 5
 	test ChangeWebContentDefaultLanguage {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		JSONGroup.addGroup(groupName = "Test Site Name");
 

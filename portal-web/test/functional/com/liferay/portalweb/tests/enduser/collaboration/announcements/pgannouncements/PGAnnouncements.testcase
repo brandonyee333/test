@@ -37,6 +37,7 @@ definition {
 	@priority = 4
 	test AddAnnouncementsEntry {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Announcements Page");
 
@@ -178,6 +179,7 @@ definition {
 	test DeleteAnnouncementsEntry {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Announcements Page");
 
@@ -203,6 +205,7 @@ definition {
 	test EditAnnouncementsEntry {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Announcements Page");
 
@@ -235,6 +238,7 @@ definition {
 	test ViewPreviousAnnouncementEntries {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Announcements Page");
 

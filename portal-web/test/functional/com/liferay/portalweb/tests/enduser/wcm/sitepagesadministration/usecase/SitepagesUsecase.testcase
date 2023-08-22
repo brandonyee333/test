@@ -247,6 +247,7 @@ definition {
 	test SitesPrivatePagesPermissions {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -387,6 +388,7 @@ definition {
 	test ViewSecureContentAndPageAsGuest {
 		property dummy.socket.proxy.disabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -571,6 +573,7 @@ definition {
 	test ViewSecureContentAndPageAsSiteMember {
 		property dummy.socket.proxy.disabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property test.smtp.server.enabled = "true";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
@@ -753,6 +756,7 @@ definition {
 	test ViewSecureContentAndPageAsUser {
 		property dummy.socket.proxy.disabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property test.smtp.server.enabled = "true";
 		property testray.component.names = "Training";
 

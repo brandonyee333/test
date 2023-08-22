@@ -28,6 +28,7 @@ definition {
 	@priority = 5
 	test EscapeUrlRedirectWithGroovyScript {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -52,6 +53,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 	test ExecuteScriptWithPredefinedProperty {
 		property custom.properties = "partnerstamm-api-user = his_user";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -86,6 +88,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 	@priority = 5
 	test NoPermissionFromUnauthorizedURLAsPowerUser {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -156,6 +159,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 	test ValidateCannotStealAdminAccount {
 		property custom.properties = "json.service.serialize.throwable=true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -275,6 +279,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 	@priority = 4
 	test ViewUpdateUserViaJSONWS {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",

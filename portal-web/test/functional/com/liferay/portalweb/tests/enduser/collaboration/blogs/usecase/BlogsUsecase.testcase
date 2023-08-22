@@ -407,6 +407,7 @@ definition {
 		property custom.properties = "blogs.trackback.enabled=true";
 		property dummy.socket.proxy.disabled = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 
@@ -770,6 +771,7 @@ definition {
 	@priority = 3
 	test ViewBlogsEntriesWithSpecialCharactersOnPublicAndPrivateVirtualHostPages {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var entryTitleSpecialCharacter = "true";
 		var privatePageVirtualHostURL = "www.baker.com";

@@ -1815,6 +1815,7 @@ definition {
 	@priority = 5
 	test DeleteEventRegular {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -1867,6 +1868,7 @@ definition {
 	test DeleteEventRepeatingAllFollowing {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -2643,6 +2645,7 @@ definition {
 	@priority = 3
 	test EditLanguageSelectorAndViewEvent {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
@@ -3175,6 +3178,7 @@ definition {
 	test SearchForOtherCalendars {
 		property portal.acceptance = "true";
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 		property testray.component.names = "Training";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
@@ -3423,6 +3427,7 @@ definition {
 	@priority = 4
 	test ViewAvailableCalendars {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -3511,6 +3516,7 @@ definition {
 	@priority = 5
 	test ViewCalendarTimeZoneDefaults {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		UserBar.gotoMyAccount();
 
@@ -3658,6 +3664,7 @@ definition {
 	@priority = 3
 	test ViewDisplayedSiteCalendarEventsAsGuest {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -4094,6 +4101,7 @@ definition {
 	@priority = 3
 	test ViewShowMoreLocalization {
 		property test.liferay.virtual.instance = "false";
+		property test.run.type = "single";
 
 		Navigator.gotoPage(pageName = "Calendar Page");
 
