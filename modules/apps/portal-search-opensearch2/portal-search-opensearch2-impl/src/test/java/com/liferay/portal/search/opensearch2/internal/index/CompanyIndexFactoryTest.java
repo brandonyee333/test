@@ -411,8 +411,8 @@ public class CompanyIndexFactoryTest extends BaseOpenSearchTestCase {
 						String indexName,
 						TypeMappingsHelper typeMappingsHelper) {
 
-						typeMappingsHelper.addTypeMappings(
-							indexName, _replaceAnalyzer("brazilian", mappings));
+						typeMappingsHelper.putTypeMappings(
+							_replaceAnalyzer("brazilian", mappings));
 					}
 
 					@Override
