@@ -69,6 +69,12 @@ processSanitizerConfiguration {
 				|			</attribute>
 				|		</tag>
 				|		<tag name="source" action="validate">
+				|			<attribute name="src" onInvalid="removeTag">
+				|				<regexp-list>
+				|					<regexp name="onsiteURL"/>
+				|					<regexp name="offsiteURL"/>
+				|				</regexp-list>
+				|			</attribute>
 				|			<attribute name="srcset">
 				|				<regexp-list>
 				|					<regexp name="anything"/>
@@ -82,6 +88,63 @@ processSanitizerConfiguration {
 				|			<attribute name="type">
 				|				<regexp-list>
 				|					<regexp value="[a-zA-Z0-9\\-]+/[a-zA-Z0-9\\-]+" />
+				|				</regexp-list>
+				|			</attribute>
+				|		</tag>
+				|		<tag name="video" action="validate">
+				|			<attribute name="autoplay">
+				|				<regexp-list>
+				|					<regexp name="anything"/>
+				|				</regexp-list>
+				|			</attribute>
+				|			<attribute name="controls">
+				|				<regexp-list>
+				|					<regexp name="anything"/>
+				|				</regexp-list>
+				|			</attribute>
+				|			<attribute name="crossorigin">
+				|				<literal-list>
+				|					<literal value="anonymous"/>
+				|					<literal value="use-credentials"/>
+				|				</literal-list>
+				|			</attribute>
+				|			<attribute name="height">
+				|				<regexp-list>
+				|					<regexp name="number"/>
+				|				</regexp-list>
+				|			</attribute>
+				|			<attribute name="loop">
+				|				<regexp-list>
+				|					<regexp name="anything"/>
+				|				</regexp-list>
+				|			</attribute>
+				|			<attribute name="muted">
+				|				<regexp-list>
+				|					<regexp name="anything"/>
+				|				</regexp-list>
+				|			</attribute>
+				|			<attribute name="poster">
+				|				<regexp-list>
+				|					<regexp name="onsiteURL"/>
+				|					<regexp name="offsiteURL"/>
+				|				</regexp-list>
+				|			</attribute>
+				|			<attribute name="preload">
+				|				<literal-list>
+				|					<literal value="auto"/>
+				|					<literal value="metadata"/>
+				|					<literal value="none"/>
+				|				</literal-list>
+				|			</attribute>
+				|			<attribute name="src">
+				|				<regexp-list>
+				|					<regexp name="onsiteURL"/>
+				|					<regexp name="offsiteURL"/>
+				|				</regexp-list>
+				|			</attribute>
+				|			<attribute name="width">
+				|				<regexp-list>
+				|					<regexp name="number" />
 				|				</regexp-list>
 				|			</attribute>
 				|		</tag>""".stripMargin()
