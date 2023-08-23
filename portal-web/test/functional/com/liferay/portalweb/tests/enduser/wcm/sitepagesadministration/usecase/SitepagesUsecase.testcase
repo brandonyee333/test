@@ -389,6 +389,7 @@ definition {
 		property dummy.socket.proxy.disabled = "true";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
+		property test.smtp.server.enabled = "true";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -396,10 +397,6 @@ definition {
 			category = "Configuration",
 			panel = "Control Panel",
 			portlet = "Server Administration");
-
-		ServerAdministration.configureMailServerSettings(
-			userName = PropsUtil.get("email.address.2"),
-			userPassword = PropsUtil.get("email.password.2"));
 
 		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
@@ -489,66 +486,40 @@ definition {
 
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
 
-		Pause(locator1 = 30000);
+		MockMock.viewMail(
+			asset = "Blogs Entry",
+			content = "Blogs Entry Title G7B2",
+			recipient = "userfn1 userln1",
+			sender = "Joe Bloggs",
+			subject = "Test Test Published \"Blogs Entry Title G7B2\" on ${siteName} Blogs");
 
-		Gmail.login(
-			userEmailAddress = PropsUtil.get("email.address.4"),
-			userPassword = PropsUtil.get("email.password.4"));
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.viewMail(
-			emailFromUserName = "Joe Bloggs",
-			gmailAssetType = "G7B2",
-			gmailMessageBody = "Blogs Entry Title G7B2",
-			gmailMessageTitle = "Test Test Published \"Blogs Entry Title G7B2\" on ${siteName} Blogs");
-
-		Gmail.openMessageContinueReadingButton(
-			contentTitle = "Blogs Entry Title G7B2",
-			pageName = "Blog and Message Board Page",
-			siteName = ${siteName});
+		MockMock.clickBodyLink(
+			asset = "Blogs Entry Title G7B2",
+			bodyLink = "CONTINUE READING");
 
 		var blogEntryURL = selenium.getLocation();
+		var messageBoardsThreadURL = MockMock.getBodySpecificText(
+			asset = "MB",
+			content = "MB Thread Message Subject G7MB3",
+			extractFirstText = " http://localhost:8080",
+			recipient = "test@liferay.com",
+			sender = "Test Test",
+			specificText = "${siteName} Message Boards ",
+			subject = "Home - ${siteName} New Message: MB Thread Message Subject G7MB3");
 
-		Close();
+		MockMock._backtoInbox();
 
-		SelectWindow(locator1 = "null");
-
-		Navigator.gotoPage(pageName = "Blog and Message Board Page");
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.viewMail(
-			emailFromUserName = "Test Test",
-			gmailAssetType = "G7MB3",
-			gmailMessageBody = "MB Thread Message Body",
-			gmailMessageTitle = "Home - ${siteName} New Message: MB Thread Message Subject G7MB3");
-
-		Gmail.openMessageLink(
-			contentTitle = "MB Thread Message Subject G7MB3",
-			gmailAssetType = "Message Boards",
-			pageName = "Blog and Message Board Page",
-			siteName = ${siteName});
-
-		var messageBoardsThreadURL = selenium.getLocation();
-
-		Close();
-
-		SelectWindow(locator1 = "null");
+		Click(
+			key_text = "Delete all",
+			locator1 = "Link#ANY");
 
 		Navigator.gotoPage(pageName = "Blog and Message Board Page");
-
-		Gmail.gotoHtmlMode();
-
-		Gmail.deleteSpecificMail(gmailMessageTitleList = "Test Test Published \"Blogs Entry Title G7B2\" on ${siteName} Blogs,Message Boards Home - ${siteName} New Message: MB Thread Message Subject G7MB3,Your New Account,Your New Password,G7B2,G7MB3");
 
 		User.logoutPG();
 
 		Navigator.openPrivateURL();
 
 		User.viewLoginPG();
-
-		AssertElementNotPresent(locator1 = "Message#ERROR");
 
 		AssertElementNotPresent(locator1 = "Home#ERROR_MESSAGE_ALERT_ERROR");
 
@@ -875,7 +846,6 @@ definition {
 			bodyLink = "CONTINUE READING");
 
 		var blogEntryURL = selenium.getLocation();
-
 		var messageBoardsThreadURL = MockMock.getBodySpecificText(
 			asset = "MB",
 			content = "MB Thread Message Subject G7MB4",
