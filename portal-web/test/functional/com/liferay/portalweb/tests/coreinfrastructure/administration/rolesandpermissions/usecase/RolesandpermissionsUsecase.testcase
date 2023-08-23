@@ -89,6 +89,7 @@ definition {
 	@priority = 3
 	test CanOnlyViewPortletsWithPermissionsGranted {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 

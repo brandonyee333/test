@@ -857,6 +857,8 @@ definition {
 
 	@priority = 3
 	test ViewBlogsEntryWorkflowViaNotifications {
+		property portal.acceptance = "poshi-validation";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(

@@ -97,6 +97,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanMapDocumentToDisplayPage {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		JSONLayoutpagetemplate.addDisplayPageTemplateEntry(

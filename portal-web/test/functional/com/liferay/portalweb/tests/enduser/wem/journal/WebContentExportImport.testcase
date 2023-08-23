@@ -30,7 +30,7 @@ definition {
 	@description = "This is a use case for LPS-82492."
 	@priority = 5
 	test AddCreatedStructureForImportedTemplate {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property testray.component.names = "Training";
 
 		HeadlessSite.addSite(siteName = "Site Name 2");
@@ -111,6 +111,8 @@ definition {
 	@description = "This is a use case for LPS-155637. Verify that it's possible to import exported web content structures with fieldsets."
 	@priority = 3
 	test CanImportExportedWCStructuresWithFieldsets {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given: Add a new site") {
 			HeadlessSite.addSite(siteName = "Site Name");
 		}
@@ -288,6 +290,7 @@ definition {
 	@description = "This is a test for LPS-114230. Verify that can show exported image global structures between instances."
 	@priority = 3
 	test CanShowExportedGlobalStructuresImageBetweenInstances {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -376,6 +379,7 @@ definition {
 	@priority = 3
 	test ContentWillDisplayInOrderInRepeatableWCFields {
 		property osgi.module.configuration.file.names = "configuration.override.com.liferay.journal.configuration.JournalServiceConfiguration_journalArticleExportImportProcessorCacheEnabled=B\"false\"";
+		property portal.acceptance = "poshi-validation";
 
 		var groupId = JSONGroupSetter.setGroupId(groupName = "Test Site Name");
 
@@ -742,6 +746,8 @@ definition {
 
 	@priority = 4
 	test ImportLAR {
+		property portal.acceptance = "poshi-validation";
+
 		property testray.component.names = "Web Content Administration";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");

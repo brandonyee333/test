@@ -30,7 +30,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanAddEntryWithMetadataSet {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Add a metadata set with numeric field") {
 			DMNavigator.openMetadataSetsAdmin(siteURLKey = "guest");
@@ -102,7 +102,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanAddPredefinedImageViaImageField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
@@ -160,7 +160,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanAddPredefinedImageViaRichText {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openToAddDocumentType(siteURLKey = "guest");
 
@@ -203,7 +203,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanCreateDocumentwithEditedImageField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentTypesAdmin(siteURLKey = "guest");
 
@@ -253,7 +253,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanCreateDocumentWithEditedTextField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentTypesAdmin(siteURLKey = "guest");
 
@@ -304,7 +304,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanCreateDocumentwithEditedUploadField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentTitle = "Document_1.doc",
@@ -462,7 +462,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewDocumentwithRepeatableImageField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openToAddDocumentType(siteURLKey = "guest");
 
@@ -640,7 +640,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test DuplicateFieldCanBeRemoved {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Add a document type with a repeatable numeric field") {
 			DMNavigator.openToAddDocumentType(siteURLKey = "guest");

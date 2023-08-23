@@ -29,6 +29,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is possible to add a Fieldset in the builder."
 	@priority = 5
 	test CanAddFieldsetInBuilder {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -51,6 +53,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is possible to add multiple options for a field with options on the Fieldset modal."
 	@priority = 5
 	test CanAddMultipleOptions {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP();
@@ -150,6 +154,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is possible to delete a Fieldset that is not being used on any Structures."
 	@priority = 5
 	test CanDeleteUnusedFieldset {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP();
@@ -200,6 +206,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is possible to edit Label, Placeholder and Help text of fields on the Fieldset modal."
 	@priority = 5
 	test CanEditLabelPlaceholderAndHelpTextOfFields {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP();
@@ -313,6 +321,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is not possible to edit fields inside a Fieldset from the builder."
 	@priority = 4
 	test CanNotEditFieldsetFieldsFromBuilder {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -341,6 +351,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is not possible remove fields from the Fieldset from the builder."
 	@priority = 4
 	test CanNotRemoveFieldsetFieldsFromBuilder {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -369,6 +381,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is not possible to remove fields from the Fieldset if the Fieldset is inside a Fields Group on the builder."
 	@priority = 3
 	test CanNotRemoveFieldsInsideFieldsetInFieldsGroupFromBuilder {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -403,6 +417,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is not possible to remove fields that are inside a Fields Group on the Fieldset from the builder."
 	@priority = 3
 	test CanNotRemoveFieldsInsideFieldsGroupFromBuilder {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -440,6 +456,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that is possible to remove a Fieldset from the builder."
 	@priority = 5
 	test CanRemoveFieldsetFromBuilder {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -470,6 +488,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that Fieldset Label can be shown or hidden."
 	@priority = 5
 	test CanSetLabelToShownOrHidden {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -502,6 +522,8 @@ definition {
 	@description = "This is a test for LRQA-68940. This test verifies that upon editing a Fieldset that is already on the builder a dialog to confirm propagation is displayed."
 	@priority = 4
 	test CanShowPropagateChangesDialog {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");

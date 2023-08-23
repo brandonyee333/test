@@ -29,6 +29,8 @@ definition {
 	@description = "Verify if user can clear the uploaded image from form by clicking on Clear button"
 	@priority = 4
 	test ClearUploadedImage {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMNavigator.gotoDocumentType();
@@ -75,6 +77,8 @@ definition {
 	@description = "Verify if user can drag and drop image field into form builder"
 	@priority = 5
 	test DragAndDropImageFieldToBuilder {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		DDLDataDefinition.save();
@@ -91,6 +95,8 @@ definition {
 	@description = "Verify if user can duplicate the image field"
 	@priority = 4
 	test DuplicateImageField {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		DataEngine.duplicate(fieldFieldLabel = "Image");
@@ -111,6 +117,8 @@ definition {
 	@description = "Verify if label and field name of image field can be translated"
 	@priority = 5
 	test LocalizationOfImageFieldtPersists {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMNavigator.gotoDocumentType();
@@ -161,6 +169,8 @@ definition {
 	@description = "Verify if user is required to define a description for an uploaded image"
 	@priority = 3
 	test SaveUploadedImageWithoutDescription {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMNavigator.gotoDocumentType();
@@ -220,6 +230,8 @@ definition {
 	@description = "Verify if user can define a help text"
 	@priority = 4
 	test SetHelpTextOfImageField {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		DataEngine.editFieldTip(
@@ -241,6 +253,8 @@ definition {
 	@description = "Verify if user can define a description for the uploaded image"
 	@priority = 4
 	test SetImageDescriptionOnDM {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMNavigator.gotoDocumentType();
@@ -279,6 +293,8 @@ definition {
 	@description = "Verify if user can set the image field as repeatable"
 	@priority = 4
 	test SetImageFieldAsRepeatable {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		DataEngine.toggleFieldRepeatable(fieldFieldLabel = "Image");
@@ -307,6 +323,8 @@ definition {
 	@description = "Verify if user can add a field label"
 	@priority = 5
 	test SetLabelOfImageField {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		FormViewBuilder.editFieldLabel(
@@ -327,6 +345,8 @@ definition {
 	@description = "Verify if user can show/hide label"
 	@priority = 4
 	test ShowAndHideImageFieldLabel {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		DataEngine.toggleShowLabel(fieldLabel = "Image");
@@ -345,6 +365,8 @@ definition {
 	@description = "Verify if user can upload an image from Liferay Documents and Media"
 	@priority = 5
 	test UploadImageFromDocumentsAndMedia {
+		property portal.acceptance = "poshi-validation";
+
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentTitle = "Document_1.jpg",
 			groupName = "Guest",
@@ -373,6 +395,8 @@ definition {
 	@description = "Verify if user can upload an image from local storage"
 	@priority = 5
 	test UploadImageFromLocalStorage {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		DDLDataDefinition.save();
@@ -395,6 +419,8 @@ definition {
 	@description = "Verify if user is not allowed to upload a file that is not an image"
 	@priority = 4
 	test UploadInvalidFile {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		DDLDataDefinition.save();
@@ -421,6 +447,8 @@ definition {
 	@description = "Verify if user can set the field as required or not"
 	@priority = 4
 	test VerifyRequiredPropertyOfImageField {
+		property portal.acceptance = "poshi-validation";
+
 		DMDocument.addImageField();
 
 		DataEngine.editFieldRequired(fieldFieldLabel = "Image");

@@ -212,6 +212,8 @@ definition {
 	@description = "This is a use case for LPS-84223. Verify if a publish fails adding a file entry that do not exist."
 	@priority = 3
 	test DLLinkValidationInWebContent {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given: User add a new file") {
 			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -1218,6 +1220,7 @@ definition {
 	@description = "This is a use case for LPS-88331. Verify is possbile export/import a site with nested upload field."
 	@priority = 3
 	test ExportImportSiteWithNestedUploadField {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1450,7 +1453,7 @@ definition {
 	@description = "Verify is possible export/import validation."
 	@priority = 5
 	test ExportImportValidation {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 		property testray.component.names = "Training";
@@ -1712,6 +1715,8 @@ definition {
 	@description = "This is a use case for LPS-135706. Verify that exporting and importing a Documents & Media URL does not append UUID to the imported URL if it was not there to begin with."
 	@priority = 3
 	test ImportDMUrlWithoutUUID {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given: User adds a new file and saves its external URL") {
 			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -2027,6 +2032,7 @@ definition {
 	@description = "This is a use case for LPS-91233. Verify is possible publish a web content with a broken link."
 	@priority = 3
 	test PublishWebContentWithBrokenLink {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

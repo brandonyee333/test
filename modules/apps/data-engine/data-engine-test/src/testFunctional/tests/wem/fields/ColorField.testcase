@@ -79,6 +79,8 @@ definition {
 	@description = "This test validates the input of valid and invalid characters on Field Reference."
 	@priority = 4
 	test EditColorFieldNameWithValidAndInvalidCharacters {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentStructures.saveCP();
 
 		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");

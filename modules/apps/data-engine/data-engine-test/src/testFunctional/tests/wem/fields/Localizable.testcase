@@ -35,6 +35,8 @@ definition {
 	@description = "This is a test for LRQA-66432. This test validates it is possible to edit the Localizable property of a field to Off and On on the Fieldset and the propagation of changes."
 	@priority = 4
 	test EditLocalizableOnPublishedWCWithFieldset {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.createNewFieldset(
 			fieldNameList = "Text",
 			fieldsetName = "New Fieldset");
@@ -142,6 +144,8 @@ definition {
 	@description = "This test ensures that when editing the Localizable state of a field, its content persists"
 	@priority = 5
 	test EditLocalizableState {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.addField(
 			fieldFieldLabel = "Text",
 			fieldName = "Text");
@@ -218,6 +222,8 @@ definition {
 	@description = "This test ensures that it's not possible to translate fields with Localizable set as false."
 	@priority = 5
 	test LocalizableSetToFalse {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.addField(
 			fieldFieldLabel = "Text",
 			fieldName = "Text");
@@ -266,6 +272,8 @@ definition {
 	@description = "This test ensures that it's possible/not possible to translate fields with Localizable set as true/false when those fields are in a field group."
 	@priority = 5
 	test LocalizableSetToFalseAndTrueFieldGroup {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.addField(
 			fieldFieldLabel = "Text",
 			fieldName = "Text");
@@ -327,6 +335,8 @@ definition {
 	@description = "This is a test for LRQA-66428. This test checks if Localizable property is successfully set when the Portal Instance language is not English US and if it persists for Structures created before changing Portal Instance language"
 	@priority = 5
 	test LocalizableWithDifferentInstanceLanguage {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.addFields(fieldNameList = "Text,Numeric");
 
 		DataEngine.addFieldNested(
@@ -431,6 +441,8 @@ definition {
 	@description = "This test ensures that it's possible to translate the content of the fields in a fieldset"
 	@priority = 5
 	test TranslateFieldSetLocalizableOn {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.addFields(fieldNameList = "Text,Numeric");
 
 		DataEngine.addFieldNested(
@@ -545,6 +557,8 @@ definition {
 	@description = "This is a test for LRQA-66429. This test check a field with Localizable property set as True in a simple field, a Field Group, a Fieldset and a Field Group into a Fieldset."
 	@priority = 5
 	test ValidateDefaulLocalizableValue {
+		property portal.acceptance = "poshi-validation";
+
 		var checkboxName = "Localizable";
 
 		DataEngine.gotoCreateNewFieldset();
@@ -596,6 +610,8 @@ definition {
 	@description = "This is a test for LRQA-66427. This test check it's not possible to translate a field with Localizable property set as Off in a simple field and a Field Group into a Fieldset"
 	@priority = 5
 	test ValidateNotTranslatableOnFieldset {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.gotoCreateNewFieldset();
 
 		FormViewBuilder.editFieldSetName(fieldSetName = "New Fieldset");

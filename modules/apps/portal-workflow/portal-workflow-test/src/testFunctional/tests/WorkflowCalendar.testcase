@@ -2,6 +2,7 @@
 definition {
 
 	property custom.properties = "default.layout.template.id=1_column${line.separator}company.default.time.zone=America/Los_Angeles";
+	property portal.acceptance = "poshi-validation";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Workflow";
@@ -116,7 +117,7 @@ definition {
 	test ApproveEventWithInvitedUser {
 		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		var siteName = TestCase.getSiteName();
 
@@ -167,6 +168,7 @@ definition {
 	@priority = 4
 	test CalendarPopUpCanBeApproved {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "poshi-validation";
 
 		CalendarScheduler.selectSpecificEvent(eventTitle = "Calendar Event Title");
 
@@ -203,6 +205,7 @@ definition {
 	@priority = 3
 	test CalendarPopUpCanBeRejected {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "poshi-validation";
 
 		CalendarNavigator.gotoEventDetails(eventTitle = "Calendar Event Title");
 
@@ -234,6 +237,8 @@ definition {
 	@description = "Verify that a calendar event on draft can be approved"
 	@priority = 4
 	test CalendarWithDraftStatusCanBecomeApproved {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -339,6 +344,8 @@ definition {
 	@description = "This is a use case for LPS-59572."
 	@priority = 3
 	test DeleteAndRestoreEvent {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoView(viewType = "Week");
@@ -471,6 +478,8 @@ definition {
 
 	@priority = 4
 	test RejectEventWithInvitedUser {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoView(viewType = "Week");
@@ -518,6 +527,8 @@ definition {
 	@description = "Verify that the Calendar Event status become pending after submit"
 	@priority = 4
 	test StatusBecomePendingAfterSubmit {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarScheduler.selectSpecificEvent(eventTitle = "Calendar Event Title");
 
 		CalendarScheduler.gotoDetailsViaDialogBox();
@@ -558,6 +569,8 @@ definition {
 	@description = "Verify that a Unpublish warning message appears when the user edit a approved event"
 	@priority = 3
 	test UnpublishWarningMessageIsDisplayedOnEdit {
+		property portal.acceptance = "poshi-validation";
+
 		UserBar.gotoDropdownItem(dropdownItem = "My Workflow Tasks");
 
 		Workflow.assignToMeTaskByActions(
@@ -585,6 +598,8 @@ definition {
 
 	@priority = 3
 	test ViewPendingStatusInEventDetails {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		CalendarScheduler.addEventToday(

@@ -296,6 +296,8 @@ definition {
 	@description = "This is a test for LPS-116034. The custom ddmfields of single type collection items are available for mapping in editable field."
 	@priority = 4
 	test MapCustomDDMFieldToFragmentBasedOnSingleTypeCollection {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a custom Web Content structure") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -1536,6 +1538,8 @@ definition {
 	@description = "This is a test for LPS-118979. The mappable fields are grouped by fieldset in Collection Display based on single type collection."
 	@priority = 4
 	test ViewMappableFieldsAreGroupedByFieldsetBasedOnSingleTypeCollection {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content article based on Basic Web Content") {
 			JSONWebcontent.addWebContent(
 				content = "Web Content Content",

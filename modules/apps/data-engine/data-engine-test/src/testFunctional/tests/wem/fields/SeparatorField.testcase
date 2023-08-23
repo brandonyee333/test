@@ -102,6 +102,8 @@ definition {
 	@description = "This is a test for LPS-98081. Edit Field Reference with valid and invalid characters"
 	@priority = 4
 	test EditReferenceOfSeparatorWithValidAndInvalidCharacters {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.editFieldReference(
 			assertFieldReference = "EditedSeparator",
 			fieldFieldLabel = "Separator",
@@ -129,6 +131,7 @@ definition {
 	@priority = 5
 	test RepeatSeparatorOnWebContent {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DataEngine.toggleFieldRepeatable(fieldFieldLabel = "Separator");
 

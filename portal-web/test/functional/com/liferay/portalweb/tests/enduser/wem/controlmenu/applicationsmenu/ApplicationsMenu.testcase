@@ -27,7 +27,7 @@ definition {
 	@priority = 5
 	@uitest
 	test NavigateToSiteAndSiteScopeApplicationsInProductMenuWhenDisableApplicationsMenu {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Disable the Applications Menu") {
 			PortalSettings.disableApplicationsMenu();
@@ -198,7 +198,7 @@ definition {
 	@priority = 5
 	@uitest
 	test ViewProductMenuWhenDisableApplicationsMenuInDefaultInstance {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -253,6 +253,7 @@ definition {
 	@priority = 4
 	@uitest
 	test ViewProductMenuWhenDisableApplicationsMenuInVirtualInstance {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

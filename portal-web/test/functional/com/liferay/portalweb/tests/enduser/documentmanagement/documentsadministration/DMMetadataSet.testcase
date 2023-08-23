@@ -139,6 +139,8 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewDocumentwithEditedImageField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openMetadataSetsAdmin(siteURLKey = "guest");
 
 		DMMetadataSet.addTitle(metadataSetName = "DM Metadata Set Name");
@@ -219,6 +221,8 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewDocumentwithEditedTextField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openMetadataSetsAdmin(siteURLKey = "guest");
 
 		DMMetadataSet.addTitle(metadataSetName = "DM Metadata Set Name");
@@ -296,6 +300,8 @@ definition {
 	@priority = 3
 	@refactordone
 	test DeletedFieldsAreReflectedWhenAddingNewDocType {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openMetadataSetsAdmin(siteURLKey = "guest");
 
 		DMMetadataSet.addTitle(metadataSetName = "DM Metadata Set Name");

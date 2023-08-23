@@ -395,7 +395,7 @@ definition {
 	@refactordone
 	test CanBlacklistCharacters {
 		property custom.properties = "dl.char.blacklist=\\\\,//,:,*,?,<,#,|,../,/..";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -1268,7 +1268,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanDownloadWithCustomFileName {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -1293,7 +1293,7 @@ definition {
 	@refactordone
 	test CanDownloadWithSpecialCharactersInTitle {
 		property custom.properties = "dl.actions.visible=true";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentTitle = "/D/M/@!# Title",
@@ -1319,7 +1319,7 @@ definition {
 		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
 		property environment.acceptance = "true";
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -1660,6 +1660,7 @@ definition {
 	@priority = 4
 	test CanFilterByRecentAndOrderByDownloads {
 		property custom.properties = "dl.actions.visible=true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONDocument.addFileWithUploadedFile(
 			dmDocumentTitle = "Document_2.doc",
@@ -2821,7 +2822,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanRestrictFileExtensionToDoc {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -3234,7 +3235,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewDocumentWithEditedDisplayPageTemplate {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		HeadlessSite.addSite(siteName = "Test Site Name");
 
@@ -4100,7 +4101,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test WillRejectForbiddenCharactersInFileName {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 

@@ -202,6 +202,8 @@ definition {
 	@description = "This is a test for LPS-116034. The custom ddmfields of content are available for mapping in editable field."
 	@priority = 4
 	test MapCustomDDMFieldToFragment {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a custom Web Content structure") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = ${siteURLKey});
 
@@ -1578,6 +1580,8 @@ definition {
 	@description = "This is a test for LPS-99686. Map web content fields to link editable field"
 	@priority = 2
 	test MapWebContentFieldsToLinkFragment {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure with multiple fields") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = ${siteURLKey});
 
@@ -2417,7 +2421,7 @@ definition {
 	@description = "This is a test for LPS-118979 and LPS-106776. The mappable fields are grouped by fieldset in content page."
 	@priority = 5
 	test ViewMappableFieldsAreGroupedByFieldset {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Add a web content article based on Basic Web Content") {
 			JSONWebcontent.addWebContent(

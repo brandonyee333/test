@@ -68,7 +68,7 @@ definition {
 	@description = "This is a test for LRQA-66584. This test validates the fields creation into a field group up to 3 levels, field groups edition, and field groups deletion"
 	@priority = 5
 	test CreateEditAndDeleteFieldGroups {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DataEngine.addField(
 			fieldFieldLabel = "Text",
@@ -455,7 +455,7 @@ definition {
 	@description = "This is a test for LRQA-66584. This test validates the duplication of field groups up to 2 levels"
 	@priority = 5
 	test DuplicateTwoLevelFieldGroups {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DataEngine.addField(
 			fieldFieldLabel = "Text 1",
@@ -756,6 +756,8 @@ definition {
 	@description = "LPS-168179: It's possible to reorder Web Content with Structure of repeatable fields groups"
 	@priority = 5
 	test ReorderRepeatableFieldsGroupsByDragAndDrop {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a Web Content Structure that contains repeatable fields groups") {
 			DEBuilder.addField(
 				fieldLabel = "Text",
@@ -868,6 +870,7 @@ definition {
 	@priority = 4
 	test SetFieldGroupAsRepeatableAndExecuteOnAWebContent {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DataEngine.addField(
 			fieldFieldLabel = "Text",

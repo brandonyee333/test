@@ -74,6 +74,7 @@ definition {
 	@refactordone
 	test CannotExceedStorageQuotaWhenUsingSingleUpload {
 		property custom.properties = "data.limit.dl.storage.max.size=1048576";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 

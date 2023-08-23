@@ -146,7 +146,7 @@ definition {
 	@description = "This is a use case for LPS-68780."
 	@priority = 5
 	test EditCommentAssignedToMe {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		Navigator.gotoPage(pageName = "Page Comments Page");
 

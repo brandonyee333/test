@@ -29,6 +29,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to add multiple options for Grid field on the Document Type builder."
 	@priority = 4
 	test CanAddMultipleOptionsInGridField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -69,6 +71,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to add multiple options for Multiple Selection field on the Document Type builder."
 	@priority = 4
 	test CanAddMultipleOptionsInMultipleSelectionField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -94,6 +98,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to add multiple options for Select From List field on the Document Type builder."
 	@priority = 4
 	test CanAddMultipleOptionsInSelectFromListField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -119,6 +125,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to add multiple options for Single Selection field on the Document Type builder."
 	@priority = 4
 	test CanAddMultipleOptionsInSingleSelectionField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -199,6 +207,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label and Help text of Color Field on the Document Type builder."
 	@priority = 4
 	test CanEditLabelPlaceholderAndHelpTextInColorField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -239,6 +249,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that that is possible to edit Label and Help text of Date Field on the Document Type builder."
 	@priority = 5
 	test CanEditLabelPlaceholderAndHelpTextInDateField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -279,6 +291,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label and Help text of Geolocation Field on the Document Type builder."
 	@priority = 4
 	test CanEditLabelPlaceholderAndHelpTextInGeolocationField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -319,6 +333,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label and Help text of Image Field on the Document Type builder."
 	@priority = 4
 	test CanEditLabelPlaceholderAndHelpTextInImageField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -359,6 +375,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label and Help text of Link to Page Field on the Document Type builder."
 	@priority = 4
 	test CanEditLabelPlaceholderAndHelpTextInLinkToPageField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -399,6 +417,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label, Placeholder and Help text of Numeric Field on the Document Type builder."
 	@priority = 5
 	test CanEditLabelPlaceholderAndHelpTextInNumericField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -443,6 +463,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label and Help text of Rich Text Field on the Document Type builder."
 	@priority = 4
 	test CanEditLabelPlaceholderAndHelpTextInRichTextField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -483,6 +505,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label and Help text of Separator Field on the Document Type builder."
 	@priority = 4
 	test CanEditLabelPlaceholderAndHelpTextInSeparatorField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -523,6 +547,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label, Placeholder and Help text of Text Field on the Document Type builder."
 	@priority = 5
 	test CanEditLabelPlaceholderAndHelpTextInTextField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(
@@ -567,6 +593,8 @@ definition {
 	@description = "This is a test for LRQA-69030. This test verifies that is possible to edit Label and Help text of Upload Field on the Document Type builder."
 	@priority = 4
 	test CanEditLabelPlaceholderAndHelpTextInUploadField {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.addWithoutSave(

@@ -98,6 +98,8 @@ definition {
 	@description = "Verify that is possible to choose different options for Grid field for a translated language"
 	@priority = 5
 	test CanChooseDifferentOptionsFromGridField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -186,6 +188,8 @@ definition {
 	@description = "Verify that is possible to choose different options for Multiple Selection field for a translated language"
 	@priority = 5
 	test CanChooseDifferentOptionsFromMultpleSelectionField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -296,6 +300,8 @@ definition {
 	@description = "Verify that is possible to choose different options for Select From List field for a translated language"
 	@priority = 5
 	test CanChooseDifferentOptionsFromSelectFromListField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -366,6 +372,8 @@ definition {
 	@description = "Verify that is possible to choose different options for Single Selection field for a translated language"
 	@priority = 5
 	test CanChooseDifferentOptionsFromSingleSelectionField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -488,6 +496,8 @@ definition {
 	@description = "Verify that for decimal Numeric fields the decimal separator is adequate to the current locale"
 	@priority = 4
 	test CanDecimalSeparatorBeAdequateWithDifferentLanguages {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -536,6 +546,7 @@ definition {
 	@description = "Verify that upon editing Default language, translated languages are not affected"
 	@priority = 5
 	test CanDefaulfLanguageChangeTranslationsAfterEdited {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -714,6 +725,7 @@ definition {
 	@description = "Verify that upon editing Default language, translated languages are not affected"
 	@priority = 5
 	test CanDefaultLanguageBeEditedAndRemainTranslations {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -986,6 +998,8 @@ definition {
 	@description = "Verify that is possible to translate fields with options inside a Fields Group"
 	@priority = 5
 	test CanInputtedDataBeTranslatedInFieldOptionOnFieldsGroup {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -1390,6 +1404,8 @@ definition {
 	@description = "Verify that translations for more than two different languages persists"
 	@priority = 5
 	test CanInputtedDataBeTranslatedToTwoLanguages {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -1631,6 +1647,8 @@ definition {
 	@description = "Verify that is not possible to translate a field that has Localizable set as off"
 	@priority = 4
 	test CanNotLocalizbleOffTranslate {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -1692,6 +1710,8 @@ definition {
 	@description = "Verify that is not possible to translate a field that has Localizable set as off and is inside a Fields Group that has Localizable fields"
 	@priority = 3
 	test CanNotLocalizbleOffTranslateFieldsOnFieldsGroup {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -1766,6 +1786,8 @@ definition {
 	@description = "Verify that is not possible to choose options of a field that has Localizable set as off"
 	@priority = 4
 	test CanNotLocalizbleOffTranslateOptionFields {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -1822,6 +1844,7 @@ definition {
 	@description = "Verify Default language when Portal Instance language is changed"
 	@priority = 4
 	test CanPortalLanguageBeChanged {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1885,6 +1908,8 @@ definition {
 	@description = "Verify that Structure's translations are displayed on the Web Content"
 	@priority = 5
 	test CanStructureTranslationsBeShown {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -1923,6 +1948,8 @@ definition {
 	@description = "Verify that is possible to translate field with options inside a Fields Group"
 	@priority = 5
 	test CanTranslateFieldOptionInFieldsGroup {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -1990,6 +2017,8 @@ definition {
 	@description = "Verify that is possible to translate fields with options on the Fieldset modal"
 	@priority = 5
 	test CanTranslateFieldOptionOnFieldset {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2177,6 +2206,8 @@ definition {
 	@description = "Verify that is possible to translate fields inside a Fields Group"
 	@priority = 5
 	test CanTranslateFieldsOnFieldsGroup {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2268,6 +2299,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Color Field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnColorField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2314,6 +2347,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Date Field"
 	@priority = 5
 	test CanTranslateLabelAndHelpTextOnDateField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2360,6 +2395,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Geolocation Field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnGeolocationField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2406,6 +2443,8 @@ definition {
 	@description = "Verify that is possible to translate multiple options for Grid field"
 	@priority = 5
 	test CanTranslateLabelAndHelpTextOnGridField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2452,6 +2491,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Image Field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnImageField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2498,6 +2539,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Link to Page Field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnLinkToPageField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2544,6 +2587,8 @@ definition {
 	@description = "Verify that is possible to translate multiple options for Multiple Selection field"
 	@priority = 5
 	test CanTranslateLabelAndHelpTextOnMultipleSelectionField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2590,6 +2635,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Numeric Field"
 	@priority = 5
 	test CanTranslateLabelAndHelpTextOnNumericField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2636,6 +2683,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Rich Text Field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnRichTextField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2682,6 +2731,8 @@ definition {
 	@description = "Verify that is possible to translate multiple options for Select From List field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnSelectFromListField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2728,6 +2779,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Separator Field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnSeparatorField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2774,6 +2827,8 @@ definition {
 	@description = "Verify that is possible to translate multiple options for Single Selection field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnSingleSelectionField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2820,6 +2875,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Upload Field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnUploadField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2866,6 +2923,8 @@ definition {
 	@description = "Verify that is possible to translate Label and Help text of Web Content Field"
 	@priority = 4
 	test CanTranslateLabelAndHelpTextOnWebContentField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2921,6 +2980,8 @@ definition {
 	@description = "Verify that is possible to translate Label, Placeholder and Help text of Text Field"
 	@priority = 5
 	test CanTranslateLabelPlaceholderHelpTextOnTextField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -2971,6 +3032,8 @@ definition {
 	@description = "Verify that is possible to translate a Web Content with all fields"
 	@priority = 5
 	test CanTranslateWebContentWithAllFields {
+		property portal.acceptance = "poshi-validation";
+
 		for (var n : list "1,2") {
 			JSONLayout.addPublicLayout(
 				groupName = "Test Site Name",
@@ -3301,6 +3364,8 @@ definition {
 	@description = "Verify that translations for repeatable fields persists"
 	@priority = 5
 	test CanTranslationsPersistsOnRepeatableField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();
@@ -3538,6 +3603,8 @@ definition {
 	@description = "Verify that is possible to choose a different Page on the Link to Page Field for a translated language"
 	@priority = 5
 	test CanUploadedLinkToPageChangeWithTranslations {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		for (var n : list "1,2") {

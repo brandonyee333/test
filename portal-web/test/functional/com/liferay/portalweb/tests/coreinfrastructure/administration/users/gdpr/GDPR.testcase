@@ -133,6 +133,8 @@ definition {
 	@description = "This test adds entries from different application and anonymizes all entries via Select All"
 	@priority = 4
 	test CanAnonymizeAllEntries {
+		property portal.acceptance = "poshi-validation";
+
 		JSONBlog.addEntry(
 			entryContent = "Blogs Entry Content",
 			entryTitle = "Blogs Entry Title",
@@ -365,6 +367,8 @@ definition {
 	@description = "This test asserts a related asset can be anonymized from an application."
 	@priority = 3
 	test CanAnonymizeARelatedAsset {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Login as user whose data will be deleted and add a blog entry and document to be added as Related Assets") {
 			JSONBlog.addEntry(
 				entryContent = "Blogs Entry Content",
@@ -563,7 +567,7 @@ definition {
 	@description = "This test anonymizes a single entry from an application"
 	@priority = 5
 	test CanAnonymizeEntryFromApplication {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -684,6 +688,7 @@ definition {
 	@description = "This test covers LPS-168719. It ensures that changing the password length does not affect anonymization"
 	@priority = 3
 	test CanAnonymizeWithPasswordLengthChange {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -742,6 +747,7 @@ definition {
 	@description = "This test covers LPS-169408. It ensures that changing the password minimum upper case does not affect anonymization"
 	@priority = 3
 	test CanAnonymizeWithPasswordMinimumUpperCaseChange {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1047,6 +1053,7 @@ definition {
 	@description = "This test deletes and anonymizes all entries from all applications"
 	@priority = 3
 	test CanDeleteAndAnonymizeAllEntries {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1081,6 +1088,8 @@ definition {
 	@description = "This test deletes export process"
 	@priority = 3
 	test CanDeleteAnExportProcess {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Log in as new user and create data across several different applications") {
 			JSONBlog.addEntry(
 				entryContent = "Blogs Entry Content",
@@ -1166,6 +1175,8 @@ definition {
 	@description = "This test asserts a related asset can be deleted from an application."
 	@priority = 3
 	test CanDeleteARelatedAsset {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Login as user whose data will be deleted and add a blog entry and document to be added as Related Assets") {
 			JSONBlog.addEntry(
 				entryContent = "Blogs Entry Content",
@@ -1412,6 +1423,8 @@ definition {
 	@description = "This test edits an entry in Delete Personal Data"
 	@priority = 4
 	test CanEditEntryFromApplication {
+		property portal.acceptance = "poshi-validation";
+
 		ProductMenuHelper.openProductMenu();
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
@@ -1459,7 +1472,7 @@ definition {
 	@description = "This test exports multiple entries from different applications"
 	@priority = 4
 	test CanExportMultipleEntries {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
@@ -1605,6 +1618,8 @@ definition {
 	@description = "This test filters and orders data from the export data process"
 	@priority = 2
 	test CanFilterAndOrderExportProcesses {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Sign in as New User and create data from various applications") {
 			JSONBlog.addEntry(
 				entryContent = "Blogs Entry Content",
@@ -1686,6 +1701,7 @@ definition {
 	@description = "This test filters application to Forms, Web Content and Contacts and views all filtered data in Review Data section"
 	@priority = 3
 	test CanFilterAndViewData {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1816,6 +1832,8 @@ definition {
 	@description = "LPS-77749. This test orders entries by Name and by Description"
 	@priority = 2
 	test CanOrderDataInViewData {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMDocument.addCP(
@@ -1953,6 +1971,8 @@ definition {
 	@description = "Test is asserting that entries are still anonymous after activating user."
 	@priority = 3
 	test EntriesAreStillAnonymousAfterActivatingUser {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Sign in as User and add DM folder1 and Document_2.docx.") {
 			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -2040,6 +2060,8 @@ definition {
 	@description = "LPS-77750 This test asserts that the details of the entry display when user clicks on the Info icon."
 	@priority = 3
 	test EntryDetailsDisplayInInfoPanel {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMFolder.addCP(
@@ -2096,6 +2118,7 @@ definition {
 	@description = "This test changes pagination and assert export processes display properly."
 	@priority = 2
 	test PaginationWorksInExportPersonalData {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

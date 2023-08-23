@@ -1915,7 +1915,7 @@ definition {
 	@description = "LPS-130265: Validate if it's posible to create a experience using a segment based on Session > Referrer URL criteria"
 	@priority = 5
 	test AddNewExperienceSessionReferrerURLSegment {
-		property portal.acceptance = "true";
+		property portal.acceptance = "tposhi-validation";
 
 		task ("Add a session segment") {
 			JSONSegmentsentry.addSegment(

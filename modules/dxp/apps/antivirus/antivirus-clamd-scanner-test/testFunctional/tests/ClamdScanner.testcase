@@ -29,6 +29,8 @@ definition {
 	@description = "Verify normal documents can be added when Clamd Antivirus is enabled."
 	@priority = 5
 	test CanAddDocumentWhenEnablingAntivirus {
+		property portal.acceptance = "poshi-validation";
+
 		task ("When the user tries uploading a normal document") {
 			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
@@ -79,6 +81,8 @@ definition {
 	@description = "Verify Clamd Antivirus will block a document that contains a virus uploaded to a depot."
 	@priority = 5
 	test CannotUploadVirusToDepot {
+		property portal.acceptance = "poshi-validation";
+
 		JSONDepot.addDepot(
 			depotDescription = "This is the description of a depot",
 			depotName = "Test Depot Name");
@@ -181,6 +185,8 @@ definition {
 	@description = "LPS-157927 Verify Clamd Antivirus will block a document that contains a virus while adding."
 	@priority = 5
 	test CannotUploadVirusWhileAddingDocument {
+		property portal.acceptance = "poshi-validation";
+
 		task ("When the user tries uploading a document that contains a virus") {
 			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 

@@ -403,6 +403,8 @@ definition {
 	@description = "LPS-108138 - Verify that users can filter the tasks to be transitioned by steps"
 	@priority = 3
 	test OnChooseTransitionPerStepCanFilterByStep {
+		property portal.acceptance = "poshi-validation";
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
 			panel = "Applications",

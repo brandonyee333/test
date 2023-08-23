@@ -41,6 +41,7 @@ definition {
 	@description = "This is a test for LPS-133993. Verify if its possible collect Digital Signature By button"
 	@priority = 5
 	test CanCollectDigitalSignatureByButton {
+		property portal.acceptance = "poshi-validation";
 		property solutions.acceptance = "true";
 
 		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");
@@ -68,6 +69,8 @@ definition {
 	@description = "This is a test for LPS-133993. Verify if its possible collect Digital Signature By vertical ellipsis"
 	@priority = 5
 	test CanCollectDigitalSignatureByVerticalEllipsis {
+		property portal.acceptance = "poshi-validation";
+
 		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");

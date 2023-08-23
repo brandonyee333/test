@@ -297,6 +297,7 @@ definition {
 	@description = "This is a use case for LPS-95589. Verify is not possible export a DM with deleted document link."
 	@priority = 4
 	test ExportDMWithDeletedDocumentLink {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -633,6 +634,7 @@ definition {
 	@description = "This is a use case for LPS-86608. Verify is possible export/import Web Content with repeat field."
 	@priority = 3
 	test ExportImportWebcontentWithRepeatField {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -771,6 +773,7 @@ definition {
 	@description = "This is a use case for LPS-88831, LPS-88889 and LPS-88890. Verify is possible export a web content with deleted reference."
 	@priority = 4
 	test ExportWebContentWithDeletedReference {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

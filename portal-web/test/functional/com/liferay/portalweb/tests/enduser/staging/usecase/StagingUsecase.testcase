@@ -1740,6 +1740,8 @@ definition {
 	@description = "This is a use case for LPS-82028."
 	@priority = 4
 	test SingleAssetPublishLayoutScopedContent {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given: User add a Blog portlet to the staging site") {
 			JSONLayout.addWidgetToPublicLayout(
 				column = 1,
@@ -2833,6 +2835,7 @@ definition {
 	@description = "This is a use case for LPS-87280."
 	@priority = 4
 	test ViewPublishedWCWithApostropheInImageField {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

@@ -462,6 +462,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanDeleteDocumentWithCustomField {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1280,6 +1281,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanEditDocumentWithCustomField {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -3058,6 +3060,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanPublishImageWithCustomField {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

@@ -146,6 +146,8 @@ definition {
 	@description = "This is a use case for LRQA-61632."
 	@priority = 3
 	test CanDisableSearchableInTextField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();

@@ -258,6 +258,8 @@ definition {
 	@description = "Move a structured web content to recycle bin and restore it."
 	@priority = 3
 	test RecycleBinWebContent {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a structure with text field and save") {
 			WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "test-site-name");
 

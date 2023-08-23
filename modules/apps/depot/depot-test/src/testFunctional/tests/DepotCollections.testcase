@@ -776,6 +776,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanSelectDocumentsWithTypeManually {
+		property portal.acceptance = "poshi-validation";
+
 		for (var i : list "1,2") {
 			DepotNavigator.openDepotDocumentTypeAdmin(depotName = "Test Depot Name");
 

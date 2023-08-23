@@ -88,6 +88,8 @@ definition {
 	@description = "Assert the conflict can be manually resovled on Calendar by discarding within Publications."
 	@priority = 4
 	test ResolveConflictingPublicationsByDiscarding {
+		property portal.acceptance = "poshi-validation";
+
 		HeadlessSite.addSite(siteName = "Site Name");
 
 		JSONLayout.addPublicLayout(

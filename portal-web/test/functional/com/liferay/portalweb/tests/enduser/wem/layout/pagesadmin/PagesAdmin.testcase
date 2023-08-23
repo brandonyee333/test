@@ -2301,6 +2301,8 @@ definition {
 	@description = "This is a test for LPS-159631. Page opens in new tab when selecting New Tab in advanced tab."
 	@priority = 4
 	test ViewLinkToURLTypePageWhichSelectingNewTabInAdvancedTab {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a page creator has a widget page") {
 			JSONLayout.addPublicLayout(
 				groupName = ${randomSiteName},
@@ -2363,6 +2365,8 @@ definition {
 	@description = "This is a test for LPS-159631. Page opens in new tab when setting Target in advanced tab."
 	@priority = 4
 	test ViewLinkToURLTypePageWhichSettingTargetInAdvancedTab {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a page creator has a widget page") {
 			JSONLayout.addPublicLayout(
 				groupName = ${randomSiteName},
@@ -2425,6 +2429,8 @@ definition {
 	@description = "This is a test for LPS-159631. Page opens in current page in default setting."
 	@priority = 4
 	test ViewLinkToURLTypePageWithDefaultSetting {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a page creator has a widget page") {
 			JSONLayout.addPublicLayout(
 				groupName = ${randomSiteName},

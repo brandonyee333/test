@@ -65,6 +65,8 @@ definition {
 	@description = "This is a use case for LPS-67400."
 	@priority = 3
 	test ViewCreatedEventVisibleOnScheduler {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		var endDateTime = CalendarEvent.getCalendarTimeHour(status = "End");

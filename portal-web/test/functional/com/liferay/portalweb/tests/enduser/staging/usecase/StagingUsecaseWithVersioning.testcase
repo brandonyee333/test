@@ -415,6 +415,8 @@ definition {
 
 	@priority = 4
 	test StagingCopyFromLive {
+		property portal.acceptance = "poshi-validation";
+
 		Staging.viewSitePagesVariationPG(sitePagesVariationName = "Main Variation");
 
 		Portlet.addPG(portletName = "Blogs");

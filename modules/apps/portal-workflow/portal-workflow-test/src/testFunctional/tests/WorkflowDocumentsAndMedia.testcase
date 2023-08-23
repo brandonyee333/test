@@ -490,6 +490,8 @@ definition {
 	@description = "This test covers LPS-90346. It ensures that the document preview displays correctly after submitting an edit."
 	@priority = 4
 	test PreviewSubmittedEdit {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
@@ -574,7 +576,7 @@ definition {
 	@priority = 5
 	test SaveAsDraftAndViewCategories {
 		property custom.properties = "dl.file.entry.drafts.enabled=true";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 

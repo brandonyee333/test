@@ -59,6 +59,8 @@ definition {
 	@description = "This test ensures that user can set the searchable property of the field."
 	@priority = 5
 	test EditSearchableOfGeolocation {
+		property portal.acceptance = "poshi-validation";
+
 		var key_structureName = "WC Structure Title";
 		var key_fieldName = "Geolocation";
 
@@ -102,6 +104,8 @@ definition {
 	@description = "This test ensures that the user can set the fields parameters and it persists."
 	@priority = 5
 	test SetGeolocationLabelHelpTextAndReference {
+		property portal.acceptance = "poshi-validation";
+
 		var key_fieldName = "Geolocation";
 		var key_structureName = "WC Structure Title";
 
@@ -146,6 +150,8 @@ definition {
 	@description = "This test ensures a repeatable geolocation field can be duplicated on the Web Content."
 	@priority = 4
 	test VerifyDuplicatedGeolocationOnWebContent {
+		property portal.acceptance = "poshi-validation";
+
 		var key_fieldName = "Geolocation";
 
 		DataEngine.toggleFieldRepeatable(fieldFieldLabel = ${key_fieldName});
@@ -172,6 +178,8 @@ definition {
 	@description = "This test ensures the field can be set as required."
 	@priority = 5
 	test VerifyRequiredPropertyOfGeolocation {
+		property portal.acceptance = "poshi-validation";
+
 		var key_fieldName = "Geolocation";
 
 		DataEngine.editFieldRequired(fieldFieldLabel = ${key_fieldName});

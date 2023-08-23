@@ -57,6 +57,8 @@ definition {
 	@description = "This is a test for LRQA-68679. This test verifies that is possible to duplicate the field."
 	@priority = 4
 	test CanBeDuplicated {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -83,6 +85,8 @@ definition {
 	@description = "This is a test for LRQA-68679. This test verifies that Label and Help text can be edited."
 	@priority = 5
 	test CanEditLabelAndHelpText {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -120,6 +124,8 @@ definition {
 	@description = "This is a test for LRQA-70109. This test verifies that is possible to remove a duplicated field (repeatable)."
 	@priority = 4
 	test CanRemoveDuplicatedField {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -158,6 +164,7 @@ definition {
 	@description = "This is a test for LRQA-68679. This test verifies that Default Searchable property is 'Disable' when System Setting is left unchecked"
 	@priority = 3
 	test CanSetDefaultSearchablePropertyToDisable {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -193,6 +200,7 @@ definition {
 	@description = "This is a test for LRQA-68679. This test verifies that Default Searchable property is 'Keyword' when System Setting is checked"
 	@priority = 3
 	test CanSetDefaultSearchablePropertyToKeyword {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -228,6 +236,8 @@ definition {
 	@description = "This is a test for LRQA-68679. This test verifies that Label and Help text can be set."
 	@priority = 5
 	test CanSetLabelAndHelpText {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -253,6 +263,8 @@ definition {
 	@description = "This is a test for LRQA-68679. This test verifies that Label can be shown or hidden."
 	@priority = 3
 	test CanSetLabelToShownOrHidden {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -283,7 +295,7 @@ definition {
 	@description = "Check if Geolocation Field details can be seen."
 	@priority = 4
 	test ViewGeolocationFieldDetails {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property portal.upstream = "true";
 
 		NavItem.gotoStructures();

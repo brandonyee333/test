@@ -133,6 +133,8 @@ definition {
 	@description = "This is a test for LPS-128645. Map custom field to text fragment."
 	@priority = 4
 	test MapCustomFieldToTextFragment {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a custom field for Document") {
 			ApplicationsMenu.gotoPortlet(
 				category = "Configuration",
@@ -519,6 +521,8 @@ definition {
 	@description = "Map multiple custom ddm fields to text editable fields."
 	@priority = 4
 	test MapMultipleCustomDDMFieldsToTextFragment {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = ${siteURLKey});
 
@@ -1706,6 +1710,8 @@ definition {
 	@description = "This is a test for LPS-120504. View mapped image after sort documents in display page template."
 	@priority = 4
 	test ViewMappedImageAfterSortDocumentsInDisplayPageTemplate {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a display page template based on Document and Basic Document") {
 			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
 				contentType = "Document",

@@ -59,6 +59,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the user can decline an event via Scheduler"
 	@priority = 3
 	test CanDeclineEventViaScheduler {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEventViaMyCalendars(user = "Test Test");
 
 		CalendarEvent.editTitle(eventTitle = "Calendar Event Title");
@@ -79,6 +81,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the user can delete a rate status into a event"
 	@priority = 3
 	test CanDeleteRateIntoAEvent {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Calendar.chooseSiteCalendarMenulistOption(
@@ -120,6 +124,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the user can edit event details via Scheduler"
 	@priority = 3
 	test CanEditEventViaScheduler {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -142,6 +148,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the user can rate a event"
 	@priority = 3
 	test CanRateAEvent {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Calendar.chooseSiteCalendarMenulistOption(
@@ -181,6 +189,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the user can view the fields Title, Starts, Ends, Rresources in event details page"
 	@priority = 3
 	test CanViewValuesInEventDetailsPage {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -199,7 +209,7 @@ definition {
 
 	@priority = 5
 	test DeleteRegular {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -225,6 +235,8 @@ definition {
 
 	@priority = 4
 	test DeleteRepeatingAllEventsInTheSeries {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -248,7 +260,7 @@ definition {
 
 	@priority = 5
 	test DeleteRepeatingAllFollowing {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -321,6 +333,8 @@ definition {
 
 	@priority = 3
 	test EditAllDay {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -341,6 +355,8 @@ definition {
 
 	@priority = 3
 	test EditAllDayReminders {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -373,6 +389,8 @@ definition {
 
 	@priority = 3
 	test EditAllDayWithUserInvite {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -401,6 +419,8 @@ definition {
 	@description = "This is a use case for LPS-59097."
 	@priority = 4
 	test EditAndViewRSVP {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.addRegular(
@@ -506,6 +526,8 @@ definition {
 
 	@priority = 4
 	test EditRegular {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -526,6 +548,8 @@ definition {
 
 	@priority = 3
 	test EditRegularReminders {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -562,6 +586,8 @@ definition {
 	@description = "This is a use case for LPS-50026."
 	@priority = 4
 	test EditRegularWithUserInvite {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -607,6 +633,8 @@ definition {
 
 	@priority = 3
 	test EditRepeating {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -633,6 +661,8 @@ definition {
 	@description = "This is a use case for LPS-50016."
 	@priority = 3
 	test EditRepeatingAllEventsInTheSeries {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.editTitle(eventTitle = "Original Event Title");
@@ -669,6 +699,8 @@ definition {
 	@description = "This is a use case for LPS-50017"
 	@priority = 3
 	test EditRepeatingAllFollowing {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.editTitle(eventTitle = "Original Event Title");
@@ -700,6 +732,8 @@ definition {
 
 	@priority = 4
 	test EditRepeatingReminders {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -737,6 +771,8 @@ definition {
 
 	@priority = 4
 	test EditRepeatingWithUserInvite {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -765,6 +801,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the event status is Any when the user Maybe attend the event"
 	@priority = 3
 	test EventStatusIsAnyWhenUserMaybeAttend {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -784,6 +822,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the event status is -Approved- when the Calendar has no workflow assigned"
 	@priority = 4
 	test EventStatusIsApprovedWhenNoWorkflowAssigned {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -803,6 +843,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the event status is Denied when the user declines an event"
 	@priority = 3
 	test EventStatusIsDeniedWhenUserDeclines {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -822,6 +864,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the event status is -Pending- when the Calendar has the Single Approver assigned"
 	@priority = 5
 	test EventStatusIsPendingWhenWorkflowIsAssigned {
+		property portal.acceptance = "poshi-validation";
+
 		Workflow.openWorkflowProcessBuilderConfiguration();
 
 		Workflow.configureWorkflow(
@@ -852,6 +896,8 @@ definition {
 	@description = "LRQA-71888 - Verify that the buttons Maybe and Decline are displayed"
 	@priority = 4
 	test MaybeAndDeclineButtonAreDisplayed {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -871,6 +917,8 @@ definition {
 	@description = "This is a use case for LPS-54548."
 	@priority = 4
 	test SearchInSearchPortletWithTag {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -903,6 +951,7 @@ definition {
 	@priority = 4
 	test ViewCalendarChange {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
@@ -1037,6 +1086,8 @@ definition {
 	@description = "This is a use case for LPS-51222."
 	@priority = 3
 	test ViewCorrectCalendarOnEventSwitch {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();

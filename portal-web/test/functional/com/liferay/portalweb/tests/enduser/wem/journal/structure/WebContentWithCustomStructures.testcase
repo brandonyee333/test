@@ -93,6 +93,8 @@ definition {
 	@description = "This is a test for LPS-102795. Can add translations to removable fields sets contents to null."
 	@priority = 4
 	test AddTranslationsToRemovableFields {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a Web Content Display widget to page") {
 			JSONLayout.addPublicLayout(
 				groupName = "Test Site Name",
@@ -561,6 +563,8 @@ definition {
 	@description = "Add a web content with custom structure that has nested fields."
 	@priority = 4
 	test AddWebContentWithNestedFields {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content strcuture with custom fields") {
 			WebContentNavigator.openWebContentStructuresAdmin(siteURLKey = "test-site-name");
 
@@ -715,7 +719,7 @@ definition {
 	test AddWebContentWithRepeatableRichTextField {
 		property environment.acceptance = "true";
 		property operating.system.types = "alpine,amazonlinux,centos,debian,fedora,orcllinux,osx,redhat,rockylinux,solaris,suse,ubuntu,windows";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Add a web content structure with a repeatable Rich Text field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
@@ -803,6 +807,8 @@ definition {
 	@description = "This is a use case for LRQA-61632. Add web content with required HTML field."
 	@priority = 4
 	test AddWebContentWithRequiredRichTextField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure with a required Rich Text field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -1553,6 +1559,8 @@ definition {
 	@description = "This is a test for LPS-162313. The user is able to select Hidden Pages for Web Content structure."
 	@priority = 4
 	test SelectHiddenPageInLinkToPageField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a user has a widget page hidden from Menu Display") {
 			PagesAdmin.openPagesAdmin(siteURLKey = "Test Site Name");
 
@@ -1847,6 +1855,8 @@ definition {
 	@description = "This is a use case for LPS-102867. View Select From List cannot lose the selection after add repeatable fields."
 	@priority = 4
 	test ViewSelectedOptionsInRepeatableFields {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure with custom fields") {
 			WebContentNavigator.openWebContentStructuresAdmin(siteURLKey = "test-site-name");
 

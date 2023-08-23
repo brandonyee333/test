@@ -86,6 +86,7 @@ definition {
 		property database.bare.enabled = "true";
 		property database.partition.enabled = "true";
 		property database.types = "mysql";
+		property portal.acceptance = "poshi-validation";
 		property skip.start.app.server = "true";
 		property test.assert.warning.exceptions = "true";
 
@@ -169,6 +170,7 @@ definition {
 		property database.bare.enabled = "true";
 		property database.partition.enabled = "true";
 		property database.types = "mysql";
+		property portal.acceptance = "poshi-validation";
 		property skip.start.app.server = "true";
 		property test.assert.warning.exceptions = "true";
 

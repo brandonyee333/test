@@ -61,6 +61,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanAddDocumentTypeAndMetadata {
+		property portal.acceptance = "poshi-validation";
+
 		JSONDepot.addDepot(
 			depotDescription = "This is the description of a depot",
 			depotName = "Test Depot Name");
@@ -239,7 +241,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanEditDocument {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONDepot.addDepot(
 			depotDescription = "This is the description of a depot",

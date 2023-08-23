@@ -86,6 +86,7 @@ definition {
 	@priority = 3
 	test CanChangeCalendarColor {
 		property ci.retries.disabled = "true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONCalendar.setCalendarColor(calendarName = "Test Test");
 

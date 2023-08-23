@@ -37,6 +37,8 @@ definition {
 	@description = "This is a test for LPS-131206. Verify if its possible download envelopes by Envelope Description "
 	@priority = 3
 	test CanDownloadEnvelopeByEnvelopeDescription {
+		property portal.acceptance = "poshi-validation";
+
 		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");
 
 		DigitalSignature.createEnvelope(
@@ -103,6 +105,8 @@ definition {
 	@description = "This is a test for LPS-133595. Verify if the Create Date column shows the date correctly after created one envelope in local Timezone "
 	@priority = 4
 	test CanViewCorrectDate {
+		property portal.acceptance = "poshi-validation";
+
 		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");
 
 		DigitalSignature.createEnvelope(
@@ -175,6 +179,8 @@ definition {
 	@description = "This is a test for LPS-137169. Verify if have more recipients than one"
 	@priority = 4
 	test HaveMoreRecipientsThanOne {
+		property portal.acceptance = "poshi-validation";
+
 		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");
 
 		DigitalSignature.createEnvelope(

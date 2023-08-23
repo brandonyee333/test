@@ -69,7 +69,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanDeleteDocumentWithCustomType {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -147,6 +147,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanEditAndRepublishDocumentType {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -255,7 +256,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanEditAndRepublishDocumentWithCustomTypeAndSet {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -488,6 +489,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanEditAndRepublishMetadataSetWithCustomType {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -613,7 +615,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanEditDocumentWithCustomType {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

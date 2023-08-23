@@ -255,6 +255,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanRemoveDMWithDocumentType {
+		property portal.acceptance = "poshi-validation";
+
 		DepotNavigator.openDepotDocumentTypeAdmin(depotName = "Test Depot Name");
 
 		DMDocumentType.add(
@@ -304,6 +306,8 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewDMwithDocumentTypeOnSiteWidgets {
+		property portal.acceptance = "poshi-validation";
+
 		JSONLayout.addPublicLayout(
 			groupName = "Site Name",
 			layoutName = "Page Name");
@@ -365,6 +369,8 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewDocumentTypeInRelatedAssets {
+		property portal.acceptance = "poshi-validation";
+
 		JSONDepot.addDepot(
 			depotDescription = "This is the description of a depot",
 			depotName = "Test Depot Name");

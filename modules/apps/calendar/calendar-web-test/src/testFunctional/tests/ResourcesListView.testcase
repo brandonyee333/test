@@ -349,6 +349,7 @@ definition {
 	@priority = 3
 	test ViewInvitedResourceAvailability {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",

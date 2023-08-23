@@ -205,7 +205,7 @@ definition {
 
 	@priority = 5
 	test EnableDisablePublicationsViaPublicationsAdmin {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		HeadlessSite.addSite(siteName = "Site Name");
 

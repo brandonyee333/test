@@ -94,6 +94,8 @@ definition {
 
 	@priority = 3
 	test ChangeCalendarTypeForAllDayEvent {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -114,6 +116,8 @@ definition {
 
 	@priority = 4
 	test ChangeCalendarTypeForRegularEvent {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -134,6 +138,8 @@ definition {
 
 	@priority = 4
 	test ChangeCalendarTypeForRepeatingEvent {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -158,6 +164,7 @@ definition {
 	test ChangeColorCalendarSiteCalendarsEventRegular {
 		property ci.retries.disabled = "true";
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
@@ -254,6 +261,8 @@ definition {
 
 	@priority = 4
 	test DeactivateAndDeleteSiteCalendarAndViewSiteCalendarEvent {
+		property portal.acceptance = "poshi-validation";
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
@@ -420,7 +429,7 @@ definition {
 
 	@priority = 5
 	test SearchForOtherCalendars {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

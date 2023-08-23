@@ -156,6 +156,7 @@ definition {
 	@description = "This is a test for LPS-131425. Verify if unsuportted files Error message appear"
 	@priority = 5
 	test CannotCreateEnvelopeWithUnsupportedFiles {
+		property portal.acceptance = "poshi-validation";
 		property solutions.acceptance = "true";
 
 		task ("Given that Digital Signature is enabled with proper credentials") {
@@ -186,6 +187,7 @@ definition {
 	@description = "This is a test for LPS-131425. Verify if Success Message appear"
 	@priority = 5
 	test CanViewSuccessMessage {
+		property portal.acceptance = "poshi-validation";
 		property solutions.acceptance = "true";
 
 		DigitalSignature.enableDigitalSignature(siteStrategy = "Always Inherit");

@@ -190,6 +190,8 @@ definition {
 	@description = "This is a test for LPS-98076. Verify that a user can set Searchable as Disabled and as Text"
 	@priority = 4
 	test SetRichTextSearchableByTextAndDisable {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.editFieldSearchable(
 			fieldFieldLabel = "Rich Text",
 			searchableType = "Disable");
@@ -218,6 +220,8 @@ definition {
 	@description = "This is a test for LPS-98076. Verify that a user can hide/show the field label"
 	@priority = 3
 	test ShowAndHideRichTextLabel {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.toggleShowLabel(fieldLabel = "Rich Text");
 
 		DDLDataDefinition.save();

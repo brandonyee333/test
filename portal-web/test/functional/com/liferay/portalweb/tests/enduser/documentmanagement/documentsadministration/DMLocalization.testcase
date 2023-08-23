@@ -147,6 +147,8 @@ definition {
 	@description = "This test ensures that Japanese file name with invalid characters can not be published."
 	@priority = 5
 	test CannotPublishJapaneseFileNameWithInvalidCharacters {
+		property portal.acceptance = "poshi-validation";
+
 		for (var invalidCharacter : list "<,|,?") {
 			DMDocument.addCP(
 				dmDocumentDescription = "DM文書記述",
@@ -216,6 +218,8 @@ definition {
 	@description = "This test ensures that the title is the file name minus extension by default when uploading a Japanese file by single upload."
 	@priority = 5
 	test CanViewJapaneseFileAfterSingleUpload {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
 
 		DMDocument.addCP(

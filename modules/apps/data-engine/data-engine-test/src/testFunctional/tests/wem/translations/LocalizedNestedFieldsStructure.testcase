@@ -459,6 +459,8 @@ definition {
 	@description = "This test ensures that is possible to translate the structure without adding a title to the default language."
 	@priority = 4
 	test TranslateStructureWithoutDefaultTitle {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentStructures.addCP();
 
 		DataEngine.addField(
@@ -660,6 +662,8 @@ definition {
 	@description = "This test ensures that the translation persist after creating a 2-level nested fields."
 	@priority = 5
 	test TranslationPersistsForTwoLevelNestedFields {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
 		DataEngine.addField(

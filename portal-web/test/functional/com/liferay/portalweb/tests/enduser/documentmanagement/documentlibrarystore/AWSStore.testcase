@@ -157,6 +157,7 @@ definition {
 
 	@priority = 5
 	test AWSS3StoreSmoke {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

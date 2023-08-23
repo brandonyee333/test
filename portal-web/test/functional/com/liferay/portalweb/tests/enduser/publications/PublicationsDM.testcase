@@ -280,6 +280,8 @@ definition {
 
 	@priority = 4
 	test PublishDocumentWithNewDocumentType {
+		property portal.acceptance = "poshi-validation";
+
 		JSONPublications.addPublication(publicationName = "Publication Name");
 
 		JSONPublications.selectPublication(publicationName = "Publication Name");

@@ -482,6 +482,8 @@ definition {
 	@description = "This is a test for LRQA-68747. This test verifies that is possible to duplicate or delete fields that are inside a Fields Group."
 	@priority = 5
 	test CanDuplicateOrDeleteFields {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -526,6 +528,8 @@ definition {
 	@description = "This is a test for LRQA-68747. This test verifies that is possible to duplicate or delete fields that are inside a Fields Group inside another Fields Group."
 	@priority = 3
 	test CanDuplicateOrDeleteFieldsInsideNestedFieldsGroup {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -772,6 +776,8 @@ definition {
 	@description = "This is a test for LRQA-68747. This test verifies that is possible to edit Label, Placeholder and Help text of fields that are inside the Fields Group."
 	@priority = 5
 	test CanEditLabelPlaceholderAndHelpTextOfFields {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -837,6 +843,8 @@ definition {
 	@description = "This is a test for LRQA-68747. This test verifies that is possible to edit Label, Placeholder and Help text of fields that are inside a Fields Group inside another Fields Group."
 	@priority = 4
 	test CanEditLabelPlaceholderAndHelpTextOfFieldsInsideNestedFieldsGroups {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -962,6 +970,8 @@ definition {
 	@description = "This is a test for LRQA-71711. This test verifies that data inputted on a repeatable Fields Group duplicated persists on the Web Content"
 	@priority = 4
 	test CanInputDataOnDuplicatedField {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -1060,6 +1070,8 @@ definition {
 	@description = "Verify that data inputted on a repeatable Fields Group duplicated persists on the Web Content"
 	@priority = 4
 	test CanInputDataOnDuplicatedFieldTranslated {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -1443,6 +1455,8 @@ definition {
 	@description = "This is a test for LRQA-71711. This test verifies that is possible to remove duplicated repeatable Fields Group"
 	@priority = 4
 	test CanRemoveDuplicatedField {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -1491,6 +1505,8 @@ definition {
 	@description = "Verify that is possible to remove duplicated repeatable Fields Group"
 	@priority = 4
 	test CanRemoveDuplicatedRepeatableFieldsGroupTranslated {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -1715,6 +1731,8 @@ definition {
 	@description = "This is a test for LRQA-71711. This test verifies that Options chosen for a Grid field inside a Fields Group persists"
 	@priority = 5
 	test CanSelectGridOptionsInFieldsGroup {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -1768,6 +1786,8 @@ definition {
 	@description = "Verify that Options chosen for a Grid field inside a Fields Group persists"
 	@priority = 5
 	test CanSelectGridOptionsInFieldsGroupTranslated {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -1839,6 +1859,8 @@ definition {
 	@description = "This is a test for LRQA-71711. This test verifies that Options chosen for Fields with Options inside a Fields Group persists"
 	@priority = 5
 	test CanSelectOptionsInFieldsGroup {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
@@ -1880,6 +1902,8 @@ definition {
 	@description = "Verify that Options chosen for Fields with Options inside a Fields Group persists"
 	@priority = 5
 	test CanSelectOptionsInFieldsGroupTranslated {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");

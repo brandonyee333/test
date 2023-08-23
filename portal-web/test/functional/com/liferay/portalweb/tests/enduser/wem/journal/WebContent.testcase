@@ -224,6 +224,8 @@ definition {
 	@description = "The user can edit the global basic strucutre and template in web content admin."
 	@priority = 4
 	test EditBasicWebContentStructureAndTemplate {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Edit basic strucutre in global site") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "global");
 
@@ -1773,6 +1775,8 @@ definition {
 	@description = "This is a use case for LPS-140253. View no private page in web content."
 	@priority = 4
 	test ViewNoPrivatePageInWebContent {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a content page and add Asset Publisher in it") {
 			JSONLayout.addPublicLayout(
 				groupName = "Test Site Name",

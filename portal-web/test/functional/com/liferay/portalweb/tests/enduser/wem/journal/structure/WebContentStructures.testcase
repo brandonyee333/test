@@ -166,6 +166,8 @@ definition {
 	@description = "This is a use case for LPS-126248. Edit field reference of field options in structure editor."
 	@priority = 4
 	test EditFieldReferenceOfFieldOption {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure with a Select from List field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -250,6 +252,8 @@ definition {
 	@description = "The user can edit the default values for a structure with fieldsets"
 	@priority = 4
 	test EditStructureDefaultValuesBasedOnFieldset {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a Web Content admin has a structure based on a fieldset") {
 			WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "test-site-name");
 
@@ -1293,7 +1297,7 @@ definition {
 	@description = "This is a test for LPS-125933. Create, read, update and delete a Structure with all possible fields."
 	@priority = 5
 	test ViewAndEditAsWellAsDeleteStructureWithAllFields {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property testray.component.names = "Training,Web Content Administration";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");

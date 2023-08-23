@@ -78,7 +78,7 @@ definition {
 
 	@priority = 5
 	test AddAllDay {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		CalendarNavigator.gotoAddEvent();
 
@@ -94,6 +94,8 @@ definition {
 
 	@priority = 3
 	test AddAllDayRSVPYes {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -114,6 +116,7 @@ definition {
 
 	@priority = 3
 	test AddAllDayWithRemindersEnabled {
+		property portal.acceptance = "poshi-validation";
 		property portal.release = "false";
 
 		CalendarNavigator.gotoAddEvent();
@@ -135,6 +138,8 @@ definition {
 
 	@priority = 3
 	test AddAllDayWithTag {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -159,6 +164,8 @@ definition {
 
 	@priority = 3
 	test AddAllDayWithUserInviteAccept {
+		property portal.acceptance = "poshi-validation";
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -278,6 +285,8 @@ definition {
 	@description = "This is a use case for LPS-44540."
 	@priority = 5
 	test AddEventTwiceViaMyCalendars {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEventViaMyCalendars(user = "Test Test");
 
 		CalendarEvent.editTitle(eventTitle = "Calendar Event Title1");
@@ -302,6 +311,8 @@ definition {
 
 	@priority = 4
 	test AddRegular {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -316,6 +327,8 @@ definition {
 
 	@priority = 4
 	test AddRegularRSVPYes {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -336,6 +349,8 @@ definition {
 
 	@priority = 4
 	test AddRegularWithRemindersEnabled {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -357,6 +372,8 @@ definition {
 
 	@priority = 4
 	test AddRegularWithTag {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -381,6 +398,8 @@ definition {
 
 	@priority = 4
 	test AddRegularWithUserInvite {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -398,6 +417,8 @@ definition {
 
 	@priority = 4
 	test AddRegularWithUserInviteAccept {
+		property portal.acceptance = "poshi-validation";
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -459,6 +480,8 @@ definition {
 
 	@priority = 4
 	test AddRepeating {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -485,7 +508,7 @@ definition {
 
 	@priority = 5
 	test AddRepeatingMonthly2Times {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		CalendarNavigator.gotoAddEvent();
 
@@ -505,6 +528,8 @@ definition {
 
 	@priority = 3
 	test AddRepeatingRSVPYes {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -584,6 +609,8 @@ definition {
 
 	@priority = 3
 	test AddRepeatingWithRemindersEnabled {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -610,6 +637,8 @@ definition {
 
 	@priority = 3
 	test AddRepeatingWithTag {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -636,6 +665,8 @@ definition {
 
 	@priority = 3
 	test AddRepeatingWithUserInviteAccept {
+		property portal.acceptance = "poshi-validation";
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -703,6 +734,7 @@ definition {
 	@description = "This is a use case for LPS-51402."
 	@priority = 4
 	test AddRepeatingYearly {
+		property portal.acceptance = "poshi-validation";
 		property portal.release = "false";
 
 		CalendarNavigator.gotoAddEvent();
@@ -782,6 +814,8 @@ definition {
 
 	@priority = 4
 	test AddWithRelatedAssetViaAssetPublisher {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		ProductMenu.gotoPortlet(
@@ -890,6 +924,8 @@ definition {
 	@description = "Verify that the user can Approve an Event"
 	@priority = 4
 	test CanApproveEvent {
+		property portal.acceptance = "poshi-validation";
+
 		Workflow.openWorkflowProcessBuilderConfiguration();
 
 		Workflow.configureWorkflow(
@@ -1000,6 +1036,8 @@ definition {
 	@description = "LRQA-71887 - Verify that the user can edit the event after it has been published"
 	@priority = 4
 	test CanEditEvent {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarEvent.enableEventBySiteCalendarName(calendarName = "Liferay DXP");
 
 		CalendarNavigator.gotoAddEvent();
@@ -1035,6 +1073,8 @@ definition {
 	@description = "LRQA-71887 - Verify that the user can Reject an event"
 	@priority = 3
 	test CanRejectEvent {
+		property portal.acceptance = "poshi-validation";
+
 		Workflow.openWorkflowProcessBuilderConfiguration();
 
 		Workflow.configureWorkflow(
@@ -1083,6 +1123,8 @@ definition {
 	@description = "LRQA-71887 - Verify that the user can save a new event as Draft"
 	@priority = 4
 	test CanSaveAsDraft {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		Button.viewPresent(button = "Save as Draft");
@@ -1137,6 +1179,8 @@ definition {
 	@description = "This is a use case for LPS-46700."
 	@priority = 3
 	test InviteAndViewAdditionalUsers {
+		property portal.acceptance = "poshi-validation";
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -1173,6 +1217,7 @@ definition {
 	@priority = 4
 	test InviteUsersAndViewResponse {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 

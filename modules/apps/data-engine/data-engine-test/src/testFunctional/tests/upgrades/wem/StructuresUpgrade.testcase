@@ -68,6 +68,7 @@ definition {
 	test EditAnUpgradedStructureWithFieldGroupAfterUpgrade621021 {
 		property data.archive.type = "data-archive-data-engine-structure";
 		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
+		property portal.acceptance = "poshi-validation";
 		property portal.version = "6.2.10.21";
 
 		ValidateDataEngineUpgrade.editAnUpgradedStructureWithFieldGroup();
@@ -79,6 +80,7 @@ definition {
 	test EditAnUpgradedStructureWithFieldsetAfterUpgrade7310 {
 		property data.archive.type = "data-archive-data-engine-structure";
 		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
+		property portal.acceptance = "poshi-validation";
 		property portal.version = "7.3.10";
 
 		ValidateDataEngineUpgrade.editAnUpgradedStructureWithFieldset();
@@ -90,6 +92,7 @@ definition {
 	test EditAnUpgradedStructureWithFieldsetAfterUpgrade71103 {
 		property data.archive.type = "data-archive-data-engine-structure";
 		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
+		property portal.acceptance = "poshi-validation";
 		property portal.version = "7.1.10.3";
 
 		ValidateDataEngineUpgrade.editAnUpgradedStructureWithFieldset();
@@ -101,6 +104,7 @@ definition {
 	test EditAnUpgradedStructureWithFieldsetAfterUpgrade72101 {
 		property data.archive.type = "data-archive-data-engine-structure";
 		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
+		property portal.acceptance = "poshi-validation";
 		property portal.version = "7.2.10.1";
 
 		ValidateDataEngineUpgrade.editAnUpgradedStructureWithFieldset();
@@ -162,6 +166,7 @@ definition {
 	test ValidateFieldLabelsTranslatedInStructureAfterUpgrade621021 {
 		property data.archive.type = "data-archive-data-engine-structure";
 		property database.types = "db2,mariadb,mysql,oracle,postgresql,sybase";
+		property portal.acceptance = "poshi-validation";
 		property portal.version = "6.2.10.21";
 
 		var allFields = "Text,Text Box,Select,Boolean,Radio,Date,Integer,Decimal,Number,Image,HTML,Documents and Media,Link to Page,Separator";

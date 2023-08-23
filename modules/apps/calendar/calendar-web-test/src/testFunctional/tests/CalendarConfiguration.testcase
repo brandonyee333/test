@@ -176,6 +176,8 @@ definition {
 
 	@priority = 4
 	test ConfigureEventsDisplaySettingsAndViewEvents {
+		property portal.acceptance = "poshi-validation";
+
 		for (var eventNumber : list "1,2,3,4,5") {
 			CalendarNavigator.gotoAddEvent();
 
@@ -333,6 +335,8 @@ definition {
 	@description = "This is a use case for LPS-51783."
 	@priority = 4
 	test ViewEventDetailsAllDayWithModifiedUserTimeZone {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		UserBar.gotoDropdownItem(dropdownItem = "Account Settings");

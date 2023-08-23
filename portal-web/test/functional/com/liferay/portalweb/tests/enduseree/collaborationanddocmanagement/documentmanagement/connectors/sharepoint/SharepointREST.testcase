@@ -129,6 +129,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanCheckinDocument {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -174,6 +175,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanDeleteDocumentInSubfolder {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -254,6 +256,7 @@ definition {
 	@description = "This is a test for LPS-182965. It checks that a file can be downloaded from Sharepoint."
 	@priority = 4
 	test CanDownloadFile {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -275,7 +278,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanEditDocumentFile {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -381,6 +384,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanMoveCheckedoutDocumentToFolder {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -446,6 +450,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanMoveDocumentToHome {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -476,6 +481,7 @@ definition {
 	@priority = 4
 	test CannotCopyAssetsFromRepository {
 		property custom.properties = "feature.flag.LPS-182512=true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -499,6 +505,7 @@ definition {
 	@priority = 4
 	test CanNotFilterSearchResultsWithExternalRepository {
 		property custom.properties = "default.layout.template.id=1_column";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -702,6 +709,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanSearchForDocumentFromHome {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -725,6 +733,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewDocumentAsGuest {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -785,6 +794,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewEditedCheckedoutDocument {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -832,6 +842,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test OriginalFileExtensionIsPreservedAfterInvalidChange {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

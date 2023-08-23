@@ -1658,6 +1658,8 @@ definition {
 	@description = "This is a use case for LPS-130126 and LPS-145648."
 	@priority = 4
 	test CustomFacetDoesNotDisplayEmptyDDMField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Create a web content structure with a text DDM field") {
 			WebContentNavigator.openWebContentStructuresAdmin(siteURLKey = "guest");
 
@@ -1929,6 +1931,8 @@ definition {
 
 	@priority = 4
 	test SearchUsingCustomFacetWithUnlocalizedDDMField {
+		property portal.acceptance = "poshi-validation";
+
 		ProductMenu.gotoPortlet(
 			category = "Content & Data",
 			portlet = "Web Content");

@@ -419,6 +419,7 @@ definition {
 	@description = "This is a use case for LPS-80494. Documents can be published with link to page fields."
 	@priority = 3
 	test StagingRemoteDMDocumentType {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -501,6 +502,7 @@ definition {
 	@description = "Web contents are only published if their content date is in correspondence with the content data range of the publish configuration."
 	@priority = 4
 	test StagingRemoteLiveWebContent {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

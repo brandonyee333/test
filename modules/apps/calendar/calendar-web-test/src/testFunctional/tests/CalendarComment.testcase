@@ -62,6 +62,8 @@ definition {
 
 	@priority = 3
 	test AddToEventAllDay {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -89,6 +91,8 @@ definition {
 
 	@priority = 4
 	test AddToEventRegular {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();
@@ -116,6 +120,8 @@ definition {
 
 	@priority = 3
 	test AddToEventRepeating {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		CalendarNavigator.gotoAddEvent();

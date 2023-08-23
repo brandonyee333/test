@@ -640,7 +640,7 @@ definition {
 	@description = "LPS-61197 - Verify that with Single Approver Workflow enabled, the Date Field is properly displayed on an Entry submitted from the Forms Widget"
 	@priority = 5
 	test FromWidgetWithWorkflowEnabledDisplaysDateField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		FormsAdmin.addForm();
 

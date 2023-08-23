@@ -475,6 +475,8 @@ definition {
 	@description = "This is a test for LPS-159631. Page opens in new tab when selecting New Tab in advanced tab on staging."
 	@priority = 3
 	test ViewLinkToURLTypePageWhichSelectingNewTabInAdvancedTab {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a page creator has a widget page in staging") {
 			JSONLayout.addPublicLayout(
 				groupName = "${randomSiteName} (Staging)",

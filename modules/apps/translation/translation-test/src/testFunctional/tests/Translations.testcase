@@ -121,6 +121,8 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanViewTranslatedFieldContentAfterEditing {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
 
 		NavItem.gotoStructures();

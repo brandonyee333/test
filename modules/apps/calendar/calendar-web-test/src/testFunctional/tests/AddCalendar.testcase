@@ -186,6 +186,8 @@ definition {
 	@description = "LRQA-71797 - Verify that the user can Enable Comments on Calendar"
 	@priority = 3
 	test CanEnableComments {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoMyCalendarsManage();
 
 		CalendarMyCalendars.addMyCalendarByManageCalendars(calendarName = "Calendar Name");
@@ -228,6 +230,8 @@ definition {
 	@description = "Verify that the user can Enable Ratings on Calendar"
 	@priority = 3
 	test CanEnableRatings {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoMyCalendarsManage();
 
 		CalendarMyCalendars.addMyCalendarByManageCalendars(calendarName = "Calendar Name");
@@ -442,6 +446,8 @@ definition {
 	@description = "LPS-60800, Verify that can save individual calendar permissions."
 	@priority = 3
 	test ViewEntryPermissionsNotDefinedByRolePermissions {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.editTitle(eventTitle = "Calendar Event Title");

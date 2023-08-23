@@ -469,6 +469,8 @@ definition {
 	@priority = 3
 	@refactorneeded
 	test DMCanFormatTextWithEditorToolbar {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentTypesAdmin(siteURLKey = "wysiwyg-site-name");
 
 		DMDocumentType.add(

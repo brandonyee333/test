@@ -27,6 +27,8 @@ definition {
 	@description = "This is a use case for LPS-164716."
 	@priority = 4
 	test CanImportExportedWCStructuresTemplatesAndFolders {
+		property portal.acceptance = "poshi-validation";
+
 		HeadlessSite.addSite(siteName = "Site Name 1");
 
 		WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name-1");

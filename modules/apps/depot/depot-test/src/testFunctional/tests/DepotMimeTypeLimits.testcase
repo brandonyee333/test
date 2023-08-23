@@ -36,6 +36,7 @@ definition {
 	@priority = 4
 	test ALTakesEffectOverInstanceLimit {
 		property custom.properties = "feature.flag.LPS-114786=true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -103,6 +104,7 @@ definition {
 	@priority = 4
 	test CanLimitSizeOnlyInCurrentDepot {
 		property custom.properties = "feature.flag.LPS-114786=true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -150,6 +152,7 @@ definition {
 	@priority = 4
 	test SystemTakesEffectOverALLimit {
 		property custom.properties = "feature.flag.LPS-114786=true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

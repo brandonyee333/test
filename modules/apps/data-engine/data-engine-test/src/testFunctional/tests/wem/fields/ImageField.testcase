@@ -109,6 +109,8 @@ definition {
 	@description = "This test ensures that a user can duplicate the Image field on the builder."
 	@priority = 4
 	test DuplicateImageField {
+		property portal.acceptance = "poshi-validation";
+
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
 		DataEngine.addField(
@@ -189,6 +191,8 @@ definition {
 	@description = "This test aims to verify if the user is required to define a description for an uploaded image."
 	@priority = 4
 	test PublishWebContentWithUploadedImageWithoutDescription {
+		property portal.acceptance = "poshi-validation";
+
 		var structureTitle = "Image Field Structure";
 		var webContentName = "Web Content";
 		var fileName = "Document_1.jpg";
@@ -339,6 +343,8 @@ definition {
 	@description = "This test ensures that user can set the image field as repeatable."
 	@priority = 3
 	test SetImageFieldAsRepeatable {
+		property portal.acceptance = "poshi-validation";
+
 		var structureTitle = "Image field Structure";
 
 		WebContentStructures.addCP(structureName = ${structureTitle});

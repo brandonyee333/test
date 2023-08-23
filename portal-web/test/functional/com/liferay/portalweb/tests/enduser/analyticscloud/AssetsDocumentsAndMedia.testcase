@@ -875,6 +875,8 @@ definition {
 	@description = "Bug: ACP-274 | Automation ID: LRAC-10671 | Test Summary: Download a document by info button"
 	@priority = 4
 	test DownloadDocumentByInfoButton {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Connect the DXP to AC") {
 			ACDXPSettings.connectDXPtoAnalyticsCloud(siteName = "Site Name");
 		}

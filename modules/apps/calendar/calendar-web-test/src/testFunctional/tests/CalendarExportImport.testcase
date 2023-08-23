@@ -53,6 +53,8 @@ definition {
 	@description = "LRQA-71361 - Verify that user can export a file at import Export/Import navigation menu"
 	@priority = 4
 	test CanExportAFile {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoConfiguration();
 
 		CalendarConfiguration.selectTimeFormat(timeFormat = "24 Hour");
@@ -121,6 +123,8 @@ definition {
 	@description = "This is a use case for LPS-57992."
 	@priority = 4
 	test CanExportCalendar {
+		property portal.acceptance = "poshi-validation";
+
 		CalendarNavigator.gotoAddEvent();
 
 		CalendarEvent.add(
@@ -190,6 +194,8 @@ definition {
 
 	@priority = 4
 	test CanViewCommentFromImportedCalendar {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Calendar.enableComments(

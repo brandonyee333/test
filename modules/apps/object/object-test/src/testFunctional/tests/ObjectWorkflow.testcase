@@ -24,7 +24,7 @@ definition {
 	@description = "LPS-145228 - Verify that the user is able to preview the entry's information inside of the My Workflow Tasks"
 	@priority = 5
 	test CanPreviewEntryInformationOnMyWorkflowTasks {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		ObjectAdmin.addObjectViaAPI(
 			labelName = "Custom Object 296",
@@ -76,6 +76,8 @@ definition {
 	@description = "LPS-145228 - Verify that the user is able to view the entire entry's information by clicking on View button"
 	@priority = 4
 	test CanViewEntryInformationThroughViewButtonMyWorkflowTasks {
+		property portal.acceptance = "poshi-validation";
+
 		ObjectAdmin.addObjectViaAPI(
 			labelName = "Custom Object 297",
 			objectName = "CustomObject297",

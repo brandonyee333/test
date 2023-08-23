@@ -23,6 +23,7 @@ definition {
 	@refactordone
 	test ViewDepotArchive73101 {
 		property data.archive.type = "data-archive-depot";
+		property portal.acceptance = "poshi-validation";
 		property portal.version = "7.3.10.1";
 
 		ValidateDepotUpgrade.validateDepotWCAndStructure();
@@ -40,6 +41,7 @@ definition {
 	@refactordone
 	test ViewDepotAutotaggingAndSharingArchive73101 {
 		property data.archive.type = "data-archive-depot";
+		property portal.acceptance = "poshi-validation";
 		property portal.version = "7.3.10.1";
 
 		ValidateAssetSharingUpgrade.viewSharedDocument(dmDocumentTitle = "DM Document Title Sharing");

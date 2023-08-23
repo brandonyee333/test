@@ -37,6 +37,8 @@ definition {
 	@description = "This test verifies that a user can set Searchable as Disabled and as Text."
 	@priority = 4
 	test EditRichTextSearchable {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.editFieldSearchable(
 			fieldFieldLabel = "Rich Text",
 			searchableType = "Disable");
@@ -79,6 +81,8 @@ definition {
 	@description = "This test verifies if the user can repeat and exclude a Rich Text Field."
 	@priority = 5
 	test ExcludeRepeatedRichTextOnWebContent {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.toggleFieldRepeatable(fieldFieldLabel = "Rich Text");
 
 		WebContentStructures.saveCP();
@@ -206,6 +210,8 @@ definition {
 	@description = "This test ensure is possible to repeat a rich text on a Web Content."
 	@priority = 5
 	test RepeatRichTextOnWebContent {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.toggleFieldRepeatable(fieldFieldLabel = "Rich Text");
 
 		WebContentStructures.saveCP();
@@ -226,6 +232,8 @@ definition {
 	@description = "This test verifies the field reference with valid and invalid characters."
 	@priority = 3
 	test SetFieldReferenceOfRichTextWithValidAndInvalidCharacters {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.editFieldReference(
 			assertFieldReference = "TestValidReference",
 			fieldFieldLabel = "Rich Text",
@@ -256,6 +264,8 @@ definition {
 	@description = "This test verifies that a user can define a Field Label and a Help Text."
 	@priority = 5
 	test SetLabelOfRichTextAndHelpText {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.editFieldLabel(
 			fieldFieldLabel = "Rich Text",
 			fieldFieldLabelEdit = "Rich Text Edited");
@@ -296,6 +306,8 @@ definition {
 	@description = "This test verifies that a user can set the field as Required or Not Required on Web Content."
 	@priority = 4
 	test VerifyRichTextIsSetAsRequiredOnWebContent {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.editFieldRequired(fieldFieldLabel = "Rich Text");
 
 		AssertClick.assertPartialTextClickAt(

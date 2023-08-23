@@ -1493,6 +1493,8 @@ definition {
 
 	@priority = 4
 	test AssertUserUpdateRejectedRecord {
+		property portal.acceptance = "poshi-validation";
+
 		PagesAdmin.openPagesAdmin(siteURLKey = "guest");
 
 		PagesAdmin.addPage(pageName = "Dynamic Data Lists Display Page");

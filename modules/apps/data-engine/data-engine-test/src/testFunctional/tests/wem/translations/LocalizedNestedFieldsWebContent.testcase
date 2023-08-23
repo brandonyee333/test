@@ -29,7 +29,7 @@ definition {
 	@description = "This is a test for LRQA-66585. This test validates the creation, edition and persistence of fields with Options on the Web Content Admin."
 	@priority = 5
 	test AddAndEditTranslatedFieldsWithOptions {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		NavItem.gotoStructures();
 
@@ -291,6 +291,8 @@ definition {
 	@description = "This test ensures translations persists for a repeatable duplicated field group."
 	@priority = 5
 	test CheckDuplicatedRepeatableStructureOnWebContent {
+		property portal.acceptance = "poshi-validation";
+
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");

@@ -928,6 +928,8 @@ definition {
 
 	@priority = 4
 	test ViewOnContentPages {
+		property portal.acceptance = "poshi-validation";
+
 		JSONWebcontent.addWebContent(
 			content = "WC Content",
 			groupName = "Guest",

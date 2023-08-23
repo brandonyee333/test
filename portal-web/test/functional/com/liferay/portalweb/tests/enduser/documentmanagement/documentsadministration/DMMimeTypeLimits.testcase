@@ -68,6 +68,7 @@ definition {
 	@e2etest
 	@priority = 4
 	test CanLimitSizeOnlyInCurrentSite {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -114,6 +115,7 @@ definition {
 	@description = "This test ensures that uploaded files will be limited in size in a depot when setting the limit of a mimetype using the type and a wildcard."
 	@priority = 4
 	test CanLimitSizeUsingWildcardInDepot {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -148,6 +150,7 @@ definition {
 	@description = "This test ensures that uploaded files will be limited in size in a site when setting the limit of a mimetype using the type and a wildcard."
 	@priority = 4
 	test CanLimitSizeUsingWildcardInSite {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -317,6 +320,7 @@ definition {
 	@e2etest
 	@priority = 4
 	test InstanceTakesEffectOverSystemLimit {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -350,6 +354,7 @@ definition {
 	@description = "This test ensures that when setting the multiple mime type size limit at site and instance levels, the lower limit from the site will take effect."
 	@priority = 3
 	test SiteSizeLimitTakesEffectOverInstanceSettingsWithMultipleLimits {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -393,6 +398,7 @@ definition {
 	@e2etest
 	@priority = 4
 	test SiteSizeLimitTakesEffectOverSystemAndInstanceSettings {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

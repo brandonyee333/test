@@ -332,6 +332,8 @@ definition {
 	@description = "This is a use case for LPS-42067. Portlet preferences are configurable and stay unchanged when the same portlet with the same name is created on different pages."
 	@priority = 4
 	test PortletPreferencesPersistWithSiteTemplateWhenSamePortletAddedOnSecondPage {
+		property portal.acceptance = "poshi-validation";
+
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		task ("Given: User add a new Site Template with a page") {
@@ -444,7 +446,7 @@ definition {
 	@priority = 4
 	test SitesDynamicTemplateInheritance {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 

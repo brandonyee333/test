@@ -212,6 +212,7 @@ definition {
 	@description = "This test covers LPS-151756. It ensures that a user can add a document and publish it to live in asset library with permissions. Skip the instance for performance improvement."
 	@priority = 4
 	test CanPublishDocument {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -253,7 +254,7 @@ definition {
 
 		DepotNavigator.openDepotDocumentsAndMediaAdminStaging(depotName = "Test Depot Name");
 
-		DMDocument.addCP(
+		
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "Document_1.doc");
 

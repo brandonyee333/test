@@ -581,6 +581,8 @@ definition {
 	@description = "This is a test for LPS-101248. Display web content with Grid field in Content Display."
 	@priority = 3
 	test ViewSelectedWebContentWithGridField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure with a Grid field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -778,6 +780,8 @@ definition {
 	@description = "This is a test for LPS-101248. Display web content with Multiple Selection field in Content Display."
 	@priority = 3
 	test ViewSelectedWebContentWithMultipleSelectionField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure with a Multiple Selection field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -965,6 +969,8 @@ definition {
 	@description = "This is a test for LPS-101248. Display web content with Select from List field in Content Display."
 	@priority = 3
 	test ViewSelectedWebContentWithSelectFromListField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure with a Select from List field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
@@ -1026,6 +1032,8 @@ definition {
 	@description = "This is a test for LPS-101248. Display web content with Single Selection field in Content Display."
 	@priority = 3
 	test ViewSelectedWebContentWithSingleSelectionField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a web content structure with a Single Selection field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 

@@ -231,6 +231,8 @@ definition {
 	@description = "This test ensures it's possible to edit a field's property for a field inside a field group."
 	@priority = 3
 	test EditFieldOnDuplicatedFieldGroup {
+		property portal.acceptance = "poshi-validation";
+
 		var dmDocumentTypeName = "DM Document Type Name";
 
 		DataEngine.addFieldNested(
@@ -333,6 +335,8 @@ definition {
 	@description = "This test validates that a collapsible field group can be collapsed when uploading a Document and Media."
 	@priority = 4
 	test SetFieldGroupAsCollapsibleAndExecuteOnUpload {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.addFieldNested(
 			fieldFieldLabel = "Numeric",
 			fieldName = "Numeric",

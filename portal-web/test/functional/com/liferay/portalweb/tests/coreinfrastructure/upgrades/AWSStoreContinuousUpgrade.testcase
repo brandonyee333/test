@@ -16,6 +16,8 @@ definition {
 
 	@priority = 4
 	test AutoUpgradeFromLatest7413Update {
+		property portal.acceptance = "poshi-validation";
+
 		var releaseBundleVersion = PropsUtil.get("test.released.release.bundle.version");
 		var releaseBundleZipURL = PropsUtil.get("test.released.test.portal.bundle.zip.url");
 

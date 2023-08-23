@@ -206,6 +206,8 @@ definition {
 	@description = "This is use case for LPS-159561. Making the changes in the description doesn't yield a missing requirement conflict."
 	@priority = 3
 	test MakingChangesInDescriptionCannotYieldConflict {
+		property portal.acceptance = "poshi-validation";
+
 		HeadlessSite.addSite(siteName = "Site Name");
 
 		WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name");
@@ -497,6 +499,7 @@ definition {
 
 	@priority = 4
 	test PublishWebContentWithDMAndImageFields {
+		property portal.acceptance = "poshi-validation";
 		property test.assert.warning.exceptions = "true";
 
 		JSONPublications.addPublication(publicationName = "Publication Name");

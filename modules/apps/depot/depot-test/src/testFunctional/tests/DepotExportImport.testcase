@@ -106,6 +106,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test ExportedDepotWithCustomizeDMCanBeImportedToDepot {
+		property portal.acceptance = "poshi-validation";
+
 		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
 
 		DMNavigator.gotoMetadataSets();

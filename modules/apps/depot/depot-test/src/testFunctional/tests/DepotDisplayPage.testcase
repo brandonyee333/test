@@ -36,6 +36,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanMapDMWithOpenGraph {
+		property portal.acceptance = "poshi-validation";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		DepotNavigator.openDepotDocumentTypeAdmin(depotName = "Test Depot Name");
@@ -471,7 +473,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanViewCustomizeDMFromConnectedSite {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -624,6 +626,7 @@ definition {
 	@description = "This test ensures that an asset library custom document entry can be displayed with the default display page template on a connected site."
 	@priority = 5
 	test CanViewDepotDMUsingDepotType {
+		property portal.acceptance = "poshi-validation";
 		property portal.upstream = "true";
 
 		JSONLayout.addPublicLayout(
@@ -718,6 +721,7 @@ definition {
 	@description = "This test ensures that an asset library document entry created with a type stored in the global site can be displayed with the default display page template on the generic site."
 	@priority = 5
 	test CanViewDepotDMUsingGlobalType {
+		property portal.acceptance = "poshi-validation";
 		property portal.upstream = "true";
 
 		JSONLayout.addPublicLayout(
@@ -996,6 +1000,8 @@ definition {
 	@description = "This test ensures that a site document entry created with a type stored in an asset library can be displayed with the default display page template on a connected site."
 	@priority = 5
 	test CanViewSiteDMUsingDepotType {
+		property portal.acceptance = "poshi-validation";
+
 		JSONLayout.addPublicLayout(
 			groupName = "Test Site Name",
 			layoutName = "Test Page Name");

@@ -658,7 +658,7 @@ definition {
 	@priority = 5
 	@uitest
 	test ConfigureFilterByField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Add a web content structure with a Select field") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");

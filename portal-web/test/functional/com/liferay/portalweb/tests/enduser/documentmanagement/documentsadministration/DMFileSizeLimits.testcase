@@ -29,6 +29,7 @@ definition {
 	@description = "This test ensures that a user is not able to upload a file to an asset library that is bigger than the Maximum File Size in that instance."
 	@priority = 4
 	test CanLimitMaxFileSizeForDepotAtInstanceScope {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -91,6 +92,7 @@ definition {
 	@e2etest
 	@priority = 4
 	test CanLimitSizeOnlyInCurrentSite {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -137,6 +139,7 @@ definition {
 	@e2etest
 	@priority = 4
 	test InstanceSizeLimitTakesEffectOverSiteAndSystemSettings {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -178,6 +181,7 @@ definition {
 	@description = "This test ensures that the size limits in the servlet take effect when the instance setting is default."
 	@priority = 4
 	test WhenInstanceIsDefaultItIsOverriddenByServlet {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -211,6 +215,7 @@ definition {
 	@description = "This test ensures that the size limits in the servlet take effect when it is not bigger than the limits in the instance."
 	@priority = 4
 	test WhenServletIsSmallerItOverridesInstance {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

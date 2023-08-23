@@ -593,6 +593,7 @@ definition {
 	@priority = 4
 	@refactorneeded
 	test CanViewEntriesOnMultiplePagesWithDifferentScopes {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

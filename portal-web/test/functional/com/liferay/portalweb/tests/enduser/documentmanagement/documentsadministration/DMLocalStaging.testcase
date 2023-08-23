@@ -26,7 +26,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanDeleteDocumentWithCustomType {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.gotoDocumentType();
 
@@ -80,7 +80,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanEditDocumentWithCustomType {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.gotoDocumentType();
 
@@ -402,6 +402,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanPublishDocumentFromRestrictedFolder {
+		property portal.acceptance = "poshi-validation";
+
 		JSONFolder.addFolder(
 			dmFolderDescription = "DM Folder Description",
 			dmFolderName = "DM Folder Name",
@@ -485,6 +487,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanPublishEditsToDocumentType {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.gotoDocumentType();
 
 		DMDocumentType.add(
@@ -567,7 +571,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanPublishEditsToDocumentUsingCustomTypeAndSet {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Add a metadata set with image field") {
 			DMNavigator.gotoMetadataSets();
@@ -659,6 +663,7 @@ definition {
 	@refactordone
 	test CanPublishEditsToMetadataSet {
 		property custom.properties = "dl.actions.visible=true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONLayout.addWidgetToPublicLayout(
 			column = 1,

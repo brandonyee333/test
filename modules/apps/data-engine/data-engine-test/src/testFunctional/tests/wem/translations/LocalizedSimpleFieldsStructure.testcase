@@ -31,7 +31,7 @@ definition {
 	@description = "This test validates adding, editing and deleting fields on the builder"
 	@priority = 5
 	test AddEditAndDeleteFieldsOnStructure {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
@@ -138,6 +138,8 @@ definition {
 	@description = "This test ensures that localization persists."
 	@priority = 4
 	test CheckLocalizationOfFieldsUponLanguageChange {
+		property portal.acceptance = "poshi-validation";
+
 		var defaultStructureName = "WC Structure Title";
 
 		WebContentStructures.addCP(
@@ -185,7 +187,7 @@ definition {
 	@description = "This test validates the creation and edition of localized fields as well as deletion of structure"
 	@priority = 5
 	test CreateEditAndDeleteLocalizedStructure {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
@@ -457,6 +459,8 @@ definition {
 	@description = "This test ensures that the translation of a field labels are carried when duplicating the field."
 	@priority = 4
 	test DuplicateTranslatedField {
+		property portal.acceptance = "poshi-validation";
+
 		var defaultStructureName = "WC Structure Title";
 
 		WebContentStructures.addCP(structureName = ${defaultStructureName});
@@ -497,7 +501,7 @@ definition {
 	@description = "This test validates the creation and edition of localized fields as well as deletion of structure in different instance language"
 	@priority = 5
 	test EditAndDeleteWithDifferentInstanceLanguage {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",
@@ -699,7 +703,7 @@ definition {
 	@description = "This test ensures that the translations for all fields in a structure persists for each field."
 	@priority = 5
 	test TranslateStructureWithAllFields {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
@@ -827,6 +831,8 @@ definition {
 	@description = "This test ensures that translations persists and do not interfere with each other."
 	@priority = 5
 	test TranslationDoesNotInterfereWithAnother {
+		property portal.acceptance = "poshi-validation";
+
 		var defaultStructureName = "WC Structure Title";
 		var fieldLabelDefault = "Text Test";
 

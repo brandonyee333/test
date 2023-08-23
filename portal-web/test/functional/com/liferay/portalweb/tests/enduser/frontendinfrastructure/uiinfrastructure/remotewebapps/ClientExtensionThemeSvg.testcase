@@ -40,7 +40,7 @@ definition {
 	@priority = 3
 	test CanExtendSvgFileFromDM {
 		property custom.properties = "feature.flag.LPS-166479=true";
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		var portalURL = PropsUtil.get("portal.url");
 

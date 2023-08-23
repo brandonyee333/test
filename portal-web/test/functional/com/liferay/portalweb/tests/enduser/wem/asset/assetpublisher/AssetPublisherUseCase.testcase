@@ -625,7 +625,7 @@ definition {
 	@description = "Filter and order the displayed assets by field."
 	@priority = 5
 	test FilterAndOrderAssetsByField {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -1126,6 +1126,8 @@ definition {
 	@description = "This is a test for LPS-113996. The user could filter documents by field in Asset Publisher."
 	@priority = 4
 	test FilterDocumentsByField {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a document type with a Select from List field") {
 			DMDocument.openDocumentsAndMediaAdmin(siteURLKey = ${siteURLKey});
 

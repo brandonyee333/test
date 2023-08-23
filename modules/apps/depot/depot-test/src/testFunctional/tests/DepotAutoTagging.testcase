@@ -41,6 +41,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test AutoTagCanBeReplacedInDocument {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -197,6 +198,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test CanDisableForTextDocument {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -294,6 +296,7 @@ definition {
 	@priority = 5
 	@refactordone
 	test TextDocumentCanBeAutoTagged {
+		property portal.acceptance = "poshi-validation";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 

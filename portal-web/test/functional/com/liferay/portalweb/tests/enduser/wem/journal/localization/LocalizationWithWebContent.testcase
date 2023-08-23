@@ -108,6 +108,8 @@ definition {
 	@description = "This is a test for LPS-100416. Non-Repeatable text fields show incorrect translation on label at first load."
 	@priority = 4
 	test AddNonRepeatableTextFieldWithTranslation {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Given a site designer has a translated web content structure with associated template") {
 			WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "test-site-name");
 

@@ -24,6 +24,8 @@ definition {
 
 	@priority = 4
 	test SearchByAssetAndModifiedRangeFacets {
+		property portal.acceptance = "poshi-validation";
+
 		JSONBlog.addEntry(
 			entryContent = "Blogs Entry1 AssetContent",
 			entryTitle = "Blogs Entry1 Title");
@@ -134,6 +136,7 @@ definition {
 	@priority = 4
 	test SearchByUserFacet {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "poshi-validation";
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",

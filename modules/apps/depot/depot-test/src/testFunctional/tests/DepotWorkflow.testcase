@@ -856,6 +856,8 @@ definition {
 	@priority = 4
 	@refactordone
 	test CanRestoreDMFolderWorkflowToDefault {
+		property portal.acceptance = "poshi-validation";
+
 		JSONFolder.addFolder(
 			dmFolderDescription = "DM Folder Description",
 			dmFolderName = "DM Folder Name",

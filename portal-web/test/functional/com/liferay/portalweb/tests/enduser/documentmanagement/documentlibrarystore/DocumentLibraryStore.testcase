@@ -32,6 +32,7 @@ definition {
 	@refactorneeded
 	test AdvancedFileSystemStoreSmoke {
 		property custom.properties = "dl.store.impl=com.liferay.portal.store.file.system.AdvancedFileSystemStore";
+		property portal.acceptance = "poshi-validation";
 		property osgi.module.configuration.file.names = "com.liferay.portal.store.file.system.configuration.AdvancedFileSystemStoreConfiguration.config";
 		property osgi.module.configurations = "rootDir=\"data/document_library1\"";
 
@@ -55,6 +56,7 @@ definition {
 	@refactorneeded
 	test DBStoreSmoke {
 		property custom.properties = "dl.store.impl=com.liferay.portal.store.db.DBStore";
+		property portal.acceptance = "poshi-validation";
 
 		Navigator.openURL();
 
@@ -82,6 +84,7 @@ definition {
 		property custom.properties = "dl.store.impl=com.liferay.portal.store.file.system.FileSystemStore";
 		property osgi.module.configuration.file.names = "com.liferay.portal.store.file.system.configuration.FileSystemStoreConfiguration.config";
 		property osgi.module.configurations = "rootDir=\"data/document_library1\"";
+		property portal.acceptance = "poshi-validation";
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
 

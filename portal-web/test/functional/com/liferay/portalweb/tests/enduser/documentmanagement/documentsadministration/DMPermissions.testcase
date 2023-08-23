@@ -490,6 +490,8 @@ definition {
 	@description = "This is a test for LPS-155227. It checks that a user can not receive notifications without the subscribe permission of the folder."
 	@priority = 4
 	test CannotReceiveNotificationsWithoutFolderSubscriptionPermissions {
+		property portal.acceptance = "poshi-validation";
+
 		HeadlessSite.addSite(siteName = "Site Name");
 
 		JSONUser.addUser(
@@ -619,7 +621,7 @@ definition {
 	@priority = 4
 	@refactordone
 	test CannotViewDocumentInDisplayPageWithoutPermissions {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
 			contentType = "Document",
@@ -1687,6 +1689,8 @@ definition {
 	@priority = 3
 	@refactordone
 	test ImageFromGlobalSiteCanBeSelectedWithPermissionsInWCD {
+		property portal.acceptance = "poshi-validation";
+
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "global");
 
 		DMDocument.addCP(

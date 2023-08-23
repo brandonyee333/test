@@ -33,6 +33,8 @@ definition {
 	@description = "This is a test for LPS-107630. Make sure Fieldsets can be duplicated"
 	@priority = 5
 	test DuplicateFieldset {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.addFields(fieldNameList = "Text,Image,Upload");
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
@@ -59,6 +61,8 @@ definition {
 	@description = "This is a test for LPS-107630. Make sure the Fieldset does not crash when editing its properties directly from Object sidebar during reuse in a new form view"
 	@priority = 4
 	test EditFieldsetPropertiesFromSideBar {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.createNewFieldset(
 			fieldNameList = "Text",
 			fieldsetName = "New Fieldset");
@@ -117,6 +121,8 @@ definition {
 	@description = "This is a test for LPS-107630. Make sure Fieldsets can be set as collapsible"
 	@priority = 4
 	test FieldsetSetAsCollapsible {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.createNewFieldset(
 			fieldNameList = "Numeric",
 			fieldsetName = "New Fieldset");
@@ -147,6 +153,8 @@ definition {
 	@description = "This is a test for LPS-107630. Make sure Fieldsets can be set as repeatable"
 	@priority = 4
 	test FieldsetSetAsRepeatable {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.createNewFieldset(
 			fieldNameList = "Rich Text",
 			fieldsetName = "New Fieldset");
@@ -205,6 +213,8 @@ definition {
 	@description = "This is a test for LPS-107630. Make sure the content is not duplicated when activating repeatable option on a Web Content"
 	@priority = 4
 	test RepeatFieldsetWithoutDuplicatingContent {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.addFieldsetToBuilder(fieldsetName = "Basic Web Content");
 
 		DataEngine.toggleFieldRepeatable(fieldsetLabel = "Basic Web Content");
@@ -244,6 +254,8 @@ definition {
 	@description = "This is a test for LPS-107630. Make sure Fieldset Label can be shown or hidden"
 	@priority = 4
 	test ShowAndHideFieldsetLabel {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.createNewFieldset(
 			fieldNameList = "Date",
 			fieldsetName = "New Fieldset");
@@ -272,6 +284,8 @@ definition {
 	@description = "This is a test for LPS-123538. As Content Creator, I cannot edit fieldset on the Advanced panel"
 	@priority = 4
 	test VerifyFieldsetCannotBeEditedOnStructureBuilder {
+		property portal.acceptance = "poshi-validation";
+
 		DataEngine.createNewFieldset(
 			fieldNameList = "Date",
 			fieldsetName = "New Fieldset");

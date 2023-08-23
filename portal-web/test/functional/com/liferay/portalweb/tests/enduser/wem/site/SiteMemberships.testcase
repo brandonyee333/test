@@ -747,6 +747,7 @@ definition {
 	@description = "View pagination in site memberships admin."
 	@priority = 3
 	test SiteMembershipsPagination {
+		property portal.acceptance = "poshi-validation";
 		property testray.component.names = "Sites Administration,Users and Organizations";
 
 		task ("Add 10 users") {

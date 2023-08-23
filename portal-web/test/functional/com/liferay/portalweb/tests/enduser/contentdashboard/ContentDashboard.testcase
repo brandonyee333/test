@@ -3226,6 +3226,8 @@ definition {
 	@description = "LPS-151065 Given a Document asset using a New Document Type When the user opens Info Panel at Content Dashboard Then ""Document - "" and structure's name text will be exhibit"
 	@priority = 3
 	test DocumentTypeInInfoPanel {
+		property portal.acceptance = "poshi-validation";
+
 		task ("Add a document type") {
 			DMNavigator.openDocumentTypesAdmin(siteURLKey = "test-site-name");
 
@@ -5336,7 +5338,7 @@ definition {
 	@description = "LPS-133354 Given The Extension filter modal When there are file extensions for the MIME type ""compressed"" Then the MIME type ""compressed"" appears as father and all of the file extensions for it appear as children and available to be selected"
 	@priority = 4
 	test MimeTypeCompressed {
-		property portal.acceptance = "true";
+		property portal.acceptance = "poshi-validation";
 
 		task ("Add a compressed file") {
 			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
