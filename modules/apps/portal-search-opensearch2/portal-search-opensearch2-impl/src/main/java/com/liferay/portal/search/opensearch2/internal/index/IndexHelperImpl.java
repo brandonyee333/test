@@ -28,7 +28,7 @@ import com.liferay.portal.search.opensearch2.internal.connection.OpenSearchConne
 import com.liferay.portal.search.opensearch2.internal.index.util.IndexFactoryCompanyIdRegistryUtil;
 import com.liferay.portal.search.opensearch2.internal.util.IndexUtil;
 import com.liferay.portal.search.opensearch2.internal.util.JsonpUtil;
-import com.liferay.portal.search.spi.model.index.contributor.IndexContributor;
+import com.liferay.portal.search.spi.index.listener.CompanyIndexListener;
 import com.liferay.portal.search.spi.settings.IndexSettingsContributor;
 
 import jakarta.json.spi.JsonProvider;
@@ -92,7 +92,7 @@ public class IndexHelperImpl implements IndexHelper {
 			mappingsFactory.addOptionalDefaultMappings(indexName);
 		}
 
-		_executeIndexContributorsAfterCreate(indexName);
+		_executeCompanyIndexListenersAfterCreate(indexName);
 
 		if (PortalRunMode.isTestMode()) {
 			_setTestModeIndexSettings(
@@ -107,7 +107,7 @@ public class IndexHelperImpl implements IndexHelper {
 		OpenSearchIndicesClient openSearchIndicesClient,
 		boolean resetBothIndexNames) {
 
-		_executeIndexContributorsBeforeRemove(indexName);
+		_executeCompanyIndexListenersBeforeRemove(indexName);
 
 		try {
 			JsonpUtil.logInfoResponse(
@@ -133,7 +133,7 @@ public class IndexHelperImpl implements IndexHelper {
 	}
 
 	@Override
-	public List<IndexContributor> getIndexContributors() {
+	public List<CompanyIndexListener> getCompanyIndexListeners() {
 		return _indexContributorServiceTrackerList.toList();
 	}
 
@@ -171,7 +171,7 @@ public class IndexHelperImpl implements IndexHelper {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_indexContributorServiceTrackerList = ServiceTrackerListFactory.open(
-			bundleContext, IndexContributor.class);
+			bundleContext, CompanyIndexListener.class);
 
 		_indexSettingsContributorServiceTrackerList =
 			ServiceTrackerListFactory.open(
@@ -325,8 +325,8 @@ public class IndexHelperImpl implements IndexHelper {
 		return settingsJSONObject;
 	}
 
-	private void _executeIndexContributorAfterCreate(
-		IndexContributor indexContributor, String indexName) {
+	private void _executeCompanyIndexListenerAfterCreate(
+		CompanyIndexListener indexContributor, String indexName) {
 
 		try {
 			indexContributor.onAfterCreate(indexName);
@@ -340,8 +340,8 @@ public class IndexHelperImpl implements IndexHelper {
 		}
 	}
 
-	private void _executeIndexContributorBeforeRemove(
-		IndexContributor indexContributor, String indexName) {
+	private void _executeCompanyIndexListenerBeforeRemove(
+		CompanyIndexListener indexContributor, String indexName) {
 
 		try {
 			indexContributor.onBeforeRemove(indexName);
@@ -355,17 +355,21 @@ public class IndexHelperImpl implements IndexHelper {
 		}
 	}
 
-	private void _executeIndexContributorsAfterCreate(String indexName) {
-		for (IndexContributor indexContributor :
+	private void _executeCompanyIndexListenersAfterCreate(String indexName) {
+		for (CompanyIndexListener indexContributor :
 				_indexContributorServiceTrackerList) {
 
-			_executeIndexContributorAfterCreate(indexContributor, indexName);
+			_executeCompanyIndexListenerAfterCreate(
+				indexContributor, indexName);
 		}
 	}
 
-	private void _executeIndexContributorsBeforeRemove(String indexName) {
-		for (IndexContributor indexContributor : getIndexContributors()) {
-			_executeIndexContributorBeforeRemove(indexContributor, indexName);
+	private void _executeCompanyIndexListenersBeforeRemove(String indexName) {
+		for (CompanyIndexListener indexContributor :
+				getCompanyIndexListeners()) {
+
+			_executeCompanyIndexListenerBeforeRemove(
+				indexContributor, indexName);
 		}
 	}
 
@@ -482,7 +486,7 @@ public class IndexHelperImpl implements IndexHelper {
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	private ServiceTrackerList<IndexContributor>
+	private ServiceTrackerList<CompanyIndexListener>
 		_indexContributorServiceTrackerList;
 
 	@Reference
