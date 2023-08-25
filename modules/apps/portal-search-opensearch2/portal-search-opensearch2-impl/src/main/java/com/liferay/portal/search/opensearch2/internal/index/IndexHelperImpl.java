@@ -107,7 +107,7 @@ public class IndexHelperImpl implements IndexHelper {
 		OpenSearchIndicesClient openSearchIndicesClient,
 		boolean resetBothIndexNames) {
 
-		_executeCompanyIndexListenersBeforeRemove(indexName);
+		_executeCompanyIndexListenersBeforeDelete(indexName);
 
 		try {
 			JsonpUtil.logInfoResponse(
