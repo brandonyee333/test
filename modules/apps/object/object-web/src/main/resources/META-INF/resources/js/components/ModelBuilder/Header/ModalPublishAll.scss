@@ -1,0 +1,21 @@
+.lfr-object__object-view-modal-publish-all {
+    &-card {
+        .card-body {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            &.active {
+                box-shadow: 0 0 0 2px #80acff;
+            }
+
+            .custom-control {
+                margin-bottom: 0;
+            }
+
+            .lexicon-icon {
+                margin-top: 0;
+            }
+        }
+    }
+}

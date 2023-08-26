@@ -3,18 +3,20 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
+import ClayButton, { ClayButtonWithIcon } from '@clayui/button';
 import ClayIcon from '@clayui/icon';
-import {ClayTooltipProvider} from '@clayui/tooltip';
+import { ClayTooltipProvider } from '@clayui/tooltip';
+import { useModal } from '@clayui/modal';
+import { ModalPublishAll } from './ModalPublishAll';
 import classNames from 'classnames';
-import React from 'react';
+import React, { useState } from 'react';
 
 import './Header.scss';
 
-import {sub} from 'frontend-js-web';
+import { sub } from 'frontend-js-web';
 
-import {ViewObjectDefinitionsModals} from '../../ViewObjectDefinitions/ViewObjectDefinitions';
-import {useFolderContext} from '../ModelBuilderContext/objectFolderContext';
+import { ViewObjectDefinitionsModals } from '../../ViewObjectDefinitions/ViewObjectDefinitions';
+import { useFolderContext } from '../ModelBuilderContext/objectFolderContext';
 
 interface Header {
 	folder: ObjectFolder;
@@ -29,7 +31,11 @@ export default function ({
 	hasDraftObjectDefinitions,
 	setShowModal,
 }: Header) {
-	const [{showChangesSaved}] = useFolderContext();
+	const [{ showChangesSaved, objectDefinitions }] = useFolderContext();
+	const [showModalPublishAll, setShowModalPublishAll] = useState<boolean>(false);
+	const { observer, onClose } = useModal({
+		onClose: () => setShowModalPublishAll(false),
+	});
 
 	return (
 		<div className="lfr-objects__model-builder-header">
@@ -136,9 +142,11 @@ export default function ({
 					</ClayButton>
 
 					<ClayButton
-						disabled={!hasDraftObjectDefinitions}
+						//disabled={!hasDraftObjectDefinitions}
 						displayType="primary"
+						onClick={e => { setShowModalPublishAll(true) }}
 					>
+						{showModalPublishAll && <ModalPublishAll disableAutoClose={false} observer={observer} onClose={onClose} />}
 						{Liferay.Language.get('publish')}
 					</ClayButton>
 				</div>
