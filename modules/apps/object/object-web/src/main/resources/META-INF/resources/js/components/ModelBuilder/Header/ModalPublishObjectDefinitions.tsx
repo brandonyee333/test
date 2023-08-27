@@ -9,24 +9,25 @@ import ClayCard from '@clayui/card';
 import { ClayCheckbox } from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import { Observer } from '@clayui/modal/lib/types';
+import { Elements, FlowElement } from 'react-flow-renderer';
 import {
     API,
     RadioField
 } from '@liferay/object-js-components-web';
 import React, {
-    FormEvent,
-    useCallback,
     useEffect,
-    useMemo,
-    useState,
+    useState
 } from 'react';
 
 
-import './ModalPublishAll.scss';
-interface IProps {
+import './ModalPublishObjectDefinitions.scss';
+import { ObjectRelationshipEdgeData } from '../types';
+
+type IProps = {
     disableAutoClose: boolean;
     observer: Observer;
     onClose: () => void;
+    elements: Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>,
 }
 
 interface IItem {
@@ -35,16 +36,24 @@ interface IItem {
 }
 
 
-export function ModalPublishAll({ disableAutoClose, observer, onClose }: IProps) {
+export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onClose, elements }: IProps) {
     const [items, setItems] = useState<IItem[]>([]);
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
+    const elementsFiltered = elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2);
 
+    const handleOnClickPublish = () => {
+        selectedItems.forEach(item => {
+            const publishObjectDefinition = async (objId : number) => {
+                const element = (await API.publishObjectDefinitionById(objId));
+            }
+            publishObjectDefinition(item);
+        })
+    }
     useEffect(() => {
-        const getObjectDefinition = async () => {
-            const list = (await API.getObjectDefinitions()).filter(object => object.status.code === 2);
-            setItems(list);
+        const publishObjectDefinition = async () => {
+            const element = (await API.publishObjectDefinitionById(12));
         }
-        getObjectDefinition();
+        publishObjectDefinition();
     }, []);
 
     const handleCheckboxChange = (itemId: number) => {
@@ -63,16 +72,19 @@ export function ModalPublishAll({ disableAutoClose, observer, onClose }: IProps)
                 <p>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</p>
 
                 <>
-                    {items.map(obj => {
+                    {elementsFiltered.map(obj => {
+                        const { id, data } = obj as FlowElement<ObjectDefinitionNodeData>;
+                        const isSelected = selectedItems.includes(data?.id!);
+
                         return (
-                            <ClayCard key={obj.id} className={`lfr-object__object-view-modal-publish-all-card ${selectedItems.includes(obj.id) ? 'active' : ''}`}>
+                            <ClayCard key={id} className={`lfr-object__object-view-modal-object-definitions-card ${isSelected ? 'active' : ''}`}>
                                 <ClayCard.Body>
-                                    <ClayCheckbox checked={selectedItems.includes(obj.id)} onChange={() => handleCheckboxChange(obj.id)} />
+                                    <ClayCheckbox checked={isSelected} onChange={() => handleCheckboxChange(data?.id!)} />
                                     <ClayIcon symbol="catalog" />
                                     <div>
-                                        <div>{obj.name}</div>
-                                        <span className="label label-info">
-                                            <span className="label-item label-item-expand">draft</span>
+                                        <div>{data?.name}</div>
+                                        <span className={`label ${data?.status.code === 2 ? "label-info" : "label-success"}`}>
+                                            <span className="label-item label-item-expand">{data?.status.label_i18n}</span>
                                         </span>
                                     </div>
                                 </ClayCard.Body>
@@ -94,6 +106,8 @@ export function ModalPublishAll({ disableAutoClose, observer, onClose }: IProps)
 
                         <ClayButton
                             displayType="primary"
+                            disabled={selectedItems.length === 0}
+                            onClick={handleOnClickPublish}
                         >
                             {Liferay.Language.get('publish')}
                         </ClayButton>

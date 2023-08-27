@@ -7,7 +7,7 @@ import ClayButton, { ClayButtonWithIcon } from '@clayui/button';
 import ClayIcon from '@clayui/icon';
 import { ClayTooltipProvider } from '@clayui/tooltip';
 import { useModal } from '@clayui/modal';
-import { ModalPublishAll } from './ModalPublishAll';
+import { ModalPublishObjectDefinitions } from './ModalPublishObjectDefinitions';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 
@@ -31,10 +31,10 @@ export default function ({
 	hasDraftObjectDefinitions,
 	setShowModal,
 }: Header) {
-	const [{ showChangesSaved, objectDefinitions }] = useFolderContext();
-	const [showModalPublishAll, setShowModalPublishAll] = useState<boolean>(false);
+	const [{ showChangesSaved, elements }] = useFolderContext();
+	const [showModalPublishObjectDefinitions, setShowModalPublishObjectDefinitions] = useState<boolean>(false);
 	const { observer, onClose } = useModal({
-		onClose: () => setShowModalPublishAll(false),
+		onClose: () => setShowModalPublishObjectDefinitions(false),
 	});
 
 	return (
@@ -144,9 +144,9 @@ export default function ({
 					<ClayButton
 						//disabled={!hasDraftObjectDefinitions}
 						displayType="primary"
-						onClick={e => { setShowModalPublishAll(true) }}
+						onClick={e => { setShowModalPublishObjectDefinitions(true) }}
 					>
-						{showModalPublishAll && <ModalPublishAll disableAutoClose={false} observer={observer} onClose={onClose} />}
+						{showModalPublishObjectDefinitions && <ModalPublishObjectDefinitions disableAutoClose={false} observer={observer} onClose={onClose} elements={elements} />}
 						{Liferay.Language.get('publish')}
 					</ClayButton>
 				</div>
