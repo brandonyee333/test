@@ -42,18 +42,41 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
     const elementsFiltered = elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2);
 
     const handleOnClickPublish = () => {
+
         const publishObjectDefinition = async (objId: number) => {
-            const response = (await API.publishObjectDefinitionById(objId));
-            const data = await response.json();
-            
-            if (response.status === 200) {
-                setSelectedItems(prevState => [...prevState, { id: objId, status: 'approved' }]);
-            } else {
-                setSelectedItems(prevState => [...prevState, { id: objId, status: 'rejected', msg: data.title }])
+            try {
+                const response = await API.publishObjectDefinitionById(objId);
+
+                if (!response.ok) throw new Error("mudar erro");
+
+                setSelectedItems(prevState => prevState.map(prevItem => {
+                    if (prevItem.id === objId) {
+                        return { id: objId, status: 'approved' };
+                    } else {
+                        return prevItem;
+                    }
+                }));
+
+            } catch (error: any) {
+                setSelectedItems(prevState => prevState.map(prevItem => {
+                    if (prevItem.id === objId) {
+                        return { id: objId, status: 'rejected', msg: error.message };
+                    } else {
+                        return prevItem;
+                    }
+                }));
             }
+
         }
 
         selectedItems.forEach(item => {
+            setSelectedItems(prevState => prevState.map(prevItem => {
+                if (prevItem.id === item.id) {
+                    return { id: item.id, status: 'loading' };
+                } else {
+                    return prevItem;
+                }
+            }));
             publishObjectDefinition(item.id);
         })
     }
@@ -94,7 +117,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                                             }
 
                                             {selectedItem?.status === "rejected" &&
-                                                <span>
+                                                <span className="rejected">
                                                     <ClayIcon symbol="exclamation-full" />
                                                     <span>{selectedItem?.msg}</span>
                                                 </span>

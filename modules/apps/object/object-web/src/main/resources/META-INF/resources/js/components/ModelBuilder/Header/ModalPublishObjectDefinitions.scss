@@ -21,6 +21,13 @@
             .lexicon-icon {
                 margin-top: 0;
             }
+
+            .rejected{
+                display: flex;
+                align-items: center;
+                color: red;
+                gap: 5px;
+            }
         }
     }
 }
