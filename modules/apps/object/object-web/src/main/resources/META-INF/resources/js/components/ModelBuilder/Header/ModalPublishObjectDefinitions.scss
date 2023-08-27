@@ -1,12 +1,17 @@
 .lfr-object__object-view-modal-object-definitions {
     &-card {
+        &.active {
+            box-shadow: 0 0 0 2px #80acff;
+        }
         .card-body {
             display: flex;
             align-items: center;
-            gap: 20px;
+            justify-content: space-between;
 
-            &.active {
-                box-shadow: 0 0 0 2px #80acff;
+            > div:first-child {
+                display: flex;
+                align-items: center;
+                gap: 20px;
             }
 
             .custom-control {
