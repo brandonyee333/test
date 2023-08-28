@@ -65,7 +65,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         setMessageHeaderModal("Publishing");
 
         const publishObjectDefinition = (objectId: number): Promise<number> => {
-            return new Promise<number>(async (resolve, reject) => {
+            return new Promise<number>(async (resolve) => {
                 try {
                     const response = await API.publishObjectDefinitionById(objectId);
 
@@ -80,7 +80,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
                 } catch (error: any) {
                     setSelectedItems(prevState => updateStatusObject(prevState, objectId, 'rejected', error.message));
-                    reject(error);
+                    resolve(0);
                 }
             });
         }
@@ -92,11 +92,14 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
         try {
             const responses = await Promise.all(publishPromises);
+            const filteredResponses = responses.filter(response => response !== 0);
+            setMessageHeaderModal("Successfully published!");
+            setStatusPublish(STATUS.FINISHED);
 
             const newArrayItems = elements.map(element => {
                 const elementId = (element as FlowElement<ObjectDefinitionNodeData>).data?.id || 0;
 
-                if (responses.includes(elementId)) {
+                if (filteredResponses.includes(elementId)) {
                     return {
                         ...element, data: {
                             ...element.data,
@@ -119,8 +122,6 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                 type: TYPES.SET_ELEMENTS,
             });
 
-            setMessageHeaderModal("Successfully published!");
-            setStatusPublish(STATUS.FINISHED);
         } catch (error) {
             setMessageHeaderModal("Confirm publishing");
             setStatusPublish(STATUS.REJECTED);
