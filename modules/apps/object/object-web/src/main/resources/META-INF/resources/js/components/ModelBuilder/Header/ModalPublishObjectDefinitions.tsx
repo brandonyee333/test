@@ -15,7 +15,6 @@ import {
     API
 } from '@liferay/object-js-components-web';
 import React, {
-    useEffect,
     useState
 } from 'react';
 
@@ -43,10 +42,10 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
     const [statusPublish, setStatusPublish] = useState<number>(0);
     const [msgHeaderModal, setMsgHeaderModal] = useState<string>("Confirm Publishing");
 
-    const updateStatusObject = (elements: ISelectedItem[], id: number, status: 'approved' | 'loading' | 'rejected') => {
+    const updateStatusObject = (elements: ISelectedItem[], id: number, status: 'approved' | 'loading' | 'rejected', msg?: string) => {
         return elements.map(item => {
             if (item.id === id) {
-                return { id: id, status: status };
+                return { id: id, status: status, ...(status === "rejected" && { msg: msg }) };
             } else {
                 return item;
             }
@@ -61,22 +60,18 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
             return new Promise<void>(async (resolve, reject) => {
                 try {
                     const response = await API.publishObjectDefinitionById(objId);
-                    const data = await response.json();
 
-                    if (!response.ok) throw new Error(data.message.title);
+                    if (!response.ok) {
+                        const data = await response.json();
+                        throw new Error(data.title);
+                    }
 
                     setSelectedItems(prevState => updateStatusObject(prevState, objId, 'approved'));
 
                     resolve();
 
                 } catch (error: any) {
-                    setSelectedItems(prevState => prevState.map(prevItem => {
-                        if (prevItem.id === objId) {
-                            return { id: objId, status: 'rejected', msg: error.message };
-                        } else {
-                            return prevItem;
-                        }
-                    }));
+                    setSelectedItems(prevState => updateStatusObject(prevState, objId, 'rejected', error.message));
                     reject(error);
                 }
             });
