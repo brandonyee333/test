@@ -64,22 +64,22 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         setStatusPublish(STATUS.LOADING);
         setMessageHeaderModal("Publishing");
 
-        const publishObjectDefinition = (objId: number): Promise<number> => {
+        const publishObjectDefinition = (objectId: number): Promise<number> => {
             return new Promise<number>(async (resolve, reject) => {
                 try {
-                    const response = await API.publishObjectDefinitionById(objId);
+                    const response = await API.publishObjectDefinitionById(objectId);
 
                     if (!response.ok) {
                         const data = await response.json();
                         throw new Error(data.title);
                     }
 
-                    setSelectedItems(prevState => updateStatusObject(prevState, objId, 'approved'));
+                    setSelectedItems(prevState => updateStatusObject(prevState, objectId, 'approved'));
 
-                    resolve(objId);
+                    resolve(objectId);
 
                 } catch (error: any) {
-                    setSelectedItems(prevState => updateStatusObject(prevState, objId, 'rejected', error.message));
+                    setSelectedItems(prevState => updateStatusObject(prevState, objectId, 'rejected', error.message));
                     reject(error);
                 }
             });
@@ -94,20 +94,20 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
             const responses = await Promise.all(publishPromises);
 
             const newArrayItems = elements.map(element => {
-                //const elementId = (element as FlowElement<ObjectDefinitionNodeData>).data?.id || 0;
+                const elementId = (element as FlowElement<ObjectDefinitionNodeData>).data?.id || 0;
 
-                // if (responses.includes(elementId)) {
-                //     return {
-                //         ...element, data: {
-                //             ...element.data,
-                //             status: {
-                //                 code: 0,
-                //                 label: 'approved',
-                //                 label_i18n: 'Approved'
-                //             }
-                //         }
-                //     }
-                // }
+                if (responses.includes(elementId)) {
+                    return {
+                        ...element, data: {
+                            ...element.data,
+                            status: {
+                                code: 0,
+                                label: 'approved',
+                                label_i18n: 'Approved'
+                            }
+                        }
+                    }
+                }
 
                 return element;
             })
