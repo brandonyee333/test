@@ -80,6 +80,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
                 } catch (error: any) {
                     setSelectedItems(prevState => updateStatusObject(prevState, objectId, 'rejected', error.message));
+                    //don't throw reject, so that it doesn't go to the catch flow of the promise.all
                     resolve(0);
                 }
             });
@@ -92,9 +93,13 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
         try {
             const responses = await Promise.all(publishPromises);
-            const filteredResponses = responses.filter(response => response !== 0);
-            setMessageHeaderModal("Successfully published!");
-            setStatusPublish(STATUS.FINISHED);
+            const hasErrorsResponse = responses.some(response => response === 0);
+            let filteredResponses = responses;
+
+            if (hasErrorsResponse) filteredResponses = responses.filter(response => response !== 0);
+
+            setMessageHeaderModal(!hasErrorsResponse ? "Successfully published!" : "Published with errors");
+            setStatusPublish(!hasErrorsResponse ? STATUS.FINISHED : STATUS.REJECTED);
 
             const newArrayItems = elements.map(element => {
                 const elementId = (element as FlowElement<ObjectDefinitionNodeData>).data?.id || 0;
@@ -111,7 +116,6 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                         }
                     }
                 }
-
                 return element;
             })
 
