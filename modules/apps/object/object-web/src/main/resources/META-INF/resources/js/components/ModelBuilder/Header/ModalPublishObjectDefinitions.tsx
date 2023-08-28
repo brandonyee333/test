@@ -33,7 +33,7 @@ interface IProps {
 interface ISelectedItem {
     id: number;
     status?: 'approved' | 'loading' | 'rejected';
-    msg?: string;
+    message?: string;
 }
 
 enum STATUS {
@@ -45,15 +45,15 @@ enum STATUS {
 
 
 export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onClose, elements, dispatch }: IProps) {
+    const [elementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2));
+    const [messageHeaderModal, setMessageHeaderModal] = useState<string>("Confirm Publishing");
     const [selectedItems, setSelectedItems] = useState<ISelectedItem[]>([]);
-    const [elementsFiltered, setElementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2));
     const [statusPublish, setStatusPublish] = useState<number>(STATUS.INITIAL);
-    const [msgHeaderModal, setMsgHeaderModal] = useState<string>("Confirm Publishing");
 
-    const updateStatusObject = (elements: ISelectedItem[], id: number, status: 'approved' | 'loading' | 'rejected', msg?: string) => {
+    const updateStatusObject = (elements: ISelectedItem[], id: number, status: 'approved' | 'loading' | 'rejected', message?: string) => {
         return elements.map(item => {
             if (item.id === id) {
-                return { id: id, status: status, ...(status === "rejected" && { msg: msg }) };
+                return { id: id, status: status, ...(status === "rejected" && { message: message }) };
             } else {
                 return item;
             }
@@ -62,10 +62,10 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
     const handleOnClickPublish = async () => {
         setStatusPublish(STATUS.LOADING);
-        setMsgHeaderModal("Publishing");
+        setMessageHeaderModal("Publishing");
 
-        const publishObjectDefinition = (objId: number): Promise<void> => {
-            return new Promise<void>(async (resolve, reject) => {
+        const publishObjectDefinition = (objId: number): Promise<number> => {
+            return new Promise<number>(async (resolve, reject) => {
                 try {
                     const response = await API.publishObjectDefinitionById(objId);
 
@@ -76,29 +76,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
                     setSelectedItems(prevState => updateStatusObject(prevState, objId, 'approved'));
 
-                    const newArrayElements = elements.map(element => {
-                        if ((element as FlowElement<ObjectDefinitionNodeData>).data?.id === objId)
-                            return {
-                                ...element, data: {
-                                    ...element.data,
-                                    status: {
-                                        code: 0,
-                                        label: 'approved',
-                                        label_i18n: 'Approved'
-                                    }
-                                }
-                            };
-                        else
-                            return element;
-                    });
-                    dispatch({
-                        payload: {
-                            newElements: newArrayElements,
-                        },
-                        type: TYPES.SET_ELEMENTS,
-                    });
-
-                    resolve();
+                    resolve(objId);
 
                 } catch (error: any) {
                     setSelectedItems(prevState => updateStatusObject(prevState, objId, 'rejected', error.message));
@@ -113,11 +91,38 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         });
 
         try {
-            await Promise.all(publishPromises);
-            setMsgHeaderModal("Successfully published!");
+            const responses = await Promise.all(publishPromises);
+
+            const newArrayItems = elements.map(element => {
+                //const elementId = (element as FlowElement<ObjectDefinitionNodeData>).data?.id || 0;
+
+                // if (responses.includes(elementId)) {
+                //     return {
+                //         ...element, data: {
+                //             ...element.data,
+                //             status: {
+                //                 code: 0,
+                //                 label: 'approved',
+                //                 label_i18n: 'Approved'
+                //             }
+                //         }
+                //     }
+                // }
+
+                return element;
+            })
+
+            dispatch({
+                payload: {
+                    newElements: newArrayItems,
+                },
+                type: TYPES.SET_ELEMENTS,
+            });
+
+            setMessageHeaderModal("Successfully published!");
             setStatusPublish(STATUS.FINISHED);
         } catch (error) {
-            setMsgHeaderModal("Confirm publishing");
+            setMessageHeaderModal("Confirm publishing");
             setStatusPublish(STATUS.REJECTED);
         }
     }
@@ -141,15 +146,15 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
     return (
         <ClayModal className="lfr-object__object-view-modal-object-definitions" disableAutoClose={disableAutoClose} observer={observer} status={renderStatusModal()}>
-            <ClayModal.Header>{msgHeaderModal}</ClayModal.Header>
+            <ClayModal.Header>{messageHeaderModal}</ClayModal.Header>
 
             <ClayModal.Body>
                 <div className="c-mb-sm-4">
                     <Text size={3}>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</Text>
                 </div>
                 <div className="container-card">
-                    {elementsFiltered.map(obj => {
-                        const { id, data } = obj as FlowElement<ObjectDefinitionNodeData>;
+                    {elementsFiltered.map(object => {
+                        const { id, data } = object as FlowElement<ObjectDefinitionNodeData>;
                         const selectedItem = selectedItems.find(item => item.id === data?.id!)
                         const isSelected = selectedItem?.id === data?.id!;
 
@@ -172,7 +177,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                                             {selectedItem?.status === "rejected" &&
                                                 <span className="rejected text-danger">
                                                     <ClayIcon symbol="exclamation-full" color="danger" />
-                                                    <Text size={2}>{selectedItem?.msg}</Text>
+                                                    <Text size={2}>{selectedItem?.message}</Text>
                                                 </span>
                                             }
 
