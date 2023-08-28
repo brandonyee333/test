@@ -31,7 +31,7 @@ export default function ({
 	hasDraftObjectDefinitions,
 	setShowModal,
 }: Header) {
-	const [{ showChangesSaved, elements }] = useFolderContext();
+	const [{ showChangesSaved, elements }, dispatch] = useFolderContext();
 	const [showModalPublishObjectDefinitions, setShowModalPublishObjectDefinitions] = useState<boolean>(false);
 	const { observer, onClose } = useModal({
 		onClose: () => setShowModalPublishObjectDefinitions(false),
@@ -146,7 +146,7 @@ export default function ({
 						displayType="primary"
 						onClick={e => { setShowModalPublishObjectDefinitions(true) }}
 					>
-						{showModalPublishObjectDefinitions && <ModalPublishObjectDefinitions disableAutoClose={false} observer={observer} onClose={onClose} elements={elements} />}
+						{showModalPublishObjectDefinitions && <ModalPublishObjectDefinitions disableAutoClose={false} observer={observer} onClose={onClose} elements={elements} dispatch={dispatch} />}
 						{Liferay.Language.get('publish')}
 					</ClayButton>
 				</div>

@@ -6,27 +6,29 @@
 import ClayButton from '@clayui/button';
 import ClayModal from '@clayui/modal';
 import ClayCard from '@clayui/card';
+import { Text } from '@clayui/core';
 import { ClayCheckbox } from '@clayui/form';
 import ClayIcon from '@clayui/icon';
+import ClayLabel from '@clayui/label';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import { Observer } from '@clayui/modal/lib/types';
 import { Elements, FlowElement } from 'react-flow-renderer';
-import {
-    API
-} from '@liferay/object-js-components-web';
+import { API } from '@liferay/object-js-components-web';
 import React, {
     useState
 } from 'react';
 
 
 import './ModalPublishObjectDefinitions.scss';
-import { ObjectRelationshipEdgeData } from '../types';
+import { ObjectRelationshipEdgeData, TAction } from '../types';
+import { TYPES } from '../ModelBuilderContext/typesEnum';
 
 interface IProps {
     disableAutoClose: boolean;
     observer: Observer;
     onClose: () => void;
     elements: Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>,
+    dispatch: React.Dispatch<TAction>;
 }
 
 interface ISelectedItem {
@@ -36,9 +38,9 @@ interface ISelectedItem {
 }
 
 
-export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onClose, elements }: IProps) {
+export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onClose, elements, dispatch }: IProps) {
     const [selectedItems, setSelectedItems] = useState<ISelectedItem[]>([]);
-    const elementsFiltered = elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2);
+    const [elementsFiltered, setElementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2));
     const [statusPublish, setStatusPublish] = useState<number>(0);
     const [msgHeaderModal, setMsgHeaderModal] = useState<string>("Confirm Publishing");
 
@@ -86,6 +88,21 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         try {
             await Promise.all(publishPromises);
             setMsgHeaderModal("Successfully published!");
+            debugger;
+            const approvedList = selectedItems.filter(selectedItem => selectedItem.status === "approved");
+            let newArrayElements = [] as any;
+
+            approvedList.forEach(approvedItem => {
+                newArrayElements = [...newArrayElements, elements.find(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.id === approvedItem.id)];
+            });
+            console.log(newArrayElements);
+
+            dispatch({
+                payload: {
+                    newElements: [],
+                },
+                type: TYPES.SET_ELEMENTS,
+            });
         } catch (error) {
             setMsgHeaderModal("Confirm publishing");
         } finally {
@@ -106,8 +123,9 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
             <ClayModal.Header>{msgHeaderModal}</ClayModal.Header>
 
             <ClayModal.Body>
-                <p>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</p>
-
+                <div className="c-mb-sm-4">
+                    <Text size={3}>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</Text>
+                </div>
                 <>
                     {elementsFiltered.map(obj => {
                         const { id, data } = obj as FlowElement<ObjectDefinitionNodeData>;
@@ -121,17 +139,19 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                                         <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />
                                         <ClayIcon symbol="catalog" />
                                         <div>
-                                            <div>{data?.name}</div>
+                                            <div>
+                                                <Text size={3} weight="bold">{data?.name}</Text>
+                                            </div>
                                             {(!selectedItem?.status || !["approved", "rejected"].includes(selectedItem.status)) &&
-                                                <span className={`label label-info`}>
-                                                    <span className="label-item label-item-expand">{data?.status.label_i18n}</span>
-                                                </span>
+                                                <ClayLabel displayType="info">
+                                                    {Liferay.Language.get('draft')}
+                                                </ClayLabel>
                                             }
 
                                             {selectedItem?.status === "rejected" &&
-                                                <span className="rejected">
-                                                    <ClayIcon symbol="exclamation-full" />
-                                                    <span>{selectedItem?.msg}</span>
+                                                <span className="rejected text-danger">
+                                                    <ClayIcon symbol="exclamation-full" color="danger" />
+                                                    <Text size={3}>{selectedItem?.msg}</Text>
                                                 </span>
                                             }
 
@@ -143,7 +163,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                                             size="sm"
                                         />}
 
-                                        {selectedItem?.status === "approved" && <ClayIcon symbol="check" />}
+                                        {selectedItem?.status === "approved" && <Text color="success"><ClayIcon symbol="check" /></Text>}
                                     </div>
                                 </ClayCard.Body>
                             </ClayCard>
@@ -154,18 +174,22 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
             <ClayModal.Footer
                 last={
-                    <ClayButton.Group key={1} spaced>
-                        {statusPublish === 2 ?
+                    statusPublish === 2 ?
+                        <ClayButton.Group key={1} spaced>
                             <ClayButton
                                 displayType="primary"
                                 onClick={onClose}
                             >
                                 {Liferay.Language.get('close')}
-                            </ClayButton> :
+                            </ClayButton>
+                        </ClayButton.Group>
+                        :
+                        <ClayButton.Group key={2} spaced>
                             <>
                                 <ClayButton
                                     displayType="secondary"
                                     onClick={onClose}
+                                    className="c-mr-sm-2"
                                 >
                                     {Liferay.Language.get('Cancel')}
                                 </ClayButton>
@@ -178,10 +202,10 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                                     {Liferay.Language.get('publish')}
                                 </ClayButton>
                             </>
-                        }
-                    </ClayButton.Group>
+
+                        </ClayButton.Group>
                 }>
             </ClayModal.Footer>
-        </ClayModal>
+        </ClayModal >
     );
 }
