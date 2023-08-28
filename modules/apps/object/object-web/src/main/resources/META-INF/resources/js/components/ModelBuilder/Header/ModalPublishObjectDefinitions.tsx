@@ -40,45 +40,62 @@ interface ISelectedItem {
 export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onClose, elements }: IProps) {
     const [selectedItems, setSelectedItems] = useState<ISelectedItem[]>([]);
     const elementsFiltered = elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2);
+    const [statusPublish, setStatusPublish] = useState<number>(0);
+    const [msgHeaderModal, setMsgHeaderModal] = useState<string>("Confirm Publishing");
 
-    const handleOnClickPublish = () => {
-
-        const publishObjectDefinition = async (objId: number) => {
-            try {
-                const response = await API.publishObjectDefinitionById(objId);
-
-                if (!response.ok) throw new Error("mudar erro");
-
-                setSelectedItems(prevState => prevState.map(prevItem => {
-                    if (prevItem.id === objId) {
-                        return { id: objId, status: 'approved' };
-                    } else {
-                        return prevItem;
-                    }
-                }));
-
-            } catch (error: any) {
-                setSelectedItems(prevState => prevState.map(prevItem => {
-                    if (prevItem.id === objId) {
-                        return { id: objId, status: 'rejected', msg: error.message };
-                    } else {
-                        return prevItem;
-                    }
-                }));
+    const updateStatusObject = (elements: ISelectedItem[], id: number, status: 'approved' | 'loading' | 'rejected') => {
+        return elements.map(item => {
+            if (item.id === id) {
+                return { id: id, status: status };
+            } else {
+                return item;
             }
+        }) as ISelectedItem[]
+    }
+
+    const handleOnClickPublish = async () => {
+        setStatusPublish(1);
+        setMsgHeaderModal("Publishing");
+
+        const publishObjectDefinition = (objId: number): Promise<void> => {
+            return new Promise<void>(async (resolve, reject) => {
+                try {
+                    const response = await API.publishObjectDefinitionById(objId);
+                    const data = await response.json();
+
+                    if (!response.ok) throw new Error(data.message.title);
+
+                    setSelectedItems(prevState => updateStatusObject(prevState, objId, 'approved'));
+
+                    resolve();
+
+                } catch (error: any) {
+                    setSelectedItems(prevState => prevState.map(prevItem => {
+                        if (prevItem.id === objId) {
+                            return { id: objId, status: 'rejected', msg: error.message };
+                        } else {
+                            return prevItem;
+                        }
+                    }));
+                    reject(error);
+                }
+            });
 
         }
 
-        selectedItems.forEach(item => {
-            setSelectedItems(prevState => prevState.map(prevItem => {
-                if (prevItem.id === item.id) {
-                    return { id: item.id, status: 'loading' };
-                } else {
-                    return prevItem;
-                }
-            }));
-            publishObjectDefinition(item.id);
-        })
+        const publishPromises = selectedItems.map(item => {
+            setSelectedItems(prevState => updateStatusObject(prevState, item.id, 'loading'));
+            return publishObjectDefinition(item.id);
+        });
+
+        try {
+            await Promise.all(publishPromises);
+            setMsgHeaderModal("Successfully published!");
+        } catch (error) {
+            setMsgHeaderModal("Confirm publishing");
+        } finally {
+            setStatusPublish(2);
+        }
     }
 
     const handleCheckboxChange = (itemId: number) => {
@@ -91,7 +108,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
     return (
         <ClayModal disableAutoClose={disableAutoClose} observer={observer} status="warning">
-            <ClayModal.Header>Confirm Publishing</ClayModal.Header>
+            <ClayModal.Header>{msgHeaderModal}</ClayModal.Header>
 
             <ClayModal.Body>
                 <p>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</p>
@@ -106,7 +123,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                             <ClayCard key={id} className={`lfr-object__object-view-modal-object-definitions-card ${isSelected ? 'active' : ''}`}>
                                 <ClayCard.Body>
                                     <div>
-                                        <ClayCheckbox checked={isSelected} onChange={() => handleCheckboxChange(data?.id!)} />
+                                        <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />
                                         <ClayIcon symbol="catalog" />
                                         <div>
                                             <div>{data?.name}</div>
@@ -143,20 +160,30 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
             <ClayModal.Footer
                 last={
                     <ClayButton.Group key={1} spaced>
-                        <ClayButton
-                            displayType="secondary"
-                            onClick={onClose}
-                        >
-                            {Liferay.Language.get('Cancel')}
-                        </ClayButton>
+                        {statusPublish === 2 ?
+                            <ClayButton
+                                displayType="primary"
+                                onClick={onClose}
+                            >
+                                {Liferay.Language.get('close')}
+                            </ClayButton> :
+                            <>
+                                <ClayButton
+                                    displayType="secondary"
+                                    onClick={onClose}
+                                >
+                                    {Liferay.Language.get('Cancel')}
+                                </ClayButton>
 
-                        <ClayButton
-                            displayType="primary"
-                            disabled={selectedItems.length === 0}
-                            onClick={handleOnClickPublish}
-                        >
-                            {Liferay.Language.get('publish')}
-                        </ClayButton>
+                                <ClayButton
+                                    displayType="primary"
+                                    disabled={selectedItems.length === 0 || statusPublish === 1}
+                                    onClick={handleOnClickPublish}
+                                >
+                                    {Liferay.Language.get('publish')}
+                                </ClayButton>
+                            </>
+                        }
                     </ClayButton.Group>
                 }>
             </ClayModal.Footer>
