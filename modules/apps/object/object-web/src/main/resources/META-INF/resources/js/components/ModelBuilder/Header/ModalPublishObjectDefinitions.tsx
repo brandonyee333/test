@@ -14,10 +14,7 @@ import ClayLoadingIndicator from '@clayui/loading-indicator';
 import { Observer } from '@clayui/modal/lib/types';
 import { Elements, FlowElement } from 'react-flow-renderer';
 import { API } from '@liferay/object-js-components-web';
-import React, {
-    useState
-} from 'react';
-
+import React, { useState } from 'react';
 
 import './ModalPublishObjectDefinitions.scss';
 import { ObjectRelationshipEdgeData, TAction } from '../types';
@@ -35,6 +32,13 @@ interface ISelectedItem {
     id: number;
     status?: 'approved' | 'loading' | 'rejected';
     msg?: string;
+}
+
+enum STATUS {
+    APPROVED = 0,
+    LOADING = 1,
+    REJECTED = 2,
+    INITIAL = -1
 }
 
 
@@ -70,6 +74,28 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
                     setSelectedItems(prevState => updateStatusObject(prevState, objId, 'approved'));
 
+                    const newArrayElements = elements.map(element => {
+                        if ((element as FlowElement<ObjectDefinitionNodeData>).data?.id === objId)
+                            return {
+                                ...element, data: {
+                                    ...element.data,
+                                    status: {
+                                        code: 0,
+                                        label: 'approved',
+                                        label_i18n: 'Approved'
+                                    }
+                                }
+                            };
+                        else
+                            return element;
+                    });
+                    dispatch({
+                        payload: {
+                            newElements: newArrayElements,
+                        },
+                        type: TYPES.SET_ELEMENTS,
+                    });
+
                     resolve();
 
                 } catch (error: any) {
@@ -88,21 +114,6 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         try {
             await Promise.all(publishPromises);
             setMsgHeaderModal("Successfully published!");
-            debugger;
-            const approvedList = selectedItems.filter(selectedItem => selectedItem.status === "approved");
-            let newArrayElements = [] as any;
-
-            approvedList.forEach(approvedItem => {
-                newArrayElements = [...newArrayElements, elements.find(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.id === approvedItem.id)];
-            });
-            console.log(newArrayElements);
-
-            dispatch({
-                payload: {
-                    newElements: [],
-                },
-                type: TYPES.SET_ELEMENTS,
-            });
         } catch (error) {
             setMsgHeaderModal("Confirm publishing");
         } finally {
@@ -140,7 +151,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                                         <ClayIcon symbol="catalog" />
                                         <div>
                                             <div>
-                                                <Text size={3} weight="bold">{data?.name}</Text>
+                                                <Text size={3} weight="semi-bold">{data?.name}</Text>
                                             </div>
                                             {(!selectedItem?.status || !["approved", "rejected"].includes(selectedItem.status)) &&
                                                 <ClayLabel displayType="info">
@@ -151,7 +162,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                                             {selectedItem?.status === "rejected" &&
                                                 <span className="rejected text-danger">
                                                     <ClayIcon symbol="exclamation-full" color="danger" />
-                                                    <Text size={3}>{selectedItem?.msg}</Text>
+                                                    <Text size={2}>{selectedItem?.msg}</Text>
                                                 </span>
                                             }
 

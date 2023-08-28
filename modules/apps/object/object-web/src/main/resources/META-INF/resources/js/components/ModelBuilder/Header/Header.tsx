@@ -144,7 +144,7 @@ export default function ({
 					<ClayButton
 						//disabled={!hasDraftObjectDefinitions}
 						displayType="primary"
-						onClick={e => { setShowModalPublishObjectDefinitions(true) }}
+						onClick={() => { setShowModalPublishObjectDefinitions(true) }}
 					>
 						{showModalPublishObjectDefinitions && <ModalPublishObjectDefinitions disableAutoClose={false} observer={observer} onClose={onClose} elements={elements} dispatch={dispatch} />}
 						{Liferay.Language.get('publish')}

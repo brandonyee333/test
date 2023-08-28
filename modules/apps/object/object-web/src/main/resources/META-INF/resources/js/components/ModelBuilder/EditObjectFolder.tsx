@@ -13,6 +13,7 @@ import {ModalEditFolder} from '../ViewObjectDefinitions/ModalEditFolder';
 import {ViewObjectDefinitionsModals} from '../ViewObjectDefinitions/ViewObjectDefinitions';
 import Diagram from './Diagram/Diagram';
 import Header from './Header/Header';
+import { FlowElement } from 'react-flow-renderer';
 import LeftSidebar from './LeftSidebar/LeftSidebar';
 import {useFolderContext} from './ModelBuilderContext/objectFolderContext';
 import {TYPES} from './ModelBuilderContext/typesEnum';
@@ -31,7 +32,7 @@ export default function EditObjectFolder({
 	siteKeyValuePair,
 }: EditObjectFolder) {
 	const [
-		{rightSidebarType, selectedFolder, storages, viewApiURL},
+		{rightSidebarType, selectedFolder, storages, viewApiURL, elements},
 		dispatch,
 	] = useFolderContext();
 
