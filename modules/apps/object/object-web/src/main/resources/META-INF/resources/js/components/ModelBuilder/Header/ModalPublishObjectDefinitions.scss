@@ -1,4 +1,10 @@
 .lfr-object__object-view-modal-object-definitions {
+    .container-card {
+        max-height: 350px;
+        overflow-y: auto;
+        padding: 3px;
+    }
+
     &-card {
         &.active {
             box-shadow: 0 0 0 2px #80acff;
@@ -22,7 +28,7 @@
                 margin-top: 0;
             }
 
-            .rejected{
+            .rejected {
                 display: flex;
                 align-items: center;
                 gap: 5px;

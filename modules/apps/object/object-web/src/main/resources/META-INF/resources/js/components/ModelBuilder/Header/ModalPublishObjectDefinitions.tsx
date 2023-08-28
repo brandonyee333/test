@@ -15,10 +15,12 @@ import { Observer } from '@clayui/modal/lib/types';
 import { Elements, FlowElement } from 'react-flow-renderer';
 import { API } from '@liferay/object-js-components-web';
 import React, { useState } from 'react';
-
 import './ModalPublishObjectDefinitions.scss';
 import { ObjectRelationshipEdgeData, TAction } from '../types';
 import { TYPES } from '../ModelBuilderContext/typesEnum';
+
+
+type TStatus = 'danger' | 'info' | 'success' | 'warning';
 
 interface IProps {
     disableAutoClose: boolean;
@@ -35,17 +37,17 @@ interface ISelectedItem {
 }
 
 enum STATUS {
-    APPROVED = 0,
+    INITIAL = 0,
     LOADING = 1,
-    REJECTED = 2,
-    INITIAL = -1
+    FINISHED = 2,
+    REJECTED = 3
 }
 
 
 export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onClose, elements, dispatch }: IProps) {
     const [selectedItems, setSelectedItems] = useState<ISelectedItem[]>([]);
     const [elementsFiltered, setElementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2));
-    const [statusPublish, setStatusPublish] = useState<number>(0);
+    const [statusPublish, setStatusPublish] = useState<number>(STATUS.INITIAL);
     const [msgHeaderModal, setMsgHeaderModal] = useState<string>("Confirm Publishing");
 
     const updateStatusObject = (elements: ISelectedItem[], id: number, status: 'approved' | 'loading' | 'rejected', msg?: string) => {
@@ -59,7 +61,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
     }
 
     const handleOnClickPublish = async () => {
-        setStatusPublish(1);
+        setStatusPublish(STATUS.LOADING);
         setMsgHeaderModal("Publishing");
 
         const publishObjectDefinition = (objId: number): Promise<void> => {
@@ -103,7 +105,6 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                     reject(error);
                 }
             });
-
         }
 
         const publishPromises = selectedItems.map(item => {
@@ -114,10 +115,10 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         try {
             await Promise.all(publishPromises);
             setMsgHeaderModal("Successfully published!");
+            setStatusPublish(STATUS.FINISHED);
         } catch (error) {
             setMsgHeaderModal("Confirm publishing");
-        } finally {
-            setStatusPublish(2);
+            setStatusPublish(STATUS.REJECTED);
         }
     }
 
@@ -129,15 +130,24 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         }
     };
 
+    const renderStatusModal = (): TStatus => {
+        switch (statusPublish) {
+            case 3: return 'warning';
+            case 1: return 'info';
+            case 2: return 'success';
+            default: return 'warning';
+        }
+    }
+
     return (
-        <ClayModal disableAutoClose={disableAutoClose} observer={observer} status="warning">
+        <ClayModal className="lfr-object__object-view-modal-object-definitions" disableAutoClose={disableAutoClose} observer={observer} status={renderStatusModal()}>
             <ClayModal.Header>{msgHeaderModal}</ClayModal.Header>
 
             <ClayModal.Body>
                 <div className="c-mb-sm-4">
                     <Text size={3}>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</Text>
                 </div>
-                <>
+                <div className="container-card">
                     {elementsFiltered.map(obj => {
                         const { id, data } = obj as FlowElement<ObjectDefinitionNodeData>;
                         const selectedItem = selectedItems.find(item => item.id === data?.id!)
@@ -180,12 +190,12 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                             </ClayCard>
                         )
                     })}
-                </>
+                </div>
             </ClayModal.Body>
 
             <ClayModal.Footer
                 last={
-                    statusPublish === 2 ?
+                    statusPublish === STATUS.FINISHED || statusPublish === STATUS.REJECTED ?
                         <ClayButton.Group key={1} spaced>
                             <ClayButton
                                 displayType="primary"
@@ -207,7 +217,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
                                 <ClayButton
                                     displayType="primary"
-                                    disabled={selectedItems.length === 0 || statusPublish === 1}
+                                    disabled={selectedItems.length === 0 || statusPublish === STATUS.LOADING}
                                     onClick={handleOnClickPublish}
                                 >
                                     {Liferay.Language.get('publish')}
