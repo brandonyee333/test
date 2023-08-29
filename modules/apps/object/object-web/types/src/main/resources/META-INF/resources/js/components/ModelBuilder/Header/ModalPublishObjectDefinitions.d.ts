@@ -4,22 +4,22 @@
  */
 
 import {Observer} from '@clayui/modal/lib/types';
-import {Elements} from 'react-flow-renderer';
 import React from 'react';
+import {Elements} from 'react-flow-renderer';
 import './ModalPublishObjectDefinitions.scss';
 import {ObjectRelationshipEdgeData, TAction} from '../types';
 interface IProps {
 	disableAutoClose: boolean;
+	dispatch: React.Dispatch<TAction>;
+	elements: Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>;
 	observer: Observer;
 	onClose: () => void;
-	elements: Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>;
-	dispatch: React.Dispatch<TAction>;
 }
 export declare function ModalPublishObjectDefinitions({
 	disableAutoClose,
+	dispatch,
+	elements,
 	observer,
 	onClose,
-	elements,
-	dispatch,
 }: IProps): JSX.Element;
 export {};

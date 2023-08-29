@@ -5,11 +5,12 @@
 
 import ClayButton, { ClayButtonWithIcon } from '@clayui/button';
 import ClayIcon from '@clayui/icon';
-import { ClayTooltipProvider } from '@clayui/tooltip';
 import { useModal } from '@clayui/modal';
-import { ModalPublishObjectDefinitions } from './ModalPublishObjectDefinitions';
+import { ClayTooltipProvider } from '@clayui/tooltip';
 import classNames from 'classnames';
 import React, { useState } from 'react';
+
+import { ModalPublishObjectDefinitions } from './ModalPublishObjectDefinitions';
 
 import './Header.scss';
 
@@ -31,7 +32,7 @@ export default function ({
 	hasDraftObjectDefinitions,
 	setShowModal,
 }: Header) {
-	const [{ showChangesSaved, elements }, dispatch] = useFolderContext();
+	const [{ elements, showChangesSaved }, dispatch] = useFolderContext();
 	const [showModalPublishObjectDefinitions, setShowModalPublishObjectDefinitions] = useState<boolean>(false);
 	const { observer, onClose } = useModal({
 		onClose: () => setShowModalPublishObjectDefinitions(false),
@@ -146,7 +147,8 @@ export default function ({
 						displayType="primary"
 						onClick={() => { setShowModalPublishObjectDefinitions(true) }}
 					>
-						{showModalPublishObjectDefinitions && <ModalPublishObjectDefinitions disableAutoClose={false} observer={observer} onClose={onClose} elements={elements} dispatch={dispatch} />}
+						{showModalPublishObjectDefinitions && <ModalPublishObjectDefinitions disableAutoClose={false} dispatch={dispatch} elements={elements} observer={observer} onClose={onClose} />}
+
 						{Liferay.Language.get('publish')}
 					</ClayButton>
 				</div>

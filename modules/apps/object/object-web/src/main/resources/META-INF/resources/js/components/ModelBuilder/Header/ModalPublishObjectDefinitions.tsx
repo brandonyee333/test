@@ -4,36 +4,37 @@
  */
 
 import ClayButton from '@clayui/button';
-import ClayModal from '@clayui/modal';
 import ClayCard from '@clayui/card';
 import { Text } from '@clayui/core';
 import { ClayCheckbox } from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayLabel from '@clayui/label';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
+import ClayModal from '@clayui/modal';
 import { Observer } from '@clayui/modal/lib/types';
-import { Elements, FlowElement } from 'react-flow-renderer';
 import { API } from '@liferay/object-js-components-web';
 import React, { useState } from 'react';
+import { Elements, FlowElement } from 'react-flow-renderer';
+
 import './ModalPublishObjectDefinitions.scss';
-import { ObjectRelationshipEdgeData, TAction } from '../types';
 import { TYPES } from '../ModelBuilderContext/typesEnum';
+import { ObjectRelationshipEdgeData, TAction } from '../types';
 
 
 type TStatus = 'danger' | 'info' | 'success' | 'warning';
 
 interface IProps {
     disableAutoClose: boolean;
+    dispatch: React.Dispatch<TAction>;
+    elements: Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>,
     observer: Observer;
     onClose: () => void;
-    elements: Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>,
-    dispatch: React.Dispatch<TAction>;
 }
 
 interface ISelectedItem {
     id: number;
-    status?: 'approved' | 'loading' | 'rejected';
     message?: string;
+    status?: 'approved' | 'loading' | 'rejected';
 }
 
 enum STATUS {
@@ -44,7 +45,7 @@ enum STATUS {
 }
 
 
-export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onClose, elements, dispatch }: IProps) {
+export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elements, observer, onClose }: IProps) {
     const [elementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2));
     const [messageHeaderModal, setMessageHeaderModal] = useState<string>(Liferay.Language.get('confirm-publishing'));
     const [selectAll, setSelectAll] = useState<boolean>(false);
@@ -54,7 +55,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
     const updateStatusObject = (elements: ISelectedItem[], id: number, status: 'approved' | 'loading' | 'rejected', message?: string) => {
         return elements.map(item => {
             if (item.id === id) {
-                return { id: id, status: status, ...(status === "rejected" && { message: message }) };
+                return { id, status, ...(status === "rejected" && { message }) };
             } else {
                 return item;
             }
@@ -66,6 +67,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         setMessageHeaderModal(Liferay.Language.get('publishing'));
 
         const publishObjectDefinition = (objectId: number): Promise<number> => {
+            // eslint-disable-next-line no-async-promise-executor
             return new Promise<number>(async (resolve) => {
                 try {
                     const response = await API.publishObjectDefinitionById(objectId);
@@ -81,7 +83,9 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
                 } catch (error: any) {
                     setSelectedItems(prevState => updateStatusObject(prevState, objectId, 'rejected', error.message));
-                    //don't throw reject, so that it doesn't go to the catch flow of the promise.all
+
+                    // don't throw reject, so that it doesn't go to the catch flow of the promise.all
+
                     resolve(0);
                 }
             });
@@ -89,6 +93,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
         const publishPromises = selectedItems.map(item => {
             setSelectedItems(prevState => updateStatusObject(prevState, item.id, 'loading'));
+
             return publishObjectDefinition(item.id);
         });
 
@@ -97,7 +102,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
             const hasErrorsResponse = responses.some(response => response === 0);
             let filteredResponses = responses;
 
-            if (hasErrorsResponse) filteredResponses = responses.filter(response => response !== 0);
+            if (hasErrorsResponse) { filteredResponses = responses.filter(response => response !== 0) };
 
             setMessageHeaderModal(!hasErrorsResponse ? "Successfully published!" : "Published with errors");
             setStatusPublish(!hasErrorsResponse ? STATUS.FINISHED : STATUS.REJECTED);
@@ -117,6 +122,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                         }
                     }
                 }
+
                 return element;
             })
 
@@ -150,6 +156,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
         } else {
             const allIds = elementsFiltered.map((object) => {
                 const { data } = object as FlowElement<ObjectDefinitionNodeData>;
+
                 return data?.id!;
             });
             setSelectedItems(allIds.map((id) => ({ id })));
@@ -174,30 +181,35 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                 <div className="c-mb-sm-4">
                     <Text size={3}>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</Text>
                 </div>
+
                 <div className={`select-all-checkbox c-p-sm-3 c-mb-sm-3 ${selectAll ? 'active' : ''}`}>
                     <ClayCheckbox
                         checked={selectAll}
-                        onChange={handleSelectAll}
+                        indeterminate={(selectAll && selectedItems.length !== elementsFiltered.length)}
                         label={`${Liferay.Language.get('select-all')} ${selectAll ? `(${selectAll ? selectedItems.length : 0} of ${elementsFiltered.length} items selected)` : ''}`}
-                        indeterminate={(selectAll && selectedItems.length != elementsFiltered.length)}
+                        onChange={handleSelectAll}
                     />
                 </div>
+
                 <div className="container-card">
                     {elementsFiltered.map(object => {
-                        const { id, data } = object as FlowElement<ObjectDefinitionNodeData>;
+                        const { data, id } = object as FlowElement<ObjectDefinitionNodeData>;
                         const selectedItem = selectedItems.find(item => item.id === data?.id!)
                         const isSelected = selectedItem?.id === data?.id!;
 
                         return (
-                            <ClayCard key={id} className={`lfr-object__object-view-modal-object-definitions-card ${isSelected ? 'active' : ''}`}>
+                            <ClayCard className={`lfr-object__object-view-modal-object-definitions-card ${isSelected ? 'active' : ''}`} key={id}>
                                 <ClayCard.Body>
                                     <div>
                                         <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />
+
                                         <ClayIcon symbol="catalog" />
+
                                         <div>
                                             <div>
                                                 <Text size={3} weight="semi-bold">{data?.name}</Text>
                                             </div>
+
                                             {(!selectedItem?.status || !["approved", "rejected"].includes(selectedItem.status)) &&
                                                 <ClayLabel displayType="info">
                                                     {Liferay.Language.get('draft')}
@@ -206,13 +218,15 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
                                             {selectedItem?.status === "rejected" &&
                                                 <span className="rejected text-danger">
-                                                    <ClayIcon symbol="exclamation-full" color="danger" />
+                                                    <ClayIcon color="danger" symbol="exclamation-full" />
+
                                                     <Text size={2}>{selectedItem?.message}</Text>
                                                 </span>
                                             }
 
                                         </div>
                                     </div>
+
                                     <div>
                                         {selectedItem?.status === "loading" && <ClayLoadingIndicator
                                             displayType="secondary"
@@ -243,16 +257,17 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                         <ClayButton.Group key={2} spaced>
                             <>
                                 <ClayButton
+                                    className="c-mr-sm-2"
                                     displayType="secondary"
                                     onClick={onClose}
-                                    className="c-mr-sm-2"
                                 >
                                     {Liferay.Language.get('Cancel')}
                                 </ClayButton>
 
                                 <ClayButton
-                                    displayType="primary"
+                                    // eslint-disable-next-line @liferay/prefer-length-check
                                     disabled={selectedItems.length === 0 || statusPublish === STATUS.LOADING}
+                                    displayType="primary"
                                     onClick={handleOnClickPublish}
                                 >
                                     {statusPublish === STATUS.LOADING ? Liferay.Language.get('please-wait') + '...' : Liferay.Language.get('publish')}
