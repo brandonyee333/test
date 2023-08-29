@@ -13,9 +13,9 @@ import ClayLoadingIndicator from '@clayui/loading-indicator';
 import ClayModal from '@clayui/modal';
 import { Observer } from '@clayui/modal/lib/types';
 import { API } from '@liferay/object-js-components-web';
+import { sub } from 'frontend-js-web';
 import React, { useState } from 'react';
 import { Elements, FlowElement } from 'react-flow-renderer';
-import { sub } from 'frontend-js-web';
 
 import './ModalPublishObjectDefinitions.scss';
 import { TYPES } from '../ModelBuilderContext/typesEnum';
@@ -177,14 +177,14 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
     const createLabelForSelectAll = (): string => {
         let stringLabel = '';
 
-        if(selectedItems.length === elementsFiltered.length){
+        if (selectedItems.length === elementsFiltered.length) {
             stringLabel += Liferay.Language.get('all-selected');
-        }else{
+        } else if (!selectedItems.length) {
             stringLabel += Liferay.Language.get('select-all');
         }
 
-        stringLabel += sub(Liferay.Language.get('x-of-x-items-selected'), selectedItems.length, elementsFiltered.length);
-        
+        stringLabel += ` (${sub(Liferay.Language.get('x-of-x-items-selected'), selectedItems.length, elementsFiltered.length)})`;
+
         return stringLabel;
     }
 
