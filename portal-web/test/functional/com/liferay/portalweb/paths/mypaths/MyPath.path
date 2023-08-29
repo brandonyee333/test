@@ -10,7 +10,21 @@
 </thead>
 
 <tbody>
-
+<tr>
+	<td>APPLICATIONS_MENU</td>
+	<td>//div[contains(@class,'control-menu')]//button[@data-qa-id='applicationsMenu']</td>
+	<td></td>
+</tr>    
+<tr>
+    <td>CONTROL_PANEL</td>
+	<td>//li[@class='nav-item']/button[child::span[text()='Control Panel']]</td>
+	<td></td>
+</tr>
+<tr>
+    <td>PANEL_CONFIGURATION_SECTION</td>
+	<td>//div[@class='col-md' and child::nav[@aria-labelledby='nav_control_panel.configuration']]</td>
+	<td></td>
+</tr>
 </tbody>
 </table>
 </body>
