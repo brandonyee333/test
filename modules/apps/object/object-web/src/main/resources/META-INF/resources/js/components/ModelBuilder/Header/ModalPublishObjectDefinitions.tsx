@@ -26,7 +26,7 @@ type TStatus = 'danger' | 'info' | 'success' | 'warning';
 enum STATUS {
     REJECTED = -1,
     INITIAL = 0,
-    LOADING = 1,
+    PENDING = 1,
     APPROVED = 2,
 }
 
@@ -63,7 +63,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
     }
 
     const handleOnClickPublish = async () => {
-        setStatusPublish(STATUS.LOADING);
+        setStatusPublish(STATUS.PENDING);
         setMessageHeaderModal(`${Liferay.Language.get('publishing')}...`);
 
         const publishObjectDefinition = (objectId: number): Promise<number> => {
@@ -92,7 +92,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
         }
 
         const publishPromises = selectedItems.map(item => {
-            setSelectedItems(prevState => updateStatusObject(prevState, item.id, STATUS.LOADING));
+            setSelectedItems(prevState => updateStatusObject(prevState, item.id, STATUS.PENDING));
 
             return publishObjectDefinition(item.id);
         });
@@ -169,7 +169,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
     const renderStatusModal = (): TStatus => {
         switch (statusPublish) {
             case STATUS.REJECTED: return 'warning';
-            case STATUS.LOADING: return 'info';
+            case STATUS.PENDING: return 'info';
             case STATUS.APPROVED: return 'success';
             default: return 'warning';
         }
@@ -208,7 +208,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         return (
                             <ClayList.Item className={`lfr-object__object-view-modal-object-definitions-list-item ${isSelected ? 'active' : ''}`} key={id}>
                                 <div>
-                                    {!statusPublish && <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status !== undefined && [STATUS.APPROVED, STATUS.LOADING].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />}
+                                    {!statusPublish && <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status !== undefined && [STATUS.APPROVED, STATUS.PENDING].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />}
 
                                     <ClayIcon symbol="catalog" />
 
@@ -229,7 +229,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                                 </div>
 
                                 <div>
-                                    {selectedItem?.status === STATUS.LOADING && <ClayLoadingIndicator
+                                    {selectedItem?.status === STATUS.PENDING && <ClayLoadingIndicator
                                         displayType="secondary"
                                         size="sm"
                                     />}
@@ -266,11 +266,11 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
 
                                 <ClayButton
                                     // eslint-disable-next-line @liferay/prefer-length-check
-                                    disabled={selectedItems.length === 0 || statusPublish === STATUS.LOADING}
+                                    disabled={selectedItems.length === 0 || statusPublish === STATUS.PENDING}
                                     displayType="primary"
                                     onClick={handleOnClickPublish}
                                 >
-                                    {statusPublish === STATUS.LOADING ? Liferay.Language.get('please-wait') + '...' : Liferay.Language.get('publish-objects')}
+                                    {statusPublish === STATUS.PENDING ? Liferay.Language.get('please-wait') + '...' : Liferay.Language.get('publish-objects')}
                                 </ClayButton>
                             </>
 
