@@ -5,19 +5,17 @@
 
 package com.liferay.commerce.product.asset.categories.web.internal.upload;
 
-import com.liferay.asset.kernel.service.AssetCategoryService;
 import com.liferay.commerce.product.configuration.AttachmentsConfiguration;
 import com.liferay.commerce.product.exception.CPAttachmentFileEntryNameException;
 import com.liferay.commerce.product.exception.CPAttachmentFileEntrySizeException;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UniqueFileNameProvider;
@@ -26,21 +24,19 @@ import com.liferay.upload.UploadFileEntryHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Alessio Antonio Rendina
  */
-@Component(
-	configurationPid = "com.liferay.commerce.product.configuration.AttachmentsConfiguration",
-	service = TempAssetCategoryAttachmentsUploadFileEntryHandler.class
-)
 public class TempAssetCategoryAttachmentsUploadFileEntryHandler
 	implements UploadFileEntryHandler {
+
+	public TempAssetCategoryAttachmentsUploadFileEntryHandler(
+		AttachmentsConfiguration attachmentsConfiguration,
+		UniqueFileNameProvider uniqueFileNameProvider) {
+
+		_attachmentsConfiguration = attachmentsConfiguration;
+		_uniqueFileNameProvider = uniqueFileNameProvider;
+	}
 
 	@Override
 	public FileEntry upload(UploadPortletRequest uploadPortletRequest)
@@ -64,15 +60,6 @@ public class TempAssetCategoryAttachmentsUploadFileEntryHandler
 				fileName, contentType, inputStream, themeDisplay);
 		}
 	}
-
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		_attachmentsConfiguration = ConfigurableUtil.createConfigurable(
-			AttachmentsConfiguration.class, properties);
-	}
-
-	@Reference
-	protected AssetCategoryService assetCategoryService;
 
 	private FileEntry _addFileEntry(
 			String fileName, String contentType, InputStream inputStream,
@@ -117,7 +104,7 @@ public class TempAssetCategoryAttachmentsUploadFileEntryHandler
 			throw new CPAttachmentFileEntrySizeException();
 		}
 
-		String extension = _file.getExtension(fileName);
+		String extension = FileUtil.getExtension(fileName);
 
 		String[] imageExtensions = _attachmentsConfiguration.imageExtensions();
 
@@ -141,12 +128,7 @@ public class TempAssetCategoryAttachmentsUploadFileEntryHandler
 	private static final Log _log = LogFactoryUtil.getLog(
 		TempAssetCategoryAttachmentsUploadFileEntryHandler.class);
 
-	private volatile AttachmentsConfiguration _attachmentsConfiguration;
-
-	@Reference
-	private File _file;
-
-	@Reference
-	private UniqueFileNameProvider _uniqueFileNameProvider;
+	private final AttachmentsConfiguration _attachmentsConfiguration;
+	private final UniqueFileNameProvider _uniqueFileNameProvider;
 
 }
