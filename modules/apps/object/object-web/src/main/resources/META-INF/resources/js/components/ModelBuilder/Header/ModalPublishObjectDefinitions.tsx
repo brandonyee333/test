@@ -64,7 +64,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
 
     const handleOnClickPublish = async () => {
         setStatusPublish(STATUS.LOADING);
-        setMessageHeaderModal(Liferay.Language.get('publishing'));
+        setMessageHeaderModal(`${Liferay.Language.get('publishing')}...`);
 
         const publishObjectDefinition = (objectId: number): Promise<number> => {
             // eslint-disable-next-line no-async-promise-executor
