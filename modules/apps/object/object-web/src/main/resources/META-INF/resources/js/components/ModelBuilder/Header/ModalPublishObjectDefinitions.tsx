@@ -13,7 +13,7 @@ import ClayModal from '@clayui/modal';
 import { Observer } from '@clayui/modal/lib/types';
 import { API } from '@liferay/object-js-components-web';
 import { sub } from 'frontend-js-web';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Elements, FlowElement } from 'react-flow-renderer';
 
 import './ModalPublishObjectDefinitions.scss';
@@ -155,8 +155,6 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                 setSelectedItems(allIds.map((id) => ({ id })));
                 setSelectAll(true);
             }
-        } else {
-            setSelectAll(true);
         }
     };
 
@@ -166,8 +164,6 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
         } else {
             setSelectedItems([...selectedItems, { id: itemId }]);
         }
-
-        handleSelectAll();
     };
 
     const renderStatusModal = (): TStatus => {
@@ -178,6 +174,8 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
             default: return 'warning';
         }
     }
+
+    useEffect(() => setSelectAll(!!selectedItems.length), [selectedItems]);
 
 
     return (
@@ -210,7 +208,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         return (
                             <ClayList.Item className={`lfr-object__object-view-modal-object-definitions-list-item ${isSelected ? 'active' : ''}`} key={id}>
                                 <div>
-                                    <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />
+                                    {!statusPublish && <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />}
 
                                     <ClayIcon symbol="catalog" />
 
