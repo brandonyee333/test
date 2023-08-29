@@ -15,6 +15,7 @@ import { Observer } from '@clayui/modal/lib/types';
 import { API } from '@liferay/object-js-components-web';
 import React, { useState } from 'react';
 import { Elements, FlowElement } from 'react-flow-renderer';
+import { sub } from 'frontend-js-web';
 
 import './ModalPublishObjectDefinitions.scss';
 import { TYPES } from '../ModelBuilderContext/typesEnum';
@@ -117,7 +118,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                             status: {
                                 code: 0,
                                 label: 'approved',
-                                label_i18n: 'Approved'
+                                label_i18n: Liferay.Language.get('approved')
                             }
                         }
                     }
@@ -173,13 +174,27 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
         }
     }
 
+    const createLabelForSelectAll = (): string => {
+        let stringLabel = '';
+
+        if(selectedItems.length === elementsFiltered.length){
+            stringLabel += Liferay.Language.get('all-selected');
+        }else{
+            stringLabel += Liferay.Language.get('select-all');
+        }
+
+        stringLabel += sub(Liferay.Language.get('x-of-x-items-selected'), selectedItems.length, elementsFiltered.length);
+        
+        return stringLabel;
+    }
+
     return (
         <ClayModal className="lfr-object__object-view-modal-object-definitions" disableAutoClose={disableAutoClose} observer={observer} status={renderStatusModal()}>
             <ClayModal.Header>{messageHeaderModal}</ClayModal.Header>
 
             <ClayModal.Body>
                 <div className="c-mb-sm-4">
-                    <Text size={3}>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</Text>
+                    <Text size={3}>{Liferay.Language.get('the-following-objects-contain-changes-that-will-be-published-and-may-affect-your-production-environment')} {Liferay.Language.get('please-check-before-confirming')}</Text>
                 </div>
 
                 {statusPublish === STATUS.INITIAL &&
@@ -187,7 +202,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         <ClayCheckbox
                             checked={selectAll}
                             indeterminate={(selectAll && selectedItems.length !== elementsFiltered.length)}
-                            label={`${Liferay.Language.get('select-all')} ${selectAll ? `(${selectAll ? selectedItems.length : 0} of ${elementsFiltered.length} items selected)` : ''}`}
+                            label={createLabelForSelectAll()}
                             onChange={handleSelectAll}
                         />
                     </div>}
