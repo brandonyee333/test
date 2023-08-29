@@ -9,7 +9,6 @@ import com.liferay.commerce.product.exception.CPAttachmentFileEntryNameException
 import com.liferay.commerce.product.exception.CPAttachmentFileEntrySizeException;
 import com.liferay.commerce.shop.by.diagram.configuration.CSDiagramSettingImageConfiguration;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -17,7 +16,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UniqueFileNameProvider;
@@ -26,21 +25,20 @@ import com.liferay.upload.UploadFileEntryHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Alessio Antonio Rendina
  */
-@Component(
-	configurationPid = "com.liferay.commerce.shop.by.diagram.configuration.CSDiagramSettingImageConfiguration",
-	service = CSDiagramSettingImageUploadFileEntryHandler.class
-)
 public class CSDiagramSettingImageUploadFileEntryHandler
 	implements UploadFileEntryHandler {
+
+	public CSDiagramSettingImageUploadFileEntryHandler(
+		CSDiagramSettingImageConfiguration csDiagramSettingImageConfiguration,
+		UniqueFileNameProvider uniqueFileNameProvider) {
+
+		_csDiagramSettingImageConfiguration =
+			csDiagramSettingImageConfiguration;
+		_uniqueFileNameProvider = uniqueFileNameProvider;
+	}
 
 	@Override
 	public FileEntry upload(UploadPortletRequest uploadPortletRequest)
@@ -63,13 +61,6 @@ public class CSDiagramSettingImageUploadFileEntryHandler
 			return _addFileEntry(
 				fileName, contentType, inputStream, themeDisplay);
 		}
-	}
-
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		_csDiagramSettingImageConfiguration =
-			ConfigurableUtil.createConfigurable(
-				CSDiagramSettingImageConfiguration.class, properties);
 	}
 
 	private FileEntry _addFileEntry(
@@ -117,7 +108,7 @@ public class CSDiagramSettingImageUploadFileEntryHandler
 			throw new CPAttachmentFileEntrySizeException();
 		}
 
-		String extension = _file.getExtension(fileName);
+		String extension = FileUtil.getExtension(fileName);
 
 		String[] imageExtensions =
 			_csDiagramSettingImageConfiguration.imageExtensions();
@@ -142,13 +133,8 @@ public class CSDiagramSettingImageUploadFileEntryHandler
 	private static final Log _log = LogFactoryUtil.getLog(
 		CSDiagramSettingImageUploadFileEntryHandler.class);
 
-	private volatile CSDiagramSettingImageConfiguration
+	private final CSDiagramSettingImageConfiguration
 		_csDiagramSettingImageConfiguration;
-
-	@Reference
-	private File _file;
-
-	@Reference
-	private UniqueFileNameProvider _uniqueFileNameProvider;
+	private final UniqueFileNameProvider _uniqueFileNameProvider;
 
 }
