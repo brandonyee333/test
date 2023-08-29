@@ -1,28 +1,30 @@
 @component-name = "portal"
 definition {
-    property testray.main.component.name = "Navigation";
 
-    setUp {
-        TestCase.setUpPortalInstance();
+	property testray.main.component.name = "Navigation";
 
-        User.firstLoginPG();
+	setUp {
+		TestCase.setUpPortalInstance();
 
-        Navigator.openURL();
-    }
+		User.firstLoginPG();
 
-    tearDown {
-        User.logoutAndLoginPG(
-            userLoginEmailAddress = "test@liferay.com",
-            userLoginFullName = "Test Test");
-    }
+		Navigator.openURL();
+	}
 
-    @description = "Access Portal Global Menu and validate CONFIGURATION string at Control Panel"
-    @priority = "5"
-    test AssertConfigurationSectionPresentInApplicationsMenu {
-        Click(locator1 = "MyPath#APPLICATIONS_MENU");
+	tearDown {
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+	}
 
-        Click(locator1 = "MyPath#CONTROL_PANEL");
+	@description = "Access Portal Global Menu and validate CONFIGURATION string at Control Panel"
+	@priority = 5
+	test AssertConfigurationSectionPresentInApplicationsMenu {
+		Click(locator1 = "MyPath#APPLICATIONS_MENU");
 
-        AssertElementPresent(locator1 = "MyPath#PANEL_CONFIGURATION_SECTION");
-    }
+		Click(locator1 = "MyPath#CONTROL_PANEL");
+
+		AssertElementPresent(locator1 = "MyPath#PANEL_CONFIGURATION_SECTION");
+	}
+
 }
