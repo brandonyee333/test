@@ -1,0 +1,18 @@
+@component-name = "portal"
+definition {
+    property testray.main.component.name = "Navigation";
+
+    setUp {
+        TestCase.setUpPortalInstance();
+
+        User.firstLoginPG();
+
+        Navigator.openURL();
+    }
+
+    tearDown {
+        User.logoutAndLoginPG(
+            userLoginEmailAddress = "test@liferay.com",
+            userLoginFullName = "Test Test");
+    }
+}
