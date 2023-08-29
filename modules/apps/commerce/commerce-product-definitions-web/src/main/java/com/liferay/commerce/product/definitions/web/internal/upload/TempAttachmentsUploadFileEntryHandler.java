@@ -8,16 +8,14 @@ package com.liferay.commerce.product.definitions.web.internal.upload;
 import com.liferay.commerce.product.configuration.AttachmentsConfiguration;
 import com.liferay.commerce.product.exception.CPAttachmentFileEntryNameException;
 import com.liferay.commerce.product.exception.CPAttachmentFileEntrySizeException;
-import com.liferay.commerce.product.service.CPDefinitionService;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -27,21 +25,19 @@ import com.liferay.upload.UploadFileEntryHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.util.Map;
-
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Marco Leo
  */
-@Component(
-	configurationPid = "com.liferay.commerce.product.configuration.AttachmentsConfiguration",
-	service = TempAttachmentsUploadFileEntryHandler.class
-)
 public class TempAttachmentsUploadFileEntryHandler
 	implements UploadFileEntryHandler {
+
+	public TempAttachmentsUploadFileEntryHandler(
+		AttachmentsConfiguration attachmentsConfiguration,
+		UniqueFileNameProvider uniqueFileNameProvider) {
+
+		_attachmentsConfiguration = attachmentsConfiguration;
+		_uniqueFileNameProvider = uniqueFileNameProvider;
+	}
 
 	@Override
 	public FileEntry upload(UploadPortletRequest uploadPortletRequest)
@@ -66,15 +62,6 @@ public class TempAttachmentsUploadFileEntryHandler
 				fileName, contentType, inputStream, themeDisplay);
 		}
 	}
-
-	@Activate
-	protected void activate(Map<String, Object> properties) {
-		_attachmentsConfiguration = ConfigurableUtil.createConfigurable(
-			AttachmentsConfiguration.class, properties);
-	}
-
-	@Reference
-	protected CPDefinitionService cpDefinitionService;
 
 	private FileEntry _addFileEntry(
 			String fileName, String contentType, InputStream inputStream,
@@ -119,7 +106,7 @@ public class TempAttachmentsUploadFileEntryHandler
 			throw new CPAttachmentFileEntrySizeException();
 		}
 
-		String extension = _file.getExtension(fileName);
+		String extension = FileUtil.getExtension(fileName);
 
 		String[] imageExtensions = _attachmentsConfiguration.imageExtensions();
 
@@ -148,12 +135,7 @@ public class TempAttachmentsUploadFileEntryHandler
 	private static final Log _log = LogFactoryUtil.getLog(
 		TempAttachmentsUploadFileEntryHandler.class);
 
-	private volatile AttachmentsConfiguration _attachmentsConfiguration;
-
-	@Reference
-	private File _file;
-
-	@Reference
-	private UniqueFileNameProvider _uniqueFileNameProvider;
+	private final AttachmentsConfiguration _attachmentsConfiguration;
+	private final UniqueFileNameProvider _uniqueFileNameProvider;
 
 }
