@@ -139,29 +139,35 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
         }
     }
 
-    const handleCheckboxChange = (itemId: number) => {
+    const handleSelectAll = (_type?: 'check-remove-all' | 'check-all'): void => {
+        if (_type) {
+            const allSelected = selectedItems.length === elementsFiltered.length;
+
+            if (allSelected && _type !== 'check-all') {
+                setSelectedItems([]);
+                setSelectAll(false);
+            } else {
+                const allIds = elementsFiltered.map((object) => {
+                    const { data } = object as FlowElement<ObjectDefinitionNodeData>;
+
+                    return data?.id!;
+                });
+                setSelectedItems(allIds.map((id) => ({ id })));
+                setSelectAll(true);
+            }
+        } else {
+            setSelectAll(true);
+        }
+    };
+
+    const handleCheckboxChange = (itemId: number): void => {
         if (selectedItems.some(item => item.id === itemId)) {
             setSelectedItems(selectedItems.filter(item => item.id !== itemId));
         } else {
             setSelectedItems([...selectedItems, { id: itemId }]);
         }
-    };
 
-    const handleSelectAll = () => {
-        const allSelected = selectedItems.length === elementsFiltered.length;
-
-        if (allSelected) {
-            setSelectedItems([]);
-            setSelectAll(false);
-        } else {
-            const allIds = elementsFiltered.map((object) => {
-                const { data } = object as FlowElement<ObjectDefinitionNodeData>;
-
-                return data?.id!;
-            });
-            setSelectedItems(allIds.map((id) => ({ id })));
-            setSelectAll(true);
-        }
+        handleSelectAll();
     };
 
     const renderStatusModal = (): TStatus => {
@@ -189,10 +195,10 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                             checked={selectAll}
                             indeterminate={(selectAll && selectedItems.length !== elementsFiltered.length)}
                             label={`${sub(Liferay.Language.get('x-of-x-items-selected'), selectedItems.length, elementsFiltered.length)}`}
-                            onChange={handleSelectAll}
+                            onChange={() => handleSelectAll('check-remove-all')}
                         />
 
-                        <ClayButton className="c-px-sm-0 text-3 text-weight-semi-bold" displayType="link" onClick={handleSelectAll}>{Liferay.Language.get('select-all')}</ClayButton>
+                        <ClayButton className="c-px-sm-0 text-3 text-weight-semi-bold" displayType="link" onClick={() => handleSelectAll('check-all')}>{Liferay.Language.get('select-all')}</ClayButton>
                     </div>}
 
                 <ClayList className="container-list">
@@ -202,7 +208,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         const isSelected = selectedItem?.id === data?.id!;
 
                         return (
-                            <ClayList.Item className={`lfr-object__object-view-modal-object-definitions-card ${isSelected ? 'active' : ''}`} key={id}>
+                            <ClayList.Item className={`lfr-object__object-view-modal-object-definitions-list-item ${isSelected ? 'active' : ''}`} key={id}>
                                 <div>
                                     <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />
 
