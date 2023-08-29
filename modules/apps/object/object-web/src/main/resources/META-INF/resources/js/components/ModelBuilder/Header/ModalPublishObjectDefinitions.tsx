@@ -4,11 +4,10 @@
  */
 
 import ClayButton from '@clayui/button';
-import ClayCard from '@clayui/card';
 import { Text } from '@clayui/core';
 import { ClayCheckbox } from '@clayui/form';
 import ClayIcon from '@clayui/icon';
-import ClayLabel from '@clayui/label';
+import ClayList from '@clayui/list';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import ClayModal from '@clayui/modal';
 import { Observer } from '@clayui/modal/lib/types';
@@ -105,7 +104,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
 
             if (hasErrorsResponse) { filteredResponses = responses.filter(response => response !== 0) };
 
-            setMessageHeaderModal(!hasErrorsResponse ? "Successfully published!" : "Published with errors");
+            setMessageHeaderModal(!hasErrorsResponse ? Liferay.Language.get('successfully-published') : Liferay.Language.get('published-with-errors'));
             setStatusPublish(!hasErrorsResponse ? STATUS.FINISHED : STATUS.REJECTED);
 
             const newArrayItems = elements.map(element => {
@@ -174,19 +173,6 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
         }
     }
 
-    const createLabelForSelectAll = (): string => {
-        let stringLabel = '';
-
-        if (selectedItems.length === elementsFiltered.length) {
-            stringLabel += Liferay.Language.get('all-selected');
-        } else if (!selectedItems.length) {
-            stringLabel += Liferay.Language.get('select-all');
-        }
-
-        stringLabel += ` (${sub(Liferay.Language.get('x-of-x-items-selected'), selectedItems.length, elementsFiltered.length)})`;
-
-        return stringLabel;
-    }
 
     return (
         <ClayModal className="lfr-object__object-view-modal-object-definitions" disableAutoClose={disableAutoClose} observer={observer} status={renderStatusModal()}>
@@ -198,64 +184,58 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                 </div>
 
                 {statusPublish === STATUS.INITIAL &&
-                    <div className={`select-all-checkbox c-p-sm-3 c-mb-sm-3 ${selectAll ? 'active' : ''}`}>
+                    <div className={`select-all-checkbox c-px-sm-3 c-mb-sm-2 ${selectAll ? 'active' : ''}`}>
                         <ClayCheckbox
                             checked={selectAll}
                             indeterminate={(selectAll && selectedItems.length !== elementsFiltered.length)}
-                            label={createLabelForSelectAll()}
+                            label={`${sub(Liferay.Language.get('x-of-x-items-selected'), selectedItems.length, elementsFiltered.length)}`}
                             onChange={handleSelectAll}
                         />
+
+                        <ClayButton className="c-px-sm-0 text-3 text-weight-semi-bold" displayType="link" onClick={handleSelectAll}>{Liferay.Language.get('select-all')}</ClayButton>
                     </div>}
 
-                <div className="container-card">
+                <ClayList className="container-list">
                     {elementsFiltered.map(object => {
                         const { data, id } = object as FlowElement<ObjectDefinitionNodeData>;
                         const selectedItem = selectedItems.find(item => item.id === data?.id!)
                         const isSelected = selectedItem?.id === data?.id!;
 
                         return (
-                            <ClayCard className={`lfr-object__object-view-modal-object-definitions-card ${isSelected ? 'active' : ''}`} key={id}>
-                                <ClayCard.Body>
+                            <ClayList.Item className={`lfr-object__object-view-modal-object-definitions-card ${isSelected ? 'active' : ''}`} key={id}>
+                                <div>
+                                    <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />
+
+                                    <ClayIcon symbol="catalog" />
+
                                     <div>
-                                        <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />
-
-                                        <ClayIcon symbol="catalog" />
-
                                         <div>
-                                            <div>
-                                                <Text size={3} weight="semi-bold">{data?.name}</Text>
-                                            </div>
-
-                                            {(!selectedItem?.status || !["approved", "rejected"].includes(selectedItem.status)) &&
-                                                <ClayLabel displayType="info">
-                                                    {Liferay.Language.get('draft')}
-                                                </ClayLabel>
-                                            }
-
-                                            {selectedItem?.status === "rejected" &&
-                                                <span className="rejected text-danger">
-                                                    <ClayIcon color="danger" symbol="exclamation-full" />
-
-                                                    <Text size={2}>{selectedItem?.message}</Text>
-                                                </span>
-                                            }
-
+                                            <Text size={3} weight="semi-bold">{data?.name}</Text>
                                         </div>
-                                    </div>
 
-                                    <div>
-                                        {selectedItem?.status === "loading" && <ClayLoadingIndicator
-                                            displayType="secondary"
-                                            size="sm"
-                                        />}
+                                        {selectedItem?.status === "rejected" &&
+                                            <span className="rejected text-danger">
+                                                <ClayIcon color="danger" symbol="exclamation-full" />
 
-                                        {selectedItem?.status === "approved" && <Text color="success"><ClayIcon symbol="check" /></Text>}
+                                                <Text size={2}>{selectedItem?.message}</Text>
+                                            </span>
+                                        }
+
                                     </div>
-                                </ClayCard.Body>
-                            </ClayCard>
+                                </div>
+
+                                <div>
+                                    {selectedItem?.status === "loading" && <ClayLoadingIndicator
+                                        displayType="secondary"
+                                        size="sm"
+                                    />}
+
+                                    {selectedItem?.status === "approved" && <Text color="success"><ClayIcon symbol="check" /></Text>}
+                                </div>
+                            </ClayList.Item>
                         )
                     })}
-                </div>
+                </ClayList>
             </ClayModal.Body>
 
             <ClayModal.Footer
