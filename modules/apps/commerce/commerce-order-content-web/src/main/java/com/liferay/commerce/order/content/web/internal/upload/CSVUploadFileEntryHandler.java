@@ -6,7 +6,7 @@
 package com.liferay.commerce.order.content.web.internal.upload;
 
 import com.liferay.document.library.kernel.exception.FileExtensionException;
-import com.liferay.document.library.kernel.util.DLValidator;
+import com.liferay.document.library.kernel.util.DLValidatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -14,7 +14,7 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.File;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.TempFileEntryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.upload.UniqueFileNameProvider;
@@ -23,14 +23,16 @@ import com.liferay.upload.UploadFileEntryHandler;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Alessio Antonio Rendina
  */
-@Component(service = CSVUploadFileEntryHandler.class)
 public class CSVUploadFileEntryHandler implements UploadFileEntryHandler {
+
+	public CSVUploadFileEntryHandler(
+		UniqueFileNameProvider uniqueFileNameProvider) {
+
+		_uniqueFileNameProvider = uniqueFileNameProvider;
+	}
 
 	@Override
 	public FileEntry upload(UploadPortletRequest uploadPortletRequest)
@@ -42,12 +44,12 @@ public class CSVUploadFileEntryHandler implements UploadFileEntryHandler {
 
 		String fileName = uploadPortletRequest.getFileName(_PARAMETER_NAME);
 
-		_dlValidator.validateFileSize(
+		DLValidatorUtil.validateFileSize(
 			themeDisplay.getScopeGroupId(), fileName,
 			uploadPortletRequest.getContentType(_PARAMETER_NAME),
 			uploadPortletRequest.getSize(_PARAMETER_NAME));
 
-		String extension = _file.getExtension(fileName);
+		String extension = FileUtil.getExtension(fileName);
 
 		if (!extension.equals("csv")) {
 			throw new FileExtensionException(
@@ -109,13 +111,6 @@ public class CSVUploadFileEntryHandler implements UploadFileEntryHandler {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CSVUploadFileEntryHandler.class);
 
-	@Reference
-	private DLValidator _dlValidator;
-
-	@Reference
-	private File _file;
-
-	@Reference
-	private UniqueFileNameProvider _uniqueFileNameProvider;
+	private final UniqueFileNameProvider _uniqueFileNameProvider;
 
 }

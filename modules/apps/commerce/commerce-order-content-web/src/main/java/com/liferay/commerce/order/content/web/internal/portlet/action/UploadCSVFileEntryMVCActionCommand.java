@@ -8,8 +8,10 @@ package com.liferay.commerce.order.content.web.internal.portlet.action;
 import com.liferay.commerce.constants.CommercePortletKeys;
 import com.liferay.commerce.order.content.web.internal.upload.CSVUploadFileEntryHandler;
 import com.liferay.commerce.order.content.web.internal.upload.CSVUploadResponseHandler;
+import com.liferay.item.selector.ItemSelectorUploadResponseHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.upload.UniqueFileNameProvider;
 import com.liferay.upload.UploadHandler;
 
 import javax.portlet.ActionRequest;
@@ -36,15 +38,17 @@ public class UploadCSVFileEntryMVCActionCommand extends BaseMVCActionCommand {
 		throws Exception {
 
 		_uploadHandler.upload(
-			_csvUploadFileEntryHandler, _csvUploadResponseHandler,
+			new CSVUploadFileEntryHandler(_uniqueFileNameProvider),
+			new CSVUploadResponseHandler(_itemSelectorUploadResponseHandler),
 			actionRequest, actionResponse);
 	}
 
 	@Reference
-	private CSVUploadFileEntryHandler _csvUploadFileEntryHandler;
+	private ItemSelectorUploadResponseHandler
+		_itemSelectorUploadResponseHandler;
 
 	@Reference
-	private CSVUploadResponseHandler _csvUploadResponseHandler;
+	private UniqueFileNameProvider _uniqueFileNameProvider;
 
 	@Reference
 	private UploadHandler _uploadHandler;
