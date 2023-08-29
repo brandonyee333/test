@@ -23,7 +23,14 @@ import { ObjectRelationshipEdgeData, TAction } from '../types';
 
 type TStatus = 'danger' | 'info' | 'success' | 'warning';
 
-interface IProps {
+enum STATUS {
+    REJECTED = -1,
+    INITIAL = 0,
+    LOADING = 1,
+    APPROVED = 2,
+}
+
+interface IModalPublishObjectDefinitionsProps {
     disableAutoClose: boolean;
     dispatch: React.Dispatch<TAction>;
     elements: Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>,
@@ -34,28 +41,21 @@ interface IProps {
 interface ISelectedItem {
     id: number;
     message?: string;
-    status?: 'approved' | 'loading' | 'rejected';
-}
-
-enum STATUS {
-    INITIAL = 0,
-    LOADING = 1,
-    FINISHED = 2,
-    REJECTED = 3
+    status?: STATUS;
 }
 
 
-export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elements, observer, onClose }: IProps) {
+export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elements, observer, onClose }: IModalPublishObjectDefinitionsProps) {
     const [elementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2));
     const [messageHeaderModal, setMessageHeaderModal] = useState<string>(Liferay.Language.get('confirm-publishing'));
     const [selectAll, setSelectAll] = useState<boolean>(false);
     const [selectedItems, setSelectedItems] = useState<ISelectedItem[]>([]);
     const [statusPublish, setStatusPublish] = useState<number>(STATUS.INITIAL);
 
-    const updateStatusObject = (elements: ISelectedItem[], id: number, status: 'approved' | 'loading' | 'rejected', message?: string) => {
+    const updateStatusObject = (elements: ISelectedItem[], id: number, status: STATUS, message?: string) => {
         return elements.map(item => {
             if (item.id === id) {
-                return { id, status, ...(status === "rejected" && { message }) };
+                return { id, status, ...(status === STATUS.REJECTED && { message }) };
             } else {
                 return item;
             }
@@ -77,12 +77,12 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         throw new Error(data.title);
                     }
 
-                    setSelectedItems(prevState => updateStatusObject(prevState, objectId, 'approved'));
+                    setSelectedItems(prevState => updateStatusObject(prevState, objectId, STATUS.APPROVED));
 
                     resolve(objectId);
 
                 } catch (error: any) {
-                    setSelectedItems(prevState => updateStatusObject(prevState, objectId, 'rejected', error.message));
+                    setSelectedItems(prevState => updateStatusObject(prevState, objectId, STATUS.REJECTED, error.message));
 
                     // don't throw reject, so that it doesn't go to the catch flow of the promise.all
 
@@ -92,7 +92,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
         }
 
         const publishPromises = selectedItems.map(item => {
-            setSelectedItems(prevState => updateStatusObject(prevState, item.id, 'loading'));
+            setSelectedItems(prevState => updateStatusObject(prevState, item.id, STATUS.LOADING));
 
             return publishObjectDefinition(item.id);
         });
@@ -105,7 +105,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
             if (hasErrorsResponse) { filteredResponses = responses.filter(response => response !== 0) };
 
             setMessageHeaderModal(!hasErrorsResponse ? Liferay.Language.get('successfully-published') : Liferay.Language.get('published-with-errors'));
-            setStatusPublish(!hasErrorsResponse ? STATUS.FINISHED : STATUS.REJECTED);
+            setStatusPublish(!hasErrorsResponse ? STATUS.APPROVED : STATUS.REJECTED);
 
             const newArrayItems = elements.map(element => {
                 const elementId = (element as FlowElement<ObjectDefinitionNodeData>).data?.id || 0;
@@ -115,7 +115,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         ...element, data: {
                             ...element.data,
                             status: {
-                                code: 0,
+                                code: 0, // Default Status 'approved' in Liferay
                                 label: 'approved',
                                 label_i18n: Liferay.Language.get('approved')
                             }
@@ -168,9 +168,9 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
 
     const renderStatusModal = (): TStatus => {
         switch (statusPublish) {
-            case 3: return 'warning';
-            case 1: return 'info';
-            case 2: return 'success';
+            case STATUS.REJECTED: return 'warning';
+            case STATUS.LOADING: return 'info';
+            case STATUS.APPROVED: return 'success';
             default: return 'warning';
         }
     }
@@ -208,7 +208,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         return (
                             <ClayList.Item className={`lfr-object__object-view-modal-object-definitions-list-item ${isSelected ? 'active' : ''}`} key={id}>
                                 <div>
-                                    {!statusPublish && <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status && ["approved", "loading"].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />}
+                                    {!statusPublish && <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status !== undefined && [STATUS.APPROVED, STATUS.LOADING].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />}
 
                                     <ClayIcon symbol="catalog" />
 
@@ -217,7 +217,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                                             <Text size={3} weight="semi-bold">{data?.name}</Text>
                                         </div>
 
-                                        {selectedItem?.status === "rejected" &&
+                                        {selectedItem?.status === STATUS.REJECTED &&
                                             <span className="rejected text-danger">
                                                 <ClayIcon color="danger" symbol="exclamation-full" />
 
@@ -229,12 +229,12 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                                 </div>
 
                                 <div>
-                                    {selectedItem?.status === "loading" && <ClayLoadingIndicator
+                                    {selectedItem?.status === STATUS.LOADING && <ClayLoadingIndicator
                                         displayType="secondary"
                                         size="sm"
                                     />}
 
-                                    {selectedItem?.status === "approved" && <Text color="success"><ClayIcon symbol="check" /></Text>}
+                                    {selectedItem?.status === STATUS.APPROVED && <Text color="success"><ClayIcon symbol="check" /></Text>}
                                 </div>
                             </ClayList.Item>
                         )
@@ -244,7 +244,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
 
             <ClayModal.Footer
                 last={
-                    statusPublish === STATUS.FINISHED || statusPublish === STATUS.REJECTED ?
+                    statusPublish === STATUS.APPROVED || statusPublish === STATUS.REJECTED ?
                         <ClayButton.Group key={1} spaced>
                             <ClayButton
                                 displayType="primary"

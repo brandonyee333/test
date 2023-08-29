@@ -8,7 +8,7 @@ import React from 'react';
 import {Elements} from 'react-flow-renderer';
 import './ModalPublishObjectDefinitions.scss';
 import {ObjectRelationshipEdgeData, TAction} from '../types';
-interface IProps {
+interface IModalPublishObjectDefinitionsProps {
 	disableAutoClose: boolean;
 	dispatch: React.Dispatch<TAction>;
 	elements: Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>;
@@ -21,5 +21,5 @@ export declare function ModalPublishObjectDefinitions({
 	elements,
 	observer,
 	onClose,
-}: IProps): JSX.Element;
+}: IModalPublishObjectDefinitionsProps): JSX.Element;
 export {};
