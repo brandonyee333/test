@@ -5,6 +5,12 @@
         padding: 3px;
     }
 
+    .select-all-checkbox.active{
+        border-bottom: solid 1px #80acff;
+        background: #F0F5FF;
+        margin-top: -1px;
+    }
+
     &-card {
         &.active {
             box-shadow: 0 0 0 2px #80acff;

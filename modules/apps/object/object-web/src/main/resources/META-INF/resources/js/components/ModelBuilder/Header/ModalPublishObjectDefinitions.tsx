@@ -46,7 +46,8 @@ enum STATUS {
 
 export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onClose, elements, dispatch }: IProps) {
     const [elementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2));
-    const [messageHeaderModal, setMessageHeaderModal] = useState<string>("Confirm Publishing");
+    const [messageHeaderModal, setMessageHeaderModal] = useState<string>(Liferay.Language.get('confirm-publishing'));
+    const [selectAll, setSelectAll] = useState<boolean>(false);
     const [selectedItems, setSelectedItems] = useState<ISelectedItem[]>([]);
     const [statusPublish, setStatusPublish] = useState<number>(STATUS.INITIAL);
 
@@ -62,7 +63,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
 
     const handleOnClickPublish = async () => {
         setStatusPublish(STATUS.LOADING);
-        setMessageHeaderModal("Publishing");
+        setMessageHeaderModal(Liferay.Language.get('publishing'));
 
         const publishObjectDefinition = (objectId: number): Promise<number> => {
             return new Promise<number>(async (resolve) => {
@@ -127,7 +128,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
             });
 
         } catch (error) {
-            setMessageHeaderModal("Confirm publishing");
+            setMessageHeaderModal(Liferay.Language.get('confirm-publishing'));
             setStatusPublish(STATUS.REJECTED);
         }
     }
@@ -137,6 +138,22 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
             setSelectedItems(selectedItems.filter(item => item.id !== itemId));
         } else {
             setSelectedItems([...selectedItems, { id: itemId }]);
+        }
+    };
+
+    const handleSelectAll = () => {
+        const allSelected = selectedItems.length === elementsFiltered.length;
+
+        if (allSelected) {
+            setSelectedItems([]);
+            setSelectAll(false);
+        } else {
+            const allIds = elementsFiltered.map((object) => {
+                const { data } = object as FlowElement<ObjectDefinitionNodeData>;
+                return data?.id!;
+            });
+            setSelectedItems(allIds.map((id) => ({ id })));
+            setSelectAll(true);
         }
     };
 
@@ -156,6 +173,14 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
             <ClayModal.Body>
                 <div className="c-mb-sm-4">
                     <Text size={3}>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</Text>
+                </div>
+                <div className={`select-all-checkbox c-p-sm-3 c-mb-sm-3 ${selectAll ? 'active' : ''}`}>
+                    <ClayCheckbox
+                        checked={selectAll}
+                        onChange={handleSelectAll}
+                        label={`${Liferay.Language.get('select-all')} ${selectAll && `(${selectAll ? selectedItems.length : 0} of ${elementsFiltered.length} items selected)`}`}
+                        indeterminate={(selectAll && selectedItems.length != elementsFiltered.length)}
+                    />
                 </div>
                 <div className="container-card">
                     {elementsFiltered.map(object => {
@@ -230,7 +255,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                                     disabled={selectedItems.length === 0 || statusPublish === STATUS.LOADING}
                                     onClick={handleOnClickPublish}
                                 >
-                                    {Liferay.Language.get('publish')}
+                                    {statusPublish === STATUS.LOADING ? Liferay.Language.get('please-wait') + '...' : Liferay.Language.get('publish')}
                                 </ClayButton>
                             </>
 
