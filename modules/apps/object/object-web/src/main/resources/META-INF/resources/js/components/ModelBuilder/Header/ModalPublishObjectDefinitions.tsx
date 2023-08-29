@@ -182,14 +182,15 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                     <Text size={3}>The following Objects contain changes that will be published and may affect your production environment. Please check before confirming:</Text>
                 </div>
 
-                <div className={`select-all-checkbox c-p-sm-3 c-mb-sm-3 ${selectAll ? 'active' : ''}`}>
-                    <ClayCheckbox
-                        checked={selectAll}
-                        indeterminate={(selectAll && selectedItems.length !== elementsFiltered.length)}
-                        label={`${Liferay.Language.get('select-all')} ${selectAll ? `(${selectAll ? selectedItems.length : 0} of ${elementsFiltered.length} items selected)` : ''}`}
-                        onChange={handleSelectAll}
-                    />
-                </div>
+                {statusPublish === STATUS.INITIAL &&
+                    <div className={`select-all-checkbox c-p-sm-3 c-mb-sm-3 ${selectAll ? 'active' : ''}`}>
+                        <ClayCheckbox
+                            checked={selectAll}
+                            indeterminate={(selectAll && selectedItems.length !== elementsFiltered.length)}
+                            label={`${Liferay.Language.get('select-all')} ${selectAll ? `(${selectAll ? selectedItems.length : 0} of ${elementsFiltered.length} items selected)` : ''}`}
+                            onChange={handleSelectAll}
+                        />
+                    </div>}
 
                 <div className="container-card">
                     {elementsFiltered.map(object => {
@@ -270,7 +271,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                                     displayType="primary"
                                     onClick={handleOnClickPublish}
                                 >
-                                    {statusPublish === STATUS.LOADING ? Liferay.Language.get('please-wait') + '...' : Liferay.Language.get('publish')}
+                                    {statusPublish === STATUS.LOADING ? Liferay.Language.get('please-wait') + '...' : Liferay.Language.get('publish-objects')}
                                 </ClayButton>
                             </>
 
