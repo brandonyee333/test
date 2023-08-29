@@ -142,7 +142,7 @@ export default function ({
 					</ClayButton>
 
 					<ClayButton
-						//disabled={!hasDraftObjectDefinitions}
+						disabled={!hasDraftObjectDefinitions}
 						displayType="primary"
 						onClick={() => { setShowModalPublishObjectDefinitions(true) }}
 					>

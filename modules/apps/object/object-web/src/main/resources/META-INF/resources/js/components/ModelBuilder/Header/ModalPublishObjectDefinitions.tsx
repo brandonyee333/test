@@ -178,7 +178,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, observer, onCl
                     <ClayCheckbox
                         checked={selectAll}
                         onChange={handleSelectAll}
-                        label={`${Liferay.Language.get('select-all')} ${selectAll && `(${selectAll ? selectedItems.length : 0} of ${elementsFiltered.length} items selected)`}`}
+                        label={`${Liferay.Language.get('select-all')} ${selectAll ? `(${selectAll ? selectedItems.length : 0} of ${elementsFiltered.length} items selected)` : ''}`}
                         indeterminate={(selectAll && selectedItems.length != elementsFiltered.length)}
                     />
                 </div>
