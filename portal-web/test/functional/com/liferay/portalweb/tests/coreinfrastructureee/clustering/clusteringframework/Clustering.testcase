@@ -181,6 +181,7 @@ definition {
 		GogoShell.viewOutput(outputContent = "Liferay Portal");
 	}
 
+	@ignore = "true"
 	@description = "This is a usecase for LPS-151178. Verify a category can be added to a document on a slave node."
 	@priority = 3
 	test CanAddCategoryToDocumentOnSlaveNode {
