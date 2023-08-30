@@ -5,16 +5,6 @@
 
 type LocalizedValue<T> = Liferay.Language.LocalizedValue<T>;
 
-interface Folder {
-	actions: {};
-	dateCreated: string;
-	dateModified: string;
-	externalReferenceCode: string;
-	id: number;
-	label: LocalizedValue<string>;
-	name: string;
-}
-
 type NotificationTemplate = {
 	attachmentObjectFieldIds: string[] | number[];
 	bcc: string;
@@ -117,10 +107,23 @@ interface ObjectFieldView extends ObjectField {
 	type?: string;
 }
 
+type DefinitionAction = {
+	href: string;
+	method: string;
+};
+
+type DefinitionActions = {
+	delete: DefinitionAction;
+	get: DefinitionAction;
+	permissions: DefinitionAction;
+	update: DefinitionAction;
+};
+
 interface ObjectDefinition {
 	accountEntryRestricted: boolean;
 	accountEntryRestrictedObjectFieldId: string;
 	accountEntryRestrictedObjectFieldName: string;
+	actions: DefinitionActions;
 	active: boolean;
 	dateCreated: string;
 	dateModified: string;
@@ -139,7 +142,7 @@ interface ObjectDefinition {
 	objectFields: ObjectField[];
 	objectFolderExternalReferenceCode: string;
 	objectLayouts: [];
-	objectRelationships: [];
+	objectRelationships: ObjectRelationship[];
 	objectViews: [];
 	panelCategoryKey: string;
 	parameterRequired?: boolean;
@@ -311,6 +314,43 @@ type ObjectValidationType = {
 	name: string;
 };
 
+interface ObjectFieldNode extends Partial<ObjectField> {
+	primaryKey: boolean;
+	required: boolean;
+	selected: boolean;
+}
+
+interface ObjectDefinitionNodeData
+	extends Omit<ObjectDefinition, 'objectFields' | 'label'> {
+	hasObjectDefinitionDeleteResourcePermission: boolean;
+	hasObjectDefinitionManagePermissionsResourcePermission: boolean;
+	hasObjectDefinitionUpdateResourcePermission: boolean;
+	hasObjectDefinitionViewResourcePermission: boolean;
+	hasSelfRelationships: boolean;
+	label: string;
+	linkedDefinition: boolean;
+	nodeSelected: boolean;
+	objectFields: ObjectFieldNode[];
+}
+
+interface ObjectFolder {
+	actions: Actions;
+	dateCreated: string;
+	dateModified: string;
+	definitions?: ObjectDefinitionNodeData[];
+	externalReferenceCode: string;
+	id: number;
+	label: LocalizedValue<string>;
+	name: string;
+	objectFolderItems: ObjectFolderItem[];
+}
+interface ObjectFolderItem {
+	linkedDefinition: boolean;
+	objectDefinitionExternalReferenceCode: string;
+	positionX: number;
+	positionY: number;
+}
+
 interface PickList {
 	actions: Actions;
 	externalReferenceCode: string;
@@ -361,7 +401,7 @@ interface LabelNameObject {
 
 interface LabelTypeObject {
 	label: string;
-	type: string;
+	value: string;
 }
 
 interface NameValueObject {

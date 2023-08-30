@@ -20,18 +20,26 @@ interface Actions {
 	update: HTTPMethod;
 }
 
-interface ErrorDetails extends Error {
-	detail?: string;
-}
-
-interface Folder {
-	actions: [];
+interface ObjectFolder {
+	actions: Actions;
 	dateCreated: string;
 	dateModified: string;
 	externalReferenceCode: string;
 	id: number;
 	label: LocalizedValue<string>;
 	name: string;
+	objectFolderItems: ObjectFolderItem[];
+}
+
+interface ObjectFolderItem {
+	linkedDefinition: boolean;
+	objectDefinitionExternalReferenceCode: string;
+	positionX: number;
+	positionY: number;
+}
+
+interface ErrorDetails extends Error {
+	detail?: string;
 }
 
 interface PickListItem {
@@ -162,6 +170,10 @@ export async function fetchJSON<T>(input: RequestInfo, init?: RequestInit) {
 	return (await result.json()) as T;
 }
 
+export async function getAllFolders() {
+	return await getList<ObjectFolder>('/o/object-admin/v1.0/object-folders');
+}
+
 export async function getAllObjectDefinitions() {
 	return await getList<ObjectDefinition>(
 		'/o/object-admin/v1.0/object-definitions?page=-1'
@@ -169,9 +181,20 @@ export async function getAllObjectDefinitions() {
 }
 
 export async function getAllObjectFolders() {
-	return await getList<Folder>(
+	return await getList<ObjectFolder>(
 		'/o/object-admin/v1.0/object-folders?pageSize=-1'
 	);
+}
+
+export async function getFolderByERC(folderERC: string) {
+	const folderResponse = await fetch(
+		`/o/object-admin/v1.0/object-folders/by-external-reference-code/${folderERC}`,
+		{method: 'GET'}
+	);
+
+	const folder = (await folderResponse.json()) as ObjectFolder;
+
+	return folder;
 }
 
 export async function getList<T>(url: string) {
@@ -318,6 +341,17 @@ export async function putObjectDefinitionByExternalReferenceCode(
 	);
 }
 
+export async function putObjectFolderByERC(folder: Partial<ObjectFolder>) {
+	return await fetch(
+		`/o/object-admin/v1.0/object-folders/by-external-reference-code/${folder.externalReferenceCode}`,
+		{
+			body: JSON.stringify(folder),
+			headers,
+			method: 'PUT',
+		}
+	);
+}
+
 export async function save(
 	url: string,
 	item: unknown,
@@ -359,6 +393,8 @@ export async function save(
 		};
 		throw ErrorDetails();
 	}
+
+	return response.json();
 }
 
 export async function addPickListItem({

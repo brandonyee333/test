@@ -3,105 +3,130 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import ReactFlow, {Background, Controls, MiniMap} from 'react-flow-renderer';
+import ReactFlow, {
+	Background,
+	Connection,
+	ConnectionMode,
+	Controls,
+	Edge,
+	MiniMap,
+	Node,
+	addEdge,
+} from 'react-flow-renderer';
 
 import {DefinitionNode} from '../DefinitionNode/DefinitionNode';
+import {EmptyNode} from '../DefinitionNode/EmptyNode';
 
 import './Diagram.scss';
 
-import React from 'react';
+import {API} from '@liferay/object-js-components-web';
+import React, {MouseEvent, useCallback} from 'react';
 
-function DiagramBuilder() {
-	const NODE_TYPES = {
-		objectDefinition: DefinitionNode,
-	};
+import {ViewObjectDefinitionsModals} from '../../ViewObjectDefinitions/ViewObjectDefinitions';
+import DefaultEdge from '../Edges/DefaultEdge';
+import SelfEdge from '../Edges/SelfEdge';
+import {useFolderContext} from '../ModelBuilderContext/objectFolderContext';
+import {TYPES} from '../ModelBuilderContext/typesEnum';
 
-	const INITIAL_NODES = [
+const NODE_TYPES = {
+	emptyNode: EmptyNode,
+	objectDefinition: DefinitionNode,
+};
+
+const EDGE_TYPES = {
+	default: DefaultEdge,
+	self: SelfEdge,
+};
+
+function DiagramBuilder({
+	setShowModal,
+}: {
+	setShowModal: (value: ViewObjectDefinitionsModals) => void;
+}) {
+	const [
+		{elements, selectedFolder, showChangesSaved},
+		dispatch,
+	] = useFolderContext();
+
+	const emptyNode = [
 		{
 			data: {
-				creationLanguageId: 'en_US',
-				hasDeleteResourcePermission: true,
-				hasManagePermissionsResourcePermission: true,
-				hasObjectDefinitionPublished: false,
-				isLinkedNode: false,
-				nodeSelected: true,
-				objectDefinitionLabel: 'Postal Address',
-				objectDefinitionName: 'portalAddress',
-				objectFields: [
-					{
-						businessType: 'LongInteger',
-						label: {en_US: 'ID'},
-						name: 'id',
-						primaryKey: true,
-						selected: false,
-					},
-					{
-						businessType: 'Text',
-						label: {en_US: 'External Reference Code'},
-						name: 'erc',
-						primaryKey: false,
-						selected: true,
-					},
-					{
-						businessType: 'Text',
-						label: {en_US: 'Name'},
-						name: 'name',
-						primaryKey: false,
-						selected: false,
-					},
-					{
-						businessType: 'Text',
-						label: {en_US: 'Street 1'},
-						name: 'street1',
-						primaryKey: false,
-						selected: false,
-					},
-					{
-						businessType: 'Text',
-						label: {en_US: 'Author'},
-						name: 'author',
-						primaryKey: false,
-						selected: false,
-					},
-					{
-						businessType: 'Date',
-						label: {en_US: 'Create Date'},
-						name: 'createDate',
-						primaryKey: false,
-						selected: false,
-					},
-					{
-						businessType: 'Date',
-						label: {en_US: 'Modified Date'},
-						name: 'modifiedDate',
-						primaryKey: false,
-						selected: false,
-					},
-					{
-						businessType: 'Text',
-						label: {en_US: 'Status'},
-						name: 'status',
-						primaryKey: false,
-						selected: false,
-					},
-				],
-				system: false,
+				setShowModal,
 			},
-			id: 'A',
+			id: 'empty',
 			position: {
-				x: 450,
-				y: 370,
+				x: 400,
+				y: 400,
 			},
-			type: 'objectDefinition',
+			type: 'emptyNode',
 		},
 	];
+
+	const onConnect = useCallback(
+		(connection: Connection | Edge) => {
+			const newElements = addEdge(connection, elements);
+
+			dispatch({
+				payload: {newElements},
+				type: TYPES.SET_ELEMENTS,
+			});
+		},
+		[dispatch, elements]
+	);
+
+	const onNodeDragStop = async (
+		event: MouseEvent,
+		node: Node<ObjectDefinitionNodeData>
+	) => {
+		const folder = await API.getFolderByERC(
+			selectedFolder.externalReferenceCode
+		);
+
+		const updatedObjectFolderItems = folder.objectFolderItems.map(
+			(folderItem) => {
+				if (
+					folderItem.objectDefinitionExternalReferenceCode ===
+					node.data?.externalReferenceCode
+				) {
+					return {
+						...folderItem,
+						positionX: node.position.x,
+						positionY: node.position.y,
+					};
+				}
+
+				return folderItem;
+			}
+		);
+
+		const updatedFolder = {
+			externalReferenceCode: selectedFolder.externalReferenceCode,
+			id: selectedFolder.id,
+			label: selectedFolder.label,
+			name: selectedFolder.name,
+			objectFolderItems: updatedObjectFolderItems,
+		};
+
+		API.putObjectFolderByERC(updatedFolder);
+
+		if (!showChangesSaved) {
+			dispatch({
+				payload: {updatedShowChangesSaved: true},
+				type: TYPES.SET_SHOW_CHANGES_SAVED,
+			});
+		}
+	};
 
 	return (
 		<div className="lfr-objects__model-builder-diagram-area">
 			<ReactFlow
-				elements={INITIAL_NODES}
+				connectionMode={ConnectionMode.Loose}
+				edgeTypes={EDGE_TYPES}
+				elements={elements.length ? elements : emptyNode}
 				minZoom={0.1}
 				nodeTypes={NODE_TYPES}
+				onConnect={onConnect}
+				onNodeDragStop={onNodeDragStop}
 			>
 				<Background size={1} />
 

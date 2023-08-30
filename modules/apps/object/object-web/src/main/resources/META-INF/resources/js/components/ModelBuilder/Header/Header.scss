@@ -11,6 +11,15 @@
 		gap: 1rem;
 	}
 
+	&-changes-saved {
+		align-items: center;
+		color: #287d3c;
+		display: flex;
+		font-size: 14px;
+		font-weight: 600;
+		gap: 0.5rem;
+	}
+
 	&-container {
 		display: flex;
 		justify-content: space-between;
@@ -24,7 +33,18 @@
 		display: flex;
 		gap: 0.5rem;
 
-		&-erc {
+		&-erc-content {
+			max-width: 28rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+
+			&-changes-saved {
+				max-width: 10rem;
+			}
+		}
+
+		&-erc-title {
 			color: #6b6c7e;
 		}
 
@@ -34,7 +54,15 @@
 			font-size: 18px;
 			font-weight: 600;
 			line-height: 150%;
+			max-width: 12.5rem;
+			overflow: hidden;
 			padding-right: 0.5rem;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+
+			&-changes-saved {
+				max-width: 10rem;
+			}
 		}
 	}
 }

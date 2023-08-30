@@ -3,59 +3,125 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
+import ClayButton, { ClayButtonWithIcon } from '@clayui/button';
 import ClayIcon from '@clayui/icon';
-import React from 'react';
+import { useModal } from '@clayui/modal';
+import { ClayTooltipProvider } from '@clayui/tooltip';
+import classNames from 'classnames';
+import React, { useState } from 'react';
+
+import { ModalPublishObjectDefinitions } from './ModalPublishObjectDefinitions';
 
 import './Header.scss';
 
-import {sub} from 'frontend-js-web';
+import { sub } from 'frontend-js-web';
+
+import { ViewObjectDefinitionsModals } from '../../ViewObjectDefinitions/ViewObjectDefinitions';
+import { useFolderContext } from '../ModelBuilderContext/objectFolderContext';
 
 interface Header {
-	folderExternalReferenceCode: string;
-	folderName: string;
+	folder: ObjectFolder;
 	hasDraftObjectDefinitions: boolean;
+	setShowModal: (
+		value: React.SetStateAction<ViewObjectDefinitionsModals>
+	) => void;
 }
 
 export default function ({
-	folderExternalReferenceCode,
-	folderName,
+	folder,
 	hasDraftObjectDefinitions,
+	setShowModal,
 }: Header) {
+	const [{ elements, showChangesSaved }, dispatch] = useFolderContext();
+	const [showModalPublishObjectDefinitions, setShowModalPublishObjectDefinitions] = useState<boolean>(false);
+	const { observer, onClose } = useModal({
+		onClose: () => setShowModalPublishObjectDefinitions(false),
+	});
+
 	return (
 		<div className="lfr-objects__model-builder-header">
 			<div className="lfr-objects__model-builder-header-container">
 				<div className="lfr-objects__model-builder-header-folder-info">
-					<div className="lfr-objects__model-builder-header-folder-info-name">
-						<span>{folderName}</span>
+					<div
+						className={classNames(
+							'lfr-objects__model-builder-header-folder-info-name',
+							{
+								'lfr-objects__model-builder-header-folder-info-name-changes-saved': showChangesSaved,
+							}
+						)}
+					>
+						<ClayTooltipProvider>
+							<span
+								title={
+									Liferay.Language.get('folder-name') +
+									`: ${folder.name}`
+								}
+							>
+								{folder.name}
+							</span>
+						</ClayTooltipProvider>
 					</div>
 
-					<span className="lfr-objects__model-builder-header-folder-info-erc">
+					<span className="lfr-objects__model-builder-header-folder-info-erc-title">
 						{Liferay.Language.get('erc')}:
 					</span>
 
-					<strong>{folderExternalReferenceCode}</strong>
-
-					<span
-						role="tooltip"
-						title={Liferay.Language.get(
-							'unique-key-for-referencing-the-object-folder'
-						)}
-					>
-						<ClayIcon symbol="question-circle" />
-					</span>
-
-					{folderExternalReferenceCode !== 'uncategorized' && (
-						<ClayButtonWithIcon
-							aria-label={sub(
-								Liferay.Language.get('edit-x'),
-								Liferay.Language.get('external-reference-code')
+					<ClayTooltipProvider>
+						<span
+							className={classNames(
+								'lfr-objects__model-builder-header-folder-info-erc-content',
+								{
+									'lfr-objects__model-builder-header-folder-info-erc-content-changes-saved': showChangesSaved,
+								}
 							)}
-							displayType="unstyled"
-							symbol="pencil"
-						/>
-					)}
+							title={
+								Liferay.Language.get('erc') +
+								`: ${folder.externalReferenceCode}`
+							}
+						>
+							<strong>{folder.externalReferenceCode}</strong>
+						</span>
+					</ClayTooltipProvider>
+
+					<ClayTooltipProvider>
+						<span
+							title={Liferay.Language.get(
+								'unique-key-for-referencing-the-object-folder'
+							)}
+						>
+							<ClayIcon symbol="question-circle" />
+						</span>
+					</ClayTooltipProvider>
+
+					{folder.externalReferenceCode !== 'uncategorized' &&
+						folder.actions?.update && (
+							<ClayButtonWithIcon
+								aria-label={Liferay.Language.get(
+									'edit-label-and-erc'
+								)}
+								displayType="unstyled"
+								onClick={() =>
+									setShowModal(
+										(
+											previousState: ViewObjectDefinitionsModals
+										) => ({
+											...previousState,
+											editFolder: true,
+										})
+									)
+								}
+								symbol="pencil"
+							/>
+						)}
 				</div>
+
+				{showChangesSaved && (
+					<span className="lfr-objects__model-builder-header-changes-saved">
+						{Liferay.Language.get('changes-saved')}
+						&nbsp;
+						<ClayIcon symbol="check-circle" />
+					</span>
+				)}
 
 				<div className="lfr-objects__model-builder-header-buttons-container">
 					<ClayButtonWithIcon
@@ -79,7 +145,10 @@ export default function ({
 					<ClayButton
 						disabled={!hasDraftObjectDefinitions}
 						displayType="primary"
+						onClick={() => { setShowModalPublishObjectDefinitions(true) }}
 					>
+						{showModalPublishObjectDefinitions && <ModalPublishObjectDefinitions disableAutoClose={false} dispatch={dispatch} elements={elements} observer={observer} onClose={onClose} />}
+
 						{Liferay.Language.get('publish')}
 					</ClayButton>
 				</div>

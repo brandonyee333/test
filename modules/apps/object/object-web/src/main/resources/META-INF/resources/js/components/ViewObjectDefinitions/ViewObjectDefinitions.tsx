@@ -11,7 +11,6 @@ import {
 	getLocalizableLabel,
 	stringToURLParameterFormat,
 } from '@liferay/object-js-components-web';
-import {createResourceURL} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
 import {
@@ -29,11 +28,11 @@ import {ModalAddFolder} from './ModalAddFolder';
 import {ModalAddObjectDefinition} from './ModalAddObjectDefinition';
 import {ModalDeleteObjectDefinition} from './ModalDeleteObjectDefinition';
 import {ModalEditFolder} from './ModalEditFolder';
-import {deleteObjectDefinition, getFolderActions} from './objectDefinitionUtil';
 
 import './ViewObjectDefinitions.scss';
 import {ModalDeleteFolder} from './ModalDeleteFolder';
 import {ModalMoveObjectDefinition} from './ModalMoveObjectDefinition';
+import {deleteObjectDefinition, getFolderActions} from './objectDefinitionUtil';
 
 interface ViewObjectDefinitionsProps extends IFDSTableProps {
 	baseResourceURL: string;
@@ -47,12 +46,16 @@ export type ViewObjectDefinitionsModals = {
 	addObjectDefinition: boolean;
 	deleteFolder: boolean;
 	deleteObjectDefinition: boolean;
+	editERC: boolean;
 	editFolder: boolean;
 	moveObjectDefinition: boolean;
+	redirectEditObjectDefinition: boolean;
 };
 
-export interface DeletedObjectDefinition extends ObjectDefinition {
+export interface DeletedObjectDefinition {
 	hasObjectRelationship: boolean;
+	id: number;
+	name: string;
 	objectEntriesCount: number;
 }
 
@@ -68,27 +71,47 @@ export default function ViewObjectDefinitions({
 	storages,
 	url,
 }: ViewObjectDefinitionsProps) {
-	const initialValues: Folder = {
-		actions: {},
+	const initialValues: ObjectFolder = {
+		actions: {
+			delete: {
+				href: '',
+				method: '',
+			},
+			get: {
+				href: '',
+				method: '',
+			},
+			permissions: {
+				href: '',
+				method: '',
+			},
+			update: {
+				href: '',
+				method: '',
+			},
+		},
 		dateCreated: '',
 		dateModified: '',
 		externalReferenceCode: '',
 		id: 0,
 		label: {en_US: ''},
 		name: '',
+		objectFolderItems: [],
 	};
 	const [showModal, setShowModal] = useState<ViewObjectDefinitionsModals>({
 		addFolder: false,
 		addObjectDefinition: false,
 		deleteFolder: false,
 		deleteObjectDefinition: false,
+		editERC: false,
 		editFolder: false,
 		moveObjectDefinition: false,
+		redirectEditObjectDefinition: false,
 	});
-	const [selectedFolder, setSelectedFolder] = useState<Partial<Folder>>(
+	const [selectedFolder, setSelectedFolder] = useState<Partial<ObjectFolder>>(
 		initialValues
 	);
-	const [foldersList, setFoldersList] = useState<Partial<Folder>[]>([
+	const [foldersList, setFoldersList] = useState<Partial<ObjectFolder>[]>([
 		initialValues,
 	]);
 	const [
@@ -102,6 +125,13 @@ export default function ViewObjectDefinitions({
 	] = useState<ObjectDefinition | null>();
 
 	const [loading, setLoading] = useState(true);
+
+	function handleShowDeleteModal() {
+		setShowModal((previousState: ViewObjectDefinitionsModals) => ({
+			...previousState,
+			deleteObjectDefinition: true,
+		}));
+	}
 
 	function objectDefinitionLabelDataRenderer({
 		itemData,
@@ -163,46 +193,14 @@ export default function ViewObjectDefinitions({
 			itemData: ObjectDefinition;
 		}) {
 			if (action.data.id === 'deleteObjectDefinition') {
-				const getDeleteObjectDefinition = async () => {
-					const url = createResourceURL(baseResourceURL, {
-						objectDefinitionId: itemData.id,
-						p_p_resource_id:
-							'/object_definitions/get_object_definition_delete_info',
-					}).href;
-
-					const {
-						hasObjectRelationship,
-						objectEntriesCount,
-					} = await API.fetchJSON<{
-						hasObjectRelationship: boolean;
-						objectEntriesCount: number;
-					}>(url);
-
-					if (itemData.status.code !== 0) {
-						await deleteObjectDefinition(
-							itemData.id,
-							itemData.name
-						);
-						setTimeout(() => window.location.reload(), 1000);
-
-						return;
-					}
-
-					setDeletedObjectDefinition({
-						...itemData,
-						hasObjectRelationship,
-						objectEntriesCount,
-					});
-
-					setShowModal(
-						(previousState: ViewObjectDefinitionsModals) => ({
-							...previousState,
-							deleteObjectDefinition: true,
-						})
-					);
-				};
-
-				getDeleteObjectDefinition();
+				deleteObjectDefinition(
+					baseResourceURL,
+					itemData.id,
+					itemData.name,
+					itemData.status.label,
+					setDeletedObjectDefinition,
+					handleShowDeleteModal
+				);
 			}
 
 			if (action.data.id === 'moveObjectDefinition') {
@@ -312,8 +310,8 @@ export default function ViewObjectDefinitions({
 					) : (
 						<>
 							<FoldersListSideBar
-								foldersList={foldersList as Folder[]}
-								selectedFolder={selectedFolder as Folder}
+								foldersList={foldersList as ObjectFolder[]}
+								selectedFolder={selectedFolder as ObjectFolder}
 								setSelectedFolder={setSelectedFolder}
 								setShowModal={setShowModal}
 							/>
@@ -334,6 +332,7 @@ export default function ViewObjectDefinitions({
 										}
 										label={selectedFolder.label}
 										modelBuilderURL={modelBuilderURL}
+										name={selectedFolder.name}
 									/>
 								}
 								viewMode="no-header-border"
@@ -416,7 +415,7 @@ export default function ViewObjectDefinitions({
 
 			{showModal.deleteFolder && (
 				<ModalDeleteFolder
-					folder={selectedFolder as Folder}
+					folder={selectedFolder as ObjectFolder}
 					handleOnClose={() => {
 						setShowModal(
 							(previousState: ViewObjectDefinitionsModals) => ({
@@ -430,7 +429,7 @@ export default function ViewObjectDefinitions({
 
 			{showModal.moveObjectDefinition && (
 				<ModalMoveObjectDefinition
-					foldersList={foldersList as Folder[]}
+					foldersList={foldersList as ObjectFolder[]}
 					handleOnClose={() => {
 						setShowModal(
 							(previousState: ViewObjectDefinitionsModals) => ({

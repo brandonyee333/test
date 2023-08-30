@@ -13,14 +13,21 @@ interface Actions {
 	permissions: HTTPMethod;
 	update: HTTPMethod;
 }
-interface Folder {
-	actions: [];
+interface ObjectFolder {
+	actions: Actions;
 	dateCreated: string;
 	dateModified: string;
 	externalReferenceCode: string;
 	id: number;
 	label: LocalizedValue<string>;
 	name: string;
+	objectFolderItems: ObjectFolderItem[];
+}
+interface ObjectFolderItem {
+	linkedDefinition: boolean;
+	objectDefinitionExternalReferenceCode: string;
+	positionX: number;
+	positionY: number;
 }
 interface PickListItem {
 	externalReferenceCode: string;
@@ -93,8 +100,12 @@ export declare function fetchJSON<T>(
 	input: RequestInfo,
 	init?: RequestInit
 ): Promise<T>;
+export declare function getAllFolders(): Promise<ObjectFolder[]>;
 export declare function getAllObjectDefinitions(): Promise<ObjectDefinition[]>;
-export declare function getAllObjectFolders(): Promise<Folder[]>;
+export declare function getAllObjectFolders(): Promise<ObjectFolder[]>;
+export declare function getFolderByERC(
+	folderERC: string
+): Promise<ObjectFolder>;
 export declare function getList<T>(url: string): Promise<T[]>;
 export declare function getNotificationTemplateByExternalReferenceCode(
 	notificationTemplateExternalReferenceCode: string
@@ -146,29 +157,32 @@ export declare function publishObjectDefinitionById(
 export declare function putObjectDefinitionByExternalReferenceCode(
 	values: Partial<ObjectDefinition>
 ): Promise<Response>;
+export declare function putObjectFolderByERC(
+	folder: Partial<ObjectFolder>
+): Promise<Response>;
 export declare function save(
 	url: string,
 	item: unknown,
 	method?: 'PATCH' | 'POST' | 'PUT'
-): Promise<void>;
+): Promise<any>;
 export declare function addPickListItem({
 	id,
 	key,
 	name_i18n,
-}: Partial<PickListItem>): Promise<void>;
+}: Partial<PickListItem>): Promise<any>;
 export declare function updatePickList({
 	externalReferenceCode,
 	id,
 	listTypeEntries,
 	name_i18n,
-}: Partial<PickList>): Promise<void>;
+}: Partial<PickList>): Promise<any>;
 export declare function updatePickListItem({
 	externalReferenceCode,
 	id,
 	name_i18n,
-}: Partial<PickListItem>): Promise<void>;
+}: Partial<PickListItem>): Promise<any>;
 export declare function updateRelationship({
 	objectRelationshipId,
 	...others
-}: ObjectRelationship): Promise<void>;
+}: ObjectRelationship): Promise<any>;
 export {};
