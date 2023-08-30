@@ -220,6 +220,17 @@ public class ServiceProxyFactory {
 
 			boolean calledSystemCheckers = false;
 
+			String className = _field.getDeclaringClass(
+			).getName();
+
+			_log.error(
+				StringBundler.concat(
+					"BLOCKING:", className, ".", _field.getName()));
+
+			Exception exception = new Exception("BLOCKING");
+
+			_log.error("Exception stack trace:", exception);
+
 			while (true) {
 				_lock.lock();
 
