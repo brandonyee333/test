@@ -25,9 +25,9 @@ type TStatus = 'danger' | 'info' | 'success' | 'warning';
 
 enum STATUS {
     REJECTED = -1,
-    INITIAL = 0,
+    APPROVED = 0,
     PENDING = 1,
-    APPROVED = 2,
+    DRAFT = 2,
 }
 
 interface IModalPublishObjectDefinitionsProps {
@@ -46,11 +46,11 @@ interface ISelectedItem {
 
 
 export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elements, observer, onClose }: IModalPublishObjectDefinitionsProps) {
-    const [elementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === 2));
+    const [elementsFiltered] = useState<Elements<ObjectDefinitionNodeData | ObjectRelationshipEdgeData>>(elements.filter(element => (element as FlowElement<ObjectDefinitionNodeData>).data?.status.code === STATUS.DRAFT));
     const [messageHeaderModal, setMessageHeaderModal] = useState<string>(Liferay.Language.get('confirm-publishing'));
     const [selectAll, setSelectAll] = useState<boolean>(false);
     const [selectedItems, setSelectedItems] = useState<ISelectedItem[]>([]);
-    const [statusPublish, setStatusPublish] = useState<number>(STATUS.INITIAL);
+    const [statusPublish, setStatusPublish] = useState<number>(STATUS.DRAFT);
 
     const updateStatusObject = (elements: ISelectedItem[], id: number, status: STATUS, message?: string) => {
         return elements.map(item => {
@@ -86,7 +86,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
 
                     // don't throw reject, so that it doesn't go to the catch flow of the promise.all
 
-                    resolve(0);
+                    resolve(STATUS.REJECTED);
                 }
             });
         }
@@ -99,10 +99,10 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
 
         try {
             const responses = await Promise.all(publishPromises);
-            const hasErrorsResponse = responses.some(response => response === 0);
+            const hasErrorsResponse = responses.some(response => response === STATUS.REJECTED);
             let filteredResponses = responses;
 
-            if (hasErrorsResponse) { filteredResponses = responses.filter(response => response !== 0) };
+            if (hasErrorsResponse) { filteredResponses = responses.filter(response => response !== STATUS.REJECTED) };
 
             setMessageHeaderModal(!hasErrorsResponse ? Liferay.Language.get('successfully-published') : Liferay.Language.get('published-with-errors'));
             setStatusPublish(!hasErrorsResponse ? STATUS.APPROVED : STATUS.REJECTED);
@@ -115,7 +115,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         ...element, data: {
                             ...element.data,
                             status: {
-                                code: 0, // Default Status 'approved' in Liferay
+                                code: STATUS.APPROVED,
                                 label: 'approved',
                                 label_i18n: Liferay.Language.get('approved')
                             }
@@ -187,7 +187,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                     <Text size={3}>{Liferay.Language.get('the-following-objects-contain-changes-that-will-be-published-and-may-affect-your-production-environment')} {Liferay.Language.get('please-check-before-confirming')}</Text>
                 </div>
 
-                {statusPublish === STATUS.INITIAL &&
+                {statusPublish === STATUS.DRAFT &&
                     <div className={`select-all-checkbox c-px-sm-3 c-mb-sm-2 ${selectAll ? 'active' : ''}`}>
                         <ClayCheckbox
                             checked={selectAll}
@@ -208,7 +208,7 @@ export function ModalPublishObjectDefinitions({ disableAutoClose, dispatch, elem
                         return (
                             <ClayList.Item className={`lfr-object__object-view-modal-object-definitions-list-item ${isSelected ? 'active' : ''}`} key={id}>
                                 <div>
-                                    {!statusPublish && <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status !== undefined && [STATUS.APPROVED, STATUS.PENDING].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />}
+                                    {statusPublish === STATUS.DRAFT  && <ClayCheckbox checked={isSelected} disabled={(selectedItem?.status !== undefined && [STATUS.APPROVED, STATUS.PENDING].includes(selectedItem?.status))} onChange={() => handleCheckboxChange(data?.id!)} />}
 
                                     <ClayIcon symbol="catalog" />
 
