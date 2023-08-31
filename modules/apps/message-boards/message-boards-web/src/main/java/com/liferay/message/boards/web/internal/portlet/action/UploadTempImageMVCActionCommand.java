@@ -7,7 +7,7 @@ package com.liferay.message.boards.web.internal.portlet.action;
 
 import com.liferay.item.selector.ItemSelectorUploadResponseHandler;
 import com.liferay.message.boards.constants.MBPortletKeys;
-import com.liferay.message.boards.web.internal.upload.TempImageMBUploadFileEntryHandler;
+import com.liferay.message.boards.web.internal.upload.BaseMBUploadFileEntryHandler;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.upload.UploadHandler;
@@ -47,9 +47,20 @@ public class UploadTempImageMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private TempImageMBUploadFileEntryHandler
-		_tempImageMBUploadFileEntryHandler;
+		_tempImageMBUploadFileEntryHandler =
+			new TempImageMBUploadFileEntryHandler();
 
 	@Reference
 	private UploadHandler _uploadHandler;
+
+	private static class TempImageMBUploadFileEntryHandler
+		extends BaseMBUploadFileEntryHandler {
+
+		@Override
+		protected String getParameterName() {
+			return "imageSelectorFileName";
+		}
+
+	}
 
 }
