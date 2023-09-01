@@ -281,6 +281,7 @@ definition {
 		property custom.properties = "field.enable.com.liferay.portal.kernel.model.Contact.male=true";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
+		property portal.acceptance = "summer";
 
 		task ("Add LDAP server and test connection") {
 			PortalSettings.addLDAPServer();
