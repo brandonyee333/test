@@ -110,7 +110,7 @@ definition {
 		task ("Logout, restart server and login") {
 			User.logoutPG();
 
-			Portlet.shutdownServer();
+			Portlet.shutdownServer(signOutLocalizationName="Salir");
 
 			Portlet.startServer(deleteLiferayHome = "false");
 
