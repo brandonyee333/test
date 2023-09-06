@@ -30,6 +30,7 @@ import CheckboxMultiSelect from '../components/CheckboxMultiSelect';
 import OrderableTable from '../components/OrderableTable';
 
 import '../../css/Filters.scss';
+import '../../css/FDSEntries.scss';
 
 enum filterTypes {
 	DATE_RANGE = 'DATE_RANGE',
@@ -278,9 +279,12 @@ function AddFDSFilterModalContent({
 		return (
 			<ClayDropDown
 				closeOnClick
+				menuElementAttrs={{
+					className: 'fds-cell-renderers-dropdown-menu',
+				}}
 				trigger={
 					<ClayInput
-						className="filter-by-cell-renderers-dropdown-menu"
+						className="form-control form-control-select form-control-select-secondary filter-by-cell-renderers-dropdown-menu"
 						aria-labelledby={`${namespace}cellRenderersLabel`}
 						placeholder={
 							selectedField
@@ -293,6 +297,7 @@ function AddFDSFilterModalContent({
 				<ClayDropDown.ItemList items={cellRenderers} role="listbox">
 					{cellRenderers.map((cellRenderer) => (
 						<ClayDropDown.Item
+							className="align-items-center d-flex justify-content-between"
 							key={cellRenderer.name}
 							roleItem="option"
 							disabled={
