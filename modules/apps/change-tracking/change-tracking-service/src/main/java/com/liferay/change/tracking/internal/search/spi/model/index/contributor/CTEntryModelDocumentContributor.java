@@ -84,6 +84,27 @@ public class CTEntryModelDocumentContributor
 		return locales.toArray(new Locale[0]);
 	}
 
+	private Map<Locale, String> _getChangeTypeLabeleMap(
+		Locale[] locales, long changeType) {
+
+		Map<Locale, String> map = new HashMap<>();
+
+		String changeTypeLabel = "modified";
+
+		if (changeType == CTConstants.CT_CHANGE_TYPE_ADDITION) {
+			changeTypeLabel = "added";
+		}
+		else if (changeType == CTConstants.CT_CHANGE_TYPE_DELETION) {
+			changeTypeLabel = "deleted";
+		}
+
+		for (Locale locale : locales) {
+			map.put(locale, _language.get(locale, changeTypeLabel));
+		}
+
+		return map;
+	}
+
 	private <T extends BaseModel<T>> Map<Locale, String> _getTitleMap(
 		Locale[] locales, T model, long modelClassNameId) {
 
@@ -139,9 +160,21 @@ public class CTEntryModelDocumentContributor
 			_ctDisplayRendererRegistry.getCTDisplayRenderer(
 				ctEntry.getModelClassNameId()));
 
+		document.addLocalizedKeyword(
+			Field.getSortableFieldName("typeName"),
+			_getTypeNameMap(locales, ctEntry.getModelClassNameId()), true,
+			true);
 		document.addLocalizedText(
 			"typeName", _getTypeNameMap(locales, ctEntry.getModelClassNameId()),
 			true);
+
+		document.addLocalizedKeyword(
+			Field.getSortableFieldName("changeTypeLabel"),
+			_getChangeTypeLabeleMap(locales, ctEntry.getChangeType()), true,
+			true);
+		document.addLocalizedText(
+			"changeTypeLabel",
+			_getChangeTypeLabeleMap(locales, ctEntry.getChangeType()), true);
 
 		if (model == null) {
 			return;
@@ -155,13 +188,12 @@ public class CTEntryModelDocumentContributor
 
 			if (group != null) {
 				document.addKeyword(Field.GROUP_ID, group.getGroupId());
-				document.addLocalizedKeyword("groupName", group.getNameMap());
+				document.addLocalizedKeyword(
+					Field.getSortableFieldName("groupName"), group.getNameMap(),
+					true, true);
 			}
 		}
 
-		document.addLocalizedKeyword(
-			Field.getSortableFieldName(Field.TITLE),
-			_getTitleMap(locales, model, ctEntry.getModelClassNameId()));
 		document.addLocalizedText(
 			Field.TITLE,
 			_getTitleMap(locales, model, ctEntry.getModelClassNameId()), true);
