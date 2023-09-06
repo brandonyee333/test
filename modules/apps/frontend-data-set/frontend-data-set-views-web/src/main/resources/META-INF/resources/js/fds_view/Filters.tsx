@@ -28,6 +28,7 @@ import {FDSViewType} from '../FDSViews';
 import {IPickList, getAllPicklists, getFields} from '../api';
 import CheckboxMultiSelect from '../components/CheckboxMultiSelect';
 import OrderableTable from '../components/OrderableTable';
+import ValidationFeedback from '../components/ValidationFeedback';
 
 import '../../css/Filters.scss';
 import '../../css/FDSEntries.scss';
@@ -107,7 +108,7 @@ function getModalHeader(
 	if (filterType && filterType == filterTypes.SELECTION) {
 		return Liferay.Language.get('new-selection-filter');
 	} else {
-		return Liferay.Language.get('new-filter');
+		return Liferay.Language.get('new-date-range-filter');
 	}
 }
 
@@ -121,6 +122,7 @@ function AddFDSFilterModalContent({
 	namespace,
 	onSave,
 }: IPropsAddFDSFilterModalContent) {
+	const [fieldInUseValidationError, setFieldInUseValidationError] = useState<boolean>(false);
 	const [from, setFrom] = useState<string>(
 		(filter as IDateFilter)?.from ?? format(new Date(), 'yyyy-MM-dd')
 	);
@@ -263,19 +265,42 @@ function AddFDSFilterModalContent({
 		closeModal();
 	};
 
+	const isValidSingleMode =
+		multiple || (!multiple && !(preselectedValues.length > 1));
+
+	const fromFormElementId = `${namespace}From`;
+	const includeModeFormElementId = `${namespace}IncludeMode`;
+	const multipleFormElementId = `${namespace}Multiple`;
+	const nameFormElementId = `${namespace}Name`;
+	const preselectedValuesFormElementId = `${namespace}PreselectedValues`;
+	const selectedFieldFormElementId = `${namespace}SelectedField`;
+	const sourceOptionFormElementId = `${namespace}SourceOption`;
+	const toFormElementId = `${namespace}To`;
+
+	const filteredSourceItems = !selectedPicklist
+		? []
+		: selectedPicklist.listTypeEntries
+				.filter((item) => fuzzy.match(preselectedValueInput, item.name))
+				.map((item) => ({
+					label: item.name,
+					value: String(item.id),
+				}));
+
+	const inUseFields = fields.map((item) =>
+		fieldNames?.includes(item.name) ? item.name : undefined
+	);
+
 	const CellRendererDropdown = ({
 		cellRenderers,
+		inUseFields,
 		namespace,
 		onItemClick,
 	}: {
 		cellRenderers: IField[];
+		inUseFields: (string | undefined)[];
 		namespace: string;
 		onItemClick: Function;
 	}) => {
-		const inUseFields = fields.map((item) =>
-			fieldNames?.includes(item.name) ? item.name : undefined
-		);
-
 		return (
 			<ClayDropDown
 				closeOnClick
@@ -320,27 +345,6 @@ function AddFDSFilterModalContent({
 		);
 	};
 
-	const isValidSingleMode =
-		multiple || (!multiple && !(preselectedValues.length > 1));
-
-	const fromFormElementId = `${namespace}From`;
-	const includeModeFormElementId = `${namespace}IncludeMode`;
-	const multipleFormElementId = `${namespace}Multiple`;
-	const nameFormElementId = `${namespace}Name`;
-	const preselectedValuesFormElementId = `${namespace}PreselectedValues`;
-	const selectedFieldFormElementId = `${namespace}SelectedField`;
-	const sourceOptionFormElementId = `${namespace}SourceOption`;
-	const toFormElementId = `${namespace}To`;
-
-	const filteredSourceItems = !selectedPicklist
-		? []
-		: selectedPicklist.listTypeEntries
-				.filter((item) => fuzzy.match(preselectedValueInput, item.name))
-				.map((item) => ({
-					label: item.name,
-					value: String(item.id),
-				}));
-
 	return (
 		<>
 			<ClayModal.Header>
@@ -373,13 +377,17 @@ function AddFDSFilterModalContent({
 					/>
 				</ClayForm.Group>
 
-				<ClayForm.Group>
+				<ClayForm.Group
+					className={classNames({
+						'has-error': fieldInUseValidationError,
+					})}
+				>
 					<label htmlFor={selectedFieldFormElementId}>
 						{Liferay.Language.get('filter-by')}
 					</label>
-
 					<CellRendererDropdown
 						cellRenderers={fields}
+						inUseFields={inUseFields}
 						namespace={namespace}
 						onItemClick={(item: IField) => {
 							const newVal = fields.find((field) => {
@@ -387,10 +395,24 @@ function AddFDSFilterModalContent({
 							});
 
 							if (newVal) {
+								if( inUseFields.includes(newVal.name) ) {
+									setFieldInUseValidationError(true)
+									setSaveButtonDisabled(true)
+								} else {
+									setFieldInUseValidationError(false)
+									setSaveButtonDisabled(false)
+								}
 								setSelectedField(newVal);
 							}
 						}}
 					/>
+					{fieldInUseValidationError && (
+						<ValidationFeedback
+							message={Liferay.Language.get(
+								'field-used-in-another-filter'
+							)}
+						/>
+					)}
 				</ClayForm.Group>
 
 				{filterType === filterTypes.SELECTION && picklists.length == 0 && (
@@ -399,7 +421,7 @@ function AddFDSFilterModalContent({
 					</ClayAlert>
 				)}
 
-				{selectedField && filterType === filterTypes.DATE_RANGE && (
+				{selectedField && filterType === filterTypes.DATE_RANGE && !fieldInUseValidationError &&(
 					<ClayForm.Group className="form-group-autofit">
 						<div
 							className={classNames('form-group-item', {
@@ -459,7 +481,7 @@ function AddFDSFilterModalContent({
 					</ClayForm.Group>
 				)}
 
-				{selectedField && filterType === filterTypes.SELECTION && (
+				{selectedField && filterType === filterTypes.SELECTION && !fieldInUseValidationError &&(
 					<>
 						<ClayForm.Group>
 							<label htmlFor={sourceOptionFormElementId}>
