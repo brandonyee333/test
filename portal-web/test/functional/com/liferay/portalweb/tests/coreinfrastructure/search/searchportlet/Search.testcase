@@ -216,6 +216,8 @@ definition {
 	@description = "This is a use case for LPS-165397."
 	@priority = 3
 	test CanDisableDisplaySelectedResultWithContentPages {
+		property portal.acceptance = "LPS-195403";
+
 		task ("Add a New Page") {
 			JSONLayout.addPublicLayout(
 				groupName = "Guest",
@@ -2698,6 +2700,8 @@ definition {
 	@description = "This is a use case for LPS-193198."
 	@priority = 3
 	test ViewSearchBarVisibility {
+		property portal.acceptance = "LPS-195403";
+
 		task ("Configure the embedded search bar to be invisible") {
 			Search.openSearchPage();
 

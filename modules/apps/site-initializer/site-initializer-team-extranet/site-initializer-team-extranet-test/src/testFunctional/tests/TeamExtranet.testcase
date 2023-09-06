@@ -861,6 +861,8 @@ definition {
 	@description = "This is a test for LPS-144835. Verify the search Bar Widget can be embedded in a Custom Fragment"
 	@priority = 3
 	test VerifySearchBarEmbeddedInACustomFragment {
+		property portal.acceptance = "LPS-195403";
+
 		task ("Add a Fragment Collection and go to Team Extranet Fragments Admin") {
 			JSONFragment.addFragmentCollection(
 				groupName = ${testSiteName},
@@ -904,6 +906,8 @@ definition {
 	@description = "This is a test for LPS-144161. Verify the Search Bar on Team Extranet Pages"
 	@priority = 4
 	test VerifySearchBarOnPages {
+		property portal.acceptance = "LPS-195403";
+
 		task ("Go to Team Extranet Site Pages and Assert the Search Bar presence") {
 			for (var pageName : list "Home,Team,Careers,Blog,Resources,Privacy Policy,Cookie Settings,Search") {
 				PagesAdmin.openPagesAdmin(siteURLKey = ${testSiteURL});

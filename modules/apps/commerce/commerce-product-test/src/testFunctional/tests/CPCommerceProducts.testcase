@@ -781,7 +781,7 @@ definition {
 	@priority = 5
 	test CanCheckDraftProductVisibilityOnMiniumCatalogPage {
 		property custom.properties = "jsonws.web.service.paths.excludes=${line.separator}company.security.strangers.verify=false";
-		property portal.acceptance = "true";
+		property portal.acceptance = "LPS-195403";
 
 		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
 

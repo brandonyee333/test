@@ -30,6 +30,7 @@ definition {
 	@description = "This is for LPS-121422. The elements are still shown in edit mode after executing reset changes."
 	@priority = 3
 	test SitesTemplatePermissionPersistence {
+		property portal.acceptance = "LPS-195403";
 		property testray.component.names = "Permissions,Sites Administration";
 
 		task ("Add a new site template") {

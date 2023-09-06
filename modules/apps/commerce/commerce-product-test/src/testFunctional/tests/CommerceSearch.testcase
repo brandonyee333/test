@@ -668,7 +668,7 @@ definition {
 	@description = "COMMERCE-6148. As a buyer, I want to search a product by its name using the Search Bar widget and I want the results to be visible on the Search Results widget"
 	@priority = 5
 	test SearchBarWidgetSearchProductByName {
-		property portal.acceptance = "true";
+		property portal.acceptance = "LPS-195403";
 
 		// TODO Review
 
@@ -699,7 +699,7 @@ definition {
 	@description = "COMMERCE-6149.As a buyer, I want to search a product by its name using double quotes in the Search Bar widget and that product should be visible on the Search Results widget"
 	@priority = 3
 	test SearchBarWidgetSearchProductByNameDoubleQuotes {
-		property portal.acceptance = "false";
+		property portal.acceptance = "LPS-195403";
 
 		var product = '''"ABS Sensor"''';
 
@@ -729,7 +729,7 @@ definition {
 	@description = "COMMERCE-6150. As a buyer, I want to search a product by its name using single quotes in the Search Bar widget and the results should be visible on the Search Results widget"
 	@priority = 3
 	test SearchBarWidgetSearchProductByNameSingleQuotes {
-		property portal.acceptance = "false";
+		property portal.acceptance = "LPS-195403";
 
 		// TODO Review
 
@@ -760,7 +760,7 @@ definition {
 	@description = "COMMERCE-6151. As a buyer, I want to search a product by typing its SKU in the Search Bar widget and the results should be visible on the Search Results widget"
 	@priority = 3
 	test SearchBarWidgetSearchProductBySKU {
-		property portal.acceptance = "false";
+		property portal.acceptance = "LPS-195403";
 
 		// TODO Review
 
@@ -786,7 +786,7 @@ definition {
 	@description = "COMMERCE-6155. As a buyer, I want to search for products by typing a Category in Search Bar widget and the results should be visible on Search Results widget"
 	@priority = 5
 	test SearchBarWidgetSearchProductsByCategory {
-		property portal.acceptance = "true";
+		property portal.acceptance = "LPS-195403";
 
 		// TODO Review
 
@@ -814,7 +814,7 @@ definition {
 	@description = "COMMERCE-6156. As a buyer, I want to search for products by typing different Categories in Search Bar widget and the results should be visible on Search Results widget"
 	@priority = 3
 	test SearchBarWidgetSearchProductsByDifferentCategories {
-		property portal.acceptance = "false";
+		property portal.acceptance = "LPS-195403";
 
 		// TODO Review
 
@@ -844,7 +844,7 @@ definition {
 	@description = "COMMERCE-6152. As a buyer, I want to search for different products by typing their SKUs in the Search Bar widget and the results should be visible on the Search Results widget"
 	@priority = 3
 	test SearchBarWidgetSearchProductsByDifferentSKUs {
-		property portal.acceptance = "false";
+		property portal.acceptance = "LPS-195403";
 
 		// TODO Review
 
@@ -875,7 +875,7 @@ definition {
 	@description = "COMMERCE-6154. As a buyer, I want to search for products by typing different Specification Values in Search Bar widget and the results should be visible on Search Results widget"
 	@priority = 3
 	test SearchBarWidgetSearchProductsByDifferentSpecificationValues {
-		property portal.acceptance = "false";
+		property portal.acceptance = "LPS-195403";
 
 		// TODO Review
 
@@ -921,7 +921,7 @@ definition {
 	@description = "COMMERCE-6153. As a buyer, I want to search for products by typing a Specifications Value in Search Bar widget and the results should be visible on Search Results widget"
 	@priority = 3
 	test SearchBarWidgetSearchProductsBySpecificationValue {
-		property portal.acceptance = "false";
+		property portal.acceptance = "LPS-195403";
 
 		// TODO Review
 

@@ -28,7 +28,7 @@ definition {
 	@refactordone
 	test CanConfigureLookAndFeelSettingsOnSinglePage {
 		property osgi.modules.includes = "frontend-taglib-clay-sample-web";
-		property portal.acceptance = "true";
+		property portal.acceptance = "LPS-195403";
 
 		task ("Given classic theme page") {
 			JSONLayout.addPublicLayout(

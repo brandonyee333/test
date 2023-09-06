@@ -62,6 +62,8 @@ definition {
 
 	@priority = 4
 	test CanConfigureSearchContributorSize {
+		property portal.acceptance = "LPS-195403";
+
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
 			description = "WC WebContent Description",
@@ -141,6 +143,7 @@ definition {
 
 	@priority = 4
 	test CanViewBasicAndBlueprintSuggestionsTogether {
+		property portal.acceptance = "LPS-195403";
 		property test.run.environment = "EE";
 
 		JSONWebcontent.addWebContent(
@@ -180,6 +183,8 @@ definition {
 
 	@priority = 4
 	test CanViewSearchBarSuggestionsResultDetails {
+		property portal.acceptance = "LPS-195403";
+
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
 			description = "WC WebContent Description",
@@ -227,6 +232,8 @@ definition {
 	@description = "This is a use case for LPS-166050. When using a Blueprint to drive Search Bar suggestions, I can configure a character threshold that applies to this group"
 	@priority = 3
 	test ConfigureBlueprintContributorCharacterThresholds {
+		property portal.acceptance = "LPS-195403";
+
 		task ("Add Web Content and Blueprint") {
 			JSONWebcontent.addWebContent(
 				content = "WC WebContent Content",
@@ -464,6 +471,8 @@ definition {
 	@description = "This is a use case for LPS-155317"
 	@priority = 4
 	test DisablingSuggestionsSAPHidesSuggestionsFromGuests {
+		property portal.acceptance = "LPS-195403";
+
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
 			description = "WC WebContent Description",
@@ -502,6 +511,8 @@ definition {
 
 	@priority = 4
 	test DisplaySuggestionsAfterCharacterThresholdIsMet {
+		property portal.acceptance = "LPS-195403";
+
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
 			description = "WC WebContent Description",
@@ -539,6 +550,8 @@ definition {
 	@description = "This is a use case for LPS-162509."
 	@priority = 4
 	test HonorLetUserChooseSiteScope {
+		property portal.acceptance = "LPS-195403";
+
 		JSONWebcontent.addWebContent(
 			content = "Content",
 			description = "Apple WC Description",
@@ -585,6 +598,7 @@ definition {
 	@description = "This is a use case for LPS-176871."
 	@priority = 4
 	test SearchSuggestionsInNonRootContext {
+		property portal.acceptance = "LPS-195403";
 		property portal.context = "liferay";
 		property search.environment.suite.exclude = "true";
 		property skip.clean-app-server-deploy-dir = "true";
@@ -611,6 +625,8 @@ definition {
 
 	@priority = 4
 	test ShowHTMLAsPlainText {
+		property portal.acceptance = "LPS-195403";
+
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
 			layoutName = "Test Content Page Name",
@@ -632,6 +648,8 @@ definition {
 
 	@priority = 5
 	test ViewBasicSuggestionsAcrossDifferentScopes {
+		property portal.acceptance = "LPS-195403";
+
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
 			description = "WC WebContent Description",
@@ -676,6 +694,8 @@ definition {
 
 	@priority = 3
 	test ViewBlueprintContributorZeroCharacterThreshold {
+		property portal.acceptance = "LPS-195403";
+
 		JSONWebcontent.addWebContent(
 			content = "WC WebContent Content",
 			groupName = "Guest",
@@ -714,6 +734,7 @@ definition {
 
 	@priority = 5
 	test ViewBlueprintSuggestionsAcrossDifferentScopes {
+		property portal.acceptance = "LPS-195403";
 		property test.run.environment = "EE";
 
 		JSONWebcontent.addWebContent(
@@ -810,6 +831,8 @@ definition {
 	@description = "This is a use case for LPS-190910."
 	@priority = 3
 	test ViewSuggestionsLocalizedDescription {
+		property portal.acceptance = "LPS-195403";
+
 		JSONWebcontent.addBasicWebContentLocalized(
 			contentMap = "en_US:content,es_ES:contenido,de_DE:inhalt",
 			descriptionMap = "en_US:description,es_ES:descripción",
@@ -853,6 +876,8 @@ definition {
 	@description = "This is a use case for LPS-162509."
 	@priority = 4
 	test ViewSuggestionsLocalizedDisplayGroupName {
+		property portal.acceptance = "LPS-195403";
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",

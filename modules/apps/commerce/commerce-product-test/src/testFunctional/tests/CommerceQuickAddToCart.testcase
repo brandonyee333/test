@@ -1740,7 +1740,7 @@ definition {
 	@description = "This is a test for COMMERCE-10475. Buyer user can paste text on quick add to cart search bar"
 	@priority = 3
 	test CanPasteTextOnQuickAddToCartSearchBar {
-		property portal.acceptance = "false";
+		property portal.acceptance = "LPS-195403";
 
 		task ("Given an account with a buyer user is created") {
 			CommerceEntry.addAccountEntryUser(
