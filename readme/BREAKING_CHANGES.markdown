@@ -1521,7 +1521,7 @@ Replace configuration usage with `DLFileEntryConfiguration` `previewableProcesso
 ## Changed default value of virtual.hosts.valid.hosts from '*' to 'localhost,127.0.0.1,[::1],[0:0:0:0:0:0:0:1]'
 
 - **Date:** 2023-June-2
-- **JIRA Ticket:** [LPS-184385](https://issues.liferay.com/browse/LPS-184385)
+- **JIRA Ticket:** [LPE-17758](https://liferay.atlassian.net/browse/LPE-17758)
 
 ### What changed?
 
