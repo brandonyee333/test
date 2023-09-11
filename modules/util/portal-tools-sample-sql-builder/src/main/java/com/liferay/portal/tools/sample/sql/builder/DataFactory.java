@@ -579,6 +579,10 @@ public class DataFactory {
 		return getClassNameId(DLFileEntry.class);
 	}
 
+	public RoleModel getGuestRoleModel() {
+		return _guestRoleModel;
+	}
+
 	public long getJournalArticleClassNameId() {
 		return getClassNameId(JournalArticle.class);
 	}
@@ -6646,9 +6650,15 @@ public class DataFactory {
 
 		mbCategoryModel.setParentCategoryId(
 			MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID);
-		mbCategoryModel.setName("Test Category " + index);
+
+		String name = "Test Category " + index;
+
+		mbCategoryModel.setName(name);
+
 		mbCategoryModel.setDisplayStyle(
 			MBCategoryConstants.DEFAULT_DISPLAY_STYLE);
+		mbCategoryModel.setFriendlyURL(
+			StringUtil.replace(name, CharPool.SPACE, StringPool.DASH));
 		mbCategoryModel.setLastPublishDate(new Date());
 		mbCategoryModel.setStatusDate(new Date());
 
