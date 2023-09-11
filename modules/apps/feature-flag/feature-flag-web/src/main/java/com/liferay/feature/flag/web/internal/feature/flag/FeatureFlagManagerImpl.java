@@ -7,7 +7,11 @@ package com.liferay.feature.flag.web.internal.feature.flag;
 
 import com.liferay.portal.kernel.feature.flag.FeatureFlag;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManager;
+import com.liferay.portal.kernel.feature.flag.constants.FeatureFlagConstants;
+import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -44,6 +48,12 @@ public class FeatureFlagManagerImpl implements FeatureFlagManager {
 
 	@Override
 	public boolean isEnabled(String key) {
+		if (GetterUtil.getBoolean(
+				PropsUtil.get(FeatureFlagConstants.getKey(key, "system")))) {
+
+			return isEnabled(CompanyConstants.SYSTEM, key);
+		}
+
 		return isEnabled(CompanyThreadLocal.getCompanyId(), key);
 	}
 
