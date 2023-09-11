@@ -15,6 +15,7 @@ export declare function BasicInfo({
 	componentLabel,
 	creationLanguageId,
 	disabled,
+	disabledLabel,
 	errors,
 	objectFields,
 	setValues,

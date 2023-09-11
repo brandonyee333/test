@@ -22,6 +22,7 @@ export type ObjectValidationErrors = FormError<ObjectValidation>;
 
 export interface TabProps {
 	disabled: boolean;
+	disabledLabel: boolean;
 	errors: ObjectValidationErrors;
 	handleChange: ChangeEventHandler<HTMLInputElement>;
 	setValues: (values: Partial<ObjectValidation>) => void;

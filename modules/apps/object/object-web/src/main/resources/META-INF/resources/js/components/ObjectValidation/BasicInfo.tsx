@@ -39,6 +39,7 @@ export function BasicInfo({
 	componentLabel,
 	creationLanguageId,
 	disabled,
+	disabledLabel,
 	errors,
 	objectFields,
 	setValues,
@@ -80,7 +81,7 @@ export function BasicInfo({
 		<>
 			<Card title={componentLabel}>
 				<InputLocalized
-					disabled={disabled}
+					disabled={disabledLabel}
 					error={errors.name}
 					label={Liferay.Language.get('label')}
 					onChange={(name) => setValues({name})}
