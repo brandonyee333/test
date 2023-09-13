@@ -6,7 +6,7 @@
 import ClayForm, {ClayCheckbox} from '@clayui/form';
 import {useLiferayState} from '@liferay/frontend-js-state-web';
 import classnames from 'classnames';
-import skuOptionsAtom from 'commerce-frontend-js/utilities/atoms/skuOptionsAtom';
+import skuOptionsAtom from '../../utilities/atoms/skuOptionsAtom';
 import React, {useEffect, useState} from 'react';
 
 import Asterisk from './Asterisk';
@@ -17,17 +17,18 @@ import {
 	isRequired,
 } from './utils';
 
-const ProductOptionCheckbox = ({
-	componentId,
+const ProductOptionCheckboxMultiple = ({
 	forceRequired,
 	namespace,
 	productOption,
 }) => {
 	const [hasErrors, setHasErrors] = useState(false);
-	const [isChecked, setIsChecked] = useState(false);
-
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
+	);
+
+	const [productOptionValues, setProductOptionValues] = useState(
+		productOption.productOptionValues
 	);
 
 	useEffect(
@@ -39,26 +40,53 @@ const ProductOptionCheckbox = ({
 					productOption,
 					skuOptionsAtomState
 				),
+				namespace,
 			}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[hasErrors]
 	);
 
 	useEffect(() => {
-		setSkuOptionsAtomState({...skuOptionsAtomState, namespace});
+		let hasPreselected = false;
+		let initialSkuOptions = skuOptionsAtomState.skuOptions;
 
-		if (productOption.required) {
+		setProductOptionValues(
+			productOptionValues.map((productOptionValue) => {
+				if (productOptionValue.preselected) {
+					hasPreselected = true;
+
+					initialSkuOptions = [
+						...skuOptionsAtomState.skuOptions,
+						{
+							key: productOption.key,
+							skuOptionKey: productOption.key,
+							value: [productOptionValue.key],
+						},
+					];
+				}
+
+				return {
+					...productOptionValue,
+					selected: productOptionValue.preselected,
+				};
+			})
+		);
+
+		const required = productOption.required && !hasPreselected;
+
+		if (required) {
 			setHasErrors(true);
 		}
 
 		setSkuOptionsAtomState({
 			...skuOptionsAtomState,
 			errors: getSkuOptionsErrors(
-				productOption.required,
+				required,
 				productOption,
 				skuOptionsAtomState
 			),
 			namespace,
+			skuOptions: initialSkuOptions,
 		});
 
 		return () => setSkuOptionsAtomState(initialSkuOptionsAtomState);
@@ -72,23 +100,25 @@ const ProductOptionCheckbox = ({
 
 		setSkuOptionsAtomState({...skuOptionsAtomState, updating: true});
 
-		setIsChecked(checked);
-
 		let currentSkuOptions = skuOptionsAtomState.skuOptions;
+
+		const curSkuOptionIndex = currentSkuOptions.findIndex(
+			(skuOption) => skuOption.skuOptionKey === productOption.key
+		);
 
 		const currentSkuOption = currentSkuOptions.filter(
 			(skuOption) => skuOption.skuOptionKey === productOption.key
 		)[0];
 
 		if (currentSkuOption) {
-			const curIndex = currentSkuOptions.findIndex(
-				(skuOption) => skuOption.skuOptionKey === productOption.key
-			);
-
-			currentSkuOptions[curIndex] = {
+			currentSkuOptions[curSkuOptionIndex] = {
 				key: productOption.key,
 				skuOptionKey: productOption.key,
-				value: checked ? [value] : [],
+				value: checked
+					? [...currentSkuOptions[curSkuOptionIndex].value, value]
+					: currentSkuOptions[curSkuOptionIndex].value.filter(
+							(curVal) => !(curVal === value)
+					  ),
 			};
 		}
 		else {
@@ -102,10 +132,22 @@ const ProductOptionCheckbox = ({
 			];
 		}
 
-		const required = (forceRequired || productOption.required) && !checked;
+		const curProductOptionValueIndex = productOptionValues.findIndex(
+			(productOptionValue) => productOptionValue.key === value
+		);
+
+		productOptionValues[curProductOptionValueIndex] = {
+			...productOptionValues[curProductOptionValueIndex],
+			selected: checked,
+		};
+
+		setProductOptionValues(productOptionValues);
+
+		const required =
+			(forceRequired || productOption.required) &&
+			currentSkuOptions[curSkuOptionIndex]?.value.length === 0;
 
 		setHasErrors(required);
-
 		setSkuOptionsAtomState({
 			...skuOptionsAtomState,
 			errors: getSkuOptionsErrors(
@@ -120,7 +162,7 @@ const ProductOptionCheckbox = ({
 
 	return (
 		<ClayForm.Group className={classnames({'has-error': hasErrors})}>
-			<label htmlFor={componentId}>
+			<label>
 				{getProductOptionName(productOption.name)}
 
 				<Asterisk
@@ -132,14 +174,16 @@ const ProductOptionCheckbox = ({
 				/>
 			</label>
 
-			<ClayCheckbox
-				checked={isChecked}
-				disabled={skuOptionsAtomState.updating}
-				id={componentId}
-				name={productOption.key}
-				onChange={handleChange}
-				value={productOption.key}
-			/>
+			{productOptionValues.map(({key, name, selected}) => (
+				<ClayCheckbox
+					checked={selected}
+					key={key}
+					label={name}
+					name={key}
+					onChange={handleChange}
+					value={key}
+				/>
+			))}
 
 			{hasErrors && (
 				<ClayForm.FeedbackItem>
@@ -152,4 +196,4 @@ const ProductOptionCheckbox = ({
 	);
 };
 
-export default ProductOptionCheckbox;
+export default ProductOptionCheckboxMultiple;

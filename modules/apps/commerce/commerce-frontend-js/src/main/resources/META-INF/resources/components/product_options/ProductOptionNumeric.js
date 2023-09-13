@@ -6,7 +6,7 @@
 import ClayForm, {ClayInput} from '@clayui/form';
 import {useLiferayState} from '@liferay/frontend-js-state-web';
 import classnames from 'classnames';
-import skuOptionsAtom from 'commerce-frontend-js/utilities/atoms/skuOptionsAtom';
+import skuOptionsAtom from '../../utilities/atoms/skuOptionsAtom';
 import React, {useEffect, useState} from 'react';
 
 import Asterisk from './Asterisk';
@@ -17,14 +17,14 @@ import {
 	isRequired,
 } from './utils';
 
-const ProductOptionDate = ({
+const ProductOptionNumeric = ({
 	componentId,
 	forceRequired,
 	namespace,
 	productOption,
 }) => {
-	const [date, setDate] = useState('');
 	const [hasErrors, setHasErrors] = useState(false);
+	const [number, setNumber] = useState('');
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
@@ -78,7 +78,7 @@ const ProductOptionDate = ({
 
 		setSkuOptionsAtomState({...skuOptionsAtomState, updating: true});
 
-		setDate(value);
+		setNumber(value);
 
 		let currentSkuOptions = skuOptionsAtomState.skuOptions;
 
@@ -143,8 +143,8 @@ const ProductOptionDate = ({
 				id={componentId}
 				name={productOption.key}
 				onChange={handleChange}
-				type="date"
-				value={date}
+				type="number"
+				value={number}
 			/>
 
 			{hasErrors && (
@@ -158,4 +158,4 @@ const ProductOptionDate = ({
 	);
 };
 
-export default ProductOptionDate;
+export default ProductOptionNumeric;

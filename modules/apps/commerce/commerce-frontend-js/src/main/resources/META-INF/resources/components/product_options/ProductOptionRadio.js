@@ -6,9 +6,9 @@
 import ClayForm, {ClayRadio, ClayRadioGroup} from '@clayui/form';
 import {useIsMounted} from '@liferay/frontend-js-react-web';
 import {useLiferayState} from '@liferay/frontend-js-state-web';
-import ServiceProvider from 'commerce-frontend-js/ServiceProvider/index';
-import skuOptionsAtom from 'commerce-frontend-js/utilities/atoms/skuOptionsAtom';
-import {CP_INSTANCE_CHANGED} from 'commerce-frontend-js/utilities/eventsDefinitions';
+import ServiceProvider from '../../ServiceProvider/index';
+import skuOptionsAtom from '../../utilities/atoms/skuOptionsAtom';
+import {CP_INSTANCE_CHANGED} from '../../utilities/eventsDefinitions';
 import React, {useEffect, useState} from 'react';
 
 import Asterisk from './Asterisk';
