@@ -38,9 +38,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -384,14 +386,15 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 
 	@Test
 	public void testGetClassName() throws Exception {
-		CopyOnWriteArraySet<ClassName> classNames = new CopyOnWriteArraySet<>();
+		Map<ClassName, String> classNames = Collections.synchronizedMap(
+			new IdentityHashMap<>());
 
 		try {
 			DBPartitionUtil.forEachCompanyId(
-				companyId -> Assert.assertTrue(
-					classNames.add(
-						_classNameLocalService.getClassName(
-							"class.name.test"))));
+				companyId -> Assert.assertNull(
+					classNames.put(
+						_classNameLocalService.getClassName("class.name.test"),
+						"")));
 
 			Assert.assertEquals(
 				classNames.toString(), _companyLocalService.getCompaniesCount(),
