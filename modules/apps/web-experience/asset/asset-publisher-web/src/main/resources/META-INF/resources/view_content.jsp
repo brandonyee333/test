@@ -33,7 +33,7 @@ for (char c : urlTitle.toCharArray()) {
 
 boolean workflowPreview = GetterUtil.getBoolean(request.getAttribute(WebKeys.WORKFLOW_ASSET_PREVIEW));
 
-boolean print = ParamUtil.getString(request, "viewMode").equals(Constants.PRINT);
+boolean print = Objects.equals(ParamUtil.getString(request, "viewMode"), Constants.PRINT);
 
 AssetEntry assetEntry = null;
 

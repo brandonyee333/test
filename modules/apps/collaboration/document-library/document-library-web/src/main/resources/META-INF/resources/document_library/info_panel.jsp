@@ -219,7 +219,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(fileEntries) && ListUtil.isEmp
 					<%
 					long assetClassPK = 0;
 
-					if (!fileVersion.isApproved() && !fileVersion.getVersion().equals(DLFileEntryConstants.VERSION_DEFAULT) && !fileEntry.isInTrash()) {
+					if (!fileVersion.isApproved() && !Objects.equals(fileVersion.getVersion(), DLFileEntryConstants.VERSION_DEFAULT) && !fileEntry.isInTrash()) {
 						assetClassPK = fileVersion.getFileVersionId();
 					}
 					else {

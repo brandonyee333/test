@@ -802,7 +802,8 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 			else if (themeDisplay.isLifecycleAction()) {
 				_triggeredByActionURL = true;
 
-				if (getLifecycle().equals(PortletRequest.ACTION_PHASE)) {
+				if (Objects.equals(
+						getLifecycle(), PortletRequest.ACTION_PHASE)) {
 
 					// Request was triggered by an action URL and is being
 					// processed by com.liferay.portlet.ActionRequestImpl
@@ -859,7 +860,7 @@ public abstract class PortletRequestImpl implements LiferayPortletRequest {
 				}
 			}
 
-			if (getLifecycle().equals(PortletRequest.RENDER_PHASE) &&
+			if (Objects.equals(getLifecycle(), PortletRequest.RENDER_PHASE) &&
 				!LiferayWindowState.isExclusive(request) &&
 				!LiferayWindowState.isPopUp(request)) {
 

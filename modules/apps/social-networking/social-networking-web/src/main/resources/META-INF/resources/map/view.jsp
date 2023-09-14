@@ -13,7 +13,7 @@ boolean organizationProfileMap = false;
 boolean siteProfileMap = false;
 boolean userProfileMap = false;
 
-if ((user2 != null) && layout.getFriendlyURL().equals("/friends")) {
+if ((user2 != null) && Objects.equals(layout.getFriendlyURL(), "/friends")) {
 	friendsProfileMap = true;
 }
 else if (organization != null) {

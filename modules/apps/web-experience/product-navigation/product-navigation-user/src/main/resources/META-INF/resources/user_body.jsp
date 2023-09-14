@@ -25,7 +25,7 @@
 		String changeLanguageMessage = null;
 		String doAsUserLanguageId = null;
 
-		if (locale.getLanguage().equals(realUserLocale.getLanguage()) && locale.getCountry().equals(realUserLocale.getCountry())) {
+		if (Objects.equals(locale.getLanguage(), realUserLocale.getLanguage()) && Objects.equals(locale.getCountry(), realUserLocale.getCountry())) {
 			changeLanguageMessage = LanguageUtil.format(realUserLocale, "use-x's-preferred-language-(x)", new String[] {HtmlUtil.escape(user.getFullName()), userLocale.getDisplayLanguage(realUserLocale)}, false);
 			doAsUserLanguageId = userLocale.getLanguage() + "_" + userLocale.getCountry();
 		}

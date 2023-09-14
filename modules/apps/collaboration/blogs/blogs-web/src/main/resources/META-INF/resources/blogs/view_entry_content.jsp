@@ -120,7 +120,7 @@ String socialBookmarksDisplayPosition = blogsPortletInstanceConfiguration.social
 					String subtitle = entry.getSubtitle();
 					%>
 
-					<c:if test="<%= (blogsPortletInstanceConfiguration.displayStyle().equals(BlogsUtil.DISPLAY_STYLE_FULL_CONTENT) || viewSingleEntry) && Validator.isNotNull(subtitle) %>">
+					<c:if test="<%= (Objects.equals(blogsPortletInstanceConfiguration.displayStyle(), BlogsUtil.DISPLAY_STYLE_FULL_CONTENT) || viewSingleEntry) && Validator.isNotNull(subtitle) %>">
 						<div class="entry-subtitle">
 							<c:choose>
 								<c:when test="<%= viewSingleEntry %>">

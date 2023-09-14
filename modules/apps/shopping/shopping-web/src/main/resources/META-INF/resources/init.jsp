@@ -164,6 +164,7 @@ page import="java.util.Enumeration" %><%@
 page import="java.util.HashMap" %><%@
 page import="java.util.List" %><%@
 page import="java.util.Map" %><%@
+page import="java.util.Objects" %><%@
 page import="java.util.Properties" %>
 
 <%@ page import="javax.portlet.PortletURL" %><%@

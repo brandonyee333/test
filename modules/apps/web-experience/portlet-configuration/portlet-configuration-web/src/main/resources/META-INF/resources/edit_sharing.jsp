@@ -69,7 +69,7 @@ String widgetURL = PortalUtil.getWidgetURL(portlet, themeDisplay);
 
 						String callbackURL = widgetURL;
 
-						if (portlet.getFacebookIntegration().equals(PortletConstants.FACEBOOK_INTEGRATION_FBML)) {
+						if (Objects.equals(portlet.getFacebookIntegration(), PortletConstants.FACEBOOK_INTEGRATION_FBML)) {
 							callbackURL = PortalUtil.getFacebookURL(portlet, facebookCanvasPageURL, themeDisplay);
 						}
 						%>

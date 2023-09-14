@@ -101,7 +101,7 @@ ColorScheme selColorScheme = ThemeLocalServiceUtil.getColorScheme(company.getCom
 
 									String cssClass = StringPool.BLANK;
 
-									if (selColorScheme.getColorSchemeId().equals(curColorScheme.getColorSchemeId())) {
+									if (Objects.equals(selColorScheme.getColorSchemeId(), curColorScheme.getColorSchemeId())) {
 										cssClass = "selected-color-scheme";
 									}
 								%>
@@ -144,7 +144,7 @@ ColorScheme selColorScheme = ThemeLocalServiceUtil.getColorScheme(company.getCom
 					Theme curTheme = themes.get(i);
 				%>
 
-					<c:if test="<%= !selTheme.getThemeId().equals(curTheme.getThemeId()) %>">
+					<c:if test="<%= !Objects.equals(selTheme.getThemeId(), curTheme.getThemeId()) %>">
 						<li>
 							<div class="theme-entry">
 								<img alt="" class="modify-link theme-thumbnail" onclick="document.getElementById('<portlet:namespace />ThemeId<%= i %>').checked = true;" src="<%= curTheme.getStaticResourcePath() %><%= HtmlUtil.escapeAttribute(curTheme.getImagesPath()) %>/thumbnail.png" title="<%= HtmlUtil.escapeAttribute(curTheme.getName()) %>" />

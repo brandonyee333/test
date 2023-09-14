@@ -19,7 +19,7 @@ if (!ArrayUtil.contains(AssetPublisherWebConfigurationValues.DISPLAY_STYLES, ass
 }
 else {
 	for (String curDisplayStyle : AssetPublisherWebConfigurationValues.DISPLAY_STYLES) {
-		if (assetPublisherDisplayContext.getDisplayStyle().equals(curDisplayStyle)) {
+		if (Objects.equals(assetPublisherDisplayContext.getDisplayStyle(), curDisplayStyle)) {
 %>
 
 			<liferay-util:include page='<%= "/display/" + TextFormatter.format(curDisplayStyle, TextFormatter.N) + ".jsp" %>' servletContext="<%= application %>" />

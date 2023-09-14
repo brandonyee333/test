@@ -356,12 +356,12 @@ if (portletTitleBasedNavigation) {
 						if (thread.isQuestion() || message.isAnswer()) {
 							question = true;
 
-							if ((category != null) && category.getDisplayStyle().equals("question")) {
+							if ((category != null) && Objects.equals(category.getDisplayStyle(), "question")) {
 								disabled = true;
 							}
 						}
 					}
-					else if ((category != null) && category.getDisplayStyle().equals("question")) {
+					else if ((category != null) && Objects.equals(category.getDisplayStyle(), "question")) {
 						disabled = true;
 						question = true;
 					}

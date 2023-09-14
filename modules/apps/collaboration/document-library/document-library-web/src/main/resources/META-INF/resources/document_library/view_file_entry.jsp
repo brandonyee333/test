@@ -54,7 +54,7 @@ if (PropsValues.DL_FILE_ENTRY_CONVERSIONS_ENABLED && PrefsPropsUtil.getBoolean(P
 
 long assetClassPK = 0;
 
-if (!fileVersion.isApproved() && !fileVersion.getVersion().equals(DLFileEntryConstants.VERSION_DEFAULT) && !fileEntry.isInTrash()) {
+if (!fileVersion.isApproved() && !Objects.equals(fileVersion.getVersion(), DLFileEntryConstants.VERSION_DEFAULT) && !fileEntry.isInTrash()) {
 	assetClassPK = fileVersion.getFileVersionId();
 }
 else {

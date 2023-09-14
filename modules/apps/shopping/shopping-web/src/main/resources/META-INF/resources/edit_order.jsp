@@ -118,7 +118,7 @@ long orderId = BeanParamUtil.getLong(order, request, "orderId");
 
 					<aui:input label="payer-email-address" name="ppPayerEmail" />
 
-					<c:if test="<%= order.getPpPaymentStatus().equals(ShoppingOrderConstants.STATUS_CHECKOUT) %>">
+					<c:if test="<%= Objects.equals(order.getPpPaymentStatus(), ShoppingOrderConstants.STATUS_CHECKOUT) %>">
 						<aui:field-wrapper label="paypal-order">
 
 							<%

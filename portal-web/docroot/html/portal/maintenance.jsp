@@ -13,7 +13,7 @@ page import="com.liferay.portal.util.MaintenanceUtil" %>
 <%
 boolean invokingSession = false;
 
-if (session.getId().equals(MaintenanceUtil.getSessionId())) {
+if (Objects.equals(session.getId(), MaintenanceUtil.getSessionId())) {
 	invokingSession = true;
 }
 %>

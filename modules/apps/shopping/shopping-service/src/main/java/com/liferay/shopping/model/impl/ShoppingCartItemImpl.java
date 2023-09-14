@@ -11,6 +11,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.shopping.model.ShoppingCartItem;
 import com.liferay.shopping.model.ShoppingItem;
 
+import java.util.Objects;
+
 /**
  * @author Brian Wing Shun Chan
  */
@@ -52,8 +54,8 @@ public class ShoppingCartItemImpl implements ShoppingCartItem {
 
 		ShoppingCartItem cartItem = (ShoppingCartItem)obj;
 
-		if (getItem().equals(cartItem.getItem()) &&
-			getFields().equals(cartItem.getFields())) {
+		if (Objects.equals(getItem(), cartItem.getItem()) &&
+			Objects.equals(getFields(), cartItem.getFields())) {
 
 			return true;
 		}
