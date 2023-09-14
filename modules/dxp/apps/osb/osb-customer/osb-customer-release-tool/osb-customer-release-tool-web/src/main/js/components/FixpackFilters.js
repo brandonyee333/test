@@ -113,7 +113,19 @@ export default class FixpackFilters extends Component {
 				(item) => item.version === fromFixPackVersion
 			);
 
-			return fixpacks.slice(index);
+			const toFixPacks = fixpacks.slice(index);
+
+			if (productVersion === '7.4') {
+				const toQuarterylyFixPacks = toFixPacks.filter((item) =>
+					Object.keys(item).some((value) =>
+						item[value].toLowerCase().includes('quarterly')
+					)
+				);
+
+				return toQuarterylyFixPacks;
+			}
+
+			return toFixPacks;
 		}
 
 		return fixpacks;
