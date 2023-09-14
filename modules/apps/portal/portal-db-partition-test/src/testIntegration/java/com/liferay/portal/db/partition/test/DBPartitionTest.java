@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
-import com.liferay.portal.model.DefaultModelHintsImpl;
 import com.liferay.portal.model.impl.ClassNameImpl;
 import com.liferay.portal.service.impl.ClassNameLocalServiceImpl;
 import com.liferay.portal.service.impl.CompanyLocalServiceImpl;
@@ -564,8 +563,6 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 		}
 	}
 
-	private static final String _CLASS_NAME_VALUE = "class.name.test";
-
 	private static final String _DB_PARTITION_SCHEMA_NAME_PREFIX =
 		"lpartitiontest_";
 
@@ -577,14 +574,5 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 
 	@Inject
 	private CounterLocalService _counterLocalService;
-
-	private class ClassNameModelHints extends DefaultModelHintsImpl {
-
-		@Override
-		public List<String> getModels() {
-			return Arrays.asList(_CLASS_NAME_VALUE);
-		}
-
-	}
 
 }
