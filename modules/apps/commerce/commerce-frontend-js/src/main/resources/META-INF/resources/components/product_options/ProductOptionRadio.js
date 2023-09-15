@@ -25,8 +25,8 @@ const ProductOptionRadio = ({
 	accountId,
 	channelId,
 	componentId,
-	forceRequired,
-	isAdmin,
+	forceRequired = false,
+	isAdmin = false,
 	json,
 	minQuantity,
 	namespace,
@@ -35,6 +35,7 @@ const ProductOptionRadio = ({
 	sku,
 }) => {
 	const isMounted = useIsMounted();
+	const optionIsRequired = isRequired(forceRequired, isAdmin, productOption);
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
@@ -277,9 +278,7 @@ const ProductOptionRadio = ({
 			<label htmlFor={componentId}>
 				{getProductOptionName(productOption.name)}
 
-				<Asterisk
-					required={isRequired(forceRequired, isAdmin, productOption)}
-				/>
+				<Asterisk required={optionIsRequired} />
 			</label>
 
 			<ClayRadioGroup
