@@ -4,13 +4,17 @@
  */
 
 import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
-import ClayForm, {ClaySelect} from '@clayui/form';
-import ClayIcon from '@clayui/icon';
+import ClayForm from '@clayui/form';
+import {useLiferayState} from '@liferay/frontend-js-state-web';
 import {fetch, sub} from 'frontend-js-web';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
+import {CommerceContext} from '../../index';
+import skuOptionsAtom from '../../utilities/atoms/skuOptionsAtom';
 import {CHANNEL_RESOURCE_ENDPOINT} from '../../utilities/constants';
 import {isNonnull} from '../price/util/index';
+import ProductOptionRadio from '../product_options/ProductOptionRadio';
+import ProductOptionSelect from '../product_options/ProductOptionSelect';
 import MiniCartContext from './MiniCartContext';
 
 const getProductOptions = (channelId, productId) => {
@@ -24,6 +28,10 @@ const getProductOptions = (channelId, productId) => {
 
 function EditItem() {
 	const [options, setOptions] = useState([]);
+	const [skuOptionsAtomState] = useLiferayState(skuOptionsAtom);
+
+	const {namespace} = skuOptionsAtomState;
+
 	const {
 		cartState: {
 			cartItems,
@@ -78,7 +86,10 @@ function EditItem() {
 					{options?.items?.length > 0 ? (
 						<ClayForm>
 							<Options
-								items={options.items}
+								channelId={channel.id}
+								namespace={namespace}
+								options={options.items}
+								productId={editedItem.productId}
 								selectedItem={selectedItem}
 							/>
 						</ClayForm>
@@ -143,45 +154,29 @@ function EditItem() {
 
 export default EditItem;
 
-const Options = ({items, selectedItem}) => {
-	const [selectedOptions, setSelectedOptions] = useState(() =>
-		JSON.parse(selectedItem.options).reduce(
-			(acc, {key, value}) => ({...acc, [key]: value}),
-			{}
-		)
-	);
+const Options = ({channelId, namespace, options, productId, selectedItem}) =>
+	options.map((option) => {
+		let Component = ProductOptionSelect;
 
-	return items.map(({id, key, name, productOptionValues}) => (
-		<ClayForm.Group key={id}>
-			<label htmlFor={`${id}-${name}`}>
-				{name}
+		if (option.fieldType === 'radio') {
+			Component = ProductOptionRadio;
+		}
 
-				<span className="reference-mark">
-					<ClayIcon symbol="asterisk" />
-				</span>
-			</label>
-
-			<ClaySelect
-				id={`${id}-${name}`}
-				onChange={({target: {value}}) =>
-					setSelectedOptions((selectedOptions) => ({
-						...selectedOptions,
-						[key]: value,
-					}))
-				}
-			>
-				{productOptionValues.map((item) => (
-					<ClaySelect.Option
-						key={item.id}
-						label={item.name}
-						selected={selectedOptions[key] === item.key}
-						value={item.key}
-					/>
-				))}
-			</ClaySelect>
-		</ClayForm.Group>
-	));
-};
+		return (
+			<Component
+				accountId={CommerceContext.account.accountId}
+				channelId={channelId}
+				componentId={`${namespace}_${option.id}`}
+				json={selectedItem.options}
+				key={option.id}
+				minQuantity={selectedItem.quantity}
+				namespace={namespace}
+				productId={productId}
+				productOption={option}
+				sku={{skuId: selectedItem.skuId}}
+			/>
+		);
+	});
 
 const PriceRow = ({children, priceName}) => {
 	return (
