@@ -6,11 +6,11 @@
 import ClayForm, {ClayRadio, ClayRadioGroup} from '@clayui/form';
 import {useIsMounted} from '@liferay/frontend-js-react-web';
 import {useLiferayState} from '@liferay/frontend-js-state-web';
+import React, {useEffect, useState} from 'react';
+
 import ServiceProvider from '../../ServiceProvider/index';
 import skuOptionsAtom from '../../utilities/atoms/skuOptionsAtom';
 import {CP_INSTANCE_CHANGED} from '../../utilities/eventsDefinitions';
-import React, {useEffect, useState} from 'react';
-
 import Asterisk from './Asterisk';
 import {
 	getInitialProductOptionValue,
@@ -146,20 +146,22 @@ const ProductOptionRadio = ({
 		)[0];
 
 		if (currentSkuOption) {
-			const curIndex = currentSkuOptions.findIndex(
-				(skuOption) => skuOption.skuOptionKey === productOption.key
-			);
+			currentSkuOptions = currentSkuOptions.map((skuOption) => {
+				if (skuOption.skuOptionKey === productOption.key) {
+					return {
+						key: productOption.key,
+						price: currentProductOptionValue.price,
+						priceType: currentProductOptionValue.priceType,
+						quantity: currentProductOptionValue.quantity,
+						skuId: currentProductOptionValue.skuId,
+						skuOptionKey: productOption.key,
+						skuOptionValueKey: valueArray[1],
+						value: [valueArray[1]],
+					};
+				}
 
-			currentSkuOptions[curIndex] = {
-				key: productOption.key,
-				price: currentProductOptionValue.price,
-				priceType: currentProductOptionValue.priceType,
-				quantity: currentProductOptionValue.quantity,
-				skuId: currentProductOptionValue.skuId,
-				skuOptionKey: productOption.key,
-				skuOptionValueKey: valueArray[1],
-				value: [valueArray[1]],
-			};
+				return skuOption;
+			});
 		}
 		else {
 			currentSkuOptions = [
