@@ -79,6 +79,7 @@ const getSkuOptionsErrors = (hasErrors, productOption, skuOptionsAtomState) =>
 const initialSkuOptionsAtomState = {
 	errors: [],
 	namespace: '',
+	skuMiniCartOptions: [],
 	skuOptions: [],
 	updating: false,
 };

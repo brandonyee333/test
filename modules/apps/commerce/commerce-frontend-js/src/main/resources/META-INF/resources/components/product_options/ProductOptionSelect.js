@@ -28,6 +28,7 @@ const ProductOptionSelect = ({
 	componentId,
 	forceRequired = false,
 	isAdmin = false,
+	isFromMiniCart = false,
 	json,
 	minQuantity,
 	namespace,
@@ -38,6 +39,7 @@ const ProductOptionSelect = ({
 	const [hasErrors, setHasErrors] = useState(false);
 	const isMounted = useIsMounted();
 	const optionIsRequired = isRequired(forceRequired, isAdmin, productOption);
+	const skuOptionsKey = isFromMiniCart ? 'skuMiniCartOptions' : 'skuOptions';
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
@@ -119,6 +121,9 @@ const ProductOptionSelect = ({
 					value: initialProductOptionValue?.key || '',
 				},
 			],
+			...(isFromMiniCart && {
+				skuMiniCartOptions: skuOptionsAtomState.skuOptions,
+			}),
 		});
 
 		return () => setSkuOptionsAtomState(initialSkuOptionsAtomState);
@@ -177,7 +182,7 @@ const ProductOptionSelect = ({
 
 		setSelectedProductOptionValueKey(valueArray[1]);
 
-		let currentSkuOptions = skuOptionsAtomState.skuOptions;
+		let currentSkuOptions = skuOptionsAtomState[skuOptionsKey];
 
 		const currentSkuOption = currentSkuOptions.filter(
 			(skuOption) => skuOption.skuOptionKey === productOption.key
@@ -227,7 +232,7 @@ const ProductOptionSelect = ({
 					productOption,
 					skuOptionsAtomState
 				),
-				skuOptions: currentSkuOptions,
+				[skuOptionsKey]: currentSkuOptions,
 				updating: false,
 			});
 		}
@@ -264,10 +269,10 @@ const ProductOptionSelect = ({
 
 				setSkuOptionsAtomState({
 					...skuOptionsAtomState,
-					skuOptions: currentSkuOptions,
+					[skuOptionsKey]: currentSkuOptions,
 				});
 
-				cpInstance.skuOptions = currentSkuOptions;
+				cpInstance[skuOptionsKey] = currentSkuOptions;
 				cpInstance.skuId = parseInt(cpInstance.id, 10);
 
 				const dispatchedPayload = {
@@ -290,7 +295,7 @@ const ProductOptionSelect = ({
 							productOption,
 							skuOptionsAtomState
 						),
-						skuOptions: currentSkuOptions,
+						[skuOptionsKey]: currentSkuOptions,
 						updating: false,
 					});
 				}

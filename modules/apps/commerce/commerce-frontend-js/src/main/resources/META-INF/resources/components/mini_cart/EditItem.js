@@ -167,6 +167,7 @@ const Options = ({channelId, namespace, options, productId, selectedItem}) =>
 				accountId={CommerceContext.account.accountId}
 				channelId={channelId}
 				componentId={`${namespace}_${option.id}`}
+				isFromMiniCart={true}
 				json={selectedItem.options}
 				key={option.id}
 				minQuantity={selectedItem.quantity}

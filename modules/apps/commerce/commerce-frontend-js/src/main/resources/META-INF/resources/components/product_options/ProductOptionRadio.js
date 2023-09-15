@@ -27,6 +27,7 @@ const ProductOptionRadio = ({
 	componentId,
 	forceRequired = false,
 	isAdmin = false,
+	isFromMiniCart = false,
 	json,
 	minQuantity,
 	namespace,
@@ -36,6 +37,7 @@ const ProductOptionRadio = ({
 }) => {
 	const isMounted = useIsMounted();
 	const optionIsRequired = isRequired(forceRequired, isAdmin, productOption);
+	const skuOptionsKey = isFromMiniCart ? 'skuMiniCartOptions' : 'skuOptions';
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
@@ -70,7 +72,7 @@ const ProductOptionRadio = ({
 			),
 			namespace,
 			skuOptions: [
-				...skuOptionsAtomState.skuOptions,
+				...skuOptionsAtomState[skuOptionsKey],
 				{
 					key: productOption.key,
 					price: defaultProductOptionValue?.price,
@@ -82,6 +84,9 @@ const ProductOptionRadio = ({
 					value: [defaultProductOptionValue?.key],
 				},
 			],
+			...(isFromMiniCart && {
+				skuMiniCartOptions: skuOptionsAtomState.skuOptions,
+			}),
 		});
 
 		return () => setSkuOptionsAtomState(initialSkuOptionsAtomState);
@@ -140,7 +145,7 @@ const ProductOptionRadio = ({
 			(productOptionValue) => productOptionValue.key === valueArray[1]
 		)[0];
 
-		let currentSkuOptions = skuOptionsAtomState.skuOptions;
+		let currentSkuOptions = skuOptionsAtomState[skuOptionsKey];
 
 		const currentSkuOption = currentSkuOptions.filter(
 			(skuOption) => skuOption.skuOptionKey === productOption.key
@@ -183,7 +188,7 @@ const ProductOptionRadio = ({
 		if (!productOption.skuContributor && !currentProductOptionValue.skuId) {
 			setSkuOptionsAtomState({
 				...skuOptionsAtomState,
-				skuOptions: currentSkuOptions,
+				[skuOptionsKey]: currentSkuOptions,
 				updating: false,
 			});
 
@@ -223,10 +228,10 @@ const ProductOptionRadio = ({
 
 				setSkuOptionsAtomState({
 					...skuOptionsAtomState,
-					skuOptions: currentSkuOptions,
+					[skuOptionsKey]: currentSkuOptions,
 				});
 
-				cpInstance.skuOptions = currentSkuOptions;
+				cpInstance[skuOptionsKey] = currentSkuOptions;
 				cpInstance.skuId = parseInt(cpInstance.id, 10);
 
 				const dispatchedPayload = {
@@ -243,7 +248,7 @@ const ProductOptionRadio = ({
 				if (isMounted()) {
 					setSkuOptionsAtomState({
 						...skuOptionsAtomState,
-						skuOptions: currentSkuOptions,
+						[skuOptionsKey]: currentSkuOptions,
 						updating: false,
 					});
 				}
