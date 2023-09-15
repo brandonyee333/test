@@ -1,0 +1,28 @@
+jobs:
+  comment-on-label:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check if the label is 'QA Review Needed'
+      run: echo "Label is ${{ github.event.label.name }}"
+      if: github.event.label.name == 'QA Review Needed'
+
+    - name: Comment on Pull Request
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      run: |
+        issue_number="${{ github.event.issue.number }}"
+        repo="${{ github.repository }}"
+        owner=$(echo $repo | cut -d'/' -f1)
+        body="ci:test:upgrade"
+
+        response=$(curl -X POST -s -H "Authorization: token $ACCESS_TOKEN" -H "Content-Type: application/json" \
+          -d "{\"body\":\"$body\"}" \
+          "https://api.github.com/repos/$owner/$repo/issues/$issue_number/comments")
+
+        echo "Comment response: $response"
+name: Comment on Label
+on:
+    issues:
+        types:
+            - labeled
