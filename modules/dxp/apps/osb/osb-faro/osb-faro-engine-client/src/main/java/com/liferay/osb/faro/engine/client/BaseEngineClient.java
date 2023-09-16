@@ -216,7 +216,7 @@ public abstract class BaseEngineClient {
 	}
 
 	protected void delete(
-			FaroProject faroProject, Object object, String type,
+			FaroProject faroProject, String type, Object object,
 			Map<String, Object> uriVariables)
 		throws FaroEngineClientException {
 
