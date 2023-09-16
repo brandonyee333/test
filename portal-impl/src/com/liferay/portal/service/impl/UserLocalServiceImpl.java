@@ -3913,7 +3913,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			String passwordResetURL = sb.toString();
 
-			ticketLocalService.updateTicket(ticket);
+			ticket.setKey(PasswordEncryptorUtil.encrypt(ticket.getKey()));
 
 			sendPasswordNotification(
 				user, companyId, null, passwordResetURL, fromName, fromAddress,
