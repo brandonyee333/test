@@ -8,9 +8,9 @@
 <%@ include file="/html/portal/init.jsp" %>
 
 <%
-boolean oldFormat = (boolean)request.getAttribute("oldFormat");
+String currentURL = PortalUtil.getCurrentURL(request);
 
-String referer = ParamUtil.getString(request, WebKeys.REFERER, PortalUtil.getCurrentURL(request));
+String referer = ParamUtil.getString(request, WebKeys.REFERER, currentURL);
 
 Ticket ticket = (Ticket)request.getAttribute(WebKeys.TICKET);
 
@@ -27,7 +27,7 @@ if (referer.startsWith(themeDisplay.getPathMain() + "/portal/update_password") &
 	<c:when test="<%= !themeDisplay.isSignedIn() && (ticket == null) %>">
 		<div class="alert alert-warning">
 			<c:choose>
-				<c:when test="<%= oldFormat %>">
+				<c:when test='<%= (ticket == null) && (ticketKey != null) && (ticketKey.indexOf("_") == -1) %>'>
 					<liferay-ui:message key="this-link-format-is-no-longer-recognized-please-request-a-new-link" />
 				</c:when>
 				<c:otherwise>
