@@ -56,7 +56,11 @@ const ProductOptionRadio = ({
 	const initialProductOptionValue =
 		isAdmin && currentJSONObject
 			? {key: currentJSONObject.value[0]}
-			: getInitialProductOptionValue(productOption);
+			: getInitialProductOptionValue({
+					currentJSONObject,
+					isFromMiniCart,
+					productOption,
+			  });
 
 	const defaultProductOptionValue = initialProductOptionValue
 		? initialProductOptionValue

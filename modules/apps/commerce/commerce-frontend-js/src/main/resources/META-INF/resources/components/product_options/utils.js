@@ -5,13 +5,21 @@
 
 import {isObject} from 'frontend-js-web/index';
 
-const getInitialProductOptionValue = (productOption) => {
+const getInitialProductOptionValue = ({
+	currentJSONObject,
+	isFromMiniCart,
+	productOption,
+}) => {
 	if (!productOption.productOptionValues) {
 		return;
 	}
 
+	const getSelectedProductOptionValue = isFromMiniCart
+		? ({key}) => key === currentJSONObject.skuOptionValueKey
+		: ({preselected}) => preselected === true;
+
 	const selectedProductOptionValue = productOption.productOptionValues.find(
-		(productOptionValue) => productOptionValue.preselected === true
+		getSelectedProductOptionValue
 	);
 
 	if (selectedProductOptionValue) {

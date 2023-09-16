@@ -53,7 +53,11 @@ const ProductOptionSelect = ({
 
 	const initialProductOptionValue = isAdmin
 		? {key: currentJSONObject?.value[0]}
-		: getInitialProductOptionValue(productOption);
+		: getInitialProductOptionValue({
+				currentJSONObject,
+				isFromMiniCart,
+				productOption,
+		  });
 
 	const [
 		selectedProductOptionValue,
