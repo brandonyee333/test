@@ -73,7 +73,7 @@
 				for (i = 0; i < imageFiles.length; i++) {
 					file = imageFiles[i];
 
-					this._processFile(file, editor);
+					this._processFile(file, editor, true);
 				}
 			}
 
@@ -195,7 +195,7 @@
 			if (clipboardItem.type.indexOf('image') === 0) {
 				const imageFile = clipboardItem.getAsFile();
 
-				this._processFile(imageFile, editor);
+				this._processFile(imageFile, editor, false);
 			}
 			else if (clipboardItem.type === 'html') {
 				const fragment = CKEDITOR.htmlParser.fragment.fromHtml(
@@ -274,7 +274,7 @@
 		 * @param {CKEDITOR.editor} editor The current editor instance
 		 * @protected
 		 */
-		_processFile(file, editor) {
+		_processFile(file, editor, dragdrop) {
 			const reader = new FileReader();
 
 			reader.addEventListener('loadend', () => {
@@ -284,14 +284,9 @@
 					'<img src="' + bin + '">'
 				);
 
-				editor.insertElement(element);
-
-				const imageData = {
-					element,
-					file,
-				};
-
-				editor.fire('imageAdd', imageData);
+				if (dragdrop) {
+					editor.insertElement(element);
+				}
 			});
 
 			reader.readAsDataURL(file);
@@ -349,173 +344,6 @@
 						editor,
 					}
 				);
-			});
-
-			AUI().use('aui-progressbar', 'uploader', (A) => {
-				const ATTR_DATA_RANDOM_ID = 'data-random-id';
-				const CSS_UPLOADING_IMAGE = 'uploading-image';
-
-				const TPL_IMAGE_CONTAINER =
-					'<div class="uploading-image-container"></div>';
-
-				const TPL_PROGRESS_BAR = '<div class="progressbar"></div>';
-
-				const _onUploadError = () => {
-					const image = this._tempImage;
-
-					if (image) {
-						image.parentElement.remove();
-					}
-
-					Liferay.Util.openToast({
-						message: Liferay.Language.get(
-							'an-unexpected-error-occurred-while-uploading-your-file'
-						),
-						type: 'danger',
-					});
-				};
-
-				const _onUploadComplete = (event) => {
-					const target = event.details[0].target;
-
-					const progressbar = target.progressbar;
-
-					if (progressbar) {
-						progressbar.destroy();
-					}
-
-					const data = JSON.parse(event.data);
-
-					if (data.success) {
-						const image = this._tempImage;
-
-						if (image) {
-							image.removeAttribute(ATTR_DATA_RANDOM_ID);
-							image.classList.remove(CSS_UPLOADING_IMAGE);
-
-							image.setAttribute(
-								data.file.attributeDataImageId,
-								data.file.fileEntryId
-							);
-
-							image.src = editor.config.attachmentURLPrefix
-								? editor.config.attachmentURLPrefix +
-								  data.file.title
-								: data.file.url;
-
-							const imageContainer = image.parentElement;
-
-							A.one(image).unwrap(imageContainer);
-
-							imageContainer.remove();
-
-							editor.fire('imageUploaded', {
-								editor,
-								// eslint-disable-next-line @liferay/no-abbreviations
-								el: image,
-								fileEntryId: data.file.fileEntryId,
-								uploadImageReturnType: '',
-							});
-
-							const fragment = CKEDITOR.htmlParser.fragment.fromHtml(
-								editor.getData()
-							);
-
-							let imageFound = false;
-
-							fragment.forEach((element) => {
-								if (
-									element.type === CKEDITOR.NODE_ELEMENT &&
-									element.attributes['data-image-id'] ===
-										image.dataset.imageId
-								) {
-									imageFound = true;
-								}
-							});
-
-							if (!imageFound) {
-								this._onImageUploaded(image, editor);
-							}
-						}
-					}
-					else {
-						_onUploadError();
-					}
-				};
-
-				const _onUploadProgress = (event) => {
-					const percentLoaded = Math.round(event.percentLoaded);
-
-					const target = event.details[0].target;
-
-					const progressbar = target.progressbar;
-
-					if (progressbar) {
-						progressbar.set('label', percentLoaded + ' %');
-
-						progressbar.set('value', Math.ceil(percentLoaded));
-					}
-				};
-
-				const _createProgressBar = (image) => {
-					const imageContainerNode = A.Node.create(
-						TPL_IMAGE_CONTAINER
-					);
-					const progressBarNode = A.Node.create(TPL_PROGRESS_BAR);
-
-					A.one(image).wrap(imageContainerNode);
-
-					imageContainerNode.appendChild(progressBarNode);
-
-					const progressbar = new A.ProgressBar({
-						boundingBox: progressBarNode,
-					}).render();
-
-					return progressbar;
-				};
-
-				editor.on('imageAdd', (event) => {
-					const eventData = event.data;
-
-					let file = eventData.file;
-					const image = eventData.element.$;
-
-					const randomId = eventData.randomId || A.guid();
-
-					image.setAttribute(ATTR_DATA_RANDOM_ID, randomId);
-
-					image.classList.add(CSS_UPLOADING_IMAGE);
-
-					this._tempImage = image;
-
-					let uploader = eventData.uploader;
-
-					if (uploader) {
-						uploader.on('uploadcomplete', _onUploadComplete);
-						uploader.on('uploaderror', _onUploadError);
-						uploader.on('uploadprogress', _onUploadProgress);
-					}
-					else {
-						file = new A.FileHTML5(file);
-
-						uploader = new A.Uploader({
-							fileFieldName: 'imageSelectorFileName',
-							uploadURL: editor.config.uploadUrl,
-						});
-
-						uploader.on('uploadcomplete', _onUploadComplete);
-						uploader.on('uploaderror', _onUploadError);
-						uploader.on('uploadprogress', _onUploadProgress);
-
-						uploader.set('postVarsPerFile', {
-							randomId,
-						});
-
-						uploader.upload(file);
-					}
-
-					file.progressbar = _createProgressBar(image);
-				});
 			});
 		},
 	});
