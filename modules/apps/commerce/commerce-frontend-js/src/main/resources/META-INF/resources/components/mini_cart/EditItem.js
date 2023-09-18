@@ -9,14 +9,21 @@ import {useLiferayState} from '@liferay/frontend-js-state-web';
 import {fetch, sub} from 'frontend-js-web';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
+import ServiceProvider from '../../ServiceProvider/index';
 import {CommerceContext} from '../../index';
 import skuOptionsAtom from '../../utilities/atoms/skuOptionsAtom';
 import {CHANNEL_RESOURCE_ENDPOINT} from '../../utilities/constants';
-import {CP_INSTANCE_CHANGED} from '../../utilities/eventsDefinitions';
+import {
+	CP_INSTANCE_CHANGED,
+	CURRENT_ORDER_UPDATED,
+} from '../../utilities/eventsDefinitions';
+import {formatCartItem} from '../add_to_cart/data';
 import {adaptLegacyPriceModel, isNonnull} from '../price/util/index';
 import ProductOptionRadio from '../product_options/ProductOptionRadio';
 import ProductOptionSelect from '../product_options/ProductOptionSelect';
 import MiniCartContext from './MiniCartContext';
+
+const CartResource = ServiceProvider.DeliveryCartAPI('v1');
 
 const getProductOptions = (channelId, productId) => {
 	const url = new URL(
@@ -27,17 +34,59 @@ const getProductOptions = (channelId, productId) => {
 	return url.toString();
 };
 
+const saveItem = async ({cartState, cpInstance, namespace, selectedItem}) => {
+	if (!Object.keys(cpInstance).length) {
+		return;
+	}
+
+	const {cartItems, id: cartId} = cartState;
+	const {skuMiniCartOptions} = cpInstance;
+
+	const formattedCartItem = formatCartItem(
+		cpInstance,
+		namespace,
+		skuMiniCartOptions,
+		namespace
+	);
+
+	const updatedCartItems = cartItems.map((cartItem) =>
+		cartItem.id === selectedItem.id
+			? {
+					...cartItem,
+					options: formattedCartItem.options,
+					replacedSkuId: formattedCartItem.replacedSkuId,
+					sku: cpInstance.sku,
+					skuId: formattedCartItem.skuId,
+			  }
+			: cartItem
+	);
+
+	const updatedCart = await CartResource.updateCartById(cartId, {
+		cartItems: updatedCartItems,
+	});
+
+	Liferay.fire(CURRENT_ORDER_UPDATED, {order: updatedCart});
+
+	return updatedCart;
+};
+
 function EditItem() {
 	const [options, setOptions] = useState([]);
 	const [skuOptionsAtomState] = useLiferayState(skuOptionsAtom);
+	const [cpInstance, setCpInstance] = useState({});
 
-	const {namespace} = skuOptionsAtomState;
+	const {miniCartErrors, namespace} = skuOptionsAtomState;
+
+	const buttonSaveIsDisabled = useMemo(() => miniCartErrors.length, [
+		miniCartErrors,
+	]);
 
 	const {
 		cartState: {
 			cartItems,
 			channel: {channel},
 		},
+		cartState,
 		editedItem,
 		setEditedItem,
 	} = useContext(MiniCartContext);
@@ -55,6 +104,7 @@ function EditItem() {
 	const [price, setPrice] = useState(selectedItem.price);
 
 	const updatePrice = ({cpInstance}) => {
+		setCpInstance(cpInstance);
 		setPrice(adaptLegacyPriceModel(cpInstance.price));
 	};
 
@@ -77,6 +127,25 @@ function EditItem() {
 
 	const hasDiscount = isNonnull(price.discountPercentage);
 	const hasPromoPrice = isNonnull(price.promoPrice);
+
+	const onSaveItem = () => {
+		if (buttonSaveIsDisabled) {
+			return;
+		}
+
+		saveItem({
+			cartState,
+			cpInstance,
+			namespace,
+			selectedItem,
+		})
+			.then(() => {
+				setEditedItem(null);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
 
 	return (
 		<>
@@ -158,7 +227,12 @@ function EditItem() {
 						{Liferay.Language.get('cancel')}
 					</ClayButton>
 
-					<ClayButton>{Liferay.Language.get('save')}</ClayButton>
+					<ClayButton
+						disabled={buttonSaveIsDisabled}
+						onClick={onSaveItem}
+					>
+						{Liferay.Language.get('save')}
+					</ClayButton>
 				</div>
 			</div>
 		</>
