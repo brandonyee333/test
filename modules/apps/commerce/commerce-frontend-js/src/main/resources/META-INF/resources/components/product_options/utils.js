@@ -71,21 +71,30 @@ const getProductOptionName = (name) => {
 	return name;
 };
 
-const getSkuOptionsErrors = (hasErrors, productOption, skuOptionsAtomState) =>
-	hasErrors
+const getSkuOptionsErrors = (
+	hasErrors,
+	productOption,
+	skuOptionsAtomState,
+	isFromMiniCart = false
+) => {
+	const errorsKey = isFromMiniCart ? 'miniCartErrors' : 'errors';
+
+	return hasErrors
 		? [
-				...skuOptionsAtomState.errors,
+				...skuOptionsAtomState[errorsKey],
 				{
 					hasErrors: true,
 					id: productOption.id,
 				},
 		  ]
-		: skuOptionsAtomState.errors.filter(
+		: skuOptionsAtomState[errorsKey].filter(
 				(error) => error.id !== productOption.id
 		  );
+};
 
 const initialSkuOptionsAtomState = {
 	errors: [],
+	miniCartErrors: [],
 	namespace: '',
 	skuMiniCartOptions: [],
 	skuOptions: [],

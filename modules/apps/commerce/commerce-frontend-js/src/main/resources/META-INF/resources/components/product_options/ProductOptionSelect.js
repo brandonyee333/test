@@ -36,6 +36,7 @@ const ProductOptionSelect = ({
 	productOption,
 	sku,
 }) => {
+	const errorsKey = isFromMiniCart ? 'miniCartErrors' : 'errors';
 	const [hasErrors, setHasErrors] = useState(false);
 	const isMounted = useIsMounted();
 	const optionIsRequired = isRequired(forceRequired, isAdmin, productOption);
@@ -83,10 +84,11 @@ const ProductOptionSelect = ({
 		() =>
 			setSkuOptionsAtomState({
 				...skuOptionsAtomState,
-				errors: getSkuOptionsErrors(
+				[errorsKey]: getSkuOptionsErrors(
 					hasErrors,
 					productOption,
-					skuOptionsAtomState
+					skuOptionsAtomState,
+					isFromMiniCart
 				),
 			}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -134,6 +136,7 @@ const ProductOptionSelect = ({
 			isFromMiniCart
 				? setSkuOptionsAtomState({
 						...skuOptionsAtomState,
+						miniCartErrors: [],
 						skuMiniCartOptions: [],
 				  })
 				: setSkuOptionsAtomState(initialSkuOptionsAtomState);
@@ -158,10 +161,11 @@ const ProductOptionSelect = ({
 
 			return setSkuOptionsAtomState({
 				...skuOptionsAtomState,
-				errors: getSkuOptionsErrors(
+				[errorsKey]: getSkuOptionsErrors(
 					required,
 					productOption,
-					skuOptionsAtomState
+					skuOptionsAtomState,
+					isFromMiniCart
 				),
 				updating: false,
 			});
@@ -181,10 +185,11 @@ const ProductOptionSelect = ({
 
 			return setSkuOptionsAtomState({
 				...skuOptionsAtomState,
-				errors: getSkuOptionsErrors(
+				[errorsKey]: getSkuOptionsErrors(
 					required,
 					productOption,
-					skuOptionsAtomState
+					skuOptionsAtomState,
+					isFromMiniCart
 				),
 				updating: false,
 			});
@@ -237,10 +242,11 @@ const ProductOptionSelect = ({
 
 			return setSkuOptionsAtomState({
 				...skuOptionsAtomState,
-				errors: getSkuOptionsErrors(
+				[errorsKey]: getSkuOptionsErrors(
 					false,
 					productOption,
-					skuOptionsAtomState
+					skuOptionsAtomState,
+					isFromMiniCart
 				),
 				[skuOptionsKey]: currentSkuOptions,
 				updating: false,
@@ -300,10 +306,11 @@ const ProductOptionSelect = ({
 					setHasErrors(false);
 					setSkuOptionsAtomState({
 						...skuOptionsAtomState,
-						errors: getSkuOptionsErrors(
+						[errorsKey]: getSkuOptionsErrors(
 							false,
 							productOption,
-							skuOptionsAtomState
+							skuOptionsAtomState,
+							isFromMiniCart
 						),
 						[skuOptionsKey]: currentSkuOptions,
 						updating: false,
@@ -351,12 +358,10 @@ const ProductOptionSelect = ({
 				name={productOption.key}
 				onChange={handleChange}
 			>
-				{optionIsRequired ? null : (
-					<ClaySelect.Option
-						label={Liferay.Language.get('choose-an-option')}
-						selected={!selectedProductOptionValueKey}
-					/>
-				)}
+				<ClaySelect.Option
+					label={Liferay.Language.get('choose-an-option')}
+					selected={!selectedProductOptionValueKey}
+				/>
 
 				{productOptionValues.map(
 					({
