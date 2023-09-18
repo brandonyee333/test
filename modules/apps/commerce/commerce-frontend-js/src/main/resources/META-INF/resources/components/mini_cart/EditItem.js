@@ -12,7 +12,8 @@ import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {CommerceContext} from '../../index';
 import skuOptionsAtom from '../../utilities/atoms/skuOptionsAtom';
 import {CHANNEL_RESOURCE_ENDPOINT} from '../../utilities/constants';
-import {isNonnull} from '../price/util/index';
+import {CP_INSTANCE_CHANGED} from '../../utilities/eventsDefinitions';
+import {adaptLegacyPriceModel, isNonnull} from '../price/util/index';
 import ProductOptionRadio from '../product_options/ProductOptionRadio';
 import ProductOptionSelect from '../product_options/ProductOptionSelect';
 import MiniCartContext from './MiniCartContext';
@@ -51,7 +52,11 @@ function EditItem() {
 		[cartItems, editedItem]
 	);
 
-	const {price} = selectedItem;
+	const [price, setPrice] = useState(selectedItem.price);
+
+	const updatePrice = ({cpInstance}) => {
+		setPrice(adaptLegacyPriceModel(cpInstance.price));
+	};
 
 	useEffect(() => {
 		const url = getProductOptions(channel.id, editedItem.productId);
@@ -61,6 +66,14 @@ function EditItem() {
 			.then((data) => setOptions(data))
 			.catch((error) => console.error(error));
 	}, [channel.id, editedItem.productId]);
+
+	useEffect(() => {
+		Liferay.on(`${namespace}${CP_INSTANCE_CHANGED}`, updatePrice);
+
+		return () => {
+			Liferay.detach(`${namespace}${CP_INSTANCE_CHANGED}`, updatePrice);
+		};
+	}, [namespace]);
 
 	const hasDiscount = isNonnull(price.discountPercentage);
 	const hasPromoPrice = isNonnull(price.promoPrice);
