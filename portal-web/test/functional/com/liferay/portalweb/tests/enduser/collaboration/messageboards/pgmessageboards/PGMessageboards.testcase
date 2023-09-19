@@ -629,7 +629,7 @@ definition {
 
 	@priority = 4
 	test ViewDefaultEmailFromConfigurationAndSubscriptionEmail {
-		property custom.properties = "message.boards.email.bulk=false${line.separator}jsonws.web.service.paths.excludes=";
+		property custom.properties = "jsonws.web.service.paths.excludes=${line.separator}message.boards.email.bulk=false";
 		property test.smtp.server.enabled = "true";
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
