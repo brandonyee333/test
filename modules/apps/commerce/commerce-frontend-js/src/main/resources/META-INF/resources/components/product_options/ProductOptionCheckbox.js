@@ -19,12 +19,16 @@ import {
 
 const ProductOptionCheckbox = ({
 	componentId,
-	forceRequired,
+	forceRequired = false,
+	isFromMiniCart = false,
+	json,
 	namespace,
 	productOption,
 }) => {
+	const errorsKey = isFromMiniCart ? 'miniCartErrors' : 'errors';
 	const [hasErrors, setHasErrors] = useState(false);
 	const [isChecked, setIsChecked] = useState(false);
+	const skuOptionsKey = isFromMiniCart ? 'skuMiniCartOptions' : 'skuOptions';
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
@@ -34,10 +38,11 @@ const ProductOptionCheckbox = ({
 		() =>
 			setSkuOptionsAtomState({
 				...skuOptionsAtomState,
-				errors: getSkuOptionsErrors(
+				[errorsKey]: getSkuOptionsErrors(
 					hasErrors,
 					productOption,
-					skuOptionsAtomState
+					skuOptionsAtomState,
+					isFromMiniCart
 				),
 			}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,9 +51,22 @@ const ProductOptionCheckbox = ({
 
 	useEffect(() => {
 		setSkuOptionsAtomState({...skuOptionsAtomState, namespace});
+		let isChecked = false;
+
+		if (isFromMiniCart) {
+			const option = JSON.parse(json).find(
+				({key}) => key === productOption.key
+			);
+
+			if (option) {
+				isChecked = option.value.includes(option.key);
+
+				setIsChecked(isChecked);
+			}
+		}
 
 		if (productOption.required) {
-			setHasErrors(true);
+			setHasErrors(isChecked ? !isChecked : productOption.required);
 		}
 
 		setSkuOptionsAtomState({
@@ -59,9 +77,19 @@ const ProductOptionCheckbox = ({
 				skuOptionsAtomState
 			),
 			namespace,
+			...(isFromMiniCart && {
+				skuMiniCartOptions: skuOptionsAtomState.skuOptions,
+			}),
 		});
 
-		return () => setSkuOptionsAtomState(initialSkuOptionsAtomState);
+		return () =>
+			isFromMiniCart
+				? setSkuOptionsAtomState({
+						...skuOptionsAtomState,
+						miniCartErrors: [],
+						skuMiniCartOptions: [],
+				  })
+				: setSkuOptionsAtomState(initialSkuOptionsAtomState);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -74,7 +102,7 @@ const ProductOptionCheckbox = ({
 
 		setIsChecked(checked);
 
-		let currentSkuOptions = skuOptionsAtomState.skuOptions;
+		let currentSkuOptions = skuOptionsAtomState[skuOptionsKey];
 
 		const currentSkuOption = currentSkuOptions.find(
 			(skuOption) => skuOption.skuOptionKey === productOption.key
@@ -89,6 +117,8 @@ const ProductOptionCheckbox = ({
 						value: checked ? [value] : [],
 					};
 				}
+
+				return skuOption;
 			});
 		}
 		else {
@@ -97,7 +127,7 @@ const ProductOptionCheckbox = ({
 				{
 					key: productOption.key,
 					skuOptionKey: productOption.key,
-					value: [value],
+					value: checked ? [value] : [],
 				},
 			];
 		}
@@ -108,12 +138,13 @@ const ProductOptionCheckbox = ({
 
 		setSkuOptionsAtomState({
 			...skuOptionsAtomState,
-			errors: getSkuOptionsErrors(
+			[errorsKey]: getSkuOptionsErrors(
 				required,
 				productOption,
-				skuOptionsAtomState
+				skuOptionsAtomState,
+				isFromMiniCart
 			),
-			skuOptions: currentSkuOptions,
+			[skuOptionsKey]: currentSkuOptions,
 			updating: false,
 		});
 	};
