@@ -1,3 +1,15 @@
+tasks.register('replaceIsServerSide') {
+	doLast {
+		ant.replace(
+			file: 'classes/META-INF/resources/metal/src/coreNamed.js',
+			token: 'function isServerSide',
+			value: 'function isServerSide() { return false; }\n\n  function _isServerSide'
+		)
+	}
+}
+
+jar.dependsOn replaceIsServerSide
+
 afterEvaluate {
 	transpileJS {
 		soyDependencies = []
