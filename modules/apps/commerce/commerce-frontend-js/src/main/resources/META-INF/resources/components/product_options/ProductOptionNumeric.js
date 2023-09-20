@@ -28,7 +28,7 @@ const ProductOptionNumeric = ({
 	const errorsKey = isFromMiniCart ? 'miniCartErrors' : 'errors';
 	const [hasErrors, setHasErrors] = useState(false);
 	const [number, setNumber] = useState('');
-	const skuOptionsKey = isFromMiniCart ? 'skuMiniCartOptions' : 'skuOptions';
+	const skuOptionsKey = isFromMiniCart ? 'miniCartSkuOptions' : 'skuOptions';
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
@@ -82,7 +82,7 @@ const ProductOptionNumeric = ({
 				},
 			],
 			...(isFromMiniCart && {
-				skuMiniCartOptions: skuOptionsAtomState.skuOptions,
+				miniCartSkuOptions: skuOptionsAtomState.skuOptions,
 			}),
 		});
 
@@ -91,7 +91,7 @@ const ProductOptionNumeric = ({
 				? setSkuOptionsAtomState({
 						...skuOptionsAtomState,
 						miniCartErrors: [],
-						skuMiniCartOptions: [],
+						miniCartSkuOptions: [],
 				  })
 				: setSkuOptionsAtomState(initialSkuOptionsAtomState); // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

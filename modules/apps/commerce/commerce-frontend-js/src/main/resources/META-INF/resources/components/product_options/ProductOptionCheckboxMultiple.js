@@ -26,7 +26,7 @@ const ProductOptionCheckboxMultiple = ({
 }) => {
 	const errorsKey = isFromMiniCart ? 'miniCartErrors' : 'errors';
 	const [hasErrors, setHasErrors] = useState(false);
-	const skuOptionsKey = isFromMiniCart ? 'skuMiniCartOptions' : 'skuOptions';
+	const skuOptionsKey = isFromMiniCart ? 'miniCartSkuOptions' : 'skuOptions';
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
 	);
@@ -115,7 +115,7 @@ const ProductOptionCheckboxMultiple = ({
 			namespace,
 			skuOptions: initialSkuOptions,
 			...(isFromMiniCart && {
-				skuMiniCartOptions: initialSkuOptions,
+				miniCartSkuOptions: initialSkuOptions,
 			}),
 		});
 
@@ -124,7 +124,7 @@ const ProductOptionCheckboxMultiple = ({
 				? setSkuOptionsAtomState({
 						...skuOptionsAtomState,
 						miniCartErrors: [],
-						skuMiniCartOptions: [],
+						miniCartSkuOptions: [],
 				  })
 				: setSkuOptionsAtomState(initialSkuOptionsAtomState);
 

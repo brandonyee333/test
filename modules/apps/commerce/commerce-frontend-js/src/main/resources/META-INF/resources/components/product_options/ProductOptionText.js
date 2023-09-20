@@ -27,7 +27,7 @@ const ProductOptionText = ({
 }) => {
 	const errorsKey = isFromMiniCart ? 'miniCartErrors' : 'errors';
 	const [hasErrors, setHasErrors] = useState(false);
-	const skuOptionsKey = isFromMiniCart ? 'skuMiniCartOptions' : 'skuOptions';
+	const skuOptionsKey = isFromMiniCart ? 'miniCartSkuOptions' : 'skuOptions';
 	const [text, setText] = useState('');
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
@@ -82,7 +82,7 @@ const ProductOptionText = ({
 				},
 			],
 			...(isFromMiniCart && {
-				skuMiniCartOptions: skuOptionsAtomState.skuOptions,
+				miniCartSkuOptions: skuOptionsAtomState.skuOptions,
 			}),
 		});
 
@@ -91,7 +91,7 @@ const ProductOptionText = ({
 				? setSkuOptionsAtomState({
 						...skuOptionsAtomState,
 						miniCartErrors: [],
-						skuMiniCartOptions: [],
+						miniCartSkuOptions: [],
 				  })
 				: setSkuOptionsAtomState(initialSkuOptionsAtomState);
 		// eslint-disable-next-line react-hooks/exhaustive-deps

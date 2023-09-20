@@ -8,8 +8,8 @@ import {State} from '@liferay/frontend-js-state-web';
 const skuOptionsAtom = State.atom('skuOptionsAtom', {
 	errors: [],
 	miniCartErrors: [],
+	miniCartSkuOptions: [],
 	namespace: '',
-	skuMiniCartOptions: [],
 	skuOptions: [],
 	updating: false,
 });

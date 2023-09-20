@@ -95,8 +95,8 @@ const getSkuOptionsErrors = (
 const initialSkuOptionsAtomState = {
 	errors: [],
 	miniCartErrors: [],
+	miniCartSkuOptions: [],
 	namespace: '',
-	skuMiniCartOptions: [],
 	skuOptions: [],
 	updating: false,
 };

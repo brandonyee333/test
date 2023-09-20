@@ -41,12 +41,12 @@ const getProductOptions = (channelId, productId) => {
 
 const saveItem = async ({cartState, cpInstance, namespace, selectedItem}) => {
 	const {cartItems, id: cartId} = cartState;
-	const {skuMiniCartOptions} = cpInstance;
+	const {miniCartSkuOptions} = cpInstance;
 
 	const formattedCartItem = formatCartItem(
 		cpInstance,
 		namespace,
-		skuMiniCartOptions,
+		miniCartSkuOptions,
 		namespace
 	);
 
@@ -106,12 +106,12 @@ function EditItem() {
 
 	useEffect(() => {
 		setCpInstance({
+			miniCartSkuOptions: skuOptionsAtomState.miniCartSkuOptions,
 			quantity: selectedItem.quantity,
 			replacedSkuId: selectedItem.replacedSkuId,
 			skuId: selectedItem.skuId,
-			skuMiniCartOptions: skuOptionsAtomState.skuMiniCartOptions,
 		});
-	}, [selectedItem, skuOptionsAtomState.skuMiniCartOptions]);
+	}, [selectedItem, skuOptionsAtomState.miniCartSkuOptions]);
 
 	const [price, setPrice] = useState(selectedItem.price);
 
@@ -155,7 +155,7 @@ function EditItem() {
 				setEditedItem(null);
 				setSkuOptionsAtomState({
 					...skuOptionsAtomState,
-					skuOptions: skuOptionsAtomState.skuMiniCartOptions,
+					skuOptions: skuOptionsAtomState.miniCartSkuOptions,
 				});
 			})
 			.catch((error) => {

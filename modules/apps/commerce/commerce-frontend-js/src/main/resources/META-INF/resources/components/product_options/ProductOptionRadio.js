@@ -37,7 +37,7 @@ const ProductOptionRadio = ({
 }) => {
 	const isMounted = useIsMounted();
 	const optionIsRequired = isRequired(forceRequired, isAdmin, productOption);
-	const skuOptionsKey = isFromMiniCart ? 'skuMiniCartOptions' : 'skuOptions';
+	const skuOptionsKey = isFromMiniCart ? 'miniCartSkuOptions' : 'skuOptions';
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
@@ -89,7 +89,7 @@ const ProductOptionRadio = ({
 				},
 			],
 			...(isFromMiniCart && {
-				skuMiniCartOptions: skuOptionsAtomState.skuOptions,
+				miniCartSkuOptions: skuOptionsAtomState.skuOptions,
 			}),
 		});
 
@@ -97,7 +97,7 @@ const ProductOptionRadio = ({
 			isFromMiniCart
 				? setSkuOptionsAtomState({
 						...skuOptionsAtomState,
-						skuMiniCartOptions: [],
+						miniCartSkuOptions: [],
 				  })
 				: setSkuOptionsAtomState(initialSkuOptionsAtomState);
 		// eslint-disable-next-line react-hooks/exhaustive-deps

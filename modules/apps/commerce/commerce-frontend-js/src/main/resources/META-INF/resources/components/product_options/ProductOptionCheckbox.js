@@ -28,7 +28,7 @@ const ProductOptionCheckbox = ({
 	const errorsKey = isFromMiniCart ? 'miniCartErrors' : 'errors';
 	const [hasErrors, setHasErrors] = useState(false);
 	const [isChecked, setIsChecked] = useState(false);
-	const skuOptionsKey = isFromMiniCart ? 'skuMiniCartOptions' : 'skuOptions';
+	const skuOptionsKey = isFromMiniCart ? 'miniCartSkuOptions' : 'skuOptions';
 
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
@@ -78,7 +78,7 @@ const ProductOptionCheckbox = ({
 			),
 			namespace,
 			...(isFromMiniCart && {
-				skuMiniCartOptions: skuOptionsAtomState.skuOptions,
+				miniCartSkuOptions: skuOptionsAtomState.skuOptions,
 			}),
 		});
 
@@ -87,7 +87,7 @@ const ProductOptionCheckbox = ({
 				? setSkuOptionsAtomState({
 						...skuOptionsAtomState,
 						miniCartErrors: [],
-						skuMiniCartOptions: [],
+						miniCartSkuOptions: [],
 				  })
 				: setSkuOptionsAtomState(initialSkuOptionsAtomState);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
