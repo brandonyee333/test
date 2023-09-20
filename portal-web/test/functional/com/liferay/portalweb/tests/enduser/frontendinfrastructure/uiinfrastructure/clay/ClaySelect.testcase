@@ -46,6 +46,8 @@ definition {
 	@priority = 5
 	@refactordone
 	test MultipleCanBeConfigured {
+		property portal.acceptance = "bronson";
+
 		Navigator.gotoNavTab(navTab = "Form Elements");
 
 		AssertEditable(
