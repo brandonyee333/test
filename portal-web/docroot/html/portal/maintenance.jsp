@@ -5,10 +5,7 @@
  */
 --%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<%@ page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
-page import="com.liferay.portal.util.MaintenanceUtil" %>
+<%@ include file="/html/portal/init.jsp" %>
 
 <%
 boolean invokingSession = false;
