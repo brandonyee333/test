@@ -47,7 +47,7 @@ function AddToCartButton({
 	const randomNamespace = getRandomId();
 
 	const buttonDisabled = useMemo(
-		() => skuOptionsAtomState.errors.length || disabled,
+		() => skuOptionsAtomState.errors?.length || disabled,
 		[disabled, skuOptionsAtomState.errors]
 	);
 

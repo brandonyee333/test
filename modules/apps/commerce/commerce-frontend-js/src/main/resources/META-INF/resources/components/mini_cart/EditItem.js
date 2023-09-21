@@ -7,7 +7,13 @@ import ClayButton, {ClayButtonWithIcon} from '@clayui/button';
 import ClayForm from '@clayui/form';
 import {useLiferayState} from '@liferay/frontend-js-state-web';
 import {fetch, sub} from 'frontend-js-web';
-import React, {useContext, useEffect, useMemo, useState} from 'react';
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useState
+} from 'react';
 
 import ServiceProvider from '../../ServiceProvider/index';
 import {CommerceContext} from '../../index';
@@ -29,8 +35,9 @@ import ProductOptionText from '../product_options/ProductOptionText';
 import MiniCartContext from './MiniCartContext';
 
 const CartResource = ServiceProvider.DeliveryCartAPI('v1');
+const miniCartNamespace = 'minicart_';
 
-const getProductOptions = (channelId, productId) => {
+const getProductOptionsURL = (channelId, productId) => {
 	const url = new URL(
 		`${themeDisplay.getPathContext()}${CHANNEL_RESOURCE_ENDPOINT}/${channelId}/products/${productId}/product-options`,
 		themeDisplay.getPortalURL()
@@ -39,48 +46,16 @@ const getProductOptions = (channelId, productId) => {
 	return url.toString();
 };
 
-const saveItem = async ({cartState, cpInstance, namespace, selectedItem}) => {
-	const {cartItems, id: cartId} = cartState;
-	const {miniCartSkuOptions} = cpInstance;
-
-	const formattedCartItem = formatCartItem(
-		cpInstance,
-		namespace,
-		miniCartSkuOptions,
-		namespace
-	);
-
-	const updatedCartItems = cartItems.map((cartItem) =>
-		cartItem.id === selectedItem.id
-			? {
-					...cartItem,
-					options: formattedCartItem.options,
-					replacedSkuId: formattedCartItem.replacedSkuId,
-					sku: cpInstance.sku,
-					skuId: formattedCartItem.skuId,
-			  }
-			: cartItem
-	);
-
-	const updatedCart = await CartResource.updateCartById(cartId, {
-		cartItems: updatedCartItems,
-	});
-
-	Liferay.fire(CURRENT_ORDER_UPDATED, {order: updatedCart});
-
-	return updatedCart;
-};
-
 function EditItem() {
 	const [options, setOptions] = useState([]);
 	const [skuOptionsAtomState, setSkuOptionsAtomState] = useLiferayState(
 		skuOptionsAtom
 	);
-	const [cpInstance, setCpInstance] = useState({});
+	const [cpInstance, setCPInstance] = useState({});
 
-	const {miniCartErrors, namespace} = skuOptionsAtomState;
+	const {miniCartErrors} = skuOptionsAtomState;
 
-	const buttonSaveIsDisabled = useMemo(() => miniCartErrors.length, [
+	const disabled = useMemo(() => miniCartErrors?.length, [
 		miniCartErrors,
 	]);
 
@@ -100,68 +75,100 @@ function EditItem() {
 	);
 
 	const selectedItem = useMemo(
-		() => cartItems.find((item) => item.productId === editedItem.productId),
+		() => cartItems.find((item) => item.id === editedItem.cartItemId) || {},
 		[cartItems, editedItem]
 	);
 
 	useEffect(() => {
-		setCpInstance({
-			miniCartSkuOptions: skuOptionsAtomState.miniCartSkuOptions,
+		setCPInstance({
 			quantity: selectedItem.quantity,
 			replacedSkuId: selectedItem.replacedSkuId,
 			skuId: selectedItem.skuId,
 		});
-	}, [selectedItem, skuOptionsAtomState.miniCartSkuOptions]);
+	}, [selectedItem]);
 
-	const [price, setPrice] = useState(selectedItem.price);
+	const handleSave = useCallback(() => {
+		if (disabled) {
+			return;
+		}
 
-	const updatePrice = ({cpInstance}) => {
-		setCpInstance(cpInstance);
+		const {cartItems, id: cartId} = cartState;
+
+		const formattedCartItem = formatCartItem(
+			cpInstance,
+			miniCartNamespace,
+			skuOptionsAtomState.miniCartSkuOptions,
+			miniCartNamespace
+		);
+
+		const updatedCartItems = cartItems.map((cartItem) =>
+			cartItem.id === selectedItem.id
+				? {
+					...cartItem,
+					options: formattedCartItem.options,
+					replacedSkuId: formattedCartItem.replacedSkuId,
+					skuId: formattedCartItem.skuId,
+				}
+				: cartItem
+		);
+
+		CartResource.updateCartById(cartId, {
+			cartItems: updatedCartItems,
+		})
+		.then((updatedCart) => {
+			Liferay.fire(CURRENT_ORDER_UPDATED, {order: updatedCart});
+
+			setEditedItem(null);
+			setSkuOptionsAtomState({
+				...skuOptionsAtomState,
+				miniCartErrors: [],
+				miniCartSkuOptions: [],
+				updating: false,
+			});
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+	}, [cpInstance, skuOptionsAtomState.miniCartSkuOptions]);
+
+	useEffect(() => {
+		const saveButton = document.getElementById(`${miniCartNamespace}saveButton`);
+
+		if (saveButton) {
+			saveButton.addEventListener('click', handleSave);
+		}
+
+		return () => {
+			saveButton.removeEventListener('click', handleSave);
+		};
+	}, [cpInstance, skuOptionsAtomState.miniCartSkuOptions]);
+
+	const [price, setPrice] = useState(selectedItem ? selectedItem.price : null);
+
+	const handleCPInstanceChanged = ({cpInstance}) => {
+		setCPInstance(cpInstance);
 		setPrice(adaptLegacyPriceModel(cpInstance.price));
 	};
 
 	useEffect(() => {
-		const url = getProductOptions(channel.id, editedItem.productId);
+		const productOptionsURL = getProductOptionsURL(channel.id, editedItem.productId);
 
-		fetch(url)
+		fetch(productOptionsURL)
 			.then((response) => response.json())
 			.then((data) => setOptions(data))
 			.catch((error) => console.error(error));
 	}, [channel.id, editedItem.productId]);
 
 	useEffect(() => {
-		Liferay.on(`${namespace}${CP_INSTANCE_CHANGED}`, updatePrice);
+		Liferay.on(`${miniCartNamespace}${CP_INSTANCE_CHANGED}`, handleCPInstanceChanged);
 
 		return () => {
-			Liferay.detach(`${namespace}${CP_INSTANCE_CHANGED}`, updatePrice);
+			Liferay.detach(`${miniCartNamespace}${CP_INSTANCE_CHANGED}`, handleCPInstanceChanged);
 		};
-	}, [namespace]);
+	}, [miniCartNamespace]);
 
 	const hasDiscount = isNonnull(price.discountPercentage);
 	const hasPromoPrice = isNonnull(price.promoPrice);
-
-	const onSaveItem = () => {
-		if (buttonSaveIsDisabled) {
-			return;
-		}
-
-		saveItem({
-			cartState,
-			cpInstance,
-			namespace,
-			selectedItem,
-		})
-			.then(() => {
-				setEditedItem(null);
-				setSkuOptionsAtomState({
-					...skuOptionsAtomState,
-					skuOptions: skuOptionsAtomState.miniCartSkuOptions,
-				});
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	};
 
 	return (
 		<>
@@ -184,10 +191,11 @@ function EditItem() {
 					{options?.items?.length > 0 ? (
 						<ClayForm>
 							<Options
+								cartItemId={editedItem.cartItemId}
 								channelId={channel.id}
-								namespace={namespace}
-								options={options.items}
+								namespace={miniCartNamespace}
 								productId={editedItem.productId}
+								productOptions={options.items}
 								selectedItem={selectedItem}
 							/>
 						</ClayForm>
@@ -244,8 +252,8 @@ function EditItem() {
 					</ClayButton>
 
 					<ClayButton
-						disabled={buttonSaveIsDisabled}
-						onClick={onSaveItem}
+						disabled={disabled}
+						id={`${miniCartNamespace}saveButton`}
 					>
 						{Liferay.Language.get('save')}
 					</ClayButton>
@@ -257,30 +265,27 @@ function EditItem() {
 
 export default EditItem;
 
-const Options = ({channelId, namespace, options, productId, selectedItem}) =>
-	options.map((option) => {
-		let Component = ProductOptionText;
+const Options = ({cartItemId, channelId, productId, productOptions, selectedItem}) =>
+	productOptions.map((productOption) => {
+		let Component = ProductOptionCheckbox;
 		let props = {
-			componentId: `${namespace}_${option.id}`,
+			componentId: `${miniCartNamespace}${cartItemId}_${productOption.id}`,
 			isFromMiniCart: true,
 			json: selectedItem.options,
-			namespace,
-			productOption: option,
+			namespace: miniCartNamespace,
+			productOption: productOption,
 		};
 
-		if (option.fieldType === FIELD_TYPE.checkboxMultiple) {
+		if (productOption.fieldType === FIELD_TYPE.checkboxMultiple) {
 			Component = ProductOptionCheckboxMultiple;
 		}
-		else if (option.fieldType === FIELD_TYPE.checkbox) {
-			Component = ProductOptionCheckbox;
-		}
-		else if (option.fieldType === FIELD_TYPE.date) {
+		else if (productOption.fieldType === FIELD_TYPE.date) {
 			Component = ProductOptionDate;
 		}
-		else if (option.fieldType === FIELD_TYPE.numeric) {
+		else if (productOption.fieldType === FIELD_TYPE.numeric) {
 			Component = ProductOptionNumeric;
 		}
-		else if (option.fieldType === FIELD_TYPE.radio) {
+		else if (productOption.fieldType === FIELD_TYPE.radio) {
 			Component = ProductOptionRadio;
 			props = {
 				...props,
@@ -291,7 +296,7 @@ const Options = ({channelId, namespace, options, productId, selectedItem}) =>
 				sku: {skuId: selectedItem.skuId},
 			};
 		}
-		else if (option.fieldType === FIELD_TYPE.select) {
+		else if (productOption.fieldType === FIELD_TYPE.select) {
 			Component = ProductOptionSelect;
 			props = {
 				...props,
@@ -302,8 +307,11 @@ const Options = ({channelId, namespace, options, productId, selectedItem}) =>
 				sku: {skuId: selectedItem.skuId},
 			};
 		}
+		else if (productOption.fieldType === FIELD_TYPE.text) {
+			Component = ProductOptionText;
+		}
 
-		return <Component key={option.id} {...props} />;
+		return <Component key={productOption.id} {...props} />;
 	});
 
 const PriceRow = ({children, priceName}) => {

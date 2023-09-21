@@ -15,7 +15,7 @@ const getInitialProductOptionValue = ({
 	}
 
 	const getSelectedProductOptionValue = isFromMiniCart
-		? ({key}) => key === currentJSONObject.skuOptionValueKey
+		? ({key}) => key === currentJSONObject?.skuOptionValueKey
 		: ({preselected}) => preselected === true;
 
 	const selectedProductOptionValue = productOption.productOptionValues.find(
@@ -73,9 +73,9 @@ const getProductOptionName = (name) => {
 
 const getSkuOptionsErrors = (
 	hasErrors,
+	isFromMiniCart = false,
 	productOption,
-	skuOptionsAtomState,
-	isFromMiniCart = false
+	skuOptionsAtomState
 ) => {
 	const errorsKey = isFromMiniCart ? 'miniCartErrors' : 'errors';
 
@@ -87,7 +87,7 @@ const getSkuOptionsErrors = (
 					id: productOption.id,
 				},
 		  ]
-		: skuOptionsAtomState[errorsKey].filter(
+		: skuOptionsAtomState[errorsKey]?.filter(
 				(error) => error.id !== productOption.id
 		  );
 };

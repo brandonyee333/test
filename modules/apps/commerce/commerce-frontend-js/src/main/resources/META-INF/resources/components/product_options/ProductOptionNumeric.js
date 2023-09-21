@@ -40,9 +40,9 @@ const ProductOptionNumeric = ({
 				...skuOptionsAtomState,
 				[errorsKey]: getSkuOptionsErrors(
 					hasErrors,
+					isFromMiniCart,
 					productOption,
-					skuOptionsAtomState,
-					isFromMiniCart
+					skuOptionsAtomState
 				),
 			}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,6 +69,7 @@ const ProductOptionNumeric = ({
 			...skuOptionsAtomState,
 			errors: getSkuOptionsErrors(
 				productOption.required,
+				isFromMiniCart,
 				productOption,
 				skuOptionsAtomState
 			),
@@ -81,9 +82,6 @@ const ProductOptionNumeric = ({
 					value: [value],
 				},
 			],
-			...(isFromMiniCart && {
-				miniCartSkuOptions: skuOptionsAtomState.skuOptions,
-			}),
 		});
 
 		return () =>
@@ -143,9 +141,9 @@ const ProductOptionNumeric = ({
 			...skuOptionsAtomState,
 			[errorsKey]: getSkuOptionsErrors(
 				required,
+				isFromMiniCart,
 				productOption,
-				skuOptionsAtomState,
-				isFromMiniCart
+				skuOptionsAtomState
 			),
 			[skuOptionsKey]: currentSkuOptions,
 			updating: false,

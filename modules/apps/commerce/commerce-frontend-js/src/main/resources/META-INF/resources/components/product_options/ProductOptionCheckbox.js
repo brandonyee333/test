@@ -40,9 +40,9 @@ const ProductOptionCheckbox = ({
 				...skuOptionsAtomState,
 				[errorsKey]: getSkuOptionsErrors(
 					hasErrors,
+					isFromMiniCart,
 					productOption,
-					skuOptionsAtomState,
-					isFromMiniCart
+					skuOptionsAtomState
 				),
 			}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,13 +73,11 @@ const ProductOptionCheckbox = ({
 			...skuOptionsAtomState,
 			errors: getSkuOptionsErrors(
 				productOption.required,
+				isFromMiniCart,
 				productOption,
 				skuOptionsAtomState
 			),
 			namespace,
-			...(isFromMiniCart && {
-				miniCartSkuOptions: skuOptionsAtomState.skuOptions,
-			}),
 		});
 
 		return () =>
@@ -140,9 +138,9 @@ const ProductOptionCheckbox = ({
 			...skuOptionsAtomState,
 			[errorsKey]: getSkuOptionsErrors(
 				required,
+				isFromMiniCart,
 				productOption,
-				skuOptionsAtomState,
-				isFromMiniCart
+				skuOptionsAtomState
 			),
 			[skuOptionsKey]: currentSkuOptions,
 			updating: false,

@@ -47,9 +47,9 @@ const ProductOptionCheckboxMultiple = ({
 				...skuOptionsAtomState,
 				[errorsKey]: getSkuOptionsErrors(
 					hasErrors,
+					isFromMiniCart,
 					productOption,
-					skuOptionsAtomState,
-					isFromMiniCart
+					skuOptionsAtomState
 				),
 				namespace,
 			}),
@@ -109,14 +109,12 @@ const ProductOptionCheckboxMultiple = ({
 			...skuOptionsAtomState,
 			errors: getSkuOptionsErrors(
 				required,
+				isFromMiniCart,
 				productOption,
 				skuOptionsAtomState
 			),
 			namespace,
 			skuOptions: initialSkuOptions,
-			...(isFromMiniCart && {
-				miniCartSkuOptions: initialSkuOptions,
-			}),
 		});
 
 		return () =>
@@ -200,9 +198,9 @@ const ProductOptionCheckboxMultiple = ({
 			...skuOptionsAtomState,
 			[errorsKey]: getSkuOptionsErrors(
 				hasError,
+				isFromMiniCart,
 				productOption,
-				skuOptionsAtomState,
-				isFromMiniCart
+				skuOptionsAtomState
 			),
 			[skuOptionsKey]: currentSkuOptions,
 			updating: false,

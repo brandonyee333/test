@@ -71,6 +71,7 @@ const ProductOptionRadio = ({
 			...skuOptionsAtomState,
 			errors: getSkuOptionsErrors(
 				!defaultProductOptionValue,
+				isFromMiniCart,
 				productOption,
 				skuOptionsAtomState
 			),
@@ -88,9 +89,6 @@ const ProductOptionRadio = ({
 					value: [defaultProductOptionValue?.key],
 				},
 			],
-			...(isFromMiniCart && {
-				miniCartSkuOptions: skuOptionsAtomState.skuOptions,
-			}),
 		});
 
 		return () =>
@@ -241,7 +239,7 @@ const ProductOptionRadio = ({
 					[skuOptionsKey]: currentSkuOptions,
 				});
 
-				cpInstance[skuOptionsKey] = currentSkuOptions;
+				cpInstance.skuOptions = currentSkuOptions;
 				cpInstance.skuId = parseInt(cpInstance.id, 10);
 
 				const dispatchedPayload = {
