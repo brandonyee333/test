@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>MyTestFile</title>
+</head>
+
+<body>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr><td rowspan="1" colspan="3">MyTestFile</td></tr>
+</thead>
+
+<tbody>
+<tr>
+	<td>APPLICATION_MENU</td>
+	<td>//*[@id="controlMenu"]/div[4]/ul/li[7]/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CONTROL_PANEL</td>
+	<td>//*[@id="_com_liferay_product_navigation_applications_menu_web_internal_portlet_ProductNavigationApplicationsMenuPortlet_tab_2"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CONFIGURATION_SECTION</td>
+	<td>//*[@id="nav_control_panel.configuration"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SIMULATION_MENU</td>
+	<td>//*[@id="_com_liferay_product_navigation_simulation_web_portlet_SimulationPortlet_simulationToggleId"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CUSTOM_BUTTON</td>
+	<td>//*[@id="_com_liferay_product_navigation_simulation_web_portlet_SimulationPortlet_simulationDeviceContainer"]/div/div/button[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WIDTH_VALUE</td>
+	<td>//*[@id="_com_liferay_product_navigation_simulation_web_portlet_SimulationPortlet_width"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>HEIGHT_VALUE</td>
+	<td>//*[@id="_com_liferay_product_navigation_simulation_web_portlet_SimulationPortlet_height"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>APPLY_CUSTOM</td>
+	<td>//*[@id="_com_liferay_product_navigation_simulation_web_portlet_SimulationPortlet_customSizeSelector"]/button</td>
+	<td></td>
+</tr>
+<!-- <tr>
+	<td>CLOSE_MENU</td>
+	<td>//*[@id="_com_liferay_product_navigation_simulation_web_portlet_SimulationPortlet_simulationPanelId"]/div[1]/div[1]/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ACTIONS_BUTTON_TR</td>
+	<td>//*[@id="_com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet_kldx___menu"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TRANSLATION_BUTTON</td>
+	<td>//*[@id="_com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet_kldx______menu__francais_2d_france__1"]</td>
+	<td></td>
+</tr> -->
+</tbody>
+</table>
+</body>
+</html>

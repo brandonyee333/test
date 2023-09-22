@@ -1,0 +1,71 @@
+definition {
+
+	macro CreateBlogs {
+		Blogs.addEntry(
+			entryContent = ${entryContent},
+			entryTitle = ${entryTitle});
+	}
+
+	macro DeleteBlog {
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Delete",
+			rowEntry = ${rowEntry});
+	}
+
+	macro EditBlogs {
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "This is Title");
+
+		BlogsEntry.editTitle(
+			entryTitle = ${entryTitle},
+			entryTitleEdit = ${entryTitleEdit});
+
+		Button.clickPublish();
+	}
+
+	macro SearchBlogs {
+		BlogsEntry.searchCP(
+			entryContent = ${entryContent},
+			entrySearchTerm = ${entrySearchTerm},
+			entryTitle = ${entryTitle});
+	}
+
+	macro SetSize {
+		Click(locator1 = "MyTestFile#SIMULATION_MENU");
+
+		Click(locator1 = "MyTestFile#CUSTOM_BUTTON");
+
+		TripleClick(locator1 = "MyTestFile#HEIGHT_VALUE");
+
+		Type.sendKeys(
+			locator1 = "MyTestFile#HEIGHT_VALUE",
+			value1 = ${height});
+
+		TripleClick(locator1 = "MyTestFile#WIDTH_VALUE");
+
+		Type.sendKeys(
+			locator1 = "MyTestFile#WIDTH_VALUE",
+			value1 = ${width});
+		Click(locator1="MyTestFile#APPLY_CUSTOM");
+	}
+macro ValidateSimulationValues {
+		Click(locator1 = "MyTestFile#SIMULATION_MENU");
+		Click(locator1 = "MyTestFile#SIMULATION_MENU");
+		AssertTextPresent(
+			locator1 = "MyTestFile#HEIGHT_VALUE",
+			value1 = ${height});
+		AssertTextPresent(
+			locator1 = "MyTestFile#WIDTH_VALUE",
+			value1 = ${width});
+		}
+ 
+	macro ValidateString {
+		Click(locator1 = "MyTestFile#APPLICATION_MENU");
+
+		Click(locator1 = "MyTestFile#CONTROL_PANEL");
+
+		AssertElementPresent(locator1 = "MyTestFile#CONFIGURATION_SECTION");
+	}
+
+}
