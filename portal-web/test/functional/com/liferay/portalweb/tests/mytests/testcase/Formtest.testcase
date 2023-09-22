@@ -1,0 +1,62 @@
+@component-name = "portal-web-forms-and-data-lists"
+definition {
+
+	property testray.main.component.name = "Forms";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+
+		Navigator.openURL();
+	}
+
+	tearDown {
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+	}
+
+	@description = "create a new form , translate it then publish it"
+	@priority = 5
+	test CreateFormWithTextAndNumeric {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Exercice#6");
+
+		Form.addTextField();
+
+		Form.editFieldLabelMetal(fieldValue = "Full Name");
+
+		Form.save();
+
+		Form.gotoAddField(fieldType = "Numeric");
+
+		Form.editFieldLabelMetal(fieldValue = "Age");
+
+		Form.save();
+
+		Form.addTranslation(localizedLanguage = "French (France)");
+
+		FormViewBuilder.clickFieldLabel(fieldLabel = "Full Name");
+
+		Form.editElementSetFieldLabel(fieldValue = "Nom Complet");
+
+		FormViewBuilder.clickFieldLabel(fieldLabel = "Age");
+
+		Form.editElementSetFieldLabel(fieldValue = "Âge");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPreviewForm();
+
+		Navigator.selectSpecificWindow(windowTitle = "Form - Forms");
+
+		FormPortletConfiguration.changeLanguage(
+			currentLanguage = "en-US",
+			newLanguage = "français-France");
+	}
+
+}
