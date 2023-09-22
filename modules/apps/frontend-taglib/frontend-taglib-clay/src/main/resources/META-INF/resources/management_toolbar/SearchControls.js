@@ -72,7 +72,10 @@ const SearchControls = ({
 							}
 						}}
 					>
-						<ClayInput.GroupItem>
+						<ClayInput.GroupItem className="input-group-item-shrink input-group-prepend">
+							<button aria-labelledby="picker-label" aria-expanded="false" aria-haspopup="listbox" class="form-control form-control-s form-control-select form-control-select-secondary" role="combobox" tabindex="0" type="button">All</button>
+						</ClayInput.GroupItem>
+						<ClayInput.GroupItem className="input-group-append">
 							<ClayInput
 								aria-label={`${Liferay.Language.get(
 									'search'
