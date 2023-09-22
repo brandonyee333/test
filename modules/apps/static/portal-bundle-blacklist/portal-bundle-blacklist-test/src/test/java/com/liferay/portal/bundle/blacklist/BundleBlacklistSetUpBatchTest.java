@@ -22,6 +22,7 @@ import org.junit.Test;
 
 /**
  * @author Matthew Tambara
+ * this is tests for ci:test:relevant
  */
 public class BundleBlacklistSetUpBatchTest {
 
