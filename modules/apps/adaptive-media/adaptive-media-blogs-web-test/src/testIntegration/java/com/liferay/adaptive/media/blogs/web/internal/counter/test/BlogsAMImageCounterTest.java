@@ -13,8 +13,7 @@ import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.GroupConstants;
-import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -23,7 +22,7 @@ import com.liferay.portal.kernel.test.util.CompanyTestUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
-import com.liferay.portal.kernel.test.util.UserTestUtil;
+import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.test.rule.Inject;
@@ -51,21 +50,7 @@ public class BlogsAMImageCounterTest {
 
 	@Before
 	public void setUp() throws Exception {
-		_company1 = CompanyTestUtil.addCompany();
-
-		_user1 = UserTestUtil.getAdminUser(_company1.getCompanyId());
-
-		_group1 = GroupTestUtil.addGroup(
-			_company1.getCompanyId(), _user1.getUserId(),
-			GroupConstants.DEFAULT_PARENT_GROUP_ID);
-
-		_company2 = CompanyTestUtil.addCompany();
-
-		_user2 = UserTestUtil.getAdminUser(_company2.getCompanyId());
-
-		_group2 = GroupTestUtil.addGroup(
-			_company2.getCompanyId(), _user2.getUserId(),
-			GroupConstants.DEFAULT_PARENT_GROUP_ID);
+		_group = GroupTestUtil.addGroup();
 	}
 
 	@Test
@@ -74,22 +59,22 @@ public class BlogsAMImageCounterTest {
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
-				_group1, _user1.getUserId());
+				_group, TestPropsValues.getUserId());
 
 		_dlAppLocalService.addFileEntry(
-			null, _user1.getUserId(), _group1.getGroupId(),
+			null, TestPropsValues.getUserId(), _group.getGroupId(),
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString() + ".jpg", ContentTypes.IMAGE_JPEG,
 			_getImageBytes(), null, null, serviceContext);
 
 		BlogsEntry blogsEntry = _blogsEntryLocalService.addEntry(
-			_user1.getUserId(), RandomTestUtil.randomString(),
+			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), new Date(), serviceContext);
 
 		Assert.assertEquals(
 			0,
 			_amImageCounter.countExpectedAMImageEntries(
-				_company1.getCompanyId()));
+				TestPropsValues.getCompanyId()));
 
 		ImageSelector imageSelector = new ImageSelector(
 			_getImageBytes(), RandomTestUtil.randomString() + ".jpg",
@@ -101,51 +86,58 @@ public class BlogsAMImageCounterTest {
 		Assert.assertEquals(
 			1,
 			_amImageCounter.countExpectedAMImageEntries(
-				_company1.getCompanyId()));
+				TestPropsValues.getCompanyId()));
 	}
 
 	@Test
 	public void testBlogsAMImageCounterOnlyCountsBlogsImagesPerCompany()
 		throws Exception {
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(
-				_group1, _user1.getUserId());
+		Company company = CompanyTestUtil.addCompany();
 
-		_dlAppLocalService.addFileEntry(
-			null, _user1.getUserId(), _group1.getGroupId(),
-			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			RandomTestUtil.randomString() + ".jpg", ContentTypes.IMAGE_JPEG,
-			_getImageBytes(), null, null, serviceContext);
+		try {
+			ServiceContext serviceContext =
+				ServiceContextTestUtil.getServiceContext(
+					_group, TestPropsValues.getUserId());
 
-		BlogsEntry blogsEntry = _blogsEntryLocalService.addEntry(
-			_user1.getUserId(), RandomTestUtil.randomString(),
-			RandomTestUtil.randomString(), new Date(), serviceContext);
+			_dlAppLocalService.addFileEntry(
+				null, TestPropsValues.getUserId(), _group.getGroupId(),
+				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
+				RandomTestUtil.randomString() + ".jpg", ContentTypes.IMAGE_JPEG,
+				_getImageBytes(), null, null, serviceContext);
 
-		Assert.assertEquals(
-			0,
-			_amImageCounter.countExpectedAMImageEntries(
-				_company1.getCompanyId()));
-		Assert.assertEquals(
-			0,
-			_amImageCounter.countExpectedAMImageEntries(
-				_company2.getCompanyId()));
+			BlogsEntry blogsEntry = _blogsEntryLocalService.addEntry(
+				TestPropsValues.getUserId(), RandomTestUtil.randomString(),
+				RandomTestUtil.randomString(), new Date(), serviceContext);
 
-		ImageSelector imageSelector = new ImageSelector(
-			_getImageBytes(), RandomTestUtil.randomString() + ".jpg",
-			ContentTypes.IMAGE_JPEG, IMAGE_CROP_REGION);
+			Assert.assertEquals(
+				0,
+				_amImageCounter.countExpectedAMImageEntries(
+					TestPropsValues.getCompanyId()));
+			Assert.assertEquals(
+				0,
+				_amImageCounter.countExpectedAMImageEntries(
+					company.getCompanyId()));
 
-		_blogsEntryLocalService.addCoverImage(
-			blogsEntry.getEntryId(), imageSelector);
+			ImageSelector imageSelector = new ImageSelector(
+				_getImageBytes(), RandomTestUtil.randomString() + ".jpg",
+				ContentTypes.IMAGE_JPEG, IMAGE_CROP_REGION);
 
-		Assert.assertEquals(
-			1,
-			_amImageCounter.countExpectedAMImageEntries(
-				_company1.getCompanyId()));
-		Assert.assertEquals(
-			0,
-			_amImageCounter.countExpectedAMImageEntries(
-				_company2.getCompanyId()));
+			_blogsEntryLocalService.addCoverImage(
+				blogsEntry.getEntryId(), imageSelector);
+
+			Assert.assertEquals(
+				1,
+				_amImageCounter.countExpectedAMImageEntries(
+					TestPropsValues.getCompanyId()));
+			Assert.assertEquals(
+				0,
+				_amImageCounter.countExpectedAMImageEntries(
+					company.getCompanyId()));
+		}
+		finally {
+			_companyLocalService.deleteCompany(company);
+		}
 	}
 
 	protected static final String IMAGE_CROP_REGION =
@@ -162,18 +154,13 @@ public class BlogsAMImageCounterTest {
 	@Inject
 	private BlogsEntryLocalService _blogsEntryLocalService;
 
-	@DeleteAfterTestRun
-	private Company _company1;
-
-	@DeleteAfterTestRun
-	private Company _company2;
+	@Inject
+	private CompanyLocalService _companyLocalService;
 
 	@Inject
 	private DLAppLocalService _dlAppLocalService;
 
-	private Group _group1;
-	private Group _group2;
-	private User _user1;
-	private User _user2;
+	@DeleteAfterTestRun
+	private Group _group;
 
 }
