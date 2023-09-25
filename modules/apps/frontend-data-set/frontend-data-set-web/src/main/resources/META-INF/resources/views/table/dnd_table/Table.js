@@ -25,6 +25,8 @@ function Table({children, className}) {
 		return (
 			<ClayTable
 				className={classNames(
+					'table-bordered',
+					'table-striped',
 					{
 						'is-dragging': draggingColumnName !== null,
 					},
