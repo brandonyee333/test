@@ -336,8 +336,8 @@ function AddFDSFilterModalContent({
 							<DateRangeFilterModalContent.Header />
 						)}
 
-						{filterType !== EFilterType.SELECTION && (
-							<DateRangeFilterModalContent.Header />
+						{filterType === EFilterType.SELECTION && (
+							<SelectionFilterModalContent.Header />
 						)}
 					</>
 				)}
