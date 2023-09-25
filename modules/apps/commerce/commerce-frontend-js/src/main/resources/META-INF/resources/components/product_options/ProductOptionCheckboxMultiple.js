@@ -51,7 +51,7 @@ const ProductOptionCheckboxMultiple = ({
 					productOption,
 					skuOptionsAtomState
 				),
-				namespace,
+				...(!isFromMiniCart && {namespace}),
 			}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[hasErrors]
@@ -59,7 +59,7 @@ const ProductOptionCheckboxMultiple = ({
 
 	useEffect(() => {
 		let hasPreselected = false;
-		let initialSkuOptions = skuOptionsAtomState.skuOptions;
+		let initialSkuOptions = skuOptionsAtomState.skuOptions || [];
 
 		const newProductOptionValues = productOptionValues.map(
 			(productOptionValue) => {
@@ -113,8 +113,10 @@ const ProductOptionCheckboxMultiple = ({
 				productOption,
 				skuOptionsAtomState
 			),
-			namespace,
-			skuOptions: initialSkuOptions,
+			...(!isFromMiniCart && {namespace}),
+			[skuOptionsKey]: isFromMiniCart
+				? JSON.parse(json)
+				: initialSkuOptions,
 		});
 
 		return () =>
