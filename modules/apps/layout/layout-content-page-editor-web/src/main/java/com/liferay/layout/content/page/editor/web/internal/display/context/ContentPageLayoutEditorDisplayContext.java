@@ -418,11 +418,10 @@ public class ContentPageLayoutEditorDisplayContext
 					Layout layout = themeDisplay.getLayout();
 
 					portletURL.setParameter(
+						"redirect", themeDisplay.getURLCurrent());
+					portletURL.setParameter(
 						"backURLTitle",
 						layout.getName(themeDisplay.getLocale()));
-
-					portletURL.setParameter(
-						"redirect", themeDisplay.getURLCurrent());
 
 					return portletURL.toString();
 				});
