@@ -492,11 +492,11 @@ public class StyleBookEntryLocalServiceImpl
 			styleBookEntry.getName(), copy);
 
 		for (int i = 1;; i++) {
-			StyleBookEntry stylebookEntryDuplicated =
+			StyleBookEntry existingStyleBookEntry =
 				styleBookEntryPersistence.fetchByG_LikeN_First(
 					styleBookEntry.getGroupId(), name, null);
 
-			if (stylebookEntryDuplicated == null) {
+			if (existingStyleBookEntry == null) {
 				break;
 			}
 
