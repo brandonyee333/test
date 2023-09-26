@@ -219,9 +219,9 @@ public class SXPBlueprintLocalServiceImpl
 		SXPBlueprint sxpBlueprint = sxpBlueprintPersistence.findByPrimaryKey(
 			sxpBlueprintId);
 
+		sxpBlueprint.setExternalReferenceCode(externalReferenceCode);
 		sxpBlueprint.setConfigurationJSON(configurationJSON);
 		sxpBlueprint.setDescriptionMap(descriptionMap);
-		sxpBlueprint.setExternalReferenceCode(externalReferenceCode);
 		sxpBlueprint.setElementInstancesJSON(elementInstancesJSON);
 		sxpBlueprint.setTitleMap(titleMap);
 		sxpBlueprint.setVersion(
