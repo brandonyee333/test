@@ -1,1 +1,4 @@
-{"name":"Clarity","frontendTokensValuesPath":"frontend-tokens-values.json"}
+{
+	"frontendTokensValuesPath": "frontend-tokens-values.json",
+	"name": "Clarity"
+}
