@@ -105,7 +105,6 @@ function AddFDSFilterModalContent({
 		(filter as ISelectionFilter)?.multiple ?? true
 	);
 	const [label, setLabel] = useState(filter?.label || '');
-	const [labelValidationError, setLabelValidationError] = useState(false);
 	const [picklists, setPicklists] = useState<IPickList[]>([]);
 	const [preselectedValues, setPreselectedValues] = useState<any[]>([]);
 	const [selectedField, setSelectedField] = useState<IField | null>(
@@ -155,7 +154,16 @@ function AddFDSFilterModalContent({
 		};
 
 		if (Liferay.FeatureFlags['LPS-172017']) {
-			body = {...body, label_i18n: i18nFilterLabels};
+			let labels;
+			if (!translationExists({translations: i18nFilterLabels})) {
+				const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId();
+				labels = {[defaultLanguageId]: selectedField.label};
+			}
+			else {
+				labels = i18nFilterLabels;
+			}
+
+			body = {...body, label_i18n: labels};
 		}
 		else {
 			body = {...body, label: label || selectedField.label};
@@ -242,19 +250,6 @@ function AddFDSFilterModalContent({
 		onSave({...responseJSON, displayType, filterType});
 
 		closeModal();
-	};
-
-	const validateForm = () => {
-		let valid = true;
-
-		if (
-			Liferay.FeatureFlags['LPS-172017'] &&
-			!translationExists({translations: i18nFilterLabels})
-		) {
-			valid = false;
-		}
-
-		setSaveButtonDisabled(!valid);
 	};
 
 	const nameFormElementId = `${namespace}Name`;
@@ -347,27 +342,10 @@ function AddFDSFilterModalContent({
 				{Liferay.FeatureFlags['LPS-172017'] ? (
 					<ClayForm.Group>
 						<InputLocalized
-							error={
-								labelValidationError
-									? Liferay.Language.get(
-											'this-field-is-required'
-									  )
-									: undefined
-							}
 							id={nameFormElementId}
 							label={Liferay.Language.get('label')}
 							name="label"
-							onBlur={() => {
-								setLabelValidationError(
-									!translationExists({
-										translations: i18nFilterLabels,
-									})
-								);
-
-								validateForm();
-							}}
 							onChange={setI18nFilterLabels}
-							required
 							translations={i18nFilterLabels}
 						/>
 					</ClayForm.Group>
@@ -544,6 +522,8 @@ function Filters({fdsFilterClientExtensions, fdsView, namespace}: IProps) {
 			const dynamicFiltersOrderer = responseJSON[
 				OBJECT_RELATIONSHIP.FDS_VIEW_FDS_DYNAMIC_FILTER
 			] as ISelectionFilter[];
+
+			// TODO: set a default filter name
 
 			let filtersOrdered: FilterCollection = [
 				...clientExtensionFiltersOrderer.map((item) => ({
