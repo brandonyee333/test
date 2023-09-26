@@ -39,10 +39,6 @@ import openDefaultSuccessToast from '../utils/openDefaultSuccessToast';
 
 import '../../css/Filters.scss';
 
-const translationExists = ({translations}: {translations: any}) => {
-	return Boolean(Object.keys(translations).find((key) => translations[key]));
-};
-
 type FilterCollection = Array<
 	IClientExtensionFilter | IDateFilter | ISelectionFilter
 >;
@@ -154,19 +150,10 @@ function AddFDSFilterModalContent({
 		};
 
 		if (Liferay.FeatureFlags['LPS-172017']) {
-			let labels;
-			if (!translationExists({translations: i18nFilterLabels})) {
-				const defaultLanguageId = Liferay.ThemeDisplay.getDefaultLanguageId();
-				labels = {[defaultLanguageId]: selectedField.label};
-			}
-			else {
-				labels = i18nFilterLabels;
-			}
-
-			body = {...body, label_i18n: labels};
+			body = {...body, label_i18n: i18nFilterLabels};
 		}
 		else {
-			body = {...body, label: label || selectedField.label};
+			body = {...body, label};
 		}
 
 		let displayType: string = '';
@@ -564,7 +551,14 @@ function Filters({fdsFilterClientExtensions, fdsView, namespace}: IProps) {
 				filtersOrdered = [...notOrdered, ...filtersOrdered];
 			}
 
-			setFilters(filtersOrdered);
+			setFilters(
+				filtersOrdered.map((filter) => {
+					return {
+						...filter,
+						label: filter.label || '',
+					};
+				})
+			);
 		};
 
 		getFields(fdsView).then((newFields) => {
@@ -657,9 +651,12 @@ function Filters({fdsFilterClientExtensions, fdsView, namespace}: IProps) {
 						fields={availableFields}
 						filterType={filterType}
 						namespace={namespace}
-						onSave={(newfilter) =>
-							setFilters([...filters, newfilter])
-						}
+						onSave={(newfilter) => {
+							if (newfilter.label === undefined) {
+								newfilter.label = '';
+							}
+							setFilters([...filters, newfilter]);
+						}}
 					/>
 				),
 				disableAutoClose: true,
