@@ -137,7 +137,7 @@
 
 				button.setAttribute(
 					'data-title',
-					Liferay.Language.get('create-aicontent')
+					Liferay.Language.get('create-ai-content')
 				);
 			});
 		},
