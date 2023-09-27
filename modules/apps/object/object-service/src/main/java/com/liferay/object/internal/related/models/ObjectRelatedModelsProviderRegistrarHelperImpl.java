@@ -34,11 +34,11 @@ public class ObjectRelatedModelsProviderRegistrarHelperImpl
 				Constants.SERVICE_RANKING, () -> serviceRanking
 			).put(
 				ObjectRelatedModelsProviderRegistrarHelper.
-					OBJECT_DEFINITION_ERC_KEY,
+					KEY_OBJECT_DEFINITION_ERC,
 				objectDefinition.getExternalReferenceCode()
 			).put(
 				ObjectRelatedModelsProviderRegistrarHelper.
-					RELATIONSHIP_TYPE_KEY,
+					KEY_RELATIONSHIP_TYPE,
 				objectRelatedModelsProvider.getObjectRelationshipType()
 			).build());
 	}

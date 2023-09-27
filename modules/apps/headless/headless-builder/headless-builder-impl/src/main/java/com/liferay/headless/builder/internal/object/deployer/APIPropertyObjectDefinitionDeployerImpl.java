@@ -57,10 +57,10 @@ public class APIPropertyObjectDefinitionDeployerImpl
 				"(&(objectClass=", ObjectRelatedModelsProvider.class.getName(),
 				")(",
 				ObjectRelatedModelsProviderRegistrarHelper.
-					OBJECT_DEFINITION_ERC_KEY,
+					KEY_OBJECT_DEFINITION_ERC,
 				"=L_API_PROPERTY)(",
 				ObjectRelatedModelsProviderRegistrarHelper.
-					RELATIONSHIP_TYPE_KEY,
+					KEY_RELATIONSHIP_TYPE,
 				"=", ObjectRelationshipConstants.TYPE_ONE_TO_MANY, "))"),
 			new ObjectRelatedModelsProviderServiceTrackerCustomizer());
 
