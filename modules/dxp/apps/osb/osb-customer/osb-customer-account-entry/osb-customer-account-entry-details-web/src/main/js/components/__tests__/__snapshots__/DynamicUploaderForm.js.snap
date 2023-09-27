@@ -112,7 +112,7 @@ exports[`DynamicUploaderForm renders correctly 1`] = `
         <span
           class="checkbox-label"
         >
-          please-check-this-box-if-the-file-you-upload-does-not-contain-any-personal-data-and-therefore-can-be-uploaded-to-and-accessed-from-any-liferay-support-location-globally
+          i-certify-that-the-uploaded-attachment-does-not-contain-any-personal-data
         </span>
       </label>
     </div>
@@ -121,6 +121,7 @@ exports[`DynamicUploaderForm renders correctly 1`] = `
     >
       <button
         class="btn btn-md btn-primary"
+        disabled=""
         type="submit"
       >
         submit
