@@ -2,8 +2,6 @@ dependencies {
 	compileInclude group: "aopalliance", name: "aopalliance", version: "1.0"
 	compileInclude group: "args4j", name: "args4j", version: "2.0.16"
 	compileInclude group: "asm", name: "asm", version: "3.1"
-	compileInclude group: "com.google.code.findbugs", name: "jsr305", version: "1.3.9"
-	compileInclude group: "com.google.errorprone", name: "error_prone_annotations", version: "2.2.0"
 	compileInclude group: "com.google.inject", name: "guice", version: "3.0"
 	compileInclude group: "com.google.inject.extensions", name: "guice-assistedinject", version: "3.0"
 	compileInclude group: "com.google.inject.extensions", name: "guice-multibindings", version: "3.0"
@@ -11,7 +9,6 @@ dependencies {
 	compileInclude group: "com.ibm.icu", name: "icu4j", version: "51.1"
 	compileInclude group: "javax.inject", name: "javax.inject", version: "1"
 	compileInclude group: "org.apache.commons", name: "commons-lang3", version: "3.4"
-	compileInclude group: "org.checkerframework", name: "checker-qual", version: "2.5.2"
 	compileInclude group: "org.sonatype.sisu.inject", name: "cglib", version: "2.2.1-v20090111"
 
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
