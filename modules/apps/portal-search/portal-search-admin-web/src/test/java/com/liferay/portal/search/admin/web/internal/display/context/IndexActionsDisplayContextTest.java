@@ -59,15 +59,10 @@ public class IndexActionsDisplayContextTest {
 		IndexActionsDisplayContext indexActionsDisplayContext =
 			indexActionsDisplayContextBuilder.build();
 
-		double availableDiskSpace =
-			indexActionsDisplayContext.getAvailableDiskSpace();
-
-		double currentDiskSpaceUsed =
-			indexActionsDisplayContext.getCurrentDiskSpaceUsed();
-
-		Assert.assertEquals(100.0, availableDiskSpace, 0);
-
-		Assert.assertEquals(80.0, currentDiskSpaceUsed, 0);
+		Assert.assertEquals(
+			100.0, indexActionsDisplayContext.getAvailableDiskSpace(), 0);
+		Assert.assertEquals(
+			80.0, indexActionsDisplayContext.getCurrentDiskSpaceUsed(), 0);
 
 		indexActionsDisplayContextBuilder.setStatsInformationFactory(
 			getStatsInformationFactory(16.0, 10.0, 10.0));

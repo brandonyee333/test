@@ -67,12 +67,9 @@ public class StatsClusterRequestExecutorTest {
 			statsClusterRequestExecutorImpl.execute(statsClusterRequest);
 
 		Assert.assertNotNull(statsClusterResponse);
-
-		Assert.assertNotNull(statsClusterResponse.getClusterHealthStatus());
-
 		Assert.assertNotEquals(
 			0, statsClusterResponse.getAvailableSpaceInBytes());
-
+		Assert.assertNotNull(statsClusterResponse.getClusterHealthStatus());
 		Assert.assertNotEquals(0, statsClusterResponse.getUsedSpaceInBytes());
 	}
 
