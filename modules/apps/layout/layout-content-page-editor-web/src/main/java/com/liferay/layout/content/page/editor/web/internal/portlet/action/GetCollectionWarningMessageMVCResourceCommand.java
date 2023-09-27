@@ -106,7 +106,7 @@ public class GetCollectionWarningMessageMVCResourceCommand
 				(CollectionStyledLayoutStructureItem)layoutStructureItem;
 
 		return _layoutWarningMessageHelper.
-			getCollectionWarningMessageJsonObject(
+			getCollectionWarningMessageJSONObject(
 				collectionStyledLayoutStructureItem, httpServletRequest);
 	}
 

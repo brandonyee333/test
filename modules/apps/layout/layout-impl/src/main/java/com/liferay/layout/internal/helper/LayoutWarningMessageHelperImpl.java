@@ -71,7 +71,7 @@ public class LayoutWarningMessageHelperImpl
 	implements LayoutWarningMessageHelper {
 
 	@Override
-	public JSONObject getCollectionWarningMessageJsonObject(
+	public JSONObject getCollectionWarningMessageJSONObject(
 			CollectionStyledLayoutStructureItem
 				collectionStyledLayoutStructureItem,
 			HttpServletRequest httpServletRequest)

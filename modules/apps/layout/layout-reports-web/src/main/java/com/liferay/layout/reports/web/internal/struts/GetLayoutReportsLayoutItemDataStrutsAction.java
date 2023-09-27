@@ -177,7 +177,7 @@ public class GetLayoutReportsLayoutItemDataStrutsAction
 
 							JSONObject collectionWarningMessageJSONObject =
 								_layoutWarningMessageHelper.
-									getCollectionWarningMessageJsonObject(
+									getCollectionWarningMessageJSONObject(
 										(CollectionStyledLayoutStructureItem)
 											layoutStructureItem,
 										httpServletRequest);

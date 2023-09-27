@@ -20,7 +20,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface LayoutWarningMessageHelper {
 
-	public JSONObject getCollectionWarningMessageJsonObject(
+	public JSONObject getCollectionWarningMessageJSONObject(
 			CollectionStyledLayoutStructureItem
 				collectionStyledLayoutStructureItem,
 			HttpServletRequest httpServletRequest)

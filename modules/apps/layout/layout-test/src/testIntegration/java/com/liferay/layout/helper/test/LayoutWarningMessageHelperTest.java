@@ -219,7 +219,7 @@ public class LayoutWarningMessageHelperTest {
 		mockHttpServletRequest.setParameter("p_l_mode", mode);
 
 		return _layoutWarningMessageHelper.
-			getCollectionWarningMessageJsonObject(
+			getCollectionWarningMessageJSONObject(
 				collectionStyledLayoutStructureItem, mockHttpServletRequest);
 	}
 
