@@ -263,7 +263,7 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 
 			String dataFileName = batchEngineUnit.getDataFileName();
 
-			java.io.File batchMarkerFile = bundle.getDataFile(
+			java.io.File processedFile = bundle.getDataFile(
 				com.liferay.petra.string.StringUtil.merge(
 					Arrays.asList(
 						dataFileName.replaceAll("\\W+", "."),
@@ -271,25 +271,25 @@ public class BatchEngineUnitProcessorImpl implements BatchEngineUnitProcessor {
 						"processed"),
 					"."));
 
-			if (batchMarkerFile == null) {
+			if (processedFile == null) {
 				return false;
 			}
 
 			String lastModifiedString = String.valueOf(
 				bundle.getLastModified());
 
-			if (batchMarkerFile.exists() &&
+			if (processedFile.exists() &&
 				Objects.equals(
-					_file.read(batchMarkerFile), lastModifiedString)) {
+					_file.read(processedFile), lastModifiedString)) {
 
 				return true;
 			}
 
-			if (!batchMarkerFile.exists()) {
-				batchMarkerFile.createNewFile();
+			if (!processedFile.exists()) {
+				processedFile.createNewFile();
 			}
 
-			_file.write(batchMarkerFile, lastModifiedString, true);
+			_file.write(processedFile, lastModifiedString, true);
 
 			return false;
 		}
