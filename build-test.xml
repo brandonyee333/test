@@ -659,10 +659,14 @@ jdbc.default.password=${database.password}
 
 // HikariCP
 
-jdbc.default.validationTimeout=300000
-jdbc.default.connectionTimeout=600000
-jdbc.default.maximumPoolSize=30
+jdbc.default.connectionTimeout=30000
+jdbc.default.idle-timeout=600000
+jdbc.default.max-lifetime=1800000
+jdbc.default.minimum-idle=5
+jdbc.default.maximumPoolSize=50
+
 jdbc.default.minimumIdle=0]]></echo>
+
 
 			<if>
 				<equals arg1="${database.type}" arg2="oracle" />
@@ -11573,10 +11577,11 @@ jdbc.default.password=${database.password}
 
 // HikariCP
 
-jdbc.default.validationTimeout=300000
-jdbc.default.connectionTimeout=600000
-jdbc.default.maximumPoolSize=${database.max.pool.size}
-jdbc.default.minimumIdle=0
+jdbc.default.connectionTimeout=30000
+jdbc.default.idle-timeout=600000
+jdbc.default.max-lifetime=1800000
+jdbc.default.minimum-idle=5
+jdbc.default.maximumPoolSize=50
 
 enterprise.product.notification.enabled=false
 company.security.strangers.verify=false
