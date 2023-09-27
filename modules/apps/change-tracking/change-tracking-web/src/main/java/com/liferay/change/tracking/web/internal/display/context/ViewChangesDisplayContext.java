@@ -566,7 +566,7 @@ public class ViewChangesDisplayContext {
 					return null;
 				}
 
-				return PortletURLBuilder.createActionURL(
+				return PortletURLBuilder.createRenderURL(
 					_renderResponse
 				).setMVCRenderCommandName(
 					"/change_tracking/view_move_changes"
