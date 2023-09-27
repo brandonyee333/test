@@ -112,7 +112,7 @@ const TranslationItem = ({
 			<span className="sr-only">
 				{`${sub(
 					Liferay.Language.get(
-						'language-option-label-and-status-x-x'
+						'x-language-x'
 					),
 					languageLabel,
 					statusText
