@@ -41,8 +41,8 @@ if (Validator.isNotNull(backURL)) {
 				<aui:input name="commerceInventoryWarehouseItemId" type="hidden" />
 				<aui:input name="sku" type="hidden" value="<%= cpInstance.getSku() %>" />
 				<aui:input name="quantity" type="hidden" />
-				<aui:input name="mvccVersion" type="hidden" />
 				<aui:input name="unitOfMeasureKey" type="hidden" />
+				<aui:input name="mvccVersion" type="hidden" />
 
 				<table class="show-quick-actions-on-hover table table-autofit table-list table-responsive-lg">
 					<thead>
@@ -61,8 +61,8 @@ if (Validator.isNotNull(backURL)) {
 					<tbody>
 
 						<%
-						int curIndex = 0;
 						List<String> cpInstanceUnitOfMeasureKeys = commerceInventoryWarehouseItemsDisplayContext.getCPInstanceUnitOfMeasureKeys();
+						int curIndex = 0;
 
 						for (CommerceInventoryWarehouse commerceInventoryWarehouse : commerceInventoryWarehouses) {
 							long commerceInventoryWarehouseItemId = 0;
