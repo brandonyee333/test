@@ -38,8 +38,8 @@ import org.osgi.service.component.annotations.Reference;
 public class EndpointHelper {
 
 	public Map<String, Object> getResponseEntityMap(
-			long companyId, APIApplication.Schema schema, String pathParameter,
-			String pathParameterValue, String scopeKey)
+			long companyId, String pathParameter, String pathParameterValue,
+			APIApplication.Schema schema, String scopeKey)
 		throws Exception {
 
 		Set<String> relationshipsNames = new HashSet<>();
@@ -100,11 +100,9 @@ public class EndpointHelper {
 
 		Set<String> relationshipsNames = new HashSet<>();
 
-		APIApplication.Schema responseSchema = endpoint.getResponseSchema();
+		APIApplication.Schema schema = endpoint.getResponseSchema();
 
-		for (APIApplication.Property property :
-				responseSchema.getProperties()) {
-
+		for (APIApplication.Property property : schema.getProperties()) {
 			relationshipsNames.addAll(property.getObjectRelationshipNames());
 		}
 
@@ -114,14 +112,12 @@ public class EndpointHelper {
 				_filterExpressionHelper.getExpression(
 					companyId, endpoint, filterString),
 				ListUtil.fromCollection(relationshipsNames), pagination,
-				responseSchema.getMainObjectDefinitionExternalReferenceCode(),
-				scopeKey,
+				schema.getMainObjectDefinitionExternalReferenceCode(), scopeKey,
 				_sortsHelper.getSorts(
 					acceptLanguage, companyId, endpoint, sortString));
 
 		for (ObjectEntry objectEntry : objectEntriesPage.getItems()) {
-			responseEntityMaps.add(
-				_getResponseEntityMap(objectEntry, responseSchema));
+			responseEntityMaps.add(_getResponseEntityMap(objectEntry, schema));
 		}
 
 		return Page.of(
@@ -177,16 +173,14 @@ public class EndpointHelper {
 	}
 
 	private Map<String, Object> _getResponseEntityMap(
-		ObjectEntry objectEntry, APIApplication.Schema responseSchema) {
+		ObjectEntry objectEntry, APIApplication.Schema schema) {
 
 		Map<String, Object> responseEntityMap = new HashMap<>();
 
 		Map<String, Object> objectEntryProperties = _getObjectEntryProperties(
 			objectEntry);
 
-		for (APIApplication.Property property :
-				responseSchema.getProperties()) {
-
+		for (APIApplication.Property property : schema.getProperties()) {
 			List<String> objectRelationshipNames =
 				property.getObjectRelationshipNames();
 

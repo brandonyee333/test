@@ -86,8 +86,8 @@ public class HeadlessBuilderResourceImpl {
 			path + "/" + pathParameterValue,
 			APIApplication.Endpoint.Scope.COMPANY,
 			endpoint -> _endpointHelper.getResponseEntityMap(
-				_company.getCompanyId(), endpoint.getResponseSchema(),
-				endpoint.getPathParameter(), pathParameterValue, null));
+				_company.getCompanyId(), endpoint.getPathParameter(),
+				pathParameterValue, endpoint.getResponseSchema(), null));
 	}
 
 	@GET
@@ -106,8 +106,8 @@ public class HeadlessBuilderResourceImpl {
 			path + "/" + pathParameterValue,
 			APIApplication.Endpoint.Scope.GROUP,
 			endpoint -> _endpointHelper.getResponseEntityMap(
-				_company.getCompanyId(), endpoint.getResponseSchema(),
-				endpoint.getPathParameter(), pathParameterValue, scopeKey));
+				_company.getCompanyId(), endpoint.getPathParameter(),
+				pathParameterValue, endpoint.getResponseSchema(), scopeKey));
 	}
 
 	private <T> Response _executeEndpoint(
