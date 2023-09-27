@@ -377,7 +377,7 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 					"fieldName", String.valueOf(fdsFieldProperties.get("name"))
 				).put(
 					"label",
-					_getLabelFromProperties("label", "name", fdsFieldProperties)
+					_getValue("label", "name", fdsFieldProperties)
 				).put(
 					"sortable", (boolean)fdsFieldProperties.get("sortable")
 				);
@@ -447,7 +447,7 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 						"id", properties.get("fieldName")
 					).put(
 						"label",
-						_getLabelFromProperties(
+						_getValue(
 							"label", "fieldName", properties)
 					).put(
 						"max", _getDateJSONObject(properties.get("to"))
@@ -496,7 +496,7 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 							))
 					).put(
 						"label",
-						_getLabelFromProperties(
+						_getValue(
 							"label", "fieldName", properties)
 					).put(
 						"multiple", properties.get("multiple")
@@ -606,17 +606,17 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 			});
 	}
 
-	private String _getLabelFromProperties(
-		String defaultProperty, String fallbackProperty,
+	private String _getValue(
+		String defaultKey, String fallbackKey,
 		Map<String, Object> fdsFieldProperties) {
 
-		String label = String.valueOf(fdsFieldProperties.get(defaultProperty));
+		String value = String.valueOf(fdsFieldProperties.get(defaultKey));
 
-		if (Validator.isNotNull(label)) {
-			return label;
+		if (Validator.isNotNull(value)) {
+			return value;
 		}
 
-		return String.valueOf(fdsFieldProperties.get(fallbackProperty));
+		return String.valueOf(fdsFieldProperties.get(fallbackKey));
 	}
 
 	private ObjectEntry _getObjectEntry(
