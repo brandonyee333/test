@@ -40,6 +40,7 @@ export default class DynamicUploaderForm extends React.Component {
 		},
 		namespace: '',
 		resumable: {},
+		submitting: true,
 		token: '',
 		toolbar: {
 			paused: false,
@@ -235,6 +236,12 @@ export default class DynamicUploaderForm extends React.Component {
 			});
 		}
 	};
+
+	handleSubmitDisable = event => {
+		this.setState({
+			submitting: !event.target.checked
+		});
+	}
 
 	handleUpdateComment = event => {
 		this.setState({
@@ -432,11 +439,12 @@ export default class DynamicUploaderForm extends React.Component {
 					<label>
 						<input
 							name={`${namespace}noPersonalData`}
+							onChange={this.handleSubmitDisable}
 							type="checkbox"
 						/>{' '}
 						<span className="checkbox-label">
 							{
-								Liferay.Language.get('please-check-this-box-if-the-file-you-upload-does-not-contain-any-personal-data-and-therefore-can-be-uploaded-to-and-accessed-from-any-liferay-support-location-globally')
+								Liferay.Language.get('i-certify-that-the-uploaded-attachment-does-not-contain-any-personal-data')
 							}
 						</span>
 					</label>

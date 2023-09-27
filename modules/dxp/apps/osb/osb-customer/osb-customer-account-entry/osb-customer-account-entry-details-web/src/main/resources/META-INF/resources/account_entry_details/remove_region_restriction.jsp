@@ -31,7 +31,7 @@ TicketAttachment ticketAttachment = (TicketAttachment)renderRequest.getAttribute
 				<liferay-ui:message key="edit-access-for" /> <%= HtmlUtil.escape(ticketAttachment.getFileName()) %>
 			</h1>
 
-			<aui:input label="check-this-box-if-the-file-you-uploaded-does-not-contain-any-personal-data-and-therefore-can-be-accessed-from-any-liferay-support-location-globally" name="noPersonalData" type="checkbox" value="" />
+			<aui:input label="i-certify-that-the-uploaded-attachment-does-not-contain-any-personal-data" name="noPersonalData" type="checkbox" value="" />
 
 			<div class="portlet-msg-info">
 				<liferay-ui:message key="note-this-action-cannot-be-undone" />
