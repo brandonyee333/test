@@ -9,7 +9,6 @@ Import-Package:\
 	\
 	!com.github.mustachejava.*,\
 	\
-	!com.google.common.*,\
 	!com.google.protobuf.*,\
 	\
 	!com.ning.compress.*,\
