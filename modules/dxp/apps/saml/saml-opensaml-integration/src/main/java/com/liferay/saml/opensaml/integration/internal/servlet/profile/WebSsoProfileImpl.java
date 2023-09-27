@@ -308,12 +308,10 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 
 		_samlConfiguration = ConfigurableUtil.createConfigurable(
 			SamlConfiguration.class, properties);
-
 		_stringAttributeResolverServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, AttributeResolver.class, "(companyId=*)",
 				new DefaultServiceReferenceMapper(_log));
-
 		_stringNameIdResolverServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, NameIdResolver.class, "(companyId=*)",
