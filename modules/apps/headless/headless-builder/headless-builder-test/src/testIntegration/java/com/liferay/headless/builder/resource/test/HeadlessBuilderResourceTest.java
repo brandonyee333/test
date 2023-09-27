@@ -429,7 +429,7 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			APIApplication.Endpoint.RetrieveType.COLLECTION.getValue(),
 			APIApplication.Endpoint.Scope.COMPANY);
 
-		_addAPISort(_API_ENDPOINT_ERC_1, String.format("%s:asc", "textField"));
+		_addAPISort(_API_ENDPOINT_ERC_1, "textField:asc");
 
 		_publishAPIApplication(_API_APPLICATION_ERC_1);
 
@@ -614,7 +614,7 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			APIApplication.Endpoint.RetrieveType.COLLECTION.getValue(),
 			APIApplication.Endpoint.Scope.COMPANY);
 
-		_addAPISort(_API_ENDPOINT_ERC_1, String.format("%s:desc", "textField"));
+		_addAPISort(_API_ENDPOINT_ERC_1, "textField:desc");
 
 		_publishAPIApplication(_API_APPLICATION_ERC_1);
 
@@ -807,16 +807,12 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			APIApplication.Endpoint.Scope.COMPANY);
 
 		String endpoint1 = "c/" + _BASE_URL_1 + _API_APPLICATION_PATH_1;
-		String scopedEndpoint1 = StringBundler.concat(
-			"c/", _BASE_URL_1, "/scopes/%s", _API_APPLICATION_PATH_1);
 
 		Assert.assertEquals(
 			404,
 			HTTPTestUtil.invokeToHttpCode(null, endpoint1, Http.Method.GET));
 
 		String endpoint2 = "c/" + _BASE_URL_2 + _API_APPLICATION_PATH_2;
-		String scopedEndpoint2 = StringBundler.concat(
-			"c/", _BASE_URL_2, "/scopes/%s", _API_APPLICATION_PATH_2);
 
 		Assert.assertEquals(
 			404,
@@ -835,13 +831,17 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			404,
 			HTTPTestUtil.invokeToHttpCode(
 				null,
-				String.format(scopedEndpoint1, TestPropsValues.getGroupId()),
+				StringBundler.concat(
+					"c/", _BASE_URL_1, "/scopes/", TestPropsValues.getGroupId(),
+					_API_APPLICATION_PATH_1),
 				Http.Method.GET));
 		Assert.assertEquals(
 			404,
 			HTTPTestUtil.invokeToHttpCode(
 				null,
-				String.format(scopedEndpoint2, TestPropsValues.getGroupId()),
+				StringBundler.concat(
+					"c/", _BASE_URL_2, "/scopes/", TestPropsValues.getGroupId(),
+					_API_APPLICATION_PATH_2),
 				Http.Method.GET));
 
 		ObjectEntry objectEntry1 = _addCustomObjectEntry(
@@ -967,9 +967,9 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			).toString(),
 			HTTPTestUtil.invokeToJSONObject(
 				null,
-				String.format(
-					"%s?page=2&pageSize=5",
-					"c/" + _BASE_URL_1 + _API_APPLICATION_PATH_1),
+				StringBundler.concat(
+					"c/", _BASE_URL_1, _API_APPLICATION_PATH_1,
+					"?page=2&pageSize=5"),
 				Http.Method.GET
 			).toString(),
 			JSONCompareMode.LENIENT);
@@ -1165,18 +1165,19 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			APIApplication.Endpoint.Scope.GROUP);
 
 		String endpointPath = "c/" + _BASE_URL_1 + _API_APPLICATION_PATH_1;
-		String scopedEndpointPath = StringBundler.concat(
-			"c/", _BASE_URL_1, "/scopes/%s", _API_APPLICATION_PATH_1);
 
 		Assert.assertEquals(
 			404,
 			HTTPTestUtil.invokeToHttpCode(null, endpointPath, Http.Method.GET));
+
+		String scopedEndpointPath = StringBundler.concat(
+			"c/", _BASE_URL_1, "/scopes/", TestPropsValues.getGroupId(),
+			_API_APPLICATION_PATH_1);
+
 		Assert.assertEquals(
 			404,
 			HTTPTestUtil.invokeToHttpCode(
-				null,
-				String.format(scopedEndpointPath, TestPropsValues.getGroupId()),
-				Http.Method.GET));
+				null, scopedEndpointPath, Http.Method.GET));
 
 		_publishAPIApplication(_API_APPLICATION_ERC_1);
 
@@ -1186,9 +1187,7 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 		Assert.assertEquals(
 			200,
 			HTTPTestUtil.invokeToHttpCode(
-				null,
-				String.format(scopedEndpointPath, TestPropsValues.getGroupId()),
-				Http.Method.GET));
+				null, scopedEndpointPath, Http.Method.GET));
 
 		ObjectEntry objectEntry1 = _addCustomObjectEntry(
 			_group.getGroupId(), 1, null, _siteScopedObjectDefinition1,
@@ -1214,11 +1213,14 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 				"totalCount", 0
 			).toString(),
 			HTTPTestUtil.invokeToJSONObject(
-				null,
-				String.format(scopedEndpointPath, TestPropsValues.getGroupId()),
-				Http.Method.GET
+				null, scopedEndpointPath, Http.Method.GET
 			).toString(),
 			JSONCompareMode.LENIENT);
+
+		scopedEndpointPath = StringBundler.concat(
+			"c/", _BASE_URL_1, "/scopes/", _group.getGroupId(),
+			_API_APPLICATION_PATH_1);
+
 		JSONAssert.assertEquals(
 			JSONUtil.put(
 				"items",
@@ -1234,8 +1236,7 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 				"totalCount", 1
 			).toString(),
 			HTTPTestUtil.invokeToJSONObject(
-				null, String.format(scopedEndpointPath, _group.getGroupId()),
-				Http.Method.GET
+				null, scopedEndpointPath, Http.Method.GET
 			).toString(),
 			JSONCompareMode.LENIENT);
 
@@ -1253,8 +1254,7 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 		Assert.assertEquals(
 			404,
 			HTTPTestUtil.invokeToHttpCode(
-				null, String.format(scopedEndpointPath, _group.getGroupId()),
-				Http.Method.GET));
+				null, scopedEndpointPath, Http.Method.GET));
 	}
 
 	@Test
@@ -1270,9 +1270,6 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			APIApplication.Endpoint.RetrieveType.SINGLE_ELEMENT.getValue(),
 			APIApplication.Endpoint.Scope.GROUP);
 
-		String scopedEndpointPath = StringBundler.concat(
-			"c/", _BASE_URL_1, "/scopes/%s", _API_APPLICATION_PATH_1);
-
 		_publishAPIApplication(_API_APPLICATION_ERC_1);
 
 		ObjectEntry objectEntry = _addCustomObjectEntry(
@@ -1286,8 +1283,8 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			HTTPTestUtil.invokeToJSONObject(
 				null,
 				StringBundler.concat(
-					String.format(scopedEndpointPath, _group.getGroupId()),
-					StringPool.FORWARD_SLASH,
+					"c/", _BASE_URL_1, "/scopes/", _group.getGroupId(),
+					_API_APPLICATION_PATH_1, StringPool.FORWARD_SLASH,
 					objectEntry.getExternalReferenceCode()),
 				Http.Method.GET
 			).toString(),
@@ -1307,9 +1304,6 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			APIApplication.Endpoint.RetrieveType.SINGLE_ELEMENT.getValue(),
 			APIApplication.Endpoint.Scope.GROUP);
 
-		String scopedEndpointPath = StringBundler.concat(
-			"c/", _BASE_URL_1, "/scopes/%s", _API_APPLICATION_PATH_1);
-
 		_publishAPIApplication(_API_APPLICATION_ERC_1);
 
 		_addCustomObjectEntry(
@@ -1322,8 +1316,9 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 			).toString(),
 			HTTPTestUtil.invokeToJSONObject(
 				null,
-				String.format(scopedEndpointPath, _group.getGroupId()) +
-					"/uniqueValue",
+				StringBundler.concat(
+					"c/", _BASE_URL_1, "/scopes/", _group.getGroupId(),
+					_API_APPLICATION_PATH_1, "/uniqueValue"),
 				Http.Method.GET
 			).toString(),
 			JSONCompareMode.LENIENT);
@@ -1448,9 +1443,8 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 								_API_SCHEMA_INTEGER_FIELD_ERC + 3
 							).put(
 								"objectRelationshipNames",
-								String.format(
-									"%s,%s", objectRelationshipName1,
-									objectRelationshipName2)
+								objectRelationshipName1 + "," +
+									objectRelationshipName2
 							),
 							JSONUtil.put(
 								"description", "description"
@@ -1461,9 +1455,8 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 								_API_SCHEMA_MULTISELECT_PICKLIST_FIELD_ERC + 3
 							).put(
 								"objectRelationshipNames",
-								String.format(
-									"%s,%s", objectRelationshipName1,
-									objectRelationshipName2)
+								objectRelationshipName1 + "," +
+									objectRelationshipName2
 							),
 							JSONUtil.put(
 								"description", "description"
@@ -1473,9 +1466,8 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 								"objectFieldERC", _API_SCHEMA_TEXT_FIELD_ERC + 3
 							).put(
 								"objectRelationshipNames",
-								String.format(
-									"%s,%s", objectRelationshipName1,
-									objectRelationshipName2)
+								objectRelationshipName1 + "," +
+									objectRelationshipName2
 							))
 					).put(
 						"description", "description"
