@@ -115,8 +115,9 @@ public class LayoutPageTemplateCollectionLocalServiceImpl
 			for (LayoutPageTemplateCollection curLayoutPageTemplateCollection :
 					layoutPageTemplateCollections) {
 
-				deleteLayoutPageTemplateCollection(
-					curLayoutPageTemplateCollection);
+				layoutPageTemplateCollectionLocalService.
+					deleteLayoutPageTemplateCollection(
+						curLayoutPageTemplateCollection);
 			}
 		}
 
