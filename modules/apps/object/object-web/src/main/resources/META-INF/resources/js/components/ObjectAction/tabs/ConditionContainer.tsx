@@ -37,8 +37,8 @@ export function ConditionContainer({
 			<ClayForm.Group>
 				<Toggle
 					disabled={
-						values.system ||
-						values.objectActionTriggerKey === 'standalone'
+						values.objectActionTriggerKey === 'standalone' ||
+						values.system
 					}
 					label={Liferay.Language.get('enable-condition')}
 					name="condition"
