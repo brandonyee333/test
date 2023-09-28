@@ -8,6 +8,7 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 import com.liferay.osb.customer.account.entry.details.constants.EventConstants;
 import com.liferay.osb.customer.account.entry.details.service.EventLocalService;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
+import com.liferay.osb.customer.ticket.exception.PersonalDataException;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentService;
 import com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException;
@@ -93,6 +94,10 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			boolean noPersonalData = ParamUtil.getBoolean(
 				actionRequest, "noPersonalData");
 
+			if (!noPersonalData) {
+				throw new PersonalDataException();
+			}
+
 			ZendeskTicket zendeskTicket =
 				_zendeskTicketWebService.getZendeskTicket(zendeskTicketId);
 
@@ -103,12 +108,6 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			long accountEntryId = _zendeskMapperUtil.getAccountEntryId(
 				zendeskTicket.getZendeskOrganizationId());
 
-			boolean regionRestricted = true;
-
-			if (noPersonalData) {
-				regionRestricted = false;
-			}
-
 			ServiceContext serviceContext = ServiceContextFactory.getInstance(
 				TicketAttachment.class.getName(), actionRequest);
 
@@ -117,7 +116,7 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			TicketAttachment ticketAttachment =
 				_ticketAttachmentService.addTicketAttachment(
 					accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
-					fileSize, type, regionRestricted, serviceContext);
+					fileSize, type, false, serviceContext);
 
 			addEvent(actionRequest, ticketAttachment);
 		}

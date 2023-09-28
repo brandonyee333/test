@@ -41,6 +41,7 @@ FileRepository fileRepository = fileRepositoryManager.getDataRegionFileRepositor
 
 <liferay-ui:error exception="<%= NoSuchAccountEntryException.class %>" message="the-project-could-not-be-found" />
 <liferay-ui:error exception="<%= NoSuchZendeskTicketException.class %>" message="the-ticket-could-not-be-found" />
+<liferay-ui:error exception="<%= PersonalDataException.class %>" message="please-certify-that-the-uploaded-attachment-does-not-contain-any-personal-data" />
 
 <aui:script>
 	AccountDetails.render(
