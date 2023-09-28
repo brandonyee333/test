@@ -487,7 +487,7 @@ public class ObjectActionLocalServiceTest {
 				"Peter", ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE,
 				"John", WorkflowConstants.STATUS_DRAFT);
 
-			// Create root context
+			// Hierarchy, root object entry
 
 			ObjectDefinition objectDefinitionA =
 				ObjectDefinitionTestUtil.addCustomObjectDefinition(
@@ -551,7 +551,7 @@ public class ObjectActionLocalServiceTest {
 				).build(),
 				ServiceContextTestUtil.getServiceContext());
 
-			// Add object entry in child node
+			// Hierarchy, add object entry in a child node
 
 			ObjectField objectField = _objectFieldLocalService.getObjectField(
 				objectRelationshipA_AA.getObjectFieldId2());
@@ -566,13 +566,13 @@ public class ObjectActionLocalServiceTest {
 				).build(),
 				ServiceContextTestUtil.getServiceContext());
 
-			// On after root context update
+			// Hierarchy, on after root update
 
 			_assertWebhookObjectAction(
 				"John", ObjectActionTriggerConstants.KEY_ON_AFTER_ROOT_UPDATE,
 				objectDefinitionA, null, WorkflowConstants.STATUS_APPROVED);
 
-			// Add object entry in grandchild node
+			// Hierarchy, add object entry in a grandchild node
 
 			objectField = _objectFieldLocalService.getObjectField(
 				objectRelationshipAA_AAA.getObjectFieldId2());
@@ -587,7 +587,7 @@ public class ObjectActionLocalServiceTest {
 				).build(),
 				ServiceContextTestUtil.getServiceContext());
 
-			// On after root context update
+			// Hierarchy, on after root update
 
 			_assertWebhookObjectAction(
 				"John", ObjectActionTriggerConstants.KEY_ON_AFTER_ROOT_UPDATE,
