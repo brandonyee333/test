@@ -1237,8 +1237,7 @@ definition {
 		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
 
 		Type(
-			key_text = "Price List Price",
-			locator1 = "TextInput#ANY",
+			locator1 = "CommerceEntry#PRICE_FIELD",
 			value1 = ${price});
 
 		Button.clickSave();
