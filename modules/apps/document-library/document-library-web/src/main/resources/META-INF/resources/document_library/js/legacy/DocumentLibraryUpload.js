@@ -105,12 +105,13 @@ AUI.add(
 						${Liferay.Util.getLexiconIconTpl(STR_ICON_DEFAULT)}
 					</span>
 					</span>
-			</div>
-			<div class="autofit-col autofit-col-expand pl-1">
-				<div class="table-title">
-					<a>{0}</a>
 				</div>
-			</div>
+
+				<div class="autofit-col autofit-col-expand pl-1">
+					<div class="table-title">
+						<a>{0}</a>
+					</div>
+				</div>
 			</div>`;
 
 		const TPL_ENTRY_WRAPPER =
