@@ -13,7 +13,7 @@ DisplayPageTemplateInfoPanelDisplayContext displayPageTemplateInfoPanelDisplayCo
 List<LayoutPageTemplateCollection> layoutPageTemplateCollections = displayPageTemplateInfoPanelDisplayContext.getLayoutPageTemplateCollections();
 List<LayoutPageTemplateEntry> layoutPageTemplateEntries = displayPageTemplateInfoPanelDisplayContext.getLayoutPageTemplateEntries();
 
-Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
+Format dateTimeFormat = FastDateFormatFactoryUtil.getDateTime(locale, timeZone);
 %>
 
 <c:choose>
@@ -74,7 +74,7 @@ Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZo
 			</p>
 
 			<p class="sidebar-dd text-secondary">
-				<%= dateFormatDateTime.format(layoutPageTemplateEntry.getCreateDate()) %>
+				<%= dateTimeFormat.format(layoutPageTemplateEntry.getCreateDate()) %>
 			</p>
 
 			<p class="sidebar-dt">
@@ -82,7 +82,7 @@ Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZo
 			</p>
 
 			<p class="sidebar-dd text-secondary">
-				<%= dateFormatDateTime.format(layoutPageTemplateEntry.getModifiedDate()) %>
+				<%= dateTimeFormat.format(layoutPageTemplateEntry.getModifiedDate()) %>
 			</p>
 		</div>
 	</c:when>
@@ -143,7 +143,7 @@ Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZo
 				</p>
 
 				<p class="sidebar-dd text-secondary">
-					<%= dateFormatDateTime.format(layoutPageTemplateCollection.getCreateDate()) %>
+					<%= dateTimeFormat.format(layoutPageTemplateCollection.getCreateDate()) %>
 				</p>
 
 				<p class="sidebar-dt">
@@ -151,7 +151,7 @@ Format dateFormatDateTime = FastDateFormatFactoryUtil.getDateTime(locale, timeZo
 				</p>
 
 				<p class="sidebar-dd text-secondary">
-					<%= dateFormatDateTime.format(layoutPageTemplateCollection.getModifiedDate()) %>
+					<%= dateTimeFormat.format(layoutPageTemplateCollection.getModifiedDate()) %>
 				</p>
 
 				<p class="sidebar-dt">
