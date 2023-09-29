@@ -125,7 +125,7 @@ public class CommerceCheckoutStepHttpHelperTest {
 		Assert.assertTrue(
 			_commerceCheckoutStepHttpHelper.
 				isActiveBillingAddressCommerceCheckoutStep(
-					null, commerceOrder));
+					commerceOrder, null));
 
 		_accountEntryLocalService.updateDefaultBillingAddressId(
 			accountEntry.getAccountEntryId(), 0);
@@ -143,7 +143,7 @@ public class CommerceCheckoutStepHttpHelperTest {
 		Assert.assertFalse(
 			_commerceCheckoutStepHttpHelper.
 				isActiveBillingAddressCommerceCheckoutStep(
-					null, commerceOrder));
+					commerceOrder, null));
 	}
 
 	private CommerceAddress _addCommerceAddress(long commerceAccountId)

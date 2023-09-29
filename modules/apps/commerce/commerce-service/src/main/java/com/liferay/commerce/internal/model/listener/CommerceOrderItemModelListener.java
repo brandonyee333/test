@@ -11,6 +11,7 @@ import com.liferay.commerce.model.CommerceOrderItem;
 import com.liferay.commerce.order.CommerceOrderThreadLocal;
 import com.liferay.commerce.order.engine.CommerceOrderEngine;
 import com.liferay.commerce.service.CommerceOrderItemLocalService;
+import com.liferay.commerce.service.CommerceOrderLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -32,13 +33,53 @@ public class CommerceOrderItemModelListener
 	extends BaseModelListener<CommerceOrderItem> {
 
 	@Override
+	public void onAfterCreate(CommerceOrderItem commerceOrderItem) {
+		try {
+			CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
+
+			boolean commerceOrderShippable = commerceOrder.isShippable();
+
+			if (!commerceOrderShippable) {
+				boolean commerceOrderItemShippable =
+					commerceOrderItem.isShippable();
+
+				if (commerceOrderItemShippable) {
+					commerceOrder.setShippable(true);
+
+					_commerceOrderLocalService.updateCommerceOrder(
+						commerceOrder);
+				}
+			}
+		}
+		catch (PortalException portalException) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(portalException);
+			}
+		}
+	}
+
+	@Override
 	public void onAfterRemove(CommerceOrderItem commerceOrderItem) {
 		try {
+			CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
+
+			for (CommerceOrderItem curCommerceOrderItem :
+					commerceOrder.getCommerceOrderItems()) {
+
+				if (curCommerceOrderItem.isShippable()) {
+					commerceOrder.setShippable(true);
+
+					commerceOrder =
+						_commerceOrderLocalService.updateCommerceOrder(
+							commerceOrder);
+
+					break;
+				}
+			}
+
 			if (CommerceOrderThreadLocal.isDeleteInProcess()) {
 				return;
 			}
-
-			CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
 
 			if (commerceOrder.getOrderStatus() ==
 					CommerceOrderConstants.ORDER_STATUS_PARTIALLY_SHIPPED) {
@@ -168,5 +209,8 @@ public class CommerceOrderItemModelListener
 
 	@Reference
 	private CommerceOrderItemLocalService _commerceOrderItemLocalService;
+
+	@Reference
+	private CommerceOrderLocalService _commerceOrderLocalService;
 
 }

@@ -6,7 +6,6 @@
 package com.liferay.commerce.checkout.web.internal.helper;
 
 import com.liferay.account.model.AccountEntry;
-import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.commerce.checkout.helper.CommerceCheckoutStepHttpHelper;
 import com.liferay.commerce.constants.CommerceCheckoutWebKeys;
 import com.liferay.commerce.constants.CommerceOrderActionKeys;
@@ -56,6 +55,7 @@ import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.BigDecimalUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -78,7 +78,7 @@ public class DefaultCommerceCheckoutStepHttpHelper
 
 	@Override
 	public String getOrderDetailURL(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException {
 
 		PortletURL portletURL =
@@ -94,7 +94,7 @@ public class DefaultCommerceCheckoutStepHttpHelper
 
 	@Override
 	public boolean isActiveBillingAddressCommerceCheckoutStep(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException {
 
 		CommerceAddress defaultBillingCommerceAddress = null;
@@ -161,7 +161,7 @@ public class DefaultCommerceCheckoutStepHttpHelper
 			 (defaultBillingCommerceAddressId ==
 				 defaultShippingCommerceAddressId) &&
 			 (billingAddress == null) && (shippingAddress == null) &&
-			 _commerceShippingHelper.isShippable(commerceOrder)) ||
+			 commerceOrder.isShippable()) ||
 			((billingAddress != null) && (shippingAddress != null) &&
 			 (billingAddress.getCommerceAddressId() ==
 				 shippingAddress.getCommerceAddressId()))) {
@@ -174,7 +174,7 @@ public class DefaultCommerceCheckoutStepHttpHelper
 
 	@Override
 	public boolean isActiveDeliveryTermCommerceCheckoutStep(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder,
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest,
 			String languageId)
 		throws PortalException {
 
@@ -208,9 +208,14 @@ public class DefaultCommerceCheckoutStepHttpHelper
 					_commerceTermEntryLocalService.getCommerceTermEntry(
 						commerceChannelAccountEntryRel.getClassPK());
 
-				_commerceOrderLocalService.updateTermsAndConditions(
-					commerceOrder.getCommerceOrderId(),
-					commerceTermEntry.getCommerceTermEntryId(), 0, languageId);
+				commerceOrder =
+					_commerceOrderLocalService.updateTermsAndConditions(
+						commerceOrder.getCommerceOrderId(),
+						commerceTermEntry.getCommerceTermEntryId(), 0,
+						languageId);
+
+				httpServletRequest.setAttribute(
+					CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 
 				return false;
 			}
@@ -270,9 +275,12 @@ public class DefaultCommerceCheckoutStepHttpHelper
 			CommerceTermEntry commerceTermEntry =
 				deliveryCommerceTermEntries.get(0);
 
-			_commerceOrderLocalService.updateTermsAndConditions(
+			commerceOrder = _commerceOrderLocalService.updateTermsAndConditions(
 				commerceOrder.getCommerceOrderId(),
 				commerceTermEntry.getCommerceTermEntryId(), 0, languageId);
+
+			httpServletRequest.setAttribute(
+				CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 
 			return false;
 		}
@@ -292,17 +300,23 @@ public class DefaultCommerceCheckoutStepHttpHelper
 		if ((commerceTermEntry != null) && commerceTermEntry.isActive() &&
 			deliveryCommerceTermEntries.contains(commerceTermEntry)) {
 
-			_commerceOrderLocalService.updateTermsAndConditions(
+			commerceOrder = _commerceOrderLocalService.updateTermsAndConditions(
 				commerceOrder.getCommerceOrderId(),
 				commerceTermEntry.getCommerceTermEntryId(), 0,
 				_language.getLanguageId(_portal.getLocale(httpServletRequest)));
+
+			httpServletRequest.setAttribute(
+				CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 		}
 		else {
 			commerceTermEntry = deliveryCommerceTermEntries.get(0);
 
-			_commerceOrderLocalService.updateTermsAndConditions(
+			commerceOrder = _commerceOrderLocalService.updateTermsAndConditions(
 				commerceOrder.getCommerceOrderId(),
 				commerceTermEntry.getCommerceTermEntryId(), 0, languageId);
+
+			httpServletRequest.setAttribute(
+				CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 		}
 
 		return true;
@@ -310,7 +324,7 @@ public class DefaultCommerceCheckoutStepHttpHelper
 
 	@Override
 	public boolean isActivePaymentMethodCommerceCheckoutStep(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException {
 
 		long commercePaymentMethodGroupRelsCount =
@@ -464,9 +478,13 @@ public class DefaultCommerceCheckoutStepHttpHelper
 					_commerceTermEntryLocalService.getCommerceTermEntry(
 						commerceChannelAccountEntryRel.getClassPK());
 
-				_commerceOrderLocalService.updateTermsAndConditions(
-					commerceOrder.getCommerceOrderId(), 0,
-					commerceTermEntry.getCommerceTermEntryId(), languageId);
+				commerceOrder =
+					_commerceOrderLocalService.updateTermsAndConditions(
+						commerceOrder.getCommerceOrderId(), 0,
+						commerceTermEntry.getCommerceTermEntryId(), languageId);
+
+				httpServletRequest.setAttribute(
+					CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 
 				return false;
 			}
@@ -496,9 +514,12 @@ public class DefaultCommerceCheckoutStepHttpHelper
 			CommerceTermEntry commerceTermEntry =
 				paymentCommerceTermEntries.get(0);
 
-			_commerceOrderLocalService.updateTermsAndConditions(
+			commerceOrder = _commerceOrderLocalService.updateTermsAndConditions(
 				commerceOrder.getCommerceOrderId(), 0,
 				commerceTermEntry.getCommerceTermEntryId(), languageId);
+
+			httpServletRequest.setAttribute(
+				CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 
 			return false;
 		}
@@ -518,32 +539,30 @@ public class DefaultCommerceCheckoutStepHttpHelper
 		if ((commerceTermEntry != null) && commerceTermEntry.isActive() &&
 			paymentCommerceTermEntries.contains(commerceTermEntry)) {
 
-			_commerceOrderLocalService.updateTermsAndConditions(
+			commerceOrder = _commerceOrderLocalService.updateTermsAndConditions(
 				commerceOrder.getCommerceOrderId(), 0,
 				commerceTermEntry.getCommerceTermEntryId(), languageId);
 		}
 		else {
 			commerceTermEntry = paymentCommerceTermEntries.get(0);
 
-			_commerceOrderLocalService.updateTermsAndConditions(
+			commerceOrder = _commerceOrderLocalService.updateTermsAndConditions(
 				commerceOrder.getCommerceOrderId(), 0,
 				commerceTermEntry.getCommerceTermEntryId(), languageId);
 		}
+
+		httpServletRequest.setAttribute(
+			CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 
 		return true;
 	}
 
 	@Override
 	public boolean isActiveShippingMethodCommerceCheckoutStep(
-			HttpServletRequest httpServletRequest)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException {
 
-		CommerceOrder commerceOrder =
-			(CommerceOrder)httpServletRequest.getAttribute(
-				CommerceCheckoutWebKeys.COMMERCE_ORDER);
-
-		if (!commerceOrder.isOpen() ||
-			!_commerceShippingHelper.isShippable(commerceOrder) ||
+		if (!commerceOrder.isOpen() || !commerceOrder.isShippable() ||
 			_commerceShippingHelper.isFreeShipping(commerceOrder)) {
 
 			return false;
@@ -598,6 +617,9 @@ public class DefaultCommerceCheckoutStepHttpHelper
 			commerceOrder = _updateCommerceOrderCommerceShippingMethod(
 				commerceContext, commerceOrder, commerceShippingMethods,
 				httpServletRequest);
+
+			httpServletRequest.setAttribute(
+				CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 		}
 
 		return _hasCommerceOrderPermission(
@@ -607,7 +629,7 @@ public class DefaultCommerceCheckoutStepHttpHelper
 
 	@Override
 	public boolean isCommercePaymentComplete(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException {
 
 		if (BigDecimalUtil.isZero(commerceOrder.getTotal())) {
@@ -668,7 +690,7 @@ public class DefaultCommerceCheckoutStepHttpHelper
 
 	private CommerceOrder _updateCommerceOrder(
 			CommerceContext commerceContext, CommerceOrder commerceOrder,
-			String commerceShippingMethodKey, String commerceShippingOptionKey,
+			String commerceShippingMethodKey, String shippingOptionName,
 			HttpServletRequest httpServletRequest)
 		throws PortalException {
 
@@ -700,13 +722,101 @@ public class DefaultCommerceCheckoutStepHttpHelper
 								getCommerceShippingMethodId();
 					}
 
-					_commerceOrderLocalService.updateCommerceShippingMethod(
-						commerceOrder.getCommerceOrderId(),
-						commerceShippingMethodId, commerceShippingOptionKey,
-						commerceContext, _portal.getLocale(httpServletRequest));
+					if ((commerceOrder.getCommerceShippingMethodId() !=
+							commerceShippingMethodId) ||
+						!StringUtil.equals(
+							commerceOrder.getShippingOptionName(),
+							shippingOptionName)) {
 
-					return _commerceOrderLocalService.recalculatePrice(
-						commerceOrder.getCommerceOrderId(), commerceContext);
+						return _commerceOrderLocalService.updateCommerceOrder(
+							commerceOrder.getUserId(),
+							commerceOrder.getExternalReferenceCode(),
+							commerceOrder.getCommerceOrderId(),
+							commerceOrder.getBillingAddressId(),
+							commerceOrder.getCommerceAccountId(),
+							commerceOrder.getCommerceCurrencyId(),
+							commerceOrder.getCommerceOrderTypeId(),
+							commerceShippingMethodId,
+							commerceOrder.getDeliveryCommerceTermEntryId(),
+							commerceOrder.getPaymentCommerceTermEntryId(),
+							commerceOrder.getShippingAddressId(),
+							commerceOrder.getAdvanceStatus(),
+							commerceOrder.getCommercePaymentMethodKey(),
+							commerceOrder.getCouponCode(),
+							commerceOrder.
+								getDeliveryCommerceTermEntryDescription(),
+							commerceOrder.getDeliveryCommerceTermEntryName(),
+							commerceOrder.getLastPriceUpdateDate(),
+							commerceOrder.isManuallyAdjusted(),
+							commerceOrder.getOrderDate(),
+							commerceOrder.getOrderStatus(),
+							commerceOrder.
+								getPaymentCommerceTermEntryDescription(),
+							commerceOrder.getPaymentCommerceTermEntryName(),
+							commerceOrder.getPaymentStatus(),
+							commerceOrder.getPrintedNote(),
+							commerceOrder.getPurchaseOrderNumber(),
+							commerceOrder.getRequestedDeliveryDate(),
+							commerceOrder.isShippable(),
+							commerceOrder.getShippingAmount(),
+							commerceOrder.getShippingDiscountAmount(),
+							commerceOrder.getShippingDiscountPercentageLevel1(),
+							commerceOrder.getShippingDiscountPercentageLevel2(),
+							commerceOrder.getShippingDiscountPercentageLevel3(),
+							commerceOrder.getShippingDiscountPercentageLevel4(),
+							commerceOrder.
+								getShippingDiscountPercentageLevel1WithTaxAmount(),
+							commerceOrder.
+								getShippingDiscountPercentageLevel2WithTaxAmount(),
+							commerceOrder.
+								getShippingDiscountPercentageLevel3WithTaxAmount(),
+							commerceOrder.
+								getShippingDiscountPercentageLevel4WithTaxAmount(),
+							commerceOrder.getShippingDiscountWithTaxAmount(),
+							shippingOptionName,
+							commerceOrder.getShippingWithTaxAmount(),
+							commerceOrder.getSubtotal(),
+							commerceOrder.getSubtotalDiscountAmount(),
+							commerceOrder.getSubtotalDiscountPercentageLevel1(),
+							commerceOrder.getSubtotalDiscountPercentageLevel2(),
+							commerceOrder.getSubtotalDiscountPercentageLevel3(),
+							commerceOrder.getSubtotalDiscountPercentageLevel4(),
+							commerceOrder.
+								getSubtotalDiscountPercentageLevel1WithTaxAmount(),
+							commerceOrder.
+								getSubtotalDiscountPercentageLevel2WithTaxAmount(),
+							commerceOrder.
+								getSubtotalDiscountPercentageLevel3WithTaxAmount(),
+							commerceOrder.
+								getSubtotalDiscountPercentageLevel4WithTaxAmount(),
+							commerceOrder.getSubtotalDiscountWithTaxAmount(),
+							commerceOrder.getSubtotalWithTaxAmount(),
+							commerceOrder.getTaxAmount(),
+							commerceOrder.getTotal(),
+							commerceOrder.getTotalDiscountAmount(),
+							commerceOrder.getTotalDiscountPercentageLevel1(),
+							commerceOrder.getTotalDiscountPercentageLevel2(),
+							commerceOrder.getTotalDiscountPercentageLevel3(),
+							commerceOrder.getTotalDiscountPercentageLevel4(),
+							commerceOrder.
+								getTotalDiscountPercentageLevel1WithTaxAmount(),
+							commerceOrder.
+								getTotalDiscountPercentageLevel2WithTaxAmount(),
+							commerceOrder.
+								getTotalDiscountPercentageLevel3WithTaxAmount(),
+							commerceOrder.
+								getTotalDiscountPercentageLevel4WithTaxAmount(),
+							commerceOrder.getTotalDiscountWithTaxAmount(),
+							commerceOrder.getTotalWithTaxAmount(),
+							commerceOrder.getTransactionId(),
+							commerceOrder.getStatus(),
+							commerceOrder.getStatusByUserId(),
+							commerceOrder.getStatusByUserName(),
+							commerceOrder.getStatusDate(), true,
+							commerceContext);
+					}
+
+					return commerceOrder;
 				});
 
 			httpServletRequest.setAttribute(
@@ -838,9 +948,6 @@ public class DefaultCommerceCheckoutStepHttpHelper
 	private static final TransactionConfig _transactionConfig =
 		TransactionConfig.Factory.create(
 			Propagation.REQUIRED, new Class<?>[] {Exception.class});
-
-	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private CommerceAddressService _commerceAddressService;

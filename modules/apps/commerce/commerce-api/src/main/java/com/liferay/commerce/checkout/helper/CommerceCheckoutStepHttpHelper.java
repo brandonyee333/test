@@ -19,20 +19,20 @@ import org.osgi.annotation.versioning.ProviderType;
 public interface CommerceCheckoutStepHttpHelper {
 
 	public String getOrderDetailURL(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException;
 
 	public boolean isActiveBillingAddressCommerceCheckoutStep(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException;
 
 	public boolean isActiveDeliveryTermCommerceCheckoutStep(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder,
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest,
 			String languageId)
 		throws PortalException;
 
 	public boolean isActivePaymentMethodCommerceCheckoutStep(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException;
 
 	public boolean isActivePaymentTermCommerceCheckoutStep(
@@ -41,11 +41,11 @@ public interface CommerceCheckoutStepHttpHelper {
 		throws PortalException;
 
 	public boolean isActiveShippingMethodCommerceCheckoutStep(
-			HttpServletRequest httpServletRequest)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException;
 
 	public boolean isCommercePaymentComplete(
-			HttpServletRequest httpServletRequest, CommerceOrder commerceOrder)
+			CommerceOrder commerceOrder, HttpServletRequest httpServletRequest)
 		throws PortalException;
 
 }

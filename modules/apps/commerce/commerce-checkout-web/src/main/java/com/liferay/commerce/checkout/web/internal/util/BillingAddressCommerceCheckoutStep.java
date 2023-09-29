@@ -101,7 +101,7 @@ public class BillingAddressCommerceCheckoutStep
 		boolean activeBillingAddressCommerceCheckoutStep =
 			_commerceCheckoutStepHttpHelper.
 				isActiveBillingAddressCommerceCheckoutStep(
-					httpServletRequest, commerceOrder);
+					commerceOrder, httpServletRequest);
 
 		AccountEntry accountEntry = commerceOrder.getAccountEntry();
 
@@ -205,10 +205,14 @@ public class BillingAddressCommerceCheckoutStep
 						_countryLocalService,
 						_commerceOrderModelResourcePermission);
 
-			addressCommerceCheckoutStepDisplayContext.
-				updateCommerceOrderAddress(
-					actionRequest,
-					CommerceCheckoutWebKeys.BILLING_ADDRESS_PARAM_NAME);
+			CommerceOrder commerceOrder =
+				addressCommerceCheckoutStepDisplayContext.
+					updateCommerceOrderAddress(
+						actionRequest,
+						CommerceCheckoutWebKeys.BILLING_ADDRESS_PARAM_NAME);
+
+			actionRequest.setAttribute(
+				CommerceCheckoutWebKeys.COMMERCE_ORDER, commerceOrder);
 		}
 		catch (Exception exception) {
 			if (exception instanceof CommerceAddressCityException ||
@@ -311,7 +315,7 @@ public class BillingAddressCommerceCheckoutStep
 			httpServletRequest.setAttribute(
 				CommerceCheckoutWebKeys.COMMERCE_CHECKOUT_STEP_ORDER_DETAIL_URL,
 				_commerceCheckoutStepHttpHelper.getOrderDetailURL(
-					httpServletRequest, commerceOrder));
+					commerceOrder, httpServletRequest));
 
 			_jspRenderer.renderJSP(
 				httpServletRequest, httpServletResponse, "/error.jsp");

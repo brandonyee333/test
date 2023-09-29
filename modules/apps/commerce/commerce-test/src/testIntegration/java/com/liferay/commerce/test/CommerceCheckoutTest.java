@@ -387,7 +387,7 @@ public class CommerceCheckoutTest {
 		boolean activeBillingAddressCommerceCheckoutStep =
 			_commerceCheckoutStepHttpHelper.
 				isActiveBillingAddressCommerceCheckoutStep(
-					httpServletRequest, commerceOrder);
+					commerceOrder, httpServletRequest);
 
 		Assert.assertTrue(activeBillingAddressCommerceCheckoutStep);
 	}
@@ -443,7 +443,7 @@ public class CommerceCheckoutTest {
 		boolean activeBillingAddressCommerceCheckoutStep =
 			_commerceCheckoutStepHttpHelper.
 				isActiveBillingAddressCommerceCheckoutStep(
-					httpServletRequest, commerceOrder);
+					commerceOrder, httpServletRequest);
 
 		Assert.assertFalse(activeBillingAddressCommerceCheckoutStep);
 	}
@@ -496,7 +496,7 @@ public class CommerceCheckoutTest {
 		boolean activeBillingAddressCommerceCheckoutStep =
 			_commerceCheckoutStepHttpHelper.
 				isActiveBillingAddressCommerceCheckoutStep(
-					httpServletRequest, commerceOrder);
+					commerceOrder, httpServletRequest);
 
 		Assert.assertTrue(activeBillingAddressCommerceCheckoutStep);
 	}
@@ -539,7 +539,7 @@ public class CommerceCheckoutTest {
 		boolean activePaymentMethod =
 			_commerceCheckoutStepHttpHelper.
 				isActivePaymentMethodCommerceCheckoutStep(
-					httpServletRequest, commerceOrder);
+					commerceOrder, httpServletRequest);
 
 		Assert.assertFalse(activePaymentMethod);
 	}
@@ -600,7 +600,7 @@ public class CommerceCheckoutTest {
 		boolean activePaymentMethod =
 			_commerceCheckoutStepHttpHelper.
 				isActivePaymentMethodCommerceCheckoutStep(
-					httpServletRequest, commerceOrder);
+					commerceOrder, httpServletRequest);
 
 		Assert.assertFalse(activePaymentMethod);
 	}
@@ -646,7 +646,7 @@ public class CommerceCheckoutTest {
 		boolean activePaymentMethod =
 			_commerceCheckoutStepHttpHelper.
 				isActivePaymentMethodCommerceCheckoutStep(
-					httpServletRequest, commerceOrder);
+					commerceOrder, httpServletRequest);
 
 		Assert.assertFalse(activePaymentMethod);
 	}

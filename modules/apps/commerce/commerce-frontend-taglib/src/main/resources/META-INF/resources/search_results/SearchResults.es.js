@@ -87,6 +87,10 @@ class SearchResults extends Component {
 			return;
 		}
 
+		if (!this.queryString || this.queryString.trim().length == 0) {
+			return;
+		}
+
 		this.lock = true;
 
 		fetch(
