@@ -51,7 +51,7 @@ import org.json.JSONObject;
 public abstract class BaseBuild implements Build {
 
 	@Override
-	public boolean applyReinvokeRules() {
+	public boolean isApplyReinvokeRules() {
 		if (!isCompleted() || !isFailing() || isFromArchive() ||
 			(badBuildNumbers.size() >= REINVOCATIONS_SIZE_MAX)) {
 
@@ -72,7 +72,7 @@ public abstract class BaseBuild implements Build {
 	}
 
 	@Override
-	public boolean applySlaveOfflineRules() {
+	public boolean isApplySlaveOfflineRules() {
 		if (!isCompleted() || !isFailing() || isFromArchive()) {
 			return false;
 		}
@@ -1621,9 +1621,9 @@ public abstract class BaseBuild implements Build {
 				}
 			}
 
-			applySlaveOfflineRules();
+			isApplySlaveOfflineRules();
 
-			applyReinvokeRules();
+			isApplyReinvokeRules();
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(ioException);

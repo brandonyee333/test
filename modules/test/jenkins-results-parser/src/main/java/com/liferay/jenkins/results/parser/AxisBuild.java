@@ -57,7 +57,7 @@ public class AxisBuild extends BaseBuild {
 	}
 
 	@Override
-	public boolean applySlaveOfflineRules() {
+	public boolean isApplySlaveOfflineRules() {
 		return false;
 	}
 

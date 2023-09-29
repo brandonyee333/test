@@ -83,7 +83,7 @@ public abstract class BaseTopLevelBuild
 	}
 
 	@Override
-	public boolean applyReinvokeRules() {
+	public boolean isApplyReinvokeRules() {
 		return false;
 	}
 

@@ -26,9 +26,9 @@ public interface Build {
 
 	public void addTimelineData(TimelineData timelineData);
 
-	public boolean applyReinvokeRules();
+	public boolean isApplyReinvokeRules();
 
-	public boolean applySlaveOfflineRules();
+	public boolean isApplySlaveOfflineRules();
 
 	public void archive();
 
