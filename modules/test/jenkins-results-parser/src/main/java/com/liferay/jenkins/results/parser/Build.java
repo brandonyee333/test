@@ -26,10 +26,6 @@ public interface Build {
 
 	public void addTimelineData(TimelineData timelineData);
 
-	public boolean isApplyReinvokeRules();
-
-	public boolean isApplySlaveOfflineRules();
-
 	public void archive();
 
 	public void archive(String archiveName);
@@ -160,6 +156,10 @@ public interface Build {
 	public boolean hasGenericCIFailure();
 
 	public Invocation invoke();
+
+	public boolean isApplyReinvokeRules();
+
+	public boolean isApplySlaveOfflineRules();
 
 	public boolean isBuildModified();
 

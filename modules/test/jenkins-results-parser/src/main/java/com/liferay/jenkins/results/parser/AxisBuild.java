@@ -57,11 +57,6 @@ public class AxisBuild extends BaseBuild {
 	}
 
 	@Override
-	public boolean isApplySlaveOfflineRules() {
-		return false;
-	}
-
-	@Override
 	public void findDownstreamBuilds() {
 	}
 
@@ -494,6 +489,11 @@ public class AxisBuild extends BaseBuild {
 		}
 
 		return warningMessages;
+	}
+
+	@Override
+	public boolean isApplySlaveOfflineRules() {
+		return false;
 	}
 
 	@Override

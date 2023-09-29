@@ -51,58 +51,6 @@ import org.json.JSONObject;
 public abstract class BaseBuild implements Build {
 
 	@Override
-	public boolean isApplyReinvokeRules() {
-		if (!isCompleted() || !isFailing() || isFromArchive() ||
-			(badBuildNumbers.size() >= REINVOCATIONS_SIZE_MAX)) {
-
-			return false;
-		}
-
-		for (ReinvokeRule reinvokeRule : reinvokeRules) {
-			if (!reinvokeRule.matches(this)) {
-				continue;
-			}
-
-			reinvoke(reinvokeRule);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
-	public boolean isApplySlaveOfflineRules() {
-		if (!isCompleted() || !isFailing() || isFromArchive()) {
-			return false;
-		}
-
-		JenkinsSlave jenkinsSlave = getJenkinsSlave();
-
-		if (jenkinsSlave == null) {
-			return false;
-		}
-
-		jenkinsSlave.update();
-
-		if (jenkinsSlave.isOffline()) {
-			return false;
-		}
-
-		for (SlaveOfflineRule slaveOfflineRule : slaveOfflineRules) {
-			if (!slaveOfflineRule.matches(this)) {
-				continue;
-			}
-
-			takeSlaveOffline(slaveOfflineRule);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	@Override
 	public void archive() {
 		archive(getArchiveName());
 	}
@@ -1293,6 +1241,58 @@ public abstract class BaseBuild implements Build {
 		_invocations.add(invocation);
 
 		return invocation;
+	}
+
+	@Override
+	public boolean isApplyReinvokeRules() {
+		if (!isCompleted() || !isFailing() || isFromArchive() ||
+			(badBuildNumbers.size() >= REINVOCATIONS_SIZE_MAX)) {
+
+			return false;
+		}
+
+		for (ReinvokeRule reinvokeRule : reinvokeRules) {
+			if (!reinvokeRule.matches(this)) {
+				continue;
+			}
+
+			reinvoke(reinvokeRule);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean isApplySlaveOfflineRules() {
+		if (!isCompleted() || !isFailing() || isFromArchive()) {
+			return false;
+		}
+
+		JenkinsSlave jenkinsSlave = getJenkinsSlave();
+
+		if (jenkinsSlave == null) {
+			return false;
+		}
+
+		jenkinsSlave.update();
+
+		if (jenkinsSlave.isOffline()) {
+			return false;
+		}
+
+		for (SlaveOfflineRule slaveOfflineRule : slaveOfflineRules) {
+			if (!slaveOfflineRule.matches(this)) {
+				continue;
+			}
+
+			takeSlaveOffline(slaveOfflineRule);
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
