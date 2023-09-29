@@ -69,7 +69,7 @@ public class TemplatesAspect {
 						captureTemplateScriptInTransaction()) {
 
 					optionalThreadContext.addTransactionAttribute(
-						"Fragment Entry Link html", html);
+						"Fragment Entry Link HTML", html);
 				}
 
 				return optionalThreadContext.startTransaction(
