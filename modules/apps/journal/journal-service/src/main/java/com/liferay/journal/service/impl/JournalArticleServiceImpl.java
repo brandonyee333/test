@@ -37,6 +37,7 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -99,35 +100,13 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 *                              template
 	 * @param layoutUuid            the unique string identifying the web content
 	 *                              article's display page
-	 * @param displayDateMonth      the month the web content article is set to
+	 * @param displayDate           the date the web content article is set to
 	 *                              display
-	 * @param displayDateDay        the calendar day the web content article is set to
-	 *                              display
-	 * @param displayDateYear       the year the web content article is set to
-	 *                              display
-	 * @param displayDateHour       the hour the web content article is set to
-	 *                              display
-	 * @param displayDateMinute     the minute the web content article is set to
-	 *                              display
-	 * @param expirationDateMonth   the month the web content article is set to
-	 *                              expire
-	 * @param expirationDateDay     the calendar day the web content article is set
-	 *                              to expire
-	 * @param expirationDateYear    the year the web content article is set to
-	 *                              expire
-	 * @param expirationDateHour    the hour the web content article is set to
-	 *                              expire
-	 * @param expirationDateMinute  the minute the web content article is set to
+	 * @param expirationDate        the date the web content article is set to
 	 *                              expire
 	 * @param neverExpire           whether the web content article is not set to auto
 	 *                              expire
-	 * @param reviewDateMonth       the month the web content article is set for
-	 *                              review
-	 * @param reviewDateDay         the calendar day the web content article is set for
-	 *                              review
-	 * @param reviewDateYear        the year the web content article is set for review
-	 * @param reviewDateHour        the hour the web content article is set for review
-	 * @param reviewDateMinute      the minute the web content article is set for
+	 * @param reviewDate            the date the web content article is set for
 	 *                              review
 	 * @param neverReview           whether the web content article is not set for review
 	 * @param indexable             whether the web content article is searchable
@@ -146,6 +125,35 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 * @return the web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
+	@Override
+	public JournalArticle addArticle(
+			String externalReferenceCode, long groupId, long folderId,
+			long classNameId, long classPK, String articleId,
+			boolean autoArticleId, Map<Locale, String> titleMap,
+			Map<Locale, String> descriptionMap,
+			Map<Locale, String> friendlyURLMap, String content,
+			long ddmStructureId, String ddmTemplateKey, String layoutUuid,
+			Date displayDate, Date expirationDate, boolean neverExpire,
+			Date reviewDate, boolean neverReview, boolean indexable,
+			boolean smallImage, long smallImageId, int smallImageSource,
+			String smallImageURL, File smallFile, Map<String, byte[]> images,
+			String articleURL, ServiceContext serviceContext)
+		throws PortalException {
+
+		ModelResourcePermissionUtil.check(
+			_journalFolderModelResourcePermission, getPermissionChecker(),
+			groupId, folderId, ActionKeys.ADD_ARTICLE);
+
+		return journalArticleLocalService.addArticle(
+			externalReferenceCode, getUserId(), groupId, folderId, classNameId,
+			classPK, articleId, autoArticleId,
+			JournalArticleConstants.VERSION_DEFAULT, titleMap, descriptionMap,
+			friendlyURLMap, content, ddmStructureId, ddmTemplateKey, layoutUuid,
+			displayDate, expirationDate, neverExpire, reviewDate, neverReview,
+			indexable, smallImage, smallImageId, smallImageSource,
+			smallImageURL, smallFile, images, articleURL, serviceContext);
+	}
+
 	@Override
 	public JournalArticle addArticle(
 			String externalReferenceCode, long groupId, long folderId,
