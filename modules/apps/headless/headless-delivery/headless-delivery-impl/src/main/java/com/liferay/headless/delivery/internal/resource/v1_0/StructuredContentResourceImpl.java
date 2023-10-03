@@ -538,8 +538,8 @@ public class StructuredContentResourceImpl
 						structuredContent.getContentFields(), journalArticle),
 					journalArticle.getGroupId()),
 				_getDDMTemplateKey(ddmStructure),
-				journalArticle.getLayoutUuid(), displayDate, null, true, null,
-				true, true, false, 0, 0, null, null, null, null,
+				journalArticle.getLayoutUuid(), displayDate, null, null, true,
+				false, 0, 0, null, null, null, null,
 				_createServiceContext(
 					_getAssetCategoryIds(journalArticle, structuredContent),
 					_getAssetLinkEntryIds(journalArticle, structuredContent),
@@ -766,8 +766,8 @@ public class StructuredContentResourceImpl
 					_jsonDDMFormValuesSerializer, _ddmFormValuesValidator,
 					ddmStructure, _journalConverter),
 				ddmStructure.getStructureId(), _getDDMTemplateKey(ddmStructure),
-				null, displayDate, null, true, null, true, true, false, 0, 0,
-				null, null, null, null,
+				null, displayDate, null, null, true, false, 0, 0, null, null,
+				null, null,
 				_createServiceContext(
 					structuredContent.getTaxonomyCategoryIds(),
 					assetLinkEntryIds, priority,
@@ -1318,8 +1318,8 @@ public class StructuredContentResourceImpl
 						journalArticle),
 					journalArticle.getGroupId()),
 				_getDDMTemplateKey(ddmStructure),
-				journalArticle.getLayoutUuid(), displayDate, null, true, null,
-				true, true, false, 0, 0, null, null, null, null,
+				journalArticle.getLayoutUuid(), displayDate, null, null, true,
+				false, 0, 0, null, null, null, null,
 				_createServiceContext(
 					_getAssetCategoryIds(journalArticle, structuredContent),
 					_getAssetLinkEntryIds(journalArticle, structuredContent),

@@ -318,8 +318,8 @@ public class StructuredContentResourceImpl
 					_jsonDDMFormValuesSerializer, _ddmFormValuesValidator,
 					ddmStructure, _journalConverter),
 				ddmStructure.getStructureId(), _getDDMTemplateKey(ddmStructure),
-				null, displayDate, null, true, null, true, true, false, 0, 0,
-				null, null, null, null, serviceContext));
+				null, displayDate, null, null, true, false, 0, 0, null, null,
+				null, null, serviceContext));
 	}
 
 	private String _getDDMTemplateKey(DDMStructure ddmStructure) {
