@@ -2106,8 +2106,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 							_servletContext),
 						stringUtilReplaceValues),
 					ddmStructure.getStructureId(), ddmTemplateKey, null,
-					new Date(), null, true, null, true, true, false, 0, 0, null,
-					null, null, null, serviceContext);
+					new Date(), null, null, true, false, 0, 0, null, null, null,
+					null, serviceContext);
 			}
 			else {
 				journalArticle = _journalArticleLocalService.updateArticle(
@@ -2120,8 +2120,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 							_replace(resourcePath, ".json", ".xml"),
 							_servletContext),
 						stringUtilReplaceValues),
-					ddmTemplateKey, null, new Date(), null, true, null, true,
-					true, false, 0, 0, null, null, null, null, serviceContext);
+					ddmTemplateKey, null, new Date(), null, null, true, false,
+					0, 0, null, null, null, null, serviceContext);
 			}
 
 			JournalArticle finalJournalArticle = journalArticle;

@@ -166,8 +166,7 @@ public class JournalArticleInfoItemFieldValuesUpdater
 				ddmStructure, fields, ddmStructure.getGroupId()),
 			latestArticle.getDDMTemplateKey(), latestArticle.getLayoutUuid(),
 			latestArticle.getDisplayDate(), latestArticle.getExpirationDate(),
-			_isNeverExpire(latestArticle), latestArticle.getReviewDate(),
-			_isNeverReview(latestArticle), latestArticle.isIndexable(),
+			latestArticle.getReviewDate(), latestArticle.isIndexable(),
 			latestArticle.isSmallImage(), latestArticle.getSmallImageId(),
 			latestArticle.getSmallImageSource(),
 			latestArticle.getSmallImageURL(), null, null, null, serviceContext);
@@ -329,22 +328,6 @@ public class JournalArticleInfoItemFieldValuesUpdater
 		}
 
 		return defaultString;
-	}
-
-	private boolean _isNeverExpire(JournalArticle journalArticle) {
-		if (journalArticle.getExpirationDate() == null) {
-			return true;
-		}
-
-		return false;
-	}
-
-	private boolean _isNeverReview(JournalArticle journalArticle) {
-		if (journalArticle.getReviewDate() == null) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private void _updateFieldsDisplay(Fields ddmFields, String fieldName) {

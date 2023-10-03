@@ -636,8 +636,8 @@ public class JournalArticleLocalServiceImpl
 			externalReferenceCode, userId, groupId, folderId,
 			JournalArticleConstants.CLASS_NAME_ID_DEFAULT, 0, StringPool.BLANK,
 			true, 1, titleMap, descriptionMap, titleMap, content,
-			ddmStructureId, ddmTemplateKey, null, new Date(), null, true, null,
-			true, true, false, 0, 0, null, null, null, null, serviceContext);
+			ddmStructureId, ddmTemplateKey, null, new Date(), null, null, true,
+			false, 0, 0, null, null, null, null, serviceContext);
 	}
 
 	@Override
@@ -5013,8 +5013,7 @@ public class JournalArticleLocalServiceImpl
 			userId, groupId, folderId, articleId, version, titleMap,
 			descriptionMap, null, content, article.getDDMTemplateKey(),
 			layoutUuid, article.getDisplayDate(), article.getExpirationDate(),
-			article.getExpirationDate() == null, article.getReviewDate(),
-			article.getReviewDate() == null, article.isIndexable(),
+			article.getReviewDate(), article.isIndexable(),
 			article.isSmallImage(), article.getSmallImageId(),
 			article.getSmallImageSource(), article.getSmallImageURL(), null,
 			null, null, serviceContext);
