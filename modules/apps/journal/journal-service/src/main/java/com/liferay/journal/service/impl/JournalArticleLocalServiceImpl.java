@@ -300,11 +300,8 @@ public class JournalArticleLocalServiceImpl
 	 *                              display
 	 * @param expirationDate        the date the web content article is set to
 	 *                              expire
-	 * @param neverExpire           whether the web content article is not set to auto
-	 *                              expire
 	 * @param reviewDate            the date the web content article is set for
 	 *                              review
-	 * @param neverReview           whether the web content article is not set for review
 	 * @param indexable             whether the web content article is searchable
 	 * @param smallImage            whether the web content article has a small image
 	 * @param smallImageSource      the web content article's small image source
@@ -330,10 +327,9 @@ public class JournalArticleLocalServiceImpl
 			Map<Locale, String> descriptionMap,
 			Map<Locale, String> friendlyURLMap, String content,
 			long ddmStructureId, String ddmTemplateKey, String layoutUuid,
-			Date displayDate, Date expirationDate, boolean neverExpire,
-			Date reviewDate, boolean neverReview, boolean indexable,
-			boolean smallImage, long smallImageId, int smallImageSource,
-			String smallImageURL, File smallImageFile,
+			Date displayDate, Date expirationDate, Date reviewDate,
+			boolean indexable, boolean smallImage, long smallImageId,
+			int smallImageSource, String smallImageURL, File smallImageFile,
 			Map<String, byte[]> images, String articleURL,
 			ServiceContext serviceContext)
 		throws PortalException {
@@ -343,14 +339,6 @@ public class JournalArticleLocalServiceImpl
 		User user = _userLocalService.getUser(userId);
 
 		articleId = StringUtil.toUpperCase(StringUtil.trim(articleId));
-
-		if (neverExpire) {
-			expirationDate = null;
-		}
-
-		if (neverReview) {
-			reviewDate = null;
-		}
 
 		byte[] smallImageBytes = null;
 
@@ -598,10 +586,9 @@ public class JournalArticleLocalServiceImpl
 			externalReferenceCode, userId, groupId, folderId, classNameId,
 			classPK, articleId, autoArticleId, version, titleMap,
 			descriptionMap, friendlyURLMap, content, ddmStructureId,
-			ddmTemplateKey, layoutUuid, displayDate, expirationDate,
-			neverExpire, reviewDate, neverReview, indexable, smallImage,
-			smallImageId, smallImageSource, smallImageURL, smallImageFile,
-			images, articleURL, serviceContext);
+			ddmTemplateKey, layoutUuid, displayDate, expirationDate, reviewDate,
+			indexable, smallImage, smallImageId, smallImageSource,
+			smallImageURL, smallImageFile, images, articleURL, serviceContext);
 	}
 
 	/**
@@ -4595,11 +4582,8 @@ public class JournalArticleLocalServiceImpl
 	 *         display
 	 * @param  expirationDate the date the web content article is set to
 	 *         expire
-	 * @param  neverExpire whether the web content article is not set to auto
-	 *         expire
 	 * @param  reviewDate the date the web content article is set for
 	 *         review
-	 * @param  neverReview whether the web content article is not set for review
 	 * @param  indexable whether the web content is searchable
 	 * @param  smallImage whether to update web content article's a small image.
 	 *         A file must be passed in as <code>smallImageFile</code> value,
@@ -4635,10 +4619,10 @@ public class JournalArticleLocalServiceImpl
 			Map<Locale, String> descriptionMap,
 			Map<Locale, String> friendlyURLMap, String content,
 			String ddmTemplateKey, String layoutUuid, Date displayDate,
-			Date expirationDate, boolean neverExpire, Date reviewDate,
-			boolean neverReview, boolean indexable, boolean smallImage,
-			long smallImageId, int smallImageSource, String smallImageURL,
-			File smallImageFile, Map<String, byte[]> images, String articleURL,
+			Date expirationDate, Date reviewDate, boolean indexable,
+			boolean smallImage, long smallImageId, int smallImageSource,
+			String smallImageURL, File smallImageFile,
+			Map<String, byte[]> images, String articleURL,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -4975,9 +4959,9 @@ public class JournalArticleLocalServiceImpl
 		return journalArticleLocalService.updateArticle(
 			userId, groupId, folderId, articleId, version, titleMap,
 			descriptionMap, friendlyURLMap, content, ddmTemplateKey, layoutUuid,
-			displayDate, expirationDate, neverExpire, reviewDate, neverReview,
-			indexable, smallImage, smallImageId, smallImageSource,
-			smallImageURL, smallImageFile, images, articleURL, serviceContext);
+			displayDate, expirationDate, reviewDate, indexable, smallImage,
+			smallImageId, smallImageSource, smallImageURL, smallImageFile,
+			images, articleURL, serviceContext);
 	}
 
 	/**

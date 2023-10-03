@@ -104,11 +104,8 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 *                              display
 	 * @param expirationDate        the date the web content article is set to
 	 *                              expire
-	 * @param neverExpire           whether the web content article is not set to auto
-	 *                              expire
 	 * @param reviewDate            the date the web content article is set for
 	 *                              review
-	 * @param neverReview           whether the web content article is not set for review
 	 * @param indexable             whether the web content article is searchable
 	 * @param smallImage            whether the web content article has a small image
 	 * @param smallImageSource      the web content article's small image source
@@ -133,11 +130,11 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			Map<Locale, String> descriptionMap,
 			Map<Locale, String> friendlyURLMap, String content,
 			long ddmStructureId, String ddmTemplateKey, String layoutUuid,
-			Date displayDate, Date expirationDate, boolean neverExpire,
-			Date reviewDate, boolean neverReview, boolean indexable,
-			boolean smallImage, long smallImageId, int smallImageSource,
-			String smallImageURL, File smallFile, Map<String, byte[]> images,
-			String articleURL, ServiceContext serviceContext)
+			Date displayDate, Date expirationDate, Date reviewDate,
+			boolean indexable, boolean smallImage, long smallImageId,
+			int smallImageSource, String smallImageURL, File smallFile,
+			Map<String, byte[]> images, String articleURL,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		ModelResourcePermissionUtil.check(
@@ -149,9 +146,9 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			classPK, articleId, autoArticleId,
 			JournalArticleConstants.VERSION_DEFAULT, titleMap, descriptionMap,
 			friendlyURLMap, content, ddmStructureId, ddmTemplateKey, layoutUuid,
-			displayDate, expirationDate, neverExpire, reviewDate, neverReview,
-			indexable, smallImage, smallImageId, smallImageSource,
-			smallImageURL, smallFile, images, articleURL, serviceContext);
+			displayDate, expirationDate, reviewDate, indexable, smallImage,
+			smallImageId, smallImageSource, smallImageURL, smallFile, images,
+			articleURL, serviceContext);
 	}
 
 	@Override
@@ -1992,11 +1989,8 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 *                             display
 	 * @param expirationDate       the date the web content article is set to
 	 *                             expire
-	 * @param neverExpire          whether the web content article is not set to auto
-	 *                             expire
 	 * @param reviewDate           the month the web content article is set for
 	 *                             review
-	 * @param neverReview          whether the web content article is not set for review
 	 * @param indexable            whether the web content is searchable
 	 * @param smallImage           whether to update web content article's a small image.
 	 *                             A file must be passed in as <code>smallImageFile</code> value,
@@ -2030,11 +2024,10 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
 			Map<Locale, String> friendlyURLMap, String content,
 			String ddmTemplateKey, String layoutUuid, Date displayDate,
-			Date expirationDate, boolean neverExpire, Date reviewDate,
-			boolean neverReview, boolean indexable, boolean smallImage,
-			long smallImageId, int smallImageSource, String smallImageURL,
-			File smallFile, Map<String, byte[]> images, String articleURL,
-			ServiceContext serviceContext)
+			Date expirationDate, Date reviewDate, boolean indexable,
+			boolean smallImage, long smallImageId, int smallImageSource,
+			String smallImageURL, File smallFile, Map<String, byte[]> images,
+			String articleURL, ServiceContext serviceContext)
 		throws PortalException {
 
 		JournalArticle article = journalArticlePersistence.findByG_A_V(
@@ -2046,9 +2039,9 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 		return journalArticleLocalService.updateArticle(
 			getUserId(), groupId, folderId, articleId, version, titleMap,
 			descriptionMap, friendlyURLMap, content, ddmTemplateKey, layoutUuid,
-			displayDate, expirationDate, neverExpire, reviewDate, neverReview,
-			indexable, smallImage, smallImageId, smallImageSource,
-			smallImageURL, smallFile, images, articleURL, serviceContext);
+			displayDate, expirationDate, reviewDate, indexable, smallImage,
+			smallImageId, smallImageSource, smallImageURL, smallFile, images,
+			articleURL, serviceContext);
 	}
 
 	@Override
