@@ -1988,35 +1988,13 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 *                             template
 	 * @param layoutUuid           the unique string identifying the web content
 	 *                             article's display page
-	 * @param displayDateMonth     the month the web content article is set to
+	 * @param displayDate          the date the web content article is set to
 	 *                             display
-	 * @param displayDateDay       the calendar day the web content article is set to
-	 *                             display
-	 * @param displayDateYear      the year the web content article is set to
-	 *                             display
-	 * @param displayDateHour      the hour the web content article is set to
-	 *                             display
-	 * @param displayDateMinute    the minute the web content article is set to
-	 *                             display
-	 * @param expirationDateMonth  the month the web content article is set to
-	 *                             expire
-	 * @param expirationDateDay    the calendar day the web content article is set
-	 *                             to expire
-	 * @param expirationDateYear   the year the web content article is set to
-	 *                             expire
-	 * @param expirationDateHour   the hour the web content article is set to
-	 *                             expire
-	 * @param expirationDateMinute the minute the web content article is set to
+	 * @param expirationDate       the date the web content article is set to
 	 *                             expire
 	 * @param neverExpire          whether the web content article is not set to auto
 	 *                             expire
-	 * @param reviewDateMonth      the month the web content article is set for
-	 *                             review
-	 * @param reviewDateDay        the calendar day the web content article is set for
-	 *                             review
-	 * @param reviewDateYear       the year the web content article is set for review
-	 * @param reviewDateHour       the hour the web content article is set for review
-	 * @param reviewDateMinute     the minute the web content article is set for
+	 * @param reviewDate           the month the web content article is set for
 	 *                             review
 	 * @param neverReview          whether the web content article is not set for review
 	 * @param indexable            whether the web content is searchable
@@ -2046,6 +2024,33 @@ public class JournalArticleServiceImpl extends JournalArticleServiceBaseImpl {
 	 * @return the updated web content article
 	 * @throws PortalException if a portal exception occurred
 	 */
+	@Override
+	public JournalArticle updateArticle(
+			long groupId, long folderId, String articleId, double version,
+			Map<Locale, String> titleMap, Map<Locale, String> descriptionMap,
+			Map<Locale, String> friendlyURLMap, String content,
+			String ddmTemplateKey, String layoutUuid, Date displayDate,
+			Date expirationDate, boolean neverExpire, Date reviewDate,
+			boolean neverReview, boolean indexable, boolean smallImage,
+			long smallImageId, int smallImageSource, String smallImageURL,
+			File smallFile, Map<String, byte[]> images, String articleURL,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		JournalArticle article = journalArticlePersistence.findByG_A_V(
+			groupId, articleId, version);
+
+		_journalArticleModelResourcePermission.check(
+			getPermissionChecker(), article, ActionKeys.UPDATE);
+
+		return journalArticleLocalService.updateArticle(
+			getUserId(), groupId, folderId, articleId, version, titleMap,
+			descriptionMap, friendlyURLMap, content, ddmTemplateKey, layoutUuid,
+			displayDate, expirationDate, neverExpire, reviewDate, neverReview,
+			indexable, smallImage, smallImageId, smallImageSource,
+			smallImageURL, smallFile, images, articleURL, serviceContext);
+	}
+
 	@Override
 	public JournalArticle updateArticle(
 			long groupId, long folderId, String articleId, double version,
