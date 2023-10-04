@@ -78,10 +78,10 @@ DigitalSignatureConfiguration digitalSignatureConfiguration = (DigitalSignatureC
 				<aui:option label="" value="" />
 
 				<%
-				for (String digitalSignatureEnvironment : DigitalSignatureConstants.ENVIRONMENTS) {
+				for (String environment : DigitalSignatureConstants.ENVIRONMENTS) {
 				%>
 
-					<aui:option label="<%= digitalSignatureEnvironment %>" value="<%= digitalSignatureEnvironment %>" />
+					<aui:option label="<%= environment %>" value="<%= environment %>" />
 
 				<%
 				}
