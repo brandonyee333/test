@@ -91,6 +91,7 @@ public class AddTicketAttachmentMVCActionCommand extends BaseMVCActionCommand {
 			long fileSize = ParamUtil.getLong(actionRequest, "fileSize");
 			int type = ParamUtil.getInteger(actionRequest, "type");
 			String comment = ParamUtil.getString(actionRequest, "comment");
+
 			boolean noPersonalData = ParamUtil.getBoolean(
 				actionRequest, "noPersonalData");
 
