@@ -763,8 +763,10 @@ public class AccountSynchronizer {
 		Date now = new Date();
 
 		for (ProductPurchase productPurchase : productPurchases) {
-			if (!productPurchase.getPerpetual() &&
-				now.after(productPurchase.getEndDate())) {
+			if ((productPurchase.getStatus() ==
+					ProductPurchase.Status.CANCELLED) ||
+				(!productPurchase.getPerpetual() &&
+				 now.after(productPurchase.getEndDate()))) {
 
 				continue;
 			}
