@@ -66,12 +66,12 @@ public class FeatureFlagsBagProviderImpl
 
 	@Override
 	public void clearCache() {
-		_featureFlagsBagMap.clear();
+		_featureFlagsBags.clear();
 	}
 
 	@Override
 	public FeatureFlagsBag getOrCreateFeatureFlagsBag(long companyId) {
-		FeatureFlagsBag featureFlagsBag = _featureFlagsBagMap.get(companyId);
+		FeatureFlagsBag featureFlagsBag = _featureFlagsBags.get(companyId);
 
 		if (featureFlagsBag != null) {
 			return featureFlagsBag;
@@ -80,7 +80,7 @@ public class FeatureFlagsBagProviderImpl
 		featureFlagsBag = _createFeatureFlagsBag(companyId);
 
 		FeatureFlagsBag previousFeatureFlagsBag =
-			_featureFlagsBagMap.putIfAbsent(companyId, featureFlagsBag);
+			_featureFlagsBags.putIfAbsent(companyId, featureFlagsBag);
 
 		if (previousFeatureFlagsBag != null) {
 			return previousFeatureFlagsBag;
@@ -101,7 +101,7 @@ public class FeatureFlagsBagProviderImpl
 			_featureFlagPreferencesManager.setEnabled(companyId, key, enabled);
 		}
 
-		FeatureFlagsBag featureFlagsBag = _featureFlagsBagMap.get(companyId);
+		FeatureFlagsBag featureFlagsBag = _featureFlagsBags.get(companyId);
 
 		if (featureFlagsBag == null) {
 			return;
@@ -110,7 +110,7 @@ public class FeatureFlagsBagProviderImpl
 		featureFlagsBag.setEnabled(key, enabled);
 
 		List<FeatureFlagListener> featureFlagListeners =
-			_featureFlagListenerServiceTrackerMap.getService(key);
+			_serviceTrackerMap.getService(key);
 
 		if (featureFlagListeners != null) {
 			for (FeatureFlagListener featureFlagListener :
@@ -120,7 +120,7 @@ public class FeatureFlagsBagProviderImpl
 			}
 		}
 
-		featureFlagListeners = _featureFlagListenerServiceTrackerMap.getService(
+		featureFlagListeners = _serviceTrackerMap.getService(
 			"*");
 
 		if (featureFlagListeners != null) {
@@ -141,7 +141,7 @@ public class FeatureFlagsBagProviderImpl
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_featureFlagListenerServiceTrackerMap =
+		_serviceTrackerMap =
 			ServiceTrackerMapFactory.openMultiValueMap(
 				bundleContext, FeatureFlagListener.class, null,
 				(serviceReference, emitter) -> {
@@ -165,7 +165,7 @@ public class FeatureFlagsBagProviderImpl
 
 	@Deactivate
 	protected void deactivate() {
-		_featureFlagListenerServiceTrackerMap.close();
+		_serviceTrackerMap.close();
 	}
 
 	private FeatureFlagsBag _createFeatureFlagsBag(long companyId) {
@@ -348,14 +348,14 @@ public class FeatureFlagsBagProviderImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		FeatureFlagsBagProviderImpl.class);
 
-	private static final Map<Long, FeatureFlagsBag> _featureFlagsBagMap =
+	private static final Map<Long, FeatureFlagsBag> _featureFlagsBags =
 		new ConcurrentHashMap<>();
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
 	private ServiceTrackerMap<String, List<FeatureFlagListener>>
-		_featureFlagListenerServiceTrackerMap;
+		_serviceTrackerMap;
 
 	@Reference
 	private FeatureFlagPreferencesManager _featureFlagPreferencesManager;
