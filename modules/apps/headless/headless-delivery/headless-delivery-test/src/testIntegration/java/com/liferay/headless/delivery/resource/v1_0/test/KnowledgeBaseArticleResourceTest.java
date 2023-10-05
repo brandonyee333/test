@@ -130,7 +130,7 @@ public class KnowledgeBaseArticleResourceTest
 		assertValid(postKnowledgeBaseArticle);
 
 		DateTestUtil.assertEquals(
-			_truncateMiliseconds(knowledgeBaseArticle.getDatePublished()),
+			_truncateMilliseconds(knowledgeBaseArticle.getDatePublished()),
 			postKnowledgeBaseArticle.getDatePublished());
 	}
 
@@ -219,7 +219,7 @@ public class KnowledgeBaseArticleResourceTest
 		return _kbFolder.getKbFolderId();
 	}
 
-	private Date _truncateMiliseconds(Date date) {
+	private Date _truncateMilliseconds(Date date) {
 		Instant instant = date.toInstant();
 
 		return Date.from(instant.truncatedTo(ChronoUnit.SECONDS));
