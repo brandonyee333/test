@@ -185,14 +185,14 @@ public class FeatureFlagsBagProviderImpl
 
 		if (companyId == CompanyThreadLocal.getCompanyId()) {
 			_populateFeatureFlagsMap(
-				companyId, systemFeatureFlags, featureFlags);
+				companyId, featureFlags, systemFeatureFlags);
 		}
 		else {
 			try (SafeCloseable safeCloseable =
 					CompanyThreadLocal.setWithSafeCloseable(companyId)) {
 
 				_populateFeatureFlagsMap(
-					companyId, systemFeatureFlags, featureFlags);
+					companyId, featureFlags, systemFeatureFlags);
 			}
 		}
 
@@ -245,8 +245,8 @@ public class FeatureFlagsBagProviderImpl
 	}
 
 	private void _populateFeatureFlagsMap(
-		long companyId, Map<String, FeatureFlag> systemFeatureFlags,
-		Map<String, FeatureFlag> featureFlags) {
+		long companyId, Map<String, FeatureFlag> featureFlags,
+		Map<String, FeatureFlag> systemFeatureFlags) {
 
 		Properties properties = PropsUtil.getProperties(
 			FeatureFlagConstants.FEATURE_FLAG + StringPool.PERIOD, true);
