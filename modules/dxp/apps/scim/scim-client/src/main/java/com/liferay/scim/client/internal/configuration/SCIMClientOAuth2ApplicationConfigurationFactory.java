@@ -120,7 +120,7 @@ public class SCIMClientOAuth2ApplicationConfigurationFactory {
 
 		User user = userLocalService.getGuestUser(companyId);
 
-		User serviceUser = userLocalService.getUserByScreenName(
+		User clientCredentialUser = userLocalService.getUserByScreenName(
 			companyId, PropsValues.DEFAULT_ADMIN_SCREEN_NAME);
 
 		String clientId = _generateClientId(
@@ -135,7 +135,7 @@ public class SCIMClientOAuth2ApplicationConfigurationFactory {
 				_oAuth2ApplicationLocalService.addOAuth2Application(
 					companyId, user.getUserId(), user.getScreenName(),
 					ListUtil.fromArray(GrantType.JWT_BEARER),
-					"client_secret_post", serviceUser.getUserId(), clientId,
+					"client_secret_post", clientCredentialUser.getUserId(), clientId,
 					ClientProfile.HEADLESS_SERVER.id(),
 					OAuth2SecureRandomGenerator.generateClientSecret(), null,
 					Collections.emptyList(), null, 0, null,
