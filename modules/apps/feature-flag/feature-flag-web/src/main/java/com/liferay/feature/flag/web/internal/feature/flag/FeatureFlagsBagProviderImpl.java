@@ -77,14 +77,15 @@ public class FeatureFlagsBagProviderImpl
 			return featureFlagsBag;
 		}
 
+		featureFlagsBag = _featureFlagsBags.get(companyId);
+
+		if (featureFlagsBag != null) {
+			return featureFlagsBag;
+		}
+
 		featureFlagsBag = _createFeatureFlagsBag(companyId);
 
-		FeatureFlagsBag previousFeatureFlagsBag =
-			_featureFlagsBags.putIfAbsent(companyId, featureFlagsBag);
-
-		if (previousFeatureFlagsBag != null) {
-			return previousFeatureFlagsBag;
-		}
+		_featureFlagsBags.putIfAbsent(companyId, featureFlagsBag);
 
 		return featureFlagsBag;
 	}
@@ -120,8 +121,7 @@ public class FeatureFlagsBagProviderImpl
 			}
 		}
 
-		featureFlagListeners = _serviceTrackerMap.getService(
-			"*");
+		featureFlagListeners = _serviceTrackerMap.getService("*");
 
 		if (featureFlagListeners != null) {
 			for (FeatureFlagListener featureFlagListener :
@@ -141,26 +141,25 @@ public class FeatureFlagsBagProviderImpl
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
-		_serviceTrackerMap =
-			ServiceTrackerMapFactory.openMultiValueMap(
-				bundleContext, FeatureFlagListener.class, null,
-				(serviceReference, emitter) -> {
-					List<String> keys = _getFeatureFlagKeys(serviceReference);
+		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
+			bundleContext, FeatureFlagListener.class, null,
+			(serviceReference, emitter) -> {
+				List<String> keys = _getFeatureFlagKeys(serviceReference);
 
-					if (keys == null) {
-						_log.error(
-							"No feature flag keys specified for " +
-								serviceReference);
+				if (keys == null) {
+					_log.error(
+						"No feature flag keys specified for " +
+							serviceReference);
 
-						return;
-					}
+					return;
+				}
 
-					for (String key : keys) {
-						emitter.emit(key);
-					}
-				},
-				new FeatureFlagListenerEagerServiceTrackerCustomizer(
-					bundleContext));
+				for (String key : keys) {
+					emitter.emit(key);
+				}
+			},
+			new FeatureFlagListenerEagerServiceTrackerCustomizer(
+				bundleContext));
 	}
 
 	@Deactivate
@@ -354,14 +353,14 @@ public class FeatureFlagsBagProviderImpl
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	private ServiceTrackerMap<String, List<FeatureFlagListener>>
-		_serviceTrackerMap;
-
 	@Reference
 	private FeatureFlagPreferencesManager _featureFlagPreferencesManager;
 
 	@Reference
 	private Language _language;
+
+	private ServiceTrackerMap<String, List<FeatureFlagListener>>
+		_serviceTrackerMap;
 
 	private class FeatureFlagListenerEagerServiceTrackerCustomizer
 		implements EagerServiceTrackerCustomizer
