@@ -89,28 +89,28 @@ public class KnowledgeBaseArticleResourceTest
 		KnowledgeBaseArticle randomKnowledgeBaseArticle =
 			randomKnowledgeBaseArticle();
 
-		KnowledgeBaseArticle postedknowledgeBaseArticle =
+		KnowledgeBaseArticle postknowledgeBaseArticle =
 			knowledgeBaseArticleResource.postSiteKnowledgeBaseArticle(
 				testGroup.getGroupId(), randomKnowledgeBaseArticle);
 
-		Date postedKnowledgeBaseArticleDatePublished =
-			postedknowledgeBaseArticle.getDatePublished();
+		Date postKnowledgeBaseArticleDatePublished =
+			postknowledgeBaseArticle.getDatePublished();
 
-		postedknowledgeBaseArticle.setDatePublished(
-			DateUtils.addHours(postedKnowledgeBaseArticleDatePublished, 1));
+		postknowledgeBaseArticle.setDatePublished(
+			DateUtils.addHours(postKnowledgeBaseArticleDatePublished, 1));
 
-		KnowledgeBaseArticle patchedKnowledgeBaseArticle =
+		KnowledgeBaseArticle patchKnowledgeBaseArticle =
 			knowledgeBaseArticleResource.patchKnowledgeBaseArticle(
-				postedknowledgeBaseArticle.getId(), postedknowledgeBaseArticle);
+				postknowledgeBaseArticle.getId(), postknowledgeBaseArticle);
 
-		assertValid(patchedKnowledgeBaseArticle);
+		assertValid(patchKnowledgeBaseArticle);
 
 		DateTestUtil.assertEquals(
-			postedknowledgeBaseArticle.getDatePublished(),
-			patchedKnowledgeBaseArticle.getDatePublished());
+			postknowledgeBaseArticle.getDatePublished(),
+			patchKnowledgeBaseArticle.getDatePublished());
 		DateTestUtil.assertNotEquals(
-			postedknowledgeBaseArticle.getDateModified(),
-			patchedKnowledgeBaseArticle.getDateModified());
+			postknowledgeBaseArticle.getDateModified(),
+			patchKnowledgeBaseArticle.getDateModified());
 	}
 
 	@Override
@@ -123,15 +123,15 @@ public class KnowledgeBaseArticleResourceTest
 		KnowledgeBaseArticle knowledgeBaseArticle =
 			randomKnowledgeBaseArticle();
 
-		KnowledgeBaseArticle postedKnowledgeBaseArticle =
+		KnowledgeBaseArticle postKnowledgeBaseArticle =
 			knowledgeBaseArticleResource.postSiteKnowledgeBaseArticle(
 				testGroup.getGroupId(), knowledgeBaseArticle);
 
-		assertValid(postedKnowledgeBaseArticle);
+		assertValid(postKnowledgeBaseArticle);
 
 		DateTestUtil.assertEquals(
 			_truncateMiliseconds(knowledgeBaseArticle.getDatePublished()),
-			postedKnowledgeBaseArticle.getDatePublished());
+			postKnowledgeBaseArticle.getDatePublished());
 	}
 
 	@Override
