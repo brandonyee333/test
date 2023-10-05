@@ -376,7 +376,7 @@ public class FeatureFlagsBagProviderImpl
 				featureFlagKeys.contains(featureFlag.getKey()) ||
 				featureFlagKeys.contains("*");
 
-			UnsafeConsumer<Long, Exception> companyIdUnsafeConsumer =
+			UnsafeConsumer<Long, Exception> unsafeConsumer =
 				companyId -> {
 					FeatureFlagsBag featureFlagsBag =
 						getOrCreateFeatureFlagsBag(companyId);
@@ -391,9 +391,9 @@ public class FeatureFlagsBagProviderImpl
 				};
 
 			try {
-				_companyLocalService.forEachCompanyId(companyIdUnsafeConsumer);
+				_companyLocalService.forEachCompanyId(unsafeConsumer);
 
-				companyIdUnsafeConsumer.accept(CompanyConstants.SYSTEM);
+				unsafeConsumer.accept(CompanyConstants.SYSTEM);
 			}
 			catch (Exception exception) {
 				_log.error(exception);
