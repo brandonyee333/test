@@ -553,7 +553,7 @@ public class ObjectRelationshipLocalServiceTest {
 			ObjectRelationshipConstants.DELETION_TYPE_DISASSOCIATE,
 			systemObjectRelationship.getDeletionType());
 
-		// Requests from not-allowed bundles can only update the label
+		// Requests from forbidden bundles can only update the label
 
 		String liferayMode = SystemProperties.get("liferay.mode");
 
