@@ -496,11 +496,6 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 						_listTypeEntryLocalService.getListTypeEntries(
 							listTypeDefinition.getListTypeDefinitionId());
 
-					JSONArray selectedItemsJSONArray =
-						_getSelectedItemsJSONArray(
-							listTypeEntries, themeDisplay.getLocale(),
-							MapUtil.getString(properties, "preselectedValues"));
-
 					return JSONUtil.put(
 						"autocompleteEnabled", true
 					).put(
@@ -526,6 +521,12 @@ public class FDSViewFragmentRenderer implements FragmentRenderer {
 					).put(
 						"preloadedData",
 						() -> {
+							JSONArray selectedItemsJSONArray =
+								_getSelectedItemsJSONArray(
+									listTypeEntries, themeDisplay.getLocale(),
+									MapUtil.getString(
+										properties, "preselectedValues"));
+
 							if (JSONUtil.isEmpty(selectedItemsJSONArray)) {
 								return null;
 							}
