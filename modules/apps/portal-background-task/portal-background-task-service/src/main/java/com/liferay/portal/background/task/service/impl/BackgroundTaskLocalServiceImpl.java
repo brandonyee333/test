@@ -686,6 +686,7 @@ public class BackgroundTaskLocalServiceImpl
 
 	@Activate
 	protected void activate() {
+		_log.error("Intentional Fail");
 		_backgroundTaskLockHelper = new BackgroundTaskLockHelper(_lockManager);
 	}
 
