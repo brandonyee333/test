@@ -22,6 +22,7 @@ import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
 import com.liferay.expando.kernel.service.ExpandoRowLocalService;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.expression.Expression;
@@ -468,29 +469,23 @@ public class CPAttachmentFileEntryLocalServiceImpl
 			int status, int start, int end)
 		throws PortalException {
 
-		List<Long> cpAttachmentFileEntryIds = dslQuery(
-			_getGroupByStep(
-				DSLQueryFactoryUtil.selectDistinct(
-					CPAttachmentFileEntryTable.INSTANCE.CPAttachmentFileEntryId
-				).from(
-					CPAttachmentFileEntryTable.INSTANCE
-				),
-				classNameId, classPK, keywords, type, status,
-				CPAttachmentFileEntryTable.INSTANCE.title
-			).limit(
-				start, end
-			));
-
-		List<CPAttachmentFileEntry> cpAttachmentFileEntries = new ArrayList<>(
-			cpAttachmentFileEntryIds.size());
-
-		for (Long cpAttachmentFileEntryId : cpAttachmentFileEntryIds) {
-			cpAttachmentFileEntries.add(
+		return TransformUtil.transform(
+			dslQuery(
+				_getGroupByStep(
+					DSLQueryFactoryUtil.selectDistinct(
+						CPAttachmentFileEntryTable.INSTANCE.
+							CPAttachmentFileEntryId
+					).from(
+						CPAttachmentFileEntryTable.INSTANCE
+					),
+					classNameId, classPK, keywords, type, status,
+					CPAttachmentFileEntryTable.INSTANCE.title
+				).limit(
+					start, end
+				)),
+			cpAttachmentFileEntryId ->
 				cpAttachmentFileEntryLocalService.getCPAttachmentFileEntry(
-					cpAttachmentFileEntryId));
-		}
-
-		return cpAttachmentFileEntries;
+					(Long)cpAttachmentFileEntryId));
 	}
 
 	@Override
