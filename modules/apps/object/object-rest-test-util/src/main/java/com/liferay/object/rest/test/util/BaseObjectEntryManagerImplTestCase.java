@@ -116,14 +116,14 @@ public abstract class BaseObjectEntryManagerImplTestCase {
 	}
 
 	protected String getValue(Object value) {
-		if (value instanceof String) {
-			return StringUtil.quote(String.valueOf(value));
-		}
-		else if (value instanceof Date) {
+		if (value instanceof Date) {
 			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat(
 				"yyyy-MM-dd");
 
 			return dateFormat.format(value);
+		}
+		else if (value instanceof String) {
+			return StringUtil.quote(String.valueOf(value));
 		}
 
 		return String.valueOf(value);
