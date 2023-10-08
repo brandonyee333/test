@@ -567,7 +567,7 @@ public class LayoutsImporterImpl implements LayoutsImporter {
 							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 						pageTemplateCollection.getName(),
 						pageTemplateCollection.getDescription(),
-						LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
 						ServiceContextThreadLocal.getServiceContext());
 			}
 		}
@@ -585,7 +585,7 @@ public class LayoutsImporterImpl implements LayoutsImporter {
 							groupId, pageTemplateCollection.getName(),
 							LayoutPageTemplateEntryTypeConstants.TYPE_BASIC),
 					pageTemplateCollection.getDescription(),
-					LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+					LayoutPageTemplateCollectionTypeConstants.BASIC,
 					ServiceContextThreadLocal.getServiceContext());
 		}
 		else if (Objects.equals(

@@ -203,7 +203,7 @@ public class LayoutPageTemplateCollectionActionDropdownItem {
 		LayoutPageTemplateCollection layoutPageTemplateCollection) {
 
 		if (layoutPageTemplateCollection.getType() ==
-				LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC) {
+				LayoutPageTemplateCollectionTypeConstants.BASIC) {
 
 			return LanguageUtil.get(
 				httpServletRequest, "rename-page-template-set");

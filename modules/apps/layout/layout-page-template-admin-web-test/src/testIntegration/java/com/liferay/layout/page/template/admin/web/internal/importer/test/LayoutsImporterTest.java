@@ -104,7 +104,7 @@ public class LayoutsImporterTest {
 					LayoutPageTemplateConstants.
 						PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 					"Page Template Collection", StringPool.BLANK,
-					LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+					LayoutPageTemplateCollectionTypeConstants.BASIC,
 					_serviceContext1);
 
 		LayoutPageTemplateEntry layoutPageTemplateEntry1 =

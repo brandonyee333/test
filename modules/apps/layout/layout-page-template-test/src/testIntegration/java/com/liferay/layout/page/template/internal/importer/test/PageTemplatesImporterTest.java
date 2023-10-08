@@ -168,7 +168,7 @@ public class PageTemplatesImporterTest {
 						LayoutPageTemplateConstants.
 							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 						name, RandomTestUtil.randomString(),
-						LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
 						serviceContext);
 
 			String layoutPageTemplateEntryName = RandomTestUtil.randomString();
@@ -545,7 +545,7 @@ public class PageTemplatesImporterTest {
 							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 						RandomTestUtil.randomString(),
 						RandomTestUtil.randomString(),
-						LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
 						serviceContext);
 
 			LayoutPageTemplateEntry layoutPageTemplateEntry =
@@ -628,7 +628,7 @@ public class PageTemplatesImporterTest {
 							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 						RandomTestUtil.randomString(),
 						RandomTestUtil.randomString(),
-						LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
 						serviceContext);
 
 			LayoutPageTemplateEntry layoutPageTemplateEntry =
@@ -714,7 +714,7 @@ public class PageTemplatesImporterTest {
 							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 						RandomTestUtil.randomString(),
 						RandomTestUtil.randomString(),
-						LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
 						serviceContext);
 
 			LayoutPageTemplateEntry layoutPageTemplateEntry =
@@ -816,7 +816,7 @@ public class PageTemplatesImporterTest {
 							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 						RandomTestUtil.randomString(),
 						RandomTestUtil.randomString(),
-						LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
 						serviceContext);
 
 			LayoutPageTemplateEntry layoutPageTemplateEntry =

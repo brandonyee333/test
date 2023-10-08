@@ -91,7 +91,7 @@ public class ExportLayoutPageTemplateEntriesMVCResourceCommandTest {
 					LayoutPageTemplateConstants.
 						PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 					"Page Template Collection One", StringPool.BLANK,
-					LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+					LayoutPageTemplateCollectionTypeConstants.BASIC,
 					_serviceContext);
 
 		String name1 = "Page Template One";
@@ -158,7 +158,7 @@ public class ExportLayoutPageTemplateEntriesMVCResourceCommandTest {
 					LayoutPageTemplateConstants.
 						PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 					"Page Template Collection One", StringPool.BLANK,
-					LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+					LayoutPageTemplateCollectionTypeConstants.BASIC,
 					_serviceContext);
 
 		LayoutPageTemplateEntry layoutPageTemplateEntry =
@@ -193,7 +193,7 @@ public class ExportLayoutPageTemplateEntriesMVCResourceCommandTest {
 					LayoutPageTemplateConstants.
 						PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 					"Page Template Collection One", StringPool.BLANK,
-					LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+					LayoutPageTemplateCollectionTypeConstants.BASIC,
 					_serviceContext);
 
 		String name = "Page Template One";
@@ -238,7 +238,7 @@ public class ExportLayoutPageTemplateEntriesMVCResourceCommandTest {
 					LayoutPageTemplateConstants.
 						PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 					RandomTestUtil.randomString(10), StringPool.BLANK,
-					LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+					LayoutPageTemplateCollectionTypeConstants.BASIC,
 					_serviceContext);
 
 		LayoutPageTemplateEntry layoutPageTemplateEntry =

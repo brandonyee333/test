@@ -102,7 +102,7 @@ public class CreateLayoutPageTemplateEntryMVCActionCommand
 							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 						layoutPageTemplateCollectionName,
 						layoutPageTemplateCollectionDescription,
-						LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
 						serviceContext);
 
 			layoutPageTemplateCollectionId =

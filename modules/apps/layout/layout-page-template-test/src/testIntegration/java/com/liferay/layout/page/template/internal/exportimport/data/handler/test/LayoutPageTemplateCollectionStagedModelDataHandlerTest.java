@@ -54,7 +54,7 @@ public class LayoutPageTemplateCollectionStagedModelDataHandlerTest
 				LayoutPageTemplateConstants.
 					PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 				RandomTestUtil.randomString(), StringPool.BLANK,
-				LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+				LayoutPageTemplateCollectionTypeConstants.BASIC,
 				ServiceContextTestUtil.getServiceContext(
 					group.getGroupId(), TestPropsValues.getUserId()));
 	}

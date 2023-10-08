@@ -55,7 +55,7 @@ public class LayoutPageTemplateEntryTableReferenceDefinitionTest
 						PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 					RandomTestUtil.randomString(),
 					RandomTestUtil.randomString(),
-					LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+					LayoutPageTemplateCollectionTypeConstants.BASIC,
 					ServiceContextTestUtil.getServiceContext());
 	}
 

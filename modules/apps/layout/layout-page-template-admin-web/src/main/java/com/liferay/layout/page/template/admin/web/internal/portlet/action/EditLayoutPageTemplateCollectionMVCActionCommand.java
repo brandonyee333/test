@@ -64,7 +64,7 @@ public class EditLayoutPageTemplateCollectionMVCActionCommand
 						LayoutPageTemplateConstants.
 							PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 						name, description,
-						LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+						LayoutPageTemplateCollectionTypeConstants.BASIC,
 						serviceContext);
 		}
 		else {

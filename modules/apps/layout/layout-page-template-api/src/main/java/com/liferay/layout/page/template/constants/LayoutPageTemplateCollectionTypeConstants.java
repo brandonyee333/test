@@ -10,8 +10,8 @@ package com.liferay.layout.page.template.constants;
  */
 public class LayoutPageTemplateCollectionTypeConstants {
 
-	public static final int TYPE_BASIC = 0;
+	public static final int BASIC = 0;
 
-	public static final int TYPE_DISPLAY_PAGE = 1;
+	public static final int DISPLAY_PAGE = 1;
 
 }

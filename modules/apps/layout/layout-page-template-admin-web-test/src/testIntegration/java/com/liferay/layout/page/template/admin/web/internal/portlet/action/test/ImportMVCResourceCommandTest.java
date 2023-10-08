@@ -94,7 +94,7 @@ public class ImportMVCResourceCommandTest {
 				LayoutPageTemplateConstants.
 					PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 				"imported", StringPool.BLANK,
-				LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+				LayoutPageTemplateCollectionTypeConstants.BASIC,
 				_serviceContext);
 
 		_assertImportResultsJSONObject(
@@ -145,7 +145,7 @@ public class ImportMVCResourceCommandTest {
 				LayoutPageTemplateConstants.
 					PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 				"imported", StringPool.BLANK,
-				LayoutPageTemplateCollectionTypeConstants.TYPE_BASIC,
+				LayoutPageTemplateCollectionTypeConstants.BASIC,
 				_serviceContext);
 
 		_assertImportResultsJSONObject(
