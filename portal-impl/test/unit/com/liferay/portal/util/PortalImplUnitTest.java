@@ -60,18 +60,18 @@ public class PortalImplUnitTest extends PowerMockito {
 	public void testGetForwardedHostWithCustomXForwardedHostEnabled()
 		throws Exception {
 
+		String[] virtualHostsValidHosts = PropsValues.VIRTUAL_HOSTS_VALID_HOSTS;
 		boolean webServerForwardedHostEnabled =
 			PropsValues.WEB_SERVER_FORWARDED_HOST_ENABLED;
 		String webServerForwardedHostHeader =
 			PropsValues.WEB_SERVER_FORWARDED_HOST_HEADER;
-		String[] virtualHostsValidHosts = PropsValues.VIRTUAL_HOSTS_VALID_HOSTS;
 
 		try {
+			setPropsValuesValue(
+				"VIRTUAL_HOSTS_VALID_HOSTS", new String[] {"forwardedServer"});
 			setPropsValuesValue("WEB_SERVER_FORWARDED_HOST_ENABLED", true);
 			setPropsValuesValue(
 				"WEB_SERVER_FORWARDED_HOST_HEADER", "X-Forwarded-Custom-Host");
-			setPropsValuesValue(
-				"VIRTUAL_HOSTS_VALID_HOSTS", new String[] {"forwardedServer"});
 
 			MockHttpServletRequest mockHttpServletRequest =
 				new MockHttpServletRequest();
@@ -86,13 +86,13 @@ public class PortalImplUnitTest extends PowerMockito {
 		}
 		finally {
 			setPropsValuesValue(
+				"VIRTUAL_HOSTS_VALID_HOSTS", virtualHostsValidHosts);
+			setPropsValuesValue(
 				"WEB_SERVER_FORWARDED_HOST_ENABLED",
 				webServerForwardedHostEnabled);
 			setPropsValuesValue(
 				"WEB_SERVER_FORWARDED_HOST_HEADER",
 				webServerForwardedHostHeader);
-			setPropsValuesValue(
-				"VIRTUAL_HOSTS_VALID_HOSTS", virtualHostsValidHosts);
 		}
 	}
 
@@ -128,14 +128,15 @@ public class PortalImplUnitTest extends PowerMockito {
 	public void testGetForwardedHostWithXForwardedHostEnabled()
 		throws Exception {
 
+		String[] virtualHostsValidHosts = PropsValues.VIRTUAL_HOSTS_VALID_HOSTS;
 		boolean webServerForwardedHostEnabled =
 			PropsValues.WEB_SERVER_FORWARDED_HOST_ENABLED;
-		String[] virtualHostsValidHosts = PropsValues.VIRTUAL_HOSTS_VALID_HOSTS;
 
 		try {
-			setPropsValuesValue("WEB_SERVER_FORWARDED_HOST_ENABLED", true);
 			setPropsValuesValue(
 				"VIRTUAL_HOSTS_VALID_HOSTS", new String[] {"forwardedServer"});
+			setPropsValuesValue("WEB_SERVER_FORWARDED_HOST_ENABLED", true);
+
 			MockHttpServletRequest mockHttpServletRequest =
 				new MockHttpServletRequest();
 
@@ -149,10 +150,10 @@ public class PortalImplUnitTest extends PowerMockito {
 		}
 		finally {
 			setPropsValuesValue(
+				"VIRTUAL_HOSTS_VALID_HOSTS", virtualHostsValidHosts);
+			setPropsValuesValue(
 				"WEB_SERVER_FORWARDED_HOST_ENABLED",
 				webServerForwardedHostEnabled);
-			setPropsValuesValue(
-				"VIRTUAL_HOSTS_VALID_HOSTS", virtualHostsValidHosts);
 		}
 	}
 
