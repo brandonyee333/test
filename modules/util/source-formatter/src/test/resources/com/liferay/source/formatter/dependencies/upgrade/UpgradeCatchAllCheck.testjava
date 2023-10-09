@@ -16,8 +16,7 @@ public class UpgradeCatchAllCheck {
 		HtmlUtil.extractText(testEntry.getContent());
 
 		if (true) {
-			String contentVariableLineBreak = HtmlUtil.extractText(
-				testEntry.getContent());
+			HtmlUtil.extractText(testEntry.getContent());
 		}
 	}
 
@@ -26,8 +25,6 @@ public class UpgradeCatchAllCheck {
 
 		region.getCode();
 
-		commerceAddress.getRegion().getCode();
-
 		commerceAddress.getRegion(
 		).getCode();
 	}
@@ -35,10 +32,10 @@ public class UpgradeCatchAllCheck {
 	public void method(
 		long companyId, long groupId, String title, int start, int end) {
 
-		_assetVocabularyService.searchVocabularies(
+		_assetVocabularyLocalService.searchVocabularies(
 			companyId, groupId, title, start, end);
 
-		return _assetVocabularyLocalService.searchVocabularies(
+		_assetVocabularyService.searchVocabularies(
 			companyId, groupId, title, start, end);
 
 		_assetVocabularyService.searchVocabularies(

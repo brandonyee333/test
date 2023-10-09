@@ -110,8 +110,7 @@ public class UpgradeCatchAllCheck extends BaseFileCheck {
 
 				interpolatedNewParameterNames.add(
 					StringUtil.replace(
-						newParameterName,
-						prefix + index + CharPool.POUND,
+						newParameterName, prefix + index + CharPool.POUND,
 						parameterNames.get(index)));
 			}
 			else {
