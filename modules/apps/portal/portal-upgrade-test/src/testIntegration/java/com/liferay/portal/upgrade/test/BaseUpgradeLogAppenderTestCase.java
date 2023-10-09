@@ -97,8 +97,6 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 
 		builder.withPattern("%level - %m%n %X");
 
-		_upgradeReportDirectory = "";
-
 		_logContextAppender = WriterAppender.createAppender(
 			builder.build(), null, _unsyncStringWriter,
 			"logContextWriterAppender", false, false);
@@ -724,6 +722,7 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 	private String _reportContent;
 	private final UnsyncStringWriter _unsyncStringWriter =
 		new UnsyncStringWriter();
-	private String _upgradeReportDirectory;
+	private String _upgradeReportDirectory = "";
+
 
 }
