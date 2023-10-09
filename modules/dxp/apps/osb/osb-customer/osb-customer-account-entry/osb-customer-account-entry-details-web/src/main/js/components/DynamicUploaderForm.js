@@ -416,6 +416,7 @@ export default class DynamicUploaderForm extends React.Component {
 				<Alert type="info">
 					<span>
 						{this.props.fileRepositoryMessage}
+						&nbsp;
 					</span>
 
 					{langSub(
