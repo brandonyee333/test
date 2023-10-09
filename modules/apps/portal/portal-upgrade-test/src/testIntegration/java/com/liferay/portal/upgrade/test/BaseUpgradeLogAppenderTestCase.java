@@ -113,7 +113,7 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 	public void tearDown() {
 		_appender.stop();
 
-		File reportsDir;
+		File reportsDir = null;
 
 		if (_upgradeReportDir.isEmpty()) {
 			reportsDir = new File(getFilePath(), "reports");
@@ -123,7 +123,7 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 			_upgradeReportDir = "";
 		}
 
-		if ((reportsDir != null) && reportsDir.exists()) {
+		if (reportsDir.exists()) {
 			File reportFile = new File(reportsDir, "upgrade_report.info");
 
 			if (reportFile.exists()) {
