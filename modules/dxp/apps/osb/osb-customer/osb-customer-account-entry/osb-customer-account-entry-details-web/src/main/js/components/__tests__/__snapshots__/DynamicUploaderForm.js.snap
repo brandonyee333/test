@@ -97,6 +97,7 @@ exports[`DynamicUploaderForm renders correctly 1`] = `
       </span>
       <span>
         Your file will be uploaded to a file server in the United States.
+        \xa0
       </span>
       please-note-that-the-location-of-the-server-to-which-the-file-will-be-uploaded-is-based-on-the-location-of-the-liferay-center-providing-support-to-your-company.-for-more-information-regarding-our-attachment-policy-please-refer-to-this-x
     </div>
