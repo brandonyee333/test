@@ -11855,6 +11855,17 @@ jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 			</then>
 		</if>
 
+		<if>
+			<equals arg1="${database.type}" arg2="mysql" />
+			<then>
+				<replace
+					file="portal-impl/src/portal-ext.properties"
+					token="${database.mysql.driver}"
+					value="${database.mariadb.driver}"
+				/>
+			</then>
+		</if>
+
 		<get-testcase-property property.name="store.migration.test" />
 
 		<if>
