@@ -1374,7 +1374,13 @@ public class ViewChangesDisplayContext {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		if (FeatureFlagManagerUtil.isEnabled("LPS-179035")) {
+		if (FeatureFlagManagerUtil.isEnabled("LPS-179035") &&
+			_renderRequest.getParameter(
+				"mvcRenderCommandName"
+			).equals(
+				"/change_tracking/view_changes"
+			)) {
+
 			boolean showHideable = ParamUtil.getBoolean(
 				_renderRequest, "showHideable");
 
