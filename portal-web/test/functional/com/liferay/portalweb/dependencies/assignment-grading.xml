@@ -78,7 +78,7 @@
 				<template-language>text</template-language>
 				<notification-type>user-notification</notification-type>
 				<recipients>
-					<assignees/>
+					<assignees />
 				</recipients>
 				<execution-type>onAssignment</execution-type>
 			</notification>
@@ -92,7 +92,7 @@
 				<template-language>text</template-language>
 				<notification-type>user-notification</notification-type>
 				<recipients>
-					<user/>
+					<user />
 				</recipients>
 				<execution-type>onExit</execution-type>
 			</notification>
@@ -132,7 +132,7 @@
 ]]>
 		</metadata>
 		<assignments>
-			<user/>
+			<user />
 		</assignments>
 		<transitions>
 			<transition>
