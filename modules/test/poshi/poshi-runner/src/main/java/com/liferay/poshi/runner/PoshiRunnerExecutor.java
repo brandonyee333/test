@@ -22,12 +22,21 @@ import com.liferay.poshi.runner.util.TableUtil;
 import com.liferay.poshi.runner.var.type.DefaultTable;
 import com.liferay.poshi.runner.var.type.TableFactory;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+
 import java.lang.reflect.Method;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.Callable;
@@ -67,6 +76,70 @@ public class PoshiRunnerExecutor {
 			_testNamespacedClassCommandName);
 		_poshiVariablesContext = PoshiVariablesContext.getPoshiVariablesContext(
 			_testNamespacedClassCommandName);
+	}
+
+	public void calculateAvgMacroRuntimes() {
+		List<Map.Entry<String, Double>> list = new ArrayList<>();
+
+		for (Map.Entry<String, List<Long>> entry : _macroRuntimes.entrySet()) {
+			String macroName = entry.getKey();
+			List<Long> runtimes = entry.getValue();
+
+			long totalRuntime = 0;
+
+			for (long runtime : runtimes) {
+				totalRuntime += runtime;
+			}
+
+			double averageRuntime = totalRuntime / (double)runtimes.size();
+
+			list.add(new AbstractMap.SimpleEntry<>(macroName, averageRuntime));
+		}
+
+		Collections.sort(
+			list,
+			new Comparator<Map.Entry<String, Double>>() {
+
+				public int compare(
+					Map.Entry<String, Double> o1,
+					Map.Entry<String, Double> o2) {
+
+					return o2.getValue(
+					).compareTo(
+						o1.getValue()
+					);
+				}
+
+			});
+
+		Map<String, Double> sortedMap = new LinkedHashMap<>();
+
+		System.out.println(
+			"---------------------------------------------------------");
+		System.out.println("Average macro runtimes\n");
+
+		for (Map.Entry<String, Double> entry : list) {
+			sortedMap.put(entry.getKey(), entry.getValue());
+
+			String macroName = entry.getKey();
+			Double averageRuntime = entry.getValue();
+
+			// Temp to output in log also
+
+			System.out.println(
+				macroName + ": " + String.format("%.2f", averageRuntime) +
+					"ms");
+		}
+
+		System.out.println(
+			"---------------------------------------------------------");
+
+		try {
+			writeCSV(sortedMap, _PROJECT_DIR + "/portal-web/macro-metrics.csv");
+		}
+		catch (IOException ioException) {
+			throw new UncheckedIOException(ioException);
+		}
 	}
 
 	public boolean evaluateConditionalElement(Element element)
@@ -800,6 +873,8 @@ public class PoshiRunnerExecutor {
 			classCommandName, namespace);
 
 		try {
+			long startTime = System.currentTimeMillis();
+
 			runMacroCommandElement(commandElement, namespacedClassCommandName);
 
 			Element returnElement = executeElement.element("return");
@@ -823,6 +898,20 @@ public class PoshiRunnerExecutor {
 
 				_macroReturnValue = null;
 			}
+
+			long endTime = System.currentTimeMillis();
+
+			long runtime = endTime - startTime;
+
+			if (!_macroRuntimes.containsKey(classCommandName)) {
+				_macroRuntimes.put(classCommandName, new ArrayList<Long>());
+			}
+
+			_macroRuntimes.get(
+				classCommandName
+			).add(
+				runtime
+			);
 		}
 		catch (Exception exception) {
 			_summaryLogger.failSummary(
@@ -1176,6 +1265,37 @@ public class PoshiRunnerExecutor {
 		}
 	}
 
+	public void writeCSV(Map<String, Double> dataMap, String fileName)
+		throws IOException {
+
+		FileWriter writer = new FileWriter(fileName);
+
+		writer.append(
+			"Macro Name"
+		).append(
+			","
+		).append(
+			"Avg Runtime"
+		).append(
+			"\n"
+		);
+
+		for (Map.Entry<String, Double> entry : dataMap.entrySet()) {
+			writer.append(
+				entry.getKey()
+			).append(
+				","
+			).append(
+				String.format("%.2f", entry.getValue())
+			).append(
+				"\n"
+			);
+		}
+
+		writer.flush();
+		writer.close();
+	}
+
 	protected Object callWithTimeout(
 			Callable<?> callable, String description, long timeoutSeconds)
 		throws Exception {
@@ -1435,6 +1555,9 @@ public class PoshiRunnerExecutor {
 		return null;
 	}
 
+	private static final String _PROJECT_DIR = System.getProperty(
+		"project.dir");
+
 	private static final Pattern _locatorKeyPattern = Pattern.compile(
 		"((?<namespace>[\\w]+)\\.)?(\\w+)#(\\$\\{\\w+\\}|[A-Z0-9_]+)");
 	private static final Pattern _parameterPattern = Pattern.compile(
@@ -1448,6 +1571,7 @@ public class PoshiRunnerExecutor {
 	private boolean _hasContinue;
 	private boolean _inLoop;
 	private Object _macroReturnValue;
+	private final Map<String, List<Long>> _macroRuntimes = new HashMap<>();
 	private final PoshiLogger _poshiLogger;
 	private final PoshiProperties _poshiProperties;
 	private final PoshiStackTrace _poshiStackTrace;

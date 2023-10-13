@@ -250,6 +250,8 @@ public class PoshiRunner {
 			SummaryLogger.clear(_testNamespacedClassCommandName);
 		}
 
+		_poshiRunnerExecutor.calculateAvgMacroRuntimes();
+
 		if (!_poshiProperties.liferayDataGuardEnabled) {
 			return;
 		}
