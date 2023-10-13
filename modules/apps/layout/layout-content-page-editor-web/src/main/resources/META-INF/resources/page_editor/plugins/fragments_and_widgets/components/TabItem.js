@@ -105,14 +105,14 @@ export default function TabItem({displayStyle, item, onRemoveHighlighted}) {
 
 	return displayStyle === FRAGMENTS_DISPLAY_STYLES.CARDS ? (
 		<CardItem
-			disabled={item.disabled || isDraggingSource || disabled}
+			disabled={disabled || isDraggingSource || item.disabled}
 			handlerRef={item.disabled ? null : sourceRef}
 			item={item}
 			onToggleHighlighted={onToggleHighlighted}
 		/>
 	) : (
 		<ListItem
-			disabled={item.disabled || isDraggingSource || disabled}
+			disabled={disabled || isDraggingSource || item.disabled}
 			handlerRef={item.disabled ? null : sourceRef}
 			item={item}
 			onToggleHighlighted={onToggleHighlighted}
