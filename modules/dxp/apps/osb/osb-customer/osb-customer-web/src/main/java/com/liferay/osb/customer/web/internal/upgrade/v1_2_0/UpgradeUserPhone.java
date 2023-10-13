@@ -48,7 +48,7 @@ public class UpgradeUserPhone extends UpgradeProcess {
 					_phoneLocalService.updatePhone(
 						curPhone.getPhoneId(), phone.getNumber(),
 						curPhone.getExtension(), curPhone.getTypeId(),
-						curPhone.getPrimary());
+						curPhone.isPrimary());
 				}
 			}
 		}

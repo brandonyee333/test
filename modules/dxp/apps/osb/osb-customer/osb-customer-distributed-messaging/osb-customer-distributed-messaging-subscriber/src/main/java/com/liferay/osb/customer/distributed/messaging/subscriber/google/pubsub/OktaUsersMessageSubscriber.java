@@ -209,7 +209,7 @@ public class OktaUsersMessageSubscriber
 						_phoneLocalService.updatePhone(
 							curPhone.getPhoneId(), number,
 							curPhone.getExtension(), typeId,
-							curPhone.getPrimary());
+							curPhone.isPrimary());
 					}
 				}
 			}
@@ -288,7 +288,7 @@ public class OktaUsersMessageSubscriber
 
 		for (Phone curPhone : phones) {
 			if (((businessTypeId == curPhone.getTypeId()) &&
-				 curPhone.getPrimary()) ||
+				 curPhone.isPrimary()) ||
 				(mobileTypeId == curPhone.getTypeId())) {
 
 				phoneNumbers.put(curPhone.getTypeId(), curPhone.getNumber());

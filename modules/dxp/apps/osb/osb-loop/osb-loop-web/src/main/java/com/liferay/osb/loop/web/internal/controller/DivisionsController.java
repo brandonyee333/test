@@ -1179,8 +1179,8 @@ public class DivisionsController extends LoopAlloyControllerImpl {
 			LoopDivisionUtil.getNetworkLoopDivisions(loopDivision));
 
 		for (LoopDivision curLoopDivision : loopDivisions) {
-			curLoopDivision.setSubtype(subtype);
 			curLoopDivision.setType(type);
+			curLoopDivision.setSubtype(subtype);
 
 			updateModelIgnoreRequest(curLoopDivision);
 		}
