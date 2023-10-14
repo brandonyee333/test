@@ -43,7 +43,7 @@ public class ListTypeLocalServiceImpl extends ListTypeLocalServiceBaseImpl {
 	}
 
 	@Override
-	public void deleteCompanyListTypes(long companyId) {
+	public void deleteListTypes(long companyId) {
 		List<ListType> listTypes = listTypePersistence.findByCompanyId(
 			companyId);
 

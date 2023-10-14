@@ -81,7 +81,7 @@ public interface ListTypeLocalService
 	public PersistedModel createPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public void deleteCompanyListTypes(long companyId);
+	public void deleteListTypes(long companyId);
 
 	/**
 	 * Deletes the list type from the database. Also notifies the appropriate model listeners.

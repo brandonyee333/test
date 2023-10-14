@@ -76,8 +76,8 @@ public class ListTypeLocalServiceWrapper
 	}
 
 	@Override
-	public void deleteCompanyListTypes(long companyId) {
-		_listTypeLocalService.deleteCompanyListTypes(companyId);
+	public void deleteListTypes(long companyId) {
+		_listTypeLocalService.deleteListTypes(companyId);
 	}
 
 	/**

@@ -76,8 +76,8 @@ public class ListTypeLocalServiceUtil {
 		return getService().createPersistedModel(primaryKeyObj);
 	}
 
-	public static void deleteCompanyListTypes(long companyId) {
-		getService().deleteCompanyListTypes(companyId);
+	public static void deleteListTypes(long companyId) {
+		getService().deleteListTypes(companyId);
 	}
 
 	/**
