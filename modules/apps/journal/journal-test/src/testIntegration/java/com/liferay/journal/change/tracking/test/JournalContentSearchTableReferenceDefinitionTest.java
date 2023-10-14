@@ -48,7 +48,6 @@ public class JournalContentSearchTableReferenceDefinitionTest
 		_journalArticle = JournalTestUtil.addArticle(
 			TestPropsValues.getUserId(), group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
-
 		_layout = _layoutLocalService.getLayout(TestPropsValues.getPlid());
 	}
 
