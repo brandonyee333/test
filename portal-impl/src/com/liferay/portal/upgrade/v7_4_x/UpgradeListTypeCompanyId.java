@@ -139,23 +139,20 @@ public class UpgradeListTypeCompanyId extends UpgradeProcess {
 		for (Map.Entry<String, List<String>> listTypeReference :
 				_listTypeReferences.entrySet()) {
 
-			String table = listTypeReference.getKey();
-			List<String> columns = listTypeReference.getValue();
+			String tableName = listTypeReference.getKey();
+			List<String> columnNames = listTypeReference.getValue();
 
-			for (String column : columns) {
+			for (String columnName : columnNames) {
 				try (PreparedStatement preparedStatement =
 						connection.prepareStatement(
 							StringBundler.concat(
-								"update ", table, " set ", column,
-								" = ? where ", column,
+								"update ", tableName, " set ", columnName,
+								" = ? where ", columnName,
 								" = ? and companyId = ?"))) {
 
-					for (Map.Entry<Long, Long> listTypeIdEntry :
-							listTypeIds.entrySet()) {
-
-						preparedStatement.setLong(
-							1, listTypeIdEntry.getValue());
-						preparedStatement.setLong(2, listTypeIdEntry.getKey());
+					for (Map.Entry<Long, Long> entry : listTypeIds.entrySet()) {
+						preparedStatement.setLong(1, entry.getValue());
+						preparedStatement.setLong(2, entry.getKey());
 						preparedStatement.setLong(3, companyId);
 
 						preparedStatement.executeUpdate();
