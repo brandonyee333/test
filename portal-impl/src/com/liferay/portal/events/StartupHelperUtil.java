@@ -228,7 +228,7 @@ public class StartupHelperUtil {
 			}
 			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
-					_log.warn("Unable to read db warmed state", exception);
+					_log.warn("Unable to read DB warmed state", exception);
 				}
 			}
 		}
@@ -242,7 +242,7 @@ public class StartupHelperUtil {
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to write db warmed state", exception);
+				_log.warn("Unable to write DB warmed state", exception);
 			}
 		}
 
