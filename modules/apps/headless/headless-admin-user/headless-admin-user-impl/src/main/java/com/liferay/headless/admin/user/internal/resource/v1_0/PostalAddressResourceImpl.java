@@ -34,6 +34,7 @@ import com.liferay.portal.vulcan.pagination.Page;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.BadRequestException;
 
@@ -138,7 +139,6 @@ public class PostalAddressResourceImpl extends BasePostalAddressResourceImpl {
 			country = _getCountryByTitle(postalAddress);
 
 			address.setCountryId(country.getCountryId());
-
 			address.setRegionId(_getRegionId(postalAddress, country));
 		}
 
@@ -305,10 +305,7 @@ public class PostalAddressResourceImpl extends BasePostalAddressResourceImpl {
 			country.getCountryId());
 
 		if ((postalAddress.getAddressRegion() == null) ||
-			postalAddress.getAddressRegion(
-			).equals(
-				""
-			)) {
+			Objects.equals(postalAddress.getAddressRegion(), "")) {
 
 			if (regions.isEmpty()) {
 				return 0;
