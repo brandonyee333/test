@@ -15,7 +15,6 @@ import com.liferay.dynamic.data.mapping.exception.NoSuchFormInstanceRecordExcept
 import com.liferay.dynamic.data.mapping.exception.StorageException;
 import com.liferay.dynamic.data.mapping.form.field.type.constants.DDMFormFieldTypeConstants;
 import com.liferay.dynamic.data.mapping.internal.notification.DDMFormEmailNotificationSender;
-import com.liferay.dynamic.data.mapping.model.DDMContent;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstance;
 import com.liferay.dynamic.data.mapping.model.DDMFormInstanceRecord;
@@ -727,7 +726,7 @@ public class DDMFormInstanceRecordLocalServiceImpl
 			ddmStructure.getLatestStructureVersion();
 
 		_ddmStorageLinkLocalService.addStorageLink(
-			_portal.getClassNameId(DDMContent.class.getName()), primaryKey,
+			_portal.getClassNameId(DDMStorageLink.class), primaryKey,
 			ddmStructureVersion.getStructureVersionId(), serviceContext);
 
 		return primaryKey;
