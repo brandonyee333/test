@@ -1051,7 +1051,7 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 	}
 
 	@Test
-	public void testGetWithRelatedModelProperty() throws Exception {
+	public void testGetWithRelatedModel() throws Exception {
 		JSONObject apiApplicationJSONObject = HTTPTestUtil.invokeToJSONObject(
 			JSONUtil.put(
 				"applicationStatus", "published"
