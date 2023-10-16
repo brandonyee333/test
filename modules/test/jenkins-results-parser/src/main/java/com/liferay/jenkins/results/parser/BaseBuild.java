@@ -297,9 +297,7 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public JSONObject getBuildJSONObject() {
-		String urlSuffix = "api/json";
-
-		String archiveFileContent = getArchiveFileContent(urlSuffix);
+		String archiveFileContent = getArchiveFileContent("api/json");
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(archiveFileContent)) {
 			return new JSONObject(archiveFileContent);
@@ -319,9 +317,7 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public JSONObject getBuildJSONObject(String tree) {
-		String urlSuffix = "api/json";
-
-		String archiveFileContent = getArchiveFileContent(urlSuffix);
+		String archiveFileContent = getArchiveFileContent("api/json");
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(archiveFileContent)) {
 			return new JSONObject(archiveFileContent);
@@ -410,9 +406,7 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public String getConsoleText() {
-		String urlSuffix = "consoleText";
-
-		String archiveFileContent = getArchiveFileContent(urlSuffix);
+		String archiveFileContent = getArchiveFileContent("consoleText");
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(archiveFileContent)) {
 			return archiveFileContent;
