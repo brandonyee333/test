@@ -2488,4 +2488,107 @@ definition {
 		FormFields.viewTextLabel(fieldLabel = "Text");
 	}
 
+	@description = "Case 1: Validating a String"
+	@priority = 5
+	test ValidateConfigurationStringAtControlPanel {
+		ApplicationsMenuHelper.openApplicationsMenu();
+
+		ApplicationsMenu.gotoPanel(panel = "Control Panel");
+
+		AssertElementPresent(
+			locator1 = "//h2[@id='nav_control_panel.configuration']");
+	}
+
+	@description = "Case 2: Writing tests in Forms"
+	@priority = 5
+	test WriteNewTestsInForms {
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.editDescription(formDescription = "Form 1 Description");
+
+		Form.editPageTitle(
+			formPageName = "Page 1",
+			formTitleNumber = 1);
+
+		Form.editPageDescription(
+			formPageDescriptionName = "Page 1 Description");
+
+		Form.gotoAddField(
+			fieldPositionNumber = 0,
+			fieldType = "Text");
+
+		Form.editFieldLabelMetal(fieldValue = "Full Name");
+
+		Form.closeSidebar();
+
+		Form.gotoAddField(
+			fieldPositionNumber = 1,
+			fieldType = "Numeric");
+
+		Form.editFieldLabelMetal(fieldValue = "Age");
+
+		Form.addTranslation(localizedLanguage = "Portuguese (Brazil)");
+
+		Click(
+            key_name = "Full Name",
+            locator1 = "FormFields#FIELD_TARGET_LABEL");
+
+		Form.editFieldLabelMetal(fieldValue = "Nome Completo");
+
+		Click(
+            key_name = "Age",
+            locator1 = "FormFields#FIELD_TARGET_LABEL");
+
+		Form.editFieldLabelMetal(fieldValue = "Idade");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+        FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.editText(
+			fieldLabel = "Full Name",
+			fieldName = "Text",
+			fieldValue = "Gabriel Aires");
+
+		FormFields.editText(
+			fieldLabel = "Age",
+			fieldName = "Numeric",
+			fieldValue = "21");
+
+		FormPortlet.submitSuccessfully();
+
+		Refresh();
+
+        FormPortletConfiguration.changeLanguage(
+            currentLanguage = "en-US",
+            newLanguage = "português-Brasil");
+
+		FormFields.editText(
+			fieldLabel = "Full Name",
+			fieldName = "Text",
+			fieldValue = "Caleb Hall");
+
+		FormFields.editText(
+			fieldLabel = "Age",
+			fieldName = "Numeric",
+			fieldValue = "18");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content & Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoViewEntries();
+	}
+
 }
