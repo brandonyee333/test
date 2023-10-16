@@ -241,7 +241,7 @@ public class BatchEngineUnitReaderImpl implements BatchEngineUnitReader {
 			}
 		}
 		catch (IOException ioException) {
-			_log.error("Unable to read batch engine entry urls", ioException);
+			_log.error("Unable to read batch engine entry URLs", ioException);
 		}
 
 		return null;
@@ -269,7 +269,7 @@ public class BatchEngineUnitReaderImpl implements BatchEngineUnitReader {
 			serializer.writeTo(outputStream);
 		}
 		catch (IOException ioException) {
-			_log.error("Unable to write batch engine entry urls", ioException);
+			_log.error("Unable to write batch engine entry URLs", ioException);
 		}
 	}
 
