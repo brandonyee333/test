@@ -533,6 +533,11 @@ public class DDMServiceUpgradeStepRegistrator
 			"5.3.3", "5.4.0",
 			new com.liferay.dynamic.data.mapping.internal.upgrade.v5_4_0.
 				DDMFieldUpgradeProcess());
+
+		registry.register(
+			"5.4.0", "6.0.0",
+			new com.liferay.dynamic.data.mapping.internal.upgrade.v6_0_0.
+				DDMStorageLinkUpgradeProcess());
 	}
 
 	@Activate
