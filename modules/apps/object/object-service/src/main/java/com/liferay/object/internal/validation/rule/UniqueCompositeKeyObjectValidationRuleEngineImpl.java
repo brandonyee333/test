@@ -8,7 +8,6 @@ package com.liferay.object.internal.validation.rule;
 import com.liferay.object.constants.ObjectValidationRuleConstants;
 import com.liferay.object.constants.ObjectValidationRuleSettingConstants;
 import com.liferay.object.internal.entry.util.ObjectEntrySearchUtil;
-import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectValidationRule;
 import com.liferay.object.model.ObjectValidationRuleSetting;
@@ -26,8 +25,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -52,22 +49,6 @@ public class UniqueCompositeKeyObjectValidationRuleEngineImpl
 		ObjectValidationRule objectValidationRule =
 			(ObjectValidationRule)inputObjects.get("objectValidationRule");
 
-		List<ObjectField> objectFields = new ArrayList<>();
-
-		for (ObjectValidationRuleSetting objectValidationRuleSetting :
-				objectValidationRule.getObjectValidationRuleSettings()) {
-
-			if (objectValidationRuleSetting.compareName(
-					ObjectValidationRuleSettingConstants.
-						NAME_COMPOSITE_KEY_OBJECT_FIELD_ID)) {
-
-				objectFields.add(
-					_objectFieldLocalService.fetchObjectField(
-						GetterUtil.getLong(
-							objectValidationRuleSetting.getValue())));
-			}
-		}
-
 		Map<String, Object> baseModel = (Map<String, Object>)inputObjects.get(
 			"baseModel");
 		Map<String, Object> entryDTO = (Map<String, Object>)inputObjects.get(
@@ -82,7 +63,7 @@ public class UniqueCompositeKeyObjectValidationRuleEngineImpl
 					objectValidationRule.getObjectDefinitionId()),
 				_getPredicate(
 					(Map<String, Object>)entryDTO.get("properties"),
-					objectValidationRule, objectFields));
+					objectValidationRule));
 		}
 		catch (PortalException portalException) {
 			_log.error(portalException);
@@ -108,12 +89,24 @@ public class UniqueCompositeKeyObjectValidationRuleEngineImpl
 	}
 
 	private Predicate _getPredicate(
-		Map<String, Object> entryValues, ObjectValidationRule objectValidationRule,
-		List<ObjectField> objectFields) {
+		Map<String, Object> entryValues,
+		ObjectValidationRule objectValidationRule) {
 
 		Predicate predicate = null;
 
-		for (ObjectField objectField : objectFields) {
+		for (ObjectValidationRuleSetting objectValidationRuleSetting :
+				objectValidationRule.getObjectValidationRuleSettings()) {
+
+			if (!objectValidationRuleSetting.compareName(
+					ObjectValidationRuleSettingConstants.
+						NAME_COMPOSITE_KEY_OBJECT_FIELD_ID)) {
+
+				continue;
+			}
+
+			ObjectField objectField = _objectFieldLocalService.fetchObjectField(
+				GetterUtil.getLong(objectValidationRuleSetting.getValue()));
+
 			Table<?> table = null;
 
 			try {
