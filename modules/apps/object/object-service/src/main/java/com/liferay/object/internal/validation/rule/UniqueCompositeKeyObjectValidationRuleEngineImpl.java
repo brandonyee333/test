@@ -125,18 +125,18 @@ public class UniqueCompositeKeyObjectValidationRuleEngineImpl
 				continue;
 			}
 
-			Predicate uniqueComposedKeyObjectFieldPredicate =
-				ObjectEntrySearchUtil.getUniqueComposedKeyObjectFieldPredicate(
+			Predicate uniqueCompositeKeyObjectFieldPredicate =
+				ObjectEntrySearchUtil.getUniqueCompositeKeyObjectFieldPredicate(
 					(Column<?, Object>)column, objectField.getDBType(),
 					GetterUtil.getString(
 						entryValues.get(objectField.getName())));
 
 			if (predicate == null) {
-				predicate = uniqueComposedKeyObjectFieldPredicate;
+				predicate = uniqueCompositeKeyObjectFieldPredicate;
 			}
 			else {
 				predicate = predicate.and(
-					uniqueComposedKeyObjectFieldPredicate);
+					uniqueCompositeKeyObjectFieldPredicate);
 			}
 		}
 

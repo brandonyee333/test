@@ -97,7 +97,7 @@ public class ObjectEntrySearchUtil {
 		).withParentheses();
 	}
 
-	public static Predicate getUniqueComposedKeyObjectFieldPredicate(
+	public static Predicate getUniqueCompositeKeyObjectFieldPredicate(
 		Column<?, Object> column, String dbType, String value) {
 
 		if (dbType.equals(ObjectFieldConstants.DB_TYPE_INTEGER) ||
