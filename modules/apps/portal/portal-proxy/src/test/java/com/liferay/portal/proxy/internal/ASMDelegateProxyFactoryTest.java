@@ -95,7 +95,7 @@ public class ASMDelegateProxyFactoryTest {
 
 	@NewEnv(type = NewEnv.Type.CLASSLOADER)
 	@Test
-	public void testConcurrentCreat() throws Exception {
+	public void testConcurrentCreate() throws Exception {
 		DelegateProxyFactory delegateProxyFactory =
 			new ASMDelegateProxyFactory();
 
