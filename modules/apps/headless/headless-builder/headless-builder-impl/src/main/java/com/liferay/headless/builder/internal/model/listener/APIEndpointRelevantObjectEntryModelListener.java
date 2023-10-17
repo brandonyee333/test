@@ -319,18 +319,6 @@ public class APIEndpointRelevantObjectEntryModelListener
 				"single-element-id-endpoint-cannot-be-scoped-by-group");
 		}
 
-		String pathInParameterString = StringUtil.extractLast(
-			pathString, StringPool.FORWARD_SLASH);
-
-		if (!StringUtil.isLowerCase(
-				StringUtil.extractFirst(pathString, pathInParameterString))) {
-
-			throw new ObjectEntryValuesException.InvalidObjectField(
-				Arrays.asList(objectField.getLabel(user.getLocale())),
-				"%s must contain only lower case characters",
-				"x-must-contain-only-lower-case-characters");
-		}
-
 		Matcher singleElementPathMatcher = _singleElementPathPattern.matcher(
 			pathString);
 
@@ -341,6 +329,9 @@ public class APIEndpointRelevantObjectEntryModelListener
 				"x-can-have-a-maximum-of-255-alphanumeric-characters");
 		}
 
+		String pathInParameterString = StringUtil.extractLast(
+			pathString, StringPool.FORWARD_SLASH);
+
 		Matcher curlyBraceMatcher = _curlyBracePattern.matcher(
 			pathInParameterString);
 
@@ -349,6 +340,15 @@ public class APIEndpointRelevantObjectEntryModelListener
 				Arrays.asList(objectField.getLabel(user.getLocale())),
 				"%s must contain a path parameter between curly braces",
 				"x-must-contain-a-path-parameter-between-curly-braces");
+		}
+
+		if (!StringUtil.isLowerCase(
+				StringUtil.extractFirst(pathString, pathInParameterString))) {
+
+			throw new ObjectEntryValuesException.InvalidObjectField(
+				Arrays.asList(objectField.getLabel(user.getLocale())),
+				"%s must contain only lower case characters",
+				"x-must-contain-only-lower-case-characters");
 		}
 	}
 
