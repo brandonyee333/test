@@ -269,6 +269,13 @@ public class FreeMarkerManager extends BaseTemplateManager {
 	protected void activate(ComponentContext componentContext) {
 		BundleContext bundleContext = componentContext.getBundleContext();
 
+		_bundle = bundleContext.getBundle();
+
+		_bundleTracker = new BundleTracker<>(
+			bundleContext, Bundle.ACTIVE, new TaglibBundleTrackerCustomizer());
+
+		_bundleTracker.open();
+
 		_freeMarkerEngineConfiguration = ConfigurableUtil.createConfigurable(
 			FreeMarkerEngineConfiguration.class,
 			componentContext.getProperties());
@@ -284,13 +291,6 @@ public class FreeMarkerManager extends BaseTemplateManager {
 			bundleContext.registerService(
 				TemplateResourceLoader.class, _freeMarkerTemplateResourceLoader,
 				null);
-
-		_bundle = bundleContext.getBundle();
-
-		_bundleTracker = new BundleTracker<>(
-			bundleContext, Bundle.ACTIVE, new TaglibBundleTrackerCustomizer());
-
-		_bundleTracker.open();
 
 		WriterFactoryUtil.setWriterFactory(new UnsyncStringWriterFactory());
 
