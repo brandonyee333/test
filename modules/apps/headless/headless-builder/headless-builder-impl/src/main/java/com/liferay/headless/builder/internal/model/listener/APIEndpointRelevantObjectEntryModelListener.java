@@ -166,18 +166,18 @@ public class APIEndpointRelevantObjectEntryModelListener
 					String message = null;
 					String messageKey = null;
 
-					if (!StringUtil.isLowerCase(pathString)) {
-						message = "%s must contain only lower case characters";
-						messageKey =
-							"x-must-contain-only-lower-case-characters";
-					}
-					else if (pathString.startsWith(StringPool.FORWARD_SLASH)) {
+					if (pathString.startsWith(StringPool.FORWARD_SLASH)) {
 						message =
 							"%s can have a maximum of 255 alphanumeric " +
 								"characters";
 						messageKey =
 							"x-can-have-a-maximum-of-255-alphanumeric-" +
 								"characters";
+					}
+					else if (!StringUtil.isLowerCase(pathString)) {
+						message = "%s must contain only lower case characters";
+						messageKey =
+							"x-must-contain-only-lower-case-characters";
 					}
 					else {
 						message = "%s must start with the \"/\" character";
