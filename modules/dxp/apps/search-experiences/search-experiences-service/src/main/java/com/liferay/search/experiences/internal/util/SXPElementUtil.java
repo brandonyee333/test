@@ -24,6 +24,7 @@ import java.net.URL;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +76,58 @@ public class SXPElementUtil {
 				String.valueOf(sxpElement.getElementDefinition()), true,
 				_SCHEMA_VERSION,
 				LocalizedMapUtil.getLocalizedMap(sxpElement.getTitle_i18n()), 0,
+				new ServiceContext() {
+					{
+						setAddGuestPermissions(true);
+						setCompanyId(company.getCompanyId());
+						setScopeGroupId(company.getGroupId());
+						setUserId(user.getUserId());
+					}
+				});
+		}
+	}
+
+	public static void updateSXPElements(
+			Company company, SXPElementLocalService sxpElementLocalService)
+		throws PortalException {
+
+		HashMap<String, Long> externalReferenceCodesAndIds = new HashMap<>();
+
+		for (com.liferay.search.experiences.model.SXPElement sxpPElement :
+				sxpElementLocalService.getSXPElements(
+					company.getCompanyId(), true)) {
+
+			externalReferenceCodesAndIds.put(
+				sxpPElement.getExternalReferenceCode(),
+				sxpPElement.getSXPElementId());
+		}
+
+		for (SXPElement sxpElement : _getOrCreateSXPElements()) {
+			if (!FeatureFlagManagerUtil.isEnabled("LPS-122920") &&
+				Objects.equals(
+					sxpElement.getExternalReferenceCode(),
+					"RESCORE_BY_TEXT_EMBEDDING")) {
+
+				continue;
+			}
+
+			_setDefaultLanguageToLocalizedFields(
+				company.getLocale(), sxpElement);
+
+			sxpElement.setId(
+				externalReferenceCodesAndIds.get(
+					sxpElement.getExternalReferenceCode()));
+
+			User user = company.getGuestUser();
+
+			sxpElementLocalService.updateSXPElement(
+				sxpElement.getExternalReferenceCode(), user.getUserId(),
+				sxpElement.getId(),
+				LocalizedMapUtil.getLocalizedMap(
+					sxpElement.getDescription_i18n()),
+				String.valueOf(sxpElement.getElementDefinition()), true,
+				_SCHEMA_VERSION,
+				LocalizedMapUtil.getLocalizedMap(sxpElement.getTitle_i18n()),
 				new ServiceContext() {
 					{
 						setAddGuestPermissions(true);
