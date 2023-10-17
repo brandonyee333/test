@@ -187,13 +187,13 @@ public class AccountRoleModelResourcePermission
 			return false;
 		}
 
-		List<AccountEntryOrganizationRel> accountEntryOrganizationRels =
-			_accountEntryOrganizationRelLocalService.
-				getAccountEntryOrganizationRels(accountEntryId);
-
 		long[] userOrganizationIds =
 			_organizationLocalService.getUserOrganizationIds(
 				permissionChecker.getUserId(), true);
+
+		List<AccountEntryOrganizationRel> accountEntryOrganizationRels =
+			_accountEntryOrganizationRelLocalService.
+				getAccountEntryOrganizationRels(accountEntryId);
 
 		for (AccountEntryOrganizationRel accountEntryOrganizationRel :
 				accountEntryOrganizationRels) {
