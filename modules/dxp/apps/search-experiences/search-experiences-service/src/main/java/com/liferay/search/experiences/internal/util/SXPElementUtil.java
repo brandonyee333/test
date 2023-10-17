@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -60,6 +62,9 @@ public class SXPElementUtil {
 
 				continue;
 			}
+
+			_setDefaultLanguageToLocalizedFields(
+				company.getLocale(), sxpElement);
 
 			User user = company.getGuestUser();
 
@@ -117,6 +122,31 @@ public class SXPElementUtil {
 		}
 
 		return _sxpElements;
+	}
+
+	private static void _setDefaultLanguageToLocalizedField(
+		Map<String, String> mapI18n, Locale locale) {
+
+		mapI18n.keySet(
+		).stream(
+		).findFirst(
+		).ifPresent(
+			key -> {
+				if (!key.equals(locale.toString())) {
+					mapI18n.put(locale.toString(), mapI18n.get(key));
+					mapI18n.remove(key);
+				}
+			}
+		);
+	}
+
+	private static void _setDefaultLanguageToLocalizedFields(
+		Locale locale, SXPElement sxpElement) {
+
+		_setDefaultLanguageToLocalizedField(sxpElement.getTitle_i18n(), locale);
+
+		_setDefaultLanguageToLocalizedField(
+			sxpElement.getDescription_i18n(), locale);
 	}
 
 	private static final String _SCHEMA_VERSION = StringUtil.replace(
