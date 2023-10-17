@@ -191,10 +191,6 @@ public class ${schemaName}ResourceFactoryImpl implements ${schemaName}Resource.F
 		}
 	}
 
-	private static class ResourceProxyProviderFunctionHolder {
-		private static final Function<InvocationHandler, ${schemaName}Resource> _${schemaVarName}ResourceProxyProviderFunction = _getProxyProviderFunction();
-	}
-
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
@@ -229,6 +225,12 @@ public class ${schemaName}ResourceFactoryImpl implements ${schemaName}Resource.F
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	private static class ResourceProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, ${schemaName}Resource> _${schemaVarName}ResourceProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private class AcceptLanguageImpl implements AcceptLanguage {
 
