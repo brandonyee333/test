@@ -235,7 +235,7 @@ definition {
 			Click(locator1 = "//*[contains(@class, 'page-link')]//*[contains(@class,'right')]");
 		}
 
-		AssertElementPresent(
+		AssertTextEquals.assertPartialText(
 			locator1 = "PublicationsChanges#PUBLICATIONS_CHANGE_USER",
 			value1 = ${changeUser});
 
