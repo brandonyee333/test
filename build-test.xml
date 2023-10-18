@@ -12414,6 +12414,17 @@ portal.proxy.path=/${portal.proxy.path}</echo>
 			</then>
 		</if>
 
+		<get-testcase-property property.name="publications.dataset.display.enabled" />
+		<propertycopy from="publications.dataset.display.enabled[${env.CI_TEST_SUITE}]" name="publications.dataset.display.enabled" silent="true" />
+
+		<if>
+			<equals arg1="${publications.dataset.display.enabled}" arg2="true" />
+			<then>
+				<echo append="true" file="portal-impl/src/portal-ext.properties">
+feature.flag.LPS-179035=true</echo>
+			</then>
+		</if>
+
 		<get-testcase-property property.name="setup.wizard.enabled" />
 
 		<if>
