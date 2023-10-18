@@ -323,13 +323,13 @@ public class PortletDocumentFragmentEntryProcessor
 			_updateLayoutPortletSetup(portletPreferences, jxPortletPreferences);
 		}
 		else {
-			int portletPreferencesCount =
+			int count =
 				_portletPreferencesLocalService.getPortletPreferencesCount(
 					fragmentEntryLink.getCompanyId(),
 					PortletKeys.PREFS_OWNER_ID_DEFAULT,
 					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, portletId);
 
-			if (portletPreferencesCount > 0) {
+			if (count > 0) {
 				jxPortletPreferences =
 					PortletPreferencesFactoryUtil.getLayoutPortletSetup(
 						fragmentEntryLink.getCompanyId(),
