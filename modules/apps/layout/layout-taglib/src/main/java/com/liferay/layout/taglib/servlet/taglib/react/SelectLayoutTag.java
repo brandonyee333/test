@@ -136,7 +136,6 @@ public class SelectLayoutTag extends IncludeTag {
 
 		String[] selectedLayoutIds = ParamUtil.getStringValues(
 			httpServletRequest, "layoutUuid");
-
 		long selPlid = ParamUtil.getLong(
 			httpServletRequest, "selPlid", LayoutConstants.DEFAULT_PLID);
 
