@@ -29,12 +29,10 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.PortletPreferenceValueLocalService;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portlet.PortletPreferencesImpl;
 import com.liferay.portlet.exportimport.staging.StagingAdvicesThreadLocal;
 
 import java.util.Arrays;
@@ -155,9 +153,8 @@ public class PortletDocumentFragmentEntryProcessor
 	}
 
 	private boolean _checkNoninstanceablePortletUsed(
-			FragmentEntryLink currentFragmentEntryLink,
-			String currentPortletName, HttpServletRequest httpServletRequest)
-		throws PortalException {
+		FragmentEntryLink currentFragmentEntryLink, String currentPortletName,
+		HttpServletRequest httpServletRequest) {
 
 		if ((currentFragmentEntryLink.getFragmentEntryLinkId() <= 0) ||
 			(currentFragmentEntryLink.getPlid() <= 0)) {
@@ -292,9 +289,8 @@ public class PortletDocumentFragmentEntryProcessor
 	}
 
 	private String _getPreferences(
-			long plid, String portletName, FragmentEntryLink fragmentEntryLink,
-			String id, String defaultPreferences)
-		throws PortalException {
+		long plid, String portletName, FragmentEntryLink fragmentEntryLink,
+		String id, String defaultPreferences) {
 
 		String defaultPortletId = _getPortletId(
 			portletName, fragmentEntryLink.getNamespace(), id);
@@ -310,14 +306,12 @@ public class PortletDocumentFragmentEntryProcessor
 		String portletId = _getPortletId(
 			portletName, fragmentEntryLink.getNamespace(), id);
 
-		List<com.liferay.portal.kernel.model.PortletPreferences>
-			portletPreferencesList =
-				_portletPreferencesLocalService.getPortletPreferences(
-					fragmentEntryLink.getCompanyId(),
-					PortletKeys.PREFS_OWNER_ID_DEFAULT,
-					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, portletId);
+		com.liferay.portal.kernel.model.PortletPreferences portletPreferences =
+			_portletPreferencesLocalService.fetchPortletPreferences(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid, portletId);
 
-		if (ListUtil.isNotEmpty(portletPreferencesList)) {
+		if (portletPreferences != null) {
 			jxPortletPreferences =
 				PortletPreferencesFactoryUtil.getLayoutPortletSetup(
 					fragmentEntryLink.getCompanyId(),
@@ -326,8 +320,25 @@ public class PortletDocumentFragmentEntryProcessor
 					fragmentEntryLink.getPlid(), portletId,
 					PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
 
-			_updateLayoutPortletSetup(
-				plid, portletPreferencesList, jxPortletPreferences);
+			_updateLayoutPortletSetup(portletPreferences, jxPortletPreferences);
+		}
+		else {
+			int count =
+				_portletPreferencesLocalService.getPortletPreferencesCount(
+					fragmentEntryLink.getCompanyId(),
+					PortletKeys.PREFS_OWNER_ID_DEFAULT,
+					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, portletId);
+
+			if (count > 0) {
+				jxPortletPreferences =
+					PortletPreferencesFactoryUtil.getLayoutPortletSetup(
+						fragmentEntryLink.getCompanyId(),
+						PortletKeys.PREFS_OWNER_ID_DEFAULT,
+						PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
+						fragmentEntryLink.getPlid(), portletId,
+						PortletPreferencesFactoryUtil.toXML(
+							jxPortletPreferences));
+			}
 		}
 
 		Document preferencesDocument = _getDocument(
@@ -339,37 +350,23 @@ public class PortletDocumentFragmentEntryProcessor
 	}
 
 	private void _updateLayoutPortletSetup(
-		long layoutPlid,
-		List<com.liferay.portal.kernel.model.PortletPreferences>
-			portletPreferencesList,
+		com.liferay.portal.kernel.model.PortletPreferences portletPreferences,
 		PortletPreferences jxPortletPreferences) {
 
-		long plid = 0;
+		PortletPreferences currentPortletPreferences =
+			_portletPreferenceValueLocalService.getPreferences(
+				portletPreferences);
 
-		if (jxPortletPreferences instanceof PortletPreferencesImpl) {
-			plid = layoutPlid;
+		if (_comparePreferences(
+				currentPortletPreferences, jxPortletPreferences)) {
+
+			return;
 		}
 
-		for (com.liferay.portal.kernel.model.PortletPreferences
-				portletPreferencesImpl : portletPreferencesList) {
-
-			PortletPreferences currentPortletPreferences =
-				_portletPreferenceValueLocalService.getPreferences(
-					portletPreferencesImpl);
-
-			if ((plid != portletPreferencesImpl.getPlid()) ||
-				_comparePreferences(
-					currentPortletPreferences, jxPortletPreferences)) {
-
-				continue;
-			}
-
-			_portletPreferencesLocalService.updatePreferences(
-				portletPreferencesImpl.getOwnerId(),
-				portletPreferencesImpl.getOwnerType(),
-				portletPreferencesImpl.getPlid(),
-				portletPreferencesImpl.getPortletId(), jxPortletPreferences);
-		}
+		_portletPreferencesLocalService.updatePreferences(
+			portletPreferences.getOwnerId(), portletPreferences.getOwnerType(),
+			portletPreferences.getPlid(), portletPreferences.getPortletId(),
+			jxPortletPreferences);
 	}
 
 	private void _validateFragmentEntryHTMLDocument(

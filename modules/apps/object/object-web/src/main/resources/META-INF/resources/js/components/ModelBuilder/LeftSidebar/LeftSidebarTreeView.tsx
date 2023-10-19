@@ -181,7 +181,7 @@ export default function LeftSidebarTreeView({
 					? newLeftSidebarOtherObjectFolderItems
 					: [leftSidebarSelectedObjectFolderItem]
 			}
-			nestedKey="objectDefinitions"
+			nestedKey="leftSidebarObjectDefinitionItems"
 			onExpandedChange={setExpandedKeys}
 			onSelect={(item) => {
 				if (
@@ -260,6 +260,7 @@ export default function LeftSidebarTreeView({
 														leftSidebarItem.objectFolderName
 													)
 												}
+												size="sm"
 												title={Liferay.Language.get(
 													'go-to-folder'
 												)}
@@ -338,6 +339,7 @@ export default function LeftSidebarTreeView({
 																	null
 																}
 																monospaced
+																size="sm"
 															>
 																<Icon symbol="ellipsis-v" />
 															</ClayButton>

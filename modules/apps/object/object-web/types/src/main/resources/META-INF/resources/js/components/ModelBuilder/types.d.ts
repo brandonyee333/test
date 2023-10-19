@@ -119,6 +119,18 @@ export declare type TAction =
 	  }
 	| {
 			payload: {
+				newObjectDefinitionNodePosition: {
+					x: number;
+					y: number;
+				};
+				objectDefinitionNodes: Node<ObjectDefinitionNodeData>[];
+				objectRelationshipEdges: Edge<ObjectRelationshipEdgeData>[];
+				updatedObjectDefinitionNodeId: number;
+			};
+			type: TYPES.SET_SELECTED_OBJECT_DEFINITION_NODE_POSITION;
+	  }
+	| {
+			payload: {
 				objectDefinitionNodes: Node<ObjectDefinitionNodeData>[];
 				objectRelationshipEdges: Edge<ObjectRelationshipEdgeData>[];
 				selectedObjectDefinitionId: number;
@@ -144,7 +156,11 @@ export declare type TAction =
 	| {
 			payload: {
 				currentObjectFolderName: string;
-				updatedObjectDefinitionNode: Partial<ObjectDefinition>;
+				objectDefinitionNodes: Node<ObjectDefinitionNodeData>[];
+				objectDefinitionRelationshipEdges: Edge<
+					ObjectRelationshipEdgeData
+				>[];
+				updatedObjectDefinition: Partial<ObjectDefinition>;
 			};
 			type: TYPES.UPDATE_OBJECT_DEFINITION_NODE;
 	  }

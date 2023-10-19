@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PrefsPropsUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.security.exportimport.UserImporter;
+import com.liferay.portal.security.ldap.exportimport.LDAPUserImporter;
 import com.liferay.portal.security.sso.token.configuration.TokenConfiguration;
 import com.liferay.portal.security.sso.token.constants.TokenConstants;
 import com.liferay.portal.security.sso.token.security.auth.TokenRetriever;
@@ -135,11 +135,11 @@ public class TokenAutoLogin extends BaseAutoLogin {
 		if (tokenConfiguration.importFromLDAP()) {
 			try {
 				if (authType.equals(CompanyConstants.AUTH_TYPE_SN)) {
-					user = _userImporter.importUser(
+					user = _ldapUserImporter.importUser(
 						companyId, StringPool.BLANK, login);
 				}
 				else if (authType.equals(CompanyConstants.AUTH_TYPE_EA)) {
-					user = _userImporter.importUser(
+					user = _ldapUserImporter.importUser(
 						companyId, login, StringPool.BLANK);
 				}
 				else {
@@ -192,12 +192,12 @@ public class TokenAutoLogin extends BaseAutoLogin {
 	private ConfigurationProvider _configurationProvider;
 
 	@Reference
+	private LDAPUserImporter _ldapUserImporter;
+
+	@Reference
 	private Portal _portal;
 
 	private ServiceTrackerMap<String, TokenRetriever> _serviceTrackerMap;
-
-	@Reference
-	private UserImporter _userImporter;
 
 	@Reference
 	private UserLocalService _userLocalService;

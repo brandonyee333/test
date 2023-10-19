@@ -833,6 +833,39 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 			};
 		}
 
+		case TYPES.SET_SELECTED_OBJECT_DEFINITION_NODE_POSITION: {
+			const {
+				newObjectDefinitionNodePosition,
+				objectDefinitionNodes,
+				objectRelationshipEdges,
+				updatedObjectDefinitionNodeId,
+			} = action.payload;
+
+			const newObjectDefinitionNodes = objectDefinitionNodes.map(
+				(objectDefinitionNode) => {
+					if (
+						objectDefinitionNode.data?.id ===
+						updatedObjectDefinitionNodeId
+					) {
+						return {
+							...objectDefinitionNode,
+							position: newObjectDefinitionNodePosition,
+						};
+					}
+
+					return objectDefinitionNode;
+				}
+			);
+
+			return {
+				...state,
+				elements: [
+					...newObjectDefinitionNodes,
+					...objectRelationshipEdges,
+				],
+			};
+		}
+
 		case TYPES.SET_SELECTED_OBJECT_RELATIONSHIP_EDGE: {
 			const {
 				objectDefinitionNodes,
@@ -909,10 +942,35 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 		case TYPES.UPDATE_OBJECT_DEFINITION_NODE: {
 			const {
 				currentObjectFolderName,
-				updatedObjectDefinitionNode,
+				objectDefinitionNodes,
+				objectDefinitionRelationshipEdges,
+				updatedObjectDefinition,
 			} = action.payload;
 
 			const {leftSidebarItems} = state;
+
+			const updatedObjectDefinitionNodes = objectDefinitionNodes.map(
+				(objectDefinitionNode) => {
+					if (
+						objectDefinitionNode.data?.id ===
+						updatedObjectDefinition.id?.toString()
+					) {
+						return {
+							...objectDefinitionNode,
+							data: {
+								...objectDefinitionNode.data,
+								label: updatedObjectDefinition.label,
+								name: updatedObjectDefinition.name,
+								pluralLabel: {
+									[updatedObjectDefinition.defaultLanguageId!]: updatedObjectDefinition.pluralLabel,
+								},
+							},
+						};
+					}
+
+					return objectDefinitionNode;
+				}
+			) as Node<ObjectDefinitionNodeData>[];
 
 			let updatedObjectDefinitions;
 
@@ -926,14 +984,14 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 							(leftSidebarObjectDefinitionItem) => {
 								if (
 									leftSidebarObjectDefinitionItem.id.toString() ===
-									updatedObjectDefinitionNode.id?.toString()
+									updatedObjectDefinition.id?.toString()
 								) {
 									return {
 										...leftSidebarObjectDefinitionItem,
 										label: getLocalizableLabel(
 											defaultLanguageId,
-											updatedObjectDefinitionNode.label,
-											updatedObjectDefinitionNode.name
+											updatedObjectDefinition.label,
+											updatedObjectDefinition.name
 										),
 									};
 								}
@@ -959,6 +1017,10 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 
 			return {
 				...state,
+				elements: [
+					...objectDefinitionRelationshipEdges,
+					...updatedObjectDefinitionNodes,
+				],
 				leftSidebarItems: newLeftSidebarItems,
 			};
 		}

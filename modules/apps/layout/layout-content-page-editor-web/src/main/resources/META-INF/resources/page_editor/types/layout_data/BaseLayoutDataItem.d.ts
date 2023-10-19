@@ -11,7 +11,8 @@ export type ResponsiveConfig<T> = T & {
 	tablet: {[Key in keyof T]?: T[Key]};
 };
 
-export type LanguageId = 'en_US' | 'es_ES';
+export type LanguageId = Liferay.Language.Locale;
+
 export type TranslatedConfig<T> = Record<LanguageId, T>;
 
 export type BackgroundImage = {classPK: string; url: string};
@@ -45,8 +46,8 @@ export interface BaseLayoutDataItem<
 	Config
 > {
 	children: string[];
-	config: Config;
+	config: Config & {name?: string};
 	itemId: string;
-	itemType: ItemType;
 	parentId: string;
+	type: ItemType;
 }

@@ -70,6 +70,12 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 			return;
 		}
 
+		if (!_build.hasMaximumInvocationCount()) {
+			_build.setStatus("starting");
+
+			return;
+		}
+
 		runReporting();
 	}
 
@@ -99,7 +105,7 @@ public abstract class BaseBuildUpdater implements BuildUpdater {
 		_isApplySlaveOfflineRules();
 
 		if (_isApplyReinvokeRules()) {
-			_build.setStatus("starting");
+			_build.setStatus("queued");
 
 			return;
 		}

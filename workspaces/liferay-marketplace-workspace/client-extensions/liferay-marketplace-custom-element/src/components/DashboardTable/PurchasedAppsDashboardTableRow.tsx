@@ -10,8 +10,10 @@ import ClayTable from '@clayui/table';
 import './PurchasedAppsDashboardTableRow.scss';
 
 import DropDown from '@clayui/drop-down/lib/DropDown';
+import {ClayTooltipProvider} from '@clayui/tooltip';
 import classNames from 'classnames';
 
+import {orderType} from '../../enums/orderType';
 import {PurchasedAppProps} from '../../pages/PurchasedAppsDashboardPage/PurchasedAppsDashboardPage';
 import {showAppImage} from '../../utils/util';
 
@@ -25,6 +27,7 @@ export function PurchasedAppsDashboardTableRow({
 	const {
 		name,
 		orderId,
+		orderTypeExternalReferenceCode,
 		project,
 		provisioning,
 		purchasedBy,
@@ -32,7 +35,10 @@ export function PurchasedAppsDashboardTableRow({
 		thumbnail,
 		type,
 		version,
+		virtualURL,
 	} = item;
+
+	const orderStatusIsNotCompleted = provisioning !== 'Completed';
 
 	return (
 		<ClayTable.Row>
@@ -140,6 +146,24 @@ export function PurchasedAppsDashboardTableRow({
 						>
 							Access Console
 						</DropDown.Item>
+						{orderTypeExternalReferenceCode === orderType.DXP && (
+							<ClayTooltipProvider>
+								<DropDown.Item
+									data-tooltip-align="left"
+									disabled={orderStatusIsNotCompleted}
+									onClick={() => {
+										window.location.href = virtualURL;
+									}}
+									title={
+										orderStatusIsNotCompleted
+											? 'This order must be completed before downloading this app.'
+											: ''
+									}
+								>
+									Download App
+								</DropDown.Item>
+							</ClayTooltipProvider>
+						)}
 					</DropDown.ItemList>
 				</DropDown>
 			</ClayTable.Cell>

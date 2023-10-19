@@ -84,9 +84,11 @@ import com.liferay.portal.kernel.model.Repository;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.SystemEventConstants;
+import com.liferay.portal.kernel.model.TrashedModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.WebDAVProps;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.module.service.Snapshot;
 import com.liferay.portal.kernel.notifications.UserNotificationDefinition;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -133,7 +135,6 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Time;
@@ -678,7 +679,7 @@ public class DLFileEntryLocalServiceImpl
 		actionableDynamicQuery.setPerformActionMethod(
 			(DLFileEntry dlFileEntry) -> {
 				if (includeTrashedEntries ||
-					!_trashHelper.isInTrashExplicitly(dlFileEntry)) {
+					!_isInTrashExplicitly(dlFileEntry)) {
 
 					repositoryEventTrigger.trigger(
 						RepositoryEventType.Delete.class, FileEntry.class,
@@ -753,7 +754,9 @@ public class DLFileEntryLocalServiceImpl
 
 		// View count
 
-		_viewCountManager.deleteViewCount(
+		ViewCountManager viewCountManager = _viewCountManagerSnapshot.get();
+
+		viewCountManager.deleteViewCount(
 			dlFileEntry.getCompanyId(),
 			_classNameLocalService.getClassNameId(DLFileEntry.class),
 			dlFileEntry.getFileEntryId());
@@ -984,7 +987,7 @@ public class DLFileEntryLocalServiceImpl
 
 				for (DLFileEntry dlFileEntry : dlFileEntries) {
 					if (includeTrashedEntries ||
-						!_trashHelper.isInTrashExplicitly(dlFileEntry)) {
+						!_isInTrashExplicitly(dlFileEntry)) {
 
 						repositoryEventTrigger.trigger(
 							RepositoryEventType.Delete.class, FileEntry.class,
@@ -1551,7 +1554,9 @@ public class DLFileEntryLocalServiceImpl
 			return;
 		}
 
-		_viewCountManager.incrementViewCount(
+		ViewCountManager viewCountManager = _viewCountManagerSnapshot.get();
+
+		viewCountManager.incrementViewCount(
 			dlFileEntry.getCompanyId(),
 			_classNameLocalService.getClassNameId(DLFileEntry.class),
 			dlFileEntry.getFileEntryId(), increment);
@@ -2381,7 +2386,8 @@ public class DLFileEntryLocalServiceImpl
 			return DLVersionNumberIncrease.MINOR;
 		}
 
-		VersioningStrategy versioningStrategy = _versioningStrategy;
+		VersioningStrategy versioningStrategy =
+			_versioningStrategySnapshot.get();
 
 		if (versioningStrategy == null) {
 			if ((dlVersionNumberIncrease == null) ||
@@ -2782,6 +2788,16 @@ public class DLFileEntryLocalServiceImpl
 			return _dlFileEntryTypeLocalService.getDefaultFileEntryTypeId(
 				dlFileEntry.getFolderId());
 		}
+	}
+
+	private boolean _isInTrashExplicitly(TrashedModel trashedModel) {
+		TrashHelper trashHelper = _trashHelperSnapshot.get();
+
+		if (trashHelper == null) {
+			return GetterUtil.DEFAULT_BOOLEAN;
+		}
+
+		return trashHelper.isInTrashExplicitly(trashedModel);
 	}
 
 	private boolean _isValidFileVersionNumber(String version) {
@@ -3654,18 +3670,14 @@ public class DLFileEntryLocalServiceImpl
 
 	private static final Pattern _fileVersionPattern = Pattern.compile(
 		"\\d+\\.\\d+");
-	private static volatile TrashHelper _trashHelper =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			TrashHelper.class, DLFileEntryLocalServiceImpl.class,
-			"_trashHelper", false);
-	private static volatile VersioningStrategy _versioningStrategy =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			VersioningStrategy.class, DLFileEntryLocalServiceImpl.class,
-			"_versioningStrategy", false, true);
-	private static volatile ViewCountManager _viewCountManager =
-		ServiceProxyFactory.newServiceTrackedInstance(
-			ViewCountManager.class, DLFileEntryLocalServiceImpl.class,
-			"_viewCountManager", false, true);
+	private static final Snapshot<TrashHelper> _trashHelperSnapshot =
+		new Snapshot<>(DLFileEntryLocalServiceImpl.class, TrashHelper.class);
+	private static final Snapshot<VersioningStrategy>
+		_versioningStrategySnapshot = new Snapshot<>(
+			DLFileEntryLocalServiceImpl.class, VersioningStrategy.class);
+	private static final Snapshot<ViewCountManager> _viewCountManagerSnapshot =
+		new Snapshot<>(
+			DLFileEntryLocalServiceImpl.class, ViewCountManager.class);
 
 	@BeanReference(type = AssetEntryLocalService.class)
 	private AssetEntryLocalService _assetEntryLocalService;

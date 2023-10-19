@@ -44,7 +44,11 @@ function FragmentDetail({fragment}) {
 
 	return (
 		<>
-			<DetailPanel badge={badge} title={Liferay.Language.get('warnings')}>
+			<DetailPanel
+				badge={badge}
+				defaultExpanded
+				title={Liferay.Language.get('warnings')}
+			>
 				{warnings.length ? (
 					<List ItemComponent={Warning} items={warnings} />
 				) : (
@@ -58,7 +62,10 @@ function FragmentDetail({fragment}) {
 				)}
 			</DetailPanel>
 
-			<DetailPanel title={Liferay.Language.get('basic-information')}>
+			<DetailPanel
+				defaultExpanded
+				title={Liferay.Language.get('basic-information')}
+			>
 				<TextSection
 					text={sub(Liferay.Language.get('x-ms'), renderTime)}
 					title={Liferay.Language.get('server-render-time')}
@@ -112,7 +119,11 @@ function IssueDetail({issue}) {
 				<Html>{tips}</Html>
 			</DetailPanel>
 
-			<DetailPanel badge={badge} title={Liferay.Language.get('tips')}>
+			<DetailPanel
+				badge={badge}
+				defaultExpanded
+				title={Liferay.Language.get('failing-elements')}
+			>
 				<List
 					ItemComponent={FailingElement}
 					items={normalizeFailingElements(failingElements, key)}
@@ -122,11 +133,11 @@ function IssueDetail({issue}) {
 	);
 }
 
-function DetailPanel({badge, children, title}) {
+function DetailPanel({badge, children, defaultExpanded, title}) {
 	return (
 		<ClayPanel
 			collapsable
-			defaultExpanded
+			defaultExpanded={defaultExpanded}
 			displayTitle={
 				<ClayPanel.Title>
 					<ClayLayout.ContentRow className="align-items-center c-gap-2">

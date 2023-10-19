@@ -7,7 +7,6 @@ package com.liferay.portal.osgi.web.portlet.tracker.internal;
 
 import com.liferay.osgi.util.StringPlus;
 import com.liferay.petra.concurrent.DCLSingleton;
-import com.liferay.petra.executor.PortalExecutorManager;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -44,6 +43,7 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.ResourceActionLocalService;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
+import com.liferay.portal.kernel.servlet.InitialRequestSyncUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DelegateProxyFactory;
@@ -319,9 +319,6 @@ public class PortletTracker
 
 		_parallel = StartupHelperUtil.isDBWarmed();
 
-		_executorService = _portalExecutorManager.getPortalExecutor(
-			PortletTracker.class.getName());
-
 		_serviceTracker = new ServiceTracker<>(
 			_bundleContext, Portlet.class, this);
 
@@ -340,7 +337,7 @@ public class PortletTracker
 									_resourcePermissionLocalService),
 								null);
 
-					DependencyManagerSyncUtil.registerSyncCallable(
+					InitialRequestSyncUtil.registerSyncCallable(
 						() -> {
 							serviceRegistration.unregister();
 
@@ -361,8 +358,6 @@ public class PortletTracker
 	@Deactivate
 	protected void deactivate() {
 		_serviceTracker.close();
-
-		_executorService.shutdownNow();
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Deactivated");
@@ -1365,33 +1360,46 @@ public class PortletTracker
 			return;
 		}
 
-		List<Future<Void>> futures = new ArrayList<>();
-
 		List<Company> companies = _companyLocalService.getCompanies();
 
-		for (Company company : companies) {
-			futures.add(
-				_executorService.submit(
-					() -> {
-						_portletLocalService.deployRemotePortlet(
-							new long[] {company.getCompanyId()}, portletModel,
-							ArrayUtil.toStringArray(categoryNames), false,
-							false);
-
-						return null;
-					}));
-		}
-
-		for (Future<Void> future : futures) {
-			try {
-				future.get();
+		if (_parallel) {
+			for (Company company : companies) {
+				_portletLocalService.deployRemotePortlet(
+					new long[] {company.getCompanyId()}, portletModel,
+					ArrayUtil.toStringArray(categoryNames), false, false);
 			}
-			catch (Exception exception) {
-				if (exception instanceof ExecutionException) {
-					throw new PortalException(exception.getCause());
-				}
+		}
+		else {
+			List<Future<Void>> futures = new ArrayList<>();
 
-				throw new PortalException(exception);
+			ExecutorService executorService =
+				SystemExecutorServiceUtil.getExecutorService();
+
+			for (Company company : companies) {
+				futures.add(
+					executorService.submit(
+						() -> {
+							_portletLocalService.deployRemotePortlet(
+								new long[] {company.getCompanyId()},
+								portletModel,
+								ArrayUtil.toStringArray(categoryNames), false,
+								false);
+
+							return null;
+						}));
+			}
+
+			for (Future<Void> future : futures) {
+				try {
+					future.get();
+				}
+				catch (Exception exception) {
+					if (exception instanceof ExecutionException) {
+						throw new PortalException(exception.getCause());
+					}
+
+					throw new PortalException(exception);
+				}
 			}
 		}
 
@@ -1495,8 +1503,6 @@ public class PortletTracker
 	@Reference
 	private DelegateProxyFactory _delegateProxyFactory;
 
-	private ExecutorService _executorService;
-
 	@Reference
 	private HttpServiceRuntime _httpServiceRuntime;
 
@@ -1509,9 +1515,6 @@ public class PortletTracker
 
 	@Reference
 	private Portal _portal;
-
-	@Reference
-	private PortalExecutorManager _portalExecutorManager;
 
 	private com.liferay.portal.kernel.model.Portlet _portalPortletModel;
 

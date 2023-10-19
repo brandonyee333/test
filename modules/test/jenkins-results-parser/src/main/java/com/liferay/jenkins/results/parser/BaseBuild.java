@@ -532,22 +532,24 @@ public abstract class BaseBuild implements Build {
 		String result = getResult();
 
 		while (result == null) {
-			if (i == 20) {
-				throw new RuntimeException(
+			if (i == 2) {
+				System.out.println(
 					JenkinsResultsParserUtil.combine(
 						"Unable to create build anchor element. The process ",
 						"timed out while waiting for a build result for ",
 						getBuildURL(), "."));
+
+				break;
 			}
 
-			JenkinsResultsParserUtil.sleep(1000 * 30);
+			JenkinsResultsParserUtil.sleep(1000 * 5);
 
 			result = getResult();
 
 			i++;
 		}
 
-		if (result.equals("SUCCESS")) {
+		if (Objects.equals(result, "SUCCESS")) {
 			return Dom4JUtil.getNewAnchorElement(
 				getBuildURL(), getDisplayName());
 		}
@@ -1499,12 +1501,6 @@ public abstract class BaseBuild implements Build {
 	@Override
 	public void setBuildURL(String buildURL) {
 		_buildURL = buildURL;
-
-		Invocation currentInvocation = getCurrentInvocation();
-
-		if (currentInvocation != null) {
-			currentInvocation.setBuildURL(buildURL);
-		}
 	}
 
 	@Override
@@ -2203,6 +2199,8 @@ public abstract class BaseBuild implements Build {
 				Invocation previousInvocation = getPreviousInvocation();
 
 				if (previousInvocation != null) {
+					sb.append(" ");
+
 					sb.append(previousInvocation.getBuildURL());
 
 					sb.append(" restarted at ");
@@ -3277,7 +3275,7 @@ public abstract class BaseBuild implements Build {
 		JSONObject buildJSONObject = getBuildJSONObject("result,queueId,url");
 
 		Invocation invocation = new Invocation(
-			jenkinsMaster, buildJSONObject.getLong("queueId"));
+			this, jenkinsMaster, buildJSONObject.getLong("queueId"));
 
 		invocation.setBuildURL(buildJSONObject.getString("url"));
 

@@ -50,6 +50,7 @@ import {MembersPage} from '../MembersPage/MembersPage';
 export interface PurchasedAppProps {
 	name: string;
 	orderId: number;
+	orderTypeExternalReferenceCode: string;
 	project?: string;
 	provisioning: string;
 	purchasedBy: string;
@@ -57,6 +58,7 @@ export interface PurchasedAppProps {
 	thumbnail: string;
 	type: string;
 	version: string;
+	virtualURL: string;
 }
 
 interface PurchasedAppTable {
@@ -234,6 +236,8 @@ export function PurchasedAppsDashboardPage() {
 						return {
 							name: placeOrderItem.name,
 							orderId: order.id,
+							orderTypeExternalReferenceCode:
+								order.orderTypeExternalReferenceCode,
 							provisioning: order.orderStatusInfo.label_i18n,
 							purchasedBy: order.author,
 							purchasedDate: formattedDate,
@@ -241,9 +245,8 @@ export function PurchasedAppsDashboardPage() {
 							type: placeOrderItem.subscription
 								? 'Subscription'
 								: 'Perpetual',
-							version: !Object.keys(version).length
-								? ''
-								: version,
+							version: Object.keys(version).length ? version : '',
+							virtualURL: placeOrderItem?.virtualItemURLs,
 						};
 					})
 				);

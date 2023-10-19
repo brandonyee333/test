@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.security.auto.login.internal.request.header.configuration.RequestHeaderAutoLoginConfiguration;
 import com.liferay.portal.security.auto.login.internal.request.header.constants.RequestHeaderAutoLoginConstants;
-import com.liferay.portal.security.exportimport.UserImporter;
+import com.liferay.portal.security.ldap.exportimport.LDAPUserImporter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -81,7 +81,7 @@ public class RequestHeaderAutoLogin extends BaseAutoLogin {
 
 		if (isLDAPImportEnabled(companyId)) {
 			try {
-				user = _userImporter.importUser(
+				user = _ldapUserImporter.importUser(
 					companyId, StringPool.BLANK, screenName);
 			}
 			catch (Exception exception) {
@@ -177,10 +177,10 @@ public class RequestHeaderAutoLogin extends BaseAutoLogin {
 	private ConfigurationProvider _configurationProvider;
 
 	@Reference
-	private Portal _portal;
+	private LDAPUserImporter _ldapUserImporter;
 
 	@Reference
-	private UserImporter _userImporter;
+	private Portal _portal;
 
 	@Reference
 	private UserLocalService _userLocalService;

@@ -433,6 +433,7 @@ definition {
 	macro addObjectViaAPI {
 		JSONObject.addObject(
 			externalReferenceCode = ${externalReferenceCode},
+			folderName = ${folderName},
 			labelName = ${labelName},
 			objectName = ${objectName},
 			panelCategoryKey = ${panelCategoryKey},
@@ -1305,7 +1306,7 @@ definition {
 				key_name = ${labelName},
 				locator1 = "CreateObject#SELECT_ANY_OBJECT_FIELD_IN_TABLE");
 
-			MenuItem.clickNoError(menuItem = "View");
+			MenuItem.clickNoError(menuItem = "Edit");
 		}
 		else {
 			Click(

@@ -35,11 +35,6 @@
 	<bean class="com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil">
 		<property name="currentConnection" ref="com.liferay.portal.dao.jdbc.CurrentConnectionImpl" />
 	</bean>
-	<bean class="com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil" id="com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil">
-		<property name="portalCustomSQL">
-			<bean class="com.liferay.portal.dao.orm.common.PortalCustomSQLImpl" />
-		</property>
-	</bean>
 	<bean class="com.liferay.portal.kernel.image.ImageToolUtil" id="com.liferay.portal.kernel.image.ImageToolUtil">
 		<property name="imageTool" ref="com.liferay.portal.image.ImageToolImpl" />
 	</bean>
@@ -50,10 +45,6 @@
 	<bean class="com.liferay.portal.language.LanguageImpl" id="com.liferay.portal.kernel.language.Language" />
 	<bean class="com.liferay.portal.kernel.language.LanguageUtil" id="com.liferay.portal.kernel.language.LanguageUtil">
 		<property name="language" ref="com.liferay.portal.kernel.language.Language" />
-	</bean>
-	<bean class="com.liferay.portal.layoutconfiguration.util.RuntimePageImpl" id="com.liferay.portal.kernel.layoutconfiguration.util.RuntimePage" />
-	<bean class="com.liferay.portal.kernel.layoutconfiguration.util.RuntimePageUtil" id="com.liferay.portal.kernel.layoutconfiguration.util.RuntimePageUtil">
-		<property name="runtimePage" ref="com.liferay.portal.kernel.layoutconfiguration.util.RuntimePage" />
 	</bean>
 	<bean class="com.liferay.portal.license.util.DefaultLicenseManagerImpl" id="com.liferay.portal.kernel.license.util.LicenseManager" />
 	<bean class="com.liferay.portal.kernel.license.util.LicenseManagerUtil" id="com.liferay.portal.kernel.license.util.LicenseManagerUtil">
@@ -91,10 +82,6 @@
 	<bean class="com.liferay.portal.util.FileImpl" id="com.liferay.portal.kernel.util.File" />
 	<bean class="com.liferay.portal.kernel.util.FileUtil" id="com.liferay.portal.kernel.util.FileUtil">
 		<property name="file" ref="com.liferay.portal.kernel.util.File" />
-	</bean>
-	<bean class="com.liferay.portal.util.HtmlImpl" id="com.liferay.portal.kernel.util.Html" />
-	<bean class="com.liferay.portal.kernel.util.HtmlUtil" id="com.liferay.portal.kernel.util.HtmlUtil">
-		<property name="html" ref="com.liferay.portal.kernel.util.Html" />
 	</bean>
 	<bean class="com.liferay.portal.util.LocalizationImpl" id="com.liferay.portal.kernel.util.Localization" />
 	<bean class="com.liferay.portal.kernel.util.LocalizationUtil" id="com.liferay.portal.kernel.util.LocalizationUtil">
