@@ -738,7 +738,7 @@ public class UploadServletRequestTest {
 				Assert.assertEquals(Arrays.toString(files), 2, files.length);
 
 				for (int i = 0; i < files.length; i++) {
-					File storeLocation;
+					File storeLocation = null;
 
 					if (fileItems[i].isInMemory()) {
 						storeLocation = fileItems[i].getTempFile();
