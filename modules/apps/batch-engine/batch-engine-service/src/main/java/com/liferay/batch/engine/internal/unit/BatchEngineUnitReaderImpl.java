@@ -302,7 +302,7 @@ public class BatchEngineUnitReaderImpl implements BatchEngineUnitReader {
 		}
 		catch (IOException ioException) {
 			_log.error(
-				"Unable to parse BatchEngineUnitConfiguration", ioException);
+				"Unable to parse batch engine unit configuration", ioException);
 
 			return null;
 		}
