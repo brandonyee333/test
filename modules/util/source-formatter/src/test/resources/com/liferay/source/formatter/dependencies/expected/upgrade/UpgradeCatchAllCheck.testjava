@@ -43,30 +43,19 @@ public class UpgradeCatchAllCheck {
 		long companyId, long groupId, String title, int start, int end) {
 
 		_assetVocabularyLocalService.searchVocabularies(companyId, new long[] {groupId}, title, new int[0], start, end, new Sort());
-
+		_assetVocabularyService.searchVocabularies(companyId, 551, "test", start, end);
 		_assetVocabularyService.searchVocabularies(companyId, new long[] {groupId}, title, new int[0], start, end, new Sort());
-
-		_assetVocabularyService.searchVocabularies(
-			companyId, 551, "test", start, end);
 	}
 
 	public void method(long companyId, String externalReferenceCode) {
-		_cpInstanceLocalService.fetchByExternalReferenceCode(externalReferenceCode, companyId);
-
-		_cpInstanceLocalService.fetchCPInstanceByExternalReferenceCode(externalReferenceCode, companyId);
-
-		CPInstanceLocalServiceUtil.fetchByExternalReferenceCode(externalReferenceCode, companyId);
-
-		CPInstanceLocalServiceUtil.fetchCPInstanceByExternalReferenceCode(externalReferenceCode, companyId);
-
-		_cpInstanceService.fetchByExternalReferenceCode(externalReferenceCode, companyId);
-
-		CPInstanceServiceUtil.fetchByExternalReferenceCode(externalReferenceCode, companyId);
-
 		CPInstanceLocalServiceUtil.fetchByExternalReferenceCode(1234, "1234");
-
-		CPInstanceLocalServiceUtil.fetchCPInstanceByExternalReferenceCode(
-			1234, "1234");
+		CPInstanceLocalServiceUtil.fetchByExternalReferenceCode(externalReferenceCode, companyId);
+		CPInstanceLocalServiceUtil.fetchCPInstanceByExternalReferenceCode(1234, "1234");
+		CPInstanceLocalServiceUtil.fetchCPInstanceByExternalReferenceCode(externalReferenceCode, companyId);
+		CPInstanceServiceUtil.fetchByExternalReferenceCode(externalReferenceCode, companyId);
+		_cpInstanceLocalService.fetchByExternalReferenceCode(externalReferenceCode, companyId);
+		_cpInstanceLocalService.fetchCPInstanceByExternalReferenceCode(externalReferenceCode, companyId);
+		_cpInstanceService.fetchByExternalReferenceCode(externalReferenceCode, companyId);
 	}
 
 	@Reference
