@@ -148,6 +148,8 @@ definition {
 	}
 
 	macro moveChangeToAnotherPublication {
+		Search.searchCP(searchTerm = ${changeTitle});
+
 		Click(
 			key_changeCategory = ${changeCategory},
 			key_changeOrder = ${changeOrder},
