@@ -139,7 +139,7 @@ public class SharingDLViewFileVersionDisplayContext
 		}
 
 		if (FeatureFlagManagerUtil.isEnabled("LPS-197477")) {
-			UnsafeConsumer<DropdownContextItem, Exception> sharingActionItem =
+			UnsafeConsumer<DropdownContextItem, Exception> unsafeConsumer =
 				_sharingDropdownItemFactory.createShareActionUnsafeConsumer(
 					DLFileEntryConstants.getClassName(),
 					_fileEntry.getFileEntryId(), _httpServletRequest);
@@ -147,14 +147,14 @@ public class SharingDLViewFileVersionDisplayContext
 			if (i >= dropdownItems.size()) {
 				dropdownItems.addAll(
 					DropdownItemListBuilder.addContext(
-						sharingActionItem
+						unsafeConsumer
 					).build());
 			}
 			else {
 				dropdownItems.addAll(
 					i,
 					DropdownItemListBuilder.addContext(
-						sharingActionItem
+						unsafeConsumer
 					).build());
 			}
 
