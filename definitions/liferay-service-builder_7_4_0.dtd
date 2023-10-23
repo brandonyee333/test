@@ -709,7 +709,7 @@ localization entity.
 The change-tracking-resolution-type value specifies how to resolve columns when
 a modification conflict is detected when publishing. This value is only used
 when change tracking is enabled for the entity. Some values are automatically
-determined by column. Otherwise, the default value is STRICT.
+determined by column. Otherwise, the default value is "strict".
 
 See com.liferay.portal.kernel.change.tracking.CTColumnResolutionType for
 available options.
