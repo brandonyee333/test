@@ -46,11 +46,11 @@ public class SegmentsEntryRoleTableReferenceDefinitionTest
 	public void setUp() throws Exception {
 		super.setUp();
 
+		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
+
 		Layout layout = LayoutTestUtil.addTypeContentLayout(group);
 
 		_segmentsEntry = SegmentsTestUtil.addSegmentsEntry(layout.getGroupId());
-
-		_role = RoleTestUtil.addRole(RoleConstants.TYPE_REGULAR);
 	}
 
 	@Override
