@@ -7054,14 +7054,14 @@ public class ServiceBuilder {
 		Element newLocalizedEntityElement = DocumentHelper.createElement(
 			"entity");
 
-		if (Validator.isNotNull(entity.getDataSource())) {
-			newLocalizedEntityElement.addAttribute(
-				"data-source", entity.getDataSource());
-		}
-
 		if (entity.isChangeTrackingEnabled()) {
 			newLocalizedEntityElement.addAttribute(
 				"change-tracking-enabled", "true");
+		}
+
+		if (Validator.isNotNull(entity.getDataSource())) {
+			newLocalizedEntityElement.addAttribute(
+				"data-source", entity.getDataSource());
 		}
 
 		if (entity.isDeprecated()) {
