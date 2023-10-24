@@ -95,7 +95,7 @@ public class JMSMessageListener implements MessageListener {
 
 		queue.schedule(
 			(Project)topLevelItem, 0, _getLabelAction(jsonObject),
-			_getParametersAction(topLevelItem, jsonObject));
+			_getParametersAction(jsonObject, topLevelItem));
 	}
 
 	private Action _getLabelAction(JSONObject jsonObject) {
@@ -116,7 +116,7 @@ public class JMSMessageListener implements MessageListener {
 	}
 
 	private Action _getParametersAction(
-		TopLevelItem topLevelItem, JSONObject jsonObject) {
+		JSONObject jsonObject, TopLevelItem topLevelItem) {
 
 		if (!(topLevelItem instanceof Job)) {
 			return null;
