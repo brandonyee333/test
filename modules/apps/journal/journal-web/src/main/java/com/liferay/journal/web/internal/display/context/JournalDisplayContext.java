@@ -285,7 +285,6 @@ public class JournalDisplayContext {
 		}
 
 		long scopeGroupId = _themeDisplay.getScopeGroupId();
-
 		StagingGroupHelper stagingGroupHelper =
 			StagingGroupHelperUtil.getStagingGroupHelper();
 
