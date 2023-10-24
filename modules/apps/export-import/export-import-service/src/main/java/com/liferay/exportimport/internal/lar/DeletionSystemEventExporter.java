@@ -93,7 +93,9 @@ public class DeletionSystemEventExporter {
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 					systemEvent.getExtraData());
 
-				if ((jsonObject.get(_ASSET_TITLE) == null) ||
+				Object assetTitle = jsonObject.get("assetTitle");
+
+				if ((assetTitle == null) ||
 					!FeatureFlagManagerUtil.isEnabled("LPS-165481")) {
 
 					continue;
@@ -103,8 +105,7 @@ public class DeletionSystemEventExporter {
 					portletDataContext.getManifestSummary();
 
 				manifestSummary.addAssetTitle(
-					systemEvent.getClassName(),
-					String.valueOf(jsonObject.get(_ASSET_TITLE)));
+					systemEvent.getClassName(), String.valueOf(assetTitle));
 			}
 		}
 
@@ -311,8 +312,6 @@ public class DeletionSystemEventExporter {
 
 		return systemEventIds;
 	}
-
-	private static final String _ASSET_TITLE = "assetTitle";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DeletionSystemEventExporter.class);
