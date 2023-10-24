@@ -381,7 +381,7 @@ public class DefaultBuildUpdater extends BaseBuildUpdater {
 		}
 		catch (IOException ioException) {
 			System.out.println(
-				"WARNING: Unable to invoke jenkins using a curl");
+				"WARNING: Unable to invoke Jenkins using curl");
 
 			try {
 				JSONObject jsonObject =
