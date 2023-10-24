@@ -76,11 +76,11 @@ public class ProcessSummaryDisplayContext {
 			_CLASS_NAME_JOURNAL_ARTICLE);
 
 		if ((modelAdditionCounter != null) && (modelDeletionCounter != null)) {
-			long sumCounters =
+			long total =
 				modelAdditionCounter.getValue() +
 					modelDeletionCounter.getValue();
 
-			if (sumCounters > 1) {
+			if (total > 1) {
 				return null;
 			}
 		}
