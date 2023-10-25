@@ -50,7 +50,7 @@ public class StringArraySXPParameter extends BaseSXPParameter {
 		}
 
 		return StringBundler.concat(
-			"[\"", StringUtils.join(_value, "\",\""), "\"]");
+			"[\"", StringUtils.join(_value, "\", \""), "\"]");
 	}
 
 	@Override
