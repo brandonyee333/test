@@ -281,6 +281,74 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-182679"
+	@priority = 3
+	test CannotMoveTheChangeWithoutParentsChange {
+		property custom.properties = "feature.flag.LPS-171364=true";
+
+		task ("Add 2 new publications") {
+			JSONPublications.addPublication(publicationName = "Publication 1 Name");
+
+			JSONPublications.addPublication(publicationName = "Publication 2 Name");
+		}
+
+		task ("Under Publication 2, add a structure, template, and web content utilizing that structure") {
+			JSONPublications.selectPublication(publicationName = "Publication 2 Name");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+			NavItem.gotoStructures();
+
+			WebContentStructures.addCP(structureName = "Test Structure Name");
+
+			DataEngine.addField(
+				fieldFieldLabel = "Text",
+				fieldName = "Text");
+
+			WebContentStructures.saveCP(structureName = "Test Structure Name");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+			NavItem.gotoTemplates();
+
+			WebContentTemplates.addCP(
+				structureName = "Test Structure Name",
+				templateDescription = "Test Template Description",
+				templateFieldNames = "Text",
+				templateName = "Test Template Name");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+			WebContentNavigator.gotoAddWithStructureCP(structureName = "Test Structure Name");
+
+			WebContent.addWithStructureCP(
+				structureName = "Test Structure Name",
+				templateName = "Test Template Name",
+				webContentTitle = "Test WebContent Title");
+
+			PortletEntry.publish();
+		}
+
+		task ("Review changes for Publication 2 and attempt to move the web content change to Publication 1") {
+			PublicationsNavigator.gotoReviewChanges(
+				gotoPublicationsAdmin = "true",
+				publicationName = "Publication 2 Name");
+
+			PublicationsChanges.moveChangeToAnotherPublication(
+				changeCategory = "Web Content Article",
+				changeOrder = 1,
+				changeTitle = "Test WebContent Title",
+				targetPublicationName = "Publication 1 Name");
+		}
+
+		task ("Assert that the web content change cannot move, as it depends on the structure/template change") {
+			AssertTextEquals.assertPartialText(
+				key_alertType = "danger",
+				locator1 = "ClayAlert#ALERT_STATIC",
+				value1 = "One or more changes conflict with existing changes in the destination publication.");
+		}
+	}
+
 	@description = "This is a use case for LPS-184911 - Saving Publications settings when it is disabled causes PrincipalException."
 	@priority = 3
 	test CanSavePublicationsSettingsWhenItIsDisabled {
