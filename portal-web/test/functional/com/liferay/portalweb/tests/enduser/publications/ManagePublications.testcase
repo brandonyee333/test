@@ -27,6 +27,7 @@ definition {
 
 	test AssertDependenciesMovePublicationsWithParentChange {
 		property custom.properties = "feature.flag.LPS-171364=true";
+		property portal.acceptance = "LPS-199417";
 
 		task ("Add 2 different publications") {
 			JSONPublications.addPublication(publicationName = "Publication 1 Name");
@@ -99,6 +100,7 @@ definition {
 	@priority = 5
 	test CanMoveChangeBetweenPublications {
 		property custom.properties = "feature.flag.LPS-171364=true";
+		property portal.acceptance = "LPS-199417";
 
 		task ("Add 1 web content and 2 different publications") {
 			JSONWebcontent.addWebContent(
@@ -189,6 +191,7 @@ definition {
 	@priority = 4
 	test CannotMoveChangesBetweenPublicationsIfConflictsArePresent {
 		property custom.properties = "feature.flag.LPS-171364=true";
+		property portal.acceptance = "LPS-199417";
 
 		task ("Add 1 web content and 2 different publications") {
 			JSONWebcontent.addWebContent(
@@ -285,6 +288,7 @@ definition {
 	@priority = 3
 	test CannotMoveTheChangeWithoutParentsChange {
 		property custom.properties = "feature.flag.LPS-171364=true";
+		property portal.acceptance = "LPS-199417";
 
 		task ("Add 2 new publications") {
 			JSONPublications.addPublication(publicationName = "Publication 1 Name");
