@@ -731,4 +731,53 @@ definition {
 			value1 = "has 2 object entries.");
 	}
 
+	@description = "LPS-003 - Verify if it's possible to delete a Custom Object entry"
+    @priority = 5
+    test CanDeleteObjectEntry {
+        task ("Given a custom object with a text field") {
+            ObjectAdmin.addObjectViaAPI(
+                labelName = "Custom Object 1",
+                objectName = "CustomObject1",
+                pluralLabelName = "Custom Objects 1");
+
+            ObjectAdmin.addObjectFieldViaAPI(
+                fieldBusinessType = "Text",
+                fieldLabelName = "Custom Field",
+                fieldName = "customObjectField",
+                fieldType = "String",
+                isRequired = "false",
+                objectName = "CustomObject1");
+
+            ObjectAdmin.publishObjectViaAPI(objectName = "CustomObject1");
+
+            ObjectAdmin.openObjectAdmin();
+
+            ObjectPortlet.selectCustomObject(label = "Custom Object 1");
+
+            CreateObject.selectPanelCategoryKey(panelCategoryKey = "Control Panel > Object");
+
+            CreateObject.saveObject();
+
+            Navigator.openURL();
+			
+            ObjectPortlet.assertObjectIsDisplayedOnControlPanel();
+        }
+
+        task ("And given an entry is added") {
+            ObjectAdmin.goToCustomObject(objectName = "CustomObject1");
+
+            ObjectPortlet.addSingleFieldEntryViaUI(entry = "String Entry");
+
+            ObjectAdmin.goToCustomObject(objectName = "CustomObject1");
+
+            ObjectPortlet.viewEntry(entry = "String Entry");
+        }
+
+        task ("When user deletes entry, then the entry can be deleted") {
+            ObjectPortlet.deleteEntry(entry = "String Entry");
+			
+            ObjectPortlet.assertEntryNotPresent(entry = "String Entry");
+        }
+    }
+
 }
