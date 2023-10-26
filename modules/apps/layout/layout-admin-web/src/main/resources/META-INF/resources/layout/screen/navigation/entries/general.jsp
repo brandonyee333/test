@@ -16,8 +16,6 @@ if (Validator.isNull(backURL)) {
 	backURL = PortalUtil.getLayoutFullURL(layoutsAdminDisplayContext.getSelLayout(), themeDisplay);
 }
 
-portletDisplay.setURLBackTitle(ParamUtil.getString(request, "backURLTitle"));
-
 String portletResource = ParamUtil.getString(request, "portletResource");
 
 Group selGroup = (Group)request.getAttribute(WebKeys.GROUP);
@@ -27,6 +25,8 @@ Group group = layoutsAdminDisplayContext.getGroup();
 Layout selLayout = layoutsAdminDisplayContext.getSelLayout();
 
 LayoutType selLayoutType = selLayout.getLayoutType();
+
+portletDisplay.setURLBackTitle(ParamUtil.getString(request, "backURLTitle"));
 %>
 
 <portlet:actionURL name="/layout_admin/edit_layout" var="editLayoutURL">
