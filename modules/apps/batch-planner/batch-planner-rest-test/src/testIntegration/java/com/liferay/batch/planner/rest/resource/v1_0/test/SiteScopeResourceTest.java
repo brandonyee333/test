@@ -81,10 +81,8 @@ public class SiteScopeResourceTest extends BaseSiteScopeResourceTestCase {
 
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Collections.emptyList(), null, internalClassNameKey);
-
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Collections.emptyList(), false, internalClassNameKey);
-
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Collections.emptyList(), true, internalClassNameKey);
 
@@ -103,10 +101,8 @@ public class SiteScopeResourceTest extends BaseSiteScopeResourceTestCase {
 
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Arrays.asList(group, testGroup), null, internalClassNameKey);
-
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Arrays.asList(group, testGroup), false, internalClassNameKey);
-
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Arrays.asList(group, testGroup), true, internalClassNameKey);
 
@@ -117,10 +113,8 @@ public class SiteScopeResourceTest extends BaseSiteScopeResourceTestCase {
 
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Collections.emptyList(), null, internalClassNameKey);
-
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Collections.emptyList(), false, internalClassNameKey);
-
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Collections.singletonList(testGroup), true, internalClassNameKey);
 
@@ -131,10 +125,8 @@ public class SiteScopeResourceTest extends BaseSiteScopeResourceTestCase {
 
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Arrays.asList(group, testGroup), null, internalClassNameKey);
-
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Arrays.asList(group, testGroup), false, internalClassNameKey);
-
 		_testGetPlanInternalClassNameKeySiteScopesPage(
 			Arrays.asList(group, testGroup), true, internalClassNameKey);
 	}
