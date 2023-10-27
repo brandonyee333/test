@@ -48,6 +48,12 @@ public class PayPalCommercePaymentMethodConstants {
 
 	public static final String PAYMENT_DEFINITION_REGULAR = "REGULAR";
 
+	public static final String PAYMENT_INTEGRATION_SERVLET_PATH =
+		"commerce-paypal-payment-integration";
+
+	public static final String PAYMENT_METHOD_SERVLET_PATH =
+		"commerce-paypal-payment-method";
+
 	public static final String PAYMENT_STATE_FAILED = "failed";
 
 	public static final String PLAN_FIXED = "FIXED";
@@ -63,10 +69,11 @@ public class PayPalCommercePaymentMethodConstants {
 		REQUEST_DETAILS_FULL, REQUEST_DETAILS_MINIMAL
 	};
 
-	public static final String SERVICE_NAME =
+	public static final String COMMERCE_PAYMENT_ENGINE_SERVICE_NAME =
 		"com.liferay.commerce.payment.engine.method.paypal";
 
-	public static final String SERVLET_PATH = "commerce-paypal-payment";
+	public static final String COMMERCE_PAYMENT_INTEGRATION_SERVICE_NAME =
+		"com.liferay.commerce.payment.integration.paypal";
 
 	public static final String STATE = "state";
 
