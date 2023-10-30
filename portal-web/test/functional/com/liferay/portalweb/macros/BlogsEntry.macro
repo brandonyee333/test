@@ -168,7 +168,7 @@ definition {
 			entryContent = ${entryContent},
 			entryTitle = ${entryTitle});
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		Copy(locator1 = "BlogsEntry#COMMENTS_TRACKBACK_URL");
 
@@ -217,7 +217,7 @@ definition {
 
 	@summary = "Default summary"
 	macro autoSaveDraft() {
-		Pause(locator1 = 30000);
+		Pause(value1 = 30000);
 
 		AssertElementPresent(locator1 = "Message#DRAFT_AUTO_SAVE");
 	}
@@ -775,7 +775,7 @@ definition {
 		var key_entryTitle = ${entryTitle};
 		var key_uploadFileName = ${uploadFileName};
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		AssertTextEquals(
 			locator1 = "BlogsEntry#TITLE",
@@ -1172,9 +1172,9 @@ definition {
 			locator1 = "Link#RSS",
 			value1 = "RSS");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
-		SelectWindow(locator1 = "title=${siteName}");
+		SelectWindow(value1 = "title=${siteName}");
 
 		AssertTextEquals(
 			locator1 = "RSS#FEED_TITLE",

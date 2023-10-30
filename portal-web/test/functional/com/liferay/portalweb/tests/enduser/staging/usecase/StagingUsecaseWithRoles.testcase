@@ -682,7 +682,7 @@ definition {
 			locator1 = "Home#PAGE_2_GUEST_VIEW",
 			value1 = "New Page Name");
 
-		Pause(locator1 = 120000);
+		Pause(value1 = 120000);
 
 		Navigator.gotoSitePage(
 			pageName = "Home",

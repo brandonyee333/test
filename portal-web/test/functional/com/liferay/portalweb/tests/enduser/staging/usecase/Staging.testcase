@@ -1291,7 +1291,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = 30000);
+		Pause(value1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -1344,7 +1344,7 @@ definition {
 			entrySubtitle = "Nemes Nagy Ágnes",
 			entryTitle = "Tavaszi felhők");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.publish();
 
@@ -2176,7 +2176,7 @@ definition {
 
 		Staging.publishToLive();
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		AssertConsoleTextNotPresent(value1 = "RuntimeException");
 
@@ -2264,7 +2264,7 @@ definition {
 
 		Staging.publishToLive();
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		AssertConsoleTextNotPresent(value1 = "RuntimeException");
 
@@ -2694,7 +2694,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = 30000);
+		Pause(value1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",

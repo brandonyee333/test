@@ -133,7 +133,7 @@ definition {
 			locator1 = "Link#ADD_CHILD_PAGE",
 			value1 = "Add Child Page");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		WikiEntry.selectPageFormat(pageFormat = "HTML");
 
@@ -499,7 +499,7 @@ definition {
 			wikiPageTitle = "Wiki Page Title",
 			wikiPageUsername = "Test Test");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		WikiPage.viewPG(
 			wikiPageContent = "Welcome to LIFERAY",

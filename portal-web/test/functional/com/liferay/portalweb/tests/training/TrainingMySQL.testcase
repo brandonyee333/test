@@ -644,13 +644,13 @@ definition {
 
 		PageTemplate.gotoPageTemplateViaEdit(pageTemplateName = "Department Landing Page");
 
-		SelectWindow(locator1 = "title=Department Landing Page - S.P.A.C.E");
+		SelectWindow(value1 = "title=Department Landing Page - S.P.A.C.E");
 
 		Portlet.addPG(portletName = "Blogs");
 
 		Close.closeWindow(locator1 = "title=Department Landing Page - S.P.A.C.E");
 
-		SelectWindow(locator1 = "title=Page Templates - Control Panel - S.P.A.C.E");
+		SelectWindow(value1 = "title=Page Templates - Control Panel - S.P.A.C.E");
 
 		Navigator.gotoSitePage(
 			pageName = "Home",
@@ -1227,7 +1227,7 @@ definition {
 
 		LAR.exportPortlet(larFileName = "FormsExport.lar");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Navigator.openURL();
 
@@ -2187,7 +2187,7 @@ Brainstorming:
 			frequency = "Yearly",
 			scheduleTitleName = "HR Site Launch");
 
-		Pause(locator1 = 120000);
+		Pause(value1 = 120000);
 	}
 
 	@priority = 5
@@ -2291,7 +2291,7 @@ Brainstorming:
 
 		Button.clickPublish();
 
-		Pause(locator1 = 10000);
+		Pause(value1 = 10000);
 
 		Navigator.openURL();
 
@@ -2413,7 +2413,7 @@ Brainstorming:
 
 		Button.clickPublish();
 
-		Pause(locator1 = 10000);
+		Pause(value1 = 10000);
 
 		Navigator.openURL();
 
@@ -3263,7 +3263,7 @@ Lead Text: Attention, incoming students: New Student Orientation begins at 2:00 
 
 		Staging.schedulePublishToLivePG(scheduleTitleName = "Site Launch");
 
-		Pause(locator1 = 120000);
+		Pause(value1 = 120000);
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Page",

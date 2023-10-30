@@ -146,11 +146,11 @@ definition {
 
 	@summary = "Default summary"
 	macro closeSidebar() {
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		Click(locator1 = "Form#SIDEBAR_CLOSE");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		AssertElementNotPresent(locator1 = "Form#SIDEBAR_CLOSE");
 	}
@@ -239,7 +239,7 @@ definition {
 
 		AssertVisible(locator1 = "Form#DESCRIPTION_FIELD");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Click(locator1 = "Form#NAME_FIELD");
 
@@ -265,7 +265,7 @@ definition {
 
 		AssertVisible(locator1 = "Form#DESCRIPTION_FIELD");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Click(locator1 = "Form#NAME_FIELD");
 

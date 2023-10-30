@@ -288,7 +288,7 @@ definition {
 
 		MenuItem.click(menuItem = "Edit");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		Panel.expandPanel(panelHeading = "Organization Site");
 
@@ -322,7 +322,7 @@ definition {
 
 		MenuItem.click(menuItem = "Edit");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		Panel.expandPanel(panelHeading = "Organization Site");
 
@@ -402,7 +402,7 @@ definition {
 
 		var key_orgName = ${orgName};
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		MenuItem.click(menuItem = "Assign Organization Roles");
 
@@ -513,7 +513,7 @@ definition {
 
 	@summary = "Default summary"
 	macro gotoActionsCmd(orgName = null) {
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",

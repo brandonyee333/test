@@ -60,7 +60,7 @@ definition {
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Manage Pages");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Page.add(
 			pageName = ${pageName},
@@ -128,7 +128,7 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_rowEntry = ${userGroupName};
 
@@ -152,7 +152,7 @@ definition {
 
 		Check(locator1 = "UserGroupsAssignUsers#USER_TABLE_CHECKBOX");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		SelectFrameTop();
 
@@ -175,7 +175,7 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_userGroupName = ${userGroupName};
 
@@ -202,7 +202,7 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_userGroupName = ${userGroupName};
 
@@ -225,7 +225,7 @@ definition {
 
 	@summary = "Default summary"
 	macro editCP(userGroupName = null, userGroupNameEdit = null) {
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_userGroupName = ${userGroupName};
 
@@ -246,7 +246,7 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		AssertTextEquals(
 			locator1 = "UserGroups#USER_GROUP_TABLE_NAME",
@@ -261,7 +261,7 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_userGroupName = ${userGroupName};
 
@@ -363,7 +363,7 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_userGroupName = ${userGroupName};
 
@@ -393,7 +393,7 @@ definition {
 
 	@summary = "Default summary"
 	macro viewPG(userGroupName = null, siteName = null, portletName = null) {
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_userGroupName = ${userGroupName};
 
@@ -403,7 +403,7 @@ definition {
 			locator1 = "UserGroupsEditUserGroup#PUBLIC_PAGES_OPEN_PAGES",
 			value1 = "Open Pages");
 
-		SelectWindow(locator1 = "home - ${userGroupName} - ${siteName}");
+		SelectWindow(value1 = "home - ${userGroupName} - ${siteName}");
 
 		AssertTextEquals(
 			locator1 = "Home#SITE_NAME",

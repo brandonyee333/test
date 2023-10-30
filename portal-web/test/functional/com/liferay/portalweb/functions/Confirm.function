@@ -5,7 +5,7 @@ definition {
 	function assertConfirmation() {
 		selenium.assertConfirmation(${value1});
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors("true");
 
 		selenium.assertLiferayErrors();
 
@@ -15,7 +15,7 @@ definition {
 	function assertConfirmationNoWait() {
 		selenium.assertConfirmation(${value1});
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors("true");
 
 		selenium.assertLiferayErrors();
 	}
@@ -23,7 +23,7 @@ definition {
 	function assertPartialConfirmation() {
 		selenium.assertPartialConfirmation(${value1});
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors("true");
 
 		selenium.assertLiferayErrors();
 
@@ -33,7 +33,7 @@ definition {
 	function waitForConfirmation() {
 		selenium.waitForConfirmation(${value1});
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors("true");
 
 		selenium.assertLiferayErrors();
 

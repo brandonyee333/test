@@ -11,7 +11,7 @@ definition {
 	macro closePortalLocalizationWarning() {
 		Alert._closeMessage(messageType = "PORTAL_LOCALIZATION");
 
-		Pause(locator1 = 2000);
+		Pause(value1 = 2000);
 	}
 
 	@summary = "Default summary"
@@ -66,7 +66,7 @@ definition {
 
 		Click(locator1 = "Message#SUCCESS");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Alert._closeMessage(messageType = "SUCCESS");
 	}

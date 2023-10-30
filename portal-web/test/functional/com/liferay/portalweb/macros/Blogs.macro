@@ -72,7 +72,7 @@ definition {
 			dmSubFolderName = ${dmSubFolderName},
 			imageFileName = ${imageFileName});
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.publish();
 	}
@@ -102,7 +102,7 @@ definition {
 
 		ItemSelector.selectDMImage(imageFileName = ${imageFileName});
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.publish();
 	}
@@ -167,7 +167,7 @@ definition {
 			navTab = ${navTab},
 			uploadFileName = ${uploadFileName});
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		AlloyEditor.addTitle(title = ${entryTitle});
 
@@ -195,7 +195,7 @@ definition {
 
 		SelectFrameTop(value1 = "relative=top");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_assetTitle = ${entryTitle};
 
@@ -230,7 +230,7 @@ definition {
 
 		SelectFrameTop(value1 = "relative=top");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var key_assetTitle = ${entryTitle};
 
@@ -354,7 +354,7 @@ definition {
 			locator1 = "Button#SUBMIT_FOR_PUBLICATION",
 			value1 = "Submit for Publication");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		SelectFrame(value1 = "relative=top");
 	}

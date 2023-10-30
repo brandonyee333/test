@@ -306,7 +306,7 @@ definition {
 			locator1 = "Button#PUBLISH",
 			value1 = "Publish");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		SelectFrame(value1 = "relative=top");
 
@@ -519,7 +519,7 @@ definition {
 		var key_imageFileName = ${dmDocumentTitle};
 		var key_imageFileName = StringUtil.replace(${dmDocumentTitle}, " ", "+");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		if (isSet(siteName)) {
 			Click(locator1 = "ItemSelector#SITES_NAVIGATION");
@@ -857,7 +857,7 @@ definition {
 				locator1 = "Button#CHOOSE",
 				value1 = "Choose");
 
-			Pause(locator1 = 5000);
+			Pause(value1 = 5000);
 
 			SelectFrame(locator1 = "WCSelectDisplayPage#DISPLAY_PAGE_CONFIGURATION_IFRAME");
 
@@ -964,7 +964,7 @@ definition {
 			locator1 = "Button#SUBMIT_FOR_PUBLICATION",
 			value1 = "Submit for Publication");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		SelectFrame();
 
@@ -1137,7 +1137,7 @@ definition {
 			locator1 = "Button#CHOOSE",
 			value1 = "Choose");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		SelectFrame(locator1 = "WCSelectDisplayPage#DISPLAY_PAGE_CONFIGURATION_IFRAME");
 
@@ -1190,7 +1190,7 @@ definition {
 			locator1 = "Button#PUBLISH",
 			value1 = "Publish");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		SelectFrame(value1 = "relative=top");
 	}
@@ -1492,7 +1492,7 @@ definition {
 
 		Alert.viewSuccessMessage();
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		SelectFrame(value1 = "relative=top");
 
@@ -1627,7 +1627,7 @@ definition {
 	macro subscribeCP() {
 		Click.clickAt(locator1 = "Icon#INFO");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		Click(locator1 = "Icon#SUBSCRIBE");
 

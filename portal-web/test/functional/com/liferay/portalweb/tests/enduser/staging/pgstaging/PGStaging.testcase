@@ -131,7 +131,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = 30000);
+		Pause(value1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -429,7 +429,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = 30000);
+		Pause(value1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -553,7 +553,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",

@@ -51,7 +51,7 @@ definition {
 
 		Alert.viewSuccessMessage();
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 	}
 
 	@summary = "Default summary"
@@ -110,7 +110,7 @@ definition {
 
 		Alert.viewSuccessMessage();
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 	}
 
 	@summary = "Default summary"
@@ -259,7 +259,7 @@ definition {
 
 		MenuItem.click(menuItem = "Download");
 
-		Pause(locator1 = 2000);
+		Pause(value1 = 2000);
 
 		takeScreenshot();
 

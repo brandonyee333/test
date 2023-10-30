@@ -34,7 +34,7 @@ definition {
 
 		Dictionary.findPG(dictionaryWord = "dog");
 
-		SelectWindow(locator1 = "title=Dog | Definition of Dog at Dictionary.com");
+		SelectWindow(value1 = "title=Dog | Definition of Dog at Dictionary.com");
 
 		AssertTextEquals(
 			key_dictionaryTerm = "dog",
@@ -43,7 +43,7 @@ definition {
 
 		Close(locator1 = "title=Dog | Define Dog at Dictionary.com");
 
-		SelectWindow(locator1 = "title=Dictionary Page - ${siteName}");
+		SelectWindow(value1 = "title=Dictionary Page - ${siteName}");
 	}
 
 }

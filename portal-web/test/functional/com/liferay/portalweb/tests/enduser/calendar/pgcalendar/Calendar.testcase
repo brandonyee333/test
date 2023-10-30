@@ -505,7 +505,7 @@ definition {
 			frequency = "Daily",
 			scheduleTitleName = "Staging Schedule Title");
 
-		Pause(locator1 = 120000);
+		Pause(value1 = 120000);
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -1136,7 +1136,7 @@ definition {
 
 			CalendarEvent.view(eventTitle = "Calendar Event Title");
 
-			Pause(locator1 = 1000);
+			Pause(value1 = 1000);
 
 			AssertConsoleTextNotPresent(value1 = "java.lang.OutOfMemoryError");
 		}
