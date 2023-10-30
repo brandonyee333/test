@@ -1,13 +1,15 @@
 definition {
 
-	macro addTagFacet {
+	@summary = "Default summary"
+	macro addTagFacet(tagName = null) {
 		AssertClick.assertPartialTextClickAt(
 			key_tagName = ${tagName},
 			locator1 = "SearchResults#USER_FACET_TAGS",
 			value1 = ${tagName});
 	}
 
-	macro configureSearchScopePG {
+	@summary = "Default summary"
+	macro configureSearchScopePG(searchScope = null, uncheckDisplayFacet = null) {
 		var key_searchScope = ${searchScope};
 
 		if ((${searchScope} == "Everything") || (${searchScope} == "Let the User Choose") || (${searchScope} == "This Site")) {
@@ -34,7 +36,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro gotoModifiedRangeFacetPG {
+	@summary = "Default summary"
+	macro gotoModifiedRangeFacetPG(searchModifiedRange = null) {
 		var key_searchModifiedRange = ${searchModifiedRange};
 
 		AssertClick.assertPartialTextClickAt(
@@ -42,7 +45,8 @@ definition {
 			value1 = ${searchModifiedRange});
 	}
 
-	macro gotoUserSearchResultPG {
+	@summary = "Default summary"
+	macro gotoUserSearchResultPG(searchAssetTitle = null) {
 		var key_searchAssetTitle = ${searchAssetTitle};
 
 		AssertClick(
@@ -50,7 +54,8 @@ definition {
 			value1 = ${searchAssetTitle});
 	}
 
-	macro removeUserFacetDisplayPG {
+	@summary = "Default summary"
+	macro removeUserFacetDisplayPG() {
 		ProductMenuHelper.closeProductMenu();
 
 		Click(locator1 = "Search#SEARCH_FIELD");
@@ -70,7 +75,8 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro searchCP {
+	@summary = "Default summary"
+	macro searchCP(searchTerm = null) {
 		AssertElementPresent(locator1 = "NavBar#BASIC_SEARCH_FIELD");
 
 		AssertElementPresent(locator1 = "Button#SEARCH");
@@ -84,7 +90,8 @@ definition {
 			value1 = "\RETURN");
 	}
 
-	macro searchPG {
+	@summary = "Default summary"
+	macro searchPG(searchTerm = null, localizationIDName = null, searchScope = null) {
 		AssertElementPresent(locator1 = "Search#SEARCH_FIELD");
 
 		AssertElementPresent(locator1 = "Search#SEARCH_PORTLET_SEARCH_BUTTON");
@@ -118,11 +125,13 @@ definition {
 			value1 = "\RETURN");
 	}
 
-	macro unscopeAssetFacetPG {
+	@summary = "Default summary"
+	macro unscopeAssetFacetPG() {
 		Click(locator1 = "SearchResults#ASSET_TYPE_FACET_ANY_ASSET");
 	}
 
-	macro viewAssetTypeFacetPG {
+	@summary = "Default summary"
+	macro viewAssetTypeFacetPG(searchAssetType = null, searchAssetTitle = null, facetFrequency = null, searchAssetSummary = null) {
 		var key_searchAssetType = ${searchAssetType};
 
 		AssertTextEquals(
@@ -143,7 +152,8 @@ definition {
 			searchAssetType = ${searchAssetType});
 	}
 
-	macro viewSearchAssetTitle {
+	@summary = "Default summary"
+	macro viewSearchAssetTitle(searchAssetTitle = null) {
 		var key_searchAssetTitle = ${searchAssetTitle};
 
 		AssertTextEquals(
@@ -151,7 +161,8 @@ definition {
 			value1 = ${searchAssetTitle});
 	}
 
-	macro viewSearchNoPG {
+	@summary = "Default summary"
+	macro viewSearchNoPG(searchTerm = null, searchNoResults = null, searchAssetTitle = null) {
 		var key_searchAssetTitle = ${searchAssetTitle};
 
 		AssertElementNotPresent(locator1 = "SearchResults#ASSET_ENTRY_TABLE_TITLE");
@@ -169,7 +180,8 @@ definition {
 		}
 	}
 
-	macro viewSearchResultPG {
+	@summary = "Default summary"
+	macro viewSearchResultPG(searchAssetType = null, searchAssetTitle = null, searchAssetSummary = null) {
 		var key_searchAssetTitle = ${searchAssetTitle};
 
 		AssertTextEquals.assertPartialText(
@@ -187,7 +199,8 @@ definition {
 		}
 	}
 
-	macro viewSearchResultsPG {
+	@summary = "Default summary"
+	macro viewSearchResultsPG(searchAssetType = null, searchAssetTitle = null, searchAssetSummary = null) {
 		var key_searchAssetTitle = ${searchAssetTitle};
 		var key_searchAssetType = ${searchAssetType};
 
@@ -206,13 +219,15 @@ definition {
 		}
 	}
 
-	macro viewSearchResultWithNoPermissions {
+	@summary = "Default summary"
+	macro viewSearchResultWithNoPermissions(searchTerm = null) {
 		AssertTextEquals(
 			locator1 = "Message#INFO_NO_RESULTS_FOUND",
 			value1 = "No results were found that matched the keywords: ${searchTerm}.");
 	}
 
-	macro viewUserFacetPG {
+	@summary = "Default summary"
+	macro viewUserFacetPG(searchAssetType = null, searchAssetTitle = null, facetFrequency = null, searchAssetSummary = null) {
 		var key_facetFrequency = ${facetFrequency};
 
 		AssertTextEquals(
@@ -237,7 +252,8 @@ definition {
 			searchAssetType = ${searchAssetType});
 	}
 
-	macro viewUserSearchResultPG {
+	@summary = "Default summary"
+	macro viewUserSearchResultPG(userName = null, pageName = null) {
 		AssertTextEquals(
 			locator1 = "Home#USER_NAME_HEADER",
 			value1 = ${userName});

@@ -1,6 +1,7 @@
 definition {
 
-	macro convertPG {
+	@summary = "Default summary"
+	macro convertPG(unitType = null, targetUnit = null, targetValue = null, initialUnit = null, initialValue = null) {
 		Type(
 			locator1 = "UnitConverter#FROM_FIELD",
 			value1 = ${initialValue});

@@ -1,6 +1,7 @@
 definition {
 
-	macro addServiceProviderConnection {
+	@summary = "Default summary"
+	macro addServiceProviderConnection(nameIdentifierFormat = null, SPMetadataURL = null, Attributes = null, SPEntityID = null, SPNameID = null, nameIdentifierAttributeName = null) {
 		AssertClick(
 			locator1 = "CPSAMLAdminServiceProviderConnections#ADD_SERVICE_PROVIDER_BUTTON",
 			value1 = "Add Service Provider");
@@ -42,7 +43,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro configureIdentityProvider {
+	@summary = "Default summary"
+	macro configureIdentityProvider(authnRequestSignatureRequired = null, signMetadata = null) {
 		if (${signMetadata} == "disable") {
 			Uncheck(locator1 = "CPSAMLAdminIdentityProvider#IDENTITY_PROVIDER_SIGN_METADATA_CHECKBOX");
 		}
@@ -60,7 +62,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro configureIdentityProviderConnection {
+	@summary = "Default summary"
+	macro configureIdentityProviderConnection(nameIdentifierFormat = null, IdpEntityID = null, enableForceAuthn = null, IdpMetadataURL = null, IdpNameID = null) {
 		Type(
 			locator1 = "CPSAMLAdmin#SAML_NAME_FIELD",
 			value1 = ${IdpNameID});

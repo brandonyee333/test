@@ -1,7 +1,8 @@
 definition {
 
 	@description = "Configures Liferay SAML as the IdP and Liferay SAML as the SP."
-	macro configureLiferaySAMLAsIdP {
+	@summary = "Default summary"
+	macro configureLiferaySAMLAsIdP(idpSessionMaximumAge = null, idpSessionIdleTimeout = null, samlEntityID = null) {
 
 		// Configure IdP (Identity Provider) on http://localhost:8080 with database lportal and saml deployed
 
@@ -31,7 +32,8 @@ definition {
 		SAMLRole.enable(samlEntityID = ${samlEntityID});
 	}
 
-	macro configureLiferaySAMLAsSP {
+	@summary = "Default summary"
+	macro configureLiferaySAMLAsSP(nameIdentifierFormat = null, authenticationMethod = null, userScreenName = null, syntaxCheckingEnabled = null, Attributes = null, spURL = null, samlEntityID = null, nodePort = null, nameIdentifierAttributeName = null) {
 		User.loginPG(
 			authenticationMethod = ${authenticationMethod},
 			nodePort = ${nodePort},
@@ -99,7 +101,8 @@ definition {
 	}
 
 	@description = "Sign into portal by executing a IdP initiated SSO login. The IdP will redirect to the SP. If the same users with the same email address are present on both instances, it will authenticate and show the SP. SAML can authenticate across major portal versions, that is, the IdP can be Portal 6.1 EE GA3 and the SP can be Portal 6.2. EE GA1. For testing purposes, it is obvious if the authentication succeeds or fails if the IdP and SP are different portal versions."
-	macro executeIdPInitiatedSSO {
+	@summary = "Default summary"
+	macro executeIdPInitiatedSSO(idpInitiatedSSOURL = null, rememberMeChecked = null, autoLogin = null) {
 		if (${autoLogin} == "true") {
 			Navigator.openSpecificURL(url = ${idpInitiatedSSOURL});
 
@@ -133,7 +136,8 @@ definition {
 	}
 
 	@description = "Sign into portal by executing a SP initiated SSO login. In the SP, click on the Sign In button to."
-	macro executeSPInitiatedSSO {
+	@summary = "Default summary"
+	macro executeSPInitiatedSSO(idpLoggedIn = null, idpInitiatedSSOURL = null, rememberMeChecked = null, spURL = null, autoLogin = null) {
 		if (${autoLogin} == "true") {
 			Navigator.openSpecificURL(url = ${idpInitiatedSSOURL});
 

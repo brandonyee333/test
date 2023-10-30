@@ -1,6 +1,7 @@
 definition {
 
-	macro addMentionViaBlogsEntry {
+	@summary = "Default summary"
+	macro addMentionViaBlogsEntry(mentionsUserScreenName = null, entryTitle = null, entryContent = null) {
 		var key_entryContent = ${entryContent};
 		var key_mentionsUserScreenName = ${mentionsUserScreenName};
 
@@ -17,7 +18,8 @@ definition {
 		PortletEntry.publish();
 	}
 
-	macro addMentionViaComments {
+	@summary = "Default summary"
+	macro addMentionViaComments(entryComment = null, mentionsUserScreenName = null) {
 		var key_entryComment = ${entryComment};
 		var key_mentionsUserScreenName = ${mentionsUserScreenName};
 
@@ -34,7 +36,8 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro addMentionViaMessageBoardsReply {
+	@summary = "Default summary"
+	macro addMentionViaMessageBoardsReply(threadSubject = null, mentionsUserScreenName = null, threadBody = null) {
 		var key_mentionsUserScreenName = ${mentionsUserScreenName};
 		var key_threadSubject = ${threadSubject};
 
@@ -63,7 +66,8 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro addMentionViaMessageBoardThread {
+	@summary = "Default summary"
+	macro addMentionViaMessageBoardThread(editMBThread = null, threadSubject = null, mentionsUserScreenNameList = null, threadBody = null) {
 		if (${editMBThread} == "True") {
 			LexiconEntry.gotoEllipsisMenuItem(menuItem = "Edit");
 		}
@@ -111,7 +115,8 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro viewCommentMentionTagLink {
+	@summary = "Default summary"
+	macro viewCommentMentionTagLink(mentionsUserScreenName = null, mentionsUserFullName = null) {
 		var key_mentionsUserFullName = ${mentionsUserFullName};
 		var key_mentionsUserScreenName = ${mentionsUserScreenName};
 		var key_siteName = ${mentionsUserFullName};
@@ -125,7 +130,8 @@ definition {
 			value1 = ${mentionsUserFullName});
 	}
 
-	macro viewMentionTagLink {
+	@summary = "Default summary"
+	macro viewMentionTagLink(mentionsUserScreenName = null, mentionsUserFullName = null) {
 		var key_mentionsUserScreenName = ${mentionsUserScreenName};
 		var key_siteName = ${mentionsUserFullName};
 

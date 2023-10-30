@@ -1,12 +1,14 @@
 definition {
 
-	macro gotoPortletConfiguration {
+	@summary = "Default summary"
+	macro gotoPortletConfiguration() {
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Configuration");
 
 		IFrame.selectConfigurationFrame();
 	}
 
-	macro viewPortletTitle {
+	@summary = "Default summary"
+	macro viewPortletTitle(portletTitle = null) {
 		var key_portletTitle = ${portletTitle};
 
 		AssertElementPresent(locator1 = "Home#SITE_ADMINISTRATION_PORTLET_TITLE");

@@ -1,7 +1,7 @@
 @default = "copy"
 definition {
 
-	function copy {
+	function copy(locator1) {
 		WaitForSPARefresh();
 
 		if (contains(${locator1}, "/input")) {
@@ -12,30 +12,30 @@ definition {
 		}
 	}
 
-	function textCopy {
+	function textCopy() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible();
+		selenium.waitForVisible(${locator1}, ${value1});
 
-		selenium.mouseOver();
+		selenium.mouseOver(${locator1});
 
-		selenium.copyText();
+		selenium.copyText(${locator1});
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}
 
-	function valueCopy {
+	function valueCopy() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible();
+		selenium.waitForVisible(${locator1}, ${value1});
 
-		selenium.mouseOver();
+		selenium.mouseOver(${locator1});
 
-		selenium.copyValue();
+		selenium.copyValue(${locator1});
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}

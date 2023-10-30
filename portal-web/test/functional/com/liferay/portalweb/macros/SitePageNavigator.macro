@@ -1,6 +1,7 @@
 definition {
 
-	macro gotoAddPage {
+	@summary = "Default summary"
+	macro gotoAddPage(sitePagePrivacy = null) {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		ProductMenuHelper.expandCategory(category = "Navigation");
@@ -60,7 +61,8 @@ definition {
 		}
 	}
 
-	macro gotoEditPage {
+	@summary = "Default summary"
+	macro gotoEditPage(sitePagePrivacy = null, page = null) {
 		ProductMenuHelper.openProductMenu();
 
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
@@ -101,7 +103,8 @@ definition {
 		}
 	}
 
-	macro gotoPages {
+	@summary = "Default summary"
+	macro gotoPages(page = null) {
 		ProductMenuHelper.openProductMenu();
 
 		ProductMenuHelper.expandPanel(panel = "Site Administration");

@@ -1,6 +1,7 @@
 definition {
 
-	macro populateFieldCheckBox {
+	@summary = "Default summary"
+	macro populateFieldCheckBox(wfFieldValue = null, wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -17,7 +18,8 @@ definition {
 		}
 	}
 
-	macro populateFieldOptions {
+	@summary = "Default summary"
+	macro populateFieldOptions(wfFieldValue = null, wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -29,7 +31,8 @@ definition {
 			value1 = ${wfFieldValue});
 	}
 
-	macro populateFieldRadio {
+	@summary = "Default summary"
+	macro populateFieldRadio(wfFieldValue = null, wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -41,7 +44,8 @@ definition {
 		Click(locator1 = "WebForm#FORM_FIELDS_RADIO_FIELD_OPTION");
 	}
 
-	macro populateFieldText {
+	@summary = "Default summary"
+	macro populateFieldText(wfFieldValue = null, wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -53,7 +57,8 @@ definition {
 			value1 = ${wfFieldValue});
 	}
 
-	macro populateFieldTextBox {
+	@summary = "Default summary"
+	macro populateFieldTextBox(wfFieldValue = null, wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -65,7 +70,8 @@ definition {
 			value1 = ${wfFieldValue});
 	}
 
-	macro sendBlankPG {
+	@summary = "Default summary"
+	macro sendBlankPG() {
 		AssertClick(
 			locator1 = "Button#SEND",
 			value1 = "Send");
@@ -77,7 +83,8 @@ definition {
 			value1 = "This field is mandatory.");
 	}
 
-	macro sendPG {
+	@summary = "Default summary"
+	macro sendPG() {
 		Click(locator1 = "WebForm#FORM_INFORMATION_TITLE");
 
 		AssertClick(
@@ -87,7 +94,8 @@ definition {
 		AssertElementPresent(locator1 = "Message#SUCCESS");
 	}
 
-	macro viewFormFieldCheckBox {
+	@summary = "Default summary"
+	macro viewFormFieldCheckBox(wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -97,7 +105,8 @@ definition {
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_CHECKBOX_FIELD");
 	}
 
-	macro viewFormFieldOptions {
+	@summary = "Default summary"
+	macro viewFormFieldOptions(wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -107,13 +116,15 @@ definition {
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_OPTIONS_FIELD");
 	}
 
-	macro viewFormFieldParagraph {
+	@summary = "Default summary"
+	macro viewFormFieldParagraph(wfParagraphFieldText = null) {
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_FIELDS_PARAGRAPH_FIELD",
 			value1 = ${wfParagraphFieldText});
 	}
 
-	macro viewFormFieldRadio {
+	@summary = "Default summary"
+	macro viewFormFieldRadio(optionsList = null, wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -129,7 +140,8 @@ definition {
 		}
 	}
 
-	macro viewFormFieldText {
+	@summary = "Default summary"
+	macro viewFormFieldText(wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -139,7 +151,8 @@ definition {
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_TEXT_FIELD");
 	}
 
-	macro viewFormFieldTextBox {
+	@summary = "Default summary"
+	macro viewFormFieldTextBox(wfFieldName = null) {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(
@@ -149,7 +162,8 @@ definition {
 		AssertElementPresent(locator1 = "WebForm#FORM_FIELDS_TEXT_BOX_FIELD");
 	}
 
-	macro viewPG {
+	@summary = "Default summary"
+	macro viewPG(wfInformationDescription = null, wfInformationTitle = null) {
 		AssertTextEquals(
 			locator1 = "WebForm#FORM_INFORMATION_TITLE",
 			value1 = ${wfInformationTitle});

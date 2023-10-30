@@ -1,6 +1,7 @@
 definition {
 
-	macro expandPanel {
+	@summary = "Default summary"
+	macro expandPanel(panelHeading = null) {
 		var key_panelHeading = ${panelHeading};
 
 		if ((IsElementPresent(locator1 = "Panel#PANEL_HEADING_COLLAPSED", value1 = ${panelHeading})) && (IsVisible(locator1 = "Panel#PANEL_HEADING_COLLAPSED", value1 = ${panelHeading}))) {
@@ -12,7 +13,8 @@ definition {
 		AssertElementPresent(locator1 = "Panel#PANEL_HEADING_EXPANDED");
 	}
 
-	macro expandSidebarApplicationsPanel {
+	@summary = "Default summary"
+	macro expandSidebarApplicationsPanel() {
 		if ((IsElementPresent(locator1 = "ControlMenuAddPanel#SIDEBAR_APPLICATIONS_PANEL_COLLAPSED")) && (IsVisible(locator1 = "ControlMenuAddPanel#SIDEBAR_APPLICATIONS_PANEL_COLLAPSED"))) {
 			AssertClick(
 				locator1 = "ControlMenuAddPanel#SIDEBAR_APPLICATIONS_PANEL_COLLAPSED",
@@ -22,7 +24,8 @@ definition {
 		}
 	}
 
-	macro expandSidebarContentPanel {
+	@summary = "Default summary"
+	macro expandSidebarContentPanel() {
 		if ((IsElementPresent(locator1 = "ControlMenuAddPanel#SIDEBAR_CONTENT_PANEL_COLLAPSED")) && (IsVisible(locator1 = "ControlMenuAddPanel#SIDEBAR_CONTENT_PANEL_COLLAPSED"))) {
 			AssertClick(
 				locator1 = "ControlMenuAddPanel#SIDEBAR_CONTENT_PANEL_COLLAPSED",

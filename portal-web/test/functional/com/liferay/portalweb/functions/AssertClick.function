@@ -2,7 +2,7 @@
 @summary = "Click on '${locator1}' that should have a value of '${value1}'"
 definition {
 
-	function assertClick {
+	function assertClick(locator1) {
 		WaitForSPARefresh();
 
 		if (contains(${locator1}, "/input")) {
@@ -13,118 +13,118 @@ definition {
 		}
 	}
 
-	function assertPartialTextClickAt {
+	function assertPartialTextClickAt() {
 		WaitForSPARefresh();
 
 		AssertTextEquals.assertPartialText();
 
-		selenium.mouseOver();
+		selenium.mouseOver(${locator1});
 
-		selenium.clickAt();
+		selenium.clickAt(${locator1}, ${value1});
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}
 
-	function assertTextClickAt {
+	function assertTextClickAt() {
 		WaitForSPARefresh();
 
 		AssertTextEquals.assertText();
 
-		selenium.mouseOver();
+		selenium.mouseOver(${locator1});
 
-		selenium.clickAt();
+		selenium.clickAt(${locator1}, ${value1});
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}
 
-	function assertTextClickAtWaitForLastScript {
+	function assertTextClickAtWaitForLastScript() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible();
+		selenium.waitForVisible(${locator1}, ${value1});
 
 		AssertClick.assertTextClickAt();
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 
-		selenium.waitForElementPresent("xpath=(//script)[last()]");
+		selenium.waitForElementPresent(${locator1}, ${value1});
 	}
 
-	function assertTextClickNoMouseOver {
+	function assertTextClickNoMouseOver() {
 		WaitForSPARefresh();
 
 		AssertTextEquals.assertText();
 
-		selenium.click();
+		selenium.click(${locator1});
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}
 
-	function assertValueClickAt {
+	function assertValueClickAt() {
 		WaitForSPARefresh();
 
 		AssertTextEquals.assertValue();
 
-		selenium.mouseOver();
+		selenium.mouseOver(${locator1});
 
-		selenium.clickAt();
+		selenium.clickAt(${locator1}, ${value1});
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}
 
-	function pauseAssertTextClickAt {
+	function pauseAssertTextClickAt() {
 		WaitForSPARefresh();
 
 		selenium.pause(1000);
 
 		AssertClick.assertTextClickAt();
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}
 
-	function pauseMakeVisibleAssertTextEqualsClickAt {
+	function pauseMakeVisibleAssertTextEqualsClickAt() {
 		WaitForSPARefresh();
 
 		selenium.pause(1000);
 
-		selenium.makeVisible();
+		selenium.makeVisible(${locator1});
 
-		selenium.waitForVisible();
+		selenium.waitForVisible(${locator1}, ${value1});
 
-		selenium.waitForText();
+		selenium.waitForText(${locator1}, ${value1});
 
-		selenium.mouseDown();
+		selenium.mouseDown(${locator1});
 
 		selenium.pause(1000);
 
-		selenium.mouseUp();
+		selenium.mouseUp(${locator1});
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}
 
-	function waitForDMHomeAssertTextEqualsClick {
+	function waitForDMHomeAssertTextEqualsClick() {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent("//div[contains(@id,'documentLibraryContainer')]");
+		selenium.waitForElementPresent(${locator1}, ${value1});
 
 		selenium.pause(1500);
 
 		AssertClick.assertTextClickAt();
 
-		selenium.assertJavaScriptErrors();
+		selenium.assertJavaScriptErrors(${value1});
 
 		selenium.assertLiferayErrors();
 	}

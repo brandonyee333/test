@@ -1,6 +1,7 @@
 definition {
 
-	macro gotoAddEntry {
+	@summary = "Default summary"
+	macro gotoAddEntry() {
 		if (IsElementPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY")) {
 			AssertClick(
 				locator1 = "Blogs#ADD_BLOGS_ENTRY",
@@ -13,13 +14,15 @@ definition {
 		AssertVisible(locator1 = "BlogsEntry#ENTRY_COVER_IMAGE_SELECT_FILE");
 	}
 
-	macro gotoBlogsEntriesPermissionsCP {
+	@summary = "Default summary"
+	macro gotoBlogsEntriesPermissionsCP() {
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Entries Permissions");
 
 		IFrame.selectDialogFrame();
 	}
 
-	macro gotoBlogsEntryPermissionsCP {
+	@summary = "Default summary"
+	macro gotoBlogsEntryPermissionsCP(entryTitle = null) {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Permissions",
 			rowEntry = ${entryTitle});
@@ -27,27 +30,32 @@ definition {
 		IFrame.selectDialogFrame();
 	}
 
-	macro gotoBlogsEntryPermissionsPG {
+	@summary = "Default summary"
+	macro gotoBlogsEntryPermissionsPG() {
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Permissions");
 
 		IFrame.selectDialogFrame();
 	}
 
-	macro gotoBrowseImage {
+	@summary = "Default summary"
+	macro gotoBrowseImage() {
 		Click(locator1 = "Button#BROWSE_IMAGE");
 	}
 
-	macro gotoConfigurationScopePG {
+	@summary = "Default summary"
+	macro gotoConfigurationScopePG() {
 		Navigator.gotoNavItem(navItem = "Scope");
 	}
 
-	macro gotoConfigurationSetupPG {
+	@summary = "Default summary"
+	macro gotoConfigurationSetupPG() {
 		Portlet.gotoPortletOptions(portletOption = "Configuration");
 
 		IFrame.selectDialogFrame();
 	}
 
-	macro gotoEditCP {
+	@summary = "Default summary"
+	macro gotoEditCP(entryTitle = null) {
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
 
 		var key_entryTitle = ${entryTitle};
@@ -65,7 +73,8 @@ definition {
 		AssertVisible(locator1 = "AlloyEditor#TITLE_FIELD");
 	}
 
-	macro gotoEditPG {
+	@summary = "Default summary"
+	macro gotoEditPG(entryTitle = null) {
 		var key_entryTitle = ${entryTitle};
 
 		AssertTextEquals(
@@ -77,7 +86,8 @@ definition {
 		AssertVisible(locator1 = "BlogsEntry#ENTRY_COVER_IMAGE_SELECT_FILE");
 	}
 
-	macro gotoEntryCP {
+	@summary = "Default summary"
+	macro gotoEntryCP(entryStatus = null, entryTitle = null) {
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
 
 		var key_entryTitle = ${entryTitle};
@@ -93,7 +103,8 @@ definition {
 			value1 = ${entryTitle});
 	}
 
-	macro gotoEntryPG {
+	@summary = "Default summary"
+	macro gotoEntryPG(entryTitle = null, entryContent = null) {
 		var key_entryContent = ${entryContent};
 		var key_entryTitle = ${entryTitle};
 
@@ -110,7 +121,8 @@ definition {
 			value1 = ${entryTitle});
 	}
 
-	macro gotoEntryWithAbstractPG {
+	@summary = "Default summary"
+	macro gotoEntryWithAbstractPG(entryAbstractDescription = null, entryTitle = null) {
 		var key_entryAbstractDescription = ${entryAbstractDescription};
 		var key_entryTitle = ${entryTitle};
 
@@ -127,7 +139,8 @@ definition {
 			value1 = ${entryTitle});
 	}
 
-	macro gotoPG {
+	@summary = "Default summary"
+	macro gotoPG(blogEntryURL = null, entryTitle = null) {
 		var key_entryTitle = ${entryTitle};
 
 		if (isSet(blogEntryURL)) {
@@ -142,13 +155,15 @@ definition {
 			value1 = ${entryTitle});
 	}
 
-	macro gotoSelectFile {
+	@summary = "Default summary"
+	macro gotoSelectFile() {
 		AssertClick(
 			locator1 = "BlogsEntry#ENTRY_COVER_IMAGE_SELECT_FILE",
 			value1 = "Select File");
 	}
 
-	macro moveToRecycleBinCP {
+	@summary = "Default summary"
+	macro moveToRecycleBinCP(entryTitle = null) {
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
 
 		var key_entryTitle = ${entryTitle};
@@ -164,7 +179,8 @@ definition {
 		AssertElementPresent(locator1 = "Message#SUCCESS");
 	}
 
-	macro openBlogsAdmin {
+	@summary = "Default summary"
+	macro openBlogsAdmin(siteURLKey = null) {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/${siteURLKey}/~/control_panel/manage?p_p_id=com_liferay_blogs_web_portlet_BlogsAdminPortlet");
 	}
 

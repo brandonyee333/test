@@ -5,7 +5,8 @@ definition {
 	var formName = "Created Form Name";
 	var rowNumber = 1;
 
-	macro addColumn {
+	@summary = "Default summary"
+	macro addColumn(columnLineNumber = null, rowNumber = null) {
 		var key_columnLineNumber = ${columnLineNumber};
 		var key_rowNumber = ${rowNumber};
 
@@ -17,7 +18,8 @@ definition {
 			value1 = "");
 	}
 
-	macro addFieldOption {
+	@summary = "Default summary"
+	macro addFieldOption(optionValue = null, index = null, optionFieldLabel = null) {
 		if (isSet(optionFieldLabel)) {
 			Type(
 				index = ${index},
@@ -33,7 +35,8 @@ definition {
 		}
 	}
 
-	macro addFields {
+	@summary = "Default summary"
+	macro addFields(fieldLocation = null, fieldNameList = null) {
 		Navigator.gotoNavTab(navTab = "Elements");
 
 		for (var fieldName : list ${fieldNameList}) {
@@ -112,7 +115,8 @@ definition {
 		}
 	}
 
-	macro addPage {
+	@summary = "Default summary"
+	macro addPage() {
 		Click(locator1 = "Form#PAGE_CONTROLS_ELLIPSIS_ICON");
 
 		AssertClick(
@@ -120,7 +124,8 @@ definition {
 			value1 = "Add New Page");
 	}
 
-	macro addTextField {
+	@summary = "Default summary"
+	macro addTextField(fieldPositionNumber = null, formPageNumber = null) {
 		if (isSet(formPageNumber)) {
 			Form.gotoAddField(
 				fieldType = "Text Field",
@@ -134,11 +139,13 @@ definition {
 		}
 	}
 
-	macro clickPublishSwitcher {
+	@summary = "Default summary"
+	macro clickPublishSwitcher() {
 		Click(locator1 = "Form#PUBLISH_FORM_SWITCHER");
 	}
 
-	macro closeSidebar {
+	@summary = "Default summary"
+	macro closeSidebar() {
 		Pause(locator1 = 1000);
 
 		Click(locator1 = "Form#SIDEBAR_CLOSE");
@@ -148,7 +155,8 @@ definition {
 		AssertElementNotPresent(locator1 = "Form#SIDEBAR_CLOSE");
 	}
 
-	macro configureEmailNotifications {
+	@summary = "Default summary"
+	macro configureEmailNotifications(subject = null, fromName = null, fromAddress = null, toAddress = null) {
 		AssertClick(
 			locator1 = "Form#SETTINGS_TAB_EMAIL_NOTIFICATIONS",
 			value1 = "Email Notifications");
@@ -174,13 +182,15 @@ definition {
 		Button.clickDone();
 	}
 
-	macro configureRequireCaptcha {
+	@summary = "Default summary"
+	macro configureRequireCaptcha() {
 		FormFields.enableSwitcher(fieldName = "requireCaptcha");
 
 		Button.clickDone();
 	}
 
-	macro configureWorkflow {
+	@summary = "Default summary"
+	macro configureWorkflow(workflowDefinition = null) {
 		Select(
 			locator1 = "AssetWorkflow#ALL_STRUCTURES_WORKFLOW_SELECT",
 			value1 = ${workflowDefinition});
@@ -188,7 +198,8 @@ definition {
 		Button.clickDone();
 	}
 
-	macro editDescription {
+	@summary = "Default summary"
+	macro editDescription(formDescription = null) {
 		Click(locator1 = "Form#DESCRIPTION_FIELD");
 
 		Type(
@@ -196,7 +207,8 @@ definition {
 			value1 = ${formDescription});
 	}
 
-	macro editFieldDataProvider {
+	@summary = "Default summary"
+	macro editFieldDataProvider(dataProvider = null) {
 		FormFields.selectRadioOption(
 			fieldName = "dataSourceType",
 			radioOption = "From Data Provider");
@@ -206,7 +218,8 @@ definition {
 			selectOption = ${dataProvider});
 	}
 
-	macro editFieldLabel {
+	@summary = "Default summary"
+	macro editFieldLabel(fieldValue = null) {
 		FormFields.editText(
 			fieldName = "label",
 			fieldValue = ${fieldValue});
@@ -216,7 +229,8 @@ definition {
 		FormFields.viewFieldName(fieldName = ${fieldName});
 	}
 
-	macro editName {
+	@summary = "Default summary"
+	macro editName(columnSize = null, formName = null) {
 		var key_columnSize = ${columnSize};
 
 		AssertVisible(locator1 = "Form#ADD_FIELD");
@@ -234,13 +248,15 @@ definition {
 			value1 = ${formName});
 	}
 
-	macro editPageTitle {
+	@summary = "Default summary"
+	macro editPageTitle(formPageName = null) {
 		Type(
 			locator1 = "Form#PAGE_TITLE_FIELD",
 			value1 = ${formPageName});
 	}
 
-	macro editTitle {
+	@summary = "Default summary"
+	macro editTitle(columnSize = null, formName = null) {
 		var key_columnSize = ${columnSize};
 
 		AssertVisible(locator1 = "Form#ADD_FIELD");
@@ -258,13 +274,15 @@ definition {
 			value1 = ${formName});
 	}
 
-	macro getPublishedFormPublicURL {
+	@summary = "Default summary"
+	macro getPublishedFormPublicURL() {
 		var publicURL = selenium.getElementValue("Form#PUBLISH_FORM_PUBLIC_URL");
 
 		return ${publicURL};
 	}
 
-	macro gotoAddField {
+	@summary = "Default summary"
+	macro gotoAddField(columnSize = null, fieldType = null) {
 		var key_columnSize = ${columnSize};
 
 		Click.makeVisibleClickAt(locator1 = "Form#ADD_FIELD");
@@ -276,7 +294,8 @@ definition {
 			value1 = ${fieldType});
 	}
 
-	macro previewForm {
+	@summary = "Default summary"
+	macro previewForm(fieldName = null, formName = null, fieldLabel = null, fieldValue = null) {
 		Navigator.selectSpecificWindow(windowTitle = "Form - Forms");
 
 		var key_formName = ${formName};
@@ -300,7 +319,8 @@ definition {
 		AssertElementNotPresent(locator1 = "FormPortlet#SUBMIT_BUTTON");
 	}
 
-	macro publishForm {
+	@summary = "Default summary"
+	macro publishForm() {
 		AssertElementPresent(locator1 = "Form#NAME_FIELD");
 
 		Click(locator1 = "Button#PUBLISH");
@@ -308,7 +328,8 @@ definition {
 		Form.viewPublishFormSuccessMessage();
 	}
 
-	macro save {
+	@summary = "Default summary"
+	macro save() {
 		AssertClick(
 			locator1 = "Form#SAVE_BUTTON",
 			value1 = "Save");
@@ -316,7 +337,8 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro submitFormPublish {
+	@summary = "Default summary"
+	macro submitFormPublish(fieldName = null, fieldLabel = null, fieldValue = null) {
 		Form.viewFormPublish(
 			fieldLabel = ${fieldLabel},
 			fieldName = ${fieldName});
@@ -333,13 +355,15 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro viewFormName {
+	@summary = "Default summary"
+	macro viewFormName(formName = null) {
 		AssertTextEquals(
 			locator1 = "Form#NAME_FIELD",
 			value1 = ${formName});
 	}
 
-	macro viewFormNotPublished {
+	@summary = "Default summary"
+	macro viewFormNotPublished() {
 		FormsAdminNavigator.openPublishURL();
 
 		AssertTextEquals(
@@ -347,7 +371,8 @@ definition {
 			value1 = "This form is not available or it was not published.");
 	}
 
-	macro viewFormPublish {
+	@summary = "Default summary"
+	macro viewFormPublish(fieldName = null, formName = null, fieldLabel = null) {
 		FormsAdminNavigator.openPublishURL();
 
 		var key_formName = ${formName};
@@ -361,7 +386,8 @@ definition {
 			fieldName = ${fieldName});
 	}
 
-	macro viewPublishFormSuccessMessage {
+	@summary = "Default summary"
+	macro viewPublishFormSuccessMessage() {
 		var key_alertMessage = "The form was published successfully! Access it with this URL";
 
 		AssertNotVisible(locator1 = "Form#PUBLISH_UNPUBLISH_ICON_CLOSE");

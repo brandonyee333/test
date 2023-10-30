@@ -1,10 +1,12 @@
 definition {
 
-	macro clickMoveToRecycleBin {
+	@summary = "Default summary"
+	macro clickMoveToRecycleBin() {
 		MenuItem.click(menuItem = "Move to the Recycle Bin");
 	}
 
-	macro inputDescription {
+	@summary = "Default summary"
+	macro inputDescription(description = null) {
 		Click(locator1 = "TextArea#DESCRIPTION");
 
 		Type(
@@ -12,7 +14,8 @@ definition {
 			value1 = ${description});
 	}
 
-	macro inputDescriptionTextInput {
+	@summary = "Default summary"
+	macro inputDescriptionTextInput(description = null) {
 		Click(locator1 = "TextInput#DESCRIPTION");
 
 		Type(
@@ -20,7 +23,8 @@ definition {
 			value1 = ${description});
 	}
 
-	macro inputLocalizedName {
+	@summary = "Default summary"
+	macro inputLocalizedName(localizedName = null, language = null) {
 		Click(
 			key_language = ${language},
 			locator1 = "Language#SITE_NAME_TRANSLATION");
@@ -28,7 +32,8 @@ definition {
 		PortletEntry.inputName(name = ${localizedName});
 	}
 
-	macro inputName {
+	@summary = "Default summary"
+	macro inputName(name = null) {
 		Click(locator1 = "TextInput#NAME");
 
 		Type(
@@ -40,7 +45,8 @@ definition {
 		}
 	}
 
-	macro inputSiteTemplateDescription {
+	@summary = "Default summary"
+	macro inputSiteTemplateDescription(description = null) {
 		Click(locator1 = "TextArea#SITE_TEMPLATE_DESCRIPTION");
 
 		Type(
@@ -48,7 +54,8 @@ definition {
 			value1 = ${description});
 	}
 
-	macro inputTitle {
+	@summary = "Default summary"
+	macro inputTitle(title = null) {
 		Click(locator1 = "TextInput#TITLE");
 
 		Type(
@@ -60,13 +67,15 @@ definition {
 		}
 	}
 
-	macro publish {
+	@summary = "Default summary"
+	macro publish() {
 		Button.clickPublish();
 
 		Alert.viewSuccessMessage();
 	}
 
-	macro publishAndWait {
+	@summary = "Default summary"
+	macro publishAndWait() {
 		Button.clickPublish();
 
 		Pause(locator1 = 3000);
@@ -74,13 +83,15 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro save {
+	@summary = "Default summary"
+	macro save() {
 		Button.clickSave();
 
 		Alert.viewSuccessMessage();
 	}
 
-	macro viewNoNavItemLink {
+	@summary = "Default summary"
+	macro viewNoNavItemLink() {
 		AssertElementNotPresent(locator1 = "NavBar#NAV_ITEM_LINK");
 	}
 

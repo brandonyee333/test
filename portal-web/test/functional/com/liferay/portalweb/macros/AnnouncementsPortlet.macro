@@ -1,6 +1,7 @@
 definition {
 
-	macro configureDisplayCountPG {
+	@summary = "Default summary"
+	macro configureDisplayCountPG() {
 		Portlet.gotoPortletOptions(
 			portletName = "Announcements",
 			portletOption = "Configuration");
@@ -16,7 +17,8 @@ definition {
 		SelectFrameTop();
 	}
 
-	macro configurePaginationManageEntriesPG {
+	@summary = "Default summary"
+	macro configurePaginationManageEntriesPG(itemsPerPage = null, distributionScope = null) {
 		Select(
 			locator1 = "AnnouncementsManageEntries#DISTRIBUTION_SCOPE_SELECT",
 			value1 = ${distributionScope});

@@ -1,16 +1,19 @@
 definition {
 
-	macro gotoAssignees {
+	@summary = "Default summary"
+	macro gotoAssignees(roleTitle = null) {
 		LexiconEntry.gotoEntry(rowEntry = ${roleTitle});
 
 		Navigator.gotoNavItem(navItem = "Assignees");
 	}
 
-	macro gotoAssigneeType {
+	@summary = "Default summary"
+	macro gotoAssigneeType(assigneeType = null) {
 		Navigator.gotoNavItem(navItem = ${assigneeType});
 	}
 
-	macro gotoPermissionSectionViaDropdown {
+	@summary = "Default summary"
+	macro gotoPermissionSectionViaDropdown(sectionTitle = null, contentTitle = null, permissionName = null) {
 		var key_navItem = ${contentTitle};
 
 		if (IsNotVisible(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM")) {
@@ -32,7 +35,8 @@ definition {
 		Click(locator1 = "RolesPermissionsNavigation#${permissionName}");
 	}
 
-	macro gotoViewNotHaveRolePermissions {
+	@summary = "Default summary"
+	macro gotoViewNotHaveRolePermissions(roleName = null, roleType = null, roleUser = null) {
 		var key_roleName = ${roleName};
 
 		if (contains("Organization,Site", ${roleType})) {

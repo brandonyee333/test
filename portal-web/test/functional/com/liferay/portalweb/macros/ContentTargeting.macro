@@ -1,6 +1,7 @@
 definition {
 
-	macro enableAnalytics {
+	@summary = "Default summary"
+	macro enableAnalytics(analyticsList = null) {
 		Panel.expandPanel(panelHeading = "Audience Targeting Analytics");
 
 		for (var analytic : list ${analyticsList}) {
@@ -10,7 +11,8 @@ definition {
 		}
 	}
 
-	macro expandPreview {
+	@summary = "Default summary"
+	macro expandPreview(portletName = null) {
 		var key_portletName = ${portletName};
 
 		if (IsElementNotPresent(locator1 = "ContentTargeting#PREVIEW_BUTTON_EXPANDED")) {
@@ -22,7 +24,8 @@ definition {
 		}
 	}
 
-	macro expandPreviewOnStagingLiveMode {
+	@summary = "Default summary"
+	macro expandPreviewOnStagingLiveMode(portletName = null) {
 		var key_portletName = ${portletName};
 
 		if (IsElementNotPresent(locator1 = "ContentTargeting#PREVIEW_BUTTON_EXPANDED")) {
@@ -34,7 +37,8 @@ definition {
 		}
 	}
 
-	macro viewEntryOnStagingLiveMode {
+	@summary = "Default summary"
+	macro viewEntryOnStagingLiveMode(previewContentList = null, viewSelectedContent = null, portletName = null, entryContentText = null) {
 		var key_portletName = ${portletName};
 
 		AssertTextEquals(

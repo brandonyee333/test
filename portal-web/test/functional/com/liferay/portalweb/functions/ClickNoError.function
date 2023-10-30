@@ -2,34 +2,34 @@
 @summary = "Click on '${locator1}'"
 definition {
 
-	function click {
+	function click() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible();
+		selenium.waitForVisible(${locator1}, ${value1});
 
-		selenium.mouseOver();
+		selenium.mouseOver(${locator1});
 
-		selenium.click();
+		selenium.click(${locator1});
 	}
 
-	function clickNoMouseOver {
+	function clickNoMouseOver() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible();
+		selenium.waitForVisible(${locator1}, ${value1});
 
-		selenium.click();
+		selenium.click(${locator1});
 	}
 
-	function mouseDownMouseUp {
+	function mouseDownMouseUp() {
 		WaitForSPARefresh();
 
-		selenium.mouseDown();
+		selenium.mouseDown(${locator1});
 
-		selenium.mouseUp();
+		selenium.mouseUp(${locator1});
 	}
 
-	function waitForMenuToggleJSClick {
-		selenium.waitForElementPresent("//script[contains(@src,'/o/frontend-js-web/liferay/menu_toggle.js')]");
+	function waitForMenuToggleJSClick() {
+		selenium.waitForElementPresent(${locator1}, ${value1});
 
 		selenium.pause(3000);
 

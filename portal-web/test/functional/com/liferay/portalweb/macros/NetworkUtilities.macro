@@ -1,6 +1,7 @@
 definition {
 
-	macro searchPG {
+	@summary = "Default summary"
+	macro searchPG(networkDomain = null, dnsDomain = null) {
 		var key_networkDomain = ${networkDomain};
 
 		Type(

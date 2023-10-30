@@ -1,6 +1,7 @@
 definition {
 
-	macro addApplication {
+	@summary = "Default summary"
+	macro addApplication(websiteURL = null, callbackURI = null, applicationName = null) {
 		AssertClick(
 			locator1 = "TestOAuth#OAUTH_ADMIN_ADD",
 			value1 = "Add");
@@ -24,7 +25,8 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro getApplicationCredentials {
+	@summary = "Default summary"
+	macro getApplicationCredentials(applicationName = null) {
 		var key_applicationName = ${applicationName};
 
 		AssertClick(
@@ -38,7 +40,8 @@ definition {
 		return ${applicationCredentials};
 	}
 
-	macro getConsumerKey {
+	@summary = "Default summary"
+	macro getConsumerKey(applicationCredentials = null, consumerSecret = null) {
 		var strippedResult = StringUtil.stripBetween(${applicationCredentials}, "Application", "Key: ");
 
 		var consumerKey = StringUtil.stripBetween(${strippedResult}, " Consumer", ${consumerSecret});
@@ -46,13 +49,15 @@ definition {
 		return ${consumerKey};
 	}
 
-	macro getConsumerSecret {
+	@summary = "Default summary"
+	macro getConsumerSecret(applicationCredentials = null) {
 		var consumerSecret = StringUtil.stripBetween(${applicationCredentials}, "Application", "Secret: ");
 
 		return ${consumerSecret};
 	}
 
-	macro testConsumerKeyAndSecret {
+	@summary = "Default summary"
+	macro testConsumerKeyAndSecret(consumerSecret = null, webID = null, consumerKey = null) {
 		Type(
 			locator1 = "TestOAuth#TEST_PORTLET_KEY",
 			value1 = ${consumerKey});
@@ -86,7 +91,8 @@ definition {
 			value1 = "Test");
 	}
 
-	macro viewJSON {
+	@summary = "Default summary"
+	macro viewJSON(domainName = null) {
 		AssertVisible(locator1 = "TestOAuth#TEST_PORTLET_JSON");
 
 		AssertTextPresent(

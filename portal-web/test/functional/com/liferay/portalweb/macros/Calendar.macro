@@ -3,7 +3,8 @@ definition {
 	var calendarDefault = "Yes";
 	var calendarDescription = "";
 
-	macro _checkForRSSTitle {
+	@summary = "Default summary"
+	macro _checkForRSSTitle(siteCalendarName = null, siteName = null, pageName = null) {
 		if (IsElementNotPresent(locator1 = "RSS#FEED_TITLE")) {
 			Navigator.gotoPage(pageName = ${pageName});
 
@@ -14,7 +15,8 @@ definition {
 		}
 	}
 
-	macro _deleteCalendar {
+	@summary = "Default summary"
+	macro _deleteCalendar() {
 		var key_menuListOption = "Delete";
 
 		AssertClickNoError(
@@ -28,7 +30,8 @@ definition {
 			value1 = "The calendar was deleted successfully.");
 	}
 
-	macro _gotoMenulistOption {
+	@summary = "Default summary"
+	macro _gotoMenulistOption(menuListOption = null) {
 		var key_menuListOption = ${menuListOption};
 
 		AssertClick(
@@ -40,7 +43,8 @@ definition {
 		}
 	}
 
-	macro _gotoOtherCalendarMenulist {
+	@summary = "Default summary"
+	macro _gotoOtherCalendarMenulist(calendarName = null) {
 		var key_calendarName = ${calendarName};
 
 		AssertTextEquals(
@@ -50,7 +54,8 @@ definition {
 		Click(locator1 = "Calendar#OTHER_CALENDARS_CALENDAR_MENULIST_ARROW");
 	}
 
-	macro _gotoSiteCalendarMenulist {
+	@summary = "Default summary"
+	macro _gotoSiteCalendarMenulist(siteCalendarName = null, siteName = null) {
 		var key_siteCalendarName = ${siteCalendarName};
 		var key_siteName = ${siteName};
 
@@ -61,13 +66,15 @@ definition {
 		Click(locator1 = "Calendar#CURRENT_SITE_CALENDARS_CALENDAR_MENULIST_ARROW");
 	}
 
-	macro _viewCalendarHidden {
+	@summary = "Default summary"
+	macro _viewCalendarHidden(calendarName = null) {
 		var key_calendarName = ${calendarName};
 
 		AssertElementNotPresent(locator1 = "Calendar#OTHER_CALENDARS_CALENDAR");
 	}
 
-	macro _viewCalendarSettingsIframe {
+	@summary = "Default summary"
+	macro _viewCalendarSettingsIframe(calendarName = null) {
 		var key_calendarName = ${calendarName};
 
 		AssertTextEquals(
@@ -77,7 +84,8 @@ definition {
 		SelectFrameTop(value1 = "relative=top");
 	}
 
-	macro _viewEmailHeader {
+	@summary = "Default summary"
+	macro _viewEmailHeader(header = null) {
 		SelectFrame(locator1 = "IFrame#DIALOG");
 
 		AssertTextEquals(
@@ -95,7 +103,8 @@ definition {
 			value1 = ${header});
 	}
 
-	macro add {
+	@summary = "Default summary"
+	macro add(calendarName = null, calendarType = null) {
 		if (${calendarType} == "My Calendars") {
 			CalendarNavigator.gotoAddMyCalendars();
 
@@ -127,7 +136,8 @@ definition {
 		}
 	}
 
-	macro changeColor {
+	@summary = "Default summary"
+	macro changeColor(site = null, calendarType = null, siteCalendarColor = null, user = null, myCalendarColor = null) {
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		if (${calendarType} == "My Calendars") {
@@ -154,13 +164,15 @@ definition {
 		}
 	}
 
-	macro chooseOtherCalendarMenulistOption {
+	@summary = "Default summary"
+	macro chooseOtherCalendarMenulistOption(calendarName = null, menuListOption = null) {
 		Calendar._gotoOtherCalendarMenulist(calendarName = ${calendarName});
 
 		Calendar._gotoMenulistOption(menuListOption = ${menuListOption});
 	}
 
-	macro chooseSiteCalendarMenulistOption {
+	@summary = "Default summary"
+	macro chooseSiteCalendarMenulistOption(menuListOption = null, siteCalendarName = null, siteName = null) {
 		Calendar._gotoSiteCalendarMenulist(
 			siteCalendarName = ${siteCalendarName},
 			siteName = ${siteName});
@@ -168,7 +180,8 @@ definition {
 		Calendar._gotoMenulistOption(menuListOption = ${menuListOption});
 	}
 
-	macro delete {
+	@summary = "Default summary"
+	macro delete(calendarName = null, site = null, calendarType = null, user = null) {
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		if (${calendarType} == "My Calendars") {
@@ -197,7 +210,8 @@ definition {
 		}
 	}
 
-	macro edit {
+	@summary = "Default summary"
+	macro edit(calendarName = null, calendarType = null, calendarNameEdit = null, user = null) {
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		if (${calendarType} == "My Calendars") {
@@ -254,7 +268,8 @@ definition {
 		}
 	}
 
-	macro editEmailTemplate {
+	@summary = "Default summary"
+	macro editEmailTemplate(calendarName = null, site = null, calendarType = null, reminderEmail = null, fromAddressEdit = null, fromNameEdit = null, user = null, inviteEmail = null) {
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		if (${calendarType} == "My Calendars") {
@@ -364,7 +379,8 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro enableComments {
+	@summary = "Default summary"
+	macro enableComments(calendarName = null, site = null, calendarType = null, user = null) {
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		if (${calendarType} == "My Calendars") {
@@ -411,7 +427,8 @@ definition {
 		}
 	}
 
-	macro exportCalendarFile {
+	@summary = "Default summary"
+	macro exportCalendarFile(calendarName = null) {
 		var key_calendarName = ${calendarName};
 
 		AssertTextEquals(
@@ -427,7 +444,8 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "ClassNotFoundException");
 	}
 
-	macro hideCurrentSiteCalendar {
+	@summary = "Default summary"
+	macro hideCurrentSiteCalendar() {
 		ScrollWebElementIntoView(locator1 = "Calendar#CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_COLOR_DEFAULT");
 
 		Click(locator1 = "Calendar#CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_COLOR_DEFAULT");
@@ -435,13 +453,15 @@ definition {
 		AssertElementPresent(locator1 = "Calendar#CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_COLOR_HIDDEN");
 	}
 
-	macro hideMyCalendarsCalendar {
+	@summary = "Default summary"
+	macro hideMyCalendarsCalendar() {
 		Click(locator1 = "Calendar#MY_CALENDARS_CALENDAR_PRIMARY_COLOR_DEFAULT");
 
 		AssertElementPresent(locator1 = "Calendar#MY_CALENDARS_CALENDAR_PRIMARY_COLOR_HIDDEN");
 	}
 
-	macro importCalendarFile {
+	@summary = "Default summary"
+	macro importCalendarFile(calendarName = null, calendarFile = null) {
 		var key_calendarName = ${calendarName};
 
 		AssertTextEquals(
@@ -465,7 +485,8 @@ definition {
 			value1 = "Your request completed successfully.");
 	}
 
-	macro removeViewPermissions {
+	@summary = "Default summary"
+	macro removeViewPermissions(calendarName = null, site = null, calendarType = null, roleName = null, user = null) {
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		if (${calendarType} == "My Calendars") {
@@ -503,13 +524,15 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro searchOtherCalendars {
+	@summary = "Default summary"
+	macro searchOtherCalendars(searchValue = null) {
 		Type(
 			locator1 = "Calendar#OTHER_CALENDARS_SEARCH",
 			value1 = ${searchValue});
 	}
 
-	macro showCurrentSiteCalendar {
+	@summary = "Default summary"
+	macro showCurrentSiteCalendar() {
 		ScrollWebElementIntoView(locator1 = "Calendar#CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_COLOR_HIDDEN");
 
 		Click(locator1 = "Calendar#CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_COLOR_HIDDEN");
@@ -517,13 +540,15 @@ definition {
 		AssertElementPresent(locator1 = "Calendar#CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_COLOR_DEFAULT");
 	}
 
-	macro showMyCalendarsCalendar {
+	@summary = "Default summary"
+	macro showMyCalendarsCalendar() {
 		Click(locator1 = "Calendar#MY_CALENDARS_CALENDAR_PRIMARY_COLOR_HIDDEN");
 
 		AssertElementPresent(locator1 = "Calendar#MY_CALENDARS_CALENDAR_PRIMARY_COLOR_DEFAULT");
 	}
 
-	macro tearDown {
+	@summary = "Default summary"
+	macro tearDown() {
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		while (IsElementPresent(locator1 = "Calendar#MY_CALENDARS_CALENDAR_ADDITIONAL_GENERIC")) {
@@ -555,7 +580,8 @@ definition {
 			value1 = "No calendars selected.");
 	}
 
-	macro tearDownColor {
+	@summary = "Default summary"
+	macro tearDownColor() {
 		CalendarNavigator.gotoView(viewType = "Week");
 
 		if (IsElementNotPresent(locator1 = "Calendar#MY_CALENDARS_CALENDAR_PRIMARY_COLOR_DEFAULT")) {
@@ -567,7 +593,8 @@ definition {
 		}
 	}
 
-	macro view {
+	@summary = "Default summary"
+	macro view(calendarName = null, site = null, calendarType = null, user = null) {
 		var key_calendarName = ${calendarName};
 
 		if (${calendarType} == "My Calendars") {
@@ -593,7 +620,8 @@ definition {
 		}
 	}
 
-	macro viewCalendarColorPicker {
+	@summary = "Default summary"
+	macro viewCalendarColorPicker(calendarName = null, color = null) {
 		Calendar._gotoOtherCalendarMenulist(calendarName = ${calendarName});
 
 		var key_color = ${color};
@@ -601,7 +629,8 @@ definition {
 		AssertElementPresent(locator1 = "Calendar#OTHER_CALENDARS_CALENDAR_MENULIST_COLOR_PICKER");
 	}
 
-	macro viewColor {
+	@summary = "Default summary"
+	macro viewColor(calendarType = null, myCalendarColor = null) {
 		var key_color = ${myCalendarColor};
 
 		if (${calendarType} == "My Calendars") {
@@ -611,7 +640,8 @@ definition {
 		}
 	}
 
-	macro viewCurrentSiteCalendarName {
+	@summary = "Default summary"
+	macro viewCurrentSiteCalendarName(calendarName = null, siteName = null) {
 		var key_siteName = ${siteName};
 
 		AssertTextEquals(
@@ -625,7 +655,8 @@ definition {
 			value1 = ${calendarName});
 	}
 
-	macro viewDefault {
+	@summary = "Default summary"
+	macro viewDefault() {
 		AssertElementNotPresent(locator1 = "Calendar#MY_CALENDARS_CALENDAR_ADDITIONAL_GENERIC");
 
 		AssertElementNotPresent(locator1 = "Calendar#CURRENT_SITE_CALENDARS_CALENDAR_ADDITIONAL_GENERIC");
@@ -633,7 +664,8 @@ definition {
 		AssertElementNotPresent(locator1 = "Calendar#OTHER_CALENDARS_CALENDAR_GENERIC");
 	}
 
-	macro viewMonth {
+	@summary = "Default summary"
+	macro viewMonth(dateMonth = null) {
 		CalendarNavigator.gotoView(viewType = "Month");
 
 		/*
@@ -651,7 +683,8 @@ definition {
 		}
 	}
 
-	macro viewNoRSS {
+	@summary = "Default summary"
+	macro viewNoRSS(rssURL = null) {
 		Navigator.openSpecificURL(url = ${rssURL});
 
 		var pageName = "Welcome";
@@ -661,7 +694,8 @@ definition {
 			locator1 = "Home#PAGE_ACTIVE");
 	}
 
-	macro viewOtherCalendarMenulist {
+	@summary = "Default summary"
+	macro viewOtherCalendarMenulist(calendarName = null, color = null, pageName = null) {
 		Calendar.chooseOtherCalendarMenulistOption(
 			calendarName = ${calendarName},
 			menuListOption = "Add Event");
@@ -711,7 +745,8 @@ definition {
 		Calendar._viewCalendarHidden(calendarName = ${calendarName});
 	}
 
-	macro viewOtherCalendarsSearchResult {
+	@summary = "Default summary"
+	macro viewOtherCalendarsSearchResult(calendarName = null) {
 		var key_calendarName = ${calendarName};
 
 		AssertTextEquals(
@@ -719,13 +754,15 @@ definition {
 			value1 = ${calendarName});
 	}
 
-	macro viewOtherCalendarsSearchResultNotPresent {
+	@summary = "Default summary"
+	macro viewOtherCalendarsSearchResultNotPresent(calendarName = null) {
 		var key_calendarName = ${calendarName};
 
 		AssertElementNotPresent(locator1 = "Calendar#OTHER_CALENDARS_SEARCH_LIST_RESULT");
 	}
 
-	macro viewRSSFeedEventNotPresent {
+	@summary = "Default summary"
+	macro viewRSSFeedEventNotPresent(calendarName = null, eventTitle = null, siteCalendarName = null, siteName = null, pageName = null) {
 		Calendar._checkForRSSTitle(
 			pageName = ${pageName},
 			siteCalendarName = ${siteCalendarName},
@@ -744,7 +781,8 @@ definition {
 		AssertElementNotPresent(locator1 = "CalendarRSS#FEED_EVENT_DATES");
 	}
 
-	macro viewRSSFeedEventPresent {
+	@summary = "Default summary"
+	macro viewRSSFeedEventPresent(calendarName = null, eventTitle = null, siteCalendarName = null, siteName = null, pageName = null) {
 		Calendar._checkForRSSTitle(
 			pageName = ${pageName},
 			siteCalendarName = ${siteCalendarName},
@@ -769,7 +807,8 @@ definition {
 		AssertElementPresent(locator1 = "CalendarRSS#FEED_EVENT_DATES");
 	}
 
-	macro viewSelectedTimeZone {
+	@summary = "Default summary"
+	macro viewSelectedTimeZone(timeZone = null) {
 		if (${timeZone} == "(UTC -08:00) Pacific Standard Time") {
 			if (IsTextNotEqual(locator1 = "CalendarConfiguration#USER_SETTINGS_TIME_ZONE_LOS_ANGELES_SELECT_OPTION", value1 = "(UTC -07:00) Pacific Daylight Time")) {
 				AssertSelectedLabel(
@@ -789,7 +828,8 @@ definition {
 		}
 	}
 
-	macro viewSiteCalendarNoMenulistOption {
+	@summary = "Default summary"
+	macro viewSiteCalendarNoMenulistOption(menuListOption = null, siteCalendarName = null, siteName = null) {
 		Calendar._gotoSiteCalendarMenulist(
 			siteCalendarName = ${siteCalendarName},
 			siteName = ${siteName});
@@ -799,7 +839,8 @@ definition {
 		AssertElementNotPresent(locator1 = "Calendar#OTHER_CALENDARS_CALENDAR_MENULIST_OPTION");
 	}
 
-	macro viewWeekCountViaMonthView {
+	@summary = "Default summary"
+	macro viewWeekCountViaMonthView(weekNumber = null) {
 		var key_weekNumber = ${weekNumber};
 
 		AssertElementPresent(locator1 = "Calendar#SCHEDULER_VIEW_MONTH_WEEK_NUMBER");
@@ -813,7 +854,8 @@ definition {
 		AssertElementNotPresent(locator1 = "Calendar#SCHEDULER_VIEW_MONTH_WEEK_NUMBER");
 	}
 
-	macro viewWeekStartDayViaAddEventMiniCalendar {
+	@summary = "Default summary"
+	macro viewWeekStartDayViaAddEventMiniCalendar(weekStartDay = null) {
 		Click(locator1 = "CalendarEditEvent#START_DATE");
 
 		AssertTextEquals(
@@ -831,7 +873,8 @@ definition {
 		Click(locator1 = "CalendarEditEvent#FORM_CONTENT");
 	}
 
-	macro viewWeekStartDayViaMonthView {
+	@summary = "Default summary"
+	macro viewWeekStartDayViaMonthView(weekStartDay = null) {
 		CalendarNavigator.gotoView(viewType = "Month");
 
 		AssertTextEquals(
@@ -839,7 +882,8 @@ definition {
 			value1 = ${weekStartDay});
 	}
 
-	macro viewWeekStartDayViaSmallCalendar {
+	@summary = "Default summary"
+	macro viewWeekStartDayViaSmallCalendar(weekStartDay = null) {
 		AssertTextEquals(
 			locator1 = "Calendar#SMALL_CALENDAR_WEEK_START_DAY",
 			value1 = ${weekStartDay});

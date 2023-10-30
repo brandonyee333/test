@@ -1,6 +1,7 @@
 definition {
 
-	macro checkReplyToMessageForGuestPG {
+	@summary = "Default summary"
+	macro checkReplyToMessageForGuestPG() {
 		AssertClick(
 			locator1 = "Button#PERMISSIONS",
 			value1 = "Permissions");

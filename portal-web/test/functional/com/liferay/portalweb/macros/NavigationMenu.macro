@@ -1,6 +1,7 @@
 definition {
 
-	macro gotoAddPage {
+	@summary = "Default summary"
+	macro gotoAddPage() {
 		Portlet.clickPortletPlusIconPG(portletName = "Navigation Menu");
 
 		MenuItem.click(menuItem = "Add Page");
