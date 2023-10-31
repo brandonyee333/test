@@ -75,7 +75,6 @@ public class ListTypeDefinitionLocalServiceTest {
 				null, TestPropsValues.getUserId(),
 				Collections.singletonMap(LocaleUtil.US, ""), false,
 				Collections.emptyList()));
-
 		AssertUtils.assertFailure(
 			ListTypeDefinitionSystemException.class, false,
 			"Only allowed bundles can add system list type definitions",

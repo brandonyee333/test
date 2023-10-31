@@ -83,14 +83,16 @@ public class ListTypeEntryLocalServiceTest {
 
 	@Test
 	public void testAddListTypeEntry() throws Exception {
+		String externalReferenceCode =
+			_listTypeEntry.getExternalReferenceCode();
+
+		Assert.assertEquals(
+			_listTypeEntry.getUuid(), externalReferenceCode);
+
 		AssertUtils.assertFailure(
 			DuplicateListTypeEntryException.class, "Duplicate key able",
 			() -> _testAddListTypeEntry(
 				_listTypeDefinition.getListTypeDefinitionId(), "able"));
-
-		String externalReferenceCode =
-			_listTypeEntry.getExternalReferenceCode();
-
 		AssertUtils.assertFailure(
 			DuplicateListTypeEntryExternalReferenceCodeException.class,
 			"Duplicate external reference code " + externalReferenceCode,
@@ -106,22 +108,15 @@ public class ListTypeEntryLocalServiceTest {
 			"Only allowed bundles can add system list type entries",
 			() -> _testAddListTypeEntry(
 				_systemListTypeDefinition.getListTypeDefinitionId(), "baker"));
-
 		AssertUtils.assertFailure(
 			ListTypeEntryKeyException.class, "Key is null",
 			() -> _testAddListTypeEntry(
 				_listTypeDefinition.getListTypeDefinitionId(), null));
-
 		AssertUtils.assertFailure(
 			ListTypeEntryKeyException.class,
 			"Key must only contain letters and digits",
 			() -> _testAddListTypeEntry(
 				_listTypeDefinition.getListTypeDefinitionId(), " able "));
-
-		Assert.assertEquals(
-			_listTypeEntry.getUuid(),
-			_listTypeEntry.getExternalReferenceCode());
-
 		AssertUtils.assertFailure(
 			NoSuchListTypeDefinitionException.class,
 			"No ListTypeDefinition exists with the primary key 0",
