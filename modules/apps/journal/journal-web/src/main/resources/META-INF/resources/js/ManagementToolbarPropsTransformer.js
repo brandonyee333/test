@@ -134,7 +134,14 @@ export default function propsTransformer({
 			}
 		},
 		onFilterDropdownItemClick(event, {item}) {
-			if (item?.data?.action === 'openDDMStructuresSelector') {
+			if (item?.data?.action === 'openCategoriesSelector') {
+				openCategorySelectionModal({
+					portletNamespace,
+					redirectURL: item?.data?.redirectURL,
+					selectCategoryURL,
+				});
+			}
+			else if (item?.data?.action === 'openDDMStructuresSelector') {
 				openSelectionModal({
 					onSelect: (selectedItem) => {
 						if (selectedItem) {
@@ -160,13 +167,6 @@ export default function propsTransformer({
 					portletNamespace,
 					redirectURL: item?.data?.redirectURL,
 					selectTagURL,
-				});
-			}
-			else if (item?.data?.action === 'openCategoriesSelector') {
-				openCategorySelectionModal({
-					portletNamespace,
-					redirectURL: item?.data?.redirectURL,
-					selectCategoryURL,
 				});
 			}
 		},
