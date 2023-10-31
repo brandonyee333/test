@@ -417,10 +417,28 @@ public class StringBundlerTest {
 	}
 
 	@Test
-	public void testConcat() {
+	public void testConcatObjects() {
+		Assert.assertSame("test1", StringBundler.concat((Object)"test1"));
+		Assert.assertSame(
+			StringPool.NULL, StringBundler.concat(new Object[] {null}));
+		Assert.assertEquals(
+			"test1test2", StringBundler.concat((Object)"test1", "test2"));
+		Assert.assertEquals(
+			"test1test2test3",
+			StringBundler.concat("test1", (Object)"test2", "test3"));
+		Assert.assertEquals(
+			"test1test2test3test4",
+			StringBundler.concat("test1", "test2", "test3", (Object)"test4"));
+	}
+
+	@Test
+	public void testConcatStrings() {
 		Assert.assertSame("test1", StringBundler.concat("test1"));
 		Assert.assertSame(
 			StringPool.NULL, StringBundler.concat(new String[] {null}));
+		Assert.assertEquals("hello", StringBundler.concat("", "hello"));
+		Assert.assertEquals(
+			"Hello, world!", StringBundler.concat("Hello,", " ", "world!"));
 		Assert.assertEquals(
 			"test1test2", StringBundler.concat("test1", "test2"));
 		Assert.assertEquals(
