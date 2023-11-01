@@ -2,7 +2,7 @@
 definition {
 
 	@summary-ignore = "true"
-	function makeVisible(locator1) {
+	function makeVisible() {
 		WaitForSPARefresh();
 
 		selenium.waitForElementPresent(${locator1}, "false");

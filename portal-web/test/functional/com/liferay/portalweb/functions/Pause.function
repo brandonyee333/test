@@ -2,7 +2,7 @@
 definition {
 
 	@summary-ignore = "true"
-	function pause(value1) {
+	function pause() {
 		WaitForSPARefresh();
 
 		selenium.pause(${value1});

@@ -1,7 +1,7 @@
 @default = "paste"
 definition {
 
-	function ckEditorPaste(locator1) {
+	function ckEditorPaste() {
 		WaitForSPARefresh();
 
 		selenium.waitForVisible(${locator1}, "false");
@@ -23,7 +23,7 @@ definition {
 		selenium.assertLiferayErrors();
 	}
 
-	function paste(locator1) {
+	function paste() {
 		WaitForSPARefresh();
 
 		selenium.waitForVisible(${locator1}, "false");

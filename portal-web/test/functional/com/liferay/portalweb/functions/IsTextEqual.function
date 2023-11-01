@@ -1,7 +1,7 @@
 @default = "isTextEqual"
 definition {
 
-	function isText(locator1, value1) {
+	function isText() {
 		WaitForSPARefresh();
 
 		selenium.waitForElementPresent(${locator1}, "false");
@@ -22,7 +22,7 @@ definition {
 		}
 	}
 
-	function isValue(locator1, value1) {
+	function isValue() {
 		WaitForSPARefresh();
 
 		selenium.waitForElementPresent(${locator1}, "false");

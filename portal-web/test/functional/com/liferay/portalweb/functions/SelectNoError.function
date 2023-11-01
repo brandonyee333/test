@@ -1,7 +1,7 @@
 @default = "pauseSelect"
 definition {
 
-	function pauseSelect(locator1, value1) {
+	function pauseSelect() {
 		WaitForSPARefresh();
 
 		selenium.pause(5000);
