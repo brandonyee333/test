@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro gotoEventToday(eventTitle = null) {
+	macro gotoEventToday {
 		var key_eventTitle = ${eventTitle};
 
 		AssertClick(
@@ -9,8 +8,7 @@ definition {
 			value1 = ${eventTitle});
 	}
 
-	@summary = "Default summary"
-	macro gotoEventUpcoming(eventTitle = null) {
+	macro gotoEventUpcoming {
 		var key_eventTitle = ${eventTitle};
 
 		AssertClick(
@@ -18,22 +16,19 @@ definition {
 			value1 = ${eventTitle});
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultMessage() {
+	macro viewDefaultMessage {
 		AssertTextEquals(
 			locator1 = "EventsListPortlet#PORTLET_NO_EVENTS",
 			value1 = "There are no more events today.");
 	}
 
-	@summary = "Default summary"
-	macro viewEventTime(eventTitle = null) {
+	macro viewEventTime {
 		var key_eventTitle = ${eventTitle};
 
 		AssertElementPresent(locator1 = "EventsListPortlet#TODAYS_EVENTS_EVENT_TIME");
 	}
 
-	@summary = "Default summary"
-	macro viewHeader() {
+	macro viewHeader {
 		AssertTextEquals(
 			locator1 = "EventsListPortlet#PORTLET_TITLE",
 			value1 = "Events List");

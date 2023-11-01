@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addADTWithFieldEntryCP(fieldName = null, portletName = null) {
+	macro addADTWithFieldEntryCP {
 		AssertVisible(locator1 = "Button#PLUS");
 
 		LexiconEntry.gotoAdd();
@@ -21,8 +20,7 @@ definition {
 		Refresh();
 	}
 
-	@summary = "Default summary"
-	macro addCP(adtType = null, adtFile = null) {
+	macro addCP {
 		var key_adtType = ${adtType};
 
 		Portlet.viewEmptyMessage();
@@ -46,8 +44,7 @@ definition {
 			value1 = "${adtType} Test ADT");
 	}
 
-	@summary = "Default summary"
-	macro addManualViaRSS(siteName = null) {
+	macro addManualViaRSS {
 		IFrame.selectDialogFrame();
 
 		Pause(locator1 = 5000);
@@ -81,8 +78,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro addPG(adtType = null, adtFile = null, siteName = null, portletName = null) {
+	macro addPG {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");
@@ -133,8 +129,7 @@ definition {
 		SelectFrameTop(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro addPGWithScript(adtType = null, siteName = null, script = null, portletName = null) {
+	macro addPGWithScript {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");
@@ -181,8 +176,7 @@ definition {
 		SelectFrameTop(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro addPortletADTWithFieldEntry(fieldName = null, portletName = null) {
+	macro addPortletADTWithFieldEntry {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");
@@ -212,8 +206,7 @@ definition {
 		SelectFrameTop(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro editADTScript(adtScript = null) {
+	macro editADTScript {
 		Type.sendKeysAceEditor(
 			locator1 = "TextArea#ACE_EDITOR",
 			value1 = ${adtScript});
@@ -221,8 +214,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro gotoWidgetTemplatesEllipsisItem(item = null, widgetTemplateName = null) {
+	macro gotoWidgetTemplatesEllipsisItem {
 		Click.waitForMenuToggleJSClick(
 			key_tableEntry = ${widgetTemplateName},
 			locator1 = "LexiconTable#TABLE_ENTRY_ELLIPSIS_LINK");
@@ -230,8 +222,7 @@ definition {
 		MenuItem.clickNoError(menuItem = ${item});
 	}
 
-	@summary = "Default summary"
-	macro searchGlobalADT(templateName = null) {
+	macro searchGlobalADT {
 		AssertElementPresent(locator1 = "Search#SEARCH_FIELD");
 
 		AssertElementPresent(locator1 = "Icon#BASIC_SEARCH");
@@ -249,8 +240,7 @@ definition {
 			value1 = ${templateName});
 	}
 
-	@summary = "Default summary"
-	macro selectPortletADT(templateName = null, portletName = null) {
+	macro selectPortletADT {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");

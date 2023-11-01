@@ -3,8 +3,7 @@ definition {
 	var assetType = "Message Boards Thread";
 	var userName = "Test Test";
 
-	@summary = "Default summary"
-	macro addCP(threadSubject = null, threadBody = null) {
+	macro addCP {
 		LexiconEntry.gotoAddMenuItem(menuItem = "Thread");
 
 		AssertElementPresent(locator1 = "TextInput#SUBJECT");
@@ -22,8 +21,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addCPWithAttachment(threadSubject = null, mbAttachmentFile = null, threadBody = null) {
+	macro addCPWithAttachment {
 		LexiconEntry.gotoAddMenuItem(menuItem = "Thread");
 
 		Click(locator1 = "TextInput#SUBJECT");
@@ -45,8 +43,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addInvalidAttachmentPG(threadSubject = null, maxAttachmentFileSize = null, invalidSize = null, mbThreadAttachment = null) {
+	macro addInvalidAttachmentPG {
 		AssertClick(
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
@@ -76,8 +73,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro addPG(threadSubject = null, threadBody = null, fontSize = null) {
+	macro addPG {
 		AssertClick(
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
@@ -119,8 +115,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addPGAsQuestion(threadSubject = null, threadBody = null) {
+	macro addPGAsQuestion {
 		AssertClick(
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
@@ -146,8 +141,7 @@ definition {
 		MessageboardsThread.viewMarkedAsQuestionPG(threadSubject = ${threadSubject});
 	}
 
-	@summary = "Default summary"
-	macro addPGWithAttachment(threadSubject = null, threadBody = null, mbThreadAttachment = null) {
+	macro addPGWithAttachment {
 		AssertClick(
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
@@ -177,8 +171,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro addPGWithPermissions(threadSubject = null, viewableBySelection = null, threadBody = null) {
+	macro addPGWithPermissions {
 		AssertClick(
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
@@ -202,8 +195,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addWithWorkflowCP(threadSubject = null, threadBody = null) {
+	macro addWithWorkflowCP {
 		LexiconEntry.gotoAddMenuItem(menuItem = "Thread");
 
 		Click(locator1 = "TextInput#SUBJECT");
@@ -221,8 +213,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro addWithWorkflowPG(threadSubject = null, threadBody = null) {
+	macro addWithWorkflowPG {
 		AssertClick(
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
@@ -242,8 +233,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro banUser(userName = null) {
+	macro banUser {
 		AssertClick(
 			key_userName = ${userName},
 			locator1 = "MessageBoardsThread#MESSAGE_BAN_THIS_USER",
@@ -252,8 +242,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro cancelAdd(threadSubject = null, threadBody = null) {
+	macro cancelAdd {
 		AssertClick(
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
@@ -273,8 +262,7 @@ definition {
 			value1 = "Cancel");
 	}
 
-	@summary = "Default summary"
-	macro cancelEdit(threadSubjectEdit = null, threadBodyEdit = null) {
+	macro cancelEdit {
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Edit");
 
 		Click(locator1 = "TextInput#SUBJECT");
@@ -292,8 +280,7 @@ definition {
 			value1 = "Cancel");
 	}
 
-	@summary = "Default summary"
-	macro deletePG(threadSubject = null) {
+	macro deletePG {
 		var key_threadSubject = ${threadSubject};
 
 		AssertTextEquals(
@@ -309,15 +296,13 @@ definition {
 		AssertElementNotPresent(locator1 = "MessageBoards#THREAD_LIST_THREAD");
 	}
 
-	@summary = "Default summary"
-	macro downloadAttachmentPG() {
+	macro downloadAttachmentPG {
 		Click(locator1 = "MessageBoardsThread#MESSAGE_BODY_ATTACHMENT_1");
 
 		DownloadTempFile();
 	}
 
-	@summary = "Default summary"
-	macro editCP(threadSubjectEdit = null, mbAttachmentFile = null, threadAttachmentRemove = null, threadBodyEdit = null) {
+	macro editCP {
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Edit");
 
 		if (${threadAttachmentRemove} == "true") {
@@ -349,8 +334,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro editPG(preview = null, threadSubject = null, threadSubjectEdit = null, saveAsDraft = null, threadBodyEdit = null, userName = null) {
+	macro editPG {
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Edit");
 
 		if (isSet(threadSubjectEdit)) {
@@ -411,8 +395,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro editReplyViaAP(threadSubject = null, assetTitle = null, threadBody = null) {
+	macro editReplyViaAP {
 		MouseOver(locator1 = "AP#BODY");
 
 		Click.waitForMenuToggleJSClick(
@@ -439,8 +422,7 @@ definition {
 		Click(locator1 = "Button#PUBLISH");
 	}
 
-	@summary = "Default summary"
-	macro editViaMyPosts(threadSubject = null, threadSubjectEdit = null) {
+	macro editViaMyPosts {
 		AssertClick(
 			locator1 = "MessageBoards#NAVIGATION_MY_POSTS",
 			value1 = "My Posts");
@@ -462,16 +444,14 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro gotoCP(threadSubject = null) {
+	macro gotoCP {
 		AssertClick(
 			key_threadSubject = ${threadSubject},
 			locator1 = "MessageBoards#THREAD_LIST_THREAD",
 			value1 = ${threadSubject});
 	}
 
-	@summary = "Default summary"
-	macro gotoPG(threadSubject = null, messageBoardsThreadURL = null, postCount = null, lastPostUserName = null) {
+	macro gotoPG {
 		var key_postsNumber = ${postCount};
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${lastPostUserName};
@@ -498,15 +478,13 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro gotoViewInContext() {
+	macro gotoViewInContext {
 		AssertClick(
 			locator1 = "Link#VIEW_IN_CONTEXT",
 			value1 = "View in Context »");
 	}
 
-	@summary = "Default summary"
-	macro markAsAnswerCP(threadReplyBody = null) {
+	macro markAsAnswerCP {
 		LexiconEntry.openEntryMenu(rowEntry = ${threadReplyBody});
 
 		MenuItem.click(menuItem = "Mark as an Answer");
@@ -516,8 +494,7 @@ definition {
 			value1 = "Answer");
 	}
 
-	@summary = "Default summary"
-	macro markAsAnswerPG(threadReplyBody = null) {
+	macro markAsAnswerPG {
 		Click.waitForMenuToggleJSClick(
 			key_threadReplyBody = ${threadReplyBody},
 			locator1 = "MessageBoards#THREAD_REPLY_ACTIONS");
@@ -529,8 +506,7 @@ definition {
 			value1 = "Answer");
 	}
 
-	@summary = "Default summary"
-	macro movePG(categoryName1 = null, threadSubject = null, explanationSubject = null, explanationBody = null, explanationPost = null) {
+	macro movePG {
 		AssertClick(
 			key_categoryName = ${categoryName1},
 			locator1 = "MessageBoards#CATEGORY_LIST_CATEGORY",
@@ -581,8 +557,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro moveToRecycleBinCP(threadSubject = null) {
+	macro moveToRecycleBinCP {
 		AssertTextEquals(
 			key_threadSubject = ${threadSubject},
 			locator1 = "MessageBoards#THREAD_LIST_THREAD",
@@ -597,13 +572,11 @@ definition {
 			value1 = "There are no threads nor categories.");
 	}
 
-	@summary = "Default summary"
-	macro openMBThreadAdmin(siteURLKey = null) {
+	macro openMBThreadAdmin {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/${siteURLKey}/~/control_panel/manage?p_p_id=com_liferay_message_boards_web_portlet_MBAdminPortlet");
 	}
 
-	@summary = "Default summary"
-	macro quickReplyPG(threadSubject = null, threadReplyBody = null) {
+	macro quickReplyPG {
 		AssertClick(
 			key_threadSubject = ${threadSubject},
 			locator1 = "MessageBoards#THREAD_LIST_THREAD",
@@ -618,8 +591,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro replyCP(markAsQuestion = null, threadSubject = null, threadReplyBody = null, markAsAnswer = null) {
+	macro replyCP {
 		if (${markAsQuestion} == "true") {
 			AssertClick(
 				key_threadSubject = ${threadSubject},
@@ -642,8 +614,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro replyPG(displayStyle = null, threadSubject = null, anonymous = null, threadBody = null, mbThreadAttachment = null, threadReplyBody = null, markAsAnswer = null) {
+	macro replyPG {
 		if (${displayStyle} == "Question") {
 			AssertClick(
 				key_threadSubject = ${threadSubject},
@@ -706,8 +677,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro restoreMBAttachmentCP(mbAttachmentFile = null) {
+	macro restoreMBAttachmentCP {
 		Click(locator1 = "MessageBoardsThread#MESSAGE_BODY_ATTACHMENT_1");
 
 		AssertTextEquals(
@@ -724,8 +694,7 @@ definition {
 			value1 = "This message does not have file attachments in the Recycle Bin.");
 	}
 
-	@summary = "Default summary"
-	macro saveNewThreadAsDraft(threadSubject = null, threadBody = null) {
+	macro saveNewThreadAsDraft {
 		AssertClick(
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
@@ -751,8 +720,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro splitThreadPG(threadSubject = null, threadSplitSubject = null, threadSplitReplyBody = null, threadSplitReplySubject = null, threadReplyBody = null) {
+	macro splitThreadPG {
 		Click(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS_2");
 
 		MenuItem.click(menuItem = "Split Thread");
@@ -805,8 +773,7 @@ definition {
 		AssertElementNotPresent(locator1 = "MessageBoardsThread#THREAD_BODY_2");
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -834,15 +801,13 @@ definition {
 		RecycleBin.emptyCP();
 	}
 
-	@summary = "Default summary"
-	macro viewAnonymousPostingCheckboxCP() {
+	macro viewAnonymousPostingCheckboxCP {
 		LexiconEntry.gotoAddMenuItem(menuItem = "Thread");
 
 		AssertElementPresent(locator1 = "Checkbox#ANONYMOUS");
 	}
 
-	@summary = "Default summary"
-	macro viewAnswerPG(threadSubject = null) {
+	macro viewAnswerPG {
 		var key_threadSubject = ${threadSubject};
 
 		AssertTextEquals.assertPartialText(
@@ -862,8 +827,7 @@ definition {
 			value1 = "Back");
 	}
 
-	@summary = "Default summary"
-	macro viewAsWorkflowAsset(threadSubject = null, threadBody = null) {
+	macro viewAsWorkflowAsset {
 		SiteAdmin.viewPortletTitle(portletTitle = ${threadSubject});
 
 		AssertTextEquals(
@@ -872,8 +836,7 @@ definition {
 			value1 = ${threadBody});
 	}
 
-	@summary = "Default summary"
-	macro viewBBCodeNoXSS(threadSubject = null, threadBody = null, userName = null) {
+	macro viewBBCodeNoXSS {
 		var key_threadBody = ${threadBody};
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
@@ -893,8 +856,7 @@ definition {
 			value1 = ${threadBody});
 	}
 
-	@summary = "Default summary"
-	macro viewCP(threadSubject = null, mbAttachmentFile = null, threadBody = null, postsNumber = null, userName = null) {
+	macro viewCP {
 		var key_threadBody = ${threadBody};
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
@@ -944,8 +906,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultCP(threadSubject = null, userName = null) {
+	macro viewDefaultCP {
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
 
@@ -968,8 +929,7 @@ definition {
 		AssertElementNotPresent(locator1 = "MessageBoards#VERTICAL_ELLIPSIS");
 	}
 
-	@summary = "Default summary"
-	macro viewDoNotHaveRequiredPermissionsPG(threadSubject = null, userName = null) {
+	macro viewDoNotHaveRequiredPermissionsPG {
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
 
@@ -990,8 +950,7 @@ definition {
 		AssertElementNotPresent(locator1 = "MessageBoards#THREAD_LIST_LAST_POST");
 	}
 
-	@summary = "Default summary"
-	macro viewLockedPG(threadSubject = null) {
+	macro viewLockedPG {
 		var key_threadStatus = "Locked";
 		var key_threadSubject = ${threadSubject};
 
@@ -1020,8 +979,7 @@ definition {
 		AssertElementNotPresent(locator1 = "MessageBoardsThread#MESSAGE_EDIT_1");
 	}
 
-	@summary = "Default summary"
-	macro viewMarkAsQuestionCheckedCP(threadSubject = null) {
+	macro viewMarkAsQuestionCheckedCP {
 		LexiconEntry.gotoAddMenuItem(menuItem = "Thread");
 
 		AssertVisible(locator1 = "Button#PUBLISH");
@@ -1039,8 +997,7 @@ definition {
 			value1 = "Cancel");
 	}
 
-	@summary = "Default summary"
-	macro viewMarkAsQuestionNotCheckedCP(threadSubject = null) {
+	macro viewMarkAsQuestionNotCheckedCP {
 		LexiconEntry.gotoAddMenuItem(menuItem = "Thread");
 
 		AssertVisible(locator1 = "Button#PUBLISH");
@@ -1058,22 +1015,19 @@ definition {
 			value1 = "Cancel");
 	}
 
-	@summary = "Default summary"
-	macro viewMarkedAsQuestionPG(threadSubject = null) {
+	macro viewMarkedAsQuestionPG {
 		AssertElementPresent(
 			key_threadSubject = ${threadSubject},
 			locator1 = "MessageBoards#THREAD_LIST_QUESTION_MARK_ICON");
 	}
 
-	@summary = "Default summary"
-	macro viewNoAnonymousPostingCheckboxCP() {
+	macro viewNoAnonymousPostingCheckboxCP {
 		LexiconEntry.gotoAddMenuItem(menuItem = "Thread");
 
 		AssertElementNotPresent(locator1 = "Checkbox#ANONYMOUS");
 	}
 
-	@summary = "Default summary"
-	macro viewNoPG(threadSubject = null) {
+	macro viewNoPG {
 		var key_threadSubject = ${threadSubject};
 
 		AssertTextEquals.assertText(
@@ -1091,8 +1045,7 @@ definition {
 		AssertElementNotPresent(locator1 = "MessageBoards#THREAD_LIST_LAST_POST");
 	}
 
-	@summary = "Default summary"
-	macro viewNoXSSPG(threadSubject = null, userName = null) {
+	macro viewNoXSSPG {
 		var key_threadBody = "";
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
@@ -1116,8 +1069,7 @@ definition {
 			value1 = "");
 	}
 
-	@summary = "Default summary"
-	macro viewPG(threadSubject = null, workflowTask = null, threadBody2 = null, threadBody = null, fontSize = null, threadSubject2 = null, userName = null) {
+	macro viewPG {
 		var key_threadBody = ${threadBody};
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
@@ -1173,8 +1125,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewPGViaAP(threadSubject = null, threadBody = null) {
+	macro viewPGViaAP {
 		var key_assetTitle = ${threadSubject};
 
 		AssertTextEquals(
@@ -1204,8 +1155,7 @@ definition {
 			value1 = ${threadBody});
 	}
 
-	@summary = "Default summary"
-	macro viewReplyCP(threadSubject = null, mbAttachmentFile = null, threadBody = null, userName = null) {
+	macro viewReplyCP {
 		var key_threadBody = ${threadBody};
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
@@ -1225,8 +1175,7 @@ definition {
 			value1 = ${threadBody});
 	}
 
-	@summary = "Default summary"
-	macro viewReplyPG(threadSubject = null, loggedOut = null, postCount = null, guestReply = null, threadBody = null, mbThreadAttachment = null, userName = null, threadReplyBody = null) {
+	macro viewReplyPG {
 		var key_postsNumber = ${postCount};
 		var key_threadBody = ${threadBody};
 		var key_threadSubject = ${threadSubject};
@@ -1323,8 +1272,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewReplyWithUpvote(threadSubject = null, threadReplyBodyList = null, postCount = null, threadBody = null, userName = null) {
+	macro viewReplyWithUpvote {
 		var key_postsNumber = ${postCount};
 		var key_threadBody = ${threadBody};
 		var key_threadSubject = ${threadSubject};
@@ -1369,8 +1317,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewSplitThreadPG(threadSubject = null, threadSplitReplyBody = null, threadBody = null, userName = null, pageName = null, threadReplyBody = null, threadSplitReplySubject = null) {
+	macro viewSplitThreadPG {
 		var key_threadBody = ${threadBody};
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
@@ -1445,8 +1392,7 @@ definition {
 		AssertElementNotPresent(locator1 = "MessageBoardsThread#THREAD_BODY_2");
 	}
 
-	@summary = "Default summary"
-	macro viewStatisticsPostsCountDefaultPG() {
+	macro viewStatisticsPostsCountDefaultPG {
 		AssertClick(
 			locator1 = "MessageBoards#NAVIGATION_STATISTICS",
 			value1 = "Statistics");
@@ -1474,8 +1420,7 @@ definition {
 			value1 = "There are no top posters.");
 	}
 
-	@summary = "Default summary"
-	macro viewStatisticsPostsCountPG(userMessageboardsRank = null, userName = null, threadPostNumber = null) {
+	macro viewStatisticsPostsCountPG {
 		AssertClick(
 			locator1 = "MessageBoards#NAVIGATION_STATISTICS",
 			value1 = "Statistics");
@@ -1501,8 +1446,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewStatisticsTopPoster(userMessageboardsRank = null, userPostNumber = null, userName = null) {
+	macro viewStatisticsTopPoster {
 		AssertClick(
 			locator1 = "MessageBoards#NAVIGATION_STATISTICS",
 			value1 = "Statistics");
@@ -1541,8 +1485,7 @@ definition {
 		AssertElementPresent(locator1 = "MessageBoardsStatistics#TOP_POSTERS_AUTHOR_ICON");
 	}
 
-	@summary = "Default summary"
-	macro viewWithWorkflowPG(threadSubject = null, workflowTask = null, threadBody = null, userName = null) {
+	macro viewWithWorkflowPG {
 		var key_threadBody = "threadBody";
 		var key_threadSubject = ${threadSubject};
 		var key_userName = ${userName};
@@ -1599,8 +1542,7 @@ definition {
 			value1 = ${threadBody});
 	}
 
-	@summary = "Default summary"
-	macro viewWithWorkflowPGViaAP(threadSubject = null) {
+	macro viewWithWorkflowPGViaAP {
 		AssertElementNotPresent(
 			key_assetTitle = ${threadSubject},
 			locator1 = "AP#ASSET_ABSTRACT_TITLE");

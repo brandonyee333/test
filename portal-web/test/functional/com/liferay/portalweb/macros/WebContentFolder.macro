@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addCP(folderDescription = null, folderName = null) {
+	macro addCP {
 		var key_webContentTitle = ${folderName};
 
 		LexiconEntry.gotoAdd();
@@ -25,8 +24,7 @@ definition {
 			value1 = ${folderName});
 	}
 
-	@summary = "Default summary"
-	macro addSubfolderCP(subfolderName = null, subfolderDescription = null, folderName = null) {
+	macro addSubfolderCP {
 		var key_webContentTitle = ${folderName};
 
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
@@ -56,8 +54,7 @@ definition {
 			value1 = ${subfolderName});
 	}
 
-	@summary = "Default summary"
-	macro checkSubfolderPermissions(subfolder = null, folderName = null) {
+	macro checkSubfolderPermissions {
 		var key_webContentTitle = ${folderName};
 
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
@@ -78,8 +75,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro configureWorkflowCP(workflowRestriction = null, workflowDefinition = null, structureName = null, folderName = null) {
+	macro configureWorkflowCP {
 		WebContentFolder.gotoEditCP(
 			folderName = ${folderName},
 			webContentTitle = ${folderName});
@@ -127,8 +123,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro gotoCP(webContentTitle = null, folderName = null) {
+	macro gotoCP {
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
 
 		var key_webContentTitle = ${webContentTitle};
@@ -146,8 +141,7 @@ definition {
 			value1 = ${folderName});
 	}
 
-	@summary = "Default summary"
-	macro gotoEditCP(webContentTitle = null, folderName = null) {
+	macro gotoEditCP {
 		var key_webContentTitle = ${folderName};
 
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
@@ -161,8 +155,7 @@ definition {
 		MenuItem.click(menuItem = "Edit");
 	}
 
-	@summary = "Default summary"
-	macro moveToRecycleBinCP(folderName = null) {
+	macro moveToRecycleBinCP {
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
 
 		var key_webContentTitle = ${folderName};
@@ -178,8 +171,7 @@ definition {
 		AssertElementPresent(locator1 = "Message#SUCCESS");
 	}
 
-	@summary = "Default summary"
-	macro viewFolderWorkflow(workflowResourceValue = null, folderName = null) {
+	macro viewFolderWorkflow {
 		WebContentFolder.gotoEditCP(
 			folderName = ${folderName},
 			webContentTitle = ${folderName});

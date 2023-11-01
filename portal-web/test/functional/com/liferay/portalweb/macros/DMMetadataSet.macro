@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro add(metadataSetName = null, dmMetadataSetFieldNames = null) {
+	macro add {
 		DMMetadataSet.selectMetadataSetsFrame();
 
 		AssertTextEquals(
@@ -24,8 +23,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro addField(fieldName = null, field = null, fieldFieldLabel = null) {
+	macro addField {
 		var key_field = ${field};
 
 		DragAndDrop(
@@ -72,8 +70,7 @@ definition {
 		Click(locator1 = "TextInput#NAME");
 	}
 
-	@summary = "Default summary"
-	macro selectMetadataSetsFrame() {
+	macro selectMetadataSetsFrame {
 		if (IsElementPresent(locator1 = "IFrame#DIALOG")) {
 			SelectFrameTop();
 
@@ -81,8 +78,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(

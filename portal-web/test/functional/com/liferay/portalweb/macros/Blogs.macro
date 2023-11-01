@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addDraft(entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro addDraft {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -12,8 +11,7 @@ definition {
 		BlogsEntry.saveAsDraft();
 	}
 
-	@summary = "Default summary"
-	macro addDraftViaAutoSave(entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro addDraftViaAutoSave {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -24,8 +22,7 @@ definition {
 		BlogsEntry.autoSaveDraft();
 	}
 
-	@summary = "Default summary"
-	macro addEntry(entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro addEntry {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -36,8 +33,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addEntryWithCategory(entrySubtitle = null, vocabularyName = null, entryTitle = null, categoryName = null, entryContent = null) {
+	macro addEntryWithCategory {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -54,8 +50,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addEntryWithCoverImageFromDMFolders(dmSubFolderName = null, entrySubtitle = null, imageFileName = null, dmFolderName = null, entryTitle = null, entryContent = null) {
+	macro addEntryWithCoverImageFromDMFolders {
 		BlogsNavigator.gotoAddEntry();
 
 		AlloyEditor.addTitle(title = ${entryTitle});
@@ -77,8 +72,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addEntryWithHTML(entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro addEntryWithHTML {
 		BlogsNavigator.gotoAddEntry();
 
 		AlloyEditor.addTitle(title = ${entryTitle});
@@ -90,8 +84,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addEntryWithImageViaLinkBrowseFromDM(imageFileName = null, entryTitle = null, entryContent = null) {
+	macro addEntryWithImageViaLinkBrowseFromDM {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -107,8 +100,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addEntryWithPermissions(viewableBy = null, entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro addEntryWithPermissions {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -123,8 +115,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addEntryWithTag(entrySubtitle = null, tagName = null, entryTitle = null, entryContent = null) {
+	macro addEntryWithTag {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -139,8 +130,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addEntryWithTags(entrySubtitle = null, tagNameList = null, entryTitle = null, entryContent = null) {
+	macro addEntryWithTags {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -157,8 +147,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addEntryWithUploadedCoverImage(navTab = null, uploadFileName = null, coverImageName = null, entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro addEntryWithUploadedCoverImage {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsNavigator.gotoSelectFile();
@@ -181,8 +170,7 @@ definition {
 			locator1 = "BlogsEntry#ENTRY_COVER_IMAGE_UNPUBLISHED");
 	}
 
-	@summary = "Default summary"
-	macro addViaAP(entryTitle = null, entryContent = null) {
+	macro addViaAP {
 		AssetPublisherPortlet.addAsset(assetType = "Blogs Entry");
 
 		AlloyEditor.addTitleAndContent(
@@ -208,8 +196,7 @@ definition {
 			value1 = ${entryContent});
 	}
 
-	@summary = "Default summary"
-	macro addViaAPSelectScope(entryTitle = null, entryContent = null) {
+	macro addViaAPSelectScope {
 		AssetPublisherPortlet.addAsset(assetType = "Add Content (Select Scope and Type)");
 
 		Select(
@@ -243,8 +230,7 @@ definition {
 			value1 = ${entryContent});
 	}
 
-	@summary = "Default summary"
-	macro addWithCustomAbstract(entrySubtitle = null, entryAbstractDescription = null, entryTitle = null, entryContent = null) {
+	macro addWithCustomAbstract {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -259,8 +245,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addWithCustomAbstractViaAP(entryAbstractDescription = null, entryTitle = null, entryContent = null) {
+	macro addWithCustomAbstractViaAP {
 		AssetPublisherPortlet.addAsset(assetType = "Blogs Entry");
 
 		BlogsEntry.addEntryContent(
@@ -276,8 +261,7 @@ definition {
 			value1 = "Publish");
 	}
 
-	@summary = "Default summary"
-	macro addWithDefaultAbstract(entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro addWithDefaultAbstract {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -294,8 +278,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro addWithInvalidContent(entrySubtitle = null, entryInvalidContent = null, entryTitle = null) {
+	macro addWithInvalidContent {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -306,8 +289,7 @@ definition {
 		BlogsEntry.publishWithInvalidContent();
 	}
 
-	@summary = "Default summary"
-	macro addWithInvalidTitle(entrySubtitle = null, entryInvalidTitle = null, entryContent = null) {
+	macro addWithInvalidTitle {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -318,8 +300,7 @@ definition {
 		BlogsEntry.publishWithInvalidTitle();
 	}
 
-	@summary = "Default summary"
-	macro addWithInvalidTitleLength(entrySubtitle = null, entryInvalidTitleLength = null, entryContent = null) {
+	macro addWithInvalidTitleLength {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -330,8 +311,7 @@ definition {
 		BlogsEntry.publishWithInvalidTitleLength();
 	}
 
-	@summary = "Default summary"
-	macro addWithWorkflow(entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro addWithWorkflow {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -342,8 +322,7 @@ definition {
 		BlogsEntry.publishWithWorkflow();
 	}
 
-	@summary = "Default summary"
-	macro addWithWorkflowViaAP(entryTitle = null, entryContent = null) {
+	macro addWithWorkflowViaAP {
 		AssetPublisherPortlet.addAsset(assetType = "Blogs Entry");
 
 		AlloyEditor.addTitleAndContent(
@@ -359,8 +338,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro disableSocialBookmarkSites() {
+	macro disableSocialBookmarkSites {
 		Navigator.gotoPage(pageName = "Blogs Page");
 
 		Portlet.gotoPortletOptions(
@@ -376,8 +354,7 @@ definition {
 		IFrame.selectTopFrame();
 	}
 
-	@summary = "Default summary"
-	macro editDraftPG(entrySubtitleEdit = null, entrySubtitle = null, entryContentEdit = null, entryTitleEdit = null, entryTitle = null, entryContent = null) {
+	macro editDraftPG {
 		BlogsNavigator.gotoEditPG(entryTitle = ${entryTitle});
 
 		BlogsEntry.editEntryContent(
@@ -395,8 +372,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro editEntryPG(entrySubtitleEdit = null, entrySubtitle = null, entryContentEdit = null, entryTitleEdit = null, entryTitle = null, entryContent = null) {
+	macro editEntryPG {
 		BlogsNavigator.gotoEditPG(entryTitle = ${entryTitle});
 
 		BlogsEntry.editEntryContent(
@@ -410,8 +386,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro enableSocialBookmarkSites(socialBookmarkSites = null) {
+	macro enableSocialBookmarkSites {
 		Navigator.gotoPage(pageName = "Blogs Page");
 
 		Portlet.gotoPortletOptions(
@@ -433,8 +408,7 @@ definition {
 		IFrame.selectTopFrame();
 	}
 
-	@summary = "Default summary"
-	macro publishDraftCP(entrySubtitle = null, entryTitle = null, entryContent = null) {
+	macro publishDraftCP {
 		BlogsNavigator.gotoEditCP(entryTitle = ${entryTitle});
 
 		BlogsEntry.viewEntry(
@@ -445,8 +419,7 @@ definition {
 		PortletEntry.publish();
 	}
 
-	@summary = "Default summary"
-	macro subscribePG() {
+	macro subscribePG {
 		AssertClick(
 			locator1 = "Blogs#SUBSCRIBE_LINK",
 			value1 = "Subscribe");
@@ -454,8 +427,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro tearDownConfigurationDisplaySettingsPG(pageName = null) {
+	macro tearDownConfigurationDisplaySettingsPG {
 		Navigator.gotoPage(pageName = ${pageName});
 
 		BlogsNavigator.gotoConfigurationSetupPG();
@@ -467,8 +439,7 @@ definition {
 		IFrame.selectTopFrame();
 	}
 
-	@summary = "Default summary"
-	macro tearDownConfigurationScopePG(pageName = null) {
+	macro tearDownConfigurationScopePG {
 		Navigator.gotoPage(pageName = ${pageName});
 
 		BlogsNavigator.gotoConfigurationSetupPG();
@@ -478,8 +449,7 @@ definition {
 		BlogsConfiguration.selectScopePG(scopeSelection = "Liferay");
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -507,8 +477,7 @@ definition {
 		RecycleBin.emptyCP();
 	}
 
-	@summary = "Default summary"
-	macro tearDownSubscribePG(pageName = null) {
+	macro tearDownSubscribePG {
 		Navigator.gotoPage(pageName = ${pageName});
 
 		AssertClick(
@@ -518,8 +487,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro viewControlsPG() {
+	macro viewControlsPG {
 		AssertTextEquals(
 			locator1 = "Blogs#ADD_BLOGS_ENTRY",
 			value1 = "Add Blog Entry");
@@ -533,8 +501,7 @@ definition {
 			value1 = "RSS");
 	}
 
-	@summary = "Default summary"
-	macro viewNoEntryCP() {
+	macro viewNoEntryCP {
 		AssertTextEquals(
 			locator1 = "Message#EMPTY_INFO",
 			value1 = "No entries were found.");

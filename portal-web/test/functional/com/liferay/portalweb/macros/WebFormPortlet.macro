@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addField(wfNewFieldName = null, wfPreviousFieldName = null, optionsList = null, wfFieldType = null, optional = null) {
+	macro addField {
 		var key_wfPreviousFieldName = ${wfPreviousFieldName};
 
 		Click(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_ADD_ROW_BUTTON");
@@ -14,8 +13,7 @@ definition {
 			wfNewFieldName = ${wfNewFieldName});
 	}
 
-	@summary = "Default summary"
-	macro configureSetupFormFieldsPG(wfInformationDescription = null, wfInformationTitle = null, portletName = null) {
+	macro configureSetupFormFieldsPG {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");
@@ -35,8 +33,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro deleteEditableField(wfFieldName = null) {
+	macro deleteEditableField {
 		WebFormPortlet.viewEditableField(wfFieldName = ${wfFieldName});
 
 		var key_wfFieldName = ${wfFieldName};
@@ -46,8 +43,7 @@ definition {
 		WebFormPortlet.viewEditableFieldNotVisibleCmd(wfFieldName = ${wfFieldName});
 	}
 
-	@summary = "Default summary"
-	macro editField(wfNewFieldName = null, optionsList = null, wfFieldType = null, optional = null, wfFieldName = null) {
+	macro editField {
 		var key_wfFieldName = ${wfFieldName};
 
 		if (${wfFieldName} == "New Item") {
@@ -86,8 +82,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro editParagraphField(wfNewFieldName = null, wfParagraphFieldText = null) {
+	macro editParagraphField {
 		var key_wfNewFieldName = ${wfNewFieldName};
 
 		Type(
@@ -95,8 +90,7 @@ definition {
 			value1 = ${wfParagraphFieldText});
 	}
 
-	@summary = "Default summary"
-	macro saveConfiguration() {
+	macro saveConfiguration {
 		AssertClick(
 			locator1 = "Button#SAVE",
 			value1 = "Save");
@@ -106,29 +100,25 @@ definition {
 		SelectFrameTop(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro viewEditableField(wfFieldName = null) {
+	macro viewEditableField {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertElementPresent(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_NAME_FIELD");
 	}
 
-	@summary = "Default summary"
-	macro viewEditableFieldNotPresent(wfFieldName = null) {
+	macro viewEditableFieldNotPresent {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertElementNotPresent(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_NAME_EDITABLE_FIELD");
 	}
 
-	@summary = "Default summary"
-	macro viewEditableFieldNotVisibleCmd(wfFieldName = null) {
+	macro viewEditableFieldNotVisibleCmd {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertNotVisible(locator1 = "WebFormConfiguration#SETUP_FORM_FIELDS_NAME_FIELD");
 	}
 
-	@summary = "Default summary"
-	macro viewSubmittedField(optionsList = null, optional = null, wfFieldName = null) {
+	macro viewSubmittedField {
 		var key_wfFieldName = ${wfFieldName};
 
 		AssertTextEquals(

@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addCP(sourceURL = null) {
+	macro addCP {
 		IFrame.selectConfigurationFrame();
 
 		Type(
@@ -13,40 +12,33 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro closeFrame() {
+	macro closeFrame {
 		SelectFrame(value1 = "relative=top");
 
 		Click(locator1 = "Icon#CLOSE");
 	}
 
-	@summary = "Default summary"
-	macro selectCategoryFrame() {
+	macro selectCategoryFrame {
 		SelectFrame(locator1 = "IFrame#SELECT_CATEGORY");
 	}
 
-	@summary = "Default summary"
-	macro selectConfigurationFrame() {
+	macro selectConfigurationFrame {
 		SelectFrame(locator1 = "IFrame#CONFIGURATION");
 	}
 
-	@summary = "Default summary"
-	macro selectDialogFrame() {
+	macro selectDialogFrame {
 		SelectFrame(locator1 = "IFrame#DIALOG");
 	}
 
-	@summary = "Default summary"
-	macro selectEditAssetFrame() {
+	macro selectEditAssetFrame {
 		SelectFrame(locator1 = "IFrame#EDIT_ASSET");
 	}
 
-	@summary = "Default summary"
-	macro selectModalFrame() {
+	macro selectModalFrame {
 		SelectFrame(locator1 = "IFrame#MODAL_IFRAME");
 	}
 
-	@summary = "Default summary"
-	macro selectPermissionsFrame() {
+	macro selectPermissionsFrame {
 		var key_iframeTitle = "Permissions";
 
 		AssertElementPresent(locator1 = "IFrame#IFRAME_TITLE");
@@ -54,8 +46,7 @@ definition {
 		IFrame.selectDialogFrame();
 	}
 
-	@summary = "Default summary"
-	macro selectTopFrame() {
+	macro selectTopFrame {
 		SelectFrame(value1 = "relative=top");
 	}
 

@@ -1,42 +1,36 @@
 definition {
 
-	@summary = "Default summary"
-	macro gotoAuthenticationFacebook() {
+	macro gotoAuthenticationFacebook {
 		AssertClick(
 			locator1 = "NavTab#FACEBOOK",
 			value1 = "Facebook");
 	}
 
-	@summary = "Default summary"
-	macro gotoAuthenticationGoogle() {
+	macro gotoAuthenticationGoogle {
 		AssertClick(
 			locator1 = "NavTab#GOOGLE",
 			value1 = "Google");
 	}
 
-	@summary = "Default summary"
-	macro gotoAuthenticationLDAP() {
+	macro gotoAuthenticationLDAP {
 		AssertClick(
 			locator1 = "NavTab#LDAP",
 			value1 = "LDAP");
 	}
 
-	@summary = "Default summary"
-	macro gotoAuthenticationOpenID() {
+	macro gotoAuthenticationOpenID {
 		AssertClick(
 			locator1 = "NavTab#OPENID",
 			value1 = "OpenID");
 	}
 
-	@summary = "Default summary"
-	macro gotoAuthenticationOpenSSO() {
+	macro gotoAuthenticationOpenSSO {
 		AssertClick(
 			locator1 = "NavTab#OPENSSO",
 			value1 = "OpenSSO");
 	}
 
-	@summary = "Default summary"
-	macro gotoLDAP() {
+	macro gotoLDAP {
 		Panel.expandPanel(panelHeading = "Authentication");
 
 		PortalSettingsNavigator.gotoAuthenticationLDAP();

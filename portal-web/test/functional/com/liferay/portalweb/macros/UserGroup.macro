@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addCP(selectSiteTemplate = null, userGroupName = null, userGroupNameVariation = null, siteTemplateName = null) {
+	macro addCP {
 		var key_userGroupName = ${userGroupName};
 
 		LexiconEntry.gotoAdd();
@@ -48,8 +47,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro addPageCP(sitePagePrivacy = null, userGroupName = null, pageName = null) {
+	macro addPageCP {
 		var key_userGroupName = ${userGroupName};
 
 		Type(
@@ -67,8 +65,7 @@ definition {
 			sitePagePrivacy = ${sitePagePrivacy});
 	}
 
-	@summary = "Default summary"
-	macro addSiteCP(userGroupSite = null, checkEnablePropagationCheckbox = null, userGroupName = null) {
+	macro addSiteCP {
 		UserGroup.gotoActionsCmd(userGroupName = ${userGroupName});
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Edit");
@@ -89,8 +86,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro assignAllMembersCP(userGroupName = null) {
+	macro assignAllMembersCP {
 		var key_userGroupName = ${userGroupName};
 
 		Type(
@@ -120,8 +116,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro assignMemberCP(userGroupName = null, userScreenName = null) {
+	macro assignMemberCP {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = ${userGroupName});
@@ -167,8 +162,7 @@ definition {
 			value1 = ${userScreenName});
 	}
 
-	@summary = "Default summary"
-	macro deleteCP(userGroupName = null) {
+	macro deleteCP {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = ${userGroupName});
@@ -194,8 +188,7 @@ definition {
 		AssertElementNotPresent(locator1 = "UserGroups#USER_GROUP_TABLE_NAME");
 	}
 
-	@summary = "Default summary"
-	macro deleteUserCP(userGroupName = null) {
+	macro deleteUserCP {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = ${userGroupName});
@@ -223,8 +216,7 @@ definition {
 			value1 = "You cannot delete user groups that have users.");
 	}
 
-	@summary = "Default summary"
-	macro editCP(userGroupName = null, userGroupNameEdit = null) {
+	macro editCP {
 		Pause(locator1 = 5000);
 
 		var key_userGroupName = ${userGroupName};
@@ -236,8 +228,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro gotoActionsCmd(userGroupName = null) {
+	macro gotoActionsCmd {
 		var key_userGroupName = ${userGroupName};
 
 		Type(
@@ -253,8 +244,7 @@ definition {
 			value1 = ${userGroupName});
 	}
 
-	@summary = "Default summary"
-	macro removeMemberCP(userGroupName = null, userScreenName = null) {
+	macro removeMemberCP {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = ${userGroupName});
@@ -280,8 +270,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro searchCP(userGroupName = null) {
+	macro searchCP {
 		var key_userGroupName = ${userGroupName};
 
 		Type(
@@ -305,8 +294,7 @@ definition {
 			value1 = ${userGroupName});
 	}
 
-	@summary = "Default summary"
-	macro searchMembersInUserGroupCP(searchTerm = null) {
+	macro searchMembersInUserGroupCP {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = ${searchTerm});
@@ -314,8 +302,7 @@ definition {
 		Click(locator1 = "Button#SUBMIT");
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -332,8 +319,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewAssignMemberCP(userGroupName = null, userScreenName = null) {
+	macro viewAssignMemberCP {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = ${userGroupName});
@@ -355,8 +341,7 @@ definition {
 			value1 = ${userScreenName});
 	}
 
-	@summary = "Default summary"
-	macro viewCP(userGroupName = null) {
+	macro viewCP {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = ${userGroupName});
@@ -384,15 +369,13 @@ definition {
 		AssertElementPresent(locator1 = "Button#SUBMIT");
 	}
 
-	@summary = "Default summary"
-	macro viewDefault() {
+	macro viewDefault {
 		AssertTextEquals(
 			locator1 = "Message#EMPTY_INFO",
 			value1 = "No user groups were found.");
 	}
 
-	@summary = "Default summary"
-	macro viewPG(userGroupName = null, siteName = null, portletName = null) {
+	macro viewPG {
 		Pause(locator1 = 5000);
 
 		var key_userGroupName = ${userGroupName};
@@ -418,8 +401,7 @@ definition {
 		Close(locator1 = "home - ${userGroupName} - ${siteName}");
 	}
 
-	@summary = "Default summary"
-	macro viewPortletCP() {
+	macro viewPortletCP {
 		AssertElementPresent(locator1 = "Button#PLUS");
 
 		AssertElementPresent(locator1 = "TextInput#SEARCH");
@@ -431,8 +413,7 @@ definition {
 		AssertElementPresent(locator1 = "Message#EMPTY_INFO");
 	}
 
-	@summary = "Default summary"
-	macro viewRemoveMemberCP(userGroupName = null, userFirstName = null) {
+	macro viewRemoveMemberCP {
 		var key_userGroupName = ${userGroupName};
 
 		Type(

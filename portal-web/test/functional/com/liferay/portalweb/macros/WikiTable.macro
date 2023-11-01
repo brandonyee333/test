@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro deleteEntry(wikiPageTitle = null) {
+	macro deleteEntry {
 		Click(locator1 = "Icon#DISPLAY_STYLE_LIST");
 
 		var key_wikiPageTitle = ${wikiPageTitle};
@@ -11,8 +10,7 @@ definition {
 		PortletEntry.clickMoveToRecycleBin();
 	}
 
-	@summary = "Default summary"
-	macro restoreEntry(wikiPageTitle = null) {
+	macro restoreEntry {
 		var key_wikiPageTitle = ${wikiPageTitle};
 
 		Click(locator1 = "WikiTable#ALL_PAGES_VERTICAL_ELLIPSIS");
@@ -20,8 +18,7 @@ definition {
 		MenuItem.click(menuItem = "Restore");
 	}
 
-	@summary = "Default summary"
-	macro viewEntry(wikiPageTitle = null, draftStatus = null) {
+	macro viewEntry {
 		var key_wikiPageTitle = ${wikiPageTitle};
 
 		AssertTextEquals(
@@ -33,8 +30,7 @@ definition {
 			value1 = ${draftStatus});
 	}
 
-	@summary = "Default summary"
-	macro viewNoEntry(wikiPageTitle = null) {
+	macro viewNoEntry {
 		var key_wikiPageTitle = ${wikiPageTitle};
 
 		AssertElementNotPresent(locator1 = "WikiTable#ALL_PAGES_WIKI_PAGE_TITLE");

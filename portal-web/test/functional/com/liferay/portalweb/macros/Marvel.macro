@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro viewAsGuestPG() {
+	macro viewAsGuestPG {
 		AssertElementNotPresent(locator1 = "IFrame#MARVEL");
 
 		Navigator.openSpecificURL(url = "http://localhost:5601/o/portal-search-elasticsearch-marvel-web/marvel-proxy/app/kibana");
@@ -11,8 +10,7 @@ definition {
 			value1 = "{\"statusCode\":404,\"error\":\"Not Found\"}");
 	}
 
-	@summary = "Default summary"
-	macro viewPG() {
+	macro viewPG {
 		SelectFrame(locator1 = "IFrame#MARVEL");
 
 		AssertElementPresent(locator1 = "Marvel#HOME_HEADER");

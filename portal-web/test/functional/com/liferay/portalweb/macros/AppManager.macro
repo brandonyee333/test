@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro deactivateAppCP(appName = null) {
+	macro deactivateAppCP {
 		LexiconEntry.openEntryMenu(rowEntry = ${appName});
 
 		MenuItem.clickNoError(menuItem = "Deactivate");
@@ -9,8 +8,7 @@ definition {
 		Confirm(value1 = "Are you sure you want to deactivate this?");
 	}
 
-	@summary = "Default summary"
-	macro selectAppCP(appName = null) {
+	macro selectAppCP {
 		var key_appName = ${appName};
 
 		while (IsElementNotPresent(locator1 = "AppManager#APP_NAME")) {
@@ -22,8 +20,7 @@ definition {
 			value1 = ${appName});
 	}
 
-	@summary = "Default summary"
-	macro uninstallAppCP(appName = null) {
+	macro uninstallAppCP {
 		Search.searchCP(searchTerm = ${appName});
 
 		LexiconEntry.openEntryMenu(rowEntry = ${appName});
@@ -35,8 +32,7 @@ definition {
 		Pause(locator1 = 15000);
 	}
 
-	@summary = "Default summary"
-	macro uploadAppCP(warFileName = null, appName = null) {
+	macro uploadAppCP {
 		Click(locator1 = "Portlet#OPTIONS_ICON");
 
 		MenuItem.click(menuItem = "Upload");
@@ -72,8 +68,7 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "HotDeployException: Error registering portlets for ${appName}");
 	}
 
-	@summary = "Default summary"
-	macro viewAppCP(appName = null, appStatus = null) {
+	macro viewAppCP {
 		Search.searchCP(searchTerm = ${appName});
 
 		AssertTextEquals.assertPartialText(
@@ -88,8 +83,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewNoAppCP(appName = null) {
+	macro viewNoAppCP {
 		var key_appName = ${appName};
 
 		AssertElementNotPresent(locator1 = "AppManager#APP_NAME");
@@ -101,8 +95,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewStatus(appName = null, appStatus = null) {
+	macro viewStatus {
 		AssertTextEquals.assertPartialText(
 			key_appName = ${appName},
 			key_appStatus = ${appStatus},
@@ -110,8 +103,7 @@ definition {
 			value1 = ${appStatus});
 	}
 
-	@summary = "Default summary"
-	macro viewUninstallAppCP(appName = null) {
+	macro viewUninstallAppCP {
 		Search.searchCP(searchTerm = ${appName});
 
 		AssertElementNotPresent(

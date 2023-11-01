@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addAssignees(assigneeName = null, assigneeType = null) {
+	macro addAssignees {
 		LexiconEntry.gotoAdd();
 
 		SelectFrame(locator1 = "IFrame#SELECT_ASSIGNEES");
@@ -27,8 +26,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro addCP(roleTitle = null, roleName = null, roleType = null, roleDescription = null) {
+	macro addCP {
 		if (${roleType} == "Organization") {
 			Navigator.gotoNavItem(navItem = "Organization Roles");
 		}
@@ -71,8 +69,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro addPermissions(permissionDefinitionKeys = null) {
+	macro addPermissions {
 		for (var permissionDefinitionKey : list ${permissionDefinitionKeys}) {
 			Check(locator1 = "RolesPermissions#${permissionDefinitionKey}");
 		}
@@ -82,8 +79,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro addStagingAdminRole(roleTitle = null, roleDescription = null) {
+	macro addStagingAdminRole {
 		var roleName = "Staging Admin";
 
 		Role.addCP(
@@ -103,8 +99,7 @@ definition {
 			roleType = "Site");
 	}
 
-	@summary = "Default summary"
-	macro definePermissionCmdCP(permissionDefinitionKeys = null, siteNameScope = null, permissionDefinitionKeyChange = null, removeLink = null, confirmation = null, roleType = null, remove = null, permissionDefinitionKey = null, permissionDefinitionKeySiteScope = null, roleName = null, permissionNavigationValue = null, permissionNavigationKey = null, roleUser = null) {
+	macro definePermissionCmdCP {
 		Role.editPermissionCmdCP(
 			confirmation = ${confirmation},
 			define = "true",
@@ -122,8 +117,7 @@ definition {
 			siteNameScope = ${siteNameScope});
 	}
 
-	@summary = "Default summary"
-	macro definePermissionCP(permissionDefinitionKey = null, siteNameScope = null, permissionDefinitionValue = null, roleName = null, removeLink = null, permissionNavigationValue = null, confirmation = null, roleType = null, roleUser = null, remove = null) {
+	macro definePermissionCP {
 		Role.definePermissionCmdCP(
 			confirmation = ${confirmation},
 			permissionDefinitionKey = ${permissionDefinitionKey},
@@ -140,8 +134,7 @@ definition {
 			remove = ${remove});
 	}
 
-	@summary = "Default summary"
-	macro definePermissionPG(permissionsList = null, roleName = null) {
+	macro definePermissionPG {
 		var key_roleName = StringUtil.replace(${roleName}, " ", "-");
 
 		var key_roleName = StringUtil.lowerCase(${key_roleName});
@@ -168,8 +161,7 @@ definition {
 		AssertChecked(locator1 = "Permissions#${permissionDefinitionKey}");
 	}
 
-	@summary = "Default summary"
-	macro definePermissionsCP(permissionDefinitionKeys = null, roleName = null, roleType = null, roleUser = null) {
+	macro definePermissionsCP {
 		Role.definePermissionCmdCP(
 			permissionDefinitionKeys = ${permissionDefinitionKeys},
 			roleName = ${roleName},
@@ -177,8 +169,7 @@ definition {
 			roleUser = ${roleUser});
 	}
 
-	@summary = "Default summary"
-	macro deleteCP(roleName = null) {
+	macro deleteCP {
 		Type.sendKeys(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
 			value1 = "Name");
@@ -194,8 +185,7 @@ definition {
 		Confirm(value1 = "Are you sure you want to delete this role? It will be deleted immediately. If it is a reviewer role, its task assignments will be deleted along with it.");
 	}
 
-	@summary = "Default summary"
-	macro editPermissionCmdCP(siteNameScope = null, removeLink = null, confirmation = null, roleType = null, remove = null, roleName = null, define = null, roleUser = null) {
+	macro editPermissionCmdCP {
 		var key_roleName = ${roleName};
 
 		if (contains("Organization,Site", ${roleType})) {
@@ -421,13 +411,11 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro openRolesAdmin() {
+	macro openRolesAdmin {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_roles_admin_web_portlet_RolesAdminPortlet");
 	}
 
-	@summary = "Default summary"
-	macro removePermissionCP(permissionDefinitionKey = null, permissionDefinitionKeys = null, siteNameScope = null, permissionDefinitionValue = null, permissionDefinitionKeyChange = null, permissionDefinitionKeySiteScope = null, roleName = null, permissionNavigationValue = null, removeLink = null, permissionNavigationKey = null, roleType = null, roleUser = null) {
+	macro removePermissionCP {
 		Role.editPermissionCmdCP(
 			permissionDefinitionKey = ${permissionDefinitionKey},
 			permissionDefinitionKeyChange = ${permissionDefinitionKeyChange},
@@ -449,8 +437,7 @@ definition {
 			remove = "true");
 	}
 
-	@summary = "Default summary"
-	macro removePermissionPG(permissionDefinitionKey = null, roleName = null) {
+	macro removePermissionPG {
 		var key_roleName = StringUtil.replace(${roleName}, " ", "-");
 
 		var key_roleName = StringUtil.lowerCase(${key_roleName});
@@ -470,8 +457,7 @@ definition {
 		AssertNotChecked(locator1 = "Permissions#${permissionDefinitionKey}");
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -492,15 +478,13 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewAssignee(roleTitle = null, assigneeName = null) {
+	macro viewAssignee {
 		RoleNavigator.gotoAssignees(roleTitle = ${roleTitle});
 
 		LexiconEntry.viewEntryName(rowEntry = ${assigneeName});
 	}
 
-	@summary = "Default summary"
-	macro viewCP(roleName = null, roleType = null) {
+	macro viewCP {
 		if (contains("Organization,Site", ${roleType})) {
 			Navigator.gotoNavItem(navItem = "${roleType} Roles");
 		}
@@ -525,8 +509,7 @@ definition {
 			value1 = ${roleName});
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultCP() {
+	macro viewDefaultCP {
 		Type.sendKeys(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
 			value1 = "Name");
@@ -538,8 +521,7 @@ definition {
 			value1 = "No roles were found.");
 	}
 
-	@summary = "Default summary"
-	macro viewPermissionCP(permissionDefinitionKey = null, permissionDefinitionValue = null, remove = null) {
+	macro viewPermissionCP {
 		if (contains(${permissionDefinitionKey}, "CONTROL_PANEL_GENERAL_PERMISSIONS")) {
 			var permissionNavigationKey = "CONTROL_PANEL_GENERAL_PERMISSIONS";
 			var permissionNavigationValue = "General Permissions";
@@ -661,8 +643,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewPermissionPG(permissionDefinitionKey = null, permissionFlagged = null, roleName = null) {
+	macro viewPermissionPG {
 		var key_roleName = StringUtil.replace(${roleName}, " ", "-");
 
 		var key_roleName = StringUtil.lowerCase(${key_roleName});
@@ -675,8 +656,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewPermissionSubdirectory(navItem = null, subItemList = null) {
+	macro viewPermissionSubdirectory {
 		var key_navItem = ${navItem};
 
 		if (IsElementPresent(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_COLLAPSED")) {

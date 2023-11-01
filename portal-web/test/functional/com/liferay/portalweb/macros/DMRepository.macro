@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addDocumentum(dmCabinetName = null, dmRepositoryFieldName = null) {
+	macro addDocumentum {
 		Panel.expandPanel(panelHeading = "Repository Configuration");
 
 		Select(
@@ -17,8 +16,7 @@ definition {
 			value1 = ${dmRepositoryFieldName});
 	}
 
-	@summary = "Default summary"
-	macro addSharepoint(dmRepositorySiteURL = null, dmRepositoryLibraryPath = null, dmRepositoryName = null, dmRepositorySiteAbsoluteURL = null, dmRepositoryLibraryName = null) {
+	macro addSharepoint {
 		Panel.expandPanel(panelHeading = "Repository Configuration");
 
 		Select(
@@ -47,8 +45,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro gotoCP(dmRepositoryName = null) {
+	macro gotoCP {
 		var key_dmRepositoryName = ${dmRepositoryName};
 
 		Portlet.changeDisplayStyle(displayStyle = "Descriptive");
@@ -66,8 +63,7 @@ definition {
 			value1 = ${dmRepositoryName});
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -106,8 +102,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewBreadcrumb(dmRepositoryName = null) {
+	macro viewBreadcrumb {
 		var key_dmFolderName = ${dmRepositoryName};
 		var breadcrumbNameUppercase = StringUtil.upperCase(${dmRepositoryName});
 

@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addDate(month = null, year = null, day = null) {
+	macro addDate {
 		/*
 		To ensure the desired month will always be reached, please set the date in current year.
 		*/

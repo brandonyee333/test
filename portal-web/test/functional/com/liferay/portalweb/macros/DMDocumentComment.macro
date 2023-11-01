@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addPG(dmDocumentTitle = null, commentBody = null) {
+	macro addPG {
 		var key_dmDocumentTitle = ${dmDocumentTitle};
 
 		AssertClick(
@@ -23,8 +22,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro viewPG(dmDocumentTitle = null, commentBody = null) {
+	macro viewPG {
 		var key_dmDocumentTitle = ${dmDocumentTitle};
 
 		AssertClick(

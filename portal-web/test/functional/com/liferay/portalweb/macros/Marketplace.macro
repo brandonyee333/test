@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro smoke() {
+	macro smoke {
 		Page.add(pageName = "Blogs Test Page");
 
 		Portlet.addPG(

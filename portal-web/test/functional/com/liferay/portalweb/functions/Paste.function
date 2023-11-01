@@ -1,16 +1,16 @@
 @default = "paste"
 definition {
 
-	function ckEditorPaste() {
+	function ckEditorPaste {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible("//a[contains(@class,'cke_button__unlink') and contains(@class,'cke_button_disabled')]");
 
 		selenium.pause(1000);
 
-		selenium.selectFrame(${locator1});
+		selenium.selectFrame();
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible("//html/body");
 
 		selenium.mouseOver("//html/body");
 
@@ -18,21 +18,21 @@ definition {
 
 		selenium.selectFrame("relative=parent");
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors();
 
 		selenium.assertLiferayErrors();
 	}
 
-	function paste() {
+	function paste {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible();
 
-		selenium.mouseOver(${locator1});
+		selenium.mouseOver();
 
-		selenium.paste(${locator1});
+		selenium.paste();
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors();
 
 		selenium.assertLiferayErrors();
 	}

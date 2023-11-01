@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addCP(pageTemplateActive = null, pageTemplateName = null) {
+	macro addCP {
 		LexiconEntry.gotoAdd();
 
 		PortletEntry.inputName(name = ${pageTemplateName});
@@ -25,8 +24,7 @@ definition {
 			value1 = ${pageTemplateActive});
 	}
 
-	@summary = "Default summary"
-	macro configurePageTemplateLayout(pageTemplateName = null, columnName = null) {
+	macro configurePageTemplateLayout {
 		Click(
 			key_pageTemplateName = ${pageTemplateName},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
@@ -41,8 +39,7 @@ definition {
 		Page.editPageLayoutColumn(columnName = ${columnName});
 	}
 
-	@summary = "Default summary"
-	macro deactivateAndActivate(pageTemplateName = null) {
+	macro deactivateAndActivate {
 		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(
@@ -60,8 +57,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro deleteCP(pageTemplateName = null) {
+	macro deleteCP {
 		LexiconEntry.gotoEntryMenuItemNoError(
 			menuItem = "Delete",
 			rowEntry = ${pageTemplateName});
@@ -71,8 +67,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro editCP(pageTemplateActive = null, pageTemplateName = null) {
+	macro editCP {
 		AssertTextEquals.assertPartialText(
 			key_pageTemplateName = ${pageTemplateName},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
@@ -103,8 +98,7 @@ definition {
 			value1 = ${pageTemplateActive});
 	}
 
-	@summary = "Default summary"
-	macro editDescription(pageTemplateName = null, pageTemplateDescription = null) {
+	macro editDescription {
 		AssertTextEquals.assertPartialText(
 			key_pageTemplateName = ${pageTemplateName},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
@@ -124,8 +118,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro gotoPageTemplateViaEdit(pageTemplateName = null) {
+	macro gotoPageTemplateViaEdit {
 		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(
@@ -137,8 +130,7 @@ definition {
 			value1 = ${pageTemplateName});
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
@@ -157,16 +149,14 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewCP(pageTemplateName = null) {
+	macro viewCP {
 		AssertTextEquals.assertPartialText(
 			key_pageTemplateName = ${pageTemplateName},
 			locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME",
 			value1 = ${pageTemplateName});
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultCP(pageTemplateNameList = null) {
+	macro viewDefaultCP {
 		for (var pageTemplateName : list ${pageTemplateNameList}) {
 			var key_pageTemplateName = ${pageTemplateName};
 
@@ -178,8 +168,7 @@ definition {
 		AssertElementNotPresent(locator1 = "PageTemplates#PAGE_TEMPLATE_TABLE_NAME_4");
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultLocalizedCP(pageTemplateDescriptionList = null, pageTemplateNameList = null) {
+	macro viewDefaultLocalizedCP {
 		for (var pageTemplateNameTranslation : list ${pageTemplateNameList}) {
 			var key_pageTemplateName = ${pageTemplateNameTranslation};
 
@@ -197,8 +186,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultPortletPG(portletTitleList = null, pageTemplateName = null) {
+	macro viewDefaultPortletPG {
 		if (${pageTemplateName} == "Blog") {
 			AssertElementPresent(locator1 = "Home#PORTLET_1");
 
@@ -216,8 +204,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewDescription(pageTemplateName = null, pageTemplateDescription = null) {
+	macro viewDescription {
 		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(
@@ -231,8 +218,7 @@ definition {
 			value1 = ${pageTemplateDescription});
 	}
 
-	@summary = "Default summary"
-	macro viewPG(siteName = null, pageTemplateName = null) {
+	macro viewPG {
 		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertClick.assertPartialTextClickAt(
@@ -250,8 +236,7 @@ definition {
 			value1 = ${pageTemplateName});
 	}
 
-	@summary = "Default summary"
-	macro viewStatus(pageTemplateName = null, pageTemplateStatus = null) {
+	macro viewStatus {
 		var key_pageTemplateName = ${pageTemplateName};
 
 		AssertTextEquals.assertPartialText(

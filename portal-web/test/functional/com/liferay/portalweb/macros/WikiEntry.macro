@@ -1,38 +1,32 @@
 definition {
 
-	@summary = "Default summary"
-	macro addMediaWikiDescription(wikiPageContent = null) {
+	macro addMediaWikiDescription {
 		Type(
 			locator1 = "TextArea#WEB_EDITOR",
 			value1 = ${wikiPageContent});
 	}
 
-	@summary = "Default summary"
-	macro addPageTitle(wikiPageTitle = null) {
+	macro addPageTitle {
 		Type.typeEditor(
 			locator1 = "AlloyEditor#TITLE_FIELD",
 			value1 = ${wikiPageTitle});
 	}
 
-	@summary = "Default summary"
-	macro cancel() {
+	macro cancel {
 		AssertClick(
 			locator1 = "Button#CANCEL",
 			value1 = "Cancel");
 	}
 
-	@summary = "Default summary"
-	macro confirmHTML() {
+	macro confirmHTML {
 		Confirm(value1 = "You may lose some formatting when switching from Creole to HTML. Do you want to continue?");
 	}
 
-	@summary = "Default summary"
-	macro confirmMediaWiki() {
+	macro confirmMediaWiki {
 		Confirm(value1 = "You may lose some formatting when switching from Creole to MediaWiki. Do you want to continue?");
 	}
 
-	@summary = "Default summary"
-	macro saveAsDraft() {
+	macro saveAsDraft {
 		AssertClick(
 			locator1 = "Button#SAVE",
 			value1 = "Save as Draft");
@@ -40,8 +34,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro selectPageFormat(pageFormat = null) {
+	macro selectPageFormat {
 		if (IsNotVisible(locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN")) {
 			Panel.expandPanel(panelHeading = "Configuration");
 
@@ -56,15 +49,13 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewPageContentBody(wikiPageContent = null) {
+	macro viewPageContentBody {
 		AssertTextEquals(
 			locator1 = "WikiEntry#BODY",
 			value1 = ${wikiPageContent});
 	}
 
-	@summary = "Default summary"
-	macro viewPageFormat(pageFormat = null) {
+	macro viewPageFormat {
 		if (IsNotVisible(locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN")) {
 			Panel.expandPanel(panelHeading = "Configuration");
 		}

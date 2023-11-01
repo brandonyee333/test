@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addClassificationRuleCP(deviceType = null, classificationName = null, ruleOSScope = null, mobileDeviceFamilyName = null) {
+	macro addClassificationRuleCP {
 		var key_deviceFamilyName = ${mobileDeviceFamilyName};
 
 		AssertClick(
@@ -31,8 +30,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro addDeviceFamilyCP(deviceFamilyName = null) {
+	macro addDeviceFamilyCP {
 		LexiconEntry.gotoAdd();
 
 		AssertTextEquals.assertPartialText(
@@ -46,8 +44,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro assertRedirectActionPG(redirectPageName = null, pageName = null) {
+	macro assertRedirectActionPG {
 		var key_pageName = ${pageName};
 
 		AssertClick(
@@ -59,8 +56,7 @@ definition {
 		AssertVisible(locator1 = "Home#PAGE_ACTIVE");
 	}
 
-	@summary = "Default summary"
-	macro previewPG(deviceType = null) {
+	macro previewPG {
 		Click(locator1 = "ControlMenu#SIMULATION");
 
 		Pause(locator1 = 2000);

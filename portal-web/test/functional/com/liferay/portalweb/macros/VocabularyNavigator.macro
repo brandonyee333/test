@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro gotoAdd() {
+	macro gotoAdd {
 		AssertVisible(locator1 = "Button#PLUS");
 
 		Pause(locator1 = 3000);

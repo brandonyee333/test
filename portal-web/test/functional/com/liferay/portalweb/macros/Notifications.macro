@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro acceptRequest(requestsTitle = null) {
+	macro acceptRequest {
 		var key_requestsTitle = ${requestsTitle};
 
 		AssertTextEquals(
@@ -13,8 +12,7 @@ definition {
 			value1 = "Confirm");
 	}
 
-	@summary = "Default summary"
-	macro deleteNotification(contentBody = null) {
+	macro deleteNotification {
 		var key_contentBody = ${contentBody};
 
 		Click(locator1 = "Notifications#NOTIFICATIONS_VERTICAL_ELLIPSIS");
@@ -24,8 +22,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Notifications#NOTIFICATIONS_CONTENT");
 	}
 
-	@summary = "Default summary"
-	macro goToFilterValues(filterValue = null) {
+	macro goToFilterValues {
 		var key_filterValue = ${filterValue};
 
 		Click(locator1 = "Dropdown#FILTER");
@@ -35,8 +32,7 @@ definition {
 			value1 = ${filterValue});
 	}
 
-	@summary = "Default summary"
-	macro gotoNotifications() {
+	macro gotoNotifications {
 		if (IsElementPresent(locator1 = "Notifications#USER_BAR_BADGE_COUNT")) {
 			Click(locator1 = "Notifications#USER_BAR_BADGE_COUNT");
 		}
@@ -54,24 +50,21 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro gotoNotificationsEntry(notificationsWorkflowTitle = null) {
+	macro gotoNotificationsEntry {
 		AssertClick(
 			key_notificationsWorkflowTitle = ${notificationsWorkflowTitle},
 			locator1 = "Notifications#NOTIFICATIONS_WORKFLOW_TITLE",
 			value1 = ${notificationsWorkflowTitle});
 	}
 
-	@summary = "Default summary"
-	macro navigateToContent(contentBody = null) {
+	macro navigateToContent {
 		AssertClick.assertPartialTextClickAt(
 			key_contentBody = ${contentBody},
 			locator1 = "Notifications#NOTIFICATIONS_CONTENT",
 			value1 = ${contentBody});
 	}
 
-	@summary = "Default summary"
-	macro reviewViaNotificationsEntry(notificationsWorkflowTitle = null, menuItem = null) {
+	macro reviewViaNotificationsEntry {
 		Notifications.gotoNotificationsEntry(notificationsWorkflowTitle = ${notificationsWorkflowTitle});
 
 		Click(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
@@ -87,8 +80,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro tearDownUnreadNotifications(contentBody = null) {
+	macro tearDownUnreadNotifications {
 		ProductMenu.gotoPortlet(
 			category = "My Account",
 			panel = "User",
@@ -103,8 +95,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewBadgeCount(notificationCount = null) {
+	macro viewBadgeCount {
 		if (IsElementPresent(locator1 = "Notifications#USER_BAR_BADGE_COUNT")) {
 			AssertTextEquals(
 				locator1 = "Notifications#USER_BAR_BADGE_COUNT",
@@ -132,15 +123,13 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultContent() {
+	macro viewDefaultContent {
 		AssertTextEquals(
 			locator1 = "Message#EMPTY_INFO",
 			value1 = "You do not have any notifications.");
 	}
 
-	@summary = "Default summary"
-	macro viewNewComment(user = null, contentBody = null, content = null) {
+	macro viewNewComment {
 		var assetType = StringUtil.lowerCase(${assetType});
 		var key_contentBody = ${contentBody};
 
@@ -160,8 +149,7 @@ definition {
 			value1 = ${contentBody});
 	}
 
-	@summary = "Default summary"
-	macro viewNewContent(user = null, contentBody = null) {
+	macro viewNewContent {
 		var assetType = StringUtil.lowerCase(${assetType});
 		var key_contentBody = ${contentBody};
 
@@ -174,8 +162,7 @@ definition {
 			value1 = ${contentBody});
 	}
 
-	@summary = "Default summary"
-	macro viewNoNotificationEntry() {
+	macro viewNoNotificationEntry {
 		AssertElementNotPresent(locator1 = "Notifications#USER_BAR_BADGE_COUNT");
 
 		AssertElementNotPresent(locator1 = "Notifications#NOTIFICATIONS_CONTENT_GENERIC");
@@ -183,8 +170,7 @@ definition {
 		AssertElementNotPresent(locator1 = "Notifications#NOTIFICATIONS_TITLE");
 	}
 
-	@summary = "Default summary"
-	macro viewNoNotifications(activePanel = null) {
+	macro viewNoNotifications {
 		if (${activePanel} == "Profile") {
 			AssertElementNotPresent(locator1 = "Notifications#USER_NAVIGATION_BAR_BADGE_COUNT");
 		}
@@ -198,15 +184,13 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewNoRequest() {
+	macro viewNoRequest {
 		AssertElementNotPresent(locator1 = "Button#CONFIRM");
 
 		AssertElementNotPresent(locator1 = "Button#IGNORE");
 	}
 
-	@summary = "Default summary"
-	macro viewRequest(requestsTitle = null) {
+	macro viewRequest {
 		Click(locator1 = "Notifications#REQUESTS_LIST_TAB");
 
 		AssertTextEquals(
@@ -214,8 +198,7 @@ definition {
 			value1 = ${requestsTitle});
 	}
 
-	@summary = "Default summary"
-	macro viewUpdatedContent(user = null, contentBody = null) {
+	macro viewUpdatedContent {
 		var assetType = StringUtil.lowerCase(${assetType});
 		var key_contentBody = ${contentBody};
 

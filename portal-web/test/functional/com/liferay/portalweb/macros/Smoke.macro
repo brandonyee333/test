@@ -4,7 +4,7 @@ definition {
 	var userLastName = "Test";
 
 	@summary-ignore = "true"
-	macro runSmoke(pageType = null, i = null, pageTemplateName = null, defaultURL = null, nodePort = null) {
+	macro runSmoke {
 		Page.add(
 			defaultURL = ${defaultURL},
 			nodePort = ${nodePort},
@@ -83,8 +83,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewWelcomePage() {
+	macro viewWelcomePage {
 		AssertTextEquals.assertText(
 			locator1 = "HelloWorld#PORTLET_TITLE",
 			value1 = "Hello World");

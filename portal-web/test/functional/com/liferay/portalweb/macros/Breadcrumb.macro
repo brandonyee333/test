@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro configureBreadcrumb(selectADTType = null, configureWithoutSave = null) {
+	macro configureBreadcrumb {
 		IFrame.selectConfigurationFrame();
 
 		if (isSet(checkSetupName)) {
@@ -36,8 +35,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro displayTemplatePreview(displayStyle = null) {
+	macro displayTemplatePreview {
 		IFrame.selectConfigurationFrame();
 
 		Select(
@@ -47,8 +45,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro saveDisplayPreview() {
+	macro saveDisplayPreview {
 		IFrame.selectConfigurationFrame();
 
 		PortletEntry.save();
@@ -56,8 +53,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro viewActiveEntry(breadcrumbName = null) {
+	macro viewActiveEntry {
 		var breadcrumbNameUppercase = StringUtil.upperCase(${breadcrumbName});
 
 		AssertTextEquals.assertPartialText(
@@ -65,15 +61,13 @@ definition {
 			value1 = ${breadcrumbNameUppercase});
 	}
 
-	@summary = "Default summary"
-	macro viewADTApplied(breadcrumbADTType = null) {
+	macro viewADTApplied {
 		var key_breadcrumbADTType = ${breadcrumbADTType};
 
 		AssertElementPresent(locator1 = "BreadcrumbPortlet#BREADCRUMB_ADT");
 	}
 
-	@summary = "Default summary"
-	macro viewConfigurationCheckboxes() {
+	macro viewConfigurationCheckboxes {
 		IFrame.selectConfigurationFrame();
 
 		if (isSet(checkSetupName)) {
@@ -95,8 +89,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro viewConfigurationPreview(breadcrumbListVisible = null, breadcrumbListNotVisible = null) {
+	macro viewConfigurationPreview {
 		IFrame.selectConfigurationFrame();
 
 		if (isSet(breadcrumbListVisible)) {
@@ -118,8 +111,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro viewEntry(breadcrumbName = null, breadcrumbNameUppercase = null) {
+	macro viewEntry {
 		AssertTextEquals(
 			breadcrumbNameUppercase = StringUtil.upperCase(${breadcrumbName}),
 			key_breadcrumbName = ${breadcrumbName},
@@ -127,8 +119,7 @@ definition {
 			value1 = ${breadcrumbNameUppercase});
 	}
 
-	@summary = "Default summary"
-	macro viewPG(breadcrumbListVisible = null, breadcrumbListNotVisible = null) {
+	macro viewPG {
 		if (isSet(breadcrumbListVisible)) {
 			for (var breadcrumbName : list ${breadcrumbListVisible}) {
 				var key_breadcrumbName = ${breadcrumbName};
@@ -149,8 +140,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewSpecificPG(breadcrumbListVisible = null, breadcrumbListNotVisible = null) {
+	macro viewSpecificPG {
 		if (isSet(breadcrumbListNotVisible)) {
 			for (var breadcrumbName : list ${breadcrumbListNotVisible}) {
 				AssertElementNotPresent(

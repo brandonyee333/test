@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro calculatePG(loanInterestRate = null, loanMonthlyPayment = null, loanTotalPaid = null, loanAmount = null, loanYears = null, loanInterestPaid = null) {
+	macro calculatePG {
 		Type(
 			locator1 = "TextInput#LOAN_AMOUNT",
 			value1 = ${loanAmount});

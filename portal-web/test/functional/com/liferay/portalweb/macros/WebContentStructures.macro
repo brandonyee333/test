@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addCP(structureName = null, structureDescription = null) {
+	macro addCP {
 		LexiconEntry.gotoAdd();
 
 		WebContentStructures.addName(structureName = ${structureName});
@@ -15,8 +14,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro addLocalization(localization1NameKey = null, localization2Name = null, localization2NameKey = null, localization1Name = null) {
+	macro addLocalization {
 		var key_localizationName = ${localization1NameKey};
 
 		Click(locator1 = "Translation#LOCALIZATION_NAME");
@@ -32,15 +30,13 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro addName(structureName = null) {
+	macro addName {
 		Type.clickAtType(
 			locator1 = "TextInput#NAME",
 			value1 = ${structureName});
 	}
 
-	@summary = "Default summary"
-	macro addNullCP() {
+	macro addNullCP {
 		LexiconEntry.gotoAdd();
 
 		AssertElementNotPresent(locator1 = "TextInput#REQUIRED_ALERT");
@@ -54,8 +50,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro addSubstructure(parentStructureName = null) {
+	macro addSubstructure {
 		AssertClick(
 			locator1 = "Button#SELECT",
 			value1 = "Select");
@@ -75,8 +70,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro advancedSearchCP(structureName = null, structureDescription = null) {
+	macro advancedSearchCP {
 		var key_ddlDataDefinitionName = ${structureName};
 
 		AssertTextEquals(
@@ -104,8 +98,7 @@ definition {
 			value1 = ${structureDescription});
 	}
 
-	@summary = "Default summary"
-	macro deleteCP(structureName = null, webContentHasReference = null) {
+	macro deleteCP {
 		WebContentNavigator.gotoManageStructures();
 
 		var key_ddlDataDefinitionName = ${structureName};
@@ -128,8 +121,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro editSubstructureDefaultValuesCP(substructureName = null, editSubstructureFieldNames = null) {
+	macro editSubstructureDefaultValuesCP {
 		var key_ddlDataDefinitionName = ${substructureName};
 
 		Type(
@@ -183,8 +175,7 @@ definition {
 		SelectFrameTop();
 	}
 
-	@summary = "Default summary"
-	macro saveCP(addRoleViewPermissions = null, structureName = null) {
+	macro saveCP {
 		AssertClick(
 			locator1 = "DDMEditStructure#SAVE_BUTTON",
 			value1 = "Save");
@@ -206,8 +197,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -252,8 +242,7 @@ definition {
 		Portlet.viewEmptyMessage();
 	}
 
-	@summary = "Default summary"
-	macro viewCP(structureName = null, structureDescription = null) {
+	macro viewCP {
 		var key_ddlDataDefinitionName = ${structureName};
 
 		if (isSet(structureName)) {
@@ -271,8 +260,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro viewTableEntryCP(structureName = null, structureDescription = null) {
+	macro viewTableEntryCP {
 		var key_ddlDataDefinitionName = ${structureName};
 
 		AssertTextEquals(
@@ -284,8 +272,7 @@ definition {
 			value1 = ${structureDescription});
 	}
 
-	@summary = "Default summary"
-	macro viewTemplateValidation() {
+	macro viewTemplateValidation {
 		Confirm(value1 = "Please add a template to render this structure.");
 	}
 

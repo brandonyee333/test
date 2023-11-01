@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addCategoryLocalizationCP(localizationNameKey = null, localizationName = null, localization2Name = null, vocabularyName = null, localization2NameKey = null, categoryName = null) {
+	macro addCategoryLocalizationCP {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Add Category",
 			rowEntry = ${vocabularyName});
@@ -25,8 +24,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro addCategoryPropertyCP(propertiesValueField = null, propertiesKeyField = null, vocabularyName = null, categoryName = null, propertyNumber = null) {
+	macro addCategoryPropertyCP {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Add Category",
 			rowEntry = ${vocabularyName});
@@ -72,8 +70,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro addCategoryViewableByCP(viewableBy = null, vocabularyName = null, categoryName = null) {
+	macro addCategoryViewableByCP {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Add Category",
 			rowEntry = ${vocabularyName});
@@ -89,8 +86,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro addCP(vocabularyName = null, categoryName = null, categoryDescription = null) {
+	macro addCP {
 		var key_vocabularyName = ${vocabularyName};
 
 		if (IsElementPresent(locator1 = "Categories#VOCABULARY_HEADER")) {
@@ -115,8 +111,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro addWithNullTitleCP(vocabularyName = null) {
+	macro addWithNullTitleCP {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Add Category",
 			rowEntry = ${vocabularyName});
@@ -130,8 +125,7 @@ definition {
 			value1 = "This field is required.");
 	}
 
-	@summary = "Default summary"
-	macro deleteByIconCP(vocabularyName = null, categoryName = null) {
+	macro deleteByIconCP {
 		var key_categoryName = ${categoryName};
 		var key_vocabularyName = ${vocabularyName};
 
@@ -158,8 +152,7 @@ definition {
 		AssertTextNotPresent(value1 = ${categoryName});
 	}
 
-	@summary = "Default summary"
-	macro deleteCategoriesCP(vocabularyName = null) {
+	macro deleteCategoriesCP {
 		var key_vocabularyName = ${vocabularyName};
 
 		AssertClick(
@@ -179,8 +172,7 @@ definition {
 			value1 = "There are no categories.");
 	}
 
-	@summary = "Default summary"
-	macro deleteCategoryByMenuCP(vocabularyName = null, categoryName = null) {
+	macro deleteCategoryByMenuCP {
 		AssertClick(
 			key_vocabularyName = ${vocabularyName},
 			locator1 = "Categories#VOCABULARY_ENTRY_LINK",
@@ -201,8 +193,7 @@ definition {
 		AssertTextNotPresent(value1 = ${categoryName});
 	}
 
-	@summary = "Default summary"
-	macro deleteCategoryProperty2CP(vocabularyName = null, categoryName = null) {
+	macro deleteCategoryProperty2CP {
 		AssertClick(
 			key_vocabularyName = ${vocabularyName},
 			locator1 = "Categories#VOCABULARY_ENTRY_LINK",
@@ -223,8 +214,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro deletePartialCategoryCP(vocabularyName = null) {
+	macro deletePartialCategoryCP {
 		var key_vocabularyName = ${vocabularyName};
 
 		AssertClick(
@@ -244,8 +234,7 @@ definition {
 			value1 = "You do not have the required permissions.");
 	}
 
-	@summary = "Default summary"
-	macro editCategoryPropertyCP(propertiesValueFieldEdit = null, propertiesKeyFieldEdit = null, categoryNameEdit = null, vocabularyName = null, categoryName = null) {
+	macro editCategoryPropertyCP {
 		AssertClick(
 			key_vocabularyName = ${vocabularyName},
 			locator1 = "Categories#VOCABULARY_ENTRY_LINK",
@@ -270,8 +259,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro editCP(categoryNameEdit = null, vocabularyName = null, categoryName = null) {
+	macro editCP {
 		AssertClick(
 			key_vocabularyName = ${vocabularyName},
 			locator1 = "Categories#VOCABULARY_ENTRY_LINK",
@@ -286,8 +274,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro moveViaEditCP(vocabularyName2 = null, vocabularyName = null, categoryName = null) {
+	macro moveViaEditCP {
 		AssertClick(
 			key_vocabularyName = ${vocabularyName},
 			locator1 = "Categories#VOCABULARY_ENTRY_LINK",
@@ -308,8 +295,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro searchCP(vocabularyName = null, categorySearchEntry = null) {
+	macro searchCP {
 		var key_vocabularyName = ${vocabularyName};
 
 		AssertClick(
@@ -323,8 +309,7 @@ definition {
 		Click(locator1 = "Icon#BASIC_SEARCH");
 	}
 
-	@summary = "Default summary"
-	macro viewCategoryPropertyCP(propertiesValueField = null, propertiesKeyField = null, vocabularyName = null, categoryName = null, propertyNumber = null) {
+	macro viewCategoryPropertyCP {
 		AssertClick(
 			key_vocabularyName = ${vocabularyName},
 			locator1 = "Categories#VOCABULARY_ENTRY_LINK",
@@ -366,8 +351,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewCategoryToVocabularyCP(vocabularyName = null, categoryName = null) {
+	macro viewCategoryToVocabularyCP {
 		var key_categoryName = ${categoryName};
 		var key_vocabularyName = ${vocabularyName};
 
@@ -380,8 +364,7 @@ definition {
 			value1 = ${categoryName});
 	}
 
-	@summary = "Default summary"
-	macro viewCategoryViewableByCP(viewableBy = null, vocabularyName = null, categoryName = null) {
+	macro viewCategoryViewableByCP {
 		AssertClick(
 			key_vocabularyName = ${vocabularyName},
 			locator1 = "Categories#VOCABULARY_ENTRY_LINK",
@@ -406,8 +389,7 @@ definition {
 		SelectFrameTop(value1 = "relative=top");
 	}
 
-	@summary = "Default summary"
-	macro viewCP(vocabularyName = null, categoryName = null) {
+	macro viewCP {
 		var key_categoryName = ${categoryName};
 		var key_vocabularyName = ${vocabularyName};
 
@@ -420,8 +402,7 @@ definition {
 			value1 = ${categoryName});
 	}
 
-	@summary = "Default summary"
-	macro viewFilterViaCategoriesNavigationPG(vocabularyName = null, categoryName = null) {
+	macro viewFilterViaCategoriesNavigationPG {
 		var key_categoryName = ${categoryName};
 		var key_vocabularyName = ${vocabularyName};
 
@@ -438,8 +419,7 @@ definition {
 			value1 = ${categoryName});
 	}
 
-	@summary = "Default summary"
-	macro viewNavigationCP(vocabularyName = null, categoryName = null) {
+	macro viewNavigationCP {
 		var key_vocabularyName = ${vocabularyName};
 
 		AssertClick(
@@ -457,8 +437,7 @@ definition {
 		SiteAdmin.viewPortletTitle(portletTitle = ${vocabularyName});
 	}
 
-	@summary = "Default summary"
-	macro viewRemoveFilterViaAP(vocabularyName = null, categoryName = null) {
+	macro viewRemoveFilterViaAP {
 		var key_categoryName = ${categoryName};
 		var key_vocabularyName = ${vocabularyName};
 
@@ -471,8 +450,7 @@ definition {
 		AssertElementNotPresent(locator1 = "AP#CATEGORIES_FILTER_CATEGORY");
 	}
 
-	@summary = "Default summary"
-	macro viewSearchResultsCP(nullResult = null, categoryDescriptionList = null, categoryNameList = null) {
+	macro viewSearchResultsCP {
 		if (isSet(categoryNameList)) {
 			for (var categoryName : list ${categoryNameList}) {
 				var key_categoryName = ${categoryName};

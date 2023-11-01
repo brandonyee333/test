@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro editConfiguration(configurationName = null) {
+	macro editConfiguration {
 		var key_rowEntry = ${configurationName};
 
 		while (IsElementNotPresent(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS")) {
@@ -21,8 +20,7 @@ definition {
 		MenuItem.click(menuItem = "Edit");
 	}
 
-	@summary = "Default summary"
-	macro editSecurityCredential(securityCredential = null) {
+	macro editSecurityCredential {
 		Type(
 			locator1 = "SystemSettings#SECURITY_CREDENTIAL_FIELD",
 			value1 = ${securityCredential});
@@ -45,8 +43,7 @@ definition {
 			value2 = 70);
 	}
 
-	@summary = "Default summary"
-	macro enableSetting(checkboxSetting = null, enableSetting = null) {
+	macro enableSetting {
 		if (${enableSetting} == "false") {
 			Uncheck(locator1 = "SystemSettings#${checkboxSetting}");
 		}
@@ -55,13 +52,11 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro exitEditConfiguration() {
+	macro exitEditConfiguration {
 		Click(locator1 = "Icon#ANGLE_LEFT_BACK");
 	}
 
-	@summary = "Default summary"
-	macro getCurrentUserEmailResquestDenied(curl = null) {
+	macro getCurrentUserEmailResquestDenied {
 		var output = JSONCurlUtil.post(${curl});
 
 		if (contains(${output}, "Access denied to com.liferay.portal.kernel.service.UserService#getCurrentUser")) {
@@ -72,8 +67,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro getUserEmailAddressRequestDenied(curl = null) {
+	macro getUserEmailAddressRequestDenied {
 		var output = JSONCurlUtil.post(${curl});
 
 		if (contains(${output}, "Access denied to com.liferay.portal.kernel.service.UserService#getUserByEmailAddress")) {
@@ -84,8 +78,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro getUserEmailSuccessfully(curl = null, companyId = null) {
+	macro getUserEmailSuccessfully {
 		Variables.assertDefined(parameterList = "${curl},${companyId}");
 
 		var output = JSONCurlUtil.post(${curl});
@@ -101,8 +94,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro getViewUserEmailPermissionDenied(curl = null, userId = null) {
+	macro getViewUserEmailPermissionDenied {
 		Variables.assertDefined(parameterList = "${curl},${userId}");
 
 		var output = JSONCurlUtil.post(${curl});
@@ -115,8 +107,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro gotoCategory(category = null) {
+	macro gotoCategory {
 		var key_category = ${category};
 
 		AssertClick(
@@ -124,8 +115,7 @@ definition {
 			value1 = ${category});
 	}
 
-	@summary = "Default summary"
-	macro gotoConfiguration(configurationScope = null, configurationName = null, configurationCategory = null) {
+	macro gotoConfiguration {
 		Click(
 			key_itemName = ${configurationCategory},
 			locator1 = "ListGroupItem#ITEM_TEXT");
@@ -146,13 +136,11 @@ definition {
 			locator1 = "Header#H2_TITLE");
 	}
 
-	@summary = "Default summary"
-	macro openSystemSettingsAdmin() {
+	macro openSystemSettingsAdmin {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_configuration_admin_web_portlet_SystemSettingsPortlet");
 	}
 
-	@summary = "Default summary"
-	macro resetConfiguration(configurationName = null, category = null) {
+	macro resetConfiguration {
 		SystemSettings.gotoCategory(category = ${category});
 
 		var key_rowEntry = ${configurationName};
@@ -169,8 +157,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro saveConfiguration() {
+	macro saveConfiguration {
 		if (IsElementPresent(locator1 = "Button#SAVE")) {
 			AssertClick(
 				locator1 = "Button#SAVE",
@@ -185,8 +172,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro viewConfiguration(configurationName = null, enableLDAP = null) {
+	macro viewConfiguration {
 		var key_rowEntry = ${configurationName};
 
 		while (IsElementNotPresent(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS")) {

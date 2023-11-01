@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addLDAPServer(LDAPServerName = null) {
+	macro addLDAPServer {
 		AssertClick(
 			locator1 = "PortalSettingsAuthentication#AUTHENTICATION_LDAP_ADD_BUTTON",
 			value1 = "Add");
@@ -19,8 +18,7 @@ definition {
 		Button.clickSave();
 	}
 
-	@summary = "Default summary"
-	macro configureAudienceTargetingAnalytics(enableAnalyticsList = null, disableAnalyticsList = null) {
+	macro configureAudienceTargetingAnalytics {
 		Panel.expandPanel(panelHeading = "Audience Targeting Analytics");
 
 		if (isSet(enableAnalyticsList)) {
@@ -42,8 +40,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro configureBlogsRatingType(ratingType = null) {
+	macro configureBlogsRatingType {
 		Select(
 			locator1 = "Select#BLOGS_RATING",
 			value1 = ${ratingType});
@@ -59,8 +56,7 @@ definition {
 			value1 = ${ratingType});
 	}
 
-	@summary = "Default summary"
-	macro configureContentSharingAcrossSitesCP(enableAcrossSite = null) {
+	macro configureContentSharingAcrossSitesCP {
 		Panel.expandPanel(panelHeading = "Content Sharing");
 
 		if (${enableAcrossSite} == "true") {
@@ -83,8 +79,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro configureContentSharingSubSitesCP(subSites = null) {
+	macro configureContentSharingSubSitesCP {
 		Panel.expandPanel(panelHeading = "Content Sharing");
 
 		if (${subSites} == "enabledByDefault") {
@@ -128,8 +123,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro configureCurrentLanguagesCP(failExpected = null, errorMessage = null, currentPortalLanguages = null) {
+	macro configureCurrentLanguagesCP {
 		Navigator.gotoNavTab(navTab = "Miscellaneous");
 
 		if (isSet(defaultPortalLanguage)) {
@@ -178,8 +172,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro configureGoogleApps(googleAppsAPIKey = null, googleClientID = null) {
+	macro configureGoogleApps {
 		ScrollWebElementIntoView(locator1 = "//div[contains(@class,'panel') and contains(@role,'tablist')]//a[normalize-space(text())='Google Apps']");
 
 		Panel.expandPanel(panelHeading = "Google Apps");
@@ -195,8 +188,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro configureOpenSSO(OpenSSOLoginURL = null, OpenSSOServiceURL = null, OpenSSOLogoutURL = null) {
+	macro configureOpenSSO {
 		Check(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_OPEN_SSO_ENABLED_CHECKBOX");
 
 		Type(
@@ -214,8 +206,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro configureTimeZone(timeZone = null) {
+	macro configureTimeZone {
 		Navigator.gotoNavTab(navTab = "Miscellaneous");
 
 		Select(
@@ -225,8 +216,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro configureWikiService(editor = null, counter = null) {
+	macro configureWikiService {
 		var key_counter = ${counter};
 
 		Type(
@@ -234,8 +224,7 @@ definition {
 			value1 = ${editor});
 	}
 
-	@summary = "Default summary"
-	macro disableLDAPCP() {
+	macro disableLDAPCP {
 		PortalSettingsNavigator.gotoLDAP();
 
 		Uncheck(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_LDAP_ENABLED_CHECKBOX");
@@ -247,8 +236,7 @@ definition {
 		AssertNotChecked(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_LDAP_ENABLED_CHECKBOX");
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationAuthenticationCAS(casServerURL = null, casServiceURL = null, casLoginURL = null, casLogoutURL = null) {
+	macro editConfigurationAuthenticationCAS {
 		Panel.expandPanel(panelHeading = "Authentication");
 
 		AssertClick(
@@ -284,8 +272,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationAuthenticationFacebook(facebookApplicationSecret = null, facebookApplicationID = null) {
+	macro editConfigurationAuthenticationFacebook {
 		Check(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_FACEBOOK_ENABLED_CHECKBOX");
 
 		Type(
@@ -315,8 +302,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationAuthenticationGeneral(enableRequireStrangers = null, authenticationMethod = null) {
+	macro editConfigurationAuthenticationGeneral {
 		Panel.expandPanel(panelHeading = "Authentication");
 
 		if (${enableRequireStrangers} == "true") {
@@ -331,8 +317,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationUsersDefaultUserAssociationsOrganizationSitesCP(orgName = null) {
+	macro editConfigurationUsersDefaultUserAssociationsOrganizationSitesCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -360,8 +345,7 @@ definition {
 			value1 = ${orgName});
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationUsersDefaultUserAssociationsRolesCP(roleName = null) {
+	macro editConfigurationUsersDefaultUserAssociationsRolesCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -389,8 +373,7 @@ definition {
 			value1 = ${roleName});
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationUsersDefaultUserAssociationsSitesCP(siteName = null) {
+	macro editConfigurationUsersDefaultUserAssociationsSitesCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -418,8 +401,7 @@ definition {
 			value1 = ${siteName});
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationUsersDefaultUserAssociationsUserGroupsCP(userGroupName = null) {
+	macro editConfigurationUsersDefaultUserAssociationsUserGroupsCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -447,8 +429,7 @@ definition {
 			value1 = ${userGroupName});
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationUsersEmailNotificationsCP() {
+	macro editConfigurationUsersEmailNotificationsCP {
 		Panel.expandPanel(panelHeading = "Email Notifications");
 
 		AssertClick(
@@ -462,8 +443,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationUsersEmailNotificationsSenderCP(emailAddress = null, emailSenderName = null) {
+	macro editConfigurationUsersEmailNotificationsSenderCP {
 		Panel.expandPanel(panelHeading = "Email Notifications");
 
 		Type(
@@ -477,8 +457,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro editConfigurationUsersEmailVerificationNotificationsCP(emailVerificationURL = null) {
+	macro editConfigurationUsersEmailVerificationNotificationsCP {
 		Panel.expandPanel(panelHeading = "Email Notifications");
 
 		AssertClick(
@@ -499,8 +478,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro editDefaultLandingPageCP(defaultLandingPage = null) {
+	macro editDefaultLandingPageCP {
 		Type(
 			locator1 = "PortalSettings#DEFAULT_LANDING_PAGE_FIELD",
 			value1 = ${defaultLandingPage});
@@ -508,15 +486,13 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro editLDAPServer(LDAPServerName = null) {
+	macro editLDAPServer {
 		var key_LDAPServerName = ${LDAPServerName};
 
 		Click(locator1 = "PortalSettingsAuthentication#LDAP_SERVERS_TABLE_EDIT");
 	}
 
-	@summary = "Default summary"
-	macro editVirtualHostCP(virtualHostName = null) {
+	macro editVirtualHostCP {
 		Type(
 			locator1 = "PortalSettings#VIRTUAL_HOST_FIELD",
 			value1 = ${virtualHostName});
@@ -528,8 +504,7 @@ definition {
 			value1 = ${virtualHostName});
 	}
 
-	@summary = "Default summary"
-	macro enableGoogleSSOCP(googleClientSecret = null, googleClientID = null) {
+	macro enableGoogleSSOCP {
 		Check(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_GOOGLE_ENABLED_CHECKBOX");
 
 		Type(
@@ -543,15 +518,13 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro enableLDAPSetting(enableCheckboxKey = null) {
+	macro enableLDAPSetting {
 		Check(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_LDAP_${enableCheckboxKey}_CHECKBOX");
 
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro enableOpenIDCP() {
+	macro enableOpenIDCP {
 		Check(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_OPEN_ID_ENABLED_CHECKBOX");
 
 		PortletEntry.save();
@@ -565,8 +538,7 @@ definition {
 		AssertChecked(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_OPEN_ID_ENABLED_CHECKBOX");
 	}
 
-	@summary = "Default summary"
-	macro enterReservedEmailAddressCP(userEmailAddress = null) {
+	macro enterReservedEmailAddressCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -594,8 +566,7 @@ definition {
 			value1 = ${userEmailAddress});
 	}
 
-	@summary = "Default summary"
-	macro enterReservedScreenNameCP(userScreenName = null) {
+	macro enterReservedScreenNameCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -623,13 +594,11 @@ definition {
 			value1 = ${userScreenName});
 	}
 
-	@summary = "Default summary"
-	macro openAnalyticsCloudAdmin() {
+	macro openAnalyticsCloudAdmin {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_analytics_settings_web_portlet_AnalyticsAdminPortlet");
 	}
 
-	@summary = "Default summary"
-	macro tearDownAuthenticationCP() {
+	macro tearDownAuthenticationCP {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
@@ -666,8 +635,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro tearDownCP() {
+	macro tearDownCP {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
@@ -712,8 +680,7 @@ definition {
 		PortalSettings.configureContentSharingAcrossSitesCP(enableAcrossSite = "true");
 	}
 
-	@summary = "Default summary"
-	macro testLDAPConnection() {
+	macro testLDAPConnection {
 		AssertClick(
 			locator1 = "PortalSettingsAuthentication#LDAP_SERVER_TEST_LDAP_CONNECTION_BUTTON",
 			value1 = "Test LDAP Connection");
@@ -747,8 +714,7 @@ definition {
 		Click(locator1 = "Button#CLOSE_MODAL");
 	}
 
-	@summary = "Default summary"
-	macro testOpenSSOConnection() {
+	macro testOpenSSOConnection {
 		AssertClick(
 			locator1 = "PortalSettingsAuthentication#AUTHENTICATION_OPEN_SSO_TEST_OPEN_SSO_CONFIGURATION_BUTTON",
 			value1 = "Test OpenSSO Configuration");
@@ -762,8 +728,7 @@ definition {
 		Click(locator1 = "Button#CLOSE_MODAL");
 	}
 
-	@summary = "Default summary"
-	macro viewAuthenticationCASCP() {
+	macro viewAuthenticationCASCP {
 		Panel.expandPanel(panelHeading = "Authentication");
 
 		AssertClick(
@@ -825,8 +790,7 @@ definition {
 		AssertElementPresent(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_CAS_TEST_CAS_CONFIGURATION_BUTTON");
 	}
 
-	@summary = "Default summary"
-	macro viewAuthenticationGeneralCP() {
+	macro viewAuthenticationGeneralCP {
 		Panel.expandPanel(panelHeading = "Authentication");
 
 		AssertClick(
@@ -850,8 +814,7 @@ definition {
 		AssertElementPresent(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_GENERAL_REQUIRE_STRANGERS_TO_VERIFY_THEIR_EMAIL_ADDRESS_CHECKBOX");
 	}
 
-	@summary = "Default summary"
-	macro viewAuthenticationLDAPCP() {
+	macro viewAuthenticationLDAPCP {
 		PortalSettingsNavigator.gotoLDAP();
 
 		for (var fieldName : list "PortalSettingsPortlet_enabled,required,ldapImportEnabled,ldapExportEnabled,passwordPolicyEnabled") {
@@ -909,8 +872,7 @@ definition {
 		AssertElementPresent(locator1 = "PortalSettingsAuthentication#LDAP_SERVER_TEST_LDAP_GROUPS_BUTTON");
 	}
 
-	@summary = "Default summary"
-	macro viewAuthenticationNTLMCP() {
+	macro viewAuthenticationNTLMCP {
 		Panel.expandPanel(panelHeading = "Authentication");
 
 		AssertClick(
@@ -960,8 +922,7 @@ definition {
 			value1 = "TEMP_OBFUSCATION_VALUE");
 	}
 
-	@summary = "Default summary"
-	macro viewAuthenticationOpenIDCP() {
+	macro viewAuthenticationOpenIDCP {
 		Panel.expandPanel(panelHeading = "Authentication");
 
 		AssertClick(
@@ -971,8 +932,7 @@ definition {
 		AssertElementPresent(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_OPEN_ID_ENABLED_CHECKBOX");
 	}
 
-	@summary = "Default summary"
-	macro viewAuthenticationOpenSSOCP() {
+	macro viewAuthenticationOpenSSOCP {
 		Panel.expandPanel(panelHeading = "Authentication");
 
 		AssertClick(
@@ -1042,8 +1002,7 @@ definition {
 		AssertElementPresent(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_OPEN_SSO_TEST_OPEN_SSO_CONFIGURATION_BUTTON");
 	}
 
-	@summary = "Default summary"
-	macro viewConfigurationUsersDefaultUserAssociationsOrganizationSitesCP(orgName = null) {
+	macro viewConfigurationUsersDefaultUserAssociationsOrganizationSitesCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -1055,8 +1014,7 @@ definition {
 			value1 = ${orgName});
 	}
 
-	@summary = "Default summary"
-	macro viewConfigurationUsersDefaultUserAssociationsRolesCP(roleName = null) {
+	macro viewConfigurationUsersDefaultUserAssociationsRolesCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -1068,8 +1026,7 @@ definition {
 			value1 = ${roleName});
 	}
 
-	@summary = "Default summary"
-	macro viewConfigurationUsersDefaultUserAssociationsSitesCP(siteName = null) {
+	macro viewConfigurationUsersDefaultUserAssociationsSitesCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -1081,8 +1038,7 @@ definition {
 			value1 = ${siteName});
 	}
 
-	@summary = "Default summary"
-	macro viewConfigurationUsersDefaultUserAssociationsUserGroupsCP(userGroupName = null) {
+	macro viewConfigurationUsersDefaultUserAssociationsUserGroupsCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -1094,8 +1050,7 @@ definition {
 			value1 = ${userGroupName});
 	}
 
-	@summary = "Default summary"
-	macro viewCurrentDefaultPortalLanguageCP(navTab = null, defaultPortalLanguage = null) {
+	macro viewCurrentDefaultPortalLanguageCP {
 		Navigator.gotoNavTab(navTab = ${navTab});
 
 		AssertSelectedLabel(
@@ -1103,8 +1058,7 @@ definition {
 			value1 = ${defaultPortalLanguage});
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultLanguageCP(defaultPortalLanguage = null) {
+	macro viewDefaultLanguageCP {
 		Navigator.gotoNavTab(navTab = "Miscellaneous");
 
 		AssertSelectedLabel(
@@ -1112,8 +1066,7 @@ definition {
 			value1 = ${defaultPortalLanguage});
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultUserAssociationsCP() {
+	macro viewDefaultUserAssociationsCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(
@@ -1155,8 +1108,7 @@ definition {
 			value1 = "");
 	}
 
-	@summary = "Default summary"
-	macro viewEmailNotificationsAccountCreatedNotificationCP() {
+	macro viewEmailNotificationsAccountCreatedNotificationCP {
 		Panel.expandPanel(panelHeading = "Email Notifications");
 
 		AssertClick(
@@ -1186,8 +1138,7 @@ definition {
 		AssertElementPresent(locator1 = "PortalSettingsEmailNotifications#EMAIL_NOTIFICATIONS_ACCOUNT_CREATED_NOTIFICATION_BODY_WITHOUT_PASSWORD_FIELD");
 	}
 
-	@summary = "Default summary"
-	macro viewEmailNotificationsPasswordChangedNotificationCP() {
+	macro viewEmailNotificationsPasswordChangedNotificationCP {
 		Panel.expandPanel(panelHeading = "Email Notifications");
 
 		AssertClick(
@@ -1207,8 +1158,7 @@ definition {
 		AssertElementPresent(locator1 = "PortalSettingsEmailNotifications#EMAIL_NOTIFICATIONS_PASSWORD_CHANGED_NOTIFICATION_BODY_FIELD");
 	}
 
-	@summary = "Default summary"
-	macro viewEmailNotificationsSenderCP() {
+	macro viewEmailNotificationsSenderCP {
 		Panel.expandPanel(panelHeading = "Email Notifications");
 
 		AssertClick(
@@ -1232,13 +1182,11 @@ definition {
 			value1 = "test@liferay.com");
 	}
 
-	@summary = "Default summary"
-	macro viewEnabledLDAPSetting(enableCheckboxKey = null) {
+	macro viewEnabledLDAPSetting {
 		AssertChecked(locator1 = "PortalSettingsAuthentication#AUTHENTICATION_LDAP_${enableCheckboxKey}_CHECKBOX");
 	}
 
-	@summary = "Default summary"
-	macro viewReservedCredentialsScreenNamesCP() {
+	macro viewReservedCredentialsScreenNamesCP {
 		Panel.expandPanel(panelHeading = "Users");
 
 		AssertClick(

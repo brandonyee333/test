@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro assertEquals(actual = null, expected = null) {
+	macro assertEquals {
 		echo(${expected});
 
 		echo(${actual});
@@ -14,8 +13,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro assertNotEquals(actual = null, expected = null) {
+	macro assertNotEquals {
 		echo(${expected});
 
 		echo(${actual});
@@ -28,8 +26,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro fail() {
+	macro fail {
 		if (!(isSet(message))) {
 			var message = "FAIL";
 		}
@@ -39,8 +36,7 @@ definition {
 		fail(${message});
 	}
 
-	@summary = "Default summary"
-	macro hardRefresh() {
+	macro hardRefresh {
 		var mac = OSDetector.isApple();
 
 		if (${mac} == "true") {
@@ -53,8 +49,7 @@ definition {
 		WaitForPageLoad();
 	}
 
-	@summary = "Default summary"
-	macro isGreaterThan(actual = null, expected = null) {
+	macro isGreaterThan {
 		echo(${expected});
 
 		echo(${actual});
@@ -69,8 +64,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro pass() {
+	macro pass {
 		if (!(isSet(message))) {
 			var message = "PASS";
 		}
@@ -78,8 +72,7 @@ definition {
 		echo(${message});
 	}
 
-	@summary = "Default summary"
-	macro typeIntoField() {
+	macro typeIntoField {
 		Navigator.openURL();
 
 		Page.add(pageName = "Test Page Name");

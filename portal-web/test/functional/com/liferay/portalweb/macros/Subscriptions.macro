@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro subscribeViaInfoPanelPG() {
+	macro subscribeViaInfoPanelPG {
 		Click(locator1 = "Icon#INFO");
 
 		Click(locator1 = "Icon#SUBSCRIBE");
@@ -9,8 +8,7 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro unsubscribeViaMySubscriptions() {
+	macro unsubscribeViaMySubscriptions {
 		AssertClick(
 			locator1 = "Link#UNSUBSCRIBE",
 			value1 = "Unsubscribe");
@@ -18,15 +16,13 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultPG() {
+	macro viewDefaultPG {
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#INFO",
 			value1 = "No subscriptions were found.");
 	}
 
-	@summary = "Default summary"
-	macro viewSubscription(assetName = null, assetTitle = null, assetType = null) {
+	macro viewSubscription {
 		var key_assetName = ${assetName};
 		var key_assetTitle = ${assetTitle};
 		var key_assetType = ${assetType};
@@ -44,8 +40,7 @@ definition {
 			value1 = ${assetType});
 	}
 
-	@summary = "Default summary"
-	macro viewUnsubscribedViaInfoPanel() {
+	macro viewUnsubscribedViaInfoPanel {
 		Click(locator1 = "Icon#INFO");
 
 		AssertVisible(locator1 = "Icon#STAR_UNSUBSCRIBED");

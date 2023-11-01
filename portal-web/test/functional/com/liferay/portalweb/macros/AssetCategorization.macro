@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro _addTag(tagName = null) {
+	macro _addTag {
 		Type.clickAtType(
 			locator1 = "AssetCategorization#TAGS_FIELD",
 			value1 = ${tagName});
@@ -15,8 +14,7 @@ definition {
 			value1 = "Add");
 	}
 
-	@summary = "Default summary"
-	macro addCategory(vocabularyName = null, categoryName = null) {
+	macro addCategory {
 		var key_vocabularyName = ${vocabularyName};
 
 		AssertClick(
@@ -52,8 +50,7 @@ definition {
 			value1 = ${categoryName});
 	}
 
-	@summary = "Default summary"
-	macro addMultipleCategories(vocabularyName = null, categoryNameList = null) {
+	macro addMultipleCategories {
 		var key_vocabularyName = ${vocabularyName};
 
 		AssertClick(
@@ -69,8 +66,7 @@ definition {
 		Click(locator1 = "Icon#CLOSE");
 	}
 
-	@summary = "Default summary"
-	macro addTag(tagName = null) {
+	macro addTag {
 		AssetCategorization._addTag(tagName = ${tagName});
 
 		AssertTextEquals(
@@ -79,8 +75,7 @@ definition {
 			value1 = ${tagName});
 	}
 
-	@summary = "Default summary"
-	macro gotoSelectCategory() {
+	macro gotoSelectCategory {
 		SelectFrameTop();
 
 		if (IsElementPresent(locator1 = "IFrame#DIALOG")) {
@@ -94,8 +89,7 @@ definition {
 		Portlet.expandTree();
 	}
 
-	@summary = "Default summary"
-	macro removeTag(tagName = null) {
+	macro removeTag {
 		var key_tagName = ${tagName};
 
 		AssertTextEquals(
@@ -107,8 +101,7 @@ definition {
 		AssertElementNotPresent(locator1 = "AssetCategorization#TAG");
 	}
 
-	@summary = "Default summary"
-	macro selectTag(tagNameList = null) {
+	macro selectTag {
 		Click(locator1 = "AssetCategorization#TAGS_SELECT_BUTTON");
 
 		SelectFrameTop();

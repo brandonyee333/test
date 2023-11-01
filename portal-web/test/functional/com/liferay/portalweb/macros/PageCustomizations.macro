@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro enableSectionCustomizableCP(columnId = null, pageName = null) {
+	macro enableSectionCustomizableCP {
 		var key_columnId = ${columnId};
 
 		SitePageNavigator.gotoEditPage(page = ${pageName});
@@ -17,8 +16,7 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro enableSectionCustomizablePG(columnId = null) {
+	macro enableSectionCustomizablePG {
 		var key_columnId = ${columnId};
 
 		Check.checkToggleSwitch(locator1 = "SitePagesEditPage#CUSTOMIZATION_SETTINGS_SHOW_CUSTOMIZABLE_SECTIONS");
@@ -32,15 +30,13 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	@summary = "Default summary"
-	macro gotoCustomizationSettingsPG() {
+	macro gotoCustomizationSettingsPG {
 		Navigator.gotoNavTab(navTab = "Advanced");
 
 		Panel.expandPanel(panelHeading = "Customization Settings");
 	}
 
-	@summary = "Default summary"
-	macro gotoCustomizedPageInfo() {
+	macro gotoCustomizedPageInfo {
 		Click(locator1 = "Icon#HEADER_VERTICAL_ELLIPSIS");
 
 		if (isSet(viewDefaultPage)) {
@@ -57,8 +53,7 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewCustomizablePagePG() {
+	macro viewCustomizablePagePG {
 		Click(locator1 = "Icon#PAGE_CUSTOMIZATION_ELLIPSIS");
 
 		AssertTextEquals.assertPartialText(

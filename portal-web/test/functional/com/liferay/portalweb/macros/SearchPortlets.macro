@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro viewSearchHidden() {
+	macro viewSearchHidden {
 		AssertElementNotPresent(locator1 = "Search#EMBEDDED_SEARCH_BAR");
 	}
 

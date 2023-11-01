@@ -1,12 +1,10 @@
 definition {
 
-	@summary = "Default summary"
-	macro checkSocialBookmarks() {
+	macro checkSocialBookmarks {
 		Check.checkToggleSwitch(locator1 = "Checkbox#ENABLE_SOCIAL_BOOKMARKS");
 	}
 
-	@summary = "Default summary"
-	macro configureScopePG(scopeSelection = null, portletName = null) {
+	macro configureScopePG {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");
@@ -22,36 +20,31 @@ definition {
 		PortletEntry.save();
 	}
 
-	@summary = "Default summary"
-	macro enableSocialBookmarkSites(socialBookmarkSite = null) {
+	macro enableSocialBookmarkSites {
 		var key_socialBookmarkSite = ${socialBookmarkSite};
 
 		Check(locator1 = "SocialBookmarks#SOCIAL_BOOKMARKS_CONFIGURATION_CHECKBOX");
 	}
 
-	@summary = "Default summary"
-	macro gotoRSS() {
+	macro gotoRSS {
 		AssertClick(
 			locator1 = "Configuration#NAVIGATION_RSS",
 			value1 = "RSS");
 	}
 
-	@summary = "Default summary"
-	macro selectDisplayTemplate(displayTemplate = null) {
+	macro selectDisplayTemplate {
 		Select(
 			locator1 = "Configuration#SETUP_DISPLAY_SETTINGS_DISPLAY_TEMPLATE_SELECT",
 			value1 = ${displayTemplate});
 	}
 
-	@summary = "Default summary"
-	macro selectMaximumItemstoDisplay(maximumItemsToDisplay = null) {
+	macro selectMaximumItemstoDisplay {
 		Select(
 			locator1 = "Select#MAXIMUM_ITEMS_TO_DISPLAY",
 			value1 = ${maximumItemsToDisplay});
 	}
 
-	@summary = "Default summary"
-	macro selectScopeCP(scopeDefault = null, scopeSelection = null) {
+	macro selectScopeCP {
 		var key_scopeDefault = ${scopeDefault};
 
 		Click.pauseClickAt(locator1 = "ProductMenu#PRODUCT_MENU_PANEL_SCOPE_COG");
@@ -68,8 +61,7 @@ definition {
 			value1 = ${scopeSelection});
 	}
 
-	@summary = "Default summary"
-	macro selectScopePG(scopeSelection = null) {
+	macro selectScopePG {
 		var key_scopeSelection = ${scopeSelection};
 
 		Select(
@@ -85,28 +77,23 @@ definition {
 		BlogsConfiguration.viewScopeSelection(scopeSelection = ${scopeSelection});
 	}
 
-	@summary = "Default summary"
-	macro uncheckComments() {
+	macro uncheckComments {
 		Uncheck(locator1 = "Checkbox#ENABLE_COMMENTS");
 	}
 
-	@summary = "Default summary"
-	macro uncheckRelatedAssets() {
+	macro uncheckRelatedAssets {
 		Uncheck(locator1 = "Checkbox#ENABLE_RELATED_ASSETS");
 	}
 
-	@summary = "Default summary"
-	macro uncheckRSSSubscriptionCheckbox() {
+	macro uncheckRSSSubscriptionCheckbox {
 		Uncheck.uncheckToggleSwitch(locator1 = "Checkbox#ENABLE_RSS_SUBSCRIPTION");
 	}
 
-	@summary = "Default summary"
-	macro uncheckSocialBookmarks() {
+	macro uncheckSocialBookmarks {
 		Uncheck.uncheckToggleSwitch(locator1 = "Checkbox#ENABLE_SOCIAL_BOOKMARKS");
 	}
 
-	@summary = "Default summary"
-	macro viewAsSiteMemberPG() {
+	macro viewAsSiteMemberPG {
 		var key_portletName = "Blogs";
 
 		AssertElementPresent(locator1 = "Portlet#TITLE");
@@ -128,8 +115,7 @@ definition {
 			value1 = "RSS");
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultConfiguration() {
+	macro viewDefaultConfiguration {
 		AssertTextEquals.assertValue(
 			locator1 = "Select#MAXIMUM_ITEMS_TO_DISPLAY",
 			value1 = 20);
@@ -163,8 +149,7 @@ definition {
 		AssertChecked(locator1 = "Checkbox#FACEBOOK");
 	}
 
-	@summary = "Default summary"
-	macro viewDefaultConfigurationRSS() {
+	macro viewDefaultConfigurationRSS {
 		Check.checkToggleSwitch(locator1 = "Checkbox#ENABLE_RSS_SUBSCRIPTION");
 
 		AssertTextEquals.assertValue(
@@ -180,8 +165,7 @@ definition {
 			value1 = "atom_1.0");
 	}
 
-	@summary = "Default summary"
-	macro viewNoPermissionCP() {
+	macro viewNoPermissionCP {
 		var key_portletTitle = "Blogs";
 
 		AssertTextEquals(
@@ -195,8 +179,7 @@ definition {
 			value1 = "No entries were found.");
 	}
 
-	@summary = "Default summary"
-	macro viewNoPermissionPG() {
+	macro viewNoPermissionPG {
 		AssertElementNotPresent(locator1 = "Blogs#ADD_BLOGS_ENTRY");
 
 		AssertElementNotPresent(locator1 = "Link#SUBSCRIBE");
@@ -220,13 +203,11 @@ definition {
 		}
 	}
 
-	@summary = "Default summary"
-	macro viewNoSubscribePG() {
+	macro viewNoSubscribePG {
 		AssertElementNotPresent(locator1 = "Link#SUBSCRIBE");
 	}
 
-	@summary = "Default summary"
-	macro viewPermissionsPG() {
+	macro viewPermissionsPG {
 		Click.mouseOverClick(locator1 = "Portlet#OPTIONS_ICON");
 
 		if (IsElementPresent(locator1 = "Portlet#OPTIONS_MENULIST_PERMISSIONS")) {
@@ -238,8 +219,7 @@ definition {
 		MenuItem.viewPresent(menuItem = "Permissions");
 	}
 
-	@summary = "Default summary"
-	macro viewScopeDefaultNoEntryCP(contentScopeName = null) {
+	macro viewScopeDefaultNoEntryCP {
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -258,15 +238,13 @@ definition {
 			value1 = "No entries were found.");
 	}
 
-	@summary = "Default summary"
-	macro viewScopeSelection(scopeSelection = null) {
+	macro viewScopeSelection {
 		AssertSelectedLabel(
 			locator1 = "Select#SCOPE",
 			value1 = ${scopeSelection});
 	}
 
-	@summary = "Default summary"
-	macro viewSubscribePG() {
+	macro viewSubscribePG {
 		AssertTextEquals(
 			locator1 = "Link#SUBSCRIBE",
 			value1 = "Subscribe");

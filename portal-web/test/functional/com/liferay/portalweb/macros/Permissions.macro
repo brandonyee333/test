@@ -1,7 +1,6 @@
 definition {
 
-	@summary = "Default summary"
-	macro addBlogsEntryLoginUserPG(entryInvalidContent = null, viewableBySelection = null, siteName = null, vocabularyName = null, entryAddRelatedAsset = null, tagName = null, userLoginEmailAddress = null, pageName = null, categoryName = null, assetType = null, entryAddCategory = null, viewableBy = null, entryAddTag = null, siteURLTemp = null, entryValidTitleLength = null, entryInvalidTitleLength = null, assetTitle = null, entryInvalidTitle = null, userLoginFullName = null, entryTitle = null, entryContent = null, entryAddPermissions = null) {
+	macro addBlogsEntryLoginUserPG {
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "test@liferay.com",
 			userLoginFullName = "Test Test");
@@ -39,8 +38,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro addDMFolderLoginUserPG(viewableBy = null, dmFolderDescription = null, dmFolder = null, dmFolderName = null, userLoginFullName = null, userLoginEmailAddress = null, pageName = null) {
+	macro addDMFolderLoginUserPG {
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "test@liferay.com",
 			userLoginFullName = "Test Test");
@@ -58,8 +56,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro definePermissionCP(permissionDefinitionKey = null, permissionDefinitionValue = null, roleName = null, permissionNavigationValue = null, roleType = null) {
+	macro definePermissionCP {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -73,8 +70,7 @@ definition {
 			roleType = ${roleType});
 	}
 
-	@summary = "Default summary"
-	macro definePermissionLoginUserCP(permissionDefinitionKey = null, permissionDefinitionValue = null, roleName = null, permissionNavigationValue = null, userLoginFullName = null, roleType = null, userLoginEmailAddress = null) {
+	macro definePermissionLoginUserCP {
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "test@liferay.com",
 			userLoginFullName = "Test Test");
@@ -91,8 +87,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro definePermissionViaJSONAPI(resourceAction = null, roleName = null, resourceName = null, roleType = null) {
+	macro definePermissionViaJSONAPI {
 		JSONPermission.addPermission(
 			actionId = ${resourceAction},
 			groupName = "Global",
@@ -101,8 +96,7 @@ definition {
 			roleType = ${roleType});
 	}
 
-	@summary = "Default summary"
-	macro removePermissionCP(permissionDefinitionKey = null, permissionDefinitionValue = null, roleName = null, permissionNavigationValue = null, removeLink = null, roleType = null) {
+	macro removePermissionCP {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -117,8 +111,7 @@ definition {
 			roleType = ${roleType});
 	}
 
-	@summary = "Default summary"
-	macro removePermissionLoginUserCP(permissionDefinitionKey = null, permissionDefinitionValue = null, roleName = null, permissionNavigationValue = null, removeLink = null, userLoginFullName = null, roleType = null, userLoginEmailAddress = null) {
+	macro removePermissionLoginUserCP {
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "test@liferay.com",
 			userLoginFullName = "Test Test");
@@ -136,8 +129,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro removePermissionViaAPI(resourceAction = null, groupName = null, roleName = null, resourceName = null, roleType = null) {
+	macro removePermissionViaAPI {
 		JSONPermission.removePermission(
 			actionId = ${resourceAction},
 			groupName = ${groupName},
@@ -146,8 +138,7 @@ definition {
 			roleType = ${roleType});
 	}
 
-	@summary = "Default summary"
-	macro setUpOrgRoleLoginUserPG(orgName = null, syntaxCheckingEnabled = null, userEmailAddress = null, newPassword = null, i = null, userFirstName = null, userLoginEmailAddress = null, pageName = null, portletName = null, userLastName = null, userScreenName = null, roleName = null, userLoginFullName = null) {
+	macro setUpOrgRoleLoginUserPG {
 		JSONUser.addUser(
 			userEmailAddress = ${userEmailAddress},
 			userFirstName = ${userFirstName},
@@ -200,8 +191,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro setUpRegRoleLoginUserCP(userLastName = null, userScreenName = null, syntaxCheckingEnabled = null, roleName = null, userEmailAddress = null, newPassword = null, userFirstName = null, userLoginFullName = null, userLoginEmailAddress = null) {
+	macro setUpRegRoleLoginUserCP {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
@@ -237,8 +227,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro setUpRegRoleLoginUserPG(userLastName = null, userScreenName = null, roleName = null, userEmailAddress = null, userFirstName = null, userLoginFullName = null, userLoginEmailAddress = null, pageName = null, portletName = null) {
+	macro setUpRegRoleLoginUserPG {
 		Permissions.setUpRegRolePG(
 			pageName = ${pageName},
 			portletName = ${portletName},
@@ -253,8 +242,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro setUpRegRolePG(userLastName = null, userScreenName = null, syntaxCheckingEnabled = null, roleName = null, i = null, userEmailAddress = null, newPassword = null, userFirstName = null, pageName = null, portletName = null) {
+	macro setUpRegRolePG {
 		JSONLayout.addPublicLayout(
 			groupName = "Guest",
 			layoutName = ${pageName});
@@ -290,8 +278,7 @@ definition {
 			userEmailAddress = ${userEmailAddress});
 	}
 
-	@summary = "Default summary"
-	macro setUpSiteMemberRoleLoginUserPG(userEmailAddressVariation = null, sitePageType = null, syntaxCheckingEnabled = null, userEmailAddress = null, newPassword = null, siteName = null, i = null, pageTemplateName = null, userFirstName = null, userLoginEmailAddress = null, pageName = null, portletName = null, sitePagePrivacy = null, userScreenNameVariation = null, userLastName = null, userScreenName = null, userMiddleName = null, userGender = null, userLoginFullName = null, userBirthday = null) {
+	macro setUpSiteMemberRoleLoginUserPG {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -367,8 +354,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro setUpSiteRoleCP(userLastName = null, userScreenName = null, syntaxCheckingEnabled = null, roleName = null, userEmailAddress = null, newPassword = null, siteName = null, userFirstName = null, userLoginFullName = null, userLoginEmailAddress = null, pageName = null) {
+	macro setUpSiteRoleCP {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
@@ -415,8 +401,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro setUpSiteRoleLoginUserCP(userLastName = null, userScreenName = null, roleName = null, syntaxCheckingEnabled = null, newPassword = null, siteName = null, userEmailAddress = null, userFirstName = null, userLoginFullName = null, userLoginEmailAddress = null, pageName = null) {
+	macro setUpSiteRoleLoginUserCP {
 		Permissions.setUpSiteRoleCP(
 			newPassword = ${newPassword},
 			pageName = ${pageName},
@@ -433,8 +418,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro setUpSiteRoleLoginUserPG(userEmailAddressVariation = null, syntaxCheckingEnabled = null, siteName = null, roleType = null, userLoginEmailAddress = null, pageName = null, portletName = null, sitePagePrivacy = null, userLastName = null, userScreenName = null, userMiddleName = null, userLoginFullName = null, userBirthday = null, roleTitle = null, sitePageType = null, userEmailAddress = null, newPassword = null, i = null, pageTemplateName = null, userFirstName = null, userScreenNameVariation = null, roleName = null, userGender = null, page = null, roleDescription = null) {
+	macro setUpSiteRoleLoginUserPG {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -533,8 +517,7 @@ definition {
 			userLoginFullName = ${userLoginFullName});
 	}
 
-	@summary = "Default summary"
-	macro setUpSiteTeamRoleLoginUserPG(userEmailAddressVariation = null, teamName = null, sitePageType = null, syntaxCheckingEnabled = null, userEmailAddress = null, newPassword = null, siteName = null, i = null, pageTemplateName = null, userFirstName = null, teamDescription = null, userLoginEmailAddress = null, pageName = null, portletName = null, sitePagePrivacy = null, userScreenNameVariation = null, userLastName = null, userScreenName = null, userMiddleName = null, userGender = null, userLoginFullName = null, userNameIsNotFound = null, userBirthday = null) {
+	macro setUpSiteTeamRoleLoginUserPG {
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",

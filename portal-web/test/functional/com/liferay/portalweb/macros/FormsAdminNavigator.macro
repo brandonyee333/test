@@ -2,20 +2,17 @@ definition {
 
 	var formName = "Created Form Name";
 
-	@summary = "Default summary"
-	macro gotoAddDataProvider() {
+	macro gotoAddDataProvider {
 		IFrame.selectDialogFrame();
 
 		Click(locator1 = "FormsAdmin#DATA_PROVIDER_PLUS_BUTTON");
 	}
 
-	@summary = "Default summary"
-	macro gotoAddForm() {
+	macro gotoAddForm {
 		LexiconEntry.gotoAdd();
 	}
 
-	@summary = "Default summary"
-	macro gotoDeleteField(fieldName = null) {
+	macro gotoDeleteField {
 		var key_fieldName = ${fieldName};
 
 		MouseOver(locator1 = "Form#FIELD_LABEL");
@@ -25,8 +22,7 @@ definition {
 		Click(locator1 = "Form#FIELD_DELETE_BUTTON");
 	}
 
-	@summary = "Default summary"
-	macro gotoEditField(fieldName = null) {
+	macro gotoEditField {
 		var key_fieldName = ${fieldName};
 
 		MouseOver(locator1 = "Form#FIELD_LABEL");
@@ -36,16 +32,14 @@ definition {
 		Click(locator1 = "Form#FIELD_EDIT_BUTTON");
 	}
 
-	@summary = "Default summary"
-	macro gotoEditFormByName(formName = null) {
+	macro gotoEditFormByName {
 		AssertClick(
 			key_formName = ${formName},
 			locator1 = "FormsAdmin#FORMS_TABLE_NAME",
 			value1 = ${formName});
 	}
 
-	@summary = "Default summary"
-	macro gotoPermissions(formName = null) {
+	macro gotoPermissions {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Permissions",
 			rowEntry = ${formName});
@@ -53,48 +47,41 @@ definition {
 		IFrame.selectDialogFrame();
 	}
 
-	@summary = "Default summary"
-	macro gotoPreviewForm() {
+	macro gotoPreviewForm {
 		AssertClick(
 			locator1 = "Message#INFO_LINK",
 			value1 = "Click here to preview the form in a new window.");
 	}
 
-	@summary = "Default summary"
-	macro gotoPublish() {
+	macro gotoPublish {
 		AssertElementPresent(locator1 = "Form#NAME_FIELD");
 
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Publish");
 	}
 
-	@summary = "Default summary"
-	macro gotoPublishCopyURLLink() {
+	macro gotoPublishCopyURLLink {
 		Click(locator1 = "Form#PUBLISH_ICON");
 	}
 
-	@summary = "Default summary"
-	macro gotoSettings() {
+	macro gotoSettings {
 		AssertElementPresent(locator1 = "Form#NAME_FIELD");
 
 		LexiconEntry.gotoHeaderMenuItem(menuItem = "Settings");
 	}
 
-	@summary = "Default summary"
-	macro gotoView() {
+	macro gotoView {
 		AssertElementPresent(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "View");
 	}
 
-	@summary = "Default summary"
-	macro gotoViewEntries() {
+	macro gotoViewEntries {
 		AssertElementPresent(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 
 		LexiconEntry.gotoEllipsisMenuItem(menuItem = "View Entries");
 	}
 
-	@summary = "Default summary"
-	macro openPublishURL() {
+	macro openPublishURL {
 		var publishFormURL = selenium.getElementValue("Form#PUBLISH_FORM_PUBLIC_URL");
 
 		Navigator.openSpecificURL(url = ${publishFormURL});
