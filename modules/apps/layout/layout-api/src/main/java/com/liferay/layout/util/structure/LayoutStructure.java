@@ -36,7 +36,7 @@ import java.util.Set;
  */
 public class LayoutStructure {
 
-	public static LayoutStructure of(String layoutStructure) {
+	public static LayoutStructure of(String layoutStructure) throws Exception {
 		if (Validator.isNull(layoutStructure)) {
 			return new LayoutStructure();
 		}
@@ -105,26 +105,14 @@ public class LayoutStructure {
 						deletedLayoutStructureItem);
 				});
 
-			List<LayoutStructureRule> layoutStructureRules = new ArrayList<>();
-
-			JSONArray layoutStructureRulesJSONArray =
-				layoutStructureJSONObject.getJSONArray("pageRules");
-
-			if (!JSONUtil.isEmpty(layoutStructureRulesJSONArray)) {
-				for (int i = 0; i < layoutStructureRulesJSONArray.length();
-					 i++) {
-
-					layoutStructureRules.add(
-						LayoutStructureRule.of(
-							layoutStructureRulesJSONArray.getJSONObject(i)));
-				}
-			}
-
 			return new LayoutStructure(
 				collectionStyledLayoutStructureItems, deletedItemIds,
 				deletedLayoutStructureItems, deletedPortletIds,
 				formStyledLayoutStructureItems, fragmentLayoutStructureItems,
-				layoutStructureItems, layoutStructureRules,
+				layoutStructureItems,
+				JSONUtil.toList(
+					layoutStructureJSONObject.getJSONArray("pageRules"),
+					jsonObject -> LayoutStructureRule.of(jsonObject)),
 				rootItemsJSONObject.getString("main"));
 		}
 		catch (JSONException jsonException) {
