@@ -10,16 +10,22 @@ import aQute.bnd.annotation.metatype.Meta;
 /**
  * @author Feliphe Marinho
  */
+
+
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.notification.internal.configuration.FunctionNotificationTypeConfiguration"
+	id = "com.liferay.notification.internal.configuration.FunctionNotificationTypeConfiguration",
+	localization = "content/Language",
+	name = "function-notification-type-configuration"
 )
 public interface FunctionNotificationTypeConfiguration {
 
-	@Meta.AD
+	@Meta.AD(type = Meta.Type.String,
+		name="oauth2-application-external-reference-code" , required = false)
 	public String oAuth2ApplicationExternalReferenceCode();
 
-	@Meta.AD
+	@Meta.AD(type = Meta.Type.String,
+		name="resource-path" , required = false)
 	public String resourcePath();
 
 }
