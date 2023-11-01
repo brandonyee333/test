@@ -200,7 +200,7 @@ definition {
 			locator1 = "SiteTemplates#SITE_TEMPLATE_TABLE_NAME",
 			value1 = ${siteTemplateName});
 
-		SelectWindow(value1 = "home - ${siteTemplateName} - ${siteName}");
+		SelectWindow(locator1 = "home - ${siteTemplateName} - ${siteName}");
 	}
 
 	@summary = "Default summary"
