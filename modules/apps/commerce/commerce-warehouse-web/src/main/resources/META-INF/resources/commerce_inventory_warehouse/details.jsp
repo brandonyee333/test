@@ -15,8 +15,6 @@ CommerceInventoryWarehouse commerceInventoryWarehouse = cIWarehousesDisplayConte
 String countryTwoLettersISOCode = BeanParamUtil.getString(commerceInventoryWarehouse, request, "countryTwoLettersISOCode");
 
 String commerceRegionCode = BeanParamUtil.getString(commerceInventoryWarehouse, request, "commerceRegionCode");
-
-boolean hasUpdatePermission = cIWarehousesDisplayContext.hasPermission();
 %>
 
 <liferay-ui:error exception="<%= CommerceGeocoderException.class %>">
@@ -47,11 +45,11 @@ boolean hasUpdatePermission = cIWarehousesDisplayContext.hasPermission();
 			<commerce-ui:panel
 				title='<%= LanguageUtil.get(request, "details") %>'
 			>
-				<aui:input disabled="<%= !hasUpdatePermission %>" localized="<%= true %>" name="name" required="<%= true %>" value="<%= commerceInventoryWarehouse.getName(locale) %>" />
+				<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" localized="<%= true %>" name="name" required="<%= true %>" value="<%= commerceInventoryWarehouse.getName(locale) %>" />
 
-				<aui:input disabled="<%= !hasUpdatePermission %>" localized="<%= true %>" name="description" type="textarea" value="<%= commerceInventoryWarehouse.getDescription(locale) %>" />
+				<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" localized="<%= true %>" name="description" type="textarea" value="<%= commerceInventoryWarehouse.getDescription(locale) %>" />
 
-				<aui:input disabled="<%= !hasUpdatePermission %>" label='<%= HtmlUtil.escape("active") %>' name="active" type="toggle-switch" value="<%= commerceInventoryWarehouse.isActive() %>" />
+				<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" label='<%= HtmlUtil.escape("active") %>' name="active" type="toggle-switch" value="<%= commerceInventoryWarehouse.isActive() %>" />
 			</commerce-ui:panel>
 		</div>
 
@@ -67,12 +65,12 @@ boolean hasUpdatePermission = cIWarehousesDisplayContext.hasPermission();
 				elementClasses="card-full-height w-100"
 				title='<%= LanguageUtil.get(request, "geolocation") %>'
 			>
-				<aui:input disabled="<%= !hasUpdatePermission %>" name="latitude" />
+				<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" name="latitude" />
 
-				<aui:input disabled="<%= !hasUpdatePermission %>" name="longitude" />
+				<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" name="longitude" />
 
 				<div>
-					<c:if test="<%= hasUpdatePermission %>">
+					<c:if test="<%= cIWarehousesDisplayContext.hasPermission() %>">
 						<clay:link
 							displayType="secondary"
 							href="<%= geolocateURL.toString() %>"
@@ -90,21 +88,21 @@ boolean hasUpdatePermission = cIWarehousesDisplayContext.hasPermission();
 			>
 				<div class="row">
 					<div class="col-lg-6">
-						<aui:input disabled="<%= !hasUpdatePermission %>" name="street1" />
+						<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" name="street1" />
 
-						<aui:input disabled="<%= !hasUpdatePermission %>" name="street3" />
+						<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" name="street3" />
 
-						<aui:select disabled="<%= !hasUpdatePermission %>" label="region" name="commerceRegionCode" />
+						<aui:select disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" label="region" name="commerceRegionCode" />
 
-						<aui:input disabled="<%= !hasUpdatePermission %>" name="city" />
+						<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" name="city" />
 					</div>
 
 					<div class="col-lg-6">
-						<aui:input disabled="<%= !hasUpdatePermission %>" name="street2" />
+						<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" name="street2" />
 
-						<aui:select disabled="<%= !hasUpdatePermission %>" label="country" name="countryTwoLettersISOCode" />
+						<aui:select disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" label="country" name="countryTwoLettersISOCode" />
 
-						<aui:input disabled="<%= !hasUpdatePermission %>" label="postal-code" name="zip" />
+						<aui:input disabled="<%= !cIWarehousesDisplayContext.hasPermission() %>" label="postal-code" name="zip" />
 					</div>
 				</div>
 			</commerce-ui:panel>
