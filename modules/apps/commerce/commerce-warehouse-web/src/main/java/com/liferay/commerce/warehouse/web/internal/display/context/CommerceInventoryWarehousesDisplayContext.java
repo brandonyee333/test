@@ -129,31 +129,33 @@ public class CommerceInventoryWarehousesDisplayContext {
 	public List<HeaderActionModel> getHeaderActionModels() throws Exception {
 		List<HeaderActionModel> headerActionModels = new ArrayList<>();
 
-		if (hasPermission()) {
-			LiferayPortletResponse liferayPortletResponse =
-				cpRequestHelper.getLiferayPortletResponse();
-
-			RenderResponse renderResponse = cpRequestHelper.getRenderResponse();
-
-			RenderURL cancelURL = renderResponse.createRenderURL();
-
-			HeaderActionModel cancelHeaderActionModel = new HeaderActionModel(
-				null, cancelURL.toString(), null, "cancel");
-
-			headerActionModels.add(cancelHeaderActionModel);
-
-			HeaderActionModel saveHeaderActionModel = new HeaderActionModel(
-				"btn-primary", liferayPortletResponse.getNamespace() + "fm",
-				PortletURLBuilder.createActionURL(
-					liferayPortletResponse
-				).setActionName(
-					"/commerce_inventory_warehouse" +
-						"/edit_commerce_inventory_warehouse"
-				).buildString(),
-				null, "save");
-
-			headerActionModels.add(saveHeaderActionModel);
+		if (!hasPermission()) {
+			return headerActionModels;
 		}
+
+		LiferayPortletResponse liferayPortletResponse =
+			cpRequestHelper.getLiferayPortletResponse();
+
+		RenderResponse renderResponse = cpRequestHelper.getRenderResponse();
+
+		RenderURL cancelURL = renderResponse.createRenderURL();
+
+		HeaderActionModel cancelHeaderActionModel = new HeaderActionModel(
+			null, cancelURL.toString(), null, "cancel");
+
+		headerActionModels.add(cancelHeaderActionModel);
+
+		HeaderActionModel saveHeaderActionModel = new HeaderActionModel(
+			"btn-primary", liferayPortletResponse.getNamespace() + "fm",
+			PortletURLBuilder.createActionURL(
+				liferayPortletResponse
+			).setActionName(
+				"/commerce_inventory_warehouse" +
+					"/edit_commerce_inventory_warehouse"
+			).buildString(),
+			null, "save");
+
+		headerActionModels.add(saveHeaderActionModel);
 
 		return headerActionModels;
 	}
