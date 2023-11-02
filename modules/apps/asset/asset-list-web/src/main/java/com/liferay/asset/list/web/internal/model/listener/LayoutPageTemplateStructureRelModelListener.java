@@ -45,12 +45,7 @@ public class LayoutPageTemplateStructureRelModelListener
 			LayoutPageTemplateStructureRel layoutPageTemplateStructureRel)
 		throws ModelListenerException {
 
-		try {
-			_updateAssetListEntryUsages(layoutPageTemplateStructureRel);
-		}
-		catch (Exception exception) {
-			throw new ModelListenerException(exception);
-		}
+		_updateAssetListEntryUsages(layoutPageTemplateStructureRel);
 	}
 
 	@Override
@@ -60,12 +55,7 @@ public class LayoutPageTemplateStructureRelModelListener
 			LayoutPageTemplateStructureRel layoutPageTemplateStructureRel)
 		throws ModelListenerException {
 
-		try {
-			_updateAssetListEntryUsages(layoutPageTemplateStructureRel);
-		}
-		catch (Exception exception) {
-			throw new ModelListenerException(exception);
-		}
+		_updateAssetListEntryUsages(layoutPageTemplateStructureRel);
 	}
 
 	private void _addAssetListEntryUsage(
@@ -142,8 +132,7 @@ public class LayoutPageTemplateStructureRelModelListener
 	}
 
 	private void _updateAssetListEntryUsages(
-			LayoutPageTemplateStructureRel layoutPageTemplateStructureRel)
-		throws Exception {
+		LayoutPageTemplateStructureRel layoutPageTemplateStructureRel) {
 
 		SegmentsExperience segmentsExperience =
 			_segmentsExperienceLocalService.fetchSegmentsExperience(
