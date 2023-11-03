@@ -1139,6 +1139,8 @@ public class ObjectEntryLocalServiceImpl
 					_objectFieldLocalService);
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
 			_getDynamicObjectDefinitionTable(objectDefinitionId);
+		DynamicObjectDefinitionTable dynamicRootObjectDefinitionTable =
+			_getDynamicRootObjectDefinitionTable(objectDefinitionId);
 		DynamicObjectDefinitionTable extensionDynamicObjectDefinitionTable =
 			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId);
 
@@ -1149,9 +1151,6 @@ public class ObjectEntryLocalServiceImpl
 				_getSelectExpressions(extensionDynamicObjectDefinitionTable),
 				extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn()),
 			_EXPRESSIONS);
-
-		DynamicObjectDefinitionTable dynamicRootObjectDefinitionTable =
-			_getDynamicRootObjectDefinitionTable(objectDefinitionId);
 
 		List<Object[]> rows = _list(
 			DSLQueryFactoryUtil.select(
