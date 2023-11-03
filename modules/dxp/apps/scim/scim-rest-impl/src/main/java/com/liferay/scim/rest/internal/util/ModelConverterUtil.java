@@ -82,11 +82,7 @@ public class ModelConverterUtil {
 	public static User toUser(ScimUser scimUser) throws Exception {
 		User user = new User();
 
-		SCIMResourceSchemaManager scimResourceSchemaManager =
-			SCIMResourceSchemaManager.getInstance();
-
 		user.replaceActive(scimUser.isActive());
-
 		user.replaceEmails(
 			Collections.singletonList(
 				new MultiValuedComplexType(
@@ -102,6 +98,9 @@ public class ModelConverterUtil {
 
 		user.replaceTitle(scimUser.getJobTitle());
 
+		SCIMResourceSchemaManager scimResourceSchemaManager =
+			SCIMResourceSchemaManager.getInstance();
+
 		user.setAttribute(
 			_createLiferayUserExtensionComplexAttribute(scimUser),
 			scimResourceSchemaManager.getUserResourceSchema());
@@ -112,19 +111,18 @@ public class ModelConverterUtil {
 
 		user.setExternalId(scimUser.getExternalReferenceCode());
 		user.setId(scimUser.getId());
-		user.setLocation(
-			StringBundler.concat(
-				AbstractResourceManager.getResourceEndpointURL(
-					SCIMConstants.USER_ENDPOINT),
-				CharPool.FORWARD_SLASH, scimUser.getId()));
 
 		Date modifiedDate = scimUser.getModifiedDate();
 
 		user.setLastModifiedInstant(modifiedDate.toInstant());
 
+		user.setLocation(
+			StringBundler.concat(
+				AbstractResourceManager.getResourceEndpointURL(
+					SCIMConstants.USER_ENDPOINT),
+				CharPool.FORWARD_SLASH, scimUser.getId()));
 		user.setResourceType(SCIMConstants.USER);
 		user.setSchemas();
-
 		user.setUserName(scimUser.getScreenName());
 
 		return user;
