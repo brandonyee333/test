@@ -101,7 +101,7 @@ renderResponse.setTitle(organization.getName());
 		<div class="separator"><!-- --></div>
 
 		<%
-		String taglibOnClick = renderResponse.getNamespace() + "updateOrganizationUsers('" + portletURL.toString() + StringPool.AMPERSAND + renderResponse.getNamespace() + "cur=" + cur + "');";
+		String taglibOnClick = renderResponse.getNamespace() + "updateOrganizationUsers();";
 		%>
 
 		<aui:button onClick="<%= taglibOnClick %>" value="update-associations" />
@@ -113,10 +113,9 @@ renderResponse.setTitle(organization.getName());
 </aui:form>
 
 <aui:script>
-	function <portlet:namespace />updateOrganizationUsers(assignmentsRedirect) {
+	function <portlet:namespace />updateOrganizationUsers() {
 		var form = AUI.$(document.<portlet:namespace />fm);
 
-		form.fm('assignmentsRedirect').val(assignmentsRedirect);
 		form.fm('addUserIds').val(Liferay.Util.listCheckedExcept(form, '<portlet:namespace />allRowIds'));
 		form.fm('removeUserIds').val(Liferay.Util.listUncheckedExcept(form, '<portlet:namespace />allRowIds'));
 
