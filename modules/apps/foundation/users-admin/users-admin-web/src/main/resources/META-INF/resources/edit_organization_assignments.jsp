@@ -11,8 +11,6 @@
 String tabs1 = ParamUtil.getString(request, "tabs1");
 String tabs2 = ParamUtil.getString(request, "tabs2", "current");
 
-int cur = ParamUtil.getInteger(request, SearchContainer.DEFAULT_CUR_PARAM);
-
 String redirect = ParamUtil.getString(request, "redirect");
 
 long organizationId = ParamUtil.getLong(request, "organizationId");
@@ -100,11 +98,7 @@ renderResponse.setTitle(organization.getName());
 
 		<div class="separator"><!-- --></div>
 
-		<%
-		String taglibOnClick = renderResponse.getNamespace() + "updateOrganizationUsers();";
-		%>
-
-		<aui:button onClick="<%= taglibOnClick %>" value="update-associations" />
+		<aui:button onClick='<%= renderResponse.getNamespace() + "updateOrganizationUsers();" %>' value="update-associations" />
 
 		<liferay-ui:search-iterator
 			markupView="lexicon"
