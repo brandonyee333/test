@@ -140,7 +140,6 @@ public class CPInstanceModelPreFilterContributor
 			booleanFilter.addRequiredTerm(
 				CPField.REPLACEMENT_CP_INSTANCE_UUID,
 				replacementCPInstanceUuid);
-
 			booleanFilter.addRequiredTerm(
 				CPField.REPLACEMENT_CPRODUCT_ID, replacementCProductId);
 		}
