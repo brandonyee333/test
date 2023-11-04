@@ -143,7 +143,7 @@ public class UserManagerImpl implements UserManager {
 			CompanyThreadLocal.getCompanyId(), GetterUtil.getLong(userId));
 
 		if (scimUser == null) {
-			throw new NotFoundException("No user found with id : " + userId);
+			throw new NotFoundException("No user found with user ID " + userId);
 		}
 
 		try {
