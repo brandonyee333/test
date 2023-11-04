@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Supplier;
 
 import org.wso2.charon3.core.attributes.Attribute;
 import org.wso2.charon3.core.attributes.ComplexAttribute;
@@ -172,28 +171,28 @@ public class ScimUserUtil {
 					attributeValue, attributeSchema.getType())));
 	}
 
+	private static Date _getBirthday() {
+		Calendar birthdayCalendar = CalendarFactoryUtil.getCalendar(
+			1970, Calendar.JANUARY, 1);
+
+		return birthdayCalendar.getTime();
+	}
+
 	private static Date _getBirthday(Locale locale, User user) {
-		Supplier<Date> supplier = () -> {
-			Calendar birthdayCalendar = CalendarFactoryUtil.getCalendar(
-				1970, Calendar.JANUARY, 1);
-
-			return birthdayCalendar.getTime();
-		};
-
 		try {
 			ComplexAttribute complexAttribute =
 				(ComplexAttribute)user.getAttribute(
 					_LIFERAY_USER_SCHEMA_EXTENSION_URI);
 
 			if (complexAttribute == null) {
-				return supplier.get();
+				return _getBirthday();
 			}
 
 			SimpleAttribute simpleAttribute =
 				(SimpleAttribute)complexAttribute.getSubAttribute("birthday");
 
 			if (simpleAttribute == null) {
-				return supplier.get();
+				return _getBirthday();
 			}
 
 			return DateUtil.parseDate(
@@ -205,7 +204,7 @@ public class ScimUserUtil {
 			}
 		}
 
-		return supplier.get();
+		return _getBirthday();
 	}
 
 	private static String _getEmailAddress(User user) {
