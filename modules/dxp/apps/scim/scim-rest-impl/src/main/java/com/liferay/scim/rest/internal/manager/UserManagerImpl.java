@@ -106,7 +106,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public void deleteGroup(String id) throws NotImplementedException {
+	public void deleteGroup(String groupId) throws NotImplementedException {
 		throw new NotImplementedException();
 	}
 
@@ -121,7 +121,8 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public Group getGroup(String id, Map<String, Boolean> requiredAttributes)
+	public Group getGroup(
+			String groupId, Map<String, Boolean> requiredAttributes)
 		throws NotImplementedException {
 
 		throw new NotImplementedException();
@@ -135,14 +136,14 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	@Override
-	public User getUser(String id, Map<String, Boolean> requiredAttributes)
+	public User getUser(String userId, Map<String, Boolean> requiredAttributes)
 		throws BadRequestException, CharonException, NotFoundException {
 
 		ScimUser scimUser = _fetchScimUser(
-			CompanyThreadLocal.getCompanyId(), GetterUtil.getLong(id));
+			CompanyThreadLocal.getCompanyId(), GetterUtil.getLong(userId));
 
 		if (scimUser == null) {
-			throw new NotFoundException("No user found with id : " + id);
+			throw new NotFoundException("No user found with id : " + userId);
 		}
 
 		try {
