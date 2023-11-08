@@ -37,7 +37,7 @@ import com.liferay.object.exception.ObjectDefinitionScopeException;
 import com.liferay.object.exception.ObjectEntryStatusException;
 import com.liferay.object.exception.ObjectEntryValuesException;
 import com.liferay.object.exception.ObjectRelationshipDeletionTypeException;
-import com.liferay.object.field.attachment.AttachmentValidator;
+import com.liferay.object.field.attachment.AttachmentManager;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
 import com.liferay.object.field.business.type.ObjectFieldBusinessTypeRegistry;
 import com.liferay.object.field.setting.util.ObjectFieldSettingUtil;
@@ -1573,7 +1573,7 @@ public class ObjectEntryLocalServiceImpl
 
 			DLFolder dlFileEntryFolder = dlFileEntry.getFolder();
 
-			DLFolder dlFolder = _attachmentValidator.getDLFolder(
+			DLFolder dlFolder = _attachmentManager.getDLFolder(
 				objectFieldId, dlFileEntry.getCompanyId(),
 				dlFileEntry.getGroupId(), serviceContext, userId);
 
@@ -3777,7 +3777,7 @@ public class ObjectEntryLocalServiceImpl
 		throws PortalException {
 
 		if (!ArrayUtil.contains(
-				_attachmentValidator.getAcceptedFileExtensions(objectFieldId),
+				_attachmentManager.getAcceptedFileExtensions(objectFieldId),
 				fileExtension, true)) {
 
 			throw new ObjectEntryValuesException.InvalidFileExtension(
@@ -3790,7 +3790,7 @@ public class ObjectEntryLocalServiceImpl
 			String objectFieldName)
 		throws PortalException {
 
-		long maximumFileSize = _attachmentValidator.getMaximumFileSize(
+		long maximumFileSize = _attachmentManager.getMaximumFileSize(
 			objectFieldId, !guestUser);
 
 		if ((maximumFileSize > 0) && (fileSize > maximumFileSize)) {
@@ -4387,7 +4387,7 @@ public class ObjectEntryLocalServiceImpl
 	private AssetLinkLocalService _assetLinkLocalService;
 
 	@Reference
-	private AttachmentValidator _attachmentValidator;
+	private AttachmentManager _attachmentManager;
 
 	@Reference
 	private CurrentConnection _currentConnection;
