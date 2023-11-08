@@ -4877,6 +4877,7 @@ definition {
 	@priority = 3
 	test ViewMappedAssetInBlueprintCollectionProvider {
 		property custom.properties = "feature.flag.LPS-193551=true${line.seperator}feature.flag.LPS-129412=true";
+		property portal.acceptance = "LPS-196498";
 
 		task ("Create a test structure and a few sample web contents with the structure") {
 			WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
