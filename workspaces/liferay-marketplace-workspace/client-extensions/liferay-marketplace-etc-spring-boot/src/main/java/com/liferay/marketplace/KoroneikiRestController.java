@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -201,11 +202,6 @@ public class KoroneikiRestController extends BaseRestController {
 
 		Product product = _productResource.getProduct(cpDefinitionId + 1);
 
-		Map<String, String> skuMap = _getSkuMap(
-			_skuResource.getProductIdSkusPage(
-				product.getProductId(), Pagination.of(1, 10)
-			).getItems());
-
 		String licenseType = _getLicenseType(
 			_productSpecificationResource.getProductIdProductSpecificationsPage(
 				product.getProductId(), Pagination.of(1, 10)
@@ -257,7 +253,11 @@ public class KoroneikiRestController extends BaseRestController {
 			productPurchase.setPerpetual(
 				StringUtil.equals(licenseType, "Perpetual"));
 			productPurchase.setProductKey(
-				skuMap.get(orderItemJSONObject.getString("sku")));
+				_getProductKey(
+					orderItemJSONObject.getString("sku"),
+					_skuResource.getProductIdSkusPage(
+						product.getProductId(), Pagination.of(1, 10)
+					).getItems()));
 			productPurchase.setStatus(ProductPurchase.Status.APPROVED);
 			productPurchase.setQuantity(orderItemJSONObject.getInt("quantity"));
 
@@ -337,14 +337,14 @@ public class KoroneikiRestController extends BaseRestController {
 		return null;
 	}
 
-	private Map<String, String> _getSkuMap(Collection<Sku> skuCollection) {
-		Map<String, String> map = new HashMap<>();
-
-		for (Sku sku : skuCollection) {
-			map.put(sku.getSku(), sku.getExternalReferenceCode());
+	private String _getProductKey(String skuString, Collection<Sku> skus) {
+		for (Sku sku : skus) {
+			if (Objects.equals(sku.getSku(), skuString)) {
+				return sku.getExternalReferenceCode();
+			}
 		}
 
-		return map;
+		return null;
 	}
 
 	private void _initResourceBuilders(Jwt jwt) throws Exception {
