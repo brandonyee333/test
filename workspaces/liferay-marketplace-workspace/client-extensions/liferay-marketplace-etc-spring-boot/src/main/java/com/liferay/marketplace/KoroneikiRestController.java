@@ -189,7 +189,7 @@ public class KoroneikiRestController extends BaseRestController {
 
 		Order order = new Order();
 
-		order.setOrderStatus(_COMMERCE_ORDER_PROCESSING_STATUS);
+		order.setOrderStatus(_COMMERCE_ORDER_STATUS_PROCESSING);
 
 		_orderResource.patchOrder(commerceOrderJSONObject.getLong("id"), order);
 
@@ -292,18 +292,18 @@ public class KoroneikiRestController extends BaseRestController {
 			return;
 		}
 
-		order.setOrderStatus(_COMMERCE_ORDER_COMPLETED_STATUS);
+		order.setOrderStatus(_COMMERCE_ORDER_STATUS_COMPLETED);
 
 		if (dxpLicenseUsageTypePropertiesMap.get("developer") ||
 			(dxpLicenseUsageTypePropertiesMap.get("standard") &&
 			 (commerceOrderJSONObject.getInt("paymentStatus") ==
-				 _COMMERCE_ORDER_PAYMENT_COMPLETED_STATUS))) {
+				 _COMMERCE_ORDER_STATUS_PAYMENT_COMPLETED))) {
 
 			_orderResource.patchOrder(
 				commerceOrderJSONObject.getLong("id"), order);
 		}
 		else if (dxpLicenseUsageTypePropertiesMap.get("trial")) {
-			order.setPaymentStatus(_COMMERCE_ORDER_PAYMENT_COMPLETED_STATUS);
+			order.setPaymentStatus(_COMMERCE_ORDER_STATUS_PAYMENT_COMPLETED);
 
 			_orderResource.patchOrder(
 				commerceOrderJSONObject.getLong("id"), order);
@@ -447,11 +447,11 @@ public class KoroneikiRestController extends BaseRestController {
 		}
 	}
 
-	private static final int _COMMERCE_ORDER_COMPLETED_STATUS = 0;
+	private static final int _COMMERCE_ORDER_STATUS_COMPLETED = 0;
 
-	private static final int _COMMERCE_ORDER_PAYMENT_COMPLETED_STATUS = 0;
+	private static final int _COMMERCE_ORDER_STATUS_PAYMENT_COMPLETED = 0;
 
-	private static final int _COMMERCE_ORDER_PROCESSING_STATUS = 10;
+	private static final int _COMMERCE_ORDER_STATUS_PROCESSING = 10;
 
 	private static final String[] _DXP_LICENSE_USAGE_TYPES = {
 		"developer", "standard", "trial"
