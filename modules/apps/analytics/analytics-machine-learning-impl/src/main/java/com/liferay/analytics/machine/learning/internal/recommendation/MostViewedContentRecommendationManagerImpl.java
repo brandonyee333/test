@@ -88,15 +88,15 @@ public class MostViewedContentRecommendationManagerImpl
 			Field.CREATE_DATE, mostViewedContentRecommendation.getCreateDate());
 		document.addNumber(
 			Field.COMPANY_ID, mostViewedContentRecommendation.getCompanyId());
+		document.addText(
+			RecommendationField.JOB_ID,
+			mostViewedContentRecommendation.getJobId());
 		document.addNumber(
 			RecommendationField.RECOMMENDED_ENTRY_CLASS_PK,
 			mostViewedContentRecommendation.getRecommendedEntryClassPK());
 		document.addNumber(
 			RecommendationField.SCORE,
 			mostViewedContentRecommendation.getScore());
-		document.addText(
-			RecommendationField.JOB_ID,
-			mostViewedContentRecommendation.getJobId());
 		document.addKeyword(
 			Field.UID,
 			String.valueOf(

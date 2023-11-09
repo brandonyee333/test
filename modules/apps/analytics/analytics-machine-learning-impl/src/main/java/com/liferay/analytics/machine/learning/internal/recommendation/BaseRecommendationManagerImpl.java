@@ -50,9 +50,8 @@ public abstract class BaseRecommendationManagerImpl<T> {
 			(indexDocumentResponse.getStatus() >= 300)) {
 
 			throw new PortalException(
-				String.format(
-					"Index request return status: %d",
-					indexDocumentResponse.getStatus()));
+				"Index document response status: " +
+					indexDocumentResponse.getStatus());
 		}
 
 		return model;
