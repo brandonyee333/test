@@ -256,7 +256,6 @@ public class AopConfigurableApplicationContextConfigurator
 					(BasePersistenceImpl<?>)bean;
 
 				basePersistenceImpl.setDataSource(_dataSource);
-
 				basePersistenceImpl.setSessionFactory(_sessionFactory);
 			}
 
