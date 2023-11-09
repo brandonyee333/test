@@ -2,7 +2,7 @@
 @summary = "Click on '${locator1}'"
 definition {
 
-	function click() {
+	function click(locator1) {
 		WaitForSPARefresh();
 
 		selenium.waitForVisible(${locator1}, "true");
@@ -12,7 +12,7 @@ definition {
 		selenium.click(${locator1});
 	}
 
-	function clickNoMouseOver() {
+	function clickNoMouseOver(locator1) {
 		WaitForSPARefresh();
 
 		selenium.waitForVisible(${locator1}, "true");
@@ -20,7 +20,7 @@ definition {
 		selenium.click(${locator1});
 	}
 
-	function mouseDownMouseUp() {
+	function mouseDownMouseUp(locator1) {
 		WaitForSPARefresh();
 
 		selenium.mouseDown(${locator1});
@@ -28,7 +28,7 @@ definition {
 		selenium.mouseUp(${locator1});
 	}
 
-	function waitForMenuToggleJSClick() {
+	function waitForMenuToggleJSClick(locator1) {
 		selenium.waitForElementPresent(${locator1}, "true");
 
 		selenium.pause(3000);
