@@ -1220,7 +1220,7 @@ public class CTCollectionLocalServiceImpl
 
 				String primaryKeyName = iterator.next();
 
-				_processMoveEntriesQuery(
+				_processMoveCTEntriesQuery(
 					fromCTCollectionId, toCTCollectionId, ctEntries,
 					ctPersistence, primaryKeyName);
 
@@ -1357,7 +1357,7 @@ public class CTCollectionLocalServiceImpl
 		}
 	}
 
-	private void _processMoveEntriesQuery(
+	private void _processMoveCTEntriesQuery(
 		long fromCTCollectionId, long toCTCollectionId, List<CTEntry> ctEntries,
 		CTPersistence<?> ctPersistence, String primaryKeyName) {
 
