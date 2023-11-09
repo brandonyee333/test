@@ -22,7 +22,7 @@ definition {
 				locator1 = "RSS#FEED_LINK",
 				value1 = "Feed");
 
-			Pause(locator1 = 3000);
+			Pause(value1 = 3000);
 		}
 	}
 
@@ -196,7 +196,7 @@ definition {
 			locator1 = "Wiki#FRONTPAGE_DEFAULT_MESSAGE",
 			value1 = "This page is empty. Edit it to add some text.");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		AssertElementPresent(locator1 = "AlloyEditor#CONTENT_FIELD");
 
@@ -698,7 +698,7 @@ definition {
 			locator1 = "Link#EDIT",
 			value1 = "Edit");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		AlloyEditor.addContent(content = ${wikiPageContentEdit});
 
@@ -1607,14 +1607,14 @@ definition {
 			locator1 = "RSS#FEED_LINK",
 			value1 = "Feed");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		WikiPage._checkForRSSTitleCP(
 			wikiNodeName = ${wikiNodeName},
 			wikiPageContent = ${wikiPageContent},
 			wikiPageTitle = ${wikiPageTitle});
 
-		SelectWindow(locator1 = "title=${wikiPageTitle}");
+		SelectWindow(value1 = "title=${wikiPageTitle}");
 
 		AssertTextEquals(
 			locator1 = "RSS#FEED_TITLE",

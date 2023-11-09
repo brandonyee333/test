@@ -71,7 +71,7 @@ definition {
 		task ("Add a web content article with '${webContentTitle}' as the title and '${webContentContent}' as the content") {
 			WebContentNavigator.gotoAddCP();
 
-			Pause(locator1 = 30000);
+			Pause(value1 = 30000);
 
 			WebContent.addCP(
 				webContentContent = ${webContentContent},

@@ -15,13 +15,13 @@ definition {
 	function textCopy() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible(${locator1}, "true");
 
 		selenium.mouseOver(${locator1});
 
 		selenium.copyText(${locator1});
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors("true");
 
 		selenium.assertLiferayErrors();
 	}
@@ -29,13 +29,13 @@ definition {
 	function valueCopy() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible(${locator1}, "true");
 
 		selenium.mouseOver(${locator1});
 
 		selenium.copyValue(${locator1});
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors("true");
 
 		selenium.assertLiferayErrors();
 	}

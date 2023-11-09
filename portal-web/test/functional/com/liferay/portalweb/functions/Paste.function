@@ -4,13 +4,13 @@ definition {
 	function ckEditorPaste() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible(${locator1}, "true");
 
 		selenium.pause(1000);
 
 		selenium.selectFrame(${locator1});
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible(${locator1}, "true");
 
 		selenium.mouseOver("//html/body");
 
@@ -18,7 +18,7 @@ definition {
 
 		selenium.selectFrame("relative=parent");
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors("true");
 
 		selenium.assertLiferayErrors();
 	}
@@ -26,13 +26,13 @@ definition {
 	function paste() {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible(${locator1}, "true");
 
 		selenium.mouseOver(${locator1});
 
 		selenium.paste(${locator1});
 
-		selenium.assertJavaScriptErrors(${value1});
+		selenium.assertJavaScriptErrors("true");
 
 		selenium.assertLiferayErrors();
 	}

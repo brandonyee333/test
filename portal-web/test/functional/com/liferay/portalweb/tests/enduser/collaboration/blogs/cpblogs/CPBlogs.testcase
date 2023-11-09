@@ -299,7 +299,7 @@ definition {
 
 		ItemSelector.addFromURL(imageSourceURL = "https://dummyimage.com/600x400/000/fff.jpg");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.publish();
 
@@ -845,7 +845,7 @@ definition {
 			navTab = "Upload Image",
 			uploadFileName = "Document_1.jpg");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		BlogsEntry.saveAsDraft();
 

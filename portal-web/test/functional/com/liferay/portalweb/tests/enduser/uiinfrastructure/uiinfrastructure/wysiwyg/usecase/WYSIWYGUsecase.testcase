@@ -41,7 +41,7 @@ definition {
 			navTab = "Upload Image",
 			uploadFileName = "Document_1.jpg");
 
-		Pause(locator1 = 10000);
+		Pause(value1 = 10000);
 
 		BlogsEntry.saveAsDraft();
 
@@ -55,7 +55,7 @@ definition {
 
 		ItemSelector.selectBlogImage(imageFileName = "Document_1.jpg");
 
-		Pause(locator1 = 10000);
+		Pause(value1 = 10000);
 
 		PortletEntry.publish();
 

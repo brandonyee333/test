@@ -521,7 +521,7 @@ definition {
 
 		Navigator.gotoStagedView();
 
-		Pause(locator1 = 30000);
+		Pause(value1 = 30000);
 
 		ProductMenu.gotoPortlet(
 			category = "Publishing",
@@ -1592,7 +1592,7 @@ definition {
 
 		Portlet.addPG(portletName = "Asset Publisher");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		DMDocument.addPGViaAP(
 			dmDocumentDescription = "DM Document Description",

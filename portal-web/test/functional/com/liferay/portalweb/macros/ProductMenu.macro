@@ -69,7 +69,7 @@ definition {
 				value1 = "Private Pages");
 		}
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		ProductMenuHelper.openProductMenu();
 

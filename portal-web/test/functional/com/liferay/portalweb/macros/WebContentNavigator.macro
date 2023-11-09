@@ -22,7 +22,7 @@ definition {
 	macro gotoAddCP() {
 		AssertVisible(locator1 = "Button#PLUS");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		LexiconEntry.gotoAddMenuItem(menuItem = "Basic Web Content");
 

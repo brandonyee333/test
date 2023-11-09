@@ -2729,7 +2729,7 @@ definition {
 
 			// We need this pause to view if kebab icon of the web content exists to test LPS-155805
 
-			Pause(locator1 = 3000);
+			Pause(value1 = 3000);
 
 			AssertCssValue(
 				locator1 = "//li[contains(@class, 'list-group-item')]//a[contains(@class, 'dropdown-toggle')]",
@@ -3094,7 +3094,7 @@ definition {
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
-		Open(locator1 = "/en/web/guest/home");
+		Open(value1 = "/en/web/guest/home");
 
 		Page.add(pageName = "Web Content Display Page");
 

@@ -179,7 +179,7 @@ definition {
 
 		var key_imageFileName = StringUtil.replace(${imageFileName}, " ", "+");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		if (!(IsElementPresent(locator1 = "ItemSelector#SELECT_FILE_IMAGE_PREVIEW"))) {
 			Click(locator1 = "Icon#DISPLAY_STYLE_DESCRIPTIVE");

@@ -82,13 +82,13 @@ definition {
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
-		SelectWindow(locator1 = "title=Page Template Name - ${siteName}");
+		SelectWindow(value1 = "title=Page Template Name - ${siteName}");
 
 		Portlet.addPG(portletName = "Blogs");
 
 		Close.closeWindow(locator1 = "title=Page Template Name - ${siteName}");
 
-		SelectWindow(locator1 = "title=Page Templates - Control Panel - ${siteName}");
+		SelectWindow(value1 = "title=Page Templates - Control Panel - ${siteName}");
 
 		Navigator.gotoSitePage(
 			pageName = "Site Page",
@@ -111,13 +111,13 @@ definition {
 
 		PageTemplate.gotoPageTemplateViaEdit(pageTemplateName = "Page Template Name");
 
-		SelectWindow(locator1 = "title=Page Template Name - ${siteName}");
+		SelectWindow(value1 = "title=Page Template Name - ${siteName}");
 
 		Portlet.addPG(portletName = "Web Content Display");
 
 		Close.closeWindow(locator1 = "title=Page Template Name - ${siteName}");
 
-		SelectWindow(locator1 = "title=Page Templates - Control Panel - ${siteName}");
+		SelectWindow(value1 = "title=Page Templates - Control Panel - ${siteName}");
 
 		Navigator.gotoSitePage(
 			pageName = "Site Page",
@@ -238,7 +238,7 @@ definition {
 
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
-		SelectWindow(locator1 = "title=Page Template Name - ${siteName}");
+		SelectWindow(value1 = "title=Page Template Name - ${siteName}");
 
 		Portlet.addPG(portletName = "Calendar");
 
@@ -323,7 +323,7 @@ definition {
 
 		Close.closeWindow(locator1 = "title=College Landing Page - ${siteName}");
 
-		SelectWindow(locator1 = "title=Page Templates - Control Panel - ${siteName}");
+		SelectWindow(value1 = "title=Page Templates - Control Panel - ${siteName}");
 
 		Navigator.openURL();
 

@@ -55,7 +55,7 @@ definition {
 
 		AssertElementNotPresent(locator1 = "UserBar#USER_SIGN_IN");
 
-		Pause(locator1 = 120000);
+		Pause(value1 = 120000);
 
 		AssertTextEquals(
 			locator1 = "Home#ERROR_MESSAGE_EXPIRED_SESSION",
@@ -84,7 +84,7 @@ definition {
 
 		AssertElementNotPresent(locator1 = "UserBar#USER_SIGN_IN");
 
-		Pause(locator1 = 120000);
+		Pause(value1 = 120000);
 
 		AssertTextEquals(
 			locator1 = "Home#ERROR_MESSAGE_EXPIRED_SESSION",

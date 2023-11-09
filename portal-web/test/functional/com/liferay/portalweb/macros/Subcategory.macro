@@ -9,7 +9,7 @@ definition {
 			locator1 = "Categories#VOCABULARY_ENTRY_LINK",
 			value1 = ${vocabularyName});
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Add Subcategory",

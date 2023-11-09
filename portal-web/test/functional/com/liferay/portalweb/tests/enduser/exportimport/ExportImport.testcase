@@ -132,7 +132,7 @@ definition {
 			exportTemplateName = "Export Template Name",
 			larFileName = "Export.Template");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		var larFileName = LAR.getLarFileName();
 
@@ -195,7 +195,7 @@ definition {
 
 		LAR.downloadLar();
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		LAR.importSiteCP(
 			larFileName = ${larFileName},

@@ -78,7 +78,7 @@ definition {
 
 		Alert.viewSuccessMessage();
 
-		Pause(locator1 = 120000);
+		Pause(value1 = 120000);
 
 		Navigator.openSpecificURL(url = ${publishFormURL});
 

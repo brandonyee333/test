@@ -4,7 +4,7 @@ definition {
 	macro gotoAdd() {
 		AssertVisible(locator1 = "Button#PLUS");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		LexiconEntry.gotoAdd();
 

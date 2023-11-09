@@ -1614,7 +1614,7 @@ definition {
 			panel = "Control Panel",
 			portlet = "Server Administration");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
 
@@ -1787,7 +1787,7 @@ definition {
 
 		IFrame.closeFrame();
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Page.add(
 			pageName = "Search Page",

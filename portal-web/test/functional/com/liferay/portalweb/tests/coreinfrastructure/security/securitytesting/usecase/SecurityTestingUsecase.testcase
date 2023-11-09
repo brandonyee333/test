@@ -150,7 +150,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 
 		Api.gotoPAuthURL(url = ${url});
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		AssertElementNotPresent(locator1 = "JSONWS#SECURITY_TEST_PAGE_POPULATED");
 	}
@@ -209,7 +209,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 
 		Navigator.openSpecificURL(url = "${portalURL}/html/common/forward_jsp.jsp?FORWARD_URL=http://www.msn.com");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		var key_pageName = "Welcome";
 
@@ -223,7 +223,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 
 		Page.add(pageName = "Test");
 
-		Open(locator1 = "${portalURL}/html/common/forward_jsp.jsp?FORWARD_URL=${portalURL}/web/guest/test");
+		Open(value1 = "${portalURL}/html/common/forward_jsp.jsp?FORWARD_URL=${portalURL}/web/guest/test");
 
 		var key_pageName = "Test";
 
@@ -299,7 +299,7 @@ out.println(PortalUtil.escapeRedirect("/"));
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
 			value1 = "test");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		var userId = selenium.getElementValue("UsersAndOrganizationsEditUser#DETAILS_USER_ID_FIELD");
 

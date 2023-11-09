@@ -315,7 +315,7 @@ definition {
 			customMaxAgeMsg = "Entries that have been in the Recycle Bin for more than 1 minute are automatically deleted.",
 			deleteUser = "Test Test");
 
-		Pause(locator1 = 120000);
+		Pause(value1 = 120000);
 
 		Refresh();
 

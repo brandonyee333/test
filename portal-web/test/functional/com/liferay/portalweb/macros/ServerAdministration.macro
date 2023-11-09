@@ -197,7 +197,7 @@ definition {
 
 		if (${actionsDescription} == "Reindex all search indexes.") {
 			while ((IsElementPresent(locator1 = "ControlMenu#RELOAD_TOOLTIP")) && (${pauseCount} != 24)) {
-				Pause(locator1 = 5000);
+				Pause(value1 = 5000);
 
 				var pauseCount = ${pauseCount} + 1;
 

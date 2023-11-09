@@ -4,9 +4,9 @@ definition {
 	function isText() {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, ${value1});
+		selenium.waitForElementPresent(${locator1}, "true");
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible(${locator1}, "true");
 
 		selenium.isText(${locator1}, ${value1});
 	}
@@ -25,9 +25,9 @@ definition {
 	function isValue() {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, ${value1});
+		selenium.waitForElementPresent(${locator1}, "true");
 
-		selenium.waitForVisible(${locator1}, ${value1});
+		selenium.waitForVisible(${locator1}, "true");
 
 		selenium.isValue(${locator1}, ${value1});
 	}

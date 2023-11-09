@@ -8,7 +8,7 @@ definition {
 
 		LexiconEntry.gotoAddMenuItem(menuItem = "Folder");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.inputName(name = ${dmFolderName});
 
@@ -33,7 +33,7 @@ definition {
 
 		MenuItem.click(menuItem = "Folder");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.inputName(name = ${dmFolderName});
 
@@ -74,7 +74,7 @@ definition {
 
 		MenuItem.click(menuItem = "Folder");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.inputName(name = ${mgFolderName});
 
@@ -93,7 +93,7 @@ definition {
 	macro addSubfolderCP(dmSubFolderName = null, dmSubFolderDescription = null, dmSubFolder = null) {
 		LexiconEntry.gotoAddMenuItem(menuItem = "Subfolder");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.inputName(name = ${dmSubFolderName});
 
@@ -128,7 +128,7 @@ definition {
 
 		MenuItem.click(menuItem = "Subfolder");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.inputName(name = ${dmSubFolderName});
 
@@ -163,7 +163,7 @@ definition {
 
 		MenuItem.click(menuItem = "Subfolder");
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		PortletEntry.inputName(name = ${mgSubfolderName});
 

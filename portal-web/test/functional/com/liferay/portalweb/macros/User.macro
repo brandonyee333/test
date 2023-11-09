@@ -692,7 +692,7 @@ definition {
 
 	@summary = "Default summary"
 	macro answerPasswordReminderLocalized(localizedSaveButton = null, localizedAnswer = null) {
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		var key_localizedAnswer = ${localizedAnswer};
 
@@ -754,7 +754,7 @@ definition {
 
 		MenuItem.click(menuItem = "Edit");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Panel.expandPanel(panelHeading = "Roles");
 
@@ -762,7 +762,7 @@ definition {
 			locator1 = "UsersAndOrganizationsEditUser#ROLES_REGULAR_ROLES_SELECT_LINK",
 			value1 = "Select");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		SelectFrame(locator1 = "IFrame#SELECT_REGULAR_ROLE");
 
@@ -831,7 +831,7 @@ definition {
 			locator1 = "UsersAndOrganizationsEditUser#USER_GROUPS_SELECT_LINK",
 			value1 = "Select");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		SelectFrame(locator1 = "IFrame#SELECT_USER_GROUP");
 
@@ -1050,7 +1050,7 @@ definition {
 			locator1 = "TextInput#UPLOAD_FILE",
 			value1 = ${imageName});
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Button.click(button = "Done");
 
@@ -1297,7 +1297,7 @@ definition {
 	macro editPasswordCP(resetPassword = null, authenticationMethod = null, administratorEmail = null, userScreenName = null, requirePasswordReset = null, syntaxCheckingEnabled = null, userEmailAddress = null, nodePort = null) {
 		var key_userScreenName = ${userScreenName};
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		AssertTextEquals(
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
@@ -1309,7 +1309,7 @@ definition {
 
 		Navigator.gotoNavTab(navTab = "User Information");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		if (!(isSet(newPassword))) {
 			var newPassword = "password";
@@ -1449,7 +1449,7 @@ definition {
 	macro editUserDisplaySettingsCP(displaySettingsGreeting = null, userScreenName = null) {
 		var key_userScreenName = ${userScreenName};
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		AssertTextEquals(
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
@@ -1589,7 +1589,7 @@ definition {
 	macro editUserOrganizationCP(orgName = null, userScreenName = null) {
 		var key_userScreenName = ${userScreenName};
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		AssertTextEquals(
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
@@ -1599,7 +1599,7 @@ definition {
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
 			value1 = ${userScreenName});
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		var key_orgName = ${orgName};
 
@@ -1638,7 +1638,7 @@ definition {
 	macro editUserSiteCP(userScreenName = null, siteName = null) {
 		var key_userScreenName = ${userScreenName};
 
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		AssertTextEquals(
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
@@ -1648,7 +1648,7 @@ definition {
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
 			value1 = ${userScreenName});
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		var key_siteName = ${siteName};
 
@@ -1845,7 +1845,7 @@ definition {
 
 	@summary = "Default summary"
 	macro impersonateCP(userScreenName = null, siteName = null) {
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		Type(
 			locator1 = "NavBar#BASIC_SEARCH_FIELD",
@@ -1859,7 +1859,7 @@ definition {
 
 		MenuItem.click(menuItem = "Impersonate User");
 
-		SelectWindow(locator1 = "title=Welcome - ${siteName}");
+		SelectWindow(value1 = "title=Welcome - ${siteName}");
 
 		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
 
@@ -2032,7 +2032,7 @@ definition {
 			locator1 = "Icon#FACEBOOK",
 			value1 = "Facebook");
 
-		SelectWindow(locator1 = "title=Log into Facebook | Facebook");
+		SelectWindow(value1 = "title=Log into Facebook | Facebook");
 
 		Type(
 			locator1 = "FacebookLogin#LOGIN_EMAIL_FIELD",
@@ -2108,7 +2108,7 @@ definition {
 			GoogleLogin.acceptConditions();
 		}
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
 	}
@@ -2132,7 +2132,7 @@ definition {
 
 		Click(locator1 = "Button#SIGN_IN");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		if (IsElementNotPresent(locator1 = "TextInput#LOGIN_USER_NAME")) {
 			Navigator.openURL();
@@ -2151,7 +2151,7 @@ definition {
 
 			Click(locator1 = "Button#SIGN_IN");
 
-			Pause(locator1 = 3000);
+			Pause(value1 = 3000);
 		}
 
 		Type(
@@ -2336,7 +2336,7 @@ definition {
 
 	@summary = "Default summary"
 	macro searchCP(searchTerm = null) {
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Type(
 			locator1 = "TextInput#SEARCH",
@@ -2344,7 +2344,7 @@ definition {
 
 		Click(locator1 = "Button#SUBMIT");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 	}
 
 	@summary = "Default summary"
@@ -2492,7 +2492,7 @@ definition {
 
 	@summary = "Default summary"
 	macro unlockUserAccount(userScreenName = null) {
-		Pause(locator1 = 1000);
+		Pause(value1 = 1000);
 
 		var key_userScreenName = ${userScreenName};
 
@@ -2530,7 +2530,7 @@ definition {
 	@summary = "Default summary"
 	macro viewCP(userEmailAddressVariation = null, userJobTitle = null, userScreenNameVariation = null, userLastName = null, userScreenName = null, userEmailAddress = null, userFirstName = null, userBirthday = null) {
 		if (${userEmailAddressVariation} == "At") {
-			Pause(locator1 = 1000);
+			Pause(value1 = 1000);
 
 			Type(
 				locator1 = "NavBar#BASIC_SEARCH_FIELD",
@@ -2543,7 +2543,7 @@ definition {
 				value1 = "No users were found.");
 		}
 		else if (${userEmailAddressVariation} == "Period") {
-			Pause(locator1 = 1000);
+			Pause(value1 = 1000);
 
 			Type(
 				locator1 = "NavBar#BASIC_SEARCH_FIELD",
@@ -2556,7 +2556,7 @@ definition {
 				value1 = "No users were found.");
 		}
 		else if (${userScreenNameVariation} == "Invalid") {
-			Pause(locator1 = 1000);
+			Pause(value1 = 1000);
 
 			Type(
 				locator1 = "NavBar#BASIC_SEARCH_FIELD",
@@ -2571,7 +2571,7 @@ definition {
 		else {
 			var key_userScreenName = ${userScreenName};
 
-			Pause(locator1 = 1000);
+			Pause(value1 = 1000);
 
 			AssertTextEquals(
 				locator1 = "UsersAndOrganizations#USER_TABLE_NAME",
@@ -2894,7 +2894,7 @@ definition {
 
 	@summary = "Default summary"
 	macro viewUserSiteCP(siteName = null) {
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		Panel.expandPanel(panelHeading = "Sites");
 

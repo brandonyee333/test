@@ -48,7 +48,7 @@ definition {
 			portletName = ${portletName},
 			portletOption = "Export / Import");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 	}
 
 	@summary = "Default summary"
@@ -67,7 +67,7 @@ definition {
 
 	@summary = "Default summary"
 	macro _importSite(checkContentNameList = null, contentDeletion = null, mirrorWithOverwriting = null, importPermissions = null, privateLayout = null) {
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Click(locator1 = "Button#CONTINUE");
 
@@ -111,7 +111,7 @@ definition {
 			locator1 = "SitePagesImport#IMPORT_BUTTON",
 			value1 = "Import");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		AssertTextEquals(
 			locator1 = "SitePagesImport#CURRENT_AND_PREVIOUS_STATUS_1",
@@ -148,7 +148,7 @@ definition {
 				value1 = ${larFileName});
 		}
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		if (${cannotImport} == "true") {
 			AssertTextEquals(
@@ -169,7 +169,7 @@ definition {
 				locator1 = "Button#CONTINUE",
 				value1 = "Continue");
 
-			Pause(locator1 = 5000);
+			Pause(value1 = 5000);
 
 			if (${mirrorWithOverwriting} == "true") {
 				LAR._mirrorWithOverwriting();
@@ -206,11 +206,11 @@ definition {
 	macro _selectImportFileSite(importValidationMissingItem = null, uploadFrom = null, larFileName = null) {
 		LexiconEntry.gotoAdd();
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		AssertElementPresent(locator1 = "Button#SELECT_FILE");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		if (${uploadFrom} == "dependencies") {
 			UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
@@ -223,7 +223,7 @@ definition {
 				value1 = ${larFileName});
 		}
 
-		Pause(locator1 = 180000);
+		Pause(value1 = 180000);
 
 		if (isSet(importValidationMissingItem)) {
 			AssertTextEquals.assertPartialText(
@@ -562,7 +562,7 @@ definition {
 
 	@summary = "Default summary"
 	macro filterCompletedProcesses() {
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Click(locator1 = "Dropdown#FILTER");
 

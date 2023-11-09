@@ -51,7 +51,7 @@ definition {
 			locator1 = "Button#POST_NEW_THREAD",
 			value1 = "Post New Thread");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		Type(
 			locator1 = "TextInput#SUBJECT",
@@ -546,7 +546,7 @@ definition {
 			locator1 = "Button#SELECT",
 			value1 = "Select");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		SelectFrame(locator1 = "MessageBoardsSelectCategory#IFRAME");
 

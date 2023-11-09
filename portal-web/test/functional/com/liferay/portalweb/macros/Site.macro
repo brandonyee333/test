@@ -418,7 +418,7 @@ definition {
 
 		Navigator.gotoNavItem(navItem = "User Groups");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		LexiconEntry.gotoAdd();
 
@@ -652,7 +652,7 @@ definition {
 			locator1 = "SiteSettingsSiteURL#SITE_URL_FRIENDLY_URL_LABEL",
 			value1 = "Friendly URL");
 
-		Pause(locator1 = 5000);
+		Pause(value1 = 5000);
 
 		Type(
 			locator1 = "TextInput#FRIENDLY_URL",
@@ -739,7 +739,7 @@ definition {
 
 		Navigator.gotoNavItem(navItem = "Available Sites");
 
-		Pause(locator1 = 3000);
+		Pause(value1 = 3000);
 
 		if (${membershipType} == "Private") {
 			AssertElementNotPresent(

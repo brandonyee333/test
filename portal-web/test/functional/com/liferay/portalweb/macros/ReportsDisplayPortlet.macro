@@ -12,7 +12,7 @@ definition {
 
 		MenuItem.click(menuItem = "Download");
 
-		Pause(locator1 = 2000);
+		Pause(value1 = 2000);
 
 		if (${reportFormat} == "pdf") {
 			if (${reportsFileName} == "reports_admin_template_source_sample_list_type.pdf") {
