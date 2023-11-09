@@ -143,7 +143,7 @@ Simulate = {
 Simulate.dragAndDrop(arguments[0], arguments[1]);
 		''';
 
-		selenium.executeJavaScript(${javaScript}, ${locator1}, ${locator2});
+		ExecuteJavaScript(value1 = ${javaScript});
 
 		selenium.assertJavaScriptErrors("true");
 
