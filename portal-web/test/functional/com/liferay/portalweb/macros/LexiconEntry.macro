@@ -1,34 +1,40 @@
 definition {
 
-	macro changeDisplayStyle {
+	@summary = "Default summary"
+	macro changeDisplayStyle(displayStyle = null) {
 		Click(locator1 = "Icon#CURRENT_DISPLAY_STYLE");
 
 		MenuItem.click(menuItem = StringUtil.upperCaseFirstLetter(${displayStyle}));
 	}
 
-	macro gotoAdd {
+	@summary = "Default summary"
+	macro gotoAdd() {
 		Click(locator1 = "Button#PLUS");
 	}
 
-	macro gotoAddMenuItem {
+	@summary = "Default summary"
+	macro gotoAddMenuItem(menuItem = null) {
 		LexiconEntry.gotoAdd();
 
 		MenuItem.click(menuItem = ${menuItem});
 	}
 
-	macro gotoEllipsisMenuItem {
+	@summary = "Default summary"
+	macro gotoEllipsisMenuItem(menuItem = null) {
 		Click.waitForMenuToggleJSClick(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 
 		MenuItem.click(menuItem = ${menuItem});
 	}
 
-	macro gotoEllipsisMenuItemNoError {
+	@summary = "Default summary"
+	macro gotoEllipsisMenuItemNoError(menuItem = null) {
 		Click.waitForMenuToggleJSClick(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 
 		MenuItem.clickNoError(menuItem = ${menuItem});
 	}
 
-	macro gotoEntry {
+	@summary = "Default summary"
+	macro gotoEntry(rowEntry = null) {
 		var key_rowEntry = ${rowEntry};
 
 		AssertClick(
@@ -36,19 +42,22 @@ definition {
 			value1 = ${rowEntry});
 	}
 
-	macro gotoEntryMenuItem {
+	@summary = "Default summary"
+	macro gotoEntryMenuItem(rowEntry = null, menuItem = null) {
 		LexiconEntry.openEntryMenu(rowEntry = ${rowEntry});
 
 		MenuItem.click(menuItem = ${menuItem});
 	}
 
-	macro gotoEntryMenuItemNoError {
+	@summary = "Default summary"
+	macro gotoEntryMenuItemNoError(rowEntry = null, menuItem = null) {
 		LexiconEntry.openEntryMenu(rowEntry = ${rowEntry});
 
 		MenuItem.clickNoError(menuItem = ${menuItem});
 	}
 
-	macro gotoEntryMenuItemNoWait {
+	@summary = "Default summary"
+	macro gotoEntryMenuItemNoWait(rowEntry = null, menuItem = null) {
 		Click(
 			key_rowEntry = ${rowEntry},
 			locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
@@ -56,7 +65,8 @@ definition {
 		MenuItem.click(menuItem = ${menuItem});
 	}
 
-	macro gotoEntryMenuItemNoWaitNoError {
+	@summary = "Default summary"
+	macro gotoEntryMenuItemNoWaitNoError(rowEntry = null, menuItem = null) {
 		Click(
 			key_rowEntry = ${rowEntry},
 			locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
@@ -64,39 +74,45 @@ definition {
 		MenuItem.clickNoError(menuItem = ${menuItem});
 	}
 
-	macro gotoHeaderMenuItem {
+	@summary = "Default summary"
+	macro gotoHeaderMenuItem(menuItem = null) {
 		Click(locator1 = "Icon#HEADER_VERTICAL_ELLIPSIS");
 
 		MenuItem.click(menuItem = ${menuItem});
 	}
 
-	macro gotoHeaderMenuItemNoError {
+	@summary = "Default summary"
+	macro gotoHeaderMenuItemNoError(menuItem = null) {
 		Click(locator1 = "Icon#HEADER_VERTICAL_ELLIPSIS");
 
 		MenuItem.clickNoError(menuItem = ${menuItem});
 	}
 
-	macro openEntryMenu {
+	@summary = "Default summary"
+	macro openEntryMenu(rowEntry = null) {
 		Click.waitForMenuToggleJSClick(
 			key_rowEntry = ${rowEntry},
 			locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
 	}
 
-	macro viewEntryName {
+	@summary = "Default summary"
+	macro viewEntryName(rowEntry = null) {
 		AssertTextEquals(
 			key_rowEntry = ${rowEntry},
 			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
 			value1 = ${rowEntry});
 	}
 
-	macro viewEntryNamePartial {
+	@summary = "Default summary"
+	macro viewEntryNamePartial(rowEntry = null) {
 		AssertTextEquals.assertPartialText(
 			key_rowEntry = ${rowEntry},
 			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME",
 			value1 = ${rowEntry});
 	}
 
-	macro viewNoEntry {
+	@summary = "Default summary"
+	macro viewNoEntry(rowEntry = null) {
 		AssertElementNotPresent(
 			key_rowEntry = ${rowEntry},
 			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME");

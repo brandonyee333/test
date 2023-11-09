@@ -1,6 +1,7 @@
 definition {
 
-	macro gotoLiveSite {
+	@summary = "Default summary"
+	macro gotoLiveSite() {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		AssertClick(
@@ -8,7 +9,8 @@ definition {
 			value1 = "Live");
 	}
 
-	macro gotoLocalizedEditPage {
+	@summary = "Default summary"
+	macro gotoLocalizedEditPage(page = null, category = null) {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		ProductMenuHelper.expandCategory(category = ${category});
@@ -20,7 +22,8 @@ definition {
 		Click(locator1 = "SitePages#EDIT_SPECIFIC_PAGE");
 	}
 
-	macro gotoLocalizedSite {
+	@summary = "Default summary"
+	macro gotoLocalizedSite(site = null, navItem = null) {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		ProductMenuHelper.openSitesPopup();
@@ -38,13 +41,15 @@ definition {
 			value1 = ${site});
 	}
 
-	macro gotoPersonalSite {
+	@summary = "Default summary"
+	macro gotoPersonalSite() {
 		ProductMenuHelper.expandPanel(panel = "User");
 
 		Click(locator1 = "ProductMenu#USER_PROFILE");
 	}
 
-	macro gotoPortlet {
+	@summary = "Default summary"
+	macro gotoPortlet(portlet = null, panel = null, category = null) {
 		ProductMenuHelper.expandPanel(panel = ${panel});
 
 		ProductMenuHelper.expandCategory(category = ${category});
@@ -52,7 +57,8 @@ definition {
 		ProductMenuHelper.gotoPortlet(portlet = ${portlet});
 	}
 
-	macro gotoPrivatePages {
+	@summary = "Default summary"
+	macro gotoPrivatePages() {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		ProductMenuHelper.expandCategory(category = "Navigation");
@@ -70,7 +76,8 @@ definition {
 		ProductMenuHelper.expandCategory(category = "Navigation");
 	}
 
-	macro gotoPublicPages {
+	@summary = "Default summary"
+	macro gotoPublicPages() {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		ProductMenuHelper.expandCategory(category = "Navigation");
@@ -84,7 +91,8 @@ definition {
 		ProductMenuHelper.expandCategory(category = "Navigation");
 	}
 
-	macro gotoSite {
+	@summary = "Default summary"
+	macro gotoSite(site = null) {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		ProductMenuHelper.openSitesPopup();
@@ -102,7 +110,8 @@ definition {
 			value1 = ${site});
 	}
 
-	macro gotoSiteViaLink {
+	@summary = "Default summary"
+	macro gotoSiteViaLink() {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		AssertClick(
@@ -110,7 +119,8 @@ definition {
 			value1 = "Go to Site");
 	}
 
-	macro gotoStagingSite {
+	@summary = "Default summary"
+	macro gotoStagingSite() {
 		if (IsElementNotPresent(locator1 = "ProductMenu#STAGING_SELECTED")) {
 			ProductMenuHelper.expandPanel(panel = "Site Administration");
 
@@ -122,7 +132,8 @@ definition {
 		AssertVisible(locator1 = "ProductMenu#STAGING_SELECTED");
 	}
 
-	macro viewNoSite {
+	@summary = "Default summary"
+	macro viewNoSite(site = null) {
 		ProductMenuHelper.expandPanel(panel = "Site Administration");
 
 		if ((IsElementPresent(locator1 = "ProductMenu#BACK_ARROW")) && (IsVisible(locator1 = "ProductMenu#BACK_ARROW"))) {

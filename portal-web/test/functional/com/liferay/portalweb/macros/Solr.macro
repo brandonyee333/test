@@ -1,7 +1,8 @@
 definition {
 
 	@description = "The Solr Admin Dashboard is accessible only if the Solr server is successfully running."
-	macro viewAdminDashboard {
+	@summary = "Default summary"
+	macro viewAdminDashboard(solrVersion = null) {
 		Navigator.openSpecificURL(url = "http://localhost:8983/solr");
 
 		AssertElementPresent.assertVisible(locator1 = "SolrAdminDashboard#LOGO");
@@ -15,7 +16,8 @@ definition {
 			value1 = ${solrVersion});
 	}
 
-	macro viewLiferayCloudDashboard {
+	@summary = "Default summary"
+	macro viewLiferayCloudDashboard(cloudCollectionName = null) {
 		Navigator.openSpecificURL(url = "http://localhost:8983/solr/#/~cloud");
 
 		AssertVisible(locator1 = "SolrAdminDashboard#MENU_CLOUD");
@@ -25,7 +27,8 @@ definition {
 		AssertVisible(locator1 = "SolrAdminDashboard#CLOUD_COLLECTION");
 	}
 
-	macro viewLiferayCoreAdminDashboard {
+	@summary = "Default summary"
+	macro viewLiferayCoreAdminDashboard(solrVersion = null, coreName = null) {
 		Navigator.openSpecificURL(url = "http://localhost:8983/solr/#/~cores/liferay");
 
 		var key_coreName = ${coreName};
@@ -55,7 +58,8 @@ definition {
 			value1 = "data");
 	}
 
-	macro viewLoggerNameInSolrAdminLogging {
+	@summary = "Default summary"
+	macro viewLoggerNameInSolrAdminLogging() {
 		for (var loggerName : list "LogUpdateProcessorFactory,SolrCore,DirectUpdateHandler2") {
 			var key_loggerName = ${loggerName};
 
@@ -65,7 +69,8 @@ definition {
 		}
 	}
 
-	macro viewSolrwithSolrCloudEnabledInConsole {
+	@summary = "Default summary"
+	macro viewSolrwithSolrCloudEnabledInConsole() {
 		AssertConsoleTextPresent(value1 = "Using default ZkCredentialsProvider");
 
 		AssertConsoleTextPresent(value1 = "Using default ZkACLProvider");

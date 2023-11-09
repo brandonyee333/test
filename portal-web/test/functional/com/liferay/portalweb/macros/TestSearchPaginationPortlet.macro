@@ -1,6 +1,7 @@
 definition {
 
-	macro search15Results {
+	@summary = "Default summary"
+	macro search15Results(itemsPerPage = null) {
 		var browserType = PropsUtil.get("browser.type");
 
 		if (${browserType} == "firefox") {

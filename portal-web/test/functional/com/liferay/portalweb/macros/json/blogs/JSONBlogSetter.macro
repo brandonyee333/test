@@ -1,6 +1,7 @@
 definition {
 
-	macro setServiceContext {
+	@summary = "Default summary"
+	macro setServiceContext(groupName = null) {
 		var serviceContext = JSONServiceContextUtil.setServiceContext(groupName = ${groupName});
 
 		return ${serviceContext};

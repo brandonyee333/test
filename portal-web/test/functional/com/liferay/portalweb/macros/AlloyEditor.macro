@@ -1,12 +1,14 @@
 definition {
 
-	macro addContent {
+	@summary = "Default summary"
+	macro addContent(content = null) {
 		Type.typeEditor(
 			locator1 = "AlloyEditor#CONTENT_FIELD",
 			value1 = ${content});
 	}
 
-	macro addEntryExternalURL {
+	@summary = "Default summary"
+	macro addEntryExternalURL(entryExternalURL = null) {
 		SelectFieldText(locator1 = "AlloyEditor#CONTENT_FIELD");
 
 		Click(locator1 = "AlloyEditor#TEXT_FORMATTING_LINK");
@@ -18,13 +20,15 @@ definition {
 		Click(locator1 = "AlloyEditor#TEXT_FORMATTING_LINK_INPUT_CONFIRM");
 	}
 
-	macro addLocalizedContent {
+	@summary = "Default summary"
+	macro addLocalizedContent(content = null) {
 		Type.typeEditor(
 			locator1 = "AlloyEditor#CONTENT_FIELD_LOCALIZED_1",
 			value1 = ${content});
 	}
 
-	macro addSourceContent {
+	@summary = "Default summary"
+	macro addSourceContent(content = null) {
 		AlloyEditor.clickContentField();
 
 		Click(locator1 = "Button#EDITOR_SWITCH");
@@ -34,23 +38,27 @@ definition {
 			value1 = ${content});
 	}
 
-	macro addTitle {
+	@summary = "Default summary"
+	macro addTitle(title = null) {
 		Type.typeEditor(
 			locator1 = "AlloyEditor#TITLE_FIELD",
 			value1 = ${title});
 	}
 
-	macro addTitleAndContent {
+	@summary = "Default summary"
+	macro addTitleAndContent(title = null, content = null) {
 		AlloyEditor.addTitle(title = ${title});
 
 		AlloyEditor.addContent(content = ${content});
 	}
 
-	macro clickContentField {
+	@summary = "Default summary"
+	macro clickContentField() {
 		Click(locator1 = "AlloyEditor#CONTENT_FIELD");
 	}
 
-	macro toggleStylingInAlloyEditor {
+	@summary = "Default summary"
+	macro toggleStylingInAlloyEditor() {
 		SelectFieldText(locator1 = "AlloyEditor#CONTENT_FIELD");
 
 		if (isSet(boldContent)) {
@@ -66,7 +74,8 @@ definition {
 		}
 	}
 
-	macro viewNoStylingInAlloyEditor {
+	@summary = "Default summary"
+	macro viewNoStylingInAlloyEditor(underlineContent = null, boldContent = null, italicContent = null) {
 		AlloyEditor.clickContentField();
 
 		if (isSet(boldContent)) {
@@ -88,7 +97,8 @@ definition {
 		}
 	}
 
-	macro viewStylingInAlloyEditor {
+	@summary = "Default summary"
+	macro viewStylingInAlloyEditor(underlineContent = null, boldContent = null, italicContent = null) {
 		AlloyEditor.clickContentField();
 
 		if (isSet(boldContent)) {

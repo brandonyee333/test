@@ -1,6 +1,7 @@
 definition {
 
-	macro addCP {
+	@summary = "Default summary"
+	macro addCP(initialURL = null) {
 		IFrame.selectConfigurationFrame();
 
 		Type(

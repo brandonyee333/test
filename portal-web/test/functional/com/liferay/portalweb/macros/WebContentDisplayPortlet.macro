@@ -1,6 +1,7 @@
 definition {
 
-	macro changeWebContent {
+	@summary = "Default summary"
+	macro changeWebContent(webContentTitle = null, order = null) {
 		Portlet.gotoPortletOptions(
 			order = ${order},
 			portletName = "Web Content Display",
@@ -28,7 +29,8 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro configureScopePG {
+	@summary = "Default summary"
+	macro configureScopePG(scopeSelection = null, portletName = null) {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");
@@ -44,7 +46,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro configureSetupPG {
+	@summary = "Default summary"
+	macro configureSetupPG(userToolNameList = null, metadataNameList = null, enableViewCountIncrement = null) {
 		if (isSet(userToolNameList)) {
 			IFrame.selectDialogFrame();
 
@@ -88,7 +91,8 @@ definition {
 		}
 	}
 
-	macro editTemplate {
+	@summary = "Default summary"
+	macro editTemplate(templateScript = null, templateName = null, editTemplateButton = null, structureName = null, webContentContent = null) {
 		if (${editTemplateButton} == "true") {
 			WebContentNavigator.gotoLocalizedEditPGViaWCD(localizedPortletOption = "Edit Template");
 		}
@@ -159,7 +163,8 @@ definition {
 		}
 	}
 
-	macro saveConfiguration {
+	@summary = "Default summary"
+	macro saveConfiguration() {
 		IFrame.selectDialogFrame();
 
 		PortletEntry.save();
@@ -167,7 +172,8 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro searchWebContent {
+	@summary = "Default summary"
+	macro searchWebContent(webContentSearchValue = null, webContentTitle = null, addSearchedContent = null, portletName = null) {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");
@@ -228,7 +234,8 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro searchWebContentNo {
+	@summary = "Default summary"
+	macro searchWebContentNo(webContentTitle = null, portletName = null) {
 		Portlet.gotoPortletOptions(
 			portletName = ${portletName},
 			portletOption = "Configuration");
@@ -256,7 +263,8 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro selectOtherSiteWebContent {
+	@summary = "Default summary"
+	macro selectOtherSiteWebContent(otherSiteName = null, webContentTitle = null) {
 		Portlet.gotoPortletOptions(
 			portletName = "Web Content Display",
 			portletOption = "Configuration");
@@ -294,7 +302,8 @@ definition {
 		Click(locator1 = "Icon#CLOSE");
 	}
 
-	macro selectWebContent {
+	@summary = "Default summary"
+	macro selectWebContent(webContentTitle = null, order = null) {
 		Portlet.gotoPortletOptions(
 			order = ${order},
 			portletName = "Web Content Display",
@@ -324,7 +333,8 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro viewAllSettingsEnabledPG {
+	@summary = "Default summary"
+	macro viewAllSettingsEnabledPG(relatedAssetTitle = null) {
 		AssertTextEquals.assertPartialText(
 			locator1 = "Icon#PRINT",
 			value1 = "Print");
@@ -351,7 +361,8 @@ definition {
 		AssertElementPresent(locator1 = "Comments#THUMBS_DOWN");
 	}
 
-	macro viewConfigureScopePG {
+	@summary = "Default summary"
+	macro viewConfigureScopePG(scopeSelectionDefault = null, scopeSelection = null, portletName = null) {
 		var key_portletName = "Web Content Display";
 
 		if (${scopeSelectionDefault} == "true") {
@@ -378,7 +389,8 @@ definition {
 			value1 = ${scopeSelection});
 	}
 
-	macro viewContentPageBreak {
+	@summary = "Default summary"
+	macro viewContentPageBreak(webContentContent = null) {
 		AssertClick(
 			locator1 = "Pagination#PAGE_2",
 			value1 = 2);
@@ -392,13 +404,15 @@ definition {
 			value1 = "Previous");
 	}
 
-	macro viewDeletedArticlePGViaWCD {
+	@summary = "Default summary"
+	macro viewDeletedArticlePGViaWCD() {
 		AssertTextEquals(
 			locator1 = "Message#ERROR",
 			value1 = "The selected web content no longer exists.");
 	}
 
-	macro viewEnabledFileTypesPGViaWCD {
+	@summary = "Default summary"
+	macro viewEnabledFileTypesPGViaWCD(fileTypes = null) {
 		for (var fileType : list ${fileTypes}) {
 			var key_fileType = ${fileType};
 
@@ -410,11 +424,13 @@ definition {
 		}
 	}
 
-	macro viewImageFieldViaWCD {
+	@summary = "Default summary"
+	macro viewImageFieldViaWCD() {
 		AssertVisible(locator1 = "WCD#WEB_CONTENT_IMAGE_PNG");
 	}
 
-	macro viewRecycleBinMessage {
+	@summary = "Default summary"
+	macro viewRecycleBinMessage() {
 		AssertTextEquals.assertPartialText(
 			locator1 = "Message#ERROR",
 			value1 = "The selected web content no longer exists.");

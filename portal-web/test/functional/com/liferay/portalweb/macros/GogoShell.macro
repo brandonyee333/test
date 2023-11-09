@@ -1,6 +1,7 @@
 definition {
 
-	macro getModuleID {
+	@summary = "Default summary"
+	macro getModuleID(moduleName = null) {
 		GogoShell.listModuleStatus(moduleName = ${moduleName});
 
 		AssertElementPresent(locator1 = "GogoShell#OUTPUT_FIELD");
@@ -14,7 +15,8 @@ definition {
 		return ${moduleID};
 	}
 
-	macro listModuleStatus {
+	@summary = "Default summary"
+	macro listModuleStatus(moduleName = null) {
 		Type(
 			locator1 = "GogoShell#COMMAND_FIELD",
 			value1 = "lb ${moduleName}");
@@ -24,7 +26,8 @@ definition {
 			value1 = "Execute");
 	}
 
-	macro startModule {
+	@summary = "Default summary"
+	macro startModule(moduleID = null) {
 		Type(
 			locator1 = "GogoShell#COMMAND_FIELD",
 			value1 = "start ${moduleID}");
@@ -34,7 +37,8 @@ definition {
 			value1 = "Execute");
 	}
 
-	macro stopModule {
+	@summary = "Default summary"
+	macro stopModule(moduleID = null) {
 		Type(
 			locator1 = "GogoShell#COMMAND_FIELD",
 			value1 = "stop ${moduleID}");
@@ -44,7 +48,8 @@ definition {
 			value1 = "Execute");
 	}
 
-	macro viewModuleStatus {
+	@summary = "Default summary"
+	macro viewModuleStatus(moduleStatus = null, moduleName = null) {
 		GogoShell.listModuleStatus(moduleName = ${moduleName});
 
 		AssertTextEquals.assertPartialText(

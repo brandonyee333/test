@@ -1,7 +1,8 @@
 definition {
 
 	@description = "Get cluster node outgoing ip address in console"
-	macro getClusterNodeOutgoingIPAddress {
+	@summary = "Default summary"
+	macro getClusterNodeOutgoingIPAddress(nodePort = null) {
 		var leadingPortNumber = StringUtil.replace(${nodePort}, 080, "");
 
 		var bundleIndex = ${leadingPortNumber} - 8;
@@ -26,7 +27,8 @@ definition {
 	}
 
 	@description = "This will get the log content for a specific clustered server bundle"
-	macro getLogFileSpecificServer {
+	@summary = "Default summary"
+	macro getLogFileSpecificServer(nodePort = null) {
 		var leadingPortNumber = StringUtil.replace(${nodePort}, 080, "");
 
 		var bundleIndex = ${leadingPortNumber} - 8;
@@ -43,7 +45,8 @@ definition {
 	}
 
 	@description = "This will shutdown the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
-	macro shutdownSpecificServer {
+	@summary = "Default summary"
+	macro shutdownSpecificServer(nodePort = null) {
 		var leadingPortNumber = StringUtil.replace(${nodePort}, 080, "");
 
 		var bundleIndex = ${leadingPortNumber} - 8;
@@ -54,7 +57,8 @@ definition {
 	}
 
 	@description = "This will start the server at a specific bundle at ${base_branch}-bundles-${bundle_index}\tomcat."
-	macro startSpecificServer {
+	@summary = "Default summary"
+	macro startSpecificServer(deleteLiferayHome = null, nodePort = null, keepCachedAppServerData = null) {
 		var leadingPortNumber = StringUtil.replace(${nodePort}, 080, "");
 
 		var bundleIndex = ${leadingPortNumber} - 8;
@@ -88,7 +92,8 @@ definition {
 		}
 	}
 
-	macro viewClusterStatusInConsole {
+	@summary = "Default summary"
+	macro viewClusterStatusInConsole() {
 		AssertConsoleTextPresent(value1 = "Accepted view");
 
 		AssertConsoleTextPresent(value1 = "com.liferay.portal.cluster.multiple");
@@ -98,7 +103,8 @@ definition {
 		AssertConsoleTextPresent(value1 = "com.liferay.portal.scheduler.multiple");
 	}
 
-	macro viewClusterStatusInConsoleCE {
+	@summary = "Default summary"
+	macro viewClusterStatusInConsoleCE() {
 		AssertConsoleTextPresent(value1 = "Accepted view");
 
 		AssertConsoleTextPresent(value1 = "com.liferay.portal.cluster.multiple");
@@ -109,7 +115,8 @@ definition {
 	}
 
 	@description = "This will view the text shows at a specific bundle at ${base_branch}-bundles-${bundle_index}/logs."
-	macro viewTextPresentOnSpecificNode {
+	@summary = "Default summary"
+	macro viewTextPresentOnSpecificNode(expectedText = null, nodePort = null) {
 		if (${nodePort} == 8080) {
 			AssertConsoleTextPresent(value1 = ${expectedText});
 		}
@@ -123,7 +130,8 @@ definition {
 	}
 
 	@description = "This will wait 5 minutes for node at port ${nodePort} to shutdown"
-	macro waitForNodeShutdown {
+	@summary = "Default summary"
+	macro waitForNodeShutdown(nodePort = null) {
 		AntCommand(
 			locator1 = "build-test.xml",
 			value1 = "wait-for-server-shutdown -Dapp.server.port.number=${nodePort}");

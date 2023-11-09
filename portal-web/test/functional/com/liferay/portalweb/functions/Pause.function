@@ -2,10 +2,10 @@
 definition {
 
 	@summary-ignore = "true"
-	function pause {
+	function pause() {
 		WaitForSPARefresh();
 
-		selenium.pause();
+		selenium.pause(${value1});
 	}
 
 }

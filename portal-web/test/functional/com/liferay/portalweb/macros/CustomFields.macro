@@ -1,6 +1,7 @@
 definition {
 
-	macro addCP {
+	@summary = "Default summary"
+	macro addCP(resourceName = null, customFieldName = null, customFieldType = null) {
 		var key_resourceName = ${resourceName};
 
 		AssertClick(
@@ -26,7 +27,8 @@ definition {
 			value1 = ${customFieldName});
 	}
 
-	macro deleteCP {
+	@summary = "Default summary"
+	macro deleteCP(resourceName = null, customFieldName = null) {
 		var key_resourceName = ${resourceName};
 
 		AssertClick(
@@ -50,7 +52,8 @@ definition {
 		AssertElementNotPresent(locator1 = "CustomFieldsEditResource#CUSTOM_FIELDS_TABLE_NAME");
 	}
 
-	macro editCP {
+	@summary = "Default summary"
+	macro editCP(defaultValue = null, resourceName = null, customFieldName = null, customFieldType = null) {
 		var key_resourceName = ${resourceName};
 
 		AssertClick(
@@ -78,7 +81,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro tearDownCP {
+	@summary = "Default summary"
+	macro tearDownCP() {
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",

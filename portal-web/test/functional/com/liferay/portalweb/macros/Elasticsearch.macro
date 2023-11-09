@@ -1,6 +1,7 @@
 definition {
 
-	macro getRemoteServerVersion {
+	@summary = "Default summary"
+	macro getRemoteServerVersion() {
 		var curl = "http://localhost:9200";
 
 		var serverInfo = JSONCurlUtil.get(${curl});
@@ -12,14 +13,16 @@ definition {
 		return ${serverVersion};
 	}
 
-	macro viewClusterStatus {
+	@summary = "Default summary"
+	macro viewClusterStatus(clusterStatus = null) {
 		AssertTextPresent(
 			locator1 = "//pre",
 			value1 = ${clusterStatus});
 	}
 
 	@description = "Elasticsearch provides a Cluster Health API (http://localhost:9200/_cluster/health?pretty=true) to easily view the current status of the cluster."
-	macro viewClusterStatusViaClusterHealthAPI {
+	@summary = "Default summary"
+	macro viewClusterStatusViaClusterHealthAPI(numberOfNodes = null) {
 		Navigator.openSpecificURL(url = "http://localhost:9200/_cluster/health?level=indices&pretty");
 
 		AssertTextEquals.assertPartialText(
@@ -35,11 +38,13 @@ definition {
 			value1 = "\"number_of_data_nodes\" : ${numberOfNodes}");
 	}
 
-	macro viewReplicaAddedInConsole {
+	@summary = "Default summary"
+	macro viewReplicaAddedInConsole() {
 		AssertConsoleTextPresent(value1 = "added.*reason: zen-disco-receive");
 	}
 
-	macro viewReplicaRemovedInConsole {
+	@summary = "Default summary"
+	macro viewReplicaRemovedInConsole() {
 		AssertConsoleTextPresent(value1 = "removed.*reason: zen-disco-node_left");
 	}
 

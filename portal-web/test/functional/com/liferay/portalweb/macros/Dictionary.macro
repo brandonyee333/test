@@ -1,6 +1,7 @@
 definition {
 
-	macro findPG {
+	@summary = "Default summary"
+	macro findPG(dictionaryWord = null) {
 		Type(
 			locator1 = "TextInput#WORD",
 			value1 = ${dictionaryWord});

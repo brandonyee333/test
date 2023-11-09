@@ -1,6 +1,7 @@
 definition {
 
-	macro configureAdministratorUserPG {
+	@summary = "Default summary"
+	macro configureAdministratorUserPG(administratorEmail = null, administratorFirstName = null, administratorLastName = null) {
 		Type(
 			locator1 = "TextInput#FIRST_NAME",
 			value1 = ${administratorFirstName});
@@ -14,7 +15,8 @@ definition {
 			value1 = ${administratorEmail});
 	}
 
-	macro configureDatabasePG {
+	@summary = "Default summary"
+	macro configureDatabasePG(databaseType = null, databaseName = null, databasePassword = null, jdbcDriverClassName = null, databaseUserName = null) {
 		if (IsElementNotPresent(locator1 = "SetupWizard#DATABASE_CHANGE_USE_CONFIGURED_DATABASE_LINK")) {
 			AssertClick(
 				locator1 = "SetupWizard#DATABASE_CHANGE_LINK",
@@ -48,7 +50,8 @@ definition {
 			value1 = ${databasePassword});
 	}
 
-	macro configureDefaultPG {
+	@summary = "Default summary"
+	macro configureDefaultPG(resetPassword = null, base_branch = null, virtualHostsURL = null, setupWizardEnabled = null, syntaxCheckingEnabled = null) {
 		SetupWizard.viewDefaultPortalNamePG();
 
 		SetupWizard.viewDefaultAdministratorUserPG();
@@ -90,7 +93,8 @@ definition {
 		User.viewLoggedInPG(userFirstName = "Test");
 	}
 
-	macro configurePG {
+	@summary = "Default summary"
+	macro configurePG(resetPassword = null, base_branch = null, databaseName = null, addSampleData = null, virtualHostsURL = null, syntaxCheckingEnabled = null, administratorFirstName = null, administratorLastName = null, jdbcDriverClassName = null, databaseUserName = null, databaseType = null, portalName = null, administratorEmail = null, jdbcURL = null, setupWizardEnabled = null, databasePassword = null) {
 		if (isSet(portalName)) {
 			SetupWizard.configurePortalNamePG(portalName = ${portalName});
 		}
@@ -167,13 +171,15 @@ definition {
 		}
 	}
 
-	macro configurePortalNamePG {
+	@summary = "Default summary"
+	macro configurePortalNamePG(portalName = null) {
 		Type(
 			locator1 = "TextInput#PORTAL_NAME",
 			value1 = ${portalName});
 	}
 
-	macro configureSampleDataPG {
+	@summary = "Default summary"
+	macro configureSampleDataPG(addSampleData = null) {
 		if (IsElementNotPresent(locator1 = "SetupWizard#DATABASE_CHANGE_USE_CONFIGURED_DATABASE_LINK")) {
 			AssertClick(
 				locator1 = "SetupWizard#DATABASE_CHANGE_LINK",
@@ -189,13 +195,15 @@ definition {
 		}
 	}
 
-	macro finishConfigurationPG {
+	@summary = "Default summary"
+	macro finishConfigurationPG() {
 		AssertClick(
 			locator1 = "Button#FINISH_CONFIGURATION",
 			value1 = "Finish Configuration");
 	}
 
-	macro viewConfigurationSavedPG {
+	@summary = "Default summary"
+	macro viewConfigurationSavedPG() {
 		AssertElementPresent(locator1 = "Message#SUCCESS");
 
 		AssertTextEquals.assertPartialText(
@@ -211,7 +219,8 @@ definition {
 			value1 = "Changes will take effect once the portal is restarted. Please restart the portal now.");
 	}
 
-	macro viewConfiguredDatabaseInConsole {
+	@summary = "Default summary"
+	macro viewConfiguredDatabaseInConsole(databaseType = null) {
 		if (${databaseType} == "DB2") {
 			AssertConsoleTextPresent(value1 = "Determine dialect for DB2/LINUXX8664");
 
@@ -249,7 +258,8 @@ definition {
 		}
 	}
 
-	macro viewDefaultAdministratorUserPG {
+	@summary = "Default summary"
+	macro viewDefaultAdministratorUserPG() {
 		AssertSelectedLabel(
 			locator1 = "Select#DEFAULT_LANGUAGE",
 			value1 = "English (United States)");
@@ -267,7 +277,8 @@ definition {
 			value1 = "");
 	}
 
-	macro viewDefaultDatabasePG {
+	@summary = "Default summary"
+	macro viewDefaultDatabasePG() {
 		if (IsElementPresent(locator1 = "SetupWizard#DATABASE_DEFAULT_LABEL")) {
 			AssertTextEquals.assertText(
 				locator1 = "SetupWizard#DATABASE_DEFAULT_LABEL",
@@ -312,7 +323,8 @@ definition {
 		}
 	}
 
-	macro viewDefaultPortalNamePG {
+	@summary = "Default summary"
+	macro viewDefaultPortalNamePG() {
 		var testRunEnvironment = PropsUtil.get("test.run.environment");
 
 		if (${testRunEnvironment} == "EE") {

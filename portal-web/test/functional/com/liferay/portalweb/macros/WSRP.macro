@@ -1,6 +1,7 @@
 definition {
 
-	macro addConsumerCP {
+	@summary = "Default summary"
+	macro addConsumerCP(producerName = null, consumerName = null) {
 		AssertClick(
 			locator1 = "NavTab#PRODUCERS",
 			value1 = "Producers");
@@ -22,7 +23,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro addConsumerPortletCP {
+	@summary = "Default summary"
+	macro addConsumerPortletCP(consumerPortletType = null, consumerName = null, consumerPortletName = null) {
 		var key_consumerName = ${consumerName};
 
 		Click(locator1 = "WSRPAdmin#CONSUMER_TABLE_ACTIONS_BUTTON");
@@ -40,7 +42,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro addProducerCP {
+	@summary = "Default summary"
+	macro addProducerCP(portletsAvailableSelect = null, producerName = null) {
 		AssertClick(
 			locator1 = "NavTab#PRODUCERS",
 			value1 = "Producers");
@@ -70,7 +73,8 @@ definition {
 		AssertElementPresent(locator1 = "WSRPAdmin#PRODUCER_TABLE_URL");
 	}
 
-	macro tearDownCP {
+	@summary = "Default summary"
+	macro tearDownCP() {
 		ProductMenu.gotoPortlet(
 			category = "Apps",
 			panel = "Control Panel",

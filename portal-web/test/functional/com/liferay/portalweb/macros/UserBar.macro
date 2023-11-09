@@ -3,7 +3,8 @@ definition {
 	var key_panel = "user";
 
 	@description = "Navigate to My Dashboard."
-	macro gotoDashboard {
+	@summary = "Default summary"
+	macro gotoDashboard() {
 		Navigator.openURL();
 
 		if (IsElementNotPresent(locator1 = "ProductMenu#PANEL_EXPANDED")) {
@@ -25,7 +26,8 @@ definition {
 	}
 
 	@description = "Navigate to Account via the User Bar."
-	macro gotoMyAccount {
+	@summary = "Default summary"
+	macro gotoMyAccount() {
 		Navigator.openURL();
 
 		if (IsElementNotPresent(locator1 = "ProductMenu#PANEL_EXPANDED")) {
@@ -45,7 +47,8 @@ definition {
 	}
 
 	@description = "Navigate to My Profile."
-	macro gotoProfile {
+	@summary = "Default summary"
+	macro gotoProfile() {
 		Navigator.openURL();
 
 		if (IsElementNotPresent(locator1 = "ProductMenu#PANEL_EXPANDED")) {
@@ -64,7 +67,8 @@ definition {
 		}
 	}
 
-	macro signOut {
+	@summary = "Default summary"
+	macro signOut() {
 		if (IsElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE")) {
 			if (IsElementNotPresent(locator1 = "ProductMenu#PANEL_EXPANDED")) {
 				Click(locator1 = "UserBar#USER_AVATAR_IMAGE");
@@ -76,7 +80,8 @@ definition {
 		}
 	}
 
-	macro viewUserDefaultIcon {
+	@summary = "Default summary"
+	macro viewUserDefaultIcon() {
 		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_DEFAULT");
 	}
 

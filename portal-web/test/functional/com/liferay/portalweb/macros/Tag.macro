@@ -1,12 +1,14 @@
 definition {
 
-	macro _addCP {
+	@summary = "Default summary"
+	macro _addCP(tagName = null) {
 		LexiconEntry.gotoAdd();
 
 		PortletEntry.inputName(name = ${tagName});
 	}
 
-	macro addAutoAssertionTagViaBlogsPG {
+	@summary = "Default summary"
+	macro addAutoAssertionTagViaBlogsPG(tagName = null, entryTitle = null, entryContent = null) {
 		BlogsNavigator.gotoAddEntry();
 
 		BlogsEntry.addEntryContent(
@@ -32,13 +34,15 @@ definition {
 		PortletEntry.publish();
 	}
 
-	macro addCP {
+	@summary = "Default summary"
+	macro addCP(tagName = null) {
 		Tag._addCP(tagName = ${tagName});
 
 		PortletEntry.save();
 	}
 
-	macro addInvalidCP {
+	@summary = "Default summary"
+	macro addInvalidCP(tagName = null) {
 		Tag._addCP(tagName = ${tagName});
 
 		Button.clickSave();
@@ -46,7 +50,8 @@ definition {
 		Alert.viewRequestFailedToComplete();
 	}
 
-	macro addViaSiteCP {
+	@summary = "Default summary"
+	macro addViaSiteCP(tagName = null) {
 		Panel.expandPanel(panelHeading = "Categorization");
 
 		AssetCategorization.addTag(tagName = ${tagName});
@@ -54,7 +59,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro addWithNullTitleCP {
+	@summary = "Default summary"
+	macro addWithNullTitleCP(tagName = null) {
 		Tag._addCP(tagName = ${tagName});
 
 		Button.clickSave();
@@ -64,7 +70,8 @@ definition {
 		Alert.viewRequiredField();
 	}
 
-	macro deleteCP {
+	@summary = "Default summary"
+	macro deleteCP(tagName = null, deleteMethod = null) {
 		var key_tagName = ${tagName};
 
 		if (${deleteMethod} == "From List") {
@@ -96,7 +103,8 @@ definition {
 		AssertTextNotPresent(value1 = ${tagName});
 	}
 
-	macro editCancelCP {
+	@summary = "Default summary"
+	macro editCancelCP(tagName = null) {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit",
 			rowEntry = ${tagName});
@@ -111,7 +119,8 @@ definition {
 			value1 = ${tagName});
 	}
 
-	macro editCP {
+	@summary = "Default summary"
+	macro editCP(tagNameEdit = null, tagName = null) {
 		LexiconEntry.gotoEntryMenuItem(
 			menuItem = "Edit",
 			rowEntry = ${tagName});
@@ -123,7 +132,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro mergeSingleTagWarning {
+	@summary = "Default summary"
+	macro mergeSingleTagWarning(tagName = null) {
 		var key_tagName = ${tagName};
 
 		Check(locator1 = "Tags#TAG_ENTRY_TABLE_CHECKBOX");
@@ -137,7 +147,8 @@ definition {
 		Confirm(value1 = "Please choose at least 2 tags.");
 	}
 
-	macro mergeTags {
+	@summary = "Default summary"
+	macro mergeTags(selectTagName = null, mergeConfirmation = null, tagNameList = null, selectTagToMergeTo = null) {
 		if (isSet(tagNameList)) {
 			for (var tagName : list ${tagNameList}) {
 				Check(
@@ -178,7 +189,8 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro searchTagCP {
+	@summary = "Default summary"
+	macro searchTagCP(tagName1 = null, tagName2 = null, tagName3 = null) {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = 3);
@@ -216,7 +228,8 @@ definition {
 			value1 = ${tagName3});
 	}
 
-	macro tearDownCP {
+	@summary = "Default summary"
+	macro tearDownCP(stagingSite = null) {
 		if (${stagingSite} == "true") {
 			ProductMenu.gotoStagingSite();
 		}
@@ -242,7 +255,8 @@ definition {
 			value1 = "There are no tags.");
 	}
 
-	macro viewCP {
+	@summary = "Default summary"
+	macro viewCP(tagName = null) {
 		var key_tagName = ${tagName};
 
 		AssertTextEquals(
@@ -250,20 +264,23 @@ definition {
 			value1 = ${tagName});
 	}
 
-	macro viewMergedTagsCP {
+	@summary = "Default summary"
+	macro viewMergedTagsCP(tagName = null) {
 		AssertTextNotPresent(
 			key_tagName = ${tagName},
 			locator1 = "Tags#TAG_ENTRY_TABLE_NAME",
 			value1 = ${tagName});
 	}
 
-	macro viewTagMenuNotEditableOnLive {
+	@summary = "Default summary"
+	macro viewTagMenuNotEditableOnLive(rowEntry = null, menuItem = null) {
 		LexiconEntry.openEntryMenu(rowEntry = ${rowEntry});
 
 		MenuItem.viewNotPresent(menuItem = ${menuItem});
 	}
 
-	macro viewTagsCP {
+	@summary = "Default summary"
+	macro viewTagsCP(tagName1 = null, tagName2 = null, tagName3 = null) {
 		var key_tagName = ${tagName1};
 
 		AssertTextEquals(

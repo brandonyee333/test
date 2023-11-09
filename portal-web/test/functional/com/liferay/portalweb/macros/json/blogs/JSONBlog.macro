@@ -1,6 +1,7 @@
 definition {
 
-	macro addEntry {
+	@summary = "Default summary"
+	macro addEntry(groupName = null, entryTitle = null) {
 		var portalURL = JSONCompany.getPortalURL();
 
 		if (!(isSet(entryContent))) {
@@ -48,7 +49,8 @@ definition {
 		var messageId = JSONCurlUtil.post(${curl});
 	}
 
-	macro getBlogEntryId {
+	@summary = "Default summary"
+	macro getBlogEntryId(groupName = null, friendlyURL = null, entryTitle = null) {
 		if (!(isSet(site))) {
 			var site = "true";
 		}

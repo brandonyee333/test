@@ -1,12 +1,14 @@
 definition {
 
-	macro _editCP {
+	@summary = "Default summary"
+	macro _editCP(teamName = null, teamDescription = null) {
 		PortletEntry.inputName(name = ${teamName});
 
 		PortletEntry.inputDescription(description = ${teamDescription});
 	}
 
-	macro _searchCP {
+	@summary = "Default summary"
+	macro _searchCP(searchTerm = null) {
 		Type(
 			locator1 = "TextInput#SEARCH",
 			value1 = ${searchTerm});
@@ -16,7 +18,8 @@ definition {
 			value1 = "\RETURN");
 	}
 
-	macro addCP {
+	@summary = "Default summary"
+	macro addCP(teamName = null, teamDescription = null) {
 		LexiconEntry.gotoAdd();
 
 		Team._editCP(
@@ -26,7 +29,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro assignMembersCP {
+	@summary = "Default summary"
+	macro assignMembersCP(teamName = null, userScreenName = null, userNameIsNotFound = null) {
 		var key_teamName = ${teamName};
 		var key_userScreenName = ${userScreenName};
 
@@ -82,7 +86,8 @@ definition {
 		SelectFrameTop();
 	}
 
-	macro assignUserGroups {
+	@summary = "Default summary"
+	macro assignUserGroups(teamName = null, userGroupsNameIsNotAvailable = null, userGroupName = null) {
 		var key_teamName = ${teamName};
 
 		Team._searchCP(searchTerm = ${teamName});
@@ -133,14 +138,16 @@ definition {
 		SelectFrameTop();
 	}
 
-	macro definePermissionPG {
+	@summary = "Default summary"
+	macro definePermissionPG(permissionDefinitionKey = null, teamName = null) {
 		Check(
 			key_permissionDefinitionKey = ${permissionDefinitionKey},
 			key_teamName = ${teamName},
 			locator1 = "Checkbox#TEAM_PERMISSIONS");
 	}
 
-	macro deleteCP {
+	@summary = "Default summary"
+	macro deleteCP(teamName = null) {
 		var key_teamName = ${teamName};
 
 		Portlet.changeDisplayStyle(displayStyle = "List");
@@ -156,7 +163,8 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro editCP {
+	@summary = "Default summary"
+	macro editCP(teamName = null, teamDescriptionEdit = null, teamNameEdit = null) {
 		Portlet.changeDisplayStyle(displayStyle = "List");
 
 		LexiconEntry.gotoEntryMenuItem(
@@ -170,7 +178,8 @@ definition {
 		PortletEntry.save();
 	}
 
-	macro removeMemberCP {
+	@summary = "Default summary"
+	macro removeMemberCP(teamName = null, membershipType = null, userLastName = null, userGroupName = null, userFirstName = null) {
 		LexiconEntry.gotoEntry(rowEntry = ${teamName});
 
 		Navigator.gotoNavItem(navItem = "${membershipType}s");
@@ -193,7 +202,8 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro removePermissionPG {
+	@summary = "Default summary"
+	macro removePermissionPG(teamName = null, permissionDefinitionKey = null) {
 		Uncheck(locator1 = "//tr[contains(.,'${teamName}')]/td/input[contains(@id,'${permissionDefinitionKey}')]");
 
 		PortletEntry.save();
@@ -201,7 +211,8 @@ definition {
 		AssertNotChecked(locator1 = "//tr[contains(.,'${teamName}')]/td/input[contains(@id,'${permissionDefinitionKey}')]");
 	}
 
-	macro searchCP {
+	@summary = "Default summary"
+	macro searchCP(membershipType = null, searchTerm = null, isEmpty = null) {
 		Navigator.gotoNavItem(navItem = "${membershipType}s");
 
 		Team._searchCP(searchTerm = ${searchTerm});
@@ -216,7 +227,8 @@ definition {
 		}
 	}
 
-	macro tearDownCP {
+	@summary = "Default summary"
+	macro tearDownCP() {
 		var siteName = TestCase.getSiteName(siteName = ${siteName});
 
 		Navigator.openSiteURL(siteName = ${siteName});
@@ -237,7 +249,8 @@ definition {
 		}
 	}
 
-	macro viewCP {
+	@summary = "Default summary"
+	macro viewCP(teamName = null, teamDescription = null) {
 		var key_teamName = ${teamName};
 
 		Portlet.changeDisplayStyle(displayStyle = "List");
@@ -253,7 +266,8 @@ definition {
 		AssertElementPresent(locator1 = "SiteTeams#TEAM_TABLE_ACTIONS");
 	}
 
-	macro viewDefaultCP {
+	@summary = "Default summary"
+	macro viewDefaultCP(teamName = null) {
 		var key_teamName = ${teamName};
 
 		AssertTextEquals(
@@ -265,7 +279,8 @@ definition {
 			value1 = ${teamName});
 	}
 
-	macro viewMemberCP {
+	@summary = "Default summary"
+	macro viewMemberCP(teamName = null, membershipType = null, userLastName = null, userGroupName = null, userFirstName = null) {
 		LexiconEntry.gotoEntry(rowEntry = ${teamName});
 
 		Navigator.gotoNavItem(navItem = "${membershipType}s");
@@ -284,7 +299,8 @@ definition {
 		}
 	}
 
-	macro viewNoMembersCP {
+	@summary = "Default summary"
+	macro viewNoMembersCP(teamName = null) {
 		LexiconEntry.gotoEntry(rowEntry = ${teamName});
 
 		for (var navItem : list "Users,User Groups") {
@@ -296,7 +312,8 @@ definition {
 		}
 	}
 
-	macro viewPermissionPG {
+	@summary = "Default summary"
+	macro viewPermissionPG(permissionDefinitionKey = null, teamName = null) {
 		AssertChecked(
 			key_permissionDefinitionKey = ${permissionDefinitionKey},
 			key_teamName = ${teamName},
