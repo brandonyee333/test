@@ -669,10 +669,9 @@ public class Main {
 		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
 		try (CloseableHttpClient closeableHttpClient =
-				httpClientBuilder.build()) {
-
+				httpClientBuilder.build();
 			CloseableHttpResponse closeableHttpResponse =
-				closeableHttpClient.execute(httpPost);
+				closeableHttpClient.execute(httpPost)) {
 
 			StatusLine statusLine = closeableHttpResponse.getStatusLine();
 

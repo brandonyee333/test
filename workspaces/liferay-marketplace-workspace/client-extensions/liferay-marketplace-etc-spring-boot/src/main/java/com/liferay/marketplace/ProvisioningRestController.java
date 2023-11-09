@@ -206,16 +206,14 @@ public class ProvisioningRestController extends BaseRestController {
 						"client_secret", _provisioningAuthClientSecret),
 					new BasicNameValuePair(
 						"grant_type", "client_credentials"))));
-
 		httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
 		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
 
 		try (CloseableHttpClient closeableHttpClient =
-				httpClientBuilder.build()) {
-
+				httpClientBuilder.build();
 			CloseableHttpResponse closeableHttpResponse =
-				closeableHttpClient.execute(httpPost);
+				closeableHttpClient.execute(httpPost)) {
 
 			StatusLine statusLine = closeableHttpResponse.getStatusLine();
 
