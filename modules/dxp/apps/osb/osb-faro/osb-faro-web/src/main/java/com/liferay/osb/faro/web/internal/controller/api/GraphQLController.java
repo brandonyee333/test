@@ -91,11 +91,9 @@ public class GraphQLController extends BaseFaroController {
 
 			HttpPost httpPost = new HttpPost(uri);
 
-			HttpEntity postEntity = new ByteArrayEntity(
-				requestBody.getBytes(StandardCharsets.UTF_8));
-
-			httpPost.setEntity(postEntity);
-
+			httpPost.setEntity(
+				new ByteArrayEntity(
+					requestBody.getBytes(StandardCharsets.UTF_8)));
 			httpPost.setHeader(
 				ASAH_PROJECT_ID_HEADER, faroProject.getProjectId());
 			httpPost.setHeader(
@@ -105,9 +103,9 @@ public class GraphQLController extends BaseFaroController {
 			CloseableHttpResponse closeableHttpResponse =
 				closeableHttpClient.execute(httpPost);
 
-			HttpEntity responseEntity = closeableHttpResponse.getEntity();
+			HttpEntity httpEntity = closeableHttpResponse.getEntity();
 
-			return IOUtils.toString(responseEntity.getContent(), "UTF-8");
+			return IOUtils.toString(httpEntity.getContent(), "UTF-8");
 		}
 		catch (URISyntaxException uriSyntaxException) {
 			if (_log.isDebugEnabled()) {
