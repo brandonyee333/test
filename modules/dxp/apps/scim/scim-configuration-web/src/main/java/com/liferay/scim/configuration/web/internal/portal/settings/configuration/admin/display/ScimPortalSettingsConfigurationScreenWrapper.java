@@ -26,6 +26,8 @@ import com.liferay.portal.settings.configuration.admin.display.PortalSettingsCon
 import com.liferay.scim.configuration.web.internal.constants.ScimConstants;
 import com.liferay.scim.rest.util.ScimClientUtil;
 
+import java.io.IOException;
+
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +36,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Component;
@@ -129,21 +132,20 @@ public class ScimPortalSettingsConfigurationScreenWrapper
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse) {
 
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)httpServletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
+				ThemeDisplay themeDisplay =
+					(ThemeDisplay)httpServletRequest.getAttribute(
+						WebKeys.THEME_DISPLAY);
 
 			Dictionary<String, Object> properties = null;
 
 			try {
-				Configuration[] configurations =
-					_configurationAdmin.listConfigurations(
-						String.format(
-							"(&(%s=%s)(%s=%s))",
-							ConfigurationAdmin.SERVICE_FACTORYPID,
-							ScimConstants.CONFIGURATION_PID,
-							ScimConstants.PARAM_COMPANY_ID,
-							themeDisplay.getCompanyId()));
+				Configuration[] configurations = _configurationAdmin.listConfigurations(
+					String.format(
+						"(&(%s=%s)(%s=%s))",
+						ConfigurationAdmin.SERVICE_FACTORYPID,
+						ScimConstants.CONFIGURATION_PID,
+						ScimConstants.PARAM_COMPANY_ID,
+						themeDisplay.getCompanyId()));
 
 				if (configurations == null) {
 					return;
@@ -156,53 +158,62 @@ public class ScimPortalSettingsConfigurationScreenWrapper
 			catch (Exception exception) {
 				ReflectionUtil.throwException(exception);
 			}
+						String applicationName = (String)properties.get(
+							ScimConstants.PARAM_APPLICATION_NAME);
 
-			String applicationName = (String)properties.get(
-				ScimConstants.PARAM_APPLICATION_NAME);
+						OAuth2Application oAuth2Application = null;
 
-			OAuth2Application oAuth2Application = null;
+						try {
+							oAuth2Application =
+								_oAuth2ApplicationLocalService.
+									getOAuth2Application(
+										themeDisplay.getCompanyId(),
+										ScimClientUtil.generateScimClientId(
+											applicationName));
+						}
+						catch (NoSuchOAuth2ApplicationException
+							noSuchOAuth2ApplicationException) {
 
-			try {
-				oAuth2Application =
-					_oAuth2ApplicationLocalService.getOAuth2Application(
-						themeDisplay.getCompanyId(),
-						ScimClientUtil.generateScimClientId(applicationName));
-			}
-			catch (NoSuchOAuth2ApplicationException
-						noSuchOAuth2ApplicationException) {
+							if (_log.isInfoEnabled()) {
+								_log.info(
+									noSuchOAuth2ApplicationException.
+										getMessage());
+							}
 
-				if (_log.isInfoEnabled()) {
-					_log.info(noSuchOAuth2ApplicationException);
-				}
+							return;
+						}
 
-				return;
-			}
+						String matcherField = (String)properties.get(
+							ScimConstants.PARAM_MATCHER_FIELD);
 
-			String matcherField = (String)properties.get(
-				ScimConstants.PARAM_MATCHER_FIELD);
+						httpServletRequest.setAttribute(
+							ScimConstants.PARAM_APPLICATION_NAME,
+							applicationName);
+						httpServletRequest.setAttribute(
+							ScimConstants.PARAM_MATCHER_FIELD, matcherField);
 
-			httpServletRequest.setAttribute(
-				ScimConstants.PARAM_APPLICATION_NAME, applicationName);
-			httpServletRequest.setAttribute(
-				ScimConstants.PARAM_MATCHER_FIELD, matcherField);
+								List<OAuth2Authorization> oAuth2Authorizations =
+									_oAuth2AuthorizationLocalService.
+										getOAuth2Authorizations(
+											oAuth2Application.
+												getOAuth2ApplicationId(),
+											QueryUtil.ALL_POS,
+											QueryUtil.ALL_POS, null);
 
-			List<OAuth2Authorization> oAuth2Authorizations =
-				_oAuth2AuthorizationLocalService.getOAuth2Authorizations(
-					oAuth2Application.getOAuth2ApplicationId(),
-					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+								OAuth2Authorization oAuth2Authorization;
 
-			OAuth2Authorization oAuth2Authorization;
+								if (!oAuth2Authorizations.isEmpty()) {
+									oAuth2Authorization =
+										oAuth2Authorizations.get(
+											oAuth2Authorizations.size() - 1);
 
-			if (!oAuth2Authorizations.isEmpty()) {
-				oAuth2Authorization = oAuth2Authorizations.get(
-					oAuth2Authorizations.size() - 1);
+									String accessToken =
+										oAuth2Authorization.
+											getAccessTokenContent();
 
-				String accessToken =
-					oAuth2Authorization.getAccessTokenContent();
-
-				httpServletRequest.setAttribute(
-					ScimConstants.PARAM_TOKEN, accessToken);
-			}
+									httpServletRequest.setAttribute(
+										ScimConstants.PARAM_TOKEN, accessToken);
+								}
 		}
 
 	}
