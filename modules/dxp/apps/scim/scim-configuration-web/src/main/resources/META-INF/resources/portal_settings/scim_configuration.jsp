@@ -8,24 +8,33 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String paramApplicationName = (String)request.getAttribute("applicationName");
-String paramMatcherField = (String)request.getAttribute("matcherField");
+String paramApplicationName = (String)request.getAttribute(ScimConstants.PARAM_APPLICATION_NAME);
+String paramMatcherField = (String)request.getAttribute(ScimConstants.PARAM_MATCHER_FIELD);
 
-String paramToken = (String)request.getAttribute("token");
+String paramToken = (String)request.getAttribute(ScimConstants.PARAM_TOKEN);
 
 if (paramToken == null) {
 	paramToken = StringPool.BLANK;
 }
 %>
 
-<aui:input name="<%= Constants.CMD %>" type="hidden" value="" />
+	<aui:input name="<%= Constants.CMD %>" type="hidden" value="" />
 
 <aui:input label="application-name" name="applicationName" required="<%= true %>" type="text" value="<%= paramApplicationName %>" />
 
 <aui:select helpMessage="scim_matcherField-help" label="scim_matcherField" name="matcherField" required="<%= true %>" value="<%= paramMatcherField %>">
 	<aui:option label="" value="" />
-	<aui:option label="userName" localizeLabel="<%= false %>" value="userName" />
-	<aui:option label="email" localizeLabel="<%= false %>" value="email" />
+
+	<%
+	for (String matcherField : ScimConstants.MATCHER_FIELD) {
+	%>
+
+			<aui:option label="<%= matcherField %>" localizeLabel="<%= false %>" value="<%= matcherField %>" />
+
+	<%
+	}
+	%>
+
 </aui:select>
 
 <c:choose>
@@ -102,7 +111,7 @@ if (paramToken == null) {
 					if (isConfirmed) {
 						var form = window.document['<portlet:namespace />fm'];
 						form['<portlet:namespace /><%= Constants.CMD %>'].value =
-							'generate';
+							'<%= ScimWebKeys.SCIM_GENERATE %>';
 
 						form.submit();
 					}
@@ -124,7 +133,7 @@ if (paramToken == null) {
 					if (isConfirmed) {
 						var form = window.document['<portlet:namespace />fm'];
 						form['<portlet:namespace /><%= Constants.CMD %>'].value =
-							'revoke';
+							'<%= ScimWebKeys.SCIM_REVOKE %>';
 
 						form.submit();
 					}
