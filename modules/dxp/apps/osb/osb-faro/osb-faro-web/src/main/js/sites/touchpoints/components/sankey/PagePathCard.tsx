@@ -5,8 +5,8 @@ import React from 'react';
 import Sankey from './Sankey';
 import StatesRenderer from 'shared/components/states-renderer/StatesRenderer';
 import {getSafeRangeSelectors} from 'shared/util/util';
-import {MAIN_NODE_HEIGHT, SECONDARY_NODE_COLOR} from './utils';
-import {Type} from './types';
+import {SECONDARY_NODE_COLOR} from './utils';
+import {TitleKey, Type} from './types';
 import {useParams} from 'react-router-dom';
 import {useQuery} from '@apollo/react-hooks';
 import {v4 as uuidv4} from 'uuid';
@@ -18,12 +18,6 @@ type pagePathNode = {
 	followingPagePathNodes: pagePathNode[];
 	previousPagePathNodes: pagePathNode[];
 };
-
-enum TitleKey {
-	Direct = 'direct',
-	DropOffs = 'drop-offs',
-	Others = 'others'
-}
 
 function getTitle(key: TitleKey, type: Type) {
 	const langs = {
@@ -51,40 +45,19 @@ function getColor(key: TitleKey) {
 }
 
 function formatData({pagePath}: {pagePath: pagePathNode}) {
-	const calculateTotalViews = (nodes: pagePathNode[]) =>
-		nodes?.reduce((acc, {views}) => acc + views, 0) || 0;
-
-	const formatNodes = (
-		nodes: pagePathNode[],
-		type: Type,
-		totalViews: number
-	) =>
-		nodes?.map(({canonicalUrl, title, views}) => {
-			const height = (views / totalViews) * MAIN_NODE_HEIGHT;
-
-			return {
+	const formatNodes = (nodes: pagePathNode[], type: Type) =>
+		nodes
+			?.filter(({views}) => !!views)
+			?.map(({canonicalUrl, title, views}) => ({
 				color: getColor(title),
-				height: isNaN(height) ? 0 : height,
 				id: uuidv4(),
 				name: getTitle(title, type),
 				type,
 				url: decodeURIComponent(canonicalUrl),
-
-				// TEMP: It should be fixed on backend side
-
-				views: views === -1 ? 1 : views
-			};
-		}) || [];
-
-	const totalViewsPreviousPage = calculateTotalViews(
-		pagePath.previousPagePathNodes
-	);
-	const totalViewsNextPage = calculateTotalViews(
-		pagePath.followingPagePathNodes
-	);
+				views
+			}));
 
 	const mainNode = {
-		height: MAIN_NODE_HEIGHT,
 		id: uuidv4(),
 		main: true,
 		name: decodeURIComponent(pagePath.title),
@@ -94,14 +67,12 @@ function formatData({pagePath}: {pagePath: pagePathNode}) {
 
 	const previousNodes = formatNodes(
 		pagePath.previousPagePathNodes,
-		Type.Previous,
-		totalViewsPreviousPage
+		Type.Previous
 	);
 
 	const followingNodes = formatNodes(
 		pagePath.followingPagePathNodes,
-		Type.Following,
-		totalViewsNextPage
+		Type.Following
 	);
 
 	const links = [...previousNodes, ...followingNodes].map((link, index) => ({
@@ -126,7 +97,7 @@ const PagePathCard = ({pathRangeSelectors, selectedSegment}) => {
 			channelId,
 			title: decodeURIComponent(title),
 			...(selectedSegment?.id && {
-				segmentId: parseInt(selectedSegment?.id)
+				segmentId: selectedSegment.id
 			}),
 			...getSafeRangeSelectors(pathRangeSelectors)
 		}
