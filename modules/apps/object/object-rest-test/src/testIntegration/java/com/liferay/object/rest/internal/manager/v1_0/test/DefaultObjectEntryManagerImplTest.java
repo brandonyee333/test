@@ -990,10 +990,11 @@ public class DefaultObjectEntryManagerImplTest
 	}
 
 	@Test
-	public void testAddObjectEntryHierarchyWithAccountRestriction()
+	public void testAddObjectEntryWithAccountEntryRestricted2()
 		throws Exception {
 
-		// Root account restrictions must be inherited
+		// Object definitions inherit account entry restricted from the root
+		// object definition
 
 		_addResourcePermission(
 			_rootObjectDefinition, ObjectActionKeys.ADD_OBJECT_ENTRY,
@@ -1073,7 +1074,6 @@ public class DefaultObjectEntryManagerImplTest
 					}
 				},
 				ObjectDefinitionConstants.SCOPE_COMPANY));
-
 		AssertUtils.assertFailure(
 			PrincipalException.MustHavePermission.class,
 			StringBundler.concat(
@@ -1095,7 +1095,7 @@ public class DefaultObjectEntryManagerImplTest
 	}
 
 	@Test
-	public void testAddObjectEntryWithAccountRestriction() throws Exception {
+	public void testAddObjectEntryWithAccountEntryRestricted1() throws Exception {
 
 		// Account entry restricted scope
 
