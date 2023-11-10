@@ -166,7 +166,7 @@ else {
 											</div>
 
 											<div class="flex-item-center range-options">
-												<aui:input id="rangeLast" label='<%= LanguageUtil.get(request, "last") + StringPool.TRIPLE_PERIOD %>' name="range" type="radio" value="last" />
+												<aui:input helpMessage="export-last-range-help" id="rangeLast" label='<%= LanguageUtil.get(request, "last") + StringPool.TRIPLE_PERIOD %>' name="range" type="radio" value="last" />
 											</div>
 
 											<div class="flex-item-center range-options">
