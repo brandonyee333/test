@@ -35,6 +35,9 @@ public class PortletKeys {
 
 	public static final String CALENDAR = "8";
 
+	public static final String DATE_FACET =
+		"com_liferay_portal_search_web_date_facet_portlet_DateFacetPortlet";
+
 	public static final String DIRECTORY =
 		"com_liferay_directory_web_portlet_DirectoryPortlet";
 
