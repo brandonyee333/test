@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -444,11 +445,9 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 			return false;
 		}
 
-		if (!FeatureFlagManagerUtil.isEnabled("LPS-153839") &&
-			Objects.equals(
-				portlet.getPortletId(),
-				"com_liferay_portal_search_web_date_facet_portlet_" +
-					"DateFacetPortlet")) {
+		if (_featureFlagPortletNamesMap.containsKey(portlet.getPortletId()) &&
+			!FeatureFlagManagerUtil.isEnabled(
+				_featureFlagPortletNamesMap.get(portlet.getPortletId()))) {
 
 			return false;
 		}
@@ -462,6 +461,11 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortletCategoryManagerImpl.class);
+
+	private static final Map<String, String> _featureFlagPortletNamesMap =
+		HashMapBuilder.put(
+			PortletKeys.DATE_FACET, "LPS-153839"
+		).build();
 
 	@Reference
 	private JSONFactory _jsonFactory;
