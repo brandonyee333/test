@@ -141,6 +141,34 @@ public class BaseScim implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Meta meta;
 
+	@Schema
+	public String[] getSchemas() {
+		return schemas;
+	}
+
+	public void setSchemas(String[] schemas) {
+		this.schemas = schemas;
+	}
+
+	@JsonIgnore
+	public void setSchemas(
+		UnsafeSupplier<String[], Exception> schemasUnsafeSupplier) {
+
+		try {
+			schemas = schemasUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String[] schemas;
+
 	@Override
 	public boolean equals(Object object) {
 		if (this == object) {
@@ -204,6 +232,30 @@ public class BaseScim implements Serializable {
 			sb.append("\"meta\": ");
 
 			sb.append(String.valueOf(meta));
+		}
+
+		if (schemas != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"schemas\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < schemas.length; i++) {
+				sb.append("\"");
+
+				sb.append(_escape(schemas[i]));
+
+				sb.append("\"");
+
+				if ((i + 1) < schemas.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
 		sb.append("}");
