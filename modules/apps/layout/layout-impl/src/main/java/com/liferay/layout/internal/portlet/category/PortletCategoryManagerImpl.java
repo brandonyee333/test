@@ -332,12 +332,7 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 			Portlet portlet = _portletLocalService.getPortletById(
 				themeDisplay.getCompanyId(), portletId);
 
-			if ((portlet == null) ||
-				((layout.isTypeAssetDisplay() || layout.isTypeContent()) &&
-				 ArrayUtil.contains(
-					 _UNSUPPORTED_PORTLETS_NAMES, portlet.getPortletName())) ||
-				_isDisabledByFeatureFlag(portletId)) {
-
+			if (!_isVisible(layout, portlet)) {
 				continue;
 			}
 
@@ -437,18 +432,29 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 			"sortedPortletCategoryKeys");
 	}
 
-	private boolean _isDisabledByFeatureFlag(String portletId) {
-		if (portletId.equals(_DATE_FACET_PORTLET_ID) &&
-			!FeatureFlagManagerUtil.isEnabled("LPS-153839")) {
-
-			return true;
+	private boolean _isVisible(Layout layout, Portlet portlet) {
+		if (portlet == null) {
+			return false;
 		}
 
-		return false;
-	}
+		if ((layout.isTypeAssetDisplay() || layout.isTypeContent()) &&
+			ArrayUtil.contains(
+				_UNSUPPORTED_PORTLETS_NAMES, portlet.getPortletName())) {
 
-	private static final String _DATE_FACET_PORTLET_ID =
-		"com_liferay_portal_search_web_date_facet_portlet_DateFacetPortlet";
+			return false;
+		}
+
+		if (!FeatureFlagManagerUtil.isEnabled("LPS-153839") &&
+			Objects.equals(
+				portlet.getPortletId(),
+				"com_liferay_portal_search_web_date_facet_portlet_" +
+					"DateFacetPortlet")) {
+
+			return false;
+		}
+
+		return true;
+	}
 
 	private static final String[] _UNSUPPORTED_PORTLETS_NAMES = {
 		PortletKeys.NESTED_PORTLETS
