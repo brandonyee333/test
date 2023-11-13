@@ -138,8 +138,7 @@ public class DisplayPageActionDropdownItemsProvider {
 						() -> hasUpdatePermission,
 						_getRenameDisplayPageActionUnsafeConsumer()
 					).add(
-						_getViewUsagesDisplayPageActionUnsafeConsumer(
-							count)
+						_getViewUsagesDisplayPageActionUnsafeConsumer(count)
 					).build());
 				dropdownGroupItem.setSeparator(true);
 			}
