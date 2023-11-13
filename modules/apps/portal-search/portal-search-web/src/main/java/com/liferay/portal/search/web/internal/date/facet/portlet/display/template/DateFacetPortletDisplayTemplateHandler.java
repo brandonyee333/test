@@ -9,8 +9,8 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateVariableGroup;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.search.web.internal.date.facet.constants.DateFacetPortletKeys;
 import com.liferay.portal.search.web.internal.date.facet.display.context.DateFacetDisplayContext;
 import com.liferay.portal.search.web.internal.date.facet.portlet.DateFacetPortlet;
 import com.liferay.portlet.display.template.BasePortletDisplayTemplateHandler;
@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Petteri Karttunen
  */
 @Component(
-	property = "javax.portlet.name=" + DateFacetPortletKeys.DATE_FACET,
+	property = "javax.portlet.name=" + PortletKeys.DATE_FACET,
 	service = TemplateHandler.class
 )
 public class DateFacetPortletDisplayTemplateHandler
@@ -46,14 +46,13 @@ public class DateFacetPortletDisplayTemplateHandler
 
 		return _language.format(
 			locale, "x-template",
-			_portal.getPortletTitle(
-				DateFacetPortletKeys.DATE_FACET, resourceBundle),
+			_portal.getPortletTitle(PortletKeys.DATE_FACET, resourceBundle),
 			false);
 	}
 
 	@Override
 	public String getResourceName() {
-		return DateFacetPortletKeys.DATE_FACET;
+		return PortletKeys.DATE_FACET;
 	}
 
 	@Override

@@ -13,10 +13,10 @@ import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropertiesParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.search.web.internal.date.facet.constants.DateFacetPortletKeys;
 import com.liferay.portal.search.web.internal.date.facet.display.context.builder.DateFacetDisplayContextBuilder;
 import com.liferay.portal.search.web.internal.util.DateRangeFactoryUtil;
 
@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Petteri Karttunen
  */
 @Component(
-	property = "javax.portlet.name=" + DateFacetPortletKeys.DATE_FACET,
+	property = "javax.portlet.name=" + PortletKeys.DATE_FACET,
 	service = ConfigurationAction.class
 )
 public class DateFacetPortletConfigurationAction

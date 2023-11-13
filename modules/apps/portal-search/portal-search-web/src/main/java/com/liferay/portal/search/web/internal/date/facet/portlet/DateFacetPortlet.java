@@ -10,10 +10,10 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.search.searcher.SearchRequest;
 import com.liferay.portal.search.searcher.SearchResponse;
-import com.liferay.portal.search.web.internal.date.facet.constants.DateFacetPortletKeys;
 import com.liferay.portal.search.web.internal.date.facet.display.context.DateFacetDisplayContext;
 import com.liferay.portal.search.web.internal.date.facet.display.context.builder.DateFacetDisplayContextBuilder;
 import com.liferay.portal.search.web.internal.display.context.PortletRequestThemeDisplaySupplier;
@@ -52,7 +52,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.init-param.view-template=/date/facet/view.jsp",
-		"javax.portlet.name=" + DateFacetPortletKeys.DATE_FACET,
+		"javax.portlet.name=" + PortletKeys.DATE_FACET,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=guest,power-user,user",
 		"javax.portlet.version=3.0"

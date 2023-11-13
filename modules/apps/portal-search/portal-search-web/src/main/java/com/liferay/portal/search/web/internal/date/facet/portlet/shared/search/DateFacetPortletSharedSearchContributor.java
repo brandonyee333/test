@@ -17,6 +17,7 @@ import com.liferay.portal.kernel.search.facet.util.RangeParserUtil;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.search.aggregation.Aggregation;
@@ -27,7 +28,6 @@ import com.liferay.portal.search.facet.date.range.DateRangeFacetSearchContributo
 import com.liferay.portal.search.facet.nested.NestedFacetSearchContributor;
 import com.liferay.portal.search.filter.DateRangeFilterBuilder;
 import com.liferay.portal.search.filter.FilterBuilders;
-import com.liferay.portal.search.web.internal.date.facet.constants.DateFacetPortletKeys;
 import com.liferay.portal.search.web.internal.date.facet.portlet.DateFacetPortletPreferences;
 import com.liferay.portal.search.web.internal.date.facet.portlet.DateFacetPortletPreferencesImpl;
 import com.liferay.portal.search.web.internal.date.range.BaseDateRangeFacetPortletSharedSearchContributor;
@@ -44,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Petteri Karttunen
  */
 @Component(
-	property = "javax.portlet.name=" + DateFacetPortletKeys.DATE_FACET,
+	property = "javax.portlet.name=" + PortletKeys.DATE_FACET,
 	service = PortletSharedSearchContributor.class
 )
 public class DateFacetPortletSharedSearchContributor
