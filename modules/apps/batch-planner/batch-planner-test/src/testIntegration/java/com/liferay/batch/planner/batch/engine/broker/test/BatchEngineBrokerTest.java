@@ -86,7 +86,6 @@ import com.liferay.petra.io.StreamUtil;
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.PortletCategory;
@@ -110,6 +109,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.test.rule.FeatureFlags;
@@ -756,20 +756,15 @@ public class BatchEngineBrokerTest {
 			objectEntryERC, _portal);
 
 		template = StringUtil.replace(
-			template, "$[ATTACHMENT_HREF]", link.getHref());
-
-		template = StringUtil.replace(
-			template, "$[ATTACHMENT_ID]",
-			String.valueOf(dlFileEntry.getFileEntryId()));
-
-		template = StringUtil.replace(
-			template, "$[ATTACHMENT_LABEL]", link.getLabel());
-
-		template = StringUtil.replace(
-			template, "$[ATTACHMENT_NAME]", dlFileEntry.getFileName());
-
-		template = StringUtil.replace(
-			template, "$[OBJECT_ENTRY_ERC]", objectEntryERC);
+			template,
+			new String[] {
+				"$[ATTACHMENT_HREF]", "$[ATTACHMENT_ID]", "$[ATTACHMENT_LABEL]",
+				"$[ATTACHMENT_NAME]", "$[OBJECT_ENTRY_ERC]"
+			},
+			new String[] {
+				link.getHref(), String.valueOf(dlFileEntry.getFileEntryId()),
+				link.getLabel(), dlFileEntry.getFileName(), objectEntryERC
+			});
 
 		_file.write(file, template);
 
