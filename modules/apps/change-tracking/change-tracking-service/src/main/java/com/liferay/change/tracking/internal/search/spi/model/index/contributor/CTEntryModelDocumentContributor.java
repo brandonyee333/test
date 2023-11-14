@@ -209,7 +209,7 @@ public class CTEntryModelDocumentContributor
 		if (group != null) {
 			document.addKeyword(Field.GROUP_ID, group.getGroupId());
 
-			Map<Locale, String> groupNameMap;
+			Map<Locale, String> groupNameMap = null;
 
 			try {
 				groupNameMap = group.getDescriptiveNameMap();
