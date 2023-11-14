@@ -678,14 +678,6 @@ public class ObjectValidationRuleLocalServiceImpl
 
 		int count = 0;
 
-		ObjectDefinition objectDefinition =
-			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
-
-		ObjectEntryLocalService objectEntryLocalService =
-			_objectEntryLocalServiceSnapshot.get();
-		ObjectFieldLocalService objectFieldLocalService =
-			_objectFieldLocalServiceSnapshot.get();
-
 		for (ObjectValidationRuleSetting objectValidationRuleSetting :
 				objectValidationRuleSettings) {
 
@@ -726,6 +718,9 @@ public class ObjectValidationRuleLocalServiceImpl
 				continue;
 			}
 
+			ObjectDefinition objectDefinition =
+				_objectDefinitionPersistence.findByPrimaryKey(
+					objectDefinitionId);
 			ObjectValidationRuleSetting oldObjectValidationRuleSetting =
 				_objectValidationRuleSettingPersistence.fetchByOVRI_N_V(
 					objectValidationRuleId,
@@ -735,9 +730,15 @@ public class ObjectValidationRuleLocalServiceImpl
 			if ((oldObjectValidationRuleSetting == null) &&
 				objectDefinition.isApproved()) {
 
+				ObjectFieldLocalService objectFieldLocalService =
+					_objectFieldLocalServiceSnapshot.get();
+
 				Column<?, ?> column = objectFieldLocalService.getColumn(
 					objectDefinition.getObjectDefinitionId(),
 					objectField.getName());
+
+				ObjectEntryLocalService objectEntryLocalService =
+					_objectEntryLocalServiceSnapshot.get();
 
 				long objectEntriesCount =
 					objectEntryLocalService.getObjectEntriesCount(
