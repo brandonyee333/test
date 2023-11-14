@@ -50,11 +50,8 @@ public class SavedContentEntryLocalServiceImpl
 			throw new DuplicateSavedContentEntryException();
 		}
 
-		long savedContentEntryId = counterLocalService.increment(
-			SavedContentEntry.class.getName());
-
 		savedContentEntry = savedContentEntryPersistence.create(
-			savedContentEntryId);
+			counterLocalService.increment(SavedContentEntry.class.getName()));
 
 		savedContentEntry.setGroupId(groupId);
 
