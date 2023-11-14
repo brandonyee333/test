@@ -1387,6 +1387,9 @@ public class ObjectDefinitionLocalServiceTest {
 
 	@Test
 	public void testDeleteObjectDefinition() throws Exception {
+
+		// Delete custom object definition
+
 		ObjectDefinition objectDefinition = _addCustomObjectDefinition("Test");
 
 		objectDefinition =
