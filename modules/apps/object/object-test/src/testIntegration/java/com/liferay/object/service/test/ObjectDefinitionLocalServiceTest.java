@@ -2222,18 +2222,6 @@ public class ObjectDefinitionLocalServiceTest {
 		Assert.assertEquals(required, objectField.isRequired());
 	}
 
-	private void _assertRootDescendantPortlet(long objectDefinitionId)
-		throws Exception {
-
-		ObjectDefinition objectDefinition =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectDefinitionId);
-
-		if (objectDefinition.isRootDescendantNode()) {
-			Assert.assertFalse(objectDefinition.isPortlet());
-		}
-	}
-
 	private void _assertSystemObjectFields(
 		ObjectField expectedObjectField, ObjectField objectField) {
 
@@ -2388,11 +2376,21 @@ public class ObjectDefinitionLocalServiceTest {
 				objectRelationship.getDeletionType(),
 				ObjectRelationshipConstants.DELETION_TYPE_CASCADE);
 
-			_assertRootDescendantPortlet(
-				objectRelationship.getObjectDefinitionId1());
+			ObjectDefinition objectDefinition1 =
+				_objectDefinitionLocalService.getObjectDefinition(
+					objectRelationship.getObjectDefinitionId1());
 
-			_assertRootDescendantPortlet(
-				objectRelationship.getObjectDefinitionId2());
+			if (objectDefinition1.isRootDescendantNode()) {
+				Assert.assertFalse(objectDefinition1.isPortlet());
+			}
+
+			ObjectDefinition objectDefinition2 =
+				_objectDefinitionLocalService.getObjectDefinition(
+					objectRelationship.getObjectDefinitionId2());
+
+			if (objectDefinition2.isRootDescendantNode()) {
+				Assert.assertFalse(objectDefinition2.isPortlet());
+			}
 		}
 
 		TreeTestUtil.assertObjectDefinitionTree(
