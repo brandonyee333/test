@@ -143,6 +143,8 @@ definition {
 			menuItem = "Edit Default Values",
 			rowEntry = "WC Structure Name");
 
+		AssertVisible(locator1 = "WCEditWebContent#SIDEBAR");
+
 		Type(
 			key_fieldFieldLabel = "Label UF Comunicado",
 			locator1 = "WCEditWebContent#TEXT_INPUT",
