@@ -482,7 +482,7 @@ public class JournalManagementToolbarDisplayContext
 				if (FeatureFlagManagerUtil.isEnabled("LPS-194763") &&
 					(ddmStructureId > 0)) {
 
-					return _journalDisplayContext.getDDMStructureId();
+					return ddmStructureId;
 				}
 
 				return null;
