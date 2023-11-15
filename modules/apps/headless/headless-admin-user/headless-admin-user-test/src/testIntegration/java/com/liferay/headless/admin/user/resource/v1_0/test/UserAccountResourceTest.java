@@ -401,21 +401,20 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 		JSONArray actualSiteBriefs_jsonArray = (JSONArray)jsonObject.get(
 			"siteBriefs");
 
-		JSONArray expectedSiteBriefs_jsonArray = JSONUtil.put(
-			JSONUtil.put(
-				"name", group.getGroupKey()
-			).put(
-				"roleBriefs",
-				JSONUtil.put(
-					JSONUtil.put(
-						"id", groupRole.getRoleId()
-					).put(
-						"name", groupRole.getName()
-					))
-			));
-
 		JSONAssert.assertEquals(
-			expectedSiteBriefs_jsonArray.toString(),
+			JSONUtil.put(
+				JSONUtil.put(
+					"name", group.getGroupKey()
+				).put(
+					"roleBriefs",
+					JSONUtil.put(
+						JSONUtil.put(
+							"id", groupRole.getRoleId()
+						).put(
+							"name", groupRole.getName()
+						))
+				)
+			).toString(),
 			actualSiteBriefs_jsonArray.toString(), JSONCompareMode.LENIENT);
 
 		PermissionChecker originalPermissionChecker =
