@@ -34,7 +34,6 @@ import com.liferay.portal.configuration.test.util.ConfigurationTemporarySwapper;
 import com.liferay.portal.kernel.captcha.Captcha;
 import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.exception.UserPasswordException;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
@@ -398,9 +397,6 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 			"headless-admin-user/v1.0/user-accounts/" + groupUser.getUserId(),
 			Http.Method.GET);
 
-		JSONArray actualSiteBriefs_jsonArray = jsonObject.getJSONArray(
-			"siteBriefs");
-
 		JSONAssert.assertEquals(
 			JSONUtil.put(
 				JSONUtil.put(
@@ -413,9 +409,8 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 						).put(
 							"name", groupRole.getName()
 						))
-				)
-			).toString(),
-			actualSiteBriefs_jsonArray.toString(), JSONCompareMode.LENIENT);
+				)),
+			jsonObject.getJSONArray("siteBriefs"), JSONCompareMode.LENIENT);
 
 		PermissionChecker originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
