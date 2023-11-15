@@ -345,7 +345,6 @@ public class StructuredContentResourceTest
 			TestPropsValues.getUserId(), testGroup.getGroupId(),
 			RandomTestUtil.randomString(), assetVocabulary.getVocabularyId(),
 			serviceContext);
-
 		AssetCategory assetCategory2 = _assetCategoryLocalService.addCategory(
 			TestPropsValues.getUserId(), testGroup.getGroupId(),
 			RandomTestUtil.randomString(), assetVocabulary.getVocabularyId(),
@@ -359,14 +358,14 @@ public class StructuredContentResourceTest
 		structuredContent1.setTaxonomyCategoryIds(
 			new Long[] {assetCategory2.getCategoryId()});
 
+		structuredContent1 =
+			testGetSiteStructuredContentsPage_addStructuredContent(
+				testGroup.getGroupId(), structuredContent1);
+
 		StructuredContent structuredContent2 = randomStructuredContent();
 
 		structuredContent2.setTaxonomyCategoryIds(
 			new Long[] {assetCategory1.getCategoryId()});
-
-		structuredContent1 =
-			testGetSiteStructuredContentsPage_addStructuredContent(
-				testGroup.getGroupId(), structuredContent1);
 
 		structuredContent2 =
 			testGetSiteStructuredContentsPage_addStructuredContent(
