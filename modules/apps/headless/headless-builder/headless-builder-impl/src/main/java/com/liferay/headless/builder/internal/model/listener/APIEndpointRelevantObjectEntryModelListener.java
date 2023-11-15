@@ -159,11 +159,11 @@ public class APIEndpointRelevantObjectEntryModelListener
 			Http.Method method = Http.Method.valueOf(
 				StringUtil.toUpperCase((String)values.get("httpMethod")));
 
-			if (Objects.equals(method, Http.Method.POST)) {
-				_validatePostAPIEndpoint(objectEntry);
-			}
-			else if (Objects.equals(method, Http.Method.GET)) {
+			if (Objects.equals(method, Http.Method.GET)) {
 				_validateGetAPIEndpoint(objectEntry, responseAPISchemaId);
+			}
+			else if (Objects.equals(method, Http.Method.POST)) {
+				_validatePostAPIEndpoint(objectEntry);
 			}
 
 			String pathParameter = (String)values.get("pathParameter");
