@@ -12,8 +12,6 @@ import org.json.JSONObject;
  */
 public class ZendeskUser {
 
-	public static final String ROLE_END_USER = "end-user";
-
 	public ZendeskUser(JSONObject jsonObject) {
 		_emailAddress = jsonObject.getString("email");
 		_role = jsonObject.getString("role");
@@ -33,7 +31,7 @@ public class ZendeskUser {
 	}
 
 	public boolean isEndUser() {
-		if (_role.equals(ROLE_END_USER)) {
+		if (_role.equals("end-user")) {
 			return true;
 		}
 
