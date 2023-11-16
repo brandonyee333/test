@@ -15,13 +15,13 @@ public class ZendeskUser {
 	public static final String ROLE_END_USER = "end-user";
 
 	public ZendeskUser(JSONObject jsonObject) {
-		_email = jsonObject.getString("email");
+		_emailAddress = jsonObject.getString("email");
 		_role = jsonObject.getString("role");
 		_zendeskUserId = jsonObject.getLong("id");
 	}
 
-	public String getEmail() {
-		return _email;
+	public String getEmailAddress() {
+		return _emailAddress;
 	}
 
 	public String getRole() {
@@ -40,7 +40,7 @@ public class ZendeskUser {
 		return false;
 	}
 
-	private final String _email;
+	private final String _emailAddress;
 	private final String _role;
 	private final long _zendeskUserId;
 

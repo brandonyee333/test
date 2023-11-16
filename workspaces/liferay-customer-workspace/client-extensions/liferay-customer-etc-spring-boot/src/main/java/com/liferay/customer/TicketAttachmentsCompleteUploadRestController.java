@@ -68,7 +68,7 @@ public class TicketAttachmentsCompleteUploadRestController
 
 			if (zendeskUser.isEndUser()) {
 				_zendeskWebService.addEndUserZendeskTicketComment(
-					zendeskUser.getEmail(), zendeskTicketCommentBody,
+					zendeskUser.getEmailAddress(), zendeskTicketCommentBody,
 					ticketAttachment.getZendeskTicketId());
 			}
 			else {
