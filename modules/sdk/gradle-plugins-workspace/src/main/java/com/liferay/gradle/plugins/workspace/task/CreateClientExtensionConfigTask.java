@@ -479,38 +479,41 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 	}
 
 	private void _processBatchJSONFile(File file) throws IOException {
-		JsonNode rootNode = _objectMapper.readTree(file);
+		JsonNode rootJsonNode = _objectMapper.readTree(file);
 
 		File parentFile = file.getParentFile();
 
-		JsonNode configurationNode = rootNode.findValue("configuration");
+		JsonNode configurationJsonNode = rootJsonNode.findValue(
+			"configuration");
 
-		JsonNode classNameNode = configurationNode.findValue("className");
+		JsonNode classNameJsonNode = configurationJsonNode.findValue(
+			"className");
 
-		if ((classNameNode == null) ||
+		if ((classNameJsonNode == null) ||
 			!Objects.equals(
-				_OBJECT_ENTRY_MODEL_CLASS_NAME, classNameNode.asText())) {
+				"com.liferay.object.rest.dto.v1_0.ObjectEntry",
+				classNameJsonNode.asText())) {
 
 			return;
 		}
 
-		JsonNode itemsNode = rootNode.findValue("items");
+		JsonNode itemsJsonNode = rootJsonNode.findValue("items");
 
-		if (itemsNode == null) {
+		if (itemsJsonNode == null) {
 			return;
 		}
 
 		boolean modified = false;
 
-		for (JsonNode itemNode : itemsNode) {
-			JsonNode externalReferenceCodeNode = itemNode.findValue(
+		for (JsonNode itemJsonNode : itemsJsonNode) {
+			JsonNode externalReferenceCodeJsonNode = itemJsonNode.findValue(
 				"externalReferenceCode");
 
-			if (externalReferenceCodeNode == null) {
+			if (externalReferenceCodeJsonNode == null) {
 				continue;
 			}
 
-			for (JsonNode childNode : itemNode) {
+			for (JsonNode childNode : itemJsonNode) {
 				if (!childNode.isObject()) {
 					continue;
 				}
@@ -536,7 +539,7 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 				File attachmentFile = new File(
 					parentFile,
 					String.format(
-						"attachments/%s/%s", externalReferenceCodeNode.asText(),
+						"attachments/%s/%s", externalReferenceCodeJsonNode.asText(),
 						nameNode.asText()));
 
 				if (!attachmentFile.exists()) {
@@ -575,7 +578,7 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 
 		ObjectWriter writer = _objectMapper.writer();
 
-		Files.write(resolvedTargetPath, writer.writeValueAsBytes(rootNode));
+		Files.write(resolvedTargetPath, writer.writeValueAsBytes(rootJsonNode));
 
 		Logger logger = getLogger();
 
@@ -728,9 +731,6 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 
 	private static final String _CLIENT_EXTENSION_CONFIG_FILE_NAME =
 		".client-extension-config.json";
-
-	private static final String _OBJECT_ENTRY_MODEL_CLASS_NAME =
-		"com.liferay.object.rest.dto.v1_0.ObjectEntry";
 
 	private static final String _PLUGIN_PACKAGE_PROPERTIES_PATH =
 		"WEB-INF/liferay-plugin-package.properties";
