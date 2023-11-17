@@ -5,6 +5,7 @@
 
 package com.liferay.portal.template.soy.internal;
 
+import com.google.template.soy.data.LoggingAdvisingAppendable;
 import com.google.template.soy.data.SanitizedContent;
 import com.google.template.soy.data.SoyAbstractValue;
 import com.google.template.soy.data.SoyData;
@@ -83,15 +84,6 @@ public class SoyTemplateRecord extends SoyAbstractValue implements SoyRecord {
 		return false;
 	}
 
-	@Override
-	public boolean equals(SoyValue other) {
-		if (this == other) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public Object get(String key) {
 		return _map.get(key);
 	}
@@ -149,7 +141,9 @@ public class SoyTemplateRecord extends SoyAbstractValue implements SoyRecord {
 	}
 
 	@Override
-	public void render(Appendable appendable) throws IOException {
+	public void render(LoggingAdvisingAppendable appendable)
+		throws IOException {
+
 		appendable.append('{');
 
 		boolean first = true;

@@ -3,10 +3,26 @@ Bundle-SymbolicName: com.liferay.portal.template.soy
 Bundle-Version: 2.4.55
 Export-Package: com.liferay.portal.template.soy.utils
 Import-Package:\
+	!com.google.errorprone.annotations,\
+	!com.google.errorprone.annotations.concurrent,\
 	!com.google.inject.internal.asm.util,\
 	\
 	!javax.microedition.io,\
 	\
+	!jsinterop.annotations,\
+	\
+	!org.apache.tools.ant,\
+	\
+	!org.junit,\
+	!org.junit.internal,\
+	!org.junit.rules,\
+	!org.junit.runner,\
+	!org.junit.runners,\
+	!org.junit.runners.model,\
+	\
+	!org.objectweb.asm,\
+	!org.objectweb.asm.signature,\
+	!org.objectweb.asm.tree,\
 	!org.objectweb.asm.util,\
 	\
 	*

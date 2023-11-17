@@ -10,7 +10,6 @@ import com.google.template.soy.SoyFileSet;
 import com.google.template.soy.data.SanitizedContent;
 import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.tofu.SoyTofu;
-import com.google.template.soy.tofu.SoyTofuOptions;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -186,13 +185,9 @@ public class SoyTemplate extends AbstractMultiResourceTemplate {
 			templateResources);
 
 		if (soyTofuCacheBag == null) {
-			SoyTofuOptions soyTofuOptions = new SoyTofuOptions();
-
-			soyTofuOptions.setUseCaching(true);
-
 			SoyFileSet soyFileSet = getSoyFileSet(templateResources);
 
-			SoyTofu soyTofu = soyFileSet.compileToTofu(soyTofuOptions);
+			SoyTofu soyTofu = soyFileSet.compileToTofu();
 
 			soyTofuCacheBag = _soyTofuCacheHandler.add(
 				templateResources, soyFileSet, soyTofu);
