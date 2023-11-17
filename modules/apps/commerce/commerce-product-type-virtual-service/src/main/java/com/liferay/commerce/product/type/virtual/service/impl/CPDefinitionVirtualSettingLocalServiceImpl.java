@@ -148,8 +148,6 @@ public class CPDefinitionVirtualSettingLocalServiceImpl
 		cpDefinitionVirtualSetting.setUserName(user.getFullName());
 		cpDefinitionVirtualSetting.setClassName(className);
 		cpDefinitionVirtualSetting.setClassPK(classPK);
-		cpDefinitionVirtualSetting.setFileEntryId(fileEntryId);
-		cpDefinitionVirtualSetting.setUrl(url);
 		cpDefinitionVirtualSetting.setActivationStatus(activationStatus);
 		cpDefinitionVirtualSetting.setDuration(duration);
 		cpDefinitionVirtualSetting.setMaxUsages(maxUsages);
@@ -375,8 +373,6 @@ public class CPDefinitionVirtualSettingLocalServiceImpl
 			}
 		}
 
-		cpDefinitionVirtualSetting.setFileEntryId(fileEntryId);
-		cpDefinitionVirtualSetting.setUrl(url);
 		cpDefinitionVirtualSetting.setActivationStatus(activationStatus);
 		cpDefinitionVirtualSetting.setDuration(duration);
 		cpDefinitionVirtualSetting.setMaxUsages(maxUsages);
