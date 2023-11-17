@@ -12,19 +12,9 @@ CPDefinitionVirtualSettingDisplayContext cpDefinitionVirtualSettingDisplayContex
 
 CPDefinitionVirtualSetting cpDefinitionVirtualSetting = cpDefinitionVirtualSettingDisplayContext.getCPDefinitionVirtualSetting();
 
-FileEntry fileEntry = cpDefinitionVirtualSettingDisplayContext.getFileEntry();
-
-long fileEntryId = BeanParamUtil.getLong(cpDefinitionVirtualSetting, request, "fileEntryId");
-
-String textCssClass = "text-default ";
-
-boolean useFileEntry = false;
-
-if (fileEntryId > 0) {
-	textCssClass += "hide";
-
-	useFileEntry = true;
-}
+Map<String, String> contextParams = HashMapBuilder.<String, String>put(
+	"cpDefinitionId", String.valueOf(cpDefinitionVirtualSetting.getClassPK())
+).build();
 %>
 
 <%@ include file="/details.jspf" %>

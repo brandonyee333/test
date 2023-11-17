@@ -1,0 +1,100 @@
+/**
+ * SPDX-FileCopyrightText: (c) 2023 Liferay, Inc. https://liferay.com
+ * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
+ */
+
+package com.liferay.commerce.product.type.virtual.web.internal.frontend.data.set;
+
+import com.liferay.commerce.product.model.CPDefinition;
+import com.liferay.commerce.product.type.virtual.model.CPDVirtualSettingFileEntry;
+import com.liferay.commerce.product.type.virtual.model.CPDefinitionVirtualSetting;
+import com.liferay.commerce.product.type.virtual.service.CPDefinitionVirtualSettingService;
+import com.liferay.commerce.product.type.virtual.web.internal.constants.CPDefinitionVirtualSettingFDSNames;
+import com.liferay.commerce.product.type.virtual.web.internal.model.VirtualSettingFile;
+import com.liferay.frontend.data.set.provider.FDSDataProvider;
+import com.liferay.frontend.data.set.provider.search.FDSKeywords;
+import com.liferay.frontend.data.set.provider.search.FDSPagination;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.util.ParamUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+/**
+ * @author Alessio Antonio Rendina
+ */
+@Component(
+	property = "fds.data.provider.key=" + CPDefinitionVirtualSettingFDSNames.VIRTUAL_SETTING_FILES,
+	service = FDSDataProvider.class
+)
+public class CPDefinitionVirtualSettingFDSDataProvider
+	implements FDSDataProvider<VirtualSettingFile> {
+
+	@Override
+	public List<VirtualSettingFile> getItems(
+			FDSKeywords fdsKeywords, FDSPagination fdsPagination,
+			HttpServletRequest httpServletRequest, Sort sort)
+		throws PortalException {
+
+		List<VirtualSettingFile> virtualSettingFiles = new ArrayList<>();
+
+		long cpDefinitionId = ParamUtil.getLong(
+			httpServletRequest, "cpDefinitionId");
+
+		CPDefinitionVirtualSetting cpDefinitionVirtualSetting =
+			_cpDefinitionVirtualSettingService.fetchCPDefinitionVirtualSetting(
+				CPDefinition.class.getName(), cpDefinitionId);
+
+		if (cpDefinitionVirtualSetting != null) {
+			List<CPDVirtualSettingFileEntry> cpdVirtualSettingFileEntries =
+				cpDefinitionVirtualSetting.getCPDVirtualSettingFileEntries();
+
+			for (CPDVirtualSettingFileEntry cpdVirtualSettingFileEntry :
+					cpdVirtualSettingFileEntries) {
+
+				virtualSettingFiles.add(
+					new VirtualSettingFile(
+						cpdVirtualSettingFileEntry.
+							getCPDefinitionVirtualSettingFileEntryId(),
+						cpdVirtualSettingFileEntry.getFileEntryId(),
+						cpdVirtualSettingFileEntry.getUrl(),
+						cpdVirtualSettingFileEntry.getVersion()));
+			}
+		}
+
+		return virtualSettingFiles;
+	}
+
+	@Override
+	public int getItemsCount(
+			FDSKeywords fdsKeywords, HttpServletRequest httpServletRequest)
+		throws PortalException {
+
+		long cpDefinitionId = ParamUtil.getLong(
+			httpServletRequest, "cpDefinitionId");
+
+		CPDefinitionVirtualSetting cpDefinitionVirtualSetting =
+			_cpDefinitionVirtualSettingService.fetchCPDefinitionVirtualSetting(
+				CPDefinition.class.getName(), cpDefinitionId);
+
+		if (cpDefinitionVirtualSetting != null) {
+			List<CPDVirtualSettingFileEntry> cpdVirtualSettingFileEntries =
+				cpDefinitionVirtualSetting.getCPDVirtualSettingFileEntries();
+
+			return cpdVirtualSettingFileEntries.size();
+		}
+
+		return 0;
+	}
+
+	@Reference
+	private CPDefinitionVirtualSettingService
+		_cpDefinitionVirtualSettingService;
+
+}

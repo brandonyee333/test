@@ -40,8 +40,6 @@ boolean override = BeanParamUtil.getBoolean(cpDefinitionVirtualSetting, request,
 				<aui:fieldset collapsible="<%= true %>" label="details">
 
 					<%
-					FileEntry fileEntry = cpDefinitionVirtualSettingDisplayContext.getFileEntry();
-
 					long fileEntryId = BeanParamUtil.getLong(cpDefinitionVirtualSetting, request, "fileEntryId");
 
 					String textCssClass = "text-default ";
