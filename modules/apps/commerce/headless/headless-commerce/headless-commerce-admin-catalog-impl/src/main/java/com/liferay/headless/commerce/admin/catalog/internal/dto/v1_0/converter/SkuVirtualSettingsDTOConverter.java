@@ -79,7 +79,7 @@ public class SkuVirtualSettingsDTOConverter
 					cpDefinitionVirtualSetting.getTermsOfUseContentMap());
 				termsOfUseRequired =
 					cpDefinitionVirtualSetting.isTermsOfUseRequired();
-				url = cpDefinitionVirtualSetting.getUrl();
+				url = null; //cpDefinitionVirtualSetting.getUrl();
 				useSample = cpDefinitionVirtualSetting.isUseSample();
 
 				setActivationStatusInfo(
@@ -119,8 +119,8 @@ public class SkuVirtualSettingsDTOConverter
 					});
 				setSrc(
 					() -> {
-						FileEntry fileEntry =
-							cpDefinitionVirtualSetting.getFileEntry();
+						FileEntry fileEntry = null;
+						//cpDefinitionVirtualSetting.getFileEntry();
 
 						if (fileEntry == null) {
 							return null;

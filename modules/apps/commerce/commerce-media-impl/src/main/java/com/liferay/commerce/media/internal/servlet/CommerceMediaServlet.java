@@ -546,14 +546,15 @@ public class CommerceMediaServlet extends HttpServlet {
 			}
 
 			FileEntry fileEntry = null;
+			/*
 
-			if (sample) {
-				fileEntry = cpDefinitionVirtualSetting.getSampleFileEntry();
-			}
-			else {
-				fileEntry = cpDefinitionVirtualSetting.getFileEntry();
-			}
-
+						if (sample) {
+							fileEntry = cpDefinitionVirtualSetting.getSampleFileEntry();
+						}
+						else {
+							fileEntry = cpDefinitionVirtualSetting.getFileEntry();
+						}
+			*/
 			if ((fileEntry == null) ||
 				(fileEntry.getFileEntryId() != fileEntryId)) {
 

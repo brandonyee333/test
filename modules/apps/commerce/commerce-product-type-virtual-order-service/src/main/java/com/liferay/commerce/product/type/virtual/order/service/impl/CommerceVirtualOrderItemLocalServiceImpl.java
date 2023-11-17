@@ -148,8 +148,7 @@ public class CommerceVirtualOrderItemLocalServiceImpl
 		}
 
 		return commerceVirtualOrderItemLocalService.addCommerceVirtualOrderItem(
-			commerceOrderItemId, cpDefinitionVirtualSetting.getFileEntryId(),
-			cpDefinitionVirtualSetting.getUrl(),
+			commerceOrderItemId, 0, "",
 			cpDefinitionVirtualSetting.getActivationStatus(),
 			cpDefinitionVirtualSetting.getDuration(), 0,
 			cpDefinitionVirtualSetting.getMaxUsages(), serviceContext);

@@ -148,7 +148,7 @@ public class SkuVirtualSettingsUtil {
 
 		if (Validator.isNull(attachmentURL)) {
 			if (Validator.isNull(skuVirtualSettings.getAttachment())) {
-				attachmentURL = cpDefinitionVirtualSetting.getUrl();
+				attachmentURL = "";//cpDefinitionVirtualSetting.getUrl();
 			}
 			else {
 				attachmentFileEntryId = FileEntryUtil.getFileEntryId(
@@ -157,8 +157,8 @@ public class SkuVirtualSettingsUtil {
 			}
 
 			if (attachmentFileEntryId == 0) {
-				attachmentFileEntryId =
-					cpDefinitionVirtualSetting.getFileEntryId();
+				attachmentFileEntryId = 0;
+				//cpDefinitionVirtualSetting.getFileEntryId();
 			}
 		}
 
