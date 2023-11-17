@@ -22,9 +22,7 @@ import java.util.List;
 public class CPDefinitionVirtualSettingImpl
 	extends CPDefinitionVirtualSettingBaseImpl {
 
-	public List<CPDVirtualSettingFileEntry>
-	getCPDVirtualSettingFileEntries() {
-
+	public List<CPDVirtualSettingFileEntry> getCPDVirtualSettingFileEntries() {
 		return CPDVirtualSettingFileEntryLocalServiceUtil.
 			getCPDVirtualSettingFileEntries(getCPDefinitionVirtualSettingId());
 	}
