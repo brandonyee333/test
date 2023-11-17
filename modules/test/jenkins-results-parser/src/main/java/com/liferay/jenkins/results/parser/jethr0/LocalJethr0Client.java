@@ -18,14 +18,14 @@ public class LocalJethr0Client extends BaseJethr0Client {
 		super(jenkinsMaster);
 
 		_jmsBrokerURL = getBuildPropertyString("jethr0.jms.broker.url");
+		_jmsGitHubToJethr0QueueName = getBuildPropertyString(
+			"jethr0.jms.github.jethr0.queue.name");
 		_jmsJethr0ToJRPQueueName = getBuildPropertyString(
 			"jethr0.jms.jethr0.jrp.queue.name");
 		_jmsJRPToJethr0QueueName = getBuildPropertyString(
 			"jethr0.jms.jrp.jethr0.queue.name");
 		_jmsUserName = getBuildPropertyString("jethr0.jms.user.name");
 		_jmsUserPassword = getBuildPropertyString("jethr0.jms.user.password");
-		_jmsGitHubToJethr0QueueName = getBuildPropertyString(
-			"jethr0.jms.github.jethr0.queue.name");
 		_liferayDXPURL = getBuildPropertyURL("jethr0.liferay.dxp.url");
 		_oAuthClientSecret = getBuildPropertyString(
 			"jethr0.liferay.oauth.client.secret");

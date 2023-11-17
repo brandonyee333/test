@@ -25,14 +25,14 @@ public class CIJethr0Client extends BaseJethr0Client {
 		super(jenkinsMaster);
 
 		_jmsBrokerURL = _getSecretString("jms.broker.url");
+		_jmsGitHubToJethr0QueueName = _getSecretString(
+			"jms.github.jethr0.queue.name");
 		_jmsJethr0ToJRPQueueName = _getSecretString(
 			"jms.jethr0.jrp.queue.name");
 		_jmsJRPToJethr0QueueName = _getSecretString(
 			"jms.jrp.jethr0.queue.name");
 		_jmsUserName = _getSecretString("jms.user.name");
 		_jmsUserPassword = _getSecretString("jms.user.password");
-		_jmsGitHubToJethr0QueueName = _getSecretString(
-			"jms.github.jethr0.queue.name");
 		_liferayDXPURL = _getSecretURL("liferay.dxp.url");
 		_oAuthExternalReferenceCode = _getSecretString(
 			"liferay.oauth.external.reference.code");
