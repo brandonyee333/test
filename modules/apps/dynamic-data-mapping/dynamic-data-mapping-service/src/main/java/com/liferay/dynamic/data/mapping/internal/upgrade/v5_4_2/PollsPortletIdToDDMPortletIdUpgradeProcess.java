@@ -5,13 +5,12 @@
 
 package com.liferay.dynamic.data.mapping.internal.upgrade.v5_4_2;
 
-import com.liferay.dynamic.data.mapping.internal.upgrade.BasePollsPortletIdUpgradeProcess;
-
 /**
  * @author Carolina Barbosa
  */
 public class PollsPortletIdToDDMPortletIdUpgradeProcess
-	extends BasePollsPortletIdUpgradeProcess {
+	extends com.liferay.dynamic.data.mapping.internal.upgrade.v5_1_4.
+				PollsPortletIdToDDMPortletIdUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
