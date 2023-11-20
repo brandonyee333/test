@@ -1009,13 +1009,13 @@ public class DefaultObjectEntryManagerImpl
 		}
 	}
 
-	private byte[] _decode(String base64) {
+	private byte[] _decode(String fileBase64) {
 		try {
-			return Base64.decode(base64);
+			return Base64.decode(fileBase64);
 		}
 		catch (Exception exception) {
 			throw new IllegalArgumentException(
-				"Error decoding base64 content", exception);
+				"Unable to decode Base64 file", exception);
 		}
 	}
 
