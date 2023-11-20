@@ -480,7 +480,6 @@ public class FragmentEntryLocalServiceTest {
 		Assert.assertEquals(
 			fragmentEntry.getFragmentCollectionId(),
 			copyFragmentEntry.getFragmentCollectionId());
-
 		Assert.assertEquals(
 			StringBundler.concat(
 				fragmentEntry.getName(), " (",
