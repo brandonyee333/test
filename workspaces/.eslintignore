@@ -1,3 +1,4 @@
+**/*.min.js
 build/*
 classes/**
 dist/**
@@ -6,4 +7,3 @@ tmp/**
 types/**/*.d.ts
 yarn-*.js
 zippableResources/**
-**/*.min.js
