@@ -5,7 +5,7 @@ definition {
 	function click(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForVisible(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
@@ -19,7 +19,7 @@ definition {
 	function clickAt(locator1, value1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForVisible(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
@@ -33,7 +33,7 @@ definition {
 	function clickAtNotVisible(locator1, value1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
@@ -49,23 +49,23 @@ definition {
 
 		selenium.pause(1000);
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
 		selenium.pause(1000);
 
 		Click.clickAt();
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 	}
 
 	function clickNoMouseOver(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForVisible(${locator1}, "false");
 
 		selenium.click(${locator1});
 
@@ -85,7 +85,7 @@ definition {
 	}
 
 	function clickNoSPARefresh(locator1) {
-		
+		selenium.waitForVisible(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
@@ -117,9 +117,9 @@ definition {
 	function mouseDownMouseUp(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
-		
+		selenium.waitForVisible(${locator1}, "false");
 
 		selenium.mouseDown(${locator1});
 
@@ -129,11 +129,11 @@ definition {
 	function mouseOverClick(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
-		
+		selenium.waitForVisible(${locator1}, "false");
 
 		selenium.click(${locator1});
 
@@ -165,7 +165,7 @@ definition {
 			selenium.selectFrame("//*[contains(@class,'modal-body')]/iframe[not(contains(@class,'hidden'))]");
 		}
 
-		
+		selenium.waitForEditable(${locator1});
 
 		selenium.pause(1000);
 
@@ -179,9 +179,9 @@ definition {
 	function waitForPersonalMenuJSClick(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
-		
+		selenium.waitForEditable();
 
 		selenium.pause(1000);
 

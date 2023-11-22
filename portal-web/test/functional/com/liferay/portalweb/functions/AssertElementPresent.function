@@ -5,7 +5,7 @@ definition {
 	function assertElementPresent(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementPresent(${locator1}, "true");
 
 		selenium.assertElementPresent(${locator1});
 
@@ -15,7 +15,7 @@ definition {
 	}
 
 	function assertElementPresentNoWaitForSPAReFresh(locator1) {
-		
+		selenium.waitForElementPresent(${locator1}, "true");
 
 		selenium.assertElementPresent(${locator1});
 
@@ -25,7 +25,7 @@ definition {
 	function assertVisible(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForVisible(${locator1}, "true");
 
 		selenium.assertVisible(${locator1});
 

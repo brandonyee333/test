@@ -2,7 +2,7 @@
 definition {
 
 	function waitForElementNotPresent(locator1) {
-		
+		selenium.waitForElementNotPresent(${locator1}, "false");
 	}
 
 }

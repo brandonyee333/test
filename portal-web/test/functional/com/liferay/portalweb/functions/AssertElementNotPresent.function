@@ -5,7 +5,7 @@ definition {
 	function assertElementNotPresent(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementNotPresent(${locator1}, "false");
 
 		selenium.assertElementNotPresent(${locator1});
 
@@ -15,7 +15,7 @@ definition {
 	}
 
 	function assertElementNotPresentNoWaitForSPAReFresh(locator1) {
-		
+		selenium.waitForElementNotPresent(${locator1}, "false");
 
 		selenium.assertElementNotPresent(${locator1});
 

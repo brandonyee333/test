@@ -36,7 +36,7 @@ arguments[0].dispatchEvent(event);
 	function mouseOver(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForVisible(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
@@ -48,7 +48,7 @@ arguments[0].dispatchEvent(event);
 	function mouseOverInvisible(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
@@ -60,11 +60,11 @@ arguments[0].dispatchEvent(event);
 	function mouseOverNotVisible(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
 		selenium.mouseOver(${locator1});
 
-		
+		selenium.waitForVisible(${locator1}, "false");
 
 		selenium.assertJavaScriptErrors("true");
 
@@ -74,7 +74,7 @@ arguments[0].dispatchEvent(event);
 	function waitForMenuToggleJSMouseOver(locator1) {
 		WaitForSPARefresh();
 
-		
+		selenium.waitForElementPresent(${locator1}, "false");
 
 		selenium.pause(1000);
 
