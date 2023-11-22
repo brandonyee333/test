@@ -307,10 +307,10 @@ public class CommerceOrderItemLocalServiceImpl
 		commerceOrderItemLocalService.deleteCommerceOrderItem(
 			userId, commerceOrderItem);
 
-		CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
-
 		CommerceOrderLocalService commerceOrderLocalService =
 			_commerceOrderLocalServiceSnapshot.get();
+
+		CommerceOrder commerceOrder = commerceOrderItem.getCommerceOrder();
 
 		if (_commerceShippingHelper.isFreeShipping(commerceOrder)) {
 			commerceOrderLocalService.updateCommerceShippingMethod(

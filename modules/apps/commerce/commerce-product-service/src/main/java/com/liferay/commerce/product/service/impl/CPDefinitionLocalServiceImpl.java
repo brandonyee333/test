@@ -2664,15 +2664,15 @@ public class CPDefinitionLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
+		CommercePriceEntryLocalService commercePriceEntryLocalService =
+			_commercePriceEntryLocalServiceSnapshot.get();
+
 		CommercePriceListLocalService commercePriceListLocalService =
 			_commercePriceListLocalServiceSnapshot.get();
 
 		CommercePriceList commercePriceList =
 			commercePriceListLocalService.getCatalogBaseCommercePriceListByType(
 				cpInstance.getGroupId(), type);
-
-		CommercePriceEntryLocalService commercePriceEntryLocalService =
-			_commercePriceEntryLocalServiceSnapshot.get();
 
 		CommercePriceEntry commercePriceEntry =
 			commercePriceEntryLocalService.fetchCommercePriceEntry(
