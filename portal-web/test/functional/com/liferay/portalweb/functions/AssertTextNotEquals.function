@@ -5,9 +5,9 @@ definition {
 	function assertNotPartialText(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForNotPartialText(${locator1}, ${value1});
+		
 
 		selenium.assertNotPartialText(${locator1}, ${value1});
 
@@ -19,9 +19,9 @@ definition {
 	function assertNotText(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForNotText(${locator1}, ${value1});
+		
 
 		selenium.assertNotText(${locator1}, ${value1});
 
@@ -33,9 +33,9 @@ definition {
 	function assertNotValue(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForNotValue(${locator1}, ${value1});
+		
 
 		selenium.assertNotValue(${locator1}, ${value1});
 

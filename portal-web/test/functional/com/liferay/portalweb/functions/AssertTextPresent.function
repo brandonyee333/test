@@ -4,7 +4,7 @@ definition {
 	function assertTextPresent(value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForTextPresent(${value1});
+		
 
 		selenium.assertTextPresent(${value1});
 

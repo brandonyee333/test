@@ -4,7 +4,7 @@ definition {
 	function tripleClick(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
 		selenium.mouseOver(${locator1});
 

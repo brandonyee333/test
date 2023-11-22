@@ -5,9 +5,9 @@ definition {
 	function clickAtType(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -31,9 +31,9 @@ definition {
 	function sendKeys(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -47,9 +47,9 @@ definition {
 	function sendKeysAceEditor(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -63,7 +63,7 @@ definition {
 	function sendKeysApplicationSearch(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForEditable(${locator1});
+		
 
 		Type.sendKeys();
 
@@ -75,9 +75,9 @@ definition {
 	function type(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -91,9 +91,9 @@ definition {
 	function typeAceEditor(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -107,9 +107,9 @@ definition {
 	function typeAceEditorNoError(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -119,9 +119,9 @@ definition {
 	function typeAceEditorNoMouseOver(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.typeAceEditor(${locator1}, ${value1});
 
@@ -133,9 +133,9 @@ definition {
 	function typeClickAt(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -151,7 +151,7 @@ definition {
 	function typeCodeMirrorEditorNoError(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -161,9 +161,9 @@ definition {
 	function typeEditor(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -177,11 +177,11 @@ definition {
 	function typeEditorWaitForEditor(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
 		selenium.pause(1000);
 
-		selenium.waitForEditable(${locator1});
+		
 
 		Type.typeEditor();
 
@@ -203,9 +203,9 @@ definition {
 	function typeNoMouseOver(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.type(${locator1}, ${value1});
 
@@ -217,7 +217,7 @@ definition {
 	function typeNotVisibleNoMouseOver(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.type(${locator1}, ${value1});
 
@@ -229,7 +229,7 @@ definition {
 	function typeNotVisibleNoMouseOverNoError(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.click(${locator1});
 
@@ -239,9 +239,9 @@ definition {
 	function typePause(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -257,9 +257,9 @@ definition {
 	function typeWaitForCKEditorScript(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		Type.type();
 

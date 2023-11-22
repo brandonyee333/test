@@ -4,9 +4,9 @@ definition {
 	function assertEditable(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.assertEditable(${locator1});
 
@@ -18,9 +18,9 @@ definition {
 	function assertEditableNotVisible(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.assertEditable(${locator1});
 

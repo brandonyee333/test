@@ -4,7 +4,7 @@ definition {
 	function uploadTempFile(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
 		selenium.mouseOver(${locator1});
 
@@ -18,7 +18,7 @@ definition {
 	function uploadTempFileHiddenNoMouseOver(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
 		selenium.uploadTempFile(${locator1}, ${value1});
 

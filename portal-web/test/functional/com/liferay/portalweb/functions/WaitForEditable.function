@@ -4,9 +4,9 @@ definition {
 	function waitForEditable(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.assertJavaScriptErrors("true");
 

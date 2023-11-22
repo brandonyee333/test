@@ -4,7 +4,7 @@ definition {
 	function scrollWebElementIntoView(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
 		selenium.scrollWebElementIntoView(${locator1});
 

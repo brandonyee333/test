@@ -26,9 +26,9 @@ definition {
 	function assertTextClick(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForTextCaseInsensitive(${locator1}, ${value1});
+		
 
 		selenium.assertTextCaseInsensitive(${locator1}, ${value1});
 
@@ -40,9 +40,9 @@ definition {
 	function assertValueClick(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
-		selenium.waitForValue(${locator1}, ${value1});
+		
 
 		selenium.assertValue(${locator1}, ${value1});
 

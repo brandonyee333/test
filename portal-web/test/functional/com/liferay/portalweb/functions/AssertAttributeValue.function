@@ -4,7 +4,7 @@ definition {
 	function assertAttributeNotPresent(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
 		selenium.assertAttributeNotPresent(${locator1}, ${value1});
 
@@ -16,7 +16,7 @@ definition {
 	function assertAttributeValue(locator1, value2, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
 		selenium.assertAttributeValue(${locator1}, ${value1}, ${value2});
 

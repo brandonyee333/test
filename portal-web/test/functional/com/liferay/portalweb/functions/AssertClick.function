@@ -84,7 +84,7 @@ definition {
 	function assertTextClickAtWaitForLastScript(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForVisible(${locator1}, "false");
+		
 
 		AssertClick.assertTextClickAt();
 
@@ -92,7 +92,7 @@ definition {
 
 		selenium.assertLiferayErrors();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 	}
 
 	function assertTextClickCaseSensitive(locator1) {
@@ -150,7 +150,7 @@ definition {
 	function waitForDMHomeAssertTextEqualsClick(locator1) {
 		WaitForSPARefresh();
 
-		selenium.waitForElementPresent(${locator1}, "false");
+		
 
 		selenium.pause(1500);
 

@@ -16,7 +16,7 @@ definition {
 	function select(locator1, value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForEditable(${locator1});
+		
 
 		selenium.mouseOver(${locator1});
 

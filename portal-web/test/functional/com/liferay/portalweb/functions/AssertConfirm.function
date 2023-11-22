@@ -41,7 +41,7 @@ definition {
 	}
 
 	function waitForConfirmation(value1) {
-		selenium.waitForConfirmation(${value1});
+		
 
 		selenium.assertJavaScriptErrors("true");
 

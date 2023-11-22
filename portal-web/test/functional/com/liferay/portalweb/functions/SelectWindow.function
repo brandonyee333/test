@@ -48,7 +48,7 @@ definition {
 	function waitForSelectPopUp(value1) {
 		WaitForSPARefresh();
 
-		selenium.waitForPopUp(${value1}, "");
+		
 
 		selenium.selectPopUp(${value1});
 
