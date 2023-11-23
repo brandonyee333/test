@@ -1299,16 +1299,16 @@ public class ManagementToolbarTag extends BaseContainerTag {
 			jspWriter.write("component-text text-truncate-inline\"><span");
 			jspWriter.write(" class=\"text-truncate\">");
 
-			String searchValueTag =
+			String searchValueHTML =
 				"<strong>\"" + HtmlUtil.escape(searchValue) + "\"</strong>";
 
 			jspWriter.write(
 				LanguageUtil.format(
 					resourceBundle,
-					_getResultsText(
-						searchValue, getItemsTotal(),
-						ListUtil.isNotEmpty(filterLabelItems)),
-					new Object[] {getItemsTotal(), searchValueTag}));
+					_getResultsLanguageKey(
+						ListUtil.isNotEmpty(filterLabelItems), getItemsTotal(),
+						searchValue),
+					new Object[] {getItemsTotal(), searchValueHTML}));
 
 			jspWriter.write("</span></span></div></li>");
 
@@ -1402,8 +1402,8 @@ public class ManagementToolbarTag extends BaseContainerTag {
 		return searchData;
 	}
 
-	private String _getResultsText(
-		String searchValue, int itemsTotal, boolean hasFilters) {
+	private String _getResultsLanguageKey(
+		boolean hasFilters, int itemsTotal, String searchValue) {
 
 		if (Validator.isNull(searchValue)) {
 			if (FeatureFlagManagerUtil.isEnabled("LPS-198573") && hasFilters) {
