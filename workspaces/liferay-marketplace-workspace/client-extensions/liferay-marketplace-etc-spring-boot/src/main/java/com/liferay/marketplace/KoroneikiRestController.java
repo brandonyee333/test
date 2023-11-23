@@ -229,8 +229,7 @@ public class KoroneikiRestController extends BaseRestController {
 
 		if ((orderItemsJSONArray == null) ||
 			!Objects.equals(
-				order.getOrderTypeExternalReferenceCode(),
-				_ALLOWED_ORDER_TYPE)) {
+				order.getOrderTypeExternalReferenceCode(), "DXPAPP")) {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
@@ -582,8 +581,6 @@ public class KoroneikiRestController extends BaseRestController {
 		return _koroneikiAccountResource.postAccount(
 			jwt.getClaim("username"), jwt.getClaim("sub"), koroneikiAccount);
 	}
-
-	private static final String _ALLOWED_ORDER_TYPE = "DXPAPP";
 
 	private static final int _COMMERCE_ORDER_STATUS_COMPLETED = 0;
 

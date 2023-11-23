@@ -102,6 +102,11 @@ public class ProvisioningRestController extends BaseRestController {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 
+		httpHeaders.setAccessControlExposeHeaders(
+			Collections.singletonList("Content-Disposition"));
+		httpHeaders.setCacheControl(
+			"must-revalidate, post-check=0, pre-check=0");
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("activation-key-");
@@ -112,16 +117,13 @@ public class ProvisioningRestController extends BaseRestController {
 		sb.append(appLicenseKey.getHostName());
 		sb.append(".xml");
 
-		httpHeaders.setAccessControlExposeHeaders(
-			Collections.singletonList("Content-Disposition"));
-		httpHeaders.setCacheControl(
-			"must-revalidate, post-check=0, pre-check=0");
 		httpHeaders.setContentDispositionFormData(
 			"attachment",
 			sb.toString(
 			).replaceAll(
 				StringPool.SPACE, StringPool.DASH
 			).toLowerCase());
+
 		httpHeaders.setContentType(MediaType.TEXT_XML);
 
 		return new ResponseEntity(
