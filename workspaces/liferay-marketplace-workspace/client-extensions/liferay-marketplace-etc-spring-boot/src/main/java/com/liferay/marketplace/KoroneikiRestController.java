@@ -426,9 +426,9 @@ public class KoroneikiRestController extends BaseRestController {
 			Map<String, String> productSpecificationsMap)
 		throws Exception {
 
-		Map<String, Boolean> dxpLicenseUsageTypePropertiesMap = new HashMap<>();
-
 		ProductPurchase productPurchase = new ProductPurchase();
+
+		Map<String, Boolean> dxpLicenseUsageTypePropertiesMap = new HashMap<>();
 
 		_populateDXPLicenseUsageTypePropertiesMap(
 			dxpLicenseUsageTypePropertiesMap, orderItem.getOptions());
