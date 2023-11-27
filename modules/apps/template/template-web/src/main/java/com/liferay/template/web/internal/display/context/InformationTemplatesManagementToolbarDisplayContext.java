@@ -197,6 +197,9 @@ public class InformationTemplatesManagementToolbarDisplayContext
 					continue;
 				}
 
+				JSONArray itemSubtypesJSONArray =
+					JSONFactoryUtil.createJSONArray();
+
 				InfoPermissionProvider infoPermissionProvider =
 					_infoItemServiceRegistry.getFirstInfoItemService(
 						InfoPermissionProvider.class,
@@ -211,9 +214,6 @@ public class InformationTemplatesManagementToolbarDisplayContext
 								_themeDisplay.getScopeGroupId(),
 								_themeDisplay.getPermissionChecker()));
 				}
-
-				JSONArray itemSubtypesJSONArray =
-					JSONFactoryUtil.createJSONArray();
 
 				infoItemFormVariations = ListUtil.sort(
 					infoItemFormVariations,

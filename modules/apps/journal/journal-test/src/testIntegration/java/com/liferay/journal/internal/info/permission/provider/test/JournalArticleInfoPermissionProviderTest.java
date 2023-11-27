@@ -100,7 +100,6 @@ public class JournalArticleInfoPermissionProviderTest {
 			infoPermissionProvider.hasViewPermission(
 				ddmStructure1.getStructureKey(), _group.getGroupId(),
 				permissionChecker));
-
 		Assert.assertTrue(
 			infoPermissionProvider.hasViewPermission(
 				String.valueOf(ddmStructure2.getStructureId()),

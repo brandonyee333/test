@@ -537,14 +537,14 @@ public class DisplayPageDisplayContext {
 			return jsonArray;
 		}
 
-		Collection<InfoItemFormVariation> infoItemFormVariations =
-			infoItemFormVariationsProvider.getInfoItemFormVariations(
-				_themeDisplay.getScopeGroupId());
-
 		InfoPermissionProvider infoPermissionProvider =
 			_infoItemServiceRegistry.getFirstInfoItemService(
 				InfoPermissionProvider.class,
 				infoItemClassDetails.getClassName());
+
+		Collection<InfoItemFormVariation> infoItemFormVariations =
+			infoItemFormVariationsProvider.getInfoItemFormVariations(
+				_themeDisplay.getScopeGroupId());
 
 		for (InfoItemFormVariation infoItemFormVariation :
 				infoItemFormVariations) {
