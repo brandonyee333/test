@@ -6,10 +6,9 @@
 --%>
 
 <%
+CommerceOrder commerceOrder = commerceCartContentTotalDisplayContext.getCommerceOrder();
 boolean manageNotesPermission = commerceCartContentTotalDisplayContext.hasPermission(CommerceOrderActionKeys.MANAGE_COMMERCE_ORDER_NOTES);
 boolean manageRestrictedNotesPermission = commerceCartContentTotalDisplayContext.hasPermission(CommerceOrderActionKeys.MANAGE_COMMERCE_ORDER_RESTRICTED_NOTES);
-
-CommerceOrder commerceOrder = commerceCartContentTotalDisplayContext.getCommerceOrder();
 %>
 
 <portlet:actionURL name="/commerce_open_order_content/edit_commerce_order" var="editRequestQuoteURL" />
