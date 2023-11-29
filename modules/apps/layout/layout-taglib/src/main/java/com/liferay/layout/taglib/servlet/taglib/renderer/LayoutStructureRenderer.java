@@ -239,7 +239,9 @@ public class LayoutStructureRenderer {
 				catch (JSONException jsonException) {
 					if (_log.isDebugEnabled()) {
 						_log.debug(
-							"Unable to parse JSON object", jsonException);
+							"Unable to parse JSON: " +
+								listObjectReference.toJSON(),
+							jsonException);
 					}
 				}
 			}
