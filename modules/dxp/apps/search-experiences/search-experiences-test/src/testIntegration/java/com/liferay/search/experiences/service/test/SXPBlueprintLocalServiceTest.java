@@ -97,6 +97,48 @@ public class SXPBlueprintLocalServiceTest {
 
 		Assert.assertNotNull(sxpBlueprint.getExternalReferenceCode());
 		Assert.assertEquals("1.0", sxpBlueprint.getVersion());
+
+		// Title
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext();
+
+		try {
+			_addSXPBlueprint(
+				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
+				Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
+				Collections.emptyMap(), serviceContext);
+		}
+		catch (SXPBlueprintTitleException sxpBlueprintTitleException) {
+			Assert.assertNotNull(sxpBlueprintTitleException);
+		}
+
+		// Validate
+
+		String attributeName =
+			"com.liferay.search.experiences.service.impl." +
+				"SXPBlueprintLocalServiceImpl#_validate";
+
+		serviceContext.setAttribute(attributeName, Boolean.TRUE);
+
+		try {
+			_addSXPBlueprint(
+				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
+				Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
+				Collections.emptyMap(), serviceContext);
+		}
+		catch (SXPBlueprintTitleException sxpBlueprintTitleException) {
+			Assert.assertNotNull(sxpBlueprintTitleException);
+		}
+
+		serviceContext.setAttribute(attributeName, Boolean.FALSE);
+
+		sxpBlueprint = _addSXPBlueprint(
+			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
+			Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
+			Collections.emptyMap(), serviceContext);
+
+		Assert.assertEquals(Collections.emptyMap(), sxpBlueprint.getTitleMap());
 	}
 
 	@Test
@@ -163,47 +205,6 @@ public class SXPBlueprintLocalServiceTest {
 			sxpBlueprint1.getExternalReferenceCode());
 
 		_sxpBlueprintLocalService.updateSXPBlueprint(sxpBlueprint2);
-	}
-
-	@Test
-	public void testValidateSXPBlueprint() throws Exception {
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext();
-
-		String attributeName =
-			"com.liferay.search.experiences.service.impl." +
-				"SXPBlueprintLocalServiceImpl#_validate";
-
-		try {
-			_addSXPBlueprint(
-				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-				Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
-				Collections.emptyMap(), serviceContext);
-		}
-		catch (SXPBlueprintTitleException sxpBlueprintTitleException) {
-			Assert.assertNotNull(sxpBlueprintTitleException);
-		}
-
-		serviceContext.setAttribute(attributeName, Boolean.TRUE);
-
-		try {
-			_addSXPBlueprint(
-				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-				Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
-				Collections.emptyMap(), serviceContext);
-		}
-		catch (SXPBlueprintTitleException sxpBlueprintTitleException) {
-			Assert.assertNotNull(sxpBlueprintTitleException);
-		}
-
-		serviceContext.setAttribute(attributeName, Boolean.FALSE);
-
-		SXPBlueprint sxpBlueprint = _addSXPBlueprint(
-			RandomTestUtil.randomString(), TestPropsValues.getUserId(),
-			Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
-			Collections.emptyMap(), serviceContext);
-
-		Assert.assertEquals(Collections.emptyMap(), sxpBlueprint.getTitleMap());
 	}
 
 	private SXPBlueprint _addSXPBlueprint(String externalReferenceCode)

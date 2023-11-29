@@ -131,6 +131,51 @@ public class SXPElementLocalServiceTest {
 			description, noFallbackFieldsSXPElement.getFallbackDescription());
 		Assert.assertEquals(
 			title, noFallbackFieldsSXPElement.getFallbackTitle());
+
+		// Title
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext();
+
+		try {
+			_addSXPElement(
+				Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				RandomTestUtil.randomString(), Collections.emptyMap(),
+				TestPropsValues.getUserId(), serviceContext);
+		}
+		catch (SXPElementTitleException sxpElementTitleException) {
+			Assert.assertNotNull(sxpElementTitleException);
+		}
+
+		// Validate
+
+		String attributeName =
+			"com.liferay.search.experiences.service.impl." +
+				"SXPElementLocalServiceImpl#_validate";
+
+		serviceContext.setAttribute(attributeName, Boolean.TRUE);
+
+		try {
+			_addSXPElement(
+				Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				RandomTestUtil.randomString(), Collections.emptyMap(),
+				TestPropsValues.getUserId(), serviceContext);
+		}
+		catch (SXPElementTitleException sxpElementTitleException) {
+			Assert.assertNotNull(sxpElementTitleException);
+		}
+
+		serviceContext.setAttribute(attributeName, Boolean.FALSE);
+
+		sxpElement = _addSXPElement(
+			Collections.emptyMap(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+			Collections.emptyMap(), TestPropsValues.getUserId(),
+			serviceContext);
+
+		Assert.assertEquals(Collections.emptyMap(), sxpElement.getTitleMap());
 	}
 
 	@Test
@@ -197,49 +242,6 @@ public class SXPElementLocalServiceTest {
 	}
 
 	@Test
-	public void testValidateSXPElement() throws Exception {
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext();
-
-		String attributeName =
-			"com.liferay.search.experiences.service.impl." +
-				"SXPElementLocalServiceImpl#_validate";
-
-		try {
-			_addSXPElement(
-				Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
-				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-				RandomTestUtil.randomString(), Collections.emptyMap(),
-				TestPropsValues.getUserId(), serviceContext);
-		}
-		catch (SXPElementTitleException sxpElementTitleException) {
-			Assert.assertNotNull(sxpElementTitleException);
-		}
-
-		serviceContext.setAttribute(attributeName, Boolean.TRUE);
-
-		try {
-			_addSXPElement(
-				Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
-				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-				RandomTestUtil.randomString(), Collections.emptyMap(),
-				TestPropsValues.getUserId(), serviceContext);
-		}
-		catch (SXPElementTitleException sxpElementTitleException) {
-			Assert.assertNotNull(sxpElementTitleException);
-		}
-
-		serviceContext.setAttribute(attributeName, Boolean.FALSE);
-
-		SXPElement sxpElement = _addSXPElement(
-			Collections.emptyMap(), RandomTestUtil.randomString(),
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			Collections.emptyMap(), TestPropsValues.getUserId(),
-			serviceContext);
-
-		Assert.assertEquals(Collections.emptyMap(), sxpElement.getTitleMap());
-	}
-
 	private SXPElement _addSXPElement(
 			Map<Locale, String> descriptionMap, String externalReferenceCode,
 			String fallbackDescription, String fallbackTitle,
