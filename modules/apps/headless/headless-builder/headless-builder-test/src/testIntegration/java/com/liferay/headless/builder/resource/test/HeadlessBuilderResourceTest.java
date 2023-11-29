@@ -1751,14 +1751,12 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 
 		String apiSchemaExternalReferenceCode = RandomTestUtil.randomString();
 
-		String method = Http.Method.GET.name();
-
 		assertSuccessfulHttpCode(
 			JSONUtil.put(
 				"apiApplicationToAPIEndpoints",
 				_createAPIEndpoint(
 					apiEndpointExternalReferenceCode, path,
-					StringUtil.toLowerCase(method), null,
+					StringUtil.toLowerCase(Http.Method.GET.name()), null,
 					APIApplication.Endpoint.RetrieveType.COLLECTION.getValue(),
 					APIApplication.Endpoint.Scope.COMPANY)
 			).put(
@@ -1823,15 +1821,13 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 
 		String apiSchemaExternalReferenceCode = RandomTestUtil.randomString();
 
-		String method = Http.Method.GET.name();
-
 		assertSuccessfulHttpCode(
 			JSONUtil.put(
 				"apiApplicationToAPIEndpoints",
 				_createAPIEndpoint(
 					apiEndpointExternalReferenceCode, path,
-					StringUtil.toLowerCase(method), pathParameter, retrieveType,
-					scope)
+					StringUtil.toLowerCase(Http.Method.GET.name()),
+					pathParameter, retrieveType, scope)
 			).put(
 				"apiApplicationToAPISchemas",
 				JSONUtil.put(
@@ -1890,15 +1886,13 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 
 		String apiSchemaExternalReferenceCode = RandomTestUtil.randomString();
 
-		String method = Http.Method.GET.name();
-
 		assertSuccessfulHttpCode(
 			JSONUtil.put(
 				"apiApplicationToAPIEndpoints",
 				_createAPIEndpoint(
 					apiEndpointExternalReferenceCode, path,
-					StringUtil.toLowerCase(method), pathParameter, retrieveType,
-					scope)
+					StringUtil.toLowerCase(Http.Method.GET.name()),
+					pathParameter, retrieveType, scope)
 			).put(
 				"apiApplicationToAPISchemas",
 				JSONUtil.put(
@@ -2037,14 +2031,12 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 
 		String apiSchemaExternalReferenceCode = RandomTestUtil.randomString();
 
-		String method = Http.Method.POST.name();
-
 		assertSuccessfulHttpCode(
 			JSONUtil.put(
 				"apiApplicationToAPIEndpoints",
 				_createAPIEndpoint(
 					apiEndpointExternalReferenceCode, path,
-					StringUtil.toLowerCase(method), null,
+					StringUtil.toLowerCase(Http.Method.POST.name()), null,
 					APIApplication.Endpoint.RetrieveType.SINGLE_ELEMENT.
 						getValue(),
 					scope)
