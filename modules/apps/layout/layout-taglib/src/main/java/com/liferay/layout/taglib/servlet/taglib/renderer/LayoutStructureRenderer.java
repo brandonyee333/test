@@ -217,7 +217,12 @@ public class LayoutStructureRenderer {
 
 		JspWriter jspWriter = _pageContext.getOut();
 
-		jspWriter.write("<div");
+		jspWriter.write("<div class=\"");
+		jspWriter.write(
+			collectionStyledLayoutStructureItem.getUniqueCssClass());
+		jspWriter.write(StringPool.SPACE);
+		jspWriter.write(collectionStyledLayoutStructureItem.getCssClass());
+		jspWriter.write("\"");
 
 		if (FeatureFlagManagerUtil.isEnabled("LRAC-14922")) {
 			ListObjectReference listObjectReference =
@@ -247,11 +252,6 @@ public class LayoutStructureRenderer {
 			}
 		}
 
-		jspWriter.write(" class=\"");
-		jspWriter.write(
-			collectionStyledLayoutStructureItem.getUniqueCssClass());
-		jspWriter.write(StringPool.SPACE);
-		jspWriter.write(collectionStyledLayoutStructureItem.getCssClass());
 		jspWriter.write("\" style=\"");
 		jspWriter.write(
 			_renderLayoutStructureDisplayContext.getStyle(
