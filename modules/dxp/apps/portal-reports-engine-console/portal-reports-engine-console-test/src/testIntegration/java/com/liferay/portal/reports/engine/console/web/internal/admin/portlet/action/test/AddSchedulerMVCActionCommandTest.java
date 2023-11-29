@@ -64,7 +64,9 @@ public class AddSchedulerMVCActionCommandTest {
 
 	@Before
 	public void setUp() throws Exception {
-		try (InputStream inputStream = getClass().getResourceAsStream(
+		Class<?> clazz = getClass();
+
+		try (InputStream inputStream = clazz.getResourceAsStream(
 				"dependencies/reports_admin_template_sample.jrxml")) {
 
 			_definition = _definitionLocalService.addDefinition(
