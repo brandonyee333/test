@@ -7,16 +7,19 @@ package com.liferay.client.extension.web.internal.type.deployer;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.type.CET;
+import com.liferay.client.extension.type.CustomCheckoutStepCET;
 import com.liferay.client.extension.type.CustomElementCET;
 import com.liferay.client.extension.type.IFrameCET;
 import com.liferay.client.extension.type.JSImportMapsEntryCET;
 import com.liferay.client.extension.type.deployer.CETDeployer;
 import com.liferay.client.extension.web.internal.frontend.js.importmaps.extender.ClientExtensionJSImportMapsContributor;
 import com.liferay.client.extension.web.internal.portlet.CETPortletFriendlyURLMapper;
+import com.liferay.client.extension.web.internal.portlet.CustomCheckoutStepCETImpl;
 import com.liferay.client.extension.web.internal.portlet.CustomElementCETPortlet;
 import com.liferay.client.extension.web.internal.portlet.IFrameCETPortlet;
 import com.liferay.client.extension.web.internal.portlet.action.CETPortletConfigurationAction;
 import com.liferay.client.extension.web.internal.util.CETUtil;
+import com.liferay.commerce.util.CommerceCheckoutStep;
 import com.liferay.frontend.js.importmaps.extender.JSImportMapsContributor;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.petra.string.StringBundler;
@@ -25,6 +28,7 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
+import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
@@ -51,6 +55,12 @@ public class CETDeployerImpl implements CETDeployer {
 	public List<ServiceRegistration<?>> deploy(CET cet) {
 		if (Objects.equals(
 				cet.getType(),
+				ClientExtensionEntryConstants.TYPE_CUSTOM_CHECKOUT_STEP)) {
+
+			return _deploy((CustomCheckoutStepCET)cet);
+		}
+		else if (Objects.equals(
+				cet.getType(),
 				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
 			return _deploy((CustomElementCET)cet);
@@ -74,6 +84,38 @@ public class CETDeployerImpl implements CETDeployer {
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 	}
+
+	private List<ServiceRegistration<?>> _deploy(
+			CustomCheckoutStepCET customCheckoutStepCET) {
+
+		List<ServiceRegistration<?>> serviceRegistrations = new ArrayList<>();
+
+		String portletId = _getPortletId(customCheckoutStepCET);
+
+		serviceRegistrations.add(
+			_register(
+				ConfigurationAction.class,
+				new CETPortletConfigurationAction(
+					"/entry/configuration.jsp", portletId)));
+
+		serviceRegistrations.add(
+			_bundleContext.registerService(
+				CommerceCheckoutStep.class,
+				new CustomCheckoutStepCETImpl(customCheckoutStepCET.
+						getCheckoutStepLabel(), customCheckoutStepCET.
+					getCheckoutStepName()),
+				HashMapDictionaryBuilder.<String, Object>put(
+					"commerce.checkout.step.name", customCheckoutStepCET.
+						getCheckoutStepName()
+				).put(
+					"commerce.checkout.step.order",
+						Integer.valueOf(customCheckoutStepCET.
+							getCheckoutStepOrder())
+				).build()));
+
+		return serviceRegistrations;
+	}
+
 
 	private List<ServiceRegistration<?>> _deploy(
 		CustomElementCET customElementCET) {
