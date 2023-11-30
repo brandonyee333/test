@@ -138,37 +138,12 @@ public class PayPalCommercePaymentIntegration
 			HttpResponse<Order> httpResponse = payPalHttpClient.execute(
 				ordersAuthorizeRequest);
 
-			if (httpResponse.statusCode() == 201) {
-				Order order = httpResponse.result();
+			Authorization authorization = _getAuthorization(httpResponse);
 
-				List<PurchaseUnit> purchaseUnits = order.purchaseUnits();
-
-				if (ListUtil.isNotEmpty(purchaseUnits)) {
-					PurchaseUnit purchaseUnit = purchaseUnits.get(0);
-
-					if (purchaseUnit != null) {
-						PaymentCollection paymentCollection =
-							purchaseUnit.payments();
-
-						if (paymentCollection != null) {
-							List<Authorization> authorizations =
-								paymentCollection.authorizations();
-
-							if (ListUtil.isNotEmpty(authorizations)) {
-								Authorization authorization =
-									authorizations.get(0);
-
-								if (authorization != null) {
-									commercePaymentEntry.setPaymentStatus(
-										CommercePaymentEntryConstants.
-											STATUS_AUTHORIZED);
-									commercePaymentEntry.setTransactionCode(
-										authorization.id());
-								}
-							}
-						}
-					}
-				}
+			if (authorization != null) {
+				commercePaymentEntry.setPaymentStatus(
+					CommercePaymentEntryConstants.STATUS_AUTHORIZED);
+				commercePaymentEntry.setTransactionCode(authorization.id());
 			}
 		}
 		catch (IOException ioException) {
@@ -482,6 +457,40 @@ public class PayPalCommercePaymentIntegration
 		sb.append(queryString);
 
 		return sb.toString();
+	}
+
+	private Authorization _getAuthorization(HttpResponse<Order> httpResponse) {
+		if (httpResponse.statusCode() != 201) {
+			return null;
+		}
+
+		Order order = httpResponse.result();
+
+		List<PurchaseUnit> purchaseUnits = order.purchaseUnits();
+
+		if (ListUtil.isEmpty(purchaseUnits)) {
+			return null;
+		}
+
+		PurchaseUnit purchaseUnit = purchaseUnits.get(0);
+
+		if (purchaseUnit == null) {
+			return null;
+		}
+
+		PaymentCollection paymentCollection = purchaseUnit.payments();
+
+		if (paymentCollection == null) {
+			return null;
+		}
+
+		List<Authorization> authorizations = paymentCollection.authorizations();
+
+		if (ListUtil.isEmpty(authorizations)) {
+			return null;
+		}
+
+		return authorizations.get(0);
 	}
 
 	private PurchaseUnitRequest _getCommerceOrderPurchaseUnitRequest(
