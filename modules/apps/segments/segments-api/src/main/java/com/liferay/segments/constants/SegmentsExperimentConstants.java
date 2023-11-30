@@ -340,4 +340,34 @@ public class SegmentsExperimentConstants {
 
 	}
 
+	public enum Type {
+
+		AB("ab"), MAB("mab");
+
+		public static Type parse(String label) {
+			if (Validator.isNull(label)) {
+				return null;
+			}
+
+			for (Type type : values()) {
+				if (label.equals(type.getLabel())) {
+					return type;
+				}
+			}
+
+			return null;
+		}
+
+		public String getLabel() {
+			return _label;
+		}
+
+		private Type(String label) {
+			_label = label;
+		}
+
+		private final String _label;
+
+	}
+
 }
