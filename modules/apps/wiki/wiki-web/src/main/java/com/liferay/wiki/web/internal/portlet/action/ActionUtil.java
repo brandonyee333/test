@@ -145,12 +145,15 @@ public class ActionUtil {
 			themeDisplay.getScopeGroupId());
 
 		if (nodesCount == 0) {
-			Layout layout = themeDisplay.getLayout();
+			Group group = GroupLocalServiceUtil.fetchGroup(
+				themeDisplay.getScopeGroupId());
 
 			ServiceContext serviceContext = ServiceContextFactory.getInstance(
 				WikiNode.class.getName(), portletRequest);
 
 			serviceContext.setAddGroupPermissions(true);
+
+			Layout layout = themeDisplay.getLayout();
 
 			if (layout.isPublicLayout() || layout.isTypeControlPanel()) {
 				serviceContext.setAddGuestPermissions(true);
@@ -158,9 +161,6 @@ public class ActionUtil {
 			else {
 				serviceContext.setAddGuestPermissions(false);
 			}
-
-			Group group = GroupLocalServiceUtil.fetchGroup(
-				themeDisplay.getScopeGroupId());
 
 			try (SafeCloseable safeCloseable =
 					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
