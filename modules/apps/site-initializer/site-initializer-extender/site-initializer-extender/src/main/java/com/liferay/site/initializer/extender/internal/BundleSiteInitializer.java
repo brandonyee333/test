@@ -1492,17 +1492,17 @@ public class BundleSiteInitializer implements SiteInitializer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			StringBundler sb1 = new StringBundler();
+			StringBundler sb = new StringBundler();
 
 			JSONObject propertiesJSONObject = jsonObject.getJSONObject(
 				"properties");
 
 			if (propertiesJSONObject != null) {
 				for (String key : propertiesJSONObject.keySet()) {
-					sb1.append(key);
-					sb1.append(StringPool.EQUAL);
-					sb1.append(propertiesJSONObject.getString(key));
-					sb1.append(StringPool.NEW_LINE);
+					sb.append(key);
+					sb.append(StringPool.EQUAL);
+					sb.append(propertiesJSONObject.getString(key));
+					sb.append(StringPool.NEW_LINE);
 				}
 			}
 
@@ -1510,7 +1510,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				jsonObject.getString("externalReferenceCode"),
 				serviceContext.getUserId(), StringPool.BLANK,
 				SiteInitializerUtil.toMap(jsonObject.getString("name_i18n")),
-				sb1.toString(), StringPool.BLANK,
+				sb.toString(), StringPool.BLANK,
 				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
 				UnicodePropertiesBuilder.create(
 					true
