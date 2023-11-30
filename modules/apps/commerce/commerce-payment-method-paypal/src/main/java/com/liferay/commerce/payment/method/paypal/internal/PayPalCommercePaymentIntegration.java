@@ -113,6 +113,7 @@ public class PayPalCommercePaymentIntegration
 
 		commercePaymentEntry.setPaymentStatus(
 			CommercePaymentEntryConstants.STATUS_FAILED);
+		commercePaymentEntry.setRedirectURL(null);
 
 		try {
 			PayPalHttpClient payPalHttpClient = _getPayPalHttpClient(
@@ -169,8 +170,6 @@ public class PayPalCommercePaymentIntegration
 					}
 				}
 			}
-
-			commercePaymentEntry.setRedirectURL(null);
 		}
 		catch (IOException ioException) {
 			_log.error(ioException);
