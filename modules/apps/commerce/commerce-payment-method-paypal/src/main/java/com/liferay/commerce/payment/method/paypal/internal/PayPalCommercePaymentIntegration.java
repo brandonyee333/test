@@ -111,7 +111,7 @@ public class PayPalCommercePaymentIntegration
 			CommercePaymentEntry commercePaymentEntry)
 		throws PortalException {
 
-		String transactionId = StringPool.BLANK;
+		String transactionCode = StringPool.BLANK;
 
 		try {
 			PayPalHttpClient payPalHttpClient = _getPayPalHttpClient(
@@ -157,7 +157,7 @@ public class PayPalCommercePaymentIntegration
 									authorizations.get(0);
 
 								if (authorization != null) {
-									transactionId = authorization.id();
+									transactionCode = authorization.id();
 								}
 							}
 						}
@@ -165,7 +165,7 @@ public class PayPalCommercePaymentIntegration
 				}
 			}
 
-			if (Validator.isNotNull(transactionId)) {
+			if (Validator.isNotNull(transactionCode)) {
 				commercePaymentEntry.setPaymentStatus(
 					CommercePaymentEntryConstants.STATUS_AUTHORIZED);
 			}
@@ -175,7 +175,7 @@ public class PayPalCommercePaymentIntegration
 			}
 
 			commercePaymentEntry.setRedirectURL(null);
-			commercePaymentEntry.setTransactionCode(transactionId);
+			commercePaymentEntry.setTransactionCode(transactionCode);
 		}
 		catch (IOException ioException) {
 			_log.error(ioException);
@@ -185,7 +185,7 @@ public class PayPalCommercePaymentIntegration
 					new JSONObject(ioException), StringPool.BLANK));
 			commercePaymentEntry.setPaymentStatus(
 				CommercePaymentEntryConstants.STATUS_FAILED);
-			commercePaymentEntry.setTransactionCode(transactionId);
+			commercePaymentEntry.setTransactionCode(transactionCode);
 		}
 
 		return commercePaymentEntry;
@@ -369,7 +369,7 @@ public class PayPalCommercePaymentIntegration
 		throws PortalException {
 
 		boolean success = false;
-		String transactionId = StringPool.BLANK;
+		String transactionCode = StringPool.BLANK;
 
 		try {
 			PayPalHttpClient payPalHttpClient = _getPayPalHttpClient(
@@ -443,7 +443,7 @@ public class PayPalCommercePaymentIntegration
 					}
 				}
 
-				transactionId = order.id();
+				transactionCode = order.id();
 			}
 
 			if (success) {
@@ -455,7 +455,7 @@ public class PayPalCommercePaymentIntegration
 					CommercePaymentEntryConstants.STATUS_FAILED);
 			}
 
-			commercePaymentEntry.setTransactionCode(transactionId);
+			commercePaymentEntry.setTransactionCode(transactionCode);
 		}
 		catch (IOException ioException) {
 			_log.error(ioException);
@@ -464,7 +464,7 @@ public class PayPalCommercePaymentIntegration
 				_getErrorMessages(ioException, StringPool.BLANK));
 			commercePaymentEntry.setPaymentStatus(
 				CommercePaymentEntryConstants.STATUS_FAILED);
-			commercePaymentEntry.setTransactionCode(transactionId);
+			commercePaymentEntry.setTransactionCode(transactionCode);
 		}
 
 		return commercePaymentEntry;
