@@ -274,7 +274,7 @@ public class SegmentsExperimentLocalServiceImpl
 	@Override
 	public SegmentsExperiment runSegmentsExperiment(
 			long segmentsExperimentId, double confidenceLevel,
-			Map<Long, Double> segmentsExperienceIdSplitMap)
+			Map<Long, Double> segmentsExperienceIdSplitMap, String type)
 		throws PortalException {
 
 		SegmentsExperiment segmentsExperiment =
@@ -286,6 +286,7 @@ public class SegmentsExperimentLocalServiceImpl
 		_validateConfidenceLevel(confidenceLevel);
 		_validateSegmentsExperimentRels(segmentsExperienceIdSplitMap);
 		_validateSplit(segmentsExperienceIdSplitMap);
+		_validateType(type);
 
 		UnicodeProperties typeSettingsUnicodeProperties =
 			segmentsExperiment.getTypeSettingsProperties();
@@ -296,6 +297,8 @@ public class SegmentsExperimentLocalServiceImpl
 
 		typeSettingsUnicodeProperties.setProperty(
 			"confidenceLevel", String.valueOf(confidenceLevel));
+
+		typeSettingsUnicodeProperties.setProperty("type", String.valueOf(type));
 
 		segmentsExperiment.setTypeSettings(
 			typeSettingsUnicodeProperties.toString());
@@ -694,6 +697,12 @@ public class SegmentsExperimentLocalServiceImpl
 				StringBundler.concat(
 					"Status ", newStatusObject.name(),
 					" requires a winner segments experience"));
+		}
+	}
+
+	private void _validateType(String type) throws PortalException {
+		if (SegmentsExperimentConstants.Type.parse(type) == null) {
+			throw new SegmentsExperimentTypeException();
 		}
 	}
 

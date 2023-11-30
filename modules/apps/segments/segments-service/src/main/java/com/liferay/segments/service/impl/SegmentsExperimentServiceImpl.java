@@ -182,7 +182,7 @@ public class SegmentsExperimentServiceImpl
 	@Override
 	public SegmentsExperiment runSegmentsExperiment(
 			String segmentsExperimentKey, double confidenceLevel,
-			Map<String, Double> segmentsExperienceKeySplitMap)
+			Map<String, Double> segmentsExperienceKeySplitMap, String type)
 		throws PortalException {
 
 		SegmentsExperiment segmentsExperiment =
@@ -205,7 +205,7 @@ public class SegmentsExperimentServiceImpl
 
 		return segmentsExperimentLocalService.runSegmentsExperiment(
 			segmentsExperiment.getSegmentsExperimentId(), confidenceLevel,
-			segmentsExperienceIdSplitMap);
+			segmentsExperienceIdSplitMap, type);
 	}
 
 	@Override
