@@ -45,6 +45,7 @@ import com.liferay.segments.exception.SegmentsExperimentGoalException;
 import com.liferay.segments.exception.SegmentsExperimentNameException;
 import com.liferay.segments.exception.SegmentsExperimentRelSplitException;
 import com.liferay.segments.exception.SegmentsExperimentStatusException;
+import com.liferay.segments.exception.SegmentsExperimentTypeException;
 import com.liferay.segments.exception.WinnerSegmentsExperienceException;
 import com.liferay.segments.model.SegmentsExperience;
 import com.liferay.segments.model.SegmentsExperiment;

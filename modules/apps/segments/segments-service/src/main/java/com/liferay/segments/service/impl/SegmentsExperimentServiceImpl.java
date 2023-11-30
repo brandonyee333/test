@@ -165,7 +165,7 @@ public class SegmentsExperimentServiceImpl
 	@Override
 	public SegmentsExperiment runSegmentsExperiment(
 			long segmentsExperimentId, double confidenceLevel,
-			Map<Long, Double> segmentsExperienceIdSplitMap)
+			Map<Long, Double> segmentsExperienceIdSplitMap, String type)
 		throws PortalException {
 
 		_segmentsExperimentResourcePermission.check(
@@ -175,8 +175,8 @@ public class SegmentsExperimentServiceImpl
 			ActionKeys.UPDATE);
 
 		return segmentsExperimentLocalService.runSegmentsExperiment(
-			segmentsExperimentId, confidenceLevel,
-			segmentsExperienceIdSplitMap);
+			segmentsExperimentId, confidenceLevel, segmentsExperienceIdSplitMap,
+			type);
 	}
 
 	@Override
