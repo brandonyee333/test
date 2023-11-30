@@ -1471,19 +1471,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 			Pagination.of(QueryUtil.ALL_POS, QueryUtil.ALL_POS), null);
 
 		for (CET cet : cets) {
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("com_liferay_client_extension_web_internal_portlet_");
-			sb.append("ClientExtensionEntryPortlet_");
-			sb.append(cet.getCompanyId());
-			sb.append("_");
-			sb.append(
-				CETUtil.normalizeExternalReferenceCodeForPortletId(
-					cet.getExternalReferenceCode()));
-
 			stringUtilReplaceValues.put(
 				"CLIENT_EXTENSION_ENTRY_ERC:" + cet.getExternalReferenceCode(),
-				sb.toString());
+				StringBundler.concat(
+					"com_liferay_client_extension_web_internal_portlet_",
+					"ClientExtensionEntryPortlet_", cet.getCompanyId(), "_",
+					CETUtil.normalizeExternalReferenceCodeForPortletId(
+						cet.getExternalReferenceCode())));
 		}
 
 		String json = SiteInitializerUtil.read(
@@ -1549,20 +1543,15 @@ public class BundleSiteInitializer implements SiteInitializer {
 					"useESM", jsonObject.getBoolean("useESM", false)
 				).buildString());
 
-			StringBundler sb2 = new StringBundler(5);
-
-			sb2.append("com_liferay_client_extension_web_internal_portlet_");
-			sb2.append("ClientExtensionEntryPortlet_");
-			sb2.append(serviceContext.getCompanyId());
-			sb2.append("_");
-			sb2.append(
-				CETUtil.normalizeExternalReferenceCodeForPortletId(
-					jsonObject.getString("externalReferenceCode")));
-
 			stringUtilReplaceValues.put(
 				"CLIENT_EXTENSION_ENTRY_ERC:" +
 					jsonObject.getString("externalReferenceCode"),
-				sb2.toString());
+				StringBundler.concat(
+					"com_liferay_client_extension_web_internal_portlet_",
+					"ClientExtensionEntryPortlet_",
+					serviceContext.getCompanyId(), "_",
+					CETUtil.normalizeExternalReferenceCodeForPortletId(
+						jsonObject.getString("externalReferenceCode"))));
 		}
 	}
 
