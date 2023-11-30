@@ -591,7 +591,6 @@ public class PayPalCommercePaymentIntegration
 			_commerceCurrencyLocalService.getCommerceCurrency(
 				commercePaymentEntry.getCompanyId(),
 				commercePaymentEntry.getCurrencyCode());
-
 		PayPalGroupServiceConfiguration payPalGroupServiceConfiguration =
 			_getPayPalGroupServiceConfiguration(commercePaymentEntry);
 
