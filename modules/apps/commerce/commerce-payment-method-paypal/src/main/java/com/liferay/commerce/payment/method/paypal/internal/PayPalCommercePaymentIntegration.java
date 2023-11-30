@@ -368,7 +368,9 @@ public class PayPalCommercePaymentIntegration
 			CommercePaymentEntry commercePaymentEntry)
 		throws PortalException {
 
-		boolean success = false;
+		commercePaymentEntry.setPaymentStatus(
+			CommercePaymentEntryConstants.STATUS_FAILED);
+
 		String transactionCode = StringPool.BLANK;
 
 		try {
@@ -436,8 +438,8 @@ public class PayPalCommercePaymentIntegration
 
 						commercePaymentEntry.setRedirectURL(
 							linkDescription.href());
-
-						success = true;
+						commercePaymentEntry.setPaymentStatus(
+							CommercePaymentEntryConstants.STATUS_CREATED);
 
 						break;
 					}
@@ -445,27 +447,15 @@ public class PayPalCommercePaymentIntegration
 
 				transactionCode = order.id();
 			}
-
-			if (success) {
-				commercePaymentEntry.setPaymentStatus(
-					CommercePaymentEntryConstants.STATUS_CREATED);
-			}
-			else {
-				commercePaymentEntry.setPaymentStatus(
-					CommercePaymentEntryConstants.STATUS_FAILED);
-			}
-
-			commercePaymentEntry.setTransactionCode(transactionCode);
 		}
 		catch (IOException ioException) {
 			_log.error(ioException);
 
 			commercePaymentEntry.setErrorMessages(
 				_getErrorMessages(ioException, StringPool.BLANK));
-			commercePaymentEntry.setPaymentStatus(
-				CommercePaymentEntryConstants.STATUS_FAILED);
-			commercePaymentEntry.setTransactionCode(transactionCode);
 		}
+
+		commercePaymentEntry.setTransactionCode(transactionCode);
 
 		return commercePaymentEntry;
 	}
