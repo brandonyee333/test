@@ -116,7 +116,7 @@ public class JournalTransformer {
 
 		if (renderedArticleIds.contains(articleId)) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("The article cannot include itself: " + articleId);
+				_log.warn("Article " + articleId + " cannot include itself");
 			}
 
 			return StringPool.BLANK;

@@ -288,48 +288,6 @@ public class JournalTransformerTest {
 					"defaultSelectionStyle", "dynamic"
 				).build());
 
-			ThemeDisplay themeDisplay = new ThemeDisplay();
-
-			Layout layout = LayoutTestUtil.addTypePortletLayout(
-				_group.getGroupId());
-
-			LayoutSet layoutSet = _layoutSetLocalService.getLayoutSet(
-				_group.getGroupId(), false);
-
-			themeDisplay.setCompany(
-				_companyLocalService.getCompany(_group.getCompanyId()));
-			themeDisplay.setLayout(layout);
-			themeDisplay.setLayoutSet(layoutSet);
-			themeDisplay.setLayoutTypePortlet(
-				(LayoutTypePortlet)layout.getLayoutType());
-			themeDisplay.setLocale(LocaleUtil.US);
-			themeDisplay.setLookAndFeel(
-				_themeLocalService.getTheme(
-					_group.getCompanyId(), layoutSet.getThemeId()),
-				null);
-			themeDisplay.setPermissionChecker(permissionChecker);
-			themeDisplay.setRealUser(TestPropsValues.getUser());
-			themeDisplay.setScopeGroupId(_group.getGroupId());
-			themeDisplay.setSiteGroupId(_group.getGroupId());
-			themeDisplay.setTimeZone(TimeZoneUtil.getDefault());
-			themeDisplay.setUser(TestPropsValues.getUser());
-
-			MockHttpServletRequest mockHttpServletRequest =
-				new MockHttpServletRequest();
-
-			mockHttpServletRequest.setAttribute(
-				WebKeys.CTX, mockHttpServletRequest.getServletContext());
-			mockHttpServletRequest.setAttribute(WebKeys.LAYOUT, layout);
-			mockHttpServletRequest.setAttribute(
-				WebKeys.THEME_DISPLAY, themeDisplay);
-			mockHttpServletRequest.setMethod(HttpMethods.GET);
-			mockHttpServletRequest.setParameter(
-				"currentURL", "http://localhost:8080/currentURL");
-
-			themeDisplay.setRequest(mockHttpServletRequest);
-
-			themeDisplay.setResponse(new MockHttpServletResponse());
-
 			DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
 				_group.getGroupId(), JournalArticle.class.getName());
 
@@ -353,6 +311,51 @@ public class JournalTransformerTest {
 					ddmStructure.getStructureKey(),
 					ddmTemplate.getTemplateKey(), LocaleUtil.US);
 
+			ThemeDisplay themeDisplay = new ThemeDisplay();
+
+			themeDisplay.setCompany(
+				_companyLocalService.getCompany(_group.getCompanyId()));
+
+			Layout layout = LayoutTestUtil.addTypePortletLayout(
+				_group.getGroupId());
+
+			themeDisplay.setLayout(layout);
+
+			LayoutSet layoutSet = _layoutSetLocalService.getLayoutSet(
+				_group.getGroupId(), false);
+
+			themeDisplay.setLayoutSet(layoutSet);
+
+			themeDisplay.setLayoutTypePortlet(
+				(LayoutTypePortlet)layout.getLayoutType());
+			themeDisplay.setLocale(LocaleUtil.US);
+			themeDisplay.setLookAndFeel(
+				_themeLocalService.getTheme(
+					_group.getCompanyId(), layoutSet.getThemeId()),
+				null);
+			themeDisplay.setPermissionChecker(permissionChecker);
+			themeDisplay.setRealUser(TestPropsValues.getUser());
+
+			MockHttpServletRequest mockHttpServletRequest =
+				new MockHttpServletRequest();
+
+			mockHttpServletRequest.setAttribute(
+				WebKeys.CTX, mockHttpServletRequest.getServletContext());
+			mockHttpServletRequest.setAttribute(WebKeys.LAYOUT, layout);
+			mockHttpServletRequest.setAttribute(
+				WebKeys.THEME_DISPLAY, themeDisplay);
+			mockHttpServletRequest.setMethod(HttpMethods.GET);
+			mockHttpServletRequest.setParameter(
+				"currentURL", "http://localhost:8080/currentURL");
+
+			themeDisplay.setRequest(mockHttpServletRequest);
+
+			themeDisplay.setResponse(new MockHttpServletResponse());
+			themeDisplay.setScopeGroupId(_group.getGroupId());
+			themeDisplay.setSiteGroupId(_group.getGroupId());
+			themeDisplay.setTimeZone(TimeZoneUtil.getDefault());
+			themeDisplay.setUser(TestPropsValues.getUser());
+
 			_transformMethod.invoke(
 				_journalTransformer, journalArticle, ddmTemplate,
 				_journalHelper, LocaleUtil.toLanguageId(LocaleUtil.US),
@@ -370,8 +373,8 @@ public class JournalTransformerTest {
 			LogEntry logEntry = logEntries.get(0);
 
 			Assert.assertEquals(
-				"The article cannot include itself: " +
-					journalArticle.getArticleId(),
+				"Article " + journalArticle.getArticleId() +
+					" cannot include itself",
 				logEntry.getMessage());
 		}
 		finally {
