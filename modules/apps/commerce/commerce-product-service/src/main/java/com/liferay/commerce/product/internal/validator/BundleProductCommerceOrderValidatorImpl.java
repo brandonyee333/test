@@ -109,6 +109,8 @@ public class BundleProductCommerceOrderValidatorImpl
 				continue;
 			}
 
+			String languageId = LocaleUtil.toLanguageId(locale);
+
 			CPInstance commerceOptionValueCPInstance =
 				_cpInstanceLocalService.getCPInstance(
 					commerceOptionValue.getCPInstanceId());
@@ -129,7 +131,6 @@ public class BundleProductCommerceOrderValidatorImpl
 
 					CPDefinition cpDefinition =
 						cpDefinitionLink.getCPDefinition();
-					String languageId = LocaleUtil.toLanguageId(locale);
 					CPDefinition publishedCPDefinition =
 						_cpDefinitionLocalService.getCPDefinition(
 							cProduct.getPublishedCPDefinitionId());
