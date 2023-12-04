@@ -136,27 +136,6 @@ public class ObjectDefinitionLocalServiceTest {
 
 	@Test
 	public void testAddCustomObjectDefinition() throws Exception {
-		ObjectDefinition objectDefinition =
-			ObjectDefinitionTestUtil.addCustomObjectDefinition(
-				false, _objectDefinitionLocalService,
-				Arrays.asList(
-					new TextObjectFieldBuilder(
-					).labelMap(
-						LocalizedMapUtil.getLocalizedMap(
-							RandomTestUtil.randomString())
-					).name(
-						"a" + RandomTestUtil.randomString()
-					).localized(
-						true
-					).build()));
-
-		AssertUtils.assertFailure(
-			ObjectDefinitionEnableLocalizationException.class,
-			"You cannot disable entry translation for the object definition " +
-				"because translation is enabled for custom fields",
-			() -> _objectDefinitionLocalService.publishCustomObjectDefinition(
-				TestPropsValues.getUserId(),
-				objectDefinition.getObjectDefinitionId()));
 
 		// Label is null
 
@@ -183,7 +162,7 @@ public class ObjectDefinitionLocalServiceTest {
 			"The first character of a name must be an upper case letter",
 			() -> _addCustomObjectDefinition("test"));
 
-		objectDefinition = _addCustomObjectDefinition("Test");
+		ObjectDefinition objectDefinition = _addCustomObjectDefinition("Test");
 
 		objectDefinition =
 			_objectDefinitionLocalService.publishCustomObjectDefinition(
@@ -1710,6 +1689,31 @@ public class ObjectDefinitionLocalServiceTest {
 						RandomTestUtil.randomString()),
 					StringUtil.randomId(), false,
 					ObjectRelationshipConstants.TYPE_ONE_TO_MANY, null)));
+	}
+
+	@Test
+	public void testPublishCustomObjectDefinition() throws Exception {
+		ObjectDefinition objectDefinition =
+			ObjectDefinitionTestUtil.addCustomObjectDefinition(
+				false, _objectDefinitionLocalService,
+				Arrays.asList(
+					new TextObjectFieldBuilder(
+					).labelMap(
+						LocalizedMapUtil.getLocalizedMap(
+							RandomTestUtil.randomString())
+					).name(
+						"a" + RandomTestUtil.randomString()
+					).localized(
+						true
+					).build()));
+
+		AssertUtils.assertFailure(
+			ObjectDefinitionEnableLocalizationException.class,
+			"You cannot disable entry translation for the object definition " +
+				"because translation is enabled for custom fields",
+			() -> _objectDefinitionLocalService.publishCustomObjectDefinition(
+				TestPropsValues.getUserId(),
+				objectDefinition.getObjectDefinitionId()));
 	}
 
 	@Test
