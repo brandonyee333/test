@@ -820,8 +820,7 @@ public class ObjectActionLocalServiceTest {
 
 		// Each call to the method _testAddObjectActionWithCircularReference
 		// should increase the expected objects entries count by 2. The only
-		// exception is for the 4th call when we inject with a broken thread
-		// local.
+		// exception is for the 4th call when we inject a broken thread local.
 
 		_testAddObjectActionWithCircularReference(2);
 		_testAddObjectActionWithCircularReference(4);
