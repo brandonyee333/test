@@ -201,7 +201,7 @@ public class RoleDisplayContext {
 		return new NavigationItemList() {
 			{
 				for (String assigneeTypeName :
-						_getAssigneeTypeNamesByRole(portletURL)) {
+						_getAssigneeTypeNamesByRoleId(portletURL)) {
 
 					if (_isAssigneeTypeVisible(role, assigneeTypeName)) {
 						add(
@@ -362,27 +362,27 @@ public class RoleDisplayContext {
 		return false;
 	}
 
-	private String[] _getAssigneeTypeNamesByRole(PortletURL portletURL)
+	private String[] _getAssigneeTypeNamesByRoleId(PortletURL portletURL)
 		throws Exception {
 
-		String[] assigneeTypeNamesByRole = _ASSIGNEE_TYPE_NAMES;
+		String[] assigneeTypeNames = _ASSIGNEE_TYPE_NAMES;
 
 		Map<String, String[]> parameterMap = portletURL.getParameterMap();
 
-		String[] roleIdParameter = parameterMap.get("roleId");
+		String[] roleIds = parameterMap.get("roleId");
 
-		if (roleIdParameter.length > 0) {
-			long roleId = GetterUtil.getLong(roleIdParameter[0]);
+		if (roleIds.length > 0) {
+			long roleId = GetterUtil.getLong(roleIds[0]);
 
 			Role role = RoleServiceUtil.fetchRole(roleId);
 
 			if (Objects.equals(RoleConstants.ADMINISTRATOR, role.getName())) {
-				assigneeTypeNamesByRole = ArrayUtil.filter(
-					assigneeTypeNamesByRole, name -> !name.equals("segments"));
+				assigneeTypeNames = ArrayUtil.filter(
+					assigneeTypeNames, name -> !name.equals("segments"));
 			}
 		}
 
-		return assigneeTypeNamesByRole;
+		return assigneeTypeNames;
 	}
 
 	private Role _getSelectedRole() throws Exception {
