@@ -119,6 +119,8 @@ public abstract class BaseUserActivityAsahSuggestionsContributor
 
 	private String _getHashedEmailAddress(long userId) {
 		try {
+			StringBuilder sb = new StringBuilder();
+
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
 
 			messageDigest.update(
@@ -127,8 +129,6 @@ public abstract class BaseUserActivityAsahSuggestionsContributor
 				).getBytes());
 
 			byte[] digest = messageDigest.digest();
-
-			StringBuilder sb = new StringBuilder();
 
 			for (byte b : digest) {
 				sb.append(String.format("%02x", b));

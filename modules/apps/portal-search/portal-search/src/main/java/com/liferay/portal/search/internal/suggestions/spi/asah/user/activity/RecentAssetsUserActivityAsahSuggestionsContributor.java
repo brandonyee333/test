@@ -61,32 +61,34 @@ public class RecentAssetsUserActivityAsahSuggestionsContributor
 
 		String url = itemJSONObject.getString("url");
 
-		if (url.endsWith("/search")) {
-			try {
-				String className = _classNames.get(
-					itemJSONObject.getString("contentType"));
-
-				AssetRendererFactory<?> assetRendererFactory =
-					AssetRendererFactoryRegistryUtil.
-						getAssetRendererFactoryByClassName(className);
-
-				if (assetRendererFactory == null) {
-					return null;
-				}
-
-				long classPK = itemJSONObject.getLong("assetId");
-
-				return _assetURLViewProvider.getAssetURLView(
-					assetRendererFactory.getAssetRenderer(classPK),
-					assetRendererFactory, className, classPK,
-					_liferayPortletRequest, _liferayPortletResponse);
-			}
-			catch (Exception exception) {
-				_log.error(exception);
-			}
+		if (!url.endsWith("/search")) {
+			return url;
 		}
 
-		return url;
+		try {
+			String className = _classNames.get(
+				itemJSONObject.getString("contentType"));
+
+			AssetRendererFactory<?> assetRendererFactory =
+				AssetRendererFactoryRegistryUtil.
+					getAssetRendererFactoryByClassName(className);
+
+			if (assetRendererFactory == null) {
+				return null;
+			}
+
+			long classPK = itemJSONObject.getLong("assetId");
+
+			return _assetURLViewProvider.getAssetURLView(
+				assetRendererFactory.getAssetRenderer(classPK),
+				assetRendererFactory, className, classPK,
+				_liferayPortletRequest, _liferayPortletResponse);
+		}
+		catch (Exception exception) {
+			_log.error(exception);
+
+			return url;
+		}
 	}
 
 	@Override
