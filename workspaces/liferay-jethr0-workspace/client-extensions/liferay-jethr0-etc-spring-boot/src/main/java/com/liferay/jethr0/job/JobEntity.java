@@ -303,10 +303,10 @@ public interface JobEntity extends Entity {
 					return null;
 				}
 
+				JSONArray parameterDefinitionsJSONArray = new JSONArray();
+
 				List<ParameterDefinition> parameterDefinitions =
 					(List<ParameterDefinition>)object;
-
-				JSONArray parameterDefinitionsJSONArray = new JSONArray();
 
 				for (ParameterDefinition parameterDefinition :
 						parameterDefinitions) {
