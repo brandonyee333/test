@@ -65,9 +65,8 @@ public class UserFileUploadsSettingsImpl implements UserFileUploadsSettings {
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_defaultUserFileUploadsConfiguration =
-			ConfigurableUtil.createConfigurable(
-				UserFileUploadsConfiguration.class, properties);
+		_userFileUploadsConfiguration = ConfigurableUtil.createConfigurable(
+			UserFileUploadsConfiguration.class, properties);
 	}
 
 	private UserFileUploadsConfiguration _getUserFileUploadsConfiguration() {
@@ -80,7 +79,7 @@ public class UserFileUploadsSettingsImpl implements UserFileUploadsSettings {
 			_log.error(configurationException);
 		}
 
-		return _defaultUserFileUploadsConfiguration;
+		return _userFileUploadsConfiguration;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -89,7 +88,6 @@ public class UserFileUploadsSettingsImpl implements UserFileUploadsSettings {
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
-	private volatile UserFileUploadsConfiguration
-		_defaultUserFileUploadsConfiguration;
+	private volatile UserFileUploadsConfiguration _userFileUploadsConfiguration;
 
 }
