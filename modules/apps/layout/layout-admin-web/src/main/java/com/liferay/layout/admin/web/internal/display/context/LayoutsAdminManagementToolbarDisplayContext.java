@@ -123,7 +123,7 @@ public class LayoutsAdminManagementToolbarDisplayContext
 						StringPool.BLANK, Layout.class.getName(),
 						_themeDisplay.getScopeGroupId(),
 						LiferayWindowState.POP_UP.toString(),
-						_themeDisplay.getRequest()));
+						_themeDisplay.getRequest(), true));
 				dropdownItem.setIcon("password-policies");
 				dropdownItem.setLabel(
 					LanguageUtil.get(httpServletRequest, "permissions"));
