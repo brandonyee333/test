@@ -653,6 +653,10 @@ public class PortletConfigurationPermissionsDisplayContext {
 			"returnToFullPageURL", _getReturnToFullPageURL()
 		).setParameter(
 			"roleTypes", _getRoleTypesParam()
+		).setParameter(
+			"showModelResourceSuccessMessage",
+			ParamUtil.getBoolean(
+				_httpServletRequest, "showModelResourceSuccessMessage")
 		).setWindowState(
 			LiferayWindowState.POP_UP
 		).buildPortletURL();
