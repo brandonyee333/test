@@ -13,6 +13,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.change.tracking.CTCollectionThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -610,6 +611,29 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 			portletPreferences.store();
 		}
 
+		if (ParamUtil.getBoolean(
+				actionRequest, "showModelResourceSuccessMessage") &&
+			Validator.isNotNull(modelResource)) {
+
+			String modelResourceKey = "model.resource.".concat(modelResource);
+
+			if (resourcePrimKeys.length > 1) {
+				modelResourceKey = modelResourceKey.concat(".items");
+			}
+
+			SessionMessages.add(
+				actionRequest, "modelResourceSuccessMessage",
+				_language.format(
+					themeDisplay.getLocale(),
+					"the-permissions-of-x-x-were-updated-successfully",
+					new Object[] {
+						resourcePrimKeys.length,
+						StringUtil.toLowerCase(
+							_language.get(
+								themeDisplay.getLocale(), modelResourceKey))
+					}));
+		}
+
 		_updateLayoutStatus(
 			themeDisplay.getLayout(),
 			ServiceContextFactory.getInstance(actionRequest),
@@ -1114,6 +1138,9 @@ public class PortletConfigurationPortlet extends MVCPortlet {
 
 	@Reference
 	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private Language _language;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
