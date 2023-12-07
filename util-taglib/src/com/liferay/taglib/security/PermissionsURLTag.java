@@ -5,6 +5,7 @@
 
 package com.liferay.taglib.security;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -33,7 +34,8 @@ public class PermissionsURLTag extends TagSupport {
 
 	public static String doTag(
 			String redirect, String modelResource, Object resourceGroupId,
-			String windowState, HttpServletRequest httpServletRequest)
+			String windowState, HttpServletRequest httpServletRequest,
+			boolean showModelResourceSuccessMessage)
 		throws Exception {
 
 		ThemeDisplay themeDisplay =
@@ -79,6 +81,8 @@ public class PermissionsURLTag extends TagSupport {
 			"portletConfiguration", true
 		).setParameter(
 			"resourceGroupId", resourceGroupId
+		).setParameter(
+			"showModelResourceSuccessMessage", showModelResourceSuccessMessage
 		).setWindowState(
 			WindowStateFactory.getWindowState(windowState)
 		).buildPortletURL();
@@ -121,7 +125,8 @@ public class PermissionsURLTag extends TagSupport {
 			String redirect, String modelResource,
 			String modelResourceDescription, Object resourceGroupId,
 			String resourcePrimKey, String windowState, int[] roleTypes,
-			HttpServletRequest httpServletRequest)
+			HttpServletRequest httpServletRequest,
+			boolean showModelResourceSuccessMessage)
 		throws Exception {
 
 		ThemeDisplay themeDisplay =
@@ -181,6 +186,11 @@ public class PermissionsURLTag extends TagSupport {
 			portletURL.setParameter("roleTypes", StringUtil.merge(roleTypes));
 		}
 
+		if (showModelResourceSuccessMessage) {
+			portletURL.setParameter(
+				"showModelResourceSuccessMessage", StringPool.TRUE);
+		}
+
 		return portletURL.toString();
 	}
 
@@ -190,7 +200,7 @@ public class PermissionsURLTag extends TagSupport {
 			String portletURLToString = doTag(
 				_redirect, _modelResource, _modelResourceDescription,
 				_resourceGroupId, _resourcePrimKey, _windowState, _roleTypes,
-				(HttpServletRequest)pageContext.getRequest());
+				(HttpServletRequest)pageContext.getRequest(), false);
 
 			if (Validator.isNotNull(_var)) {
 				pageContext.setAttribute(_var, portletURLToString);
