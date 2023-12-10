@@ -23,7 +23,6 @@ PortletURL portletURL = entriesSearchContainer.getIteratorURL();
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= new BlogsManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, entriesSearchContainer, trashHelper, displayStyle) %>"
 	propsTransformer="blogs_admin/js/BlogEntriesManagementToolbarPropsTransformer"
-	searchContainerId="blogEntries"
 />
 
 <portlet:actionURL name="/blogs/edit_entry" var="restoreTrashEntriesURL">
