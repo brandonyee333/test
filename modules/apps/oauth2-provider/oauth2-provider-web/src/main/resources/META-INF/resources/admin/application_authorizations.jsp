@@ -8,42 +8,16 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
-String redirect = ParamUtil.getString(request, "redirect");
-
 OAuth2Application oAuth2Application = oAuth2AdminPortletDisplayContext.getOAuth2Application();
 
 long oAuth2ApplicationId = oAuth2Application.getOAuth2ApplicationId();
 
 OAuth2AuthorizationsDisplayContext oAuth2AuthorizationsDisplayContext = new OAuth2AuthorizationsDisplayContext(liferayPortletRequest, liferayPortletResponse, oAuth2ApplicationId);
-
-int oAuth2AuthorizationsCount = OAuth2AuthorizationServiceUtil.getApplicationOAuth2AuthorizationsCount(oAuth2ApplicationId);
-
-OAuth2AuthorizationsManagementToolbarDisplayContext oAuth2AuthorizationsManagementToolbarDisplayContext = new OAuth2AuthorizationsManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, currentURLObj);
 %>
 
-<portlet:actionURL name="/admin/revoke_oauth2_authorizations" var="revokeOAuth2AuthorizationsURL">
-	<portlet:param name="mvcRenderCommandName" value="/oauth2_provider/view_oauth2_authorizations" />
-	<portlet:param name="navigation" value="application_authorizations" />
-	<portlet:param name="backURL" value="<%= redirect %>" />
-	<portlet:param name="oAuth2ApplicationId" value="<%= String.valueOf(oAuth2ApplicationId) %>" />
-</portlet:actionURL>
-
 <clay:management-toolbar
-	actionDropdownItems="<%= oAuth2AuthorizationsManagementToolbarDisplayContext.getActionDropdownItems() %>"
-	additionalProps='<%=
-		HashMapBuilder.<String, Object>put(
-			"revokeOAuth2AuthorizationsURL", revokeOAuth2AuthorizationsURL.toString()
-		).build()
-	%>'
-	disabled="<%= oAuth2AuthorizationsCount == 0 %>"
-	itemsTotal="<%= oAuth2AuthorizationsCount %>"
-	orderDropdownItems="<%= oAuth2AuthorizationsManagementToolbarDisplayContext.getOrderByDropdownItems() %>"
+	managementToolbarDisplayContext="<%= new OAuth2AuthorizationsManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, oAuth2ApplicationId, oAuth2AuthorizationsDisplayContext.getSearchContainer()) %>"
 	propsTransformer="admin/js/OAuth2AuthorizationsManagementToolbarPropsTransformer"
-	searchContainerId="oAuth2AuthorizationsSearchContainer"
-	selectable="<%= true %>"
-	showSearch="<%= false %>"
-	sortingOrder="<%= oAuth2AuthorizationsManagementToolbarDisplayContext.getOrderByType() %>"
-	sortingURL="<%= String.valueOf(oAuth2AuthorizationsManagementToolbarDisplayContext.getSortingURL()) %>"
 />
 
 <clay:container-fluid>
