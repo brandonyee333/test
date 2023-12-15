@@ -47,6 +47,10 @@
 
 	<#assign homePageContentLayoutModels = dataFactory.newContentPageLayoutModels(groupId, "welcome") />
 
+	<#list dataFactory.newPortletPreferencesModels(homePageContentLayoutModels) as portletPreferencesModel>
+		${dataFactory.toInsertSQL(portletPreferencesModel)}
+	</#list>
+
 	<@insertContentPageLayout
 		_fragmentEntryLinkModels=dataFactory.newFragmentEntryLinkModels(homePageContentLayoutModels)
 		_layoutModels=homePageContentLayoutModels
@@ -69,6 +73,13 @@
 	_layoutModels=defaultSiteHomePageContentLayoutModels
 	_templateFileName="default-homepage-layout-definition.json"
 />
+
+<#list dataFactory.newPortletPreferencesModels(defaultSiteHomePageContentLayoutModels) as portletPreferencesModel>
+		${dataFactory.toInsertSQL(portletPreferencesModel)}
+		<#list dataFactory.newPortletPreferenceValueModels(portletPreferencesModel) as portletPreferenceValueModel>
+			${dataFactory.toInsertSQL(portletPreferenceValueModel)}
+		</#list>
+	</#list>
 
 <#assign
 	searchLayoutModel = dataFactory.newSearchLayoutModel(guestGroupModel.groupId, true)
