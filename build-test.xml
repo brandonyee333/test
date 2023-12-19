@@ -1429,7 +1429,7 @@ jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 					<isset property="playwright.docker.image" />
 				</not>
 				<then>
-					<fail>Unable to get playwright.docker.image property for Playwright ${playwright.version}</fail>
+					<fail>Unable to get the property "playwright.docker.image" for Playwright ${playwright.version}</fail>
 				</then>
 			</if>
 		</sequential>
