@@ -58,11 +58,11 @@
 	<AUTH
 		auth_class="org.jgroups.auth.X509Token"
 		auth_value="${cluster.link.auth.value}"
-		cert_alias="${cluster.link.cert.alias}"
-		cert_password="${cluster.link.cert.password}"
-		cipher_type="${cluster.link.cipher.type}"
-		keystore_password="${cluster.link.keystore.password}"
-		keystore_path="${cluster.link.keystore.path}"
+		cert_alias="${cluster.link.auth.cert.alias}"
+		cert_password="${cluster.link.auth.cert.password}"
+		cipher_type="${cluster.link.auth.cipher.type}"
+		keystore_password="${cluster.link.auth.keystore.password}"
+		keystore_path="${cluster.link.auth.keystore.path}"
 		keystore_type="${cluster.link.keystore_type}"
 	/>
 	<pbcast.GMS join_timeout="2000" print_local_addr="true" view_bundling="true" />
