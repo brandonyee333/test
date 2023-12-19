@@ -41,7 +41,7 @@ public class AggregationFilteringFacetProcessorContext
 
 	public static FacetProcessorContext newInstance(Collection<Facet> facets) {
 		return new AggregationFilteringFacetProcessorContext(
-			_getFacetSelectionFiltersMap(facets));
+			_getQueriesMap(facets));
 	}
 
 	@Override
@@ -179,10 +179,10 @@ public class AggregationFilteringFacetProcessorContext
 		return queries;
 	}
 
-	private static Map<String, List<Query>> _getFacetSelectionFiltersMap(
+	private static Map<String, List<Query>> _getQueriesMap(
 		Collection<Facet> facets) {
 
-		Map<String, List<Query>> map = new HashMap<>();
+		Map<String, List<Query>> queriesMap = new HashMap<>();
 
 		for (Facet facet : facets) {
 			if ((facet instanceof com.liferay.portal.search.facet.Facet) &&
@@ -192,26 +192,26 @@ public class AggregationFilteringFacetProcessorContext
 					(com.liferay.portal.search.facet.Facet)facet;
 
 				if (!ArrayUtil.isEmpty(osgiFacet.getSelections())) {
-					map.put(
+					queriesMap.put(
 						osgiFacet.getAggregationName(),
 						_getFacetSelectionFilterQueries(osgiFacet));
 				}
 			}
 		}
 
-		return map;
+		return queriesMap;
 	}
 
 	private AggregationFilteringFacetProcessorContext(
-		Map<String, List<Query>> selectionFiltersMap) {
+		Map<String, List<Query>> queriesMap) {
 
-		_selectionFiltersMap = selectionFiltersMap;
+		_queriesMap = queriesMap;
 	}
 
 	private Builder.ContainerBuilder _getFacetSelectionFilterContainerBuilder(
 		String aggregationName) {
 
-		if (_selectionFiltersMap.isEmpty()) {
+		if (_queriesMap.isEmpty()) {
 			return null;
 		}
 
@@ -233,7 +233,7 @@ public class AggregationFilteringFacetProcessorContext
 		BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
 
 		for (Map.Entry<String, List<Query>> entry :
-				_selectionFiltersMap.entrySet()) {
+				_queriesMap.entrySet()) {
 
 			String filterAggregationName = entry.getKey();
 
@@ -261,6 +261,6 @@ public class AggregationFilteringFacetProcessorContext
 		return boolQueryBuilder.build();
 	}
 
-	private final Map<String, List<Query>> _selectionFiltersMap;
+	private final Map<String, List<Query>> _queriesMap;
 
 }
