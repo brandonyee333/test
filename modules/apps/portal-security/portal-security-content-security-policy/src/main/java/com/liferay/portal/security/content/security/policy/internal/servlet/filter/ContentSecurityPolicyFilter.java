@@ -104,10 +104,6 @@ public class ContentSecurityPolicyFilter extends BasePortalFilter {
 				"<(?i)link ", "<link nonce=\"" + nonce + "\" ");
 			content = content.replaceAll(
 				"<(?i)link>", "<link nonce=\"" + nonce + "\">");
-			content = content.replaceAll(
-				"<(?i)style ", "<style nonce=\"" + nonce + "\" ");
-			content = content.replaceAll(
-				"<(?i)style>", "<style nonce=\"" + nonce + "\">");
 
 			if (!FeatureFlagManagerUtil.isEnabled("LPS-178065")) {
 				content = content.replaceAll(
@@ -115,6 +111,11 @@ public class ContentSecurityPolicyFilter extends BasePortalFilter {
 				content = content.replaceAll(
 					"<(?i)script>", "<script nonce=\"" + nonce + "\">");
 			}
+
+			content = content.replaceAll(
+				"<(?i)style ", "<style nonce=\"" + nonce + "\" ");
+			content = content.replaceAll(
+				"<(?i)style>", "<style nonce=\"" + nonce + "\">");
 
 			printWriter.write(content);
 
