@@ -1077,6 +1077,11 @@ public class OpenSearchAggregationTranslator
 	public org.opensearch.client.opensearch._types.aggregations.Aggregation
 		visit(SignificantTextAggregation significantTextAggregation) {
 
+		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
+			aggregationBuilder =
+				new org.opensearch.client.opensearch._types.aggregations.
+					Aggregation.Builder();
+
 		org.opensearch.client.opensearch._types.aggregations.
 			SignificantTextAggregation.Builder
 				significantTextAggregationBuilder =
@@ -1181,11 +1186,6 @@ public class OpenSearchAggregationTranslator
 			significantTextAggregationBuilder::sourceFields,
 			significantTextAggregation.getSourceFields());
 
-		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
-			aggregationBuilder =
-				new org.opensearch.client.opensearch._types.aggregations.
-					Aggregation.Builder();
-
 		return _translateChildAggregations(
 			significantTextAggregation,
 			aggregationBuilder.significantText(
@@ -1195,6 +1195,11 @@ public class OpenSearchAggregationTranslator
 	@Override
 	public org.opensearch.client.opensearch._types.aggregations.Aggregation
 		visit(StatsAggregation statsAggregation) {
+
+		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
+			aggregationBuilder =
+				new org.opensearch.client.opensearch._types.aggregations.
+					Aggregation.Builder();
 
 		org.opensearch.client.opensearch._types.aggregations.StatsAggregation.
 			Builder statsAggregationBuilder = AggregationBuilders.stats();
@@ -1206,11 +1211,6 @@ public class OpenSearchAggregationTranslator
 		SetterUtil.setNotNullScript(
 			statsAggregationBuilder::script, statsAggregation.getScript());
 
-		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
-			aggregationBuilder =
-				new org.opensearch.client.opensearch._types.aggregations.
-					Aggregation.Builder();
-
 		return _translateChildAggregations(
 			statsAggregation,
 			aggregationBuilder.stats(statsAggregationBuilder.build()));
@@ -1219,6 +1219,11 @@ public class OpenSearchAggregationTranslator
 	@Override
 	public org.opensearch.client.opensearch._types.aggregations.Aggregation
 		visit(SumAggregation sumAggregation) {
+
+		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
+			aggregationBuilder =
+				new org.opensearch.client.opensearch._types.aggregations.
+					Aggregation.Builder();
 
 		org.opensearch.client.opensearch._types.aggregations.SumAggregation.
 			Builder sumAggregationBuilder = AggregationBuilders.sum();
@@ -1230,11 +1235,6 @@ public class OpenSearchAggregationTranslator
 		SetterUtil.setNotNullScript(
 			sumAggregationBuilder::script, sumAggregation.getScript());
 
-		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
-			aggregationBuilder =
-				new org.opensearch.client.opensearch._types.aggregations.
-					Aggregation.Builder();
-
 		return _translateChildAggregations(
 			sumAggregation,
 			aggregationBuilder.sum(sumAggregationBuilder.build()));
@@ -1243,6 +1243,11 @@ public class OpenSearchAggregationTranslator
 	@Override
 	public org.opensearch.client.opensearch._types.aggregations.Aggregation
 		visit(TermsAggregation termsAggregation) {
+
+		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
+			aggregationBuilder =
+				new org.opensearch.client.opensearch._types.aggregations.
+					Aggregation.Builder();
 
 		org.opensearch.client.opensearch._types.aggregations.TermsAggregation.
 			Builder termsAggregationBuilder =
@@ -1316,11 +1321,6 @@ public class OpenSearchAggregationTranslator
 		SetterUtil.setNotNullInteger(
 			termsAggregationBuilder::size, termsAggregation.getSize());
 
-		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
-			aggregationBuilder =
-				new org.opensearch.client.opensearch._types.aggregations.
-					Aggregation.Builder();
-
 		return _translateChildAggregations(
 			termsAggregation,
 			aggregationBuilder.terms(termsAggregationBuilder.build()));
@@ -1329,6 +1329,11 @@ public class OpenSearchAggregationTranslator
 	@Override
 	public org.opensearch.client.opensearch._types.aggregations.Aggregation
 		visit(TopHitsAggregation topHitsAggregation) {
+
+		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
+			aggregationBuilder =
+				new org.opensearch.client.opensearch._types.aggregations.
+					Aggregation.Builder();
 
 		org.opensearch.client.opensearch._types.aggregations.TopHitsAggregation.
 			Builder topHitsAggregationBuilder = AggregationBuilders.topHits();
@@ -1399,11 +1404,6 @@ public class OpenSearchAggregationTranslator
 			topHitsAggregationBuilder::version,
 			topHitsAggregation.getVersion());
 
-		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
-			aggregationBuilder =
-				new org.opensearch.client.opensearch._types.aggregations.
-					Aggregation.Builder();
-
 		return _translateChildAggregations(
 			topHitsAggregation,
 			aggregationBuilder.topHits(topHitsAggregationBuilder.build()));
@@ -1412,6 +1412,11 @@ public class OpenSearchAggregationTranslator
 	@Override
 	public org.opensearch.client.opensearch._types.aggregations.Aggregation
 		visit(ValueCountAggregation valueCountAggregation) {
+
+		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
+			aggregationBuilder =
+				new org.opensearch.client.opensearch._types.aggregations.
+					Aggregation.Builder();
 
 		org.opensearch.client.opensearch._types.aggregations.
 			ValueCountAggregation.Builder valueCountAggregationBuilder =
@@ -1426,11 +1431,6 @@ public class OpenSearchAggregationTranslator
 			valueCountAggregationBuilder::script,
 			valueCountAggregation.getScript());
 
-		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
-			aggregationBuilder =
-				new org.opensearch.client.opensearch._types.aggregations.
-					Aggregation.Builder();
-
 		return _translateChildAggregations(
 			valueCountAggregation,
 			aggregationBuilder.valueCount(
@@ -1440,6 +1440,11 @@ public class OpenSearchAggregationTranslator
 	@Override
 	public org.opensearch.client.opensearch._types.aggregations.Aggregation
 		visit(WeightedAvgAggregation weightedAvgAggregation) {
+
+		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
+			aggregationBuilder =
+				new org.opensearch.client.opensearch._types.aggregations.
+					Aggregation.Builder();
 
 		org.opensearch.client.opensearch._types.aggregations.
 			WeightedAverageAggregation.Builder
@@ -1466,11 +1471,6 @@ public class OpenSearchAggregationTranslator
 				weightedAvgAggregation.getWeightField(),
 				weightedAvgAggregation.getWeightMissing(),
 				weightedAvgAggregation.getWeightScript()));
-
-		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
-			aggregationBuilder =
-				new org.opensearch.client.opensearch._types.aggregations.
-					Aggregation.Builder();
 
 		return _translateChildAggregations(
 			weightedAvgAggregation,
