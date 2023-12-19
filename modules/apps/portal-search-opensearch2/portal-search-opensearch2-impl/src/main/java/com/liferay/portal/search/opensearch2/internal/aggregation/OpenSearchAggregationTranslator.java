@@ -133,6 +133,11 @@ public class OpenSearchAggregationTranslator
 	public org.opensearch.client.opensearch._types.aggregations.Aggregation
 		visit(AvgAggregation avgAggregation) {
 
+		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
+			aggregationBuilder =
+				new org.opensearch.client.opensearch._types.aggregations.
+					Aggregation.Builder();
+
 		AverageAggregation.Builder averageAggregationBuilder =
 			AggregationBuilders.avg();
 
@@ -142,11 +147,6 @@ public class OpenSearchAggregationTranslator
 			averageAggregationBuilder::missing, avgAggregation.getMissing());
 		SetterUtil.setNotNullScript(
 			averageAggregationBuilder::script, avgAggregation.getScript());
-
-		org.opensearch.client.opensearch._types.aggregations.Aggregation.Builder
-			aggregationBuilder =
-				new org.opensearch.client.opensearch._types.aggregations.
-					Aggregation.Builder();
 
 		return _translateChildAggregations(
 			avgAggregation,
