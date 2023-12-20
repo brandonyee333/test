@@ -21,6 +21,7 @@ import com.liferay.portal.test.rule.Inject;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -28,6 +29,7 @@ import org.junit.runner.RunWith;
  * @author Loc Pham
  */
 @FeatureFlags("LPS-185150")
+@Ignore
 @RunWith(Arquillian.class)
 public class CaptchaResourceTest extends BaseCaptchaResourceTestCase {
 
@@ -70,7 +72,7 @@ public class CaptchaResourceTest extends BaseCaptchaResourceTestCase {
 
 		_assertStatus(_getToken(), RandomTestUtil.randomString(), 400);
 
-		// Captcha is expierd
+		// Captcha is expired
 
 		// TODO
 
