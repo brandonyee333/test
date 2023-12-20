@@ -131,13 +131,6 @@ public class TestrayImporter {
 		for (Map.Entry<Long, TestrayBuild> testrayBuildEntry :
 				testrayBuildMap.entrySet()) {
 
-			String testrayBuildTitle = "Testray Build";
-
-			if (i > 0) {
-				testrayBuildTitle = JenkinsResultsParserUtil.combine(
-					testrayBuildTitle, " (", String.valueOf(i), ")");
-			}
-
 			String testrayRoutineTitle = "Testray Routine";
 
 			if (i > 0) {
@@ -148,6 +141,13 @@ public class TestrayImporter {
 			TestrayBuild testrayBuild = testrayBuildEntry.getValue();
 
 			TestrayRoutine testrayRoutine = testrayBuild.getTestrayRoutine();
+
+			String testrayBuildTitle = "Testray Build";
+
+			if (i > 0) {
+				testrayBuildTitle = JenkinsResultsParserUtil.combine(
+					testrayBuildTitle, " (", String.valueOf(i), ")");
+			}
 
 			Dom4JUtil.addToElement(
 				rootElement,
