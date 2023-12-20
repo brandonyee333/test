@@ -50,7 +50,8 @@ public class SyncReindexManagerImpl implements SyncReindexManager {
 				_getEntryClassNamesFilterQuery(entryClassNames));
 		}
 
-		booleanQuery.addFilterQueryClauses(_getTimeStampFilterQuery(date));
+		booleanQuery.addFilterQueryClauses(
+			_getTimeStampFilterBooleanQuery(date));
 
 		_searchEngineAdapter.execute(
 			new DeleteByQueryDocumentRequest(booleanQuery, indexName));
@@ -74,7 +75,7 @@ public class SyncReindexManagerImpl implements SyncReindexManager {
 		return termsQuery;
 	}
 
-	private BooleanQuery _getTimeStampFilterQuery(Date date) {
+	private BooleanQuery _getTimeStampFilterBooleanQuery(Date date) {
 		BooleanQuery booleanQuery = _queries.booleanQuery();
 
 		Format format = _fastDateFormatFactory.getSimpleDateFormat(
