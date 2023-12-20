@@ -6,13 +6,12 @@
 package com.liferay.captcha.rest.internal.resource.v1_0;
 
 import com.liferay.captcha.configuration.CaptchaConfiguration;
-import com.liferay.captcha.rest.dto.v1_0.SimpleCaptcha;
-import com.liferay.captcha.rest.resource.v1_0.SimpleCaptchaResource;
+import com.liferay.captcha.rest.dto.v1_0.Captcha;
+import com.liferay.captcha.rest.resource.v1_0.CaptchaResource;
 import com.liferay.captcha.simplecaptcha.SimpleCaptchaImpl;
 import com.liferay.captcha.util.CaptchaUtil;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.captcha.Captcha;
 import com.liferay.portal.kernel.captcha.CaptchaTextException;
 import com.liferay.portal.kernel.encryptor.EncryptorUtil;
 import com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil;
@@ -35,23 +34,25 @@ import org.osgi.service.component.annotations.ServiceScope;
  * @author Loc Pham
  */
 @Component(
-	properties = "OSGI-INF/liferay/rest/v1_0/simple-captcha.properties",
-	scope = ServiceScope.PROTOTYPE, service = SimpleCaptchaResource.class
+	properties = "OSGI-INF/liferay/rest/v1_0/captcha.properties",
+	scope = ServiceScope.PROTOTYPE, service = CaptchaResource.class
 )
-public class SimpleCaptchaResourceImpl extends BaseSimpleCaptchaResourceImpl {
+public class CaptchaResourceImpl extends BaseCaptchaResourceImpl {
 
 	@Override
-	public SimpleCaptcha getSimpleCaptchaChallenge() throws Exception {
-		_checkSimpleCaptchaConfiguration();
+	public Captcha getCaptchaChallenge() throws Exception {
+		_checkCaptchaConfiguration();
 
-		Captcha captcha = CaptchaUtil.getCaptcha();
+		com.liferay.portal.kernel.captcha.Captcha kernelCaptcha =
+			CaptchaUtil.getCaptcha();
 
 		try (ByteArrayOutputStream byteArrayOutputStream =
 				new ByteArrayOutputStream()) {
 
-			String expectedAnswer = captcha.serveImage(byteArrayOutputStream);
+			String expectedAnswer = kernelCaptcha.serveImage(
+				byteArrayOutputStream);
 
-			return new SimpleCaptcha() {
+			return new Captcha() {
 				{
 					image =
 						"data:image/png;base64," +
@@ -75,20 +76,18 @@ public class SimpleCaptchaResourceImpl extends BaseSimpleCaptchaResourceImpl {
 	}
 
 	@Override
-	public void postSimpleCaptchaResponse(SimpleCaptcha simpleCaptcha)
-		throws Exception {
-
-		_checkSimpleCaptchaConfiguration();
+	public void postCaptchaResponse(Captcha captcha) throws Exception {
+		_checkCaptchaConfiguration();
 
 		JSONObject jsonObject = _jsonFactory.createJSONObject(
 			EncryptorUtil.decrypt(
-				contextCompany.getKeyObj(), simpleCaptcha.getToken()));
+				contextCompany.getKeyObj(), captcha.getToken()));
 
 		if (!jsonObject.has("answer") || !jsonObject.has("expiryTime") ||
 			!NonceUtil.verify(jsonObject.getString("nonce"))) {
 
 			throw new IllegalArgumentException(
-				"Token: " + simpleCaptcha.getToken());
+				"Token: " + captcha.getToken());
 		}
 
 		long expiryTime = jsonObject.getLong("expiryTime");
@@ -98,13 +97,13 @@ public class SimpleCaptchaResourceImpl extends BaseSimpleCaptchaResourceImpl {
 		}
 
 		if (!StringUtil.equalsIgnoreCase(
-				jsonObject.getString("answer"), simpleCaptcha.getAnswer())) {
+				jsonObject.getString("answer"), captcha.getAnswer())) {
 
 			throw new CaptchaTextException("Invalid answer");
 		}
 	}
 
-	private void _checkSimpleCaptchaConfiguration() throws Exception {
+	private void _checkCaptchaConfiguration() throws Exception {
 		if (!FeatureFlagManagerUtil.isEnabled("LPS-185150")) {
 			throw new UnsupportedOperationException();
 		}

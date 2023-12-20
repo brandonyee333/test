@@ -6,9 +6,9 @@
 package com.liferay.captcha.rest.resource.v1_0.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.captcha.rest.client.dto.v1_0.SimpleCaptcha;
+import com.liferay.captcha.rest.client.dto.v1_0.Captcha;
 import com.liferay.captcha.rest.client.http.HttpInvoker;
-import com.liferay.captcha.rest.client.resource.v1_0.SimpleCaptchaResource;
+import com.liferay.captcha.rest.client.resource.v1_0.CaptchaResource;
 import com.liferay.portal.kernel.encryptor.EncryptorUtil;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -28,21 +28,18 @@ import org.junit.runner.RunWith;
  */
 @FeatureFlags("LPS-185150")
 @RunWith(Arquillian.class)
-public class SimpleCaptchaResourceTest
-	extends BaseSimpleCaptchaResourceTestCase {
+public class CaptchaResourceTest extends BaseCaptchaResourceTestCase {
 
 	@Override
 	@Test
-	public void testGetSimpleCaptchaChallenge() throws Exception {
-		SimpleCaptchaResource.Builder builder = SimpleCaptchaResource.builder();
+	public void testGetCaptchaChallenge() throws Exception {
+		CaptchaResource.Builder builder = CaptchaResource.builder();
 
-		SimpleCaptchaResource simpleCaptchaResourceForGuestAccess =
-			builder.build();
+		CaptchaResource captchaResourceForGuestAccess = builder.build();
 
-		SimpleCaptcha simpleCaptcha =
-			simpleCaptchaResourceForGuestAccess.getSimpleCaptchaChallenge();
+		Captcha captcha = captchaResourceForGuestAccess.getCaptchaChallenge();
 
-		String token = simpleCaptcha.getToken();
+		String token = captcha.getToken();
 
 		Assert.assertNotNull("CaptchaToken was not returned", token);
 
@@ -59,7 +56,7 @@ public class SimpleCaptchaResourceTest
 				System.currentTimeMillis());
 
 		String base64Header = "data:image/png;base64,";
-		String base64CaptchaImage = simpleCaptcha.getImage();
+		String base64CaptchaImage = captcha.getImage();
 
 		Assert.assertEquals(
 			"Expected image data to start with \"" + base64Header + "\"",
@@ -75,10 +72,10 @@ public class SimpleCaptchaResourceTest
 
 	@Override
 	@Test
-	public void testPostSimpleCaptchaResponse() throws Exception {
+	public void testPostCaptchaResponse() throws Exception {
 		String token = _getToken();
 
-		SimpleCaptchaResource.Builder builder = SimpleCaptchaResource.builder();
+		CaptchaResource.Builder builder = CaptchaResource.builder();
 
 		_assertStatus(
 			token, RandomTestUtil.randomString(10), 400, builder.build());
@@ -91,7 +88,7 @@ public class SimpleCaptchaResourceTest
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			EncryptorUtil.decrypt(testCompany.getKeyObj(), token));
 
-		SimpleCaptchaResource.Builder builder = SimpleCaptchaResource.builder();
+		CaptchaResource.Builder builder = CaptchaResource.builder();
 
 		_assertStatus(
 			token, jsonObject.getString("answer"), 204, builder.build());
@@ -102,31 +99,28 @@ public class SimpleCaptchaResourceTest
 
 	private void _assertStatus(
 			String captchaToken, String answer, int status,
-			SimpleCaptchaResource captchaResource)
+			CaptchaResource captchaResource)
 		throws Exception {
 
-		SimpleCaptcha simpleCaptcha = new SimpleCaptcha();
+		Captcha captcha = new Captcha();
 
-		simpleCaptcha.setToken(captchaToken);
-		simpleCaptcha.setAnswer(answer);
+		captcha.setToken(captchaToken);
+		captcha.setAnswer(answer);
 
 		HttpInvoker.HttpResponse httpResponse =
-			captchaResource.postSimpleCaptchaResponseHttpResponse(
-				simpleCaptcha);
+			captchaResource.postCaptchaResponseHttpResponse(captcha);
 
 		Assert.assertEquals(status, httpResponse.getStatusCode());
 	}
 
 	private String _getToken() throws Exception {
-		SimpleCaptchaResource.Builder builder = SimpleCaptchaResource.builder();
+		CaptchaResource.Builder builder = CaptchaResource.builder();
 
-		SimpleCaptchaResource simpleCaptchaResourceForGuestAccess =
-			builder.build();
+		CaptchaResource captchaResourceForGuestAccess = builder.build();
 
-		SimpleCaptcha simpleCaptcha =
-			simpleCaptchaResourceForGuestAccess.getSimpleCaptchaChallenge();
+		Captcha captcha = captchaResourceForGuestAccess.getCaptchaChallenge();
 
-		return simpleCaptcha.getToken();
+		return captcha.getToken();
 	}
 
 	@Inject

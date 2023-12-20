@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Quan Huynh
  */
 @Component(service = PortalInstanceLifecycleListener.class)
-public class SimpleCaptchaSAPEntryPortalInstanceLifecycleListener
+public class CaptchaSAPEntryPortalInstanceLifecycleListener
 	extends BasePortalInstanceLifecycleListener {
 
 	@Override
@@ -68,7 +68,7 @@ public class SimpleCaptchaSAPEntryPortalInstanceLifecycleListener
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SimpleCaptchaSAPEntryPortalInstanceLifecycleListener.class);
+		CaptchaSAPEntryPortalInstanceLifecycleListener.class);
 
 	@Reference
 	private SAPEntryLocalService _sapEntryLocalService;
