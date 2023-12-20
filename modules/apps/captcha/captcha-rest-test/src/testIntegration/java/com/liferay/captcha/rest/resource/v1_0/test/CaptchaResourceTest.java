@@ -65,11 +65,17 @@ public class CaptchaResourceTest extends BaseCaptchaResourceTestCase {
 	@Override
 	@Test
 	public void testPostCaptchaResponse() throws Exception {
-		_assertStatus(_getToken(), RandomTestUtil.randomString(10), 400);
-	}
 
-	@Test
-	public void testStatelessCaptcha() throws Exception {
+		// Answer is invalid
+
+		_assertStatus(_getToken(), RandomTestUtil.randomString(), 400);
+
+		// Captcha is expierd
+
+		// TODO
+
+		// Nonce
+
 		String token = _getToken();
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
