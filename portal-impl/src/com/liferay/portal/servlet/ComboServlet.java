@@ -194,7 +194,7 @@ public class ComboServlet extends HttpServlet {
 			httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
 			if (_log.isWarnEnabled()) {
-				_log.warn("ComboServlet request exceeded maximum file count");
+				_log.warn("Request exceeds maximum number of files");
 			}
 
 			return;
