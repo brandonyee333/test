@@ -5,6 +5,9 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.configuration.util.ObjectConfigurationUtil;
+import com.liferay.object.constants.ObjectValidationRuleConstants;
+import com.liferay.object.exception.ObjectValidationRuleEngineException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectValidationRule;
 import com.liferay.object.model.ObjectValidationRuleSetting;
@@ -12,11 +15,13 @@ import com.liferay.object.service.base.ObjectValidationRuleServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -45,6 +50,8 @@ public class ObjectValidationRuleServiceImpl
 
 		_objectDefinitionModelResourcePermission.check(
 			getPermissionChecker(), objectDefinitionId, ActionKeys.UPDATE);
+
+		_validateConfigurationExecuteScript(engine, getPermissionChecker());
 
 		return objectValidationRuleLocalService.addObjectValidationRule(
 			externalReferenceCode, getUserId(), objectDefinitionId, active,
@@ -102,10 +109,26 @@ public class ObjectValidationRuleServiceImpl
 			getPermissionChecker(),
 			objectValidationRule.getObjectDefinitionId(), ActionKeys.UPDATE);
 
+		_validateConfigurationExecuteScript(engine, getPermissionChecker());
+
 		return objectValidationRuleLocalService.updateObjectValidationRule(
 			externalReferenceCode, objectValidationRuleId, active, engine,
 			errorLabelMap, nameMap, outputType, script,
 			objectValidationRuleSettings);
+	}
+
+	private void _validateConfigurationExecuteScript(
+			String engine, PermissionChecker permissionChecker)
+		throws PortalException {
+
+		if (Objects.equals(
+				engine, ObjectValidationRuleConstants.ENGINE_TYPE_GROOVY) &&
+			!ObjectConfigurationUtil.hasPermissionExecuteScript(
+				permissionChecker)) {
+
+			throw new ObjectValidationRuleEngineException.
+				MustHavePermissionEngineGroovy();
+		}
 	}
 
 	@Reference(

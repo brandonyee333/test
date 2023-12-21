@@ -5,17 +5,22 @@
 
 package com.liferay.object.service.impl;
 
+import com.liferay.object.configuration.util.ObjectConfigurationUtil;
+import com.liferay.object.constants.ObjectActionExecutorConstants;
+import com.liferay.object.exception.ObjectActionExecutorKeyException;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.base.ObjectActionServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -44,6 +49,9 @@ public class ObjectActionServiceImpl extends ObjectActionServiceBaseImpl {
 
 		_objectDefinitionModelResourcePermission.check(
 			getPermissionChecker(), objectDefinitionId, ActionKeys.UPDATE);
+
+		_validateConfigurationExecuteScript(
+			objectActionExecutorKey, getPermissionChecker());
 
 		return objectActionLocalService.addObjectAction(
 			externalReferenceCode, getUserId(), objectDefinitionId, active,
@@ -97,11 +105,30 @@ public class ObjectActionServiceImpl extends ObjectActionServiceBaseImpl {
 			getPermissionChecker(), objectAction.getObjectDefinitionId(),
 			ActionKeys.UPDATE);
 
+		_validateConfigurationExecuteScript(
+			objectActionExecutorKey, getPermissionChecker());
+
 		return objectActionLocalService.updateObjectAction(
 			externalReferenceCode, objectActionId, active, conditionExpression,
 			description, errorMessageMap, labelMap, name,
 			objectActionExecutorKey, objectActionTriggerKey,
 			parametersUnicodeProperties);
+	}
+
+	private void _validateConfigurationExecuteScript(
+			String objectActionExecutorKey, PermissionChecker permissionChecker)
+		throws PortalException {
+
+		if (Objects.equals(
+				objectActionExecutorKey,
+				ObjectActionExecutorConstants.KEY_GROOVY) &&
+			!ObjectConfigurationUtil.hasPermissionExecuteScript(
+				permissionChecker)) {
+
+			throw new ObjectActionExecutorKeyException(
+				"The user must have permission to choose object action " +
+					"executor key Groovy");
+		}
 	}
 
 	@Reference(

@@ -8,11 +8,13 @@ package com.liferay.object.web.internal.object.definitions.display.context;
 import com.liferay.frontend.data.set.model.FDSActionDropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.learn.LearnMessageUtil;
+import com.liferay.object.configuration.util.ObjectConfigurationUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectValidationRuleConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectValidationRule;
 import com.liferay.object.validation.rule.ObjectValidationRuleEngineRegistry;
+import com.liferay.object.web.internal.display.context.helper.ObjectRequestHelper;
 import com.liferay.object.web.internal.object.definitions.display.context.util.ObjectCodeEditorUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.transform.TransformUtil;
@@ -23,6 +25,7 @@ import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -47,6 +50,8 @@ public class ObjectDefinitionsValidationsDisplayContext
 
 		_objectValidationRuleEngineRegistry =
 			objectValidationRuleEngineRegistry;
+
+		_objectRequestHelper = new ObjectRequestHelper(httpServletRequest);
 	}
 
 	public String getEditObjectValidationURL() throws Exception {
@@ -82,15 +87,27 @@ public class ObjectDefinitionsValidationsDisplayContext
 				"delete", "delete", "async"));
 	}
 
-	public List<Map<String, String>> getObjectValidationRuleEngines() {
+	public List<Map<String, String>> getObjectValidationRuleEngines()
+		throws PortalException {
+
 		ObjectDefinition objectDefinition = getObjectDefinition();
+
+		boolean hasPermissionExecuteScript =
+			ObjectConfigurationUtil.hasPermissionExecuteScript(
+				_objectRequestHelper.getPermissionChecker());
 
 		return ListUtil.sort(
 			TransformUtil.transform(
-				_objectValidationRuleEngineRegistry.
-					getObjectValidationRuleEngines(
-						objectDefinition.getCompanyId(),
-						objectDefinition.getName()),
+				ListUtil.filter(
+					_objectValidationRuleEngineRegistry.
+						getObjectValidationRuleEngines(
+							objectDefinition.getCompanyId(),
+							objectDefinition.getName()),
+					objectValidationRuleEngine ->
+						!StringUtil.equals(
+							objectValidationRuleEngine.getKey(),
+							ObjectValidationRuleConstants.ENGINE_TYPE_GROOVY) ||
+						hasPermissionExecuteScript),
 				objectValidationRuleEngine -> HashMapBuilder.put(
 					"key", objectValidationRuleEngine.getKey()
 				).put(
@@ -165,6 +182,7 @@ public class ObjectDefinitionsValidationsDisplayContext
 				ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION));
 	}
 
+	private final ObjectRequestHelper _objectRequestHelper;
 	private final ObjectValidationRuleEngineRegistry
 		_objectValidationRuleEngineRegistry;
 

@@ -13,6 +13,7 @@ import com.liferay.object.action.executor.ObjectActionExecutorRegistry;
 import com.liferay.object.action.trigger.ObjectActionTrigger;
 import com.liferay.object.action.trigger.ObjectActionTriggerRegistry;
 import com.liferay.object.admin.rest.dto.v1_0.util.ObjectActionUtil;
+import com.liferay.object.configuration.util.ObjectConfigurationUtil;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.constants.ObjectFieldConstants;
@@ -20,9 +21,11 @@ import com.liferay.object.constants.ObjectWebKeys;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.object.web.internal.display.context.helper.ObjectRequestHelper;
 import com.liferay.object.web.internal.object.definitions.display.context.util.ObjectCodeEditorUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -62,6 +65,8 @@ public class ObjectDefinitionsActionsDisplayContext
 		_objectActionExecutorRegistry = objectActionExecutorRegistry;
 		_objectActionTriggerRegistry = objectActionTriggerRegistry;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
+
+		_objectRequestHelper = new ObjectRequestHelper(httpServletRequest);
 	}
 
 	public String getEditObjectActionURL() throws Exception {
@@ -128,7 +133,9 @@ public class ObjectDefinitionsActionsDisplayContext
 			objectAction.getObjectActionExecutorKey());
 	}
 
-	public JSONArray getObjectActionExecutorsJSONArray() {
+	public JSONArray getObjectActionExecutorsJSONArray()
+		throws PortalException {
+
 		JSONArray objectActionExecutorsJSONArray =
 			_jsonFactory.createJSONArray();
 
@@ -143,6 +150,15 @@ public class ObjectDefinitionsActionsDisplayContext
 				StringUtil.equals(
 					objectActionExecutor.getKey(),
 					ObjectActionExecutorConstants.KEY_UPDATE_OBJECT_ENTRY)) {
+
+				continue;
+			}
+
+			if (StringUtil.equals(
+					objectActionExecutor.getKey(),
+					ObjectActionExecutorConstants.KEY_GROOVY) &&
+				!ObjectConfigurationUtil.hasPermissionExecuteScript(
+					_objectRequestHelper.getPermissionChecker())) {
 
 				continue;
 			}
@@ -311,5 +327,6 @@ public class ObjectDefinitionsActionsDisplayContext
 	private final ObjectActionExecutorRegistry _objectActionExecutorRegistry;
 	private final ObjectActionTriggerRegistry _objectActionTriggerRegistry;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
+	private final ObjectRequestHelper _objectRequestHelper;
 
 }
