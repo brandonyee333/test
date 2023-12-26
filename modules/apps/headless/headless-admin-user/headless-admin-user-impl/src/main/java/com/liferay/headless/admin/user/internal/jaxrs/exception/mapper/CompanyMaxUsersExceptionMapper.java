@@ -34,7 +34,7 @@ public class CompanyMaxUsersExceptionMapper
 
 		return new Problem(
 			Response.Status.BAD_REQUEST,
-			"Cannot add a user to company. Max users limit reached.");
+			"Unable add any more users to the company.");
 	}
 
 }
