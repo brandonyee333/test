@@ -533,7 +533,7 @@ public class UserNotificationEventLocalServiceImpl
 
 	@Override
 	public int getUserNotificationEventsCount(
-		long userId, String type, boolean delivered, long timestamp) {
+		long userId, String type, long timestamp, boolean delivered) {
 
 		return dslQueryCount(
 			DSLQueryFactoryUtil.countDistinct(
@@ -546,9 +546,9 @@ public class UserNotificationEventLocalServiceImpl
 				).and(
 					UserNotificationEventTable.INSTANCE.type.eq(type)
 				).and(
-					UserNotificationEventTable.INSTANCE.delivered.eq(delivered)
-				).and(
 					UserNotificationEventTable.INSTANCE.timestamp.gte(timestamp)
+				).and(
+					UserNotificationEventTable.INSTANCE.delivered.eq(delivered)
 				)
 			));
 	}
