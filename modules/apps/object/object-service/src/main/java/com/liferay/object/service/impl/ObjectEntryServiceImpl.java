@@ -607,7 +607,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 			).toInstant());
 	}
 
-	private void _sendNotificationEventsToAdministratorUsers(
+	private void _sendUserNotificationEvents(
 			ObjectDefinition objectDefinition)
 		throws PortalException {
 
@@ -716,7 +716,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 			if (count >=
 					maximumNumberOfGuestUserObjectEntriesPerObjectDefinition) {
 
-				_sendNotificationEventsToAdministratorUsers(objectDefinition);
+				_sendUserNotificationEvents(objectDefinition);
 
 				throw new ObjectEntryCountException(
 					Collections.singletonList(objectDefinition.getLabel()),
