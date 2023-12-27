@@ -501,6 +501,7 @@ type UserAccount = {
 	name: string;
 	newsSubscription: boolean;
 	password: string;
+	roleBriefs: {id: number; name: string}[];
 };
 
 type RequestBody = {
