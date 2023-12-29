@@ -43,7 +43,7 @@ public class ViewOrphanPortletsMVCRenderCommand implements MVCRenderCommand {
 				_portal.getLiferayPortletResponse(renderResponse),
 				_portletRegistry));
 
-		return "/orphan_portlets.jsp";
+		return "/view_orphan_portlets.jsp";
 	}
 
 	@Reference
