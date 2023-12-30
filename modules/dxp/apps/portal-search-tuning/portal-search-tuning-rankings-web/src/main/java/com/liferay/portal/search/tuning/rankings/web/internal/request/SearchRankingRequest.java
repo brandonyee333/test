@@ -87,6 +87,7 @@ public class SearchRankingRequest {
 
 	private BooleanQuery _getBooleanQuery() {
 		BooleanQuery booleanQuery = _queries.booleanQuery();
+
 		String keywords = _searchContext.getKeywords();
 		String scope = GetterUtil.getString(
 			_httpServletRequest.getParameter("scope"), "all");
