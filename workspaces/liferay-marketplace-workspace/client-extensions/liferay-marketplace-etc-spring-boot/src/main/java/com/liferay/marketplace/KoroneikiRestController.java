@@ -142,11 +142,11 @@ public class KoroneikiRestController extends BaseRestController {
 				);
 			}
 
-			String licenseUsageType = _getDXPLicenseUsageType(
+			String dxpLicenseUsageType = _getDXPLicenseUsageType(
 				orderItem.getOptions());
 
-			if (licenseUsageType == null) {
-				licenseUsageType = orderItem.getSkuExternalReferenceCode();
+			if (dxpLicenseUsageType == null) {
+				dxpLicenseUsageType = orderItem.getSkuExternalReferenceCode();
 			}
 
 			int provisionedCount = 0;
@@ -177,7 +177,7 @@ public class KoroneikiRestController extends BaseRestController {
 				).put(
 					"endDate", endDate
 				).put(
-					"name", licenseUsageType
+					"name", dxpLicenseUsageType
 				).put(
 					"perpetual", productPurchase.getPerpetual()
 				).put(
@@ -216,13 +216,13 @@ public class KoroneikiRestController extends BaseRestController {
 					product.getProductId(), Pagination.of(1, 10)
 				).getItems()) {
 
-			String licenseUsageType = _getDXPLicenseUsageType(
+			String dxpLicenseUsageType = _getDXPLicenseUsageType(
 				sku.getSkuOptions());
 
 			if (sku.getExternalReferenceCode(
 				).startsWith(
 					"KOR-"
-				) || (licenseUsageType == null)) {
+				) || (dxpLicenseUsageType == null)) {
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
@@ -238,7 +238,7 @@ public class KoroneikiRestController extends BaseRestController {
 				"en_US"
 			);
 
-			String name = productName + " - " + licenseUsageType;
+			String name = productName + " - " + dxpLicenseUsageType;
 
 			com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page
 				<com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product>
