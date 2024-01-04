@@ -76,15 +76,15 @@ public class UpgradeModulesFactoryTest {
 	public void testUpgradeFromExistingNullRelease() throws UpgradeException {
 		_releaseLocalService.addRelease(_SERVLET_CONTEXT_NAME, null);
 
-		_testAndAssert();
+		_test();
 	}
 
 	@Test
 	public void testUpgradeFromNonexistingRelease() throws UpgradeException {
-		_testAndAssert();
+		_test();
 	}
 
-	private void _testAndAssert() throws UpgradeException {
+	private void _test() throws UpgradeException {
 		UpgradeProcess upgradeProcess = UpgradeModulesFactory.create(
 			new String[] {_SERVLET_CONTEXT_NAME}, null);
 
