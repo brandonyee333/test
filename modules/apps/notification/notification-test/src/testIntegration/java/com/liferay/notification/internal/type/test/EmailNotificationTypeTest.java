@@ -62,7 +62,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -523,7 +522,7 @@ public class EmailNotificationTypeTest extends BaseNotificationTypeTest {
 		}
 	}
 
-	private static LinkedHashMap<String, Object> _freeMarkTermValues;
+	private static Map<String, Object> _freeMarkTermValues;
 
 	@Inject
 	private GroupLocalService _groupLocalService;
