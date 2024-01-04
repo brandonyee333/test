@@ -285,10 +285,9 @@ public class GitHubPullRequest {
 
 		GitHubClient gitHubClient = getGitHubClient();
 
-		String response = gitHubClient.requestPatch(
-			getAPIURL(), requestJSONObject);
-
-		JSONObject responseJSONObject = new JSONObject(response);
+		JSONObject responseJSONObject = new JSONObject(
+			gitHubClient.requestPatch(
+				getAPIURL(), requestJSONObject));
 
 		JSONArray errorsJSONArray = responseJSONObject.optJSONArray("errors");
 
