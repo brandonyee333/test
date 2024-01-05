@@ -465,7 +465,7 @@ public class AsyncAntivirusDLStoreTest {
 		_withAsyncAntivirusConfiguration(
 			5, "0 0/10 * * * ?", true,
 			() -> {
-				ServiceReference<?>[] references =
+				ServiceReference<?>[] serviceReferences =
 					_bundleContext.getServiceReferences(
 						DynamicMBean.class.toString(),
 						"(component.name=" +
@@ -475,7 +475,7 @@ public class AsyncAntivirusDLStoreTest {
 				AntivirusAsyncStatisticsManagerMBean
 					antivirusAsyncStatisticsManagerMBean =
 						(AntivirusAsyncStatisticsManagerMBean)
-							_bundleContext.getService(references[0]);
+							_bundleContext.getService(serviceReferences[0]);
 
 				Assert.assertNotNull(antivirusAsyncStatisticsManagerMBean);
 
