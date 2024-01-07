@@ -213,9 +213,7 @@ public class ObjectEntryOpenAPIContributor extends BaseOpenAPIContributor {
 		}
 
 		_setBatchUnsupportedFormats(objectDefinitionSchemaProperties);
-
 		_setListEntryRef(schemas);
-
 		_setReadOnlyProperties(schemas);
 	}
 
@@ -708,21 +706,23 @@ public class ObjectEntryOpenAPIContributor extends BaseOpenAPIContributor {
 
 	private void _setBatchUnsupportedFormats(Map<String, Schema> properties) {
 		for (Map.Entry<String, Schema> entry : properties.entrySet()) {
-			if (_batchUnsupportedFormats.containsKey(entry.getKey())) {
-				Schema schema = entry.getValue();
-
-				Map<String, Object> extensions = schema.getExtensions();
-
-				if (MapUtil.isEmpty(extensions)) {
-					extensions = new HashMap<>();
-				}
-
-				extensions.put(
-					"x-batch-unsupported-formats",
-					_batchUnsupportedFormats.get(entry.getKey()));
-
-				schema.setExtensions(extensions);
+			if (!_batchUnsupportedFormats.containsKey(entry.getKey())) {
+				continue;
 			}
+
+			Schema schema = entry.getValue();
+
+			Map<String, Object> extensions = schema.getExtensions();
+
+			if (MapUtil.isEmpty(extensions)) {
+				extensions = new HashMap<>();
+			}
+
+			extensions.put(
+				"x-batch-unsupported-formats",
+				_batchUnsupportedFormats.get(entry.getKey()));
+
+			schema.setExtensions(extensions);
 		}
 	}
 
