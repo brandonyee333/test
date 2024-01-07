@@ -139,6 +139,12 @@ public class APIApplicationOpenApiContributor implements OpenAPIContributor {
 
 			paths.put(_formatPath(endpoint), _toOpenAPIPathItem(endpoint));
 
+			APIApplication.Schema requestSchema = endpoint.getRequestSchema();
+
+			if (requestSchema != null) {
+				schemasSet.add(requestSchema.getName());
+			}
+
 			APIApplication.Schema responseSchema = endpoint.getResponseSchema();
 
 			if (responseSchema != null) {
@@ -151,12 +157,6 @@ public class APIApplicationOpenApiContributor implements OpenAPIContributor {
 				else {
 					schemasSet.add(responseSchema.getName());
 				}
-			}
-
-			APIApplication.Schema requestSchema = endpoint.getRequestSchema();
-
-			if (requestSchema != null) {
-				schemasSet.add(requestSchema.getName());
 			}
 		}
 
