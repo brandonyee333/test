@@ -413,7 +413,7 @@ public class JournalEditArticleDisplayContext {
 		).build();
 	}
 
-	public DDMFormValues getDDMFormValues() throws PortalException {
+	public DDMFormValues getDDMFormValues() {
 		if (_ddmFormValues != null) {
 			return _ddmFormValues;
 		}
@@ -436,11 +436,13 @@ public class JournalEditArticleDisplayContext {
 				JournalArticleConstants.CLASS_NAME_ID_DEFAULT)) {
 
 			JournalArticle ddmStructureArticle =
-				JournalArticleServiceUtil.getArticle(
+				JournalArticleLocalServiceUtil.fetchArticle(
 					ddmStructure.getGroupId(), DDMStructure.class.getName(),
 					ddmStructure.getStructureId());
 
-			ddmFormValues = ddmStructureArticle.getDDMFormValues();
+			if (ddmStructureArticle != null) {
+				ddmFormValues = ddmStructureArticle.getDDMFormValues();
+			}
 		}
 
 		if (ddmFormValues != null) {
