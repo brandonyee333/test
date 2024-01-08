@@ -52,6 +52,9 @@ public class ThemeCSSCETImplFactoryImpl
 			"clayURL", ParamUtil.getString(portletRequest, "clayURL")
 		).put(
 			"mainURL", ParamUtil.getString(portletRequest, "mainURL")
+		).put(
+			"frontendTokenDefinition",
+			ParamUtil.getString(portletRequest, "frontendTokenDefinition")
 		).build();
 	}
 
