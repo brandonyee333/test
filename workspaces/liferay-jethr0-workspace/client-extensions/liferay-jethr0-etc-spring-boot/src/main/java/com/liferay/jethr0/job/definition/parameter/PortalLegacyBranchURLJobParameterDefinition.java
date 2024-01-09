@@ -36,8 +36,8 @@ public class PortalLegacyBranchURLJobParameterDefinition
 	@Override
 	public String getValueDescription() {
 		return StringUtil.combine(
-			"e.g. https://github.com/[user]/liferay-qa-portal-legacy-ee/",
-			"tree/[branch]");
+			"e.g. https://github.com/[user]/liferay-qa-portal-legacy-ee",
+			"/tree/[branch]");
 	}
 
 	@Override
