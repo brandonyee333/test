@@ -29,6 +29,8 @@ definition {
 
 	@priority = 5
 	test CanBeInvitedToCollaborateOnMultiplePublications {
+		property portal.acceptance = "brooke";
+
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",
 			userFirstName = "userfn",
