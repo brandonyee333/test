@@ -43,6 +43,7 @@ import {ObjectRelationshipEdgeData} from './types';
 import {updatePreviousURLParam} from './utils';
 
 import './EditObjectFolder.scss';
+import {ModalMoveObjectDefinition} from '../ViewObjectDefinitions/ModalMoveObjectDefinition';
 
 interface EditObjectFolder {
 	companies: Scope[];
@@ -66,6 +67,7 @@ export default function EditObjectFolder({
 			isLoadingObjectFolder,
 			leftSidebarItems,
 			modelBuilderModals,
+			movedObjectDefinitionId,
 			objectDefinitionsStorageTypes,
 			objectFolderName,
 			objectFolders,
@@ -155,7 +157,7 @@ export default function EditObjectFolder({
 			type: TYPES.SET_LOADING_OBJECT_FOLDER,
 		});
 
-		const updateModelBuilderStructure = async () => {
+		const makeFetch = async () => {
 			const payload = await getUpdatedModelBuilderStructurePayload(
 				baseResourceURL,
 				objectFolderName
@@ -174,7 +176,7 @@ export default function EditObjectFolder({
 			});
 		};
 
-		updateModelBuilderStructure();
+		makeFetch();
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [objectFolderName]);
@@ -462,6 +464,32 @@ export default function EditObjectFolder({
 					name={selectedObjectFolder.name}
 				/>
 			)}
+
+			{modelBuilderModals.moveObjectDefinition &&
+				movedObjectDefinitionId && (
+					<ModalMoveObjectDefinition
+						handleOnClose={() => {
+							dispatch({
+								payload: {
+									updatedModelBuilderModals: {
+										moveObjectDefinition: false,
+									},
+								},
+								type:
+									TYPES.UPDATE_VISIBILITY_MODEL_BUILDER_MODALS,
+							});
+						}}
+						objectDefinitionId={movedObjectDefinitionId}
+						objectFolders={objectFolders}
+						selectedObjectFolder={selectedObjectFolder}
+						setMoveObjectDefinition={() => {
+							dispatch({
+								payload: {movedObjectDefinitionId: undefined},
+								type: TYPES.SET_MOVED_OBJECT_DEFINITION,
+							});
+						}}
+					/>
+				)}
 
 			{modelBuilderModals.publishObjectDefinitions && (
 				<ModalPublishObjectDefinitions

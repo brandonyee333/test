@@ -78,6 +78,7 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 							objectDefinitionId: newObjectDefinition.id,
 							objectDefinitionName: newObjectDefinition.name,
 							objectDefinitionPermissionsURL,
+							objectFoldersLenght: objectFolders.length,
 							status: newObjectDefinition.status,
 						});
 
@@ -449,6 +450,7 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 				selectedObjectRelationshipId,
 			} = action.payload;
 			const {baseResourceURL, objectDefinitionPermissionsURL} = state;
+
 			const newLeftSidebarItems = objectFolders.map((objectFolder) => {
 				const leftSidebarObjectDefinitionItems = objectFolder.objectDefinitions?.map(
 					(objectDefinition) => {
@@ -462,6 +464,7 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 							objectDefinitionId: objectDefinition.id,
 							objectDefinitionName: objectDefinition.name,
 							objectDefinitionPermissionsURL,
+							objectFoldersLenght: objectFolders.length,
 							status: objectDefinition.status,
 						});
 
@@ -633,6 +636,7 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 					...newObjectRelationshipEdges,
 				],
 				leftSidebarItems: newLeftSidebarItems,
+				objectFolders,
 				selectedObjectFolder: selectedObjectFolder as ObjectFolder,
 				selectedObjectRelationship: null,
 			};
@@ -708,6 +712,15 @@ export function ObjectFolderReducer(state: TState, action: TAction): TState {
 			return {
 				...state,
 				elements: newElements,
+			};
+		}
+
+		case TYPES.SET_MOVED_OBJECT_DEFINITION: {
+			const {movedObjectDefinitionId} = action.payload;
+
+			return {
+				...state,
+				movedObjectDefinitionId: movedObjectDefinitionId as number,
 			};
 		}
 
