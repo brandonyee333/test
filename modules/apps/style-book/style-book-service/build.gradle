@@ -11,6 +11,9 @@ dependencies {
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.http.servlet-api", version: "1.1.2"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.4.0"
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
+	compileOnly project(":apps:client-extension:client-extension-type-api")
+	compileOnly project(":apps:frontend-token:frontend-token-definition-api")
+	compileOnly project(":core:osgi-service-tracker-collections")
 	compileOnly project(":apps:change-tracking:change-tracking-spi")
 	compileOnly project(":apps:document-library:document-library-api")
 	compileOnly project(":apps:export-import:export-import-api")

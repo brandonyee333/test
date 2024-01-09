@@ -29,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.liferay.style.book.register.CETFrontendTokenDefinitionRegistry;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleEvent;
@@ -48,6 +49,7 @@ public class FrontendTokenDefinitionRegistryImpl
 
 	@Override
 	public FrontendTokenDefinition getFrontendTokenDefinition(String themeId) {
+		_cetFrontendTokenDefinitionRegistry.getTokenDefinition("test");
 		Map<String, FrontendTokenDefinitionImpl>
 			themeIdFrontendTokenDefinitionImpls =
 				_themeIdFrontendTokenDefinitionImplsDCLSingleton.getSingleton(
@@ -167,6 +169,10 @@ public class FrontendTokenDefinitionRegistryImpl
 	@Reference
 	protected Portal portal;
 
+	@Reference
+	private CETFrontendTokenDefinitionRegistry
+		_cetFrontendTokenDefinitionRegistry;
+
 	private String _getFrontendTokenDefinitionJSON(Bundle bundle) {
 		URL url = bundle.getEntry("WEB-INF/frontend-token-definition.json");
 
@@ -237,5 +243,6 @@ public class FrontendTokenDefinitionRegistryImpl
 		_themeIdFrontendTokenDefinitionImpls = new ConcurrentHashMap<>();
 	private final DCLSingleton<Map<String, FrontendTokenDefinitionImpl>>
 		_themeIdFrontendTokenDefinitionImplsDCLSingleton = new DCLSingleton<>();
+
 
 }
