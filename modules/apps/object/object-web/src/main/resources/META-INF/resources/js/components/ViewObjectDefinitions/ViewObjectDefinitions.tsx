@@ -630,7 +630,6 @@ export default function ViewObjectDefinitions({
 					onAfterSubmit={() =>
 						setTimeout(() => window.location.reload(), 1000)
 					}
-					selectedObjectFolder={selectedObjectFolder}
 					setMoveObjectDefinition={setMoveObjectDefinition}
 				/>
 			)}
