@@ -32,10 +32,10 @@ public class ObjectConfigurationModelListener
 	public void onBeforeSave(String pid, Dictionary<String, Object> properties)
 		throws ConfigurationModelListenerException {
 
-		long duration = GetterUtil.getLong(properties.get("duration"));
-
 		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 			"content.Language", LocaleUtil.getMostRelevantLocale(), getClass());
+
+		long duration = GetterUtil.getLong(properties.get("duration"));
 
 		if (duration < 1) {
 			throw new ConfigurationModelListenerException(
