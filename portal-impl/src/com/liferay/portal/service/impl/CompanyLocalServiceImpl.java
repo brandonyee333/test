@@ -1563,7 +1563,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		}
 	}
 
-	protected Company syncDefaultCompanyVirtualHost(Company company)
+	protected Company syncVirtualHost(Company company)
 		throws PortalException {
 
 		if (!PropsValues.COMPANY_DEFAULT_VIRTUAL_HOST_SYNC_ON_STARTUP ||
@@ -2079,9 +2079,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 			checkCompanyKey(company.getCompanyId());
 
-			// Sync Virtual Host Name
+			// Virtual host
 
-			company = syncDefaultCompanyVirtualHost(company);
+			company = syncVirtualHost(company);
 
 			// Resource actions
 

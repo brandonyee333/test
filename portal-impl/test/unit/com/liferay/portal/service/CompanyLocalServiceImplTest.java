@@ -9,6 +9,7 @@ import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.module.util.SystemBundleUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.PropsValuesTestUtil;
 import com.liferay.portal.model.impl.CompanyImpl;
 import com.liferay.portal.service.impl.CompanyLocalServiceImpl;
@@ -55,12 +56,12 @@ public class CompanyLocalServiceImplTest {
 	}
 
 	@Test
-	public void testSyncDefaultCompanyVirtualHost() throws Exception {
-		String testDomain = "a.test.domain";
+	public void testSyncVirtualHost() throws Exception {
+		String domain = RandomTestUtil.randomString();
 
-		Company testCompany = new CompanyImpl();
+		Company company = new CompanyImpl();
 
-		testCompany.setWebId("liferay.com");
+		company.setWebId("liferay.com");
 
 		CompanyLocalServiceImpl companyLocalServiceImpl =
 			new CompanyLocalServiceImpl() {
@@ -69,15 +70,14 @@ public class CompanyLocalServiceImplTest {
 				public Company checkCompany(String webId)
 					throws PortalException {
 
-					return syncDefaultCompanyVirtualHost(
-						getCompanyByWebId(webId));
+					return syncVirtualHost(getCompanyByWebId(webId));
 				}
 
 				@Override
 				public Company getCompanyByWebId(String webId)
 					throws PortalException {
 
-					return testCompany;
+					return company;
 				}
 
 				@Override
@@ -86,32 +86,32 @@ public class CompanyLocalServiceImplTest {
 						int maxUsers, boolean active)
 					throws PortalException {
 
-					testCompany.setCompanyId(companyId);
-					testCompany.setVirtualHostname(virtualHostname);
-					testCompany.setMx(mx);
-					testCompany.setMaxUsers(maxUsers);
-					testCompany.setActive(active);
+					company.setCompanyId(companyId);
+					company.setMx(mx);
+					company.setMaxUsers(maxUsers);
+					company.setActive(active);
+					company.setVirtualHostname(virtualHostname);
 
-					return testCompany;
+					return company;
 				}
 
 			};
 
 		try (SafeCloseable safeCloseable1 =
 				PropsValuesTestUtil.swapWithSafeCloseable(
-					"COMPANY_DEFAULT_VIRTUAL_HOST_SYNC_ON_STARTUP", true);
+					"COMPANY_DEFAULT_VIRTUAL_HOST_MAIL_DOMAIN", domain);
 			SafeCloseable safeCloseable2 =
 				PropsValuesTestUtil.swapWithSafeCloseable(
-					"COMPANY_DEFAULT_VIRTUAL_HOST_NAME", testDomain);
+					"COMPANY_DEFAULT_VIRTUAL_HOST_NAME", domain);
 			SafeCloseable safeCloseable3 =
 				PropsValuesTestUtil.swapWithSafeCloseable(
-					"COMPANY_DEFAULT_VIRTUAL_HOST_MAIL_DOMAIN", testDomain)) {
+					"COMPANY_DEFAULT_VIRTUAL_HOST_SYNC_ON_STARTUP", true)) {
 
-			Company company = companyLocalServiceImpl.checkCompany(
+			Company checkedCompany = companyLocalServiceImpl.checkCompany(
 				PropsValues.COMPANY_DEFAULT_WEB_ID);
 
-			Assert.assertEquals(testDomain, company.getMx());
-			Assert.assertEquals(testDomain, company.getVirtualHostname());
+			Assert.assertEquals(domain, checkedCompany.getMx());
+			Assert.assertEquals(domain, checkedCompany.getVirtualHostname());
 		}
 	}
 
