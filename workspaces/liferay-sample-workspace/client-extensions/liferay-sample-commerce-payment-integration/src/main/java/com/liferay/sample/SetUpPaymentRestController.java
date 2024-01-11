@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-package com.liferay.payment.integration;
+package com.liferay.sample;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Crescenzo Rega
  */
-@RequestMapping("/refund")
+@RequestMapping("/set-up-payment")
 @RestController
-public class RefundRestController extends BaseRestController {
+public class SetUpPaymentRestController extends BaseRestController {
 
 	@PostMapping
 	public ResponseEntity<String> post(
@@ -38,7 +38,7 @@ public class RefundRestController extends BaseRestController {
 			JSONObject commercePaymentEntryJSONObject = new JSONObject(
 				jsonObject.getString("commercePaymentEntry"));
 
-			commercePaymentEntryJSONObject.put("paymentStatus", 17);
+			commercePaymentEntryJSONObject.put("paymentStatus", 18);
 
 			jsonObject.put(
 				"commercePaymentEntry", commercePaymentEntryJSONObject);
@@ -55,6 +55,6 @@ public class RefundRestController extends BaseRestController {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		RefundRestController.class);
+		SetUpPaymentRestController.class);
 
 }
