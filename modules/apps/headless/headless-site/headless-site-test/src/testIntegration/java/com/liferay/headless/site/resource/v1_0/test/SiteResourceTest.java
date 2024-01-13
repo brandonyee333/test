@@ -122,7 +122,7 @@ public class SiteResourceTest extends BaseSiteResourceTestCase {
 
 			Assert.assertEquals("NOT_FOUND", problem.getStatus());
 			Assert.assertEquals(
-				"No site exists for external reference code " +
+				"No site exists with external reference code " +
 					externalReferenceCode,
 				problem.getTitle());
 		}
