@@ -67,7 +67,7 @@ public class CTClosureFactoryImpl implements CTClosureFactory {
 
 	@Override
 	public void clearCache(long ctCollectionId) {
-		_ctClosureCache.remove(ctCollectionId);
+		_ctClosuresMap.remove(ctCollectionId);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class CTClosureFactoryImpl implements CTClosureFactory {
 
 	@Override
 	public CTClosure create(long ctCollectionId, Set<Long> classNameIds) {
-		Map<Set<Long>, CTClosure> ctClosures = _ctClosureCache.getOrDefault(
+		Map<Set<Long>, CTClosure> ctClosures = _ctClosuresMap.getOrDefault(
 			ctCollectionId, new LRUMap<>(5));
 
 		CTClosure ctClosure = ctClosures.get(classNameIds);
@@ -111,7 +111,7 @@ public class CTClosureFactoryImpl implements CTClosureFactory {
 
 		ctClosures.put(classNameIds, ctClosure);
 
-		_ctClosureCache.putIfAbsent(ctCollectionId, ctClosures);
+		_ctClosuresMap.putIfAbsent(ctCollectionId, ctClosures);
 
 		return ctClosure;
 	}
@@ -511,7 +511,7 @@ public class CTClosureFactoryImpl implements CTClosureFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CTClosureFactoryImpl.class);
 
-	private final Map<Long, Map<Set<Long>, CTClosure>> _ctClosureCache =
+	private final Map<Long, Map<Set<Long>, CTClosure>> _ctClosuresMap =
 		new LRUMap<>(10);
 
 	@Reference
