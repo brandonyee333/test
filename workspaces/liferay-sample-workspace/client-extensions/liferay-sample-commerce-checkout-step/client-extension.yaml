@@ -1,7 +1,7 @@
 assemble:
-    - fromTask: bootJar
-    - from: build/resources/main/assets
+    - from: assets
       into: static
+    - fromTask: bootJar
 liferay-sample-commerce-checkout-step:
     active: true
     checkoutStepLabel: liferay-sample-commerce-checkout-step-label
