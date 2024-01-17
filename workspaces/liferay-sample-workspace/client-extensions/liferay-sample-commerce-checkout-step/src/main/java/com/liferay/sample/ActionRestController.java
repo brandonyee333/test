@@ -34,32 +34,29 @@ public class ActionRestController extends BaseRestController {
 
 		JSONObject jsonObject = new JSONObject(json);
 
-		String response = WebClient.create(
-			StringBundler.concat(
-				lxcDXPServerProtocol, "://", lxcDXPMainDomain,
-				"/o/headless-commerce-delivery-cart/v1.0/carts/",
-				jsonObject.getLong("commerceOrderId"))
-		).patch(
-		).accept(
-			MediaType.APPLICATION_JSON
-		).contentType(
-			MediaType.APPLICATION_JSON
-		).bodyValue(
-			new JSONObject(
-			).put(
-				"purchaseOrderNumber", jsonObject.getString("pon")
-			).toString()
-		).header(
-			HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()
-		).retrieve(
-		).bodyToMono(
-			String.class
-		).block();
-
-		JSONObject responseJSONObject = new JSONObject(response);
-
 		return new ResponseEntity<>(
-			responseJSONObject.toString(), HttpStatus.OK);
+			WebClient.create(
+				StringBundler.concat(
+					lxcDXPServerProtocol, "://", lxcDXPMainDomain,
+					"/o/headless-commerce-delivery-cart/v1.0/carts/",
+					jsonObject.getLong("commerceOrderId"))
+			).patch(
+			).accept(
+				MediaType.APPLICATION_JSON
+			).contentType(
+				MediaType.APPLICATION_JSON
+			).bodyValue(
+				new JSONObject(
+				).put(
+					"purchaseOrderNumber", jsonObject.getString("pon")
+				).toString()
+			).header(
+				HttpHeaders.AUTHORIZATION, "Bearer " + jwt.getTokenValue()
+			).retrieve(
+			).bodyToMono(
+				String.class
+			).block(),
+			HttpStatus.OK);
 	}
 
 }
