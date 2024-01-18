@@ -4,23 +4,6 @@
 		"name": "commerceCheckoutStep",
 		"properties": [
 			{
-				"name": "description",
-				"type": "CETProperty.Type.String"
-			},
-			{
-				"name": "name",
-				"type": "CETProperty.Type.String"
-			},
-			{
-				"default": "https://www.liferay.com",
-				"name": "sourceCodeURL",
-				"type": "CETProperty.Type.String"
-			},
-			{
-				"name": "type",
-				"type": "CETProperty.Type.String"
-			},
-			{
 				"default": "",
 				"name": "active",
 				"type": "CETProperty.Type.Boolean"
@@ -38,6 +21,14 @@
 			{
 				"default": "",
 				"name": "checkoutStepOrder",
+				"type": "CETProperty.Type.String"
+			},
+			{
+				"name": "description",
+				"type": "CETProperty.Type.String"
+			},
+			{
+				"name": "name",
 				"type": "CETProperty.Type.String"
 			},
 			{
@@ -59,6 +50,15 @@
 				"default": "",
 				"name": "showControls",
 				"type": "CETProperty.Type.Boolean"
+			},
+			{
+				"default": "https://www.liferay.com",
+				"name": "sourceCodeURL",
+				"type": "CETProperty.Type.String"
+			},
+			{
+				"name": "type",
+				"type": "CETProperty.Type.String"
 			},
 			{
 				"default": "",
