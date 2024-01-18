@@ -7,6 +7,7 @@
 
 import {EdgeProps} from 'react-flow-renderer';
 import {ObjectRelationshipEdgeData} from '../types';
+import './Edge.scss';
 export declare function getInitialObjectRelationshipEdgeStyle(
 	edgeSelected: boolean
 ): {
@@ -21,8 +22,12 @@ export declare function getInitialLabelBgStyle(
 };
 export default function DefaultObjectRelationshipEdge({
 	data,
-	id,
+	id: edgeId,
 	source,
+	sourceX: fixedHandleSourceX,
+	sourceY: fixedHandleSourceY,
 	style,
 	target,
+	targetX: fixedHandleTargetX,
+	targetY: fixedHandleTargetY,
 }: EdgeProps<ObjectRelationshipEdgeData[]>): JSX.Element | null;

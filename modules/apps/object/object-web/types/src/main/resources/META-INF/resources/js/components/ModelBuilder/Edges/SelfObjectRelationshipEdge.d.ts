@@ -10,11 +10,11 @@ import {ObjectRelationshipEdgeData} from '../types';
 import './Edge.scss';
 export default function SelfObjectRelationshipEdge({
 	data,
-	id,
+	id: edgeId,
 	source,
 	sourceX,
 	sourceY,
 	style,
 	targetX,
 	targetY,
-}: EdgeProps<ObjectRelationshipEdgeData>): JSX.Element | null;
+}: EdgeProps<ObjectRelationshipEdgeData[]>): JSX.Element | null;

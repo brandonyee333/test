@@ -91,9 +91,7 @@ export function objectRelationshipEdgeFactory({
 			sourceHandle: isSelfObjectRelationship ? 'fixedLeftHandle' : null,
 			target: `${objectRelationship.objectDefinitionId2}`,
 			targetHandle: isSelfObjectRelationship ? 'fixedRightHandle' : null,
-			type: isSelfObjectRelationship
-				? 'selfObjectRelationshipEdge'
-				: 'defaultObjectRelationshipEdge',
+			type: 'objectRelationshipEdge',
 		};
 	}
 }

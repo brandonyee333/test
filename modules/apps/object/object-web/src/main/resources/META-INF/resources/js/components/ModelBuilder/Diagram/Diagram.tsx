@@ -21,8 +21,7 @@ import ReactFlow, {
 
 import {ModalAddObjectRelationship} from '../../ObjectRelationship/ModalAddObjectRelationship';
 import {getUpdatedModelBuilderStructurePayload} from '../../ViewObjectDefinitions/objectDefinitionUtil';
-import DefaultObjectRelationshipEdge from '../Edges/DefaultObjectRelationshipEdge';
-import SelfObjectRelationshipEdge from '../Edges/SelfObjectRelationshipEdge';
+import ObjectRelationshipEdge from '../Edges/ObjectRelationshipEdge';
 import {useObjectFolderContext} from '../ModelBuilderContext/objectFolderContext';
 import {TYPES} from '../ModelBuilderContext/typesEnum';
 import {ObjectDefinitionNode} from '../ObjectDefinitionNode/ObjectDefinitionNode';
@@ -34,8 +33,7 @@ const NODE_TYPES = {
 };
 
 const EDGE_TYPES = {
-	defaultObjectRelationshipEdge: DefaultObjectRelationshipEdge,
-	selfObjectRelationshipEdge: SelfObjectRelationshipEdge,
+	objectRelationshipEdge: ObjectRelationshipEdge,
 };
 
 function DiagramBuilder() {
