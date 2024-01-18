@@ -11,6 +11,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
@@ -25,6 +26,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -597,6 +599,44 @@ public class DBTest {
 		Assert.assertArrayEquals(
 			new String[] {_dbInspector.normalizeName("id")},
 			_db.getPrimaryKeyColumnNames(_connection, _TABLE_NAME_2));
+	}
+
+	@Test
+	public void testGetIndexResultSet() throws Exception {
+		_addIndex(new String[] {"typeVarchar"});
+
+		if (_db.getDBType() == DBType.ORACLE) {
+			Statement statement = _connection.createStatement();
+
+			statement.execute(
+				StringBundler.concat(
+					"CALL dbms_stats.lock_table_stats(ownname => '",
+					_connection.getSchema(), "', tabname => '", _TABLE_NAME_1,
+					"')"));
+
+			statement.close();
+		}
+
+		try (ResultSet indexResultSet = _db.getIndexResultSet(
+				_connection, _TABLE_NAME_1)) {
+
+			while (indexResultSet.next()) {
+				Assert.assertEquals(
+					"typeVarchar", indexResultSet.getString("INDEX_NAME"));
+			}
+		}
+
+		if (_db.getDBType() == DBType.ORACLE) {
+			Statement statement = _connection.createStatement();
+
+			statement.execute(
+				StringBundler.concat(
+					"CALL dbms_stats.unlock_table_stats(ownname => '",
+					_connection.getSchema(), "', tabname => '", _TABLE_NAME_1,
+					"')"));
+
+			statement.close();
+		}
 	}
 
 	@Test
