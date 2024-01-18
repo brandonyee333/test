@@ -87,7 +87,7 @@ export function RightSidebarObjectRelationshipDetails({
 		const makeFetch = async () => {
 			if (selectedObjectRelationship) {
 				const selectedObjectRelationshipResponse = (await API.getObjectRelationship(
-					selectedObjectRelationship.data!.objectRelationshipId
+					selectedObjectRelationship.id
 				)) as ObjectRelationship;
 
 				setValues(selectedObjectRelationshipResponse);
@@ -172,70 +172,43 @@ export function RightSidebarObjectRelationshipDetails({
 				return;
 			}
 
-			let newObjectRelationship = {};
-
-			const isSelfObjectRelationship =
-				objectRelationship.objectDefinitionId1 ===
-				objectRelationship.objectDefinitionId2;
+			const newObjectRelationshipEdgeData: ObjectRelationshipEdgeData[] = [];
 
 			const updatedElements = elements.map((element) => {
 				if (isEdge(element)) {
-					const edgeData = (element as Edge<
-						ObjectRelationshipEdgeData
-					>).data;
-
-					const objectRelationshipId = edgeData?.objectRelationshipId;
-					const selfObjectRelationships =
-						edgeData?.selfObjectRelationships;
-
-					const newSelfObjectRelationships = selfObjectRelationships?.map(
-						(selfObjectRelationship) => {
+					(element as Edge<ObjectRelationshipEdgeData[]>).data?.map(
+						(objectRelationshipEdgeData) => {
 							if (
-								objectRelationship?.id ===
-								selfObjectRelationship.id
+								objectRelationshipEdgeData.id ===
+								objectRelationship?.id
 							) {
-								return {
-									...selfObjectRelationship,
-									label: objectRelationship.label,
-								};
+								newObjectRelationshipEdgeData.push({
+									...objectRelationshipEdgeData,
+									label: getLocalizableLabel(
+										defaultLanguageId,
+										objectRelationship.label,
+										objectRelationship.name
+									),
+								});
+							}
+							else {
+								newObjectRelationshipEdgeData.push(
+									objectRelationshipEdgeData
+								);
 							}
 
-							return selfObjectRelationship;
+							return {
+								...element,
+								data: newObjectRelationshipEdgeData,
+							};
 						}
 					);
-
-					if (objectRelationshipId === objectRelationship?.id) {
-						newObjectRelationship = {
-							...edgeData,
-							deletionType: objectRelationship.deletionType,
-							label:
-								isSelfObjectRelationship &&
-								selfObjectRelationships &&
-								selfObjectRelationships.length > 1
-									? selfObjectRelationships.length.toString()
-									: getLocalizableLabel(
-											defaultLanguageId,
-											objectRelationship.label,
-											objectRelationship.name
-									  ),
-							selfObjectRelationships: newSelfObjectRelationships,
-						};
-					}
-					else {
-						newObjectRelationship = {
-							...edgeData,
-							selfObjectRelationships: newSelfObjectRelationships,
-						};
-					}
-
-					return {
-						...element,
-						data: newObjectRelationship,
-					};
 				}
 
 				return element;
-			}) as Elements<ObjectDefinitionNodeData>;
+			}) as Elements<
+				ObjectDefinitionNodeData | ObjectRelationshipEdgeData[]
+			>;
 
 			dispatch({
 				payload: {
@@ -359,7 +332,7 @@ export function RightSidebarObjectRelationshipDetails({
 				/>
 
 				{objectRelationshipParameterRequired &&
-					selectedObjectRelationship?.data?.type === 'oneToMany' && (
+					selectedObjectRelationship?.type === 'oneToMany' && (
 						<>
 							<Input
 								label={Liferay.Language.get('api-endpoint')}
