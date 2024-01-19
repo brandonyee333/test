@@ -46,13 +46,10 @@ public class GenerateTestrayCSVUtil {
 			_generate(allTestrayCaseResults, TestrayCaseResult.Type.UNIQUE));
 
 		sb.append("\n");
-
 		sb.append(
 			_generate(
 				allTestrayCaseResults, TestrayCaseResult.Type.DID_NOT_RUN));
-
 		sb.append("\n");
-
 		sb.append(
 			_generate(allTestrayCaseResults, TestrayCaseResult.Type.COMMON));
 
