@@ -2459,7 +2459,6 @@ public class HeadlessBuilderResourceTest extends BaseTestCase {
 				"title", RandomTestUtil.randomString()
 			).toString(),
 			"headless-builder/applications", Http.Method.POST);
-
 		assertSuccessfulJSONObject(
 			_createAPIEndpoint(
 				apiEndpointExternalReferenceCode, Http.Method.GET, path,

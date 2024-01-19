@@ -605,7 +605,6 @@ public class HeadlessBuilderOpenAPIResourceTest extends BaseTestCase {
 				"title", "title"
 			).toString(),
 			"headless-builder/applications", Http.Method.POST);
-
 		assertSuccessfulJSONObject(
 			JSONUtil.put(
 				"apiApplicationToAPIEndpoints",
