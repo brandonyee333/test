@@ -285,12 +285,12 @@ public class ConfigurationEnvBuilder {
 	}
 
 	private static String _generateJSON(List<ObjectDef> objectDefs) {
-		JSONObject schemaJSONObject = _jsonObject(
+		JSONObject schemaJSONObject = _toJSONObject(
 			jsonObject -> jsonObject.put(
-				"oneOf", _jsonArray()
+				"oneOf", _toJSONArray()
 			).put(
 				"properties",
-				_jsonObject("pid", _jsonObject("enum", _jsonArray()))
+				_toJSONObject("pid", _toJSONObject("enum", _toJSONArray()))
 			));
 
 		for (ObjectDef objectDef : objectDefs) {
@@ -381,11 +381,11 @@ public class ConfigurationEnvBuilder {
 		return newObjectDefs;
 	}
 
-	private static JSONArray _jsonArray(Object... items) {
+	private static JSONArray _toJSONArray(Object... items) {
 		return _jsonFactory.createJSONArray(items);
 	}
 
-	private static JSONObject _jsonObject(Consumer<JSONObject> consumer) {
+	private static JSONObject _toJSONObject(Consumer<JSONObject> consumer) {
 		JSONObject jsonObject = _jsonFactory.createJSONObject();
 
 		consumer.accept(jsonObject);
@@ -393,14 +393,14 @@ public class ConfigurationEnvBuilder {
 		return jsonObject;
 	}
 
-	private static JSONObject _jsonObject(String key, Object value) {
-		return _jsonObject(jsonObject -> jsonObject.put(key, value));
+	private static JSONObject _toJSONObject(String key, Object value) {
+		return _toJSONObject(jsonObject -> jsonObject.put(key, value));
 	}
 
-	private static JSONObject _jsonObject(
+	private static JSONObject _toJSONObject(
 		String key, UnsafeSupplier<Object, Exception> valueUnsafeSupplier) {
 
-		return _jsonObject(
+		return _toJSONObject(
 			jsonObject -> jsonObject.put(key, valueUnsafeSupplier));
 	}
 
@@ -604,7 +604,7 @@ public class ConfigurationEnvBuilder {
 		}
 
 		protected JSONObject toJSONObject() {
-			JSONObject jsonObject = _jsonObject(
+			JSONObject jsonObject = _toJSONObject(
 				"default", () -> defaultValue
 			).put(
 				"deprecated", () -> deprecated
@@ -617,7 +617,7 @@ public class ConfigurationEnvBuilder {
 			);
 
 			if (isArray()) {
-				jsonObject.put("items", _jsonObject("type", "string"));
+				jsonObject.put("items", _toJSONObject("type", "string"));
 			}
 
 			if (isObject()) {
@@ -641,7 +641,7 @@ public class ConfigurationEnvBuilder {
 			}
 
 			if (ArrayUtil.isNotEmpty(optionValues)) {
-				JSONArray optionValuesJSONArray = _jsonArray(optionValues);
+				JSONArray optionValuesJSONArray = _toJSONArray(optionValues);
 
 				if (isArray()) {
 					jsonObject.getJSONObject(
@@ -692,13 +692,13 @@ public class ConfigurationEnvBuilder {
 		}
 
 		protected JSONObject toJSONObject() {
-			JSONObject jsonObject = _jsonObject(
+			JSONObject jsonObject = _toJSONObject(
 				"description", () -> description
 			).put(
 				"properties",
-				_jsonObject(
+				_toJSONObject(
 					"pid",
-					_jsonObject(
+					_toJSONObject(
 						"const", pid
 					).put(
 						"description", () -> description
@@ -706,7 +706,7 @@ public class ConfigurationEnvBuilder {
 						"title", () -> title
 					))
 			).put(
-				"required", _jsonArray("pid")
+				"required", _toJSONArray("pid")
 			).put(
 				"title", () -> title
 			);
