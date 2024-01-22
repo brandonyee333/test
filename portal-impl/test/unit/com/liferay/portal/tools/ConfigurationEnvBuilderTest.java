@@ -54,7 +54,7 @@ public class ConfigurationEnvBuilderTest extends ConfigurationEnvBuilder {
 
 		Path modulesDirPath = Paths.get("modules");
 
-		PathMatcher pathMatcher = _getPathMatcher(
+		PathMatcher includePathMatcher = _getPathMatcher(
 			"glob:**/apps/**/configuration{,/**}/*Configuration.java");
 		PathMatcher excludePathMatcher = _getPathMatcher("glob:**/*-test/**");
 
@@ -67,7 +67,7 @@ public class ConfigurationEnvBuilderTest extends ConfigurationEnvBuilder {
 						Path path, BasicFileAttributes basicFileAttributes)
 					throws IOException {
 
-					if (pathMatcher.matches(path) &&
+					if (includePathMatcher.matches(path) &&
 						!excludePathMatcher.matches(path)) {
 
 						configurationJavaFileNames.add(path.toString());
