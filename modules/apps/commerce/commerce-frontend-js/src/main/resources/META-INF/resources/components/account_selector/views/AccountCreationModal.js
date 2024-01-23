@@ -6,8 +6,8 @@
 import ClayButton from '@clayui/button';
 import ClayForm from '@clayui/form';
 import ClayModal from '@clayui/modal';
-import {fetch} from 'frontend-js-web';
-import React, {useState} from 'react';
+import {debounce, fetch} from 'frontend-js-web';
+import React, {useMemo, useState} from 'react';
 
 import ServiceProvider from '../../../ServiceProvider/index';
 import AccountCreationModalBody from './AccountCreationModalBody';
@@ -40,6 +40,8 @@ export default function AccountCreationModal({
 	);
 
 	const createAccount = (event) => {
+		console.log('test');
+		debugger;
 		event.preventDefault();
 
 		const organizationIds = accountData.organizations.map(
@@ -69,13 +71,18 @@ export default function AccountCreationModal({
 			.catch((error) => console.error(error));
 	};
 
+	const debouncedCreateAccount = useMemo(
+		() => debounce(async (event) => createAccount(event), 500),
+		[createAccount]
+	);
+
 	return (
 		<ClayModal center className="commerce-modal" observer={observer}>
 			<ClayModal.Header>
 				{Liferay.Language.get('create-new-account')}
 			</ClayModal.Header>
 
-			<ClayForm onSubmit={createAccount}>
+			<ClayForm>
 				<AccountCreationModalBody
 					accountData={accountData}
 					accountTypes={accountTypes}
@@ -92,7 +99,10 @@ export default function AccountCreationModal({
 								{Liferay.Language.get('cancel')}
 							</ClayButton>
 
-							<ClayButton type="submit">
+							<ClayButton
+								onClick={debouncedCreateAccount}
+								type="button"
+							>
 								{Liferay.Language.get('create')}
 							</ClayButton>
 						</ClayButton.Group>
