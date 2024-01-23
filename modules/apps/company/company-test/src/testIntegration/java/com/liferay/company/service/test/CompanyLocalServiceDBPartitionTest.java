@@ -6,9 +6,9 @@
 package com.liferay.company.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.db.partition.db.DBPartitionDB;
 import com.liferay.portal.db.partition.test.util.BaseDBPartitionTestCase;
+import com.liferay.portal.db.partition.util.DBPartitionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.ResourceAction;
@@ -477,6 +477,24 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 	}
 
+	private int _getDBPartitionsCount() throws SQLException {
+		DatabaseMetaData databaseMetaData = connection.getMetaData();
+
+		try (ResultSet resultSet = databaseMetaData.getSchemas()) {
+			if (resultSet.last()) {
+				return resultSet.getRow();
+			}
+		}
+
+		try (ResultSet resultSet = databaseMetaData.getCatalogs()) {
+			while (resultSet.last()) {
+				return resultSet.getRow();
+			}
+		}
+
+		throw new SQLException("At least one database partition is required");
+	}
+
 	private List<String> _getObjectNames(String objectType, long companyId)
 		throws Exception {
 
@@ -497,24 +515,6 @@ public class CompanyLocalServiceDBPartitionTest
 		}
 
 		return objectNames;
-	}
-
-	private int _getDBPartitionsCount() throws SQLException {
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-
-		try (ResultSet resultSet = databaseMetaData.getSchemas()) {
-			if (resultSet.last()) {
-				return resultSet.getRow();
-			}
-		}
-
-		try (ResultSet resultSet = databaseMetaData.getCatalogs()) {
-			while (resultSet.last()) {
-				return resultSet.getRow();
-			}
-		}
-
-		throw new SQLException("At least one database partition is required");
 	}
 
 	private int _getTablesCount(long companyId) throws Exception {
