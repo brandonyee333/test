@@ -436,11 +436,6 @@ public class PortletPreferencesLocalServiceImpl
 	}
 
 	@Override
-	public List<PortletPreferences> getPortletPreferences(String portletId) {
-		return portletPreferencesFinder.findByPortletId(portletId);
-	}
-
-	@Override
 	public List<PortletPreferences> getPortletPreferencesByOwnerId(
 		long ownerId) {
 
@@ -450,6 +445,13 @@ public class PortletPreferencesLocalServiceImpl
 	@Override
 	public List<PortletPreferences> getPortletPreferencesByPlid(long plid) {
 		return portletPreferencesPersistence.findByPlid(plid);
+	}
+
+	@Override
+	public List<PortletPreferences> getPortletPreferencesByPortletId(
+		String portletId) {
+
+		return portletPreferencesFinder.findByPortletId(portletId);
 	}
 
 	@Override

@@ -79,20 +79,22 @@ public class FragmentEntryLinkModelListener
 					}
 
 					List<PortletPreferences> portletPreferences =
-						_portletPreferencesLocalService.getPortletPreferences(
-							portletId);
+						_portletPreferencesLocalService.
+							getPortletPreferencesByPortletId(portletId);
 
 					for (PortletPreferences curPortletPreferences :
 							portletPreferences) {
 
-						if (!masterLayoutPlids.contains(
+						if (masterLayoutPlids.contains(
 								curPortletPreferences.getPlid())) {
 
-							_portletPreferencesLocalService.
-								deletePortletPreferences(
-									curPortletPreferences.
-										getPortletPreferencesId());
+							continue;
 						}
+
+						_portletPreferencesLocalService.
+							deletePortletPreferences(
+								curPortletPreferences.
+									getPortletPreferencesId());
 					}
 				}
 
