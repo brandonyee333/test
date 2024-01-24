@@ -14,14 +14,14 @@ import com.liferay.commerce.frontend.model.LabelField;
 public class PaymentMethod {
 
 	public PaymentMethod(
-		String description, String paymentIntegrationKey, String key,
-		String name, String paymentEngine, LabelField status) {
+		String description, String key, String name, String paymentEngine,
+		String paymentIntegrationKey, LabelField status) {
 
 		_description = description;
-		_paymentIntegrationKey = paymentIntegrationKey;
 		_key = key;
 		_name = name;
 		_paymentEngine = paymentEngine;
+		_paymentIntegrationKey = paymentIntegrationKey;
 		_status = status;
 	}
 

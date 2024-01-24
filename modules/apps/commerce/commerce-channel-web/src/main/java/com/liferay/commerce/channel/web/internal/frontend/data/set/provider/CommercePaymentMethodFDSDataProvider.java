@@ -93,9 +93,10 @@ public class CommercePaymentMethodFDSDataProvider
 
 			paymentMethods.add(
 				new PaymentMethod(
-					commercePaymentDescription, null,
-					commercePaymentMethod.getKey(), commercePaymentName,
+					commercePaymentDescription, commercePaymentMethod.getKey(),
+					commercePaymentName,
 					commercePaymentMethod.getName(themeDisplay.getLocale()),
+					null,
 					CommerceChannelClayTableUtil.getLabelField(
 						_isActive(commercePaymentMethodGroupRel),
 						themeDisplay.getLocale())));
@@ -128,7 +129,7 @@ public class CommercePaymentMethodFDSDataProvider
 
 			paymentMethods.add(
 				new PaymentMethod(
-					description, key, key, name, name,
+					description, key, name, name, key,
 					CommerceChannelClayTableUtil.getLabelField(
 						_isActive(commercePaymentMethodGroupRel),
 						themeDisplay.getLocale())));
