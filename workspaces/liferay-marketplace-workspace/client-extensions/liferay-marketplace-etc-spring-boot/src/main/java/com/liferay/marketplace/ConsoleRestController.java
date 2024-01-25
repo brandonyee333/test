@@ -27,11 +27,11 @@ public class ConsoleRestController extends BaseRestController {
 	@GetMapping("projects-usage")
 	public String getProjectsUsage(
 			@AuthenticationPrincipal Jwt jwt,
-			@RequestParam(required = false) String email)
+			@RequestParam(required = false) String emailAddress)
 		throws Exception {
 
-		if (email == null) {
-			email = jwt.getClaims(
+		if (emailAddress == null) {
+			emailAddress = jwt.getClaims(
 			).get(
 				"username"
 			)
@@ -44,7 +44,7 @@ public class ConsoleRestController extends BaseRestController {
 			uriBuilder -> uriBuilder.path(
 				"/admin/user-projects-plan-usage"
 			).queryParam(
-				"userEmail", email
+				"userEmail", emailAddress
 			).build()
 		).header(
 			HttpHeaders.AUTHORIZATION, "Bearer " + _getAuthorization()
@@ -73,7 +73,7 @@ public class ConsoleRestController extends BaseRestController {
 		).bodyValue(
 			new JSONObject(
 			).put(
-				"email", _consoleAuthEmail
+				"email", _consoleAuthEmailAddress
 			).put(
 				"password", _consoleAuthPassword
 			).toString()
@@ -99,8 +99,8 @@ public class ConsoleRestController extends BaseRestController {
 
 	private String _accessToken;
 
-	@Value("${liferay.marketplace.console.auth.email}")
-	private String _consoleAuthEmail;
+	@Value("${liferay.marketplace.console.auth.email.address}")
+	private String _consoleAuthEmailAddress;
 
 	@Value("${liferay.marketplace.console.auth.password}")
 	private String _consoleAuthPassword;
