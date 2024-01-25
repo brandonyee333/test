@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.annotation.Generated;
 
@@ -410,9 +409,6 @@ public class HttpInvoker {
 			}
 		}
 	}
-
-	private static final Logger _logger = Logger.getLogger(
-		HttpInvoker.class.getName());
 
 	private static final Field _methodField;
 
