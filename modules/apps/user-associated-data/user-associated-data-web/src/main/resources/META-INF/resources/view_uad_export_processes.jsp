@@ -64,5 +64,5 @@ renderResponse.setTitle(StringBundler.concat(selectedUser.getFullName(), " - ", 
 			"exportProcessesResourceURL", exportProcessesURL.toString()
 		).build()
 	%>'
-	module="{UADExportProcesses} from user-associated-data-web"
+	module="js/UADExportProcesses"
 />
