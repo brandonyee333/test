@@ -43,7 +43,7 @@ String portletId = (String)objArray[9];
 				%>
 
 				<react:component
-					module="{GroupLabels} from roles-admin-web"
+					module="js/GroupLabels.es"
 					props='<%=
 						HashMapBuilder.<String, Object>put(
 							"itemSelectorURL", itemSelectorURL.toString()

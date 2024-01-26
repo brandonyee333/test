@@ -5,7 +5,7 @@
 
 import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
 
-import addAssignees from './addAssignees';
+import addAssignees from './add_assignees';
 
 export default function propsTransformer({
 	additionalProps: {
