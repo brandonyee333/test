@@ -22,7 +22,7 @@ Role role = userGroupsDisplayContext.getRole();
 
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= userGroupsManagementToolbarDisplayContext %>"
-	propsTransformer="{UserGroupsManagementToolbarPropsTransformer} from site-memberships-web"
+	propsTransformer="js/UserGroupsManagementToolbarPropsTransformer"
 />
 
 <portlet:actionURL name="deleteGroupUserGroups" var="deleteGroupUserGroupsURL">
