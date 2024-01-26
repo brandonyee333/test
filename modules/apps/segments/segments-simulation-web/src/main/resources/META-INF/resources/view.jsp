@@ -16,7 +16,7 @@ SegmentsSimulationDisplayContext segmentsSimulationDisplayContext = (SegmentsSim
 	id='<%= liferayPortletResponse.getNamespace() + "segmentsSimulationContainer" %>'
 >
 	<react:component
-		module="{PageContentSelectors} from segments-simulation-web"
+		module="js/components/PageContentSelectors"
 		props="<%= segmentsSimulationDisplayContext.getData() %>"
 	/>
 </clay:container-fluid>
