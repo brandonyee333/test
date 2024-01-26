@@ -111,7 +111,7 @@ if (size != null) {
 	%>
 
 	<react:component
-		module="{PersonalMenu} from product-navigation-taglib"
+		module="personal_menu/js/PersonalMenu.es"
 		props="<%= props %>"
 	/>
 </div>
