@@ -22,7 +22,7 @@ ApplicationsMenuDisplayContext applicationsMenuDisplayContext = new Applications
 	/>
 
 	<react:component
-		module="{ApplicationsMenu} from product-navigation-applications-menu-web"
+		module="js/ApplicationsMenu"
 		props="<%= applicationsMenuDisplayContext.getApplicationsMenuComponentData() %>"
 	/>
 </li>
