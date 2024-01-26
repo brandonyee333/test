@@ -13,7 +13,7 @@ RedirectNotFoundEntriesDisplayContext redirectNotFoundEntriesDisplayContext = (R
 
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= redirectNotFoundEntriesDisplayContext.getRedirectNotFoundEntriesManagementToolbarDisplayContext() %>"
-	propsTransformer="{RedirectNotFoundEntriesManagementToolbarPropsTransformer} from redirect-web"
+	propsTransformer="js/RedirectNotFoundEntriesManagementToolbarPropsTransformer"
 />
 
 <aui:form action="<%= redirectNotFoundEntriesDisplayContext.getActionURL() %>" cssClass="container-fluid container-fluid-max-xl" name="fm">

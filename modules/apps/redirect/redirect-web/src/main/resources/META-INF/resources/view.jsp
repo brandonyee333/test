@@ -31,7 +31,7 @@ RedirectDisplayContext redirectDisplayContext = (RedirectDisplayContext)request.
 
 		<div>
 			<react:component
-				module="{RedirectPatterns} from redirect-web"
+				module="js/RedirectPatterns"
 				props="<%= redirectPatternConfigurationDisplayContext.getRedirectPatterns() %>"
 			/>
 		</div>

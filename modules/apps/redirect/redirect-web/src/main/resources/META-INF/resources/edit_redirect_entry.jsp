@@ -92,7 +92,7 @@ renderResponse.setTitle(editRedirectEntryDisplayContext.getTitle());
 			<aui:input name="destinationURL" value="<%= editRedirectEntryDisplayContext.getDestinationURL() %>" />
 
 			<react:component
-				module="{DestinationUrlInput} from redirect-web"
+				module="js/DestinationUrlInput"
 				props='<%=
 					HashMapBuilder.<String, Object>put(
 						"autofocus", editRedirectEntryDisplayContext.isAutoFocusDestinationURL()
@@ -136,7 +136,7 @@ renderResponse.setTitle(editRedirectEntryDisplayContext.getTitle());
 
 <div>
 	<react:component
-		module="{ChainedRedirections} from redirect-web"
+		module="js/ChainedRedirections"
 		props='<%=
 			HashMapBuilder.<String, Object>put(
 				"saveButtonLabel", editRedirectEntryDisplayContext.getSubmitButtonLabel()
@@ -155,5 +155,5 @@ renderResponse.setTitle(editRedirectEntryDisplayContext.getTitle());
 			"initialIsPermanent", editRedirectEntryDisplayContext.isRedirectEntryPermanent()
 		).build()
 	%>'
-	module="{editRedirectEntry} from redirect-web"
+	module="js/editRedirectEntry"
 />
