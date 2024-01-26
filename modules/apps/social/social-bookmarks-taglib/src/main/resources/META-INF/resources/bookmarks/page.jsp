@@ -22,7 +22,7 @@
 				dropdownItems="<%= SocialBookmarksTagUtil.getDropdownItems(request.getLocale(), types, className, classPK, title, url) %>"
 				icon="share"
 				label='<%= BrowserSnifferUtil.isMobile(request) ? null : "share" %>'
-				propsTransformer="{SocialBookmarksDropdownPropsTransformer} from social-bookmarks-taglib"
+				propsTransformer="js/SocialBookmarksDropdownPropsTransformer"
 				small="<%= true %>"
 			/>
 		</c:when>
@@ -75,7 +75,7 @@
 					dropdownItems="<%= SocialBookmarksTagUtil.getDropdownItems(request.getLocale(), remainingTypes, className, classPK, title, url) %>"
 					icon="share"
 					monospaced="<%= true %>"
-					propsTransformer="{SocialBookmarksDropdownPropsTransformer} from social-bookmarks-taglib"
+					propsTransformer="js/SocialBookmarksDropdownPropsTransformer"
 					small="<%= true %>"
 					title="share"
 				/>
