@@ -38,7 +38,7 @@ PortletURL portletURL = viewUserGroupsManagementToolbarDisplayContext.getPortlet
 	creationMenu="<%= viewUserGroupsManagementToolbarDisplayContext.getCreationMenu() %>"
 	itemsTotal="<%= searchContainer.getTotal() %>"
 	orderDropdownItems="<%= viewUserGroupsManagementToolbarDisplayContext.getOrderByDropdownItems() %>"
-	propsTransformer="{ViewUserGroupsManagementToolbarPropsTransformer} from user-groups-admin-web"
+	propsTransformer="js/ViewUserGroupsManagementToolbarPropsTransformer"
 	searchActionURL="<%= viewUserGroupsManagementToolbarDisplayContext.getSearchActionURL() %>"
 	searchContainerId="userGroups"
 	searchFormName="searchFm"
