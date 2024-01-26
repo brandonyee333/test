@@ -38,7 +38,7 @@ SiteAdminManagementToolbarDisplayContext siteAdminManagementToolbarDisplayContex
 
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= siteAdminManagementToolbarDisplayContext %>"
-	propsTransformer="{SiteManagementToolbarPropsTransformer} from site-admin-web"
+	propsTransformer="js/SiteManagementToolbarPropsTransformer"
 />
 
 <div class="closed sidenav-container sidenav-right" id="<portlet:namespace />infoPanelId">

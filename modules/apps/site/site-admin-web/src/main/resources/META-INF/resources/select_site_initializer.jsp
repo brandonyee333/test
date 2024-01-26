@@ -52,7 +52,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "select-template"));
 						>
 							<liferay-ui:search-container-column-text>
 								<clay:vertical-card
-									propsTransformer="{SelectSiteInitializerVerticalCardPropsTransformer} from site-admin-web"
+									propsTransformer="js/SelectSiteInitializerVerticalCardPropsTransformer"
 									verticalCard="<%= new SelectSiteInitializerVerticalCard(siteInitializerItem, renderRequest, renderResponse) %>"
 								/>
 							</liferay-ui:search-container-column-text>

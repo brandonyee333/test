@@ -84,7 +84,7 @@ request.removeAttribute(WebKeys.SEARCH_CONTAINER_RESULT_ROW);
 									<clay:dropdown-actions
 										aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
 										dropdownItems="<%= siteAdminDisplayContext.getActionDropdownItems(group) %>"
-										propsTransformer="{SiteDropdownDefaultPropsTransformer} from site-admin-web"
+										propsTransformer="js/SiteDropdownDefaultPropsTransformer"
 									/>
 								</li>
 							</ul>

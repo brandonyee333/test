@@ -17,7 +17,7 @@ DisplaySettingsDisplayContext displaySettingsDisplayContext = new DisplaySetting
 	</div>
 
 	<react:component
-		module="{SiteLanguageConfiguration} from site-admin-web"
+		module="js/SiteLanguageConfiguration"
 		props="<%= displaySettingsDisplayContext.getPropsMap() %>"
 	/>
 </div>

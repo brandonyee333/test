@@ -178,6 +178,6 @@ if (parentGroupId != GroupConstants.DEFAULT_PARENT_GROUP_ID) {
 				"windowState", LiferayWindowState.POP_UP.toString()
 			).build()
 		%>'
-		module="{Details} from site-admin-web"
+		module="js/site/Details"
 	/>
 </c:if>
