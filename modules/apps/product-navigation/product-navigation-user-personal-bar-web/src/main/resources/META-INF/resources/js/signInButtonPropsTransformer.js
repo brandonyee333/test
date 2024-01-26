@@ -23,7 +23,7 @@ async function fetchModalContent(url) {
 	}
 }
 
-export function signInButtonPropsTransformer({
+export default function propsTransformer({
 	additionalProps: {redirect, signInURL},
 	...props
 }) {
