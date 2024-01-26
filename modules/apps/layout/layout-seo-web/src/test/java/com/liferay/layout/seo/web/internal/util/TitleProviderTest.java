@@ -110,12 +110,12 @@ public class TitleProviderTest {
 
 	@Test
 	public void testGetTitle() throws PortalException {
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
 		String companyName = RandomTestUtil.randomString();
 		String groupDescriptiveName = RandomTestUtil.randomString();
 		String htmlTitle = RandomTestUtil.randomString();
-
-		MockHttpServletRequest mockHttpServletRequest =
-			new MockHttpServletRequest();
 
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY,
@@ -132,14 +132,15 @@ public class TitleProviderTest {
 
 	@Test
 	public void testGetTitleStatusErrorPage() throws PortalException {
-		String htmlTitle = RandomTestUtil.randomString();
 		String groupDescriptiveName = RandomTestUtil.randomString();
+		String htmlTitle = RandomTestUtil.randomString();
 
 		_setUpLayoutUtilityPageEntryLayoutProviderUtil(
 			groupDescriptiveName, htmlTitle);
 
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
+
 		String companyName = RandomTestUtil.randomString();
 
 		mockHttpServletRequest.setAttribute(
@@ -202,7 +203,6 @@ public class TitleProviderTest {
 		themeDisplay.setCompany(company);
 
 		themeDisplay.setLayout(_getLayout(groupDescriptiveName, htmlTitle));
-
 		themeDisplay.setLocale(LocaleUtil.US);
 
 		MockHttpServletResponse mockHttpServletResponse =
