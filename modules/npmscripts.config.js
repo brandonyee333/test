@@ -492,7 +492,6 @@ module.exports = {
 			],
 			'item-selector-taglib': [],
 			'item-selector-web': [],
-			'social-bookmarks-taglib': [],
 		},
 	},
 	check: CHECK_AND_FIX_GLOBS,
