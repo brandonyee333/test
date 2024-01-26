@@ -8,6 +8,6 @@
 <%@ include file="/sharing/init.jsp" %>
 
 <react:component
-	module="{Sharing} from sharing-web"
+	module="sharing/js/Sharing.es"
 	props="<%= (Map<String, Object>)request.getAttribute(SharingWebKeys.SHARING_REACT_DATA) %>"
 />

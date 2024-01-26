@@ -27,7 +27,7 @@ ViewSharedAssetsDisplayContext viewSharedAssetsDisplayContext = (ViewSharedAsset
 
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= viewSharedAssetsDisplayContext.getManagementToolbarDisplayContext() %>"
-	propsTransformer="{SharedAssetsManagementToolbarPropsTransformer} from sharing-web"
+	propsTransformer="shared_assets/js/SharedAssetsManagementToolbarPropsTransformer"
 />
 
 <clay:container-fluid>
@@ -90,5 +90,5 @@ ViewSharedAssetsDisplayContext viewSharedAssetsDisplayContext = (ViewSharedAsset
 </clay:container-fluid>
 
 <liferay-frontend:component
-	module="{SharedAssets} from sharing-web"
+	module="shared_assets/js/SharedAssets"
 />
