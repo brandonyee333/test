@@ -107,4 +107,4 @@ Ratings.propTypes = {
 	url: PropTypes.string.isRequired,
 };
 
-export {Ratings};
+export default Ratings;
