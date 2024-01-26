@@ -1262,9 +1262,9 @@ public abstract class BaseDB implements DB {
 
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 
-		DBInspector dbInspector = new DBInspector(connection);
-
 		DB db = DBManagerUtil.getDB();
+
+		DBInspector dbInspector = new DBInspector(connection);
 
 		String catalog = dbInspector.getCatalog();
 		String schema = dbInspector.getSchema();
