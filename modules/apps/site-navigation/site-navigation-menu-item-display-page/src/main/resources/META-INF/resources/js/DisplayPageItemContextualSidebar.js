@@ -371,4 +371,4 @@ function getFieldName(namespace, fieldName) {
 	return `${namespace}TypeSettingsProperties--${fieldName}--`;
 }
 
-export {DisplayPageItemContextualSidebar};
+export default DisplayPageItemContextualSidebar;

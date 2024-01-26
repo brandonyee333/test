@@ -7,7 +7,7 @@ import '@testing-library/jest-dom/extend-expect';
 import {render, screen} from '@testing-library/react';
 import React from 'react';
 
-import {DisplayPageItemContextualSidebar} from '../../src/main/resources/META-INF/resources/js/index';
+import DisplayPageItemContextualSidebar from '../../src/main/resources/META-INF/resources/js/DisplayPageItemContextualSidebar';
 
 const DEFAULT_LANGUAGE_ID = 'en_US';
 
