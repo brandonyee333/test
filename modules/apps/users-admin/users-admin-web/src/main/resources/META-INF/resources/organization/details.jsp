@@ -100,7 +100,7 @@ if (organization != null) {
 			"regionSelectVal", regionId
 		).build()
 	%>'
-	module="{CountryRegionDynamicSelect} from users-admin-web"
+	module="js/CountryRegionDynamicSelect"
 />
 
 <c:if test="<%= organization == null %>">
