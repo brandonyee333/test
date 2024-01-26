@@ -21,7 +21,7 @@
 			<c:if test="<%= addContentPanelDisplayContext.showAddPanel() %>">
 				<div class="add-content-menu" data-qa-id="addPanelBody" id="<portlet:namespace />addPanelContainer">
 					<react:component
-						module="{AddPanel} from product-navigation-control-menu-web"
+						module="js/AddPanel"
 						props="<%= addContentPanelDisplayContext.getAddContentPanelData() %>"
 					/>
 				</div>
