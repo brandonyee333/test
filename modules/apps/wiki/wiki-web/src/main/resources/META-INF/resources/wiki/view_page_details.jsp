@@ -308,7 +308,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "details
 							displayType="link"
 							icon="lock"
 							label="permissions"
-							propsTransformer="{WikiPagePermissionsButtonPropsTransformer} from wiki-web"
+							propsTransformer="wiki/js/WikiPagePermissionsButtonPropsTransformer"
 							small="<%= true %>"
 						/>
 					</c:if>
@@ -398,7 +398,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "details
 							displayType="link"
 							icon="trash"
 							label="delete"
-							propsTransformer="{WikiPageDeleteButtonPropsTransformer} from wiki-web"
+							propsTransformer="wiki/js/WikiPageDeleteButtonPropsTransformer"
 							small="<%= true %>"
 						/>
 					</c:if>

@@ -309,7 +309,7 @@ if (portletTitleBasedNavigation) {
 										"printPageURL", printPageURL
 									).build()
 								%>'
-								module="{printPageButtonEventListener} from wiki-web"
+								module="wiki/js/printPageButtonEventListener"
 							/>
 						</div>
 					</c:if>

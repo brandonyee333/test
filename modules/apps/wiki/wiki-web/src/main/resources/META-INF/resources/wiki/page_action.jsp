@@ -25,5 +25,5 @@ WikiListPagesDisplayContext wikiListPagesDisplayContext = new WikiListPagesDispl
 <clay:dropdown-actions
 	aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
 	dropdownItems="<%= wikiListPagesDisplayContext.getActionDropdownItems(wikiPage) %>"
-	propsTransformer="{WikiPageDropdownPropsTransformer} from wiki-web"
+	propsTransformer="wiki/js/WikiPageDropdownPropsTransformer"
 />
