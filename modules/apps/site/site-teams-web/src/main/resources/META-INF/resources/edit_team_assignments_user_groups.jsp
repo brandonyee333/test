@@ -18,7 +18,7 @@ EditSiteTeamAssignmentsUserGroupsDisplayContext editSiteTeamAssignmentsUserGroup
 
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= new EditSiteTeamAssignmentsUserGroupsManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, editSiteTeamAssignmentsUserGroupsDisplayContext) %>"
-	propsTransformer="{EditSiteTeamAssignmentsUserGroupsManagementToolbarPropsTransformer} from site-teams-web"
+	propsTransformer="js/EditSiteTeamAssignmentsUserGroupsManagementToolbarPropsTransformer"
 />
 
 <portlet:actionURL name="deleteTeamUserGroups" var="deleteTeamUserGroupsURL" />

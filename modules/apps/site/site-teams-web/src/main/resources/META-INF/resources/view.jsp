@@ -15,7 +15,7 @@ SiteTeamsManagementToolbarDisplayContext siteTeamsManagementToolbarDisplayContex
 
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= siteTeamsManagementToolbarDisplayContext %>"
-	propsTransformer="{SiteTeamsManagementToolbarPropsTransformer} from site-teams-web"
+	propsTransformer="js/SiteTeamsManagementToolbarPropsTransformer"
 />
 
 <portlet:actionURL name="deleteTeams" var="deleteTeamsURL">
