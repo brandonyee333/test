@@ -13,6 +13,6 @@
 	</div>
 
 	<react:component
-		module="{App} from product-navigation-simulation-device"
+		module="js/components/App"
 	/>
 </div>
