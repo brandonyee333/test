@@ -5,7 +5,7 @@
 
 import {openToast} from 'frontend-js-web';
 
-export function undo({alertMessage, namespace}) {
+export default function ({alertMessage, namespace}) {
 	const componentId = `${namespace}recycleBinAlert`;
 
 	openToast({
