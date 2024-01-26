@@ -15,7 +15,7 @@ function showNotification(message, error = false) {
 	});
 }
 
-export function SavedContentEntry({
+export default function SavedContentEntry({
 	className,
 	classPK,
 	contentTitle,
