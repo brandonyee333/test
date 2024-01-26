@@ -51,7 +51,7 @@ List<TrashEntry> trashEntries = (List<TrashEntry>)request.getAttribute(TrashWebK
 												%>'
 												aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
 												dropdownItems="<%= trashDisplayContext.getTrashEntryActionDropdownItems(trashEntry) %>"
-												propsTransformer="{EntriesPropsTransformer} from trash-web"
+												propsTransformer="js/EntriesPropsTransformer"
 											/>
 										</c:when>
 										<c:otherwise>
@@ -63,7 +63,7 @@ List<TrashEntry> trashEntries = (List<TrashEntry>)request.getAttribute(TrashWebK
 												%>'
 												aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
 												dropdownItems="<%= trashDisplayContext.getTrashViewContentActionDropdownItems(trashRenderer.getClassName(), trashRenderer.getClassPK()) %>"
-												propsTransformer="{EntriesPropsTransformer} from trash-web"
+												propsTransformer="js/EntriesPropsTransformer"
 											/>
 										</c:otherwise>
 									</c:choose>

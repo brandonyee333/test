@@ -13,7 +13,7 @@ TrashManagementToolbarDisplayContext trashManagementToolbarDisplayContext = new 
 
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= trashManagementToolbarDisplayContext %>"
-	propsTransformer="{TrashManagementToolbarPropsTransformer} from trash-web"
+	propsTransformer="js/TrashManagementToolbarPropsTransformer"
 />
 
 <liferay-util:include page="/restore_path.jsp" servletContext="<%= application %>" />
@@ -169,14 +169,14 @@ TrashManagementToolbarDisplayContext trashManagementToolbarDisplayContext = new 
 										<clay:dropdown-actions
 											aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
 											dropdownItems="<%= trashDisplayContext.getTrashEntryActionDropdownItems(trashEntry) %>"
-											propsTransformer="{EntriesPropsTransformer} from trash-web"
+											propsTransformer="js/EntriesPropsTransformer"
 										/>
 									</c:when>
 									<c:otherwise>
 										<clay:dropdown-actions
 											aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
 											dropdownItems="<%= trashDisplayContext.getTrashViewContentActionDropdownItems(trashRenderer.getClassName(), trashRenderer.getClassPK()) %>"
-											propsTransformer="{EntriesPropsTransformer} from trash-web"
+											propsTransformer="js/EntriesPropsTransformer"
 										/>
 									</c:otherwise>
 								</c:choose>
@@ -185,7 +185,7 @@ TrashManagementToolbarDisplayContext trashManagementToolbarDisplayContext = new 
 						<c:when test="<%= trashDisplayContext.isIconView() %>">
 							<liferay-ui:search-container-column-text>
 								<clay:vertical-card
-									propsTransformer="{EntriesPropsTransformer} from trash-web"
+									propsTransformer="js/EntriesPropsTransformer"
 									verticalCard="<%= new TrashEntryVerticalCard(trashEntry, trashRenderer, liferayPortletResponse, renderRequest, searchContainer.getRowChecker(), viewContentURLString) %>"
 								/>
 							</liferay-ui:search-container-column-text>
@@ -260,14 +260,14 @@ TrashManagementToolbarDisplayContext trashManagementToolbarDisplayContext = new 
 										<clay:dropdown-actions
 											aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
 											dropdownItems="<%= trashDisplayContext.getTrashEntryActionDropdownItems(trashEntry) %>"
-											propsTransformer="{EntriesPropsTransformer} from trash-web"
+											propsTransformer="js/EntriesPropsTransformer"
 										/>
 									</c:when>
 									<c:otherwise>
 										<clay:dropdown-actions
 											aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
 											dropdownItems="<%= trashDisplayContext.getTrashViewContentActionDropdownItems(trashRenderer.getClassName(), trashRenderer.getClassPK()) %>"
-											propsTransformer="{EntriesPropsTransformer} from trash-web"
+											propsTransformer="js/EntriesPropsTransformer"
 										/>
 									</c:otherwise>
 								</c:choose>
