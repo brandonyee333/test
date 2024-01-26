@@ -17,7 +17,7 @@ const ACTIONS = {
 	},
 };
 
-export function SiteDropdownDefaultPropsTransformer({items, ...props}) {
+export default function propsTransformer({items, ...props}) {
 	return {
 		...props,
 		items: items.map((item) => {
