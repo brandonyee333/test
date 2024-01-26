@@ -2,7 +2,6 @@
 	"dependencies": {
 		"frontend-js-web": "*"
 	},
-	"main": "js/index.js",
 	"name": "site-navigation-menu-web",
 	"optionalDependencies": {
 		"fsevents": "^1.2.7"

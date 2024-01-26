@@ -13,7 +13,7 @@ import {
 	toggleSelectBox,
 } from 'frontend-js-web';
 
-export function NavigationMenuConfiguration({
+export default function NavigationMenuConfiguration({
 	itemSelectorNamespace,
 	namespace,
 	portletResource,

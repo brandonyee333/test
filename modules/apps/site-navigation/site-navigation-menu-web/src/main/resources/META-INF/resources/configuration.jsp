@@ -237,5 +237,5 @@ SiteNavigationMenuConfigurationDisplayContext siteNavigationMenuConfigurationDis
 			"siteNavigationMenuItemSelectorURL", siteNavigationMenuDisplayContext.getSiteNavigationMenuItemSelectorURL()
 		).build()
 	%>'
-	module="{NavigationMenuConfiguration} from site-navigation-menu-web"
+	module="js/NavigationMenuConfiguration"
 />
