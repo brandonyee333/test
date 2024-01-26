@@ -15,7 +15,7 @@ SiteNavigationMenuItemItemSelectorViewDisplayContext siteNavigationMenuItemItemS
 	<c:when test="<%= siteNavigationMenuItemItemSelectorViewDisplayContext.isShowSelectSiteNavigationMenuItem() %>">
 		<div class="select-site-navigation-menu-item">
 			<react:component
-				module="{SelectSiteNavigationMenuItem} from site-navigation-item-selector-web"
+				module="js/SelectSiteNavigationMenuItem"
 				props='<%=
 					HashMapBuilder.<String, Object>put(
 						"itemSelectorSaveEvent", siteNavigationMenuItemItemSelectorViewDisplayContext.getItemSelectedEventName()
