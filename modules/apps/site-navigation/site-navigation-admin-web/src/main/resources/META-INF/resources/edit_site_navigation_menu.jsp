@@ -22,7 +22,7 @@ renderResponse.setTitle(siteNavigationAdminDisplayContext.getSiteNavigationMenuN
 <c:if test="<%= siteNavigationAdminDisplayContext.hasUpdatePermission() %>">
 	<react:component
 		componentId="siteNavigationMenuEditor"
-		module="{App} from site-navigation-admin-web"
+		module="site_navigation_menu_editor/index"
 		props="<%= siteNavigationAdminDisplayContext.getSiteNavigationContext() %>"
 	/>
 </c:if>
