@@ -13,7 +13,7 @@ EditStyleBookEntryDisplayContext editStyleBookEntryDisplayContext = new EditStyl
 
 <div>
 	<react:component
-		module="{StyleBookEditor} from style-book-web"
+		module="js/style-book-editor/StyleBookEditor"
 		props="<%= editStyleBookEntryDisplayContext.getStyleBookEditorData() %>"
 	/>
 </div>

@@ -13,7 +13,7 @@ StyleBookDisplayContext styleBookDisplayContext = new StyleBookDisplayContext(re
 
 <clay:management-toolbar
 	managementToolbarDisplayContext="<%= new StyleBookManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, styleBookDisplayContext.getStyleBookEntriesSearchContainer()) %>"
-	propsTransformer="{StyleBookManagementToolbarPropsTransformer} from style-book-web"
+	propsTransformer="js/StyleBookManagementToolbarPropsTransformer"
 />
 
 <portlet:actionURL name="/style_book/delete_style_book_entry" var="deleteStyleBookEntryURL">
@@ -32,7 +32,7 @@ StyleBookDisplayContext styleBookDisplayContext = new StyleBookDisplayContext(re
 			>
 				<liferay-ui:search-container-column-text>
 					<clay:vertical-card
-						propsTransformer="{StylebookEntryActionDropdownPropsTransformer} from style-book-web"
+						propsTransformer="js/StylebookEntryActionDropdownPropsTransformer"
 						verticalCard="<%= new StyleBookVerticalCard(styleBookEntry, renderRequest, renderResponse, searchContainer.getRowChecker()) %>"
 					/>
 				</liferay-ui:search-container-column-text>
