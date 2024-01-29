@@ -131,7 +131,6 @@ public class FrontendTokenDefinitionManager {
 			ResourceBundleLoader resourceBundleLoader, String themeId) {
 
 		try {
-			Objects.requireNonNull(frontendTokenDefinitionAsJsonString);
 			Objects.requireNonNull(themeId);
 
 			FrontendTokenDefinitionImpl frontendTokenDefinitionImpl =
@@ -139,10 +138,8 @@ public class FrontendTokenDefinitionManager {
 					frontendTokenDefinitionAsJsonString, resourceBundleLoader,
 					themeId);
 
-			if (frontendTokenDefinitionImpl != null) {
 				_themeIdFrontendTokenDefinitionImpls.put(
 					themeId, frontendTokenDefinitionImpl);
-			}
 
 			return frontendTokenDefinitionImpl;
 		}
