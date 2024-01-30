@@ -38,7 +38,7 @@ public class FrontendTokenDefinitionRegistryImpl
 		long companyId, String externalReferenceCode, String themeId) {
 
 		if (FeatureFlagManagerUtil.isEnabled("LPD-10773") &&
-			externalReferenceCode != null) {
+			(externalReferenceCode != null)) {
 
 			FrontendTokenDefinition frontendTokenDefinition =
 				_frontendTokenDefinitionManager.getFrontendTokenDefinition(
@@ -68,8 +68,8 @@ public class FrontendTokenDefinitionRegistryImpl
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_frontendTokenDefinitionManager = new FrontendTokenDefinitionManager(
-				jsonFactory, new DCLSingleton<>(), new ConcurrentHashMap<>(),
-				new ConcurrentHashMap<>());
+			jsonFactory, new DCLSingleton<>(), new ConcurrentHashMap<>(),
+			new ConcurrentHashMap<>());
 
 		_bundleTracker = new BundleTracker<>(
 			bundleContext, Bundle.ACTIVE,

@@ -1,5 +1,5 @@
 /**
- * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
+ * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -46,15 +46,17 @@ public class ThemeBundleTrackerCustomizer
 		Bundle bundle, BundleEvent event) {
 
 		String themeId = null;
+
 		try {
 			String frontendTokenDefinitionAsJsonString =
 				_getFrontendTokenDefinitionJSONFromBundle(bundle);
 
 			if (Objects.nonNull(frontendTokenDefinitionAsJsonString)) {
 				themeId = _getThemeId(bundle, _portal);
+
 				return _manager.addFrontendTokenDefinition(
-						themeId, _getResourceBundleLoader(bundle.getSymbolicName()),
-						frontendTokenDefinitionAsJsonString);
+					themeId, _getResourceBundleLoader(bundle.getSymbolicName()),
+					frontendTokenDefinitionAsJsonString);
 			}
 		}
 		catch (RuntimeException runtimeException) {
