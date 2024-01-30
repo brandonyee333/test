@@ -59,6 +59,20 @@ public interface AutoEscapeEntryModel extends BaseModel<AutoEscapeEntry> {
 	public void setAutoEscapeEntryId(long autoEscapeEntryId);
 
 	/**
+	 * Returns the auto escape disabled column of this auto escape entry.
+	 *
+	 * @return the auto escape disabled column of this auto escape entry
+	 */
+	public String getAutoEscapeDisabledColumn();
+
+	/**
+	 * Sets the auto escape disabled column of this auto escape entry.
+	 *
+	 * @param autoEscapeDisabledColumn the auto escape disabled column of this auto escape entry
+	 */
+	public void setAutoEscapeDisabledColumn(String autoEscapeDisabledColumn);
+
+	/**
 	 * Returns the auto escape enabled column of this auto escape entry.
 	 *
 	 * @return the auto escape enabled column of this auto escape entry
@@ -72,20 +86,6 @@ public interface AutoEscapeEntryModel extends BaseModel<AutoEscapeEntry> {
 	 * @param autoEscapeEnabledColumn the auto escape enabled column of this auto escape entry
 	 */
 	public void setAutoEscapeEnabledColumn(String autoEscapeEnabledColumn);
-
-	/**
-	 * Returns the auto escape disabled column of this auto escape entry.
-	 *
-	 * @return the auto escape disabled column of this auto escape entry
-	 */
-	public String getAutoEscapeDisabledColumn();
-
-	/**
-	 * Sets the auto escape disabled column of this auto escape entry.
-	 *
-	 * @param autoEscapeDisabledColumn the auto escape disabled column of this auto escape entry
-	 */
-	public void setAutoEscapeDisabledColumn(String autoEscapeDisabledColumn);
 
 	@Override
 	public AutoEscapeEntry cloneWithOriginalValues();

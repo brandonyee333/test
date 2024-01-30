@@ -110,10 +110,10 @@ public class AutoEscapeEntryPersistenceTest {
 
 		AutoEscapeEntry newAutoEscapeEntry = _persistence.create(pk);
 
-		newAutoEscapeEntry.setAutoEscapeEnabledColumn(
+		newAutoEscapeEntry.setAutoEscapeDisabledColumn(
 			RandomTestUtil.randomString());
 
-		newAutoEscapeEntry.setAutoEscapeDisabledColumn(
+		newAutoEscapeEntry.setAutoEscapeEnabledColumn(
 			RandomTestUtil.randomString());
 
 		_autoEscapeEntries.add(_persistence.update(newAutoEscapeEntry));
@@ -125,11 +125,11 @@ public class AutoEscapeEntryPersistenceTest {
 			existingAutoEscapeEntry.getAutoEscapeEntryId(),
 			newAutoEscapeEntry.getAutoEscapeEntryId());
 		Assert.assertEquals(
-			existingAutoEscapeEntry.getAutoEscapeEnabledColumn(),
-			newAutoEscapeEntry.getAutoEscapeEnabledColumn());
-		Assert.assertEquals(
 			existingAutoEscapeEntry.getAutoEscapeDisabledColumn(),
 			newAutoEscapeEntry.getAutoEscapeDisabledColumn());
+		Assert.assertEquals(
+			existingAutoEscapeEntry.getAutoEscapeEnabledColumn(),
+			newAutoEscapeEntry.getAutoEscapeEnabledColumn());
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class AutoEscapeEntryPersistenceTest {
 	protected OrderByComparator<AutoEscapeEntry> getOrderByComparator() {
 		return OrderByComparatorFactoryUtil.create(
 			"AutoEscapeEntry", "autoEscapeEntryId", true,
-			"autoEscapeEnabledColumn", true, "autoEscapeDisabledColumn", true);
+			"autoEscapeDisabledColumn", true, "autoEscapeEnabledColumn", true);
 	}
 
 	@Test
@@ -357,10 +357,10 @@ public class AutoEscapeEntryPersistenceTest {
 
 		AutoEscapeEntry autoEscapeEntry = _persistence.create(pk);
 
-		autoEscapeEntry.setAutoEscapeEnabledColumn(
+		autoEscapeEntry.setAutoEscapeDisabledColumn(
 			RandomTestUtil.randomString());
 
-		autoEscapeEntry.setAutoEscapeDisabledColumn(
+		autoEscapeEntry.setAutoEscapeEnabledColumn(
 			RandomTestUtil.randomString());
 
 		_autoEscapeEntries.add(_persistence.update(autoEscapeEntry));

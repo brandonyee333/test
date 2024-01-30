@@ -1,7 +1,7 @@
 create table AutoEscapeEntry (
 	autoEscapeEntryId LONG not null primary key,
-	autoEscapeEnabledColumn VARCHAR(75) null,
-	autoEscapeDisabledColumn VARCHAR(75) null
+	autoEscapeDisabledColumn VARCHAR(75) null,
+	autoEscapeEnabledColumn VARCHAR(75) null
 );
 
 create table BigDecimalEntries_LVEntries (

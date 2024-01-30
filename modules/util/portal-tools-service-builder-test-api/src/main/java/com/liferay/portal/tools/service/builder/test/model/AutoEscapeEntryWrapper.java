@@ -33,9 +33,9 @@ public class AutoEscapeEntryWrapper
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("autoEscapeEntryId", getAutoEscapeEntryId());
-		attributes.put("autoEscapeEnabledColumn", getAutoEscapeEnabledColumn());
 		attributes.put(
 			"autoEscapeDisabledColumn", getAutoEscapeDisabledColumn());
+		attributes.put("autoEscapeEnabledColumn", getAutoEscapeEnabledColumn());
 
 		return attributes;
 	}
@@ -48,18 +48,18 @@ public class AutoEscapeEntryWrapper
 			setAutoEscapeEntryId(autoEscapeEntryId);
 		}
 
-		String autoEscapeEnabledColumn = (String)attributes.get(
-			"autoEscapeEnabledColumn");
-
-		if (autoEscapeEnabledColumn != null) {
-			setAutoEscapeEnabledColumn(autoEscapeEnabledColumn);
-		}
-
 		String autoEscapeDisabledColumn = (String)attributes.get(
 			"autoEscapeDisabledColumn");
 
 		if (autoEscapeDisabledColumn != null) {
 			setAutoEscapeDisabledColumn(autoEscapeDisabledColumn);
+		}
+
+		String autoEscapeEnabledColumn = (String)attributes.get(
+			"autoEscapeEnabledColumn");
+
+		if (autoEscapeEnabledColumn != null) {
+			setAutoEscapeEnabledColumn(autoEscapeEnabledColumn);
 		}
 	}
 

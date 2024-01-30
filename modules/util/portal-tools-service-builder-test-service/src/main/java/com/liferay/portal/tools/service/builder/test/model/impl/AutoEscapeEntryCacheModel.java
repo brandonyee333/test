@@ -55,10 +55,10 @@ public class AutoEscapeEntryCacheModel
 
 		sb.append("{autoEscapeEntryId=");
 		sb.append(autoEscapeEntryId);
-		sb.append(", autoEscapeEnabledColumn=");
-		sb.append(autoEscapeEnabledColumn);
 		sb.append(", autoEscapeDisabledColumn=");
 		sb.append(autoEscapeDisabledColumn);
+		sb.append(", autoEscapeEnabledColumn=");
+		sb.append(autoEscapeEnabledColumn);
 		sb.append("}");
 
 		return sb.toString();
@@ -70,20 +70,20 @@ public class AutoEscapeEntryCacheModel
 
 		autoEscapeEntryImpl.setAutoEscapeEntryId(autoEscapeEntryId);
 
-		if (autoEscapeEnabledColumn == null) {
-			autoEscapeEntryImpl.setAutoEscapeEnabledColumn("");
-		}
-		else {
-			autoEscapeEntryImpl.setAutoEscapeEnabledColumn(
-				autoEscapeEnabledColumn);
-		}
-
 		if (autoEscapeDisabledColumn == null) {
 			autoEscapeEntryImpl.setAutoEscapeDisabledColumn("");
 		}
 		else {
 			autoEscapeEntryImpl.setAutoEscapeDisabledColumn(
 				autoEscapeDisabledColumn);
+		}
+
+		if (autoEscapeEnabledColumn == null) {
+			autoEscapeEntryImpl.setAutoEscapeEnabledColumn("");
+		}
+		else {
+			autoEscapeEntryImpl.setAutoEscapeEnabledColumn(
+				autoEscapeEnabledColumn);
 		}
 
 		autoEscapeEntryImpl.resetOriginalValues();
@@ -94,20 +94,13 @@ public class AutoEscapeEntryCacheModel
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		autoEscapeEntryId = objectInput.readLong();
-		autoEscapeEnabledColumn = objectInput.readUTF();
 		autoEscapeDisabledColumn = objectInput.readUTF();
+		autoEscapeEnabledColumn = objectInput.readUTF();
 	}
 
 	@Override
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(autoEscapeEntryId);
-
-		if (autoEscapeEnabledColumn == null) {
-			objectOutput.writeUTF("");
-		}
-		else {
-			objectOutput.writeUTF(autoEscapeEnabledColumn);
-		}
 
 		if (autoEscapeDisabledColumn == null) {
 			objectOutput.writeUTF("");
@@ -115,10 +108,17 @@ public class AutoEscapeEntryCacheModel
 		else {
 			objectOutput.writeUTF(autoEscapeDisabledColumn);
 		}
+
+		if (autoEscapeEnabledColumn == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(autoEscapeEnabledColumn);
+		}
 	}
 
 	public long autoEscapeEntryId;
-	public String autoEscapeEnabledColumn;
 	public String autoEscapeDisabledColumn;
+	public String autoEscapeEnabledColumn;
 
 }

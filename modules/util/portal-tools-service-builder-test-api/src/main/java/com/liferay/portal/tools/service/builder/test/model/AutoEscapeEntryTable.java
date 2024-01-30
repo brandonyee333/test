@@ -25,13 +25,13 @@ public class AutoEscapeEntryTable extends BaseTable<AutoEscapeEntryTable> {
 	public final Column<AutoEscapeEntryTable, Long> autoEscapeEntryId =
 		createColumn(
 			"autoEscapeEntryId", Long.class, Types.BIGINT, Column.FLAG_PRIMARY);
-	public final Column<AutoEscapeEntryTable, String> autoEscapeEnabledColumn =
-		createColumn(
-			"autoEscapeEnabledColumn", String.class, Types.VARCHAR,
-			Column.FLAG_DEFAULT);
 	public final Column<AutoEscapeEntryTable, String> autoEscapeDisabledColumn =
 		createColumn(
 			"autoEscapeDisabledColumn", String.class, Types.VARCHAR,
+			Column.FLAG_DEFAULT);
+	public final Column<AutoEscapeEntryTable, String> autoEscapeEnabledColumn =
+		createColumn(
+			"autoEscapeEnabledColumn", String.class, Types.VARCHAR,
 			Column.FLAG_DEFAULT);
 
 	private AutoEscapeEntryTable() {

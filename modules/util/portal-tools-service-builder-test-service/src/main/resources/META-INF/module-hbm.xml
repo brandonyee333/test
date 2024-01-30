@@ -33,8 +33,8 @@
 		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="autoEscapeEntryId" type="long">
 			<generator class="assigned" />
 		</id>
-		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="autoEscapeEnabledColumn" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="autoEscapeDisabledColumn" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="autoEscapeEnabledColumn" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.portal.tools.service.builder.test.model.impl.BigDecimalEntryImpl" table="BigDecimalEntry">
 		<id access="com.liferay.portal.dao.orm.hibernate.MethodPropertyAccessor" name="bigDecimalEntryId" type="long">

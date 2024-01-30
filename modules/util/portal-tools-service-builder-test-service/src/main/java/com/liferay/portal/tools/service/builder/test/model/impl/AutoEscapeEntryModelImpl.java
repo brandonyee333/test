@@ -58,8 +58,8 @@ public class AutoEscapeEntryModelImpl
 
 	public static final Object[][] TABLE_COLUMNS = {
 		{"autoEscapeEntryId", Types.BIGINT},
-		{"autoEscapeEnabledColumn", Types.VARCHAR},
-		{"autoEscapeDisabledColumn", Types.VARCHAR}
+		{"autoEscapeDisabledColumn", Types.VARCHAR},
+		{"autoEscapeEnabledColumn", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -67,12 +67,12 @@ public class AutoEscapeEntryModelImpl
 
 	static {
 		TABLE_COLUMNS_MAP.put("autoEscapeEntryId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("autoEscapeEnabledColumn", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("autoEscapeDisabledColumn", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("autoEscapeEnabledColumn", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table AutoEscapeEntry (autoEscapeEntryId LONG not null primary key,autoEscapeEnabledColumn VARCHAR(75) null,autoEscapeDisabledColumn VARCHAR(75) null)";
+		"create table AutoEscapeEntry (autoEscapeEntryId LONG not null primary key,autoEscapeDisabledColumn VARCHAR(75) null,autoEscapeEnabledColumn VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table AutoEscapeEntry";
 
@@ -217,11 +217,11 @@ public class AutoEscapeEntryModelImpl
 			attributeGetterFunctions.put(
 				"autoEscapeEntryId", AutoEscapeEntry::getAutoEscapeEntryId);
 			attributeGetterFunctions.put(
-				"autoEscapeEnabledColumn",
-				AutoEscapeEntry::getAutoEscapeEnabledColumn);
-			attributeGetterFunctions.put(
 				"autoEscapeDisabledColumn",
 				AutoEscapeEntry::getAutoEscapeDisabledColumn);
+			attributeGetterFunctions.put(
+				"autoEscapeEnabledColumn",
+				AutoEscapeEntry::getAutoEscapeEnabledColumn);
 
 			_attributeGetterFunctions = Collections.unmodifiableMap(
 				attributeGetterFunctions);
@@ -244,13 +244,13 @@ public class AutoEscapeEntryModelImpl
 				(BiConsumer<AutoEscapeEntry, Long>)
 					AutoEscapeEntry::setAutoEscapeEntryId);
 			attributeSetterBiConsumers.put(
-				"autoEscapeEnabledColumn",
-				(BiConsumer<AutoEscapeEntry, String>)
-					AutoEscapeEntry::setAutoEscapeEnabledColumn);
-			attributeSetterBiConsumers.put(
 				"autoEscapeDisabledColumn",
 				(BiConsumer<AutoEscapeEntry, String>)
 					AutoEscapeEntry::setAutoEscapeDisabledColumn);
+			attributeSetterBiConsumers.put(
+				"autoEscapeEnabledColumn",
+				(BiConsumer<AutoEscapeEntry, String>)
+					AutoEscapeEntry::setAutoEscapeEnabledColumn);
 
 			_attributeSetterBiConsumers = Collections.unmodifiableMap(
 				(Map)attributeSetterBiConsumers);
@@ -273,25 +273,6 @@ public class AutoEscapeEntryModelImpl
 	}
 
 	@Override
-	public String getAutoEscapeEnabledColumn() {
-		if (_autoEscapeEnabledColumn == null) {
-			return "";
-		}
-		else {
-			return _autoEscapeEnabledColumn;
-		}
-	}
-
-	@Override
-	public void setAutoEscapeEnabledColumn(String autoEscapeEnabledColumn) {
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		_autoEscapeEnabledColumn = autoEscapeEnabledColumn;
-	}
-
-	@Override
 	public String getAutoEscapeDisabledColumn() {
 		if (_autoEscapeDisabledColumn == null) {
 			return "";
@@ -308,6 +289,25 @@ public class AutoEscapeEntryModelImpl
 		}
 
 		_autoEscapeDisabledColumn = autoEscapeDisabledColumn;
+	}
+
+	@Override
+	public String getAutoEscapeEnabledColumn() {
+		if (_autoEscapeEnabledColumn == null) {
+			return "";
+		}
+		else {
+			return _autoEscapeEnabledColumn;
+		}
+	}
+
+	@Override
+	public void setAutoEscapeEnabledColumn(String autoEscapeEnabledColumn) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_autoEscapeEnabledColumn = autoEscapeEnabledColumn;
 	}
 
 	public long getColumnBitmask() {
@@ -367,10 +367,10 @@ public class AutoEscapeEntryModelImpl
 		AutoEscapeEntryImpl autoEscapeEntryImpl = new AutoEscapeEntryImpl();
 
 		autoEscapeEntryImpl.setAutoEscapeEntryId(getAutoEscapeEntryId());
-		autoEscapeEntryImpl.setAutoEscapeEnabledColumn(
-			getAutoEscapeEnabledColumn());
 		autoEscapeEntryImpl.setAutoEscapeDisabledColumn(
 			getAutoEscapeDisabledColumn());
+		autoEscapeEntryImpl.setAutoEscapeEnabledColumn(
+			getAutoEscapeEnabledColumn());
 
 		autoEscapeEntryImpl.resetOriginalValues();
 
@@ -383,10 +383,10 @@ public class AutoEscapeEntryModelImpl
 
 		autoEscapeEntryImpl.setAutoEscapeEntryId(
 			this.<Long>getColumnOriginalValue("autoEscapeEntryId"));
-		autoEscapeEntryImpl.setAutoEscapeEnabledColumn(
-			this.<String>getColumnOriginalValue("autoEscapeEnabledColumn"));
 		autoEscapeEntryImpl.setAutoEscapeDisabledColumn(
 			this.<String>getColumnOriginalValue("autoEscapeDisabledColumn"));
+		autoEscapeEntryImpl.setAutoEscapeEnabledColumn(
+			this.<String>getColumnOriginalValue("autoEscapeEnabledColumn"));
 
 		return autoEscapeEntryImpl;
 	}
@@ -465,18 +465,6 @@ public class AutoEscapeEntryModelImpl
 
 		autoEscapeEntryCacheModel.autoEscapeEntryId = getAutoEscapeEntryId();
 
-		autoEscapeEntryCacheModel.autoEscapeEnabledColumn =
-			getAutoEscapeEnabledColumn();
-
-		String autoEscapeEnabledColumn =
-			autoEscapeEntryCacheModel.autoEscapeEnabledColumn;
-
-		if ((autoEscapeEnabledColumn != null) &&
-			(autoEscapeEnabledColumn.length() == 0)) {
-
-			autoEscapeEntryCacheModel.autoEscapeEnabledColumn = null;
-		}
-
 		autoEscapeEntryCacheModel.autoEscapeDisabledColumn =
 			getAutoEscapeDisabledColumn();
 
@@ -487,6 +475,18 @@ public class AutoEscapeEntryModelImpl
 			(autoEscapeDisabledColumn.length() == 0)) {
 
 			autoEscapeEntryCacheModel.autoEscapeDisabledColumn = null;
+		}
+
+		autoEscapeEntryCacheModel.autoEscapeEnabledColumn =
+			getAutoEscapeEnabledColumn();
+
+		String autoEscapeEnabledColumn =
+			autoEscapeEntryCacheModel.autoEscapeEnabledColumn;
+
+		if ((autoEscapeEnabledColumn != null) &&
+			(autoEscapeEnabledColumn.length() == 0)) {
+
+			autoEscapeEntryCacheModel.autoEscapeEnabledColumn = null;
 		}
 
 		return autoEscapeEntryCacheModel;
@@ -551,8 +551,8 @@ public class AutoEscapeEntryModelImpl
 	}
 
 	private long _autoEscapeEntryId;
-	private String _autoEscapeEnabledColumn;
 	private String _autoEscapeDisabledColumn;
+	private String _autoEscapeEnabledColumn;
 
 	public <T> T getColumnValue(String columnName) {
 		Function<AutoEscapeEntry, Object> function =
@@ -584,9 +584,9 @@ public class AutoEscapeEntryModelImpl
 
 		_columnOriginalValues.put("autoEscapeEntryId", _autoEscapeEntryId);
 		_columnOriginalValues.put(
-			"autoEscapeEnabledColumn", _autoEscapeEnabledColumn);
-		_columnOriginalValues.put(
 			"autoEscapeDisabledColumn", _autoEscapeDisabledColumn);
+		_columnOriginalValues.put(
+			"autoEscapeEnabledColumn", _autoEscapeEnabledColumn);
 	}
 
 	private transient Map<String, Object> _columnOriginalValues;
@@ -602,9 +602,9 @@ public class AutoEscapeEntryModelImpl
 
 		columnBitmasks.put("autoEscapeEntryId", 1L);
 
-		columnBitmasks.put("autoEscapeEnabledColumn", 2L);
+		columnBitmasks.put("autoEscapeDisabledColumn", 2L);
 
-		columnBitmasks.put("autoEscapeDisabledColumn", 4L);
+		columnBitmasks.put("autoEscapeEnabledColumn", 4L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
