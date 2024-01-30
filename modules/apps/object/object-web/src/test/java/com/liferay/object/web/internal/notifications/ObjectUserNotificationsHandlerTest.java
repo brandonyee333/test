@@ -129,15 +129,15 @@ public class ObjectUserNotificationsHandlerTest {
 		Mockito.when(
 			_userNotificationEvent.getPayload()
 		).thenReturn(
-			"{ \"exceedsObjectEntryLimit\": true }"
+			"{\"exceedsObjectEntryLimit\": true}"
 		);
 
-		try (MockedStatic<RequestBackedPortletURLFactoryUtil>
+		try (MockedStatic<PortletURLBuilder> portletURLBuilderMockedStatic =
+				Mockito.mockStatic(PortletURLBuilder.class);
+			MockedStatic<RequestBackedPortletURLFactoryUtil>
 				requestBackedPortletURLFactoryUtilMockedStatic =
 					Mockito.mockStatic(
-						RequestBackedPortletURLFactoryUtil.class);
-			MockedStatic<PortletURLBuilder> portletURLBuilderMockedStatic =
-				Mockito.mockStatic(PortletURLBuilder.class)) {
+						RequestBackedPortletURLFactoryUtil.class)) {
 
 			requestBackedPortletURLFactoryUtilMockedStatic.when(
 				() -> RequestBackedPortletURLFactoryUtil.create(
