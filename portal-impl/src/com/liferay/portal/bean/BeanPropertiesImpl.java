@@ -418,22 +418,22 @@ public class BeanPropertiesImpl implements BeanProperties {
 	public Class<?> getObjectType(
 		Object bean, String param, Class<?> defaultValue) {
 
-		Class<?> beanType = null;
+		Class<?> clazz = null;
 
 		if (bean != null) {
 			try {
-				beanType = _getPropertyType(bean, param);
+				clazz = _getPropertyClass(bean, param);
 			}
 			catch (Exception exception) {
 				_log.error(exception);
 			}
 		}
 
-		if (beanType == null) {
+		if (clazz == null) {
 			return defaultValue;
 		}
 
-		return beanType;
+		return clazz;
 	}
 
 	@Override
@@ -445,11 +445,11 @@ public class BeanPropertiesImpl implements BeanProperties {
 	public Class<?> getObjectTypeSilent(
 		Object bean, String param, Class<?> defaultValue) {
 
-		Class<?> beanType = null;
+		Class<?> clazz = null;
 
 		if (bean != null) {
 			try {
-				beanType = _getPropertyType(bean, param);
+				clazz = _getPropertyClass(bean, param);
 			}
 			catch (Exception exception) {
 				if (_log.isDebugEnabled()) {
@@ -458,11 +458,11 @@ public class BeanPropertiesImpl implements BeanProperties {
 			}
 		}
 
-		if (beanType == null) {
+		if (clazz == null) {
 			return defaultValue;
 		}
 
-		return beanType;
+		return clazz;
 	}
 
 	@Override
@@ -598,10 +598,10 @@ public class BeanPropertiesImpl implements BeanProperties {
 					continue;
 				}
 
-				Class<?> propertyTypeClass = _getPropertyType(bean, dateParam);
+				Class<?> propertyClass = _getPropertyClass(bean, dateParam);
 
-				if ((propertyTypeClass == null) ||
-					!propertyTypeClass.equals(Date.class)) {
+				if ((propertyClass == null) ||
+					!propertyClass.equals(Date.class)) {
 
 					continue;
 				}
@@ -680,7 +680,7 @@ public class BeanPropertiesImpl implements BeanProperties {
 		}
 	}
 
-	private Class<?> _getPropertyType(Object bean, String param) {
+	private Class<?> _getPropertyClass(Object bean, String param) {
 		AutoEscapeBeanHandler autoEscapeBeanHandler =
 			ProxyUtil.fetchInvocationHandler(bean, AutoEscapeBeanHandler.class);
 
