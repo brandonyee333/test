@@ -12,7 +12,6 @@ that they only contain data associated with their proper company ID.
 
 ```
 java -jar com.liferay.portal.tools.db.partition.schema.validator.jar -d myDatabaseName -p myDabatabasePassword -u myDatabaseUser
-```
 
 -a,--debug Print all log traces
 -d,--db-name <arg> Database name
@@ -22,3 +21,4 @@ java -jar com.liferay.portal.tools.db.partition.schema.validator.jar -d myDataba
 -s,--schema-prefix <arg> Schema prefix for non-default partitions
 -t,--db-type Database type [mysql or postgresql]
 -u,--user <arg> Database user name
+```
