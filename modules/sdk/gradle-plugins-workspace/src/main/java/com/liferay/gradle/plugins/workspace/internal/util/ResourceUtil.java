@@ -29,7 +29,7 @@ public class ResourceUtil {
 	public static Resolver getClassLoaderResolver(String resourcePath) {
 		return () -> Objects.requireNonNull(
 			ResourceUtil.class.getResourceAsStream(resourcePath),
-			"Could not get resource from classpath: " + resourcePath);
+			"Unable to get resource from class path: " + resourcePath);
 	}
 
 	public static Resolver getURLResolver(File cacheDir, String url) {
