@@ -59,13 +59,11 @@ public class
 			}
 
 			long guestUserId = _userLocalService.getGuestUserId(companyId);
-
+			Company company = _companyLocalService.getCompany(companyId);
 			String content = StringUtil.read(
 				AddMBModerationWorkflowDefinitionInitialRequestPortalInstanceLifecycleListener.class,
 				"dependencies" +
 					"/message-boards-moderation-workflow-definition.xml");
-
-			Company company = _companyLocalService.getCompany(companyId);
 
 			_workflowDefinitionManager.deployWorkflowDefinition(
 				companyId, guestUserId,
