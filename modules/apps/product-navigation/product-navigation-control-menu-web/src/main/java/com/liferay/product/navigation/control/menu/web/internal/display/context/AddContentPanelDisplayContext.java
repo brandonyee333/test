@@ -104,11 +104,10 @@ public class AddContentPanelDisplayContext {
 				ResourceURL resourceURL =
 					_liferayPortletResponse.createResourceURL();
 
-				resourceURL.setResourceID(
-					"/product_navigation_control_menu/get_contents");
-
 				resourceURL.setParameter(
 					"status", String.valueOf(WorkflowConstants.STATUS_ANY));
+				resourceURL.setResourceID(
+					"/product_navigation_control_menu/get_contents");
 
 				return resourceURL.toString();
 			}
