@@ -434,7 +434,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				ObjectEntryBatchReindexer.class,
 				new ObjectEntryBatchReindexer(
-					objectEntryModelIndexerWriterContributor, objectDefinition),
+					_dynamicQueryBatchIndexingActionableFactory,
+					_objectEntryLocalService, objectDefinition),
 				null));
 
 		return serviceRegistrations;

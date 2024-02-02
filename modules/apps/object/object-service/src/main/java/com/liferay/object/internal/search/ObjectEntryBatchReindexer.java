@@ -7,11 +7,12 @@ package com.liferay.object.internal.search;
 
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
+import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.search.batch.BatchIndexingActionable;
+import com.liferay.portal.search.batch.DynamicQueryBatchIndexingActionableFactory;
 import com.liferay.portal.search.indexer.IndexerDocumentBuilder;
-import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 
 /**
  * @author Feliphe Marinho
@@ -20,11 +21,14 @@ import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterC
 public class ObjectEntryBatchReindexer {
 
 	public ObjectEntryBatchReindexer(
-		ModelIndexerWriterContributor<ObjectEntry>
-			modelIndexerWriterContributor,
+		DynamicQueryBatchIndexingActionableFactory
+			dynamicQueryBatchIndexingActionableFactory,
+		ObjectEntryLocalService objectEntryLocalService,
 		ObjectDefinition objectDefinition) {
 
-		_modelIndexerWriterContributor = modelIndexerWriterContributor;
+		_dynamicQueryBatchIndexingActionableFactory =
+			dynamicQueryBatchIndexingActionableFactory;
+		_objectEntryLocalService = objectEntryLocalService;
 		_objectDefinition = objectDefinition;
 	}
 
@@ -37,7 +41,10 @@ public class ObjectEntryBatchReindexer {
 		long companyId) {
 
 		BatchIndexingActionable batchIndexingActionable =
-			_modelIndexerWriterContributor.getBatchIndexingActionable();
+			_dynamicQueryBatchIndexingActionableFactory.
+				getBatchIndexingActionable(
+					_objectEntryLocalService.
+						getIndexableActionableDynamicQuery());
 
 		batchIndexingActionable.setAddCriteriaMethod(
 			dynamicQuery -> {
@@ -55,8 +62,9 @@ public class ObjectEntryBatchReindexer {
 		batchIndexingActionable.performActions();
 	}
 
-	private final ModelIndexerWriterContributor<ObjectEntry>
-		_modelIndexerWriterContributor;
+	private final DynamicQueryBatchIndexingActionableFactory
+		_dynamicQueryBatchIndexingActionableFactory;
 	private final ObjectDefinition _objectDefinition;
+	private final ObjectEntryLocalService _objectEntryLocalService;
 
 }
