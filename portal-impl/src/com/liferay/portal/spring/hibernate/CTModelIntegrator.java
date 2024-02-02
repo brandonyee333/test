@@ -97,9 +97,9 @@ public class CTModelIntegrator implements Integrator {
 				EventListenerRegistry.class);
 
 		eventListenerRegistry.setListeners(
-			EventType.PRE_UPDATE,
-			preUpdateEvent -> {
-				Object entity = preUpdateEvent.getEntity();
+			EventType.PRE_DELETE,
+			preDeleteEvent -> {
+				Object entity = preDeleteEvent.getEntity();
 
 				if (entity instanceof CTModel) {
 					CTModel<?> ctModel = (CTModel<?>)entity;
@@ -114,11 +114,10 @@ public class CTModelIntegrator implements Integrator {
 
 				return false;
 			});
-
 		eventListenerRegistry.setListeners(
-			EventType.PRE_DELETE,
-			preDeleteEvent -> {
-				Object entity = preDeleteEvent.getEntity();
+			EventType.PRE_UPDATE,
+			preUpdateEvent -> {
+				Object entity = preUpdateEvent.getEntity();
 
 				if (entity instanceof CTModel) {
 					CTModel<?> ctModel = (CTModel<?>)entity;
