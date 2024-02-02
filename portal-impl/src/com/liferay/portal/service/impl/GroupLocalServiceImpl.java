@@ -3931,9 +3931,9 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			PropsKeys.LOCALES);
 
 		if (Validator.isNotNull(newLanguageIds)) {
-			Group companyGroup = getCompanyGroup(group.getCompanyId());
-
 			group = groupPersistence.findByPrimaryKey(groupId);
+
+			Group companyGroup = getCompanyGroup(group.getCompanyId());
 
 			String oldLanguageIds =
 				oldTypeSettingsUnicodeProperties.getProperty(
