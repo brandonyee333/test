@@ -83,7 +83,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.workflow.WorkflowHandler;
 import com.liferay.portal.language.override.service.PLOEntryLocalService;
 import com.liferay.portal.search.batch.DynamicQueryBatchIndexingActionableFactory;
-import com.liferay.portal.search.indexer.IndexerDocumentBuilder;
 import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.query.contributor.KeywordQueryContributor;
@@ -102,8 +101,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 
 /**
@@ -434,26 +431,12 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			return serviceRegistrations;
 		}
 
-		try {
-			List<ServiceReference<IndexerDocumentBuilder>> serviceReferences =
-				(List<ServiceReference<IndexerDocumentBuilder>>)
-					_bundleContext.getServiceReferences(
-						IndexerDocumentBuilder.class,
-						"(indexer.class.name=" +
-							objectDefinition.getClassName() + ")");
-
-			serviceRegistrations.add(
-				_bundleContext.registerService(
-					ObjectEntryBatchReindexer.class,
-					new ObjectEntryBatchReindexerImpl(
-						_bundleContext.getService(serviceReferences.get(0)),
-						objectEntryModelIndexerWriterContributor,
-						objectDefinition),
-					null));
-		}
-		catch (InvalidSyntaxException invalidSyntaxException) {
-			return ReflectionUtil.throwException(invalidSyntaxException);
-		}
+		serviceRegistrations.add(
+			_bundleContext.registerService(
+				ObjectEntryBatchReindexer.class,
+				new ObjectEntryBatchReindexerImpl(
+					objectEntryModelIndexerWriterContributor, objectDefinition),
+				null));
 
 		return serviceRegistrations;
 	}

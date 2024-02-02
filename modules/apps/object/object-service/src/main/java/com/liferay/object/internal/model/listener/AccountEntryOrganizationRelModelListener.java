@@ -9,10 +9,13 @@ import com.liferay.account.model.AccountEntryOrganizationRel;
 import com.liferay.object.internal.search.ObjectEntryBatchReindexer;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
 import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.search.indexer.IndexerDocumentBuilder;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -57,10 +60,15 @@ public class AccountEntryOrganizationRelModelListener
 	protected void activate(BundleContext bundleContext) {
 		_objectEntryBatchReindexers = ServiceTrackerListFactory.open(
 			bundleContext, ObjectEntryBatchReindexer.class);
+
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, IndexerDocumentBuilder.class, "indexer.class.name");
 	}
 
 	@Deactivate
 	protected void deactivate() {
+		_serviceTrackerMap.close();
+
 		_objectEntryBatchReindexers.close();
 	}
 
@@ -70,7 +78,12 @@ public class AccountEntryOrganizationRelModelListener
 		for (ObjectEntryBatchReindexer objectEntryBatchReindexer :
 				_objectEntryBatchReindexers) {
 
+			IndexerDocumentBuilder indexerDocumentBuilder =
+				_serviceTrackerMap.getService(
+					objectEntryBatchReindexer.getClassName());
+
 			objectEntryBatchReindexer.reindex(
+				indexerDocumentBuilder,
 				accountEntryOrganizationRel.getAccountEntryId(),
 				accountEntryOrganizationRel.getCompanyId());
 		}
@@ -78,5 +91,7 @@ public class AccountEntryOrganizationRelModelListener
 
 	private ServiceTrackerList<ObjectEntryBatchReindexer>
 		_objectEntryBatchReindexers;
+	private ServiceTrackerMap<String, IndexerDocumentBuilder>
+		_serviceTrackerMap;
 
 }

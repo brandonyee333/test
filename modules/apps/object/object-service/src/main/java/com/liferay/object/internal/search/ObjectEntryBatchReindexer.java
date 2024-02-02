@@ -5,6 +5,8 @@
 
 package com.liferay.object.internal.search;
 
+import com.liferay.portal.search.indexer.IndexerDocumentBuilder;
+
 /**
  * @author Feliphe Marinho
  * @author Gabriel Albuquerque
@@ -13,6 +15,8 @@ public interface ObjectEntryBatchReindexer {
 
 	public String getClassName();
 
-	public void reindex(long accountId, long companyId);
+	public void reindex(
+		IndexerDocumentBuilder indexerDocumentBuilder, long accountId,
+		long companyId);
 
 }

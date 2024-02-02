@@ -21,12 +21,10 @@ public class ObjectEntryBatchReindexerImpl
 	implements ObjectEntryBatchReindexer {
 
 	public ObjectEntryBatchReindexerImpl(
-		IndexerDocumentBuilder indexerDocumentBuilder,
 		ModelIndexerWriterContributor<ObjectEntry>
 			modelIndexerWriterContributor,
 		ObjectDefinition objectDefinition) {
 
-		_indexerDocumentBuilder = indexerDocumentBuilder;
 		_modelIndexerWriterContributor = modelIndexerWriterContributor;
 		_objectDefinition = objectDefinition;
 	}
@@ -37,7 +35,10 @@ public class ObjectEntryBatchReindexerImpl
 	}
 
 	@Override
-	public void reindex(long accountEntryId, long companyId) {
+	public void reindex(
+		IndexerDocumentBuilder indexerDocumentBuilder, long accountEntryId,
+		long companyId) {
+
 		BatchIndexingActionable batchIndexingActionable =
 			_modelIndexerWriterContributor.getBatchIndexingActionable();
 
@@ -52,12 +53,11 @@ public class ObjectEntryBatchReindexerImpl
 		batchIndexingActionable.setCompanyId(companyId);
 		batchIndexingActionable.setPerformActionMethod(
 			(ObjectEntry objectEntry) -> batchIndexingActionable.addDocuments(
-				_indexerDocumentBuilder.getDocument(objectEntry)));
+				indexerDocumentBuilder.getDocument(objectEntry)));
 
 		batchIndexingActionable.performActions();
 	}
 
-	private final IndexerDocumentBuilder _indexerDocumentBuilder;
 	private final ModelIndexerWriterContributor<ObjectEntry>
 		_modelIndexerWriterContributor;
 	private final ObjectDefinition _objectDefinition;
