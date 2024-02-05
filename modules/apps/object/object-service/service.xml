@@ -231,8 +231,7 @@
 			<finder-column name="objectDefinitionId" />
 			<finder-column name="status" />
 		</finder>
-		<finder name="G_U_GtC_ODI" return-type="Collection">
-			<finder-column name="groupId" />
+		<finder name="U_GtC_ODI" return-type="Collection">
 			<finder-column name="userId" />
 			<finder-column comparator="&gt;" name="createDate" />
 			<finder-column name="objectDefinitionId" />

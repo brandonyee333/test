@@ -119,7 +119,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				groupId, objectDefinitionId, values);
 		}
 
-		_validateSubmissionLimit(groupId, objectDefinitionId, getUser());
+		_validateSubmissionLimit(objectDefinitionId, getUser());
 
 		return objectEntryLocalService.addObjectEntry(
 			getUserId(), groupId, objectDefinitionId, values, serviceContext);
@@ -694,8 +694,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 		}
 	}
 
-	private void _validateSubmissionLimit(
-		long groupId, long objectDefinitionId, User user)
+	private void _validateSubmissionLimit(long objectDefinitionId, User user)
 		throws PortalException {
 
 		if (!user.isGuestUser()) {
@@ -724,8 +723,8 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 			}
 
 			long count = objectEntryLocalService.getObjectEntriesCount(
-				user.getUserId(), groupId,
-				objectDefinition.getObjectDefinitionId(), _getStartDate());
+				user.getUserId(), objectDefinition.getObjectDefinitionId(),
+				_getStartDate());
 
 			long maximumNumberOfGuestUserObjectEntriesPerObjectDefinition =
 				_objectConfiguration.
