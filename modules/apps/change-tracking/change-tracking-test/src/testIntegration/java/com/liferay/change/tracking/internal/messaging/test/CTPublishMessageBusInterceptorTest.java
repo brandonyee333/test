@@ -85,7 +85,7 @@ public class CTPublishMessageBusInterceptorTest {
 			DestinationNames.BACKGROUND_TASK_STATUS, message);
 
 		Assert.assertEquals(
-			expectedSentMessageCount, testMessageListener._sentMessageCount);
+			expectedSentMessageCount, testMessageListener._count);
 	}
 
 	private static final BundleContext _bundleContext =
@@ -98,10 +98,10 @@ public class CTPublishMessageBusInterceptorTest {
 
 		@Override
 		public void receive(Message message) throws MessageListenerException {
-			_sentMessageCount++;
+			_count++;
 		}
 
-		private int _sentMessageCount;
+		private int _count;
 
 	}
 
