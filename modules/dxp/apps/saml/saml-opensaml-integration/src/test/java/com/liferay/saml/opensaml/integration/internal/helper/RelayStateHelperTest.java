@@ -47,7 +47,6 @@ public class RelayStateHelperTest extends BaseSamlTestCase {
 			_relayStateHelperImpl.getRelayStateTokenFromRedirect(RELAY_STATE);
 
 		Assert.assertNotEquals(RELAY_STATE, relayState);
-
 		Assert.assertEquals(
 			RELAY_STATE,
 			_relayStateHelperImpl.getRedirectFromRelayStateToken(relayState));
