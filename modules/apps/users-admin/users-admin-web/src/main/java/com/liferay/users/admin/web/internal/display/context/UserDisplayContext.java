@@ -103,11 +103,10 @@ public class UserDisplayContext {
 		SiteItemSelectorCriterion siteItemSelectorCriterion =
 			new SiteItemSelectorCriterion();
 
-		siteItemSelectorCriterion.setIncludeCompany(false);
-		siteItemSelectorCriterion.setIncludeRecentSites(false);
-
 		siteItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
 			new GroupItemSelectorReturnType());
+		siteItemSelectorCriterion.setIncludeCompany(false);
+		siteItemSelectorCriterion.setIncludeRecentSites(false);
 
 		return String.valueOf(
 			itemSelector.getItemSelectorURL(

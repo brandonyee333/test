@@ -165,10 +165,9 @@ if (parentGroupId != GroupConstants.DEFAULT_PARENT_GROUP_ID) {
 
 	SiteItemSelectorCriterion siteItemSelectorCriterion = new SiteItemSelectorCriterion();
 
+	siteItemSelectorCriterion.setDesiredItemSelectorReturnTypes(new GroupItemSelectorReturnType());
 	siteItemSelectorCriterion.setIncludeCompany(false);
 	siteItemSelectorCriterion.setIncludeRecentSites(false);
-
-	siteItemSelectorCriterion.setDesiredItemSelectorReturnTypes(new GroupItemSelectorReturnType());
 	%>
 
 	<liferay-frontend:component

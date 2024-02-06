@@ -98,11 +98,10 @@ public class GroupSegmentsFieldCustomizer extends BaseSegmentsFieldCustomizer {
 			SiteItemSelectorCriterion siteItemSelectorCriterion =
 				new SiteItemSelectorCriterion();
 
-			siteItemSelectorCriterion.setIncludeCompany(false);
-			siteItemSelectorCriterion.setIncludeRecentSites(false);
-
 			siteItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
 				new GroupItemSelectorReturnType());
+			siteItemSelectorCriterion.setIncludeCompany(false);
+			siteItemSelectorCriterion.setIncludeRecentSites(false);
 
 			return new Field.SelectEntity(
 				"selectEntity",
