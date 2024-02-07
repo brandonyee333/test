@@ -150,7 +150,7 @@ public class CTCacheTest {
 	@Test
 	public void testFinderCacheResults() throws Exception {
 
-		// Adding a layout so this production has 1 total
+		// Add 1 layout so production has 1 total
 
 		LayoutTestUtil.addTypePortletLayout(_group);
 
@@ -183,7 +183,7 @@ public class CTCacheTest {
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					ctCollection1.getCtCollectionId())) {
 
-			// Adding a layout so this publication has 1 + 1 from prod
+			// Add 1 layout so this publication has 1 more than production
 
 			LayoutTestUtil.addTypePortletLayout(_group);
 
@@ -211,7 +211,7 @@ public class CTCacheTest {
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					ctCollection2.getCtCollectionId())) {
 
-			// Adding 2 layouts so this publication has 2 + 1 from prod
+			// Adding 2 layouts so this publication has 2 more than produdction
 
 			LayoutTestUtil.addTypePortletLayout(_group);
 			LayoutTestUtil.addTypePortletLayout(_group);
