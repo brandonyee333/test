@@ -142,14 +142,6 @@ public class FacetResponseProcessor {
 		return term;
 	}
 
-	private String _getFacetName(FacetConfiguration facetConfiguration) {
-		if (!Validator.isBlank(facetConfiguration.getAggregationName())) {
-			return facetConfiguration.getAggregationName();
-		}
-
-		return facetConfiguration.getName();
-	}
-
 	private String _getFolderDisplayName(
 		long companyId, Locale locale, long folderId, long userId) {
 
@@ -390,8 +382,16 @@ public class FacetResponseProcessor {
 
 		for (FacetConfiguration facetConfiguration : facetConfigurations) {
 			Facet facet = searchResponse.withFacetContextGet(
-				facetContext -> facetContext.getFacet(
-					_getFacetName(facetConfiguration)));
+				facetContext -> {
+					if (Validator.isNotNull(
+							facetConfiguration.getAggregationName())) {
+
+						return facetContext.getFacet(
+							facetConfiguration.getAggregationName());
+					}
+
+					return facetContext.getFacet(facetConfiguration.getName());
+				});
 
 			if (facet == null) {
 				continue;
