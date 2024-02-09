@@ -2430,7 +2430,7 @@ definition {
 
 			AssertElementPresent(
 				key_cartItemName = "Option Select from List",
-				locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME_H6");
+				locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME");
 
 			AssertElementPresent(
 				key_cartItemSku = "Value(1 × ABS Sensor UOM1KEY)",
@@ -2528,7 +2528,7 @@ definition {
 
 			AssertElementPresent(
 				key_cartItemName = "Option Select from List",
-				locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME_H6");
+				locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME");
 
 			AssertElementPresent(
 				key_cartItemSku = "Mount(1 × Mount )",
@@ -2686,7 +2686,7 @@ definition {
 
 				AssertElementPresent(
 					key_cartItemName = ${optionName},
-					locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME_H6");
+					locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME");
 
 				AssertElementPresent(
 					key_cartItemSku = ${optionValue},
@@ -2709,7 +2709,7 @@ definition {
 
 				AssertElementNotPresent(
 					key_cartItemName = ${optionName},
-					locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME_H6_ACCORDION_SHOW");
+					locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME_ACCORDION_SHOW");
 
 				AssertElementNotPresent(
 					key_cartItemSku = ${optionValue},

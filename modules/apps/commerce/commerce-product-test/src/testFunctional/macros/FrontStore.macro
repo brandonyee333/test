@@ -911,7 +911,7 @@ definition {
 				for (var bundledItem : list ${bundledItems}) {
 					AssertElementPresent(
 						key_cartItemName = ${optionName},
-						locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME_H6");
+						locator1 = "CommerceAccelerators#MINI_CART_ITEM_NAME");
 
 					AssertElementPresent(
 						key_cartItemSku = ${bundledItem},
