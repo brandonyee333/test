@@ -286,20 +286,19 @@ public class ExportTaskResourceTest {
 	}
 
 	private Map<String, String> _splitClassName(String className) {
-		Map<String, String> result = new HashMap<>();
+		Map<String, String> classNamePartsMap = new HashMap<>();
 
 		if (className.contains("#")) {
-			String[] classNameTaskItemDelegateName = className.split("#");
+			String[] classNameParts = className.split("#");
 
-			result.put("className", classNameTaskItemDelegateName[0]);
-			result.put(
-				"taskItemDelegateName", classNameTaskItemDelegateName[1]);
+			classNamePartsMap.put("className", classNameParts[0]);
+			classNamePartsMap.put("taskItemDelegateName", classNameParts[1]);
 		}
 		else {
-			result.put("className", className);
+			classNamePartsMap.put("className", className);
 		}
 
-		return result;
+		return classNamePartsMap;
 	}
 
 	private void _testPostExportTask(String className) throws Exception {
@@ -311,11 +310,11 @@ public class ExportTaskResourceTest {
 			HttpHeaders.ACCEPT, ContentTypes.APPLICATION_JSON
 		).build();
 
-		Map<String, String> classNameParts = _splitClassName(className);
+		Map<String, String> classNamePartsMap = _splitClassName(className);
 
 		ExportTask exportTask = exportTaskResource.postExportTask(
-			classNameParts.get("className"), "jsont", null, null, null,
-			classNameParts.get("taskItemDelegateName"));
+			classNamePartsMap.get("className"), "jsont", null, null, null,
+			classNamePartsMap.get("taskItemDelegateName"));
 
 		String externalReferenceCode = exportTask.getExternalReferenceCode();
 
@@ -370,8 +369,9 @@ public class ExportTaskResourceTest {
 		).build();
 
 		ImportTask importTask = importTaskResource.postImportTask(
-			classNameParts.get("className"), null, "UPSERT", null, null, null,
-			classNameParts.get("taskItemDelegateName"), itemsJSONArray);
+			classNamePartsMap.get("className"), null, "UPSERT", null, null,
+			null, classNamePartsMap.get("taskItemDelegateName"),
+			itemsJSONArray);
 
 		externalReferenceCode = importTask.getExternalReferenceCode();
 
