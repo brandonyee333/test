@@ -63,6 +63,29 @@ public class DateParameterUtilTest {
 	}
 
 	@Test
+	public void testGetLocalDateTime2() {
+		Assert.assertEquals(
+			"2021-10-28T00:00",
+			String.valueOf(DateParameterUtil.getLocalDateTime("2021-10-28")));
+
+		Assert.assertEquals(
+			"2021-10-28T01:00",
+			String.valueOf(
+				DateParameterUtil.getLocalDateTime("2021-10-28 01:00:00")));
+
+		Assert.assertEquals(
+			"2021-10-28T01:00",
+			String.valueOf(
+				DateParameterUtil.getLocalDateTime("2021-10-28 1:00")));
+
+		Assert.assertEquals(
+			"2024-02-06T14:43:44",
+			String.valueOf(
+				DateParameterUtil.getLocalDateTime(
+					"Tue Feb 06 14:43:44 GMT 2024")));
+	}
+
+	@Test
 	public void testGetParameterBlank() {
 		Assert.assertEquals(
 			StringPool.BLANK,
