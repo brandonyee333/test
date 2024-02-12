@@ -27,7 +27,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -36,6 +38,10 @@ import java.util.TimeZone;
  * @author Carolina Barbosa
  */
 public class DateParameterUtil {
+
+	public static final List<String> datePatterns = Arrays.asList(
+		"yyyy-MM-dd H:mm", "yyyy-MM-dd HH:mm:ss",
+		"EEE MMM dd HH:mm:ss zzz yyyy");
 
 	public static LocalDate getLocalDate(String dateString) {
 		if (Validator.isNull(dateString)) {
@@ -62,8 +68,25 @@ public class DateParameterUtil {
 			return null;
 		}
 
-		return LocalDateTime.parse(
-			dateTimeString, DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm"));
+		String parseException = null;
+
+		for (String datePattern : datePatterns) {
+			try {
+				return LocalDateTime.parse(
+					dateTimeString, DateTimeFormatter.ofPattern(datePattern));
+			}
+			catch (DateTimeParseException dateTimeParseException) {
+				parseException = String.valueOf(dateTimeParseException);
+			}
+		}
+
+		if (parseException != null) {
+			_log.error(parseException);
+		}
+
+		return getLocalDate(
+			dateTimeString
+		).atStartOfDay();
 	}
 
 	public static String getParameter(
