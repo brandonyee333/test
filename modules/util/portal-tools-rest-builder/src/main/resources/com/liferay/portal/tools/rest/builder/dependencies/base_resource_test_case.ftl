@@ -833,11 +833,11 @@ public abstract class Base${schemaName}ResourceTestCase {
 
 						random${schemaName}());
 
-						// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+						// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 						int pageSizeLimit = 500;
 
-						if (totalCount >= 498) {
+						if (totalCount >= (pageSizeLimit - 2)) {
 							Page<${schemaName}> page1 = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
 							<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
@@ -899,9 +899,8 @@ public abstract class Base${schemaName}ResourceTestCase {
 							);
 
 							assertContains(${schemaVarName}3, (List<${schemaName}>)page3.getItems());
-
-						} else {
-
+						}
+						else {
 							Page<${schemaName}> page1 = ${schemaVarName}Resource.${javaMethodSignature.methodName}(
 
 							<#list javaMethodSignature.javaMethodParameters as javaMethodParameter>
