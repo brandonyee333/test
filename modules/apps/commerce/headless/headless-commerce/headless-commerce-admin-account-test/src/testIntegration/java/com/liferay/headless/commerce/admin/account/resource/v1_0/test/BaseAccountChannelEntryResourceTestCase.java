@@ -1562,11 +1562,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelBillingAddressesPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelBillingAddressesPage(
@@ -1802,11 +1802,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelCurrenciesPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelCurrenciesPage(
@@ -2042,11 +2042,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelDeliveryTermsPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelDeliveryTermsPage(
@@ -2282,11 +2282,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelDiscountsPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelDiscountsPage(
@@ -2522,11 +2522,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelPaymentMethodsPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelPaymentMethodsPage(
@@ -2762,11 +2762,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelPaymentTermsPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelPaymentTermsPage(
@@ -3002,11 +3002,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelPriceListsPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelPriceListsPage(
@@ -3242,11 +3242,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelShippingAddressesPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelShippingAddressesPage(
@@ -3482,11 +3482,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelUsersPage_addAccountChannelEntry(
 				externalReferenceCode, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountByExternalReferenceCodeAccountChannelUsersPage(
@@ -3717,11 +3717,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelBillingAddressesPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountIdAccountChannelBillingAddressesPage(
@@ -3947,11 +3947,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelCurrenciesPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountIdAccountChannelCurrenciesPage(
@@ -4175,11 +4175,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelDeliveryTermsPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountIdAccountChannelDeliveryTermsPage(
@@ -4398,11 +4398,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelDiscountsPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountIdAccountChannelDiscountsPage(
@@ -4625,11 +4625,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelPaymentMethodsPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountIdAccountChannelPaymentMethodsPage(
@@ -4855,11 +4855,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelPaymentTermsPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountIdAccountChannelPaymentTermsPage(
@@ -5083,11 +5083,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelPriceListsPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountIdAccountChannelPriceListsPage(
@@ -5311,11 +5311,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelShippingAddressesPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.
 					getAccountIdAccountChannelShippingAddressesPage(
@@ -5533,11 +5533,11 @@ public abstract class BaseAccountChannelEntryResourceTestCase {
 			testGetAccountIdAccountChannelUsersPage_addAccountChannelEntry(
 				id, randomAccountChannelEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelEntry> page1 =
 				accountChannelEntryResource.getAccountIdAccountChannelUsersPage(
 					id,

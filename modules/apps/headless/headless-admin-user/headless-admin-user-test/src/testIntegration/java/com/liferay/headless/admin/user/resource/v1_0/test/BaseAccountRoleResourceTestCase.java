@@ -582,11 +582,11 @@ public abstract class BaseAccountRoleResourceTestCase {
 			testGetAccountAccountRolesByExternalReferenceCodePage_addAccountRole(
 				externalReferenceCode, randomAccountRole());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountRole> page1 =
 				accountRoleResource.
 					getAccountAccountRolesByExternalReferenceCodePage(
@@ -1238,11 +1238,11 @@ public abstract class BaseAccountRoleResourceTestCase {
 			testGetAccountAccountRolesPage_addAccountRole(
 				accountId, randomAccountRole());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountRole> page1 =
 				accountRoleResource.getAccountAccountRolesPage(
 					accountId, null, null,

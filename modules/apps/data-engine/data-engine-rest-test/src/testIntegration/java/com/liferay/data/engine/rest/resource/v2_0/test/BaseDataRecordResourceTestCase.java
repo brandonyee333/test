@@ -283,11 +283,11 @@ public abstract class BaseDataRecordResourceTestCase {
 			testGetDataDefinitionDataRecordsPage_addDataRecord(
 				dataDefinitionId, randomDataRecord());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DataRecord> page1 =
 				dataRecordResource.getDataDefinitionDataRecordsPage(
 					dataDefinitionId, null, null,
@@ -646,11 +646,11 @@ public abstract class BaseDataRecordResourceTestCase {
 			testGetDataRecordCollectionDataRecordsPage_addDataRecord(
 				dataRecordCollectionId, randomDataRecord());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DataRecord> page1 =
 				dataRecordResource.getDataRecordCollectionDataRecordsPage(
 					dataRecordCollectionId, null, null,

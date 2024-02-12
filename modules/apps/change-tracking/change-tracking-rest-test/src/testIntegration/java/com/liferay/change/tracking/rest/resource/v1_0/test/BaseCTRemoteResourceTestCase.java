@@ -241,11 +241,11 @@ public abstract class BaseCTRemoteResourceTestCase {
 
 		CTRemote ctRemote3 = testGetCTRemotesPage_addCTRemote(randomCTRemote());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<CTRemote> page1 = ctRemoteResource.getCTRemotesPage(
 				null,
 				Pagination.of(

@@ -296,11 +296,11 @@ public abstract class BasePriceModifierResourceTestCase {
 			testGetPriceListByExternalReferenceCodePriceModifiersPage_addPriceModifier(
 				externalReferenceCode, randomPriceModifier());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<PriceModifier> page1 =
 				priceModifierResource.
 					getPriceListByExternalReferenceCodePriceModifiersPage(
@@ -611,11 +611,11 @@ public abstract class BasePriceModifierResourceTestCase {
 			testGetPriceListIdPriceModifiersPage_addPriceModifier(
 				id, randomPriceModifier());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<PriceModifier> page1 =
 				priceModifierResource.getPriceListIdPriceModifiersPage(
 					id, null, null,

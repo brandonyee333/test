@@ -286,11 +286,11 @@ public abstract class BaseObjectViewResourceTestCase {
 			testGetObjectDefinitionByExternalReferenceCodeObjectViewsPage_addObjectView(
 				externalReferenceCode, randomObjectView());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectView> page1 =
 				objectViewResource.
 					getObjectDefinitionByExternalReferenceCodeObjectViewsPage(
@@ -665,11 +665,11 @@ public abstract class BaseObjectViewResourceTestCase {
 			testGetObjectDefinitionObjectViewsPage_addObjectView(
 				objectDefinitionId, randomObjectView());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectView> page1 =
 				objectViewResource.getObjectDefinitionObjectViewsPage(
 					objectDefinitionId, null,

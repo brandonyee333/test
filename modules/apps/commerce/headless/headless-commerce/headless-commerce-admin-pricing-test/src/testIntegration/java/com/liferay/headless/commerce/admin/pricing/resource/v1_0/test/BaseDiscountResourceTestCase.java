@@ -236,11 +236,11 @@ public abstract class BaseDiscountResourceTestCase {
 
 		Discount discount3 = testGetDiscountsPage_addDiscount(randomDiscount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Discount> page1 = discountResource.getDiscountsPage(
 				Pagination.of(
 					(int)Math.ceil((totalCount + 1.0) / pageSizeLimit),

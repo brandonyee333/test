@@ -271,11 +271,11 @@ public abstract class BaseRegionResourceTestCase {
 		Region region3 = testGetCountryRegionsPage_addRegion(
 			countryId, randomRegion());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Region> page1 = regionResource.getCountryRegionsPage(
 				countryId, null, null,
 				Pagination.of(
@@ -637,11 +637,11 @@ public abstract class BaseRegionResourceTestCase {
 
 		Region region3 = testGetRegionsPage_addRegion(randomRegion());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Region> page1 = regionResource.getRegionsPage(
 				null, null,
 				Pagination.of(

@@ -266,11 +266,11 @@ public abstract class BaseCategoryResourceTestCase {
 		Category category3 = testGetChannelProductCategoriesPage_addCategory(
 			channelId, productId, randomCategory());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Category> page1 =
 				categoryResource.getChannelProductCategoriesPage(
 					channelId, productId,

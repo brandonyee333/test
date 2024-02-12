@@ -278,11 +278,11 @@ public abstract class BaseProductOptionResourceTestCase {
 			testGetChannelProductProductOptionsPage_addProductOption(
 				channelId, productId, randomProductOption());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ProductOption> page1 =
 				productOptionResource.getChannelProductProductOptionsPage(
 					channelId, productId,

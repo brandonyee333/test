@@ -365,11 +365,11 @@ public abstract class BaseOrderResourceTestCase {
 
 		Order order3 = testGetOrdersPage_addOrder(randomOrder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Order> page1 = orderResource.getOrdersPage(
 				null, null,
 				Pagination.of(

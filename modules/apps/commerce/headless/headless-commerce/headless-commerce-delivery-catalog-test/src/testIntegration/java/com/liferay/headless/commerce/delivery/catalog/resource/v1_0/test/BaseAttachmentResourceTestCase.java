@@ -281,11 +281,11 @@ public abstract class BaseAttachmentResourceTestCase {
 			testGetChannelProductAttachmentsPage_addAttachment(
 				channelId, productId, randomAttachment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Attachment> page1 =
 				attachmentResource.getChannelProductAttachmentsPage(
 					channelId, productId, null,
@@ -468,11 +468,11 @@ public abstract class BaseAttachmentResourceTestCase {
 		Attachment attachment3 = testGetChannelProductImagesPage_addAttachment(
 			channelId, productId, randomAttachment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Attachment> page1 =
 				attachmentResource.getChannelProductImagesPage(
 					channelId, productId, null,

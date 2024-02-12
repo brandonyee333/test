@@ -393,11 +393,11 @@ public abstract class BaseContentElementResourceTestCase {
 			testGetAssetLibraryContentElementsPage_addContentElement(
 				assetLibraryId, randomContentElement());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ContentElement> page1 =
 				contentElementResource.getAssetLibraryContentElementsPage(
 					assetLibraryId, null, null, null,
@@ -830,11 +830,11 @@ public abstract class BaseContentElementResourceTestCase {
 			testGetSiteContentElementsPage_addContentElement(
 				siteId, randomContentElement());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ContentElement> page1 =
 				contentElementResource.getSiteContentElementsPage(
 					siteId, null, null, null,

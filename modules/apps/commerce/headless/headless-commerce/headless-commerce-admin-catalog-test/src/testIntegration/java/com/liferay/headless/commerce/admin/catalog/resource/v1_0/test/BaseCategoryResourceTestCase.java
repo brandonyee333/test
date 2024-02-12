@@ -276,11 +276,11 @@ public abstract class BaseCategoryResourceTestCase {
 			testGetProductByExternalReferenceCodeCategoriesPage_addCategory(
 				externalReferenceCode, randomCategory());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Category> page1 =
 				categoryResource.
 					getProductByExternalReferenceCodeCategoriesPage(
@@ -453,11 +453,11 @@ public abstract class BaseCategoryResourceTestCase {
 		Category category3 = testGetProductIdCategoriesPage_addCategory(
 			id, randomCategory());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Category> page1 = categoryResource.getProductIdCategoriesPage(
 				id,
 				Pagination.of(

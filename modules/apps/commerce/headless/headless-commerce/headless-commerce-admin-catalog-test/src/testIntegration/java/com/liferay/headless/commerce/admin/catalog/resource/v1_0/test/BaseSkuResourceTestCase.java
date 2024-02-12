@@ -287,11 +287,11 @@ public abstract class BaseSkuResourceTestCase {
 		Sku sku3 = testGetProductByExternalReferenceCodeSkusPage_addSku(
 			externalReferenceCode, randomSku());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Sku> page1 =
 				skuResource.getProductByExternalReferenceCodeSkusPage(
 					externalReferenceCode,
@@ -457,11 +457,11 @@ public abstract class BaseSkuResourceTestCase {
 
 		Sku sku3 = testGetProductIdSkusPage_addSku(id, randomSku());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Sku> page1 = skuResource.getProductIdSkusPage(
 				id,
 				Pagination.of(
@@ -658,11 +658,11 @@ public abstract class BaseSkuResourceTestCase {
 
 		Sku sku3 = testGetSkusPage_addSku(randomSku());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Sku> page1 = skuResource.getSkusPage(
 				null, null,
 				Pagination.of(
@@ -1282,11 +1282,11 @@ public abstract class BaseSkuResourceTestCase {
 
 		Sku sku3 = testGetUnitOfMeasureSkusPage_addSku(randomSku());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Sku> page1 = skuResource.getUnitOfMeasureSkusPage(
 				null, null,
 				Pagination.of(

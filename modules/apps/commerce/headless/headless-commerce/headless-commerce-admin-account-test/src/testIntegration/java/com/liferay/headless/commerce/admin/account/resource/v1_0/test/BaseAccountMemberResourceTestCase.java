@@ -285,11 +285,11 @@ public abstract class BaseAccountMemberResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountMembersPage_addAccountMember(
 				externalReferenceCode, randomAccountMember());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountMember> page1 =
 				accountMemberResource.
 					getAccountByExternalReferenceCodeAccountMembersPage(
@@ -532,11 +532,11 @@ public abstract class BaseAccountMemberResourceTestCase {
 			testGetAccountIdAccountMembersPage_addAccountMember(
 				id, randomAccountMember());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountMember> page1 =
 				accountMemberResource.getAccountIdAccountMembersPage(
 					id,

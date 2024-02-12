@@ -402,11 +402,11 @@ public abstract class BaseContentStructureResourceTestCase {
 			testGetAssetLibraryContentStructuresPage_addContentStructure(
 				assetLibraryId, randomContentStructure());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ContentStructure> page1 =
 				contentStructureResource.getAssetLibraryContentStructuresPage(
 					assetLibraryId, null, null, null,
@@ -1053,11 +1053,11 @@ public abstract class BaseContentStructureResourceTestCase {
 			testGetSiteContentStructuresPage_addContentStructure(
 				siteId, randomContentStructure());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ContentStructure> page1 =
 				contentStructureResource.getSiteContentStructuresPage(
 					siteId, null, null, null,

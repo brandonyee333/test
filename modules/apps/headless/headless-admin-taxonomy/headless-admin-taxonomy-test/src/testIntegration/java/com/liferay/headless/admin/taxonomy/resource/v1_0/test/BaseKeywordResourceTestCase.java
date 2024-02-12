@@ -393,11 +393,11 @@ public abstract class BaseKeywordResourceTestCase {
 		Keyword keyword3 = testGetAssetLibraryKeywordsPage_addKeyword(
 			assetLibraryId, randomKeyword());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Keyword> page1 = keywordResource.getAssetLibraryKeywordsPage(
 				assetLibraryId, null, null, null,
 				Pagination.of(
@@ -746,11 +746,11 @@ public abstract class BaseKeywordResourceTestCase {
 		Keyword keyword3 = testGetKeywordsRankedPage_addKeyword(
 			randomKeyword());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Keyword> page1 = keywordResource.getKeywordsRankedPage(
 				null, null,
 				Pagination.of(
@@ -1155,11 +1155,11 @@ public abstract class BaseKeywordResourceTestCase {
 		Keyword keyword3 = testGetSiteKeywordsPage_addKeyword(
 			siteId, randomKeyword());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Keyword> page1 = keywordResource.getSiteKeywordsPage(
 				siteId, null, null, null,
 				Pagination.of(

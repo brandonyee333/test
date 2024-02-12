@@ -618,11 +618,11 @@ public abstract class BaseReplenishmentItemResourceTestCase {
 			testGetReplenishmentItemsPage_addReplenishmentItem(
 				sku, randomReplenishmentItem());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ReplenishmentItem> page1 =
 				replenishmentItemResource.getReplenishmentItemsPage(
 					sku,
@@ -865,11 +865,11 @@ public abstract class BaseReplenishmentItemResourceTestCase {
 			testGetWarehouseIdReplenishmentItemsPage_addReplenishmentItem(
 				warehouseId, randomReplenishmentItem());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ReplenishmentItem> page1 =
 				replenishmentItemResource.getWarehouseIdReplenishmentItemsPage(
 					warehouseId,

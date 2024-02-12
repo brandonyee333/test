@@ -342,11 +342,11 @@ public abstract class BaseProductGroupProductResourceTestCase {
 			testGetProductGroupByExternalReferenceCodeProductGroupProductsPage_addProductGroupProduct(
 				externalReferenceCode, randomProductGroupProduct());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ProductGroupProduct> page1 =
 				productGroupProductResource.
 					getProductGroupByExternalReferenceCodeProductGroupProductsPage(
@@ -583,11 +583,11 @@ public abstract class BaseProductGroupProductResourceTestCase {
 			testGetProductGroupIdProductGroupProductsPage_addProductGroupProduct(
 				id, randomProductGroupProduct());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ProductGroupProduct> page1 =
 				productGroupProductResource.
 					getProductGroupIdProductGroupProductsPage(

@@ -300,11 +300,11 @@ public abstract class BasePriceListChannelResourceTestCase {
 			testGetPriceListByExternalReferenceCodePriceListChannelsPage_addPriceListChannel(
 				externalReferenceCode, randomPriceListChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<PriceListChannel> page1 =
 				priceListChannelResource.
 					getPriceListByExternalReferenceCodePriceListChannelsPage(
@@ -616,11 +616,11 @@ public abstract class BasePriceListChannelResourceTestCase {
 			testGetPriceListIdPriceListChannelsPage_addPriceListChannel(
 				id, randomPriceListChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<PriceListChannel> page1 =
 				priceListChannelResource.getPriceListIdPriceListChannelsPage(
 					id, null, null,

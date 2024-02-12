@@ -461,11 +461,11 @@ public abstract class BaseSkuUnitOfMeasureResourceTestCase {
 			testGetSkuByExternalReferenceCodeSkuUnitOfMeasuresPage_addSkuUnitOfMeasure(
 				externalReferenceCode, randomSkuUnitOfMeasure());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<SkuUnitOfMeasure> page1 =
 				skuUnitOfMeasureResource.
 					getSkuByExternalReferenceCodeSkuUnitOfMeasuresPage(
@@ -681,11 +681,11 @@ public abstract class BaseSkuUnitOfMeasureResourceTestCase {
 			testGetSkuIdSkuUnitOfMeasuresPage_addSkuUnitOfMeasure(
 				id, randomSkuUnitOfMeasure());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<SkuUnitOfMeasure> page1 =
 				skuUnitOfMeasureResource.getSkuIdSkuUnitOfMeasuresPage(
 					id,

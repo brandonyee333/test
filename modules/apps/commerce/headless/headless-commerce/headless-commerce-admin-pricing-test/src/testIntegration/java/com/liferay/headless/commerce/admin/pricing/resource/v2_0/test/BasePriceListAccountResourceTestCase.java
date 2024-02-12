@@ -300,11 +300,11 @@ public abstract class BasePriceListAccountResourceTestCase {
 			testGetPriceListByExternalReferenceCodePriceListAccountsPage_addPriceListAccount(
 				externalReferenceCode, randomPriceListAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<PriceListAccount> page1 =
 				priceListAccountResource.
 					getPriceListByExternalReferenceCodePriceListAccountsPage(
@@ -616,11 +616,11 @@ public abstract class BasePriceListAccountResourceTestCase {
 			testGetPriceListIdPriceListAccountsPage_addPriceListAccount(
 				id, randomPriceListAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<PriceListAccount> page1 =
 				priceListAccountResource.getPriceListIdPriceListAccountsPage(
 					id, null, null,

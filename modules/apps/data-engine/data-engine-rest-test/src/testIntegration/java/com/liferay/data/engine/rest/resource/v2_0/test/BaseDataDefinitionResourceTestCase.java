@@ -297,11 +297,11 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			testGetDataDefinitionByContentTypeContentTypePage_addDataDefinition(
 				contentType, randomDataDefinition());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DataDefinition> page1 =
 				dataDefinitionResource.
 					getDataDefinitionByContentTypeContentTypePage(
@@ -983,11 +983,11 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			testGetSiteDataDefinitionByContentTypeContentTypePage_addDataDefinition(
 				siteId, contentType, randomDataDefinition());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DataDefinition> page1 =
 				dataDefinitionResource.
 					getSiteDataDefinitionByContentTypeContentTypePage(

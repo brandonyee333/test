@@ -458,11 +458,11 @@ public abstract class BaseProductSpecificationResourceTestCase {
 			testGetProductIdProductSpecificationsPage_addProductSpecification(
 				id, randomProductSpecification());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ProductSpecification> page1 =
 				productSpecificationResource.
 					getProductIdProductSpecificationsPage(

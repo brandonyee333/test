@@ -309,11 +309,11 @@ public abstract class BaseFormResourceTestCase {
 
 		Form form3 = testGetSiteFormsPage_addForm(siteId, randomForm());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Form> page1 = formResource.getSiteFormsPage(
 				siteId,
 				Pagination.of(

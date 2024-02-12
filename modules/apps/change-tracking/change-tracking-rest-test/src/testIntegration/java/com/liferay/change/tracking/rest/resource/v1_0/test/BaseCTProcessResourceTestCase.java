@@ -318,11 +318,11 @@ public abstract class BaseCTProcessResourceTestCase {
 		CTProcess ctProcess3 = testGetCTProcessesPage_addCTProcess(
 			randomCTProcess());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<CTProcess> page1 = ctProcessResource.getCTProcessesPage(
 				null, null, null,
 				Pagination.of(

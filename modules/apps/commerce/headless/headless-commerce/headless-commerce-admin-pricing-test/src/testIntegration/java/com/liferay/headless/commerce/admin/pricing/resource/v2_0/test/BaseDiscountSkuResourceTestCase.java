@@ -296,11 +296,11 @@ public abstract class BaseDiscountSkuResourceTestCase {
 			testGetDiscountByExternalReferenceCodeDiscountSkusPage_addDiscountSku(
 				externalReferenceCode, randomDiscountSku());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountSku> page1 =
 				discountSkuResource.
 					getDiscountByExternalReferenceCodeDiscountSkusPage(
@@ -598,11 +598,11 @@ public abstract class BaseDiscountSkuResourceTestCase {
 			testGetDiscountIdDiscountSkusPage_addDiscountSku(
 				id, randomDiscountSku());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountSku> page1 =
 				discountSkuResource.getDiscountIdDiscountSkusPage(
 					id, null, null,

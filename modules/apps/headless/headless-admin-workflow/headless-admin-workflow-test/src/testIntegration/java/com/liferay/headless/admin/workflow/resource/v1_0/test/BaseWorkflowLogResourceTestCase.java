@@ -281,11 +281,11 @@ public abstract class BaseWorkflowLogResourceTestCase {
 			testGetWorkflowInstanceWorkflowLogsPage_addWorkflowLog(
 				workflowInstanceId, randomWorkflowLog());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WorkflowLog> page1 =
 				workflowLogResource.getWorkflowInstanceWorkflowLogsPage(
 					workflowInstanceId, null,
@@ -526,11 +526,11 @@ public abstract class BaseWorkflowLogResourceTestCase {
 			testGetWorkflowTaskWorkflowLogsPage_addWorkflowLog(
 				workflowTaskId, randomWorkflowLog());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WorkflowLog> page1 =
 				workflowLogResource.getWorkflowTaskWorkflowLogsPage(
 					workflowTaskId, null,

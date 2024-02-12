@@ -318,11 +318,11 @@ public abstract class BaseShipmentResourceTestCase {
 
 		Shipment shipment3 = testGetShipmentsPage_addShipment(randomShipment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Shipment> page1 = shipmentResource.getShipmentsPage(
 				null, null,
 				Pagination.of(

@@ -612,11 +612,11 @@ public abstract class BaseUserAccountResourceTestCase {
 			testGetAccountUserAccountsByExternalReferenceCodePage_addUserAccount(
 				externalReferenceCode, randomUserAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<UserAccount> page1 =
 				userAccountResource.
 					getAccountUserAccountsByExternalReferenceCodePage(
@@ -1210,11 +1210,11 @@ public abstract class BaseUserAccountResourceTestCase {
 			testGetAccountUserAccountsPage_addUserAccount(
 				accountId, randomUserAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<UserAccount> page1 =
 				userAccountResource.getAccountUserAccountsPage(
 					accountId, null, null,
@@ -1917,11 +1917,11 @@ public abstract class BaseUserAccountResourceTestCase {
 			testGetOrganizationUserAccountsPage_addUserAccount(
 				organizationId, randomUserAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<UserAccount> page1 =
 				userAccountResource.getOrganizationUserAccountsPage(
 					organizationId, null, null,
@@ -2333,11 +2333,11 @@ public abstract class BaseUserAccountResourceTestCase {
 		UserAccount userAccount3 = testGetSiteUserAccountsPage_addUserAccount(
 			siteId, randomUserAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<UserAccount> page1 =
 				userAccountResource.getSiteUserAccountsPage(
 					siteId, null, null,
@@ -2696,11 +2696,11 @@ public abstract class BaseUserAccountResourceTestCase {
 		UserAccount userAccount3 = testGetUserAccountsPage_addUserAccount(
 			randomUserAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<UserAccount> page1 = userAccountResource.getUserAccountsPage(
 				null, null,
 				Pagination.of(
@@ -3404,11 +3404,11 @@ public abstract class BaseUserAccountResourceTestCase {
 			testGetUserAccountsByStatusPage_addUserAccount(
 				status, randomUserAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<UserAccount> page1 =
 				userAccountResource.getUserAccountsByStatusPage(
 					status, null, null,

@@ -307,11 +307,11 @@ public abstract class BaseObjectValidationRuleResourceTestCase {
 			testGetObjectDefinitionByExternalReferenceCodeObjectValidationRulesPage_addObjectValidationRule(
 				externalReferenceCode, randomObjectValidationRule());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectValidationRule> page1 =
 				objectValidationRuleResource.
 					getObjectDefinitionByExternalReferenceCodeObjectValidationRulesPage(
@@ -732,11 +732,11 @@ public abstract class BaseObjectValidationRuleResourceTestCase {
 			testGetObjectDefinitionObjectValidationRulesPage_addObjectValidationRule(
 				objectDefinitionId, randomObjectValidationRule());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectValidationRule> page1 =
 				objectValidationRuleResource.
 					getObjectDefinitionObjectValidationRulesPage(

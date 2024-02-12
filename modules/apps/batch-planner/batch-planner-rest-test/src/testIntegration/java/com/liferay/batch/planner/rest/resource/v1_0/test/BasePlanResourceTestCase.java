@@ -235,11 +235,11 @@ public abstract class BasePlanResourceTestCase {
 
 		Plan plan3 = testGetPlansPage_addPlan(randomPlan());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Plan> page1 = planResource.getPlansPage(
 				Pagination.of(
 					(int)Math.ceil((totalCount + 1.0) / pageSizeLimit),

@@ -482,11 +482,11 @@ public abstract class BaseObjectActionResourceTestCase {
 			testGetObjectDefinitionByExternalReferenceCodeObjectActionsPage_addObjectAction(
 				externalReferenceCode, randomObjectAction());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectAction> page1 =
 				objectActionResource.
 					getObjectDefinitionByExternalReferenceCodeObjectActionsPage(
@@ -872,11 +872,11 @@ public abstract class BaseObjectActionResourceTestCase {
 			testGetObjectDefinitionObjectActionsPage_addObjectAction(
 				objectDefinitionId, randomObjectAction());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectAction> page1 =
 				objectActionResource.getObjectDefinitionObjectActionsPage(
 					objectDefinitionId, null,

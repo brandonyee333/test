@@ -336,11 +336,11 @@ public abstract class BaseUserNotificationResourceTestCase {
 			testGetMyUserNotificationsPage_addUserNotification(
 				randomUserNotification());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<UserNotification> page1 =
 				userNotificationResource.getMyUserNotificationsPage(
 					null, null,
@@ -763,11 +763,11 @@ public abstract class BaseUserNotificationResourceTestCase {
 			testGetUserAccountUserNotificationsPage_addUserNotification(
 				userAccountId, randomUserNotification());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<UserNotification> page1 =
 				userNotificationResource.getUserAccountUserNotificationsPage(
 					userAccountId, null, null,

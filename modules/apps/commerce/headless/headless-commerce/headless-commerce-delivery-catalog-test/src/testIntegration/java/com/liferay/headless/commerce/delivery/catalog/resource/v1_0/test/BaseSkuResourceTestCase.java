@@ -271,11 +271,11 @@ public abstract class BaseSkuResourceTestCase {
 		Sku sku3 = testGetChannelProductSkusPage_addSku(
 			channelId, productId, randomSku());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Sku> page1 = skuResource.getChannelProductSkusPage(
 				channelId, productId, null,
 				Pagination.of(

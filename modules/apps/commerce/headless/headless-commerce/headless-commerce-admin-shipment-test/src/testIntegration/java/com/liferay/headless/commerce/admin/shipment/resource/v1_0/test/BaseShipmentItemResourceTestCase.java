@@ -561,11 +561,11 @@ public abstract class BaseShipmentItemResourceTestCase {
 			testGetShipmentByExternalReferenceCodeItemsPage_addShipmentItem(
 				externalReferenceCode, randomShipmentItem());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ShipmentItem> page1 =
 				shipmentItemResource.
 					getShipmentByExternalReferenceCodeItemsPage(
@@ -781,11 +781,11 @@ public abstract class BaseShipmentItemResourceTestCase {
 		ShipmentItem shipmentItem3 = testGetShipmentItemsPage_addShipmentItem(
 			shipmentId, randomShipmentItem());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ShipmentItem> page1 =
 				shipmentItemResource.getShipmentItemsPage(
 					shipmentId,

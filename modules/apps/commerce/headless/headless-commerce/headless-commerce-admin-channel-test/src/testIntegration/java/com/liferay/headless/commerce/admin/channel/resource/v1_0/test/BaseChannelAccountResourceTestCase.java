@@ -298,11 +298,11 @@ public abstract class BaseChannelAccountResourceTestCase {
 			testGetChannelByExternalReferenceCodeChannelAccountsPage_addChannelAccount(
 				externalReferenceCode, randomChannelAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ChannelAccount> page1 =
 				channelAccountResource.
 					getChannelByExternalReferenceCodeChannelAccountsPage(
@@ -610,11 +610,11 @@ public abstract class BaseChannelAccountResourceTestCase {
 			testGetChannelIdChannelAccountsPage_addChannelAccount(
 				id, randomChannelAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ChannelAccount> page1 =
 				channelAccountResource.getChannelIdChannelAccountsPage(
 					id, null, null,

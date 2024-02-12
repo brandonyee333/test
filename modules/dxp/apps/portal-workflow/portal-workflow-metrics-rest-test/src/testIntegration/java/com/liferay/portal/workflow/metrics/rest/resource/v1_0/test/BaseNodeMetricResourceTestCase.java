@@ -257,11 +257,11 @@ public abstract class BaseNodeMetricResourceTestCase {
 		NodeMetric nodeMetric3 = testGetProcessNodeMetricsPage_addNodeMetric(
 			processId, randomNodeMetric());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<NodeMetric> page1 =
 				nodeMetricResource.getProcessNodeMetricsPage(
 					processId, null, null, null, null, null,

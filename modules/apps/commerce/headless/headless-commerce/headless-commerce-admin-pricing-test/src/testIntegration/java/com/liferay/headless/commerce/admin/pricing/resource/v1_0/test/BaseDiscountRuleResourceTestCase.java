@@ -285,11 +285,11 @@ public abstract class BaseDiscountRuleResourceTestCase {
 			testGetDiscountByExternalReferenceCodeDiscountRulesPage_addDiscountRule(
 				externalReferenceCode, randomDiscountRule());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountRule> page1 =
 				discountRuleResource.
 					getDiscountByExternalReferenceCodeDiscountRulesPage(
@@ -631,11 +631,11 @@ public abstract class BaseDiscountRuleResourceTestCase {
 			testGetDiscountIdDiscountRulesPage_addDiscountRule(
 				id, randomDiscountRule());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountRule> page1 =
 				discountRuleResource.getDiscountIdDiscountRulesPage(
 					id,

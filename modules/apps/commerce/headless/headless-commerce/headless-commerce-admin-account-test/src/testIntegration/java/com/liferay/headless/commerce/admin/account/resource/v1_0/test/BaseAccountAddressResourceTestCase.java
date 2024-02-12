@@ -626,11 +626,11 @@ public abstract class BaseAccountAddressResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountAddressesPage_addAccountAddress(
 				externalReferenceCode, randomAccountAddress());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountAddress> page1 =
 				accountAddressResource.
 					getAccountByExternalReferenceCodeAccountAddressesPage(
@@ -843,11 +843,11 @@ public abstract class BaseAccountAddressResourceTestCase {
 			testGetAccountIdAccountAddressesPage_addAccountAddress(
 				id, randomAccountAddress());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountAddress> page1 =
 				accountAddressResource.getAccountIdAccountAddressesPage(
 					id,

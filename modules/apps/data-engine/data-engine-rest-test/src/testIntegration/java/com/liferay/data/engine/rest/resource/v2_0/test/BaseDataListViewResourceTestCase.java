@@ -316,11 +316,11 @@ public abstract class BaseDataListViewResourceTestCase {
 			testGetDataDefinitionDataListViewsPage_addDataListView(
 				dataDefinitionId, randomDataListView());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DataListView> page1 =
 				dataListViewResource.getDataDefinitionDataListViewsPage(
 					dataDefinitionId, null,

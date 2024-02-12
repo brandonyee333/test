@@ -581,11 +581,11 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			testGetKnowledgeBaseFolderKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
 				parentKnowledgeBaseFolderId, randomKnowledgeBaseFolder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<KnowledgeBaseFolder> page1 =
 				knowledgeBaseFolderResource.
 					getKnowledgeBaseFolderKnowledgeBaseFoldersPage(
@@ -825,11 +825,11 @@ public abstract class BaseKnowledgeBaseFolderResourceTestCase {
 			testGetSiteKnowledgeBaseFoldersPage_addKnowledgeBaseFolder(
 				siteId, randomKnowledgeBaseFolder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<KnowledgeBaseFolder> page1 =
 				knowledgeBaseFolderResource.getSiteKnowledgeBaseFoldersPage(
 					siteId,

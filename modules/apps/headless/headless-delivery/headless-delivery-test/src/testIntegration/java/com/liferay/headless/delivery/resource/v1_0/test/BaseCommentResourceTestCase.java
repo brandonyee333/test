@@ -369,11 +369,11 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment3 = testGetBlogPostingCommentsPage_addComment(
 			blogPostingId, randomComment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Comment> page1 = commentResource.getBlogPostingCommentsPage(
 				blogPostingId, null, null, null,
 				Pagination.of(
@@ -915,11 +915,11 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment3 = testGetCommentCommentsPage_addComment(
 			parentCommentId, randomComment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Comment> page1 = commentResource.getCommentCommentsPage(
 				parentCommentId, null, null, null,
 				Pagination.of(
@@ -1322,11 +1322,11 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment3 = testGetDocumentCommentsPage_addComment(
 			documentId, randomComment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Comment> page1 = commentResource.getDocumentCommentsPage(
 				documentId, null, null, null,
 				Pagination.of(
@@ -2881,11 +2881,11 @@ public abstract class BaseCommentResourceTestCase {
 		Comment comment3 = testGetStructuredContentCommentsPage_addComment(
 			structuredContentId, randomComment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Comment> page1 =
 				commentResource.getStructuredContentCommentsPage(
 					structuredContentId, null, null, null,

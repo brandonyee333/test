@@ -274,11 +274,11 @@ public abstract class BaseInstanceResourceTestCase {
 		Instance instance3 = testGetProcessInstancesPage_addInstance(
 			processId, randomInstance());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Instance> page1 = instanceResource.getProcessInstancesPage(
 				processId, null, null, null, null, null, null, null,
 				Pagination.of(

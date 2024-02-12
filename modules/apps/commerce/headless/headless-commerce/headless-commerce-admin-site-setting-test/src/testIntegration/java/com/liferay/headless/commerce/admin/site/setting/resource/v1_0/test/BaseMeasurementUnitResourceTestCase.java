@@ -340,11 +340,11 @@ public abstract class BaseMeasurementUnitResourceTestCase {
 			testGetMeasurementUnitsPage_addMeasurementUnit(
 				randomMeasurementUnit());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<MeasurementUnit> page1 =
 				measurementUnitResource.getMeasurementUnitsPage(
 					null,
@@ -962,11 +962,11 @@ public abstract class BaseMeasurementUnitResourceTestCase {
 			testGetMeasurementUnitsByType_addMeasurementUnit(
 				measurementUnitType, randomMeasurementUnit());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<MeasurementUnit> page1 =
 				measurementUnitResource.getMeasurementUnitsByType(
 					measurementUnitType,

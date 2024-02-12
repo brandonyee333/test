@@ -299,11 +299,11 @@ public abstract class BaseOrderTypeChannelResourceTestCase {
 			testGetOrderTypeByExternalReferenceCodeOrderTypeChannelsPage_addOrderTypeChannel(
 				externalReferenceCode, randomOrderTypeChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OrderTypeChannel> page1 =
 				orderTypeChannelResource.
 					getOrderTypeByExternalReferenceCodeOrderTypeChannelsPage(
@@ -517,11 +517,11 @@ public abstract class BaseOrderTypeChannelResourceTestCase {
 			testGetOrderTypeIdOrderTypeChannelsPage_addOrderTypeChannel(
 				id, randomOrderTypeChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OrderTypeChannel> page1 =
 				orderTypeChannelResource.getOrderTypeIdOrderTypeChannelsPage(
 					id, null,

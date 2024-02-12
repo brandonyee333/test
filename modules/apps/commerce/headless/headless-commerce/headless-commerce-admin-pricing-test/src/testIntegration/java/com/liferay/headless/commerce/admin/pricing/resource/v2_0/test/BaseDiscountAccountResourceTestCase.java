@@ -300,11 +300,11 @@ public abstract class BaseDiscountAccountResourceTestCase {
 			testGetDiscountByExternalReferenceCodeDiscountAccountsPage_addDiscountAccount(
 				externalReferenceCode, randomDiscountAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountAccount> page1 =
 				discountAccountResource.
 					getDiscountByExternalReferenceCodeDiscountAccountsPage(
@@ -615,11 +615,11 @@ public abstract class BaseDiscountAccountResourceTestCase {
 			testGetDiscountIdDiscountAccountsPage_addDiscountAccount(
 				id, randomDiscountAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountAccount> page1 =
 				discountAccountResource.getDiscountIdDiscountAccountsPage(
 					id, null, null,

@@ -437,11 +437,11 @@ public abstract class BaseCartCommentResourceTestCase {
 		CartComment cartComment3 = testGetCartCommentsPage_addCartComment(
 			cartId, randomCartComment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<CartComment> page1 = cartCommentResource.getCartCommentsPage(
 				cartId,
 				Pagination.of(

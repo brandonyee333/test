@@ -332,11 +332,11 @@ public abstract class BasePaymentResourceTestCase {
 
 		Payment payment3 = testGetPaymentsPage_addPayment(randomPayment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Payment> page1 = paymentResource.getPaymentsPage(
 				null, null,
 				Pagination.of(

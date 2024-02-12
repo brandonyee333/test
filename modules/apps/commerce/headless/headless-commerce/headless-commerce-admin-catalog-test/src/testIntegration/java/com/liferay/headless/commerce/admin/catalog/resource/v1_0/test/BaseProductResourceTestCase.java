@@ -314,11 +314,11 @@ public abstract class BaseProductResourceTestCase {
 
 		Product product3 = testGetProductsPage_addProduct(randomProduct());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Product> page1 = productResource.getProductsPage(
 				null, null,
 				Pagination.of(

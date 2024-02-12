@@ -288,11 +288,11 @@ public abstract class BaseAccountOrganizationResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountOrganizationsPage_addAccountOrganization(
 				externalReferenceCode, randomAccountOrganization());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountOrganization> page1 =
 				accountOrganizationResource.
 					getAccountByExternalReferenceCodeAccountOrganizationsPage(
@@ -544,11 +544,11 @@ public abstract class BaseAccountOrganizationResourceTestCase {
 			testGetAccountIdAccountOrganizationsPage_addAccountOrganization(
 				id, randomAccountOrganization());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountOrganization> page1 =
 				accountOrganizationResource.
 					getAccountIdAccountOrganizationsPage(

@@ -292,11 +292,11 @@ public abstract class BaseTermOrderTypeResourceTestCase {
 			testGetTermByExternalReferenceCodeTermOrderTypesPage_addTermOrderType(
 				externalReferenceCode, randomTermOrderType());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<TermOrderType> page1 =
 				termOrderTypeResource.
 					getTermByExternalReferenceCodeTermOrderTypesPage(
@@ -503,11 +503,11 @@ public abstract class BaseTermOrderTypeResourceTestCase {
 			testGetTermIdTermOrderTypesPage_addTermOrderType(
 				id, randomTermOrderType());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<TermOrderType> page1 =
 				termOrderTypeResource.getTermIdTermOrderTypesPage(
 					id, null,

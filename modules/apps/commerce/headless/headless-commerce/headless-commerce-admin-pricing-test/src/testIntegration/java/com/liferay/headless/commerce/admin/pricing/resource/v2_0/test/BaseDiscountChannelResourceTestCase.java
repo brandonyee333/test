@@ -300,11 +300,11 @@ public abstract class BaseDiscountChannelResourceTestCase {
 			testGetDiscountByExternalReferenceCodeDiscountChannelsPage_addDiscountChannel(
 				externalReferenceCode, randomDiscountChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountChannel> page1 =
 				discountChannelResource.
 					getDiscountByExternalReferenceCodeDiscountChannelsPage(
@@ -615,11 +615,11 @@ public abstract class BaseDiscountChannelResourceTestCase {
 			testGetDiscountIdDiscountChannelsPage_addDiscountChannel(
 				id, randomDiscountChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountChannel> page1 =
 				discountChannelResource.getDiscountIdDiscountChannelsPage(
 					id, null, null,

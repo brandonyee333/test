@@ -348,11 +348,11 @@ public abstract class BaseAttachmentResourceTestCase {
 			testGetProductByExternalReferenceCodeAttachmentsPage_addAttachment(
 				externalReferenceCode, randomAttachment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Attachment> page1 =
 				attachmentResource.
 					getProductByExternalReferenceCodeAttachmentsPage(
@@ -611,11 +611,11 @@ public abstract class BaseAttachmentResourceTestCase {
 			testGetProductByExternalReferenceCodeImagesPage_addAttachment(
 				externalReferenceCode, randomAttachment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Attachment> page1 =
 				attachmentResource.getProductByExternalReferenceCodeImagesPage(
 					externalReferenceCode,
@@ -846,11 +846,11 @@ public abstract class BaseAttachmentResourceTestCase {
 		Attachment attachment3 = testGetProductIdAttachmentsPage_addAttachment(
 			id, randomAttachment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Attachment> page1 =
 				attachmentResource.getProductIdAttachmentsPage(
 					id,
@@ -1061,11 +1061,11 @@ public abstract class BaseAttachmentResourceTestCase {
 		Attachment attachment3 = testGetProductIdImagesPage_addAttachment(
 			id, randomAttachment());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Attachment> page1 = attachmentResource.getProductIdImagesPage(
 				id,
 				Pagination.of(

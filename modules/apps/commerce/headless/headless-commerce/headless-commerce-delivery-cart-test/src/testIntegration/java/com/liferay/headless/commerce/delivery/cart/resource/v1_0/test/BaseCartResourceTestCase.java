@@ -487,11 +487,11 @@ public abstract class BaseCartResourceTestCase {
 		Cart cart3 = testGetChannelCartsPage_addCart(
 			accountId, channelId, randomCart());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Cart> page1 = cartResource.getChannelCartsPage(
 				accountId, channelId, null,
 				Pagination.of(

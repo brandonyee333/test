@@ -417,11 +417,11 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetAssetLibraryDocumentFoldersPage_addDocumentFolder(
 				assetLibraryId, randomDocumentFolder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DocumentFolder> page1 =
 				documentFolderResource.getAssetLibraryDocumentFoldersPage(
 					assetLibraryId, null, null, null, null,
@@ -863,11 +863,11 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetAssetLibraryDocumentFoldersRatedByMePage_addDocumentFolder(
 				assetLibraryId, randomDocumentFolder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DocumentFolder> page1 =
 				documentFolderResource.
 					getAssetLibraryDocumentFoldersRatedByMePage(
@@ -1501,11 +1501,11 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetDocumentFolderDocumentFoldersPage_addDocumentFolder(
 				parentDocumentFolderId, randomDocumentFolder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DocumentFolder> page1 =
 				documentFolderResource.getDocumentFolderDocumentFoldersPage(
 					parentDocumentFolderId, null, null, null, null,
@@ -1975,11 +1975,11 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetSiteDocumentFoldersPage_addDocumentFolder(
 				siteId, randomDocumentFolder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DocumentFolder> page1 =
 				documentFolderResource.getSiteDocumentFoldersPage(
 					siteId, null, null, null, null,
@@ -2462,11 +2462,11 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			testGetSiteDocumentFoldersRatedByMePage_addDocumentFolder(
 				siteId, randomDocumentFolder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DocumentFolder> page1 =
 				documentFolderResource.getSiteDocumentFoldersRatedByMePage(
 					siteId,

@@ -246,11 +246,11 @@ public abstract class BaseCommerceChannelResourceTestCase {
 			testGetCommerceChannelsPage_addCommerceChannel(
 				randomCommerceChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<CommerceChannel> page1 =
 				commerceChannelResource.getCommerceChannelsPage(
 					null,

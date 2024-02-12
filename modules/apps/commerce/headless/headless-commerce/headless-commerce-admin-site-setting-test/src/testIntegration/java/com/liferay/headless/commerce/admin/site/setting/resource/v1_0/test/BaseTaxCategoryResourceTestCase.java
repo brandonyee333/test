@@ -274,11 +274,11 @@ public abstract class BaseTaxCategoryResourceTestCase {
 			testGetCommerceAdminSiteSettingGroupTaxCategoryPage_addTaxCategory(
 				groupId, randomTaxCategory());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<TaxCategory> page1 =
 				taxCategoryResource.
 					getCommerceAdminSiteSettingGroupTaxCategoryPage(

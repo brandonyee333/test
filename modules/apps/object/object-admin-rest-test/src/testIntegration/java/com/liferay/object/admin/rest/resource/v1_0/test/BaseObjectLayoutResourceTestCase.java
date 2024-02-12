@@ -287,11 +287,11 @@ public abstract class BaseObjectLayoutResourceTestCase {
 			testGetObjectDefinitionByExternalReferenceCodeObjectLayoutsPage_addObjectLayout(
 				externalReferenceCode, randomObjectLayout());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectLayout> page1 =
 				objectLayoutResource.
 					getObjectDefinitionByExternalReferenceCodeObjectLayoutsPage(
@@ -677,11 +677,11 @@ public abstract class BaseObjectLayoutResourceTestCase {
 			testGetObjectDefinitionObjectLayoutsPage_addObjectLayout(
 				objectDefinitionId, randomObjectLayout());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectLayout> page1 =
 				objectLayoutResource.getObjectDefinitionObjectLayoutsPage(
 					objectDefinitionId, null,

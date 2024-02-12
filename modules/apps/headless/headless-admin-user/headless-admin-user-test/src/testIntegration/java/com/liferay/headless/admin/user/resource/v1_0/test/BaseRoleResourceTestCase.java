@@ -229,11 +229,11 @@ public abstract class BaseRoleResourceTestCase {
 
 		Role role3 = testGetRolesPage_addRole(randomRole());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Role> page1 = roleResource.getRolesPage(
 				null, null,
 				Pagination.of(

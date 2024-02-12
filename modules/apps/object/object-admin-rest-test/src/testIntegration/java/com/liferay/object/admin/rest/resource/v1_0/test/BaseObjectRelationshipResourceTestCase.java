@@ -418,11 +418,11 @@ public abstract class BaseObjectRelationshipResourceTestCase {
 			testGetObjectDefinitionByExternalReferenceCodeObjectRelationshipsPage_addObjectRelationship(
 				externalReferenceCode, randomObjectRelationship());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectRelationship> page1 =
 				objectRelationshipResource.
 					getObjectDefinitionByExternalReferenceCodeObjectRelationshipsPage(
@@ -945,11 +945,11 @@ public abstract class BaseObjectRelationshipResourceTestCase {
 			testGetObjectDefinitionObjectRelationshipsPage_addObjectRelationship(
 				objectDefinitionId, randomObjectRelationship());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectRelationship> page1 =
 				objectRelationshipResource.
 					getObjectDefinitionObjectRelationshipsPage(

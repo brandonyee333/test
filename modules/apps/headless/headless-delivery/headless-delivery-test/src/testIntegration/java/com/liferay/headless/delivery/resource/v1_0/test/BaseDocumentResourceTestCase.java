@@ -413,11 +413,11 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document3 = testGetAssetLibraryDocumentsPage_addDocument(
 			assetLibraryId, randomDocument());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Document> page1 =
 				documentResource.getAssetLibraryDocumentsPage(
 					assetLibraryId, null, null, null, null,
@@ -1058,11 +1058,11 @@ public abstract class BaseDocumentResourceTestCase {
 			testGetAssetLibraryDocumentsRatedByMePage_addDocument(
 				assetLibraryId, randomDocument());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Document> page1 =
 				documentResource.getAssetLibraryDocumentsRatedByMePage(
 					assetLibraryId,
@@ -1337,11 +1337,11 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document3 = testGetDocumentFolderDocumentsPage_addDocument(
 			documentFolderId, randomDocument());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Document> page1 =
 				documentResource.getDocumentFolderDocumentsPage(
 					documentFolderId, null, null, null, null,
@@ -2033,11 +2033,11 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document3 = testGetSiteDocumentsPage_addDocument(
 			siteId, randomDocument());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Document> page1 = documentResource.getSiteDocumentsPage(
 				siteId, null, null, null, null,
 				Pagination.of(
@@ -2678,11 +2678,11 @@ public abstract class BaseDocumentResourceTestCase {
 		Document document3 = testGetSiteDocumentsRatedByMePage_addDocument(
 			siteId, randomDocument());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Document> page1 =
 				documentResource.getSiteDocumentsRatedByMePage(
 					siteId,

@@ -403,11 +403,11 @@ public abstract class BaseOrganizationResourceTestCase {
 			testGetAccountByExternalReferenceCodeOrganizationsPage_addOrganization(
 				externalReferenceCode, randomOrganization());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Organization> page1 =
 				organizationResource.
 					getAccountByExternalReferenceCodeOrganizationsPage(
@@ -1039,11 +1039,11 @@ public abstract class BaseOrganizationResourceTestCase {
 			testGetAccountOrganizationsPage_addOrganization(
 				accountId, randomOrganization());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Organization> page1 =
 				organizationResource.getAccountOrganizationsPage(
 					accountId, null, null,
@@ -1576,11 +1576,11 @@ public abstract class BaseOrganizationResourceTestCase {
 		Organization organization3 = testGetOrganizationsPage_addOrganization(
 			randomOrganization());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Organization> page1 =
 				organizationResource.getOrganizationsPage(
 					null, null, null,
@@ -2458,11 +2458,11 @@ public abstract class BaseOrganizationResourceTestCase {
 			testGetOrganizationChildOrganizationsPage_addOrganization(
 				organizationId, randomOrganization());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Organization> page1 =
 				organizationResource.getOrganizationChildOrganizationsPage(
 					organizationId, null, null, null,
@@ -2956,11 +2956,11 @@ public abstract class BaseOrganizationResourceTestCase {
 			testGetOrganizationOrganizationsPage_addOrganization(
 				parentOrganizationId, randomOrganization());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Organization> page1 =
 				organizationResource.getOrganizationOrganizationsPage(
 					parentOrganizationId, null, null, null,

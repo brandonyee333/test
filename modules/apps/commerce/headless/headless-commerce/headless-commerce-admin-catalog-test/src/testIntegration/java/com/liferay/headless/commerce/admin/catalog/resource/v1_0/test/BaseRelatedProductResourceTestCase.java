@@ -289,11 +289,11 @@ public abstract class BaseRelatedProductResourceTestCase {
 			testGetProductByExternalReferenceCodeRelatedProductsPage_addRelatedProduct(
 				externalReferenceCode, randomRelatedProduct());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<RelatedProduct> page1 =
 				relatedProductResource.
 					getProductByExternalReferenceCodeRelatedProductsPage(
@@ -507,11 +507,11 @@ public abstract class BaseRelatedProductResourceTestCase {
 			testGetProductIdRelatedProductsPage_addRelatedProduct(
 				id, randomRelatedProduct());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<RelatedProduct> page1 =
 				relatedProductResource.getProductIdRelatedProductsPage(
 					id, null,

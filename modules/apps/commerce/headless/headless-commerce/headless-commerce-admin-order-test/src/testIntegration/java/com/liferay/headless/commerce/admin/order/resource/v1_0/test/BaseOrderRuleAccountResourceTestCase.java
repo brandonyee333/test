@@ -300,11 +300,11 @@ public abstract class BaseOrderRuleAccountResourceTestCase {
 			testGetOrderRuleByExternalReferenceCodeOrderRuleAccountsPage_addOrderRuleAccount(
 				externalReferenceCode, randomOrderRuleAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OrderRuleAccount> page1 =
 				orderRuleAccountResource.
 					getOrderRuleByExternalReferenceCodeOrderRuleAccountsPage(
@@ -616,11 +616,11 @@ public abstract class BaseOrderRuleAccountResourceTestCase {
 			testGetOrderRuleIdOrderRuleAccountsPage_addOrderRuleAccount(
 				id, randomOrderRuleAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OrderRuleAccount> page1 =
 				orderRuleAccountResource.getOrderRuleIdOrderRuleAccountsPage(
 					id, null, null,

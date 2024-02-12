@@ -403,11 +403,11 @@ public abstract class BaseObjectFieldResourceTestCase {
 			testGetObjectDefinitionByExternalReferenceCodeObjectFieldsPage_addObjectField(
 				externalReferenceCode, randomObjectField());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectField> page1 =
 				objectFieldResource.
 					getObjectDefinitionByExternalReferenceCodeObjectFieldsPage(
@@ -888,11 +888,11 @@ public abstract class BaseObjectFieldResourceTestCase {
 			testGetObjectDefinitionObjectFieldsPage_addObjectField(
 				objectDefinitionId, randomObjectField());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectField> page1 =
 				objectFieldResource.getObjectDefinitionObjectFieldsPage(
 					objectDefinitionId, null, null,

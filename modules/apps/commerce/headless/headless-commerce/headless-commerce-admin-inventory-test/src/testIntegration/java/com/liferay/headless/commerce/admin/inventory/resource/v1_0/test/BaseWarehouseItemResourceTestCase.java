@@ -402,11 +402,11 @@ public abstract class BaseWarehouseItemResourceTestCase {
 			testGetWarehouseItemsUpdatedPage_addWarehouseItem(
 				randomWarehouseItem());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WarehouseItem> page1 =
 				warehouseItemResource.getWarehouseItemsUpdatedPage(
 					null, null,
@@ -724,11 +724,11 @@ public abstract class BaseWarehouseItemResourceTestCase {
 			testGetWarehouseByExternalReferenceCodeWarehouseItemsPage_addWarehouseItem(
 				externalReferenceCode, randomWarehouseItem());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WarehouseItem> page1 =
 				warehouseItemResource.
 					getWarehouseByExternalReferenceCodeWarehouseItemsPage(
@@ -940,11 +940,11 @@ public abstract class BaseWarehouseItemResourceTestCase {
 			testGetWarehouseIdWarehouseItemsPage_addWarehouseItem(
 				id, randomWarehouseItem());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WarehouseItem> page1 =
 				warehouseItemResource.getWarehouseIdWarehouseItemsPage(
 					id,

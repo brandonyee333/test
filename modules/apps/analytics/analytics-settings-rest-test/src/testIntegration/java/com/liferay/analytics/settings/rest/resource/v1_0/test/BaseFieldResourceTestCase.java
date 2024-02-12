@@ -232,11 +232,11 @@ public abstract class BaseFieldResourceTestCase {
 
 		Field field3 = testGetFieldsAccountsPage_addField(randomField());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Field> page1 = fieldResource.getFieldsAccountsPage(
 				null,
 				Pagination.of(
@@ -473,11 +473,11 @@ public abstract class BaseFieldResourceTestCase {
 
 		Field field3 = testGetFieldsOrdersPage_addField(randomField());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Field> page1 = fieldResource.getFieldsOrdersPage(
 				null,
 				Pagination.of(
@@ -713,11 +713,11 @@ public abstract class BaseFieldResourceTestCase {
 
 		Field field3 = testGetFieldsPeoplePage_addField(randomField());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Field> page1 = fieldResource.getFieldsPeoplePage(
 				null,
 				Pagination.of(
@@ -953,11 +953,11 @@ public abstract class BaseFieldResourceTestCase {
 
 		Field field3 = testGetFieldsProductsPage_addField(randomField());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Field> page1 = fieldResource.getFieldsProductsPage(
 				null,
 				Pagination.of(

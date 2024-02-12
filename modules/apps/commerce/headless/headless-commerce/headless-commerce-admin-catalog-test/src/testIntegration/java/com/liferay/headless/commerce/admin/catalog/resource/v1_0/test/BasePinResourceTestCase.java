@@ -310,11 +310,11 @@ public abstract class BasePinResourceTestCase {
 		Pin pin3 = testGetProductByExternalReferenceCodePinsPage_addPin(
 			externalReferenceCode, randomPin());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Pin> page1 =
 				pinResource.getProductByExternalReferenceCodePinsPage(
 					externalReferenceCode, null,
@@ -630,11 +630,11 @@ public abstract class BasePinResourceTestCase {
 
 		Pin pin3 = testGetProductIdPinsPage_addPin(id, randomPin());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Pin> page1 = pinResource.getProductIdPinsPage(
 				id, null,
 				Pagination.of(

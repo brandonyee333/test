@@ -508,11 +508,11 @@ public abstract class BaseAccountChannelShippingOptionResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountChannelShippingOptionPage_addAccountChannelShippingOption(
 				externalReferenceCode, randomAccountChannelShippingOption());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelShippingOption> page1 =
 				accountChannelShippingOptionResource.
 					getAccountByExternalReferenceCodeAccountChannelShippingOptionPage(
@@ -755,11 +755,11 @@ public abstract class BaseAccountChannelShippingOptionResourceTestCase {
 			testGetAccountIdAccountChannelShippingOptionPage_addAccountChannelShippingOption(
 				id, randomAccountChannelShippingOption());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AccountChannelShippingOption> page1 =
 				accountChannelShippingOptionResource.
 					getAccountIdAccountChannelShippingOptionPage(

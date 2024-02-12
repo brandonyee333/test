@@ -336,11 +336,11 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 			testGetDiscountByExternalReferenceCodeDiscountCategoriesPage_addDiscountCategory(
 				externalReferenceCode, randomDiscountCategory());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountCategory> page1 =
 				discountCategoryResource.
 					getDiscountByExternalReferenceCodeDiscountCategoriesPage(
@@ -559,11 +559,11 @@ public abstract class BaseDiscountCategoryResourceTestCase {
 			testGetDiscountIdDiscountCategoriesPage_addDiscountCategory(
 				id, randomDiscountCategory());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DiscountCategory> page1 =
 				discountCategoryResource.getDiscountIdDiscountCategoriesPage(
 					id,

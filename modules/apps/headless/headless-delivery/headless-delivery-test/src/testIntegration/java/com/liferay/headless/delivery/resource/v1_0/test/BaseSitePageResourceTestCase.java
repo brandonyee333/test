@@ -359,11 +359,11 @@ public abstract class BaseSitePageResourceTestCase {
 		SitePage sitePage3 = testGetSiteSitePagesPage_addSitePage(
 			siteId, randomSitePage());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<SitePage> page1 = sitePageResource.getSiteSitePagesPage(
 				siteId, null, null, null,
 				Pagination.of(

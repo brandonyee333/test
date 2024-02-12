@@ -430,11 +430,11 @@ public abstract class BaseCartItemResourceTestCase {
 		CartItem cartItem3 = testGetCartItemsPage_addCartItem(
 			cartId, randomCartItem());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<CartItem> page1 = cartItemResource.getCartItemsPage(
 				cartId, null,
 				Pagination.of(

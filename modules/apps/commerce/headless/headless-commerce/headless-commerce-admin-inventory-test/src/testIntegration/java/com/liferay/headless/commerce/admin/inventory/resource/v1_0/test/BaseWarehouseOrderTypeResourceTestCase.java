@@ -301,11 +301,11 @@ public abstract class BaseWarehouseOrderTypeResourceTestCase {
 			testGetWarehouseByExternalReferenceCodeWarehouseOrderTypesPage_addWarehouseOrderType(
 				externalReferenceCode, randomWarehouseOrderType());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WarehouseOrderType> page1 =
 				warehouseOrderTypeResource.
 					getWarehouseByExternalReferenceCodeWarehouseOrderTypesPage(
@@ -633,11 +633,11 @@ public abstract class BaseWarehouseOrderTypeResourceTestCase {
 			testGetWarehouseIdWarehouseOrderTypesPage_addWarehouseOrderType(
 				id, randomWarehouseOrderType());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WarehouseOrderType> page1 =
 				warehouseOrderTypeResource.
 					getWarehouseIdWarehouseOrderTypesPage(

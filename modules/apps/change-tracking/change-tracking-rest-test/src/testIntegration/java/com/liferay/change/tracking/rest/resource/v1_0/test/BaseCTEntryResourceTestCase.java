@@ -368,11 +368,11 @@ public abstract class BaseCTEntryResourceTestCase {
 		CTEntry ctEntry3 = testGetCtCollectionCTEntriesPage_addCTEntry(
 			ctCollectionId, randomCTEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<CTEntry> page1 = ctEntryResource.getCtCollectionCTEntriesPage(
 				ctCollectionId, null, null, null,
 				Pagination.of(

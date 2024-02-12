@@ -425,11 +425,11 @@ public abstract class BaseProductChannelResourceTestCase {
 			testGetProductByExternalReferenceCodeProductChannelsPage_addProductChannel(
 				externalReferenceCode, randomProductChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ProductChannel> page1 =
 				productChannelResource.
 					getProductByExternalReferenceCodeProductChannelsPage(
@@ -619,11 +619,11 @@ public abstract class BaseProductChannelResourceTestCase {
 			testGetProductIdProductChannelsPage_addProductChannel(
 				id, randomProductChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ProductChannel> page1 =
 				productChannelResource.getProductIdProductChannelsPage(
 					id,

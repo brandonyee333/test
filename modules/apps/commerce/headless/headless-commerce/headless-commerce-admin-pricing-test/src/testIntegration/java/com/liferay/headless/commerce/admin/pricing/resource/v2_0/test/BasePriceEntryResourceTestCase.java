@@ -456,11 +456,11 @@ public abstract class BasePriceEntryResourceTestCase {
 			testGetPriceListByExternalReferenceCodePriceEntriesPage_addPriceEntry(
 				externalReferenceCode, randomPriceEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<PriceEntry> page1 =
 				priceEntryResource.
 					getPriceListByExternalReferenceCodePriceEntriesPage(
@@ -912,11 +912,11 @@ public abstract class BasePriceEntryResourceTestCase {
 			testGetPriceListIdPriceEntriesPage_addPriceEntry(
 				id, randomPriceEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<PriceEntry> page1 =
 				priceEntryResource.getPriceListIdPriceEntriesPage(
 					id, null, null,

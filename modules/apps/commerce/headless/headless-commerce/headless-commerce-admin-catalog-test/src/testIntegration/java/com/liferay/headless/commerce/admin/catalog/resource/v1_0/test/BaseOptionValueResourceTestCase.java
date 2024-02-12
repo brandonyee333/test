@@ -542,11 +542,11 @@ public abstract class BaseOptionValueResourceTestCase {
 			testGetOptionByExternalReferenceCodeOptionValuesPage_addOptionValue(
 				externalReferenceCode, randomOptionValue());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OptionValue> page1 =
 				optionValueResource.
 					getOptionByExternalReferenceCodeOptionValuesPage(
@@ -908,11 +908,11 @@ public abstract class BaseOptionValueResourceTestCase {
 			testGetOptionIdOptionValuesPage_addOptionValue(
 				id, randomOptionValue());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OptionValue> page1 =
 				optionValueResource.getOptionIdOptionValuesPage(
 					id, null,

@@ -464,11 +464,11 @@ public abstract class BaseProductOptionValueResourceTestCase {
 			testGetProductOptionIdProductOptionValuesPage_addProductOptionValue(
 				id, randomProductOptionValue());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ProductOptionValue> page1 =
 				productOptionValueResource.
 					getProductOptionIdProductOptionValuesPage(

@@ -594,11 +594,11 @@ public abstract class BaseWikiPageResourceTestCase {
 		WikiPage wikiPage3 = testGetWikiNodeWikiPagesPage_addWikiPage(
 			wikiNodeId, randomWikiPage());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WikiPage> page1 = wikiPageResource.getWikiNodeWikiPagesPage(
 				wikiNodeId, null, null, null,
 				Pagination.of(

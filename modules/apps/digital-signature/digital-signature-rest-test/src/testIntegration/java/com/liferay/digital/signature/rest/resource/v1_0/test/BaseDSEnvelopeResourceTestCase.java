@@ -275,11 +275,11 @@ public abstract class BaseDSEnvelopeResourceTestCase {
 		DSEnvelope dsEnvelope3 = testGetSiteDSEnvelopesPage_addDSEnvelope(
 			siteId, randomDSEnvelope());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<DSEnvelope> page1 = dsEnvelopeResource.getSiteDSEnvelopesPage(
 				siteId,
 				Pagination.of(

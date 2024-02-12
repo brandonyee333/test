@@ -300,11 +300,11 @@ public abstract class BaseWarehouseChannelResourceTestCase {
 			testGetWarehouseByExternalReferenceCodeWarehouseChannelsPage_addWarehouseChannel(
 				externalReferenceCode, randomWarehouseChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WarehouseChannel> page1 =
 				warehouseChannelResource.
 					getWarehouseByExternalReferenceCodeWarehouseChannelsPage(
@@ -616,11 +616,11 @@ public abstract class BaseWarehouseChannelResourceTestCase {
 			testGetWarehouseIdWarehouseChannelsPage_addWarehouseChannel(
 				id, randomWarehouseChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<WarehouseChannel> page1 =
 				warehouseChannelResource.getWarehouseIdWarehouseChannelsPage(
 					id, null, null,

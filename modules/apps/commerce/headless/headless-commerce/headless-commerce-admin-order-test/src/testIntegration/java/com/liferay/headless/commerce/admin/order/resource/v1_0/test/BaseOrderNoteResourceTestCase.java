@@ -526,11 +526,11 @@ public abstract class BaseOrderNoteResourceTestCase {
 			testGetOrderByExternalReferenceCodeOrderNotesPage_addOrderNote(
 				externalReferenceCode, randomOrderNote());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OrderNote> page1 =
 				orderNoteResource.getOrderByExternalReferenceCodeOrderNotesPage(
 					externalReferenceCode,
@@ -712,11 +712,11 @@ public abstract class BaseOrderNoteResourceTestCase {
 		OrderNote orderNote3 = testGetOrderIdOrderNotesPage_addOrderNote(
 			id, randomOrderNote());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OrderNote> page1 = orderNoteResource.getOrderIdOrderNotesPage(
 				id,
 				Pagination.of(

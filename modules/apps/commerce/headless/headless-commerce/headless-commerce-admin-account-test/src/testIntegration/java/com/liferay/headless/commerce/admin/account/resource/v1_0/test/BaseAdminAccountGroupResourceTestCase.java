@@ -339,11 +339,11 @@ public abstract class BaseAdminAccountGroupResourceTestCase {
 			testGetAccountGroupsPage_addAdminAccountGroup(
 				randomAdminAccountGroup());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AdminAccountGroup> page1 =
 				adminAccountGroupResource.getAccountGroupsPage(
 					null, null,
@@ -916,11 +916,11 @@ public abstract class BaseAdminAccountGroupResourceTestCase {
 			testGetAccountByExternalReferenceCodeAccountGroupsPage_addAdminAccountGroup(
 				externalReferenceCode, randomAdminAccountGroup());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AdminAccountGroup> page1 =
 				adminAccountGroupResource.
 					getAccountByExternalReferenceCodeAccountGroupsPage(
@@ -1108,11 +1108,11 @@ public abstract class BaseAdminAccountGroupResourceTestCase {
 			testGetAccountIdAccountGroupsPage_addAdminAccountGroup(
 				id, randomAdminAccountGroup());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<AdminAccountGroup> page1 =
 				adminAccountGroupResource.getAccountIdAccountGroupsPage(
 					id,

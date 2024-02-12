@@ -238,11 +238,11 @@ public abstract class BaseObjectFolderResourceTestCase {
 		ObjectFolder objectFolder3 = testGetObjectFoldersPage_addObjectFolder(
 			randomObjectFolder());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ObjectFolder> page1 =
 				objectFolderResource.getObjectFoldersPage(
 					null,

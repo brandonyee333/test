@@ -300,11 +300,11 @@ public abstract class BaseOrderRuleChannelResourceTestCase {
 			testGetOrderRuleByExternalReferenceCodeOrderRuleChannelsPage_addOrderRuleChannel(
 				externalReferenceCode, randomOrderRuleChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OrderRuleChannel> page1 =
 				orderRuleChannelResource.
 					getOrderRuleByExternalReferenceCodeOrderRuleChannelsPage(
@@ -616,11 +616,11 @@ public abstract class BaseOrderRuleChannelResourceTestCase {
 			testGetOrderRuleIdOrderRuleChannelsPage_addOrderRuleChannel(
 				id, randomOrderRuleChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<OrderRuleChannel> page1 =
 				orderRuleChannelResource.getOrderRuleIdOrderRuleChannelsPage(
 					id, null, null,

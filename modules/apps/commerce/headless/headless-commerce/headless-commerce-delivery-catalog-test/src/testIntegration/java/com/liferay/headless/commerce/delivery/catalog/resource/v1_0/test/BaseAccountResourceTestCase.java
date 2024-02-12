@@ -354,11 +354,11 @@ public abstract class BaseAccountResourceTestCase {
 		Account account3 = testGetChannelAccountsPage_addAccount(
 			channelId, randomAccount());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Account> page1 = accountResource.getChannelAccountsPage(
 				channelId, null, null,
 				Pagination.of(

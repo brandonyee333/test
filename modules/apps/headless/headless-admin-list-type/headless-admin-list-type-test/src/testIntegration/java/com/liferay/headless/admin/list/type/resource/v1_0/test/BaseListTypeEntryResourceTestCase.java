@@ -398,11 +398,11 @@ public abstract class BaseListTypeEntryResourceTestCase {
 			testGetListTypeDefinitionByExternalReferenceCodeListTypeEntriesPage_addListTypeEntry(
 				externalReferenceCode, randomListTypeEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ListTypeEntry> page1 =
 				listTypeEntryResource.
 					getListTypeDefinitionByExternalReferenceCodeListTypeEntriesPage(
@@ -899,11 +899,11 @@ public abstract class BaseListTypeEntryResourceTestCase {
 			testGetListTypeDefinitionListTypeEntriesPage_addListTypeEntry(
 				listTypeDefinitionId, randomListTypeEntry());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<ListTypeEntry> page1 =
 				listTypeEntryResource.getListTypeDefinitionListTypeEntriesPage(
 					listTypeDefinitionId, null, null, null,

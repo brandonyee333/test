@@ -243,11 +243,11 @@ public abstract class BaseSkuForecastResourceTestCase {
 			testGetSkuForecastsByMonthlyRevenuePage_addSkuForecast(
 				randomSkuForecast());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<SkuForecast> page1 =
 				skuForecastResource.getSkuForecastsByMonthlyRevenuePage(
 					null, null, null, null,

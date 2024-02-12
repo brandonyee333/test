@@ -229,11 +229,11 @@ public abstract class BaseChannelResourceTestCase {
 
 		Channel channel3 = testGetChannelsPage_addChannel(randomChannel());
 
-		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit()
+		// See com.liferay.portal.vulcan.internal.configuration.HeadlessAPICompanyConfiguration#pageSizeLimit
 
 		int pageSizeLimit = 500;
 
-		if (totalCount >= 498) {
+		if (totalCount >= (pageSizeLimit - 2)) {
 			Page<Channel> page1 = channelResource.getChannelsPage(
 				null,
 				Pagination.of(
