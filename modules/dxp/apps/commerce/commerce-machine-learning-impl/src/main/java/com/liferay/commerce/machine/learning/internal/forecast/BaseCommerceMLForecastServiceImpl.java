@@ -8,7 +8,7 @@ package com.liferay.commerce.machine.learning.internal.forecast;
 import com.liferay.commerce.machine.learning.forecast.CommerceMLForecast;
 import com.liferay.commerce.machine.learning.internal.forecast.constants.CommerceMLForecastField;
 import com.liferay.commerce.machine.learning.internal.forecast.constants.CommerceMLForecastPeriod;
-import com.liferay.commerce.machine.learning.internal.search.api.IndexNamePatterns;
+import com.liferay.commerce.machine.learning.internal.search.constants.IndexNamePatterns;
 import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;

@@ -5,7 +5,7 @@
 
 package com.liferay.commerce.machine.learning.internal.search.index;
 
-import com.liferay.commerce.machine.learning.internal.search.api.IndexNamePatterns;
+import com.liferay.commerce.machine.learning.internal.search.constants.IndexNamePatterns;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;

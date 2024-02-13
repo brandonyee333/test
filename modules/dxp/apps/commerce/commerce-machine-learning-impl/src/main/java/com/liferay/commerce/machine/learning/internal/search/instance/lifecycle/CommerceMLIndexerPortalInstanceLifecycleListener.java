@@ -5,8 +5,8 @@
 
 package com.liferay.commerce.machine.learning.internal.search.instance.lifecycle;
 
-import com.liferay.commerce.machine.learning.internal.search.api.IndexMappingFileNames;
-import com.liferay.commerce.machine.learning.internal.search.api.IndexNamePatterns;
+import com.liferay.commerce.machine.learning.internal.search.constants.IndexMappingFileNames;
+import com.liferay.commerce.machine.learning.internal.search.constants.IndexNamePatterns;
 import com.liferay.commerce.machine.learning.internal.search.index.CommerceMLIndexer;
 import com.liferay.portal.instance.lifecycle.BasePortalInstanceLifecycleListener;
 import com.liferay.portal.instance.lifecycle.PortalInstanceLifecycleListener;
