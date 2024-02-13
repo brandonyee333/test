@@ -70,20 +70,21 @@ public class EditMVCActionCommandTest {
 		_group = GroupTestUtil.addGroup();
 		_omniadminUser = UserTestUtil.addOmniadminUser();
 		_originalName = PrincipalThreadLocal.getName();
-		_setUpLayout();
 
 		PrincipalThreadLocal.setName(TestPropsValues.getUserId());
 
 		_user = UserTestUtil.addUser(_company);
+
+		_setUpLayout();
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws PortalException {
-		_layout.setType(_layoutType);
-
 		_companyLocalService.deleteCompany(_company);
 
 		PrincipalThreadLocal.setName(_originalName);
+
+		_layout.setType(_layoutType);
 	}
 
 	@Test
@@ -104,7 +105,7 @@ public class EditMVCActionCommandTest {
 	}
 
 	@Test
-	public void testPermissionToReindexAsNonadminUser() throws Exception {
+	public void testPermissionToReindexAsUser() throws Exception {
 		UserTestUtil.setUser(_user);
 
 		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
@@ -210,14 +211,15 @@ public class EditMVCActionCommandTest {
 		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
 			new MockLiferayPortletActionRequest();
 
+		mockLiferayPortletActionRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, _getThemeDisplay());
+
 		for (Map.Entry<String, String[]> entry : parameters.entrySet()) {
 			mockLiferayPortletActionRequest.setParameter(
 				entry.getKey(), entry.getValue());
 		}
 
 		mockLiferayPortletActionRequest.setSession(new MockPortletSession());
-		mockLiferayPortletActionRequest.setAttribute(
-			WebKeys.THEME_DISPLAY, _getThemeDisplay());
 
 		return mockLiferayPortletActionRequest;
 	}
