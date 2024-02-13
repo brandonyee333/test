@@ -105,6 +105,23 @@ public class EditMVCActionCommandTest {
 	}
 
 	@Test
+	public void testPermissionToReindexAsOmniadmin() throws Exception {
+		UserTestUtil.setUser(_omniadminUser);
+
+		Assert.assertTrue(
+			_editMVCActionCommand.processAction(
+				_getMockLiferayPortletActionRequest(
+					HashMapBuilder.put(
+						Constants.CMD,
+						new String[] {RandomTestUtil.randomString()}
+					).put(
+						"companyIds",
+						new String[] {String.valueOf(_company.getCompanyId())}
+					).build()),
+				new MockLiferayPortletActionResponse()));
+	}
+
+	@Test
 	public void testPermissionToReindexAsUser() throws Exception {
 		UserTestUtil.setUser(_user);
 
@@ -126,23 +143,6 @@ public class EditMVCActionCommandTest {
 			SessionErrors.contains(
 				mockLiferayPortletActionRequest,
 				PrincipalException.MustHavePermission.class.getName()));
-	}
-
-	@Test
-	public void testPermissionToReindexAsOmniadmin() throws Exception {
-		UserTestUtil.setUser(_omniadminUser);
-
-		Assert.assertTrue(
-			_editMVCActionCommand.processAction(
-				_getMockLiferayPortletActionRequest(
-					HashMapBuilder.put(
-						Constants.CMD,
-						new String[] {RandomTestUtil.randomString()}
-					).put(
-						"companyIds",
-						new String[] {String.valueOf(_company.getCompanyId())}
-					).build()),
-				new MockLiferayPortletActionResponse()));
 	}
 
 	@Test
