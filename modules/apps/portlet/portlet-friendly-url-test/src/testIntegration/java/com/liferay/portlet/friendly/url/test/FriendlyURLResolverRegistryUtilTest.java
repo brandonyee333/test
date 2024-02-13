@@ -61,7 +61,7 @@ public class FriendlyURLResolverRegistryUtilTest {
 
 	@Test
 	public void testGetFriendlyURLResolver() {
-		_assertGetFriendlyURLResolversAsCollection();
+		_assertGetFriendlyURLResolvers();
 
 		Assert.assertSame(
 			_friendlyURLResolver,
@@ -70,7 +70,7 @@ public class FriendlyURLResolverRegistryUtilTest {
 
 	@Test
 	public void testGetFriendlyURLResolverByDefaultURLSeparator() {
-		_assertGetFriendlyURLResolversAsCollection();
+		_assertGetFriendlyURLResolvers();
 
 		Assert.assertSame(
 			_friendlyURLResolver,
@@ -147,7 +147,7 @@ public class FriendlyURLResolverRegistryUtilTest {
 			});
 	}
 
-	private void _assertGetFriendlyURLResolversAsCollection() {
+	private void _assertGetFriendlyURLResolvers() {
 		Collection<FriendlyURLResolver> friendlyURLResolvers =
 			FriendlyURLResolverRegistryUtil.
 				getFriendlyURLResolversAsCollection();
