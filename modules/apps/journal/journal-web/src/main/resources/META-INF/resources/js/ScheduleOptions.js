@@ -36,7 +36,7 @@ export default function ScheduleOptions({
 			if (date.valueOf() <= new Date().valueOf()) {
 				setError(
 					Liferay.Language.get(
-						'the-date-entered-has-already-occurred'
+						'the-date-entered-is-in-the-past'
 					)
 				);
 			}

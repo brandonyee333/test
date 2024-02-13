@@ -235,7 +235,7 @@ describe('SaveButtons', () => {
 		);
 
 		expect(
-			screen.getByText('the-date-entered-has-already-occurred')
+			screen.getByText('the-date-entered-is-in-the-past')
 		).toBeInTheDocument();
 	});
 });
