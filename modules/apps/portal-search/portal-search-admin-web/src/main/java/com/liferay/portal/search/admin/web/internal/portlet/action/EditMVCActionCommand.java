@@ -99,8 +99,8 @@ public class EditMVCActionCommand extends BaseMVCActionCommand {
 			_reindex(
 				ParamUtil.getBoolean(actionRequest, "blocking"), className,
 				companyIds, executionMode, actionRequest.getPortletSession(),
-				ParamUtil.getLong(actionRequest, "timeout", Time.HOUR),
-				themeDisplay);
+				themeDisplay,
+				ParamUtil.getLong(actionRequest, "timeout", Time.HOUR));
 
 			if (Validator.isBlank(className)) {
 				_reindexIndexReindexer(
@@ -137,8 +137,8 @@ public class EditMVCActionCommand extends BaseMVCActionCommand {
 
 	private void _reindex(
 			boolean blocking, String className, long[] companyIds,
-			String executionMode, PortletSession portletSession, long timeout,
-			ThemeDisplay themeDisplay)
+			String executionMode, PortletSession portletSession,
+			ThemeDisplay themeDisplay, long timeout)
 		throws Exception {
 
 		Map<String, Serializable> taskContextMap =
