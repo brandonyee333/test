@@ -28,7 +28,7 @@ public class FriendlyURLSeparatorProviderImpl
 			JSONObject friendlyURLSeparatorsJSONObject =
 				_jsonFactory.createJSONObject(
 					_friendlyURLSeparatorConfigurationManager.
-						getFriendlyURLSeparatorsJSONObjectString(companyId));
+						getFriendlyURLSeparatorsJSON(companyId));
 
 			return friendlyURLSeparatorsJSONObject.getString(key);
 		}

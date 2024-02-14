@@ -22,6 +22,6 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 public interface FriendlyURLSeparatorCompanyConfiguration {
 
 	@Meta.AD(deflt = "{}", required = false)
-	public String friendlyURLSeparatorsJSONObjectString();
+	public String friendlyURLSeparatorsJSON();
 
 }

@@ -22,7 +22,7 @@ public class FriendlyURLSeparatorConfigurationManagerImpl
 	implements FriendlyURLSeparatorConfigurationManager {
 
 	@Override
-	public String getFriendlyURLSeparatorsJSONObjectString(long companyId)
+	public String getFriendlyURLSeparatorsJSON(long companyId)
 		throws ConfigurationException {
 
 		FriendlyURLSeparatorCompanyConfiguration
@@ -31,19 +31,19 @@ public class FriendlyURLSeparatorConfigurationManagerImpl
 					FriendlyURLSeparatorCompanyConfiguration.class, companyId);
 
 		return friendlyURLSeparatorCompanyConfiguration.
-			friendlyURLSeparatorsJSONObjectString();
+			friendlyURLSeparatorsJSON();
 	}
 
 	@Override
 	public void updateFriendlyURLSeparatorCompanyConfiguration(
-			long companyId, String friendlyURLSeparatorsJSONObjectString)
+			long companyId, String friendlyURLSeparatorsJSON)
 		throws ConfigurationException {
 
 		_configurationProvider.saveCompanyConfiguration(
 			FriendlyURLSeparatorCompanyConfiguration.class, companyId,
 			HashMapDictionaryBuilder.<String, Object>put(
-				"friendlyURLSeparatorsJSONObjectString",
-				friendlyURLSeparatorsJSONObjectString
+				"friendlyURLSeparatorsJSON",
+				friendlyURLSeparatorsJSON
 			).build());
 	}
 

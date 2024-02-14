@@ -160,7 +160,7 @@ public class FriendlyURLSeparatorCompanyConfigurationDisplayContext {
 		try {
 			return _jsonFactory.createJSONObject(
 				_friendlyURLSeparatorConfigurationManager.
-					getFriendlyURLSeparatorsJSONObjectString(
+					getFriendlyURLSeparatorsJSON(
 						_themeDisplay.getCompanyId()));
 		}
 		catch (Exception exception) {

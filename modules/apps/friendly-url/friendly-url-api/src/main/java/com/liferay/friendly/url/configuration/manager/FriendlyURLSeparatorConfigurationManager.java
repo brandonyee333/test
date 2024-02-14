@@ -12,11 +12,11 @@ import com.liferay.portal.kernel.module.configuration.ConfigurationException;
  */
 public interface FriendlyURLSeparatorConfigurationManager {
 
-	public String getFriendlyURLSeparatorsJSONObjectString(long companyId)
+	public String getFriendlyURLSeparatorsJSON(long companyId)
 		throws ConfigurationException;
 
 	public void updateFriendlyURLSeparatorCompanyConfiguration(
-			long companyId, String friendlyURLSeparatorsJSONObjectString)
+			long companyId, String friendlyURLSeparatorsJSON)
 		throws ConfigurationException;
 
 }

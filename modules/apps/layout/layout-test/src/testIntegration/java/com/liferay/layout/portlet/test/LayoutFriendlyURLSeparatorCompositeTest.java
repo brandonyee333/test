@@ -83,7 +83,7 @@ public class LayoutFriendlyURLSeparatorCompositeTest {
 						FriendlyURLSeparatorCompanyConfiguration.class.
 							getName(),
 						HashMapDictionaryBuilder.<String, Object>put(
-							"friendlyURLSeparatorsJSONObjectString",
+							"friendlyURLSeparatorsJSON",
 							JSONUtil.put(
 								JournalArticle.class.getName(),
 								journalArticleFriendlyURLSeparator)

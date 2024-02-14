@@ -398,7 +398,7 @@ public class FriendlyURLSeparatorSaveCompanyConfigurationMVCActionCommandTest {
 
 		JSONObject jsonObject = _jsonFactory.createJSONObject(
 			_friendlyURLSeparatorConfigurationManager.
-				getFriendlyURLSeparatorsJSONObjectString(
+				getFriendlyURLSeparatorsJSON(
 					_company.getCompanyId()));
 
 		for (Map.Entry<String, String> friendlyURLSeparator :
