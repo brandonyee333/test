@@ -46,7 +46,7 @@ export default function List(props: IFDSViewSectionProps) {
 				variant="stripe"
 			>
 				{Liferay.Language.get(
-					'this-visualization-mode-wont-be-shown-until-you-assign-at-least-one-field-to-a-list-element'
+					'this-visualization-mode-will-not-be-shown-until-you-assign-at-least-one-field-to-a-list-element'
 				)}
 			</ClayAlert>
 
