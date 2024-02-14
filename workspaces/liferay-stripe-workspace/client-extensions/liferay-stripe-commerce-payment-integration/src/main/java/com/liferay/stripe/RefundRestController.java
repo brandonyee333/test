@@ -60,14 +60,14 @@ public class RefundRestController extends BaseRestController {
 				commercePaymentEntryJSONObject.getString("transactionCode"));
 
 			RefundCreateParams refundCreateParams = RefundCreateParams.builder(
-			).setPaymentIntent(
-				session.getPaymentIntent()
 			).setAmount(
 				BigDecimal.valueOf(
 					commercePaymentEntryJSONObject.getDouble("amount")
 				).multiply(
 					BigDecimal.valueOf(100)
 				).longValue()
+			).setPaymentIntent(
+				session.getPaymentIntent()
 			).setReason(
 				_getReason(
 					commercePaymentEntryJSONObject.getString("reasonKey"))
