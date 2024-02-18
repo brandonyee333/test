@@ -442,7 +442,6 @@ public class ScopeLocatorImplTest {
 					}
 
 				});
-
 			ReflectionTestUtil.setFieldValue(
 				_scopeLocatorImpl, "_scopeLocatorConfiguration",
 				new TestScopeLocatorConfiguration());
