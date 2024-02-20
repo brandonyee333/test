@@ -55,7 +55,7 @@ function deploy_client_extensions() {
 
 		for client_extension_name in ${@}
 		do
-			local client_extension_dir=$(find ${PORTAL_PROJECT_DIR}/workspaces -type d -name "${client_extension_name}" | grep -v .releng | grep -v .npmscripts)
+			local client_extension_dir=$(find ${_PORTAL_PROJECT_DIR}/workspaces -type d -name "${client_extension_name}" | grep -v .releng | grep -v .npmscripts)
 
 			if [[ -d ${client_extension_dir} ]]
 			then
@@ -89,7 +89,7 @@ function deploy_osgi_modules() {
 
 		for osgi_module_name in ${@}
 		do
-			local osgi_module_dir=$(find ${PORTAL_PROJECT_DIR}/modules -type d -name "${osgi_module_name}" | grep -v .releng | grep -v .npmscripts)
+			local osgi_module_dir=$(find ${_PORTAL_PROJECT_DIR}/modules -type d -name "${osgi_module_name}" | grep -v .releng | grep -v .npmscripts)
 
 			if [[ -f ${osgi_module_dir}/build.gradle ]]
 			then
@@ -184,7 +184,7 @@ function get_parent_playwright_project_dirs() {
 
 	current_playwright_project_dir=${playwright_project_dir}
 
-	while [[ "${current_playwright_project_dir}" != "/" ]] && [[ "${current_playwright_project_dir}" != "${PLAYWRIGHT_BASE_DIR}" ]]
+	while [[ "${current_playwright_project_dir}" != "/" ]] && [[ "${current_playwright_project_dir}" != "${_PLAYWRIGHT_BASE_DIR}" ]]
 	do
 		current_playwright_project_dir=$(dirname "${current_playwright_project_dir}")
 
@@ -193,7 +193,7 @@ function get_parent_playwright_project_dirs() {
 }
 
 function get_playwright_project_dir() {
-	find ${PLAYWRIGHT_BASE_DIR} -name config.ts -type f -print | xargs grep "name: '${PLAYWRIGHT_PROJECT_NAME}'" | sed -n 's/\(.*\)\/config.ts.*/\1/p'
+	find ${_PLAYWRIGHT_BASE_DIR} -name config.ts -type f -print | xargs grep "name: '${PLAYWRIGHT_PROJECT_NAME}'" | sed -n 's/\(.*\)\/config.ts.*/\1/p'
 }
 
 function get_tomcat_dir() {
@@ -207,8 +207,8 @@ function get_tomcat_portal_ext_properties_file() {
 function main {
 	local playwright_env_dir=$(dirname ${BASH_SOURCE[0]})
 
-	PLAYWRIGHT_BASE_DIR=$(get_absolute_dir ${playwright_env_dir}/../..)
-	PORTAL_PROJECT_DIR=$(get_absolute_dir ${playwright_env_dir}/../../../../..)
+	_PLAYWRIGHT_BASE_DIR=$(get_absolute_dir ${playwright_env_dir}/../..)
+	_PORTAL_PROJECT_DIR=$(get_absolute_dir ${playwright_env_dir}/../../../../..)
 
 	if [[ "${LIFERAY_HOME}" == "" ]]
 	then
@@ -265,7 +265,7 @@ function update_portal_ext_properties() {
 	combine_properties_files \
 		${tomcat_portal_ext_properties_file} \
 		\
-		${PLAYWRIGHT_BASE_DIR}/env/portal-ext.properties \
+		${_PLAYWRIGHT_BASE_DIR}/env/portal-ext.properties \
 		\
 		${playwright_project_dir}/env/portal-ext.properties
 }
