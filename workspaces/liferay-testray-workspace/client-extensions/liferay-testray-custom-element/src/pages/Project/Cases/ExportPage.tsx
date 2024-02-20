@@ -22,9 +22,9 @@ const id = new Date().getTime();
 
 const ExportPage = () => {
 	const {setTabs} = useHeader();
+	const [caseIds, setCaseIds] = useState<number[]>([]);
 	const [caseIdsLoading, setCaseIdsLoading] = useState(false);
 	const [totalCases, setTotalCases] = useState(0);
-	const [caseIds, setCaseIds] = useState<number[]>([]);
 	const [, setExportCaseIds] = useStorage<number[]>(
 		`${STORAGE_KEYS.EXPORT_CASE_IDS}-${id}` as STORAGE_KEYS,
 		{
