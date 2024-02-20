@@ -1,31 +1,5 @@
 #!/bin/bash
 
-PLAYWRIGHT_ENV_DIR=$(dirname ${BASH_SOURCE[0]})
-
-export PLAYWRIGHT_BASE_DIR=$(cd -- $(dirname -- ${PLAYWRIGHT_ENV_DIR}/../..) &> /dev/null && pwd)
-export PORTAL_PROJECT_DIR=$(cd -- $(dirname -- ${PLAYWRIGHT_ENV_DIR}/../../../../..) &> /dev/null && pwd)
-
-if [[ "${LIFERAY_HOME}" == "" ]]
-then
-	echo "Set the environment variable LIFERAY_HOME."
-
-	exit 1
-fi
-
-if [[ "${LIFERAY_PORTAL_URL}" == "" ]]
-then
-	echo "Set the environment variable LIFERAY_PORTAL_URL."
-
-	exit 1
-fi
-
-if [[ "${PLAYWRIGHT_PROJECT_NAME}" == "" ]]
-then
-	echo "Set the environment variable PLAYWRIGHT_PROJECT_NAME."
-
-	exit 1
-fi
-
 function combine_properties_files() {
 	local temp_properties_file=temp.properties
 
@@ -182,6 +156,10 @@ function deploy_project_osgi_modules() {
 	fi
 }
 
+function get_absolute_dir() {
+	echo $(cd -- $(dirname -- $1) &> /dev/null && pwd)
+}
+
 function get_gradlew() {
 	if [[ -e ./gradlew ]]
 	then
@@ -226,6 +204,34 @@ function get_tomcat_portal_ext_properties_file() {
 	find ${LIFERAY_HOME} -type f -name "portal-ext.properties"
 }
 
+function main {
+	PLAYWRIGHT_ENV_DIR=$(dirname ${BASH_SOURCE[0]})
+
+	export PLAYWRIGHT_BASE_DIR=$(get_absolute_dir ${PLAYWRIGHT_ENV_DIR}/../..)
+	export PORTAL_PROJECT_DIR=$(get_absolute_dir ${PLAYWRIGHT_ENV_DIR}/../../../../..)
+
+	if [[ "${LIFERAY_HOME}" == "" ]]
+	then
+		echo "Set the environment variable LIFERAY_HOME."
+
+		exit 1
+	fi
+
+	if [[ "${LIFERAY_PORTAL_URL}" == "" ]]
+	then
+		echo "Set the environment variable LIFERAY_PORTAL_URL."
+
+		exit 1
+	fi
+
+	if [[ "${PLAYWRIGHT_PROJECT_NAME}" == "" ]]
+	then
+		echo "Set the environment variable PLAYWRIGHT_PROJECT_NAME."
+
+		exit 1
+	fi	
+}
+
 function start_app_server() {
 	cd $(get_tomcat_dir)/bin
 
@@ -263,3 +269,5 @@ function update_portal_ext_properties() {
 		\
 		${playwright_project_dir}/env/portal-ext.properties
 }
+
+main "${@}"
