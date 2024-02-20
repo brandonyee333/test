@@ -93,7 +93,7 @@ function deploy_osgi_modules() {
 
 			if [[ -f ${osgi_module_dir}/build.gradle ]]
 			then
-				echo "Deploy '${osgi_module_dir}'"
+				echo "Deploying ${osgi_module_dir}"
 
 				cd ${osgi_module_dir}
 
