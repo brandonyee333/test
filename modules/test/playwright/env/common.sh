@@ -192,7 +192,7 @@ function get_gradlew() {
 		echo "$(pwd)/gradlew"
 	elif [[ $(pwd) == / ]]
 	then
-		echo "unable to find gradlew"
+		echo "Unable to find gradlew."
 
 		exit 1
 	else
