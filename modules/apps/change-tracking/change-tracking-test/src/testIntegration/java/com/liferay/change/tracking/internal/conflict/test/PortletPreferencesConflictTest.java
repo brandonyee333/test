@@ -70,7 +70,7 @@ public class PortletPreferencesConflictTest {
 
 	@Test
 	public void testResolvePortletPreferenceConflictTest() throws Exception {
-		javax.portlet.PortletPreferences javaxPortletPreferences = null;
+		javax.portlet.PortletPreferences jxPortletPreferences = null;
 
 		try (SafeCloseable safeCloseable =
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
@@ -83,19 +83,19 @@ public class PortletPreferencesConflictTest {
 					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
 					_portlet.getPortletId(), _portlet, null);
 
-			javaxPortletPreferences =
+			jxPortletPreferences =
 				_portletPreferenceValueLocalService.getPreferences(
 					portletPreferences);
 
-			Assert.assertNotNull(javaxPortletPreferences);
+			Assert.assertNotNull(jxPortletPreferences);
 
-			javaxPortletPreferences.setValue(
+			jxPortletPreferences.setValue(
 				_ctCollection1.getName(), RandomTestUtil.randomString());
 
 			_portletPreferencesLocalService.updatePreferences(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
-				_portlet.getPortletId(), javaxPortletPreferences);
+				_portlet.getPortletId(), jxPortletPreferences);
 		}
 
 		try (SafeCloseable safeCloseable =
@@ -109,19 +109,19 @@ public class PortletPreferencesConflictTest {
 					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
 					_portlet.getPortletId(), _portlet, null);
 
-			javaxPortletPreferences =
+			jxPortletPreferences =
 				_portletPreferenceValueLocalService.getPreferences(
 					portletPreferences);
 
-			Assert.assertNotNull(javaxPortletPreferences);
+			Assert.assertNotNull(jxPortletPreferences);
 
-			javaxPortletPreferences.setValue(
+			jxPortletPreferences.setValue(
 				_ctCollection2.getName(), RandomTestUtil.randomString());
 
 			_portletPreferencesLocalService.updatePreferences(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
-				_portlet.getPortletId(), javaxPortletPreferences);
+				_portlet.getPortletId(), jxPortletPreferences);
 		}
 
 		_ctProcessLocalService.addCTProcess(
@@ -183,7 +183,7 @@ public class PortletPreferencesConflictTest {
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
 				_portlet.getPortletId(), _portlet, null);
 
-		javax.portlet.PortletPreferences javaxPortletPreferences =
+		javax.portlet.PortletPreferences jxPortletPreferences =
 			_portletPreferenceValueLocalService.getPreferences(
 				portletPreferences);
 
@@ -191,43 +191,43 @@ public class PortletPreferencesConflictTest {
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection1.getCtCollectionId())) {
 
-			javaxPortletPreferences.setValue(
+			jxPortletPreferences.setValue(
 				_ctCollection1.getName(), RandomTestUtil.randomString());
 
-			javaxPortletPreferences.setValue(
+			jxPortletPreferences.setValue(
 				conflictValueName, _ctCollection1.getName());
 
 			portletPreferences =
 				_portletPreferencesLocalService.updatePreferences(
 					PortletKeys.PREFS_OWNER_ID_DEFAULT,
 					PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
-					_portlet.getPortletId(), javaxPortletPreferences);
+					_portlet.getPortletId(), jxPortletPreferences);
 		}
 
-		javaxPortletPreferences =
+		jxPortletPreferences =
 			_portletPreferenceValueLocalService.getPreferences(
 				portletPreferences);
 
 		Assert.assertNull(
-			javaxPortletPreferences.getValue(_ctCollection1.getName(), null));
+			jxPortletPreferences.getValue(_ctCollection1.getName(), null));
 
 		Assert.assertNull(
-			javaxPortletPreferences.getValue(conflictValueName, null));
+			jxPortletPreferences.getValue(conflictValueName, null));
 
 		try (SafeCloseable safeCloseable =
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 					_ctCollection2.getCtCollectionId())) {
 
-			javaxPortletPreferences.setValue(
+			jxPortletPreferences.setValue(
 				_ctCollection2.getName(), RandomTestUtil.randomString());
 
-			javaxPortletPreferences.setValue(
+			jxPortletPreferences.setValue(
 				conflictValueName, _ctCollection2.getName());
 
 			_portletPreferencesLocalService.updatePreferences(
 				PortletKeys.PREFS_OWNER_ID_DEFAULT,
 				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, _layout.getPlid(),
-				_portlet.getPortletId(), javaxPortletPreferences);
+				_portlet.getPortletId(), jxPortletPreferences);
 		}
 
 		_ctProcessLocalService.addCTProcess(

@@ -62,7 +62,7 @@ public class PortletPreferencesConstraintResolver
 		PortletPreferences sourcePortletPreferences =
 			constraintResolverContext.getSourceCTModel();
 
-		javax.portlet.PortletPreferences javaxPortletPreferences =
+		javax.portlet.PortletPreferences jxPortletPreferences =
 			_portletPreferenceValueLocalService.getPreferences(
 				sourcePortletPreferences);
 
@@ -81,7 +81,7 @@ public class PortletPreferencesConstraintResolver
 			targetPortletPreferences.getOwnerId(),
 			targetPortletPreferences.getOwnerType(),
 			targetPortletPreferences.getPlid(),
-			targetPortletPreferences.getPortletId(), javaxPortletPreferences);
+			targetPortletPreferences.getPortletId(), jxPortletPreferences);
 	}
 
 	@Reference
