@@ -33,7 +33,7 @@
 					"label": {
 						"en_US": "Return State"
 					},
-					"listTypeDefinitionExternalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST",
+					"listTypeDefinitionExternalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATES",
 					"name": "returnState",
 					"required": true,
 					"state": true,

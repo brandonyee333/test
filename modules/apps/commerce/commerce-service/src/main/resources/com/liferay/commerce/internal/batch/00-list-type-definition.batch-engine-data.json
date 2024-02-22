@@ -15,7 +15,7 @@
 	},
 	"items": [
 		{
-			"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST",
+			"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATES",
 			"listTypeEntries": [
 				{
 					"externalReferenceCode": "COMPLETE",
@@ -34,9 +34,9 @@
 					}
 				}
 			],
-			"name": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST",
+			"name": "Commerce Return States",
 			"name_i18n": {
-				"en-US": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST"
+				"en-US": "Commerce Return States"
 			},
 			"system": false
 		}

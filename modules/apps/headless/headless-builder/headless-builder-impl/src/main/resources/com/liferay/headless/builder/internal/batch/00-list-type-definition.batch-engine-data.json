@@ -15,7 +15,7 @@
 	},
 	"items": [
 		{
-			"externalReferenceCode": "L_API_PROPERTY_TYPE_PICKLIST",
+			"externalReferenceCode": "L_API_PROPERTY_TYPES",
 			"listTypeEntries": [
 				{
 					"externalReferenceCode": "FIELD",
@@ -34,9 +34,9 @@
 					}
 				}
 			],
-			"name": "L_API_PROPERTY_TYPE_PICKLIST",
+			"name": "API Property Types",
 			"name_i18n": {
-				"en-US": "L_API_PROPERTY_TYPE_PICKLIST"
+				"en-US": "API Property Types"
 			},
 			"system": true
 		}
