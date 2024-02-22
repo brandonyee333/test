@@ -18,19 +18,19 @@
 			"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST",
 			"listTypeEntries": [
 				{
-					"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST_DRAFT",
-					"key": "draft",
-					"name": "draft",
-					"name_i18n": {
-						"en-US": "Draft"
-					}
-				},
-				{
 					"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST_COMPLETE",
 					"key": "complete",
 					"name": "complete",
 					"name_i18n": {
 						"en-US": "Complete"
+					}
+				},
+				{
+					"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST_DRAFT",
+					"key": "draft",
+					"name": "draft",
+					"name_i18n": {
+						"en-US": "Draft"
 					}
 				}
 			],
