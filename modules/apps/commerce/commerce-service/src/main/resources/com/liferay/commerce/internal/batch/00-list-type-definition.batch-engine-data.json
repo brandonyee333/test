@@ -18,7 +18,7 @@
 			"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST",
 			"listTypeEntries": [
 				{
-					"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST_COMPLETE",
+					"externalReferenceCode": "COMPLETE",
 					"key": "complete",
 					"name": "complete",
 					"name_i18n": {
@@ -26,7 +26,7 @@
 					}
 				},
 				{
-					"externalReferenceCode": "L_COMMERCE_RETURN_RETURN_STATE_PICKLIST_DRAFT",
+					"externalReferenceCode": "DRAFT",
 					"key": "draft",
 					"name": "draft",
 					"name_i18n": {
