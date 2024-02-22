@@ -203,10 +203,14 @@ definition {
 
 			Pause(value1 = 10000);
 
+			takeScreenshot();
+
 			if (!(IsElementPresent.isElementPresentNoSPARefresh(key_type = "info", locator1 = "ClayAlertToast#ALERT_TOAST"))) {
 				TestUtils.pass(message = "Test passed: Alert toast with action disappeared after 10 seconds");
 			}
 			else {
+				takeScreenshot();
+
 				fail("Test failed: Clay Toast alert with action is still present after 10 seconds.");
 			}
 		}
