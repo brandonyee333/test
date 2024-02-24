@@ -45,12 +45,6 @@ patch {
 	originalLibSrcFile = "$buildDir/com-liferay-daisydiff-1.2-sources.jar"
 }
 
-repositories {
-	maven {
-		url "https://repository-cdn.liferay.com/nexus/content/repositories/third-party"
-	}
-}
-
 unzip {
 	dependsOn downloadSrc
 
