@@ -63,7 +63,7 @@ public class ScheduledPublicationUserNotificationHandler
 				});
 		}
 
-		if (_isAdminUser(userNotificationEvent)) {
+		if (_hasAdministratorRole(userNotificationEvent)) {
 			return StringUtil.replace(
 				getBodyTemplate(), new String[] {"[$BODY$]", "[$TITLE$]"},
 				new String[] {
@@ -123,7 +123,7 @@ public class ScheduledPublicationUserNotificationHandler
 			).buildString();
 		}
 
-		if (_isAdminUser(userNotificationEvent)) {
+		if (_hasAdministratorRole(userNotificationEvent)) {
 			return PortletURLBuilder.create(
 				_portal.getControlPanelPortletURL(
 					serviceContext.getRequest(), serviceContext.getScopeGroup(),
@@ -141,7 +141,7 @@ public class ScheduledPublicationUserNotificationHandler
 		return null;
 	}
 
-	private boolean _isAdminUser(UserNotificationEvent userNotificationEvent)
+	private boolean _hasAdministratorRole(UserNotificationEvent userNotificationEvent)
 		throws Exception {
 
 		Role role = _roleLocalService.getRole(
