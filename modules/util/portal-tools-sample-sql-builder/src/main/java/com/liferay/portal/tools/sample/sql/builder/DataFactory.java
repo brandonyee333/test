@@ -314,12 +314,15 @@ import com.liferay.portlet.documentlibrary.model.impl.DLFileVersionModelImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl;
 import com.liferay.portlet.documentlibrary.social.DLActivityKeys;
 import com.liferay.portlet.social.model.impl.SocialActivityModelImpl;
+import com.liferay.product.navigation.product.menu.constants.ProductNavigationProductMenuPortletKeys;
+import com.liferay.product.navigation.user.personal.bar.web.internal.constants.ProductNavigationUserPersonalBarPortletKeys;
 import com.liferay.segments.constants.SegmentsEntryConstants;
 import com.liferay.segments.criteria.Criteria;
 import com.liferay.segments.criteria.CriteriaSerializer;
 import com.liferay.segments.model.SegmentsEntry;
 import com.liferay.segments.model.SegmentsEntryModel;
 import com.liferay.segments.model.impl.SegmentsEntryImpl;
+import com.liferay.site.navigation.constants.SiteNavigationMenuPortletKeys;
 import com.liferay.social.kernel.model.SocialActivity;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.social.kernel.model.SocialActivityModel;
@@ -1163,7 +1166,7 @@ public class DataFactory {
 			for (int i = 0; i < values.length; i++) {
 				portletPreferenceValueModels.add(
 					newPortletPreferenceValueModel(
-						portletPreferencesModel, entry.getKey(), i, values[i]));
+						i, entry.getKey(), portletPreferencesModel, values[i]));
 			}
 		}
 
@@ -1274,7 +1277,7 @@ public class DataFactory {
 			PortletPreferencesModel portletPreferencesModel) {
 
 		return newPortletPreferenceValueModel(
-			portletPreferencesModel, "commerceSiteType", 0,
+			0, "commerceSiteType", portletPreferencesModel,
 			String.valueOf(CommerceChannelConstants.SITE_TYPE_B2B));
 	}
 
@@ -3182,12 +3185,12 @@ public class DataFactory {
 
 		return Arrays.asList(
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "editable", 0, "true"),
+				0, "editable", portletPreferencesModel, "true"),
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "recordSetId", 0,
+				0, "recordSetId", portletPreferencesModel,
 				String.valueOf(ddlRecordSetModel.getRecordSetId())),
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "spreadsheet", 0, "false"));
+				0, "spreadsheet", portletPreferencesModel, "false"));
 	}
 
 	public DDLRecordModel newDDLRecordModel(
@@ -4383,10 +4386,10 @@ public class DataFactory {
 
 		return Arrays.asList(
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "articleId", 0,
+				0, "articleId", portletPreferencesModel,
 				journalArticleResourceModel.getArticleId()),
 			newPortletPreferenceValueModel(
-				portletPreferencesModel, "groupId", 0,
+				0, "groupId", portletPreferencesModel,
 				String.valueOf(journalArticleResourceModel.getGroupId())));
 	}
 
@@ -4420,7 +4423,7 @@ public class DataFactory {
 			JournalArticleModel journalArticleModel) {
 
 		return newPortletPreferenceValueModel(
-			portletPreferencesModel, "articleId", 0,
+			0, "articleId", portletPreferencesModel,
 			journalArticleModel.getArticleId());
 	}
 
@@ -5008,30 +5011,54 @@ public class DataFactory {
 			PortletKeys.PREFS_OWNER_TYPE_LAYOUT, plid, portletId);
 	}
 
-	public PortletPreferenceValueModel newPortletPreferenceValueModel(
-		PortletPreferencesModel portletPreferencesModel, String name, int index,
-		String value) {
+	public List<PortletPreferencesModel> newPortletPreferencesModels(
+		LayoutModel searchGroupLayoutModel, LayoutModel searchLayoutModel) {
 
-		PortletPreferenceValueModel portletPreferenceValueModel =
-			new PortletPreferenceValueModelImpl();
+		List<PortletPreferencesModel> portletPreferencesModels =
+			new ArrayList<>();
 
-		portletPreferenceValueModel.setPortletPreferenceValueId(
-			_portletPreferenceValueIdCounter.get());
-		portletPreferenceValueModel.setPortletPreferencesId(
-			portletPreferencesModel.getPortletPreferencesId());
-		portletPreferenceValueModel.setName(name);
-		portletPreferenceValueModel.setIndex(index);
+		portletPreferencesModels.addAll(
+			newPortletPreferencesModels(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				searchGroupLayoutModel.getPlid()));
+		portletPreferencesModels.addAll(
+			newPortletPreferencesModels(
+				PortletKeys.PREFS_OWNER_ID_DEFAULT,
+				searchLayoutModel.getPlid()));
 
-		if (value.length() >
-				PortletPreferenceValueImpl.SMALL_VALUE_MAX_LENGTH) {
+		return portletPreferencesModels;
+	}
 
-			portletPreferenceValueModel.setLargeValue(value);
+	public List<PortletPreferencesModel> newPortletPreferencesModels(
+		List<LayoutModel> layoutModels) {
+
+		List<PortletPreferencesModel> portletPreferencesModels =
+			new ArrayList<>();
+
+		for (LayoutModel layoutModel : layoutModels) {
+			long plid = layoutModel.getClassPK();
+			long ownerId = PortletKeys.PREFS_OWNER_ID_DEFAULT;
+
+			if (plid == 0) {
+				ownerId = layoutModel.getGroupId();
+			}
+
+			portletPreferencesModels.addAll(
+				newPortletPreferencesModels(ownerId, plid));
 		}
-		else {
-			portletPreferenceValueModel.setSmallValue(value);
-		}
 
-		return portletPreferenceValueModel;
+		return portletPreferencesModels;
+	}
+
+	public List<PortletPreferenceValueModel> newPortletPreferenceValueModels(
+		PortletPreferencesModel portletPreferencesModel) {
+
+		return ListUtil.fromArray(
+			newPortletPreferenceValueModel(
+				0, "destination", portletPreferencesModel, "/search"),
+			newPortletPreferenceValueModel(
+				0, "portletSetupPortletDecoratorId", portletPreferencesModel,
+				"barebone"));
 	}
 
 	public List<ReleaseModel> newReleaseModels() throws Exception {
@@ -6115,7 +6142,7 @@ public class DataFactory {
 
 						portletPreferenceValueModels.add(
 							newPortletPreferenceValueModel(
-								portletPreferencesModel, key, 0, value));
+								0, key, portletPreferencesModel, value));
 					}
 
 					break;
@@ -6815,6 +6842,76 @@ public class DataFactory {
 			PortletKeys.PREFS_OWNER_TYPE_COMPANY);
 
 		return portalPreferencesModel;
+	}
+
+	protected PortletPreferencesModel newPortletPreferencesModel(
+		long ownerId, long plid, String portletId) {
+
+		PortletPreferencesModel portletPreferencesModel =
+			new PortletPreferencesModelImpl();
+
+		// PK fields
+
+		portletPreferencesModel.setPortletPreferencesId(_counter.get());
+
+		// Audit fields
+
+		portletPreferencesModel.setCompanyId(_companyId);
+
+		// Other fields
+
+		portletPreferencesModel.setOwnerId(ownerId);
+		portletPreferencesModel.setOwnerType(
+			PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+		portletPreferencesModel.setPlid(plid);
+		portletPreferencesModel.setPortletId(portletId);
+
+		return portletPreferencesModel;
+	}
+
+	protected List<PortletPreferencesModel> newPortletPreferencesModels(
+		long ownerId, long plid) {
+
+		return ListUtil.fromArray(
+			newPortletPreferencesModel(ownerId, plid, _PORTLET_IDS[0]),
+			newPortletPreferencesModel(ownerId, plid, _PORTLET_IDS[1]),
+			newPortletPreferencesModel(ownerId, plid, _PORTLET_IDS[2]),
+			newPortletPreferencesModel(ownerId, plid, _PORTLET_IDS[3]));
+	}
+
+	protected PortletPreferenceValueModel newPortletPreferenceValueModel(
+		int index, String name, PortletPreferencesModel portletPreferencesModel,
+		String value) {
+
+		PortletPreferenceValueModel portletPreferenceValueModel =
+			new PortletPreferenceValueModelImpl();
+
+		// PK fields
+
+		portletPreferenceValueModel.setPortletPreferenceValueId(
+			_portletPreferenceValueIdCounter.get());
+
+		// Audit fields
+
+		portletPreferenceValueModel.setCompanyId(_companyId);
+
+		// Other fields
+
+		portletPreferenceValueModel.setPortletPreferencesId(
+			portletPreferencesModel.getPortletPreferencesId());
+		portletPreferenceValueModel.setName(name);
+		portletPreferenceValueModel.setIndex(index);
+
+		if (value.length() >
+				PortletPreferenceValueImpl.SMALL_VALUE_MAX_LENGTH) {
+
+			portletPreferenceValueModel.setLargeValue(value);
+		}
+		else {
+			portletPreferenceValueModel.setSmallValue(value);
+		}
+
+		return portletPreferenceValueModel;
 	}
 
 	protected ReleaseModelImpl newReleaseModel(
@@ -7523,6 +7620,14 @@ public class DataFactory {
 		System.currentTimeMillis() + Time.YEAR;
 
 	private static final String _JOURNAL_STRUCTURE_KEY = "BASIC-WEB-CONTENT";
+
+	private static final String[] _PORTLET_IDS = {
+		ProductNavigationProductMenuPortletKeys.PRODUCT_NAVIGATION_PRODUCT_MENU,
+		ProductNavigationUserPersonalBarPortletKeys.
+			PRODUCT_NAVIGATION_USER_PERSONAL_BAR,
+		SearchBarPortletKeys.SEARCH_BAR + "_INSTANCE_templateSearch",
+		SiteNavigationMenuPortletKeys.SITE_NAVIGATION_MENU
+	};
 
 	private static final String _SAMPLE_USER_NAME = "Sample";
 
