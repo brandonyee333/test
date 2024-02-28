@@ -22,11 +22,11 @@ function clone_repository {
 	local github_url=git@github.com:${github_user}/liferay-learn.git
 
 	GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -q" \
-		git clone --branch ${github_branch} --depth 1 --single-branch ${github_url} ${LIFERAY_LEARN_ETC_CRON_ROOT_DIR}
+		git clone --branch ${github_branch} --depth 1 --single-branch ${github_url} ${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR}
 
-	git -C ${LIFERAY_LEARN_ETC_CRON_ROOT_DIR} log
+	git -C ${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR} log
 
-	local git_log=$(git -C ${LIFERAY_LEARN_ETC_CRON_ROOT_DIR} log -1 --pretty="%B %H %aN")
+	local git_log=$(git -C ${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR} log -1 --pretty="%B %H %aN")
 
 	send_slack_message "Cloned *${github_url}*: *${git_log//$\"\n\"/}*"
 }
@@ -37,7 +37,7 @@ function copy_examples {
 	# Include must come before exclude.
 	#
 
-	rsync --include="*.zip" --include="*/" --exclude="*" --prune-empty-dirs --recursive ${LIFERAY_LEARN_ETC_CRON_ROOT_DIR}/site /public_html
+	rsync --include="*.zip" --include="*/" --exclude="*" --prune-empty-dirs --recursive ${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR}/site /public_html
 }
 
 function copy_images {
@@ -46,7 +46,7 @@ function copy_images {
 	# Include must come before exclude.
 	#
 
-	rsync --include="images/*" --include="*/" --exclude="*" --prune-empty-dirs --recursive ${LIFERAY_LEARN_ETC_CRON_ROOT_DIR}/docs /public_html/images
+	rsync --include="images/*" --include="*/" --exclude="*" --prune-empty-dirs --recursive ${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR}/docs /public_html/images
 }
 
 function copy_reference_docs {
@@ -55,7 +55,7 @@ function copy_reference_docs {
 	# Include must come before exclude.
 	#
 
-	rsync --include="reference/*" --include="*/" --exclude="*" --prune-empty-dirs --recursive ${LIFERAY_LEARN_ETC_CRON_ROOT_DIR}/site /public_html/reference
+	rsync --include="reference/*" --include="*/" --exclude="*" --prune-empty-dirs --recursive ${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR}/site /public_html/reference
 }
 
 function copy_resources {
@@ -97,9 +97,9 @@ function prepare_import {
 		export LIFERAY_LEARN_ETC_CRON_LIFERAY_URL="https://$(cat /etc/liferay/lxc/dxp-metadata/com.liferay.lxc.dxp.mainDomain)"
 	fi
 
-	if [ -z "${LIFERAY_LEARN_ETC_CRON_ROOT_DIR}" ]
+	if [ -z "${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR}" ]
 	then
-		export LIFERAY_LEARN_ROOT_DIR=${LIFERAY_LEARN_ETC_CRON_ROOT_DIR}
+		export LIFERAY_LEARN_ROOT_DIR=${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR}
 	fi
 }
 
@@ -121,7 +121,7 @@ function send_slack_message {
 }
 
 function setup {
-	pushd ${LIFERAY_LEARN_ETC_CRON_ROOT_DIR}
+	pushd ${LIFERAY_LEARN_ETC_CRON_GIT_REPOSITORY_DIR}
 
 	./setup.sh
 
