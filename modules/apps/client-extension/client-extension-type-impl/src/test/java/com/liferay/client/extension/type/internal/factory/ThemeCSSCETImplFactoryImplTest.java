@@ -40,8 +40,7 @@ public class ThemeCSSCETImplFactoryImplTest {
 			themeCSSCETImplFactoryImpl.validate(
 				_createThemeCSSCET("{\"frontendTokenCategories\": [}"), null);
 
-			Assert.fail(
-				"Expected ClientExtensionEntryTypeSettingsException exception");
+			Assert.fail();
 		}
 		catch (ClientExtensionEntryTypeSettingsException
 					clientExtensionEntryTypeSettingsException) {
