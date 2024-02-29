@@ -576,7 +576,7 @@ gradle.beforeProject {
 						return
 					}
 
-					FileTree fileTree = fileTree(dir: reports.junitXml.destination, exclude: "TEST-*-*.xml", include: "TEST-*.xml")
+					FileTree fileTree = fileTree(dir: reports.junitXml.outputLocation.get().getAsFile(), exclude: "TEST-*-*.xml", include: "TEST-*.xml")
 
 					ant.taskdef classname: "com.oopsconsultancy.xmltask.ant.XmlTask", classpath: configurations.xmltask.asPath, name: "xmltask"
 
