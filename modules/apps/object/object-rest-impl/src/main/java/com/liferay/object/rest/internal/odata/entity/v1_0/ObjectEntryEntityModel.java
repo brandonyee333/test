@@ -176,7 +176,8 @@ public class ObjectEntryEntityModel implements EntityModel {
 			ComplexEntityField complexEntityField = _getComplexEntityField(
 				objectDefinition, objectRelationship);
 
-			entityFieldsMap.put(complexEntityField.getName(), complexEntityField);
+			entityFieldsMap.put(
+				complexEntityField.getName(), complexEntityField);
 		}
 
 		return entityFieldsMap;
