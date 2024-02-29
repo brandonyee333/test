@@ -42,3 +42,8 @@
 # Bundle Version 1.0.10
 #
 0a1db65a82e178c607c3a74eee6fe1c15b279ceb^..cfaf5895f868e3857af1064ffc90a1c9219a5a0d=LPS-204475
+
+#
+# Bundle Version 1.0.11
+#
+cfaf5895f868e3857af1064ffc90a1c9219a5a0d^..e8a5443cacbd4ac93bf6f325de3c3d70d326d9e3=LPD-18350
