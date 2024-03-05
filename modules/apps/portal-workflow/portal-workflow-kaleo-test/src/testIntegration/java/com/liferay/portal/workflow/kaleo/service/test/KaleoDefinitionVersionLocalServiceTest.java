@@ -61,25 +61,22 @@ public class KaleoDefinitionVersionLocalServiceTest
 
 	@Test
 	public void testGetLatestKaleoDefinitionVersions() throws Exception {
+		KaleoDefinitionVersionTitleComparator
+			kaleoDefinitionVersionTitleComparator =
+				new KaleoDefinitionVersionTitleComparator(true);
 		KaleoDefinitionVersion kaleoDefinitionVersion1 =
 			getLatestKaleoDefinitionVersion(
 				addKaleoDefinition(
 					"Name 1", "First definition", "Description 1"));
-
 		KaleoDefinitionVersion kaleoDefinitionVersion2 =
 			getLatestKaleoDefinitionVersion(
 				addKaleoDefinition(
 					"Name 2", "My title 2", RandomTestUtil.randomString()));
-
 		KaleoDefinitionVersion kaleoDefinitionVersion3 =
 			getLatestKaleoDefinitionVersion(
 				addKaleoDefinition(
 					RandomTestUtil.randomString(), "My title 3",
 					"Description 3"));
-
-		KaleoDefinitionVersionTitleComparator
-			kaleoDefinitionVersionTitleComparator =
-				new KaleoDefinitionVersionTitleComparator(true);
 
 		Assert.assertEquals(
 			Arrays.asList(kaleoDefinitionVersion1, kaleoDefinitionVersion3),
