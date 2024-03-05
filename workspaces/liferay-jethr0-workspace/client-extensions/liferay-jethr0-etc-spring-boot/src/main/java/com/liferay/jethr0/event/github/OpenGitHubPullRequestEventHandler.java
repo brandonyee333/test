@@ -307,10 +307,6 @@ public class OpenGitHubPullRequestEventHandler
 			return false;
 		}
 
-		GitHubUser senderGitHubUser = gitHubPullRequest.getSenderGitHubUser();
-
-		String senderGitHubUserName = senderGitHubUser.getName();
-
 		List<String> ciTestAutoSendersBlacklist = new ArrayList<>();
 
 		String ciTestAutoSendersBlacklistString =
@@ -331,7 +327,9 @@ public class OpenGitHubPullRequestEventHandler
 				ciTestAutoSendersBlacklistString.split(","));
 		}
 
-		if (!ciTestAutoSendersBlacklist.contains(senderGitHubUserName)) {
+		GitHubUser senderGitHubUser = gitHubPullRequest.getSenderGitHubUser();
+
+		if (!ciTestAutoSendersBlacklist.contains(senderGitHubUser.getName())) {
 			return false;
 		}
 
