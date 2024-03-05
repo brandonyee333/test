@@ -552,12 +552,10 @@ public class SiteResourceTest extends BaseSiteResourceTestCase {
 	private void _testPostSiteWithoutAuthentication() throws Exception {
 		SiteResource.Builder builder = SiteResource.builder();
 
-		SiteResource curSiteResource = builder.build();
+		SiteResource siteResource = builder.build();
 
 		try {
-			Site randomSite = randomSite();
-
-			curSiteResource.postSite(randomSite);
+			siteResource.postSite(randomSite());
 
 			Assert.fail();
 		}
