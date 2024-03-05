@@ -313,10 +313,6 @@ public class UpgradePartitionedConfigurationTableTest
 
 			_scope = scope;
 
-			_pid =
-				UpgradePartitionedConfigurationTableTest.class.getName() + "~" +
-					RandomTestUtil.randomString();
-
 			String dictionary = StringPool.BLANK;
 
 			if (scopeValue != null) {
@@ -331,6 +327,10 @@ public class UpgradePartitionedConfigurationTableTest
 				RandomTestUtil.randomString(), StringPool.QUOTE);
 
 			_dictionary = dictionary;
+
+			_pid =
+				UpgradePartitionedConfigurationTableTest.class.getName() + "~" +
+					RandomTestUtil.randomString();
 		}
 
 		public String getDictionary() {
