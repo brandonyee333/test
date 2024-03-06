@@ -8,11 +8,11 @@ package com.liferay.frontend.taglib.servlet.taglib;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.internal.servlet.ServletContextUtil;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIcon;
 import com.liferay.portal.kernel.portlet.configuration.icon.PortletConfigurationIconTracker;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.JavaConstants;
@@ -46,11 +46,7 @@ public class IconOptionsTag extends IncludeTag {
 	}
 
 	public String getCssClass() {
-		if (_cssClass != null) {
-			return _cssClass;
-		}
-
-		return StringPool.BLANK;
+		return GetterUtil.getString(_cssClass);
 	}
 
 	public boolean isMonospaced() {
