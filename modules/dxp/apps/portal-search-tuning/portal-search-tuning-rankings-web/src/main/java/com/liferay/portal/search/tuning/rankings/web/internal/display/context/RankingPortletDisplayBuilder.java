@@ -60,24 +60,24 @@ import javax.servlet.http.HttpServletRequest;
 public class RankingPortletDisplayBuilder {
 
 	public RankingPortletDisplayBuilder(
-		RankingBuilderFactory rankingBuilderFactory,
 		HttpServletRequest httpServletRequest, Language language, Portal portal,
-		Queries queries, RankingIndexNameBuilder rankingIndexNameBuilder,
-		Sorts sorts, RenderRequest renderRequest, RenderResponse renderResponse,
+		Queries queries, RankingBuilderFactory rankingBuilderFactory,
+		RankingIndexNameBuilder rankingIndexNameBuilder,
+		RenderRequest renderRequest, RenderResponse renderResponse,
 		SearchEngineAdapter searchEngineAdapter,
-		SearchEngineInformation searchEngineInformation) {
+		SearchEngineInformation searchEngineInformation, Sorts sorts) {
 
-		_rankingBuilderFactory = rankingBuilderFactory;
 		_httpServletRequest = httpServletRequest;
 		_language = language;
 		_portal = portal;
 		_queries = queries;
+		_rankingBuilderFactory = rankingBuilderFactory;
 		_rankingIndexNameBuilder = rankingIndexNameBuilder;
-		_sorts = sorts;
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 		_searchEngineAdapter = searchEngineAdapter;
 		_searchEngineInformation = searchEngineInformation;
+		_sorts = sorts;
 	}
 
 	public RankingPortletDisplayContext build() {

@@ -46,9 +46,10 @@ public class RankingPortletDisplayBuilderTest extends BaseRankingsWebTestCase {
 		setUpPortletPreferencesFactoryUtil();
 
 		_rankingPortletDisplayBuilder = new RankingPortletDisplayBuilder(
-			_rankingBuilderFactory, _httpServletRequest, language, portal,
-			queries, rankingIndexNameBuilder, _sorts, _renderRequest,
-			_renderResponse, searchEngineAdapter, _searchEngineInformation);
+			_httpServletRequest, language, portal, queries,
+			_rankingBuilderFactory, rankingIndexNameBuilder, _renderRequest,
+			_renderResponse, searchEngineAdapter, _searchEngineInformation,
+			_sorts);
 	}
 
 	@Test

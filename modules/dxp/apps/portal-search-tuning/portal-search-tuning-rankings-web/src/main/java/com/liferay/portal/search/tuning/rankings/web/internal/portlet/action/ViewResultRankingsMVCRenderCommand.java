@@ -46,10 +46,10 @@ public class ViewResultRankingsMVCRenderCommand implements MVCRenderCommand {
 
 		RankingPortletDisplayContext rankingPortletDisplayContext =
 			new RankingPortletDisplayBuilder(
-				_rankingBuilderFactory,
 				portal.getHttpServletRequest(renderRequest), language, portal,
-				queries, rankingIndexNameBuilder, sorts, renderRequest,
-				renderResponse, searchEngineAdapter, searchEngineInformation
+				queries, _rankingBuilderFactory, rankingIndexNameBuilder,
+				renderRequest, renderResponse, searchEngineAdapter,
+				searchEngineInformation, sorts
 			).build();
 
 		renderRequest.setAttribute(
