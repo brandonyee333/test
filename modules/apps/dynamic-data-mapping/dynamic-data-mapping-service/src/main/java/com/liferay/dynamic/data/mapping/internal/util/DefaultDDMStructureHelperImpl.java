@@ -66,7 +66,7 @@ public class DefaultDDMStructureHelperImpl
 
 		Locale locale = _portal.getSiteDefaultLocale(groupId);
 
-		List<Element> structureElements = _getDDMStructures(
+		List<Element> structureElements = _getStructureElements(
 			classLoader, fileName, locale);
 
 		for (Element structureElement : structureElements) {
@@ -101,7 +101,7 @@ public class DefaultDDMStructureHelperImpl
 
 		Locale locale = _portal.getSiteDefaultLocale(groupId);
 
-		List<Element> structureElements = _getDDMStructures(
+		List<Element> structureElements = _getStructureElements(
 			classLoader, fileName, locale);
 
 		for (Element structureElement : structureElements) {
@@ -156,7 +156,7 @@ public class DefaultDDMStructureHelperImpl
 			String dynamicDDMStructureName, Locale locale)
 		throws Exception {
 
-		List<Element> structureElements = _getDDMStructures(
+		List<Element> structureElements = _getStructureElements(
 			classLoader, fileName, locale);
 
 		for (Element structureElement : structureElements) {
@@ -295,7 +295,7 @@ public class DefaultDDMStructureHelperImpl
 		return _ddm.getDefaultDDMFormLayout(ddmForm);
 	}
 
-	private List<Element> _getDDMStructures(
+	private List<Element> _getStructureElements(
 			ClassLoader classLoader, String fileName, Locale locale)
 		throws Exception {
 
