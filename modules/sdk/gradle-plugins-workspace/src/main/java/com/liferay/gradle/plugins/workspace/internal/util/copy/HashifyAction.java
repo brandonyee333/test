@@ -41,14 +41,14 @@ public class HashifyAction implements Action<FileCopyDetails> {
 
 		String fileName = fileCopyDetails.getName();
 
-		int pos = fileName.lastIndexOf('.');
+		int index = fileName.lastIndexOf('.');
 
-		if (pos == -1) {
+		if (index == -1) {
 			return fileName + '.' + hashValue.asHexString();
 		}
 
-		String extension = fileName.substring(pos + 1);
-		String shortFileName = fileName.substring(0, pos);
+		String extension = fileName.substring(index + 1);
+		String shortFileName = fileName.substring(0, index);
 
 		return shortFileName + '.' + hashValue.asHexString() + '.' + extension;
 	}
