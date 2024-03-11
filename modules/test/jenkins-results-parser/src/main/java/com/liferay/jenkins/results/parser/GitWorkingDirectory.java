@@ -2379,16 +2379,16 @@ public class GitWorkingDirectory {
 
 		String command = String.join(" ", commands);
 
-		if (_cacheBashCommands && _cachedBashCommands.containsKey(command)) {
+		if (_cacheBashCommands && _executionResults.containsKey(command)) {
 			System.out.println("Using cached excecution for: " + command);
 
-			return _cachedBashCommands.get(command);
+			return _executionResults.get(command);
 		}
 
 		GitUtil.ExecutionResult executionResult = GitUtil.executeBashCommands(
 			maxRetries, retryDelay, timeout, _workingDirectory, commands);
 
-		_cachedBashCommands.put(command, executionResult);
+		_executionResults.put(command, executionResult);
 
 		return executionResult;
 	}
@@ -3042,7 +3042,7 @@ public class GitWorkingDirectory {
 				"git.working.directory.public.only.repository.names"));
 
 	private boolean _cacheBashCommands;
-	private final Map<String, GitUtil.ExecutionResult> _cachedBashCommands =
+	private final Map<String, GitUtil.ExecutionResult> _executionResults =
 		new HashMap<>();
 	private File _gitDirectory;
 	private final Map<String, GitRemote> _gitRemotes =
