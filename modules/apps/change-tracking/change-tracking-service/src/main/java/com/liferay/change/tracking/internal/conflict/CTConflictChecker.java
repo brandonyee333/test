@@ -527,17 +527,15 @@ public class CTConflictChecker<T extends CTModel<T>> {
 
 		StringBundler sb = new StringBundler("select ");
 
-		Map<String, Integer> tableColumnsMap =
-			ctPersistence.getTableColumnsMap();
-
 		Set<String> ignoredColumnNames = ctPersistence.getCTColumnNames(
 			CTColumnResolutionType.IGNORE);
-
 		Set<String> maxColumnNames = ctPersistence.getCTColumnNames(
 			CTColumnResolutionType.MAX);
-
 		Set<String> minColumnNames = ctPersistence.getCTColumnNames(
 			CTColumnResolutionType.MIN);
+
+		Map<String, Integer> tableColumnsMap =
+			ctPersistence.getTableColumnsMap();
 
 		for (String name : tableColumnsMap.keySet()) {
 			if (name.equals("ctCollectionId")) {
