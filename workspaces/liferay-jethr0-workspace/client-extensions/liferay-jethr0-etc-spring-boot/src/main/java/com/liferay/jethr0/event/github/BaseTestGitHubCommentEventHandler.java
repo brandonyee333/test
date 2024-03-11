@@ -127,7 +127,7 @@ public abstract class BaseTestGitHubCommentEventHandler
 
 		String message = StringUtil.combine(
 			"The test will not be initiated because `ci:test:forward` is not ",
-			"a valid command.  Please use `ci:forward` instead.");
+			"a valid command. Use `ci:forward` instead.");
 
 		gitHubPullRequest.comment(message);
 
