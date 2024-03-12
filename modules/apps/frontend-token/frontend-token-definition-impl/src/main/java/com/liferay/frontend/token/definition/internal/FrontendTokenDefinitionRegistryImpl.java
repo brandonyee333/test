@@ -65,8 +65,7 @@ public class FrontendTokenDefinitionRegistryImpl
 
 		return _getFrontendTokenDefinition(
 			layoutSet.getCompanyId(),
-			_getLayoutSetThemeCSSCETExternalReferenceCode(
-				layoutSet.getLayoutSetId()),
+			_getCETExternalReferenceCode(layoutSet.getLayoutSetId()),
 			layoutSet.getThemeId());
 	}
 
@@ -274,9 +273,7 @@ public class FrontendTokenDefinitionRegistryImpl
 			companyId, new ConcurrentHashMap<>());
 	}
 
-	private String _getLayoutSetThemeCSSCETExternalReferenceCode(
-		long layoutSetId) {
-
+	private String _getCETExternalReferenceCode(long layoutSetId) {
 		ClientExtensionEntryRel clientExtensionEntryRel =
 			_clientExtensionEntryRelLocalService.fetchClientExtensionEntryRel(
 				_portal.getClassNameId(LayoutSet.class), layoutSetId,
