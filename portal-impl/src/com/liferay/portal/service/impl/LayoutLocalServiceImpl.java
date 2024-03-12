@@ -1124,7 +1124,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 
 		dynamicQuery.add(typeProperty.eq(type));
 
-		List<Layout> layouts = layoutLocalService.dynamicQuery(dynamicQuery);
+		List<Layout> layouts = new ArrayList<>(
+			layoutLocalService.dynamicQuery(dynamicQuery));
 
 		Group group = _groupPersistence.findByPrimaryKey(groupId);
 
