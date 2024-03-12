@@ -67,7 +67,7 @@ public class FrontendTokenDefinitionRegistryTest {
 		_frontendTokenDefinitionJSONObject = JSONFactoryUtil.createJSONObject(
 			URLUtil.toString(
 				FrontendTokenDefinitionRegistryTest.class.getResource(
-					"dependencies/frontend-token-definition.json")));
+					"/WEB-INF/frontend-token-definition.json")));
 
 		_group = GroupTestUtil.addGroup();
 
