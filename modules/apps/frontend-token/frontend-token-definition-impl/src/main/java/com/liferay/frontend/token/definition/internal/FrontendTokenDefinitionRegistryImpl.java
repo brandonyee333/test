@@ -218,6 +218,35 @@ public class FrontendTokenDefinitionRegistryImpl
 	@Reference
 	protected Portal portal;
 
+	private void _addingService(ThemeCSSCET themeCSSCET) {
+		String frontendTokenDefinitionJSON =
+			themeCSSCET.getFrontendTokenDefinitionJSON();
+
+		try {
+			_frontendTokenDefinitionJSONValidator.validate(
+				frontendTokenDefinitionJSON);
+
+			Map<String, FrontendTokenDefinition> frontendTokenDefinitions =
+				_frontendTokenDefinitionsMap.computeIfAbsent(
+					themeCSSCET.getCompanyId(),
+					entry -> new ConcurrentHashMap<>());
+
+			frontendTokenDefinitions.put(
+				themeCSSCET.getExternalReferenceCode(),
+				new FrontendTokenDefinitionImpl(
+					jsonFactory.createJSONObject(frontendTokenDefinitionJSON),
+					jsonFactory,
+					ResourceBundleLoaderUtil.getPortalResourceBundleLoader(),
+					themeCSSCET.getExternalReferenceCode()));
+		}
+		catch (JSONException | JSONValidatorException exception) {
+			_log.error(
+				"Unable to parse theme CSS client extension frontend token " +
+					"definition",
+				exception);
+		}
+	}
+
 	private String _getCETExternalReferenceCode(long layoutSetId) {
 		ClientExtensionEntryRel clientExtensionEntryRel =
 			_clientExtensionEntryRelLocalService.fetchClientExtensionEntryRel(
@@ -284,40 +313,7 @@ public class FrontendTokenDefinitionRegistryImpl
 			companyId, new ConcurrentHashMap<>());
 	}
 
-	private void _addingService(
-		ThemeCSSCET themeCSSCET) {
-
-		String frontendTokenDefinitionJSON =
-			themeCSSCET.getFrontendTokenDefinitionJSON();
-
-		try {
-			_frontendTokenDefinitionJSONValidator.validate(
-				frontendTokenDefinitionJSON);
-
-			Map<String, FrontendTokenDefinition> frontendTokenDefinitions =
-				_frontendTokenDefinitionsMap.computeIfAbsent(
-					themeCSSCET.getCompanyId(),
-					entry -> new ConcurrentHashMap<>());
-
-			frontendTokenDefinitions.put(
-				themeCSSCET.getExternalReferenceCode(),
-				new FrontendTokenDefinitionImpl(
-					jsonFactory.createJSONObject(frontendTokenDefinitionJSON),
-					jsonFactory,
-					ResourceBundleLoaderUtil.getPortalResourceBundleLoader(),
-					themeCSSCET.getExternalReferenceCode()));
-		}
-		catch (JSONException | JSONValidatorException exception) {
-			_log.error(
-				"Unable to parse theme CSS client extension frontend token " +
-					"definition",
-				exception);
-		}
-	}
-
-	private void _removedService(
-		ThemeCSSCET themeCSSCET) {
-
+	private void _removedService(ThemeCSSCET themeCSSCET) {
 		Map<String, FrontendTokenDefinition> frontendTokenDefinitions =
 			_getFrontendTokenDefinitionsMap(themeCSSCET.getCompanyId());
 
