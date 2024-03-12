@@ -275,16 +275,15 @@ public class FrontendTokenDefinitionRegistryImpl
 			}
 		}
 
-		Map<String, FrontendTokenDefinitionImpl>
-			themeIdFrontendTokenDefinitionImpls =
-				_themeIdFrontendTokenDefinitionImplsDCLSingleton.getSingleton(
-					() -> {
-						_bundleTracker.open();
+		Map<String, FrontendTokenDefinitionImpl> frontendTokenDefinitionImpls =
+			_frontendTokenDefinitionImplsDCLSingleton.getSingleton(
+				() -> {
+					_bundleTracker.open();
 
-						return _themeIdFrontendTokenDefinitionImpls;
-					});
+					return _frontendTokenDefinitionImpls;
+				});
 
-		return themeIdFrontendTokenDefinitionImpls.get(themeId);
+		return frontendTokenDefinitionImpls.get(themeId);
 	}
 
 	private String _getFrontendTokenDefinitionJSON(Bundle bundle) {
@@ -304,8 +303,8 @@ public class FrontendTokenDefinitionRegistryImpl
 		}
 	}
 
-	private Map<String, FrontendTokenDefinition>
-		_getFrontendTokenDefinitions(long companyId) {
+	private Map<String, FrontendTokenDefinition> _getFrontendTokenDefinitions(
+		long companyId) {
 
 		return _frontendTokenDefinitionsMap.getOrDefault(
 			companyId, new ConcurrentHashMap<>());
@@ -340,7 +339,7 @@ public class FrontendTokenDefinitionRegistryImpl
 					if ((frontendTokenDefinitionImpl != null) &&
 						(frontendTokenDefinitionImpl.getThemeId() != null)) {
 
-						_themeIdFrontendTokenDefinitionImpls.put(
+						_frontendTokenDefinitionImpls.put(
 							frontendTokenDefinitionImpl.getThemeId(),
 							frontendTokenDefinitionImpl);
 
@@ -361,7 +360,7 @@ public class FrontendTokenDefinitionRegistryImpl
 					Bundle bundle, BundleEvent bundleEvent,
 					FrontendTokenDefinitionImpl frontendTokenDefinitionImpl) {
 
-					_themeIdFrontendTokenDefinitionImpls.remove(
+					_frontendTokenDefinitionImpls.remove(
 						frontendTokenDefinitionImpl.getThemeId());
 				}
 
@@ -371,6 +370,10 @@ public class FrontendTokenDefinitionRegistryImpl
 	private ClientExtensionEntryRelLocalService
 		_clientExtensionEntryRelLocalService;
 
+	private final Map<String, FrontendTokenDefinitionImpl>
+		_frontendTokenDefinitionImpls = new ConcurrentHashMap<>();
+	private final DCLSingleton<Map<String, FrontendTokenDefinitionImpl>>
+		_frontendTokenDefinitionImplsDCLSingleton = new DCLSingleton<>();
 	private final FrontendTokenDefinitionJSONValidator
 		_frontendTokenDefinitionJSONValidator =
 			new FrontendTokenDefinitionJSONValidator();
@@ -381,9 +384,5 @@ public class FrontendTokenDefinitionRegistryImpl
 	private Portal _portal;
 
 	private ServiceTracker<ThemeCSSCET, ThemeCSSCET> _serviceTracker;
-	private final Map<String, FrontendTokenDefinitionImpl>
-		_themeIdFrontendTokenDefinitionImpls = new ConcurrentHashMap<>();
-	private final DCLSingleton<Map<String, FrontendTokenDefinitionImpl>>
-		_themeIdFrontendTokenDefinitionImplsDCLSingleton = new DCLSingleton<>();
 
 }
