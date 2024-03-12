@@ -1746,9 +1746,6 @@ public class GraphQLServletExtender {
 				builder.name(
 					prefix + StringUtil.upperCaseFirstLetter(graphQLNamespace));
 
-				GraphQLCodeRegistry.Builder graphQLCodeRegistryBuilder =
-					processingElementsContainer.getCodeRegistryBuilder();
-
 				boolean deprecated = false;
 
 				if (StringUtil.equals(
@@ -1757,6 +1754,9 @@ public class GraphQLServletExtender {
 
 					deprecated = true;
 				}
+
+				GraphQLCodeRegistry.Builder graphQLCodeRegistryBuilder =
+					processingElementsContainer.getCodeRegistryBuilder();
 
 				for (Method method : methods) {
 					_servletDataMap.put(method, servletData);
