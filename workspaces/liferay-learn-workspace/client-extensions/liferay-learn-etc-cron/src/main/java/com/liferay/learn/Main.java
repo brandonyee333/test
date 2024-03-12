@@ -367,7 +367,7 @@ public class Main {
 						!_diffFileNames.contains(relativeFileName)) {
 
 						System.out.println(
-							"Skipping structured content (diffs) " +
+							"Skipping structured content (no diffs) " +
 								structuredContent.getFriendlyUrlPath());
 
 						continue;
@@ -375,12 +375,12 @@ public class Main {
 
 					File file = new File(fileName);
 
-					String existingMd5Hex = _getMD5Hex(siteStructuredContent);
-					String md5Hex = DigestUtils.md5Hex(file.toString());
+					if (StringUtil.equals(
+							DigestUtils.md5Hex(file.toString()),
+							_getMD5Hex(siteStructuredContent))) {
 
-					if (StringUtil.equals(md5Hex, existingMd5Hex)) {
 						System.out.println(
-							"Skipping structured content (md5Hex) " +
+							"Skipping structured content (same md5Hex) " +
 								structuredContent.getFriendlyUrlPath());
 
 						continue;
