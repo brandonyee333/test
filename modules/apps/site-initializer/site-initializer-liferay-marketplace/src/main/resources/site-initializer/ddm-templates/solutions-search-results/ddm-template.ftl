@@ -246,6 +246,7 @@
 									<span class="banner__product-tag rounded py-1 px-2 mr-2" title="${principalCategory.name}">
 										${principalCategory.name}
 									</span>
+
 									<#if categoriesListSize?has_content && remainingCategoriesText?has_content>
 										<span class="banner__product-tag rounded py-1 px-2" title="${remainingCategoriesText?join('\n')}">
 											+ ${categoriesListSize}
