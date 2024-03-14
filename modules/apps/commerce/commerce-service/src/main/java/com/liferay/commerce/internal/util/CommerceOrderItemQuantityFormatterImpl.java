@@ -49,7 +49,7 @@ public class CommerceOrderItemQuantityFormatterImpl
 		CPMeasurementUnit cpMeasurementUnit =
 			commerceOrderItem.fetchCPMeasurementUnit();
 
-		DecimalFormat decimalFormat = _getDecimalFormat(locale);
+		DecimalFormat decimalFormat = _getDecimalFormat(true, true, locale);
 		BigDecimal quantity = commerceOrderItem.getQuantity();
 
 		if (cpMeasurementUnit != null) {
@@ -59,13 +59,29 @@ public class CommerceOrderItemQuantityFormatterImpl
 		}
 
 		if (cpInstanceUnitOfMeasure != null) {
-			return String.valueOf(
+			return decimalFormat.format(
 				quantity.setScale(
 					cpInstanceUnitOfMeasure.getPrecision(),
 					RoundingMode.HALF_UP));
 		}
 
 		return decimalFormat.format(quantity);
+	}
+
+	@Override
+	public String format(CommerceOrderItem commerceOrderItem, Locale locale)
+		throws PortalException {
+
+		DecimalFormat decimalFormat = _getDecimalFormat(true, false, locale);
+
+		return decimalFormat.format(commerceOrderItem.getQuantity());
+	}
+
+	@Override
+	public BigDecimal parse(String quantity, Locale locale) throws Exception {
+		DecimalFormat decimalFormat = _getDecimalFormat(true, true, locale);
+
+		return (BigDecimal)decimalFormat.parse(quantity);
 	}
 
 	@Activate
@@ -82,17 +98,27 @@ public class CommerceOrderItemQuantityFormatterImpl
 		_commerceOrderItemDecimalQuantityConfiguration = null;
 	}
 
-	private DecimalFormat _getDecimalFormat(Locale locale) {
+	private DecimalFormat _getDecimalFormat(
+		boolean maximumFractionDigits, boolean minimumFractionDigits,
+		Locale locale) {
+
 		DecimalFormat decimalFormat = new DecimalFormat(
 			CommerceOrderConstants.DECIMAL_FORMAT_PATTERN,
 			DecimalFormatSymbols.getInstance(locale));
 
-		decimalFormat.setMaximumFractionDigits(
-			_commerceOrderItemDecimalQuantityConfiguration.
-				maximumFractionDigits());
-		decimalFormat.setMinimumFractionDigits(
-			_commerceOrderItemDecimalQuantityConfiguration.
-				minimumFractionDigits());
+		if (maximumFractionDigits) {
+			decimalFormat.setMaximumFractionDigits(
+				_commerceOrderItemDecimalQuantityConfiguration.
+					maximumFractionDigits());
+		}
+
+		if (minimumFractionDigits) {
+			decimalFormat.setMinimumFractionDigits(
+				_commerceOrderItemDecimalQuantityConfiguration.
+					minimumFractionDigits());
+		}
+
+		decimalFormat.setParseBigDecimal(true);
 		decimalFormat.setRoundingMode(
 			_commerceOrderItemDecimalQuantityConfiguration.roundingMode());
 
