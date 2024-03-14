@@ -162,7 +162,9 @@ public abstract class BaseDynamicInclude implements DynamicInclude {
 		}
 		catch (JSONException jsonException) {
 			_log.error(
-				"Unable to parse script element attributes", jsonException);
+				"Unable to parse script element attributes JSON: " +
+					scriptElementAttributesJSON,
+				jsonException);
 		}
 
 		return stringBuilder.toString();
