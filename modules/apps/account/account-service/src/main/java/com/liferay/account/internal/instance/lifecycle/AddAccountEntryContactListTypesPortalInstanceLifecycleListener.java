@@ -27,16 +27,16 @@ public class AddAccountEntryContactListTypesPortalInstanceLifecycleListener
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
-		for (Map.Entry<String, String[]> entry :
-				_accountEntryContactListTypes.entrySet()) {
+		for (Map.Entry<String, String[]> entry : _listTypeNamesMap.entrySet()) {
+			for (String name : entry.getValue()) {
+				if (_hasListType(
+						company.getCompanyId(), name, entry.getKey())) {
 
-			for (String value : entry.getValue()) {
-				if (!_hasListType(
-						company.getCompanyId(), value, entry.getKey())) {
-
-					_listTypeLocalService.addListType(
-						company.getCompanyId(), value, entry.getKey());
+					continue;
 				}
+
+				_listTypeLocalService.addListType(
+					company.getCompanyId(), name, entry.getKey());
 			}
 		}
 	}
@@ -52,7 +52,7 @@ public class AddAccountEntryContactListTypesPortalInstanceLifecycleListener
 		return false;
 	}
 
-	private final Map<String, String[]> _accountEntryContactListTypes =
+	private final Map<String, String[]> _listTypeNamesMap =
 		HashMapBuilder.put(
 			AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS,
 			new String[] {
