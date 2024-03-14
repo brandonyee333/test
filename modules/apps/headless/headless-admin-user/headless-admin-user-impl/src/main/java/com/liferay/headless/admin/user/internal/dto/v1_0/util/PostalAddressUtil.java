@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -29,15 +30,8 @@ public class PostalAddressUtil {
 	public static long[] getAccountEntryContactAddressListTypeIds(
 		long companyId, ListTypeLocalService listTypeLocalService) {
 
-		String[] names = {
-			AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS_TYPE_BILLING,
-			AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS_TYPE_OTHER,
-			AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS_TYPE_P_O_BOX,
-			AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS_TYPE_SHIPPING
-		};
-
 		return TransformUtil.transformToLongArray(
-			ListUtil.fromArray(names),
+			_names,
 			name -> {
 				ListType listType = listTypeLocalService.getListType(
 					companyId, name,
@@ -109,5 +103,11 @@ public class PostalAddressUtil {
 			}
 		};
 	}
+
+	private static final List<String> _names = ListUtil.fromArray(
+		AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS_TYPE_BILLING,
+		AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS_TYPE_OTHER,
+		AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS_TYPE_P_O_BOX,
+		AccountListTypeConstants.ACCOUNT_ENTRY_CONTACT_ADDRESS_TYPE_SHIPPING);
 
 }
