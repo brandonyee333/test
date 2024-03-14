@@ -174,16 +174,15 @@ public class AuthorizeRestController extends BaseRestController {
 	private TaxRate _createTaxRate(String name, BigDecimal taxPercentage)
 		throws Exception {
 
-		TaxRateCreateParams params = TaxRateCreateParams.builder(
-		).setDisplayName(
-			name
-		).setPercentage(
-			taxPercentage
-		).setInclusive(
-			true
-		).build();
-
-		return TaxRate.create(params);
+		return TaxRate.create(
+			TaxRateCreateParams.builder(
+			).setDisplayName(
+				name
+			).setPercentage(
+				taxPercentage
+			).setInclusive(
+				true
+			).build());
 	}
 
 	private List<SessionCreateParams.LineItem> _getLineItems(
