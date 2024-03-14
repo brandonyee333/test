@@ -1,0 +1,2793 @@
+{
+    "configuration": {
+        "className": "com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition",
+        "parameters": {
+            "containsHeaders": "true",
+            "createStrategy": "UPSERT",
+            "importStrategy": "ON_ERROR_FAIL",
+            "taskItemDelegateName": "DEFAULT",
+            "updateStrategy": "UPDATE"
+        }
+    },
+    "items": [
+        {
+            "enableComments": false,
+            "objectRelationships": [
+                {
+                    "objectDefinitionSystem2": false,
+                    "objectField": {
+                        "relationshipType": "oneToMany",
+                        "indexed": true,
+                        "localized": false,
+                        "objectFieldSettings": [
+                            {
+                                "name": "objectDefinition1ShortName",
+                                "value": "DistributorApplication"
+                            },
+                            {
+                                "name": "objectRelationshipERCObjectFieldName",
+                                "value": "r_applicationToEvaluations_c_distributorApplicationERC"
+                            }
+                        ],
+                        "readOnly": "false",
+                        "DBType": "Long",
+                        "label": {
+                            "en_US": "Application to Evaluations"
+                        },
+                        "type": "Long",
+                        "required": false,
+                        "externalReferenceCode": "72f40fc2-86cf-4cd4-d1c0-40df59836749",
+                        "indexedAsKeyword": false,
+                        "system": false,
+                        "indexedLanguageId": "",
+                        "unique": false,
+                        "name": "r_applicationToEvaluations_c_distributorApplicationId",
+                        "state": false,
+                        "businessType": "Relationship",
+                        "readOnlyConditionExpression": ""
+                    },
+                    "parameterObjectFieldName": "",
+                    "parameterObjectFieldId": 0,
+                    "label": {
+                        "en_US": "Application to Evaluations"
+                    },
+                    "reverse": false,
+                    "type": "oneToMany",
+                    "externalReferenceCode": "6f6bb119-8515-7eec-e85a-df0d39c92cfa",
+                    "objectDefinitionModifiable2": true,
+                    "system": false,
+                    "name": "applicationToEvaluations",
+                    "deletionType": "prevent",
+                    "objectDefinitionExternalReferenceCode1": "C_DISTRIBUTOR_APPLICATION",
+                    "objectDefinitionExternalReferenceCode2": "C_APPLICATION_EVALUATION",
+                    "objectDefinitionName2": "ApplicationEvaluation"
+                }
+            ],
+            "objectFolderExternalReferenceCode": "default",
+            "enableCategorization": true,
+            "accountEntryRestrictedObjectFieldName": "",
+            "objectActions": [
+                {
+                    "conditionExpression": "",
+                    "objectActionExecutorKey": "notification",
+                    "errorMessage": {},
+                    "active": true,
+                    "description": "On After Add, send notifications to administrative users.",
+                    "label": {
+                        "en_US": "Application Submitted"
+                    },
+                    "externalReferenceCode": "2f514a57-50ea-382d-0757-7080f7683bd2",
+                    "system": false,
+                    "objectActionTriggerKey": "onAfterAdd",
+                    "name": "applicationSubmitted",
+                    "parameters": {
+                        "notificationTemplateExternalReferenceCode": "4095921c-1adf-59a0-4768-b61844945079",
+                        "type": "userNotification",
+                        "notificationTemplateId": 33736
+                    },
+                    "status": {
+                        "label_i18n": "Never Ran",
+                        "code": 0,
+                        "label": "never-ran"
+                    }
+                },
+                {
+                    "conditionExpression": "",
+                    "objectActionExecutorKey": "notification",
+                    "errorMessage": {},
+                    "active": true,
+                    "description": "On After Add, send notifications to applicants.",
+                    "label": {
+                        "en_US": "Application Received"
+                    },
+                    "externalReferenceCode": "e8473b5d-b865-7a21-3afb-948c2f5dbb5f",
+                    "system": false,
+                    "objectActionTriggerKey": "onAfterAdd",
+                    "name": "applicationReceived",
+                    "parameters": {
+                        "notificationTemplateExternalReferenceCode": "f05f496b-50bc-62e2-3207-4a903ec76d05",
+                        "type": "email",
+                        "notificationTemplateId": 33744
+                    },
+                    "status": {
+                        "label_i18n": "Never Ran",
+                        "code": 0,
+                        "label": "never-ran"
+                    }
+                },
+                {
+                    "conditionExpression": "applicationState == \"approved\" AND status == 0",
+                    "objectActionExecutorKey": "notification",
+                    "errorMessage": {},
+                    "active": true,
+                    "description": "On After Update, send notifications to applicants when state is \u2018Approved\u2019.",
+                    "label": {
+                        "en_US": "Application Approved"
+                    },
+                    "externalReferenceCode": "84ee66b8-9dfa-149e-8383-d0fecc9edd73",
+                    "system": false,
+                    "objectActionTriggerKey": "onAfterUpdate",
+                    "name": "applicationApproved",
+                    "parameters": {
+                        "notificationTemplateExternalReferenceCode": "265b3bfc-3871-4f5d-f078-deb0e6adc926",
+                        "type": "email",
+                        "notificationTemplateId": 33753
+                    },
+                    "status": {
+                        "label_i18n": "Never Ran",
+                        "code": 0,
+                        "label": "never-ran"
+                    }
+                },
+                {
+                    "conditionExpression": "applicationState == \"denied\" AND status == 0",
+                    "objectActionExecutorKey": "notification",
+                    "errorMessage": {},
+                    "active": true,
+                    "description": "On After Update, send notifications to applicants when state is \u2018Denied\u2019.",
+                    "label": {
+                        "en_US": "Application Denied"
+                    },
+                    "externalReferenceCode": "e03de462-d053-8733-0fec-70bde712ca88",
+                    "system": false,
+                    "objectActionTriggerKey": "onAfterUpdate",
+                    "name": "applicationDenied",
+                    "parameters": {
+                        "notificationTemplateExternalReferenceCode": "ca0c0232-8496-618f-9709-f7f5cdc671f1",
+                        "type": "email",
+                        "notificationTemplateId": 33762
+                    },
+                    "status": {
+                        "label_i18n": "Never Ran",
+                        "code": 0,
+                        "label": "never-ran"
+                    }
+                },
+                {
+                    "conditionExpression": "",
+                    "objectActionExecutorKey": "function#clarity-workflow-spring-boot-object-action-account",
+                    "errorMessage": {
+                        "en_US": "Failed to create the business account."
+                    },
+                    "active": true,
+                    "description": "Standalone, create a business account for an approved application.",
+                    "label": {
+                        "en_US": "Set Up Account"
+                    },
+                    "externalReferenceCode": "12e4f24f-d043-d3ae-5126-4ead5be27cf3",
+                    "system": false,
+                    "objectActionTriggerKey": "standalone",
+                    "name": "setUpAccount",
+                    "parameters": {},
+                    "status": {
+                        "label_i18n": "Never Ran",
+                        "code": 0,
+                        "label": "never-ran"
+                    }
+                }
+            ],
+            "enableLocalization": false,
+            "accountEntryRestricted": false,
+            "externalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+            "objectFields": [
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Author"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "7d2b4637-f646-57bc-e8b0-f82e400b4efe",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "creator",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "Date",
+                    "label": {
+                        "en_US": "Create Date"
+                    },
+                    "type": "Date",
+                    "required": false,
+                    "externalReferenceCode": "2efc12f0-62fa-65fb-2e4a-9e6984d01eda",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "createDate",
+                    "state": false,
+                    "businessType": "Date",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "External Reference Code"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "e114a891-15ca-5a38-293d-287f8978a1d3",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "externalReferenceCode",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "Long",
+                    "label": {
+                        "en_US": "ID"
+                    },
+                    "type": "Long",
+                    "required": false,
+                    "externalReferenceCode": "84104f13-acae-8a40-dc85-64b981377c14",
+                    "indexedAsKeyword": true,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "id",
+                    "state": false,
+                    "businessType": "LongInteger",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "Date",
+                    "label": {
+                        "en_US": "Modified Date"
+                    },
+                    "type": "Date",
+                    "required": false,
+                    "externalReferenceCode": "3ab5f491-74f5-8f8a-7af9-abadf62789f6",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "modifiedDate",
+                    "state": false,
+                    "businessType": "Date",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Status"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "6f2da2e0-e76d-8ed1-4843-c2e9cfa8f2cb",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "status",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Applicant Name"
+                    },
+                    "type": "String",
+                    "required": true,
+                    "externalReferenceCode": "e1bdf719-e7c3-a8eb-b45a-679e5b74be3b",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "applicantName",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "uniqueValues",
+                            "value": true
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Applicant Email"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "47b99d5f-91ec-89c9-4047-b40a9a553b1d",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": true,
+                    "name": "applicantEmail",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Primary Contact Name"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "4453cdfe-61c5-283b-f2c1-8b7d0725ff00",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "primaryContactName",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Primary Contact Title"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "230f2ba3-e07c-b716-adfe-93beefb3258a",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "primaryContactTitle",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "uniqueValues",
+                            "value": true
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Primary Contact Email"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "474656c9-ad84-ec31-87a8-80f80b629e58",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": true,
+                    "name": "primaryContactEmail",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "uniqueValues",
+                            "value": true
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Primary Contact Phone Number"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "5ad77890-2e59-35f5-8c84-e3b632cd0dd1",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": true,
+                    "name": "primaryContactPhoneNumber",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "showCounter",
+                            "value": false
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "Clob",
+                    "label": {
+                        "en_US": "Comments"
+                    },
+                    "type": "Clob",
+                    "required": false,
+                    "externalReferenceCode": "61f0f02b-775d-d841-dfea-61a0d516fbd8",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "comments",
+                    "state": false,
+                    "businessType": "LongText",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Name"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "4fcaeb8c-3a4e-d68a-5aa9-13f79e28c7f1",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessName",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Website"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "761b63e0-c682-cb29-1fa1-03dbcdfc47fb",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessWebsite",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "Date",
+                    "label": {
+                        "en_US": "Business Established Date"
+                    },
+                    "type": "Date",
+                    "required": false,
+                    "externalReferenceCode": "fa37495e-d96c-ef08-f994-2f294845a37e",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "businessEstablishedDate",
+                    "state": false,
+                    "businessType": "Date",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "Integer",
+                    "label": {
+                        "en_US": "Number of Employees"
+                    },
+                    "type": "Integer",
+                    "required": false,
+                    "externalReferenceCode": "ca866010-11d1-9746-f41c-0d7aae4df8a4",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "businessEmployeeNumber",
+                    "state": false,
+                    "businessType": "Integer",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Annual Revenue (in USD)"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "0fdc9d61-5e7d-9605-97bc-e5d28a87ccbd",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessAnnualRevenue",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "showCounter",
+                            "value": false
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "Clob",
+                    "label": {
+                        "en_US": "Other Brands Offered"
+                    },
+                    "type": "Clob",
+                    "required": false,
+                    "externalReferenceCode": "32b87935-43d1-05e6-2cd8-a0329561b6bb",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessOtherBrandsOffered",
+                    "state": false,
+                    "businessType": "LongText",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Phone Number"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "788ff32f-2c16-49b6-f0a4-70ad9525ac9c",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessPhoneNumber",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Address Line One"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "0f84fbf5-10f2-cf17-ae3a-5997324028be",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessAddressLineOne",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Address Line Two"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "b720f065-1b1f-0e92-0ee1-894d31a3a316",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessAddressLineTwo",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business City"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "7adbd2a1-c2c9-3ae4-7805-bb25cffaeda3",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessCity",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business State, Province, Region"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "232c1922-01d4-e77a-ec86-9b72eaf0618b",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessStateProvinceRegion",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business ZIP, Postal Code"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "c3529e16-a54f-b5c6-d84a-829ed5cdd821",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessZIPPostalCode",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Country"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "02b481fb-5a0c-e352-3166-3535f2841a67",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessCountry",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "uniqueValues",
+                            "value": true
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business License Number"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "1980893e-a034-a4f7-62ec-0876a3af0a6c",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": true,
+                    "name": "businessLicenseNumber",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "uniqueValues",
+                            "value": true
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Resale Number"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "926708b8-2463-a964-9928-ad238d6a20cc",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": true,
+                    "name": "businessResaleNumber",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "uniqueValues",
+                            "value": true
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Tax ID Number"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "19853289-be70-8377-b7f6-e321ec3572a9",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": true,
+                    "name": "businessTaxIDNumber",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "acceptedFileExtensions",
+                            "value": "jpeg, jpg, pdf, png"
+                        },
+                        {
+                            "name": "maximumFileSize",
+                            "value": 100
+                        },
+                        {
+                            "name": "fileSource",
+                            "value": "userComputer"
+                        },
+                        {
+                            "name": "showFilesInDocumentsAndMedia",
+                            "value": true
+                        },
+                        {
+                            "name": "storageDLFolderPath",
+                            "value": "/DistributorApplication"
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "Long",
+                    "label": {
+                        "en_US": "Business License"
+                    },
+                    "type": "Long",
+                    "required": false,
+                    "externalReferenceCode": "a7c8b085-cf1d-87b2-61af-c0cfb5e85796",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessLicense",
+                    "state": false,
+                    "businessType": "Attachment",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "acceptedFileExtensions",
+                            "value": "jpeg, jpg, pdf, png"
+                        },
+                        {
+                            "name": "maximumFileSize",
+                            "value": 100
+                        },
+                        {
+                            "name": "fileSource",
+                            "value": "userComputer"
+                        },
+                        {
+                            "name": "showFilesInDocumentsAndMedia",
+                            "value": true
+                        },
+                        {
+                            "name": "storageDLFolderPath",
+                            "value": "/DistributorApplication"
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "Long",
+                    "label": {
+                        "en_US": "Proof of Insurance"
+                    },
+                    "type": "Long",
+                    "required": false,
+                    "externalReferenceCode": "b64f9212-fc82-9065-ea15-ebe5a0500190",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessProofOfInsurance",
+                    "state": false,
+                    "businessType": "Attachment",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank Name"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "a3ebb708-d369-02c0-9baf-f041f9657b9c",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankName",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank Account Number"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "f94523ad-b613-70d5-6048-73ca5ccc826c",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankAccountNumber",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank Phone Number"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "252a0d43-11eb-b9e0-42e4-97e1b2dce029",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankPhoneNumber",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank Address Line One"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "7acb3fd4-3e8d-81a2-2ca3-ce58a4b8ebce",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankAddressLineOne",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank Address Line Two"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "e3f4621d-b1cf-7e72-c90c-64cd49fa7c22",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankAddressLineTwo",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank City"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "3cb5060d-ed6d-1510-0899-8ac17399b8f4",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankCity",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank State, Province, Region"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "8fcd146b-ef0b-a135-1e35-c7b0570a8f1a",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankStateProvinceRegion",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank ZIP, Postal Code"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "730e6a54-65bd-5672-0455-9489d4c95302",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankZIPPostalCode",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Bank Country"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "c8268d73-9dbb-1d11-0e6f-8437c10eca6c",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "bankCountry",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Reference Supplier Name"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "583346a1-7bbf-d382-0ae9-a49150010a87",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "referenceSupplierName",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Reference Phone Number"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "8e17948a-dbc7-988c-3760-61bc790eaeb5",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "referencePhoneNumber",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Reference Address Line One"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "ea06823c-d47c-3d05-850d-1143ed6269ad",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "referenceOneAddressLineOne",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Reference Address Line Two"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "1d0142cb-3f4c-f90a-c181-0b7b7feb86e2",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "referenceAddressLineTwo",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Reference City"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "b61d87a1-c078-a763-9cd8-e15bbba4013d",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "referenceCity",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Reference State, Province, Region"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "3525699a-3241-cee6-417e-d7262729fd28",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "referenceStateProvinceRegion",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Reference ZIP, Postal Code"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "73e4466d-7ebc-f26d-1701-a77db64cc152",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "referenceZIPPostalCode",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Reference Country"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "b8d3263b-55e5-bd82-19cf-e92af2bd2353",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "referenceCountry",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_BUSINESS_TYPES",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Type"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "7013abbc-de6b-5fed-710d-c6db6787925b",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessType",
+                    "state": false,
+                    "businessType": "Picklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_DISTRIBUTION_REGIONS",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Distribution Regions"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "d0f22ce3-7452-f0c9-ef2d-41fed234273a",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "distributionRegions",
+                    "state": false,
+                    "businessType": "MultiselectPicklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_DISTRIBUTION_CHANNELS",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Distribution Channels"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "d600649d-b754-cf66-759c-44087cc7b5b5",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessDistributionChannels",
+                    "state": false,
+                    "businessType": "MultiselectPicklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_ORDER_TYPES",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Order Types of Interest"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "442df8d9-2c6f-9dbb-95b2-6ff7638b2e40",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "orderTypesOfInterest",
+                    "state": false,
+                    "businessType": "MultiselectPicklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_PRODUCT_TYPES",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Products of Interest"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "11fbbe56-e139-cc1e-0ce4-2afdfe39ad30",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "productsOfInterest",
+                    "state": false,
+                    "businessType": "MultiselectPicklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_ANNUAL_PURCHASE_VOLUMES",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Estimated Annual Purchase Volume"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "22c892cc-b973-bb38-c9b7-c2a4ca7408dd",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "estimatedAnnualPurchaseVolume",
+                    "state": false,
+                    "businessType": "Picklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_PRODUCT_LABELS",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Product Labeling"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "0f67f198-1d58-66ed-0ce8-138b6a26f889",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "productLabeling",
+                    "state": false,
+                    "businessType": "Picklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_APPLICATION_STATES",
+                    "indexed": true,
+                    "defaultValue": "open",
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "stateFlow",
+                            "value": {
+                                "objectStates": [
+                                    {
+                                        "objectStateTransitions": [
+                                            {
+                                                "key": "underReview"
+                                            },
+                                            {
+                                                "key": "withdrawn"
+                                            }
+                                        ],
+                                        "key": "open"
+                                    },
+                                    {
+                                        "objectStateTransitions": [
+                                            {
+                                                "key": "approved"
+                                            },
+                                            {
+                                                "key": "denied"
+                                            },
+                                            {
+                                                "key": "withdrawn"
+                                            },
+                                            {
+                                                "key": "onHold"
+                                            }
+                                        ],
+                                        "key": "underReview"
+                                    },
+                                    {
+                                        "objectStateTransitions": [
+                                            {
+                                                "key": "underReview"
+                                            }
+                                        ],
+                                        "key": "approved"
+                                    },
+                                    {
+                                        "objectStateTransitions": [
+                                            {
+                                                "key": "underReview"
+                                            }
+                                        ],
+                                        "key": "denied"
+                                    },
+                                    {
+                                        "objectStateTransitions": [
+                                            {
+                                                "key": "open"
+                                            }
+                                        ],
+                                        "key": "withdrawn"
+                                    },
+                                    {
+                                        "objectStateTransitions": [
+                                            {
+                                                "key": "open"
+                                            },
+                                            {
+                                                "key": "underReview"
+                                            }
+                                        ],
+                                        "key": "onHold"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "defaultValueType",
+                            "value": "inputAsValue"
+                        },
+                        {
+                            "name": "defaultValue",
+                            "value": "open"
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Application State"
+                    },
+                    "type": "String",
+                    "required": true,
+                    "externalReferenceCode": "1d14d2e3-b5a0-12c4-1608-dca5052db8a8",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "applicationState",
+                    "state": true,
+                    "businessType": "Picklist",
+                    "readOnlyConditionExpression": ""
+                }
+            ],
+            "restContextPath": "/o/c/distributorapplications",
+            "scope": "company",
+            "portlet": true,
+            "modifiable": true,
+            "parameterRequired": false,
+            "enableObjectEntryHistory": false,
+            "titleObjectFieldName": "businessName",
+            "objectValidationRules": [
+                {
+                    "engineLabel": "Expression Builder",
+                    "active": true,
+                    "outputType": "fullValidation",
+                    "script": "isEmailAddress(applicantEmail) OR applicantEmail == \"\"",
+                    "externalReferenceCode": "5cc89425-5514-d85b-d570-58f703da189a",
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "system": false,
+                    "engine": "ddm",
+                    "objectValidationRuleSettings": [],
+                    "name": {
+                        "en_US": "Email, applicantEmail"
+                    },
+                    "errorLabel": {
+                        "en_US": "Please enter a valid applicant email address."
+                    }
+                },
+                {
+                    "engineLabel": "Expression Builder",
+                    "active": true,
+                    "outputType": "fullValidation",
+                    "script": "isEmailAddress(primaryContactEmail) OR primaryContactEmail == \"\"",
+                    "externalReferenceCode": "f884f562-9e05-d956-c31e-66d90e824485",
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "system": false,
+                    "engine": "ddm",
+                    "objectValidationRuleSettings": [],
+                    "name": {
+                        "en_US": "Email, primaryContactEmail"
+                    },
+                    "errorLabel": {
+                        "en_US": "Please enter a valid primary contact email address."
+                    }
+                },
+                {
+                    "engineLabel": "Expression Builder",
+                    "active": true,
+                    "outputType": "fullValidation",
+                    "script": "match(primaryContactPhoneNumber, \"^(\\+\\d{1,3} ?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$\") OR primaryContactPhoneNumber == \"\"",
+                    "externalReferenceCode": "9e60fdd7-045e-9fec-6c7f-d84fa5f42201",
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "system": false,
+                    "engine": "ddm",
+                    "objectValidationRuleSettings": [],
+                    "name": {
+                        "en_US": "Phone Number, primaryContactPhoneNumber"
+                    },
+                    "errorLabel": {
+                        "en_US": "Please enter a valid phone number for the primary contact."
+                    }
+                },
+                {
+                    "engineLabel": "Expression Builder",
+                    "active": true,
+                    "outputType": "fullValidation",
+                    "script": "match(businessPhoneNumber, \"^(\\+\\d{1,3} ?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$\") OR businessPhoneNumber == \"\"",
+                    "externalReferenceCode": "c7f1378c-9b84-c493-4ab4-08d5ec17a14f",
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "system": false,
+                    "engine": "ddm",
+                    "objectValidationRuleSettings": [],
+                    "name": {
+                        "en_US": "Phone Number, businessPhoneNumber"
+                    },
+                    "errorLabel": {
+                        "en_US": "Please enter a valid phone number for the business."
+                    }
+                },
+                {
+                    "engineLabel": "Expression Builder",
+                    "active": true,
+                    "outputType": "fullValidation",
+                    "script": "match(bankPhoneNumber, \"^(\\+\\d{1,3} ?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$\") OR bankPhoneNumber == \"\"",
+                    "externalReferenceCode": "638d89d4-808f-19fb-6bbc-6349c625e185",
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "system": false,
+                    "engine": "ddm",
+                    "objectValidationRuleSettings": [],
+                    "name": {
+                        "en_US": "Phone Number, bankPhoneNumber"
+                    },
+                    "errorLabel": {
+                        "en_US": "Please enter a valid phone number for the bank."
+                    }
+                },
+                {
+                    "engineLabel": "Expression Builder",
+                    "active": true,
+                    "outputType": "fullValidation",
+                    "script": "match(referencePhoneNumber, \"^(\\+\\d{1,3} ?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$\") OR referencePhoneNumber == \"\"",
+                    "externalReferenceCode": "764d5966-3a97-ff95-9a8b-4a2432ec6495",
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "system": false,
+                    "engine": "ddm",
+                    "objectValidationRuleSettings": [],
+                    "name": {
+                        "en_US": "Phone Number, referencePhoneNumber"
+                    },
+                    "errorLabel": {
+                        "en_US": "Please enter a valid phone number for the reference."
+                    }
+                },
+                {
+                    "engineLabel": "Expression Builder",
+                    "active": true,
+                    "outputType": "fullValidation",
+                    "script": "isURL(businessWebsite) OR businessWebsite == \"\"",
+                    "externalReferenceCode": "e463258a-a24c-561b-3531-b4160b34c749",
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "system": false,
+                    "engine": "ddm",
+                    "objectValidationRuleSettings": [],
+                    "name": {
+                        "en_US": "URL, businessWebsite"
+                    },
+                    "errorLabel": {
+                        "en_US": "Please enter a valid website URL."
+                    }
+                }
+            ],
+            "active": true,
+            "defaultLanguageId": "en_US",
+            "label": {
+                "en_US": "Distributor Application"
+            },
+            "panelCategoryKey": "control_panel.object",
+            "pluralLabel": {
+                "en_US": "Distributor Applications"
+            },
+            "objectLayouts": [
+                {
+                    "objectLayoutTabs": [
+                        {
+                            "name": {
+                                "en_US": "Application"
+                            },
+                            "objectLayoutBoxes": [
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "applicantName",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "applicantEmail",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "productsOfInterest",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "distributionRegions",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "orderTypesOfInterest",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "productLabeling",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "estimatedAnnualPurchaseVolume",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "comments",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "applicationState",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "General Details"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                },
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "primaryContactName",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "primaryContactTitle",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "primaryContactEmail",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "primaryContactPhoneNumber",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Contact Information"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                },
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessName",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "businessType",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessWebsite",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "businessPhoneNumber",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessEstablishedDate",
+                                                    "size": 4,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "businessEmployeeNumber",
+                                                    "size": 4,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "businessAnnualRevenue",
+                                                    "size": 4,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessDistributionChannels",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessOtherBrandsOffered",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Business Details "
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                },
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessAddressLineOne",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessAddressLineTwo",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessCity",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "businessZIPPostalCode",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessStateProvinceRegion",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "businessCountry",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Business Address"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                },
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessLicenseNumber",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "businessResaleNumber",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessTaxIDNumber",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Additional Business Information"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                },
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "businessLicense",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "businessProofOfInsurance",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Attachments"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                }
+                            ],
+                            "priority": 0
+                        },
+                        {
+                            "name": {
+                                "en_US": "References"
+                            },
+                            "objectLayoutBoxes": [
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "bankName",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "bankPhoneNumber",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "bankAccountNumber",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "bankAddressLineOne",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "bankAddressLineTwo",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "bankCity",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "bankZIPPostalCode",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "bankStateProvinceRegion",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "bankCountry",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Bank Details"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                },
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "referenceSupplierName",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "referencePhoneNumber",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "referenceOneAddressLineOne",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "referenceAddressLineTwo",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "referenceCity",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "referenceZIPPostalCode",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "referenceStateProvinceRegion",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                },
+                                                {
+                                                    "objectFieldName": "referenceCountry",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Credit Reference Details"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                }
+                            ],
+                            "priority": 0
+                        },
+                        {
+                            "id": 34982,
+                            "name": {
+                                "en_US": "Evaluation Notes"
+                            },
+                            "objectLayoutBoxes": [],
+                            "objectRelationshipExternalReferenceCode": "6f6bb119-8515-7eec-e85a-df0d39c92cfa",
+                            "objectRelationshipId": 33248,
+                            "priority": 0
+                        }
+                    ],
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "name": {
+                        "en_US": "Application Layout"
+                    },
+                    "defaultObjectLayout": true
+                }
+            ],
+            "system": false,
+            "objectViews": [
+                {
+                    "objectDefinitionExternalReferenceCode": "C_DISTRIBUTOR_APPLICATION",
+                    "name": {
+                        "en_US": "Application View"
+                    },
+                    "objectViewFilterColumns": [],
+                    "objectViewSortColumns": [],
+                    "defaultObjectView": true,
+                    "objectViewColumns": [
+                        {
+                            "objectFieldName": "id",
+                            "label": {
+                                "en_US": "ID"
+                            },
+                            "priority": 0
+                        },
+                        {
+                            "objectFieldName": "applicantName",
+                            "label": {
+                                "en_US": "Applicant Name"
+                            },
+                            "priority": 1
+                        },
+                        {
+                            "objectFieldName": "businessName",
+                            "label": {
+                                "en_US": "Business Name"
+                            },
+                            "priority": 2
+                        },
+                        {
+                            "objectFieldName": "createDate",
+                            "label": {
+                                "en_US": "Create Date"
+                            },
+                            "priority": 3
+                        },
+                        {
+                            "objectFieldName": "applicationState",
+                            "label": {
+                                "en_US": "Application State"
+                            },
+                            "priority": 4
+                        },
+                        {
+                            "objectFieldName": "status",
+                            "label": {
+                                "en_US": "Status"
+                            },
+                            "priority": 5
+                        }
+                    ]
+                }
+            ],
+            "enableObjectEntryDraft": false,
+            "name": "DistributorApplication",
+            "actions": {
+                "permissions": {},
+                "get": {},
+                "update": {},
+                "delete": {}
+            },
+            "status": {
+                "label_i18n": "Approved",
+                "code": 0,
+                "label": "approved"
+            }
+        },
+        {
+            "enableComments": true,
+            "objectRelationships": [],
+            "objectFolderExternalReferenceCode": "default",
+            "enableCategorization": true,
+            "accountEntryRestrictedObjectFieldName": "",
+            "objectActions": [],
+            "enableLocalization": false,
+            "accountEntryRestricted": false,
+            "externalReferenceCode": "C_APPLICATION_EVALUATION",
+            "objectFields": [
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Author"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "dbbd6b2e-7b11-8b7e-ccdc-6baea287a5d9",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "creator",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "Date",
+                    "label": {
+                        "en_US": "Create Date"
+                    },
+                    "type": "Date",
+                    "required": false,
+                    "externalReferenceCode": "b4e4af9b-eac4-22d0-180c-4960806b6320",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "createDate",
+                    "state": false,
+                    "businessType": "Date",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "External Reference Code"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "ab0fd4c4-c939-8dc8-c353-debcd933d2e3",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "externalReferenceCode",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "Long",
+                    "label": {
+                        "en_US": "ID"
+                    },
+                    "type": "Long",
+                    "required": false,
+                    "externalReferenceCode": "d54a730b-b999-eda1-842e-0755a598f6ee",
+                    "indexedAsKeyword": true,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "id",
+                    "state": false,
+                    "businessType": "LongInteger",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "Date",
+                    "label": {
+                        "en_US": "Modified Date"
+                    },
+                    "type": "Date",
+                    "required": false,
+                    "externalReferenceCode": "130d3a4b-1708-7782-cf32-5578dfc84bb3",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "modifiedDate",
+                    "state": false,
+                    "businessType": "Date",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": false,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "true",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Status"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "86cdc449-c8c0-1eef-9449-2fbbea1484e0",
+                    "indexedAsKeyword": false,
+                    "system": true,
+                    "indexedLanguageId": "",
+                    "unique": false,
+                    "name": "status",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_ASSESSMENT_SCORES",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Assessment Score"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "FIELD_ASSESSMENT_SCORE",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "assessmentScore",
+                    "state": false,
+                    "businessType": "Picklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [
+                        {
+                            "name": "acceptedFileExtensions",
+                            "value": "jpeg, jpg, pdf, png"
+                        },
+                        {
+                            "name": "maximumFileSize",
+                            "value": 100
+                        },
+                        {
+                            "name": "fileSource",
+                            "value": "userComputer"
+                        },
+                        {
+                            "name": "showFilesInDocumentsAndMedia",
+                            "value": false
+                        }
+                    ],
+                    "readOnly": "false",
+                    "DBType": "Long",
+                    "label": {
+                        "en_US": "Attachment"
+                    },
+                    "type": "Long",
+                    "required": false,
+                    "externalReferenceCode": "FIELD_ATTACHMENT",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "attachment",
+                    "state": false,
+                    "businessType": "Attachment",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Business Name"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "FIELD_BUSINESS_NAME",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "businessName",
+                    "state": false,
+                    "businessType": "Text",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_DECISIONS",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Decision"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "FIELD_DECISION",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "decision",
+                    "state": false,
+                    "businessType": "Picklist",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "Clob",
+                    "label": {
+                        "en_US": "Interview Notes"
+                    },
+                    "type": "Clob",
+                    "required": false,
+                    "externalReferenceCode": "FIELD_INTERVIEW_NOTES",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "interviewNotes",
+                    "state": false,
+                    "businessType": "RichText",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "Clob",
+                    "label": {
+                        "en_US": "Recommendation Comments"
+                    },
+                    "type": "Clob",
+                    "required": false,
+                    "externalReferenceCode": "FIELD_RECOMMENDATION_COMMENTS",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "recommendationComments",
+                    "state": false,
+                    "businessType": "RichText",
+                    "readOnlyConditionExpression": ""
+                },
+                {
+                    "listTypeDefinitionExternalReferenceCode": "LIST_RECOMMENDATIONS",
+                    "indexed": true,
+                    "localized": false,
+                    "objectFieldSettings": [],
+                    "readOnly": "false",
+                    "DBType": "String",
+                    "label": {
+                        "en_US": "Recommendations"
+                    },
+                    "type": "String",
+                    "required": false,
+                    "externalReferenceCode": "FIELD_RECOMMENDATIONS",
+                    "indexedAsKeyword": false,
+                    "system": false,
+                    "indexedLanguageId": "en_US",
+                    "unique": false,
+                    "name": "recommendations",
+                    "state": false,
+                    "businessType": "MultiselectPicklist",
+                    "readOnlyConditionExpression": ""
+                }
+            ],
+            "restContextPath": "/o/c/applicationevaluations",
+            "scope": "company",
+            "portlet": false,
+            "modifiable": true,
+            "parameterRequired": false,
+            "enableObjectEntryHistory": false,
+            "titleObjectFieldName": "creator",
+            "objectValidationRules": [],
+            "active": true,
+            "defaultLanguageId": "en_US",
+            "label": {
+                "en_US": "Application Evaluation"
+            },
+            "panelCategoryKey": "control_panel.object",
+            "pluralLabel": {
+                "en_US": "Application Evaluations"
+            },
+            "objectLayouts": [
+                {
+                    "objectLayoutTabs": [
+                        {
+                            "name": {
+                                "en_US": "Review"
+                            },
+                            "objectLayoutBoxes": [
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "r_applicationToEvaluations_c_distributorApplicationId",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "interviewNotes",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "attachment",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "General Details"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                },
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "recommendations",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "recommendationComments",
+                                                    "size": 12,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        },
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "assessmentScore",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Assessment"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                },
+                                {
+                                    "objectLayoutRows": [
+                                        {
+                                            "objectLayoutColumns": [
+                                                {
+                                                    "objectFieldName": "decision",
+                                                    "size": 6,
+                                                    "priority": 0
+                                                }
+                                            ],
+                                            "priority": 0
+                                        }
+                                    ],
+                                    "collapsable": true,
+                                    "name": {
+                                        "en_US": "Resolution"
+                                    },
+                                    "priority": 0,
+                                    "type": "regular"
+                                }
+                            ],
+                            "priority": 0
+                        }
+                    ],
+                    "objectDefinitionExternalReferenceCode": "C_APPLICATION_EVALUATION",
+                    "name": {
+                        "en_US": "Evaluation Layout"
+                    },
+                    "defaultObjectLayout": true
+                }
+            ],
+            "system": false,
+            "objectViews": [
+                {
+                    "objectDefinitionExternalReferenceCode": "C_APPLICATION_EVALUATION",
+                    "name": {
+                        "en_US": "Evaluation View"
+                    },
+                    "objectViewFilterColumns": [],
+                    "objectViewSortColumns": [],
+                    "defaultObjectView": true,
+                    "objectViewColumns": [
+                        {
+                            "objectFieldName": "id",
+                            "label": {
+                                "en_US": "ID"
+                            },
+                            "priority": 0
+                        },
+                        {
+                            "objectFieldName": "r_applicationToEvaluations_c_distributorApplicationId",
+                            "label": {
+                                "en_US": "Distributor Application"
+                            },
+                            "priority": 1
+                        },
+                        {
+                            "objectFieldName": "creator",
+                            "label": {
+                                "en_US": "Author"
+                            },
+                            "priority": 2
+                        },
+                        {
+                            "objectFieldName": "assessmentScore",
+                            "label": {
+                                "en_US": "Assessment Score"
+                            },
+                            "priority": 3
+                        },
+                        {
+                            "objectFieldName": "decision",
+                            "label": {
+                                "en_US": "Decision"
+                            },
+                            "priority": 4
+                        },
+                        {
+                            "objectFieldName": "createDate",
+                            "label": {
+                                "en_US": "Create Date"
+                            },
+                            "priority": 5
+                        },
+                        {
+                            "objectFieldName": "modifiedDate",
+                            "label": {
+                                "en_US": "Modified Date"
+                            },
+                            "priority": 6
+                        }
+                    ]
+                }
+            ],
+            "enableObjectEntryDraft": false,
+            "name": "ApplicationEvaluation",
+            "actions": {
+                "permissions": {},
+                "get": {},
+                "update": {},
+                "delete": {}
+            },
+            "status": {
+                "label_i18n": "Approved",
+                "code": 0,
+                "label": "approved"
+            }
+        }
+    ]
+}

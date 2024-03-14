@@ -1,0 +1,616 @@
+{
+    "configuration": {
+        "className": "com.liferay.headless.admin.list.type.dto.v1_0.ListTypeDefinition",
+        "parameters": {
+            "containsHeaders": "true",
+            "createStrategy": "UPSERT",
+            "importStrategy": "ON_ERROR_FAIL",
+            "taskItemDelegateName": "DEFAULT",
+            "updateStrategy": "UPDATE"
+        }
+    },
+    "items": [
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Annual Purchase Volumes"
+            },
+            "name": "Annual Purchase Volumes",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "$50,000 - $100,000 USD"
+                    },
+                    "name": "$50,000 - $100,000 USD",
+                    "type": "",
+                    "key": "firstTier",
+                    "externalReferenceCode": "VOLUME_FIRST_TIER"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "$200,000 - $500,000 USD"
+                    },
+                    "name": "$200,000 - $500,000 USD",
+                    "type": "",
+                    "key": "secondTier",
+                    "externalReferenceCode": "VOLUME_SECOND_TIER"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "$500,000 - $1M USD"
+                    },
+                    "name": "$500,000 - $1M USD",
+                    "type": "",
+                    "key": "thirdTier",
+                    "externalReferenceCode": "VOLUME_THIRD_TIER"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "$1M+ USD"
+                    },
+                    "name": "$1M+ USD",
+                    "type": "",
+                    "key": "fourthTier",
+                    "externalReferenceCode": "VOLUME_FOURTH_TIER"
+                }
+            ],
+            "externalReferenceCode": "LIST_ANNUAL_PURCHASE_VOLUMES"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Application States"
+            },
+            "name": "Application States",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Open"
+                    },
+                    "name": "Open",
+                    "type": "",
+                    "key": "open",
+                    "externalReferenceCode": "APPLICATION_STATE_OPEN"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Under Review"
+                    },
+                    "name": "Under Review",
+                    "type": "",
+                    "key": "underReview",
+                    "externalReferenceCode": "APPLICATION_STATE_UNDER_REVIEW"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Approved"
+                    },
+                    "name": "Approved",
+                    "type": "",
+                    "key": "approved",
+                    "externalReferenceCode": "APPLICATION_STATE_APPROVED"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Denied"
+                    },
+                    "name": "Denied",
+                    "type": "",
+                    "key": "denied",
+                    "externalReferenceCode": "APPLICATION_STATE_DENIED"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Withdrawn"
+                    },
+                    "name": "Withdrawn",
+                    "type": "",
+                    "key": "withdrawn",
+                    "externalReferenceCode": "APPLICATION_STATE_WITHDRAWN"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "On Hold"
+                    },
+                    "name": "On Hold",
+                    "type": "",
+                    "key": "onHold",
+                    "externalReferenceCode": "APPLICATION_STATE_ON_HOLD"
+                }
+            ],
+            "externalReferenceCode": "LIST_APPLICATION_STATES"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Assessment Scores"
+            },
+            "name": "Assessment Scores",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Excellent"
+                    },
+                    "name": "Excellent",
+                    "type": "",
+                    "key": "excellent",
+                    "externalReferenceCode": "SCORE_EXCELLENT"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Good"
+                    },
+                    "name": "Good",
+                    "type": "",
+                    "key": "good",
+                    "externalReferenceCode": "SCORE_GOOD"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Average"
+                    },
+                    "name": "Average",
+                    "type": "",
+                    "key": "average",
+                    "externalReferenceCode": "SCORE_AVERAGE"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Fair"
+                    },
+                    "name": "Fair",
+                    "type": "",
+                    "key": "fair",
+                    "externalReferenceCode": "SCORE_FAIR"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Poor"
+                    },
+                    "name": "Poor",
+                    "type": "",
+                    "key": "poor",
+                    "externalReferenceCode": "SCORE_POOR"
+                }
+            ],
+            "externalReferenceCode": "LIST_ASSESSMENT_SCORES"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Business Types"
+            },
+            "name": "Business Types",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Independent Business"
+                    },
+                    "name": "Independent Business",
+                    "type": "",
+                    "key": "independentBusiness",
+                    "externalReferenceCode": "BUSINESS_TYPE_INDEPENDENT_BUSINESS"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Franchise"
+                    },
+                    "name": "Franchise",
+                    "type": "",
+                    "key": "franchise",
+                    "externalReferenceCode": "BUSINESS_TYPE_FRANCHISE"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Other"
+                    },
+                    "name": "Other",
+                    "type": "",
+                    "key": "other",
+                    "externalReferenceCode": "BUSINESS_TYPE_OTHER"
+                }
+            ],
+            "externalReferenceCode": "LIST_BUSINESS_TYPES"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Decisions"
+            },
+            "name": "Decisions",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Approved"
+                    },
+                    "name": "Approved",
+                    "type": "",
+                    "key": "approved",
+                    "externalReferenceCode": "DECISION_APPROVED"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Approved with Conditions"
+                    },
+                    "name": "Approved with Conditions",
+                    "type": "",
+                    "key": "approvedWithConditions",
+                    "externalReferenceCode": "DECISION_APPROVED_WITH_CONDITIONS"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Rejected"
+                    },
+                    "name": "Rejected",
+                    "type": "",
+                    "key": "rejected",
+                    "externalReferenceCode": "DECISION_REJECTED"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Hold for Future Consideration"
+                    },
+                    "name": "Hold for Future Consideration",
+                    "type": "",
+                    "key": "holdForFutureConsideration",
+                    "externalReferenceCode": "DECISION_HOLD_FOR_FUTURE_CONSIDERATION"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Withdrawn"
+                    },
+                    "name": "Withdrawn",
+                    "type": "",
+                    "key": "withdrawn",
+                    "externalReferenceCode": "DECISION_WITHDRAWN"
+                }
+            ],
+            "externalReferenceCode": "LIST_DECISIONS"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Distribution Channels"
+            },
+            "name": "Distribution Channels",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Distribute to Other Retailers"
+                    },
+                    "name": "Distribute to Other Retailers",
+                    "type": "",
+                    "key": "otherRetailers",
+                    "externalReferenceCode": "CHANNEL_OTHER_RETAILERS"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Sell Through Own Retail"
+                    },
+                    "name": "Sell Through Own Retail",
+                    "type": "",
+                    "key": "ownRetail",
+                    "externalReferenceCode": "CHANNEL_OWN_RETAIL"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "E-Commerce"
+                    },
+                    "name": "E-Commerce",
+                    "type": "",
+                    "key": "eCommerce",
+                    "externalReferenceCode": "CHANNEL_E_COMMERCE"
+                }
+            ],
+            "externalReferenceCode": "LIST_DISTRIBUTION_CHANNELS"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Distribution Regions"
+            },
+            "name": "Distribution Regions",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Latin America"
+                    },
+                    "name": "Latin America",
+                    "type": "",
+                    "key": "latinAmerica",
+                    "externalReferenceCode": "REGION_LATIN_AMERICA"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Caribbean"
+                    },
+                    "name": "Caribbean",
+                    "type": "",
+                    "key": "caribbean",
+                    "externalReferenceCode": "REGION_CARIBBEAN"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Eastern Europe"
+                    },
+                    "name": "Eastern Europe",
+                    "type": "",
+                    "key": "easternEurope",
+                    "externalReferenceCode": "REGION_EASTERN_EUROPE"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Western Europe"
+                    },
+                    "name": "Western Europe",
+                    "type": "",
+                    "key": "westernEurope",
+                    "externalReferenceCode": "REGION_WESTERN_EUROPE"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Middle East"
+                    },
+                    "name": "Middle East",
+                    "type": "",
+                    "key": "middleEast",
+                    "externalReferenceCode": "REGION_MIDDLE_EAST"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Africa"
+                    },
+                    "name": "Africa",
+                    "type": "",
+                    "key": "africa",
+                    "externalReferenceCode": "REGION_AFRICA"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Central Asia"
+                    },
+                    "name": "Central Asia",
+                    "type": "",
+                    "key": "centralAsia",
+                    "externalReferenceCode": "REGION_CENTRAL_ASIA"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Asia & Pacific Rim"
+                    },
+                    "name": "Asia & Pacific Rim",
+                    "type": "",
+                    "key": "asiaPacificRim",
+                    "externalReferenceCode": "REGION_ASIA_PACIFIC_RIM"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "India"
+                    },
+                    "name": "India",
+                    "type": "",
+                    "key": "india",
+                    "externalReferenceCode": "REGION_INDIA"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "North America"
+                    },
+                    "name": "North America",
+                    "type": "",
+                    "key": "northAmerica",
+                    "externalReferenceCode": "REGION_NORTH_AMERICA"
+                }
+            ],
+            "externalReferenceCode": "LIST_DISTRIBUTION_REGIONS"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Order Types"
+            },
+            "name": "Order Types",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Wholesale"
+                    },
+                    "name": "Wholesale",
+                    "type": "",
+                    "key": "wholesale",
+                    "externalReferenceCode": "ORDER_TYPE_WHOLESALE"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Private Labeling"
+                    },
+                    "name": "Private Labeling",
+                    "type": "",
+                    "key": "privateLabeling",
+                    "externalReferenceCode": "ORDER_TYPE_PRIVATE_LABELING"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Bulk Formats"
+                    },
+                    "name": "Bulk Formats",
+                    "type": "",
+                    "key": "bulkFormats",
+                    "externalReferenceCode": "ORDER_TYPE_BULK_FORMATS"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Not Sure"
+                    },
+                    "name": "Not Sure",
+                    "type": "",
+                    "key": "notSure",
+                    "externalReferenceCode": "ORDER_TYPE_NOT_SURE"
+                }
+            ],
+            "externalReferenceCode": "LIST_ORDER_TYPES"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Product Labels"
+            },
+            "name": "Product Labels",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Standard US"
+                    },
+                    "name": "Standard US",
+                    "type": "",
+                    "key": "standardUS",
+                    "externalReferenceCode": "LABEL_STANDARD_US"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Localized"
+                    },
+                    "name": "Localized",
+                    "type": "",
+                    "key": "localized",
+                    "externalReferenceCode": "LABEL_LOCALIZED"
+                }
+            ],
+            "externalReferenceCode": "LIST_PRODUCT_LABELS"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Product Types"
+            },
+            "name": "Product Types",
+            "listTypeEntries": [
+                {
+                    "dateCreated": "2024-03-14T21:14:48Z",
+                    "dateModified": "2024-03-14T21:15:39Z",
+                    "externalReferenceCode": "PRODUCT_TYPE_EYEGLASSES",
+                    "id": 33078,
+                    "key": "eyeglasses",
+                    "name": "Eyeglasses",
+                    "name_i18n": {
+                        "en-US": "Eyeglasses"
+                    },
+                    "type": ""
+                },
+                {
+                    "dateCreated": "2024-03-14T21:14:53Z",
+                    "dateModified": "2024-03-14T21:15:39Z",
+                    "externalReferenceCode": "PRODUCT_TYPE_SUNGLASSES",
+                    "id": 33079,
+                    "key": "sunglasses",
+                    "name": "Sunglasses",
+                    "name_i18n": {
+                        "en-US": "Sunglasses"
+                    },
+                    "type": ""
+                },
+                {
+                    "dateCreated": "2024-03-14T21:14:57Z",
+                    "dateModified": "2024-03-14T21:15:39Z",
+                    "externalReferenceCode": "PRODUCT_TYPE_LENSES",
+                    "id": 33080,
+                    "key": "lenses",
+                    "name": "Lenses",
+                    "name_i18n": {
+                        "en-US": "Lenses"
+                    },
+                    "type": ""
+                },
+                {
+                    "dateCreated": "2024-03-14T21:15:02Z",
+                    "dateModified": "2024-03-14T21:15:39Z",
+                    "externalReferenceCode": "PRODUCT_TYPE_CONTACTS",
+                    "id": 33081,
+                    "key": "contacts",
+                    "name": "Contacts",
+                    "name_i18n": {
+                        "en-US": "Contacts"
+                    },
+                    "type": ""
+                },
+                {
+                    "dateCreated": "2024-03-14T21:15:06Z",
+                    "dateModified": "2024-03-14T21:15:39Z",
+                    "externalReferenceCode": "PRODUCT_TYPE_OTHER",
+                    "id": 33082,
+                    "key": "other",
+                    "name": "Other",
+                    "name_i18n": {
+                        "en-US": "Other"
+                    },
+                    "type": ""
+                }
+            ],
+            "externalReferenceCode": "LIST_PRODUCT_TYPES"
+        },
+        {
+            "system": false,
+            "name_i18n": {
+                "en-US": "Recommendations"
+            },
+            "name": "Recommendations",
+            "listTypeEntries": [
+                {
+                    "name_i18n": {
+                        "en-US": "Request Additional Documents"
+                    },
+                    "name": "Request Additional Documents",
+                    "type": "",
+                    "key": "requestAdditionalDocuments",
+                    "externalReferenceCode": "REC_REQUEST_ADDITIONAL_DOCUMENTS"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Schedule Follow-up Interview"
+                    },
+                    "name": "Schedule Follow-up Interview",
+                    "type": "",
+                    "key": "scheduleFollowupInterview",
+                    "externalReferenceCode": "REC_SCHEDULE_FOLLOWUP_INTERVIEW"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Propose Approval"
+                    },
+                    "name": "Propose Approval",
+                    "type": "",
+                    "key": "proposeApproval",
+                    "externalReferenceCode": "REC_PROPOSE_APPROVAL"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Propose Conditional Approval"
+                    },
+                    "name": "Propose Conditional Approval",
+                    "type": "",
+                    "key": "proposeConditionalApproval",
+                    "externalReferenceCode": "REC_PROPOSE_CONDITIONAL_APPROVAL"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Decline Application"
+                    },
+                    "name": "Decline Application",
+                    "type": "",
+                    "key": "declineApplication",
+                    "externalReferenceCode": "REC_DECLINE_APPLICATION"
+                },
+                {
+                    "name_i18n": {
+                        "en-US": "Seek Legal Review"
+                    },
+                    "name": "Seek Legal Review",
+                    "type": "",
+                    "key": "seekLegalReview",
+                    "externalReferenceCode": "REC_SEEK_LEGAL_REVIEW"
+                }
+            ],
+            "externalReferenceCode": "LIST_RECOMMENDATIONS"
+        }
+    ]
+}
