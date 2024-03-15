@@ -175,6 +175,7 @@ public abstract class BaseDiscountResourceTestCase {
 
 		discount.setAmountFormatted(regex);
 		discount.setCouponCode(regex);
+		discount.setCurrencyCode(regex);
 		discount.setExternalReferenceCode(regex);
 		discount.setLevel(regex);
 		discount.setLimitationType(regex);
@@ -189,6 +190,7 @@ public abstract class BaseDiscountResourceTestCase {
 
 		Assert.assertEquals(regex, discount.getAmountFormatted());
 		Assert.assertEquals(regex, discount.getCouponCode());
+		Assert.assertEquals(regex, discount.getCurrencyCode());
 		Assert.assertEquals(regex, discount.getExternalReferenceCode());
 		Assert.assertEquals(regex, discount.getLevel());
 		Assert.assertEquals(regex, discount.getLimitationType());
@@ -972,6 +974,14 @@ public abstract class BaseDiscountResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("currencyCode", additionalAssertFieldName)) {
+				if (discount.getCurrencyCode() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("customFields", additionalAssertFieldName)) {
 				if (discount.getCustomFields() == null) {
 					valid = false;
@@ -1369,6 +1379,17 @@ public abstract class BaseDiscountResourceTestCase {
 			if (Objects.equals("couponCode", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						discount1.getCouponCode(), discount2.getCouponCode())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("currencyCode", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						discount1.getCurrencyCode(),
+						discount2.getCurrencyCode())) {
 
 					return false;
 				}
@@ -1923,6 +1944,52 @@ public abstract class BaseDiscountResourceTestCase {
 			return sb.toString();
 		}
 
+		if (entityFieldName.equals("currencyCode")) {
+			Object object = discount.getCurrencyCode();
+
+			String value = String.valueOf(object);
+
+			if (operator.equals("contains")) {
+				sb = new StringBundler();
+
+				sb.append("contains(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 2)) {
+					sb.append(value.substring(1, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else if (operator.equals("startswith")) {
+				sb = new StringBundler();
+
+				sb.append("startswith(");
+				sb.append(entityFieldName);
+				sb.append(",'");
+
+				if ((object != null) && (value.length() > 1)) {
+					sb.append(value.substring(0, value.length() - 1));
+				}
+				else {
+					sb.append(value);
+				}
+
+				sb.append("')");
+			}
+			else {
+				sb.append("'");
+				sb.append(value);
+				sb.append("'");
+			}
+
+			return sb.toString();
+		}
+
 		if (entityFieldName.equals("customFields")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
@@ -2407,6 +2474,8 @@ public abstract class BaseDiscountResourceTestCase {
 				amountFormatted = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				couponCode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				currencyCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				displayDate = RandomTestUtil.nextDate();
 				expirationDate = RandomTestUtil.nextDate();
