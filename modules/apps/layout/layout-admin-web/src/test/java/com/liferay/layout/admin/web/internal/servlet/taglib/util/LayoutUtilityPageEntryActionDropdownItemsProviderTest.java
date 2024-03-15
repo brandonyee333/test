@@ -231,6 +231,8 @@ public class LayoutUtilityPageEntryActionDropdownItemsProviderTest {
 	}
 
 	private void _setUpLayoutUtilityPageEntryPermission() throws Exception {
+		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
+
 		ModelResourcePermission<LayoutUtilityPageEntry>
 			layoutUtilityPageEntryPermission = Mockito.mock(
 				ModelResourcePermission.class);
@@ -242,8 +244,6 @@ public class LayoutUtilityPageEntryActionDropdownItemsProviderTest {
 		).thenReturn(
 			true
 		);
-
-		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
 		bundleContext.registerService(
 			ModelResourcePermission.class, layoutUtilityPageEntryPermission,
