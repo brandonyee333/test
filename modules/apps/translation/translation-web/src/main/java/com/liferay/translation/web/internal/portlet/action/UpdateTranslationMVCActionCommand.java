@@ -107,6 +107,9 @@ public class UpdateTranslationMVCActionCommand extends BaseMVCActionCommand {
 
 			long modifiedDateTime = ParamUtil.getLong(
 				actionRequest, "modifiedDateTime");
+			int workflowAction = ParamUtil.getInteger(
+				actionRequest, "workflowAction",
+				WorkflowConstants.ACTION_PUBLISH);
 
 			InfoItemIdentifier infoItemIdentifier =
 				infoItemReference.getInfoItemIdentifier();
@@ -119,13 +122,9 @@ public class UpdateTranslationMVCActionCommand extends BaseMVCActionCommand {
 			InfoItemFieldValues sourceInfoItemFieldValues =
 				_getInfoItemFieldValues(className, infoItem);
 
-			int workflowAction = ParamUtil.getInteger(
-				actionRequest, "workflowAction",
-				WorkflowConstants.ACTION_PUBLISH);
-
 			if (FeatureFlagManagerUtil.isEnabled("LPD-11253") &&
-				(workflowAction == WorkflowConstants.ACTION_PUBLISH) &&
-				(modifiedDateTime > 0)) {
+				(modifiedDateTime > 0) &&
+				(workflowAction == WorkflowConstants.ACTION_PUBLISH)) {
 
 				Object infoItemFieldValue = _getInfoItemFieldValue(
 					"modifiedDate", sourceInfoItemFieldValues);
