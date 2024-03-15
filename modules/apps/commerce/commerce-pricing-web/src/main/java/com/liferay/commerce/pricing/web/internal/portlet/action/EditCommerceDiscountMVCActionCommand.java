@@ -5,6 +5,8 @@
 
 package com.liferay.commerce.pricing.web.internal.portlet.action;
 
+import com.liferay.commerce.currency.model.CommerceCurrency;
+import com.liferay.commerce.currency.service.CommerceCurrencyService;
 import com.liferay.commerce.discount.constants.CommerceDiscountConstants;
 import com.liferay.commerce.discount.exception.CommerceDiscountCouponCodeException;
 import com.liferay.commerce.discount.exception.CommerceDiscountMaxPriceValueException;
@@ -15,7 +17,6 @@ import com.liferay.commerce.discount.service.CommerceDiscountService;
 import com.liferay.commerce.pricing.constants.CommercePricingPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
@@ -227,21 +228,29 @@ public class EditCommerceDiscountMVCActionCommand extends BaseMVCActionCommand {
 		boolean neverExpire = ParamUtil.getBoolean(
 			actionRequest, "neverExpire");
 
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			CommerceDiscount.class.getName(), actionRequest);
+		long commerceCurrencyId = ParamUtil.getLong(
+			actionRequest, "commerceCurrencyId");
+
+		CommerceCurrency commerceCurrency =
+			_commerceCurrencyService.getCommerceCurrency(commerceCurrencyId);
 
 		return _commerceDiscountService.addOrUpdateCommerceDiscount(
-			externalReferenceCode, commerceDiscountId, title, target,
-			useCouponCode, couponCode, usePercentage, maximumDiscountAmount,
-			level, discountLevels[0], discountLevels[1], discountLevels[2],
-			discountLevels[3],
+			externalReferenceCode, commerceDiscountId, active,
+			commerceCurrency.getCode(), couponCode, displayDateMonth,
+			displayDateDay, displayDateYear, displayDateHour, displayDateMinute,
+			expirationDateMonth, expirationDateDay, expirationDateYear,
+			expirationDateHour, expirationDateMinute, level, discountLevels[0],
+			discountLevels[1], discountLevels[2], discountLevels[3],
+			limitationTimes, limitationTimesPerAccount,
 			_getLimitationType(limitationTimes, limitationTimesPerAccount),
-			limitationTimes, limitationTimesPerAccount, rulesConjunction,
-			active, displayDateMonth, displayDateDay, displayDateYear,
-			displayDateHour, displayDateMinute, expirationDateMonth,
-			expirationDateDay, expirationDateYear, expirationDateHour,
-			expirationDateMinute, neverExpire, serviceContext);
+			maximumDiscountAmount, neverExpire, rulesConjunction, target, title,
+			useCouponCode, usePercentage,
+			ServiceContextFactory.getInstance(
+				CommerceDiscount.class.getName(), actionRequest));
 	}
+
+	@Reference
+	private CommerceCurrencyService _commerceCurrencyService;
 
 	@Reference
 	private CommerceDiscountService _commerceDiscountService;

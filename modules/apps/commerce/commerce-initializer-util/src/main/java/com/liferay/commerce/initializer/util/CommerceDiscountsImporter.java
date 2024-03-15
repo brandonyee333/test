@@ -56,25 +56,19 @@ public class CommerceDiscountsImporter {
 
 		// Add Commerce Discount
 
-		String title = jsonObject.getString("title");
-
-		boolean useCouponCode = jsonObject.getBoolean("useCouponCode");
-		String couponCode = jsonObject.getString("couponCode");
-		boolean usePercentage = jsonObject.getBoolean("usePercentage");
-		BigDecimal maximumDiscountAmount = BigDecimal.valueOf(
-			jsonObject.getDouble("maximumDiscountAmount"));
-		String levelType = jsonObject.getString("level");
-		BigDecimal level1 = BigDecimal.valueOf(jsonObject.getDouble("level1"));
-
-		boolean active = jsonObject.getBoolean("active");
-
 		return _commerceDiscountLocalService.addCommerceDiscount(
-			serviceContext.getUserId(), title,
-			CommerceDiscountConstants.TARGET_CATEGORIES, useCouponCode,
-			couponCode, usePercentage, maximumDiscountAmount, levelType, level1,
-			BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-			CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0, false,
-			active, 1, 1, 2019, -1, -1, 0, 0, 0, 0, 0, true, serviceContext);
+			serviceContext.getUserId(), jsonObject.getBoolean("active"),
+			jsonObject.getString("commerceCurrencyCode"),
+			jsonObject.getString("couponCode"), 1, 1, 2019, -1, -1, 0, 0, 0, 0,
+			0, jsonObject.getString("level"),
+			BigDecimal.valueOf(jsonObject.getDouble("level1")), BigDecimal.ZERO,
+			BigDecimal.ZERO, BigDecimal.ZERO, 0,
+			CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+			BigDecimal.valueOf(jsonObject.getDouble("maximumDiscountAmount")),
+			true, false, CommerceDiscountConstants.TARGET_CATEGORIES,
+			jsonObject.getString("title"),
+			jsonObject.getBoolean("useCouponCode"),
+			jsonObject.getBoolean("usePercentage"), serviceContext);
 	}
 
 	private void _importCommerceDiscount(

@@ -240,19 +240,19 @@ public class DiscountAccountGroupResourceTest
 
 		CommerceDiscount commerceDiscount =
 			_commerceDiscountLocalService.addOrUpdateCommerceDiscount(
-				RandomTestUtil.randomString(), _user.getUserId(), 0,
-				RandomTestUtil.randomString(),
-				CommerceDiscountConstants.TARGET_PRODUCTS, false, null, false,
-				BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
-				BigDecimal.ZERO, BigDecimal.ZERO,
-				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0, true,
-				calendar.get(Calendar.MONTH),
+				RandomTestUtil.randomString(), _user.getUserId(), 0, true,
+				"USD", null, calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.MINUTE), calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
-				calendar.get(Calendar.MINUTE), true, _serviceContext);
+				calendar.get(Calendar.MINUTE), BigDecimal.ONE, BigDecimal.ZERO,
+				BigDecimal.ZERO, BigDecimal.ZERO, 0,
+				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+				BigDecimal.ZERO, true,
+				CommerceDiscountConstants.TARGET_PRODUCTS,
+				RandomTestUtil.randomString(), false, false, _serviceContext);
 
 		AccountGroup discountAccountGroup =
 			CommerceAccountGroupTestUtil.addAccountGroup(
@@ -307,13 +307,8 @@ public class DiscountAccountGroupResourceTest
 
 			_commerceDiscount =
 				_commerceDiscountLocalService.addOrUpdateCommerceDiscount(
-					"external-reference-code-test", _user.getUserId(), 0,
-					RandomTestUtil.randomString(),
-					CommerceDiscountConstants.TARGET_PRODUCTS, false, null,
-					false, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
-					BigDecimal.ZERO, BigDecimal.ZERO,
-					CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0,
-					true, calendar.get(Calendar.MONTH),
+					"external-reference-code-test", _user.getUserId(), 0, true,
+					"USD", null, calendar.get(Calendar.MONTH),
 					calendar.get(Calendar.DAY_OF_MONTH),
 					calendar.get(Calendar.YEAR),
 					calendar.get(Calendar.HOUR_OF_DAY),
@@ -321,7 +316,13 @@ public class DiscountAccountGroupResourceTest
 					calendar.get(Calendar.DAY_OF_MONTH),
 					calendar.get(Calendar.YEAR),
 					calendar.get(Calendar.HOUR_OF_DAY),
-					calendar.get(Calendar.MINUTE), true, _serviceContext);
+					calendar.get(Calendar.MINUTE), BigDecimal.ONE,
+					BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, 0,
+					CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+					BigDecimal.ZERO, true,
+					CommerceDiscountConstants.TARGET_PRODUCTS,
+					RandomTestUtil.randomString(), false, false,
+					_serviceContext);
 		}
 
 		return _commerceDiscount.getExternalReferenceCode();
@@ -364,13 +365,8 @@ public class DiscountAccountGroupResourceTest
 
 			_commerceDiscount =
 				_commerceDiscountLocalService.addOrUpdateCommerceDiscount(
-					"external-reference-code-test", _user.getUserId(), 0,
-					RandomTestUtil.randomString(),
-					CommerceDiscountConstants.TARGET_PRODUCTS, false, null,
-					false, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
-					BigDecimal.ZERO, BigDecimal.ZERO,
-					CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0,
-					true, calendar.get(Calendar.MONTH),
+					"external-reference-code-test", _user.getUserId(), 0, true,
+					"USD", null, calendar.get(Calendar.MONTH),
 					calendar.get(Calendar.DAY_OF_MONTH),
 					calendar.get(Calendar.YEAR),
 					calendar.get(Calendar.HOUR_OF_DAY),
@@ -378,7 +374,13 @@ public class DiscountAccountGroupResourceTest
 					calendar.get(Calendar.DAY_OF_MONTH),
 					calendar.get(Calendar.YEAR),
 					calendar.get(Calendar.HOUR_OF_DAY),
-					calendar.get(Calendar.MINUTE), true, _serviceContext);
+					calendar.get(Calendar.MINUTE), BigDecimal.ONE,
+					BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, 0,
+					CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+					BigDecimal.ZERO, true,
+					CommerceDiscountConstants.TARGET_PRODUCTS,
+					RandomTestUtil.randomString(), false, false,
+					_serviceContext);
 		}
 
 		return _commerceDiscount.getCommerceDiscountId();

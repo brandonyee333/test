@@ -42,6 +42,7 @@ public class DiscountDTOConverter
 			{
 				setActive(commerceDiscount::isActive);
 				setCouponCode(commerceDiscount::getCouponCode);
+				setCurrencyCode(commerceDiscount::getCommerceCurrencyCode);
 				setCustomFields(
 					() -> {
 						ExpandoBridge expandoBridge =

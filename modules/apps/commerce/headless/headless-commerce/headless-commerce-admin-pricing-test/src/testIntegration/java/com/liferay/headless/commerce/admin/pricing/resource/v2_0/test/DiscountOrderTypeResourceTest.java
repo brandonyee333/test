@@ -57,19 +57,19 @@ public class DiscountOrderTypeResourceTest
 
 		_commerceDiscount =
 			_commerceDiscountLocalService.addOrUpdateCommerceDiscount(
-				RandomTestUtil.randomString(), _user.getUserId(), 0,
-				RandomTestUtil.randomString(),
-				CommerceDiscountConstants.TARGET_PRODUCTS, false, null, false,
-				BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
-				BigDecimal.ZERO, BigDecimal.ZERO,
-				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0, true,
-				calendar.get(Calendar.MONTH),
+				RandomTestUtil.randomString(), _user.getUserId(), 0, true,
+				"USD", null, calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.MINUTE), calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
-				calendar.get(Calendar.MINUTE), true, _serviceContext);
+				calendar.get(Calendar.MINUTE), BigDecimal.ONE, BigDecimal.ZERO,
+				BigDecimal.ZERO, BigDecimal.ZERO, 0,
+				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+				BigDecimal.ZERO, true,
+				CommerceDiscountConstants.TARGET_PRODUCTS,
+				RandomTestUtil.randomString(), false, false, _serviceContext);
 	}
 
 	@Override

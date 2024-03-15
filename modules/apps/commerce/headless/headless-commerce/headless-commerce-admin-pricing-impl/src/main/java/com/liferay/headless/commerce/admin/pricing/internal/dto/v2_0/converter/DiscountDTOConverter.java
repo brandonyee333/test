@@ -58,6 +58,7 @@ public class DiscountDTOConverter
 					() -> _getAmountFormatted(
 						commerceDiscount, dtoConverterContext.getLocale()));
 				setCouponCode(commerceDiscount::getCouponCode);
+				setCurrencyCode(commerceDiscount::getCommerceCurrencyCode);
 				setCustomFields(
 					() -> {
 						ExpandoBridge expandoBridge =
@@ -139,8 +140,9 @@ public class DiscountDTOConverter
 		}
 
 		CommerceCurrency commerceCurrency =
-			_commerceCurrencyService.fetchPrimaryCommerceCurrency(
-				commerceDiscount.getCompanyId());
+			_commerceCurrencyService.getCommerceCurrency(
+				commerceDiscount.getCompanyId(),
+				commerceDiscount.getCommerceCurrencyCode());
 
 		if (commerceDiscount.isUsePercentage()) {
 			return _percentageFormatter.getLocalizedPercentage(

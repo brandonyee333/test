@@ -107,7 +107,7 @@ boolean hasPermission = commerceDiscountDisplayContext.hasPermission(ActionKeys.
 
 				<div class="row">
 					<div class="<%= colCssClass %>">
-						<aui:input ignoreRequestValue="<%= true %>" name="amount" suffix="<%= amountSuffix %>" type="text" value="<%= commerceDiscountDisplayContext.getCommerceDiscountAmount(locale) %>">
+						<aui:input ignoreRequestValue="<%= true %>" name="amount" type="text" value="<%= commerceDiscountDisplayContext.getCommerceDiscountAmount(locale) %>">
 							<aui:validator name="min"><%= CommercePriceConstants.PRICE_VALUE_MIN %></aui:validator>
 							<aui:validator name="max"><%= CommercePriceConstants.PRICE_VALUE_MAX %></aui:validator>
 							<aui:validator name="number" />
@@ -116,13 +116,29 @@ boolean hasPermission = commerceDiscountDisplayContext.hasPermission(ActionKeys.
 
 					<c:if test="<%= usePercentage %>">
 						<div class="<%= colCssClass %>">
-							<aui:input ignoreRequestValue="<%= true %>" name="maximumDiscountAmount" suffix="<%= HtmlUtil.escape(commerceDiscountDisplayContext.getDefaultCommerceCurrencyCode()) %>" type="text" value="<%= (commerceDiscount == null) ? BigDecimal.ZERO : commerceDiscountDisplayContext.round(commerceDiscount.getMaximumDiscountAmount()) %>">
+							<aui:input ignoreRequestValue="<%= true %>" name="maximumDiscountAmount" type="text" value="<%= (commerceDiscount == null) ? BigDecimal.ZERO : commerceDiscountDisplayContext.round(commerceDiscount.getMaximumDiscountAmount()) %>">
 								<aui:validator name="min"><%= CommercePriceConstants.PRICE_VALUE_MIN %></aui:validator>
 								<aui:validator name="max"><%= CommercePriceConstants.PRICE_VALUE_MAX %></aui:validator>
 								<aui:validator name="number" />
 							</aui:input>
 						</div>
 					</c:if>
+
+					<div class="<%= colCssClass %>">
+						<aui:select label="currency" name="commerceCurrencyId" required="<%= true %>" showEmptyOption="<%= true %>">
+
+							<%
+							for (CommerceCurrency commerceCurrency : commerceDiscountDisplayContext.getCommerceCurrencies()) {
+							%>
+
+								<aui:option label="<%= HtmlUtil.escape(commerceCurrency.getCode()) %>" selected="<%= (commerceDiscount != null) && Objects.equals(commerceDiscount.getCommerceCurrencyCode(), commerceCurrency.getCode()) %>" value="<%= commerceCurrency.getCommerceCurrencyId() %>" />
+
+							<%
+							}
+							%>
+
+						</aui:select>
+					</div>
 
 					<div class="<%= colCssClass %>">
 						<aui:select label="level" name="level" required="<%= true %>">

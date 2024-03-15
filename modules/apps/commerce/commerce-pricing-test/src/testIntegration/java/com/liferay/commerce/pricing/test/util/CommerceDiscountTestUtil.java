@@ -28,25 +28,26 @@ import java.util.Calendar;
 public class CommerceDiscountTestUtil {
 
 	public static CommerceDiscount addCouponDiscount(
-			long groupId, double amount, String couponCode, String target,
-			long... targetIds)
+			long groupId, double amount, String couponCode, String currencyCode,
+			String target, long... targetIds)
 		throws Exception {
 
 		CommerceDiscount commerceDiscount = addFixedCommerceDiscount(
-			groupId, amount, target, targetIds);
+			groupId, amount, currencyCode, target, targetIds);
 
-		commerceDiscount.setUseCouponCode(true);
 		commerceDiscount.setCouponCode(couponCode);
+		commerceDiscount.setLimitationTimes(1);
 		commerceDiscount.setLimitationType(
 			CommerceDiscountConstants.LIMITATION_TYPE_LIMITED);
-		commerceDiscount.setLimitationTimes(1);
+		commerceDiscount.setUseCouponCode(true);
 
 		return CommerceDiscountLocalServiceUtil.updateCommerceDiscount(
 			commerceDiscount);
 	}
 
 	public static CommerceDiscount addFixedCommerceDiscount(
-			long groupId, double amount, String target, long... targetIds)
+			long groupId, double amount, String currencyCode, String target,
+			long... targetIds)
 		throws Exception {
 
 		BigDecimal discount = BigDecimal.valueOf(amount);
@@ -61,17 +62,18 @@ public class CommerceDiscountTestUtil {
 
 		CommerceDiscount commerceDiscount =
 			CommerceDiscountLocalServiceUtil.addCommerceDiscount(
-				user.getUserId(), RandomTestUtil.randomString(), target, false,
-				null, false, BigDecimal.ZERO, discount, BigDecimal.ZERO,
-				BigDecimal.ZERO, BigDecimal.ZERO,
-				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0, true,
+				user.getUserId(), true, currencyCode, null,
 				calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.MINUTE), calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
-				calendar.get(Calendar.MINUTE), true, serviceContext);
+				calendar.get(Calendar.MINUTE), discount, BigDecimal.ZERO,
+				BigDecimal.ZERO, BigDecimal.ZERO, 0,
+				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+				BigDecimal.ZERO, true, target, RandomTestUtil.randomString(),
+				false, false, serviceContext);
 
 		_addTargetDetails(groupId, commerceDiscount, target, targetIds);
 
@@ -79,8 +81,8 @@ public class CommerceDiscountTestUtil {
 	}
 
 	public static CommerceDiscount addPercentageCommerceDiscount(
-			long groupId, BigDecimal percentage, String level, String target,
-			long... targetIds)
+			long groupId, String currencyCode, BigDecimal percentage,
+			String level, String target, long... targetIds)
 		throws Exception {
 
 		ServiceContext serviceContext =
@@ -93,17 +95,18 @@ public class CommerceDiscountTestUtil {
 
 		CommerceDiscount commerceDiscount =
 			CommerceDiscountLocalServiceUtil.addCommerceDiscount(
-				user.getUserId(), RandomTestUtil.randomString(), target, false,
-				null, true, BigDecimal.valueOf(10000), level, percentage,
-				BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0, true,
-				true, calendar.get(Calendar.MONTH),
+				user.getUserId(), true, currencyCode, null,
+				calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.MINUTE), calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
-				calendar.get(Calendar.MINUTE), true, serviceContext);
+				calendar.get(Calendar.MINUTE), level, percentage,
+				BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, 0,
+				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+				BigDecimal.valueOf(10000), true, true, target,
+				RandomTestUtil.randomString(), false, true, serviceContext);
 
 		_addDiscountProductRel(groupId, commerceDiscount, targetIds);
 
@@ -111,9 +114,9 @@ public class CommerceDiscountTestUtil {
 	}
 
 	public static CommerceDiscount addPercentageCommerceDiscount(
-			long groupId, double percentage1, double percentage2,
-			double percentage3, double percentage4, String target,
-			long... targetIds)
+			long groupId, String currencyCode, double percentage1,
+			double percentage2, double percentage3, double percentage4,
+			String target, long... targetIds)
 		throws Exception {
 
 		BigDecimal level1 = BigDecimal.valueOf(percentage1);
@@ -131,16 +134,17 @@ public class CommerceDiscountTestUtil {
 
 		CommerceDiscount commerceDiscount =
 			CommerceDiscountLocalServiceUtil.addCommerceDiscount(
-				user.getUserId(), RandomTestUtil.randomString(), target, false,
-				null, true, BigDecimal.valueOf(10000), level1, level2, level3,
-				level4, CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0,
-				true, calendar.get(Calendar.MONTH),
+				user.getUserId(), true, currencyCode, null,
+				calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
 				calendar.get(Calendar.MINUTE), calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH),
 				calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
-				calendar.get(Calendar.MINUTE), true, serviceContext);
+				calendar.get(Calendar.MINUTE), level1, level2, level3, level4,
+				0, CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+				BigDecimal.valueOf(10000), true, target,
+				RandomTestUtil.randomString(), false, true, serviceContext);
 
 		_addTargetDetails(groupId, commerceDiscount, target, targetIds);
 
