@@ -193,15 +193,15 @@ public class EditArticleHeaderProductNavigationControlMenuEntryTest {
 	private ThemeDisplay _getThemeDisplay() throws Exception {
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
+		portletDisplay.setId(JournalPortletKeys.JOURNAL);
+
 		Layout layout = new LayoutImpl();
 
 		layout.setType(LayoutConstants.TYPE_CONTROL_PANEL);
 
 		themeDisplay.setLayout(layout);
-
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-
-		portletDisplay.setId(JournalPortletKeys.JOURNAL);
 
 		themeDisplay.setPermissionChecker(
 			PermissionCheckerFactoryUtil.create(TestPropsValues.getUser()));
