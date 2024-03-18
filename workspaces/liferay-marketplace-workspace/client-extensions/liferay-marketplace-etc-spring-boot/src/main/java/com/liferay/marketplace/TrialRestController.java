@@ -111,8 +111,7 @@ public class TrialRestController extends BaseRestController {
 
 		for (Order order : ordersPage.getItems()) {
 			if (Objects.equals(
-					order.getOrderTypeExternalReferenceCode(),
-					_ORDER_TYPE_EXTERNAL_REFERENCE_CODE)) {
+					order.getOrderTypeExternalReferenceCode(), "SOLUTIONS7")) {
 
 				trialCount++;
 
@@ -191,9 +190,6 @@ public class TrialRestController extends BaseRestController {
 	private static final int _COMMERCE_ORDER_STATUS_COMPLETED = 0;
 
 	private static final int _COMMERCE_ORDER_STATUS_PROCESSING = 10;
-
-	private static final String _ORDER_TYPE_EXTERNAL_REFERENCE_CODE =
-		"SOLUTIONS7";
 
 	private static final Log _log = LogFactory.getLog(
 		TrialRestController.class);
