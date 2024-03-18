@@ -47,6 +47,8 @@ public class TrialRestController extends BaseRestController {
 			@AuthenticationPrincipal Jwt jwt, @RequestBody String json)
 		throws Exception {
 
+		_initResourceBuilders();
+
 		JSONObject jsonObject = new JSONObject(json);
 
 		if (_log.isInfoEnabled()) {
@@ -54,8 +56,6 @@ public class TrialRestController extends BaseRestController {
 				"New trial request for order " +
 					jsonObject.getNumber("classPK"));
 		}
-
-		_initResourceBuilders();
 
 		JSONObject modelDTOOrderJSONObject = jsonObject.getJSONObject(
 			"modelDTOOrder");
