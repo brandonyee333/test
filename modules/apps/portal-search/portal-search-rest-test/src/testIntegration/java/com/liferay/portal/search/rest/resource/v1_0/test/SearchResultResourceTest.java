@@ -260,16 +260,16 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 					}
 				});
 
-		Map<String, Object> facetsMap =
+		Map<String, Object> searchFacets =
 			(Map<String, Object>)searchPage.getSearchFacets();
 
-		Assert.assertNotNull(facetsMap);
+		Assert.assertNotNull(searchFacets);
 
-		Assert.assertTrue(facetsMap.containsKey(facetName));
+		Assert.assertTrue(searchFacets.containsKey(facetName));
 
 		List<String> termValuesList = new ArrayList<>();
 
-		JSONArray termJSONArray = (JSONArray)facetsMap.get(facetName);
+		JSONArray termJSONArray = (JSONArray)searchFacets.get(facetName);
 
 		for (int i = 0; i < termJSONArray.length(); i++) {
 			JSONObject termJSONObject = _jsonFactory.createJSONObject(
@@ -514,10 +514,10 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 			).build(),
 			"date-range", range, range);
 
-		Map<String, Object> facetsMap =
+		Map<String, Object> searchFacets =
 			(Map<String, Object>)searchPage.getSearchFacets();
 
-		JSONArray termJSONArray = (JSONArray)facetsMap.get("date-range");
+		JSONArray termJSONArray = (JSONArray)searchFacets.get("date-range");
 
 		Assert.assertEquals(
 			"1",
