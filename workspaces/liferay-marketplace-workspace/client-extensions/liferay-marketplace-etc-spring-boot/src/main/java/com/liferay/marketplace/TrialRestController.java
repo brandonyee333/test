@@ -70,14 +70,14 @@ public class TrialRestController extends BaseRestController {
 			_log.error(
 				accountId + " exceeded the limit of trials for this account");
 
-			order.setOrderStatus(_COMMERCE_ORDER_STATUS_CANCELLED);
+			order.setOrderStatus(_ORDER_STATUS_CANCELLED);
 
 			_orderResource.patchOrder(order.getId(), order);
 
 			return;
 		}
 
-		order.setOrderStatus(_COMMERCE_ORDER_STATUS_PROCESSING);
+		order.setOrderStatus(_ORDER_STATUS_PROCESSING);
 
 		_orderResource.patchOrder(order.getId(), order);
 
@@ -97,7 +97,7 @@ public class TrialRestController extends BaseRestController {
 
 		order.setCustomFields(customFields);
 
-		order.setOrderStatus(_COMMERCE_ORDER_STATUS_COMPLETED);
+		order.setOrderStatus(_ORDER_STATUS_COMPLETED);
 
 		_orderResource.patchOrder(order.getId(), order);
 	}
@@ -177,11 +177,11 @@ public class TrialRestController extends BaseRestController {
 		return portalInstance;
 	}
 
-	private static final int _COMMERCE_ORDER_STATUS_CANCELLED = 8;
+	private static final int _ORDER_STATUS_CANCELLED = 8;
 
-	private static final int _COMMERCE_ORDER_STATUS_COMPLETED = 0;
+	private static final int _ORDER_STATUS_COMPLETED = 0;
 
-	private static final int _COMMERCE_ORDER_STATUS_PROCESSING = 10;
+	private static final int _ORDER_STATUS_PROCESSING = 10;
 
 	private static final Log _log = LogFactory.getLog(
 		TrialRestController.class);
