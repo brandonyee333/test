@@ -49,24 +49,24 @@ public class TrialRestController extends BaseRestController {
 
 		_initResourceBuilders();
 
+		Order order = new Order();
+
 		JSONObject jsonObject = new JSONObject(json);
 
+		long classPK = jsonObject.getLong("classPK");
+
 		if (_log.isInfoEnabled()) {
-			_log.info(
-				"New trial request for order " +
-					jsonObject.getNumber("classPK"));
+			_log.info("New trial request for order " + classPK);
 		}
+
+		order.setId(classPK);
 
 		JSONObject modelDTOOrderJSONObject = jsonObject.getJSONObject(
 			"modelDTOOrder");
 
 		String accountId = modelDTOOrderJSONObject.getString("accountId");
 
-		Order order = new Order();
-
-		order.setId(jsonObject.getLong("classPK"));
-
-		if (!_checkAccountOrders(accountId)) {
+		if (_hasAccountOrders(accountId)) {
 			_log.error(
 				accountId + " exceeded the limit of trials for this account");
 
@@ -102,7 +102,7 @@ public class TrialRestController extends BaseRestController {
 		_orderResource.patchOrder(order.getId(), order);
 	}
 
-	private boolean _checkAccountOrders(String accountId) throws Exception {
+	private boolean _hasAccountOrders(String accountId) throws Exception {
 		int trialCount = 0;
 
 		Page<Order> ordersPage = _orderResource.getOrdersPage(
@@ -117,12 +117,12 @@ public class TrialRestController extends BaseRestController {
 				trialCount++;
 
 				if (trialCount > 1) {
-					return false;
+					return true;
 				}
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	private void _initResourceBuilders() throws Exception {
