@@ -358,7 +358,7 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 		return endpoint;
 	}
 
-	private HashMap<String, JSONArray> _getSearchFacets(JSONObject jsonObject) {
+	private Map<String, JSONArray> _getSearchFacets(JSONObject jsonObject) {
 		JSONObject searchFacetsJSONObject = jsonObject.getJSONObject(
 			"searchFacets");
 
@@ -366,7 +366,7 @@ public class SearchResultResourceTest extends BaseSearchResultResourceTestCase {
 			return null;
 		}
 
-		HashMap<String, JSONArray> map = new HashMap<>();
+		Map<String, JSONArray> map = new HashMap<>();
 
 		Iterator<String> iterator = searchFacetsJSONObject.keys();
 
