@@ -1456,12 +1456,9 @@ public class ObjectEntryLocalServiceTest {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(
 			"yyyy-MM-dd HH:mm");
 
-		LocalDateTime todayLocalDateTime = LocalDateTime.now();
+		LocalDateTime localDateTime = LocalDateTime.now();
 
-		LocalDateTime tomorrowLocalDateTime = todayLocalDateTime.plusDays(1);
-
-		String tomorrowLocalDateTimeString = dateTimeFormatter.format(
-			tomorrowLocalDateTime);
+		String timeString = dateTimeFormatter.format(localDateTime.plusDays(1));
 
 		ObjectField objectField = _objectFieldLocalService.fetchObjectField(
 			_objectDefinition.getObjectDefinitionId(), "time");
@@ -1490,7 +1487,7 @@ public class ObjectEntryLocalServiceTest {
 			).put(
 				"listTypeEntryKeyRequired", "listTypeEntryKey1"
 			).put(
-				"time", tomorrowLocalDateTimeString
+				"time", timeString
 			).build());
 
 		_assertCount(3);
@@ -1512,7 +1509,7 @@ public class ObjectEntryLocalServiceTest {
 			).put(
 				"listTypeEntryKeyRequired", "listTypeEntryKey1"
 			).put(
-				"time", tomorrowLocalDateTimeString
+				"time", timeString
 			).build());
 
 		_assertCount(4);
@@ -1540,7 +1537,7 @@ public class ObjectEntryLocalServiceTest {
 			).put(
 				"listTypeEntryKeyRequired", "listTypeEntryKey1"
 			).put(
-				"time", tomorrowLocalDateTimeString
+				"time", timeString
 			).build());
 
 		_assertCount(5);
@@ -1568,7 +1565,7 @@ public class ObjectEntryLocalServiceTest {
 			).put(
 				"middleName", "Doe"
 			).put(
-				"time", tomorrowLocalDateTimeString
+				"time", timeString
 			).build());
 
 		_assertCount(6);
@@ -1648,7 +1645,7 @@ public class ObjectEntryLocalServiceTest {
 			).put(
 				"middleName", RandomTestUtil.randomString()
 			).put(
-				"time", tomorrowLocalDateTimeString
+				"time", timeString
 			).build());
 
 		_assertCount(7);
