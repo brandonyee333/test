@@ -150,9 +150,10 @@ public class SiteInitializerSerializerImpl
 	private void _serializeDDMStructures(long groupId, ZipWriter zipWriter)
 		throws Exception {
 
-		for (DDMStructure ddmStructure :
-				_ddmStructureLocalService.getStructures(groupId)) {
+		List<DDMStructure> ddmStructures =
+			_ddmStructureLocalService.getStructures(groupId);
 
+		for (DDMStructure ddmStructure : ddmStructures) {
 			_serializeDDMStructure(ddmStructure, zipWriter);
 		}
 	}
@@ -183,9 +184,10 @@ public class SiteInitializerSerializerImpl
 	private void _serializeDDMTemplates(long groupId, ZipWriter zipWriter)
 		throws Exception {
 
-		for (DDMTemplate ddmTemplate :
-				_ddmTemplateLocalService.getTemplatesByGroupId(groupId)) {
+		List<DDMTemplate> ddmTemplates =
+			_ddmTemplateLocalService.getTemplatesByGroupId(groupId);
 
+		for (DDMTemplate ddmTemplate : ddmTemplates) {
 			_serializeDDMTemplate(ddmTemplate, zipWriter);
 		}
 	}
