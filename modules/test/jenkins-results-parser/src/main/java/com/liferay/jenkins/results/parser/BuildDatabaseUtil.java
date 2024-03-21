@@ -146,10 +146,10 @@ public class BuildDatabaseUtil {
 			return;
 		}
 
+		String currentNetworkName = _getCurrentNetworkName();
+
 		List<String> distNodesList = new ArrayList<>(
 			Arrays.asList(distNodes.split(",")));
-
-		String currentNetworkName = _getCurrentNetworkName();
 
 		while (!distNodesList.isEmpty()) {
 			try {
