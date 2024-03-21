@@ -745,7 +745,7 @@ public class ObjectDefinitionLocalServiceImpl
 	public List<ObjectDefinition> getBoundObjectDefinitions(
 		long companyId, long rootObjectDefinitionId) {
 
-		return objectDefinitionPersistence.findByC_R(
+		return objectDefinitionPersistence.findByC_RODI(
 			companyId, rootObjectDefinitionId);
 	}
 

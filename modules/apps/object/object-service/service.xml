@@ -128,7 +128,7 @@
 		<finder name="System" return-type="Collection">
 			<finder-column name="system" />
 		</finder>
-		<finder name="C_R" return-type="Collection">
+		<finder name="C_RODI" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="rootObjectDefinitionId" />
 		</finder>
