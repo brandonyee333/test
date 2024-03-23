@@ -3625,7 +3625,7 @@ public class JenkinsResultsParserUtil {
 			}
 		}
 		catch (IOException ioException) {
-			System.out.println("WARNING: Failed to get build properties");
+			System.out.println("WARNING: Unable to get build properties");
 		}
 
 		JenkinsMaster jenkinsMaster = JenkinsMaster.getInstance(
