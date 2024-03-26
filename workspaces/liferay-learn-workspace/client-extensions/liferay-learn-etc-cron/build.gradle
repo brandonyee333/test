@@ -60,7 +60,8 @@ fatJar {
 			}
 		}
 	}
-	exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+
+	exclude "META-INF/*.DSA", "META-INF/*.RSA", "META-INF/*.SF"
 
 	from {
 		configurations.runtimeClasspath.collect {
