@@ -1070,7 +1070,6 @@ public class GraphQLServletExtender {
 					ServletData::getMutation, mutationGraphQLObjectTypeBuilder,
 					graphQLSchemaBuilder, true, processingElementsContainer,
 					servletDatas));
-
 			graphQLNamespaces.addAll(
 				_registerNamespace(
 					ServletData::getQuery, queryGraphQLObjectTypeBuilder,
