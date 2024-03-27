@@ -87,7 +87,7 @@ public class GlobalJSCETImplFactoryImpl
 		if (keySet.contains("src")) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"Use the \"JavaScript URL\" field instead of the attribute " +
-					"'src'",
+					"\"src\"",
 				"use-the-javascript-url-field-instead-of-the-attribute-src");
 		}
 	}
