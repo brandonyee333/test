@@ -63,6 +63,8 @@ public class GetGroovyScriptUsesMVCResourceCommand
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
+
 		List<GroovyScriptUse> groovyScriptUses = new ArrayList<>();
 
 		if (DBPartition.isPartitionEnabled()) {
@@ -73,8 +75,6 @@ public class GetGroovyScriptUsesMVCResourceCommand
 		else {
 			_addGroovyScriptUses(groovyScriptUses, resourceRequest);
 		}
-
-		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		Comparator<GroovyScriptUse> comparator = Comparator.comparing(
 			GroovyScriptUse::getCompanyWebId);
