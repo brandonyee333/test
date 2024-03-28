@@ -157,9 +157,9 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 						_classNameLocalService.fetchByClassNameId(classNameId);
 
 					Assert.assertEquals(
-						"class.name." + companyId, className.getValue());
-					Assert.assertEquals(
 						classNameId, className.getClassNameId());
+					Assert.assertEquals(
+						"class.name." + companyId, className.getValue());
 				});
 		}
 		finally {
