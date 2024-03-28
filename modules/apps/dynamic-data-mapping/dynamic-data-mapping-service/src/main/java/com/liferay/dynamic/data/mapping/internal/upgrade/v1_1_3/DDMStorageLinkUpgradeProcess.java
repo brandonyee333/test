@@ -45,8 +45,11 @@ public class DDMStorageLinkUpgradeProcess extends UpgradeProcess {
 			PreparedStatement preparedStatement3 =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					connection,
-					"update DDMStorageLink set structureVersionId = ? where " +
-						"storageLinkId = ?");
+					StringBundler.concat(
+						"update DDMStorageLink set structureVersionId = ?",
+						"where structureVersionId = ? or ",
+						"(DDMStorageLink.structureVersionId IS NULL and ",
+						"DDMStorageLink.structureId = ?)"));
 			ResultSet resultSet1 = preparedStatement1.executeQuery()) {
 
 			Map<Long, Long> ddmStructureVersionIds = new HashMap<>();
@@ -73,6 +76,8 @@ public class DDMStorageLinkUpgradeProcess extends UpgradeProcess {
 							ddmStructureVersionIds.put(
 								resultSet1.getLong("storageLinkId"),
 								resultSet2.getLong("structureVersionId"));
+							preparedStatement3.setLong(
+								3, resultSet1.getLong("structureId"));
 						}
 					}
 				}
