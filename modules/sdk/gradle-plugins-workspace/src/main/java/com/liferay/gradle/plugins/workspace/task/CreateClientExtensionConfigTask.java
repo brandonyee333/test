@@ -74,12 +74,12 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 
 	public CreateClientExtensionConfigTask() {
 		_clientExtensionConfigFile = _addTaskOutputFile(
-			_project.getName() + _CLIENT_EXTENSION_CONFIG_FILE_NAME);
+			_project.getName() + ".client-extension-config.json");
 
 		_dockerFile = _addTaskOutputFile("Dockerfile");
 		_lcpJsonFile = _addTaskOutputFile("LCP.json");
 		_pluginPackagePropertiesFile = _addTaskOutputFile(
-			_PLUGIN_PACKAGE_PROPERTIES_PATH);
+			"WEB-INF/liferay-plugin-package.properties");
 	}
 
 	public void addClientExtension(ClientExtension clientExtension) {
@@ -89,7 +89,7 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 			(_siteInitializerJsonFile == null)) {
 
 			_siteInitializerJsonFile = _addTaskOutputFile(
-				_SITE_INITIALIZER_JSON_PATH);
+				"site-initializer/site-initializer.json");
 		}
 
 		if (Objects.equals(clientExtension.type, "themeCSS") &&
@@ -499,7 +499,7 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 		Map<String, Object> typeSettings = clientExtension.typeSettings;
 
 		Object frontendTokenDefinitionFile = typeSettings.remove(
-			_FRONTEND_TOKEN_DEFINITION_JSON_KEY);
+			"frontendTokenDefinitionJSON");
 
 		if (frontendTokenDefinitionFile == null) {
 			return;
@@ -515,7 +515,7 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 
 		try {
 			typeSettings.put(
-				_FRONTEND_TOKEN_DEFINITION_JSON_KEY,
+				"frontendTokenDefinitionJSON",
 				_objectMapper.writeValueAsString(
 					_objectMapper.readValue(json, Map.class)));
 		}
@@ -621,7 +621,7 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 
 				if ((fileBase64JsonNode == null) ||
 					!Objects.equals(
-						_BATCH_OBJECT_FILE_TOKEN,
+						"@batch_object_entry_file_base64@",
 						fileBase64JsonNode.asText())) {
 
 					continue;
@@ -633,7 +633,7 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 					throw new GradleException(
 						String.format(
 							"No name field found with token %s",
-							_BATCH_OBJECT_FILE_TOKEN));
+							"@batch_object_entry_file_base64@"));
 				}
 
 				File attachmentFile = new File(
@@ -826,21 +826,6 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 				ioException);
 		}
 	}
-
-	private static final String _BATCH_OBJECT_FILE_TOKEN =
-		"@batch_object_entry_file_base64@";
-
-	private static final String _CLIENT_EXTENSION_CONFIG_FILE_NAME =
-		".client-extension-config.json";
-
-	private static final String _FRONTEND_TOKEN_DEFINITION_JSON_KEY =
-		"frontendTokenDefinitionJSON";
-
-	private static final String _PLUGIN_PACKAGE_PROPERTIES_PATH =
-		"WEB-INF/liferay-plugin-package.properties";
-
-	private static final String _SITE_INITIALIZER_JSON_PATH =
-		"site-initializer/site-initializer.json";
 
 	private static final Set<String> _groupBatch = Sets.newHashSet(
 		"batch", "configuration");
