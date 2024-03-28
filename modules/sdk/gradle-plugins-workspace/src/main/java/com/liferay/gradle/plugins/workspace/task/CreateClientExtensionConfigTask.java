@@ -505,19 +505,19 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 			return;
 		}
 
-		String jsonString = ResourceUtil.readString(
+		String json = ResourceUtil.readString(
 			ResourceUtil.getLocalFileResolver(
 				_project.file(frontendTokenDefinitionFile)));
 
-		if (jsonString.isEmpty()) {
-			jsonString = "{}";
+		if (json.isEmpty()) {
+			json = "{}";
 		}
 
 		try {
 			typeSettings.put(
 				_FRONTEND_TOKEN_DEFINITION_JSON_KEY,
 				_objectMapper.writeValueAsString(
-					_objectMapper.readValue(jsonString, Map.class)));
+					_objectMapper.readValue(json, Map.class)));
 		}
 		catch (JsonParseException jsonParseException) {
 			throw new GradleException(
