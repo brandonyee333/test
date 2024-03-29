@@ -213,7 +213,6 @@ public class SaveGroupConfigurationMVCActionCommandTest {
 			"includePages", String.valueOf(includePages));
 		mockLiferayPortletActionRequest.addParameter(
 			"includeWebContent", String.valueOf(includeWebContent));
-
 		mockLiferayPortletActionRequest.setAttribute(
 			JavaConstants.JAVAX_PORTLET_RESPONSE,
 			new MockLiferayPortletActionResponse());
