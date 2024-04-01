@@ -141,27 +141,6 @@ public class SiteInitializerSerializerImpl
 		return StringUtil.replace(string, CharPool.SPACE, CharPool.DASH);
 	}
 
-	private void _serializeAccountEntries(
-			HashSet<AccountEntry> accountEntries, ZipWriter zipWriter)
-		throws Exception {
-
-		JSONArray accountEntriesJSONArray = _jsonFactory.createJSONArray();
-
-		for (AccountEntry accountEntry : accountEntries) {
-			accountEntriesJSONArray.put(
-				JSONUtil.put(
-					"externalReferenceCode",
-					accountEntry.getExternalReferenceCode()
-				).put(
-					"name", accountEntry.getName()
-				).put(
-					"type", accountEntry.getType()
-				));
-		}
-
-		_addZipEntry("accounts.json", accountEntriesJSONArray, zipWriter);
-	}
-
 	private void _serializeDDMStructure(
 			DDMStructure ddmStructure, ZipWriter zipWriter)
 		throws Exception {
@@ -508,29 +487,6 @@ public class SiteInitializerSerializerImpl
 		_addZipEntry("organizations.json", organizationsJSONArray, zipWriter);
 	}
 
-	private void _serializeRoles(HashSet<Role> roles, ZipWriter zipWriter)
-		throws Exception {
-
-		JSONArray roleJSONArray = _jsonFactory.createJSONArray();
-
-		for (Role role : roles) {
-			if (StringUtil.equals(role.getName(), "User")) {
-				continue;
-			}
-
-			roleJSONArray.put(
-				JSONUtil.put(
-					"name", role.getName()
-				).put(
-					"name_i18n", JSONUtil.put("en-US", role.getName())
-				).put(
-					"type", role.getType()
-				));
-		}
-
-		_addZipEntry("roles.json", roleJSONArray, zipWriter);
-	}
-
 	private void _serializeStyleBookEntries(long groupId, ZipWriter zipWriter)
 		throws Exception {
 
@@ -621,8 +577,42 @@ public class SiteInitializerSerializerImpl
 		}
 
 		_addZipEntry("user-accounts.json", usersJSONArray, zipWriter);
-		_serializeRoles(allRoles, zipWriter);
-		_serializeAccountEntries(allAccountEntries, zipWriter);
+
+		JSONArray roleJSONArray = _jsonFactory.createJSONArray();
+
+		for (Role role : allRoles) {
+			if (StringUtil.equals(role.getName(), "User")) {
+				continue;
+			}
+
+			roleJSONArray.put(
+				JSONUtil.put(
+					"name", role.getName()
+				).put(
+					"name_i18n", JSONUtil.put("en-US", role.getName())
+				).put(
+					"type", role.getType()
+				));
+		}
+
+		_addZipEntry("roles.json", roleJSONArray, zipWriter);
+
+		JSONArray accountEntriesJSONArray = _jsonFactory.createJSONArray();
+
+		for (AccountEntry accountEntry : allAccountEntries) {
+			accountEntriesJSONArray.put(
+				JSONUtil.put(
+					"externalReferenceCode",
+					accountEntry.getExternalReferenceCode()
+				).put(
+					"name", accountEntry.getName()
+				).put(
+					"type", accountEntry.getType()
+				));
+		}
+
+		_addZipEntry("accounts.json", accountEntriesJSONArray, zipWriter);
+
 		_serializeOrganizations(allOrganizations, zipWriter);
 	}
 
