@@ -452,9 +452,9 @@ public class SiteInitializerSerializerImpl
 	}
 
 	private void _serializeOrganization(
-		Organization organization, JSONArray jsonArray) {
+		JSONArray jsonArray, Organization organization) {
 
-		JSONObject organizationJSONObject = JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"childOrganizations", _jsonFactory.createJSONArray()
 		).put(
 			"externalReferenceCode", organization.getExternalReferenceCode()
@@ -468,24 +468,24 @@ public class SiteInitializerSerializerImpl
 					organization.getOrganizationId())) {
 
 			_serializeOrganization(
-				childOrganization,
-				(JSONArray)organizationJSONObject.get("childOrganizations"));
+				(JSONArray)jsonObject.get("childOrganizations"),
+				childOrganization);
 		}
 
-		jsonArray.put(organizationJSONObject);
+		jsonArray.put(jsonObject);
 	}
 
 	private void _serializeOrganizations(
 			Set<Organization> organizations, ZipWriter zipWriter)
 		throws Exception {
 
-		JSONArray organizationsJSONArray = _jsonFactory.createJSONArray();
+		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		for (Organization organization : organizations) {
-			_serializeOrganization(organization, organizationsJSONArray);
+			_serializeOrganization(jsonArray, organization);
 		}
 
-		_addZipEntry("organizations.json", organizationsJSONArray, zipWriter);
+		_addZipEntry("organizations.json", jsonArray, zipWriter);
 	}
 
 	private void _serializeStyleBookEntries(long groupId, ZipWriter zipWriter)
