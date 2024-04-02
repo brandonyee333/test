@@ -48,7 +48,7 @@ public class ScanCodeS3Bucket {
 		}
 		catch (IOException ioException) {
 			System.out.println(
-				"WARNING: Unable to get bucket name from mirrors.");
+				"WARNING: Unable to get bucket name from mirrors");
 		}
 
 		return getInstance(name);
