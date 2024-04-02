@@ -394,7 +394,7 @@ public class ScanCodeProject {
 	private static final String[] _LABELS = {"automated"};
 
 	private static final String[] _RESULT_FILES_EXTENSIONS = {
-		"json", "xls", "spdx", "cyclonedx", "attribution"
+		"attribution", "cyclonedx", "json", "spdx", "xls"
 	};
 
 	private final String _buildURL;
