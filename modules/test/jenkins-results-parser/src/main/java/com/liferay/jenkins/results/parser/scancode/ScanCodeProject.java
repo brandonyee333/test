@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import org.json.JSONArray;
@@ -141,7 +142,7 @@ public class ScanCodeProject {
 	public JSONObject getMapDevelopToDeployJSONObject() throws IOException {
 		JSONObject jsonObject = new JSONObject();
 
-		ArrayList<String> inputURLS = new ArrayList<>();
+		List<String> inputURLS = new ArrayList<>();
 
 		String tomcatURL = JenkinsResultsParserUtil.getBuildParameter(
 			_buildURL, "TEST_PORTAL_RELEASE_TOMCAT_URL");
@@ -401,7 +402,7 @@ public class ScanCodeProject {
 	private String _projectID;
 	private String _projectName;
 	private String _projectNameFromURL;
-	private final ArrayList<String> _projectStatuses = new ArrayList<>();
+	private final List<String> _projectStatuses = new ArrayList<>();
 	private String _projectURL;
 
 }
