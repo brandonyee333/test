@@ -219,7 +219,7 @@ public class ScanCodeS3Bucket {
 
 		System.out.println(
 			JenkinsResultsParserUtil.combine(
-				"Created Scancode S3 Object ", scanCodeS3Object.getURLString(),
+				"Created ScanCode S3 Object ", scanCodeS3Object.getURLString(),
 				" in ",
 				JenkinsResultsParserUtil.toDurationString(
 					JenkinsResultsParserUtil.getCurrentTimeMillis() - start)));

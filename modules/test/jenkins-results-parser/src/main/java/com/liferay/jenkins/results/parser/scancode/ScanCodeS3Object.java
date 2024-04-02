@@ -31,7 +31,7 @@ public class ScanCodeS3Object {
 		return _blob.getName();
 	}
 
-	public ScanCodeS3Bucket getScancodeS3Bucket() {
+	public ScanCodeS3Bucket getScanCodeS3Bucket() {
 		return _scanCodeS3Bucket;
 	}
 

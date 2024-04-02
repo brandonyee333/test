@@ -290,7 +290,7 @@ public class ScanCodeProject {
 
 		NotificationUtil.sendSlackNotification(
 			sb.toString(), "#scancode-io", ":liferay-ci:",
-			"Scancode pipeline is complete", "Liferay CI");
+			"ScanCode pipeline is complete", "Liferay CI");
 	}
 
 	public void setProjectURL(String uid, String name) {
