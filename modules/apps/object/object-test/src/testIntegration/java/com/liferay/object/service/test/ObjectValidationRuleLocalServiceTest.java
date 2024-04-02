@@ -105,17 +105,6 @@ public class ObjectValidationRuleLocalServiceTest {
 
 	@Test
 	public void testAddObjectValidationRule() throws Exception {
-		try (Closeable closeable =
-				_disableScriptContentBeExecutedOrIncluded()) {
-
-			AssertUtils.assertFailure(
-				ObjectValidationRuleEngineException.NotAllowedEngine.class,
-				"Engine \"groovy\" is not allowed",
-				() -> _addObjectValidationRule(
-					ObjectValidationRuleConstants.ENGINE_TYPE_GROOVY,
-					"invalidFields = false;"));
-		}
-
 		AssertUtils.assertFailure(
 			ObjectValidationRuleEngineException.MustNotBeNull.class,
 			"Engine is null",
@@ -126,6 +115,17 @@ public class ObjectValidationRuleLocalServiceTest {
 			"Engine \"abcdefghijklmnopqrstuvwxyz\" does not exist",
 			() -> _addObjectValidationRule(
 				"abcdefghijklmnopqrstuvwxyz", _VALID_DDM_SCRIPT));
+
+		try (Closeable closeable =
+				_disableScriptContentBeExecutedOrIncluded()) {
+
+			AssertUtils.assertFailure(
+				ObjectValidationRuleEngineException.NotAllowedEngine.class,
+				"Engine \"groovy\" is not allowed",
+				() -> _addObjectValidationRule(
+					ObjectValidationRuleConstants.ENGINE_TYPE_GROOVY,
+					"invalidFields = false;"));
+		}
 
 		AssertUtils.assertFailure(
 			ObjectValidationRuleNameException.class,

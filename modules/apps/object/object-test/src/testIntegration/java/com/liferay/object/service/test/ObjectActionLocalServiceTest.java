@@ -202,6 +202,15 @@ public class ObjectActionLocalServiceTest {
 
 		// Add object actions
 
+		AssertUtils.assertFailure(
+			ObjectActionErrorMessageException.class,
+			"Error message is null for locale " +
+				LocaleUtil.US.getDisplayName(),
+			() -> _addObjectAction(
+				StringPool.BLANK, RandomTestUtil.randomString(),
+				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
+				ObjectActionTriggerConstants.KEY_STANDALONE, false));
+
 		try (Closeable closeable =
 				_disableScriptContentBeExecutedOrIncluded()) {
 
@@ -218,14 +227,6 @@ public class ObjectActionLocalServiceTest {
 					false));
 		}
 
-		AssertUtils.assertFailure(
-			ObjectActionErrorMessageException.class,
-			"Error message is null for locale " +
-				LocaleUtil.US.getDisplayName(),
-			() -> _addObjectAction(
-				StringPool.BLANK, RandomTestUtil.randomString(),
-				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-				ObjectActionTriggerConstants.KEY_STANDALONE, false));
 		AssertUtils.assertFailure(
 			ObjectActionLabelException.class,
 			"Label is null for locale " + LocaleUtil.US.getDisplayName(),
