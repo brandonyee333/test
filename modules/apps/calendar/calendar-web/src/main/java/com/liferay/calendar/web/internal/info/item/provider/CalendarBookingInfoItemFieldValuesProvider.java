@@ -203,7 +203,6 @@ public class CalendarBookingInfoItemFieldValuesProvider
 			_calendarBookingService.getChildCalendarBookings(
 				calendarBooking.getParentCalendarBookingId(),
 				WorkflowConstants.STATUS_APPROVED);
-
 		List<CalendarBooking> declinedCalendarBookings =
 			_calendarBookingService.getChildCalendarBookings(
 				calendarBooking.getParentCalendarBookingId(),
