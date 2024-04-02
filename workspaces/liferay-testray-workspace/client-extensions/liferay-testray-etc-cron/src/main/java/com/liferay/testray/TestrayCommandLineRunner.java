@@ -53,16 +53,6 @@ public class TestrayCommandLineRunner implements CommandLineRunner {
 			"items"
 		);
 
-		if ((testrayBuildsJSONArray == null) ||
-			testrayBuildsJSONArray.isEmpty()) {
-
-			if (_log.isInfoEnabled()) {
-				_log.info("No builds found to archive");
-			}
-
-			return;
-		}
-
 		JSONArray jsonArray = new JSONArray();
 
 		for (int i = 0; i < testrayBuildsJSONArray.length(); i++) {
@@ -100,14 +90,6 @@ public class TestrayCommandLineRunner implements CommandLineRunner {
 		).getJSONArray(
 			"items"
 		);
-
-		if ((jsonArray == null) || jsonArray.isEmpty()) {
-			if (_log.isInfoEnabled()) {
-				_log.info("No builds found to delete");
-			}
-
-			return;
-		}
 
 		if (_log.isInfoEnabled()) {
 			_log.info("Deleting " + jsonArray.length() + " builds");
