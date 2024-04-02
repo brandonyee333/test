@@ -212,7 +212,7 @@ public class ObjectActionLocalServiceTest {
 				ObjectActionTriggerConstants.KEY_STANDALONE, false));
 
 		try (Closeable closeable =
-				_disableScriptContentBeExecutedOrIncluded()) {
+				_disableAllowScriptContentBeExecutedOrIncluded()) {
 
 			AssertUtils.assertFailure(
 				ObjectActionExecutorKeyException.class,
@@ -2043,7 +2043,7 @@ public class ObjectActionLocalServiceTest {
 		}
 	}
 
-	private Closeable _disableScriptContentBeExecutedOrIncluded()
+	private Closeable _disableAllowScriptContentBeExecutedOrIncluded()
 		throws ConfigurationException {
 
 		_configurationProvider.saveSystemConfiguration(

@@ -117,7 +117,7 @@ public class ObjectValidationRuleLocalServiceTest {
 				"abcdefghijklmnopqrstuvwxyz", _VALID_DDM_SCRIPT));
 
 		try (Closeable closeable =
-				_disableScriptContentBeExecutedOrIncluded()) {
+				_disableAllowScriptContentBeExecutedOrIncluded()) {
 
 			AssertUtils.assertFailure(
 				ObjectValidationRuleEngineException.NotAllowedEngine.class,
@@ -763,7 +763,7 @@ public class ObjectValidationRuleLocalServiceTest {
 		}
 	}
 
-	private Closeable _disableScriptContentBeExecutedOrIncluded()
+	private Closeable _disableAllowScriptContentBeExecutedOrIncluded()
 		throws ConfigurationException {
 
 		_configurationProvider.saveSystemConfiguration(
