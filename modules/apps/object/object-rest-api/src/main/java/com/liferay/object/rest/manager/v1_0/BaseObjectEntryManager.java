@@ -395,7 +395,7 @@ public abstract class BaseObjectEntryManager {
 		return null;
 	}
 
-	private ListEntry _getListEntry(
+	private ListEntry _fetchListEntry(
 		DTOConverterContext dtoConverterContext, String externalReferenceCode,
 		ObjectDefinition objectDefinition, ObjectField objectField) {
 
@@ -495,14 +495,14 @@ public abstract class BaseObjectEntryManager {
 				value = TransformUtil.transformToList(
 					StringUtil.split(
 						GetterUtil.getString(value), StringPool.SEMICOLON),
-					listTypeEntryExternalReferenceCode -> _getListEntry(
+					listTypeEntryExternalReferenceCode -> _fetchListEntry(
 						dtoConverterContext, listTypeEntryExternalReferenceCode,
 						objectDefinition, objectField));
 			}
 			else if (objectField.compareBusinessType(
 						ObjectFieldConstants.BUSINESS_TYPE_PICKLIST)) {
 
-				value = _getListEntry(
+				value = _fetchListEntry(
 					dtoConverterContext, GetterUtil.getString(value),
 					objectDefinition, objectField);
 			}
