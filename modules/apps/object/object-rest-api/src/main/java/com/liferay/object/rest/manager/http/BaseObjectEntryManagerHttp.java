@@ -9,17 +9,16 @@ import com.liferay.object.rest.manager.exception.ObjectEntryManagerHttpException
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
+import com.liferay.portal.kernel.util.HttpUtil;
 
 import java.net.HttpURLConnection;
-
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Guilherme Camacho
@@ -86,12 +85,6 @@ public abstract class BaseObjectEntryManagerHttp
 		}
 	}
 
-	@Reference
-	protected Http http;
-
-	@Reference
-	protected JSONFactory jsonFactory;
-
 	private JSONObject _invoke(
 			long companyId, long groupId, String location, Http.Method method,
 			JSONObject bodyJSONObject)
@@ -101,10 +94,10 @@ public abstract class BaseObjectEntryManagerHttp
 			companyId, groupId, location, method, bodyJSONObject);
 
 		if (bytes == null) {
-			return jsonFactory.createJSONObject();
+			return JSONFactoryUtil.createJSONObject();
 		}
 
-		return jsonFactory.createJSONObject(new String(bytes));
+		return JSONFactoryUtil.createJSONObject(new String(bytes));
 	}
 
 	private byte[] _invokeAsBytes(
@@ -140,7 +133,7 @@ public abstract class BaseObjectEntryManagerHttp
 			_log.debug("Proxy connector calling URL: " + options.getLocation());
 		}
 
-		byte[] bytes = http.URLtoByteArray(options);
+		byte[] bytes = HttpUtil.URLtoByteArray(options);
 
 		Http.Response response = options.getResponse();
 

@@ -11,14 +11,21 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.filter.factory.FilterFactory;
+import com.liferay.object.rest.manager.exception.ObjectEntryManagerHttpException;
+import com.liferay.object.rest.manager.http.BaseObjectEntryManagerHttp;
 import com.liferay.object.rest.manager.http.ObjectEntryManagerHttp;
 import com.liferay.object.rest.manager.v1_0.BaseObjectEntryManager;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
 import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.object.storage.sugarcrm.configuration.SugarCRMConfiguration;
+import com.liferay.object.storage.sugarcrm.internal.web.cache.SugarCRMAccessTokenWebCacheItem;
 import com.liferay.petra.function.UnsafeTriConsumer;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -345,6 +352,9 @@ public class SugarCRMObjectEntryManagerImpl
 		};
 	}
 
+	@Reference
+	private ConfigurationProvider _configurationProvider;
+
 	private final Map<String, String> _defaultObjectFieldNames =
 		HashMapBuilder.put(
 			"createDate", "date_entered"
@@ -361,10 +371,49 @@ public class SugarCRMObjectEntryManagerImpl
 	)
 	private FilterFactory<String> _filterFactory;
 
-	@Reference(
-		target = "(object.entry.manager.storage.type=" + ObjectDefinitionConstants.STORAGE_TYPE_SUGARCRM + ")"
-	)
-	private ObjectEntryManagerHttp _objectEntryManagerHttp;
+	private final ObjectEntryManagerHttp _objectEntryManagerHttp =
+		new BaseObjectEntryManagerHttp() {
+
+			@Override
+			public JSONObject getAccessToken(long companyId, long groupId) {
+				JSONObject jSONObject = SugarCRMAccessTokenWebCacheItem.get(
+					_getSugarCRMConfiguration(companyId, groupId));
+
+				if (jSONObject == null) {
+					throw new ObjectEntryManagerHttpException(
+						"Unable to authenticate with SugarCRM");
+				}
+
+				return jSONObject;
+			}
+
+			@Override
+			public String getBaseURL(long companyId, long groupId) {
+				SugarCRMConfiguration sugarCRMConfiguration =
+					_getSugarCRMConfiguration(companyId, groupId);
+
+				return sugarCRMConfiguration.baseURL();
+			}
+
+			private SugarCRMConfiguration _getSugarCRMConfiguration(
+				long companyId, long groupId) {
+
+				try {
+					if (groupId == 0) {
+						return _configurationProvider.getCompanyConfiguration(
+							SugarCRMConfiguration.class, companyId);
+					}
+
+					return _configurationProvider.getGroupConfiguration(
+						SugarCRMConfiguration.class, groupId);
+				}
+				catch (ConfigurationException configurationException) {
+					return ReflectionUtil.throwException(
+						configurationException);
+				}
+			}
+
+		};
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

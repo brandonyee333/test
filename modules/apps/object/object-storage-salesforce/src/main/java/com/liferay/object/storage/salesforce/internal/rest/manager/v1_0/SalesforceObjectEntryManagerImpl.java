@@ -14,17 +14,26 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.filter.factory.FilterFactory;
+import com.liferay.object.rest.manager.exception.ObjectEntryManagerHttpException;
+import com.liferay.object.rest.manager.http.BaseObjectEntryManagerHttp;
 import com.liferay.object.rest.manager.http.ObjectEntryManagerHttp;
 import com.liferay.object.rest.manager.v1_0.BaseObjectEntryManager;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
 import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.object.storage.salesforce.configuration.SalesforceConfiguration;
+import com.liferay.object.storage.salesforce.internal.web.cache.SalesforceAccessTokenWebCacheItem;
 import com.liferay.petra.function.UnsafeTriConsumer;
 import com.liferay.petra.function.transform.TransformUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelper;
@@ -423,8 +432,14 @@ public class SalesforceObjectEntryManagerImpl
 
 	private static final String _CUSTOM_OBJECT_SUFFIX = "__c";
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		SalesforceObjectEntryManagerImpl.class);
+
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
+	private ConfigurationProvider _configurationProvider;
 
 	private final Map<String, String> _defaultObjectFieldNames =
 		HashMapBuilder.put(
@@ -449,10 +464,65 @@ public class SalesforceObjectEntryManagerImpl
 	@Reference
 	private InlineSQLHelper _inlineSQLHelper;
 
-	@Reference(
-		target = "(object.entry.manager.storage.type=" + ObjectDefinitionConstants.STORAGE_TYPE_SALESFORCE + ")"
-	)
-	private ObjectEntryManagerHttp _objectEntryManagerHttp;
+	private final ObjectEntryManagerHttp _objectEntryManagerHttp =
+		new BaseObjectEntryManagerHttp() {
+
+			@Override
+			public JSONObject getAccessToken(long companyId, long groupId) {
+				int retry = 0;
+
+				while (retry < 3) {
+					JSONObject jSONObject =
+						SalesforceAccessTokenWebCacheItem.get(
+							_getSalesforceConfiguration(companyId, groupId));
+
+					if (jSONObject != null) {
+						return jSONObject;
+					}
+
+					try {
+						Thread.sleep(500);
+					}
+					catch (InterruptedException interruptedException) {
+						if (_log.isDebugEnabled()) {
+							_log.debug(interruptedException);
+						}
+					}
+
+					retry++;
+				}
+
+				throw new ObjectEntryManagerHttpException(
+					"Unable to authenticate with Salesforce");
+			}
+
+			@Override
+			public String getBaseURL(long companyId, long groupId) {
+				JSONObject jsonObject = getAccessToken(companyId, groupId);
+
+				return jsonObject.getString("instance_url") +
+					"/services/data/v54.0";
+			}
+
+			private SalesforceConfiguration _getSalesforceConfiguration(
+				long companyId, long groupId) {
+
+				try {
+					if (groupId == 0) {
+						return _configurationProvider.getCompanyConfiguration(
+							SalesforceConfiguration.class, companyId);
+					}
+
+					return _configurationProvider.getGroupConfiguration(
+						SalesforceConfiguration.class, groupId);
+				}
+				catch (ConfigurationException configurationException) {
+					return ReflectionUtil.throwException(
+						configurationException);
+				}
+			}
+
+		};
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;
