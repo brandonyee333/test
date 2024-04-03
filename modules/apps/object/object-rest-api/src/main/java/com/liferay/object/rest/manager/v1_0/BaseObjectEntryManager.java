@@ -242,7 +242,8 @@ public abstract class BaseObjectEntryManager {
 
 	protected List<com.liferay.object.rest.dto.v1_0.ObjectEntry>
 			toObjectEntries(
-				long companyId, Map<String, String> defaultObjectFieldNames,
+				long companyId,
+				Map<String, String> defaultObjectFieldNamesToJSONObjectKeys,
 				DTOConverterContext dtoConverterContext, JSONArray jsonArray,
 				ObjectDefinition objectDefinition)
 		throws Exception {
@@ -252,13 +253,13 @@ public abstract class BaseObjectEntryManager {
 		return JSONUtil.toList(
 			jsonArray,
 			jsonObject -> toObjectEntry(
-				companyId, dateFormat, defaultObjectFieldNames,
+				companyId, dateFormat, defaultObjectFieldNamesToJSONObjectKeys,
 				dtoConverterContext, jsonObject, objectDefinition));
 	}
 
 	protected com.liferay.object.rest.dto.v1_0.ObjectEntry toObjectEntry(
 			long companyId, DateFormat dateFormat,
-			Map<String, String> defaultObjectFieldNames,
+			Map<String, String> defaultObjectFieldNamesToJSONObjectKeys,
 			DTOConverterContext dtoConverterContext, JSONObject jsonObject,
 			ObjectDefinition objectDefinition)
 		throws Exception {
@@ -277,19 +278,23 @@ public abstract class BaseObjectEntryManager {
 						portal, null,
 						userLocalService.fetchUserByExternalReferenceCode(
 							jsonObject.getString(
-								defaultObjectFieldNames.get("creator")),
+								defaultObjectFieldNamesToJSONObjectKeys.get(
+									"creator")),
 							companyId)));
 				setDateCreated(
 					() -> dateFormat.parse(
 						jsonObject.getString(
-							defaultObjectFieldNames.get("createDate"))));
+							defaultObjectFieldNamesToJSONObjectKeys.get(
+								"createDate"))));
 				setDateModified(
 					() -> dateFormat.parse(
 						jsonObject.getString(
-							defaultObjectFieldNames.get("modifiedDate"))));
+							defaultObjectFieldNamesToJSONObjectKeys.get(
+								"modifiedDate"))));
 				setExternalReferenceCode(
 					() -> jsonObject.getString(
-						defaultObjectFieldNames.get("externalReferenceCode")));
+						defaultObjectFieldNamesToJSONObjectKeys.get(
+							"externalReferenceCode")));
 				setProperties(
 					() -> _toProperties(
 						dtoConverterContext, jsonObject, objectDefinition,

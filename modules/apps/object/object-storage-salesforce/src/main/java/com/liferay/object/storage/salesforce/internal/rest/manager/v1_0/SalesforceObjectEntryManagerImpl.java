@@ -142,8 +142,8 @@ public class SalesforceObjectEntryManagerImpl
 		}
 
 		return toObjectEntry(
-			companyId, getDateFormat(), _defaultObjectFieldNames,
-			dtoConverterContext,
+			companyId, getDateFormat(),
+			_defaultObjectFieldNamesToJSONObjectKeys, dtoConverterContext,
 			_objectEntryManagerHttp.get(
 				companyId, getGroupId(objectDefinition, scopeKey),
 				StringBundler.concat(
@@ -270,8 +270,8 @@ public class SalesforceObjectEntryManagerImpl
 
 		return Page.of(
 			toObjectEntries(
-				companyId, _defaultObjectFieldNames, dtoConverterContext,
-				jsonArray, objectDefinition),
+				companyId, _defaultObjectFieldNamesToJSONObjectKeys,
+				dtoConverterContext, jsonArray, objectDefinition),
 			pagination,
 			_getTotalCount(
 				companyId, objectDefinition,
@@ -318,7 +318,8 @@ public class SalesforceObjectEntryManagerImpl
 				sb.append(StringPool.COMMA_AND_SPACE);
 			}
 
-			String defaultFieldName = _defaultObjectFieldNames.get(fieldName);
+			String defaultFieldName =
+				_defaultObjectFieldNamesToJSONObjectKeys.get(fieldName);
 
 			if (defaultFieldName != null) {
 				sb.append(defaultFieldName);
@@ -441,7 +442,7 @@ public class SalesforceObjectEntryManagerImpl
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
-	private final Map<String, String> _defaultObjectFieldNames =
+	private final Map<String, String> _defaultObjectFieldNamesToJSONObjectKeys =
 		HashMapBuilder.put(
 			"createDate", "CreatedDate"
 		).put(

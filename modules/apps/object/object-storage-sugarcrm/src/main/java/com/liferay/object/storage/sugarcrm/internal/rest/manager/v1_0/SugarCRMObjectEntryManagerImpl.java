@@ -77,8 +77,8 @@ public class SugarCRMObjectEntryManagerImpl
 
 		return toObjectEntry(
 			objectDefinition.getCompanyId(), getDateFormat(),
-			_defaultObjectFieldNames, dtoConverterContext, responseJSONObject,
-			objectDefinition);
+			_defaultObjectFieldNamesToJSONObjectKeys, dtoConverterContext,
+			responseJSONObject, objectDefinition);
 	}
 
 	@Override
@@ -131,8 +131,8 @@ public class SugarCRMObjectEntryManagerImpl
 		}
 
 		return toObjectEntry(
-			companyId, getDateFormat(), _defaultObjectFieldNames,
-			dtoConverterContext,
+			companyId, getDateFormat(),
+			_defaultObjectFieldNamesToJSONObjectKeys, dtoConverterContext,
 			_objectEntryManagerHttp.get(
 				companyId, getGroupId(objectDefinition, scopeKey),
 				StringBundler.concat(
@@ -179,8 +179,8 @@ public class SugarCRMObjectEntryManagerImpl
 
 		return toObjectEntry(
 			objectDefinition.getCompanyId(), getDateFormat(),
-			_defaultObjectFieldNames, dtoConverterContext, responseJSONObject,
-			objectDefinition);
+			_defaultObjectFieldNamesToJSONObjectKeys, dtoConverterContext,
+			responseJSONObject, objectDefinition);
 	}
 
 	private void _appendFilter(
@@ -287,8 +287,9 @@ public class SugarCRMObjectEntryManagerImpl
 
 		return Page.of(
 			toObjectEntries(
-				companyId, _defaultObjectFieldNames, dtoConverterContext,
-				responseJSONObject.getJSONArray("records"), objectDefinition),
+				companyId, _defaultObjectFieldNamesToJSONObjectKeys,
+				dtoConverterContext, responseJSONObject.getJSONArray("records"),
+				objectDefinition),
 			pagination,
 			_getTotalCount(
 				companyId, objectDefinition, scopeKey, filterString, pagination,
@@ -325,7 +326,7 @@ public class SugarCRMObjectEntryManagerImpl
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
-	private final Map<String, String> _defaultObjectFieldNames =
+	private final Map<String, String> _defaultObjectFieldNamesToJSONObjectKeys =
 		HashMapBuilder.put(
 			"createDate", "date_entered"
 		).put(
