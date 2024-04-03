@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.URLCodec;
@@ -213,7 +214,7 @@ public class SugarCRMObjectEntryManagerImpl
 	private void _appendSorts(
 		StringBuilder sb, ObjectDefinition objectDefinition, Sort[] oldSorts) {
 
-		if ((null == oldSorts) || (oldSorts.length == 0)) {
+		if (ArrayUtil.isEmpty(oldSorts)) {
 			return;
 		}
 
@@ -224,26 +225,20 @@ public class SugarCRMObjectEntryManagerImpl
 		Sort[] newSorts = new Sort[oldSorts.length];
 
 		for (int i = 0; i < oldSorts.length; i++) {
-			int index = i;
+			for (ObjectField objectField : objectFields) {
+				if (!Objects.equals(
+						oldSorts[i].getFieldName(), objectField.getName())) {
 
-			ObjectField objectField = null;
-
-			for (ObjectField obj : objectFields) {
-				if (Objects.equals(
-						oldSorts[index].getFieldName(), obj.getName())) {
-
-					objectField = obj;
-
-					break;
+					continue;
 				}
-			}
 
-			if (objectField != null) {
 				Sort sort = new Sort(
 					objectField.getExternalReferenceCode(),
 					oldSorts[i].isReverse());
 
 				newSorts[i] = sort;
+
+				break;
 			}
 		}
 
