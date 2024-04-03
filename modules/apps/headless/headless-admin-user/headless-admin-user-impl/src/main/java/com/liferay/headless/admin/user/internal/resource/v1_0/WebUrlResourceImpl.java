@@ -35,6 +35,7 @@ import org.osgi.service.component.annotations.ServiceScope;
 )
 public class WebUrlResourceImpl extends BaseWebUrlResourceImpl {
 
+	@Override
 	public Page<WebUrl> getAccountByExternalReferenceCodeWebUrlsPage(
 			String externalReferenceCode)
 		throws Exception {
