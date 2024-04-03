@@ -243,7 +243,7 @@ public class SugarCRMObjectEntryManagerImpl
 		sb.append("&");
 	}
 
-	private String _generatePreparedLocation(
+	private String _getLocation(
 			ObjectDefinition objectDefinition, String filterString,
 			Pagination pagination, Sort[] sorts, boolean count)
 		throws Exception {
@@ -280,7 +280,7 @@ public class SugarCRMObjectEntryManagerImpl
 
 		JSONObject responseJSONObject = _objectEntryManagerHttp.get(
 			companyId, getGroupId(objectDefinition, scopeKey),
-			_generatePreparedLocation(
+			_getLocation(
 				objectDefinition, filterString, pagination, sorts, false));
 
 		if ((responseJSONObject == null) ||
@@ -310,7 +310,7 @@ public class SugarCRMObjectEntryManagerImpl
 
 		JSONObject responseJSONObject = _objectEntryManagerHttp.get(
 			companyId, getGroupId(objectDefinition, scopeKey),
-			_generatePreparedLocation(
+			_getLocation(
 				objectDefinition, filterString, pagination, sorts, true));
 
 		return responseJSONObject.getInt("record_count", 0);
