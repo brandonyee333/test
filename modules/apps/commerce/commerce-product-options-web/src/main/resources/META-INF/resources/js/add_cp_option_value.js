@@ -164,6 +164,7 @@ export default function ({
 			formattedData.key = keyInput.value;
 			formattedData.name[defaultLanguageId] = nameInput.value;
 		}
+
 		formattedData.id = cpOptionId;
 		formattedData.priority = priorityInput.value;
 
