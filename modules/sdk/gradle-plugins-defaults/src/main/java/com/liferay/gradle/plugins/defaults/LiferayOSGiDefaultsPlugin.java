@@ -22,7 +22,6 @@ import com.liferay.gradle.plugins.cache.task.TaskCache;
 import com.liferay.gradle.plugins.defaults.internal.BaselineDefaultsPlugin;
 import com.liferay.gradle.plugins.defaults.internal.FindSecurityBugsPlugin;
 import com.liferay.gradle.plugins.defaults.internal.JSDocDefaultsPlugin;
-import com.liferay.gradle.plugins.defaults.internal.JaCoCoPlugin;
 import com.liferay.gradle.plugins.defaults.internal.LiferayRelengPlugin;
 import com.liferay.gradle.plugins.defaults.internal.PublishPluginDefaultsPlugin;
 import com.liferay.gradle.plugins.defaults.internal.SpotBugsDefaultsPlugin;
@@ -382,12 +381,6 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 				portalTestSnapshotConfiguration);
 			_configureSourceSetTestIntegration(
 				project, portalConfiguration, portalTestConfiguration);
-
-			if (Boolean.getBoolean("junit.code.coverage") ||
-				GradleUtil.getProperty(project, "junit.code.coverage", false)) {
-
-				JaCoCoPlugin.INSTANCE.apply(project);
-			}
 		}
 
 		Task baselineTask = GradleUtil.getTask(

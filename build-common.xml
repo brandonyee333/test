@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="build-common" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:if="ant:if" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:jacoco="antlib:org.jacoco.ant" xmlns:sonar="antlib:org.sonar.ant" xmlns:unless="ant:unless">
+<project name="build-common" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:artifact="antlib:org.apache.maven.artifact.ant" xmlns:if="ant:if" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:sonar="antlib:org.sonar.ant" xmlns:unless="ant:unless">
 	<dirname file="${ant.file.build-common}" property="project.dir.native" />
 
 	<pathconvert property="project.dir" targetos="unix">
@@ -107,11 +107,6 @@
 		resource="net/sf/antcontrib/antlib.xml"
 	/>
 	<typedef classpathref="lib.classpath" resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" />
-	<taskdef
-		classpathref="lib.classpath"
-		resource="org/jacoco/ant/antlib.xml"
-		uri="antlib:org.jacoco.ant"
-	/>
 
 	<taskdef
 		classname="com.liferay.ant.beanshell.BeanShellTask"
@@ -152,7 +147,6 @@
 	<property name="aspectj.configuration" value="com/liferay/aspectj/aop.xml" />
 	<property name="definitions.dir" value="${project.dir}/definitions" />
 	<property name="doc.dir" value="${project.dir}/api" />
-	<property name="jacoco.agent.configuration" value="=destfile=${jacoco.dump.file},excludes=${jacoco.excludes},includes=${jacoco.includes},output=file,append=true" />
 
 	<var name="fork.mode" value="false" />
 	<var if:true="${jvm.debug}" name="fork.mode" value="true" />
@@ -1134,32 +1128,6 @@ information.
 		</sequential>
 	</macrodef>
 
-	<macrodef name="jacoco-report">
-		<attribute name="exec.file" />
-		<element name="class.files" />
-		<element name="source.files" />
-
-		<sequential>
-			<jacoco:report>
-				<executiondata>
-					<file file="@{exec.file}" />
-				</executiondata>
-
-				<structure name="Liferay JaCoCo Report">
-					<classfiles>
-						<class.files />
-					</classfiles>
-
-					<sourcefiles if:true="${jacoco.report.include.source.file}">
-						<source.files />
-					</sourcefiles>
-				</structure>
-
-				<html destdir="${jacoco.report.folder}" />
-			</jacoco:report>
-		</sequential>
-	</macrodef>
-
 	<macrodef name="junit-cmd">
 		<attribute name="forkmode" />
 		<attribute default="" name="junit.jvm.override" />
@@ -1228,7 +1196,6 @@ information.
 				<sysproperty file="test-coverage/@{test.type}/whip.dat" key="whip.datafile" />
 				<sysproperty key="whip.instrument.dump" value="${whip.instrument.dump}" />
 				<jvmarg if:true="${jvm.debug}" line="${jpda.settings}" />
-				<jvmarg if:true="${junit.code.coverage}" line="-javaagent:${jacoco.agent.jar}${jacoco.agent.configuration}" />
 				<jvmarg if:true="${aspectj.weaver.enabled}" line="${aspectj.agent}" />
 				<jvmarg if:set="junit.java.add.opens" line="${junit.java.add.opens}" />
 				<jvmarg line="${app.server.jvm.args}" />
@@ -1993,8 +1960,6 @@ rerun your task.
 					<propertyref name="compile.jsp.include" />
 					<propertyref name="git.working.branch.name" />
 					<propertyref if:set="gradle.update.file.versions.excludes" name="gradle.update.file.versions.excludes" unless:blank="${gradle.update.file.versions.excludes}" />
-					<propertyref name="jacoco.agent.configuration" />
-					<propertyref name="jacoco.agent.jar" />
 					<propertyref name="jira.project.keys" />
 					<propertyref name="jsp.precompile.from.source" />
 					<propertyref name="junit.code.coverage" />
@@ -2163,98 +2128,6 @@ rerun your task.
 			test.command.name="testRun"
 			test.results.dir="modules/test-results"
 		/>
-	</target>
-
-	<target name="generate-code-coverage-report">
-		<delete dir="${jacoco.report.folder}" />
-		<mkdir dir="${jacoco.report.folder}" />
-
-		<if>
-			<isset property="class.names" />
-			<then>
-				<taskdef
-					classname="com.liferay.ant.get.file.set.GetFileSetTask"
-					classpathref="project.classpath"
-					name="get-file-set"
-				/>
-
-				<get-file-set classNames="${class.names}" rootDir="${project.dir}" />
-			</then>
-			<else>
-				<fileset
-					dir="${project.dir}"
-					id="get.file.set.class.set"
-				>
-					<include name="**/classes/com/liferay/**/*.class" />
-				</fileset>
-
-				<dirset
-					dir="${project.dir}"
-					id="get.file.set.src.set"
-				>
-					<include name="**/src" />
-					<include name="**/src/main/java" />
-				</dirset>
-			</else>
-		</if>
-
-		<var name="exec.file" unset="true" />
-		<if>
-			<available file="${jacoco.dump.file}" type="file" />
-			<then>
-				<var name="exec.file" value="${jacoco.dump.file}" />
-			</then>
-			<elseif>
-				<available file="${jacoco.dump.file}" type="dir" />
-				<then>
-					<var name="exec.file" value="${jacoco.dump.file}/liferay-jacoco-merged.exec" />
-
-					<jacoco:merge destfile="${exec.file}">
-						<fileset
-							dir="${jacoco.dump.file}"
-							includes="*.exec"
-						/>
-					</jacoco:merge>
-				</then>
-			</elseif>
-			<else>
-				<fail message="Unable to find JaCoCo session file ${jacoco.dump.file}. Please run tests with code coverage before generating reports." />
-			</else>
-		</if>
-
-		<if>
-			<isset property="jacoco.merged.jar" />
-			<then>
-				<jacoco-report
-					exec.file="${exec.file}"
-				>
-					<class.files>
-						<file file="${jacoco.merged.jar}" />
-					</class.files>
-					<source.files>
-						<dirset
-							refid="get.file.set.src.set"
-						/>
-					</source.files>
-				</jacoco-report>
-			</then>
-			<else>
-				<jacoco-report
-					exec.file="${exec.file}"
-				>
-					<class.files>
-						<fileset
-							refid="get.file.set.class.set"
-						/>
-					</class.files>
-					<source.files>
-						<dirset
-							refid="get.file.set.src.set"
-						/>
-					</source.files>
-				</jacoco-report>
-			</else>
-		</if>
 	</target>
 
 	<target name="gradle-execute-modules">

@@ -95,8 +95,6 @@ public interface Job {
 
 	public boolean testHotfixChanges();
 
-	public boolean testJaCoCoCodeCoverage();
-
 	public boolean testReleaseBundle();
 
 	public boolean testRelevantChanges();

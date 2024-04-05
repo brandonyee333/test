@@ -6199,54 +6199,6 @@
 				</licenses>
 			</library>
 			<library>
-				<file-name>lib/development/jacocoagent.jar</file-name>
-				<version>0.8.4</version>
-				<project-name>JaCoCo</project-name>
-				<project-url>http://www.jacoco.org</project-url>
-				<licenses>
-					<license>
-						<license-name>Eclipse Public License Version 1.0</license-name>
-						<license-url>http://www.eclipse.org/legal/epl-v10.html</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/jacocoant.jar</file-name>
-				<version>0.8.4</version>
-				<project-name>JaCoCo</project-name>
-				<project-url>http://www.jacoco.org</project-url>
-				<licenses>
-					<license>
-						<license-name>Eclipse Public License Version 1.0</license-name>
-						<license-url>http://www.eclipse.org/legal/epl-v10.html</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/jacococore.jar</file-name>
-				<version>0.8.4</version>
-				<project-name>JaCoCo</project-name>
-				<project-url>http://www.jacoco.org</project-url>
-				<licenses>
-					<license>
-						<license-name>Eclipse Public License Version 1.0</license-name>
-						<license-url>http://www.eclipse.org/legal/epl-v10.html</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>lib/development/jacocoreport.jar</file-name>
-				<version>0.8.4</version>
-				<project-name>JaCoCo</project-name>
-				<project-url>http://www.jacoco.org</project-url>
-				<licenses>
-					<license>
-						<license-name>Eclipse Public License Version 1.0</license-name>
-						<license-url>http://www.eclipse.org/legal/epl-v10.html</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
 				<file-name>lib/development/jalopy.jar</file-name>
 				<version>1.5 RC3</version>
 				<project-name>Jalopy</project-name>

@@ -44,7 +44,6 @@ import org.gradle.api.file.CopySpec;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputDirectory;
-import org.gradle.api.tasks.InputFile;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.PathSensitive;
@@ -127,19 +126,6 @@ public class SetUpTestableTomcatTask
 	}
 
 	@Input
-	@Optional
-	public String getJaCoCoAgentConfiguration() {
-		return GradleUtil.toString(_jaCoCoAgentConfiguration);
-	}
-
-	@InputFile
-	@Optional
-	@PathSensitive(PathSensitivity.RELATIVE)
-	public File getJaCoCoAgentFile() {
-		return GradleUtil.toFile(getProject(), _jaCoCoAgentFile);
-	}
-
-	@Input
 	@Override
 	public String getManagerPassword() {
 		return GradleUtil.toString(_managerPassword);
@@ -186,14 +172,6 @@ public class SetUpTestableTomcatTask
 
 	public void setDir(Object dir) {
 		_dir = dir;
-	}
-
-	public void setJaCoCoAgentConfiguration(Object jaCoCoAgentConfiguration) {
-		_jaCoCoAgentConfiguration = jaCoCoAgentConfiguration;
-	}
-
-	public void setJaCoCoAgentFile(Object jaCoCoAgentFile) {
-		_jaCoCoAgentFile = jaCoCoAgentFile;
 	}
 
 	@Override
@@ -299,41 +277,6 @@ public class SetUpTestableTomcatTask
 
 			if (fileName.endsWith(".sh")) {
 				file.setExecutable(true);
-			}
-		}
-	}
-
-	private void _setUpJaCoCo() throws Exception {
-		File jaCoCoAgentFile = getJaCoCoAgentFile();
-		File targetJaCoCoAgentFile = new File(getDir(), "bin/jacocoagent.jar");
-
-		if ((jaCoCoAgentFile != null) && !targetJaCoCoAgentFile.exists()) {
-			Files.copy(
-				jaCoCoAgentFile.toPath(), targetJaCoCoAgentFile.toPath());
-		}
-
-		String jaCoCoJvmArg =
-			"-javaagent:" + targetJaCoCoAgentFile.getAbsolutePath();
-
-		if (_jaCoCoAgentConfiguration != null) {
-			jaCoCoJvmArg += _jaCoCoAgentConfiguration;
-		}
-
-		if (!_contains("bin/setenv.sh", jaCoCoJvmArg)) {
-			try (PrintWriter printWriter = _getAppendPrintWriter(
-					"bin/setenv.sh")) {
-
-				printWriter.println();
-
-				printWriter.println("if [ \"$1\" = \"jacoco\" ]");
-				printWriter.println("then");
-				printWriter.print("    JACOCO_OPTS=\"");
-				printWriter.print(jaCoCoJvmArg);
-				printWriter.println("\"");
-				printWriter.println(
-					"    CATALINA_OPTS=\"${CATALINA_OPTS} ${JACOCO_OPTS}\"");
-				printWriter.println("    shift");
-				printWriter.println("fi");
 			}
 		}
 	}
@@ -509,8 +452,6 @@ public class SetUpTestableTomcatTask
 	}
 
 	private void _setUpSetEnv() throws Exception {
-		_setUpJaCoCo();
-
 		_setUpAspectJ();
 		_setUpJpda();
 	}
@@ -524,8 +465,6 @@ public class SetUpTestableTomcatTask
 	private Object _aspectJConfiguration;
 	private boolean _debugLogging;
 	private Object _dir;
-	private Object _jaCoCoAgentConfiguration;
-	private Object _jaCoCoAgentFile;
 	private Object _managerPassword;
 	private Object _managerUserName;
 	private Object _moduleFrameworkBaseDir;

@@ -238,13 +238,6 @@ public class TestIntegrationDefaultsPlugin
 				public void execute(
 					SetUpTestableTomcatTask setUpTestableTomcatTask) {
 
-					setUpTestableTomcatTask.setJaCoCoAgentConfiguration(
-						GradleUtil.getProperty(
-							project, "jacoco.agent.configuration",
-							(String)null));
-					setUpTestableTomcatTask.setJaCoCoAgentFile(
-						GradleUtil.getProperty(
-							project, "jacoco.agent.jar", (String)null));
 					setUpTestableTomcatTask.setAspectJAgent(
 						GradleUtil.getProperty(
 							project, "aspectj.agent", (String)null));
