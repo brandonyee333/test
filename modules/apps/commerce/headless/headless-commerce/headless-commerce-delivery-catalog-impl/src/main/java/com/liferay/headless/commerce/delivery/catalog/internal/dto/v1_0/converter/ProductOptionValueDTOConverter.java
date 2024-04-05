@@ -212,18 +212,18 @@ public class ProductOptionValueDTOConverter
 						String cpDefinitionOptionValueRelKey =
 							cpDefinitionOptionValueRel.getKey();
 
-						String[] splits = cpDefinitionOptionValueRelKey.split(
+						String[] parts = cpDefinitionOptionValueRelKey.split(
 							StringPool.DASH);
 
 						TimeZone timeZone = TimeZoneUtil.getTimeZone(
-							_getTimeZoneId(splits));
+							_getTimeZoneId(parts));
 
 						Calendar calendar = CalendarFactoryUtil.getCalendar(
-							Integer.valueOf(splits[2]),
-							Integer.valueOf(splits[0]) - 1,
-							Integer.valueOf(splits[1]),
-							Integer.valueOf(splits[3]),
-							Integer.valueOf(splits[4]));
+							Integer.valueOf(parts[2]),
+							Integer.valueOf(parts[0]) - 1,
+							Integer.valueOf(parts[1]),
+							Integer.valueOf(parts[3]),
+							Integer.valueOf(parts[4]));
 
 						DateFormat dateFormat = DateFormat.getDateTimeInstance(
 							DateFormat.LONG, DateFormat.SHORT,
@@ -235,10 +235,10 @@ public class ProductOptionValueDTOConverter
 							timeZone.getDisplayName(
 								dtoConverterContext.getLocale()),
 							StringPool.CLOSE_PARENTHESIS,
-							StringPool.COMMA_AND_SPACE, splits[5],
+							StringPool.COMMA_AND_SPACE, parts[5],
 							StringPool.SPACE,
 							_language.get(
-								dtoConverterContext.getLocale(), splits[6]));
+								dtoConverterContext.getLocale(), parts[6]));
 					});
 				setPreselected(cpDefinitionOptionValueRel::isPreselected);
 				setPrice(
@@ -756,23 +756,23 @@ public class ProductOptionValueDTOConverter
 		return jsonArray;
 	}
 
-	private String _getTimeZoneId(String[] splits) {
-		if (splits.length <= 8) {
-			return splits[7].toUpperCase();
+	private String _getTimeZoneId(String[] parts) {
+		if (parts.length <= 8) {
+			return parts[7].toUpperCase();
 		}
 
 		String timeZone = StringBundler.concat(
 			com.liferay.portal.kernel.util.StringUtil.upperCaseFirstLetter(
-				splits[7]),
+				parts[7]),
 			StringPool.FORWARD_SLASH,
 			com.liferay.portal.kernel.util.StringUtil.upperCaseFirstLetter(
-				splits[8]));
+				parts[8]));
 
-		if ((splits.length > 9) && Validator.isNotNull(splits[9])) {
+		if ((parts.length > 9) && Validator.isNotNull(parts[9])) {
 			return StringBundler.concat(
 				timeZone, StringPool.UNDERLINE,
 				com.liferay.portal.kernel.util.StringUtil.upperCaseFirstLetter(
-					splits[9]));
+					parts[9]));
 		}
 
 		return timeZone;
