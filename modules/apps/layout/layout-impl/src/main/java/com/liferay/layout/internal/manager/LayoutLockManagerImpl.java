@@ -480,12 +480,10 @@ public class LayoutLockManagerImpl implements LayoutLockManager {
 		if (Objects.equals(type, LayoutConstants.TYPE_ASSET_DISPLAY)) {
 			return LockedLayoutType.DISPLAY_PAGE_TEMPLATE;
 		}
-
-		if (Objects.equals(type, LayoutConstants.TYPE_COLLECTION)) {
+		else if (Objects.equals(type, LayoutConstants.TYPE_COLLECTION)) {
 			return LockedLayoutType.COLLECTION_PAGE;
 		}
-
-		if (Objects.equals(type, LayoutConstants.TYPE_UTILITY)) {
+		else if (Objects.equals(type, LayoutConstants.TYPE_UTILITY)) {
 			return LockedLayoutType.UTILITY_PAGE;
 		}
 
