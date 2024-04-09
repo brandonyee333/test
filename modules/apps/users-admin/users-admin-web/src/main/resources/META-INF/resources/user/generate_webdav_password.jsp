@@ -7,13 +7,13 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-User selectedUser = userDisplayContext.getSelectedUser();
-%>
-
 <liferay-ui:message key="use-the-username-and-password-below-when-authenticating-your-webdav-client" />
 
 <br /><br />
+
+<%
+User selectedUser = userDisplayContext.getSelectedUser();
+%>
 
 <aui:input label="web-dav-username" name="<%= StringUtil.randomId() %>" type="resource" value="<%= selectedUser.getUserId() %>" />
 
