@@ -15,5 +15,5 @@ liferay-partner-etc-spring-boot-oauth-application-headless-server:
 liferay-partner-etc-spring-boot-object-action-mdf-claim-status-management:
     name: Liferay Partner Etc Spring Boot Object Action MDF Claim Status Management
     oAuth2ApplicationExternalReferenceCode: liferay-partner-etc-spring-boot-oauth-application-headless-server
-    resourcePath: /object/action/mdf-claim/status-management
+    resourcePath: /object/action/mdf/claim/status/management
     type: objectAction

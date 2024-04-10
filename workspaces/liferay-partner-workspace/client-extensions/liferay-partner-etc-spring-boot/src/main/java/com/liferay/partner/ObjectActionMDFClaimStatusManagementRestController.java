@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author Elias Santos
  */
-@RequestMapping("/object/action/mdf-claim/status-management")
+@RequestMapping("/object/action/mdf/claim/status/management")
 @RestController
 public class ObjectActionMDFClaimStatusManagementRestController
 	extends BaseRestController {
