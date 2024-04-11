@@ -119,15 +119,17 @@ public class AccountChannelEntryResourceTest
 				RandomTestUtil.randomString(), 1000,
 				CommerceTermEntryConstants.TYPE_DELIVERY_TERMS, null,
 				serviceContext);
+
 		_commerceDiscount =
 			CommerceDiscountLocalServiceUtil.addCommerceDiscount(
-				RandomTestUtil.randomString(), _user.getUserId(),
-				RandomTestUtil.randomString(),
-				CommerceDiscountConstants.TARGET_CATEGORIES, false, null, true,
-				BigDecimal.ZERO, StringPool.BLANK, BigDecimal.TEN,
-				BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0, true,
-				true, 1, 1, 2022, 12, 0, 0, 0, 0, 0, 0, true, serviceContext);
+				RandomTestUtil.randomString(), _user.getUserId(), true, "USD",
+				null, 1, 1, 2022, 12, 0, 0, 0, 0, 0, 0, StringPool.BLANK,
+				BigDecimal.TEN, BigDecimal.ZERO, BigDecimal.ZERO,
+				BigDecimal.ZERO, 0,
+				CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+				BigDecimal.ZERO, true, true,
+				CommerceDiscountConstants.TARGET_CATEGORIES,
+				RandomTestUtil.randomString(), false, true, serviceContext);
 		_commercePaymentTerm =
 			CommerceTermEntryLocalServiceUtil.addCommerceTermEntry(
 				RandomTestUtil.randomString(), _user.getUserId(), true,

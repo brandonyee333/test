@@ -230,6 +230,47 @@ public class Discount implements Serializable {
 	@JsonIgnore
 	private Supplier<String> _couponCodeSupplier;
 
+	@Schema(example = "EUR")
+	public String getCurrencyCode() {
+		if (_currencyCodeSupplier != null) {
+			currencyCode = _currencyCodeSupplier.get();
+
+			_currencyCodeSupplier = null;
+		}
+
+		return currencyCode;
+	}
+
+	public void setCurrencyCode(String currencyCode) {
+		this.currencyCode = currencyCode;
+
+		_currencyCodeSupplier = null;
+	}
+
+	@JsonIgnore
+	public void setCurrencyCode(
+		UnsafeSupplier<String, Exception> currencyCodeUnsafeSupplier) {
+
+		_currencyCodeSupplier = () -> {
+			try {
+				return currencyCodeUnsafeSupplier.get();
+			}
+			catch (RuntimeException runtimeException) {
+				throw runtimeException;
+			}
+			catch (Exception exception) {
+				throw new RuntimeException(exception);
+			}
+		};
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String currencyCode;
+
+	@JsonIgnore
+	private Supplier<String> _currencyCodeSupplier;
+
 	@Schema
 	@Valid
 	public Map<String, ?> getCustomFields() {
@@ -1584,6 +1625,22 @@ public class Discount implements Serializable {
 			sb.append("\"");
 
 			sb.append(_escape(couponCode));
+
+			sb.append("\"");
+		}
+
+		String currencyCode = getCurrencyCode();
+
+		if (currencyCode != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"currencyCode\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(currencyCode));
 
 			sb.append("\"");
 		}

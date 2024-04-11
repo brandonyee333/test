@@ -134,6 +134,9 @@ components:
                 couponCode:
                     example: "SAVE20"
                     type: string
+                currencyCode:
+                    example: EUR
+                    type: string
                 customFields:
                     additionalProperties: true
                     type: object

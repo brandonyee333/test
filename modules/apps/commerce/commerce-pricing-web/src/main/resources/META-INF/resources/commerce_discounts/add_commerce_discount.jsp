@@ -19,19 +19,37 @@ CommerceDiscountDisplayContext commerceDiscountDisplayContext = (CommerceDiscoun
 	<aui:form method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "apiSubmit(this.form);" %>' useNamespace="<%= false %>">
 		<aui:input bean="<%= commerceDiscountDisplayContext.getCommerceDiscount() %>" label="name" model="<%= CommerceDiscount.class %>" name="title" required="<%= true %>" />
 
-		<aui:select label="type" name="commerceDiscountType" required="<%= true %>">
+		<div class="row">
+			<div class="col-6">
+				<aui:select label="type" name="commerceDiscountType" required="<%= true %>">
 
-			<%
-			for (String commerceDiscountType : CommerceDiscountConstants.TYPES) {
-			%>
+					<%
+					for (String commerceDiscountType : CommerceDiscountConstants.TYPES) {
+					%>
 
-				<aui:option label="<%= commerceDiscountType %>" value="<%= commerceDiscountDisplayContext.getUsePercentage(commerceDiscountType) %>" />
+						<aui:option label="<%= commerceDiscountType %>" value="<%= commerceDiscountDisplayContext.getUsePercentage(commerceDiscountType) %>" />
 
-			<%
-			}
-			%>
+					<%
+					}
+					%>
 
-		</aui:select>
+				</aui:select>
+				</div><div class="col-6">
+				<aui:select label="currency" name="commerceCurrencyCode" required="<%= true %>">
+
+					<%
+					for (CommerceCurrency commerceCurrency : commerceDiscountDisplayContext.getCommerceCurrencies()) {
+					%>
+
+						<aui:option label="<%= HtmlUtil.escape(commerceCurrency.getCode()) %>" selected="<%= commerceCurrency.isPrimary() %>" value="<%= commerceCurrency.getCode() %>" />
+
+					<%
+					}
+					%>
+
+				</aui:select>
+			</div>
+		</div>
 
 		<aui:select label="apply-to" name="commerceDiscountTarget" required="<%= true %>">
 
@@ -54,6 +72,7 @@ CommerceDiscountDisplayContext commerceDiscountDisplayContext = (CommerceDiscoun
 
 		Liferay.provide(window, '<portlet:namespace />apiSubmit', (form) => {
 			const discountData = {
+				currencyCode: document.getElementById('commerceCurrencyCode').value,
 				level: '<%= CommerceDiscountConstants.LEVEL_L1 %>',
 				limitationType:
 					'<%= CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED %>',

@@ -7,6 +7,7 @@ package com.liferay.commerce.pricing.web.internal.display.context;
 
 import com.liferay.commerce.currency.model.CommerceCurrency;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
+import com.liferay.commerce.currency.util.comparator.CommerceCurrencyPriorityComparator;
 import com.liferay.commerce.discount.constants.CommerceDiscountActionKeys;
 import com.liferay.commerce.discount.constants.CommerceDiscountConstants;
 import com.liferay.commerce.discount.model.CommerceDiscount;
@@ -26,6 +27,7 @@ import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.frontend.data.set.model.FDSActionDropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -109,6 +111,13 @@ public class CommerceDiscountDisplayContext extends BasePricingDisplayContext {
 		).setWindowState(
 			LiferayWindowState.POP_UP
 		).buildString();
+	}
+
+	public List<CommerceCurrency> getCommerceCurrencies() {
+		return _commerceCurrencyLocalService.getCommerceCurrencies(
+			commercePricingRequestHelper.getCompanyId(), true,
+			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+			new CommerceCurrencyPriorityComparator(true));
 	}
 
 	public CommerceDiscount getCommerceDiscount() throws PortalException {

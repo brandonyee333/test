@@ -433,7 +433,7 @@ public class CommerceOrderLocalServiceImpl
 
 		int count =
 			_commerceDiscountLocalService.getActiveCommerceDiscountsCount(
-				commerceOrder.getCompanyId(), couponCode, true);
+				commerceOrder.getCompanyId(), true, couponCode);
 
 		if (count == 0) {
 			hasDiscounts = true;
@@ -446,7 +446,7 @@ public class CommerceOrderLocalServiceImpl
 		if (Validator.isNotNull(couponCode)) {
 			CommerceDiscount commerceDiscount =
 				_commerceDiscountLocalService.getActiveCommerceDiscount(
-					commerceOrder.getCompanyId(), couponCode, true);
+					commerceOrder.getCompanyId(), true, couponCode);
 
 			_commerceDiscountValidatorHelper.checkValid(
 				commerceContext, commerceDiscount);

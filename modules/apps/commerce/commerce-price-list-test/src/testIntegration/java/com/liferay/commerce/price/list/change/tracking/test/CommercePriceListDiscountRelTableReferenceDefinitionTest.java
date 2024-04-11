@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
@@ -28,6 +29,7 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import java.math.BigDecimal;
 
 import java.util.Calendar;
+import java.util.Currency;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -62,18 +64,21 @@ public class CommercePriceListDiscountRelTableReferenceDefinitionTest
 		Calendar calendar = CalendarFactoryUtil.getCalendar(
 			_user.getTimeZone());
 
+		Currency currency = Currency.getInstance(LocaleUtil.US);
+
 		_commerceDiscount = _commerceDiscountLocalService.addCommerceDiscount(
-			_user.getUserId(), RandomTestUtil.randomString(),
-			CommerceDiscountConstants.TARGET_PRODUCTS, false, null, false,
-			BigDecimal.ZERO, BigDecimal.valueOf(RandomTestUtil.randomDouble()),
-			BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-			CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED, 0, true,
+			_user.getUserId(), true, currency.getCurrencyCode(), null,
 			calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
 			calendar.get(Calendar.YEAR), calendar.get(Calendar.HOUR_OF_DAY),
 			calendar.get(Calendar.MINUTE), calendar.get(Calendar.MONTH),
 			calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.YEAR),
 			calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
-			true, ServiceContextTestUtil.getServiceContext(group.getGroupId()));
+			BigDecimal.valueOf(RandomTestUtil.randomDouble()), BigDecimal.ZERO,
+			BigDecimal.ZERO, BigDecimal.ZERO, 0,
+			CommerceDiscountConstants.LIMITATION_TYPE_UNLIMITED,
+			BigDecimal.ZERO, true, CommerceDiscountConstants.TARGET_PRODUCTS,
+			RandomTestUtil.randomString(), false, false,
+			ServiceContextTestUtil.getServiceContext(group.getGroupId()));
 	}
 
 	@Override
