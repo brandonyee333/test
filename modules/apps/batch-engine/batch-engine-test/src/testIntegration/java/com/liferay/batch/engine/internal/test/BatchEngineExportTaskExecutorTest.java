@@ -364,10 +364,9 @@ public class BatchEngineExportTaskExecutorTest
 		}
 
 		for (int i = 0; i < blogsEntries.size(); i++) {
-			BlogsEntry blogsEntry = blogsEntries.get(i);
-			Object[] rowValues = rowValuesList.get(i + initialCount);
-
-			_assertExportedValues(blogsEntry, fieldNames, rowValues);
+			_assertExportedValues(
+				blogsEntries.get(i), fieldNames,
+				rowValuesList.get(i + initialCount));
 		}
 	}
 
@@ -377,7 +376,6 @@ public class BatchEngineExportTaskExecutorTest
 		Assert.assertEquals(
 			BatchEngineTaskExecuteStatus.FAILED.toString(),
 			batchEngineExportTask.getExecuteStatus());
-
 		Assert.assertEquals(0, batchEngineExportTask.getProcessedItemsCount());
 		Assert.assertEquals(0, batchEngineExportTask.getTotalItemsCount());
 	}
