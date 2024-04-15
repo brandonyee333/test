@@ -246,9 +246,9 @@ public class JspServletPerformanceTest {
 		_FILE_NAME_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP =
 			"el_expression_undefined_variables.jsp";
 
-	private static final int _NUMBER_OF_REQUESTS = 1000;
-
 	private static final String _FILE_NAME_TEST_JSP = "test.jsp";
+
+	private static final int _NUMBER_OF_REQUESTS = 1000;
 
 	private static final String _WEB_CONTEXT_PATH =
 		"/test-jsp-servlet-performance";
