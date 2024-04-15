@@ -167,7 +167,15 @@ public class JspServletPerformanceTest {
 				new ZipEntry("META-INF/resources/" + fileName));
 
 			jarOutputStream.write(
-				_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP_HTML.getBytes());
+				_getBytes(
+					"<html><body>",
+					_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP_FILE_NAME,
+					"${elExpression0.test}${elExpression1.test}",
+					"${elExpression2.test}${elExpression3.test}",
+					"${elExpression4.test}${elExpression5.test}",
+					"${elExpression6.test}${elExpression7.test}",
+					"${elExpression8.test}${elExpression9.test}</body>",
+					"</html>"));
 
 			jarOutputStream.closeEntry();
 
@@ -177,14 +185,22 @@ public class JspServletPerformanceTest {
 						_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_FILE_NAME));
 
 			jarOutputStream.write(
-				_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_HTML.getBytes());
+				_getBytes(
+					"<html><body>",
+					_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_FILE_NAME,
+					"${elExpression0}${elExpression1}${elExpression2}",
+					"${elExpression3}${elExpression4}${elExpression5}",
+					"${elExpression6}${elExpression7}${elExpression8}",
+					"${elExpression9}</body></html>"));
 
 			jarOutputStream.closeEntry();
 
 			jarOutputStream.putNextEntry(
 				new ZipEntry("META-INF/resources/" + _TEST_JSP_FILE_NAME));
 
-			jarOutputStream.write(_TEST_JSP_HTML.getBytes());
+			jarOutputStream.write(
+				_getBytes(
+					"<html><body>", _TEST_JSP_FILE_NAME, "</body></html>"));
 
 			jarOutputStream.closeEntry();
 
@@ -192,6 +208,12 @@ public class JspServletPerformanceTest {
 				unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
 				unsyncByteArrayOutputStream.size());
 		}
+	}
+
+	private byte[] _getBytes(String... strings) {
+		String string = StringBundler.concat(strings);
+
+		return string.getBytes();
 	}
 
 	private void _testJsp(String jspFileName, int numberOfRequests)
@@ -221,34 +243,12 @@ public class JspServletPerformanceTest {
 			"el_expression_undefined_scoped_variables.jsp";
 
 	private static final String
-		_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP_HTML =
-			StringBundler.concat(
-				"<html><body>",
-				_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP_FILE_NAME,
-				"${elExpression0.test}${elExpression1.test}",
-				"${elExpression2.test}${elExpression3.test}",
-				"${elExpression4.test}${elExpression5.test}",
-				"${elExpression6.test}${elExpression7.test}",
-				"${elExpression8.test}${elExpression9.test}</body></html>");
-
-	private static final String
 		_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_FILE_NAME =
 			"el_expression_undefined_variables.jsp";
-
-	private static final String _EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_HTML =
-		StringBundler.concat(
-			"<html><body>", _EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_FILE_NAME,
-			"${elExpression0}${elExpression1}${elExpression2}",
-			"${elExpression3}${elExpression4}${elExpression5}",
-			"${elExpression6}${elExpression7}${elExpression8}",
-			"${elExpression9}</body></html>");
 
 	private static final int _NUMBER_OF_REQUESTS = 1000;
 
 	private static final String _TEST_JSP_FILE_NAME = "test.jsp";
-
-	private static final String _TEST_JSP_HTML = StringBundler.concat(
-		"<html><body>", _TEST_JSP_FILE_NAME, "</body></html>");
 
 	private static final String _WEB_CONTEXT_PATH =
 		"/test-jsp-servlet-performance";
