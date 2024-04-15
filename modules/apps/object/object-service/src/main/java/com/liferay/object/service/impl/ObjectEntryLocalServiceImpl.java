@@ -266,15 +266,6 @@ public class ObjectEntryLocalServiceImpl
 			null, user.isGuestUser(), groupId, objectDefinition, objectEntryId,
 			serviceContext, userId, values);
 
-		_insertIntoLocalizationTable(
-			objectDefinition, objectEntryId, values, workflowAction);
-		_insertIntoTable(
-			_getDynamicObjectDefinitionTable(objectDefinitionId), objectEntryId,
-			values, workflowAction);
-		_insertIntoTable(
-			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId),
-			objectEntryId, values, workflowAction);
-
 		ObjectEntry objectEntry = objectEntryPersistence.create(objectEntryId);
 
 		objectEntry.setGroupId(groupId);
@@ -318,6 +309,15 @@ public class ObjectEntryLocalServiceImpl
 
 			ObjectEntryThreadLocal.setSkipObjectValidationRules(false);
 		}
+
+		_insertIntoLocalizationTable(
+			objectDefinition, objectEntryId, values, workflowAction);
+		_insertIntoTable(
+			_getDynamicObjectDefinitionTable(objectDefinitionId), objectEntryId,
+			values, workflowAction);
+		_insertIntoTable(
+			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId),
+			objectEntryId, values, workflowAction);
 
 		updateAsset(
 			serviceContext.getUserId(), objectEntry,
