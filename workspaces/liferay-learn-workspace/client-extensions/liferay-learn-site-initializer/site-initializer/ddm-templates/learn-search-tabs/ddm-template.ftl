@@ -1,72 +1,72 @@
 <style>
 .panel-body {
-    padding: 0.75rem 0rem;
+	padding: 0.75rem 0rem;
 }
 
 .panel-title, .facet-clear-btn, .collapse-icon, .custom-control-input {
 	display: none;
- }
+}
 
 .custom-checkbox input[type="checkbox"]:checked + label {
- background-color: var(--Action-Primary-Active-Lighten, #E6EDFB);
- color: var(--Neutral-10, #282934); 
- border-top: solid 1px var(--Action-Primary-Active-Lighten, #E6EDFB);
+background-color: var(--Action-Primary-Active-Lighten, #E6EDFB);
+color: var(--Neutral-10, #282934);
+border-top: solid 1px var(--Action-Primary-Active-Lighten, #E6EDFB);
 }
 
 .custom-checkbox input[type="checkbox"] + label::before {
- content: ''; 
- display: none; 
+content: '';
+display: none;
 }
-	
+
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
- content: none; 
+content: none;
 }
-	
+
 .treeview-group {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  border-radius: 99px;
-  background-color: var(--Neutral-01, #F7F7F8);
-  height: 52px;
-  padding: 3px;
-  width: 100%; 
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+border-radius: 99px;
+background-color: var(--Neutral-01, #F7F7F8);
+height: 52px;
+padding: 3px;
+width: 100%;
 }
-  
-.treeview-link, .treeview .custom-control, .search-facet-display-vocabulary .treeview-vocabulary-display .tree-item-category>.c-inner, .treeview-item, .treeview-group  {
+
+.treeview-link, .treeview .custom-control, .search-facet-display-vocabulary .treeview-vocabulary-display .tree-item-category>.c-inner, .treeview-item, .treeview-group {
 	margin: 0px;
 }
-	
+
 .search-facet-display-vocabulary .treeview-vocabulary-display .tree-item-category {
-    padding: 0px; 
+	padding: 0px;
 	height: 44px;
 }
-	
+
 .treeview-item {
 	height: 44px;
 	flex:1;
 	border
-    border-radius: 99px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    color: var(--Neutral-10, #282934); 
-    font-size: 14px;
-    font-weight: 600;
+	border-radius: 99px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	color: var(--Neutral-10, #282934);
+	font-size: 14px;
+	font-weight: 600;
 	}
-	
+
 .custom-checkbox {
 	display: flex;
-    align-items: center;
+	align-items: center;
 }
-	
+
 .custom-control-label {
-    width: 100%;
+	width: 100%;
 	text-align: center;
-    height: 44px;
-    padding: 12px;
-    border-radius: 99px;
-  }
-	
+	height: 44px;
+	padding: 12px;
+	border-radius: 99px;
+}
+
 .results-frequency {
 	background-color: var(--Status-Info-Info, #2E5AAC);
 	color: var(--Neutral-00, #FFF);
@@ -104,23 +104,23 @@
 
 						<#if selectable>
 							<span class="autofit-col autofit-col-expand">
-					        	<div class="custom-checkbox custom-control">
-  									<input
-    									autocomplete="off"
-    									${selected?then("checked", "")}
-    									class="custom-control-input facet-term"
-    									data-term-id=${id}
-    									disabled
-    									onChange="Liferay.Search.FacetUtil.changeSelection(event);"
-   				 						type="checkbox"
-    									id="checkbox_${id}"
+					<div class="custom-checkbox custom-control">
+									<input
+										autocomplete="off"
+										${selected?then("checked", "")}
+										class="custom-control-input facet-term"
+										data-term-id=${id}
+										disabled
+										onChange="Liferay.Search.FacetUtil.changeSelection(event);"
+				 						type="checkbox"
+										id="checkbox_${id}"
 									>
-  										<label class="custom-control-label" for="checkbox_${id}"> 
-    										${name}
-   											<#if frequencyVisible>
-      											<span class="results-frequency">${frequency}</span>
-   											</#if>
-  										</label>
+										<label class="custom-control-label" for="checkbox_${id}">
+											${name}
+											<#if frequencyVisible>
+	  											<span class="results-frequency">${frequency}</span>
+											</#if>
+										</label>
 								</div>
 							</span>
 						<#else>
@@ -198,48 +198,47 @@
 	</@>
 </@>
 
-
 <@liferay_aui.script>
-	  
-    window.onload = function() {
-        if (!window.location.search.includes('category=')) {
-            var defaultCheckbox = document.querySelector('.custom-checkbox input[type="checkbox"]');
-            if (defaultCheckbox) {
-                defaultCheckbox.checked = true;
-            }
-        }
-    };
-	
-    function ${namespace}toggleTreeItem(dataTarget, id) {
-        const dataTargetElements = document.querySelectorAll("[data-target=\"#" + dataTarget + "\"]");
 
-        dataTargetElements.forEach(
-            element => {
-                if (element.classList.contains('collapsed')) {
-                    element.classList.remove('collapsed');
-                    element.setAttribute('aria-expanded', true);
-                } else {
-                    element.classList.add('collapsed');
-                    element.setAttribute('aria-expanded', false);
-                }
-            }
-        );
+	window.onload = function() {
+		if (!window.location.search.includes('category=')) {
+			var defaultCheckbox = document.querySelector('.custom-checkbox input[type="checkbox"]');
+			if (defaultCheckbox) {
+				defaultCheckbox.checked = true;
+			}
+		}
+	};
 
-        const subtreeCategoryTreeElement = document.getElementById(dataTarget);
+	function ${namespace}toggleTreeItem(dataTarget, id) {
+		const dataTargetElements = document.querySelectorAll("[data-target=\"#" + dataTarget + "\"]");
 
-        if (subtreeCategoryTreeElement) {
-            if (subtreeCategoryTreeElement.classList.contains('show')) {
-                subtreeCategoryTreeElement.classList.remove('show');
-            } else {
-                subtreeCategoryTreeElement.classList.add('show');
-            }
-        }
+		dataTargetElements.forEach(
+			element => {
+				if (element.classList.contains('collapsed')) {
+					element.classList.remove('collapsed');
+					element.setAttribute('aria-expanded', true);
+				} else {
+					element.classList.add('collapsed');
+					element.setAttribute('aria-expanded', false);
+				}
+			}
+		);
 
-        const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
-        checkboxes.forEach(checkbox => {
-            if (checkbox.id !== 'checkbox_' + id) {
-                checkbox.checked = false;
-            }
-        });
-    }
+		const subtreeCategoryTreeElement = document.getElementById(dataTarget);
+
+		if (subtreeCategoryTreeElement) {
+			if (subtreeCategoryTreeElement.classList.contains('show')) {
+				subtreeCategoryTreeElement.classList.remove('show');
+			} else {
+				subtreeCategoryTreeElement.classList.add('show');
+			}
+		}
+
+		const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
+		checkboxes.forEach(checkbox => {
+			if (checkbox.id !== 'checkbox_' + id) {
+				checkbox.checked = false;
+			}
+		});
+	}
 </@>
