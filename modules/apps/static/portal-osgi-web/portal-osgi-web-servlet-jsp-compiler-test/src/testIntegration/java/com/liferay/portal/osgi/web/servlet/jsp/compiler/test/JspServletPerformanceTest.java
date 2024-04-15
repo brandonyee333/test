@@ -138,59 +138,55 @@ public class JspServletPerformanceTest {
 
 	private static InputStream _createBundle() throws Exception {
 		try (UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-				new UnsyncByteArrayOutputStream()) {
+				new UnsyncByteArrayOutputStream();
+			JarOutputStream jarOutputStream = new JarOutputStream(
+				unsyncByteArrayOutputStream)) {
 
-			try (JarOutputStream jarOutputStream = new JarOutputStream(
-					unsyncByteArrayOutputStream)) {
+			Manifest manifest = new Manifest();
 
-				Manifest manifest = new Manifest();
+			Attributes attributes = manifest.getMainAttributes();
 
-				Attributes attributes = manifest.getMainAttributes();
+			attributes.putValue(Constants.BUNDLE_MANIFESTVERSION, "2");
+			attributes.putValue(
+				Constants.BUNDLE_SYMBOLICNAME,
+				JspServletPerformanceTest.class.getName());
+			attributes.putValue(Constants.BUNDLE_VERSION, "1.0.0");
+			attributes.putValue("Manifest-Version", "1.0");
+			attributes.putValue("Web-ContextPath", _WEB_CONTEXT_PATH);
 
-				attributes.putValue(Constants.BUNDLE_MANIFESTVERSION, "2");
-				attributes.putValue(
-					Constants.BUNDLE_SYMBOLICNAME,
-					JspServletPerformanceTest.class.getName());
-				attributes.putValue(Constants.BUNDLE_VERSION, "1.0.0");
-				attributes.putValue("Manifest-Version", "1.0");
-				attributes.putValue("Web-ContextPath", _WEB_CONTEXT_PATH);
+			jarOutputStream.putNextEntry(new ZipEntry(JarFile.MANIFEST_NAME));
 
-				jarOutputStream.putNextEntry(
-					new ZipEntry(JarFile.MANIFEST_NAME));
+			manifest.write(jarOutputStream);
 
-				manifest.write(jarOutputStream);
+			jarOutputStream.closeEntry();
 
-				jarOutputStream.closeEntry();
+			String fileName =
+				_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP_FILE_NAME;
 
-				String fileName =
-					_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP_FILE_NAME;
+			jarOutputStream.putNextEntry(
+				new ZipEntry("META-INF/resources/" + fileName));
 
-				jarOutputStream.putNextEntry(
-					new ZipEntry("META-INF/resources/" + fileName));
+			jarOutputStream.write(
+				_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP_HTML.getBytes());
 
-				jarOutputStream.write(
-					_EL_EXPRESSION_UNDEFINED_SCOPED_VARIABLES_JSP_HTML.
-						getBytes());
+			jarOutputStream.closeEntry();
 
-				jarOutputStream.closeEntry();
+			jarOutputStream.putNextEntry(
+				new ZipEntry(
+					"META-INF/resources/" +
+						_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_FILE_NAME));
 
-				jarOutputStream.putNextEntry(
-					new ZipEntry(
-						"META-INF/resources/" +
-							_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_FILE_NAME));
+			jarOutputStream.write(
+				_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_HTML.getBytes());
 
-				jarOutputStream.write(
-					_EL_EXPRESSION_UNDEFINED_VARIABLES_JSP_HTML.getBytes());
+			jarOutputStream.closeEntry();
 
-				jarOutputStream.closeEntry();
+			jarOutputStream.putNextEntry(
+				new ZipEntry("META-INF/resources/" + _TEST_JSP_FILE_NAME));
 
-				jarOutputStream.putNextEntry(
-					new ZipEntry("META-INF/resources/" + _TEST_JSP_FILE_NAME));
+			jarOutputStream.write(_TEST_JSP_HTML.getBytes());
 
-				jarOutputStream.write(_TEST_JSP_HTML.getBytes());
-
-				jarOutputStream.closeEntry();
-			}
+			jarOutputStream.closeEntry();
 
 			return new UnsyncByteArrayInputStream(
 				unsyncByteArrayOutputStream.unsafeGetByteArray(), 0,
