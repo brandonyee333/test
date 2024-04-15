@@ -146,8 +146,6 @@ public class FriendlyURLEntryLocalServiceTest {
 			TestPropsValues.getUserId(), _group.getGroupId(), "cat2",
 			assetVocabulary.getVocabularyId(), serviceContext);
 
-		long classNameId = _classNameLocalService.getClassNameId(User.class);
-
 		serviceContext.setAttribute(
 			"friendlyURLAssetCategoryIds",
 			new long[] {
@@ -156,7 +154,9 @@ public class FriendlyURLEntryLocalServiceTest {
 
 		FriendlyURLEntry friendlyURLEntry =
 			_friendlyURLEntryLocalService.addFriendlyURLEntry(
-				_group.getGroupId(), classNameId, TestPropsValues.getUserId(),
+				_group.getGroupId(),
+				_classNameLocalService.getClassNameId(User.class),
+				TestPropsValues.getUserId(),
 				Collections.singletonMap(
 					_language.getLanguageId(LocaleUtil.US), "url-title-en"),
 				serviceContext);
