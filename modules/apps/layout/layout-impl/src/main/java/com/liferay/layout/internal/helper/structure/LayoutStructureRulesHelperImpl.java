@@ -14,7 +14,6 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,22 +33,22 @@ public class LayoutStructureRulesHelperImpl
 
 		Set<String> displayedItemIds = new HashSet<>();
 		Set<String> hiddenItemIds = new HashSet<>();
-
-		List<LayoutStructureRule> layoutStructureRules =
-			layoutStructure.getLayoutStructureRules();
-
 		LayoutStructureRulesContext layoutStructureRulesContext =
 			new LayoutStructureRulesContext(
 				groupId, permissionChecker, segmentsEntryIds);
 
-		for (LayoutStructureRule layoutStructureRule : layoutStructureRules) {
-			if (_isLayoutStructureRuleActive(
+		for (LayoutStructureRule layoutStructureRule :
+				layoutStructure.getLayoutStructureRules()) {
+
+			if (!_isLayoutStructureRuleActive(
 					layoutStructureRule, layoutStructureRulesContext)) {
 
-				_processActions(
-					layoutStructureRule.getActionsJSONArray(), displayedItemIds,
-					hiddenItemIds);
+				continue;
 			}
+
+			_processActions(
+				layoutStructureRule.getActionsJSONArray(), displayedItemIds,
+				hiddenItemIds);
 		}
 
 		return new LayoutStructureRulesResult(displayedItemIds, hiddenItemIds);
