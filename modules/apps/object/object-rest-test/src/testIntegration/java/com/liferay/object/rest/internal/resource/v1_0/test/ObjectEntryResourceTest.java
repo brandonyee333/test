@@ -5429,7 +5429,7 @@ public class ObjectEntryResourceTest {
 	@Test
 	public void testGetObjectEntryWithLocalizedObjectField() throws Exception {
 
-		// Accept-Language header
+		// "Accept-Language" header
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -5452,7 +5452,7 @@ public class ObjectEntryResourceTest {
 			).toString(),
 			JSONCompareMode.LENIENT);
 
-		// Empty Accept-Language header
+		// Empty "Accept-Language" header
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -5475,7 +5475,7 @@ public class ObjectEntryResourceTest {
 			).toString(),
 			JSONCompareMode.LENIENT);
 
-		// Nonexistent Accept-Language header
+		// Nonexistent "Accept-Language" header
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
@@ -5498,7 +5498,7 @@ public class ObjectEntryResourceTest {
 			).toString(),
 			JSONCompareMode.LENIENT);
 
-		// Without Accept-Language header
+		// Without "Accept-Language" header
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(

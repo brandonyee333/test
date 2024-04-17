@@ -485,7 +485,7 @@ public class ObjectDefinitionGraphQLTest {
 							new GraphQLField(_OBJECT_FIELD_NAME_RICH_TEXT),
 							new GraphQLField(_OBJECT_FIELD_NAME_TEXT)))));
 
-			// Accept-Language header
+			// "Accept-Language" header
 
 			Assert.assertEquals(
 				JSONUtil.putAll(
@@ -502,7 +502,7 @@ public class ObjectDefinitionGraphQLTest {
 					"JSONObject/c", "JSONObject/" + pluralName,
 					"JSONArray/items"));
 
-			// Empty Accept-Language header
+			// Empty "Accept-Language" header
 
 			Assert.assertEquals(
 				JSONUtil.putAll(
@@ -519,7 +519,7 @@ public class ObjectDefinitionGraphQLTest {
 					"JSONObject/c", "JSONObject/" + pluralName,
 					"JSONArray/items"));
 
-			// Nonexistent Accept-Language header
+			// Nonexistent "Accept-Language" header
 
 			Assert.assertEquals(
 				JSONUtil.putAll(
@@ -536,7 +536,7 @@ public class ObjectDefinitionGraphQLTest {
 					"JSONObject/c", "JSONObject/" + pluralName,
 					"JSONArray/items"));
 
-			// Without Accept-Language header
+			// Without "Accept-Language" header
 
 			Assert.assertEquals(
 				JSONUtil.putAll(
