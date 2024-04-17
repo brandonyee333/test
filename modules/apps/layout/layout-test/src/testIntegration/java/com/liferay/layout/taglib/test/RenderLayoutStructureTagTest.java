@@ -218,7 +218,6 @@ public class RenderLayoutStructureTagTest {
 
 		MockHttpServletRequest mockHttpServletRequest =
 			_getMockHttpServletRequest(layout);
-
 		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
@@ -243,7 +242,7 @@ public class RenderLayoutStructureTagTest {
 				assetEntry.getTitle(assetEntry.getDefaultLanguageId()));
 
 			Assert.assertTrue(
-				String.valueOf(count), count >= _NUMBER_FRAGMENT_ENTRY_LINKS);
+				String.valueOf(count), count >= _COUNT_FRAGMENT_ENTRY_LINKS);
 		}
 	}
 
@@ -753,12 +752,12 @@ public class RenderLayoutStructureTagTest {
 	private List<AssetEntry> _addAssetEntries(AssetListEntry assetListEntry)
 		throws Exception {
 
+		List<AssetEntry> assetEntries = new ArrayList<>();
+
 		DDMStructure ddmStructure = DDMStructureTestUtil.addStructure(
 			_group.getGroupId(), JournalArticle.class.getName());
 
-		List<AssetEntry> assetEntries = new ArrayList<>();
-
-		for (int i = 0; i < _NUMBER_INFO_LIST_ITEMS; i++) {
+		for (int i = 0; i < _COUNT_INFO_LIST_ITEMS; i++) {
 			JournalArticle journalArticle = _addJournalArticle(ddmStructure);
 
 			assetEntries.add(
@@ -796,9 +795,9 @@ public class RenderLayoutStructureTagTest {
 				JSONUtil.put(
 					"displayAllPages", true
 				).put(
-					"numberOfItems", _NUMBER_INFO_LIST_ITEMS
+					"numberOfItems", _COUNT_INFO_LIST_ITEMS
 				).put(
-					"numberOfItemsPerPage", _NUMBER_INFO_LIST_ITEMS
+					"numberOfItemsPerPage", _COUNT_INFO_LIST_ITEMS
 				).put(
 					"paginationType", "none"
 				).put(
@@ -888,7 +887,7 @@ public class RenderLayoutStructureTagTest {
 				FragmentConstants.TYPE_COMPONENT, null,
 				WorkflowConstants.STATUS_APPROVED, _serviceContext);
 
-		for (int i = 0; i < _NUMBER_FRAGMENT_ENTRY_LINKS; i++) {
+		for (int i = 0; i < _COUNT_FRAGMENT_ENTRY_LINKS; i++) {
 			ContentLayoutTestUtil.addFragmentEntryLinkToLayout(
 				JSONUtil.put(
 					FragmentEntryProcessorConstants.
@@ -1070,9 +1069,9 @@ public class RenderLayoutStructureTagTest {
 				layout.getPlid()));
 	}
 
-	private static final int _NUMBER_FRAGMENT_ENTRY_LINKS = 5;
+	private static final int _COUNT_FRAGMENT_ENTRY_LINKS = 5;
 
-	private static final int _NUMBER_INFO_LIST_ITEMS = 5;
+	private static final int _COUNT_INFO_LIST_ITEMS = 5;
 
 	private static final Pattern _inputJSONObjectPattern = Pattern.compile(
 		"<p>InputJSONObject:(.*?)<\\/p>");
