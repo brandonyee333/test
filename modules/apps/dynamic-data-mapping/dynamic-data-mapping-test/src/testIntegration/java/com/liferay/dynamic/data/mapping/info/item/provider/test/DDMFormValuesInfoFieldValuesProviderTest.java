@@ -129,7 +129,7 @@ public class DDMFormValuesInfoFieldValuesProviderTest
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId());
 
-		JournalFolder folder = _journalFolderLocalService.addFolder(
+		JournalFolder journalFolder = _journalFolderLocalService.addFolder(
 			null, TestPropsValues.getUserId(), _group.getGroupId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
@@ -146,9 +146,9 @@ public class DDMFormValuesInfoFieldValuesProviderTest
 			read("test-ddm-structure-definition-with-nested-fields.json"),
 			StorageType.DEFAULT.getValue());
 
-		folder = _journalFolderLocalService.updateFolder(
+		journalFolder = _journalFolderLocalService.updateFolder(
 			TestPropsValues.getUserId(), _group.getGroupId(),
-			folder.getFolderId(),
+			journalFolder.getFolderId(),
 			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			new long[] {ddmStructure.getStructureId()}, 1, false,
@@ -160,7 +160,7 @@ public class DDMFormValuesInfoFieldValuesProviderTest
 
 		JournalArticle journalArticle = _journalArticleLocalService.addArticle(
 			null, TestPropsValues.getUserId(), _group.getGroupId(),
-			folder.getFolderId(), RandomTestUtil.randomLocaleStringMap(),
+			journalFolder.getFolderId(), RandomTestUtil.randomLocaleStringMap(),
 			RandomTestUtil.randomLocaleStringMap(),
 			read("ddm-structure-fieldset-field.xsd"),
 			ddmStructure.getStructureId(), ddmTemplate.getTemplateKey(),

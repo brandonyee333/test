@@ -286,14 +286,14 @@ public abstract class BaseDDMServiceTestCase {
 	protected String read(String fileName) throws Exception {
 		Class<?> clazz = getClass();
 
-		String file = StringUtil.read(
+		String content = StringUtil.read(
 			clazz.getClassLoader(), getBasePath() + fileName);
 
 		if (fileName.contains("xsd")) {
-			return file;
+			return content;
 		}
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(file);
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(content);
 
 		return jsonObject.toString();
 	}
