@@ -358,6 +358,16 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 				"publishParentLayoutsByDefault", false
 			).build());
 
+		_mockPortletRequest = new MockPortletRequest();
+
+		_mockPortletRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, _getThemeDisplay(stagingGroup));
+
+		_mockPortletRequest.setParameter(
+			"exportImportConfigurationId", String.valueOf(0));
+		_mockPortletRequest.setParameter(
+			"groupId", String.valueOf(stagingGroup.getGroupId()));
+
 		Layout parentLayout = LayoutTestUtil.addTypePortletLayout(stagingGroup);
 
 		Layout childLayout = LayoutTestUtil.addTypePortletLayout(
@@ -371,17 +381,9 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 						childLayout.getLayoutId(), parentLayout.getLayoutId()
 					})));
 
-		_mockPortletRequest = new MockPortletRequest();
-
-		_mockPortletRequest.setAttribute(
-			WebKeys.THEME_DISPLAY, _getThemeDisplay(stagingGroup));
-
-		_mockPortletRequest.setParameter(
-			"exportImportConfigurationId", String.valueOf(0));
-		_mockPortletRequest.setParameter(
-			"groupId", String.valueOf(stagingGroup.getGroupId()));
 		_mockPortletRequest.setAttribute(
 			"layoutIdMap", selectedLayoutsJSONArray.toString());
+
 		_mockPortletRequest.setParameter("PERMISSIONS", "false");
 		_mockPortletRequest.setParameter("tabs1", "public-pages");
 
@@ -391,16 +393,16 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 			parentLayout.getUuid(), liveGroup.getGroupId(),
 			parentLayout.isPrivateLayout());
 
+		Assert.assertNotNull(liveParentLayout);
+
+		LayoutTestUtil.addPortletToLayout(
+			parentLayout, JournalContentPortletKeys.JOURNAL_CONTENT);
+
 		Layout liveChildLayout = LayoutLocalServiceUtil.fetchLayout(
 			childLayout.getUuid(), liveGroup.getGroupId(),
 			childLayout.isPrivateLayout());
 
-		Assert.assertNotNull(liveParentLayout);
-
 		Assert.assertNotNull(liveChildLayout);
-
-		LayoutTestUtil.addPortletToLayout(
-			parentLayout, JournalContentPortletKeys.JOURNAL_CONTENT);
 
 		LayoutTestUtil.addPortletToLayout(
 			childLayout, JournalContentPortletKeys.JOURNAL_CONTENT);
