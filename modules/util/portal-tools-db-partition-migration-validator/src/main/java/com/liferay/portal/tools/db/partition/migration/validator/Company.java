@@ -16,12 +16,12 @@ public class Company {
 	}
 
 	public Company(
-		long companyId, String companyName, String virtualHostName,
+		long companyId, String companyName, String virtualHostname,
 		String webId) {
 
 		_companyId = companyId;
 		_companyName = companyName;
-		_virtualHostName = virtualHostName;
+		_virtualHostname = virtualHostname;
 		_webId = webId;
 	}
 
@@ -39,7 +39,7 @@ public class Company {
 
 		if ((_companyId == company._companyId) &&
 			_companyName.equals(company._companyName) &&
-			_virtualHostName.equals(company._virtualHostName) &&
+			_virtualHostname.equals(company._virtualHostname) &&
 			_webId.equals(company._webId)) {
 
 			return true;
@@ -56,8 +56,8 @@ public class Company {
 		return _companyName;
 	}
 
-	public String getVirtualHostName() {
-		return _virtualHostName;
+	public String getVirtualHostname() {
+		return _virtualHostname;
 	}
 
 	public String getWebId() {
@@ -66,7 +66,7 @@ public class Company {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(_companyId, _companyName, _virtualHostName, _webId);
+		return Objects.hash(_companyId, _companyName, _virtualHostname, _webId);
 	}
 
 	public void setCompanyId(long companyId) {
@@ -77,8 +77,8 @@ public class Company {
 		_companyName = companyName;
 	}
 
-	public void setVirtualHostName(String virtualHostName) {
-		_virtualHostName = virtualHostName;
+	public void setVirtualHostname(String virtualHostname) {
+		_virtualHostname = virtualHostname;
 	}
 
 	public void setWebId(String webId) {
@@ -87,7 +87,7 @@ public class Company {
 
 	private long _companyId;
 	private String _companyName;
-	private String _virtualHostName;
+	private String _virtualHostname;
 	private String _webId;
 
 }

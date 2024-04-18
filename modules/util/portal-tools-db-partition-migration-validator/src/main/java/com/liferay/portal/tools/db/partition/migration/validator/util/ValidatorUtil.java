@@ -102,12 +102,12 @@ public class ValidatorUtil {
 			}
 
 			if (Objects.equals(
-					company.getVirtualHostName(),
-					sourceCompany.getVirtualHostName())) {
+					company.getVirtualHostname(),
+					sourceCompany.getVirtualHostname())) {
 
 				recorder.registerWarning(
 					StringBundler.concat(
-						"Virtual host ", sourceCompany.getVirtualHostName(),
+						"Virtual host ", sourceCompany.getVirtualHostname(),
 						" already exists in the target database. Please ",
 						"change it during migration."));
 			}
