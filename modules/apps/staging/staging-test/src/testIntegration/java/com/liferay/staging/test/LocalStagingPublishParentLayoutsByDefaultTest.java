@@ -23,8 +23,6 @@ import com.liferay.layout.test.util.LayoutTestUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.module.configuration.ConfigurationProvider;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Portlet;
@@ -193,26 +191,24 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 				"publishParentLayoutsByDefault", true
 			).build());
 
+		_mockPortletRequest = new MockPortletRequest();
+
+		_mockPortletRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, _getThemeDisplay(stagingGroup));
+
 		Layout parentLayout = LayoutTestUtil.addTypePortletLayout(stagingGroup);
 
 		Layout childLayout = LayoutTestUtil.addTypePortletLayout(
 			stagingGroup, parentLayout.getPlid());
 
-		JSONArray selectedLayoutsJSONArray = JSONFactoryUtil.createJSONArray(
+		_mockPortletRequest.setAttribute(
+			"layoutIdMap",
 			ExportImportHelperUtil.getSelectedLayoutsJSON(
 				stagingGroup.getGroupId(), false,
 				StringUtil.merge(
 					new long[] {
 						childLayout.getLayoutId(), parentLayout.getLayoutId()
 					})));
-
-		ThemeDisplay themeDisplay = _getThemeDisplay(stagingGroup);
-
-		_mockPortletRequest = new MockPortletRequest();
-
-		_mockPortletRequest.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
-		_mockPortletRequest.setAttribute(
-			"layoutIdMap", selectedLayoutsJSONArray.toString());
 
 		_mockPortletRequest.setParameter(
 			"exportImportConfigurationId", String.valueOf(0));
@@ -227,33 +223,29 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 			parentLayout.getUuid(), liveGroup.getGroupId(),
 			parentLayout.isPrivateLayout());
 
-		Layout liveChildLayout = LayoutLocalServiceUtil.fetchLayout(
-			childLayout.getUuid(), liveGroup.getGroupId(),
-			childLayout.isPrivateLayout());
-
 		Assert.assertNotNull(liveParentLayout);
-
-		Assert.assertNotNull(liveChildLayout);
 
 		LayoutTestUtil.addPortletToLayout(
 			parentLayout, JournalContentPortletKeys.JOURNAL_CONTENT);
 
+		Layout liveChildLayout = LayoutLocalServiceUtil.fetchLayout(
+			childLayout.getUuid(), liveGroup.getGroupId(),
+			childLayout.isPrivateLayout());
+
+		Assert.assertNotNull(liveChildLayout);
+
 		LayoutTestUtil.addPortletToLayout(
 			childLayout, JournalContentPortletKeys.JOURNAL_CONTENT);
 
-		selectedLayoutsJSONArray = JSONFactoryUtil.createJSONArray(
+		_mockPortletRequest = new MockPortletRequest();
+
+		_mockPortletRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, _getThemeDisplay(stagingGroup));
+		_mockPortletRequest.setAttribute(
+			"layoutIdMap",
 			ExportImportHelperUtil.getSelectedLayoutsJSON(
 				stagingGroup.getGroupId(), false,
 				StringUtil.merge(new long[] {childLayout.getLayoutId()})));
-
-		themeDisplay = _getThemeDisplay(stagingGroup);
-
-		_mockPortletRequest = new MockPortletRequest();
-
-		_mockPortletRequest.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
-		_mockPortletRequest.setAttribute(
-			"layoutIdMap", selectedLayoutsJSONArray.toString());
-
 		_mockPortletRequest.setParameter(
 			"exportImportConfigurationId", String.valueOf(0));
 		_mockPortletRequest.setParameter(
@@ -267,20 +259,20 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 			parentLayout.getUuid(), liveGroup.getGroupId(),
 			parentLayout.isPrivateLayout());
 
-		liveChildLayout = LayoutLocalServiceUtil.fetchLayout(
-			childLayout.getUuid(), liveGroup.getGroupId(),
-			childLayout.isPrivateLayout());
-
 		Assert.assertTrue(
-			liveChildLayout.getTypeSettingsProperties(
+			liveParentLayout.getTypeSettingsProperties(
 			).getProperty(
 				"column-1"
 			).contains(
 				JournalContentPortletKeys.JOURNAL_CONTENT
 			));
 
+		liveChildLayout = LayoutLocalServiceUtil.fetchLayout(
+			childLayout.getUuid(), liveGroup.getGroupId(),
+			childLayout.isPrivateLayout());
+
 		Assert.assertTrue(
-			liveParentLayout.getTypeSettingsProperties(
+			liveChildLayout.getTypeSettingsProperties(
 			).getProperty(
 				"column-1"
 			).contains(
@@ -301,23 +293,21 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 				"publishParentLayoutsByDefault", true
 			).build());
 
+		_mockPortletRequest = new MockPortletRequest();
+
+		_mockPortletRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, _getThemeDisplay(stagingGroup));
+
 		Layout parentLayout = LayoutTestUtil.addTypePortletLayout(stagingGroup);
 
 		Layout childLayout = LayoutTestUtil.addTypePortletLayout(
 			stagingGroup, parentLayout.getPlid());
 
-		JSONArray selectedLayoutsJSONArray = JSONFactoryUtil.createJSONArray(
+		_mockPortletRequest.setAttribute(
+			"layoutIdMap",
 			ExportImportHelperUtil.getSelectedLayoutsJSON(
 				stagingGroup.getGroupId(), false,
 				StringUtil.merge(new long[] {childLayout.getLayoutId()})));
-
-		ThemeDisplay themeDisplay = _getThemeDisplay(stagingGroup);
-
-		_mockPortletRequest = new MockPortletRequest();
-
-		_mockPortletRequest.setAttribute(WebKeys.THEME_DISPLAY, themeDisplay);
-		_mockPortletRequest.setAttribute(
-			"layoutIdMap", selectedLayoutsJSONArray.toString());
 
 		_mockPortletRequest.setParameter(
 			"exportImportConfigurationId", String.valueOf(0));
@@ -332,14 +322,13 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 			parentLayout.getUuid(), liveGroup.getGroupId(),
 			parentLayout.isPrivateLayout());
 
+		Assert.assertNotNull(importedParentLayout);
+
 		Layout importedChildLayout = LayoutLocalServiceUtil.fetchLayout(
 			childLayout.getUuid(), liveGroup.getGroupId(),
 			childLayout.isPrivateLayout());
 
-		Assert.assertNotNull(importedParentLayout);
-
 		Assert.assertNotNull(importedChildLayout);
-
 		Assert.assertEquals(
 			importedChildLayout.getParentLayoutId(),
 			importedParentLayout.getLayoutId());
