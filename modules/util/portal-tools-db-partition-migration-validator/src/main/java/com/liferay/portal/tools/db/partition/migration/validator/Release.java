@@ -41,8 +41,7 @@ public class Release {
 
 		if (_schemaVersion.equals(release._schemaVersion) &&
 			_servletContextName.equals(release._servletContextName) &&
-			(_state == release._state) &&
-			(_verified == release._verified)) {
+			(_state == release._state) && (_verified == release._verified)) {
 
 			return true;
 		}

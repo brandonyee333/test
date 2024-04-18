@@ -66,6 +66,51 @@ public class ValidatorUtil {
 	}
 
 	private static void _validateCompany(
+		Company company, Recorder recorder, Company sourceCompany) {
+
+		if (Objects.equals(
+				company.getCompanyId(), sourceCompany.getCompanyId())) {
+
+			recorder.registerError(
+				StringBundler.concat(
+					"Company ID ", sourceCompany.getCompanyId(),
+					" already exists in the target database"));
+		}
+
+		if (Objects.equals(
+				company.getCompanyName(), sourceCompany.getCompanyName())) {
+
+			recorder.registerWarning(
+				StringBundler.concat(
+					"Company name ", sourceCompany.getCompanyName(),
+					" already exists in the target database. You must set a ",
+					"different value in ",
+					"DBPartitionInsertVirtualInstanceConfiguration.config."));
+		}
+
+		if (Objects.equals(
+				company.getVirtualHostname(),
+				sourceCompany.getVirtualHostname())) {
+
+			recorder.registerWarning(
+				StringBundler.concat(
+					"Virtual host ", sourceCompany.getVirtualHostname(),
+					" already exists in the target database. You must set a ",
+					"different value in ",
+					"DBPartitionInsertVirtualInstanceConfiguration.config."));
+		}
+
+		if (Objects.equals(company.getWebId(), sourceCompany.getWebId())) {
+			recorder.registerWarning(
+				StringBundler.concat(
+					"Web ID ", sourceCompany.getWebId(),
+					" already exists in the target database. You must set a ",
+					"different value in ",
+					"DBPartitionInsertVirtualInstanceConfiguration.config."));
+		}
+	}
+
+	private static void _validateCompany(
 		Recorder recorder, LiferayDatabase sourceLiferayDatabase,
 		LiferayDatabase targetLiferayDatabase) {
 
@@ -83,49 +128,7 @@ public class ValidatorUtil {
 		}
 
 		for (Company company : targetLiferayDatabase.getCompanies()) {
-			if (Objects.equals(
-					company.getCompanyId(), sourceCompany.getCompanyId())) {
-
-				recorder.registerError(
-					StringBundler.concat(
-						"Company ID ", sourceCompany.getCompanyId(),
-						" already exists in the target database"));
-			}
-
-			if (Objects.equals(
-					company.getCompanyName(), sourceCompany.getCompanyName())) {
-
-				recorder.registerWarning(
-					StringBundler.concat(
-						"Company name ", sourceCompany.getCompanyName(),
-						" already exists in the target database. You must ",
-						"set a different value in ",
-						"DBPartitionInsertVirtualInstanceConfiguration."));
-						"config."
-			}
-
-			if (Objects.equals(
-					company.getVirtualHostname(),
-					sourceCompany.getVirtualHostname())) {
-
-				recorder.registerWarning(
-					StringBundler.concat(
-						"Virtual host ", sourceCompany.getVirtualHostname(),
-						" already exists in the target database. You must ",
-						"set a different value in ",
-						"DBPartitionInsertVirtualInstanceConfiguration."));
-						"config."
-			}
-
-			if (Objects.equals(company.getWebId(), sourceCompany.getWebId())) {
-				recorder.registerWarning(
-					StringBundler.concat(
-						"Web ID ", sourceCompany.getWebId(),
-						" already exists in the target database. You must ",
-						"set a different value in ",
-						"DBPartitionInsertVirtualInstanceConfiguration."));
-						"config."
-			}
+			_validateCompany(company, recorder, sourceCompany);
 		}
 	}
 
