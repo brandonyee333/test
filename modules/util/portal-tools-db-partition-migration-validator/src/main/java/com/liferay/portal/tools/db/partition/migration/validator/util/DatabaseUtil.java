@@ -44,18 +44,18 @@ public class DatabaseUtil {
 			return jdbcURL;
 		}
 
-		int paramsIndex = jdbcURL.indexOf("?");
+		int index = jdbcURL.indexOf("?");
 
-		if (paramsIndex == -1) {
+		if (index == -1) {
 			return jdbcURL.substring(0, jdbcURL.lastIndexOf("/") + 1) +
 				schemaName;
 		}
 
-		String jdbcURLBase = jdbcURL.substring(0, paramsIndex);
+		String baseJDBCURL = jdbcURL.substring(0, index);
 
 		return StringBundler.concat(
-			jdbcURL.substring(0, jdbcURLBase.lastIndexOf("/") + 1), schemaName,
-			jdbcURL.substring(paramsIndex));
+			jdbcURL.substring(0, baseJDBCURL.lastIndexOf("/") + 1), schemaName,
+			jdbcURL.substring(index));
 	}
 
 	private static List<Company> _getCompanies(Connection connection)
@@ -109,7 +109,7 @@ public class DatabaseUtil {
 			while (resultSet.next()) {
 				if (companyId > 0) {
 					throw new UnsupportedOperationException(
-						"Database schema has to be a single company or " +
+						"Database schema has to have a single company or " +
 							"database partitioning must be enabled");
 				}
 
