@@ -23,7 +23,7 @@ distZip {
 		it.path = it.name
 	}
 
-	rename("(.*)-(.*)(.jar)", "$1$3")
+	rename("(.*)-(.*)(.jar)", "\$1\$3")
 }
 
 distributions {
