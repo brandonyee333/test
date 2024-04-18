@@ -83,12 +83,13 @@ public class ValidatorUtil {
 		}
 
 		for (Company company : targetLiferayInstance.getCompanies()) {
-			if (Objects.equals(company.getWebId(), sourceCompany.getWebId())) {
-				recorder.registerWarning(
+			if (Objects.equals(
+					company.getCompanyId(), sourceCompany.getCompanyId())) {
+
+				recorder.registerError(
 					StringBundler.concat(
-						"Web ID ", sourceCompany.getWebId(),
-						" already exists in the target database. Please ",
-						"change it during migration."));
+						"Company ID ", sourceCompany.getCompanyId(),
+						" already exists in the target database"));
 			}
 
 			if (Objects.equals(
@@ -97,8 +98,10 @@ public class ValidatorUtil {
 				recorder.registerWarning(
 					StringBundler.concat(
 						"Company name ", sourceCompany.getCompanyName(),
-						" already exists in the target database. Please ",
-						"change it during migration."));
+						" already exists in the target database. You must ",
+						"set a different value in ",
+						"DBPartitionInsertVirtualInstanceConfiguration."));
+						"config."
 			}
 
 			if (Objects.equals(
@@ -108,17 +111,20 @@ public class ValidatorUtil {
 				recorder.registerWarning(
 					StringBundler.concat(
 						"Virtual host ", sourceCompany.getVirtualHostname(),
-						" already exists in the target database. Please ",
-						"change it during migration."));
+						" already exists in the target database. You must ",
+						"set a different value in ",
+						"DBPartitionInsertVirtualInstanceConfiguration."));
+						"config."
 			}
 
-			if (Objects.equals(
-					company.getCompanyId(), sourceCompany.getCompanyId())) {
-
-				recorder.registerError(
+			if (Objects.equals(company.getWebId(), sourceCompany.getWebId())) {
+				recorder.registerWarning(
 					StringBundler.concat(
-						"Company ID ", sourceCompany.getCompanyId(),
-						" already exists in the target database"));
+						"Web ID ", sourceCompany.getWebId(),
+						" already exists in the target database. You must ",
+						"set a different value in ",
+						"DBPartitionInsertVirtualInstanceConfiguration."));
+						"config."
 			}
 		}
 	}
