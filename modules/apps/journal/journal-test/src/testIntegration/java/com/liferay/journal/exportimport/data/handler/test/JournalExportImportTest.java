@@ -146,17 +146,12 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 			group, parentLayout.getPlid());
 
 		String content = StringUtil.replace(
-			_read("journal_content.xml"), new String[] {"[$GROUP_NAME]"},
+			_read("journal_content.xml"),
+			new String[] {"[$GROUP_NAME]", "$LAYOUT_FRIENDLY_URL"},
 			new String[] {
-				group.getName(
-					"en_US"
-				).toLowerCase()
-			}
-		).replace(
-			"$LAYOUT_FRIENDLY_URL",
-			childLayout.getFriendlyURL(
-			).toLowerCase()
-		);
+				StringUtil.toLowerCase(group.getName("en_US")),
+				StringUtil.toLowerCase(childLayout.getFriendlyURL())
+			});
 
 		DataDefinition dataDefinition =
 			DataDefinitionTestUtil.addDataDefinition(
@@ -204,17 +199,12 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 			group, parentLayout.getPlid());
 
 		String content = StringUtil.replace(
-			_read("journal_content.xml"), new String[] {"[$GROUP_NAME]"},
+			_read("journal_content.xml"),
+			new String[] {"[$GROUP_NAME]", "$LAYOUT_FRIENDLY_URL"},
 			new String[] {
-				group.getName(
-					"en_US"
-				).toLowerCase()
-			}
-		).replace(
-			"$LAYOUT_FRIENDLY_URL",
-			childLayout.getFriendlyURL(
-			).toLowerCase()
-		);
+				StringUtil.toLowerCase(group.getName("en_US")),
+				StringUtil.toLowerCase(childLayout.getFriendlyURL())
+			});
 
 		DataDefinition dataDefinition =
 			DataDefinitionTestUtil.addDataDefinition(
