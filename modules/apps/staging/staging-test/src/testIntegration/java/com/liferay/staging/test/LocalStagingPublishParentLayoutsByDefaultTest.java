@@ -373,16 +373,14 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 		Layout childLayout = LayoutTestUtil.addTypePortletLayout(
 			stagingGroup, parentLayout.getPlid());
 
-		JSONArray selectedLayoutsJSONArray = JSONFactoryUtil.createJSONArray(
+		_mockPortletRequest.setAttribute(
+			"layoutIdMap",
 			ExportImportHelperUtil.getSelectedLayoutsJSON(
 				stagingGroup.getGroupId(), false,
 				StringUtil.merge(
 					new long[] {
 						childLayout.getLayoutId(), parentLayout.getLayoutId()
 					})));
-
-		_mockPortletRequest.setAttribute(
-			"layoutIdMap", selectedLayoutsJSONArray.toString());
 
 		_mockPortletRequest.setParameter("PERMISSIONS", "false");
 		_mockPortletRequest.setParameter("tabs1", "public-pages");
@@ -407,18 +405,15 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 		LayoutTestUtil.addPortletToLayout(
 			childLayout, JournalContentPortletKeys.JOURNAL_CONTENT);
 
-		selectedLayoutsJSONArray = JSONFactoryUtil.createJSONArray(
-			ExportImportHelperUtil.getSelectedLayoutsJSON(
-				stagingGroup.getGroupId(), false,
-				StringUtil.merge(new long[] {childLayout.getLayoutId()})));
-
 		_mockPortletRequest = new MockPortletRequest();
 
 		_mockPortletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay(stagingGroup));
 		_mockPortletRequest.setAttribute(
-			"layoutIdMap", selectedLayoutsJSONArray.toString());
-
+			"layoutIdMap",
+			ExportImportHelperUtil.getSelectedLayoutsJSON(
+				stagingGroup.getGroupId(), false,
+				StringUtil.merge(new long[] {childLayout.getLayoutId()})));
 		_mockPortletRequest.setParameter(
 			"exportImportConfigurationId", String.valueOf(0));
 		_mockPortletRequest.setParameter(
@@ -480,15 +475,11 @@ public class LocalStagingPublishParentLayoutsByDefaultTest
 			Layout childLayout = LayoutTestUtil.addTypePortletLayout(
 				stagingGroup, parentLayout.getPlid());
 
-			JSONArray selectedLayoutsJSONArray =
-				JSONFactoryUtil.createJSONArray(
-					ExportImportHelperUtil.getSelectedLayoutsJSON(
-						stagingGroup.getGroupId(), false,
-						StringUtil.merge(
-							new long[] {childLayout.getLayoutId()})));
-
 			_mockPortletRequest.setAttribute(
-				"layoutIdMap", selectedLayoutsJSONArray.toString());
+				"layoutIdMap",
+				ExportImportHelperUtil.getSelectedLayoutsJSON(
+					stagingGroup.getGroupId(), false,
+					StringUtil.merge(new long[] {childLayout.getLayoutId()})));
 
 			_mockPortletRequest.setParameter(
 				"exportImportConfigurationId", String.valueOf(0));
