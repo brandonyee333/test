@@ -440,8 +440,7 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 		if (Validator.isNotNull(friendlyURL)) {
 			layout = _layoutLocalService.updateFriendlyURL(
 				userId, layout.getPlid(), friendlyURL,
-				LocaleUtil.getSiteDefault(
-				).toString());
+				LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()));
 		}
 
 		Layout draftLayout = layout.fetchDraftLayout();
