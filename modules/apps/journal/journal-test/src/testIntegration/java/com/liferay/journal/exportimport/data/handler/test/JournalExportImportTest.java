@@ -45,7 +45,7 @@ import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutServiceUtil;
+import com.liferay.portal.kernel.service.LayoutService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -168,9 +168,7 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 
 		exportPortlet(JournalPortletKeys.JOURNAL, parentLayout);
 
-		// deletes both parent and child layouts
-
-		LayoutServiceUtil.deleteLayout(
+		_layoutService.deleteLayout(
 			groupId, parentLayout.isPrivateLayout(), parentLayout.getLayoutId(),
 			ServiceContextThreadLocal.getServiceContext());
 
@@ -684,6 +682,9 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 
 	@Inject
 	private JSONFactory _jsonFactory;
+
+	@Inject
+	private LayoutService _layoutService;
 
 	@Inject
 	private ZipReaderFactory _zipReaderFactory;
