@@ -60,10 +60,11 @@ public class ObjectEntryInfoItemObjectProviderTest {
 	public void setUp() {
 		_objectDefinition = Mockito.mock(ObjectDefinition.class);
 		_objectEntryLocalService = Mockito.mock(ObjectEntryLocalService.class);
-		_objectEntryManagerRegistry = Mockito.mock(
-			ObjectEntryManagerRegistry.class);
 
 		_objectEntryManager = Mockito.mock(ObjectEntryManager.class);
+
+		_objectEntryManagerRegistry = Mockito.mock(
+			ObjectEntryManagerRegistry.class);
 
 		Mockito.when(
 			_objectEntryManagerRegistry.getObjectEntryManager(null)
