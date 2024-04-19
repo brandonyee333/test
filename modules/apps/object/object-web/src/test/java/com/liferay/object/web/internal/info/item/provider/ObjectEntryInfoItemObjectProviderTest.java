@@ -355,10 +355,10 @@ public class ObjectEntryInfoItemObjectProviderTest {
 		Assert.assertEquals(
 			MapUtil.toString(objectEntries), 1, objectEntries.size());
 
-		ObjectEntry chachedObjectEntry = objectEntries.get(infoItemIdentifier);
+		ObjectEntry cachedObjectEntry = objectEntries.get(infoItemIdentifier);
 
-		Assert.assertNotNull(chachedObjectEntry);
-		Assert.assertEquals(objectEntry, chachedObjectEntry);
+		Assert.assertNotNull(cachedObjectEntry);
+		Assert.assertEquals(objectEntry, cachedObjectEntry);
 	}
 
 	private HttpServletRequest _getHttpServletRequest(
