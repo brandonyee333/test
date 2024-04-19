@@ -210,7 +210,6 @@ public class ObjectEntryLocalServiceTest {
 						ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 						ObjectFieldConstants.DB_TYPE_STRING,
 						RandomTestUtil.randomString(), StringUtil.randomId())));
-
 		_irrelevantObjectDefinition = _publishCustomObjectDefinition(
 			false,
 			Arrays.asList(
