@@ -444,17 +444,17 @@ public class LayoutLookAndFeelDisplayContext {
 		).put(
 			"scriptElementAttributesJSON",
 			() -> {
-				if (Objects.equals(
+				if (!Objects.equals(
 						cet.getType(),
-						ClientExtensionEntryConstants.TYPE_GLOBAL_JS) &&
-					FeatureFlagManagerUtil.isEnabled("LPD-10981")) {
+						ClientExtensionEntryConstants.TYPE_GLOBAL_JS) ||
+					!FeatureFlagManagerUtil.isEnabled("LPD-10981")) {
 
-					GlobalJSCET globalJSCET = (GlobalJSCET)cet;
-
-					return globalJSCET.getScriptElementAttributesJSON();
+					return null;
 				}
 
-				return null;
+				GlobalJSCET globalJSCET = (GlobalJSCET)cet;
+
+				return globalJSCET.getScriptElementAttributesJSON();
 			}
 		).put(
 			"scriptLocation",

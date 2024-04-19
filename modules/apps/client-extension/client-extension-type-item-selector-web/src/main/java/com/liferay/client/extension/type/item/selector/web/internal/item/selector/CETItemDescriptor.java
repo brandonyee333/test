@@ -52,17 +52,17 @@ public class CETItemDescriptor
 		).put(
 			"scriptElementAttributesJSON",
 			() -> {
-				if (Objects.equals(
+				if (!Objects.equals(
 						_cet.getType(),
-						ClientExtensionEntryConstants.TYPE_GLOBAL_JS) &&
-					FeatureFlagManagerUtil.isEnabled("LPD-10981")) {
+						ClientExtensionEntryConstants.TYPE_GLOBAL_JS) ||
+					!FeatureFlagManagerUtil.isEnabled("LPD-10981")) {
 
-					GlobalJSCET globalJSCET = (GlobalJSCET)_cet;
-
-					return globalJSCET.getScriptElementAttributesJSON();
+					return null;
 				}
 
-				return null;
+				GlobalJSCET globalJSCET = (GlobalJSCET)_cet;
+
+				return globalJSCET.getScriptElementAttributesJSON();
 			}
 		).put(
 			"type", _cet.getType()
