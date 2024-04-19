@@ -294,11 +294,11 @@ public class ExportImportTaskResourcePerformanceTest {
 		httpInvoker.httpMethod(HttpInvoker.HttpMethod.GET);
 		httpInvoker.path(url);
 
-		HttpInvoker.HttpResponse response = httpInvoker.invoke();
+		HttpInvoker.HttpResponse httpResponse = httpInvoker.invoke();
 
-		Assert.assertEquals(200, response.getStatusCode());
+		Assert.assertEquals(200, httpResponse.getStatusCode());
 
-		return response.getContent();
+		return httpResponse.getContent();
 	}
 
 	private Map<String, String> _splitClassName(String className) {
@@ -359,10 +359,10 @@ public class ExportImportTaskResourcePerformanceTest {
 
 			httpInvoker.userNameAndPassword("test@liferay.com:test");
 
-			HttpInvoker.HttpResponse response = httpInvoker.invoke();
+			HttpInvoker.HttpResponse httpResponse = httpInvoker.invoke();
 
 			ExportTask exportTask = ExportTaskSerDes.toDTO(
-				response.getContent());
+				httpResponse.getContent());
 
 			externalReferenceCode = exportTask.getExternalReferenceCode();
 
