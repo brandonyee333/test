@@ -114,7 +114,6 @@ public class ColumnDescriptorProviderImpl implements ColumnDescriptorProvider {
 
 				return fileEntry.getId();
 			});
-
 		attachmentColumnDescriptors[1] = ColumnDescriptor.from(
 			fieldName + ".link.href", index++,
 			object -> {
@@ -131,7 +130,6 @@ public class ColumnDescriptorProviderImpl implements ColumnDescriptorProvider {
 
 				return link.getHref();
 			});
-
 		attachmentColumnDescriptors[2] = ColumnDescriptor.from(
 			fieldName + ".link.label", index++,
 			object -> {
@@ -148,7 +146,6 @@ public class ColumnDescriptorProviderImpl implements ColumnDescriptorProvider {
 
 				return link.getLabel();
 			});
-
 		attachmentColumnDescriptors[3] = ColumnDescriptor.from(
 			fieldName + ".name", index,
 			object -> {
@@ -199,7 +196,7 @@ public class ColumnDescriptorProviderImpl implements ColumnDescriptorProvider {
 		for (int i = 0; i < multiselectPicklistColumnDescriptors.length;
 			 i = i + 2) {
 
-			int listTypeEntriesLambdaIndex = listTypeEntriesIndex;
+			int finalListTypeEntriesIndex = listTypeEntriesIndex;
 
 			multiselectPicklistColumnDescriptors[i] = ColumnDescriptor.from(
 				StringBundler.concat(fieldName, ".key_", listTypeEntriesIndex),
@@ -213,7 +210,7 @@ public class ColumnDescriptorProviderImpl implements ColumnDescriptorProvider {
 					}
 
 					return _getMultiselectListEntryValue(
-						listTypeEntriesLambdaIndex, "key",
+						finalListTypeEntriesIndex, "key",
 						(List<ListEntry>)value);
 				});
 			multiselectPicklistColumnDescriptors[i + 1] = ColumnDescriptor.from(
@@ -228,7 +225,7 @@ public class ColumnDescriptorProviderImpl implements ColumnDescriptorProvider {
 					}
 
 					return _getMultiselectListEntryValue(
-						listTypeEntriesLambdaIndex, "name",
+						finalListTypeEntriesIndex, "name",
 						(List<ListEntry>)value);
 				});
 
