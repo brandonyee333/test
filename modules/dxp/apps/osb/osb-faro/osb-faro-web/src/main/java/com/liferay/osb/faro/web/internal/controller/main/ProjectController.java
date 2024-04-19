@@ -865,7 +865,8 @@ public class ProjectController extends BaseFaroController {
 
 		return language.get(
 			resourceBundle,
-			"cant-delete-workspace-because-it-has-received-data-recently");
+			"the-workspace-cannot-be-deleted-because-it-has-received-data-" +
+				"recently");
 	}
 
 	private String _getEmailAddressDomainsErrorMessage(
