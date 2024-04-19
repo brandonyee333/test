@@ -272,18 +272,14 @@ public class ObjectEntryInfoItemObjectProviderTest {
 	private void _assertGetInfoItemNoSuchInfoItemException(
 		InfoItemIdentifier infoItemIdentifier, String message) {
 
-		boolean noSuchInfoItemExceptionThrown = false;
-
 		try {
 			_assertGetInfoItem(infoItemIdentifier);
+
+			Assert.fail();
 		}
 		catch (NoSuchInfoItemException noSuchInfoItemException) {
-			noSuchInfoItemExceptionThrown = true;
-
 			Assert.assertEquals(message, noSuchInfoItemException.getMessage());
 		}
-
-		Assert.assertTrue(noSuchInfoItemExceptionThrown);
 	}
 
 	private void _assertGetInfoItemProxyObjectEntry(
