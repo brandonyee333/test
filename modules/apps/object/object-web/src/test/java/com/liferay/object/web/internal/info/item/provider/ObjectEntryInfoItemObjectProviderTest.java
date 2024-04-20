@@ -129,10 +129,11 @@ public class ObjectEntryInfoItemObjectProviderTest {
 	public void testGetInfoItemProxyObjectEntryInfoItemIdentifierCachedInObjectEntriesAttribute()
 		throws Exception {
 
+		String externalReferenceCode = RandomTestUtil.randomString();
+
 		ERCInfoItemIdentifier ercInfoItemIdentifier = new ERCInfoItemIdentifier(
 			externalReferenceCode);
 
-		String externalReferenceCode = RandomTestUtil.randomString();
 		ObjectEntry objectEntry = Mockito.mock(ObjectEntry.class);
 
 		_setUpProxyObjectEntry(externalReferenceCode, objectEntry);
@@ -141,7 +142,7 @@ public class ObjectEntryInfoItemObjectProviderTest {
 			ercInfoItemIdentifier,
 			_getHttpServletRequest(
 				HashMapBuilder.<String, Object>put(
-					_OBJECT_ENTRIES_KEY,
+					_OBJECT_ENTRIES,
 					HashMapBuilder.<InfoItemIdentifier, ObjectEntry>put(
 						ercInfoItemIdentifier, objectEntry
 					).build()
@@ -187,6 +188,8 @@ public class ObjectEntryInfoItemObjectProviderTest {
 	public void testGetInfoItemProxyObjectEntryNullHttpServletRequest()
 		throws Exception {
 
+		ObjectEntry objectEntry = Mockito.mock(ObjectEntry.class);
+
 		String externalReferenceCode = RandomTestUtil.randomString();
 
 		ERCInfoItemIdentifier ercInfoItemIdentifier = new ERCInfoItemIdentifier(
@@ -194,8 +197,6 @@ public class ObjectEntryInfoItemObjectProviderTest {
 
 		Assert.assertEquals(
 			objectEntry, _assertGetInfoItem(ercInfoItemIdentifier));
-
-		ObjectEntry objectEntry = Mockito.mock(ObjectEntry.class);
 
 		com.liferay.object.rest.dto.v1_0.ObjectEntry proxyObjectEntry =
 			_setUpProxyObjectEntry(externalReferenceCode, objectEntry);
@@ -305,7 +306,7 @@ public class ObjectEntryInfoItemObjectProviderTest {
 		Mockito.verify(
 			httpServletRequest
 		).getAttribute(
-			_OBJECT_ENTRIES_KEY
+			_OBJECT_ENTRIES
 		);
 
 		_objectEntryUtilMockedStatic.verify(
@@ -332,7 +333,7 @@ public class ObjectEntryInfoItemObjectProviderTest {
 		Mockito.verify(
 			httpServletRequest
 		).getAttribute(
-			_OBJECT_ENTRIES_KEY
+			_OBJECT_ENTRIES
 		);
 	}
 
@@ -340,7 +341,7 @@ public class ObjectEntryInfoItemObjectProviderTest {
 		Map<String, Object> attributes,
 		ERCInfoItemIdentifier infoItemIdentifier, ObjectEntry objectEntry) {
 
-		Object object = attributes.get(_OBJECT_ENTRIES_KEY);
+		Object object = attributes.get(_OBJECT_ENTRIES);
 
 		Assert.assertNotNull(object);
 		Assert.assertTrue(object instanceof Map);
@@ -446,6 +447,9 @@ public class ObjectEntryInfoItemObjectProviderTest {
 
 		return proxyObjectEntry;
 	}
+
+	private static final String _OBJECT_ENTRIES =
+		ObjectEntryInfoItemObjectProvider.class.getName() + "#OBJECT_ENTRIES";
 
 	private static final MockedStatic<ObjectEntryUtil>
 		_objectEntryUtilMockedStatic = Mockito.mockStatic(
