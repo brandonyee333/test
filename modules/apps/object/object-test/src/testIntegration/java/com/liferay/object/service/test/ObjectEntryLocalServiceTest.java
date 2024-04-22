@@ -1710,8 +1710,7 @@ public class ObjectEntryLocalServiceTest {
 
 		_assertObjectEntryValues(
 			23, values,
-			_objectEntryLocalService.getValues(objectEntry.getObjectEntryId()),
-			null);
+			_objectEntryLocalService.getValues(objectEntry.getObjectEntryId()));
 
 		values = HashMapBuilder.<String, Serializable>put(
 			"emailAddressRequired", "peter@liferay.com"
@@ -1727,8 +1726,7 @@ public class ObjectEntryLocalServiceTest {
 
 		_assertObjectEntryValues(
 			23, values,
-			_objectEntryLocalService.getValues(objectEntry.getObjectEntryId()),
-			null);
+			_objectEntryLocalService.getValues(objectEntry.getObjectEntryId()));
 
 		_addOrUpdateObjectEntry(
 			"james", 0,
@@ -2365,7 +2363,7 @@ public class ObjectEntryLocalServiceTest {
 		_assertCount(1);
 
 		_assertObjectEntryValues(
-			23, values1, _getValuesFromDatabase(objectEntries.get(0)), null);
+			23, values1, _getValuesFromDatabase(objectEntries.get(0)));
 
 		// Add second object entry
 
@@ -2389,9 +2387,9 @@ public class ObjectEntryLocalServiceTest {
 		_assertCount(2);
 
 		_assertObjectEntryValues(
-			23, values1, _getValuesFromDatabase(objectEntries.get(0)), null);
+			23, values1, _getValuesFromDatabase(objectEntries.get(0)));
 		_assertObjectEntryValues(
-			23, values2, _getValuesFromDatabase(objectEntries.get(1)), null);
+			23, values2, _getValuesFromDatabase(objectEntries.get(1)));
 
 		// Add third object entry
 
@@ -2415,11 +2413,11 @@ public class ObjectEntryLocalServiceTest {
 		_assertCount(3);
 
 		_assertObjectEntryValues(
-			23, values1, _getValuesFromDatabase(objectEntries.get(0)), null);
+			23, values1, _getValuesFromDatabase(objectEntries.get(0)));
 		_assertObjectEntryValues(
-			23, values2, _getValuesFromDatabase(objectEntries.get(1)), null);
+			23, values2, _getValuesFromDatabase(objectEntries.get(1)));
 		_assertObjectEntryValues(
-			23, values3, _getValuesFromDatabase(objectEntries.get(2)), null);
+			23, values3, _getValuesFromDatabase(objectEntries.get(2)));
 
 		// Irrelevant object definition
 
@@ -2536,7 +2534,7 @@ public class ObjectEntryLocalServiceTest {
 
 		_assertCount(1);
 
-		_assertObjectEntryValues(29, values1, valuesList.get(0), null);
+		_assertObjectEntryValues(29, values1, valuesList.get(0));
 
 		// Add second object entry
 
@@ -2560,8 +2558,8 @@ public class ObjectEntryLocalServiceTest {
 
 		_assertCount(2);
 
-		_assertObjectEntryValues(29, values1, valuesList.get(0), null);
-		_assertObjectEntryValues(29, values2, valuesList.get(1), null);
+		_assertObjectEntryValues(29, values1, valuesList.get(0));
+		_assertObjectEntryValues(29, values2, valuesList.get(1));
 
 		// Add third object entry
 
@@ -2585,9 +2583,9 @@ public class ObjectEntryLocalServiceTest {
 
 		_assertCount(3);
 
-		_assertObjectEntryValues(29, values1, valuesList.get(0), null);
-		_assertObjectEntryValues(29, values2, valuesList.get(1), null);
-		_assertObjectEntryValues(29, values3, valuesList.get(2), null);
+		_assertObjectEntryValues(29, values1, valuesList.get(0));
+		_assertObjectEntryValues(29, values2, valuesList.get(1));
+		_assertObjectEntryValues(29, values3, valuesList.get(2));
 
 		// Irrelevant object definition
 
@@ -2627,7 +2625,7 @@ public class ObjectEntryLocalServiceTest {
 
 		Assert.assertEquals(valuesList.toString(), 1, valuesList.size());
 
-		_assertObjectEntryValues(29, values3, valuesList.get(0), null);
+		_assertObjectEntryValues(29, values3, valuesList.get(0));
 
 		PermissionThreadLocal.setPermissionChecker(originalPermissionChecker);
 		PrincipalThreadLocal.setName(originalName);
@@ -2651,8 +2649,8 @@ public class ObjectEntryLocalServiceTest {
 
 		Assert.assertEquals(valuesList.toString(), 2, valuesList.size());
 
-		_assertObjectEntryValues(29, values1, valuesList.get(0), null);
-		_assertObjectEntryValues(29, values3, valuesList.get(1), null);
+		_assertObjectEntryValues(29, values1, valuesList.get(0));
+		_assertObjectEntryValues(29, values3, valuesList.get(1));
 
 		// Predicate with permissions check
 
@@ -2667,7 +2665,7 @@ public class ObjectEntryLocalServiceTest {
 
 		Assert.assertEquals(valuesList.toString(), 1, valuesList.size());
 
-		_assertObjectEntryValues(29, values3, valuesList.get(0), null);
+		_assertObjectEntryValues(29, values3, valuesList.get(0));
 
 		PermissionThreadLocal.setPermissionChecker(originalPermissionChecker);
 		PrincipalThreadLocal.setName(originalName);
@@ -2769,7 +2767,7 @@ public class ObjectEntryLocalServiceTest {
 		List<ObjectEntry> objectEntries = baseModelSearchResult.getBaseModels();
 
 		_assertObjectEntryValues(
-			23, values1, _getValuesFromDatabase(objectEntries.get(0)), null);
+			23, values1, _getValuesFromDatabase(objectEntries.get(0)));
 
 		// Add second object entry
 
@@ -2794,9 +2792,9 @@ public class ObjectEntryLocalServiceTest {
 		objectEntries = baseModelSearchResult.getBaseModels();
 
 		_assertObjectEntryValues(
-			23, values1, _getValuesFromDatabase(objectEntries.get(0)), null);
+			23, values1, _getValuesFromDatabase(objectEntries.get(0)));
 		_assertObjectEntryValues(
-			23, values2, _getValuesFromDatabase(objectEntries.get(1)), null);
+			23, values2, _getValuesFromDatabase(objectEntries.get(1)));
 
 		// Add third object entry
 
@@ -2821,11 +2819,11 @@ public class ObjectEntryLocalServiceTest {
 		objectEntries = baseModelSearchResult.getBaseModels();
 
 		_assertObjectEntryValues(
-			23, values1, _getValuesFromDatabase(objectEntries.get(0)), null);
+			23, values1, _getValuesFromDatabase(objectEntries.get(0)));
 		_assertObjectEntryValues(
-			23, values2, _getValuesFromDatabase(objectEntries.get(1)), null);
+			23, values2, _getValuesFromDatabase(objectEntries.get(1)));
 		_assertObjectEntryValues(
-			23, values3, _getValuesFromDatabase(objectEntries.get(2)), null);
+			23, values3, _getValuesFromDatabase(objectEntries.get(2)));
 
 		// With keywords
 
@@ -3381,33 +3379,37 @@ public class ObjectEntryLocalServiceTest {
 
 	private void _assertObjectEntryValues(
 		int expectedValuesSize, Map<String, Serializable> expectedValues,
-		Map<String, Serializable> actualValues,
-		String[] selectedObjectFieldNames) {
+		Map<String, Serializable> actualValues) {
+
+		Assert.assertEquals(
+			expectedValues.get("emailAddressDomain"),
+			actualValues.get("emailAddressDomain"));
+		Assert.assertEquals(
+			expectedValues.get("emailAddressRequired"),
+			actualValues.get("emailAddressRequired"));
+		Assert.assertEquals(
+			expectedValues.get("firstName"), actualValues.get("firstName"));
+		Assert.assertEquals(
+			expectedValues.get("listTypeEntryKeyRequired"),
+			actualValues.get("listTypeEntryKeyRequired"));
 
 		Assert.assertEquals(
 			actualValues.toString(), expectedValuesSize, actualValues.size());
+	}
 
-		if (selectedObjectFieldNames == null) {
-			Assert.assertEquals(
-				expectedValues.get("emailAddressDomain"),
-				actualValues.get("emailAddressDomain"));
-			Assert.assertEquals(
-				expectedValues.get("emailAddressRequired"),
-				actualValues.get("emailAddressRequired"));
-			Assert.assertEquals(
-				expectedValues.get("firstName"), actualValues.get("firstName"));
-			Assert.assertEquals(
-				expectedValues.get("listTypeEntryKeyRequired"),
-				actualValues.get("listTypeEntryKeyRequired"));
-
-			return;
-		}
+	private void _assertObjectEntryValues(
+		int expectedValuesSize, Map<String, Serializable> expectedValues,
+		Map<String, Serializable> actualValues,
+		String[] selectedObjectFieldNames) {
 
 		for (String selectedObjectFieldName : selectedObjectFieldNames) {
 			Assert.assertEquals(
 				expectedValues.get(selectedObjectFieldName),
 				actualValues.get(selectedObjectFieldName));
 		}
+
+		Assert.assertEquals(
+			actualValues.toString(), expectedValuesSize, actualValues.size());
 	}
 
 	private void _assertObjectValidationRuleResult(
