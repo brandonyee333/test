@@ -393,9 +393,9 @@ public class DefaultObjectEntryManagerImpl
 			}
 		}
 
-		UriInfo uriInfo = dtoConverterContext.getUriInfo();
-
 		List<String> selectedObjectFieldNames = null;
+
+		UriInfo uriInfo = dtoConverterContext.getUriInfo();
 
 		if (uriInfo != null) {
 			MultivaluedMap<String, String> queryParameters =
