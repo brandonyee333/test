@@ -320,24 +320,27 @@ export default function PageContent({
 					}
 				/>
 			) : (
-				<ClayButton
-					aria-label={sub(
-						Liferay.Language.get('edit-inline-text-x'),
-						title
-					)}
-					className={classNames(
-						'page-editor__page-contents__button',
-						{
-							'not-allowed': isBeingEdited || !canUpdateEditables,
-						}
-					)}
-					disabled={isBeingEdited || !canUpdateEditables}
-					displayType="unstyled"
-					onClick={onClickEditInlineText}
-					size="sm"
-				>
-					<ClayIcon symbol="pencil" />
-				</ClayButton>
+				(!Liferay.FeatureFlags['LPD-19955'] || !isRestricted) && (
+					<ClayButton
+						aria-label={sub(
+							Liferay.Language.get('edit-inline-text-x'),
+							title
+						)}
+						className={classNames(
+							'page-editor__page-contents__button',
+							{
+								'not-allowed':
+									isBeingEdited || !canUpdateEditables,
+							}
+						)}
+						disabled={isBeingEdited || !canUpdateEditables}
+						displayType="unstyled"
+						onClick={onClickEditInlineText}
+						size="sm"
+					>
+						<ClayIcon symbol="pencil" />
+					</ClayButton>
+				)
 			)}
 
 			{imageEditorParams && (
@@ -356,6 +359,7 @@ export default function PageContent({
 PageContent.propTypes = {
 	actions: PropTypes.object,
 	icon: PropTypes.string,
+	isRestricted: PropTypes.bool,
 	name: PropTypes.string,
 	subtype: PropTypes.string,
 	title: PropTypes.string.isRequired,
