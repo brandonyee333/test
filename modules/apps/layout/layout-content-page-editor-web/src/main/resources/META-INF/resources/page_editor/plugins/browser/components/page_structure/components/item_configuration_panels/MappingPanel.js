@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
+import ClayAlert from '@clayui/alert';
 import React from 'react';
 
 import {BACKGROUND_IMAGE_FRAGMENT_ENTRY_PROCESSOR} from '../../../../../../app/config/constants/backgroundImageFragmentEntryProcessor';
@@ -81,6 +82,16 @@ export function MappingPanel({item}) {
 			})
 		);
 	};
+
+	if (Liferay.FeatureFlags['LPD-19955'] && editableValue?.isRestricted) {
+		return (
+			<ClayAlert displayType="secondary" role={null}>
+				{Liferay.Language.get(
+					'this-content-cannot-be-displayed-due-to-permission-restrictions'
+				)}
+			</ClayAlert>
+		);
+	}
 
 	return (
 		<>
