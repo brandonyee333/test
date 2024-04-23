@@ -711,10 +711,17 @@ function visit(
 					isMasterItem: !isMasterPage && itemInMasterLayout,
 					itemType: ITEM_TYPES.editable,
 					mapped: isMapped(editable),
-					name: mappedFieldLabel || editableId,
+					name:
+						Liferay.FeatureFlags['LPD-19955'] &&
+						editable?.isRestricted
+							? Liferay.Language.get('restricted-content')
+							: mappedFieldLabel || editableId,
 					onHoverNode,
 					parentId: item.parentId,
 					removable: false,
+					showPermissionRestriction:
+						Liferay.FeatureFlags['LPD-19955'] &&
+						editable?.isRestricted,
 					tooltipTitle: EDITABLE_TYPE_LABELS[type],
 				});
 			}
