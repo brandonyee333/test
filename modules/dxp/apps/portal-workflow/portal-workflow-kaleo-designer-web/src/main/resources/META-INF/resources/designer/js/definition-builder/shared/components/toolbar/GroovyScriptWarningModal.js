@@ -33,7 +33,7 @@ export function GroovyScriptWarningModal({
 					target="_blank"
 				>
 					{Liferay.Language.get(
-						'go-to-system-settings-security-tools-script-management-to-enable-script-execution-for-administrators'
+						'go-to-system-settings-security-tools-script-management-to-allow-administrators-to-execute-scripts'
 					)}
 				</a>
 			</ClayModal.Body>
