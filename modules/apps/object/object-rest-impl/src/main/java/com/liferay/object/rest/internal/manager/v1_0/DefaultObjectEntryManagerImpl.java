@@ -1598,9 +1598,22 @@ public class DefaultObjectEntryManagerImpl
 					serviceBuilderObjectEntry, dtoConverterContext.getUriInfo())
 			).build();
 
+			String methodName = null;
+
 			boolean scopeSite = Objects.equals(
 				objectDefinition.getScope(),
 				ObjectDefinitionConstants.SCOPE_SITE);
+
+			if (scopeSite) {
+				methodName =
+					"putScopeScopeKeyByExternalReferenceCodeObjectAction" +
+						"ObjectActionName";
+			}
+			else {
+				methodName =
+					"putByExternalReferenceCodeObjectEntryExternal" +
+						"ReferenceCodeObjectActionObjectActionName";
+			}
 
 			Map<String, String> templateParameterMap = HashMapBuilder.put(
 				() -> {
@@ -1628,19 +1641,6 @@ public class DefaultObjectEntryManagerImpl
 				},
 				serviceBuilderObjectEntry.getExternalReferenceCode()
 			).build();
-
-			String methodName = null;
-
-			if (scopeSite) {
-				methodName =
-					"putScopeScopeKeyByExternalReferenceCodeObjectAction" +
-						"ObjectActionName";
-			}
-			else {
-				methodName =
-					"putByExternalReferenceCodeObjectEntryExternal" +
-						"ReferenceCodeObjectActionObjectActionName";
-			}
 
 			for (ObjectAction objectAction :
 					_objectActionLocalService.getObjectActions(
