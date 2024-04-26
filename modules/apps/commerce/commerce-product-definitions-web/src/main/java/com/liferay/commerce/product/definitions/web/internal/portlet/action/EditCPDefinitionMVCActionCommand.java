@@ -148,10 +148,10 @@ public class EditCPDefinitionMVCActionCommand extends BaseMVCActionCommand {
 				sendRedirect(actionRequest, actionResponse, redirect);
 			}
 			else if (cmd.equals("updateAttachmentFileEntries") ||
-					 cmd.equals("updateInstances") ||
 					 cmd.equals("updateDefinitionLinks") ||
 					 cmd.equals("updateDefinitionOptionRels") ||
-					 cmd.equals("updateDefinitionPricingClasses")) {
+					 cmd.equals("updateDefinitionPricingClasses") ||
+					 cmd.equals("updateInstances")) {
 
 				Callable<CPDefinition> cpDefinitionUpdateCallable =
 					new CPDefinitionUpdateCallable(actionRequest, cpDefinition);
