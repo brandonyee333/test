@@ -147,9 +147,9 @@ public class PortalAcceptancePullRequestJob
 		FileSystem fs = FileSystems.getDefault();
 
 		_restBuilderFilePathMatchers = Arrays.asList(
-			fs.getPathMatcher("glob:**/rest-openapi*.yaml"),
+			fs.getPathMatcher("glob:**/portal-tools-rest-builder/**"),
 			fs.getPathMatcher("glob:**/rest-config*.yaml"),
-			fs.getPathMatcher("glob:**/portal-tools-rest-builder/**"));
+			fs.getPathMatcher("glob:**/rest-openapi*.yaml"));
 	}
 
 	private Boolean _centralMergePullRequest;
