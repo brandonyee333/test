@@ -63,12 +63,10 @@ public abstract class BaseVirtualInstanceOperationTestCase
 	protected void assertConfigurationIsDeletedAfterDeploy(String pid)
 		throws Exception {
 
-		Assert.assertFalse(Files.exists(_configurationPath));
-
 		Assert.assertNull(
 			_configurationAdmin.listConfigurations(
 				"(service.pid=" + pid + ")"));
-
+		Assert.assertFalse(Files.exists(_configurationPath));
 		Assert.assertNull(
 			ReflectionTestUtil.invoke(
 				_persistenceManager, "_getDictionary",
