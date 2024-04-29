@@ -459,18 +459,6 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 		FileEntry tempFileEntry = null;
 
 		try {
-			Date displayDate = _getDisplayDate(
-				uploadPortletRequest, neverExpireDefaultValue,
-				user.getTimeZone());
-
-			Date expirationDate = _getExpirationDate(
-				uploadPortletRequest, displayDate, neverExpireDefaultValue,
-				user.getTimeZone());
-
-			Date reviewDate = _getReviewDate(
-				uploadPortletRequest, neverExpireDefaultValue,
-				user.getTimeZone());
-
 			tempFileEntry = TempFileEntryUtil.getTempFileEntry(
 				themeDisplay.getScopeGroupId(), themeDisplay.getUserId(),
 				TEMP_FOLDER_NAME, selectedFileName);
@@ -487,12 +475,22 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 				tempFileEntry.getGroupId(), folderId,
 				FileUtil.stripExtension(originalSelectedFileName));
 
+			Date displayDate = _getDisplayDate(
+				uploadPortletRequest, neverExpireDefaultValue,
+				user.getTimeZone());
+
 			_dlAppService.addFileEntry(
 				null, repositoryId, folderId, uniqueFileName,
 				tempFileEntry.getMimeType(), uniqueFileTitle, StringPool.BLANK,
 				description, changeLog, tempFileEntry.getContentStream(),
-				tempFileEntry.getSize(), displayDate, expirationDate,
-				reviewDate, serviceContext);
+				tempFileEntry.getSize(), displayDate,
+				_getExpirationDate(
+					uploadPortletRequest, displayDate, neverExpireDefaultValue,
+					user.getTimeZone()),
+				_getReviewDate(
+					uploadPortletRequest, neverExpireDefaultValue,
+					user.getTimeZone()),
+				serviceContext);
 
 			validFileNameKVPs.add(
 				new KeyValuePair(uniqueFileName, selectedFileName));
