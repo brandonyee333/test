@@ -38,15 +38,15 @@ public class LiferayDatabaseTest {
 
 	@Before
 	public void setUp() throws SQLException {
-		_mockCompanies(Collections.emptyList());
-		_mockDatabaseConnection(
+		_mockGetCompanies(Collections.emptyList());
+		_mockGetConnection(
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString());
-		_mockDefaultPartition(true);
+		_mockGetTables(true);
 		_mockGetCompanyIds(Collections.emptyList());
-		_mockGetCompanyInfoIds(Collections.emptyList());
-		_mockReleases(Collections.emptyList());
-		_mockTables(Collections.emptyList());
+		_mockGetCompanyInfos(Collections.emptyList());
+		_mockGetReleases(Collections.emptyList());
+		_mockGetColumns(Collections.emptyList());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class LiferayDatabaseTest {
 			RandomTestUtil.randomLong(), RandomTestUtil.randomString(),
 			RandomTestUtil.randomString(), RandomTestUtil.randomString());
 
-		_mockCompanies(Arrays.asList(company1, company2));
+		_mockGetCompanies(Arrays.asList(company1, company2));
 
 		LiferayDatabase liferayDatabase = DatabaseUtil.exportLiferayDatabase(
 			_connection);
@@ -105,7 +105,7 @@ public class LiferayDatabaseTest {
 		Release module2Release = new Release(
 			Version.parseVersion("2.0.1"), "module2", 1, false);
 
-		_mockReleases(Arrays.asList(module1Release, module2Release));
+		_mockGetReleases(Arrays.asList(module1Release, module2Release));
 
 		LiferayDatabase liferayDatabase = DatabaseUtil.exportLiferayDatabase(
 			_connection);
@@ -120,7 +120,7 @@ public class LiferayDatabaseTest {
 	@Test
 	public void testGetTableNames() throws Exception {
 		_mockGetCompanyIds(Collections.singletonList(25000L));
-		_mockTables(
+		_mockGetColumns(
 			Arrays.asList("Table1", "Company", "Table2", "Object_x_25000"));
 
 		LiferayDatabase liferayDatabase = DatabaseUtil.exportLiferayDatabase(
@@ -147,7 +147,7 @@ public class LiferayDatabaseTest {
 			true);
 	}
 
-	private void _mockCompanies(List<Company> companies) throws SQLException {
+	private void _mockGetCompanies(List<Company> companies) throws SQLException {
 		PreparedStatement preparedStatement = Mockito.mock(
 			PreparedStatement.class);
 		ResultSet resultSet = Mockito.mock(ResultSet.class);
@@ -311,7 +311,7 @@ public class LiferayDatabaseTest {
 		);
 	}
 
-	private void _mockDatabaseConnection(
+	private void _mockGetConnection(
 			String password, String url, String user)
 		throws SQLException {
 
@@ -334,7 +334,7 @@ public class LiferayDatabaseTest {
 		);
 	}
 
-	private void _mockDefaultPartition(boolean defaultPartition)
+	private void _mockGetTables(boolean defaultPartition)
 		throws SQLException {
 
 		ResultSet resultSet = Mockito.mock(ResultSet.class);
@@ -426,7 +426,7 @@ public class LiferayDatabaseTest {
 		);
 	}
 
-	private void _mockGetCompanyInfoIds(List<Long> companyIds)
+	private void _mockGetCompanyInfos(List<Long> companyIds)
 		throws SQLException {
 
 		PreparedStatement preparedStatement = Mockito.mock(
@@ -500,7 +500,7 @@ public class LiferayDatabaseTest {
 		);
 	}
 
-	private void _mockReleases(List<Release> releases) throws SQLException {
+	private void _mockGetReleases(List<Release> releases) throws SQLException {
 		PreparedStatement preparedStatement = Mockito.mock(
 			PreparedStatement.class);
 
@@ -666,7 +666,7 @@ public class LiferayDatabaseTest {
 		);
 	}
 
-	private void _mockTables(List<String> tableNames) throws SQLException {
+	private void _mockGetColumns(List<String> tableNames) throws SQLException {
 		ResultSet resultSet1 = Mockito.mock(ResultSet.class);
 
 		Mockito.when(
@@ -752,7 +752,7 @@ public class LiferayDatabaseTest {
 			List<Long> companyIds, Consumer<LiferayDatabase> consumer)
 		throws Exception {
 
-		_mockGetCompanyInfoIds(companyIds);
+		_mockGetCompanyInfos(companyIds);
 
 		consumer.accept(DatabaseUtil.exportLiferayDatabase(_connection));
 	}
@@ -761,7 +761,7 @@ public class LiferayDatabaseTest {
 			Consumer<LiferayDatabase> consumer, boolean defaultPartition)
 		throws Exception {
 
-		_mockDefaultPartition(defaultPartition);
+		_mockGetTables(defaultPartition);
 
 		consumer.accept(DatabaseUtil.exportLiferayDatabase(_connection));
 	}
