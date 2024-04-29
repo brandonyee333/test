@@ -5055,7 +5055,6 @@ public class ObjectEntryResourceTest {
 				"%s/any(k:contains(k,'%s'))",
 				_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
 				RandomTestUtil.randomString()));
-
 		_assertFilteredObjectEntries(
 			3,
 			String.format(
@@ -5091,7 +5090,6 @@ public class ObjectEntryResourceTest {
 			String.format(
 				"%s/any(k:k eq '%s')", _OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
 				_LIST_TYPE_ENTRY_KEY_3.substring(1)));
-
 		_assertFilteredObjectEntries(
 			3,
 			String.format(
@@ -5110,7 +5108,6 @@ public class ObjectEntryResourceTest {
 				"%s/any(k:k in ('%s','%s'))",
 				_OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
 				RandomTestUtil.randomString(), RandomTestUtil.randomString()));
-
 		_assertFilteredObjectEntries(
 			2,
 			String.format(
@@ -5131,7 +5128,6 @@ public class ObjectEntryResourceTest {
 			String.format(
 				"%s/any(k:k ne '%s')", _OBJECT_FIELD_NAME_MULTISELECT_PICKLIST,
 				RandomTestUtil.randomString()));
-
 		_assertFilteredObjectEntries(
 			3,
 			String.format(
