@@ -76,7 +76,7 @@ public class LiferayDatabaseTest {
 
 		companyIds.add(RandomTestUtil.randomLong());
 
-		_testCompanyId(
+		_testGetExportedCompanyId(
 			companyIds,
 			liferayDatabase -> Assert.assertEquals(
 				companyIds.get(0),
@@ -85,7 +85,8 @@ public class LiferayDatabaseTest {
 		companyIds.add(RandomTestUtil.randomLong());
 
 		try {
-			_testCompanyId(companyIds, liferayDatabase -> Assert.fail());
+			_testGetExportedCompanyId(
+				companyIds, liferayDatabase -> Assert.fail());
 		}
 		catch (Exception exception) {
 			Assert.assertTrue(
@@ -136,14 +137,14 @@ public class LiferayDatabaseTest {
 
 	@Test
 	public void testIsExportedCompanyDefault() throws Exception {
-		_testDefaultPartition(
-			false,
+		_testIsExportedCompanyDefault(
 			liferayDatabase -> Assert.assertFalse(
-				liferayDatabase.isExportedCompanyDefault()));
-		_testDefaultPartition(
-			true,
+				liferayDatabase.isExportedCompanyDefault()),
+			false);
+		_testIsExportedCompanyDefault(
 			liferayDatabase -> Assert.assertTrue(
-				liferayDatabase.isExportedCompanyDefault()));
+				liferayDatabase.isExportedCompanyDefault()),
+			true);
 	}
 
 	private void _mockCompanies(List<Company> companies) throws SQLException {
@@ -747,7 +748,7 @@ public class LiferayDatabaseTest {
 		);
 	}
 
-	private void _testCompanyId(
+	private void _testGetExportedCompanyId(
 			List<Long> companyIds, Consumer<LiferayDatabase> consumer)
 		throws Exception {
 
@@ -756,8 +757,8 @@ public class LiferayDatabaseTest {
 		consumer.accept(DatabaseUtil.exportLiferayDatabase(_connection));
 	}
 
-	private void _testDefaultPartition(
-			boolean defaultPartition, Consumer<LiferayDatabase> consumer)
+	private void _testIsExportedCompanyDefault(
+			Consumer<LiferayDatabase> consumer, boolean defaultPartition)
 		throws Exception {
 
 		_mockDefaultPartition(defaultPartition);
