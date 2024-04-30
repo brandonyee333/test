@@ -142,7 +142,7 @@ export function normalize(ratingValue) {
 export function stringToSlug(text) {
 	const whiteSpaces = /\s+/g;
 
-	return text.replace(whiteSpaces, '-').toLowerCase();
+	return text.replace(whiteSpaces, '-');
 }
 
 export function slugToText(slug) {
