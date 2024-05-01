@@ -554,7 +554,7 @@ public class ObjectDefinitionResourceTest
 			new ObjectValidationRule() {
 				{
 					active = false;
-					engine = ObjectValidationRuleConstants.ENGINE_TYPE_DDM;
+					engine = ObjectValidationRuleConstants.ENGINE_TYPE_GROOVY;
 					errorLabel = Collections.singletonMap(
 						"en_US", RandomTestUtil.randomString());
 					externalReferenceCode =
@@ -587,7 +587,8 @@ public class ObjectDefinitionResourceTest
 				new ObjectValidationRule() {
 					{
 						active = false;
-						engine = ObjectValidationRuleConstants.ENGINE_TYPE_DDM;
+						engine =
+							ObjectValidationRuleConstants.ENGINE_TYPE_GROOVY;
 						errorLabel = Collections.singletonMap(
 							"en_US", RandomTestUtil.randomString());
 						externalReferenceCode =

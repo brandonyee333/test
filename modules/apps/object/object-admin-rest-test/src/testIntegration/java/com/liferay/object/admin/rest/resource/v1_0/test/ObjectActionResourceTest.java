@@ -83,13 +83,11 @@ public class ObjectActionResourceTest extends BaseObjectActionResourceTestCase {
 					"en_US", RandomTestUtil.randomString());
 				name = RandomTestUtil.randomString();
 				objectActionExecutorKey =
-					ObjectActionExecutorConstants.KEY_WEBHOOK;
+					ObjectActionExecutorConstants.KEY_GROOVY;
 				objectActionTriggerKey =
 					ObjectActionTriggerConstants.KEY_STANDALONE;
 				parameters = UnicodePropertiesBuilder.put(
-					"secret", "standalone"
-				).put(
-					"url", "https://standalone.com"
+					"script", "println \"Hello World\""
 				).build();
 			}
 		};

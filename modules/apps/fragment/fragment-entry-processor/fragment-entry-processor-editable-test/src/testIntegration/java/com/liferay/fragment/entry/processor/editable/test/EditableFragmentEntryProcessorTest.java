@@ -736,12 +736,10 @@ public class EditableFragmentEntryProcessorTest {
 			RandomTestUtil.randomString(),
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 			labelMap, RandomTestUtil.randomString(),
-			ObjectActionExecutorConstants.KEY_WEBHOOK,
+			ObjectActionExecutorConstants.KEY_GROOVY,
 			ObjectActionTriggerConstants.KEY_STANDALONE,
 			UnicodePropertiesBuilder.put(
-				"secret", "standalone"
-			).put(
-				"url", "https://standalone.com"
+				"script", "println 'Action Executed'"
 			).build(),
 			false);
 
