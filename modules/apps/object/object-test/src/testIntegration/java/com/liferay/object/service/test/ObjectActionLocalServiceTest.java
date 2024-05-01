@@ -126,10 +126,8 @@ import java.util.Set;
 import org.hamcrest.CoreMatchers;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -151,16 +149,6 @@ public class ObjectActionLocalServiceTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
-
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		ScriptManagementConfigurationTestUtil.save(true);
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		ScriptManagementConfigurationTestUtil.delete();
-	}
 
 	@Before
 	public void setUp() throws Exception {
