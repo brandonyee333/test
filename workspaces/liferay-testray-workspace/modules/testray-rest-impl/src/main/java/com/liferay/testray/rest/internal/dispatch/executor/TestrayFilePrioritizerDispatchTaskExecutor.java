@@ -33,13 +33,13 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = {
-		"dispatch.task.executor.name=testray-file-manager",
+		"dispatch.task.executor.name=testray-file-prioritizer",
 		"dispatch.task.executor.overlapping=false",
-		"dispatch.task.executor.type=testray-file-manager"
+		"dispatch.task.executor.type=testray-file-prioritizer"
 	},
 	service = DispatchTaskExecutor.class
 )
-public class TestrayFileManagerDispatchTaskExecutor
+public class TestrayFilePrioritizerDispatchTaskExecutor
 	extends BaseDispatchTaskExecutor {
 
 	@Override
@@ -146,10 +146,10 @@ public class TestrayFileManagerDispatchTaskExecutor
 
 	@Override
 	public String getName() {
-		return "testray-file-manager";
+		return "testray-file-prioritizer";
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		TestrayFileManagerDispatchTaskExecutor.class);
+		TestrayFilePrioritizerDispatchTaskExecutor.class);
 
 }
