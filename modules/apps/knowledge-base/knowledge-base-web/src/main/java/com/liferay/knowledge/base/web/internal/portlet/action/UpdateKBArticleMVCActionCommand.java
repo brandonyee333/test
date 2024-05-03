@@ -376,6 +376,7 @@ public class UpdateKBArticleMVCActionCommand
 			}
 			catch (LockedKBArticleException lockedKBArticleException) {
 				hideDefaultErrorMessage(actionRequest);
+
 				lockedKBArticleException.setCmd(Constants.SAVE);
 
 				throw lockedKBArticleException;
