@@ -1146,6 +1146,9 @@ public class GetEntryRenderDataMVCResourceCommand
 			return LinkedHashMapBuilder.<String, Object>put(
 				"activities",
 				() -> {
+					JSONObject workflowLogsJSONObject =
+						_jsonFactory.createJSONObject();
+
 					List<WorkflowLog> workflowLogs =
 						_workflowLogManager.getWorkflowLogsByWorkflowInstance(
 							themeDisplay.getCompanyId(),
@@ -1158,9 +1161,6 @@ public class GetEntryRenderDataMVCResourceCommand
 							QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 							_workflowComparatorFactory.
 								getLogCreateDateComparator(false));
-
-					JSONObject workflowLogsJSONObject =
-						_jsonFactory.createJSONObject();
 
 					for (WorkflowLog workflowLog : workflowLogs) {
 						workflowLogsJSONObject.put(
