@@ -3,14 +3,10 @@
 		"pageElements": [
 			{
 				"definition": {
-					"cssClasses": [
-						"learn-banner"
-					],
-					"fragmentStyle": {
-					},
+					"cssClasses": ["learn-banner"],
+					"fragmentStyle": {},
 					"indexed": true,
-					"layout": {
-					}
+					"layout": {}
 				},
 				"pageElements": [
 					{
@@ -40,8 +36,7 @@
 										"textColor": ""
 									},
 									"indexed": true,
-									"layout": {
-									}
+									"layout": {}
 								},
 								"pageElements": [
 									{
@@ -58,8 +53,7 @@
 												{
 													"id": "element-text",
 													"value": {
-														"fragmentLink": {
-														},
+														"fragmentLink": {},
 														"text": {
 															"defaultFragmentInlineValue": {
 																"value": "Capability"
@@ -88,6 +82,7 @@
 									},
 									{
 										"definition": {
+											"cssClasses": ["capability-title"],
 											"customCSS": ".[$FRAGMENT_CLASS$] {\ngap: var(--spacer-3);\n}",
 											"indexed": true,
 											"layout": {
@@ -107,8 +102,7 @@
 														"paddingTop": "6px"
 													},
 													"indexed": true,
-													"layout": {
-													}
+													"layout": {}
 												},
 												"pageElements": [
 													{
@@ -135,8 +129,7 @@
 																				}
 																			}
 																		},
-																		"fragmentLink": {
-																		}
+																		"fragmentLink": {}
 																	}
 																}
 															],
@@ -161,8 +154,7 @@
 														{
 															"id": "element-text",
 															"value": {
-																"fragmentLink": {
-																},
+																"fragmentLink": {},
 																"text": {
 																	"defaultFragmentInlineValue": {
 																		"value": "Cloud"
@@ -190,16 +182,13 @@
 									},
 									{
 										"definition": {
-											"cssClasses": [
-												"learn-search"
-											],
+											"cssClasses": ["learn-search"],
 											"fragmentStyle": {
 												"marginTop": "4",
 												"maxWidth": "var(--container-max-sm, 600px)"
 											},
 											"widgetInstance": {
-												"widgetConfig": {
-												},
+												"widgetConfig": {},
 												"widgetName": "com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet"
 											}
 										},
@@ -216,9 +205,7 @@
 			},
 			{
 				"definition": {
-					"cssClasses": [
-						"learn-category"
-					],
+					"cssClasses": ["learn-category"],
 					"fragmentStyle": {
 						"maxWidth": "var(--container-max-xl)",
 						"paddingBottom": "4",
@@ -250,8 +237,7 @@
 								{
 									"id": "element-text",
 									"value": {
-										"fragmentLink": {
-										},
+										"fragmentLink": {},
 										"text": {
 											"defaultFragmentInlineValue": {
 												"value": "<p>Liferay Cloud Platform provides the infrastructure and tooling necessary to simplify, secure, and deliver applications on Liferay DXP when using the SaaS or PaaS deployment approaches. Using Liferay’s Cloud infrastructure provides a secure, reliable, and scalable platform for building Liferay solutions.<p>The Liferay Cloud Platform includes DevOps CI/CD tools, automated backups, real-time logs, and much more.<div>Check these articles for an introduction:<ul><li><a href=/w/liferay-cloud/getting-started>Getting Started - Liferay Cloud</a><li><a href=/w/liferay-cloud/getting-started/development-requirements>Development Requirements</a><li><a href=/w/liferay-cloud/getting-started/configuring-your-github-repository>Configuring Your Github Repository</a><li><a href=/w/liferay-cloud/updating-services-in-liferay-paas/overview-of-the-liferay-cloud-deployment-workflow>Overview of the Liferay Cloud Deployment Workflow</a><li><a href=/w/liferay-cloud/updating-services-in-liferay-paas/deploying-changes-via-the-liferay-cloud-console>Deploying Changes via the Liferay Cloud Console</a></ul></div>"
@@ -414,8 +400,7 @@
 										"width": "100%"
 									},
 									"indexed": true,
-									"layout": {
-									}
+									"layout": {}
 								},
 								"pageElements": [
 									{

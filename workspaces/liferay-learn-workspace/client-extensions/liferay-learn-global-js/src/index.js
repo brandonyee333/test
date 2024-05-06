@@ -10,6 +10,8 @@ import 'prismjs';
 
 import './article';
 
+import './handleSearchInput';
+
 export default {
 	DropdownProvider,
 	SpatialNavigationProvider,

@@ -3,14 +3,10 @@
 		"pageElements": [
 			{
 				"definition": {
-					"cssClasses": [
-						"learn-banner"
-					],
-					"fragmentStyle": {
-					},
+					"cssClasses": ["learn-banner"],
+					"fragmentStyle": {},
 					"indexed": true,
-					"layout": {
-					}
+					"layout": {}
 				},
 				"pageElements": [
 					{
@@ -40,8 +36,7 @@
 										"textColor": ""
 									},
 									"indexed": true,
-									"layout": {
-									}
+									"layout": {}
 								},
 								"pageElements": [
 									{
@@ -58,8 +53,7 @@
 												{
 													"id": "element-text",
 													"value": {
-														"fragmentLink": {
-														},
+														"fragmentLink": {},
 														"text": {
 															"defaultFragmentInlineValue": {
 																"value": "Capability"
@@ -88,6 +82,7 @@
 									},
 									{
 										"definition": {
+											"cssClasses": ["capability-title"],
 											"customCSS": ".[$FRAGMENT_CLASS$] {\ngap: var(--spacer-3);\n}",
 											"indexed": true,
 											"layout": {
@@ -107,8 +102,7 @@
 														"paddingTop": "6px"
 													},
 													"indexed": true,
-													"layout": {
-													}
+													"layout": {}
 												},
 												"pageElements": [
 													{
@@ -135,8 +129,7 @@
 																				}
 																			}
 																		},
-																		"fragmentLink": {
-																		}
+																		"fragmentLink": {}
 																	}
 																}
 															],
@@ -161,8 +154,7 @@
 														{
 															"id": "element-text",
 															"value": {
-																"fragmentLink": {
-																},
+																"fragmentLink": {},
 																"text": {
 																	"defaultFragmentInlineValue": {
 																		"value": "Integration"
@@ -190,16 +182,13 @@
 									},
 									{
 										"definition": {
-											"cssClasses": [
-												"learn-search"
-											],
+											"cssClasses": ["learn-search"],
 											"fragmentStyle": {
 												"marginTop": "4",
 												"maxWidth": "var(--container-max-sm, 600px)"
 											},
 											"widgetInstance": {
-												"widgetConfig": {
-												},
+												"widgetConfig": {},
 												"widgetName": "com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet"
 											}
 										},
@@ -216,9 +205,7 @@
 			},
 			{
 				"definition": {
-					"cssClasses": [
-						"learn-category"
-					],
+					"cssClasses": ["learn-category"],
 					"fragmentStyle": {
 						"maxWidth": "var(--container-max-xl)",
 						"paddingBottom": "4",
@@ -250,8 +237,7 @@
 								{
 									"id": "element-text",
 									"value": {
-										"fragmentLink": {
-										},
+										"fragmentLink": {},
 										"text": {
 											"defaultFragmentInlineValue": {
 												"value": "<p>Liferay is designed to be standards-compliant and highly interoperable. Connect Liferay DXP with external systems using SOAP, REST, GraphQL, and more  to unite third-party software, legacy systems, and data.<p>Headless APIs, Remote Apps (Client Extensions), API Builder, and integrations with SSO platforms are some of the examples of the features in this area.<div>Check these articles for an introduction:<ul><li><a href=/w/dxp/headless-delivery/using-liferay-as-a-headless-platform>Using Liferay as a Headless Platform</a><li><a href=/w/dxp/liferay-development/integrating-external-applications>Integrating External Applications</a><li><a href=/w/dxp/headless-delivery/api-builder>API Builder</a><li><a href=/w/dxp/installation-and-upgrades/securing-liferay/configuring-sso>Configuring Single Sign-On</a></ul></div>"
@@ -414,8 +400,7 @@
 										"width": "100%"
 									},
 									"indexed": true,
-									"layout": {
-									}
+									"layout": {}
 								},
 								"pageElements": [
 									{

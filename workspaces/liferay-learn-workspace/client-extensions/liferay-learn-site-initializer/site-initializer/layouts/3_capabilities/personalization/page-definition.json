@@ -3,14 +3,10 @@
 		"pageElements": [
 			{
 				"definition": {
-					"cssClasses": [
-						"learn-banner"
-					],
-					"fragmentStyle": {
-					},
+					"cssClasses": ["learn-banner"],
+					"fragmentStyle": {},
 					"indexed": true,
-					"layout": {
-					}
+					"layout": {}
 				},
 				"pageElements": [
 					{
@@ -40,8 +36,7 @@
 										"textColor": ""
 									},
 									"indexed": true,
-									"layout": {
-									}
+									"layout": {}
 								},
 								"pageElements": [
 									{
@@ -58,8 +53,7 @@
 												{
 													"id": "element-text",
 													"value": {
-														"fragmentLink": {
-														},
+														"fragmentLink": {},
 														"text": {
 															"defaultFragmentInlineValue": {
 																"value": "Capability"
@@ -88,6 +82,7 @@
 									},
 									{
 										"definition": {
+											"cssClasses": ["capability-title"],
 											"customCSS": ".[$FRAGMENT_CLASS$] {\ngap: var(--spacer-3);\n}",
 											"indexed": true,
 											"layout": {
@@ -107,8 +102,7 @@
 														"paddingTop": "6px"
 													},
 													"indexed": true,
-													"layout": {
-													}
+													"layout": {}
 												},
 												"pageElements": [
 													{
@@ -135,8 +129,7 @@
 																				}
 																			}
 																		},
-																		"fragmentLink": {
-																		}
+																		"fragmentLink": {}
 																	}
 																}
 															],
@@ -161,8 +154,7 @@
 														{
 															"id": "element-text",
 															"value": {
-																"fragmentLink": {
-																},
+																"fragmentLink": {},
 																"text": {
 																	"defaultFragmentInlineValue": {
 																		"value": "Personalization"
@@ -190,16 +182,13 @@
 									},
 									{
 										"definition": {
-											"cssClasses": [
-												"learn-search"
-											],
+											"cssClasses": ["learn-search"],
 											"fragmentStyle": {
 												"marginTop": "4",
 												"maxWidth": "var(--container-max-sm, 600px)"
 											},
 											"widgetInstance": {
-												"widgetConfig": {
-												},
+												"widgetConfig": {},
 												"widgetName": "com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet"
 											}
 										},
@@ -216,9 +205,7 @@
 			},
 			{
 				"definition": {
-					"cssClasses": [
-						"learn-category"
-					],
+					"cssClasses": ["learn-category"],
 					"fragmentStyle": {
 						"maxWidth": "var(--container-max-xl)",
 						"paddingBottom": "4",
@@ -250,8 +237,7 @@
 								{
 									"id": "element-text",
 									"value": {
-										"fragmentLink": {
-										},
+										"fragmentLink": {},
 										"text": {
 											"defaultFragmentInlineValue": {
 												"value": "<p>Liferay provides powerful out-of-the-box features for building and delivering personalized experiences to users. Personalization features empower you to deliver novel site experiences that differ based on defined user segments, design and execute A/B Tests, and more.<div>Check these articles for an introduction:<ul><li><a href=/w/dxp/site-building/personalizing-site-experience>Personalizing Site Experience</a><li><a href=/w/dxp/site-building/personalizing-site-experience/segmentation/creating-and-managing-user-segments>Creating and Managing User Segments</a><li><a href=/w/dxp/site-building/optimizing-sites/ab-testing/ab-testing>A/B Testing</a><li><a href=/w/dxp/site-building/personalizing-site-experience/enabling-automated-live-chat-systems>Enabling Automated Live Chat Systems</a></ul></div>"
@@ -414,8 +400,7 @@
 										"width": "100%"
 									},
 									"indexed": true,
-									"layout": {
-									}
+									"layout": {}
 								},
 								"pageElements": [
 									{

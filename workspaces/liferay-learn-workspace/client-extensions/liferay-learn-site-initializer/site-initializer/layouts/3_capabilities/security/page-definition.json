@@ -3,14 +3,10 @@
 		"pageElements": [
 			{
 				"definition": {
-					"cssClasses": [
-						"learn-banner"
-					],
-					"fragmentStyle": {
-					},
+					"cssClasses": ["learn-banner"],
+					"fragmentStyle": {},
 					"indexed": true,
-					"layout": {
-					}
+					"layout": {}
 				},
 				"pageElements": [
 					{
@@ -40,8 +36,7 @@
 										"textColor": ""
 									},
 									"indexed": true,
-									"layout": {
-									}
+									"layout": {}
 								},
 								"pageElements": [
 									{
@@ -58,8 +53,7 @@
 												{
 													"id": "element-text",
 													"value": {
-														"fragmentLink": {
-														},
+														"fragmentLink": {},
 														"text": {
 															"defaultFragmentInlineValue": {
 																"value": "Capability"
@@ -88,6 +82,7 @@
 									},
 									{
 										"definition": {
+											"cssClasses": ["capability-title"],
 											"customCSS": ".[$FRAGMENT_CLASS$] {\ngap: var(--spacer-3);\n}",
 											"indexed": true,
 											"layout": {
@@ -107,8 +102,7 @@
 														"paddingTop": "6px"
 													},
 													"indexed": true,
-													"layout": {
-													}
+													"layout": {}
 												},
 												"pageElements": [
 													{
@@ -135,8 +129,7 @@
 																				}
 																			}
 																		},
-																		"fragmentLink": {
-																		}
+																		"fragmentLink": {}
 																	}
 																}
 															],
@@ -161,8 +154,7 @@
 														{
 															"id": "element-text",
 															"value": {
-																"fragmentLink": {
-																},
+																"fragmentLink": {},
 																"text": {
 																	"defaultFragmentInlineValue": {
 																		"value": "Security"
@@ -190,16 +182,13 @@
 									},
 									{
 										"definition": {
-											"cssClasses": [
-												"learn-search"
-											],
+											"cssClasses": ["learn-search"],
 											"fragmentStyle": {
 												"marginTop": "4",
 												"maxWidth": "var(--container-max-sm, 600px)"
 											},
 											"widgetInstance": {
-												"widgetConfig": {
-												},
+												"widgetConfig": {},
 												"widgetName": "com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet"
 											}
 										},
@@ -216,9 +205,7 @@
 			},
 			{
 				"definition": {
-					"cssClasses": [
-						"learn-category"
-					],
+					"cssClasses": ["learn-category"],
 					"fragmentStyle": {
 						"maxWidth": "var(--container-max-xl)",
 						"paddingBottom": "4",
@@ -250,8 +237,7 @@
 								{
 									"id": "element-text",
 									"value": {
-										"fragmentLink": {
-										},
+										"fragmentLink": {},
 										"text": {
 											"defaultFragmentInlineValue": {
 												"value": "<p>Liferay DXP is built with security in mind. A variety of standards based authentication methods and integrations can be used to ensure secure access to a site and its resources.<p>Robust role-based access control with permissions gives you fine grained control over what authenticated and unauthenticated users can access, share, or edit. Liferay DXP’s web services also have a multi-layered and configurable approach to security and authorization.<div>Check these articles for an introduction:<ul><li><a href=/w/dxp/users-and-permissions/users/understanding-users>Understanding Users</a><li><a href=/w/dxp/users-and-permissions/roles-and-permissions/understanding-roles-and-permissions>Understanding Roles and Permissions</a><li><a href=/w/dxp/installation-and-upgrades/securing-liferay>Securing Liferay</a><li><a href=/w/dxp/installation-and-upgrades/securing-liferay/authentication-basics>Authentication Basics</a></ul></div>"
@@ -414,8 +400,7 @@
 										"width": "100%"
 									},
 									"indexed": true,
-									"layout": {
-									}
+									"layout": {}
 								},
 								"pageElements": [
 									{
