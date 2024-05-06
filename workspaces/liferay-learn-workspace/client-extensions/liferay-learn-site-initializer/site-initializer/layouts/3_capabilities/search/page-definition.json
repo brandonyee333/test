@@ -3,10 +3,14 @@
 		"pageElements": [
 			{
 				"definition": {
-					"cssClasses": ["learn-banner"],
-					"fragmentStyle": {},
+					"cssClasses": [
+						"learn-banner"
+					],
+					"fragmentStyle": {
+					},
 					"indexed": true,
-					"layout": {}
+					"layout": {
+					}
 				},
 				"pageElements": [
 					{
@@ -36,7 +40,8 @@
 										"textColor": ""
 									},
 									"indexed": true,
-									"layout": {}
+									"layout": {
+									}
 								},
 								"pageElements": [
 									{
@@ -53,7 +58,8 @@
 												{
 													"id": "element-text",
 													"value": {
-														"fragmentLink": {},
+														"fragmentLink": {
+														},
 														"text": {
 															"defaultFragmentInlineValue": {
 																"value": "Capability"
@@ -82,7 +88,9 @@
 									},
 									{
 										"definition": {
-											"cssClasses": ["capability-title"],
+											"cssClasses": [
+												"capability-title"
+											],
 											"customCSS": ".[$FRAGMENT_CLASS$] {\ngap: var(--spacer-3);\n}",
 											"indexed": true,
 											"layout": {
@@ -102,7 +110,8 @@
 														"paddingTop": "6px"
 													},
 													"indexed": true,
-													"layout": {}
+													"layout": {
+													}
 												},
 												"pageElements": [
 													{
@@ -129,7 +138,8 @@
 																				}
 																			}
 																		},
-																		"fragmentLink": {}
+																		"fragmentLink": {
+																		}
 																	}
 																}
 															],
@@ -154,7 +164,8 @@
 														{
 															"id": "element-text",
 															"value": {
-																"fragmentLink": {},
+																"fragmentLink": {
+																},
 																"text": {
 																	"defaultFragmentInlineValue": {
 																		"value": "Search"
@@ -182,13 +193,16 @@
 									},
 									{
 										"definition": {
-											"cssClasses": ["learn-search"],
+											"cssClasses": [
+												"learn-search"
+											],
 											"fragmentStyle": {
 												"marginTop": "4",
 												"maxWidth": "var(--container-max-sm, 600px)"
 											},
 											"widgetInstance": {
-												"widgetConfig": {},
+												"widgetConfig": {
+												},
 												"widgetName": "com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet"
 											}
 										},
@@ -205,7 +219,9 @@
 			},
 			{
 				"definition": {
-					"cssClasses": ["learn-category"],
+					"cssClasses": [
+						"learn-category"
+					],
 					"fragmentStyle": {
 						"maxWidth": "var(--container-max-xl)",
 						"paddingBottom": "4",
@@ -237,7 +253,8 @@
 								{
 									"id": "element-text",
 									"value": {
-										"fragmentLink": {},
+										"fragmentLink": {
+										},
 										"text": {
 											"defaultFragmentInlineValue": {
 												"value": "<p>Liferay Search is a fundamental component of Liferay DXP. Search obviously powers search results for your sites, but can also be tailored and configured to do much more! Use Search to build dynamic navigation menus based on categories, boost search results for important content, or use it to present a dynamic content experience for users.<p>Search features include Full-text Search, Indexing of all content types, Search Pages and Widgets, Search Results, and more.<div>Check these articles for an introduction:<ul><li><a href=/w/dxp/using-search/getting-started/search-overview>Search Overview</a><li><a href=/w/dxp/using-search/getting-started/searching-for-content>Searching for Content</a><li><a href=/w/dxp/using-search/search-pages-and-widgets/search-results/search-results>Search Results</a><li><a href=/w/dxp/using-search/search-pages-and-widgets>Search Pages and Widgets</a><li><a href=/w/dxp/using-search/installing-and-upgrading-a-search-engine/elasticsearch>Elasticsearch</a></ul></div>"
@@ -400,7 +417,8 @@
 										"width": "100%"
 									},
 									"indexed": true,
-									"layout": {}
+									"layout": {
+									}
 								},
 								"pageElements": [
 									{
