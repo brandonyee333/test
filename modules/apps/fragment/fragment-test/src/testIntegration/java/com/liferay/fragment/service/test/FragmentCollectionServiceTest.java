@@ -236,7 +236,6 @@ public class FragmentCollectionServiceTest {
 		Assert.assertNull(
 			_fragmentCollectionService.fetchFragmentCollection(
 				fragmentCollection1.getFragmentCollectionId()));
-
 		Assert.assertNull(
 			_fragmentCollectionService.fetchFragmentCollection(
 				fragmentCollection2.getFragmentCollectionId()));
