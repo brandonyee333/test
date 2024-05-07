@@ -64,6 +64,7 @@ public class EditPortalDefaultPermissionsConfigurationMVCActionCommand
 
 		try {
 			String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+
 			String modelResource = ParamUtil.getString(
 				actionRequest, "modelResource");
 			String scope = ParamUtil.getString(actionRequest, "scope");
