@@ -144,19 +144,6 @@ public class BasePortletPreferencesUpgradeProcessTest
 		}
 	}
 
-	private void _assertCompanyIds(
-		long companyId, List<PortletPreferenceValue> portletPreferenceValues) {
-
-		Assert.assertNotEquals(0, portletPreferenceValues.size());
-
-		for (PortletPreferenceValue portletPreferenceValue :
-				portletPreferenceValues) {
-
-			Assert.assertEquals(
-				companyId, portletPreferenceValue.getCompanyId());
-		}
-	}
-
 	@Override
 	protected String[] getPortletIds() {
 		return new String[] {"test"};
@@ -172,6 +159,19 @@ public class BasePortletPreferencesUpgradeProcessTest
 				companyId, ownerId, ownerType, plid, portletId, xml);
 
 		return PortletPreferencesFactoryUtil.toXML(portletPreferences);
+	}
+
+	private void _assertCompanyIds(
+		long companyId, List<PortletPreferenceValue> portletPreferenceValues) {
+
+		Assert.assertNotEquals(0, portletPreferenceValues.size());
+
+		for (PortletPreferenceValue portletPreferenceValue :
+				portletPreferenceValues) {
+
+			Assert.assertEquals(
+				companyId, portletPreferenceValue.getCompanyId());
+		}
 	}
 
 	private List<PortletPreferenceValue> _getPortletPreferenceValues(
