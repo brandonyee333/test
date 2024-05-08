@@ -68,32 +68,20 @@ public class EditFileEntryHeaderProductNavigationControlMenuEntryTest {
 
 	@Before
 	public void setUp() throws Exception {
+
 		_group = GroupTestUtil.addGroup();
-
-		LayoutTestUtil.addTypePortletLayout(_group);
-
-		ServiceContextThreadLocal.pushServiceContext(
-			ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 	}
 
 	@Test
-	public void testIsNotShowFileEntryHeaderInAnotherView() throws Exception {
+	public void testIsShowFileEntryHeaderInAnotherView() throws Exception {
 		MockHttpServletRequest mockHttpServletRequest =
 			_getMockHttpServletRequest(_createFileEntry());
 
-		mockHttpServletRequest.removeParameter("mvcRenderCommandName");
+		mockHttpServletRequest.setParameter(
+			"mvcRenderCommandName", "/");
 
 		Assert.assertFalse(
 			_productNavigationControlMenuEntry.isShow(mockHttpServletRequest));
-	}
-
-	@Test
-	public void testIsNotShowFileEntryHeaderWithGuestPermissions()
-		throws Exception {
-
-		Assert.assertFalse(
-			_productNavigationControlMenuEntry.isShow(
-				_getMockHttpServletRequest(_createFileEntry())));
 	}
 
 	@Test
@@ -113,10 +101,19 @@ public class EditFileEntryHeaderProductNavigationControlMenuEntryTest {
 	}
 
 	@Test
+	public void testIsShowFileEntryHeaderWithGuestPermissions()
+		throws Exception {
+
+		Assert.assertFalse(
+			_productNavigationControlMenuEntry.isShow(
+				_getMockHttpServletRequest(_createFileEntry())));
+	}
+
+	@Test
 	public void testIsShowFileEntryHeaderWithoutFileEntry() throws Exception {
 		Assert.assertFalse(
 			_productNavigationControlMenuEntry.isShow(
-				_getMockHttpServletRequest()));
+				_getMockHttpServletRequest(null)));
 	}
 
 	@Test
@@ -151,33 +148,24 @@ public class EditFileEntryHeaderProductNavigationControlMenuEntryTest {
 			ResourceConstants.SCOPE_INDIVIDUAL, fileEntry.getFileEntryId());
 	}
 
-	private MockHttpServletRequest _getMockHttpServletRequest()
-		throws Exception {
-
-		MockHttpServletRequest mockHttpServletRequest =
-			new MockHttpServletRequest();
-
-		mockHttpServletRequest.setAttribute(
-			JavaConstants.JAVAX_PORTLET_RESPONSE,
-			new MockLiferayResourceResponse());
-		mockHttpServletRequest.setAttribute(
-			WebKeys.THEME_DISPLAY, _getThemeDisplay());
-
-		mockHttpServletRequest.addParameter(
-			"mvcRenderCommandName", "/document_library/edit_file_entry");
-
-		return mockHttpServletRequest;
-	}
-
 	private MockHttpServletRequest _getMockHttpServletRequest(
 			FileEntry fileEntry)
 		throws Exception {
 
 		MockHttpServletRequest mockHttpServletRequest =
-			_getMockHttpServletRequest();
+			new MockHttpServletRequest();
 
+		mockHttpServletRequest.addParameter(
+			"mvcRenderCommandName", "/document_library/edit_file_entry");
 		mockHttpServletRequest.setAttribute(
-			WebKeys.DOCUMENT_LIBRARY_FILE_ENTRY, fileEntry);
+			JavaConstants.JAVAX_PORTLET_RESPONSE,
+			new MockLiferayResourceResponse());
+		if (fileEntry != null) {
+			mockHttpServletRequest.setAttribute(
+				WebKeys.DOCUMENT_LIBRARY_FILE_ENTRY, fileEntry);
+		}
+		mockHttpServletRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, _getThemeDisplay());
 
 		return mockHttpServletRequest;
 	}
@@ -185,18 +173,14 @@ public class EditFileEntryHeaderProductNavigationControlMenuEntryTest {
 	private Object _getThemeDisplay() throws Exception {
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
+		themeDisplay.setCompany(
+			_companyLocalService.fetchCompany(TestPropsValues.getCompanyId()));
+
 		Layout layout = new LayoutImpl();
 
 		layout.setType(LayoutConstants.TYPE_CONTROL_PANEL);
 
 		themeDisplay.setLayout(layout);
-
-		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
-
-		portletDisplay.setId(DLPortletKeys.DOCUMENT_LIBRARY_ADMIN);
-
-		themeDisplay.setCompany(
-			_companyLocalService.fetchCompany(TestPropsValues.getCompanyId()));
 		themeDisplay.setPermissionChecker(
 			PermissionCheckerFactoryUtil.create(TestPropsValues.getUser()));
 		themeDisplay.setScopeGroupId(_group.getGroupId());
