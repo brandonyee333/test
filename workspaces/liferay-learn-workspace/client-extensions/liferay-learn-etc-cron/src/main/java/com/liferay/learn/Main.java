@@ -357,8 +357,9 @@ public class Main {
 					String relativeFileName = StringUtil.removeSubstring(
 						fileName, _baseDirName);
 
-					if (!_skipDiffCheck && !_diffFileNames.isEmpty() &&
-						!_diffFileNames.contains(relativeFileName)) {
+					if (!_diffFileNames.isEmpty() &&
+						!_diffFileNames.contains(relativeFileName) &&
+						!_skipDiffCheck) {
 
 						System.out.println(
 							"Skipping structured content (no diffs) " +
@@ -369,10 +370,10 @@ public class Main {
 
 					File file = new File(fileName);
 
-					if (!_skipDiffCheck &&
-						StringUtil.equals(
+					if (StringUtil.equals(
 							DigestUtils.md5Hex(file.toString()),
-							_getMD5Hex(siteStructuredContent))) {
+							_getMD5Hex(siteStructuredContent)) &&
+						!_skipDiffCheck) {
 
 						System.out.println(
 							"Skipping structured content (same md5Hex) " +
@@ -411,8 +412,9 @@ public class Main {
 						String relativeFileName = StringUtil.removeSubstring(
 							fileName, _baseDirName);
 
-						if (!_skipDiffCheck && !_diffFileNames.isEmpty() &&
-							!_diffFileNames.contains(relativeFileName)) {
+						if (!_diffFileNames.isEmpty() &&
+							!_diffFileNames.contains(relativeFileName) &&
+							!_skipDiffCheck) {
 
 							System.out.println(
 								"Skipping structured content " +
@@ -432,8 +434,9 @@ public class Main {
 					String relativeFileName = StringUtil.removeSubstring(
 						fileName, _baseDirName);
 
-					if (!_skipDiffCheck && !_diffFileNames.isEmpty() &&
-						!_diffFileNames.contains(relativeFileName)) {
+					if (!_diffFileNames.isEmpty() &&
+						!_diffFileNames.contains(relativeFileName) &&
+						!_skipDiffCheck) {
 
 						System.out.println(
 							"Skipping structured content " +
