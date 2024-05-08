@@ -1008,9 +1008,7 @@ public class ObjectDefinitionSerDes {
 						(Boolean)jsonParserFieldValue);
 				}
 			}
-			else if (Objects.equals(
-						jsonParserFieldName, "enableIndexSearch")) {
-
+			else if (Objects.equals(jsonParserFieldName, "enableIndexSearch")) {
 				if (jsonParserFieldValue != null) {
 					objectDefinition.setEnableIndexSearch(
 						(Boolean)jsonParserFieldValue);
