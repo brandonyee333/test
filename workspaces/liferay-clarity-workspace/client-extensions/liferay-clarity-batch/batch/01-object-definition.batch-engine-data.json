@@ -401,7 +401,7 @@
 					"indexed": true,
 					"indexedLanguageId": "en_US",
 					"label": {
-						"en_US": "Business Annual Revenue (in USD)"
+						"en_US": "Business Annual Revenue (In USD)"
 					},
 					"name": "businessAnnualRevenueInUSD",
 					"readOnly": "false",
