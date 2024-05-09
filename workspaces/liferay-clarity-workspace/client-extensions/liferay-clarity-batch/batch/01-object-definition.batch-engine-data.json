@@ -457,6 +457,205 @@
 					"readOnly": "false",
 					"state": false,
 					"type": "Date"
+				},
+				{
+					"DBType": "Long",
+					"businessType": "Attachment",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business License"
+					},
+					"name": "businessLicense",
+					"objectFieldSettings": [
+						{
+							"name": "acceptedFileExtensions",
+							"value": "jpeg, jpg, pdf, png"
+						},
+						{
+							"name": "fileSource",
+							"value": "userComputer"
+						},
+						{
+							"name": "maximumFileSize",
+							"value": 100
+						},
+						{
+							"name": "showFilesInDocumentsAndMedia",
+							"value": true
+						},
+						{
+							"name": "storageDLFolderPath",
+							"value": "/D4B8DistributorApplication"
+						}
+					],
+					"readOnly": "false",
+					"state": false,
+					"type": "Long"
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business License Number"
+					},
+					"name": "businessLicenseNumber",
+					"objectFieldSettings": [
+						{
+							"name": "uniqueValues",
+							"value": true
+						}
+					],
+					"readOnly": "false",
+					"required": true,
+					"state": false,
+					"type": "String",
+					"unique": true
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business Name"
+					},
+					"name": "businessName",
+					"readOnly": "false",
+					"state": false,
+					"type": "String"
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business Phone Number"
+					},
+					"name": "businessPhoneNumber",
+					"readOnly": "false",
+					"state": false,
+					"type": "String"
+				},
+				{
+					"DBType": "Long",
+					"businessType": "Attachment",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business Proof of Insurance"
+					},
+					"name": "businessProofOfInsurance",
+					"objectFieldSettings": [
+						{
+							"name": "acceptedFileExtensions",
+							"value": "jpeg, jpg, pdf, png"
+						},
+						{
+							"name": "fileSource",
+							"value": "userComputer"
+						},
+						{
+							"name": "maximumFileSize",
+							"value": 100
+						},
+						{
+							"name": "showFilesInDocumentsAndMedia",
+							"value": true
+						},
+						{
+							"name": "storageDLFolderPath",
+							"value": "/D4B8DistributorApplication"
+						}
+					],
+					"readOnly": "false",
+					"state": false,
+					"type": "Long"
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business Resale Number"
+					},
+					"name": "businessResaleNumber",
+					"objectFieldSettings": [
+						{
+							"name": "uniqueValues",
+							"value": true
+						}
+					],
+					"readOnly": "false",
+					"required": true,
+					"state": false,
+					"type": "String",
+					"unique": true
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business State, Province, Region"
+					},
+					"name": "businessStateProvinceRegion",
+					"readOnly": "false",
+					"state": false,
+					"type": "String"
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business Tax ID Number"
+					},
+					"name": "businessTaxIDNumber",
+					"objectFieldSettings": [
+						{
+							"name": "uniqueValues",
+							"value": true
+						}
+					],
+					"readOnly": "false",
+					"required": true,
+					"state": false,
+					"type": "String",
+					"unique": true
+				},
+				{
+					"DBType": "String",
+					"businessType": "Picklist",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business Type"
+					},
+					"listTypeDefinitionExternalReferenceCode": "D4B8_BUSINESS_TYPES",
+					"name": "businessType",
+					"readOnly": "false",
+					"state": false,
+					"type": "String"
+				},
+				{
+					"DBType": "String",
+					"businessType": "Text",
+					"indexed": true,
+					"indexedLanguageId": "en_US",
+					"label": {
+						"en_US": "Business Website"
+					},
+					"name": "businessWebsite",
+					"readOnly": "false",
+					"state": false,
+					"type": "String"
 				}
 			]
 		}
