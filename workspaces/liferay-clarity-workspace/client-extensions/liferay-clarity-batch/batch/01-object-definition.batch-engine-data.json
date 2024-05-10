@@ -1571,7 +1571,7 @@
 					},
 					"objectDefinitionExternalReferenceCode": "D4B8_DISTRIBUTOR_APPLICATION",
 					"outputType": "fullValidation",
-					"script": "isURL(businessWebsiteURL) OR businessWebsiteURL == \"\""
+					"script": "(businessWebsiteURL == \"\") OR isURL(businessWebsiteURL)"
 				}
 			]
 		}
