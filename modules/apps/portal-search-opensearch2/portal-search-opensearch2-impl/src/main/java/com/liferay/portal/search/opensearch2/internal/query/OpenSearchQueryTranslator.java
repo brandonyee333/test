@@ -997,7 +997,7 @@ public class OpenSearchQueryTranslator
 			return _getTermsQuery(termsQuery, field, terms);
 		}
 
-		ArrayList<String> termsList = new ArrayList<>();
+		List<String> termsList = new ArrayList<>();
 		BoolQuery.Builder builder = QueryBuilders.bool();
 
 		for (String term : terms) {
