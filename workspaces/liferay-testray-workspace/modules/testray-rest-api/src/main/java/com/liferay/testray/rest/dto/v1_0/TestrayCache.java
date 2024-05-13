@@ -16,7 +16,7 @@ import java.util.Map;
 public class TestrayCache {
 
 	public void addObjectDefinition(ObjectDefinition objectDefinition) {
-		_objectDefinitionsMap.put(
+		_objectDefinitions.put(
 			objectDefinition.getShortName(), objectDefinition);
 	}
 
@@ -29,14 +29,14 @@ public class TestrayCache {
 	}
 
 	public ObjectDefinition getObjectDefinition(String shortName) {
-		return _objectDefinitionsMap.get(shortName);
+		return _objectDefinitions.get(shortName);
 	}
 
 	public Long getObjectEntryId(String key) {
 		return _objectEntryIds.get(key);
 	}
 
-	private final Map<String, ObjectDefinition> _objectDefinitionsMap =
+	private final Map<String, ObjectDefinition> _objectDefinitions =
 		new HashMap<>();
 	private final Map<String, Long> _objectEntryIds = new HashMap<>();
 	private long _testrayRunNumber = 1;
