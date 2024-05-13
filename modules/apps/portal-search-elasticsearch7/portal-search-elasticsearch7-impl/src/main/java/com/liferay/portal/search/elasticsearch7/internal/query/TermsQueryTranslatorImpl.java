@@ -31,8 +31,9 @@ public class TermsQueryTranslatorImpl implements TermsQueryTranslator {
 			return QueryBuilders.termsQuery(field, terms);
 		}
 
-		List<String> termsList = new ArrayList<>();
 		BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+		List<String> termsList = new ArrayList<>();
 
 		for (String term : terms) {
 			termsList.add(term);
