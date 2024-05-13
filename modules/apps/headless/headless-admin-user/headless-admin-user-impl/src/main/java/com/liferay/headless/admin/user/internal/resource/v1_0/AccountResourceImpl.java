@@ -443,7 +443,7 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 				address.getStreet3(), address.getCity(), address.getZip(),
 				address.getRegionId(), address.getCountryId(),
 				address.getListTypeId(), address.isMailing(),
-				address.isPrimary(), address.getPhoneNumber(),
+				address.isPrimary(), _getAddressPhoneNumber(account),
 				_createServiceContext(account));
 		}
 
@@ -741,6 +741,16 @@ public class AccountResourceImpl extends BaseAccountResourceImpl {
 						contextCompany.getCompanyId(), _postalAddress,
 						AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS)),
 			Objects::nonNull);
+	}
+
+	private String _getAddressPhoneNumber(Account account) {
+		for (PostalAddress postalAddress : account.getPostalAddresses()) {
+			if (!Validator.isBlank(postalAddress.getPhoneNumber())) {
+				return postalAddress.getPhoneNumber();
+			}
+		}
+
+		return null;
 	}
 
 	private List<Address> _getContactAddresses(
