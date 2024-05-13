@@ -151,9 +151,7 @@ public class OpenSearchQueryTranslatorTest {
 			queryString.contains("\"boost\":" + String.valueOf(_BOOST)));
 	}
 
-	private void _assertTermsCount(
-		int expected, TermsQuery termsQuery) {
-
+	private void _assertTermsCount(int expected, TermsQuery termsQuery) {
 		String queryString = _getTranslatedQueryString(termsQuery);
 
 		Assert.assertEquals(

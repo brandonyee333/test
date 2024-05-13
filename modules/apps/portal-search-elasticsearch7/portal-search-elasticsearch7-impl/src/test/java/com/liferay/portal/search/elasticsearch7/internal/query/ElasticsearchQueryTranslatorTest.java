@@ -145,9 +145,7 @@ public class ElasticsearchQueryTranslatorTest {
 			String.valueOf(queryBuilder.boost()));
 	}
 
-	private void _assertTermsCount(
-		int expected, TermsQuery termsQuery) {
-
+	private void _assertTermsCount(int expected, TermsQuery termsQuery) {
 		String queryString = _elasticsearchQueryTranslator.translate(
 			termsQuery
 		).toString();
