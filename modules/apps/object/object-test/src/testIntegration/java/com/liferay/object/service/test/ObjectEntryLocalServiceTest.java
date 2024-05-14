@@ -1923,7 +1923,7 @@ public class ObjectEntryLocalServiceTest {
 					"Old value must be " + emailAddress),
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				ObjectValidationRuleConstants.OUTPUT_TYPE_FULL_VALIDATION,
-				String.format("oldValue('emailAddress') == '%s'", emailAddress),
+				"oldValue('emailAddress') == '" + emailAddress + "'",
 				false, Collections.emptyList());
 
 		user.setEmailAddress(RandomTestUtil.randomString());
