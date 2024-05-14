@@ -14,7 +14,6 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.testray.rest.dto.v1_0.TestrayCaseResultComparison;
 import com.liferay.testray.rest.dto.v1_0.TestrayRunComparison;
-import com.liferay.testray.rest.dto.v1_0.TestrayRunQuickComparison;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +42,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface TestrayRunComparisonResource {
 
-	public Page<TestrayRunQuickComparison> getTestrayRunComparisonByTestrayRoutineIdTestrayRoutinePage(
+	public Object getTestrayRunComparisonByTestrayRoutineIdTestrayRoutine(
 			Long testrayRoutineId)
 			throws Exception;
 

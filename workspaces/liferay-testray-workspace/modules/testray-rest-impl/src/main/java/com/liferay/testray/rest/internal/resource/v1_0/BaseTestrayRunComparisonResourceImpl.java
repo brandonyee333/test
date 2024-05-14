@@ -21,11 +21,9 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.testray.rest.dto.v1_0.TestrayCaseResultComparison;
 import com.liferay.testray.rest.dto.v1_0.TestrayRunComparison;
-import com.liferay.testray.rest.dto.v1_0.TestrayRunQuickComparison;
 import com.liferay.testray.rest.resource.v1_0.TestrayRunComparisonResource;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -62,11 +60,11 @@ public abstract class BaseTestrayRunComparisonResourceImpl
 	@javax.ws.rs.Path("/testray-run-comparisons/by-testray-routineId/{testrayRoutineId}")
 	@javax.ws.rs.Produces({ "application/json", "application/xml" })
 	@Override
-	public Page<TestrayRunQuickComparison> getTestrayRunComparisonByTestrayRoutineIdTestrayRoutinePage(
+	public Object getTestrayRunComparisonByTestrayRoutineIdTestrayRoutine(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true) @javax.validation.constraints.NotNull @javax.ws.rs.PathParam("testrayRoutineId") Long testrayRoutineId)
 			throws Exception {
 
-		return Page.of(Collections.emptyList());
+		return null;
 	}
 
 	/**
