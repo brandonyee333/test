@@ -81,11 +81,11 @@ public class LiferayOAuth2ClientConfigurationDefaultTest {
 		Assert.assertEquals(
 			expected,
 			_liferayOAuth2AccessTokenManager.getAuthorization(
-				"fizz-buzz-headless-server"));
+				"foo-able-headless-server"));
 		Assert.assertEquals(
 			expected,
 			_liferayOAuth2AccessTokenManager.getAuthorization(
-				"foo-bar-headless-server"));
+				"foo-baker-headless-server"));
 	}
 
 	@Test
