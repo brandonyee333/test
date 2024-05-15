@@ -30,7 +30,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class LiferayOAuth2ClientConfigurationExternalTest {
 
 	@Test
-	public void testFindDefaultHeadlessServer() {
+	public void testFindRegistrationIdForDefaultHeadlessServer() {
 		ClientRegistrationRepository clientRegistrationRepository =
 			_liferayOAuth2ClientConfiguration.clientRegistrationRepository();
 
@@ -50,7 +50,7 @@ public class LiferayOAuth2ClientConfigurationExternalTest {
 	}
 
 	@Test
-	public void testFindExternalHeadlessServer() {
+	public void testFindRegistrationIdForExternalHeadlessServer() {
 		ClientRegistrationRepository clientRegistrationRepository =
 			_liferayOAuth2ClientConfiguration.clientRegistrationRepository();
 
