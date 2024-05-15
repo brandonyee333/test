@@ -59,7 +59,7 @@ public class AddDefaultLayoutInitialRequestPortalInstanceLifecycleListener
 			companyId, GroupConstants.CMS);
 
 		String friendlyURL = _friendlyURLNormalizer.normalizeWithEncoding(
-			"dashboard");
+			"/dashboard");
 
 		Layout defaultLayout = _layoutLocalService.fetchLayoutByFriendlyURL(
 			group.getGroupId(), false, friendlyURL);
