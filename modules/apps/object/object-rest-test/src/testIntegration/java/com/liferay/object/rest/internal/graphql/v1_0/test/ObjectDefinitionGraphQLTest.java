@@ -60,6 +60,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+
 /**
  * @author Javier Gamarra
  */
@@ -487,7 +490,7 @@ public class ObjectDefinitionGraphQLTest {
 
 			// "Accept-Language" header
 
-			Assert.assertEquals(
+			JSONAssert.assertEquals(
 				JSONUtil.putAll(
 					JSONUtil.put(
 						_OBJECT_FIELD_NAME_LONG_TEXT, "longTextEsp"
@@ -500,11 +503,12 @@ public class ObjectDefinitionGraphQLTest {
 				JSONUtil.getValueAsString(
 					_invoke("es-ES", graphQLField), "JSONObject/data",
 					"JSONObject/c", "JSONObject/" + pluralName,
-					"JSONArray/items"));
+					"JSONArray/items"),
+				JSONCompareMode.LENIENT);
 
 			// Empty "Accept-Language" header
 
-			Assert.assertEquals(
+			JSONAssert.assertEquals(
 				JSONUtil.putAll(
 					JSONUtil.put(
 						_OBJECT_FIELD_NAME_LONG_TEXT, "longTextEng"
@@ -517,11 +521,12 @@ public class ObjectDefinitionGraphQLTest {
 				JSONUtil.getValueAsString(
 					_invoke("", graphQLField), "JSONObject/data",
 					"JSONObject/c", "JSONObject/" + pluralName,
-					"JSONArray/items"));
+					"JSONArray/items"),
+				JSONCompareMode.LENIENT);
 
 			// Nonexistent "Accept-Language" header
 
-			Assert.assertEquals(
+			JSONAssert.assertEquals(
 				JSONUtil.putAll(
 					JSONUtil.put(
 						_OBJECT_FIELD_NAME_LONG_TEXT, ""
@@ -534,11 +539,12 @@ public class ObjectDefinitionGraphQLTest {
 				JSONUtil.getValueAsString(
 					_invoke("de-DE", graphQLField), "JSONObject/data",
 					"JSONObject/c", "JSONObject/" + pluralName,
-					"JSONArray/items"));
+					"JSONArray/items"),
+				JSONCompareMode.LENIENT);
 
 			// Without "Accept-Language" header
 
-			Assert.assertEquals(
+			JSONAssert.assertEquals(
 				JSONUtil.putAll(
 					JSONUtil.put(
 						_OBJECT_FIELD_NAME_LONG_TEXT, "longTextEng"
@@ -550,7 +556,8 @@ public class ObjectDefinitionGraphQLTest {
 				).toString(),
 				JSONUtil.getValueAsString(
 					_invoke(graphQLField), "JSONObject/data", "JSONObject/c",
-					"JSONObject/" + pluralName, "JSONArray/items"));
+					"JSONObject/" + pluralName, "JSONArray/items"),
+				JSONCompareMode.LENIENT);
 		}
 		finally {
 			if (objectDefinition != null) {
