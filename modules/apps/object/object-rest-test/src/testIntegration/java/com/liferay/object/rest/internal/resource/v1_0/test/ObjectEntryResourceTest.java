@@ -4957,7 +4957,7 @@ public class ObjectEntryResourceTest {
 	}
 
 	@Test
-	public void testGetObjectEntriesWithPageSize() throws Exception {
+	public void testGetObjectEntriesWithPagination() throws Exception {
 		ObjectEntryTestUtil.addObjectEntry(
 			_objectDefinition6, _OBJECT_FIELD_NAME_TEXT,
 			_NEW_OBJECT_FIELD_VALUE_1);
