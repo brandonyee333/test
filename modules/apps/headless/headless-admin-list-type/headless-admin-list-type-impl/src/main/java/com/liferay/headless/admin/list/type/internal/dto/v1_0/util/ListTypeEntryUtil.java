@@ -7,6 +7,7 @@ package com.liferay.headless.admin.list.type.internal.dto.v1_0.util;
 
 import com.liferay.headless.admin.list.type.dto.v1_0.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
 import java.util.Locale;
@@ -28,7 +29,9 @@ public class ListTypeEntryUtil {
 			listTypeEntry.getExternalReferenceCode());
 		serviceBuilderListTypeEntry.setKey(listTypeEntry.getKey());
 		serviceBuilderListTypeEntry.setNameMap(
-			LocalizedMapUtil.getLocalizedMap(listTypeEntry.getName_i18n()));
+			_getLabelMap(
+				LocalizedMapUtil.getLocalizedMap(listTypeEntry.getName_i18n()),
+				listTypeEntry.getName()));
 
 		return serviceBuilderListTypeEntry;
 	}
@@ -56,6 +59,18 @@ public class ListTypeEntryUtil {
 		listTypeEntry.setActions(() -> actions);
 
 		return listTypeEntry;
+	}
+
+	private static Map<Locale, String> _getLabelMap(
+		Map<Locale, String> localizedMap, String name) {
+
+		Locale siteDefaultLocale = LocaleUtil.getSiteDefault();
+
+		if (!localizedMap.containsKey(siteDefaultLocale)) {
+			localizedMap.put(siteDefaultLocale, name);
+		}
+
+		return localizedMap;
 	}
 
 }
