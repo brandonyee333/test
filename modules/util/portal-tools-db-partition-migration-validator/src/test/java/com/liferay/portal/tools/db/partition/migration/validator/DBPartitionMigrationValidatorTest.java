@@ -202,22 +202,6 @@ public class DBPartitionMigrationValidatorTest extends BaseTestCase {
 		return jsonObject.toString();
 	}
 
-	private String _read(File file) throws Exception {
-		StringBuilder sb = new StringBuilder();
-
-		try (BufferedReader bufferedReader = new BufferedReader(
-				new FileReader(file))) {
-
-			String line;
-
-			while ((line = bufferedReader.readLine()) != null) {
-				sb.append(line);
-			}
-		}
-
-		return sb.toString();
-	}
-
 	private String _getReleasesOutput(List<Release> releases) {
 		JSONArray releasesJSONArray = new JSONArray();
 
@@ -293,6 +277,22 @@ public class DBPartitionMigrationValidatorTest extends BaseTestCase {
 			_USER);
 		mockGetReleases(releases);
 		mockGetTables(defaultPartition);
+	}
+
+	private String _read(File file) throws Exception {
+		StringBuilder sb = new StringBuilder();
+
+		try (BufferedReader bufferedReader = new BufferedReader(
+				new FileReader(file))) {
+
+			String line;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				sb.append(line);
+			}
+		}
+
+		return sb.toString();
 	}
 
 	private static final String _PASSWORD = RandomTestUtil.randomString();
