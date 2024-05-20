@@ -19,8 +19,12 @@ public class PageTitleComparator extends OrderByComparator<WikiPage> {
 
 	public static final String[] ORDER_BY_FIELDS = {"title"};
 
-	public PageTitleComparator(boolean ascending) {
-		_ascending = ascending;
+	public static PageTitleComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -55,6 +59,16 @@ public class PageTitleComparator extends OrderByComparator<WikiPage> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private PageTitleComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final PageTitleComparator _INSTANCE_ASCENDING =
+		new PageTitleComparator(true);
+
+	private static final PageTitleComparator _INSTANCE_DESCENDING =
+		new PageTitleComparator(false);
 
 	private final boolean _ascending;
 
