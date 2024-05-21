@@ -30,30 +30,27 @@ public class ObjectEntryValuesExceptionTest {
 		Long maxFileSize = RandomTestUtil.randomLong();
 		String objectFieldName = RandomTestUtil.randomString();
 
-		ObjectEntryValuesException.ExceedsMaxFileSize
-			objectEntryValuesExceptionExceedsMaxFileSize =
-				new ObjectEntryValuesException.ExceedsMaxFileSize(
-					maxFileSize, objectFieldName);
+		ObjectEntryValuesException.ExceedsMaxFileSize exceedsMaxFileSize =
+			new ObjectEntryValuesException.ExceedsMaxFileSize(
+				maxFileSize, objectFieldName);
 
 		Assert.assertEquals(
 			Arrays.asList(maxFileSize, objectFieldName),
-			objectEntryValuesExceptionExceedsMaxFileSize.getArguments());
+			exceedsMaxFileSize.getArguments());
 		Assert.assertEquals(
-			(long)maxFileSize,
-			objectEntryValuesExceptionExceedsMaxFileSize.getMaxFileSize());
+			(long)maxFileSize, exceedsMaxFileSize.getMaxFileSize());
 		Assert.assertEquals(
 			String.format(
 				"File exceeds the maximum permitted size of %s MB for object " +
 					"field \"%s\"",
 				maxFileSize, objectFieldName),
-			objectEntryValuesExceptionExceedsMaxFileSize.getMessage());
+			exceedsMaxFileSize.getMessage());
 		Assert.assertEquals(
 			"file-exceeds-the-maximum-permitted-size-of-x-mb-for-object-" +
 				"field-x",
-			objectEntryValuesExceptionExceedsMaxFileSize.getMessageKey());
+			exceedsMaxFileSize.getMessageKey());
 		Assert.assertEquals(
-			objectFieldName,
-			objectEntryValuesExceptionExceedsMaxFileSize.getObjectFieldName());
+			objectFieldName, exceedsMaxFileSize.getObjectFieldName());
 	}
 
 }
