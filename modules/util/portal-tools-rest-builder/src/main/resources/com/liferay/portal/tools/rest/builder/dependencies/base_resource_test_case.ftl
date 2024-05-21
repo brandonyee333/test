@@ -149,8 +149,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 		${schemaName}Resource.Builder builder = ${schemaName}Resource.builder();
 
 		${schemaVarName}Resource = builder.authentication(
-			"test@liferay.com", GetterUtil.getString(PropsUtil.get(
-			PropsKeys.DEFAULT_ADMIN_PASSWORD), "test")
+			"test@liferay.com", GetterUtil.getString(PropsUtil.get(PropsKeys.DEFAULT_ADMIN_PASSWORD), "test")
 		).locale(
 			LocaleUtil.getDefault()
 		).build();
@@ -2997,9 +2996,7 @@ public abstract class Base${schemaName}ResourceTestCase {
 			"application/json");
 		httpInvoker.httpMethod(HttpInvoker.HttpMethod.POST);
 		httpInvoker.path("http://localhost:8080/o/graphql");
-		httpInvoker.userNameAndPassword("test@liferay.com:" +
-			GetterUtil.getString(PropsUtil.get(
-						PropsKeys.DEFAULT_ADMIN_PASSWORD), "test"));
+		httpInvoker.userNameAndPassword("test@liferay.com:" + GetterUtil.getString(PropsUtil.get(PropsKeys.DEFAULT_ADMIN_PASSWORD), "test"));
 
 		HttpInvoker.HttpResponse httpResponse = httpInvoker.invoke();
 
