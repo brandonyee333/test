@@ -20,8 +20,14 @@ public class OrganizationUserNameComparator extends OrderByComparator<Object> {
 
 	public static final String[] ORDER_BY_FIELDS = {"name"};
 
-	public OrganizationUserNameComparator(boolean ascending) {
-		_ascending = ascending;
+	public static OrganizationUserNameComparator getInstance(
+		boolean ascending) {
+
+		if (ascending) {
+			return _ASCENDING;
+		}
+
+		return _DESCENDING;
 	}
 
 	@Override
@@ -57,6 +63,10 @@ public class OrganizationUserNameComparator extends OrderByComparator<Object> {
 		return _ascending;
 	}
 
+	private OrganizationUserNameComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
 	private String _getName(Object object) {
 		if (object instanceof Organization) {
 			Organization organization = (Organization)object;
@@ -68,6 +78,12 @@ public class OrganizationUserNameComparator extends OrderByComparator<Object> {
 
 		return user.getLastName();
 	}
+
+	private static final OrganizationUserNameComparator _ASCENDING =
+		new OrganizationUserNameComparator(true);
+
+	private static final OrganizationUserNameComparator _DESCENDING =
+		new OrganizationUserNameComparator(false);
 
 	private final boolean _ascending;
 
