@@ -367,11 +367,11 @@ public class ConfigurationModelIndexer
 
 	@Override
 	protected void doReindex(String[] ids) throws Exception {
+		Set<Document> documents = new HashSet<>();
+
 		Map<String, ConfigurationModel> configurationModels =
 			_configurationModelRetriever.getConfigurationModels(
 				ExtendedObjectClassDefinition.Scope.SYSTEM, null);
-
-		Set<Document> documents = new HashSet<>();
 
 		for (ConfigurationModel configurationModel :
 				configurationModels.values()) {
