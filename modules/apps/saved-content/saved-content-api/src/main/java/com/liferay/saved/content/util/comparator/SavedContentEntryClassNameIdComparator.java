@@ -22,10 +22,6 @@ public class SavedContentEntryClassNameIdComparator
 
 	public static final String[] ORDER_BY_FIELDS = {"classNameId"};
 
-	public SavedContentEntryClassNameIdComparator() {
-		this(false);
-	}
-
 	public SavedContentEntryClassNameIdComparator(boolean ascending) {
 		_ascending = ascending;
 	}
