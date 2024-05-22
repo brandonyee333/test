@@ -2186,7 +2186,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			_passwordPolicyLocalService.checkDefaultPasswordPolicy(
 				company.getCompanyId());
 
-			// Default Permissions
+			// Default resource permissions
 
 			_resourcePermissionLocalService.
 				populateDefaultModelResourcePermissions(
