@@ -19,8 +19,12 @@ public class PageVersionComparator extends OrderByComparator<WikiPage> {
 
 	public static final String[] ORDER_BY_FIELDS = {"version"};
 
-	public PageVersionComparator(boolean ascending) {
-		_ascending = ascending;
+	public static PageVersionComparator getInstance(boolean ascending) {
+		if (ascending) {
+			return _INSTANCE_ASCENDING;
+		}
+
+		return _INSTANCE_DESCENDING;
 	}
 
 	@Override
@@ -59,6 +63,16 @@ public class PageVersionComparator extends OrderByComparator<WikiPage> {
 	public boolean isAscending() {
 		return _ascending;
 	}
+
+	private PageVersionComparator(boolean ascending) {
+		_ascending = ascending;
+	}
+
+	private static final PageVersionComparator _INSTANCE_ASCENDING =
+		new PageVersionComparator(true);
+
+	private static final PageVersionComparator _INSTANCE_DESCENDING =
+		new PageVersionComparator(false);
 
 	private final boolean _ascending;
 
