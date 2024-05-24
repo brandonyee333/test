@@ -460,7 +460,6 @@ public class TestrayStatusMetricResourceImpl
 		List<Map<String, Object>> values = TestrayUtil.executeQuery(
 			sql, params);
 
-		long[] userRoleIds = contextUser.getRoleIds();
 		Role testrayAdministratorRole = _roleLocalService.getRole(
 			contextUser.getCompanyId(), "Testray Administrator");
 
@@ -472,7 +471,7 @@ public class TestrayStatusMetricResourceImpl
 						new TestrayRoutineMetric();
 
 					if (ListUtil.fromArray(
-							userRoleIds
+							contextUser.getRoleIds()
 						).contains(
 							testrayAdministratorRole.getRoleId()
 						)) {
