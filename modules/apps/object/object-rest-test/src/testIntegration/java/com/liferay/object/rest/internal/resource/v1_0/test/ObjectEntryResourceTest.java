@@ -5029,7 +5029,6 @@ public class ObjectEntryResourceTest {
 				_objectDefinition1.getRESTContextPath() +
 					"/by-external-reference-code/a/b",
 				Http.Method.GET));
-
 		Assert.assertEquals(
 			200,
 			HTTPTestUtil.invokeToHttpCode(
@@ -5037,7 +5036,6 @@ public class ObjectEntryResourceTest {
 				_objectDefinition1.getRESTContextPath() +
 					"/by-external-reference-code/a%252Fb",
 				Http.Method.GET));
-
 		Assert.assertEquals(
 			400,
 			HTTPTestUtil.invokeToHttpCode(
