@@ -55,8 +55,8 @@ public class NotificationQueueEntryResourceTest
 							"method", "method2"
 						).build())
 				).build()));
-		notificationQueueEntry1.setBody("{Something...}");
-		notificationQueueEntry1.setSubject("Something...");
+		notificationQueueEntry1.setBody("This is a body.");
+		notificationQueueEntry1.setSubject("This Is a Subject");
 		notificationQueueEntry1.setRecipients(
 			new Object[] {
 				new TreeMap<>(
@@ -107,7 +107,7 @@ public class NotificationQueueEntryResourceTest
 					)
 				)
 			).put(
-				"body", "{Something...}"
+				"body", "This is a body."
 			).put(
 				"recipients",
 				JSONUtil.putAll(
@@ -134,7 +134,7 @@ public class NotificationQueueEntryResourceTest
 							"to", "third@liferay.com"
 						)))
 			).put(
-				"subject", "Something..."
+				"subject", "This Is a Subject"
 			).put(
 				"type", "email"
 			).toString(),
