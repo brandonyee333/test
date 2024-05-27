@@ -1180,7 +1180,6 @@ public class InstanceResourceImpl extends BaseInstanceResourceImpl {
 					contextAcceptLanguage.getPreferredLocale(),
 					InstanceResourceImpl.class),
 				name));
-
 		transition.setName(() -> name);
 
 		return transition;
