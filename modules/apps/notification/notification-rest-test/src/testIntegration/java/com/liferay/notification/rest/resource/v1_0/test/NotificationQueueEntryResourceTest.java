@@ -57,8 +57,6 @@ public class NotificationQueueEntryResourceTest
 				).build()));
 		notificationQueueEntry1.setBody("{Something...}");
 		notificationQueueEntry1.setSubject("Something...");
-		notificationQueueEntry1.setType("email");
-
 		notificationQueueEntry1.setRecipients(
 			new Object[] {
 				new TreeMap<>(
@@ -88,6 +86,7 @@ public class NotificationQueueEntryResourceTest
 						).build())
 				}
 			});
+		notificationQueueEntry1.setType("email");
 
 		JSONAssert.assertEquals(
 			JSONUtil.put(
