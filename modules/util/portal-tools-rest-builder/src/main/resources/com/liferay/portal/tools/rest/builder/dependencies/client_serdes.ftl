@@ -388,17 +388,18 @@ public class ${schemaName}SerDes {
 	}
 
 	private static String _toJSON(Object value) {
-
 		if (value instanceof Map) {
 			return _toJSON((Map)value);
 		}
-		else if (value.getClass().isArray()) {
+
+		Class<?> clazz = value.getClass();
+
+		if (clazz.isArray()) {
 			StringBuilder sb = new StringBuilder("[");
 
 			Object[] values = (Object[])value;
 
 			for (int i = 0; i < values.length; i++) {
-
 				sb.append(_toJSON(values[i]));
 
 				if ((i + 1) < values.length) {
@@ -410,14 +411,12 @@ public class ${schemaName}SerDes {
 
 			return sb.toString();
 		}
-		else if (value instanceof String) {
-			return ("\"") + _escape(value)
-			+ ("\"");
+
+		if (value instanceof String) {
+			return ("\"") + _escape(value) + ("\"");
 		}
 
-		else {
-			return String.valueOf(value);
-		}
+		return String.valueOf(value);
 	}
 
 }
