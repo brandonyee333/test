@@ -728,10 +728,10 @@ public class StructuredContentResourceTest
 
 	@Override
 	protected StructuredContent randomStructuredContent() throws Exception {
-		return randomStructuredContent(RandomTestUtil.randomString(10));
+		return _randomStructuredContent(RandomTestUtil.randomString(10));
 	}
 
-	protected StructuredContent randomStructuredContent(String dataValue)
+	private StructuredContent _randomStructuredContent(String dataValue)
 		throws Exception {
 
 		StructuredContent structuredContent = super.randomStructuredContent();
@@ -1478,9 +1478,9 @@ public class StructuredContentResourceTest
 		Long contentStructureId =
 			testGetContentStructureStructuredContentsPage_getContentStructureId();
 
-		StructuredContent structuredContent1 = randomStructuredContent(
+			StructuredContent structuredContent1 = _randomStructuredContent(
 			"first second");
-		StructuredContent structuredContent2 = randomStructuredContent(
+		StructuredContent structuredContent2 = _randomStructuredContent(
 			"second");
 
 		testGetContentStructureStructuredContentsPage_addStructuredContent(
