@@ -413,7 +413,7 @@ public class ${schemaName}SerDes {
 		}
 
 		if (value instanceof String) {
-			return ("\"") + _escape(value) + ("\"");
+			return "\"" + _escape(value) + "\"";
 		}
 
 		return String.valueOf(value);
