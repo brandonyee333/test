@@ -731,43 +731,6 @@ public class StructuredContentResourceTest
 		return _randomStructuredContent(RandomTestUtil.randomString(10));
 	}
 
-	private StructuredContent _randomStructuredContent(String dataValue)
-		throws Exception {
-
-		StructuredContent structuredContent = super.randomStructuredContent();
-
-		structuredContent.setContentFields(
-			new ContentField[] {
-				new ContentField() {
-					{
-						contentFieldValue = new ContentFieldValue() {
-							{
-								data = dataValue;
-							}
-						};
-						name = "Foo";
-					}
-				}
-			});
-		structuredContent.setContentStructureId(
-			_useDepotDDMStructureStructureId ?
-				_depotDDMStructure.getStructureId() :
-					_ddmStructure.getStructureId());
-		structuredContent.setRelatedContents(
-			new RelatedContent[] {
-				new RelatedContent() {
-					{
-						contentType = "BlogPosting";
-						id = _blogsEntry.getEntryId();
-					}
-				}
-			});
-		structuredContent.setStructuredContentFolderId(
-			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
-
-		return structuredContent;
-	}
-
 	@Override
 	protected StructuredContent
 			testDeleteAssetLibraryStructuredContentByExternalReferenceCode_addStructuredContent()
@@ -1463,6 +1426,43 @@ public class StructuredContentResourceTest
 		return structuredContent;
 	}
 
+	private StructuredContent _randomStructuredContent(String dataValue)
+		throws Exception {
+
+		StructuredContent structuredContent = super.randomStructuredContent();
+
+		structuredContent.setContentFields(
+			new ContentField[] {
+				new ContentField() {
+					{
+						contentFieldValue = new ContentFieldValue() {
+							{
+								data = dataValue;
+							}
+						};
+						name = "Foo";
+					}
+				}
+			});
+		structuredContent.setContentStructureId(
+			_useDepotDDMStructureStructureId ?
+				_depotDDMStructure.getStructureId() :
+					_ddmStructure.getStructureId());
+		structuredContent.setRelatedContents(
+			new RelatedContent[] {
+				new RelatedContent() {
+					{
+						contentType = "BlogPosting";
+						id = _blogsEntry.getEntryId();
+					}
+				}
+			});
+		structuredContent.setStructuredContentFolderId(
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID);
+
+		return structuredContent;
+	}
+
 	private String _read(String fileName) throws Exception {
 		Class<?> clazz = getClass();
 
@@ -1478,7 +1478,7 @@ public class StructuredContentResourceTest
 		Long contentStructureId =
 			testGetContentStructureStructuredContentsPage_getContentStructureId();
 
-			StructuredContent structuredContent1 = _randomStructuredContent(
+		StructuredContent structuredContent1 = _randomStructuredContent(
 			"first second");
 		StructuredContent structuredContent2 = _randomStructuredContent(
 			"second");
