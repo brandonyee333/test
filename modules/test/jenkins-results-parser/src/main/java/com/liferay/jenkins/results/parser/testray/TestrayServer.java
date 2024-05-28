@@ -203,7 +203,7 @@ public class TestrayServer {
 	}
 
 	protected List<JSONObject> requestGraphQL(
-			String entityName, String[] entityFields, String filter,
+			String entityName, String[] entityFields, String filterString,
 			long maxCount, int pageSize)
 		throws IOException {
 
@@ -237,9 +237,9 @@ public class TestrayServer {
 			sb.append(", pageSize: ");
 			sb.append(pageSize);
 
-			if (!JenkinsResultsParserUtil.isNullOrEmpty(filter)) {
+			if (!JenkinsResultsParserUtil.isNullOrEmpty(filterString)) {
 				sb.append(", filter: \"");
-				sb.append(filter);
+				sb.append(filterString);
 				sb.append("\"");
 			}
 
