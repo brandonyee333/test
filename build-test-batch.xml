@@ -2745,28 +2745,23 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 						for (Map.Entry projectTestEntry : projectTestMap.entrySet()) {
 							Map parameters = new HashMap();
 
-							List projectTestList = projectTestEntry.getValue();
-
-							String projectName = projectTestEntry.getKey();
-
-							parameters.put("test.task", projectName + ":" + "@{test.task}");
+							parameters.put("dir", "modules");
+							parameters.put("gradle.jvm.args", "@{test.junit.args}");
 
 							StringBuilder sb = new StringBuilder();
-
 							int testCount = 1;
 
-							for (String test : projectTestList) {
+							for (String test : projectTestEntry.getValue()) {
 								sb.append("--tests ");
 								sb.append(test);
 								sb.append(" ");
+
 								testCount++;
 							}
 
 							parameters.put("test.name", sb.toString());
 
-							parameters.put("dir", "modules");
-
-							parameters.put("gradle.jvm.args", "@{test.junit.args}");
+							parameters.put("test.task", projectTestEntry.getKey() + ":" + "@{test.task}");
 
 							int timeout = Integer.parseInt(project.getProperty("test.class.timeout.minutes"));
 
@@ -2776,7 +2771,7 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 								AntUtil.callTargetWithTimeout(projectDir, "build-common.xml", "gradle-execute-modules", parameters, timeout, true);
 							}
 							catch(Exception exception) {
-								throw new RuntimeException("Unable to run gradle execute modules target.");
+								throw new RuntimeException("Unable to run Gradle execute modules target.");
 							}
 						}
 					]]>
@@ -7343,15 +7338,15 @@ information. Make sure to commit in all format-javadoc results.
 					<istrue value="${run.opensearch2.unit.tests}" />
 				</condition>
 
-				<condition else="" property="test.arg.solr.unit.tests" value="-Dcom.liferay.portal.search.solr8.test.unit.started=true">
-					<istrue value="${run.solr.unit.tests}" />
-				</condition>
-
 				<condition else="" property="test.arg.project.templates" value="-Dproject.templates.test.builds=${project.templates.test.builds}">
 					<isset property="project.templates.test.builds" />
 				</condition>
 
-				<property name="test.junit.args" value="--continue -Dbuild.exclude.ant.plugin=true ${test.arg.project.templates} ${test.arg.opensearch2.unit.tests} ${test.arg.solr.unit.tests} -Djunit.code.coverage=${test.batch.code.coverage} -Dtest.class.group.index=${axis.variable}" />
+				<condition else="" property="test.arg.solr.unit.tests" value="-Dcom.liferay.portal.search.solr8.test.unit.started=true">
+					<istrue value="${run.solr.unit.tests}" />
+				</condition>
+
+				<property name="test.junit.args" value="--continue -Dbuild.exclude.ant.plugin=true ${test.arg.opensearch2.unit.tests} ${test.arg.project.templates} ${test.arg.solr.unit.tests} -Djunit.code.coverage=${test.batch.code.coverage} -Dtest.class.group.index=${axis.variable}" />
 
 				<run-modules-junit-test test.class.group="${test.class.group}" test.junit.args="${test.junit.args}" test.task="test" />
 
