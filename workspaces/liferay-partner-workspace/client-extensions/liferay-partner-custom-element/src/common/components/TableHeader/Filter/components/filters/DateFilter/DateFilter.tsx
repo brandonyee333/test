@@ -17,8 +17,8 @@ interface IProps {
 }
 
 const DateFilter = ({
-	children,
 	clearInputs,
+	children,
 	dateFilters,
 	filterDescription,
 	initialDates,
