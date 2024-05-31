@@ -3201,7 +3201,7 @@ public class CPDefinitionLocalServiceImpl
 
 			throw new CPDefinitionExpirationDateException(
 				"Expiration date " + expirationDate +
-					" cannot be before display date");
+					" is before display date");
 		}
 
 		CPType cpType = _cpTypeRegistry.getCPType(productTypeName);
