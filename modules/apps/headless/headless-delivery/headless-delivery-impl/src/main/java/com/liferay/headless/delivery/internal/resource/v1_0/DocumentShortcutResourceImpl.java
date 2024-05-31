@@ -20,7 +20,6 @@ import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -90,14 +89,10 @@ public class DocumentShortcutResourceImpl
 			List<DLFileShortcut> dlFileShortcuts)
 		throws Exception {
 
-		List<DocumentShortcut> documentShortcuts = new ArrayList<>();
-
-		for (DLFileShortcut dlFileShortcut : dlFileShortcuts) {
-			documentShortcuts.add(
-				_toDocumentShortcut(new LiferayFileShortcut(dlFileShortcut)));
-		}
-
-		return documentShortcuts;
+		return transform(
+			dlFileShortcuts,
+			dlFileShortcut -> _toDocumentShortcut(
+				new LiferayFileShortcut(dlFileShortcut)));
 	}
 
 	@Reference
