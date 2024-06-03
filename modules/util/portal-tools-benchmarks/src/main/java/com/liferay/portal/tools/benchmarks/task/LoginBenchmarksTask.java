@@ -66,8 +66,8 @@ public class LoginBenchmarksTask implements BenchmarksTask {
 		Assert.assertEquals(url.toString(), httpResponse.getRedirect());
 	}
 
-	private URL _createURL(String path) throws Exception {
-		return new URL("http", _hostname, _port, path);
+	private URL _createURL(String... strings) throws Exception {
+		return new URL("http", _hostname, _port, StringBundler.concat(strings));
 	}
 
 	private long _getDuration(HttpResponse... httpResponses) {
@@ -98,11 +98,10 @@ public class LoginBenchmarksTask implements BenchmarksTask {
 				{_P_P_ID_NAMESPACE + "_saveLastPath", StringPool.FALSE}
 			},
 			_createURL(
-				StringBundler.concat(
-					"/home?", _P_P_ID_NAMESPACE,
-					"_javax.portlet.action=/login/login&", _P_P_ID_NAMESPACE,
-					"_mvcRenderCommandName=/login/login&p_p_id=", _P_P_ID,
-					"&p_p_lifecycle=1&p_p_mode=view&p_p_state=normal")));
+				"/home?", _P_P_ID_NAMESPACE,
+				"_javax.portlet.action=/login/login&", _P_P_ID_NAMESPACE,
+				"_mvcRenderCommandName=/login/login&p_p_id=", _P_P_ID,
+				"&p_p_lifecycle=1&p_p_mode=view&p_p_state=normal"));
 
 		_assertRedirect("/c", httpResponse1);
 
