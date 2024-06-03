@@ -185,9 +185,9 @@ public class LiferayOAuth2ResourceServerEnableWebSecurity {
 
 		@Override
 		public OAuth2TokenValidatorResult validate(Jwt jwt) {
-			String jwtCLaimClientId = jwt.getClaimAsString("client_id");
+			String jwtClientId = jwt.getClaimAsString("client_id");
 
-			if (_clientIds.containsValue(jwtCLaimClientId)) {
+			if (_clientIds.containsValue(jwtClientId)) {
 				return OAuth2TokenValidatorResult.success();
 			}
 
@@ -197,7 +197,7 @@ public class LiferayOAuth2ResourceServerEnableWebSecurity {
 					key -> LiferayOAuth2Util.getClientId(
 						key, _lxcDXPMainDomain, _lxcDXPServerProtocol)));
 
-			if (_clientIds.containsValue(jwtCLaimClientId)) {
+			if (_clientIds.containsValue(jwtClientId)) {
 				return OAuth2TokenValidatorResult.success();
 			}
 
