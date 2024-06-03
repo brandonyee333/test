@@ -83,7 +83,7 @@ public class LoginBenchmarksTask implements BenchmarksTask {
 		}
 	}
 
-	private long _calculateDuration(HttpResponse... httpResponses) {
+	private long _getDuration(HttpResponse... httpResponses) {
 		long duration = 0;
 
 		for (HttpResponse httpResponse : httpResponses) {
@@ -137,7 +137,7 @@ public class LoginBenchmarksTask implements BenchmarksTask {
 
 		_assertResult(httpResponse3, "ProductNavigationUserPersonalBarPortlet");
 
-		return _calculateDuration(httpResponse1, httpResponse2, httpResponse3);
+		return _getDuration(httpResponse1, httpResponse2, httpResponse3);
 	}
 
 	private long _logout() throws Exception {
@@ -166,7 +166,7 @@ public class LoginBenchmarksTask implements BenchmarksTask {
 
 		_assertResult(httpResponse2, "Remember Me");
 
-		return _calculateDuration(httpResponse1, httpResponse2);
+		return _getDuration(httpResponse1, httpResponse2);
 	}
 
 	private static final String _P_P_ID =
