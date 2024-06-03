@@ -114,8 +114,8 @@ public class LiferayOAuth2ResourceServerEnableWebSecurity {
 			String clientId = _environment.getProperty(
 				externalReferenceCode + ".oauth2.user.agent.client.id");
 
-			if ((clientId != null) && _log.isInfoEnabled()) {
-				_log.info("Using client ID " + clientId);
+			if (_log.isInfoEnabled()) {
+				_log.info("Client ID " + clientId);
 			}
 
 			clientIds.put(externalReferenceCode, clientId);
