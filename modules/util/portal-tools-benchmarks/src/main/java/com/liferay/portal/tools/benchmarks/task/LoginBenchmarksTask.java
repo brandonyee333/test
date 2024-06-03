@@ -24,11 +24,11 @@ import java.util.Objects;
 public class LoginBenchmarksTask implements BenchmarksTask {
 
 	public LoginBenchmarksTask(
-		String hostName, int port, String email, String password) {
+		String hostName, int port, String emailAddress, String password) {
 
 		_hostName = hostName;
 		_port = port;
-		_email = email;
+		_emailAddress = emailAddress;
 		_password = password;
 	}
 
@@ -42,7 +42,7 @@ public class LoginBenchmarksTask implements BenchmarksTask {
 				"viewLoginPage", _viewLoginPage(httpResponse.getCSRFToken())),
 			new AbstractMap.SimpleEntry<>(
 				"login",
-				_login(httpResponse.getCSRFToken(), _email, _password)),
+				_login(httpResponse.getCSRFToken(), _emailAddress, _password)),
 			new AbstractMap.SimpleEntry<>("logout", _logout()));
 	}
 
@@ -195,7 +195,7 @@ public class LoginBenchmarksTask implements BenchmarksTask {
 
 	private static final String _URL_REDIRECT = "/c";
 
-	private final String _email;
+	private final String _emailAddress;
 	private final String _hostName;
 	private final String _password;
 	private final int _port;
