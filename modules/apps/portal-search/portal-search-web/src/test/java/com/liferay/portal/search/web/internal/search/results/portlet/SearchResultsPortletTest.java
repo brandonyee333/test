@@ -86,6 +86,7 @@ public class SearchResultsPortletTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_setUpPortalUtil();
 		_setUpPortletSharedSearchResponse();
 		_setUpPropsUtil();
 		_setUpSearchSettings();
@@ -98,10 +99,7 @@ public class SearchResultsPortletTest {
 		_searchResultsPortlet = _createSearchResultsPortlet();
 
 		ReflectionTestUtil.setFieldValue(
-			_searchResultsPortlet, "_portal", new PortalImpl());
-
-		ReflectionTestUtil.setFieldValue(
-			PortalUtil.class, "_portal", new PortalImpl());
+			_searchResultsPortlet, "_portal", PortalUtil.getPortal());
 	}
 
 	@Test
@@ -403,6 +401,11 @@ public class SearchResultsPortletTest {
 		).getThemeDisplay(
 			Mockito.any()
 		);
+	}
+
+	private void _setUpPortalUtil() {
+		ReflectionTestUtil.setFieldValue(
+			PortalUtil.class, "_portal", new PortalImpl());
 	}
 
 	private void _setUpPropsUtil() {
