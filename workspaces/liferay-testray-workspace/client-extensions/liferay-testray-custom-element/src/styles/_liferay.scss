@@ -179,11 +179,6 @@ html {
 }
 
 .popover-management-toolbar {
-	&.popover {
-		width: 300px !important;
-		z-index: 999;
-	}
-
 	&.body-columns {
 		.popover-body {
 			max-height: 300px !important;
@@ -199,6 +194,11 @@ html {
 		}
 	}
 
+	&.popover {
+		width: 300px !important;
+		z-index: 999;
+	}
+
 	&.popover-management-toolbar-small {
 		.popover-body {
 			max-height: 190px !important;
@@ -206,19 +206,6 @@ html {
 			overflow-y: hidden !important;
 			padding: 0;
 		}
-	}
-
-	.popover-body {
-		max-height: 590px !important;
-		min-height: 350px !important;
-		overflow-y: hidden !important;
-		padding: 0;
-	}
-
-	.management-toolbar-body {
-		max-height: 390px !important;
-		min-height: 180px !important;
-		overflow-y: none;
 	}
 
 	.dropdown-header {
@@ -229,6 +216,23 @@ html {
 		.form-control {
 			margin: 0;
 		}
+	}
+
+	.inline-scroller {
+		overflow-x: hidden;
+	}
+
+	.management-toolbar-body {
+		max-height: 390px !important;
+		min-height: 180px !important;
+		overflow-y: none;
+	}
+
+	.popover-body {
+		max-height: 590px !important;
+		min-height: 350px !important;
+		overflow-y: hidden !important;
+		padding: 0;
 	}
 
 	.popover-filter-content {
@@ -244,10 +248,6 @@ html {
 		position: sticky;
 		top: 0;
 	}
-
-	.inline-scroller {
-		overflow-x: hidden;
-	}
 }
 
 .portlet {
@@ -256,10 +256,6 @@ html {
 
 .subnav-tbar {
 	background-color: #fff !important;
-}
-
-.subnav-tbar {
-	background-color: #b3cdff;
 
 	div:nth-child(1) {
 		max-width: none;
