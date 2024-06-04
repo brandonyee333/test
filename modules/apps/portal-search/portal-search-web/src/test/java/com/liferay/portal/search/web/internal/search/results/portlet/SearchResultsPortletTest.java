@@ -114,7 +114,7 @@ public class SearchResultsPortletTest {
 	}
 
 	@Test
-	public void testRedirectURL() throws Exception {
+	public void testGetIteratorURL() throws Exception {
 		Mockito.doReturn(
 			"/search?delta=10&start=2"
 		).when(
@@ -133,8 +133,7 @@ public class SearchResultsPortletTest {
 
 		Assert.assertEquals(
 			"/search?delta=10",
-			searchContainer.getIteratorURL(
-			).toString());
+			String.valueOf(searchContainer.getIteratorURL()));
 	}
 
 	protected void render() throws IOException, PortletException {
