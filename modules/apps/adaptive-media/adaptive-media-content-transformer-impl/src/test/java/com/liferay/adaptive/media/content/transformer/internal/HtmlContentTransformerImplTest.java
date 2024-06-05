@@ -38,8 +38,8 @@ public class HtmlContentTransformerImplTest {
 	@Before
 	public void setUp() throws Exception {
 		_setUpHtmlContentTransformerImpl();
-		_setUpPdfFileEntry();
-		_setUpPngFileEntry();
+		_setUpPDFFileEntry();
+		_setUpPNGFileEntry();
 	}
 
 	@Test
@@ -237,7 +237,7 @@ public class HtmlContentTransformerImplTest {
 			_dlAppLocalService);
 	}
 
-	private void _setUpPdfFileEntry() throws Exception {
+	private void _setUpPDFFileEntry() throws Exception {
 		Mockito.when(
 			_dlAppLocalService.getFileEntry(1999L)
 		).thenReturn(
@@ -251,7 +251,7 @@ public class HtmlContentTransformerImplTest {
 		);
 	}
 
-	private void _setUpPngFileEntry() throws Exception {
+	private void _setUpPNGFileEntry() throws Exception {
 		Mockito.when(
 			_dlAppLocalService.getFileEntry(1989L)
 		).thenReturn(
