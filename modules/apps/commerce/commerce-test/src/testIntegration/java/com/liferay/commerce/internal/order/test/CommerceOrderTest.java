@@ -1157,7 +1157,7 @@ public class CommerceOrderTest {
 			new int[] {CommerceOrderConstants.ORDER_STATUS_OPEN}, negate);
 	}
 
-	private static final Integer _MAX_CLAUSES_COUNT = 1024;
+	private static final int _MAX_CLAUSES_COUNT = 1024;
 
 	@Inject
 	private static ServiceComponentRuntime _serviceComponentRuntime;

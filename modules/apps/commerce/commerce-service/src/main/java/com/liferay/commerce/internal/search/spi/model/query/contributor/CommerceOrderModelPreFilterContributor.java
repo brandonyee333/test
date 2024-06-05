@@ -123,6 +123,6 @@ public class CommerceOrderModelPreFilterContributor
 		}
 	}
 
-	private static final Integer _MAX_CLAUSES_COUNT = 1024;
+	private static final int _MAX_CLAUSES_COUNT = 1024;
 
 }
