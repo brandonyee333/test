@@ -20,7 +20,7 @@ interface NewFilterModal {
 };
 
 interface NewSelectionFilterModal extends NewFilterModal {
-	filterModeRarioButtons: Locator;
+	filterModeRadioButtons: Locator;
 	nameInput: Locator;
 	newFilterModalheading: Locator;
 	picklistDropdown: Locator;
@@ -77,7 +77,7 @@ export class FiltersPage {
 		};
 		this.newSelectionFilterModal = {
 			...this.newFilterModal,
-			filterModeRarioButtons: page.getByText('Filter ModeIncludeExclude'),
+			filterModeRadioButtons: page.getByText('Filter ModeIncludeExclude'),
 			newFilterModalheading: page.getByRole('heading', {
 				name: 'New Selection Filter',
 			}),

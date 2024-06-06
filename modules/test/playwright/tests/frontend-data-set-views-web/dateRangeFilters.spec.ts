@@ -14,7 +14,6 @@ import {dataSetManagerApiHelpersTest} from './fixtures/dataSetManagerApiHelpersT
 import {dataSetsPageTest} from './fixtures/dataSetsPageTest';
 import {fdsFragmentPageTest} from './fixtures/fdsFragmentPageTest';
 import {filtersPageTest} from './fixtures/filtersPageTest';
-import {test} from "./visualizationModes.spec";
 
 export const dsmTest = mergeTests(
 	dataSetManagerApiHelpersTest,
@@ -29,6 +28,7 @@ export const dsmTest = mergeTests(
 let dataSetERC: string;
 let dataSetLabel: string;
 const NAME_COLUMN_INDEX = 1;
+const dateFieldName = 'dateCreated';
 
 dsmTest.beforeEach(async ({dataSetManagerApiHelpers}) => {
 	dataSetERC = getRandomString();
@@ -60,7 +60,7 @@ dsmTest(
 		});
 
 		const dateFilterOption = filtersPage.page.getByRole('option', {
-			name: 'dateCreated',
+			name: dateFieldName,
 		});
 
 		await dsmTest.step(
@@ -117,7 +117,7 @@ dsmTest(
 
 		await dsmTest.step('Create a date range filter', async () => {
 			await filtersPage.createDateRangeFilter({
-				filterBy: 'dateCreated',
+				filterBy: dateFieldName,
 				name: filterName
 			});
 		});
@@ -132,7 +132,7 @@ dsmTest(
 			await filtersPage.assertFiltersTableRowCount(1);
 		});
 
-		await test.step('Edit the filter, change its label @LPS-183056', async () => {
+		await dsmTest.step('Edit the filter, change its label @LPS-183056', async () => {
 			await filtersPage
 				.getRowByText(filterName)
 				.locator('.actions-cell button')
@@ -223,7 +223,7 @@ dsmTest(
 				await filtersPage.newDateRangeFilterModal.filterBySelect.click();
 
 				const dateFilterOption = filtersPage.page.getByRole('option', {
-					name: 'dateCreated',
+					name: dateFieldName,
 				});
 
 				await expect(dateFilterOption).toContainText("In Use");
@@ -310,7 +310,7 @@ fragmentTest(
 
 		await fragmentTest.step('Create a new date-time filter', async () => {
 			await dataSetManagerApiHelpers.createDataSetDateFilter({
-				fieldName: 'dateCreated',
+				fieldName: dateFieldName,
 				from: '2020-01-01',
 				label_i18n: {en_US: filterLabel},
 				r_fdsViewFDSDateFilterRelationship_c_fdsViewERC: dataSetERC,
