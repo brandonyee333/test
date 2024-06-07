@@ -126,7 +126,7 @@ public class RepositoryFactoryDBPartitionTest extends BaseDBPartitionTestCase {
 
 		_counterLocalService.reset(Counter.class.getName(), repositoryId - 1);
 
-		com.liferay.portal.kernel.model.Repository repositoryModel =
+		com.liferay.portal.kernel.model.Repository repository =
 			_repositoryLocalService.addRepository(
 				user.getUserId(), group.getGroupId(),
 				_portal.getClassNameId(LiferayRepository.class.getName()),
@@ -134,10 +134,10 @@ public class RepositoryFactoryDBPartitionTest extends BaseDBPartitionTestCase {
 				RandomTestUtil.randomString(), "Test Portlet",
 				new UnicodeProperties(), true, new ServiceContext());
 
-		Assert.assertEquals(repositoryId, repositoryModel.getRepositoryId());
+		Assert.assertEquals(repositoryId, repository.getRepositoryId());
 
 		return _repositoryFactory.createRepository(
-			repositoryModel.getRepositoryId());
+			repository.getRepositoryId());
 	}
 
 	private long _getCount() {
