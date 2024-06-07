@@ -65,14 +65,14 @@ public class RepositoryFactoryDBPartitionTest extends BaseDBPartitionTestCase {
 
 		IndexStatusManagerThreadLocal.setIndexReadOnly(true);
 
-		long counterValue = _getCounterValue();
+		long count = _getCount();
 
-		long repositoryId = counterValue + 1000;
+		long repositoryId = count + 1000;
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setWithSafeCloseable(COMPANY_IDS[0])) {
 
-			long groupId = counterValue + 100;
+			long groupId = count + 100;
 
 			Repository repository = _createRepository(
 				COMPANY_IDS[0], groupId, repositoryId);
@@ -83,7 +83,7 @@ public class RepositoryFactoryDBPartitionTest extends BaseDBPartitionTestCase {
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setWithSafeCloseable(COMPANY_IDS[1])) {
 
-			long groupId = counterValue + 200;
+			long groupId = count + 200;
 
 			Repository repository = _createRepository(
 				COMPANY_IDS[1], groupId, repositoryId);
@@ -140,23 +140,23 @@ public class RepositoryFactoryDBPartitionTest extends BaseDBPartitionTestCase {
 			repositoryModel.getRepositoryId());
 	}
 
-	private long _getCounterValue() {
-		long counterValue1 = 1;
-		long counterValue2 = 1;
+	private long _getCount() {
+		long count1 = 1;
+		long count2 = 1;
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setWithSafeCloseable(COMPANY_IDS[0])) {
 
-			counterValue1 = _counterLocalService.increment();
+			count1 = _counterLocalService.increment();
 		}
 
 		try (SafeCloseable safeCloseable =
 				CompanyThreadLocal.setWithSafeCloseable(COMPANY_IDS[1])) {
 
-			counterValue2 = _counterLocalService.increment();
+			count2 = _counterLocalService.increment();
 		}
 
-		return Math.max(counterValue1, counterValue2);
+		return Math.max(count1, count2);
 	}
 
 	private long _getGroupId(Repository repository) {
