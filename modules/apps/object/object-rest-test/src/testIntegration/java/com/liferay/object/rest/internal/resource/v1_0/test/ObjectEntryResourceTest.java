@@ -8113,7 +8113,6 @@ public class ObjectEntryResourceTest {
 		}
 	}
 
-	@FeatureFlags("LPD-18730")
 	@Test
 	public void testSortByManyToOneAndOneToManyRelationshipsCustomObjectFields()
 		throws Exception {
@@ -8595,7 +8594,6 @@ public class ObjectEntryResourceTest {
 		}
 	}
 
-	@FeatureFlags("LPD-18730")
 	@Test
 	public void testSortByManyToOneRelationshipCustomObjectFields()
 		throws Exception {
@@ -9086,7 +9084,6 @@ public class ObjectEntryResourceTest {
 		}
 	}
 
-	@FeatureFlags("LPD-18730")
 	@Test
 	public void testSortByManyToOneRelationshipSystemObjectFields()
 		throws Exception {
@@ -9476,7 +9473,6 @@ public class ObjectEntryResourceTest {
 		}
 	}
 
-	@FeatureFlags("LPD-18730")
 	@Test
 	public void testSortByOneToManyRelationshipCustomObjectFields()
 		throws Exception {
@@ -10137,7 +10133,6 @@ public class ObjectEntryResourceTest {
 		}
 	}
 
-	@FeatureFlags("LPD-18730")
 	@Test
 	public void testSortByOneToManyRelationshipSystemObjectFields()
 		throws Exception {
@@ -10720,7 +10715,6 @@ public class ObjectEntryResourceTest {
 		}
 	}
 
-	@FeatureFlags("LPD-18730")
 	@Test
 	public void testSortByUnsupportedObjectFields() throws Exception {
 		_objectRelationship1 = ObjectRelationshipTestUtil.addObjectRelationship(
