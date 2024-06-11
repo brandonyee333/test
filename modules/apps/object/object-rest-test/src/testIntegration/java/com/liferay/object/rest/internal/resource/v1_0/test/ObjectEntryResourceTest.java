@@ -10584,7 +10584,8 @@ public class ObjectEntryResourceTest {
 				JSONUtil.put(
 					"status", "BAD_REQUEST"
 				).put(
-					"title", "Unable to sort by a related object field"
+					"title",
+					"Unable to sort by a many to many related object field"
 				).toString(),
 				HTTPTestUtil.invokeToString(
 					null,
