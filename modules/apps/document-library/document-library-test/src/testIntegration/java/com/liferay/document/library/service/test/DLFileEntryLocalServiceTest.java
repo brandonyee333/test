@@ -1259,9 +1259,7 @@ public class DLFileEntryLocalServiceTest {
 	}
 
 	@Test
-	public void testUpdateFileEntryActionableDynamicQuery()
-		throws Exception {
-
+	public void testUpdateFileEntryActionableDynamicQuery() throws Exception {
 		for (int i = 0; i < 20; i++) {
 			_dlFileEntryLocalService.addFileEntry(
 				null, TestPropsValues.getUserId(), _group.getGroupId(),
