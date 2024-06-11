@@ -64,11 +64,10 @@ public class DLFileShortcutLocalServiceTest {
 				dlFileEntry.getFileEntryId(), _serviceContext);
 
 		Assert.assertEquals(
-			dlFileShortcut.getToFileEntryId(), dlFileEntry.getFileEntryId());
-
-		Assert.assertEquals(
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			dlFileShortcut.getFolderId());
+		Assert.assertEquals(
+			dlFileShortcut.getToFileEntryId(), dlFileEntry.getFileEntryId());
 	}
 
 	@Test
@@ -82,10 +81,9 @@ public class DLFileShortcutLocalServiceTest {
 				dlFileEntry.getFileEntryId(), _serviceContext);
 
 		Assert.assertEquals(
-			dlFileEntry.getFileEntryId(), dlFileShortcut.getToFileEntryId());
-
-		Assert.assertEquals(
 			dlFileEntry.getFolderId(), dlFileShortcut.getFolderId());
+		Assert.assertEquals(
+			dlFileEntry.getFileEntryId(), dlFileShortcut.getToFileEntryId());
 	}
 
 	@Test(expected = NoSuchFolderException.class)
@@ -121,11 +119,10 @@ public class DLFileShortcutLocalServiceTest {
 				_serviceContext);
 
 		Assert.assertEquals(
-			dlFileShortcut.getToFileEntryId(), dlFileEntry.getFileEntryId());
-
-		Assert.assertEquals(
 			DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
 			dlFileShortcut.getFolderId());
+		Assert.assertEquals(
+			dlFileShortcut.getToFileEntryId(), dlFileEntry.getFileEntryId());
 	}
 
 	private DLFileEntry _addDLFileEntry() throws Exception {
