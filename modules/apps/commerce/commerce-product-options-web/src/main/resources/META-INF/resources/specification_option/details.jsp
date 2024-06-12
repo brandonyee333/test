@@ -1,4 +1,5 @@
-<%--
+<%@ page
+	import="com.liferay.portal.kernel.feature.flag.FeatureFlagManagerUtil" %><%--
 /**
  * SPDX-FileCopyrightText: (c) 2000 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
@@ -55,6 +56,15 @@ List<CPOptionCategory> cpOptionCategories = cpSpecificationOptionDisplayContext.
 		<aui:input name="priority" />
 	</aui:fieldset>
 </commerce-ui:panel>
+
+<c:if test='<%= FeatureFlagManagerUtil.isEnabled("LPD-21636") %>'>
+	<commerce-ui:panel
+		elementClasses="mt-4"
+		title='<%= LanguageUtil.get(request, "picklist") %>'
+	>
+
+	</commerce-ui:panel>
+</c:if>
 
 <c:if test="<%= cpSpecificationOption == null %>">
 	<aui:script sandbox="<%= true %>">
