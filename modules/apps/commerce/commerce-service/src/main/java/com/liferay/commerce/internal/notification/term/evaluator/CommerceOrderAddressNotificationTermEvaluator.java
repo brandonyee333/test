@@ -51,8 +51,8 @@ public class CommerceOrderAddressNotificationTermEvaluator
 		throws PortalException {
 
 		if (!(object instanceof Map) ||
-			!StringUtil.equalsIgnoreCase(
-				"CommerceOrder", _objectDefinition.getShortName())) {
+			!"CommerceOrder".equalsIgnoreCase(
+				_objectDefinition.getShortName())) {
 
 			return termName;
 		}
