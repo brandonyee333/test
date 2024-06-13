@@ -136,8 +136,8 @@ public class CommerceNotificationHelperImpl
 		List<CommerceDefinitionTermContributor> definitionTermContributors =
 			new ArrayList<>();
 
-		if ((fieldType == _BCCFIELD) || (fieldType == _CCFIELD) ||
-			(fieldType == _TOFIELD)) {
+		if ((fieldType == _FIELD_BCC) || (fieldType == _FIELD_CC) ||
+			(fieldType == _FIELD_TO)) {
 
 			definitionTermContributors.addAll(
 				_commerceDefinitionTermContributorRegistry.
@@ -182,11 +182,11 @@ public class CommerceNotificationHelperImpl
 			user.getLanguageId());
 
 		String subject = _formatString(
-			commerceNotificationType, _SUBJECTFIELD,
+			commerceNotificationType, _FIELD_SUBJECT,
 			commerceNotificationTemplate.getSubject(userLocale), object,
 			userLocale);
 		String body = _formatString(
-			commerceNotificationType, _BODYFIELD,
+			commerceNotificationType, _FIELD_BODY,
 			commerceNotificationTemplate.getBody(userLocale), object,
 			userLocale);
 
@@ -197,28 +197,28 @@ public class CommerceNotificationHelperImpl
 
 		if (Validator.isNull(subject)) {
 			subject = _formatString(
-				commerceNotificationType, _SUBJECTFIELD,
+				commerceNotificationType, _FIELD_SUBJECT,
 				commerceNotificationTemplate.getSubject(siteDefaultLocale),
 				object, siteDefaultLocale);
 		}
 
 		if (Validator.isNull(body)) {
 			_formatString(
-				commerceNotificationType, _BODYFIELD,
+				commerceNotificationType, _FIELD_BODY,
 				commerceNotificationTemplate.getBody(siteDefaultLocale), object,
 				siteDefaultLocale);
 		}
 
 		String to = _formatString(
-			commerceNotificationType, _TOFIELD,
+			commerceNotificationType, _FIELD_TO,
 			commerceNotificationTemplate.getTo(), object, userLocale);
 
 		String cc = _formatString(
-			commerceNotificationType, _CCFIELD,
+			commerceNotificationType, _FIELD_CC,
 			commerceNotificationTemplate.getCc(), object, userLocale);
 
 		String bcc = _formatString(
-			commerceNotificationType, _BCCFIELD,
+			commerceNotificationType, _FIELD_BCC,
 			commerceNotificationTemplate.getBcc(), object, userLocale);
 
 		EmailAddressValidator emailAddressValidator =
@@ -263,15 +263,15 @@ public class CommerceNotificationHelperImpl
 		}
 	}
 
-	private static final int _BCCFIELD = 5;
+	private static final int _FIELD_BCC = 5;
 
-	private static final int _BODYFIELD = 2;
+	private static final int _FIELD_BODY = 2;
 
-	private static final int _CCFIELD = 4;
+	private static final int _FIELD_CC = 4;
 
-	private static final int _SUBJECTFIELD = 1;
+	private static final int _FIELD_SUBJECT = 1;
 
-	private static final int _TOFIELD = 3;
+	private static final int _FIELD_TO = 3;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceNotificationHelperImpl.class);
