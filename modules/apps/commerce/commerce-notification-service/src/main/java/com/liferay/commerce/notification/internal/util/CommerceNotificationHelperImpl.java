@@ -212,11 +212,9 @@ public class CommerceNotificationHelperImpl
 		String to = _formatString(
 			commerceNotificationType, _FIELD_TO,
 			commerceNotificationTemplate.getTo(), object, userLocale);
-
 		String cc = _formatString(
 			commerceNotificationType, _FIELD_CC,
 			commerceNotificationTemplate.getCc(), object, userLocale);
-
 		String bcc = _formatString(
 			commerceNotificationType, _FIELD_BCC,
 			commerceNotificationTemplate.getBcc(), object, userLocale);
