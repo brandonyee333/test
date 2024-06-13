@@ -200,7 +200,6 @@ public class CommerceNotificationTest {
 
 		Assert.assertEquals(
 			commerceNotificationQueueEntry.getCc(), user.getEmailAddress());
-
 		Assert.assertEquals(
 			commerceNotificationQueueEntry.getBcc(), user.getEmailAddress());
 	}
