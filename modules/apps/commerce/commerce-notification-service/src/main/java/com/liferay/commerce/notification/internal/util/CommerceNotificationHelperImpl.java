@@ -136,8 +136,8 @@ public class CommerceNotificationHelperImpl
 		List<CommerceDefinitionTermContributor> definitionTermContributors =
 			new ArrayList<>();
 
-		if ((fieldType == _TOFIELD) || (fieldType == _CCFIELD) ||
-			(fieldType == _BCCFIELD)) {
+		if ((fieldType == _BCCFIELD) || (fieldType == _CCFIELD) ||
+			(fieldType == _TOFIELD)) {
 
 			definitionTermContributors.addAll(
 				_commerceDefinitionTermContributorRegistry.
