@@ -1,5 +1,4 @@
-/**
- * SPDX-FileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
+/LayoutUtilityPageFileCopyrightText: (c) 2024 Liferay, Inc. https://liferay.com
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
@@ -80,7 +79,9 @@ public class LoginMVCActionCommandTest {
 	}
 
 	@Test
-	public void testFailedLoginRedirectWithoutUtilityPage() throws Exception {
+	public void testFailedLoginRedirectWithoutLayoutUtilityPageEntry()
+		throws Exception {
+
 		try (SafeCloseable safeCloseable =
 				PropsValuesTestUtil.swapWithSafeCloseable(
 					"AUTH_TOKEN_CHECK_ENABLED", false)) {
@@ -114,7 +115,9 @@ public class LoginMVCActionCommandTest {
 	}
 
 	@Test
-	public void testFailedLoginRedirectWithUtilityPage() throws Exception {
+	public void testFailedLoginRedirectWithLayoutUtilityPageEntry()
+		throws Exception {
+
 		try (SafeCloseable safeCloseable =
 				PropsValuesTestUtil.swapWithSafeCloseable(
 					"AUTH_TOKEN_CHECK_ENABLED", false)) {
