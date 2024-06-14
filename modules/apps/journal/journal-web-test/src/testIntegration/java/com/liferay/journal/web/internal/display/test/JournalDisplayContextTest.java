@@ -136,7 +136,6 @@ public class JournalDisplayContextTest {
 			MVCRenderConstants.
 				PORTLET_CONTEXT_OVERRIDE_REQUEST_ATTIBUTE_NAME_PREFIX + path,
 			new MockLiferayPortletContext(path));
-		mockLiferayPortletRenderRequest.setParameter("mvcPath", path);
 
 		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.COMPANY_ID, _company.getCompanyId());
@@ -147,6 +146,7 @@ public class JournalDisplayContextTest {
 			new MockLiferayPortletURL());
 		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay());
+		mockLiferayPortletRenderRequest.setParameter("mvcPath", path);
 
 		return mockLiferayPortletRenderRequest;
 	}
