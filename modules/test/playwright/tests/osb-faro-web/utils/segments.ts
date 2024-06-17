@@ -33,6 +33,9 @@ export async function editCriteriaAttributeValue(page: Page, attributeValue: str
 		.locator('input[data-testid="attribute-value-string-input"]')
 		.fill(attributeValue);
 }
+
+export async function dragAndDropCriteriaItem(page: Page, segmentField: string) {
+	const source = page.getByText(segmentField);
 	const target = page.locator('div.drop-zone-target').last();
 
 	return await source.dragTo(target);
