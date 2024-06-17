@@ -497,7 +497,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		if (Validator.isNull(virtualHostname)) {
 			throw new IllegalArgumentException(
-				"VirtualHostname must not be null");
+				"Virtual hostname must not be null");
 		}
 
 		if (Validator.isNull(webId)) {
