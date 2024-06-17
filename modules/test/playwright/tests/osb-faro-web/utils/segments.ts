@@ -14,11 +14,17 @@ export async function createStaticSegment(page: Page) {
 	await page.getByLabel('Menu').click();
 	await page.getByRole('menuitem', {name: 'Static Segment'}).click();
 }
+
 export async function addSegmentField(page: Page, segmentType: string, segmentCriterion: string) {
 	await page.locator('button.dropdown-toggle.btn-outline-secondary').click();
 	await page.getByRole('menuitem', { name: segmentType }).click();
 
 	await dragAndDropCriteriaItem(page, segmentCriterion);
+}
+
+export async function setSegmentName(page: Page, segmentName: string) {
+	await page.getByRole('button', { name: 'Unnamed Segment' }).click();
+	await page.getByPlaceholder('Unnamed Segment').fill(segmentName);
 }
 	const target = page.locator('div.drop-zone-target').last();
 
