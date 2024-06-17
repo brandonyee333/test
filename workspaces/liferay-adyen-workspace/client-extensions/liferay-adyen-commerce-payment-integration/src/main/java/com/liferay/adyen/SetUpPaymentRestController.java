@@ -119,7 +119,7 @@ public class SetUpPaymentRestController extends BaseRestController {
 					).put(
 						"externalReferenceCode", transactionCode
 					).toString(),
-					_log, "/o/c/n1a0adyenwebhooks/");
+					"/o/c/n1a0adyenwebhooks/");
 			}
 		}
 		catch (Exception exception) {
@@ -155,13 +155,7 @@ public class SetUpPaymentRestController extends BaseRestController {
 		).build();
 	}
 
-	private void _post(
-		String authorization, String body, Log log, String path) {
-
-		if (log.isDebugEnabled()) {
-			log.debug("Call POST: " + path);
-		}
-
+	private void _post(String authorization, String body, String path) {
 		_getWebClient(
 		).post(
 		).uri(
@@ -175,16 +169,7 @@ public class SetUpPaymentRestController extends BaseRestController {
 		).retrieve(
 		).bodyToMono(
 			String.class
-		).subscribe(
-			successResponse -> {
-				if (log.isDebugEnabled()) {
-					log.debug("Successful Response: " + successResponse);
-				}
-			},
-			error -> {
-				throw new RuntimeException(error);
-			}
-		);
+		).subscribe();
 	}
 
 	private static final Log _log = LogFactory.getLog(
