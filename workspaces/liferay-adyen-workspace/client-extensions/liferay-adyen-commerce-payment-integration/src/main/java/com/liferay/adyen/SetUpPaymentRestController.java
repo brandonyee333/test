@@ -47,10 +47,10 @@ public class SetUpPaymentRestController extends BaseRestController {
 		log(jwt, _log, json);
 
 		String errorMessages = null;
+		String payload = null;
 		String paymentStatus = "4";
 		String redirectURL = null;
 		String transactionCode = null;
-		String payload = null;
 
 		try {
 			JSONObject jsonObject = new JSONObject(json);
@@ -101,8 +101,8 @@ public class SetUpPaymentRestController extends BaseRestController {
 			if (StringUtils.isNotBlank(redirectURL) &&
 				StringUtils.isNotBlank(transactionCode)) {
 
-				paymentStatus = "18";
 				payload = createCheckoutSessionResponse.toJson();
+				paymentStatus = "18";
 
 				_post(
 					"Bearer " + jwt.getTokenValue(),
