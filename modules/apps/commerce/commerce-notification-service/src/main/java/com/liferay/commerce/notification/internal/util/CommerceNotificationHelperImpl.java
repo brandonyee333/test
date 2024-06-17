@@ -258,7 +258,7 @@ public class CommerceNotificationHelperImpl
 			if (toUser == null) {
 				if (_log.isInfoEnabled()) {
 					_log.info(
-						"No User found with email address: " + emailAddress);
+						"No user found with email address " + emailAddress);
 				}
 
 				_addNotificationQueueEntry(
