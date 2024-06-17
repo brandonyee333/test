@@ -1,13 +1,14 @@
 <#assign
 	navigationJSONObject = jsonFactoryUtil.createJSONObject(navigation.getData())
-	childrenJSONArray = navigationJSONObject.getJSONArray("children")
-	parentJSONObject = navigationJSONObject.getJSONObject("parent")
-	siblingsJSONArray = navigationJSONObject.getJSONArray("siblings")
 	nextLesson =
 		{
 			"title": "",
 			"url": ""
 		}
+
+	childrenJSONArray = navigationJSONObject.getJSONArray("children")
+	parentJSONObject = navigationJSONObject.getJSONObject("parent")
+	siblingsJSONArray = navigationJSONObject.getJSONArray("siblings")
 />
 
 <#if childrenJSONArray.length() gt 0>
@@ -51,7 +52,7 @@
 
 <div class="course-nav-bottom__menu d-flex">
 	<div class="menu-previous-lesson d-flex">
-			<a href=${previousLesson.url}
+			<a href=${previousLesson.url}>
 			<div class="previous-lesson-icon">
 				<svg
 				class="lexicon-icon lexicon-icon-order-arrow-left"
