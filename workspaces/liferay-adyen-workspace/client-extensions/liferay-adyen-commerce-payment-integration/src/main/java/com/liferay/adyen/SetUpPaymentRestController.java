@@ -133,11 +133,11 @@ public class SetUpPaymentRestController extends BaseRestController {
 			).put(
 				"errorMessages", errorMessages
 			).put(
-				"redirectURL", redirectURL
-			).put(
 				"payload", payload
 			).put(
 				"paymentStatus", paymentStatus
+			).put(
+				"redirectURL", redirectURL
 			).put(
 				"transactionCode", transactionCode
 			).toString(),
