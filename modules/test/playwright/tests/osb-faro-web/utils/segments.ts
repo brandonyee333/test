@@ -22,3 +22,8 @@ export async function saveSegment(page: Page) {
 	await page.getByRole('button', {name: 'Save Segment'}).click();
 	await page.waitForSelector('div.alert-success', { state: 'visible' });
 }
+
+export async function editSegment(page: Page) {
+	await page.getByRole('link', {name: 'Edit Segment'}).click();
+	await page.waitForSelector('text=Edit Individuals Segment');
+}
