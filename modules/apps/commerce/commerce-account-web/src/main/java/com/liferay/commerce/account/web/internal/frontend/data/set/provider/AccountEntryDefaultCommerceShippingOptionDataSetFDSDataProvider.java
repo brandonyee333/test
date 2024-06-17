@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "fds.data.provider.key=" + CommerceAccountFDSNames.ACCOUNT_ENTRY_DEFAULT_SHIPPING_OPTIONS,
 	service = FDSDataProvider.class
 )
-public class AccountEntryDefaultCommerceShippingOptionDataSetDataProvider
+public class AccountEntryDefaultCommerceShippingOptionDataSetFDSDataProvider
 	implements FDSDataProvider<ShippingOption> {
 
 	@Override

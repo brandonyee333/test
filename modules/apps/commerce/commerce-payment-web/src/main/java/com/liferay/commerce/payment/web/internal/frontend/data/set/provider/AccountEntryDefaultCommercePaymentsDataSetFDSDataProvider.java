@@ -40,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "fds.data.provider.key=" + CommercePaymentMethodGroupRelFDSNames.ACCOUNT_ENTRY_DEFAULT_PAYMENTS,
 	service = FDSDataProvider.class
 )
-public class AccountEntryDefaultCommercePaymentsDataSetDataProvider
+public class AccountEntryDefaultCommercePaymentsDataSetFDSDataProvider
 	implements FDSDataProvider<PaymentMethod> {
 
 	@Override
