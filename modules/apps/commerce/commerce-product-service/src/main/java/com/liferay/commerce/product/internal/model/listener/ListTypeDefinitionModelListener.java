@@ -19,7 +19,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Andrea Sbarra
  */
 @Component(service = ModelListener.class)
-public class ListTypeDefinitionListener
+public class ListTypeDefinitionModelListener
 	extends BaseModelListener<ListTypeDefinition> {
 
 	@Override

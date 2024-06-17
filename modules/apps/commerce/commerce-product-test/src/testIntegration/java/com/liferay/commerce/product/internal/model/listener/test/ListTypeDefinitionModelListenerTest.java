@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
  * @author Andrea Sbarra
  */
 @RunWith(Arquillian.class)
-public class ListTypeDefinitionListenerTest {
+public class ListTypeDefinitionModelListenerTest {
 
 	@ClassRule
 	@Rule
