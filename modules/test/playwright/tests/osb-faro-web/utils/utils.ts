@@ -9,3 +9,8 @@ export async function changeTimeFilterTo(page: Page, timeFilter: string) {
 	await page.getByRole('menuitem', {name: timeFilter}).click();
 }
 
+export async function searchTerm(page: Page, searchTerm: string) {
+	await page.getByPlaceholder('Search').click();
+	await page.getByPlaceholder('Search').fill(searchTerm);
+	await page.getByPlaceholder('Search').press('Enter');
+}
