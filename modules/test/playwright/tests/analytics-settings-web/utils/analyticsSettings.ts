@@ -3,13 +3,13 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {expect} from '@playwright/test';
+import {Page, expect} from '@playwright/test';
 
 import {liferayConfig} from '../../../liferay.config';
 import {createChannel} from '../../osb-faro-web/utils/channel';
 import {createDataSource} from '../../osb-faro-web/utils/dataSource';
 
-export async function acceptsCookiesBanner(page) {
+export async function acceptsCookiesBanner(page: Page) {
 	const cookiesBannerButton = page.getByRole('button', {name: 'Accept All'});
 
 	if (await cookiesBannerButton.isVisible()) {
@@ -17,7 +17,7 @@ export async function acceptsCookiesBanner(page) {
 	}
 }
 
-export async function connectToAnalyticsCloud(page) {
+export async function connectToAnalyticsCloud(page: Page) {
 	await page.getByPlaceholder('Paste token here.').click();
 
 	await page.keyboard.press('Control+V');
@@ -25,7 +25,7 @@ export async function connectToAnalyticsCloud(page) {
 	await page.getByRole('button', {name: 'Connect'}).click();
 }
 
-export async function disconnectFromAnalyticsCloud(page) {
+export async function disconnectFromAnalyticsCloud(page: Page) {
 	const disconnectButton = page.getByRole('button', {name: 'Disconnect'});
 
 	if (await disconnectButton.isVisible()) {
@@ -41,7 +41,7 @@ export async function disconnectFromAnalyticsCloud(page) {
 	}
 }
 
-export async function goToAnalyticsCloudInstanceSettings(page) {
+export async function goToAnalyticsCloudInstanceSettings(page: Page) {
 	await page.goto(liferayConfig.environment.baseUrl);
 
 	await page.getByLabel('Open Applications MenuCtrl+Alt+A').click();
@@ -57,7 +57,7 @@ export async function goToAnalyticsCloudInstanceSettings(page) {
 	});
 }
 
-export async function navigateToSitePage(page, siteName, pageName) {
+export async function navigateToSitePage(page: Page, pageName: string, siteName?: string) {
 	const pageNameURL = pageName.replace(/ /g, '-').toLowerCase();
 
 	if (siteName) {
@@ -75,7 +75,7 @@ export async function navigateToSitePage(page, siteName, pageName) {
 	}
 }
 
-export async function syncAllContacts(page) {
+export async function syncAllContacts(page: Page) {
 	const wizard = page.locator('[data-testid="VIEW_WIZARD_MODE"]');
 
 	await expect(wizard.getByText('Sync People')).toBeVisible({
@@ -93,7 +93,7 @@ export async function syncAllContacts(page) {
 	await page.getByRole('button', {exact: true, name: 'Next'}).click();
 }
 
-export async function syncAnalyticsCloud(apiHelpers, page, propertyName) {
+export async function syncAnalyticsCloud(apiHelpers, page: Page, propertyName: string) {
 	await createChannel(apiHelpers, propertyName);
 
 	await createDataSource(page);
@@ -113,7 +113,7 @@ export async function syncAnalyticsCloud(apiHelpers, page, propertyName) {
 	await page.getByRole('button', {name: 'Finish'}).click();
 }
 
-export async function syncSite(page, propertyName) {
+export async function syncSite(page: Page, propertyName: string) {
 	await expect(
 		page.getByRole('heading', {name: 'Property Assignment'})
 	).toBeVisible({

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {expect, mergeTests} from '@playwright/test';
+import {Page, expect, mergeTests} from '@playwright/test';
 
 import {apiHelpersTest} from '../../fixtures/apiHelpersTest';
 import {dataApiHelpersTest} from '../../fixtures/dataApiHelpersTest';
@@ -32,7 +32,7 @@ export const test = mergeTests(
 	loginTest()
 );
 
-async function changeCookiePreference(page, options) {
+async function changeCookiePreference(page: Page, options) {
 	const {enableCookieBanner, enableExplicitCookieConsentMode} = options || {};
 
 	await page.getByLabel('Open Applications MenuCtrl+Alt+A').click();
@@ -76,7 +76,7 @@ async function changeCookiePreference(page, options) {
 	await page.waitForTimeout(3000);
 }
 
-async function connectACToDXP(apiHelpers, page) {
+async function connectACToDXP(apiHelpers, page: Page) {
 	const propertyName = 'My Property - ' + getRandomString();
 
 	await createChannel(apiHelpers, propertyName);
@@ -104,7 +104,7 @@ async function connectACToDXP(apiHelpers, page) {
 	await page.getByRole('button', {name: 'Finish'}).click();
 }
 
-async function checkAnalyticsInstance(page) {
+async function checkAnalyticsInstance(page: Page) {
 	return await page.evaluate(() => {
 
 		// @ts-ignore

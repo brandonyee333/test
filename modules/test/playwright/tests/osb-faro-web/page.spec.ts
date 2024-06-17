@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {expect, mergeTests} from '@playwright/test';
+import {Page, expect, mergeTests} from '@playwright/test';
 
 import {apiHelpersTest} from '../../fixtures/apiHelpersTest';
 import {dataApiHelpersTest} from '../../fixtures/dataApiHelpersTest';
@@ -41,7 +41,7 @@ export const test = mergeTests(
 	loginTest()
 );
 
-const createSitePage = async function (apiHelpers, pageTitle) {
+const createSitePage = async function (apiHelpers, pageTitle: string) {
 	const company =
 		await apiHelpers.jsonWebServicesCompany.getCompanyByWebId(
 			'liferay.com'
@@ -64,7 +64,7 @@ const createSitePage = async function (apiHelpers, pageTitle) {
 	});
 };
 
-const goToWithReferrer = async function (page, referrer, url) {
+const goToWithReferrer = async function (page: Page, referrer: string, url: string) {
 	await page.goto(referrer);
 
 	await page.evaluate((url) => {
@@ -274,7 +274,7 @@ test('shows tracked pages in path analysis', async ({apiHelpers, page}) => {
 	});
 
 	await test.step('Go to My Page 1', async () => {
-		await navigateToSitePage(page, '', pageTitle1);
+		await navigateToSitePage(page, pageTitle1);
 		await page.waitForTimeout(10000);
 	});
 
