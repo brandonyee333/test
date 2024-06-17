@@ -81,6 +81,16 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						"class.name", objectDefinition.getClassName()
 					).build()),
 				_bundleContext.registerService(
+					NotificationTermEvaluator.class,
+					new SalesAgentNotificationTermEvaluator(
+						_accountEntryModelResourcePermission,
+						_commerceOrderLocalService, objectDefinition,
+						_permissionCheckerFactory, _roleLocalService,
+						_userLocalService),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"class.name", objectDefinition.getClassName()
+					).build()),
+				_bundleContext.registerService(
 					NotificationTermProvider.class,
 					new CommerceOrderAccountNotificationTermProvider(),
 					HashMapDictionaryBuilder.<String, Object>put(
@@ -89,16 +99,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				_bundleContext.registerService(
 					NotificationTermProvider.class,
 					new CommerceOrderAddressNotificationTermProvider(),
-					HashMapDictionaryBuilder.<String, Object>put(
-						"class.name", objectDefinition.getClassName()
-					).build()),
-				_bundleContext.registerService(
-					NotificationTermEvaluator.class,
-					new SalesAgentNotificationTermEvaluator(
-						_accountEntryModelResourcePermission,
-						_commerceOrderLocalService, objectDefinition,
-						_permissionCheckerFactory, _roleLocalService,
-						_userLocalService),
 					HashMapDictionaryBuilder.<String, Object>put(
 						"class.name", objectDefinition.getClassName()
 					).build()),
