@@ -118,9 +118,7 @@ public class BenchmarksTest {
 		ExecutorService executorService = new ThreadPoolExecutor(
 			threadCount, threadCount, 0, TimeUnit.SECONDS,
 			new LinkedBlockingDeque<>());
-
 		List<Future<Void>> futures = new ArrayList<>();
-
 		Statistics statistics = new Statistics(runCount);
 
 		for (int i = 0; i < runCount; i++) {
