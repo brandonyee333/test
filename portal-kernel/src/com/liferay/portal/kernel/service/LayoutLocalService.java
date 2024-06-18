@@ -35,11 +35,11 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import org.osgi.annotation.versioning.ProviderType;
 
@@ -614,9 +614,6 @@ public interface LayoutLocalService
 		String uuid, long groupId, boolean privateLayout);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<Layout> fetchLayouts(Set<Serializable> primaryKeys);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	/**
@@ -752,6 +749,9 @@ public interface LayoutLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Map<Long, List<Layout>> getLayoutChildLayouts(
 		List<Layout> parentLayouts);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Layout> getLayouts(Collection<Serializable> primaryKeys);
 
 	/**
 	 * Returns a range of all the layouts.
