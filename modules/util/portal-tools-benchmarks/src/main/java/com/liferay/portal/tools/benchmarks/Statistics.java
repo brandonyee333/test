@@ -76,7 +76,7 @@ public class Statistics {
 
 			System.out.println(
 				StringBundler.concat(
-					"\nTest step ", testStepName, "\n\tAverage time: ",
+					"\nTest step: ", testStepName, "\n\n\tAverage time: ",
 					String.format("%.2f", average),
 					" ms\n\tStandard deviation: ",
 					String.format("%.2f", Math.sqrt(variance)), 2,
