@@ -138,7 +138,7 @@ public class LanguageTag extends IncludeTag {
 		_useNamespace = true;
 	}
 
-	protected long getDisplayStyleGroupId() {
+	private long _getDisplayStyleGroupId() {
 		HttpServletRequest httpServletRequest = getRequest();
 
 		ThemeDisplay themeDisplay =
@@ -157,7 +157,7 @@ public class LanguageTag extends IncludeTag {
 		return themeDisplay.getScopeGroupId();
 	}
 
-	protected String getFormAction() {
+	private String _getFormAction() {
 		String formAction = _formAction;
 
 		if (Validator.isNotNull(formAction)) {
@@ -175,7 +175,6 @@ public class LanguageTag extends IncludeTag {
 		formAction = HttpComponentsUtil.setParameter(
 			formAction, "redirect",
 			PortalUtil.getCurrentURL(httpServletRequest));
-
 		formAction = HttpComponentsUtil.setParameter(
 			formAction, "groupId", themeDisplay.getScopeGroupId());
 
@@ -188,7 +187,7 @@ public class LanguageTag extends IncludeTag {
 			formAction, "layoutId", layout.getLayoutId());
 	}
 
-	protected List<LanguageEntry> getLanguageEntries(
+	private List<LanguageEntry> _getLanguageEntries(
 		Collection<Locale> locales, boolean displayCurrentLocale,
 		String formAction, String parameterName) {
 
@@ -255,7 +254,7 @@ public class LanguageTag extends IncludeTag {
 		return languageEntries;
 	}
 
-	protected Collection<Locale> getLocales() {
+	private Collection<Locale> _getLocales() {
 		if (ArrayUtil.isNotEmpty(_languageIds)) {
 			return Arrays.asList(LocaleUtil.fromLanguageIds(_languageIds));
 		}
@@ -269,7 +268,7 @@ public class LanguageTag extends IncludeTag {
 		return LanguageUtil.getAvailableLocales(themeDisplay.getSiteGroupId());
 	}
 
-	protected String getNamespacedName() {
+	private String _getNamespacedName() {
 		String name = _name;
 
 		if (!_useNamespace) {
@@ -302,11 +301,11 @@ public class LanguageTag extends IncludeTag {
 
 	@Override
 	protected int processStartTag() throws Exception {
-		String formAction = getFormAction();
-		String namespace = getNamespacedName();
+		String formAction = _getFormAction();
+		String namespace = _getNamespacedName();
 
-		List<LanguageEntry> languageEntries = getLanguageEntries(
-			getLocales(), _displayCurrentLocale, formAction, namespace);
+		List<LanguageEntry> languageEntries = _getLanguageEntries(
+			_getLocales(), _displayCurrentLocale, formAction, namespace);
 
 		if (!languageEntries.isEmpty()) {
 			JspWriter jspWriter = pageContext.getOut();
@@ -317,7 +316,7 @@ public class LanguageTag extends IncludeTag {
 					HashMapBuilder.<String, Object>put(
 						"formAction", formAction
 					).put(
-						"formName", getFormAction()
+						"formName", _getFormAction()
 					).put(
 						"languageId",
 						() -> {
@@ -336,7 +335,7 @@ public class LanguageTag extends IncludeTag {
 					).put(
 						"namespace", namespace
 					).build(),
-					_ddmTemplateKey, languageEntries, getDisplayStyleGroupId(),
+					_ddmTemplateKey, languageEntries, _getDisplayStyleGroupId(),
 					getRequest(),
 					(HttpServletResponse)pageContext.getResponse(), true));
 		}
