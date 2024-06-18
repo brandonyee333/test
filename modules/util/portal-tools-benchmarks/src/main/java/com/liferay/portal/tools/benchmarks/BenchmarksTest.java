@@ -88,7 +88,6 @@ public class BenchmarksTest {
 				testData[0], testData[1], _userPassword, 8080);
 
 		String[][] data = _loadData(
-			_createLoadDataSQL(),
 			resultSet -> new String[] {
 				resultSet.getString("emailAddress"),
 				resultSet.getString("hostname")
@@ -113,34 +112,6 @@ public class BenchmarksTest {
 			_runCount, _threadCount);
 
 		System.out.println("\nTest run finished");
-	}
-
-	private String _createLoadDataSQL() {
-		StringBundler sb = new StringBundler();
-
-		sb.append("select hostname, emailAddress from Company as company, ");
-		sb.append("VirtualHost as virtualHost, User_ as user where ");
-
-		if (!_excludedCompanies.isEmpty()) {
-			sb.append("company.webId not in (");
-
-			for (int i = 0; i < _excludedCompanies.size(); i++) {
-				sb.append("'");
-				sb.append(_excludedCompanies.get(i));
-				sb.append("'");
-
-				if (i < (_excludedCompanies.size() - 1)) {
-					sb.append(",");
-				}
-			}
-
-			sb.append(") and ");
-		}
-
-		sb.append("user.type_ = 1 and user.companyId = company.companyId and ");
-		sb.append("virtualHost.companyId = company.companyId;");
-
-		return sb.toString();
 	}
 
 	private void _executeBenchmarksTask(
@@ -182,10 +153,35 @@ public class BenchmarksTest {
 	}
 
 	private String[][] _loadData(
-			String loadDataSQL,
 			UnsafeFunction<ResultSet, String[], Exception>
 				loadDataUnsafeFunction)
 		throws Exception {
+
+		StringBundler sb = new StringBundler();
+
+		sb.append("select hostname, emailAddress from Company as company, ");
+		sb.append("VirtualHost as virtualHost, User_ as user where ");
+
+		if (!_excludedCompanies.isEmpty()) {
+			sb.append("company.webId not in (");
+
+			for (int i = 0; i < _excludedCompanies.size(); i++) {
+				sb.append("'");
+				sb.append(_excludedCompanies.get(i));
+				sb.append("'");
+
+				if (i < (_excludedCompanies.size() - 1)) {
+					sb.append(",");
+				}
+			}
+
+			sb.append(") and ");
+		}
+
+		sb.append("user.type_ = 1 and user.companyId = company.companyId and ");
+		sb.append("virtualHost.companyId = company.companyId;");
+
+		String loadDataSQL = sb.toString();
 
 		System.out.println("\nTest data load SQL : " + loadDataSQL);
 
