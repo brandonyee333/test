@@ -80,7 +80,7 @@ public class BenchmarksTest {
 		System.out.println(sb);
 	}
 
-	public void executeLoginBenchmarksTask() throws Exception {
+	public void execute() throws Exception {
 		System.out.println("Running Login test ...");
 
 		_executeBenchmarksTask(

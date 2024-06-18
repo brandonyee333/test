@@ -25,7 +25,7 @@ public class BenchmarksTestTest {
 	public void testLogin() throws Exception {
 		BenchmarksTest benchmarksTest = new BenchmarksTest();
 
-		benchmarksTest.executeLoginBenchmarksTask();
+		benchmarksTest.execute();
 	}
 
 }
