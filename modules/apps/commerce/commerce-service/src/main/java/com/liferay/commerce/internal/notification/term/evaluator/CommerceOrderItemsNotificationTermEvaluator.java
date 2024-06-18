@@ -207,13 +207,12 @@ public class CommerceOrderItemsNotificationTermEvaluator
 
 		ClassLoader classLoader = clazz.getClassLoader();
 
-		URL templateURL = classLoader.getResource(
-			"/META-INF/resources/notification/term/evaluator/dependencies" +
-				"/commerce_order_order_items.ftl");
+		URL url = classLoader.getResource(
+			"dependencies/commerce_order_order_items.ftl");
 
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_FTL,
-			new URLTemplateResource(templateURL.getPath(), templateURL), false);
+			new URLTemplateResource(url.getPath(), url), false);
 
 		_populateParameters(template, commerceOrder);
 
