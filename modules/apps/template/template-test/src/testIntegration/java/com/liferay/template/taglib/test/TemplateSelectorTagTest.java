@@ -96,14 +96,15 @@ public class TemplateSelectorTagTest {
 	public void testDoStartTagWithDisplayStyleGroupId() throws Exception {
 		TemplateSelectorTag templateSelectorTag = new TemplateSelectorTag();
 
-		MockHttpServletRequest mockHttpServletRequest =
-			_getMockHttpServletRequest();
-
 		templateSelectorTag.setClassName(TemplateEntry.class.getName());
 		templateSelectorTag.setDisplayStyle(
 			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
 				_ddmTemplate.getTemplateKey());
 		templateSelectorTag.setDisplayStyleGroupId(_group.getGroupId());
+
+		MockHttpServletRequest mockHttpServletRequest =
+			_getMockHttpServletRequest();
+
 		templateSelectorTag.setPageContext(
 			new MockPageContext(
 				null, mockHttpServletRequest, new MockHttpServletResponse()));
@@ -119,14 +120,15 @@ public class TemplateSelectorTagTest {
 	public void testDoStartTagWithDisplayStyleGroupKey() throws Exception {
 		TemplateSelectorTag templateSelectorTag = new TemplateSelectorTag();
 
-		MockHttpServletRequest mockHttpServletRequest =
-			_getMockHttpServletRequest();
-
 		templateSelectorTag.setClassName(TemplateEntry.class.getName());
 		templateSelectorTag.setDisplayStyle(
 			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
 				_ddmTemplate.getTemplateKey());
 		templateSelectorTag.setDisplayStyleGroupKey(_group.getGroupKey());
+
+		MockHttpServletRequest mockHttpServletRequest =
+			_getMockHttpServletRequest();
+
 		templateSelectorTag.setPageContext(
 			new MockPageContext(
 				null, mockHttpServletRequest, new MockHttpServletResponse()));
