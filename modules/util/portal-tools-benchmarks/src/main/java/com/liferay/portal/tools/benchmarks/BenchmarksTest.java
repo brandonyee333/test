@@ -5,7 +5,6 @@
 
 package com.liferay.portal.tools.benchmarks;
 
-import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
@@ -87,11 +86,7 @@ public class BenchmarksTest {
 			testData -> new LoginBenchmarksTask(
 				testData[0], testData[1], _userPassword, 8080);
 
-		String[][] data = _getData(
-			resultSet -> new String[] {
-				resultSet.getString("emailAddress"),
-				resultSet.getString("hostname")
-			});
+		String[][] data = _getData();
 
 		if (!_skipWarmUp) {
 			System.out.println("\nStart warming up data ...");
@@ -152,10 +147,7 @@ public class BenchmarksTest {
 		executorService.shutdown();
 	}
 
-	private String[][] _getData(
-			UnsafeFunction<ResultSet, String[], Exception> unsafeFunction)
-		throws Exception {
-
+	private String[][] _getData() throws Exception {
 		StringBundler sb = new StringBundler();
 
 		sb.append("select hostname, emailAddress from Company as company, ");
@@ -195,7 +187,11 @@ public class BenchmarksTest {
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
-				data.add(unsafeFunction.apply(resultSet));
+				data.add(
+					new String[] {
+						resultSet.getString("emailAddress"),
+						resultSet.getString("hostname")
+					});
 			}
 		}
 
