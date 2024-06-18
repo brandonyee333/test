@@ -124,13 +124,14 @@ public class BenchmarksTest {
 		Statistics statistics = new Statistics(runCount);
 
 		for (int i = 0; i < runCount; i++) {
-			String[] testData = data[indexFunction.apply(i)];
+			int finalI = i;
 
 			futures.add(
 				executorService.submit(
 					() -> {
 						BenchmarksTask benchmarksTask =
-							benchmarksTaskFunction.apply(testData);
+							benchmarksTaskFunction.apply(
+								data[indexFunction.apply(finalI)]);
 
 						statistics.addResults(benchmarksTask.execute());
 
