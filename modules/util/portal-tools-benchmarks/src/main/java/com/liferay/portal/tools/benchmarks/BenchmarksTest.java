@@ -150,11 +150,11 @@ public class BenchmarksTest {
 	private String[][] _getData() throws Exception {
 		StringBundler sb = new StringBundler();
 
-		sb.append("select hostname, emailAddress from Company as company, ");
-		sb.append("VirtualHost as virtualHost, User_ as user where ");
+		sb.append("select hostname, emailAddress from Company, VirtualHost, ");
+		sb.append("User_ where ");
 
 		if (!_excludedCompanyWebIds.isEmpty()) {
-			sb.append("company.webId not in (");
+			sb.append("Company.webId not in (");
 
 			for (int i = 0; i < _excludedCompanyWebIds.size(); i++) {
 				sb.append("'");
@@ -162,15 +162,15 @@ public class BenchmarksTest {
 				sb.append("'");
 
 				if (i < (_excludedCompanyWebIds.size() - 1)) {
-					sb.append(",");
+					sb.append(", ");
 				}
 			}
 
 			sb.append(") and ");
 		}
 
-		sb.append("user.type_ = 1 and user.companyId = company.companyId and ");
-		sb.append("virtualHost.companyId = company.companyId;");
+		sb.append("User_.type_ = 1 and User_.companyId = Company.companyId and ");
+		sb.append("VirtualHost.companyId = Company.companyId;");
 
 		String sql = sb.toString();
 
