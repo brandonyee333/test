@@ -21,7 +21,7 @@ import java.util.List;
 public class ThreadLocalCookieStore implements CookieStore {
 
 	public static SafeCloseable withSafeCloseable() {
-		_cookieStoreThreadLocal.set(_createInMemoryCookieStore());
+		_cookieStoreThreadLocal.set(_createCookieStore());
 
 		return _cookieStoreThreadLocal::remove;
 	}
@@ -68,10 +68,9 @@ public class ThreadLocalCookieStore implements CookieStore {
 		return cookieStore.removeAll();
 	}
 
-	private static CookieStore _createInMemoryCookieStore() {
+	private static CookieStore _createCookieStore() {
 
-		// Create an instance of JDK's package-private InMemoryCookieStore
-		// through creating CookieManager
+		// See java.net.InMemoryCookieStore
 
 		CookieManager cookieManager = new CookieManager();
 
@@ -80,6 +79,6 @@ public class ThreadLocalCookieStore implements CookieStore {
 
 	private static final ThreadLocal<CookieStore> _cookieStoreThreadLocal =
 		CentralizedThreadLocal.withInitial(
-			ThreadLocalCookieStore::_createInMemoryCookieStore);
+			ThreadLocalCookieStore::_createCookieStore);
 
 }
