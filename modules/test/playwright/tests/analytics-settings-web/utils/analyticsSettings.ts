@@ -150,7 +150,7 @@ export async function syncSite(page: Page, propertyName: string) {
 
 	await page.getByRole('tab', {name: 'Sites'}).click();
 
-	await page.waitForTimeout(3000);
+	await page.waitForSelector('div[aria-modal="true"] tbody');
 
 	const checkbox = await page.$(
 		'.modal table.table tbody tr:first-child input[type="checkbox"]'
