@@ -93,9 +93,7 @@ public class CommerceOrderItemsNotificationTermEvaluator
 
 		Class<?> clazz = getClass();
 
-		ClassLoader classLoader = clazz.getClassLoader();
-
-		URL url = classLoader.getResource(
+		URL url = clazz.getResource(
 			"dependencies/commerce_order_order_items.ftl");
 
 		Template template = TemplateManagerUtil.getTemplate(
