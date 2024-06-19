@@ -44,7 +44,7 @@ import reactor.core.publisher.Mono;
  */
 @RequestMapping("/notifications")
 @RestController
-public class WebhookRestController extends BaseRestController {
+public class NotificationsRestController extends BaseRestController {
 
 	@PostMapping
 	public ResponseEntity<String> post(
@@ -327,7 +327,7 @@ public class WebhookRestController extends BaseRestController {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		WebhookRestController.class);
+		NotificationsRestController.class);
 
 	@Autowired
 	private LiferayOAuth2AccessTokenManager _liferayOAuth2AccessTokenManager;
