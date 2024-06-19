@@ -17,7 +17,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -28,7 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,8 +34,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import reactor.core.publisher.Mono;
 
 /**
  * @author Crescenzo Rega
@@ -64,7 +60,7 @@ public class NotificationsRestController extends BaseRestController {
 				String externalReferenceCode = _getExternalReferenceCode(
 					notificationRequestItem);
 
-				JSONObject adyenWebhookJSONObject = _get(
+				JSONObject adyenWebhookJSONObject = get(
 					_liferayOAuth2AccessTokenManager.getAuthorization(
 						"liferay-adyen-payment-integration-oauth-application-" +
 							"headless-server"),
@@ -148,25 +144,6 @@ public class NotificationsRestController extends BaseRestController {
 		return new ResponseEntity<>(HttpStatus.ACCEPTED);
 	}
 
-	private JSONObject _get(String authorization, String path) {
-		Mono<String> response = getWebClient(
-		).get(
-		).uri(
-			uriBuilder -> uriBuilder.path(
-				path
-			).build()
-		).header(
-			HttpHeaders.AUTHORIZATION, authorization
-		).retrieve(
-		).bodyToMono(
-			String.class
-		);
-
-		response.subscribe();
-
-		return new JSONObject(Objects.requireNonNull(response.block()));
-	}
-
 	private String _getExternalReferenceCode(
 		NotificationRequestItem notificationRequestItem) {
 
@@ -192,7 +169,7 @@ public class NotificationsRestController extends BaseRestController {
 	private String _getPaymentId(
 		NotificationRequestItem notificationRequestItem) {
 
-		JSONObject paymentsJSONObject = _get(
+		JSONObject paymentsJSONObject = get(
 			_liferayOAuth2AccessTokenManager.getAuthorization(
 				"liferay-adyen-payment-integration-oauth-application-" +
 					"headless-server"),
@@ -254,28 +231,11 @@ public class NotificationsRestController extends BaseRestController {
 		return false;
 	}
 
-	private void _patch(String authorization, String body, String path) {
-		getWebClient(
-		).patch(
-		).uri(
-			uriBuilder -> uriBuilder.path(
-				path
-			).build()
-		).bodyValue(
-			body
-		).header(
-			HttpHeaders.AUTHORIZATION, authorization
-		).retrieve(
-		).bodyToMono(
-			String.class
-		).subscribe();
-	}
-
 	private void _updatePayment(
 		String errorMessages, String json, String paymentId,
 		String paymentStatus) {
 
-		_patch(
+		patch(
 			_liferayOAuth2AccessTokenManager.getAuthorization(
 				"liferay-adyen-payment-integration-oauth-application-" +
 					"headless-server"),
