@@ -85,7 +85,7 @@ public class NotificationsRestController extends BaseRestController {
 					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 				}
 
-				String commercePaymentEntryId = null;
+				String paymentId = null;
 				String errorMessages = null;
 				String paymentStatus = "4";
 
@@ -94,7 +94,7 @@ public class NotificationsRestController extends BaseRestController {
 						"CAPTURE")) {
 
 					if (notificationRequestItem.isSuccess()) {
-						commercePaymentEntryId =
+						paymentId =
 							notificationRequestItem.getMerchantReference();
 						paymentStatus = "0";
 					}
@@ -117,7 +117,7 @@ public class NotificationsRestController extends BaseRestController {
 							notificationRequestItem.getEventCode(), "REFUND")) {
 
 					if (notificationRequestItem.isSuccess()) {
-						commercePaymentEntryId = _getCommercePaymentEntryId(
+						paymentId = _getPaymentId(
 							notificationRequestItem);
 						paymentStatus = "17";
 					}
@@ -126,10 +126,9 @@ public class NotificationsRestController extends BaseRestController {
 					}
 				}
 
-				if (StringUtils.isNotBlank(commercePaymentEntryId)) {
+				if (StringUtils.isNotBlank(paymentId)) {
 					_updatePayment(
-						commercePaymentEntryId, errorMessages, json,
-						paymentStatus);
+						errorMessages, json, paymentId, paymentStatus);
 
 					delete(
 						_liferayOAuth2AccessTokenManager.getAuthorization(
@@ -203,7 +202,7 @@ public class NotificationsRestController extends BaseRestController {
 		return new JSONObject(Objects.requireNonNull(response.block()));
 	}
 
-	private String _getCommercePaymentEntryId(
+	private String _getPaymentId(
 		NotificationRequestItem notificationRequestItem) {
 
 		JSONObject paymentsJSONObject = _get(
@@ -278,7 +277,7 @@ public class NotificationsRestController extends BaseRestController {
 	}
 
 	private void _updatePayment(
-		String commercePaymentEntryId, String errorMessages, String json,
+		String errorMessages, String json, String paymentId,
 		String paymentStatus) {
 
 		_patch(
@@ -299,7 +298,7 @@ public class NotificationsRestController extends BaseRestController {
 				"paymentStatus", paymentStatus
 			).toString(),
 			"/o/headless-commerce-admin-payment/v1.0/payments/" +
-				commercePaymentEntryId);
+				paymentId);
 	}
 
 	private static final Log _log = LogFactory.getLog(
