@@ -24,12 +24,10 @@ import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,7 +63,7 @@ public class RefundRestController extends BaseRestController {
 			List<NotificationRequestItem> notificationItems =
 				notificationRequest.getNotificationItems();
 
-			if (CollectionUtils.isEmpty(notificationItems)) {
+			if (notificationItems.isEmpty()) {
 				return new ResponseEntity<>(
 					new JSONObject(
 					).put(
@@ -117,7 +115,7 @@ public class RefundRestController extends BaseRestController {
 				(PaymentRefundResponse.StatusEnum.RECEIVED.compareTo(
 					paymentRefundResponse.getStatus()) == 0)) {
 
-				_post(
+				post(
 					"Bearer " + jwt.getTokenValue(),
 					new JSONObject(
 					).put(
@@ -155,23 +153,6 @@ public class RefundRestController extends BaseRestController {
 				"paymentStatus", paymentStatus
 			).toString(),
 			HttpStatus.OK);
-	}
-
-	private void _post(String authorization, String body, String path) {
-		getWebClient(
-		).post(
-		).uri(
-			uriBuilder -> uriBuilder.path(
-				path
-			).build()
-		).bodyValue(
-			body
-		).header(
-			HttpHeaders.AUTHORIZATION, authorization
-		).retrieve(
-		).bodyToMono(
-			String.class
-		).subscribe();
 	}
 
 	private static final Log _log = LogFactory.getLog(

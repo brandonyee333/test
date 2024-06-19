@@ -21,7 +21,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.json.JSONObject;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -102,7 +101,7 @@ public class SetUpPaymentRestController extends BaseRestController {
 				payload = createCheckoutSessionResponse.toJson();
 				paymentStatus = "18";
 
-				_post(
+				post(
 					"Bearer " + jwt.getTokenValue(),
 					new JSONObject(
 					).put(
@@ -140,23 +139,6 @@ public class SetUpPaymentRestController extends BaseRestController {
 				"transactionCode", transactionCode
 			).toString(),
 			HttpStatus.OK);
-	}
-
-	private void _post(String authorization, String body, String path) {
-		getWebClient(
-		).post(
-		).uri(
-			uriBuilder -> uriBuilder.path(
-				path
-			).build()
-		).bodyValue(
-			body
-		).header(
-			HttpHeaders.AUTHORIZATION, authorization
-		).retrieve(
-		).bodyToMono(
-			String.class
-		).subscribe();
 	}
 
 	private static final Log _log = LogFactory.getLog(

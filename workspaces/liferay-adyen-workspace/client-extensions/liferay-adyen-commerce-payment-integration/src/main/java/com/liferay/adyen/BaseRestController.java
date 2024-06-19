@@ -51,6 +51,23 @@ public abstract class BaseRestController {
 		}
 	}
 
+	protected void post(String authorization, String body, String path) {
+		getWebClient(
+		).post(
+		).uri(
+			uriBuilder -> uriBuilder.path(
+				path
+			).build()
+		).bodyValue(
+			body
+		).header(
+			HttpHeaders.AUTHORIZATION, authorization
+		).retrieve(
+		).bodyToMono(
+			String.class
+		).subscribe();
+	}
+
 	@Value("${com.liferay.lxc.dxp.mainDomain}")
 	protected String lxcDXPMainDomain;
 
