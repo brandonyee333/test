@@ -326,14 +326,14 @@ public class ObjectEntryDisplayContextImpl
 				_objectDefinitionLocalService.getObjectDefinition(
 					objectDefinition2.getRootObjectDefinitionId());
 
-			if (ObjectEntryServiceUtil.hasPortletResourcePermission(
+			if (ObjectEntryServiceUtil.hasModelResourcePermission(
+					rootObjectDefinition.getObjectDefinitionId(),
+					_objectEntry.getId(), ActionKeys.UPDATE) ||
+				ObjectEntryServiceUtil.hasPortletResourcePermission(
 					objectScopeProvider.getGroupId(
 						_objectRequestHelper.getRequest()),
 					rootObjectDefinition.getObjectDefinitionId(),
-					ObjectActionKeys.ADD_OBJECT_ENTRY) ||
-				ObjectEntryServiceUtil.hasModelResourcePermission(
-					rootObjectDefinition.getObjectDefinitionId(),
-					_objectEntry.getId(), ActionKeys.UPDATE)) {
+					ObjectActionKeys.ADD_OBJECT_ENTRY)) {
 
 				creationMenu.addDropdownItem(
 					_getCreateNewRelatedModelDropdownItem(
