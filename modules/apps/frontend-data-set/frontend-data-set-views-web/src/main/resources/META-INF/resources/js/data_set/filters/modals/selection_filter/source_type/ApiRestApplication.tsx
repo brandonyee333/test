@@ -104,9 +104,8 @@ function ApiRestApplication({
 		if (!restApplication) {
 			return;
 		}
-
 		const response = await fetch(`/o${restApplication}/openapi.json`);
-
+	
 		if (!response.ok) {
 			openDefaultFailureToast();
 
@@ -341,7 +340,8 @@ function ApiRestApplication({
 				}
 			});
 		}
-	}, [selectedRESTApplication, selectedRESTSchema]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedRESTSchema]);
 
 	const ItemKeyDropdownMenu = ({
 		itemKeys: initialItemKeys,
