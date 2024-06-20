@@ -379,8 +379,6 @@ public class ExportImportDisplayPagesTest {
 			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
 				_group2.getGroupId(), layoutPageTemplateEntryKey);
 
-		Assert.assertNotNull(layoutPageTemplateEntry2);
-
 		Assert.assertEquals(
 			classNameId, layoutPageTemplateEntry2.getClassNameId());
 		Assert.assertEquals(
