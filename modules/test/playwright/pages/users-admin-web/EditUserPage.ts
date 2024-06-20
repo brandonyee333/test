@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {Locator, Page} from '@playwright/test';
+import {FrameLocator, Locator, Page} from '@playwright/test';
 
 import {searchTableRowByValue} from './UsersAndOrganizationsPage';
 
@@ -27,6 +27,12 @@ export class EditUserPage {
 		strictEqual?: boolean
 	) => Promise<{column: Locator; row: Locator}>;
 	readonly webDAVPasswordLabel: Locator;
+	readonly screenNameInput: Locator;
+	readonly emailAddressInput: Locator;
+	readonly saveButton: Locator;
+	readonly passwordConfirmationFrame: FrameLocator;
+	readonly yourPasswordInput: Locator;
+	readonly confirmButton: Locator;
 
 	constructor(page: Page) {
 		this.generateWebDAVPasswordButton = page.getByTestId(
@@ -85,5 +91,19 @@ export class EditUserPage {
 				strictEqual
 			);
 		};
+		this.screenNameInput = page.getByLabel("Screen Name");
+		this.emailAddressInput = page.getByLabel("Email Address");
+		this.saveButton = page.getByRole('button', {name: 'Save'});
+		this.passwordConfirmationFrame = page.frameLocator('iframe[title="Confirm Password"]')
+		this.yourPasswordInput = this.passwordConfirmationFrame.getByLabel('Your Password')
+		this.confirmButton = this.passwordConfirmationFrame.getByRole('button', {name: 'Confirm'});
+	}
+
+	async updateUser(screenName: string, emailAddress: string) {
+		await this.screenNameInput.fill(screenName);
+		await this.emailAddressInput.fill(emailAddress);
+		await this.saveButton.click();
+		await this.yourPasswordInput.fill('test');
+		await this.confirmButton.click();
 	}
 }

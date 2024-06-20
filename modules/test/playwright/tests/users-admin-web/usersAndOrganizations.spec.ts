@@ -6,11 +6,14 @@
 import {expect, mergeTests} from '@playwright/test';
 
 import {apiHelpersTest} from '../../fixtures/apiHelpersTest';
+import {dataApiHelpersTest} from "../../fixtures/dataApiHelpersTest";
 import {loginTest} from '../../fixtures/loginTest';
 import {usersAndOrganizationsPagesTest} from '../../fixtures/usersAndOrganizationsPagesTest';
+import {getRandomInt} from "../../utils/getRandomInt";
 
 export const test = mergeTests(
 	apiHelpersTest,
+	dataApiHelpersTest,
 	loginTest(),
 	usersAndOrganizationsPagesTest
 );
@@ -98,3 +101,25 @@ test('LPD-15423 check WebDAV password is generated', async ({
 
 	await expect(editUserPage.webDAVPasswordLabel).toBeVisible();
 });
+
+test('LPD-28908 update user information', async ({
+	apiHelpers,
+	editUserPage,
+	page,
+	usersAndOrganizationsPage
+}) => {
+
+	const user = await apiHelpers.headlessAdminUser.postUserAccount();
+
+	await page.goto('/');
+
+	await usersAndOrganizationsPage.goToUsers();
+	await (await usersAndOrganizationsPage.usersTableRowLink(user.alternateName)).click();
+	const randomNumber = getRandomInt();
+	await editUserPage.updateUser('User' + randomNumber, 'User' + randomNumber + '@liferay.com');
+
+	await expect(
+		page.getByText('Success:Your request completed successfully.')
+	).toBeVisible();
+
+})
