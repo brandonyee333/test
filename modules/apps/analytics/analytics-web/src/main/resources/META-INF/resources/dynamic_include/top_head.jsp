@@ -23,22 +23,6 @@
 	var analyticsFeatureFlagEnabled =
 		<%= FeatureFlagManagerUtil.isEnabled("LPD-10588") %>;
 
-	function <portlet:namespace />getAnalyticsSDKVersion() {
-		switch (
-			'<%= GetterUtil.getString(PropsUtil.get(PropsKeys.ANALYTICS_CLOUD_CLIENT_JS_VERSION)) %>'
-		) {
-			case 'DEV': {
-				return 'https://analytics-js-dev-cdn.liferay.com';
-			}
-			case 'INTERNAL': {
-				return 'https://analytics-js-internal-cdn.liferay.com';
-			}
-			default: {
-				return 'https://analytics-js-cdn.liferay.com';
-			}
-		}
-	}
-
 	var cookieManagers = {
 		'cookie.onetrust': {
 			checkConsent: () => {
@@ -116,6 +100,22 @@
 			},
 		},
 	};
+
+	function <portlet:namespace />getAnalyticsSDKVersion() {
+		switch (
+			'<%= GetterUtil.getString(PropsUtil.get(PropsKeys.ANALYTICS_CLOUD_CLIENT_JS_VERSION)) %>'
+		) {
+			case 'DEV': {
+				return 'https://analytics-js-dev-cdn.liferay.com';
+			}
+			case 'INTERNAL': {
+				return 'https://analytics-js-internal-cdn.liferay.com';
+			}
+			default: {
+				return 'https://analytics-js-cdn.liferay.com';
+			}
+		}
+	}
 </aui:script>
 
 <aui:script id="liferayAnalyticsScript" senna="permanent" type="text/javascript">
