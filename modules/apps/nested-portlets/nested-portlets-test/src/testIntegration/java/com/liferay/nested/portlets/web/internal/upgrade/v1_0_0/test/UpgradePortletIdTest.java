@@ -205,7 +205,6 @@ public class UpgradePortletIdTest {
 				AssetPublisherPortletKeys.ASSET_PUBLISHER,
 				RandomTestUtil.randomString()));
 		typeSettingsUnicodeProperties.put("column-2", portletId);
-
 		typeSettingsUnicodeProperties.put("layout-template-id", "2_columns_ii");
 		typeSettingsUnicodeProperties.put(
 			"nested-column-ids",
