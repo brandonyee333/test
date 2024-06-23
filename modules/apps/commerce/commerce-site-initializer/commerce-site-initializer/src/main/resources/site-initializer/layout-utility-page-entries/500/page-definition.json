@@ -222,7 +222,7 @@
 												"fragmentImage": {
 													"url": {
 														"value_i18n": {
-															"en_US": "[$DOCUMENT_URL:/site-initializer/documents/group/Commerce/500-color.svg$]"
+															"en_US": "[$DOCUMENT_URL:/site-initializer/documents/group/Commerce/500_color.svg$]"
 														}
 													}
 												},
