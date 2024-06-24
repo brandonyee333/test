@@ -765,9 +765,8 @@ public class SubscriptionSender implements Serializable {
 	protected void notifyRuntimeSubscriber(InternetAddress to, Locale locale)
 		throws Exception {
 
-		String emailAddress = to.getAddress();
-
 		long companyId = CompanyThreadLocal.getNonsystemCompanyId();
+		String emailAddress = to.getAddress();
 
 		User user = UserLocalServiceUtil.fetchUserByEmailAddress(
 			companyId, emailAddress);

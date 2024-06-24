@@ -51,16 +51,16 @@ public class CTMessageCompanyIdUpgradeProcessTest {
 
 	@Test
 	public void testUpgrade() throws Exception {
-		long companyId = TestPropsValues.getCompanyId();
-
 		long ctMessageId = RandomTestUtil.nextLong();
-
-		long ctCollectionId = RandomTestUtil.nextLong();
 
 		CTMessage ctMessage = _ctMessageLocalService.createCTMessage(
 			ctMessageId);
 
+		long companyId = TestPropsValues.getCompanyId();
+
 		ctMessage.setCompanyId(companyId);
+
+		long ctCollectionId = RandomTestUtil.nextLong();
 
 		ctMessage.setCtCollectionId(ctCollectionId);
 
