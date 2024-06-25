@@ -271,7 +271,7 @@ public class LayoutSEOLinkManagerPageTitleTest {
 				groupConfigurationTemporarySwapper =
 					new GroupConfigurationTemporarySwapper(
 						_group.getGroupId(),
-						_PID_LAYOUT_SEO_GENERAL_GROUP_CONFIGURATION,
+						_PID,
 						HashMapDictionaryBuilder.<String, Object>put(
 							"includeInstanceName", true
 						).put(
@@ -287,8 +287,6 @@ public class LayoutSEOLinkManagerPageTitleTest {
 				_layoutSEOLinkManager.getFullPageTitle(
 					_layout, null, null, null, null, companyName,
 					LocaleUtil.getDefault()));
-
-			// Asserts instance and site share the same name
 
 			Assert.assertEquals(
 				StringBundler.concat(
@@ -307,7 +305,7 @@ public class LayoutSEOLinkManagerPageTitleTest {
 				groupConfigurationTemporarySwapper =
 					new GroupConfigurationTemporarySwapper(
 						_group.getGroupId(),
-						_PID_LAYOUT_SEO_GENERAL_GROUP_CONFIGURATION,
+						_PID,
 						HashMapDictionaryBuilder.<String, Object>put(
 							"includeInstanceName", true
 						).put(
@@ -332,7 +330,7 @@ public class LayoutSEOLinkManagerPageTitleTest {
 				groupConfigurationTemporarySwapper =
 					new GroupConfigurationTemporarySwapper(
 						_group.getGroupId(),
-						_PID_LAYOUT_SEO_GENERAL_GROUP_CONFIGURATION,
+						_PID,
 						HashMapDictionaryBuilder.<String, Object>put(
 							"includeInstanceName", false
 						).put(
@@ -356,7 +354,7 @@ public class LayoutSEOLinkManagerPageTitleTest {
 				groupConfigurationTemporarySwapper =
 					new GroupConfigurationTemporarySwapper(
 						_group.getGroupId(),
-						_PID_LAYOUT_SEO_GENERAL_GROUP_CONFIGURATION,
+						_PID,
 						HashMapDictionaryBuilder.<String, Object>put(
 							"includeInstanceName", false
 						).put(
@@ -482,7 +480,7 @@ public class LayoutSEOLinkManagerPageTitleTest {
 		_layout.setFriendlyURL("/manage");
 	}
 
-	private static final String _PID_LAYOUT_SEO_GENERAL_GROUP_CONFIGURATION =
+	private static final String _PID =
 		"com.liferay.layout.seo.internal.configuration." +
 			"LayoutSEOGeneralGroupConfiguration";
 
