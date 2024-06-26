@@ -51,6 +51,7 @@ const HISTORY = {
 	NEXT: 'next_step',
 	PREV: 'prev_step',
 };
+
 const LANGUAGE = {
 	ADD: 'language_add',
 	CHANGE: 'language_change',
