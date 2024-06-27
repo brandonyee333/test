@@ -130,7 +130,7 @@ public class SegmentsEntryUpgradeProcessTest {
 	}
 
 	@Test
-	public void testUpgradeProcess() throws Exception {
+	public void testUpgrade() throws Exception {
 		DynamicQuery dynamicQuery = _segmentsEntryLocalService.dynamicQuery();
 
 		Criterion criterion = RestrictionsFactoryUtil.eq("active", true);

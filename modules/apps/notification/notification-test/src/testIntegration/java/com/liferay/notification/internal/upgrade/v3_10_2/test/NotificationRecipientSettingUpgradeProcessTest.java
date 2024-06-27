@@ -63,7 +63,7 @@ public class NotificationRecipientSettingUpgradeProcessTest {
 	public static final TestRule testRule = new LiferayIntegrationTestRule();
 
 	@Test
-	public void testUpgradeProcess() throws Exception {
+	public void testUpgrade() throws Exception {
 		NotificationTemplate notificationTemplate =
 			_notificationTemplateLocalService.addNotificationTemplate(
 				NotificationTemplateUtil.createNotificationContext(

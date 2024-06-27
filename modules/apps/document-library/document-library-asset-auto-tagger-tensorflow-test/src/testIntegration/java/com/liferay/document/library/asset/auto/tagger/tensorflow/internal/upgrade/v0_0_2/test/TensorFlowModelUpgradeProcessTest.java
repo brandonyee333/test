@@ -48,7 +48,7 @@ public class TensorFlowModelUpgradeProcessTest {
 	}
 
 	@Test
-	public void testUpgradeProcessTensorFlowDisabled() throws Exception {
+	public void testUpgradeTensorFlowDisabled() throws Exception {
 		_withTensorflowConfiguration(
 			false,
 			() -> {
@@ -59,7 +59,7 @@ public class TensorFlowModelUpgradeProcessTest {
 	}
 
 	@Test
-	public void testUpgradeProcessTensorFlowEnabled() throws Exception {
+	public void testUpgradeTensorFlowEnabled() throws Exception {
 		_withTensorflowConfiguration(
 			true,
 			() -> {
