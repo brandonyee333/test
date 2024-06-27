@@ -100,7 +100,7 @@ public class InputTagTest {
 
 		String originalLanguageIds = portletPreferences.getValue(
 			PropsKeys.LOCALES,
-			com.liferay.petra.string.StringUtil.merge(
+			StringUtil.merge(
 				LocaleUtil.toLanguageIds(
 					LanguageUtil.getCompanyAvailableLocales(
 						_group.getCompanyId())),
@@ -121,7 +121,7 @@ public class InputTagTest {
 				_group.getCompanyId(),
 				UnicodePropertiesBuilder.put(
 					PropsKeys.LOCALES,
-					com.liferay.petra.string.StringUtil.merge(
+					StringUtil.merge(
 						ArrayUtil.remove(
 							StringUtil.split(
 								originalLanguageIds, StringPool.COMMA),
@@ -165,7 +165,7 @@ public class InputTagTest {
 
 		String languageIds = portletPreferences.getValue(
 			PropsKeys.LOCALES,
-			com.liferay.petra.string.StringUtil.merge(
+			StringUtil.merge(
 				LocaleUtil.toLanguageIds(
 					LanguageUtil.getCompanyAvailableLocales(
 						_group.getCompanyId())),
@@ -178,7 +178,7 @@ public class InputTagTest {
 
 		typeSettingsUnicodeProperties.setProperty(
 			PropsKeys.LOCALES,
-			com.liferay.petra.string.StringUtil.merge(
+			StringUtil.merge(
 				ArrayUtil.remove(
 					StringUtil.split(languageIds, StringPool.COMMA),
 					languageId),
