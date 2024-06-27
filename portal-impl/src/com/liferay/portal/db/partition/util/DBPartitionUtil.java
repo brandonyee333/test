@@ -478,7 +478,7 @@ public class DBPartitionUtil {
 				}
 			}
 
-			_reloadCompanyIdQuartzJobs(fromCompanyId, toCompanyId);
+			_reloadQuartzJobs(fromCompanyId, toCompanyId);
 
 			connection.commit();
 		}
@@ -1124,8 +1124,7 @@ public class DBPartitionUtil {
 		_deleteData(tableName, fromPartitionName, statement, whereClause);
 	}
 
-	private static void _reloadCompanyIdQuartzJobs(
-			long fromCompanyId, long toCompanyId)
+	private static void _reloadQuartzJobs(long fromCompanyId, long toCompanyId)
 		throws PortalException {
 
 		for (SchedulerResponse schedulerResponse :
