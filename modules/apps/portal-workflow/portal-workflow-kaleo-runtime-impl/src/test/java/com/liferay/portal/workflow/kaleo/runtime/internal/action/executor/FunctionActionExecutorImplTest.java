@@ -49,13 +49,14 @@ public class FunctionActionExecutorImplTest {
 
 	@Test
 	public void testDoExecute() throws Exception {
+
+		// State node
+
 		FunctionActionExecutorImpl functionActionExecutorImpl = Mockito.spy(
 			new FunctionActionExecutorImpl());
 
 		ReflectionTestUtil.setFieldValue(
 			functionActionExecutorImpl, "_jsonFactory", _mockJSONFactory());
-
-		// State node
 
 		ExecutionContext executionContext = _mockExecutionContext(0);
 
@@ -100,7 +101,7 @@ public class FunctionActionExecutorImplTest {
 		Assert.assertFalse(payloadjsonobject.has("transitionURL"));
 		Assert.assertFalse(payloadjsonobject.has("workflowTaskId"));
 
-		// Task Node
+		// Task node
 
 		long workflowTaskId = RandomTestUtil.randomLong();
 
