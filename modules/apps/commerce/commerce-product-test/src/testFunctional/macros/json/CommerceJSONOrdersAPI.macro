@@ -722,6 +722,7 @@ definition {
 			var userEmail = "test";
 		}
 
+		var userPassword = PropsUtil.get("default.admin.password");
 		var fieldsList = ListUtil.toString(${fieldsList});
 
 		echo("Fieldlist: ${fieldsList}");

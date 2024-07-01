@@ -1138,6 +1138,7 @@ definition {
 		Variables.assertDefined(parameterList = ${objectName});
 
 		var portalURL = JSONCompany.getPortalURL();
+		var userPassword = PropsUtil.get("default.admin.password");
 		var objectId = JSONObject.getObjectId(objectName = ${objectName});
 		var userPassword = PropsUtil.get("default.admin.password");
 
@@ -1541,6 +1542,7 @@ definition {
 		Variables.assertDefined(parameterList = ${objectName});
 
 		var portalURL = JSONCompany.getPortalURL();
+		var userPassword = PropsUtil.get("default.admin.password");
 		var objectId = JSONObject.getObjectId(objectName = ${objectName});
 		var objectDefinition = JSONObject.getObjectDefinition(objectName = ${objectName});
 
