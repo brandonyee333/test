@@ -344,15 +344,15 @@ public class CompanyLocalServiceDBPartitionTest
 	public void testCopyDBPartitionCompany() throws Exception {
 		Company company = CompanyTestUtil.addCompany();
 
+		Configuration configuration = _assertCreateFactoryConfiguration(
+			company.getCompanyId());
+
 		String name = RandomTestUtil.randomString();
 		String virtualHostname = StringUtil.toLowerCase(
 			RandomTestUtil.randomString());
 		String webId = RandomTestUtil.randomString();
 
 		Company copiedCompany = null;
-
-		Configuration configuration = _assertCreateFactoryConfiguration(
-			company.getCompanyId());
 
 		try {
 			copiedCompany = companyLocalService.copyDBPartitionCompany(
@@ -623,12 +623,12 @@ public class CompanyLocalServiceDBPartitionTest
 
 			String configurationId = resultSet.getString("configurationId");
 
+			Assert.assertTrue(_persistenceManager.exists(configurationId));
+
 			String dictionary = resultSet.getString("dictionary");
 
 			Assert.assertTrue(dictionary.contains(String.valueOf(companyId)));
 			Assert.assertFalse(dictionary.contains(configuration.getPid()));
-
-			Assert.assertTrue(_persistenceManager.exists(configurationId));
 		}
 	}
 
