@@ -330,11 +330,10 @@ public class WelcomeSiteInitializerTest {
 			Layout layout, LayoutStructure layoutStructure)
 		throws Exception {
 
-		DTOConverter<LayoutStructure, PageDefinition>
-			pageDefinitionDTOConverter =
-				(DTOConverter<LayoutStructure, PageDefinition>)
-					_dtoConverterRegistry.getDTOConverter(
-						LayoutStructure.class.getName());
+		DTOConverter<LayoutStructure, PageDefinition> dtoConverter =
+			(DTOConverter<LayoutStructure, PageDefinition>)
+				_dtoConverterRegistry.getDTOConverter(
+					LayoutStructure.class.getName());
 
 		DTOConverterContext dtoConverterContext =
 			new DefaultDTOConverterContext(
@@ -343,8 +342,7 @@ public class WelcomeSiteInitializerTest {
 
 		dtoConverterContext.setAttribute("layout", layout);
 
-		return pageDefinitionDTOConverter.toDTO(
-			dtoConverterContext, layoutStructure);
+		return dtoConverter.toDTO(dtoConverterContext, layoutStructure);
 	}
 
 	private String _removeUUIDs(String s) {
