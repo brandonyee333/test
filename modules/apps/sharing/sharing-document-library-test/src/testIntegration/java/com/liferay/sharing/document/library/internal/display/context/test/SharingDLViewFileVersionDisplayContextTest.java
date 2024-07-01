@@ -107,7 +107,6 @@ public class SharingDLViewFileVersionDisplayContextTest {
 				_portal.getClassNameId(FileEntry.class),
 				fileEntry.getFileEntryId());
 
-		Assert.assertEquals("link", dropdownItem.get("icon"));
 		Assert.assertEquals(
 			StringBundler.concat(
 				"javascript:Liferay.Sharing.copyLink('/documents",
@@ -115,6 +114,7 @@ public class SharingDLViewFileVersionDisplayContextTest {
 				StringUtil.toLowerCase(_group.getGroupKey()), "/",
 				friendlyURLEntry.getUrlTitle(), "')"),
 			dropdownItem.get("href"));
+		Assert.assertEquals("link", dropdownItem.get("icon"));
 		Assert.assertEquals(
 			LanguageUtil.get(LocaleUtil.getDefault(), "copy-link"),
 			dropdownItem.get("label"));
@@ -124,7 +124,6 @@ public class SharingDLViewFileVersionDisplayContextTest {
 	private void _assertShareDropdownItem(
 		DropdownItem dropdownItem, FileEntry fileEntry) {
 
-		Assert.assertEquals("users", dropdownItem.get("icon"));
 		Assert.assertEquals(
 			StringBundler.concat(
 				"javascript:Liferay.Sharing.share(",
@@ -132,6 +131,7 @@ public class SharingDLViewFileVersionDisplayContextTest {
 				fileEntry.getFileEntryId(), ", 'Share\\x20",
 				fileEntry.getTitle(), "')"),
 			dropdownItem.get("href"));
+		Assert.assertEquals("users", dropdownItem.get("icon"));
 		Assert.assertEquals(
 			LanguageUtil.get(LocaleUtil.getDefault(), "invite-to-collaborate"),
 			dropdownItem.get("label"));
@@ -141,6 +141,16 @@ public class SharingDLViewFileVersionDisplayContextTest {
 	private List<DropdownItem> _getDropdownItems(
 			FileEntry fileEntry, boolean signedIn)
 		throws PortalException {
+
+		HttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
+		mockHttpServletRequest.setAttribute(
+			JavaConstants.JAVAX_PORTLET_REQUEST,
+			new MockLiferayPortletRenderRequest());
+		mockHttpServletRequest.setAttribute(
+			JavaConstants.JAVAX_PORTLET_RESPONSE,
+			new MockLiferayPortletRenderResponse());
 
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
@@ -153,15 +163,6 @@ public class SharingDLViewFileVersionDisplayContextTest {
 		themeDisplay.setSignedIn(signedIn);
 		themeDisplay.setSiteGroupId(_group.getGroupId());
 
-		HttpServletRequest mockHttpServletRequest =
-			new MockHttpServletRequest();
-
-		mockHttpServletRequest.setAttribute(
-			JavaConstants.JAVAX_PORTLET_REQUEST,
-			new MockLiferayPortletRenderRequest());
-		mockHttpServletRequest.setAttribute(
-			JavaConstants.JAVAX_PORTLET_RESPONSE,
-			new MockLiferayPortletRenderResponse());
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, themeDisplay);
 
