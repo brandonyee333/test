@@ -214,6 +214,7 @@ public class AnalyticsReportsProductNavigationControlMenuEntryTest {
 	public void testIsShowWithResourcePermission() throws Exception {
 		PortletPreferences portletPreferences = new PortletPreferencesImpl();
 
+		portletPreferences.setNew(true);
 		portletPreferences.setPortletPreferencesId(RandomTestUtil.nextLong());
 		portletPreferences.setCompanyId(TestPropsValues.getCompanyId());
 		portletPreferences.setOwnerId(TestPropsValues.getUserId());
@@ -224,7 +225,6 @@ public class AnalyticsReportsProductNavigationControlMenuEntryTest {
 
 		portletPreferences.setPortletId(
 			"com_liferay_blogs_web_portlet_BlogsPortlet_INSTANCE_rqst");
-		portletPreferences.setNew(true);
 
 		_portletPreferences =
 			_portletPreferencesLocalService.addPortletPreferences(
