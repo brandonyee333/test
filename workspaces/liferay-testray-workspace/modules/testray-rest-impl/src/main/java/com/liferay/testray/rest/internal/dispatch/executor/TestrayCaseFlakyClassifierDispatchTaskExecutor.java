@@ -44,13 +44,13 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = {
-		"dispatch.task.executor.name=testray-flaky-tracker",
+		"dispatch.task.executor.name=testray-case-flaky-classifier",
 		"dispatch.task.executor.overlapping=false",
-		"dispatch.task.executor.type=testray-flaky-tracker"
+		"dispatch.task.executor.type=testray-case-flaky-classifier"
 	},
 	service = DispatchTaskExecutor.class
 )
-public class TestrayFlakyTrackerDispatchTaskExecutor
+public class TestrayCaseFlakyClassifierDispatchTaskExecutor
 	extends BaseDispatchTaskExecutor {
 
 	@Override
@@ -96,7 +96,7 @@ public class TestrayFlakyTrackerDispatchTaskExecutor
 
 	@Override
 	public String getName() {
-		return "testray-flaky-tracker";
+		return "testray-case-flaky-classifier";
 	}
 
 	private void _process(
@@ -172,7 +172,7 @@ public class TestrayFlakyTrackerDispatchTaskExecutor
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		TestrayFlakyTrackerDispatchTaskExecutor.class);
+		TestrayCaseFlakyClassifierDispatchTaskExecutor.class);
 
 	private final OffsetDateTime _currentDateTime = OffsetDateTime.now(
 		ZoneOffset.UTC
