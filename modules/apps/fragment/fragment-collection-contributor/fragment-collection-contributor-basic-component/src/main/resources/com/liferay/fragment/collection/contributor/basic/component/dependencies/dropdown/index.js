@@ -170,6 +170,11 @@ function main() {
 	}
 	else {
 		toggle.addEventListener('click', handleToggleClick);
+		toggle.addEventListener('keydown', (event) => {
+			if (event.key === 'Enter') {
+				handleToggleClick(event);
+			}
+		});
 		document.body.addEventListener('click', handleBodyClick);
 	}
 }
