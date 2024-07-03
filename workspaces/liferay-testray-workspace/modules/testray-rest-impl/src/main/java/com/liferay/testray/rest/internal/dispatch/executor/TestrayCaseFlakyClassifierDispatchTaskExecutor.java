@@ -167,7 +167,7 @@ public class TestrayCaseFlakyClassifierDispatchTaskExecutor
 		}
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Flaky tests updated: " + flaky);
+			_log.info("Updated " + flaky + " tests");
 		}
 	}
 
