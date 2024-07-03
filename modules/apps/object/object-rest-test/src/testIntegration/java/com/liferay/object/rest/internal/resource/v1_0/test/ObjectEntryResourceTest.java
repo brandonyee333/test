@@ -5563,11 +5563,9 @@ public class ObjectEntryResourceTest {
 				_OBJECT_FIELD_NAME_DATE,
 				_dateFormat.format(RandomTestUtil.nextDate())
 			).build());
-
 		_objectEntry2 = ObjectEntryTestUtil.addObjectEntry(
 			_objectDefinition2, _OBJECT_FIELD_NAME_TEXT,
 			RandomTestUtil.randomString());
-
 		_objectRelationship1 = _addObjectRelationshipAndRelateObjectEntries(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 

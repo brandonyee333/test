@@ -71,25 +71,29 @@ public class VulcanPropertyFilter
 	private boolean _hasUnsafeSupplierValue(PropertyWriter propertyWriter)
 		throws Exception {
 
-		if (propertyWriter instanceof MapProperty) {
-			MapProperty mapProperty = (MapProperty)propertyWriter;
-
-			Object value = mapProperty.getValue();
-
-			if (value instanceof UnsafeSupplier) {
-				UnsafeSupplier<?, Exception> unsafeSupplier =
-					(UnsafeSupplier<?, Exception>)value;
-
-				Object unsafeSupplierValue = unsafeSupplier.get();
-
-				if (unsafeSupplierValue == null) {
-					return false;
-				}
-
-				mapProperty.setValue(
-					(UnsafeSupplier<?, Exception>)() -> unsafeSupplierValue);
-			}
+		if (!(propertyWriter instanceof MapProperty)) {
+			return true;
 		}
+
+		MapProperty mapProperty = (MapProperty)propertyWriter;
+
+		Object value = mapProperty.getValue();
+
+		if (!(value instanceof UnsafeSupplier)) {
+			return true;
+		}
+
+		UnsafeSupplier<?, Exception> unsafeSupplier =
+			(UnsafeSupplier<?, Exception>)value;
+
+		Object unsafeSupplierValue = unsafeSupplier.get();
+
+		if (unsafeSupplierValue == null) {
+			return false;
+		}
+
+		mapProperty.setValue(
+			(UnsafeSupplier<?, Exception>)() -> unsafeSupplierValue);
 
 		return true;
 	}
