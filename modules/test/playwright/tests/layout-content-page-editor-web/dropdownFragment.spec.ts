@@ -72,14 +72,7 @@ test('Check dropdown menu is displayed correctly in all resolutions', async ({
 			fieldLabel: 'CSS Classes',
 			fragmentId: dropdownId,
 			tab: 'Advanced',
-			value: 'd-flex',
-		});
-
-		await pageEditorPage.changeFragmentConfiguration({
-			fieldLabel: 'CSS Classes',
-			fragmentId: dropdownId,
-			tab: 'Advanced',
-			value: 'justify-content-end',
+			value: ['d-flex', 'justify-content-end'],
 		});
 	});
 

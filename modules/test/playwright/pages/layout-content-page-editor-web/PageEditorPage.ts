@@ -165,7 +165,7 @@ export class PageEditorPage {
 		fragmentId: string;
 		isDesktop?: boolean;
 		tab: ConfigurationTab;
-		value?: string | boolean;
+		value?: boolean | string | string[];
 		valueFromStylebook?: boolean;
 	}) {
 		await this.selectFragment(fragmentId, isDesktop);
@@ -207,7 +207,16 @@ export class PageEditorPage {
 					return;
 				}
 
-				await field.fill(value as string);
+				if (Array.isArray(value)) {
+					for (let i = 0; i < value?.length; i++) {
+						await field.fill(value[i] as string);
+
+						await field.blur();
+					}
+				}
+				else {
+					await field.fill(value as string);
+				}
 			}
 			else if (type === 'SELECT') {
 				await field.selectOption(value as string);
