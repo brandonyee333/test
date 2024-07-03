@@ -403,14 +403,12 @@ public class TestrayCaseResultResourceImpl
 					contextUser.getRoleIds(),
 					_roleLocalService.getRole(
 						contextUser.getCompanyId(), "Testray Administrator"
-					).getRoleId()
-				) &&
+					).getRoleId()) &&
 				!ArrayUtil.contains(
 					contextUser.getRoleIds(),
 					_roleLocalService.getRole(
 						contextUser.getCompanyId(), "Testray Lead"
-					).getRoleId()
-				)) {
+					).getRoleId())) {
 
 				return null;
 			}
