@@ -49,12 +49,12 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 
 		new AssetListEntryCreateDateComparator();
 		new AssetTagCountComparator();
+		new CommercePriceEntryUOMCreateDateComparator();
+		new CommercePriceListCreateDateComparator();
+		new CommercePriceListDisplayDateComparator();
+		new CommercePriceListPriorityComparator();
 		new CommercePricingClassCreateDateComparator();
 		new CommerceTierPriceEntryMinQuantityComparator();
-		new CommercePriceListPriorityComparator();
-		new CommercePriceListDisplayDateComparator();
-		new CommercePriceListCreateDateComparator();
-		new CommercePriceEntryUOMCreateDateComparator();
 
 		PortletDisplayTemplateManager.DISPLAY_STYLE_PREFIX;
 		PortletDisplayTemplateManager.ENTRIES;

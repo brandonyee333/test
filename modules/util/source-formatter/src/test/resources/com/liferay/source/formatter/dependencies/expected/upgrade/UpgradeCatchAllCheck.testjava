@@ -63,12 +63,12 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 
 		AssetListEntryCreateDateComparator.getInstance(false);
 		AssetTagCountComparator.getInstance(false);
+		CommercePriceEntryUOMCreateDateComparator.getInstance(false);
+		CommercePriceListCreateDateComparator.getInstance(false);
+		CommercePriceListDisplayDateComparator.getInstance(false);
+		CommercePriceListPriorityComparator.getInstance(false);
 		CommercePricingClassCreateDateComparator.getInstance(false);
 		CommerceTierPriceEntryMinQuantityComparator.getInstance(false);
-		CommercePriceListPriorityComparator.getInstance(false);
-		CommercePriceListDisplayDateComparator.getInstance(false);
-		CommercePriceListCreateDateComparator.getInstance(false);
-		CommercePriceEntryUOMCreateDateComparator.getInstance(false);
 
 		PortletDisplayTemplateConstants.DISPLAY_STYLE_PREFIX;
 		PortletDisplayTemplateConstants.ENTRIES;
