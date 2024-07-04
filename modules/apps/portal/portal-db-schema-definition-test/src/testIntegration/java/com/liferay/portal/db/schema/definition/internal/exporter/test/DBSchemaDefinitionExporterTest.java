@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.AssumeTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.test.log.LogCapture;
@@ -72,6 +73,7 @@ public class DBSchemaDefinitionExporterTest {
 	@After
 	public void tearDown() throws Exception {
 		Files.deleteIfExists(ConfigurationTestUtil.getConfigurationPath(_PID));
+
 		FileUtil.deltree(_folder);
 	}
 
@@ -90,16 +92,15 @@ public class DBSchemaDefinitionExporterTest {
 				new File(_folder, "tables.sql"),
 				new File(_folder, "indexes.sql"));
 
-			Assert.assertTrue(
-				!Files.exists(
-					ConfigurationTestUtil.getConfigurationPath(_PID)));
+			Assert.assertFalse(
+				Files.exists(ConfigurationTestUtil.getConfigurationPath(_PID)));
+			Assert.assertNull(
+				_configurationAdmin.listConfigurations(
+					"(service.pid=" + _PID + ")"));
 			Assert.assertNull(
 				ReflectionTestUtil.invoke(
 					_persistenceManager, "_getDictionary",
 					new Class<?>[] {String.class}, _PID));
-			Assert.assertNull(
-				_configurationAdmin.listConfigurations(
-					"(service.pid=" + _PID + ")"));
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
@@ -133,9 +134,11 @@ public class DBSchemaDefinitionExporterTest {
 				_COPY_DB_SCHEMA_NAME);
 
 			DatabaseTestUtil.importFile(tablesSQLFile, copyDataSource);
-			DatabaseTestUtil.importFile(indexesSQLFile, copyDataSource);
 
 			_assertTables(copyDataSource);
+
+			DatabaseTestUtil.importFile(indexesSQLFile, copyDataSource);
+
 			_assertIndexes(copyDataSource);
 		}
 		finally {
@@ -148,10 +151,10 @@ public class DBSchemaDefinitionExporterTest {
 	}
 
 	private void _assertIndexes(DataSource copyDataSource) throws Exception {
-		List<String> indexColumnNames = DatabaseTestUtil.getIndexColumnNames(
-			InfrastructureUtil.getDataSource());
 		List<String> copyIndexColumnNames =
 			DatabaseTestUtil.getIndexColumnNames(copyDataSource);
+		List<String> indexColumnNames = DatabaseTestUtil.getIndexColumnNames(
+			InfrastructureUtil.getDataSource());
 
 		Assert.assertEquals(
 			StringUtils.difference(
@@ -165,10 +168,10 @@ public class DBSchemaDefinitionExporterTest {
 	}
 
 	private void _assertTables(DataSource copyDataSource) throws Exception {
-		List<String> tableColumnNames = DatabaseTestUtil.getTableColumnNames(
-			InfrastructureUtil.getDataSource());
 		List<String> copyTableColumnNames =
 			DatabaseTestUtil.getTableColumnNames(copyDataSource);
+		List<String> tableColumnNames = DatabaseTestUtil.getTableColumnNames(
+			InfrastructureUtil.getDataSource());
 
 		Assert.assertEquals(
 			StringUtils.difference(
@@ -181,7 +184,8 @@ public class DBSchemaDefinitionExporterTest {
 		}
 	}
 
-	private static final String _COPY_DB_SCHEMA_NAME = "testcopyschema";
+	private static final String _COPY_DB_SCHEMA_NAME =
+		RandomTestUtil.randomString();
 
 	private static final String _PID =
 		"com.liferay.portal.db.schema.definition.internal.configuration." +
