@@ -38,11 +38,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class LiferayOAuth2ClientConfigurationExtraTest {
 
 	@Test
-	public void testExtraClientRegistrationsFound() {
+	public void testExtraClientRegistrations() {
 		InMemoryClientRegistrationRepository
 			inMemoryClientRegistrationRepository =
 				(InMemoryClientRegistrationRepository)
 					_clientRegistrationRepository;
+
+		Assert.assertNotNull(
+			inMemoryClientRegistrationRepository.findByRegistrationId("extra"));
 
 		List<ClientRegistration> clientRegistrations = new ArrayList<>();
 
@@ -56,19 +59,17 @@ public class LiferayOAuth2ClientConfigurationExtraTest {
 				(InMemoryReactiveClientRegistrationRepository)
 					_reactiveClientRegistrationRepository;
 
+		Assert.assertNotNull(
+			inMemoryReactiveClientRegistrationRepository.findByRegistrationId(
+				"extra"
+			).block());
+
 		clientRegistrations = new ArrayList<>();
 
 		inMemoryClientRegistrationRepository.forEach(clientRegistrations::add);
 
 		Assert.assertEquals(
 			clientRegistrations.toString(), 3, clientRegistrations.size());
-
-		Assert.assertNotNull(
-			inMemoryClientRegistrationRepository.findByRegistrationId("extra"));
-		Assert.assertNotNull(
-			inMemoryReactiveClientRegistrationRepository.findByRegistrationId(
-				"extra"
-			).block());
 	}
 
 	@Autowired
