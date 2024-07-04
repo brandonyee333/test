@@ -15,7 +15,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.tools.DBUpgrader;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portal.verify.VerifyException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -95,9 +94,7 @@ public class UpgradeRecorder {
 
 		messages.put(message, occurrences);
 
-		if (!_verifyProcessError &&
-			message.contains(VerifyException.class.getName())) {
-
+		if (!_verifyProcessError && loggerName.contains("verify")) {
 			_verifyProcessError = true;
 		}
 	}
