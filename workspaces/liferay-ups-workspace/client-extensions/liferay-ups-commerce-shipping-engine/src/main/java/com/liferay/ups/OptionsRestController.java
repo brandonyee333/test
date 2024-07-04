@@ -286,35 +286,33 @@ public class OptionsRestController extends BaseRestController {
 						)
 					)
 				)
+			).put(
+				"Shipper",
+				new JSONObject(
 				).put(
-					"Shipper",
+					"Address",
 					new JSONObject(
 					).put(
-						"Address",
-						new JSONObject(
+						"AddressLine",
+						new JSONArray(
 						).put(
-							"AddressLine",
-							new JSONArray(
-							).put(
-								typeSettingsJSONObject.getString(
-									"shipperAddressLine1")
-							).put(
-								typeSettingsJSONObject.getString(
-									"shipperAddressLine2")
-							).put(
-								typeSettingsJSONObject.getString(
-									"shipperAddressLine3")
-							)
-						).put(
-							"CountryCode",
 							typeSettingsJSONObject.getString(
-								"shipperCountryCode")
+								"shipperAddressLine1")
 						).put(
-							"PostalCode",
 							typeSettingsJSONObject.getString(
-								"shipperPostalCode")
+								"shipperAddressLine2")
+						).put(
+							typeSettingsJSONObject.getString(
+								"shipperAddressLine3")
 						)
+					).put(
+						"CountryCode",
+						typeSettingsJSONObject.getString("shipperCountryCode")
+					).put(
+						"PostalCode",
+						typeSettingsJSONObject.getString("shipperPostalCode")
 					)
+				)
 			)
 		).toString();
 
