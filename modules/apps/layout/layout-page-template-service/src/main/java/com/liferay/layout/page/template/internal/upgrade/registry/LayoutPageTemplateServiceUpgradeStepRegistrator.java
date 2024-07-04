@@ -210,8 +210,8 @@ public class LayoutPageTemplateServiceUpgradeStepRegistrator
 			UpgradeProcessFactory.runSQL(
 				StringBundler.concat(
 					"update LayoutPageTemplateStructureRel set data_ = ",
-					"REPLACE(data_, '", _OLD_CLASS_NAME, "' , '",
-					_NEW_CLASS_NAME,
+					"REPLACE(data_, '", "com.liferay.object.internal.info.collection.provider.ObjectEntrySingleFormVariationInfoCollectionProvider", "' , '",
+					"com.liferay.object.web.internal.info.collection.provider.ObjectEntrySingleFormVariationInfoCollectionProvider",
 					"') where data_ is not null and data_ != ''")));
 
 		registry.register(
@@ -246,14 +246,6 @@ public class LayoutPageTemplateServiceUpgradeStepRegistrator
 
 			});
 	}
-
-	private static final String _NEW_CLASS_NAME =
-		"com.liferay.object.web.internal.info.collection.provider." +
-			"ObjectEntrySingleFormVariationInfoCollectionProvider";
-
-	private static final String _OLD_CLASS_NAME =
-		"com.liferay.object.internal.info.collection.provider." +
-			"ObjectEntrySingleFormVariationInfoCollectionProvider";
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
