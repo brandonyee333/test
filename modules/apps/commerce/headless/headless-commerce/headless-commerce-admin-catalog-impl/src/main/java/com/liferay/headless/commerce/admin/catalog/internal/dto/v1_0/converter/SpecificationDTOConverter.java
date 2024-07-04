@@ -52,7 +52,6 @@ public class SpecificationDTOConverter
 				setKey(cpSpecificationOption::getKey);
 				setListTypeDefinitionId(
 					cpSpecificationOption::getListTypeDefinitionId);
-
 				setOptionCategory(
 					() -> {
 						CPOptionCategory cpOptionCategory =
