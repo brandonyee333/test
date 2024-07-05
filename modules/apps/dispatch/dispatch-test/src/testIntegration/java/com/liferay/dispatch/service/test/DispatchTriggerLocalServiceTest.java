@@ -238,8 +238,8 @@ public class DispatchTriggerLocalServiceTest {
 				originalEntityCache);
 		}
 
-		// Verify that the cache invalidation is not invoked one-by-one for each
-		// DispatchLog entry deletion
+		// Verify that the cache was not invalidated individually for each
+		// dispatch log deleted
 
 		Assert.assertEquals(0, mockEntityCache.getRemoveCount());
 
@@ -247,7 +247,6 @@ public class DispatchTriggerLocalServiceTest {
 			0,
 			_dispatchLogLocalService.getDispatchLogsCount(
 				dispatchTrigger.getDispatchTriggerId()));
-
 		Assert.assertEquals(
 			0,
 			_dispatchTriggerLocalService.getUserDispatchTriggersCount(
