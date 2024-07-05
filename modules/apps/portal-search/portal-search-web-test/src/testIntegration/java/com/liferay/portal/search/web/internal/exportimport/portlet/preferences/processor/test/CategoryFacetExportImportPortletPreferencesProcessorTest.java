@@ -12,6 +12,7 @@ import com.liferay.portal.search.web.internal.category.facet.constants.CategoryF
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -28,11 +29,10 @@ public class CategoryFacetExportImportPortletPreferencesProcessorTest
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Override
-	protected ExportImportPortletPreferencesProcessor
-		getExportImportPortletPreferencesProcessor() {
-
-		return _exportImportPortletPreferencesProcessor;
+	@Before
+	public void setUp() {
+		exportImportPortletPreferencesProcessor =
+			_exportImportPortletPreferencesProcessor;
 	}
 
 	@Inject(
