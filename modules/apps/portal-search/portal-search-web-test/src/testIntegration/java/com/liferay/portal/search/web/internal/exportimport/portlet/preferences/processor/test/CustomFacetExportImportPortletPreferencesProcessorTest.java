@@ -21,7 +21,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class CustomFacetExportImportPortletPreferencesProcessorTest
-	extends BaseExportImportPortletPreferencesProcessorTestCase {
+	extends BaseSearchWidgetsExportImportPortletPreferencesProcessorTestCase {
 
 	@ClassRule
 	@Rule
