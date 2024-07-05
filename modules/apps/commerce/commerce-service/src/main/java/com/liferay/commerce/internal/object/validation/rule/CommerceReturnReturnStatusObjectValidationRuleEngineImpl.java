@@ -61,7 +61,7 @@ public class CommerceReturnReturnStatusObjectValidationRuleEngineImpl
 
 	@Override
 	public String getKey() {
-		return "javaDelegate#commerceReturnReturnStatus";
+		return "javaDelegate#CommerceReturn#returnStatus";
 	}
 
 	@Override

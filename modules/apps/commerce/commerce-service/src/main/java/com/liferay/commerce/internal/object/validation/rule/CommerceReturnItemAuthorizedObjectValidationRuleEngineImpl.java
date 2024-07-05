@@ -58,7 +58,7 @@ public class CommerceReturnItemAuthorizedObjectValidationRuleEngineImpl
 
 	@Override
 	public String getKey() {
-		return "javaDelegate#commerceReturnItemAuthorized";
+		return "javaDelegate#CommerceReturnItem#authorized";
 	}
 
 	@Override

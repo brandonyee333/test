@@ -78,7 +78,7 @@ public class CommerceReturnAccountEntryIdObjectValidationRuleEngineImpl
 
 	@Override
 	public String getKey() {
-		return "javaDelegate#commerceReturnAccountEntryId";
+		return "javaDelegate#CommerceReturn#accountEntryId";
 	}
 
 	@Override

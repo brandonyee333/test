@@ -109,7 +109,7 @@ public class CommerceReturnItemCommerceOrderItemIdObjectValidationRuleEngineImpl
 
 	@Override
 	public String getKey() {
-		return "javaDelegate#commerceReturnItemCommerceOrderItemId";
+		return "javaDelegate#CommerceReturnItem#commerceOrderItemId";
 	}
 
 	@Override

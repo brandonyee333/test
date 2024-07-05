@@ -58,7 +58,7 @@ public class CommerceReturnItemReceivedObjectValidationRuleEngineImpl
 
 	@Override
 	public String getKey() {
-		return "javaDelegate#commerceReturnItemReceived";
+		return "javaDelegate#CommerceReturnItem#received";
 	}
 
 	@Override

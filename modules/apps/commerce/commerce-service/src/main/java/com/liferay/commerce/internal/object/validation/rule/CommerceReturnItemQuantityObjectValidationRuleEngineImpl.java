@@ -83,7 +83,7 @@ public class CommerceReturnItemQuantityObjectValidationRuleEngineImpl
 
 	@Override
 	public String getKey() {
-		return "javaDelegate#commerceReturnItemQuantity";
+		return "javaDelegate#CommerceReturnItem#quantity";
 	}
 
 	@Override
