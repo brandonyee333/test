@@ -5,80 +5,63 @@
 
 package com.liferay.commerce.internal.object.validation.rule;
 
-import com.liferay.object.scope.ObjectDefinitionScoped;
 import com.liferay.object.validation.rule.ObjectValidationRuleEngine;
-import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.MapUtil;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Crescenzo Rega
  */
 @Component(service = ObjectValidationRuleEngine.class)
 public class CommerceReturnCommerceOrderIdObjectValidationRuleEngineImpl
-	implements ObjectDefinitionScoped, ObjectValidationRuleEngine {
+	extends BaseObjectValidationRuleEngineImpl {
 
 	@Override
-	public Map<String, Object> execute(
-		Map<String, Object> inputObjects, String script) {
-
-		return HashMapBuilder.<String, Object>put(
-			"validationCriteriaMet",
-			() -> {
-				Map<String, Object> originalEntryDTO =
-					(Map<String, Object>)inputObjects.get("originalEntryDTO");
-
-				if (MapUtil.isEmpty(originalEntryDTO)) {
-					return true;
-				}
-
-				Map<String, Object> entryDTO =
-					(Map<String, Object>)inputObjects.get("entryDTO");
-
-				Map<String, Object> properties =
-					(Map<String, Object>)entryDTO.get("properties");
-
-				long commerceOrderId = GetterUtil.getLong(
-					properties.get(
-						"r_commerceOrderToCommerceReturns_commerceOrderId"));
-
-				Map<String, Object> originalProperties =
-					(Map<String, Object>)originalEntryDTO.get("properties");
-
-				long originalCommerceOrderId = GetterUtil.getLong(
-					originalProperties.get(
-						"r_commerceOrderToCommerceReturns_commerceOrderId"));
-
-				return commerceOrderId == originalCommerceOrderId;
-			}
-		).build();
+	protected String getObjectDefinitionName() {
+		return "CommerceReturn";
 	}
 
 	@Override
-	public List<String> getAllowedObjectDefinitionNames() {
-		return Arrays.asList("CommerceReturn");
+	protected String getObjectFieldName() {
+		return "commerceOrderId";
 	}
 
 	@Override
-	public String getKey() {
-		return "javaDelegate#CommerceReturn#commerceOrderId";
-	}
+	protected boolean hasValidationCriteriaMet(
+		Map<String, Object> inputObjects) {
 
-	@Override
-	public String getLabel(Locale locale) {
-		return _language.get(locale, "commerce-return-commerce-order-id");
-	}
+		Map<String, Object> originalEntryDTO =
+			(Map<String, Object>)inputObjects.get("originalEntryDTO");
 
-	@Reference
-	private Language _language;
+		if (MapUtil.isEmpty(originalEntryDTO)) {
+			return true;
+		}
+
+		Map<String, Object> entryDTO = (Map<String, Object>)inputObjects.get(
+			"entryDTO");
+
+		Map<String, Object> properties = (Map<String, Object>)entryDTO.get(
+			"properties");
+
+		long commerceOrderId = GetterUtil.getLong(
+			properties.get("r_commerceOrderToCommerceReturns_commerceOrderId"));
+
+		Map<String, Object> originalProperties =
+			(Map<String, Object>)originalEntryDTO.get("properties");
+
+		long originalCommerceOrderId = GetterUtil.getLong(
+			originalProperties.get(
+				"r_commerceOrderToCommerceReturns_commerceOrderId"));
+
+		if (commerceOrderId == originalCommerceOrderId) {
+			return true;
+		}
+
+		return false;
+	}
 
 }

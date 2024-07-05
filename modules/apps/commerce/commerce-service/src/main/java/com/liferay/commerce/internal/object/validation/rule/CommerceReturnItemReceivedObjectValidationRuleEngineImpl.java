@@ -5,68 +5,47 @@
 
 package com.liferay.commerce.internal.object.validation.rule;
 
-import com.liferay.object.scope.ObjectDefinitionScoped;
 import com.liferay.object.validation.rule.ObjectValidationRuleEngine;
-import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.util.BigDecimalUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 
 import java.math.BigDecimal;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Crescenzo Rega
  */
 @Component(service = ObjectValidationRuleEngine.class)
 public class CommerceReturnItemReceivedObjectValidationRuleEngineImpl
-	implements ObjectDefinitionScoped, ObjectValidationRuleEngine {
+	extends BaseObjectValidationRuleEngineImpl {
 
 	@Override
-	public Map<String, Object> execute(
-		Map<String, Object> inputObjects, String script) {
-
-		return HashMapBuilder.<String, Object>put(
-			"validationCriteriaMet",
-			() -> {
-				Map<String, Object> entryDTO =
-					(Map<String, Object>)inputObjects.get("entryDTO");
-
-				Map<String, Object> properties =
-					(Map<String, Object>)entryDTO.get("properties");
-
-				return BigDecimalUtil.lte(
-					BigDecimal.valueOf(
-						GetterUtil.getLong(properties.get("received"))),
-					BigDecimal.valueOf(
-						GetterUtil.getLong(properties.get("authorized"))));
-			}
-		).build();
+	protected String getObjectDefinitionName() {
+		return "CommerceReturnItem";
 	}
 
 	@Override
-	public List<String> getAllowedObjectDefinitionNames() {
-		return Arrays.asList("CommerceReturnItem");
+	protected String getObjectFieldName() {
+		return "received";
 	}
 
 	@Override
-	public String getKey() {
-		return "javaDelegate#CommerceReturnItem#received";
-	}
+	protected boolean hasValidationCriteriaMet(
+		Map<String, Object> inputObjects) {
 
-	@Override
-	public String getLabel(Locale locale) {
-		return _language.get(locale, "commerce-return-item-received");
-	}
+		Map<String, Object> entryDTO = (Map<String, Object>)inputObjects.get(
+			"entryDTO");
 
-	@Reference
-	private Language _language;
+		Map<String, Object> properties = (Map<String, Object>)entryDTO.get(
+			"properties");
+
+		return BigDecimalUtil.lte(
+			BigDecimal.valueOf(GetterUtil.getLong(properties.get("received"))),
+			BigDecimal.valueOf(
+				GetterUtil.getLong(properties.get("authorized"))));
+	}
 
 }
