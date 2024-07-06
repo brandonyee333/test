@@ -65,12 +65,19 @@ public class MessageResourceTest extends BaseMessageResourceTestCase {
 
 	@Test
 	public void testGetMessage() throws Exception {
-		_createAndAssertExistence();
+		Message message1 = _createMessage();
+
+		_postMessage(message1);
+
+		Message message2 = messageResource.getMessage(
+			message1.getKey(), message1.getLanguageId());
+
+		Assert.assertEquals(message1, message2);
 	}
 
 	@Test
 	public void testPostMessage() throws Exception {
-		_createAndAssertExistence();
+		testGetMessage();
 	}
 
 	@Override
@@ -135,17 +142,6 @@ public class MessageResourceTest extends BaseMessageResourceTestCase {
 		message1.setValue(RandomTestUtil.randomString());
 
 		messageResource.putMessage(message1);
-
-		Message message2 = messageResource.getMessage(
-			message1.getKey(), message1.getLanguageId());
-
-		Assert.assertEquals(message1, message2);
-	}
-
-	private void _createAndAssertExistence() throws Exception {
-		Message message1 = _createMessage();
-
-		_postMessage(message1);
 
 		Message message2 = messageResource.getMessage(
 			message1.getKey(), message1.getLanguageId());
