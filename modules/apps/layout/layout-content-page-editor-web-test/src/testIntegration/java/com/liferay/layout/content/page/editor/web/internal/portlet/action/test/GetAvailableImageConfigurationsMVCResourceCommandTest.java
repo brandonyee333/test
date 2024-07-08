@@ -66,10 +66,8 @@ public class GetAvailableImageConfigurationsMVCResourceCommandTest {
 			_mvcResourceCommand, "_getFileEntryWidth",
 			new Class<?>[] {FileEntry.class}, fileEntry);
 
-		Assert.assertEquals(_IMAGE_WIDTH, width);
+		Assert.assertEquals(197, width);
 	}
-
-	private static final int _IMAGE_WIDTH = 197;
 
 	@Inject
 	private DLAppLocalService _dlAppLocalService;
