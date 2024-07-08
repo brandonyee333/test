@@ -27,8 +27,6 @@ import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
-import java.lang.reflect.Method;
-
 import java.sql.Connection;
 
 import java.util.HashSet;
@@ -68,17 +66,12 @@ public class ObjectSQLProcessor {
 	private void _generateIndexesSQL() throws Exception {
 		DB db = DBManagerUtil.getDB();
 
-		Method method = _getMethod(
-			db.getClass(), "getIndexes", Connection.class, String.class,
-			String.class, boolean.class);
-
 		DataSource dataSource = InfrastructureUtil.getDataSource();
 
 		try (Connection connection = dataSource.getConnection()) {
 			for (String tableName : _tableNames) {
 				for (IndexMetadata indexMetadata :
-						(List<IndexMetadata>)method.invoke(
-							db, connection, tableName, null, false)) {
+						db.getIndexes(connection, tableName, null, false)) {
 
 					_indexesSQLSB.append(indexMetadata.getCreateSQL(null));
 					_indexesSQLSB.append(StringPool.NEW_LINE);
@@ -174,26 +167,6 @@ public class ObjectSQLProcessor {
 		_appendTableSQL(
 			dynamicObjectDefinitionTable.getCreateTableSQL(),
 			dynamicObjectDefinitionTable.getTableName());
-	}
-
-	private Method _getMethod(
-		Class<?> clazz, String methodName, Class<?>... parameterTypes) {
-
-		while ((clazz != null) && (clazz != Object.class)) {
-			try {
-				Method method = clazz.getDeclaredMethod(
-					methodName, parameterTypes);
-
-				method.setAccessible(true);
-
-				return method;
-			}
-			catch (NoSuchMethodException noSuchMethodException) {
-				clazz = clazz.getSuperclass();
-			}
-		}
-
-		return null;
 	}
 
 	private final DB _db;

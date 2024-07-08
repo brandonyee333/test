@@ -1257,7 +1257,8 @@ public abstract class BaseDB implements DB {
 			" where 1 = 0");
 	}
 
-	protected List<IndexMetadata> getIndexes(
+	@Override
+	public List<IndexMetadata> getIndexes(
 			Connection connection, String tableName, String columnName,
 			boolean onlyUnique)
 		throws SQLException {
