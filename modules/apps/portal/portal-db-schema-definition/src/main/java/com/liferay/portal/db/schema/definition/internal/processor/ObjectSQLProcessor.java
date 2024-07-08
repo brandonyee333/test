@@ -43,7 +43,7 @@ public class ObjectSQLProcessor {
 	public ObjectSQLProcessor(DB db) throws Exception {
 		_db = db;
 
-		_generateSQL();
+		_appendSQL();
 	}
 
 	public String getIndexesSQL() {
@@ -63,7 +63,7 @@ public class ObjectSQLProcessor {
 		_tablesSQLSB.append(StringPool.NEW_LINE);
 	}
 
-	private void _generateIndexesSQL() throws Exception {
+	private void _appendIndexesSQL() throws Exception {
 		DataSource dataSource = InfrastructureUtil.getDataSource();
 
 		try (Connection connection = dataSource.getConnection()) {
@@ -78,7 +78,7 @@ public class ObjectSQLProcessor {
 		}
 	}
 
-	private void _generateRelationshipTables(ObjectDefinition objectDefinition)
+	private void _appendRelationshipTables(ObjectDefinition objectDefinition)
 		throws Exception {
 
 		List<ObjectRelationship> objectRelationships =
@@ -119,22 +119,22 @@ public class ObjectSQLProcessor {
 		}
 	}
 
-	private void _generateSQL() throws Exception {
+	private void _appendSQL() throws Exception {
 		List<ObjectDefinition> objectDefinitions =
 			ObjectDefinitionLocalServiceUtil.getObjectDefinitions(
 				PortalInstancePool.getDefaultCompanyId(),
 				WorkflowConstants.STATUS_APPROVED);
 
 		for (ObjectDefinition objectDefinition : objectDefinitions) {
-			_generateTables(objectDefinition);
+			_appendTables(objectDefinition);
 
-			_generateRelationshipTables(objectDefinition);
+			_appendRelationshipTables(objectDefinition);
 		}
 
-		_generateIndexesSQL();
+		_appendIndexesSQL();
 	}
 
-	private void _generateTables(ObjectDefinition objectDefinition)
+	private void _appendTables(ObjectDefinition objectDefinition)
 		throws Exception {
 
 		DynamicObjectDefinitionLocalizationTable

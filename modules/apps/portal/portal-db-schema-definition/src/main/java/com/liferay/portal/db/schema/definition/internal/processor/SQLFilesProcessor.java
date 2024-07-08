@@ -31,9 +31,9 @@ public class SQLFilesProcessor {
 
 		_objectSQLProcessor = new ObjectSQLProcessor(_db);
 
-		_generatePortalSQL();
+		_appendPortalSQL();
 
-		_generateModulesSQL();
+		_appendModulesSQL();
 	}
 
 	public String getIndexesSQL() {
@@ -58,7 +58,7 @@ public class SQLFilesProcessor {
 		}
 	}
 
-	private void _generateModulesSQL() throws Exception {
+	private void _appendModulesSQL() throws Exception {
 		BundleContext bundleContext = SystemBundleUtil.getBundleContext();
 
 		Collection<ServiceReference<SchemaCreator>> serviceReferences =
@@ -75,7 +75,7 @@ public class SQLFilesProcessor {
 		}
 	}
 
-	private void _generatePortalSQL() throws Exception {
+	private void _appendPortalSQL() throws Exception {
 		_appendSQL(
 			DBResourceUtil.getPortalIndexesSQL(),
 			DBResourceUtil.getPortalTablesSQL());
