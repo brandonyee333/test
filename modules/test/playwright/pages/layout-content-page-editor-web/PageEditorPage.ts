@@ -50,6 +50,8 @@ export class PageEditorPage {
 	}
 
 	async goto(layout: Layout, siteUrl?: Site['friendlyUrlPath']) {
+		await this.page.goto('/');
+
 		await this.page.goto(
 			`/web${siteUrl || '/guest'}${layout.friendlyUrlPath}?p_l_mode=edit`
 		);
