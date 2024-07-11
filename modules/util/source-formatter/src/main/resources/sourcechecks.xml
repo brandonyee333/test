@@ -1727,6 +1727,10 @@
 			<category name="Upgrade" />
 			<description name="Replaces methods referring to class `AssetEntryAssetCategory` in class `AssetCategoryLocalService` with equivalent methods in class `AssetEntryAssetCategoryRelLocalService`." />
 		</check>
+		<check name="UpgradeJavaBaseFragmentCollectionContributorExtendedClassesCheck">
+			<category name="Upgrade" />
+			<description name="Adds FragmentCollectionKey to Component annotation in classes that extend `BaseFragmentCollectionContributor`" />
+		</check>
 		<check name="UpgradeJavaBaseModelListenerCheck">
 			<category name="Upgrade" />
 			<description name="Add parameter in the onAfterUpdate and onBeforeUpdate methods of the BaseModelListener class." />
