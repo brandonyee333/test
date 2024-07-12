@@ -38,8 +38,8 @@ public class LayoutActionsHelperTest {
 	public void setUp() throws Exception {
 		_setGroup();
 		_setUpLayout();
-		_setUpLayoutPermissionUtil();
 		_setUpLayoutLocalServiceUtil();
+		_setUpLayoutPermissionUtil();
 	}
 
 	@After
