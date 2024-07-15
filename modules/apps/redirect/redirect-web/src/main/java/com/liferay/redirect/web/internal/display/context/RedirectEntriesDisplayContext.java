@@ -220,6 +220,22 @@ public class RedirectEntriesDisplayContext {
 			redirectEntry.getSourceURL();
 	}
 
+	public boolean isLiveGroup() {
+		if (_stagingEnvironment != null) {
+			return _stagingEnvironment;
+		}
+
+		boolean stagingEnvironment = false;
+
+		if (_stagingGroupHelper.isLiveGroup(_themeDisplay.getScopeGroupId())) {
+			stagingEnvironment = true;
+		}
+
+		_stagingEnvironment = stagingEnvironment;
+
+		return _stagingEnvironment;
+	}
+
 	public boolean isStagingGroup() {
 		if (_stagingGroup != null) {
 			return _stagingGroup;
@@ -382,6 +398,7 @@ public class RedirectEntriesDisplayContext {
 	private final RedirectEntryLocalService _redirectEntryLocalService;
 	private RedirectEntrySearch _redirectEntrySearch;
 	private final RedirectEntryService _redirectEntryService;
+	private Boolean _stagingEnvironment;
 	private Boolean _stagingGroup;
 	private final StagingGroupHelper _stagingGroupHelper;
 	private final ThemeDisplay _themeDisplay;
