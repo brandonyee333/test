@@ -6,12 +6,22 @@
 import {test} from '@playwright/test';
 
 import {HomePage} from '../pages/HomePage';
+import {MDFRequestFormPage} from '../pages/mdf/MDFRequestFormPage';
+import {MDFRequestListPage} from '../pages/mdf/MDFRequestListPage';
 
 const partnerPagesTest = test.extend<{
 	homePage: HomePage;
+	mdfRequestFormPage: MDFRequestFormPage;
+	mdfRequestListPage: MDFRequestListPage;
 }>({
 	homePage: async ({page}, use) => {
 		await use(new HomePage(page));
+	},
+	mdfRequestFormPage: async ({page}, use) => {
+		await use(new MDFRequestFormPage(page));
+	},
+	mdfRequestListPage: async ({page}, use) => {
+		await use(new MDFRequestListPage(page));
 	},
 });
 
