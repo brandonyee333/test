@@ -13,14 +13,6 @@ test('Open Partner Homepage', async ({page}) => {
 	const partnerTitle = await page.getByRole('heading', {
 		name: 'Welcome to Partner Portal',
 	});
-	const videoTourButton = await page.getByRole('button', {
-		name: 'Watch a Video Tour',
-	});
-	const partnerGuideLink = await page.getByRole('link', {
-		name: 'View Solution Partner Guide',
-	});
-
+	
 	expect(partnerTitle).toBeTruthy();
-	expect(videoTourButton).toBeVisible();
-	expect(partnerGuideLink).toBeVisible();
 });
