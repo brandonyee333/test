@@ -33,9 +33,9 @@ public class SAPEntryUpgradeProcess extends UpgradeProcess {
 				try (PreparedStatement preparedStatement1 =
 						connection.prepareStatement(
 							StringBundler.concat(
-								"select count(*) from SAPEntry where name = ",
-								"'SYSTEM_REST_CLIENT_TEMPLATE_OBJECT' and ",
-								"companyId = ", companyId))) {
+								"select count(*) from SAPEntry where ",
+								"companyId = ", companyId, " and name = ",
+								"'SYSTEM_REST_CLIENT_TEMPLATE_OBJECT'"))) {
 
 					ResultSet resultSet = preparedStatement1.executeQuery();
 
@@ -43,55 +43,58 @@ public class SAPEntryUpgradeProcess extends UpgradeProcess {
 
 					int count = resultSet.getInt(1);
 
-					if (count < 1) {
-						Timestamp now = new Timestamp(
-							System.currentTimeMillis());
-
-						String title =
-							"System Service Access Policy for REST Client " +
-								"Template Object Requests";
-
-						String titleMapString =
-							LocalizationUtil.updateLocalization(
-								HashMapBuilder.put(
-									LocaleUtil.fromLanguageId(
-										UpgradeProcessUtil.getDefaultLanguageId(
-											companyId)),
-									title
-								).build(),
-								title, "Title",
-								UpgradeProcessUtil.getDefaultLanguageId(
-									companyId));
-
-						StringBuilder sb = new StringBuilder(5);
-
-						sb.append("insert into SAPEntry (uuid_, sapEntryId, ");
-						sb.append("companyId, userId, createDate, ");
-						sb.append("modifiedDate, allowedServiceSignatures, ");
-						sb.append("defaultSAPEntry, enabled, name, title) ");
-						sb.append("values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-						PreparedStatement preparedStatement2 =
-							connection.prepareStatement(sb.toString());
-
-						preparedStatement2.setString(
-							1, PortalUUIDUtil.generate());
-						preparedStatement2.setLong(
-							2, CounterLocalServiceUtil.increment());
-						preparedStatement2.setLong(3, companyId);
-						preparedStatement2.setLong(
-							4, UserLocalServiceUtil.getGuestUserId(companyId));
-						preparedStatement2.setTimestamp(5, now);
-						preparedStatement2.setTimestamp(6, now);
-						preparedStatement2.setString(7, StringPool.STAR);
-						preparedStatement2.setBoolean(8, false);
-						preparedStatement2.setBoolean(9, true);
-						preparedStatement2.setString(
-							10, "SYSTEM_REST_CLIENT_TEMPLATE_OBJECT");
-						preparedStatement2.setString(11, titleMapString);
-
-						preparedStatement2.execute();
+					if (count != 0) {
+						return;
 					}
+
+					StringBuilder sb = new StringBuilder(5);
+
+					sb.append("insert into SAPEntry (uuid_, sapEntryId, ");
+					sb.append("companyId, userId, createDate, ");
+					sb.append("modifiedDate, allowedServiceSignatures, ");
+					sb.append("defaultSAPEntry, enabled, name, title) ");
+					sb.append("values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+					PreparedStatement preparedStatement2 =
+						connection.prepareStatement(sb.toString());
+
+					preparedStatement2.setString(1, PortalUUIDUtil.generate());
+					preparedStatement2.setLong(
+						2, CounterLocalServiceUtil.increment());
+					preparedStatement2.setLong(3, companyId);
+					preparedStatement2.setLong(
+						4, UserLocalServiceUtil.getGuestUserId(companyId));
+
+					Timestamp timestamp = new Timestamp(
+						System.currentTimeMillis());
+
+					preparedStatement2.setTimestamp(5, timestamp);
+					preparedStatement2.setTimestamp(6, timestamp);
+
+					preparedStatement2.setString(7, StringPool.STAR);
+					preparedStatement2.setBoolean(8, false);
+					preparedStatement2.setBoolean(9, true);
+					preparedStatement2.setString(
+						10, "SYSTEM_REST_CLIENT_TEMPLATE_OBJECT");
+
+					String title =
+						"System Service Access Policy for REST Client " +
+							"Template Object Requests";
+
+					preparedStatement2.setString(
+						11,
+						LocalizationUtil.updateLocalization(
+							HashMapBuilder.put(
+								LocaleUtil.fromLanguageId(
+									UpgradeProcessUtil.getDefaultLanguageId(
+										companyId)),
+								title
+							).build(),
+							title, "Title",
+							UpgradeProcessUtil.getDefaultLanguageId(
+								companyId)));
+
+					preparedStatement2.execute();
 				}
 			});
 	}
