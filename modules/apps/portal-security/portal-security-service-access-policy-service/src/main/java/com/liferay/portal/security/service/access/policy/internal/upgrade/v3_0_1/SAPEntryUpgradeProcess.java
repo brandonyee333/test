@@ -79,7 +79,7 @@ public class SAPEntryUpgradeProcess extends UpgradeProcess {
 
 					String title =
 						"System Service Access Policy for REST Client " +
-							"Template Object Requests";
+							"Template Requests";
 
 					preparedStatement2.setString(
 						11,

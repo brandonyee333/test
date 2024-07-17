@@ -51,7 +51,7 @@ public interface SAPConfiguration {
 	public String systemRESTClientTemplateObjectSAPEntryName();
 
 	@Meta.AD(
-		deflt = "System Service Access Policy for Local RESTClient Requests",
+		deflt = "System Service Access Policy for REST Client Template Requests",
 		name = "system-rest-client-template-object-sap-entry-description",
 		required = false
 	)
