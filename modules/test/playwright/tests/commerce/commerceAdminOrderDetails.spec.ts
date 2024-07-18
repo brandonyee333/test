@@ -6,13 +6,16 @@
 import {expect, mergeTests} from '@playwright/test';
 
 import {apiHelpersTest} from '../../fixtures/apiHelpersTest';
+import {applicationsMenuPageTest} from '../../fixtures/applicationsMenuPageTest';
 import {commercePagesTest} from '../../fixtures/commercePagesTest';
 import {dataApiHelpersTest} from '../../fixtures/dataApiHelpersTest';
 import {loginTest} from '../../fixtures/loginTest';
 import getRandomString from '../../utils/getRandomString';
+import performLogin, {performLogout} from '../../utils/performLogin';
 
 export const test = mergeTests(
 	apiHelpersTest,
+	applicationsMenuPageTest,
 	commercePagesTest,
 	dataApiHelpersTest,
 	loginTest()
@@ -200,4 +203,223 @@ test('LPD-26244 Split order items are shown on admin order details page when sho
 			)
 		).row
 	).toBeVisible();
+});
+
+test('COMMERCE-11888. As a supplier user, I can edit the order shipments details of an order', async ({
+	apiHelpers,
+	applicationsMenuPage,
+	commerceAdminChannelDetailsPage,
+	commerceAdminChannelsPage,
+	commerceAdminOrderDetailsPage,
+	commerceAdminOrdersPage,
+	commerceLayoutsPage,
+	page,
+}) => {
+	const site = await apiHelpers.headlessSite.createSite({
+		name: 'Minium',
+		templateKey: 'minium-initializer',
+		templateType: 'site-initializer',
+	});
+
+	apiHelpers.data.push({id: site.id, type: 'site'});
+
+	await commerceLayoutsPage.cleanupSiteInitializerData(apiHelpers, site.name);
+
+	const accountBusiness = await apiHelpers.headlessAdminUser.postAccount({
+		name: 'Account Business',
+		type: 'business',
+	});
+
+	apiHelpers.data.push({id: accountBusiness.id, type: 'account'});
+
+	const phoneNumber = '12345';
+
+	const address = await apiHelpers.headlessCommerceAdminAccount.postAddress(
+		accountBusiness.id,
+		{phoneNumber, regionISOCode: 'AL'}
+	);
+
+	const accountSupplier = await apiHelpers.headlessAdminUser.postAccount({
+		name: 'Account Supplier',
+		type: 'supplier',
+	});
+
+	apiHelpers.data.push({id: accountSupplier.id, type: 'account'});
+
+	await apiHelpers.headlessAdminUser.assignUserToAccountByEmailAddress(
+		accountSupplier.id,
+		['demo.unprivileged@liferay.com']
+	);
+
+	const rolesResponse = await apiHelpers.headlessAdminUser.getAccountRoles(
+		accountSupplier.id
+	);
+
+	const accountSupplierRole = rolesResponse?.items?.filter((role) => {
+		return role.name === 'Account Supplier';
+	});
+
+	await apiHelpers.headlessAdminUser.assignAccountRoles(
+		accountSupplier.externalReferenceCode,
+		accountSupplierRole[0].id,
+		'demo.unprivileged@liferay.com'
+	);
+
+	const channels =
+		await apiHelpers.headlessCommerceAdminChannel.getChannelsPage(
+			'Minium Portal'
+		);
+
+	await apiHelpers.headlessCommerceAdminChannel.patchChannelWithAccountId(
+		accountSupplier.id,
+		channels.items[0]
+	);
+
+	await commerceAdminChannelsPage.goto();
+	await (
+		await commerceAdminChannelsPage.channelsTableRowLink(
+			channels.items[0].name
+		)
+	).click();
+
+	await commerceAdminChannelDetailsPage.activateShippingMethod(
+		'Variable Rate'
+	);
+
+	const miniumProduct =
+		await apiHelpers.headlessCommerceAdminCatalog.getProducts(
+			new URLSearchParams({
+				filter: `name eq 'Abs Sensor'`,
+			})
+		);
+
+	const miniumProductId = miniumProduct.items[0].productId;
+
+	const productSkus = await apiHelpers.headlessCommerceAdminCatalog
+		.getProduct(miniumProductId)
+		.then((product) => {
+			return product.skus;
+		});
+
+	const sku = productSkus[0];
+
+	const order = await apiHelpers.headlessCommerceAdminOrder.postOrder({
+		accountId: accountBusiness.id,
+		billingAddressId: address.id,
+		channelId: channels.items[0].id,
+		orderItems: [
+			{
+				quantity: 2,
+				skuId: sku.id,
+			},
+		],
+		orderStatus: '1',
+		paymentMethod: 'paypal',
+		paymentStatus: '0',
+		shippingAddressId: address.id,
+	});
+
+	apiHelpers.data.push({id: order.id, type: 'order'});
+
+	await performLogout(page);
+	await performLogin(page, 'demo.unprivileged');
+
+	await applicationsMenuPage.goToCommerceOrders(false);
+
+	await (
+		await commerceAdminOrdersPage.tableRowLink({
+			colIndex: 1,
+			rowValue: order.id,
+		})
+	).click();
+
+	await expect(
+		page.getByText('PendingProcessingShippedCompleted')
+	).toBeVisible();
+
+	await expect(
+		await commerceAdminOrderDetailsPage.editAddressActionLink(
+			'Billing Address Edit',
+			'Edit'
+		)
+	).toBeVisible();
+
+	await (
+		await commerceAdminOrderDetailsPage.editAddressActionLink(
+			'Billing Address Edit',
+			'Edit'
+		)
+	).click();
+	await (
+		await commerceAdminOrderDetailsPage.editAddressActionLink(
+			'Billing Address Edit',
+			'Edit'
+		)
+	).waitFor();
+
+	await expect(
+		await commerceAdminOrderDetailsPage.orderDetailsModalHeader(
+			'Edit Billing Address'
+		)
+	).toBeVisible();
+
+	const streetName = 'Street1';
+
+	await commerceAdminOrderDetailsPage.editAddress(streetName);
+
+	await expect(
+		page.getByText('PendingProcessingShippedCompleted')
+	).toBeVisible();
+
+	await expect(
+		await commerceAdminOrderDetailsPage.orderDetailsAddressDescription(
+			'Billing Address',
+			'Edit',
+			streetName
+		)
+	).toBeVisible();
+
+	await expect(
+		await commerceAdminOrderDetailsPage.orderDetailsAddressDescription(
+			'Billing Address',
+			'Edit',
+			streetName
+		)
+	).toHaveText(streetName);
+
+	await (
+		await commerceAdminOrderDetailsPage.editAddressActionLink(
+			'Shipping Address Edit',
+			'Edit'
+		)
+	).click();
+	await page.waitForLoadState('networkidle');
+
+	await expect(
+		await commerceAdminOrderDetailsPage.orderDetailsModalHeader(
+			'Edit Shipping Address'
+		)
+	).toBeVisible();
+
+	await commerceAdminOrderDetailsPage.editAddress(streetName);
+
+	await expect(
+		page.getByText('PendingProcessingShippedCompleted')
+	).toBeVisible();
+
+	await expect(
+		await commerceAdminOrderDetailsPage.orderDetailsAddressDescription(
+			'Shipping Address',
+			'Edit',
+			streetName
+		)
+	).toBeVisible();
+
+	await expect(
+		await commerceAdminOrderDetailsPage.orderDetailsAddressDescription(
+			'Shipping Address',
+			'Edit',
+			streetName
+		)
+	).toHaveText(streetName);
 });

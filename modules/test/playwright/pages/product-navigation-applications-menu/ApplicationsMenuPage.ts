@@ -302,8 +302,8 @@ export class ApplicationsMenuPage {
 		await this.commercePanelButton.click();
 	}
 
-	async goToCommerceOrders() {
-		await this.goToCommercePanel();
+	async goToCommerceOrders(checkTabVisibility = true) {
+		await this.goToCommercePanel(checkTabVisibility);
 		await this.commerceOrdersMenuItem.click();
 	}
 
