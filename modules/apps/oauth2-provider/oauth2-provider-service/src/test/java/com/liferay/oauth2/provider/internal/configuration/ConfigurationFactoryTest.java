@@ -272,10 +272,10 @@ public class ConfigurationFactoryTest {
 		oa2pahscf.userLocalService = _userLocalService;
 
 		ReflectionTestUtil.setFieldValue(
-			oa2pahscf, "_portalK8sConfigMapModifierSnapshot", _snapshot);
+			oa2pahscf, "_scopeLocator", _scopeLocator);
 
 		ReflectionTestUtil.setFieldValue(
-			oa2pahscf, "_scopeLocator", _scopeLocator);
+			oa2pahscf, "_portalK8sConfigMapModifierSnapshot", _snapshot);
 
 		oa2pahscf.activate(
 			HashMapBuilder.<String, Object>put(
@@ -335,6 +335,9 @@ public class ConfigurationFactoryTest {
 		oa2pauacf.scopeLocator = _scopeLocator;
 		oa2pauacf.userLocalService = _userLocalService;
 
+		ReflectionTestUtil.setFieldValue(
+			oa2pauacf, "_portalK8sConfigMapModifierSnapshot", _snapshot);
+
 		VirtualHostLocalService virtualHostLocalService = Mockito.mock(
 			VirtualHostLocalService.class);
 
@@ -343,9 +346,6 @@ public class ConfigurationFactoryTest {
 		).thenReturn(
 			new ArrayList<>()
 		);
-
-		ReflectionTestUtil.setFieldValue(
-			oa2pauacf, "_portalK8sConfigMapModifierSnapshot", _snapshot);
 
 		ReflectionTestUtil.setFieldValue(
 			oa2pauacf, "_virtualHostLocalService", virtualHostLocalService);
