@@ -664,12 +664,11 @@ public class FilterParserImplTest {
 		LambdaFunctionExpression lambdaFunctionExpression =
 			collectionPropertyExpression.getLambdaFunctionExpression();
 
+		Assert.assertNull(lambdaFunctionExpression.getExpression());
 		Assert.assertEquals(
 			LambdaFunctionExpression.Type.ANY,
 			lambdaFunctionExpression.getType());
 		Assert.assertNull(lambdaFunctionExpression.getVariableName());
-
-		Assert.assertNull(lambdaFunctionExpression.getExpression());
 	}
 
 	@Test
