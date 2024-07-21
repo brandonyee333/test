@@ -210,20 +210,20 @@ public abstract class BaseExportImportTestCase {
 			String externalReferenceCode, String json, String name)
 		throws Exception {
 
-		MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
-			new MockLiferayPortletActionResponse();
-
-		MVCActionCommand mvcActionCommand = getMVCActionCommand();
-
-		MockMultipartHttpServletRequest mockMultipartHttpServletRequest =
-			new MockMultipartHttpServletRequest();
-
-		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
-			new MockLiferayPortletActionRequest(
-				mockMultipartHttpServletRequest);
-
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				UploadServletRequestImpl.class.getName(), LoggerTestUtil.OFF)) {
+
+			MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
+				new MockLiferayPortletActionResponse();
+
+			MVCActionCommand mvcActionCommand = getMVCActionCommand();
+
+			MockMultipartHttpServletRequest mockMultipartHttpServletRequest =
+				new MockMultipartHttpServletRequest();
+
+			MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
+				new MockLiferayPortletActionRequest(
+					mockMultipartHttpServletRequest);
 
 			if (JSONUtil.isJSONArray(json)) {
 				mockMultipartHttpServletRequest.addParameter(
@@ -299,9 +299,9 @@ public abstract class BaseExportImportTestCase {
 			mvcActionCommand.processAction(
 				mockLiferayPortletActionRequest,
 				mockLiferayPortletActionResponse);
-		}
 
-		return mockLiferayPortletActionResponse;
+			return mockLiferayPortletActionResponse;
+		}
 	}
 
 	private String _defaultObjectRelationshipJSON;
