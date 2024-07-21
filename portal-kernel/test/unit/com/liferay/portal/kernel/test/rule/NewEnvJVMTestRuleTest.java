@@ -61,8 +61,8 @@ public class NewEnvJVMTestRuleTest {
 		_counter.getAndIncrement();
 
 		Assert.assertEquals(
-			System.getProperty("parent.java.locale.providers"),
-			System.getProperty("java.locale.providers"));
+			System.getProperty("java.locale.providers"),
+			System.getProperty("parent.java.locale.providers"));
 	}
 
 	@Test
