@@ -90,20 +90,30 @@ export default async function format(
 	}
 ) {
 	const rootDir = await getRootDir();
+	const workspacesDir = path.join(rootDir, '..', 'workspaces');
+	const playwrightDir = path.join(rootDir, 'test', 'playwright');
 
-	const ignoredFiles = await getIgoredFiles(rootDir);
+	const [rootIgnored, workspacesIgnored, playwrightIgnored] =
+		await Promise.all([
+			getIgoredFiles(rootDir),
+			getIgoredFiles(workspacesDir),
+			getIgoredFiles(playwrightDir),
+		]);
+
+	const allIgnored = [
+		...rootIgnored,
+		...workspacesIgnored,
+		...playwrightIgnored,
+	];
 
 	let filepaths = [];
 
 	if (all) {
-		const workspacesDir = path.join(rootDir, '..', 'workspaces');
-		const playwrightDir = path.join(rootDir, 'test', 'playwright');
-
 		filepaths = (
 			await Promise.all([
-				getFilesToCheck(rootDir, ignoredFiles),
-				getFilesToCheck(workspacesDir, ignoredFiles),
-				getFilesToCheck(playwrightDir, ignoredFiles),
+				getFilesToCheck(rootDir, rootIgnored),
+				getFilesToCheck(workspacesDir, workspacesIgnored),
+				getFilesToCheck(playwrightDir, playwrightIgnored),
 			])
 		).flat();
 	}
@@ -116,7 +126,7 @@ export default async function format(
 		filepaths = micromatch(
 			modifiedFiles,
 			EXTENSIONS.map((ext) => `**/*.${ext}`),
-			{ignore: ignoredFiles}
+			{ignore: allIgnored}
 		).map(
 
 			// make sure the path is absolute
