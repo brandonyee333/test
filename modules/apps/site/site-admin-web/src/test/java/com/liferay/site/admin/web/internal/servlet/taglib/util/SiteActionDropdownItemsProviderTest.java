@@ -370,25 +370,26 @@ public class SiteActionDropdownItemsProviderTest {
 			_httpServletRequest
 		);
 
-		MockLiferayPortletURL liferayPortletURL1 = new MockLiferayPortletURL();
+		MockLiferayPortletURL mockLiferayPortletURL1 = new MockLiferayPortletURL();
 
-		liferayPortletURL1.setParameter(
+		mockLiferayPortletURL1.setParameter(
 			"portletId", LayoutAdminPortletKeys.GROUP_PAGES);
-		liferayPortletURL1.setPortletId(LayoutAdminPortletKeys.GROUP_PAGES);
+		mockLiferayPortletURL1.setPortletId(LayoutAdminPortletKeys.GROUP_PAGES);
 
 		Mockito.when(
 			_portal.getControlPanelPortletURL(
 				_httpServletRequest, _group, LayoutAdminPortletKeys.GROUP_PAGES,
 				0, 0, PortletRequest.RENDER_PHASE)
 		).thenReturn(
-			liferayPortletURL1
+			mockLiferayPortletURL1
 		);
 
-		MockLiferayPortletURL liferayPortletURL2 = new MockLiferayPortletURL();
+		MockLiferayPortletURL mockLiferayPortletURL2 =
+			new MockLiferayPortletURL();
 
-		liferayPortletURL2.setParameter(
+		mockLiferayPortletURL2.setParameter(
 			"portletId", ConfigurationAdminPortletKeys.SITE_SETTINGS);
-		liferayPortletURL2.setPortletId(
+		mockLiferayPortletURL2.setPortletId(
 			ConfigurationAdminPortletKeys.SITE_SETTINGS);
 
 		Mockito.when(
@@ -397,7 +398,7 @@ public class SiteActionDropdownItemsProviderTest {
 				ConfigurationAdminPortletKeys.SITE_SETTINGS, 0, 0,
 				PortletRequest.RENDER_PHASE)
 		).thenReturn(
-			liferayPortletURL2
+			mockLiferayPortletURL2
 		);
 
 		portalUtil.setPortal(_portal);
