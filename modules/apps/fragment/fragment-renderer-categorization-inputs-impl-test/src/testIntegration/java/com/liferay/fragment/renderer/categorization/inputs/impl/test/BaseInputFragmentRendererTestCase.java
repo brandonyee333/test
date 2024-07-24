@@ -223,6 +223,8 @@ public abstract class BaseInputFragmentRendererTestCase {
 			objectDefinition.isPortlet(), objectDefinition.getPluralLabelMap(),
 			objectDefinition.getScope(), objectDefinition.getStatus());
 
+		FragmentRenderer fragmentRenderer = getFragmentRenderer();
+
 		DefaultFragmentRendererContext defaultFragmentRendererContext =
 			new DefaultFragmentRendererContext(fragmentEntryLink);
 
@@ -230,11 +232,8 @@ public abstract class BaseInputFragmentRendererTestCase {
 
 		MockHttpServletRequest mockHttpServletRequest =
 			getMockHttpServletRequest(objectDefinition);
-
 		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
-
-		FragmentRenderer fragmentRenderer = getFragmentRenderer();
 
 		fragmentRenderer.render(
 			defaultFragmentRendererContext, mockHttpServletRequest,
