@@ -138,17 +138,17 @@ public class SiteActionDropdownItemsProviderTest {
 		);
 
 		Mockito.when(
-			_group.getPrivateLayoutsPageCount()
-		).thenReturn(
-			RandomTestUtil.randomInt()
-		);
-
-		Mockito.when(
 			_group.getDisplayURL(
 				Mockito.any(ThemeDisplay.class), Mockito.anyBoolean(),
 				Mockito.anyBoolean())
 		).thenReturn(
 			null
+		);
+
+		Mockito.when(
+			_group.getPrivateLayoutsPageCount()
+		).thenReturn(
+			RandomTestUtil.randomInt()
 		);
 
 		_assertDropdownItem(
