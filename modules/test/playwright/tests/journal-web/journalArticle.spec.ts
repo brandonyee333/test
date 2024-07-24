@@ -69,6 +69,8 @@ const autoSaveAsDraftTest = mergeTests(
 	})
 );
 
+const friendlyURLDuplicatedMessageTest = mergeTests(baseTest);
+
 const keepTitlesUntranslated = mergeTests(baseTest);
 
 const prefixUrlTest = mergeTests(
@@ -391,6 +393,34 @@ baseTest(
 
 		await expect(
 			page.getByRole('heading', {name: 'Compare Versions'})
+		).toBeVisible();
+	}
+);
+
+friendlyURLDuplicatedMessageTest(
+	'Check alert message of duplicated friendly URL in french',
+	{
+		tag: '@LPD-32185',
+	},
+	async ({journalEditArticlePage, journalPage, page, site}) => {
+		await page.goto(`/fr/`);
+		await createAndPublishBasicArticleWithURL(
+			journalEditArticlePage,
+			journalPage,
+			site,
+			page
+		);
+		await createAndPublishBasicArticleWithURL(
+			journalEditArticlePage,
+			journalPage,
+			site,
+			page
+		);
+
+		await expect(
+			page
+				.locator('#ToastAlertContainer')
+				.getByText('test', {exact: true})
 		).toBeVisible();
 	}
 );
@@ -1538,3 +1568,18 @@ scheduleTest(
 		);
 	}
 );
+
+async function createAndPublishBasicArticleWithURL(
+	journalEditArticlePage,
+	journalPage,
+	site,
+	page
+) {
+	await journalPage.goto(site.friendlyUrlPath);
+	await journalPage.goToCreateArticle('Contenu web basique');
+	await journalEditArticlePage.fillFriendlyURL('test');
+	const title = getRandomString();
+	await journalEditArticlePage.titleInput.fill(title);
+	await journalEditArticlePage.publishButton.click();
+	await expect(page.getByTitle(title, {exact: true})).toBeVisible();
+}
