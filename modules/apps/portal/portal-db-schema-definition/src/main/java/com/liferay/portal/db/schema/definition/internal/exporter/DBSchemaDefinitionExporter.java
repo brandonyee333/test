@@ -129,7 +129,7 @@ public class DBSchemaDefinitionExporter {
 			}
 
 			_generateReport(
-				dbType, dbSchemaDefinitionExporterConfiguration.path());
+				dbSchemaDefinitionExporterConfiguration.path(), dbType);
 		}
 		catch (Exception exception) {
 			_log.error(
@@ -140,11 +140,11 @@ public class DBSchemaDefinitionExporter {
 		}
 	}
 
-	private void _generateReport(DBType exportDBType, String path)
+	private void _generateReport(String dirName, DBType exportDBType)
 		throws Exception {
 
 		Set<String> dbTableNames = _getDBTableNames();
-		Set<String> exportTableNames = _getExportTableNames(path);
+		Set<String> exportTableNames = _getExportTableNames(dirName);
 		String installedPatchNames = StringUtil.merge(
 			PatcherValues.INSTALLED_PATCH_NAMES, StringPool.COMMA_AND_SPACE);
 		Release release = _releaseLocalService.fetchRelease(
@@ -155,7 +155,7 @@ public class DBSchemaDefinitionExporter {
 			StringPool.COMMA_AND_SPACE);
 
 		FileUtil.write(
-			new File(path, "db_schema_definition_export_report.info"),
+			new File(dirName, "db_schema_definition_export_report.info"),
 			StringUtil.merge(
 				new Object[] {
 					"Database tables: " + dbTableNames.size(),
@@ -195,11 +195,12 @@ public class DBSchemaDefinitionExporter {
 		return tableNames;
 	}
 
-	private Set<String> _getExportTableNames(String path) throws Exception {
+	private Set<String> _getExportTableNames(String dirName) throws Exception {
 		Set<String> tableNames = new HashSet<>();
 
 		String[] lines = StringUtil.split(
-			StringUtil.toLowerCase(FileUtil.read(new File(path, "tables.sql"))),
+			StringUtil.toLowerCase(
+				FileUtil.read(new File(dirName, "tables.sql"))),
 			StringPool.NEW_LINE);
 
 		for (String line : lines) {
