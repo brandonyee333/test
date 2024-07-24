@@ -1472,6 +1472,12 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 			GetterUtil.getBoolean(product.getNeverExpire(), true),
 			serviceContext);
 
+		if (!Validator.isBlank(product.getExternalReferenceCode())) {
+			_cpDefinitionService.updateExternalReferenceCode(
+				product.getExternalReferenceCode(),
+				cpDefinition.getCPDefinitionId());
+		}
+
 		if ((product.getActive() != null) && !product.getActive()) {
 			Map<String, Serializable> workflowContext = new HashMap<>();
 
@@ -1479,12 +1485,6 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 				cpDefinition.getCPDefinitionId(),
 				WorkflowConstants.STATUS_INACTIVE, serviceContext,
 				workflowContext);
-		}
-
-		if (!Validator.isBlank(product.getExternalReferenceCode())) {
-			_cpDefinitionService.updateExternalReferenceCode(
-				product.getExternalReferenceCode(),
-				cpDefinition.getCPDefinitionId());
 		}
 
 		Map<String, ?> expando = product.getExpando();
