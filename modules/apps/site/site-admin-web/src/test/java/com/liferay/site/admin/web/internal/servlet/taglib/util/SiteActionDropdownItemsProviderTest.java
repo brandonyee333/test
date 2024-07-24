@@ -78,12 +78,12 @@ public class SiteActionDropdownItemsProviderTest {
 			_group
 		);
 
+		_groupPermissionUtilMockedStatic = Mockito.mockStatic(
+			GroupPermissionUtil.class);
+
 		PropsUtil propsUtil = new PropsUtil();
 
 		propsUtil.setProps(Mockito.mock(Props.class));
-
-		_groupPermissionUtilMockedStatic = Mockito.mockStatic(
-			GroupPermissionUtil.class);
 	}
 
 	@AfterClass

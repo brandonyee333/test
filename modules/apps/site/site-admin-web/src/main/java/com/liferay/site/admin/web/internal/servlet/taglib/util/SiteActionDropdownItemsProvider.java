@@ -326,6 +326,7 @@ public class SiteActionDropdownItemsProvider {
 			}
 
 			dropdownItem.setHref(href);
+
 			dropdownItem.setIcon("shortcut");
 			dropdownItem.setLabel(
 				LanguageUtil.format(
