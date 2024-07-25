@@ -10,7 +10,6 @@ import com.adyen.model.notification.NotificationRequestItem;
 import com.adyen.util.HMACValidator;
 
 import com.liferay.client.extension.util.spring.boot.LiferayOAuth2AccessTokenManager;
-import com.liferay.petra.string.StringBundler;
 
 import java.nio.charset.StandardCharsets;
 
