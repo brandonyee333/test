@@ -41,7 +41,7 @@ public class CommerceReturnReturnStatusObjectValidationRuleEngineImplTest
 			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Test
-	public void testCommerceReturnReturnStatusObjectValidationRuleEngineImpl() {
+	public void test() {
 		Map<String, Object> results =
 			_commerceReturnReturnStatusObjectValidationRuleEngineImpl.execute(
 				HashMapBuilder.<String, Object>put(

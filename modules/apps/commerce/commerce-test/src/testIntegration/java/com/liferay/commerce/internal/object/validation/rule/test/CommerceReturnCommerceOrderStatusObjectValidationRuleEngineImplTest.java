@@ -50,9 +50,7 @@ public class CommerceReturnCommerceOrderStatusObjectValidationRuleEngineImplTest
 			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Test
-	public void testCommerceReturnCommerceOrderStatusObjectValidationRuleEngineImpl()
-		throws Exception {
-
+	public void test() throws Exception {
 		Map<String, Object> results =
 			_commerceReturnCommerceOrderStatusObjectValidationRuleEngineImpl.
 				execute(

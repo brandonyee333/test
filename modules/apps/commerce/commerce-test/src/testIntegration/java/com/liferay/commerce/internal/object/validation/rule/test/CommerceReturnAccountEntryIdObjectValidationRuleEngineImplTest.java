@@ -40,7 +40,7 @@ public class CommerceReturnAccountEntryIdObjectValidationRuleEngineImplTest
 			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Test
-	public void testCommerceReturnAccountEntryIdObjectValidationRuleEngineImpl() {
+	public void test() {
 		Map<String, Object> results =
 			_commerceReturnAccountEntryIdObjectValidationRuleEngineImpl.execute(
 				HashMapBuilder.<String, Object>put(
