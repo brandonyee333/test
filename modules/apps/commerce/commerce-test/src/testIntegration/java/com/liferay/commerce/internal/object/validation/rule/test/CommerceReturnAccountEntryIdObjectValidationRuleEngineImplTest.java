@@ -41,42 +41,40 @@ public class CommerceReturnAccountEntryIdObjectValidationRuleEngineImplTest
 
 	@Test
 	public void test() {
-		Map<String, Object> results =
-			_commerceReturnAccountEntryIdObjectValidationRuleEngineImpl.execute(
-				HashMapBuilder.<String, Object>put(
-					"entryDTO",
+		Map<String, Object> results = _objectValidationRuleEngine.execute(
+			HashMapBuilder.<String, Object>put(
+				"entryDTO",
+				HashMapBuilder.put(
+					"properties",
 					HashMapBuilder.put(
-						"properties",
-						HashMapBuilder.put(
-							"r_accountToCommerceReturns_accountEntryId",
-							RandomTestUtil.randomLong()
-						).put(
-							"r_commerceOrderToCommerceReturns_commerceOrderId",
-							commerceOrder.getCommerceOrderId()
-						).build()
+						"r_accountToCommerceReturns_accountEntryId",
+						RandomTestUtil.randomLong()
+					).put(
+						"r_commerceOrderToCommerceReturns_commerceOrderId",
+						commerceOrder.getCommerceOrderId()
 					).build()
-				).build(),
-				null);
+				).build()
+			).build(),
+			null);
 
 		Assert.assertFalse(
 			GetterUtil.getBoolean(results.get("validationCriteriaMet")));
 
-		results =
-			_commerceReturnAccountEntryIdObjectValidationRuleEngineImpl.execute(
-				HashMapBuilder.<String, Object>put(
-					"entryDTO",
+		results = _objectValidationRuleEngine.execute(
+			HashMapBuilder.<String, Object>put(
+				"entryDTO",
+				HashMapBuilder.put(
+					"properties",
 					HashMapBuilder.put(
-						"properties",
-						HashMapBuilder.put(
-							"r_accountToCommerceReturns_accountEntryId",
-							accountEntry.getAccountEntryId()
-						).put(
-							"r_commerceOrderToCommerceReturns_commerceOrderId",
-							commerceOrder.getCommerceOrderId()
-						).build()
+						"r_accountToCommerceReturns_accountEntryId",
+						accountEntry.getAccountEntryId()
+					).put(
+						"r_commerceOrderToCommerceReturns_commerceOrderId",
+						commerceOrder.getCommerceOrderId()
 					).build()
-				).build(),
-				null);
+				).build()
+			).build(),
+			null);
 
 		Assert.assertTrue(
 			GetterUtil.getBoolean(results.get("validationCriteriaMet")));
@@ -85,7 +83,6 @@ public class CommerceReturnAccountEntryIdObjectValidationRuleEngineImplTest
 	@Inject(
 		filter = "component.name=com.liferay.commerce.internal.object.validation.rule.CommerceReturnAccountEntryIdObjectValidationRuleEngineImpl"
 	)
-	private ObjectValidationRuleEngine
-		_commerceReturnAccountEntryIdObjectValidationRuleEngineImpl;
+	private ObjectValidationRuleEngine _objectValidationRuleEngine;
 
 }

@@ -42,39 +42,36 @@ public class CommerceReturnReturnStatusObjectValidationRuleEngineImplTest
 
 	@Test
 	public void test() {
-		Map<String, Object> results =
-			_commerceReturnReturnStatusObjectValidationRuleEngineImpl.execute(
-				HashMapBuilder.<String, Object>put(
-					"entryDTO",
+		Map<String, Object> results = _objectValidationRuleEngine.execute(
+			HashMapBuilder.<String, Object>put(
+				"entryDTO",
+				HashMapBuilder.put(
+					"properties",
 					HashMapBuilder.put(
-						"properties",
-						HashMapBuilder.put(
-							"r_commerceOrderToCommerceReturns_commerceOrderId",
-							RandomTestUtil.randomLong()
-						).build()
+						"r_commerceOrderToCommerceReturns_commerceOrderId",
+						RandomTestUtil.randomLong()
 					).build()
-				).build(),
-				null);
+				).build()
+			).build(),
+			null);
 
 		Assert.assertFalse(
 			GetterUtil.getBoolean(results.get("validationCriteriaMet")));
 
-		results =
-			_commerceReturnReturnStatusObjectValidationRuleEngineImpl.execute(
-				HashMapBuilder.<String, Object>put(
-					"entryDTO",
+		results = _objectValidationRuleEngine.execute(
+			HashMapBuilder.<String, Object>put(
+				"entryDTO",
+				HashMapBuilder.put(
+					"properties",
 					HashMapBuilder.put(
-						"properties",
+						"returnStatus",
 						HashMapBuilder.put(
-							"returnStatus",
-							HashMapBuilder.put(
-								"key",
-								CommerceReturnConstants.RETURN_STATUS_DRAFT
-							).build()
+							"key", CommerceReturnConstants.RETURN_STATUS_DRAFT
 						).build()
 					).build()
-				).build(),
-				null);
+				).build()
+			).build(),
+			null);
 
 		Assert.assertTrue(
 			GetterUtil.getBoolean(results.get("validationCriteriaMet")));
@@ -83,7 +80,6 @@ public class CommerceReturnReturnStatusObjectValidationRuleEngineImplTest
 	@Inject(
 		filter = "component.name=com.liferay.commerce.internal.object.validation.rule.CommerceReturnReturnStatusObjectValidationRuleEngineImpl"
 	)
-	private ObjectValidationRuleEngine
-		_commerceReturnReturnStatusObjectValidationRuleEngineImpl;
+	private ObjectValidationRuleEngine _objectValidationRuleEngine;
 
 }

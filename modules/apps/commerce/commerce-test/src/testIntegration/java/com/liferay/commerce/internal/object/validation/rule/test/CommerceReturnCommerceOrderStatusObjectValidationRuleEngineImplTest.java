@@ -51,21 +51,18 @@ public class CommerceReturnCommerceOrderStatusObjectValidationRuleEngineImplTest
 
 	@Test
 	public void test() throws Exception {
-		Map<String, Object> results =
-			_commerceReturnCommerceOrderStatusObjectValidationRuleEngineImpl.
-				execute(
-					HashMapBuilder.<String, Object>put(
-						"entryDTO",
-						HashMapBuilder.put(
-							"properties",
-							HashMapBuilder.put(
-								"r_commerceOrderToCommerceReturns_" +
-									"commerceOrderId",
-								commerceOrder.getCommerceOrderId()
-							).build()
-						).build()
-					).build(),
-					null);
+		Map<String, Object> results = _objectValidationRuleEngine.execute(
+			HashMapBuilder.<String, Object>put(
+				"entryDTO",
+				HashMapBuilder.put(
+					"properties",
+					HashMapBuilder.put(
+						"r_commerceOrderToCommerceReturns_" + "commerceOrderId",
+						commerceOrder.getCommerceOrderId()
+					).build()
+				).build()
+			).build(),
+			null);
 
 		Assert.assertFalse(
 			GetterUtil.getBoolean(results.get("validationCriteriaMet")));
@@ -104,21 +101,18 @@ public class CommerceReturnCommerceOrderStatusObjectValidationRuleEngineImplTest
 			commerceOrder, CommerceOrderConstants.ORDER_STATUS_COMPLETED,
 			user.getUserId(), true);
 
-		results =
-			_commerceReturnCommerceOrderStatusObjectValidationRuleEngineImpl.
-				execute(
-					HashMapBuilder.<String, Object>put(
-						"entryDTO",
-						HashMapBuilder.put(
-							"properties",
-							HashMapBuilder.put(
-								"r_commerceOrderToCommerceReturns_" +
-									"commerceOrderId",
-								commerceOrder.getCommerceOrderId()
-							).build()
-						).build()
-					).build(),
-					null);
+		results = _objectValidationRuleEngine.execute(
+			HashMapBuilder.<String, Object>put(
+				"entryDTO",
+				HashMapBuilder.put(
+					"properties",
+					HashMapBuilder.put(
+						"r_commerceOrderToCommerceReturns_" + "commerceOrderId",
+						commerceOrder.getCommerceOrderId()
+					).build()
+				).build()
+			).build(),
+			null);
 
 		Assert.assertTrue(
 			GetterUtil.getBoolean(results.get("validationCriteriaMet")));
@@ -134,16 +128,15 @@ public class CommerceReturnCommerceOrderStatusObjectValidationRuleEngineImplTest
 	@Inject
 	private CommerceOrderLocalService _commerceOrderLocalService;
 
-	@Inject(
-		filter = "component.name=com.liferay.commerce.internal.object.validation.rule.CommerceReturnCommerceOrderStatusObjectValidationRuleEngineImpl"
-	)
-	private ObjectValidationRuleEngine
-		_commerceReturnCommerceOrderStatusObjectValidationRuleEngineImpl;
-
 	@Inject
 	private CommerceShipmentItemLocalService _commerceShipmentItemLocalService;
 
 	@Inject
 	private CommerceShipmentLocalService _commerceShipmentLocalService;
+
+	@Inject(
+		filter = "component.name=com.liferay.commerce.internal.object.validation.rule.CommerceReturnCommerceOrderStatusObjectValidationRuleEngineImpl"
+	)
+	private ObjectValidationRuleEngine _objectValidationRuleEngine;
 
 }
