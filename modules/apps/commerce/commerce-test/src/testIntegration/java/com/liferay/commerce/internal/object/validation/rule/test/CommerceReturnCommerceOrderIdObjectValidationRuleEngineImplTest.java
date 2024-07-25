@@ -47,7 +47,7 @@ public class CommerceReturnCommerceOrderIdObjectValidationRuleEngineImplTest
 				HashMapBuilder.put(
 					"properties",
 					HashMapBuilder.put(
-						"r_commerceOrderToCommerceReturns_" + "commerceOrderId",
+						"r_commerceOrderToCommerceReturns_commerceOrderId",
 						commerceOrder.getCommerceOrderId()
 					).build()
 				).build()
@@ -56,7 +56,7 @@ public class CommerceReturnCommerceOrderIdObjectValidationRuleEngineImplTest
 				HashMapBuilder.put(
 					"properties",
 					HashMapBuilder.put(
-						"r_commerceOrderToCommerceReturns_" + "commerceOrderId",
+						"r_commerceOrderToCommerceReturns_commerceOrderId",
 						commerceOrder.getCommerceOrderId()
 					).build()
 				).build()
@@ -72,7 +72,7 @@ public class CommerceReturnCommerceOrderIdObjectValidationRuleEngineImplTest
 				HashMapBuilder.put(
 					"properties",
 					HashMapBuilder.put(
-						"r_commerceOrderToCommerceReturns_" + "commerceOrderId",
+						"r_commerceOrderToCommerceReturns_commerceOrderId",
 						RandomTestUtil.randomLong()
 					).build()
 				).build()
@@ -81,7 +81,7 @@ public class CommerceReturnCommerceOrderIdObjectValidationRuleEngineImplTest
 				HashMapBuilder.put(
 					"properties",
 					HashMapBuilder.put(
-						"r_commerceOrderToCommerceReturns_" + "commerceOrderId",
+						"r_commerceOrderToCommerceReturns_commerceOrderId",
 						commerceOrder.getCommerceOrderId()
 					).build()
 				).build()
@@ -97,7 +97,7 @@ public class CommerceReturnCommerceOrderIdObjectValidationRuleEngineImplTest
 				HashMapBuilder.put(
 					"properties",
 					HashMapBuilder.put(
-						"r_commerceOrderToCommerceReturns_" + "commerceOrderId",
+						"r_commerceOrderToCommerceReturns_commerceOrderId",
 						commerceOrder.getCommerceOrderId()
 					).build()
 				).build()
