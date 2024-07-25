@@ -130,14 +130,14 @@ public class PortalImplEscapeRedirectTest {
 		};
 		_redirectURLSettingsImpl.securityMode = "domain";
 
-		// Allow request Host header
+		// Allow request host header
 
 		Assert.assertEquals(
 			"https://" + _HOSTNAME_PORTAL_DOMAIN + ":8080",
 			_portalImpl.escapeRedirect(
 				"https://" + _HOSTNAME_PORTAL_DOMAIN + ":8080"));
 
-		// Allow Virtual Hosts
+		// Allow virtual host
 
 		Assert.assertEquals(
 			"https://" + _HOSTNAME_VIRTUAL_HOST + ":8080",
