@@ -226,3 +226,31 @@ export async function setSegmentName({
 
 	await page.getByPlaceholder('Segment').fill(segmentName);
 }
+
+export async function viewSegmentCriteriaCard({
+	criteriaRowIndex,
+	criteriaRowValue,
+	page,
+	parent,
+}: {
+	criteriaRowIndex: number;
+	criteriaRowValue: string;
+	page: Page;
+	parent?: Locator;
+}) {
+	let criteriaRowText;
+
+	if (parent) {
+		criteriaRowText = parent.locator('.criteria-row').nth(criteriaRowIndex);
+	}
+	else {
+		criteriaRowText = page.locator('.criteria-row').nth(criteriaRowIndex);
+	}
+
+	criteriaRowText = await criteriaRowText.textContent();
+	criteriaRowText = criteriaRowText.replace(/\s/g, '');
+
+	criteriaRowValue = criteriaRowValue.replace(/\s/g, '');
+
+	expect(criteriaRowText).toEqual(criteriaRowValue);
+}
