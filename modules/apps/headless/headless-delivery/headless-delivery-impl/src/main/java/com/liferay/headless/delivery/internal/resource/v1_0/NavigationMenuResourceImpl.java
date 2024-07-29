@@ -288,7 +288,6 @@ public class NavigationMenuResourceImpl extends BaseNavigationMenuResourceImpl {
 
 		String defaultLanguageId = LocaleUtil.toLanguageId(
 			LocaleUtil.getDefault());
-
 		String preferredLanguageId =
 			contextAcceptLanguage.getPreferredLanguageId();
 

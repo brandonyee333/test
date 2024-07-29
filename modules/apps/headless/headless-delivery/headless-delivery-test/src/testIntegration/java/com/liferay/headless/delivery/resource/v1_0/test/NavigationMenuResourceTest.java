@@ -390,18 +390,12 @@ public class NavigationMenuResourceTest
 		NavigationMenuResource.Builder builder =
 			NavigationMenuResource.builder();
 
-		Locale builderLocale = LocaleUtil.getDefault();
-
-		if (locale != null) {
-			builderLocale = locale;
-		}
-
 		return builder.authentication(
 			"test@liferay.com", PropsValues.DEFAULT_ADMIN_PASSWORD
 		).header(
 			"X-Accept-All-Languages", "true"
 		).locale(
-			builderLocale
+			(locale == null) ? LocaleUtil.getDefault() : locale
 		).build();
 	}
 
