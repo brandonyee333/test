@@ -95,16 +95,21 @@ export async function dragAndDropCriteriaItem({
 
 export async function editCriteriaAttributeValue({
 	attributeValue,
+	index = 0,
 	page,
 }: {
 	attributeValue: string;
+	index?: number;
 	page: Page;
 }) {
 	await page
 		.locator('input[data-testid="attribute-value-string-input"]')
+		.nth(index)
 		.click();
+
 	await page
 		.locator('input[data-testid="attribute-value-string-input"]')
+		.nth(index)
 		.fill(attributeValue);
 }
 
