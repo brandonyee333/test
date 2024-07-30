@@ -30,43 +30,36 @@ export function getMultiple(
 ) {
 	let precisionAdjustment = 0;
 
-	if (Math.floor(incrementalOrderQuantity) !== incrementalOrderQuantity) {
+	if (!Number.isInteger(incrementalOrderQuantity)) {
 		precisionAdjustment = incrementalOrderQuantity
 			.toString()
 			.split('.')[1].length;
 	}
 
-	if (Math.floor(multipleQuantity) !== multipleQuantity) {
+	if (!Number.isInteger(multipleQuantity)) {
 		const multipleAdjustment = multipleQuantity
 			.toString()
 			.split('.')[1].length;
-
-		precisionAdjustment =
-			precisionAdjustment > multipleAdjustment
-				? precisionAdjustment
-				: multipleAdjustment;
+		precisionAdjustment = Math.max(precisionAdjustment, multipleAdjustment);
 	}
-
-	let unitOfMeasureMultiple = incrementalOrderQuantity;
-	let itemMultiple = multipleQuantity;
 
 	if (precisionAdjustment > 0) {
-		unitOfMeasureMultiple =
-			incrementalOrderQuantity * 10 * precisionAdjustment;
-		itemMultiple = multipleQuantity * 10 * precisionAdjustment;
+		const scale = Math.pow(10, precisionAdjustment);
+		incrementalOrderQuantity *= scale;
+		multipleQuantity *= scale;
 	}
 
-	const small = Math.min(unitOfMeasureMultiple, itemMultiple);
-	const large = Math.max(unitOfMeasureMultiple, itemMultiple);
-	let multiple = 0;
+	const small = Math.min(incrementalOrderQuantity, multipleQuantity);
+	const large = Math.max(incrementalOrderQuantity, multipleQuantity);
 
-	for (multiple = large; multiple < small * large; multiple += large) {
-		if (multiple % small === 0) {
-			return Number(multiple / Math.pow(10, precisionAdjustment)).toFixed(
-				precision
-			);
-		}
+	let multiple = large;
+	while (multiple % small !== 0) {
+		multiple += large;
 	}
+
+	const result = multiple / Math.pow(10, precisionAdjustment);
+
+	return Number(result.toFixed(precision));
 }
 
 export function getProductMaxQuantity(
