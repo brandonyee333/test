@@ -65,66 +65,66 @@ public class PortalWebShieldedContainerInitializer
 	public void initialize(ServletContext servletContext)
 		throws ServletException {
 
-		if (PropsValues.PORTLET_SESSION_REPLICATE_ENABLED) {
-			if (ServerDetector.isTomcat()) {
-				DependencyManagerSyncUtil.registerSyncCallable(
-					() -> {
-						Class<?> clazz = Class.forName(
-							"com.liferay.support.tomcat.session." +
-								"LiferayDeltaManager",
-							true, ServletContext.class.getClassLoader());
+		if (PropsValues.PORTLET_SESSION_REPLICATE_ENABLED &&
+			ServerDetector.isTomcat()) {
 
-						Method initMethod = clazz.getMethod(
-							"init", Function.class, Function.class);
+			DependencyManagerSyncUtil.registerSyncCallable(
+				() -> {
+					Class<?> clazz = Class.forName(
+						"com.liferay.support.tomcat.session." +
+							"LiferayDeltaManager",
+						true, ServletContext.class.getClassLoader());
 
-						initMethod.invoke(
-							null,
-							new Function<InputStream, ObjectInputStream>() {
+					Method initMethod = clazz.getMethod(
+						"init", Function.class, Function.class);
 
-								@Override
-								public ObjectInputStream apply(
-									InputStream inputStream) {
+					initMethod.invoke(
+						null,
+						new Function<InputStream, ObjectInputStream>() {
 
-									try {
-										return new AnnotatedObjectInputStream(
-											inputStream);
-									}
-									catch (IOException ioException) {
-										throw new RuntimeException(ioException);
-									}
+							@Override
+							public ObjectInputStream apply(
+								InputStream inputStream) {
+
+								try {
+									return new AnnotatedObjectInputStream(
+										inputStream);
 								}
-
-							},
-							new Function<OutputStream, ObjectOutputStream>() {
-
-								@Override
-								public ObjectOutputStream apply(
-									OutputStream outputStream) {
-
-									try {
-										return new AnnotatedObjectOutputStream(
-											outputStream);
-									}
-									catch (IOException ioException) {
-										throw new RuntimeException(ioException);
-									}
+								catch (IOException ioException) {
+									throw new RuntimeException(ioException);
 								}
+							}
 
-							});
+						},
+						new Function<OutputStream, ObjectOutputStream>() {
 
-						return null;
-					});
-			}
-			else {
-				FilterRegistration.Dynamic dynamic = servletContext.addFilter(
-					SessionReplicationFilter.class.getName(),
-					new SessionReplicationFilter());
+							@Override
+							public ObjectOutputStream apply(
+								OutputStream outputStream) {
 
-				dynamic.setAsyncSupported(true);
+								try {
+									return new AnnotatedObjectOutputStream(
+										outputStream);
+								}
+								catch (IOException ioException) {
+									throw new RuntimeException(ioException);
+								}
+							}
 
-				dynamic.addMappingForUrlPatterns(
-					EnumSet.of(DispatcherType.REQUEST), false, "/*");
-			}
+						});
+
+					return null;
+				});
+		}
+		else if (PropsValues.PORTLET_SESSION_REPLICATE_ENABLED) {
+			FilterRegistration.Dynamic dynamic = servletContext.addFilter(
+				SessionReplicationFilter.class.getName(),
+				new SessionReplicationFilter());
+
+			dynamic.setAsyncSupported(true);
+
+			dynamic.addMappingForUrlPatterns(
+				EnumSet.of(DispatcherType.REQUEST), false, "/*");
 		}
 
 		if (PropsValues.HEALTH_CHECK_DATA_SOURCE_ENABLED) {
