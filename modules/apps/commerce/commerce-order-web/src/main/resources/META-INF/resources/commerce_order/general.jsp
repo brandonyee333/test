@@ -12,7 +12,7 @@ CommerceOrderEditDisplayContext commerceOrderEditDisplayContext = (CommerceOrder
 
 CommerceOrder commerceOrder = commerceOrderEditDisplayContext.getCommerceOrder();
 
-boolean hasUpdateModelPermission = commerceOrderEditDisplayContext.hasModelPermission(commerceOrder, ActionKeys.UPDATE);
+boolean hasPermission = commerceOrderEditDisplayContext.hasModelPermission(commerceOrder, ActionKeys.UPDATE);
 %>
 
 <div class="row">
@@ -73,8 +73,8 @@ boolean hasUpdateModelPermission = commerceOrderEditDisplayContext.hasModelPermi
 								"size", "default"
 							).build()
 						%>'
-						actionLabel='<%= hasUpdateModelPermission ? LanguageUtil.get(request, Validator.isNull(purchaseOrderNumber) ? "add" : "edit") : null %>'
-						actionUrl="<%= hasUpdateModelPermission ? editPurchaseOrderNumberURL: null %>"
+						actionLabel='<%= hasPermission ? LanguageUtil.get(request, Validator.isNull(purchaseOrderNumber) ? "add" : "edit") : null %>'
+						actionUrl="<%= hasPermission ? editPurchaseOrderNumberURL: null %>"
 						elementClasses="py-3"
 						title='<%= LanguageUtil.get(request, "purchase-order-number") %>'
 					>
@@ -116,7 +116,7 @@ boolean hasUpdateModelPermission = commerceOrderEditDisplayContext.hasModelPermi
 					String billingCommerceAddressActionTitle = null;
 					String billingCommerceAddressActionURL = null;
 
-					if (hasUpdateModelPermission) {
+					if (hasPermission) {
 						billingCommerceAddressActionLabel = LanguageUtil.get(request, (billingCommerceAddress == null) ? "add" : "edit");
 						billingCommerceAddressActionTitle = LanguageUtil.get(request, (billingCommerceAddress == null) ? "add-billing-address" : "edit-billing-address");
 
@@ -192,7 +192,7 @@ boolean hasUpdateModelPermission = commerceOrderEditDisplayContext.hasModelPermi
 					String shippingCommerceAddressActionTitle = null;
 					String shippingCommerceAddressActionURL = null;
 
-					if (hasUpdateModelPermission) {
+					if (hasPermission) {
 						shippingCommerceAddressActionLabel = LanguageUtil.get(request, (shippingCommerceAddress == null) ? "add" : "edit");
 						shippingCommerceAddressActionTitle = LanguageUtil.get(request, (shippingCommerceAddress == null) ? "add-shipping-address" : "edit-shipping-address");
 
@@ -349,7 +349,7 @@ boolean hasUpdateModelPermission = commerceOrderEditDisplayContext.hasModelPermi
 					String requestedDeliveryDateActionLabel = null;
 					String requestedDeliveryDateActionURL = null;
 
-					if (hasUpdateModelPermission) {
+					if (hasPermission) {
 						requestedDeliveryDateActionLabel = LanguageUtil.get(request, (requestedDeliveryDate == null) ? "add" : "edit");
 						requestedDeliveryDateActionURL = editRequestedDeliveryDateURL;
 					}
@@ -412,8 +412,8 @@ boolean hasUpdateModelPermission = commerceOrderEditDisplayContext.hasModelPermi
 								"size", "default"
 							).build()
 						%>'
-						actionLabel='<%= hasUpdateModelPermission ? LanguageUtil.get(request, Validator.isNull(printedNote) ? "add" : "edit") : null %>'
-						actionUrl="<%= hasUpdateModelPermission ? editPrintedNoteURL: null %>"
+						actionLabel='<%= hasPermission ? LanguageUtil.get(request, Validator.isNull(printedNote) ? "add" : "edit") : null %>'
+						actionUrl="<%= hasPermission ? editPrintedNoteURL: null %>"
 						elementClasses="py-3"
 						title='<%= LanguageUtil.get(request, "printed-note") %>'
 					>
