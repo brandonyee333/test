@@ -166,6 +166,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ContentTypes;
+import com.liferay.portal.kernel.util.EscapableLocalizableFunction;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizer;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -6829,52 +6830,27 @@ public class JournalArticleLocalServiceImpl
 			journalGroupServiceConfiguration, serviceContext,
 			subscriptionSender);
 
-		String articleContent = StringPool.BLANK;
-
-		try {
-			PortletRequestModel portletRequestModel = null;
-
-			if (!ExportImportThreadLocal.isImportInProcess()) {
-				portletRequestModel = new PortletRequestModel(
-					serviceContext.getLiferayPortletRequest(),
-					serviceContext.getLiferayPortletResponse());
-			}
-
-			JournalArticleDisplay articleDisplay = getArticleDisplay(
-				article, article.getDDMTemplateKey(), Constants.VIEW,
-				LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()), 1,
-				portletRequestModel, serviceContext.getThemeDisplay());
-
-			articleContent = articleDisplay.getContent();
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
-		}
-
-		subscriptionSender.setContextAttribute(
-			"[$ARTICLE_CONTENT$]", articleContent, false);
-
-		String folderName = StringPool.BLANK;
-
-		if (folder != null) {
-			folderName = folder.getName();
-		}
-		else if (article.getFolderId() ==
-					JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-
-			folderName = _language.get(LocaleUtil.getSiteDefault(), "home");
-		}
-
-		subscriptionSender.setContextAttributes(
-			"[$FOLDER_NAME$]", folderName, "[$ARTICLE_STATUS$]",
-			_language.get(
-				LocaleUtil.getSiteDefault(),
-				WorkflowConstants.getStatusLabel(article.getStatus())));
 		subscriptionSender.setCurrentUserId(userId);
 		subscriptionSender.setEntryTitle(
 			article.getTitle(serviceContext.getLanguageId()));
+		subscriptionSender.setLocalizedContextAttribute(
+			"[$ARTICLE_CONTENT$]",
+			new EscapableLocalizableFunction(
+				locale -> _getArticleContent(article, locale, serviceContext)));
+		subscriptionSender.setLocalizedContextAttribute(
+			"[$ARTICLE_STATUS$]",
+			new EscapableLocalizableFunction(
+				locale -> _language.get(
+					locale,
+					WorkflowConstants.getStatusLabel(article.getStatus()))));
+
+		JournalFolder folderCopy = folder;
+
+		subscriptionSender.setLocalizedContextAttribute(
+			"[$FOLDER_NAME$]",
+			new EscapableLocalizableFunction(
+				locale -> _getFolderName(article, locale, folderCopy)));
+
 		subscriptionSender.setNotificationType(_getNotificationType(action));
 		subscriptionSender.setReplyToAddress(fromAddress);
 
@@ -7624,11 +7600,41 @@ public class JournalArticleLocalServiceImpl
 		return ddmFormValues;
 	}
 
-	private String _getArticleDiffs(
-		JournalArticle article, ServiceContext serviceContext) {
+	private String _getArticleContent(
+		JournalArticle article, Locale locale, ServiceContext serviceContext) {
 
-		JournalArticle previousApprovedArticle = getPreviousApprovedArticle(
-			article);
+		String articleContent = StringPool.BLANK;
+
+		try {
+			PortletRequestModel portletRequestModel = null;
+
+			if (!ExportImportThreadLocal.isImportInProcess()) {
+				portletRequestModel = new PortletRequestModel(
+					serviceContext.getLiferayPortletRequest(),
+					serviceContext.getLiferayPortletResponse());
+			}
+
+			JournalArticleDisplay articleDisplay = getArticleDisplay(
+				article, article.getDDMTemplateKey(), Constants.VIEW,
+				LocaleUtil.toLanguageId(locale), 1, portletRequestModel,
+				serviceContext.getThemeDisplay());
+
+			articleContent = articleDisplay.getContent();
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
+			}
+		}
+
+		return articleContent;
+	}
+
+	private String _getArticleDiffs(
+		JournalArticle article, Locale locale, ServiceContext serviceContext) {
+
+		JournalArticle previousApprovedArticle =
+			journalArticleLocalService.getPreviousApprovedArticle(article);
 
 		try {
 			PortletRequestModel portletRequestModel = null;
@@ -7645,8 +7651,8 @@ public class JournalArticleLocalServiceImpl
 			String articleDiffs = _journalHelper.diffHtml(
 				article.getGroupId(), article.getArticleId(),
 				previousApprovedArticle.getVersion(), article.getVersion(),
-				LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault()),
-				portletRequestModel, serviceContext.getThemeDisplay());
+				LocaleUtil.toLanguageId(locale), portletRequestModel,
+				serviceContext.getThemeDisplay());
 
 			return _diffHtml.replaceStyles(articleDiffs);
 		}
@@ -7704,6 +7710,23 @@ public class JournalArticleLocalServiceImpl
 
 			return null;
 		}
+	}
+
+	private String _getFolderName(
+		JournalArticle article, Locale locale, JournalFolder folder) {
+
+		String folderName = StringPool.BLANK;
+
+		if (folder != null) {
+			folderName = folder.getName();
+		}
+		else if (article.getFolderId() ==
+					JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+
+			folderName = _language.get(locale, "home");
+		}
+
+		return folderName;
 	}
 
 	private Map<Locale, String> _getLocalizedBodyMap(
@@ -8042,12 +8065,8 @@ public class JournalArticleLocalServiceImpl
 		ServiceContext serviceContext, SubscriptionSender subscriptionSender) {
 
 		subscriptionSender.setClassName(article.getModelClassName());
-		subscriptionSender.setContextAttribute(
-			"[$ARTICLE_DIFFS$]", _getArticleDiffs(article, serviceContext),
-			false);
 		subscriptionSender.setContextAttributes(
-			"[$ARTICLE_ID$]", article.getArticleId(), "[$ARTICLE_TITLE$]",
-			article.getTitle(serviceContext.getLanguageId()), "[$ARTICLE_URL$]",
+			"[$ARTICLE_ID$]", article.getArticleId(), "[$ARTICLE_URL$]",
 			articleURL, "[$ARTICLE_VERSION$]", article.getVersion());
 		subscriptionSender.setContextCreatorUserPrefix("ARTICLE");
 		subscriptionSender.setCreatorUserId(article.getUserId());
@@ -8056,6 +8075,14 @@ public class JournalArticleLocalServiceImpl
 		subscriptionSender.setHtmlFormat(true);
 		subscriptionSender.setLocalizedBodyMap(
 			_getLocalizedBodyMap(emailType, journalGroupServiceConfiguration));
+		subscriptionSender.setLocalizedContextAttribute(
+			"[$ARTICLE_DIFFS$]",
+			new EscapableLocalizableFunction(
+				locale -> _getArticleDiffs(article, locale, serviceContext)));
+		subscriptionSender.setLocalizedContextAttribute(
+			"[$ARTICLE_TITLE$]",
+			new EscapableLocalizableFunction(
+				locale -> article.getTitle(LocaleUtil.toLanguageId(locale))));
 		subscriptionSender.setLocalizedSubjectMap(
 			_getLocalizedSubjectMap(
 				emailType, journalGroupServiceConfiguration));
