@@ -106,7 +106,6 @@ public class FaroSubscriptionDisplayTest {
 			),
 			JSONFactoryUtil.createJSONObject(
 				faroSubscriptionDisplay.getIndividualsCounts()));
-
 		_assertCounts(
 			JSONUtil.put(
 				"monthlyValues",
@@ -200,7 +199,6 @@ public class FaroSubscriptionDisplayTest {
 			),
 			JSONFactoryUtil.createJSONObject(
 				faroSubscriptionDisplay.getIndividualsCounts()));
-
 		_assertCounts(
 			JSONUtil.put(
 				"monthlyValues",
@@ -294,7 +292,6 @@ public class FaroSubscriptionDisplayTest {
 			),
 			JSONFactoryUtil.createJSONObject(
 				faroSubscriptionDisplay.getIndividualsCounts()));
-
 		_assertCounts(
 			JSONUtil.put(
 				"monthlyValues",
@@ -414,7 +411,6 @@ public class FaroSubscriptionDisplayTest {
 			),
 			JSONFactoryUtil.createJSONObject(
 				faroSubscriptionDisplay.getIndividualsCounts()));
-
 		_assertCounts(
 			JSONUtil.put(
 				"monthlyValues",
@@ -525,7 +521,6 @@ public class FaroSubscriptionDisplayTest {
 			),
 			JSONFactoryUtil.createJSONObject(
 				faroSubscriptionDisplay.getIndividualsCounts()));
-
 		_assertCounts(
 			JSONUtil.put(
 				"monthlyValues", JSONFactoryUtil.createJSONObject()
@@ -643,7 +638,6 @@ public class FaroSubscriptionDisplayTest {
 			),
 			JSONFactoryUtil.createJSONObject(
 				faroSubscriptionDisplay.getIndividualsCounts()));
-
 		_assertCounts(
 			JSONUtil.put(
 				"monthlyValues",
