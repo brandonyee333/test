@@ -121,11 +121,11 @@ public class SynonymSearchTest {
 	public void testSearchOnLocalesWithDefaultSynonymFilters()
 		throws Exception {
 
-		doAssertSearch("efectivo", Field.TITLE, LocaleUtil.SPAIN, 2);
 		doAssertSearch("dxp", Field.TITLE, LocaleUtil.US, 2);
-		doAssertSearch("glücklich", Field.TITLE, LocaleUtil.GERMANY, 2);
-		doAssertSearch("feliz", Field.TITLE, LocaleUtil.BRAZIL, 2);
+		doAssertSearch("efectivo", Field.TITLE, LocaleUtil.SPAIN, 2);
 		doAssertSearch("effectief", Field.TITLE, LocaleUtil.NETHERLANDS, 2);
+		doAssertSearch("feliz", Field.TITLE, LocaleUtil.BRAZIL, 2);
+		doAssertSearch("glücklich", Field.TITLE, LocaleUtil.GERMANY, 2);
 		doAssertSearch("hatékony", Field.TITLE, LocaleUtil.HUNGARY, 2);
 		doAssertSearch("maison", Field.TITLE, LocaleUtil.FRANCE, 2);
 	}
