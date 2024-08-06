@@ -12,7 +12,6 @@ import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalFolderServiceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ExternalReferenceCodeModel;
 import com.liferay.portal.kernel.model.GroupedModel;
@@ -94,6 +93,12 @@ public class ExternalReferenceCodeModelDocumentContributorTest {
 		_testContribute(_user);
 	}
 
+	private boolean _isSearchEngineSolr() {
+		SearchEngine searchEngine = _searchEngineHelper.getSearchEngine();
+
+		return Objects.equals(searchEngine.getVendor(), "Solr");
+	}
+
 	private void _testContribute(
 			ExternalReferenceCodeModel externalReferenceCodeModel)
 		throws Exception {
@@ -127,12 +132,6 @@ public class ExternalReferenceCodeModelDocumentContributorTest {
 			countSearchRequest);
 
 		Assert.assertTrue(countSearchResponse.getCount() == 1);
-	}
-
-	private boolean _isSearchEngineSolr() {
-		SearchEngine searchEngine = _searchEngineHelper.getSearchEngine();
-
-		return Objects.equals(searchEngine.getVendor(), "Solr");
 	}
 
 	private BlogsEntry _blogsEntry;
