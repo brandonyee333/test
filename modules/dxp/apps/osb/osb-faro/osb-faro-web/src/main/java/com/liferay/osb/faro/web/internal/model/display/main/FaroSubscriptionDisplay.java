@@ -209,12 +209,13 @@ public class FaroSubscriptionDisplay {
 			contactsEngineClient.getIndividualsCreatedSinceCount(
 				faroProject, _lastAnniversaryDate);
 
+		_individualsStatus = getStatus(
+			_individualsCountSinceLastAnniversary, _individualsLimit);
+
 		_pageViewsCountSinceLastAnniversary = GetterUtil.getInteger(
 			cerebroEngineClient.getPageViews(
 				faroProject, _lastAnniversaryDate, new Date()));
 
-		_individualsStatus = getStatus(
-			_individualsCountSinceLastAnniversary, _individualsLimit);
 		_pageViewsStatus = getStatus(
 			_pageViewsCountSinceLastAnniversary, _pageViewsLimit);
 	}
