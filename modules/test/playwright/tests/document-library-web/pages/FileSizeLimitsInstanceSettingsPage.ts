@@ -19,7 +19,7 @@ export class FileSizeLimitsInstanceSettingsPage {
 		this.instanceSettingsPage = new InstanceSettingsPage(page);
 	}
 
-    async goto() {
+	async goto() {
 		await this.instanceSettingsPage.goToInstanceSetting(
 			'Documents and Media',
 			'File Size Limits'

@@ -19,7 +19,7 @@ export class FileSizeLimitsSiteSettingsPage {
 		this.siteSettingsPage = new SiteSettingsPage(page);
 	}
 
-    async goto() {
+	async goto() {
 		await this.siteSettingsPage.goToSiteSetting(
 			'Documents and Media',
 			'File Size Limits'

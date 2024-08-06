@@ -19,7 +19,7 @@ export class FileSizeLimitsSystemSettingsPage {
 		this.systemSettingsPage = new SystemSettingsPage(page);
 	}
 
-    async goto() {
+	async goto() {
 		await this.systemSettingsPage.goToSystemSetting(
 			'Documents and Media',
 			'File Size Limits'

@@ -8,14 +8,13 @@
 import {test} from '@playwright/test';
 
 import {FileSizeLimitsInstanceSettingsPage} from '../pages/FileSizeLimitsInstanceSettingsPage';
-import {FileSizeLimitsSystemSettingsPage} from '../pages/FileSizeLimitsSystemSettingsPage';
 import {FileSizeLimitsSiteSettingsPage} from '../pages/FileSizeLimitsSiteSettingsPage';
+import {FileSizeLimitsSystemSettingsPage} from '../pages/FileSizeLimitsSystemSettingsPage';
 
 const documentLibraryPagesTest = test.extend<{
 	fileSizeLimitsInstanceSettingsPage: FileSizeLimitsInstanceSettingsPage;
 	fileSizeLimitsSiteSettingsPage: FileSizeLimitsSiteSettingsPage;
 	fileSizeLimitsSystemSettingsPage: FileSizeLimitsSystemSettingsPage;
-
 }>({
 	fileSizeLimitsInstanceSettingsPage: async ({page}, use) => {
 		await use(new FileSizeLimitsInstanceSettingsPage(page));
