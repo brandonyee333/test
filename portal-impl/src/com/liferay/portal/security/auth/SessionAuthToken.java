@@ -67,7 +67,6 @@ public class SessionAuthToken implements AuthToken {
 		}
 
 		long plid = liferayPortletURL.getPlid();
-
 		String portletId = liferayPortletURL.getPortletId();
 
 		String key = PortletPermissionUtil.getPrimaryKey(plid, portletId);
@@ -251,9 +250,11 @@ public class SessionAuthToken implements AuthToken {
 
 		HttpSession httpSession = originalHttpServletRequest.getSession();
 
-		String tokenKey = WebKeys.AUTHENTICATION_TOKEN.concat(key);
+		String authenticationTokenKey = WebKeys.AUTHENTICATION_TOKEN.concat(
+			key);
 
-		Object sessionAuthenticationToken = httpSession.getAttribute(tokenKey);
+		Object sessionAuthenticationToken = httpSession.getAttribute(
+			authenticationTokenKey);
 
 		if (createToken &&
 			((sessionAuthenticationToken == null) ||
@@ -262,7 +263,8 @@ public class SessionAuthToken implements AuthToken {
 			sessionAuthenticationToken = PwdGenerator.getPassword(
 				PropsValues.AUTH_TOKEN_LENGTH);
 
-			httpSession.setAttribute(tokenKey, sessionAuthenticationToken);
+			httpSession.setAttribute(
+				authenticationTokenKey, sessionAuthenticationToken);
 		}
 
 		return sessionAuthenticationToken;
@@ -276,9 +278,10 @@ public class SessionAuthToken implements AuthToken {
 
 		HttpSession httpSession = originalHttpServletRequest.getSession();
 
-		String tokenKey = WebKeys.AUTHENTICATION_TOKEN.concat(key);
+		String authenticationTokenKey = WebKeys.AUTHENTICATION_TOKEN.concat(
+			key);
 
-		httpSession.setAttribute(tokenKey, _NULL_TOKEN);
+		httpSession.setAttribute(authenticationTokenKey, _NULL_TOKEN);
 	}
 
 	private static final String _CSRF = "#CSRF";
