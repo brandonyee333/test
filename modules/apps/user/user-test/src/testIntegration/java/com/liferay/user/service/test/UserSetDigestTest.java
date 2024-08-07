@@ -70,9 +70,6 @@ public class UserSetDigestTest {
 
 		String digest = user.getDigest();
 
-		Assert.assertEquals(
-			"User digest should be empty after user creation", digest,
-			StringPool.BLANK);
 		Assert.assertTrue(digest.isEmpty());
 	}
 
