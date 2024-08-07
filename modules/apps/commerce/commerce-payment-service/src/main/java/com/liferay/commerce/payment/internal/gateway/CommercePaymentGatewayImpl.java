@@ -235,12 +235,15 @@ public class CommercePaymentGatewayImpl implements CommercePaymentGateway {
 			CommercePaymentEntry commercePaymentEntry)
 		throws PortalException {
 
+		// LPD-20381 Get transaction code before it is captured by the commerce
+		// payment integration
+
+		String transactionCode = commercePaymentEntry.getTransactionCode();
+
 		CommercePaymentIntegration commercePaymentIntegration =
 			_commercePaymentHelper.getCommercePaymentIntegration(
 				commercePaymentEntry.getCommerceChannelId(),
 				commercePaymentEntry.getPaymentIntegrationKey());
-
-		String transactionCode = commercePaymentEntry.getTransactionCode();
 
 		CommercePaymentEntry capturedCommercePaymentEntry =
 			commercePaymentIntegration.capture(
