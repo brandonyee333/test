@@ -1140,10 +1140,10 @@ public class Main {
 			Heading heading = (Heading)node;
 
 			if ((heading.getLevel() == 1) && heading.hasChildren()) {
-				TextCollectingVisitor collectingVisitor =
+				TextCollectingVisitor textCollectingVisitor =
 					new TextCollectingVisitor();
 
-				return collectingVisitor.collectAndGetText(heading);
+				return textCollectingVisitor.collectAndGetText(heading);
 			}
 		}
 
@@ -1165,9 +1165,7 @@ public class Main {
 	}
 
 	private String _getTitle(String text) {
-		Node root = _parser.parse(text);
-
-		return _getTitle(root);
+		return _getTitle(_parser.parse(text));
 	}
 
 	private String _getUuid(String text) {
