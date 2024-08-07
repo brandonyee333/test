@@ -110,7 +110,7 @@ public class JournalEditArticleDisplayContextTest {
 				new Class<?>[0]));
 	}
 
-	private MockLiferayPortletRenderRequest _getMockLiferayPortletRenderRequest(
+	private RenderRequest _getMockLiferayPortletRenderRequest(
 			JournalArticle journalArticle)
 		throws Exception {
 
@@ -118,13 +118,12 @@ public class JournalEditArticleDisplayContextTest {
 			new MockLiferayPortletRenderRequest();
 
 		mockLiferayPortletRenderRequest.addParameter(
-			"articleId", journalArticle.getArticleId());
+			"mvcRenderCommandName", "/journal/edit_article");
 		mockLiferayPortletRenderRequest.addParameter(
 			"resourcePrimKey",
 			String.valueOf(journalArticle.getResourcePrimKey()));
-
 		mockLiferayPortletRenderRequest.addParameter(
-			"mvcRenderCommandName", "/journal/edit_article");
+			"articleId", journalArticle.getArticleId());
 
 		String path = "/edit_article.jsp";
 
@@ -138,10 +137,8 @@ public class JournalEditArticleDisplayContextTest {
 		themeDisplay.setCompany(
 			_companyLocalService.getCompany(_group.getCompanyId()));
 		themeDisplay.setLocale(LocaleUtil.getDefault());
-
 		themeDisplay.setPermissionChecker(
 			PermissionCheckerFactoryUtil.create(_user));
-
 		themeDisplay.setScopeGroupId(_group.getGroupId());
 		themeDisplay.setUser(_user);
 
