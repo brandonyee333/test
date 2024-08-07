@@ -148,7 +148,7 @@
 					"indexed": true,
 					"indexedAsKeyword": false,
 					"label": {
-						"en_US": "Payment Entry Id"
+						"en_US": "Payment Entry ID"
 					},
 					"localized": false,
 					"name": "paymentEntryId",
