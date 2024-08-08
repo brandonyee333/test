@@ -97,9 +97,9 @@ public class DBInspectorUnitTest {
 		DBInspector dbInspector = new DBInspector(_connection);
 
 		Assert.assertTrue(
-			dbInspector.isObjectTable(Arrays.asList(1L), "l_1_tableName"));
-		Assert.assertTrue(
 			dbInspector.isObjectTable(Arrays.asList(1L), "L_1_tableName"));
+		Assert.assertTrue(
+			dbInspector.isObjectTable(Arrays.asList(1L), "l_1_tableName"));
 	}
 
 	private void _mockTableWithColumn(String tableName, String columnName)
