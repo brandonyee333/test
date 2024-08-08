@@ -11,11 +11,9 @@
 ItemSelectorViewDescriptorRendererDisplayContext itemSelectorViewDescriptorRendererDisplayContext = (ItemSelectorViewDescriptorRendererDisplayContext)request.getAttribute(ItemSelectorViewDescriptorRendererDisplayContext.class.getName());
 
 ItemSelectorViewDescriptor<Object> itemSelectorViewDescriptor = itemSelectorViewDescriptorRendererDisplayContext.getItemSelectorViewDescriptor();
-
-SearchContainer<Object> searchContainer = itemSelectorViewDescriptorRendererDisplayContext.getSearchContainer();
-
-boolean multipleSelection = itemSelectorViewDescriptorRendererDisplayContext.isMultipleSelection();
 boolean listView = Objects.equals(itemSelectorViewDescriptorRendererDisplayContext.getDisplayStyle(), "list");
+boolean multipleSelection = itemSelectorViewDescriptorRendererDisplayContext.isMultipleSelection();
+SearchContainer<Object> searchContainer = itemSelectorViewDescriptorRendererDisplayContext.getSearchContainer();
 %>
 
 <c:if test="<%= itemSelectorViewDescriptor.isShowManagementToolbar() %>">
