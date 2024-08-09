@@ -73,6 +73,7 @@ const FrontendDataSet = ({
 	nestedItemsReferenceKey,
 	onActionDropdownItemClick,
 	onBulkActionItemClick,
+	onItemSelected,
 	onSelect,
 	overrideEmptyResultView,
 	pagination,
@@ -81,6 +82,8 @@ const FrontendDataSet = ({
 	selectedItemsKey,
 	selectionType,
 	showManagementBar,
+	showBulkActionsManagementBar,
+	showBulkActionsManagementBarActions,
 	showPagination,
 	showSearch,
 	sidePanelId,
@@ -431,6 +434,10 @@ const FrontendDataSet = ({
 			return newSelectedItems;
 		});
 	}, [selectedItemsValue, items, selectedItemsKey]);
+
+	useEffect(() => {
+		onItemSelected(selectedItems);
+	}, [selectedItems]);
 
 	useEffect(() => {
 		if (View || !contentRendererModuleURL) {
@@ -888,6 +895,8 @@ const FrontendDataSet = ({
 				selectedItemsValue,
 				selectionType,
 				sidePanelId: dataSetSupportSidePanelId,
+				showBulkActionsManagementBar,
+				showBulkActionsManagementBarActions,
 				sorts,
 				style,
 				toggleItemInlineEdit,
@@ -957,9 +966,12 @@ FrontendDataSet.defaultProps = {
 	inlineEditingSettings: null,
 	items: null,
 	itemsActions: null,
+	onItemSelected: () => {},
 	selectedItemsKey: 'id',
 	selectionType: 'multiple',
 	showManagementBar: true,
+	showBulkActionsManagementBar: true,
+	showBulkActionsManagementBarActions: true,
 	showPagination: true,
 	showSearch: true,
 	sorts: [],
