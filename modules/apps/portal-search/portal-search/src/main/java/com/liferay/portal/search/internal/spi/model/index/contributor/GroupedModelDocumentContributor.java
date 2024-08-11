@@ -43,13 +43,13 @@ public class GroupedModelDocumentContributor
 		long siteGroupId = GroupUtil.getSiteGroupId(
 			groupLocalService, groupedModel.getGroupId());
 
-		document.addKeyword(
-			"groupExternalReferenceCode", _getGroupERC(siteGroupId));
 		document.addKeyword(Field.GROUP_ID, siteGroupId);
 
+		document.addKeyword(Field.SCOPE_GROUP_ID, groupedModel.getGroupId());
+		document.addKeyword(
+			"groupExternalReferenceCode", _getGroupERC(siteGroupId));
 		document.addKeyword(
 			"scopeGroupExternalReferenceCode", _getScopeGroupERC(groupedModel));
-		document.addKeyword(Field.SCOPE_GROUP_ID, groupedModel.getGroupId());
 	}
 
 	@Reference
