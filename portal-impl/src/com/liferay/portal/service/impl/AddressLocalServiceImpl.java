@@ -335,7 +335,8 @@ public class AddressLocalServiceImpl extends AddressLocalServiceBaseImpl {
 		throws PortalException {
 
 		return updateExternalReferenceCode(
-			getAddress(addressId), externalReferenceCode);
+			addressPersistence.findByPrimaryKey(addressId),
+			externalReferenceCode);
 	}
 
 	protected SearchContext buildSearchContext(
