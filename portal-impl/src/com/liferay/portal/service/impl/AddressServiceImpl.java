@@ -166,7 +166,8 @@ public class AddressServiceImpl extends AddressServiceBaseImpl {
 		throws PortalException {
 
 		return updateExternalReferenceCode(
-			getAddress(addressId), externalReferenceCode);
+			addressPersistence.findByPrimaryKey(addressId),
+			externalReferenceCode);
 	}
 
 }
