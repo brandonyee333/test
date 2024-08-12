@@ -41,16 +41,16 @@ public class RenderRestController extends BaseRestController {
 
 		log(jwt, _log);
 
+		StringBuilder sb = new StringBuilder();
+
 		JSONObject jsonObject = new JSONObject(json);
 
 		long orderId = jsonObject.getLong("orderId");
 
-		StringBuilder sb = new StringBuilder();
-
 		sb.append(
 			WebClient.create(
 				StringBundler.concat(
-					lxcDXPServerProtocol, "://", lxcDXPMainDomain,
+					getLXCDXPURL(),
 					"/o/headless-commerce-delivery-cart/v1.0/carts/", orderId,
 					"/payment-url")
 			).get(
@@ -77,6 +77,13 @@ public class RenderRestController extends BaseRestController {
 					jsonObject.getString("transactionCode"));
 		}
 
+		if (jsonObject.has("transactionCode")) {
+			sb.append("&entryId=");
+			sb.append(
+				_getPaymentEntryId(
+					jwt, orderId, jsonObject.getString("transactionCode")));
+		}
+
 		if (jsonObject.has("fundingSource")) {
 			sb.append("&fundingSource=");
 			sb.append(jsonObject.getString("fundingSource"));
@@ -85,13 +92,6 @@ public class RenderRestController extends BaseRestController {
 		if (jsonObject.has("redirect")) {
 			sb.append("&redirect=");
 			sb.append(jsonObject.getBoolean("redirect"));
-		}
-
-		if (jsonObject.has("transactionCode")) {
-			sb.append("&entryId=");
-			sb.append(
-				_getPaymentEntryId(
-					jwt, orderId, jsonObject.getString("transactionCode")));
 		}
 
 		return new ResponseEntity<>(
@@ -125,7 +125,7 @@ public class RenderRestController extends BaseRestController {
 			}
 		}
 
-		return null;
+		return StringPool.BLANK;
 	}
 
 	private static final Log _log = LogFactory.getLog(
