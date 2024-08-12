@@ -5,6 +5,8 @@
 
 package com.liferay.paypal;
 
+import com.liferay.petra.string.StringBundler;
+
 import java.util.Objects;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -46,61 +48,59 @@ public class CaptureRestController extends BaseRestController {
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 
-			JSONObject typeSettingsJSONObject = jsonObject.getJSONObject(
-				"typeSettings");
-
 			JSONObject commercePaymentEntryJSONObject =
 				jsonObject.getJSONObject("commercePaymentEntry");
 
-			String transactionCodeCapture =
-				commercePaymentEntryJSONObject.getString("transactionCode") +
-					"/capture";
+			JSONObject typeSettingsJSONObject = jsonObject.getJSONObject(
+				"typeSettings");
 
 			String authorization = getAuthorization(
 				typeSettingsJSONObject.getString("clientId"),
 				typeSettingsJSONObject.getString("clientSecret"),
 				typeSettingsJSONObject.getString("mode"));
 
-			String captureOrderResponse = WebClient.create(
-				getPayPalURL(typeSettingsJSONObject.getString("mode"))
-			).post(
-			).uri(
-				"v2/checkout/orders/" + transactionCodeCapture
-			).contentType(
-				MediaType.APPLICATION_JSON
-			).header(
-				HttpHeaders.AUTHORIZATION, "Bearer " + authorization
-			).header(
-				"PayPal-Partner-Attribution-Id", "Liferay_SP_PPCP_API"
-			).header(
-				"PayPal-Request-Id",
-				commercePaymentEntryJSONObject.getString(
-					"commercePaymentEntryId")
-			).header(
-				"Prefer", "return=representation"
-			).exchangeToMono(
-				clientResponse -> {
-					HttpStatus httpStatus = clientResponse.statusCode();
+			JSONObject captureResponseJSONObject = new JSONObject(
+				WebClient.create(
+					getPayPalURL(typeSettingsJSONObject.getString("mode"))
+				).post(
+				).uri(
+					StringBundler.concat(
+						"v2/checkout/orders/",
+						commercePaymentEntryJSONObject.getString(
+							"transactionCode"),
+						"/capture")
+				).contentType(
+					MediaType.APPLICATION_JSON
+				).header(
+					HttpHeaders.AUTHORIZATION, "Bearer " + authorization
+				).header(
+					"PayPal-Partner-Attribution-Id", "Liferay_SP_PPCP_API"
+				).header(
+					"PayPal-Request-Id",
+					commercePaymentEntryJSONObject.getString(
+						"commercePaymentEntryId")
+				).header(
+					"Prefer", "return=representation"
+				).exchangeToMono(
+					clientResponse -> {
+						HttpStatus httpStatus = clientResponse.statusCode();
 
-					if (!httpStatus.is2xxSuccessful()) {
-						throw new RuntimeException(httpStatus.toString());
+						if (!httpStatus.is2xxSuccessful()) {
+							throw new RuntimeException(httpStatus.toString());
+						}
+
+						return clientResponse.bodyToMono(String.class);
 					}
-
-					return clientResponse.bodyToMono(String.class);
-				}
-			).block();
-
-			JSONObject captureOrderResponseJSONObject = new JSONObject(
-				captureOrderResponse);
+				).block());
 
 			if (Objects.equals(
-					captureOrderResponseJSONObject.getString("status"),
+					captureResponseJSONObject.getString("status"),
 					"COMPLETED")) {
 
 				paymentStatus = "0";
 
 				JSONObject purchaseUnitsJSONObject =
-					captureOrderResponseJSONObject.getJSONArray(
+					captureResponseJSONObject.getJSONArray(
 						"purchase_units"
 					).getJSONObject(
 						0
