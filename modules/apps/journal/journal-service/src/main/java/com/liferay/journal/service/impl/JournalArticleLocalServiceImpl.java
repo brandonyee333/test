@@ -6844,12 +6844,12 @@ public class JournalArticleLocalServiceImpl
 					locale,
 					WorkflowConstants.getStatusLabel(article.getStatus()))));
 
-		JournalFolder folderCopy = folder;
+		JournalFolder finalFolder = folder;
 
 		subscriptionSender.setLocalizedContextAttribute(
 			"[$FOLDER_NAME$]",
 			new EscapableLocalizableFunction(
-				locale -> _getFolderName(article, locale, folderCopy)));
+				locale -> _getFolderName(article, locale, finalFolder)));
 
 		subscriptionSender.setNotificationType(_getNotificationType(action));
 		subscriptionSender.setReplyToAddress(fromAddress);
