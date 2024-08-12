@@ -104,8 +104,6 @@ public class NotificationsRestController extends BaseRestController {
 			return false;
 		}
 
-		StringBundler sb = new StringBundler(15);
-
 		String transmissionId =
 			"\"" + headers.get("paypal-transmission-id") + "\"";
 		String transmissionTime =
@@ -116,22 +114,6 @@ public class NotificationsRestController extends BaseRestController {
 			"\"" + headers.get("paypal-transmission-sig") + "\"";
 		String webhookId =
 			"\"" + b9k3PayPalWebhookJSONObject.getString("webhookId") + "\"";
-
-		sb.append("{\"transmission_id\": ");
-		sb.append(transmissionId);
-		sb.append(",\"transmission_time\": ");
-		sb.append(transmissionTime);
-		sb.append(",\"cert_url\": ");
-		sb.append(certURL);
-		sb.append(",\"auth_algo\": ");
-		sb.append(authAlgo);
-		sb.append(",\"transmission_sig\": ");
-		sb.append(transmissionSig);
-		sb.append(",\"webhook_id\": ");
-		sb.append(webhookId);
-		sb.append(",\"webhook_event\": ");
-		sb.append(json);
-		sb.append("}");
 
 		String verifySignatureResponse = WebClient.create(
 			getPayPalURL(b9k3PayPalWebhookJSONObject.getString("mode"))
@@ -146,7 +128,12 @@ public class NotificationsRestController extends BaseRestController {
 			HttpHeaders.AUTHORIZATION,
 			"Bearer " + getAuthorization(b9k3PayPalWebhookJSONObject)
 		).bodyValue(
-			sb.toString()
+			StringBundler.concat(
+				"{\"transmission_id\": ", transmissionId,
+				",\"transmission_time\": ", transmissionTime, ",\"cert_url\": ",
+				certURL, ",\"auth_algo\": ", authAlgo,
+				",\"transmission_sig\": ", transmissionSig, ",\"webhook_id\": ",
+				webhookId, ",\"webhook_event\": ", json, "}")
 		).retrieve(
 		).bodyToMono(
 			String.class
