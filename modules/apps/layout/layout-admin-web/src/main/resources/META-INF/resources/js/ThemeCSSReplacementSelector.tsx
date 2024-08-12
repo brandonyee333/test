@@ -44,7 +44,7 @@ export default function ThemeCSSReplacementSelector({
 		<>
 			<p className="text-secondary">
 				{Liferay.Language.get(
-					'use-this-client-extension-to-replace-the-theme-css'
+					"use-this-client-extension-to-replace-the-theme's-css"
 				)}
 			</p>
 
