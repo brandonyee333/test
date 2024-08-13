@@ -76,6 +76,14 @@ public class ParallelExecutor<T> {
 		return waitFor(timeoutSeconds);
 	}
 
+	public String getDescription() {
+		return _description;
+	}
+
+	public String getID() {
+		return String.valueOf(_id);
+	}
+
 	public boolean hasFailedTask() {
 		if ((_taskRunnable == null) ||
 			(_taskRunnable.getFailedTaskCount() <= 0)) {
@@ -84,14 +92,6 @@ public class ParallelExecutor<T> {
 		}
 
 		return true;
-	}
-
-	public String getDescription() {
-		return _description;
-	}
-
-	public String getID() {
-		return String.valueOf(_id);
 	}
 
 	public void shutdownNow() {
