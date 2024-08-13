@@ -150,7 +150,16 @@ public class OpenIdConnectAuthenticationHandlerImpl
 
 			List<String> emails = jwtClaimsSet.getStringListClaim("emails");
 
-			claims.put("email", emails.get(0));
+			if (emails == null) {
+				String email = jwtClaimsSet.getStringClaim("email");
+
+				if (email != null) {
+					claims.put("email", email);
+				}
+			}
+			else {
+				claims.put("email", emails.get(0));
+			}
 
 			claims.put(
 				"family_name", jwtClaimsSet.getStringClaim("family_name"));
