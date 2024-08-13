@@ -134,7 +134,6 @@ public class ExportImportIndexedFieldsTest {
 
 		Map<String, Serializable> setttingMap =
 			exportImportConfiguration.getSettingsMap();
-
 		User user = TestPropsValues.getUser();
 
 		Map<String, String> map = HashMapBuilder.put(
