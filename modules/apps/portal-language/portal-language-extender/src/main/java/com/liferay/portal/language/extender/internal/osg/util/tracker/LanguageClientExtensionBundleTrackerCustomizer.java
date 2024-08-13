@@ -26,7 +26,6 @@ import com.liferay.portal.language.override.service.PLOEntryLocalService;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 
 import java.net.URL;
 import java.net.URLConnection;
@@ -82,8 +81,6 @@ public class LanguageClientExtensionBundleTrackerCustomizer
 				Company company = _companyLocalService.getCompanyByWebId(
 					PropsUtil.get(PropsKeys.COMPANY_DEFAULT_WEB_ID));
 
-				long companyId = company.getCompanyId();
-
 				String languageId = StringUtil.removeSubstring(
 					fileName, "Language_");
 
@@ -92,19 +89,20 @@ public class LanguageClientExtensionBundleTrackerCustomizer
 
 				URLConnection urlConnection = url.openConnection();
 
-				Reader reader = new InputStreamReader(
-					urlConnection.getInputStream(), StandardCharsets.UTF_8);
-
 				Properties properties = new Properties();
 
-				properties.load(reader);
+				properties.load(
+					new InputStreamReader(
+						urlConnection.getInputStream(),
+						StandardCharsets.UTF_8));
 
 				User user = _userLocalService.getUserByScreenName(
-					companyId,
+					company.getCompanyId(),
 					PropsUtil.get(PropsKeys.DEFAULT_ADMIN_SCREEN_NAME));
 
 				_ploEntryLocalService.importPLOEntries(
-					companyId, user.getUserId(), languageId, properties);
+					company.getCompanyId(), user.getUserId(), languageId,
+					properties);
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
