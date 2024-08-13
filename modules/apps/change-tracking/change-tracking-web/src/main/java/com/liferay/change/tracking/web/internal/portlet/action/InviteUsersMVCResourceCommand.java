@@ -301,71 +301,72 @@ public class InviteUsersMVCResourceCommand
 			long ctCollectionId, long receiverUserId, ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		if (UserNotificationManagerUtil.isDeliver(
+		if (!UserNotificationManagerUtil.isDeliver(
 				receiverUserId, CTPortletKeys.PUBLICATIONS, 0,
 				UserNotificationDefinition.NOTIFICATION_TYPE_ADD_ENTRY,
 				UserNotificationDeliveryConstants.TYPE_EMAIL)) {
 
-			try {
-				User user = themeDisplay.getUser();
+			return;
+		}
 
-				String fromName = user.getFullName();
-				String fromAddress = user.getEmailAddress();
+		try {
+			CTCollectionEmailConfiguration ctCollectionEmailConfiguration =
+				_configurationProvider.getCompanyConfiguration(
+					CTCollectionEmailConfiguration.class,
+					themeDisplay.getCompanyId());
 
-				User receiverUser = _userLocalService.getUser(receiverUserId);
+			User user = themeDisplay.getUser();
 
-				String toName = receiverUser.getFullName();
-				String toAddress = receiverUser.getEmailAddress();
+			String fromName = user.getFullName();
+			String fromAddress = user.getEmailAddress();
 
-				CTCollectionEmailConfiguration ctCollectionEmailConfiguration =
-					_configurationProvider.getCompanyConfiguration(
-						CTCollectionEmailConfiguration.class,
-						themeDisplay.getCompanyId());
+			User receiverUser = _userLocalService.getUser(receiverUserId);
 
-				ServiceContext serviceContext =
-					ServiceContextThreadLocal.getServiceContext();
+			String toName = receiverUser.getFullName();
+			String toAddress = receiverUser.getEmailAddress();
 
-				SubscriptionSender subscriptionSender =
-					new SubscriptionSender();
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
 
-				subscriptionSender.setContextAttributes(
-					"[$FROM_ADDRESS$]", fromAddress, "[$FROM_NAME$]", fromName,
-					"[$PORTAL_URL$]", themeDisplay.getPortalURL(),
-					"[$TO_NAME$]", toName);
-				subscriptionSender.setContextAttribute(
-					"[$PORTAL_PUBLICATION_REVIEW_CHANGES_URL$]",
-					PortletURLBuilder.create(
-						_portal.getControlPanelPortletURL(
-							serviceContext.getRequest(),
-							serviceContext.getScopeGroup(),
-							CTPortletKeys.PUBLICATIONS, 0, 0,
-							PortletRequest.RENDER_PHASE)
-					).setMVCRenderCommandName(
-						"/change_tracking/view_changes"
-					).setParameter(
-						"ctCollectionId", ctCollectionId
-					).buildString(),
-					false);
-				subscriptionSender.setFrom(fromAddress, fromName);
-				subscriptionSender.setHtmlFormat(true);
-				subscriptionSender.addRuntimeSubscribers(toAddress, toName);
-				subscriptionSender.setServiceContext(serviceContext);
-				subscriptionSender.setLocalizedBodyMap(
-					_localization.getMap(
-						ctCollectionEmailConfiguration.invitationEmailBody()));
-				subscriptionSender.setLocalizedSubjectMap(
-					_localization.getMap(
-						ctCollectionEmailConfiguration.
-							invitationEmailSubject()));
-				subscriptionSender.setMailId("ctCollectionId", ctCollectionId);
-				subscriptionSender.setNotificationType(
-					UserNotificationDefinition.NOTIFICATION_TYPE_ADD_ENTRY);
+			SubscriptionSender subscriptionSender = new SubscriptionSender();
 
-				subscriptionSender.flushNotificationsAsync();
-			}
-			catch (Exception exception) {
-				throw new SystemException(exception);
-			}
+			subscriptionSender.setContextAttribute(
+				"[$PORTAL_PUBLICATION_REVIEW_CHANGES_URL$]",
+				PortletURLBuilder.create(
+					_portal.getControlPanelPortletURL(
+						serviceContext.getRequest(),
+						serviceContext.getScopeGroup(),
+						CTPortletKeys.PUBLICATIONS, 0, 0,
+						PortletRequest.RENDER_PHASE)
+				).setMVCRenderCommandName(
+					"/change_tracking/view_changes"
+				).setParameter(
+					"ctCollectionId", ctCollectionId
+				).buildString(),
+				false);
+			subscriptionSender.setContextAttributes(
+				"[$FROM_ADDRESS$]", fromAddress, "[$FROM_NAME$]", fromName,
+				"[$PORTAL_URL$]", themeDisplay.getPortalURL(), "[$TO_NAME$]",
+				toName);
+			subscriptionSender.setFrom(fromAddress, fromName);
+			subscriptionSender.setHtmlFormat(true);
+			subscriptionSender.setLocalizedBodyMap(
+				_localization.getMap(
+					ctCollectionEmailConfiguration.invitationEmailBody()));
+			subscriptionSender.setLocalizedSubjectMap(
+				_localization.getMap(
+					ctCollectionEmailConfiguration.invitationEmailSubject()));
+			subscriptionSender.setMailId("ctCollectionId", ctCollectionId);
+			subscriptionSender.setNotificationType(
+				UserNotificationDefinition.NOTIFICATION_TYPE_ADD_ENTRY);
+			subscriptionSender.setServiceContext(serviceContext);
+
+			subscriptionSender.addRuntimeSubscribers(toAddress, toName);
+
+			subscriptionSender.flushNotificationsAsync();
+		}
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
@@ -374,34 +375,36 @@ public class InviteUsersMVCResourceCommand
 			ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		if (UserNotificationManagerUtil.isDeliver(
+		if (!UserNotificationManagerUtil.isDeliver(
 				receiverUserId, CTPortletKeys.PUBLICATIONS, 0,
 				UserNotificationDefinition.NOTIFICATION_TYPE_ADD_ENTRY,
 				UserNotificationDeliveryConstants.TYPE_WEBSITE)) {
 
-			User user = themeDisplay.getUser();
-
-			NotificationEvent notificationEvent = new NotificationEvent(
-				System.currentTimeMillis(), CTPortletKeys.PUBLICATIONS,
-				JSONUtil.put(
-					"classPK", ctCollectionId
-				).put(
-					"notificationType",
-					UserNotificationDefinition.NOTIFICATION_TYPE_ADD_ENTRY
-				).put(
-					"roleValue", roleValue
-				).put(
-					"userId", user.getUserId()
-				).put(
-					"userName", user.getFullName()
-				));
-
-			notificationEvent.setDeliveryType(
-				UserNotificationDeliveryConstants.TYPE_WEBSITE);
-
-			_userNotificationEventLocalService.addUserNotificationEvent(
-				receiverUserId, notificationEvent);
+			return;
 		}
+
+		User user = themeDisplay.getUser();
+
+		NotificationEvent notificationEvent = new NotificationEvent(
+			System.currentTimeMillis(), CTPortletKeys.PUBLICATIONS,
+			JSONUtil.put(
+				"classPK", ctCollectionId
+			).put(
+				"notificationType",
+				UserNotificationDefinition.NOTIFICATION_TYPE_ADD_ENTRY
+			).put(
+				"roleValue", roleValue
+			).put(
+				"userId", user.getUserId()
+			).put(
+				"userName", user.getFullName()
+			));
+
+		notificationEvent.setDeliveryType(
+			UserNotificationDeliveryConstants.TYPE_WEBSITE);
+
+		_userNotificationEventLocalService.addUserNotificationEvent(
+			receiverUserId, notificationEvent);
 	}
 
 	@Reference
