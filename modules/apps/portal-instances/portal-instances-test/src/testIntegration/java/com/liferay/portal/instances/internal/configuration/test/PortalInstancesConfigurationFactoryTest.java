@@ -120,7 +120,7 @@ public class PortalInstancesConfigurationFactoryTest {
 		ConfigurationTestUtil.saveConfiguration(
 			_configuration,
 			HashMapDictionaryBuilder.<String, Object>put(
-				"createDefaultAdmin", "false"
+				"addDefaultAdminUser", "false"
 			).put(
 				"mx", _domain
 			).put(

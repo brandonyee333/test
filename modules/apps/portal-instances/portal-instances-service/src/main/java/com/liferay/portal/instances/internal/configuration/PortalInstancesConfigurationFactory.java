@@ -63,7 +63,7 @@ public class PortalInstancesConfigurationFactory {
 		if (company == null) {
 			company = _companyLocalService.addCompany(
 				null, webId, virtualHostname, mx, maxUsers, active,
-				portalInstancesConfiguration.createDefaultAdmin(),
+				portalInstancesConfiguration.addDefaultAdminUser(),
 				portalInstancesConfiguration.adminPassword(),
 				portalInstancesConfiguration.adminScreenName(),
 				portalInstancesConfiguration.adminEmailAddress(),
