@@ -1266,7 +1266,7 @@ public class LayoutsImporterImpl implements LayoutsImporter {
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Invalid display page template for: " + fileName,
+					"Invalid page template collection for: " + fileName,
 					exception);
 			}
 
