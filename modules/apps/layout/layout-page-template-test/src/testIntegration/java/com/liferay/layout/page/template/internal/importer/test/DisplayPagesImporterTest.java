@@ -89,7 +89,6 @@ public class DisplayPagesImporterTest {
 
 		Assert.assertEquals(
 			"Display Page Template One", layoutPageTemplateEntry.getName());
-
 		Assert.assertEquals(0, layoutPageTemplateEntry.getClassTypeId());
 
 		_validateLayoutPageTemplateStructure(
@@ -111,7 +110,6 @@ public class DisplayPagesImporterTest {
 					LayoutPageTemplateConstants.
 						PARENT_LAYOUT_PAGE_TEMPLATE_COLLECTION_ID_DEFAULT,
 					LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE));
-
 		Assert.assertNotNull(
 			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
 				_group.getGroupId(),
@@ -206,7 +204,6 @@ public class DisplayPagesImporterTest {
 		Assert.assertEquals(
 			"com.liferay.portal.kernel.repository.model.FileEntry",
 			layoutPageTemplateEntry.getClassName());
-
 		Assert.assertEquals(
 			"Display Page Template Collection",
 			layoutPageTemplateEntry.getName());
@@ -217,8 +214,6 @@ public class DisplayPagesImporterTest {
 			_layoutPageTemplateStructureLocalService.
 				fetchLayoutPageTemplateStructure(
 					_group.getGroupId(), layoutPageTemplateEntry.getPlid());
-
-		Assert.assertNotNull(layoutPageTemplateStructure);
 
 		LayoutStructure layoutStructure = LayoutStructure.of(
 			layoutPageTemplateStructure.getDefaultSegmentsExperienceData());
@@ -244,12 +239,9 @@ public class DisplayPagesImporterTest {
 			collectionStyledLayoutStructureItem =
 				(CollectionStyledLayoutStructureItem)layoutStructureItem;
 
-		Assert.assertNotNull(collectionStyledLayoutStructureItem);
-
 		JSONObject collectionJSONObject =
 			collectionStyledLayoutStructureItem.getCollectionJSONObject();
 
-		Assert.assertNotNull(collectionJSONObject);
 		Assert.assertEquals(
 			"com.liferay.asset.kernel.model.AssetCategory",
 			collectionJSONObject.getString("itemType"));
@@ -263,8 +255,6 @@ public class DisplayPagesImporterTest {
 	private void _assertLayoutPageTemplateCollections(
 		LayoutPageTemplateCollection layoutPageTemplateCollection) {
 
-		Assert.assertNotNull(layoutPageTemplateCollection);
-
 		Assert.assertEquals(
 			3,
 			_layoutPageTemplateEntryService.
@@ -273,7 +263,6 @@ public class DisplayPagesImporterTest {
 					layoutPageTemplateCollection.
 						getLayoutPageTemplateCollectionId(),
 					LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE));
-
 		Assert.assertNotNull(
 			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
 				_group.getGroupId(),
@@ -290,8 +279,6 @@ public class DisplayPagesImporterTest {
 					layoutPageTemplateCollection.
 						getLayoutPageTemplateCollectionId(),
 					LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE);
-
-		Assert.assertNotNull(blogsDisplaylayoutPageTemplateCollection);
 
 		Assert.assertNotNull(
 			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
@@ -310,8 +297,6 @@ public class DisplayPagesImporterTest {
 						layoutPageTemplateCollection.
 							getLayoutPageTemplateCollectionId(),
 						LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE);
-
-		Assert.assertNotNull(webContentDisplaylayoutPageTemplateCollection);
 
 		Assert.assertEquals(
 			1,
@@ -332,9 +317,6 @@ public class DisplayPagesImporterTest {
 							getLayoutPageTemplateCollectionId(),
 						LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE);
 
-		Assert.assertNotNull(
-			basicWebContentDisplaylayoutPageTemplateCollection);
-
 		Assert.assertEquals(
 			1,
 			_layoutPageTemplateEntryService.
@@ -343,7 +325,6 @@ public class DisplayPagesImporterTest {
 					basicWebContentDisplaylayoutPageTemplateCollection.
 						getLayoutPageTemplateCollectionId(),
 					LayoutPageTemplateEntryTypeConstants.DISPLAY_PAGE));
-
 		Assert.assertNotNull(
 			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
 				_group.getGroupId(),
@@ -445,8 +426,6 @@ public class DisplayPagesImporterTest {
 
 	private void _validateLayoutPageTemplateStructure(
 		LayoutPageTemplateStructure layoutPageTemplateStructure) {
-
-		Assert.assertNotNull(layoutPageTemplateStructure);
 
 		LayoutStructure layoutStructure = LayoutStructure.of(
 			layoutPageTemplateStructure.getDefaultSegmentsExperienceData());
