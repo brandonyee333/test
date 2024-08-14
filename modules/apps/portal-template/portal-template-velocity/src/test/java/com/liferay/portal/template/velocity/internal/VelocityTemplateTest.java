@@ -111,8 +111,6 @@ public class VelocityTemplateTest {
 
 		_velocityEngine = new VelocityEngine();
 
-		boolean cacheEnabled = false;
-
 		ExtendedProperties extendedProperties = new FastExtendedProperties();
 
 		extendedProperties.setProperty(
@@ -138,7 +136,7 @@ public class VelocityTemplateTest {
 			VelocityEngine.RESOURCE_LOADER, "liferay");
 		extendedProperties.setProperty(
 			"liferay." + VelocityEngine.RESOURCE_LOADER + ".cache",
-			String.valueOf(cacheEnabled));
+			Boolean.FALSE.toString());
 		extendedProperties.setProperty(
 			"liferay." + VelocityEngine.RESOURCE_LOADER + ".class",
 			LiferayResourceLoader.class.getName());
@@ -162,10 +160,10 @@ public class VelocityTemplateTest {
 			StringUtil.merge(velocityEngineConfiguration.velocimacroLibrary()));
 		extendedProperties.setProperty(
 			VelocityEngine.VM_LIBRARY_AUTORELOAD,
-			String.valueOf(!cacheEnabled));
+			Boolean.TRUE.toString());
 		extendedProperties.setProperty(
 			VelocityEngine.VM_PERM_ALLOW_INLINE_REPLACE_GLOBAL,
-			String.valueOf(!cacheEnabled));
+			Boolean.TRUE.toString());
 
 		_velocityEngine.setExtendedProperties(extendedProperties);
 
