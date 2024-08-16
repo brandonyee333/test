@@ -29,7 +29,7 @@ export default function useBackgroundImageValue(
 			.then(({fileEntryId, url}) =>
 				loadBackgroundImageMediaQueries(elementId, {
 					...backgroundImage,
-					fileEntryId: fileEntryId || backgroundImage.fileEntryId,
+					fileEntryId,
 				}).then((mediaQueries) => ({
 					mediaQueries,
 					url,
@@ -50,14 +50,30 @@ function loadBackgroundImage(backgroundImage, getFieldValue) {
 		{...(backgroundImage || {}), defaultValue: backgroundImage?.url || ''},
 		null,
 		getFieldValue
-	).then((editableValue) => ({
-		fileEntryId: editableValue.fileEntryId || '',
-		url:
-			editableValue.fieldValue?.url ||
-			editableValue.url ||
-			editableValue ||
-			'',
-	}));
+	)
+		.then((editableValue) => {
+			const fileEntryId =
+				editableValue.fileEntryId || backgroundImage.fileEntryId || '';
+
+			if (!fileEntryId) {
+				return {editableValue, fileEntryId};
+			}
+
+			return ImageService.getFileEntry({fileEntryId}).then(
+				({fileEntryURL}) => ({editableValue, fileEntryURL})
+			);
+		})
+		.then(({editableValue, fileEntryId, fileEntryURL = ''}) => {
+			return {
+				fileEntryId,
+				url:
+					fileEntryURL ||
+					editableValue.fieldValue?.url ||
+					editableValue.url ||
+					editableValue ||
+					'',
+			};
+		});
 }
 
 function loadBackgroundImageMediaQueries(elementId, backgroundImage) {
