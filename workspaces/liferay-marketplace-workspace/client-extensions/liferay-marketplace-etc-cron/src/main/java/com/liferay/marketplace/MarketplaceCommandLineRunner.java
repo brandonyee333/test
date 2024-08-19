@@ -40,7 +40,7 @@ public class MarketplaceCommandLineRunner implements CommandLineRunner {
 
 	public void run(String... args) throws Exception {
 		if (_log.isInfoEnabled()) {
-			_log.info("Start processing Marketplace CronJob");
+			_log.info("Running...");
 		}
 
 		_processInProgressTrials();
@@ -188,7 +188,7 @@ public class MarketplaceCommandLineRunner implements CommandLineRunner {
 
 		if (page.getTotalCount() == 0) {
 			if (_log.isInfoEnabled()) {
-				_log.info("No Trials on hold to process");
+				_log.info("There are no on hold orders");
 			}
 
 			return;
@@ -198,7 +198,7 @@ public class MarketplaceCommandLineRunner implements CommandLineRunner {
 
 		if (!availabilityJSONObject.getBoolean("active")) {
 			if (_log.isInfoEnabled()) {
-				_log.info("No Trials seats to process");
+				_log.info("There are no available seats");
 			}
 
 			return;
@@ -209,20 +209,24 @@ public class MarketplaceCommandLineRunner implements CommandLineRunner {
 		for (Order order : page.getItems()) {
 			if (available == 0) {
 				if (_log.isInfoEnabled()) {
-					_log.info("Trials seats limit reached");
+					_log.info("There are no available seats");
 				}
 
 				break;
 			}
 
 			try {
-				_postTrialProvisioning(order);
+				if (_log.isInfoEnabled()) {
+					_log.info("Processing on hold order " + order.getId());
+				}
 
-				available--;
+				_postTrialProvisioning(order);
 
 				if (_log.isInfoEnabled()) {
 					_log.info("Processed on hold order " + order.getId());
 				}
+
+				available--;
 			}
 			catch (Exception exception) {
 				_log.error(exception);

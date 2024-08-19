@@ -278,7 +278,7 @@ public class KoroneikiRestController extends BaseRestController {
 		throws Exception {
 
 		if (_log.isInfoEnabled()) {
-			_log.info("Received order " + json);
+			_log.info("POST product purchase " + json);
 		}
 
 		JSONObject jsonObject = new JSONObject(json);
@@ -319,8 +319,8 @@ public class KoroneikiRestController extends BaseRestController {
 
 		if (_log.isInfoEnabled()) {
 			_log.info(
-				"Updating order " + commerceOrderJSONObject.getLong("id") +
-					" to processing status");
+				"Updating status for order " +
+					commerceOrderJSONObject.getLong("id") + " to processing");
 		}
 
 		order.setOrderStatus(() -> _COMMERCE_ORDER_STATUS_PROCESSING);
@@ -350,9 +350,9 @@ public class KoroneikiRestController extends BaseRestController {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Updating free order " +
+					"Updating status for free order " +
 						commerceOrderJSONObject.getLong("id") +
-							" to completed status");
+							" to completed");
 			}
 
 			order.setOrderStatus(() -> _COMMERCE_ORDER_STATUS_COMPLETED);
@@ -387,8 +387,9 @@ public class KoroneikiRestController extends BaseRestController {
 
 			if (_log.isInfoEnabled()) {
 				_log.info(
-					"Updating order " + commerceOrderJSONObject.getLong("id") +
-						" to completed status");
+					"Updating status for paid order " +
+						commerceOrderJSONObject.getLong("id") +
+							" to completed");
 			}
 
 			order.setOrderStatus(() -> _COMMERCE_ORDER_STATUS_COMPLETED);
