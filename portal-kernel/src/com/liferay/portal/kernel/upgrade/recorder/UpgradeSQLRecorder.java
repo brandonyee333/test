@@ -150,12 +150,12 @@ public class UpgradeSQLRecorder {
 		};
 	}
 
-	public static List<String> getFailedSQLStatements() {
-		return _failedSQLStatements;
+	public static List<String> getFailedSQLs() {
+		return _failedSQLs;
 	}
 
 	public static void start() {
-		_failedSQLStatements.clear();
+		_failedSQLs.clear();
 
 		_enabled = true;
 	}
@@ -164,23 +164,23 @@ public class UpgradeSQLRecorder {
 		_enabled = false;
 	}
 
-	private static <T> T _execute(SqlCallable<T> callable, Object object)
+	private static <T> T _execute(SQLCallable<T> sqlCallable, Object object)
 		throws SQLException {
 
 		try {
-			return callable.call();
+			return sqlCallable.call();
 		}
 		catch (SQLException sqlException) {
-			String sql = _extractSqlStatement(object);
+			String sql = _extractSQL(object);
 
 			if (sql != null) {
 				String message = sqlException.getMessage();
 
 				if (Validator.isBlank(message)) {
-					_failedSQLStatements.add("SQL: " + sql);
+					_failedSQLs.add("SQL: " + sql);
 				}
 				else {
-					_failedSQLStatements.add(
+					_failedSQLs.add(
 						StringBundler.concat(
 							"SQL: ", sql, ";\tError: ", message));
 				}
@@ -190,7 +190,7 @@ public class UpgradeSQLRecorder {
 		}
 	}
 
-	private static String _extractSqlStatement(Object object) {
+	private static String _extractSQL(Object object) {
 		if (object instanceof String) {
 			return (String)object;
 		}
@@ -335,10 +335,10 @@ public class UpgradeSQLRecorder {
 	}
 
 	private static boolean _enabled;
-	private static final List<String> _failedSQLStatements = new ArrayList<>();
+	private static final List<String> _failedSQLs = new ArrayList<>();
 
 	@FunctionalInterface
-	private interface SqlCallable<R> {
+	private interface SQLCallable<R> {
 
 		public R call() throws SQLException;
 
