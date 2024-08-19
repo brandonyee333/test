@@ -802,33 +802,33 @@ public class CallableStatementWrapper
 	}
 
 	@Override
-	public void setNCharacterStream(int parameterIndex, Reader value)
+	public void setNCharacterStream(int parameterIndex, Reader reader)
 		throws SQLException {
 
-		_callableStatement.setNCharacterStream(parameterIndex, value);
+		_callableStatement.setNCharacterStream(parameterIndex, reader);
 	}
 
 	@Override
 	public void setNCharacterStream(
-			int parameterIndex, Reader value, long length)
+			int parameterIndex, Reader reader, long length)
 		throws SQLException {
 
-		_callableStatement.setNCharacterStream(parameterIndex, value, length);
+		_callableStatement.setNCharacterStream(parameterIndex, reader, length);
 	}
 
 	@Override
-	public void setNCharacterStream(String parameterName, Reader value)
+	public void setNCharacterStream(String parameterName, Reader reader)
 		throws SQLException {
 
-		_callableStatement.setNCharacterStream(parameterName, value);
+		_callableStatement.setNCharacterStream(parameterName, reader);
 	}
 
 	@Override
 	public void setNCharacterStream(
-			String parameterName, Reader value, long length)
+			String parameterName, Reader reader, long length)
 		throws SQLException {
 
-		_callableStatement.setNCharacterStream(parameterName, value, length);
+		_callableStatement.setNCharacterStream(parameterName, reader, length);
 	}
 
 	@Override
