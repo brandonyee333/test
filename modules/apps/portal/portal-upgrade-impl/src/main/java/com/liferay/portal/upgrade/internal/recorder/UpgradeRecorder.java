@@ -10,7 +10,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.ReleaseManager;
-import com.liferay.portal.kernel.upgrade.recorder.UpgradeSQLStatementRecorder;
+import com.liferay.portal.kernel.upgrade.recorder.UpgradeSQLRecorder;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.version.Version;
@@ -49,7 +49,7 @@ public class UpgradeRecorder {
 	}
 
 	public List<String> getFailedSQLStatements() {
-		return UpgradeSQLStatementRecorder.getFailedSQLStatements();
+		return UpgradeSQLRecorder.getFailedSQLStatements();
 	}
 
 	public String getFinalSchemaVersion(String servletContextName) {
@@ -137,11 +137,11 @@ public class UpgradeRecorder {
 			(moduleSchemaVersions, schemaVersion) ->
 				moduleSchemaVersions._setInitial(schemaVersion));
 
-		UpgradeSQLStatementRecorder.start();
+		UpgradeSQLRecorder.start();
 	}
 
 	public void stop() {
-		UpgradeSQLStatementRecorder.stop();
+		UpgradeSQLRecorder.stop();
 
 		_filter(_errorMessages);
 		_filter(_warningMessages);

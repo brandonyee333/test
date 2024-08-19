@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * @author István András Dézsi
  */
-public class UpgradeSQLStatementRecorder {
+public class UpgradeSQLRecorder {
 
 	public static Connection getConnectionWrapper(Connection connection) {
 		if (!_enabled) {
