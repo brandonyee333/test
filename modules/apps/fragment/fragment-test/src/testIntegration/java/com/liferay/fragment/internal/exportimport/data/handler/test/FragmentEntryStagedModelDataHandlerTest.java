@@ -101,22 +101,22 @@ public class FragmentEntryStagedModelDataHandlerTest
 		Map<String, List<StagedModel>> dependentStagedModelsMap =
 			addDependentStagedModelsMap(stagingGroup);
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(
-				stagingGroup.getGroupId(), TestPropsValues.getUserId());
-
 		StagedModel stagedModel = addStagedModel(
 			stagingGroup, dependentStagedModelsMap);
 
 		FragmentEntry fragmentEntry = (FragmentEntry)stagedModel;
 
-		Class<?> clazz = getClass();
-
-		ClassLoader classLoader = clazz.getClassLoader();
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				stagingGroup.getGroupId(), TestPropsValues.getUserId());
 
 		Repository repository = PortletFileRepositoryUtil.addPortletRepository(
 			stagingGroup.getGroupId(), FragmentPortletKeys.FRAGMENT,
 			serviceContext);
+
+		Class<?> clazz = getClass();
+
+		ClassLoader classLoader = clazz.getClassLoader();
 
 		FileEntry fileEntry = PortletFileRepositoryUtil.addPortletFileEntry(
 			null, stagingGroup.getGroupId(), TestPropsValues.getUserId(),
@@ -183,14 +183,14 @@ public class FragmentEntryStagedModelDataHandlerTest
 		Map<String, List<StagedModel>> dependentStagedModelsMap =
 			addDependentStagedModelsMap(stagingGroup);
 
-		ServiceContext serviceContext =
-			ServiceContextTestUtil.getServiceContext(
-				stagingGroup.getGroupId(), TestPropsValues.getUserId());
-
 		StagedModel stagedModel = addStagedModel(
 			stagingGroup, dependentStagedModelsMap);
 
 		FragmentEntry fragmentEntry = (FragmentEntry)stagedModel;
+
+		ServiceContext serviceContext =
+			ServiceContextTestUtil.getServiceContext(
+				stagingGroup.getGroupId(), TestPropsValues.getUserId());
 
 		FragmentEntryLink fragmentEntryLink =
 			_fragmentEntryLinkLocalService.addFragmentEntryLink(
@@ -237,16 +237,14 @@ public class FragmentEntryStagedModelDataHandlerTest
 
 		FragmentEntry fragmentEntry = _addFragmentEntry(
 			StringPool.BLANK, stagingGroup, "<div class=\"fragment_1\"></div>");
+		long segmentsExperienceId =
+			_segmentsExperienceLocalService.fetchDefaultSegmentsExperienceId(
+				_layout.getPlid());
+		Layout draftLayout = _layout.fetchDraftLayout();
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				stagingGroup.getGroupId(), TestPropsValues.getUserId());
-
-		long segmentsExperienceId =
-			_segmentsExperienceLocalService.fetchDefaultSegmentsExperienceId(
-				_layout.getPlid());
-
-		Layout draftLayout = _layout.fetchDraftLayout();
 
 		String itemId = ContentLayoutTestUtil.addFragmentEntryLinkToLayout(
 			_fragmentEntryLinkLocalService.addFragmentEntryLink(
