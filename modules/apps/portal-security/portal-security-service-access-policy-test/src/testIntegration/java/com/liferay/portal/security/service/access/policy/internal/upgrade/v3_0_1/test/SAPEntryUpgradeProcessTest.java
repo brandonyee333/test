@@ -71,14 +71,14 @@ public class SAPEntryUpgradeProcessTest {
 
 		Assert.assertNotNull(sapEntry);
 
-		Role guestRole = RoleLocalServiceUtil.getRole(
+		Role role = RoleLocalServiceUtil.getRole(
 			company.getCompanyId(), RoleConstants.GUEST);
 
 		Assert.assertTrue(
 			_resourcePermissionLocalService.hasResourcePermission(
 				company.getCompanyId(), SAPEntry.class.getName(),
 				ResourceConstants.SCOPE_INDIVIDUAL,
-				String.valueOf(sapEntry.getSapEntryId()), guestRole.getRoleId(),
+				String.valueOf(sapEntry.getSapEntryId()), role.getRoleId(),
 				ActionKeys.VIEW));
 	}
 
