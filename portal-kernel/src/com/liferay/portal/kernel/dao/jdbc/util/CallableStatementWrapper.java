@@ -989,17 +989,17 @@ public class CallableStatementWrapper
 	}
 
 	@Override
-	public void setSQLXML(int parameterIndex, SQLXML xmlObject)
+	public void setSQLXML(int parameterIndex, SQLXML sqlXML)
 		throws SQLException {
 
-		_callableStatement.setSQLXML(parameterIndex, xmlObject);
+		_callableStatement.setSQLXML(parameterIndex, sqlXML);
 	}
 
 	@Override
-	public void setSQLXML(String parameterName, SQLXML xmlObject)
+	public void setSQLXML(String parameterName, SQLXML sqlXML)
 		throws SQLException {
 
-		_callableStatement.setSQLXML(parameterName, xmlObject);
+		_callableStatement.setSQLXML(parameterName, sqlXML);
 	}
 
 	@Override

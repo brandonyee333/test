@@ -349,10 +349,10 @@ public class PreparedStatementWrapper
 	}
 
 	@Override
-	public void setSQLXML(int parameterIndex, SQLXML xmlObject)
+	public void setSQLXML(int parameterIndex, SQLXML sqlXML)
 		throws SQLException {
 
-		_preparedStatement.setSQLXML(parameterIndex, xmlObject);
+		_preparedStatement.setSQLXML(parameterIndex, sqlXML);
 	}
 
 	@Override
