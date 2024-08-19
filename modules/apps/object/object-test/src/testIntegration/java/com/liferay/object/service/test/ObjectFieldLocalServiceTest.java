@@ -1283,7 +1283,7 @@ public class ObjectFieldLocalServiceTest {
 
 		ObjectDefinition modifiableSystemObjectDefinition =
 			ObjectDefinitionTestUtil.addModifiableSystemObjectDefinition(
-				TestPropsValues.getUserId(), null,
+				TestPropsValues.getUserId(), null, false,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"Test", null, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
@@ -1526,7 +1526,7 @@ public class ObjectFieldLocalServiceTest {
 
 		ObjectDefinition modifiableSystemObjectDefinition =
 			ObjectDefinitionTestUtil.addModifiableSystemObjectDefinition(
-				TestPropsValues.getUserId(), null,
+				TestPropsValues.getUserId(), null, false,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"Test", null, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),

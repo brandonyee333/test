@@ -101,7 +101,7 @@ public class ObjectValidationRuleLocalServiceTest {
 	public void setUp() throws Exception {
 		_modifiableSystemObjectDefinition =
 			ObjectDefinitionTestUtil.addModifiableSystemObjectDefinition(
-				TestPropsValues.getUserId(), null,
+				TestPropsValues.getUserId(), null, false,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				"Test", null, null,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
