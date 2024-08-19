@@ -135,6 +135,10 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 				_mapGlobalJSScriptElementAttributesToJSONString(
 					clientExtension);
 			}
+			else if (Objects.equals(type, "language")) {
+				pluginPackageProperties.put(
+					"Liferay-Client-Extension-Language", "content/");
+			}
 			else if (Objects.equals(type, "siteInitializer")) {
 				pluginPackageProperties.put(
 					"Liferay-Client-Extension-Site-Initializer",
@@ -859,6 +863,9 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 		else if (_groupFrontend.containsAll(classifications)) {
 			return "frontend";
 		}
+		else if (_groupLanguage.containsAll(classifications)) {
+			return "language";
+		}
 		else if (_groupMicroservice.containsAll(classifications)) {
 			return "microservice";
 		}
@@ -907,6 +914,8 @@ public class CreateClientExtensionConfigTask extends DefaultTask {
 		"configuration");
 	private static final Set<String> _groupFrontend = Sets.newHashSet(
 		"configuration", "frontend");
+	private static final Set<String> _groupLanguage = Sets.newHashSet(
+		"configuration", "language");
 	private static final Set<String> _groupMicroservice = Sets.newHashSet(
 		"configuration", "microservice");
 	private static final Map<String, String>
