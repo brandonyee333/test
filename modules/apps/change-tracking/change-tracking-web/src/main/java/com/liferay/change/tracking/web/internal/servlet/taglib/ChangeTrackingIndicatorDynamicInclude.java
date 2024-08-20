@@ -167,33 +167,6 @@ public class ChangeTrackingIndicatorDynamicInclude extends BaseDynamicInclude {
 					ctPreferences.getCtCollectionId());
 			}
 
-			CTConfiguration ctConfiguration = _getCTConfiguration(
-				themeDisplay.getCompanyId());
-
-			String portletId = ParamUtil.getString(
-				httpServletRequest, "p_p_id");
-
-			boolean productionOnlyApplication = false;
-
-			if (Validator.isNotNull(portletId) &&
-				ArrayUtil.contains(
-					ctConfiguration.productionOnlyApplication(), portletId)) {
-
-				productionOnlyApplication = true;
-			}
-
-			boolean unsupportedApplication = false;
-
-			if (Validator.isNotNull(portletId) &&
-				ArrayUtil.contains(
-					ctConfiguration.unsupportedApplication(), portletId)) {
-
-				unsupportedApplication = true;
-			}
-
-			boolean showContextChangePopover = _isShowContextChangePopover(
-				portletId, themeDisplay);
-
 			if (ctCollection == null) {
 				writer.write(
 					_language.get(themeDisplay.getLocale(), "production"));
@@ -204,21 +177,29 @@ public class ChangeTrackingIndicatorDynamicInclude extends BaseDynamicInclude {
 
 			writer.write("</span></button></div>");
 
-			String componentId =
-				_portal.getPortletNamespace(CTPortletKeys.PUBLICATIONS) +
-					"IndicatorComponent";
+			CTConfiguration ctConfiguration = _getCTConfiguration(
+				themeDisplay.getCompanyId());
+			String portletId = ParamUtil.getString(
+				httpServletRequest, "p_p_id");
 
 			_reactRenderer.renderReact(
 				new ComponentDescriptor(
 					"{ChangeTrackingIndicator} from change-tracking-web",
-					componentId, null, true),
+					_portal.getPortletNamespace(CTPortletKeys.PUBLICATIONS) +
+						"IndicatorComponent",
+					null, true),
 				_getReactData(
 					httpServletRequest, ctCollection, ctPreferences,
-					productionOnlyApplication,
+					Validator.isNotNull(portletId) &&
+					ArrayUtil.contains(
+						ctConfiguration.productionOnlyApplication(), portletId),
 					_ctSettingsConfigurationHelper.isSandboxEnabled(
 						themeDisplay.getCompanyId()),
-					showContextChangePopover, themeDisplay,
-					unsupportedApplication),
+					_isShowContextChangePopover(portletId, themeDisplay),
+					themeDisplay,
+					Validator.isNotNull(portletId) &&
+					ArrayUtil.contains(
+						ctConfiguration.unsupportedApplication(), portletId)),
 				httpServletRequest, writer);
 
 			writer.write("</div>");
