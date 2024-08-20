@@ -623,42 +623,42 @@ public class ChangeTrackingIndicatorDynamicInclude extends BaseDynamicInclude {
 
 		Group group = themeDisplay.getScopeGroup();
 
-		if (!CTCollectionThreadLocal.isProductionMode() && group.isSite() &&
-			FeatureFlagManagerUtil.isEnabled(
+		if (CTCollectionThreadLocal.isProductionMode() || !group.isSite() ||
+			!FeatureFlagManagerUtil.isEnabled(
 				themeDisplay.getCompanyId(), "LPD-20131")) {
 
-			HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
+			return false;
+		}
 
-			long ctLastGroupId = GetterUtil.getLong(
-				httpSession.getAttribute(CTWebKeys.CT_LAST_GROUP_ID));
+		HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
 
-			if (ctLastGroupId == 0) {
-				ctLastGroupId = group.getGroupId();
+		long ctLastGroupId = GetterUtil.getLong(
+			httpSession.getAttribute(CTWebKeys.CT_LAST_GROUP_ID));
 
-				httpSession.setAttribute(
-					CTWebKeys.CT_LAST_GROUP_ID, ctLastGroupId);
-			}
+		if (ctLastGroupId == 0) {
+			ctLastGroupId = group.getGroupId();
 
-			if (ctLastGroupId != group.getGroupId()) {
-				httpSession.setAttribute(
-					CTWebKeys.CT_SHOW_POPOVER, Boolean.TRUE);
-			}
+			httpSession.setAttribute(CTWebKeys.CT_LAST_GROUP_ID, ctLastGroupId);
+		}
 
-			if (GetterUtil.getBoolean(
-					httpSession.getAttribute(CTWebKeys.CT_SHOW_POPOVER))) {
+		if (ctLastGroupId != group.getGroupId()) {
+			httpSession.setAttribute(CTWebKeys.CT_SHOW_POPOVER, Boolean.TRUE);
+		}
 
-				PanelCategoryHelper panelCategoryHelper =
-					new PanelCategoryHelper(_panelAppRegistry);
+		if (GetterUtil.getBoolean(
+				httpSession.getAttribute(CTWebKeys.CT_SHOW_POPOVER))) {
 
-				if (Validator.isNotNull(portletId) &&
-					panelCategoryHelper.containsPortlet(
-						portletId, PanelCategoryKeys.SITE_ADMINISTRATION) &&
-					!panelCategoryHelper.containsPortlet(
-						portletId,
-						PanelCategoryKeys.SITE_ADMINISTRATION_PUBLISHING)) {
+			PanelCategoryHelper panelCategoryHelper = new PanelCategoryHelper(
+				_panelAppRegistry);
 
-					return true;
-				}
+			if (Validator.isNotNull(portletId) &&
+				panelCategoryHelper.containsPortlet(
+					portletId, PanelCategoryKeys.SITE_ADMINISTRATION) &&
+				!panelCategoryHelper.containsPortlet(
+					portletId,
+					PanelCategoryKeys.SITE_ADMINISTRATION_PUBLISHING)) {
+
+				return true;
 			}
 		}
 
