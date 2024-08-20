@@ -676,33 +676,28 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 						"com.liferay.portal.dao.db.BaseDB",
 						LoggerTestUtil.INFO)) {
 
-					try {
-						db.updateIndexes(
-							connection, "Company",
-							"create index " + TEST_INDEX_NAME +
-								" on Company (logoId, companyId);",
-							false);
+					db.updateIndexes(
+						connection, "Company",
+						"create index " + TEST_INDEX_NAME +
+							" on Company (logoId, companyId);",
+						false);
 
-						List<LogEntry> logEntries = logCapture.getLogEntries();
+					List<LogEntry> logEntries = logCapture.getLogEntries();
 
-						long expectedLogEntriesCount = 0L;
+					long expectedLogEntriesCount = 0L;
 
-						if (companyId ==
-								PortalInstancePool.getDefaultCompanyId()) {
-
-							expectedLogEntriesCount = 1L;
-						}
-
-						Assert.assertEquals(
-							logEntries.toString(), expectedLogEntriesCount,
-							logEntries.size());
+					if (companyId == PortalInstancePool.getDefaultCompanyId()) {
+						expectedLogEntriesCount = 1L;
 					}
-					finally {
-						if (dbInspector.hasIndex("Company", TEST_INDEX_NAME)) {
-							db.runSQL(
-								"drop index " + TEST_INDEX_NAME +
-									" on Company");
-						}
+
+					Assert.assertEquals(
+						logEntries.toString(), expectedLogEntriesCount,
+						logEntries.size());
+				}
+				finally {
+					if (dbInspector.hasIndex("Company", TEST_INDEX_NAME)) {
+						db.runSQL(
+							"drop index " + TEST_INDEX_NAME + " on Company");
 					}
 				}
 			});
