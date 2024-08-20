@@ -100,11 +100,12 @@ public class InviteUsersMVCResourceCommandTest {
 
 	@FeatureFlags("LPD-11212")
 	@Test
-	public void testGetInviteUsersWithCustomEmailSenderNameAndAddress()
+	public void testGetInviteUsersWithCustomEmailFromAddressAndEmailFromName()
 		throws Exception {
 
-		String emailFromAddress = "custom@liferay.com";
-		String emailFromName = "Custom sender name";
+		String emailFromAddress =
+			RandomTestUtil.randomString() + "@liferay.com";
+		String emailFromName = RandomTestUtil.randomString();
 
 		try (CompanyConfigurationTemporarySwapper
 				companyConfigurationTemporarySwapper =
@@ -132,9 +133,11 @@ public class InviteUsersMVCResourceCommandTest {
 
 	@FeatureFlags("LPD-11212")
 	@Test
-	public void testGetInviteUsersWithCustomEmailTemplates() throws Exception {
-		String invitationEmailBody = "Custom email body";
-		String invitationEmailSubject = "Custom email subject";
+	public void testGetInviteUsersWithCustomInvitationEmailBodyAndInvitationEmailSubject()
+		throws Exception {
+
+		String invitationEmailBody = RandomTestUtil.randomString();
+		String invitationEmailSubject = RandomTestUtil.randomString();
 
 		try (CompanyConfigurationTemporarySwapper
 				companyConfigurationTemporarySwapper =
