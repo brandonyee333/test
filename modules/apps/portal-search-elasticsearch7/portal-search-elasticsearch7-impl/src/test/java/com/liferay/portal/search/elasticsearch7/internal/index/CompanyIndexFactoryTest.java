@@ -161,7 +161,7 @@ public class CompanyIndexFactoryTest {
 	}
 
 	@Test
-	public void testAdditionalTypeMappingsCantOverrideContributedMappings()
+	public void testAdditionalTypeMappingsCannotOverrideContributedMappings()
 		throws Exception {
 
 		_serviceRegistrations.add(
@@ -361,7 +361,7 @@ public class CompanyIndexFactoryTest {
 	}
 
 	@Test
-	public void testContributeMappingsCantOverrideDefaultMappings()
+	public void testContributeMappingsCannotOverrideDefaultMappings()
 		throws Exception {
 
 		_serviceRegistrations.add(

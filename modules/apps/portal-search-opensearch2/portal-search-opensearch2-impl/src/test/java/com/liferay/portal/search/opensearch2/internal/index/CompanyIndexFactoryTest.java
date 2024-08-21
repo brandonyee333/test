@@ -153,7 +153,7 @@ public class CompanyIndexFactoryTest extends BaseOpenSearchTestCase {
 	}
 
 	@Test
-	public void testAdditionalTypeMappingsCantOverrideContributedMappings()
+	public void testAdditionalTypeMappingsCannotOverrideContributedMappings()
 		throws Exception {
 
 		_serviceRegistrations.add(
@@ -353,7 +353,7 @@ public class CompanyIndexFactoryTest extends BaseOpenSearchTestCase {
 	}
 
 	@Test
-	public void testContributeMappingsCantOverrideDefaultMappings()
+	public void testContributeMappingsCannotOverrideDefaultMappings()
 		throws Exception {
 
 		_serviceRegistrations.add(
