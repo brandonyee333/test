@@ -34,7 +34,7 @@ public class AuthVerifierRegistry {
 		return _serviceTrackerMap.getService(simpleClassName);
 	}
 
-	public static List<AuthVerifier> getAuthVerifiersByPriority() {
+	public static List<AuthVerifier> getAuthVerifiers() {
 		return _serviceTrackerList.toList();
 	}
 
