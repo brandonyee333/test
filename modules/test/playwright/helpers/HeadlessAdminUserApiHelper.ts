@@ -247,9 +247,9 @@ export class HeadlessAdminUserApiHelper {
 						en_US: account.name,
 					},
 					...(account || {}),
-				}
+				},
 			}
-		)
+		);
 	}
 
 	async postAccount(account?: TAccount): Promise<TAccount> {
