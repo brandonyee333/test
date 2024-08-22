@@ -2392,18 +2392,18 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		sb.append(baseDiffsURL);
 
 		_setParameter(
-			"&mvcRenderCommandName", sb, serviceContext,
+			"mvcRenderCommandName", sb, serviceContext,
 			"/wiki/compare_versions");
 		_setParameter(
-			"&nodeId", sb, serviceContext, String.valueOf(page.getNodeId()));
+			"nodeId", sb, serviceContext, String.valueOf(page.getNodeId()));
 		_setParameter(
-			"&sourceVersion", sb, serviceContext,
+			"sourceVersion", sb, serviceContext,
 			String.valueOf(previousVersionPage.getVersion()));
 		_setParameter(
-			"&targetVersion", sb, serviceContext,
+			"targetVersion", sb, serviceContext,
 			String.valueOf(page.getVersion()));
-		_setParameter("&title", sb, serviceContext, page.getTitle());
-		_setParameter("&type", sb, serviceContext, "html");
+		_setParameter("title", sb, serviceContext, page.getTitle());
+		_setParameter("type", sb, serviceContext, "html");
 
 		return sb.toString();
 	}
@@ -3294,6 +3294,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		String name, StringBundler sb, ServiceContext serviceContext,
 		String value) {
 
+		sb.append(StringPool.AMPERSAND);
 		sb.append(serviceContext.getPortletId());
 		sb.append(StringPool.UNDERLINE);
 		sb.append(URLCodec.encodeURL(name));
