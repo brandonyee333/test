@@ -581,12 +581,10 @@ public class SkuResourceTest extends BaseSkuResourceTestCase {
 
 				Price skuUnitOfMeasurePrice = skuUnitOfMeasure.getPrice();
 
-				Assert.assertNotNull(skuUnitOfMeasurePrice);
 				Assert.assertTrue(
 					BigDecimalUtil.eq(
 						commercePriceEntry.getPrice(),
 						BigDecimal.valueOf(skuUnitOfMeasurePrice.getPrice())));
-
 				Assert.assertNotNull(
 					skuUnitOfMeasurePrice.getPricingQuantityPriceFormatted());
 
