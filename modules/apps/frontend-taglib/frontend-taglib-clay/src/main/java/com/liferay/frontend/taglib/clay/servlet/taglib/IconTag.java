@@ -24,9 +24,7 @@ public class IconTag extends BaseContainerTag {
 	@Override
 	public int doStartTag() throws JspException {
 		setAttributeNamespace(_ATTRIBUTE_NAMESPACE);
-
 		setContainerElement("svg");
-
 		setDynamicAttribute(StringPool.BLANK, "role", "presentation");
 
 		HttpServletRequest httpServletRequest = getRequest();

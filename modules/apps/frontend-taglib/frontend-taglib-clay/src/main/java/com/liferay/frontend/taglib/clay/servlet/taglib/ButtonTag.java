@@ -258,8 +258,7 @@ public class ButtonTag extends BaseContainerTag {
 	protected void writeIcon(JspWriter jspWriter) throws IOException {
 		jspWriter.write("\"><svg class=\"lexicon-icon lexicon-icon-");
 		jspWriter.write(_icon);
-		jspWriter.write("\" role=\"presentation\">");
-		jspWriter.write("<use xlink:href=\"");
+		jspWriter.write("\" role=\"presentation\"><use xlink:href=\"");
 
 		HttpServletRequest httpServletRequest = getRequest();
 
