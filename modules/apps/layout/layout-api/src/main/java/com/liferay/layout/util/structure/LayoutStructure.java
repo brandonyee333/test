@@ -493,7 +493,7 @@ public class LayoutStructure {
 		for (String itemId : itemIds) {
 			if (Objects.equals(itemId, parentItemId)) {
 				throw new UnsupportedOperationException(
-					"Unable to copy items because item id and parent item id " +
+					"Unable to copy items because item ID and parent item ID " +
 						"cannot be the same item");
 			}
 
@@ -502,8 +502,8 @@ public class LayoutStructure {
 
 			if (childrenItemIds.contains(parentItemId)) {
 				throw new UnsupportedOperationException(
-					"Unable to copy items because parent item id cannot be a " +
-						"child of item id");
+					"Unable to copy items because parent item ID cannot be a " +
+						"child of item ID");
 			}
 
 			LayoutStructureItem layoutStructureItem = _layoutStructureItems.get(
