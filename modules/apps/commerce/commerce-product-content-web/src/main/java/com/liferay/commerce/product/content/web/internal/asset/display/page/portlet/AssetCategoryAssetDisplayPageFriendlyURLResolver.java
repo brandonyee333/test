@@ -267,7 +267,7 @@ public class AssetCategoryAssetDisplayPageFriendlyURLResolver
 
 		String layoutActualURL = _portal.getLayoutActualURL(layout, mainPath);
 
-		Map<String, String[]> actualParams;
+		Map<String, String[]> actualParams = null;
 
 		if (params == null) {
 			actualParams = new HashMap<>();

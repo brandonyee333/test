@@ -7773,7 +7773,7 @@ public class PortalImpl implements Portal {
 
 			friendlyURL = url.substring(0, position);
 
-			Map<String, String[]> actualParams;
+			Map<String, String[]> actualParams = null;
 
 			if (params == null) {
 				actualParams = new HashMap<>();
