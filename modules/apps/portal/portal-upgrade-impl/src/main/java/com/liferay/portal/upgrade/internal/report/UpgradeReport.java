@@ -325,7 +325,7 @@ public class UpgradeReport {
 					catch (IOException ioException) {
 						if (_log.isWarnEnabled()) {
 							_log.warn(
-								"Failed to load properties from file: " +
+								"Unable to load properties from file: " +
 									filePath,
 								ioException);
 						}

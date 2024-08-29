@@ -260,10 +260,9 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 
 		_appender.stop();
 
-		_assertReport("SQL: update NonexistingTable;");
-
 		_assertLogContextContains(
 			"upgrade.report.failed.sqls", "SQL: update NonexistingTable;");
+		_assertReport("SQL: update NonexistingTable;");
 	}
 
 	@Test
@@ -558,16 +557,14 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 
 		_appender.stop();
 
-		_assertReport("Properties set with environment variables");
-		_assertReport("my.environment.property: my environment property value");
-
 		_assertLogContextContains(
 			"upgrade.report.properties.set.by.user",
 			"Properties set with environment variables");
-
 		_assertLogContextContains(
 			"upgrade.report.properties.set.by.user",
 			"my.environment.property: my environment property value");
+		_assertReport("Properties set with environment variables");
+		_assertReport("my.environment.property: my environment property value");
 	}
 
 	@Test
@@ -594,16 +591,14 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 
 			_appender.stop();
 
-			_assertReport(propertiesFile.getAbsolutePath());
-			_assertReport("my.property: my property value");
-
 			_assertLogContextContains(
 				"upgrade.report.properties.set.by.user",
 				propertiesFile.getAbsolutePath());
-
 			_assertLogContextContains(
 				"upgrade.report.properties.set.by.user",
 				"my.property: my property value");
+			_assertReport(propertiesFile.getAbsolutePath());
+			_assertReport("my.property: my property value");
 		}
 		finally {
 			PropsUtil.set(
