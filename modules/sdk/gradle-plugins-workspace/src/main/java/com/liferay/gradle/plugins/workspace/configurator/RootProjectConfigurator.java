@@ -73,6 +73,7 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.artifacts.Configuration;
+import org.gradle.api.artifacts.DependencySet;
 import org.gradle.api.execution.TaskExecutionGraph;
 import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.DirectoryProperty;
@@ -233,6 +234,9 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			GradleUtil.addDefaultRepositories(project);
 		}
 
+		Configuration bundleSupportConfiguration =
+			_addConfigurationBundleSupport(project);
+
 		Configuration providedModulesConfiguration =
 			_addConfigurationProvidedModules(project);
 
@@ -250,14 +254,16 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 		_addTaskInitBundle(
 			project, downloadBundleTask, workspaceExtension,
-			providedModulesConfiguration, INIT_BUNDLE_TASK_NAME);
+			bundleSupportConfiguration, providedModulesConfiguration,
+			INIT_BUNDLE_TASK_NAME);
 
 		Copy distBundleTask = _addTaskDistBundle(
 			project, downloadBundleTask, DIST_BUNDLE_TASK_NAME,
-			workspaceExtension, null, providedModulesConfiguration);
+			workspaceExtension, bundleSupportConfiguration, null,
+			providedModulesConfiguration);
 
 		_addTasksDistBundleEnvironments(
-			project, downloadBundleTask, workspaceExtension,
+			project, downloadBundleTask, workspaceExtension, bundleSupportConfiguration,
 			providedModulesConfiguration);
 
 		_addTasksDistBundleArchive(project, distBundleTask, workspaceExtension);
@@ -686,11 +692,12 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 	private Copy _addTaskDistBundle(
 		Project project, Download downloadBundleTask, String taskName,
-		WorkspaceExtension workspaceExtension, String environment,
+		WorkspaceExtension workspaceExtension,
+		Configuration bundleSupportConfiguration, String environment,
 		Configuration providedModulesConfiguration) {
 
 		InitBundleTask initBundleTask = _addTaskInitBundle(
-			project, downloadBundleTask, workspaceExtension,
+			project, downloadBundleTask, workspaceExtension, bundleSupportConfiguration,
 			providedModulesConfiguration, taskName + "InitBundle");
 
 		initBundleTask.setConfigEnvironment(
@@ -939,6 +946,36 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		return dockerTagImage;
 	}
 
+	private Configuration _addConfigurationBundleSupport(
+		final Project project) {
+
+		Configuration configuration = GradleUtil.addConfiguration(
+			project, BUNDLE_SUPPORT_CONFIGURATION_NAME);
+
+		configuration.defaultDependencies(
+			new Action<DependencySet>() {
+
+				@Override
+				public void execute(DependencySet dependencySet) {
+					_addDependenciesBundleSupport(project);
+				}
+
+			});
+
+		configuration.setDescription(
+			"Configures Liferay Bundle Support for this project.");
+		configuration.setVisible(false);
+
+		return configuration;
+	}
+
+	private void _addDependenciesBundleSupport(Project project) {
+		GradleUtil.addDependency(
+			project, BUNDLE_SUPPORT_CONFIGURATION_NAME, "com.liferay",
+			"com.liferay.portal.tools.bundle.support", "latest.release");
+	}
+
+
 	private Download _addTaskDownloadBundle(
 		final Project project, VerifyProductTask verifyProductTask,
 		final WorkspaceExtension workspaceExtension) {
@@ -1010,6 +1047,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 	private InitBundleTask _addTaskInitBundle(
 		Project project, Download downloadBundleTask,
 		final WorkspaceExtension workspaceExtension,
+		Configuration bundleSupportConfiguration,
 		Configuration osgiModulesConfiguration, String taskName) {
 
 		InitBundleTask initBundleTask = GradleUtil.addTask(
@@ -1023,6 +1061,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 			initBundleTask::getDestinationDir, initBundleTask);
 
 		initBundleTask.mustRunAfter(VERIFY_PRODUCT_TASK_NAME);
+		initBundleTask.setClasspath(bundleSupportConfiguration);
 		initBundleTask.setConfigEnvironment(
 			new Callable<String>() {
 
@@ -1312,7 +1351,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 	private void _addTasksDistBundleEnvironments(
 		Project project, Download downloadBundleTask,
-		WorkspaceExtension workspaceExtension,
+		WorkspaceExtension workspaceExtension, Configuration bundleSupportConfiguration,
 		Configuration providedModulesConfiguration) {
 
 		long buildTime = System.currentTimeMillis();
@@ -1363,7 +1402,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 							project, downloadBundleTask,
 							DIST_BUNDLE_TASK_NAME +
 								StringUtil.capitalize(environment),
-							workspaceExtension, environment,
+							workspaceExtension, bundleSupportConfiguration, environment,
 							providedModulesConfiguration);
 
 						Tar distBundleTarTask = _addTaskDistBundle(
