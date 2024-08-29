@@ -306,7 +306,7 @@ public class UpgradeReport {
 		).put(
 			"properties.set.by.user",
 			() -> {
-				Map<String, Properties> filesProperties = new LinkedHashMap<>();
+				Map<String, Properties> propertiesMap = new LinkedHashMap<>();
 
 				for (String filePath :
 						PropsUtil.getArray("include-and-override")) {
@@ -333,7 +333,7 @@ public class UpgradeReport {
 						continue;
 					}
 
-					filesProperties.put(filePath, properties);
+					propertiesMap.put(filePath, properties);
 				}
 
 				String envPrefix = "LIFERAY_";
@@ -356,10 +356,10 @@ public class UpgradeReport {
 						entry.getValue());
 				}
 
-				filesProperties.put(
+				propertiesMap.put(
 					"Properties set with environment variables", properties);
 
-				return new PropertiesPrinter(filesProperties);
+				return new PropertiesPrinter(propertiesMap);
 			}
 		).put(
 			"document.library.storage.size",
@@ -896,8 +896,8 @@ public class UpgradeReport {
 
 	private class PropertiesPrinter {
 
-		public PropertiesPrinter(Map<String, Properties> filesProperties) {
-			_filesProperties = filesProperties;
+		public PropertiesPrinter(Map<String, Properties> propertiesMap) {
+			_propertiesMap = propertiesMap;
 		}
 
 		@Override
@@ -908,7 +908,7 @@ public class UpgradeReport {
 			sb.append(StringPool.NEW_LINE);
 
 			for (Map.Entry<String, Properties> filePropertiesEntry :
-					_filesProperties.entrySet()) {
+					_propertiesMap.entrySet()) {
 
 				String source = filePropertiesEntry.getKey();
 
@@ -952,7 +952,7 @@ public class UpgradeReport {
 			return sb.toString();
 		}
 
-		private final Map<String, Properties> _filesProperties;
+		private final Map<String, Properties> _propertiesMap;
 
 	}
 
