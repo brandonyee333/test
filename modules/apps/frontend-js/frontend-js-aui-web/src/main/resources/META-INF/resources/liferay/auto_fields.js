@@ -140,7 +140,7 @@ AUI.add(
 
 					const clone = currentRow.clone();
 
-					const guid = instance._guid++;
+					const guid = ++instance._guid;
 
 					const formValidator = instance._getFormValidator(node);
 
