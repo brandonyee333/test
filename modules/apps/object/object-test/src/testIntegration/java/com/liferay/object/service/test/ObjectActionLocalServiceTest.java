@@ -2228,10 +2228,8 @@ public class ObjectActionLocalServiceTest {
 		Assert.assertEquals("Assunto", notificationQueueEntry.getSubject());
 	}
 
-	/**
-	 * LPS-189995
-	 */
 	@Test
+	@TestInfo("LPS-189995")
 	public void testOnAfterUpdateObjectActionWithAttachmentObjectField()
 		throws Exception {
 

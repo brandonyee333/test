@@ -135,11 +135,9 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 		exportImportJournalArticle(true);
 	}
 
-	/**
-	 * LPD-6808: AC15-AC16
-	 */
 	@FeatureFlags("LPS-199086")
 	@Test
+	@TestInfo("LPD-6808: AC15-AC16")
 	public void testExportImportJournalArticleWithLayoutURLLayoutDoesNotExistOnImportSide()
 		throws Exception {
 
@@ -188,11 +186,9 @@ public class JournalExportImportTest extends BasePortletExportImportTestCase {
 		}
 	}
 
-	/**
-	 * LPD-6808: AC15-AC17
-	 */
 	@FeatureFlags("LPS-199086")
 	@Test
+	@TestInfo("LPD-6808: AC15-AC17")
 	public void testExportImportJournalArticleWithLayoutURLLayoutExistOnImportSide()
 		throws Exception {
 

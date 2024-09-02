@@ -698,11 +698,9 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 		Assert.assertNotNull(importedLayout);
 	}
 
-	/**
-	 * LPD-6808: AC9-AC10
-	 */
 	@FeatureFlags("LPS-199086")
 	@Test
+	@TestInfo("LPD-6808: AC9-AC10")
 	public void testLayoutExportImportWithModifiedContentAndExistingParentAndChildLayoutsOnImportSide()
 		throws Exception {
 
@@ -786,11 +784,9 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 			).size());
 	}
 
-	/**
-	 * LPD-6808: AC9-AC11
-	 */
 	@FeatureFlags("LPS-199086")
 	@Test
+	@TestInfo("LPD-6808: AC9-AC11")
 	public void testLayoutExportImportWithModifiedContentAndNonexistentParentAndChildLayoutsOnImportSide()
 		throws Exception {
 
@@ -834,11 +830,9 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 		Assert.assertNotNull(importedChildLayout);
 	}
 
-	/**
-	 * LPD-6808: AC12-AC13
-	 */
 	@FeatureFlags("LPS-199086")
 	@Test
+	@TestInfo("LPD-6808: AC12-AC13")
 	public void testLayoutExportImportWithUncheckedConfigurationAndModifiedContentAndExistingParentAndChildLayoutsOnImportSide()
 		throws Exception {
 
@@ -922,11 +916,9 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 			).size());
 	}
 
-	/**
-	 * LPD-6808: AC12-AC14
-	 */
 	@FeatureFlags("LPS-199086")
 	@Test
+	@TestInfo("LPD-6808: AC12-AC14")
 	public void testLayoutExportImportWithUncheckedConfigurationAndModifiedContentAndNonexistentParentAndChildLayoutsOnImportSide()
 		throws Exception {
 
@@ -971,10 +963,8 @@ public class LayoutExportImportTest extends BaseExportImportTestCase {
 		}
 	}
 
-	/**
-	 * LPD-6808
-	 */
 	@Test
+	@TestInfo("LPD-6808")
 	public void testPublishParentLayoutsByDefaultConfigurationPublishParentLayoutFirstThenChildLayout()
 		throws Exception {
 
