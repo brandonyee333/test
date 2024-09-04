@@ -101,7 +101,7 @@ public class WishListResourceTest extends BaseWishListResourceTestCase {
 		};
 	}
 
-	protected WishListItem randomWishListItem() throws Exception {
+	private WishListItem _randomWishListItem() throws Exception {
 		CPInstance cpInstance = CPTestUtil.addCPInstanceWithRandomSku(
 			testGroup.getGroupId(), BigDecimal.ONE);
 
@@ -208,7 +208,7 @@ public class WishListResourceTest extends BaseWishListResourceTestCase {
 			"nestedFields", "wishListItems"
 		).build();
 
-		wishList.setWishListItems(new WishListItem[] {randomWishListItem()});
+		wishList.setWishListItems(new WishListItem[] {_randomWishListItem()});
 
 		WishList patchWishList = wishListResource.patchWishList(
 			wishList.getId(), _accountEntry.getAccountEntryId(), wishList);
