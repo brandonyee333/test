@@ -39,9 +39,15 @@ public class DataSourceFactoryUtil {
 
 		HikariConfig hikariConfig = new HikariConfig();
 
+		hikariConfig.setConnectionTimeout(30000);
 		hikariConfig.setDriverClassName(driverClassName);
+		hikariConfig.setIdleTimeout(600000);
 		hikariConfig.setJdbcUrl(jdbcURL);
+		hikariConfig.setMaxLifetime(0);
+		hikariConfig.setMaximumPoolSize(10);
+		hikariConfig.setMinimumIdle(10);
 		hikariConfig.setPassword(password);
+		hikariConfig.setTransactionIsolation("TRANSACTION_READ_UNCOMMITTED");
 		hikariConfig.setUsername(userName);
 
 		if (partitionName != null) {
@@ -52,13 +58,6 @@ public class DataSourceFactoryUtil {
 				hikariConfig.setCatalog(partitionName);
 			}
 		}
-
-		hikariConfig.setConnectionTimeout(30000);
-		hikariConfig.setIdleTimeout(600000);
-		hikariConfig.setMaximumPoolSize(10);
-		hikariConfig.setMaxLifetime(0);
-		hikariConfig.setMinimumIdle(10);
-		hikariConfig.setTransactionIsolation("TRANSACTION_READ_UNCOMMITTED");
 
 		return new HikariDataSource(hikariConfig);
 	}
