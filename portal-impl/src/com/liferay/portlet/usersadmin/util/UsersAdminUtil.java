@@ -307,6 +307,13 @@ public class UsersAdminUtil {
 			RenderResponse renderResponse)
 		throws Exception {
 
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		PermissionChecker permissionChecker =
+			themeDisplay.getPermissionChecker();
+
 		PortletURL portletURL = PortletURLBuilder.createRenderURL(
 			renderResponse
 		).setMVCRenderCommandName(
@@ -320,13 +327,6 @@ public class UsersAdminUtil {
 		List<Organization> ancestorOrganizations = organization.getAncestors();
 
 		Collections.reverse(ancestorOrganizations);
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		PermissionChecker permissionChecker =
-			themeDisplay.getPermissionChecker();
 
 		for (Organization ancestorOrganization : ancestorOrganizations) {
 			portletURL.setParameter(
