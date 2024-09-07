@@ -124,7 +124,7 @@ public class SXPBlueprintAndSXPElementUpgradeProcessTest {
 					)
 				).toString());
 
-		JSONObject searchBarSuggestionsLargeValueJSONObject = JSONUtil.put(
+		JSONObject suggestionsJSONObject = JSONUtil.put(
 			"attributes",
 			JSONUtil.put(
 				"includeAssetSearchSummary", true
@@ -141,9 +141,9 @@ public class SXPBlueprintAndSXPElementUpgradeProcessTest {
 			"size", "5"
 		);
 
-		PortletPreferenceValue searchBarSuggestionsPortletPreferenceValue =
+		PortletPreferenceValue searchBarPortletPreferenceValue =
 			_addPortletPreferenceValue(
-				searchBarSuggestionsLargeValueJSONObject.toString(),
+				suggestionsJSONObject.toString(),
 				"suggestionsContributorConfigurations", _PORTLET_ID_SEARCH_BAR,
 				null);
 
@@ -174,7 +174,7 @@ public class SXPBlueprintAndSXPElementUpgradeProcessTest {
 				getPortletPreferenceValueId());
 
 		JSONObject attributesJSONObject =
-			searchBarSuggestionsLargeValueJSONObject.getJSONObject(
+			suggestionsJSONObject.getJSONObject(
 				"attributes");
 
 		attributesJSONObject.put(
@@ -185,9 +185,9 @@ public class SXPBlueprintAndSXPElementUpgradeProcessTest {
 		);
 
 		_assertPortletPreferenceValue(
-			searchBarSuggestionsLargeValueJSONObject.toString(),
+			suggestionsJSONObject.toString(),
 			"suggestionsContributorConfigurations", StringPool.BLANK,
-			searchBarSuggestionsPortletPreferenceValue.
+			searchBarPortletPreferenceValue.
 				getPortletPreferenceValueId());
 
 		_assertPortletPreferenceValue(
