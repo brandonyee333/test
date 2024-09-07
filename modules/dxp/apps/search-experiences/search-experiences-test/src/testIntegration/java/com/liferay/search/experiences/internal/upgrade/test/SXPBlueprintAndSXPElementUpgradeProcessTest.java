@@ -49,7 +49,6 @@ import com.liferay.search.experiences.service.SXPElementLocalService;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -89,22 +88,12 @@ public class SXPBlueprintAndSXPElementUpgradeProcessTest {
 
 	@After
 	public void tearDown() throws Exception {
-		Iterator<Long> sxpBlueprintIdsIterator = _sxpBlueprintIds.iterator();
-
-		while (sxpBlueprintIdsIterator.hasNext()) {
-			_sxpBlueprintLocalService.deleteSXPBlueprint(
-				sxpBlueprintIdsIterator.next());
-
-			sxpBlueprintIdsIterator.remove();
+		for (Long sxpBlueprintId : _sxpBlueprintIds) {
+			_sxpBlueprintLocalService.deleteSXPBlueprint(sxpBlueprintId);
 		}
 
-		Iterator<Long> sxpElementIdsIterator = _sxpElementIds.iterator();
-
-		while (sxpElementIdsIterator.hasNext()) {
-			_sxpElementLocalService.deleteSXPElement(
-				sxpElementIdsIterator.next());
-
-			sxpElementIdsIterator.remove();
+		for (Long sxpElementId : _sxpElementIds) {
+			_sxpElementLocalService.deleteSXPElement(sxpElementId);
 		}
 	}
 
