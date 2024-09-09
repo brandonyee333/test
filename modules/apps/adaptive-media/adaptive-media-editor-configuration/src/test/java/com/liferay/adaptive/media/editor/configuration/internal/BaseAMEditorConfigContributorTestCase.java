@@ -239,7 +239,6 @@ public abstract class BaseAMEditorConfigContributorTestCase {
 			desiredItemSelectorReturnTypes,
 			itemSelectorReturnType -> itemSelectorReturnType instanceof
 				AMImageFileEntryItemSelectorReturnType);
-
 		_assertContains(
 			desiredItemSelectorReturnTypes,
 			itemSelectorReturnType ->
