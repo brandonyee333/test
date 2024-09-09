@@ -75,8 +75,15 @@ public class DBSchemaImporterProcess {
 		_targetCharsetEncoding = _getSessionCharsetEncoding(_targetDataSource);
 	}
 
-	public List<String> getPartitionsReportInfo() {
-		return _partitionsReportInfo;
+	public String getDataSourceInfos() {
+		StringBundler sb = new StringBundler(_dataSourceInfos.size() * 2);
+
+		for (String dataSourceInfo : _dataSourceInfos) {
+			sb.append(dataSourceInfo);
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		return sb.toString();
 	}
 
 	public String getReleaseInfo() throws Exception {
@@ -136,7 +143,7 @@ public class DBSchemaImporterProcess {
 							_sourceDataSource, _targetDataSource
 						).run();
 
-						_partitionsReportInfo.add(
+						_dataSourceInfos.add(
 							0,
 							_getDataSourceInfo(
 								null, _sourceDataSource, _targetDataSource));
@@ -166,7 +173,7 @@ public class DBSchemaImporterProcess {
 								sourceDataSource, targetDataSource
 							).run();
 
-							_partitionsReportInfo.add(
+							_dataSourceInfos.add(
 								_getDataSourceInfo(
 									partitionName, sourceDataSource,
 									targetDataSource));
@@ -464,11 +471,11 @@ public class DBSchemaImporterProcess {
 		new SimpleDateFormat(DateUtil.ISO_8601_PATTERN);
 
 	private final List<String> _asyncSQLs = new ArrayList<>();
+	private final List<String> _dataSourceInfos = Collections.synchronizedList(
+		new ArrayList<>());
 	private final ExecutorService _executorService =
 		Executors.newFixedThreadPool(5);
 	private final List<String> _partitionNames = new ArrayList<>();
-	private final List<String> _partitionsReportInfo =
-		Collections.synchronizedList(new ArrayList<>());
 	private final String _path;
 	private final DataSource _sourceDataSource;
 	private final String _sourceJDBCURL;

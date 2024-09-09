@@ -5,7 +5,6 @@
 
 package com.liferay.portal.tools.db.schema.importer;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -17,7 +16,6 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -94,7 +92,7 @@ public class DBSchemaImporter {
 						"Export date: " + _simpleDateFormat.format(new Date()),
 						dbSchemaImporterProcess.getReleaseInfo(),
 						StringPool.NEW_LINE, StringPool.NEW_LINE,
-						_getReportInfo(dbSchemaImporterProcess)
+						dbSchemaImporterProcess.getDataSourceInfos()
 					},
 					StringPool.NEW_LINE));
 		}
@@ -128,22 +126,6 @@ public class DBSchemaImporter {
 			null, "target-user", true, "Set the target database user.");
 
 		return options;
-	}
-
-	private static String _getReportInfo(
-		DBSchemaImporterProcess dbSchemaImporterProcess) {
-
-		List<String> partitionsReportInfo =
-			dbSchemaImporterProcess.getPartitionsReportInfo();
-
-		StringBundler sb = new StringBundler(partitionsReportInfo.size() * 2);
-
-		for (String partitionReportInfo : partitionsReportInfo) {
-			sb.append(partitionReportInfo);
-			sb.append(StringPool.NEW_LINE);
-		}
-
-		return sb.toString();
 	}
 
 	private static void _printHelpAndExit(Options options) {
