@@ -97,7 +97,6 @@ public class DocumentMetadataSetResourceImpl
 		throws Exception {
 
 		Group group = groupLocalService.getGroup(groupId);
-
 		long classNameId = _classNameLocalService.getClassNameId(
 			DLFileEntryMetadata.class);
 
