@@ -1137,6 +1137,14 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 	}
 
 	public void method(
+		String searchEngineId, long companyId, Document documents,
+		boolean commitImmediately) {
+
+		IndexWriterHelper.updateDocument(searchEngineId, companyId, documents, commitImmediately);
+		IndexWriterHelper.updateDocument("test123", 123, null, null);
+	}
+
+	public void method(
 		String className, long classPK, Locale locale,
 		ThemeDisplay themeDisplay) {
 
@@ -1181,7 +1189,7 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 
 		themeDisplay.getPortletGroupId();
 	}
-
+	
 	@Reference
 	private AccountGroupLocalService _accountGroupLocalService;
 
@@ -1277,6 +1285,9 @@ public class UpgradeCatchAllCheck implements ConfigurationBeanDeclaration {
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private IndexWriterHelper _indexWriterHelper;
 
 	@Reference
 	private JournalFolderLocalService _journalFolderLocalService;
