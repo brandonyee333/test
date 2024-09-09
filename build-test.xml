@@ -1116,8 +1116,7 @@ jdbc.default.connectionProperties=oracle.jdbc.ReadTimeout=0;oracle.net.CONNECT_T
 						<elseif>
 							<equals arg1="@{type}" arg2="none" />
 							<then>
-								<propertycopy from="java.jdk[@{version}]" property="java.jdk.home.property.name" silent="true" />
-								<propertycopy from="${java.jdk.home.property.name}" property="java.jdk.home" silent="true" />
+								<propertycopy from="java.jdk[@{version}]" property="java.jdk.home" silent="true" />
 							</then>
 						</elseif>
 						<elseif>
