@@ -98,7 +98,12 @@ public class DBSchemaImporterProcess {
 			resultSet.next();
 
 			sb.append("Portal build date: ");
-			sb.append(_simpleDateFormat.format(resultSet.getDate("buildDate")));
+
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				DateUtil.ISO_8601_PATTERN);
+
+			sb.append(simpleDateFormat.format(resultSet.getDate("buildDate")));
+
 			sb.append(StringPool.NEW_LINE);
 			sb.append("Portal build number: ");
 			sb.append(resultSet.getLong("buildNumber"));
@@ -466,9 +471,6 @@ public class DBSchemaImporterProcess {
 	}
 
 	private static final int _COMPANY_BATCH_SIZE = 5;
-
-	private static final SimpleDateFormat _simpleDateFormat =
-		new SimpleDateFormat(DateUtil.ISO_8601_PATTERN);
 
 	private final List<String> _asyncSQLs = new ArrayList<>();
 	private final List<String> _dataSourceInfos = Collections.synchronizedList(

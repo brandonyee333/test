@@ -86,10 +86,13 @@ public class DBSchemaImporter {
 		try (PrintWriter printWriter = new PrintWriter(
 				new File(dirName, "db_schema_import_report.info"))) {
 
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+				DateUtil.ISO_8601_PATTERN);
+
 			printWriter.println(
 				StringUtil.merge(
 					new Object[] {
-						"Export date: " + _simpleDateFormat.format(new Date()),
+						"Export date: " + simpleDateFormat.format(new Date()),
 						dbSchemaImporterProcess.getReleaseInfo(),
 						StringPool.NEW_LINE, StringPool.NEW_LINE,
 						dbSchemaImporterProcess.getDataSourceInfos()
@@ -145,8 +148,5 @@ public class DBSchemaImporter {
 	private static final int _LIFERAY_COMMON_EXIT_CODE_HELP = 2;
 
 	private static final int _LIFERAY_COMMON_EXIT_CODE_OK = 0;
-
-	private static final SimpleDateFormat _simpleDateFormat =
-		new SimpleDateFormat(DateUtil.ISO_8601_PATTERN);
 
 }
