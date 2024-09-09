@@ -3167,6 +3167,14 @@
 		"to": "CPTaxCategoryCreateDateComparator.getInstance(param#0#)"
 	},
 	{
+		"classNames": [
+			"IndexWriterHelper"
+		],
+		"from": "updateDocument(String paramName, long paramName, Document paramName, boolean paramName)",
+		"issueKey": "LPD-35875",
+		"to": "updateDocument(param#1#, param#2#)"
+	},
+	{
 		"from": "CookieKeys.COMMERCE_CONTINUE_AS_GUEST",
 		"issueKey": "LPS-159679",
 		"newImports": [
