@@ -7,7 +7,7 @@ network.
 
 - MySQL or PostgreSQL
 - Database user with read access to all partitions
-- Previous execution of DBSchemaDefinitionExporter to generate sql schema files.
+- Previous run of DBSchemaDefinitionExporter to generate SQL schema files
 
 ## Usage
 
