@@ -58,7 +58,7 @@ public class GroupSelectorTagTest {
 			PermissionCheckerMethodTestRule.INSTANCE);
 
 	@Test
-	public void testGetDepotGroupsWithDepotGroupTypeWhenPagination()
+	public void testGetDepotGroupsWithDepotGroupTypeWithPagination()
 		throws Exception {
 
 		_addDepotEntries(PropsValues.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA + 1);
