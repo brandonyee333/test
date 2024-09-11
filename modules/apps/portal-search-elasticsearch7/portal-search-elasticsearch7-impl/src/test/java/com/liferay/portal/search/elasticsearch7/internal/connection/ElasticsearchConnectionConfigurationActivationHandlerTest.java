@@ -44,8 +44,6 @@ public class ElasticsearchConnectionConfigurationActivationHandlerTest {
 
 	@Before
 	public void setUp() {
-		_elasticsearchConnectionConfigurationActivationHandler =
-			new ElasticsearchConnectionConfigurationActivationHandler();
 		_elasticsearchConnectionManager =
 			_createElasticsearchConnectionManager();
 
@@ -158,7 +156,8 @@ public class ElasticsearchConnectionConfigurationActivationHandlerTest {
 		_elasticsearchConnectionConfiguration = Mockito.mock(
 			ElasticsearchConnectionConfiguration.class);
 	private ElasticsearchConnectionConfigurationActivationHandler
-		_elasticsearchConnectionConfigurationActivationHandler;
+		_elasticsearchConnectionConfigurationActivationHandler =
+			new ElasticsearchConnectionConfigurationActivationHandler();
 	private ElasticsearchConnectionManager _elasticsearchConnectionManager;
 	private final Http _http = Mockito.mock(Http.class);
 
