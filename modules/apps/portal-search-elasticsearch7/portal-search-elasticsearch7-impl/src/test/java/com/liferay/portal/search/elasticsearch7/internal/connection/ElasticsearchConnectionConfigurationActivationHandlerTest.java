@@ -65,43 +65,54 @@ public class ElasticsearchConnectionConfigurationActivationHandlerTest {
 
 	@Test
 	public void testApplyProxyConfigurationInElasticsearchConnection() {
-		String connectionId = RandomTestUtil.randomString();
-		String[] networkHostAddresses = RandomTestUtil.randomStrings(10);
-		String proxyHost = RandomTestUtil.randomString();
-		String proxyPassword = RandomTestUtil.randomString();
-		int proxyPort = RandomTestUtil.randomInt();
-		String proxyUserName = RandomTestUtil.randomString();
-
 		Mockito.when(
 			_elasticsearchConnectionConfiguration.active()
 		).thenReturn(
 			true
 		);
+
+		String connectionId = RandomTestUtil.randomString();
+
 		Mockito.when(
 			_elasticsearchConnectionConfiguration.connectionId()
 		).thenReturn(
 			connectionId
 		);
+
+		String[] networkHostAddresses = RandomTestUtil.randomStrings(10);
+
 		Mockito.when(
 			_elasticsearchConnectionConfiguration.networkHostAddresses()
 		).thenReturn(
 			networkHostAddresses
 		);
+
+		String proxyHost = RandomTestUtil.randomString();
+
 		Mockito.when(
 			_elasticsearchConnectionConfiguration.proxyHost()
 		).thenReturn(
 			proxyHost
 		);
+
+		String proxyPassword = RandomTestUtil.randomString();
+
 		Mockito.when(
 			_elasticsearchConnectionConfiguration.proxyPassword()
 		).thenReturn(
 			proxyPassword
 		);
+
+		int proxyPort = RandomTestUtil.randomInt();
+
 		Mockito.when(
 			_elasticsearchConnectionConfiguration.proxyPort()
 		).thenReturn(
 			proxyPort
 		);
+
+		String proxyUserName = RandomTestUtil.randomString();
+
 		Mockito.when(
 			_elasticsearchConnectionConfiguration.proxyUserName()
 		).thenReturn(
