@@ -1477,14 +1477,14 @@ public class UsersAdminUtil {
 
 			if (emailAddressId <= 0) {
 				emailAddress = EmailAddressServiceUtil.addEmailAddress(
-					className, classPK, address, listTypeId, primary,
+					null, className, classPK, address, listTypeId, primary,
 					new ServiceContext());
 
 				emailAddressId = emailAddress.getEmailAddressId();
 			}
 			else {
 				EmailAddressServiceUtil.updateEmailAddress(
-					emailAddressId, address, listTypeId, primary);
+					null, emailAddressId, address, listTypeId, primary);
 			}
 
 			emailAddressIds.add(emailAddressId);
