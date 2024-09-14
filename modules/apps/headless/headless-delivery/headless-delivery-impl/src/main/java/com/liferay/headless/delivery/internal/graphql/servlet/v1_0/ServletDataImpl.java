@@ -155,6 +155,8 @@ public class ServletDataImpl implements ServletData {
 			_contentTemplateResourceComponentServiceObjects);
 		Query.setDocumentResourceComponentServiceObjects(
 			_documentResourceComponentServiceObjects);
+		Query.setDocumentDataDefinitionTypeResourceComponentServiceObjects(
+			_documentDataDefinitionTypeResourceComponentServiceObjects);
 		Query.setDocumentFolderResourceComponentServiceObjects(
 			_documentFolderResourceComponentServiceObjects);
 		Query.setDocumentMetadataSetResourceComponentServiceObjects(
@@ -603,6 +605,11 @@ public class ServletDataImpl implements ServletData {
 							DocumentResourceImpl.class,
 							"putSiteDocumentPermissionsPage"));
 					put(
+						"mutation#createAssetLibraryDocumentDataDefinitionTypesPageExportBatch",
+						new ObjectValuePair<>(
+							DocumentDataDefinitionTypeResourceImpl.class,
+							"postAssetLibraryDocumentDataDefinitionTypesPageExportBatch"));
+					put(
 						"mutation#createAssetLibraryDocumentDataDefinitionType",
 						new ObjectValuePair<>(
 							DocumentDataDefinitionTypeResourceImpl.class,
@@ -612,6 +619,11 @@ public class ServletDataImpl implements ServletData {
 						new ObjectValuePair<>(
 							DocumentDataDefinitionTypeResourceImpl.class,
 							"postAssetLibraryDocumentDataDefinitionTypeBatch"));
+					put(
+						"mutation#createSiteDocumentDataDefinitionTypesPageExportBatch",
+						new ObjectValuePair<>(
+							DocumentDataDefinitionTypeResourceImpl.class,
+							"postSiteDocumentDataDefinitionTypesPageExportBatch"));
 					put(
 						"mutation#createSiteDocumentDataDefinitionType",
 						new ObjectValuePair<>(
@@ -2024,6 +2036,21 @@ public class ServletDataImpl implements ServletData {
 						new ObjectValuePair<>(
 							DocumentResourceImpl.class,
 							"getSiteDocumentsRatedByMePage"));
+					put(
+						"query#assetLibraryDocumentDataDefinitionTypes",
+						new ObjectValuePair<>(
+							DocumentDataDefinitionTypeResourceImpl.class,
+							"getAssetLibraryDocumentDataDefinitionTypesPage"));
+					put(
+						"query#documentDataDefinitionType",
+						new ObjectValuePair<>(
+							DocumentDataDefinitionTypeResourceImpl.class,
+							"getDocumentDataDefinitionType"));
+					put(
+						"query#documentDataDefinitionTypes",
+						new ObjectValuePair<>(
+							DocumentDataDefinitionTypeResourceImpl.class,
+							"getSiteDocumentDataDefinitionTypesPage"));
 					put(
 						"query#assetLibraryDocumentFolders",
 						new ObjectValuePair<>(
