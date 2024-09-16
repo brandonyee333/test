@@ -375,6 +375,10 @@ public class ObjectEntryLocalServiceUtil {
 		return getService().getObjectEntries(start, end);
 	}
 
+	public static List<ObjectEntry> getObjectEntries(long objectDefinitionId) {
+		return getService().getObjectEntries(objectDefinitionId);
+	}
+
 	public static List<ObjectEntry> getObjectEntries(
 		long groupId, long objectDefinitionId, int start, int end) {
 
