@@ -136,18 +136,26 @@ public class CTProcessLocalServiceImpl extends CTProcessLocalServiceBaseImpl {
 			ctProcess.setBackgroundTaskId(backgroundTask.getBackgroundTaskId());
 		}
 
+		ctProcess = ctProcessPersistence.update(ctProcess);
+
 		_resourceLocalService.addResources(
 			ctProcess.getCompanyId(), 0, ctProcess.getUserId(),
 			CTProcess.class.getName(), ctProcess.getCtProcessId(), false, false,
 			false);
 
-		return ctProcessPersistence.update(ctProcess);
+		return ctProcess;
 	}
 
 	@Indexable(type = IndexableType.DELETE)
 	@Override
 	public CTProcess deleteCTProcess(CTProcess ctProcess)
 		throws PortalException {
+
+		ctProcessPersistence.remove(ctProcess);
+
+		_resourceLocalService.deleteResource(
+			ctProcess.getCompanyId(), CTProcess.class.getName(),
+			ResourceConstants.SCOPE_INDIVIDUAL, ctProcess.getCtProcessId());
 
 		BackgroundTask backgroundTask =
 			_backgroundTaskLocalService.fetchBackgroundTask(
@@ -169,11 +177,7 @@ public class CTProcessLocalServiceImpl extends CTProcessLocalServiceBaseImpl {
 			_backgroundTaskLocalService.deleteBackgroundTask(backgroundTask);
 		}
 
-		_resourceLocalService.deleteResource(
-			ctProcess.getCompanyId(), CTProcess.class.getName(),
-			ResourceConstants.SCOPE_INDIVIDUAL, ctProcess.getCtProcessId());
-
-		return ctProcessPersistence.remove(ctProcess);
+		return ctProcess;
 	}
 
 	@Indexable(type = IndexableType.DELETE)
