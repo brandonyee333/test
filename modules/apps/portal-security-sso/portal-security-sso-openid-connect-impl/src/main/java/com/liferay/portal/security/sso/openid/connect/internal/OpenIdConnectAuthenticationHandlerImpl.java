@@ -12,6 +12,8 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONException;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -225,7 +227,11 @@ public class OpenIdConnectAuthenticationHandlerImpl
 			).put(
 				"state", new State()
 			).put(
-				"ui_locales", _getLangTags(httpServletRequest)
+				"ui_locales",
+				_getLangTags(
+					httpServletRequest,
+					_isSendLocaleLowerCase(
+						oAuthClientEntry.getTokenRequestParametersJSON()))
 			).build();
 
 		try {
@@ -357,7 +363,9 @@ public class OpenIdConnectAuthenticationHandlerImpl
 		}
 	}
 
-	private List<LangTag> _getLangTags(HttpServletRequest httpServletRequest) {
+	private List<LangTag> _getLangTags(
+		HttpServletRequest httpServletRequest, boolean sendLocaleLowercase) {
+
 		Locale locale = _portal.getLocale(httpServletRequest);
 
 		if (locale == null) {
@@ -365,6 +373,14 @@ public class OpenIdConnectAuthenticationHandlerImpl
 		}
 
 		try {
+			if (sendLocaleLowercase) {
+				return Collections.singletonList(
+					LangTag.parse(
+						_language.getBCP47LangTag(
+							locale
+						).toLowerCase()));
+			}
+
 			return Collections.singletonList(
 				LangTag.parse(_language.getBCP47LangTag(locale)));
 		}
@@ -394,6 +410,26 @@ public class OpenIdConnectAuthenticationHandlerImpl
 					uriSyntaxException.getMessage(),
 				uriSyntaxException);
 		}
+	}
+
+	private boolean _isSendLocaleLowerCase(String tokenRequestParametersJSON) {
+		if (Validator.isNotNull(tokenRequestParametersJSON)) {
+			try {
+				com.liferay.portal.kernel.json.JSONObject jsonObject =
+					_jsonFactory.createJSONObject(tokenRequestParametersJSON);
+
+				return jsonObject.getBoolean("send_locale_lowercase");
+			}
+			catch (JSONException jsonException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(
+						"exception parsing tokenRequestParameters, " +
+							jsonException.getMessage());
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private String _requestUserInfoJSON(
@@ -481,6 +517,9 @@ public class OpenIdConnectAuthenticationHandlerImpl
 	@Reference
 	private AuthorizationServerMetadataResolver
 		_authorizationServerMetadataResolver;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private Language _language;
