@@ -2237,7 +2237,7 @@ public class ObjectActionLocalServiceTest {
 			guestUser.getUserId(), 0, objectDefinition.getObjectDefinitionId(),
 			Collections.emptyMap(), serviceContext);
 
-		_assertNotificationSubject("Subject");
+		_assertNotificationQueueEntrySubject("Subject");
 
 		User user = UserTestUtil.addUser();
 
@@ -2248,7 +2248,7 @@ public class ObjectActionLocalServiceTest {
 			user.getUserId(), 0, objectDefinition.getObjectDefinitionId(),
 			Collections.emptyMap(), serviceContext);
 
-		_assertNotificationSubject("Assunto");
+		_assertNotificationQueueEntrySubject("Assunto");
 
 		// Use preferred language for guest users
 
@@ -2266,7 +2266,7 @@ public class ObjectActionLocalServiceTest {
 			guestUser.getUserId(), 0, objectDefinition.getObjectDefinitionId(),
 			Collections.emptyMap(), serviceContext);
 
-		_assertNotificationSubject("Assunto");
+		_assertNotificationQueueEntrySubject("Assunto");
 
 		_userLocalService.updateLanguageId(
 			user.getUserId(), LocaleUtil.US.toLanguageTag());
@@ -2275,7 +2275,7 @@ public class ObjectActionLocalServiceTest {
 			user.getUserId(), 0, objectDefinition.getObjectDefinitionId(),
 			Collections.emptyMap(), serviceContext);
 
-		_assertNotificationSubject("Subject");
+		_assertNotificationQueueEntrySubject("Subject");
 
 		serviceContext.setLanguageId(LocaleUtil.HUNGARY.toLanguageTag());
 
@@ -2283,15 +2283,16 @@ public class ObjectActionLocalServiceTest {
 			guestUser.getUserId(), 0, objectDefinition.getObjectDefinitionId(),
 			Collections.emptyMap(), serviceContext);
 
-		_assertNotificationSubject("Subject");
+		_assertNotificationQueueEntrySubject("Subject");
 
 		_objectEntryLocalService.addObjectEntry(
 			user.getUserId(), 0, objectDefinition.getObjectDefinitionId(),
 			Collections.emptyMap(), serviceContext);
 
-		_assertNotificationSubject("Subject");
+		_assertNotificationQueueEntrySubject("Subject");
 
 		_objectDefinitionLocalService.deleteObjectDefinition(objectDefinition);
+
 		_userLocalService.deleteUser(user);
 	}
 
@@ -2775,7 +2776,7 @@ public class ObjectActionLocalServiceTest {
 		Assert.assertEquals("println \"Hello World\"", arguments[2]);
 	}
 
-	private void _assertNotificationSubject(String expectedSubject)
+	private void _assertNotificationQueueEntrySubject(String expectedSubject)
 		throws Exception {
 
 		List<NotificationQueueEntry> notificationQueueEntries =
