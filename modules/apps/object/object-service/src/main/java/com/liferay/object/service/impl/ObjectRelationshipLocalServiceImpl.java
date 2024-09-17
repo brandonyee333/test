@@ -1387,6 +1387,18 @@ public class ObjectRelationshipLocalServiceImpl
 					objectDefinition2);
 			}
 		}
+
+		if (objectDefinition1.isApproved() && objectDefinition2.isApproved()) {
+			boolean oldObjectDefinition2Root = false;
+
+			if (objectDefinition2.getRootObjectDefinitionId() > 0) {
+				oldObjectDefinition2Root = true;
+			}
+
+			_objectEntryLocalService.updateRootObjectEntryIds(
+				objectDefinition1, objectRelationship,
+				oldObjectDefinition2Root);
+		}
 	}
 
 	private void _deleteObjectFields(
