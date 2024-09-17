@@ -421,7 +421,7 @@ public class ScanCodeProject {
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(
-				"Unable to get Scancode api key", ioException);
+				"Unable to get ScanCode API key", ioException);
 		}
 	}
 
