@@ -34,8 +34,6 @@ public class ScanCodeProject {
 		_labels.add("automated");
 
 		_pipelineName = pipelineName;
-
-		_s3URL = null;
 	}
 
 	public void addPipeline(String pipelineName)
