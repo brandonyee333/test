@@ -964,6 +964,18 @@ public class DocumentImpl implements Document {
 		createField(name, value);
 	}
 
+	protected void createKeywordField(
+		String name, String[] values, boolean lowerCase) {
+
+		if (lowerCase && Validator.isNotNull(values)) {
+			for (String value : values) {
+				StringUtil.toLowerCase(value);
+			}
+		}
+
+		createField(name, values);
+	}
+
 	protected void createNumberField(
 		String name, boolean typify, Number value) {
 
@@ -1129,9 +1141,31 @@ public class DocumentImpl implements Document {
 		if (values.length == 0) {
 			return;
 		}
+		else if (values.length == 1) {
+			_createSortableTextField(
+				name, typify, Collections.min(Arrays.<String>asList(values)));
+		} else {
+			if (typify) {
+				name = name + "_String";
+			}
 
-		_createSortableTextField(
-			name, typify, Collections.min(Arrays.<String>asList(values)));
+			String[] truncatedValues = new String[values.length];
+
+			for (int index = 0; index < values.length; index++) {
+				String value = values[index];
+				String truncatedValue = value;
+
+				if (value.length() > _SORTABLE_TEXT_FIELDS_TRUNCATED_LENGTH) {
+					truncatedValue = value.substring(
+						0, _SORTABLE_TEXT_FIELDS_TRUNCATED_LENGTH);
+				}
+
+				truncatedValues[index] = truncatedValue;
+			}
+
+			createKeywordField(
+				Field.getSortableFieldName(name), truncatedValues, true);
+		}
 	}
 
 	private Format _getDateFormat() {
