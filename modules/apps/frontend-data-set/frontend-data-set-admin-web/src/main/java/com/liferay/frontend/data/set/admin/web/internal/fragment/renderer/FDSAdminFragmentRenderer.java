@@ -579,14 +579,13 @@ public class FDSAdminFragmentRenderer implements FragmentRenderer {
 			return fieldName;
 		}
 
-		int index = fieldName.indexOf(StringPool.FORWARD_SLASH);
+		int index = fieldName.lastIndexOf(StringPool.FORWARD_SLASH);
 
 		if (index <= 0) {
 			return fieldName;
 		}
 
-		return fieldName.substring(
-			0, fieldName.lastIndexOf(StringPool.FORWARD_SLASH));
+		return fieldName.substring(0, index);
 	}
 
 	private JSONArray _getFiltersJSONArray(
