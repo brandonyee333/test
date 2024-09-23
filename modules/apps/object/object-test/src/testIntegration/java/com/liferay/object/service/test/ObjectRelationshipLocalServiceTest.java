@@ -834,9 +834,71 @@ public class ObjectRelationshipLocalServiceTest {
 						_objectDefinitionLocalService::getObjectDefinition),
 					_objectDefinitionLocalService));
 
+		// Must have the same scope
+
+		ObjectDefinition siteObjectDefinition =
+			ObjectDefinitionTestUtil.publishObjectDefinition(
+				Collections.singletonList(
+					new TextObjectFieldBuilder(
+					).labelMap(
+						LocalizedMapUtil.getLocalizedMap(
+							RandomTestUtil.randomString())
+					).name(
+						"a" + RandomTestUtil.randomString()
+					).build()),
+				ObjectDefinitionConstants.SCOPE_SITE);
+
+		AssertUtils.assertFailure(
+			ObjectRelationshipEdgeException.class,
+			"Object definitions in a root context must have the same scope",
+			() -> _bindObjectDefinitions(
+				objectDefinitionA.getObjectDefinitionId(),
+				siteObjectDefinition.getObjectDefinitionId()));
+
+		// Must not form a cycle
+
+		ObjectDefinition finalObjectDefinitionAAA = objectDefinitionAAA;
+
+		AssertUtils.assertFailure(
+			ObjectRelationshipEdgeException.class,
+			"Object definitions in a root context must not form a cycle",
+			() -> _bindObjectDefinitions(
+				finalObjectDefinitionAAA.getObjectDefinitionId(),
+				objectDefinitionA.getObjectDefinitionId()));
+
+		// Must not have more than one parent
+
+		AssertUtils.assertFailure(
+			ObjectRelationshipEdgeException.class,
+			"Objects definitions in a root context must not have more than " +
+				"one parent",
+			() -> _bindObjectDefinitions(
+				objectDefinitionA.getObjectDefinitionId(),
+				finalObjectDefinitionAAA.getObjectDefinitionId()));
+
+		ObjectDefinition objectDefinitionB =
+			_addAndPublishCustomObjectDefinition("B");
+		ObjectDefinition objectDefinitionBB =
+			_addAndPublishCustomObjectDefinition("BB");
+
+		_bindObjectDefinitions(
+			objectDefinitionB.getObjectDefinitionId(),
+			objectDefinitionBB.getObjectDefinitionId());
+
+		AssertUtils.assertFailure(
+			ObjectRelationshipEdgeException.class,
+			"Objects definitions in a root context must not have more than " +
+				"one parent",
+			() -> _bindObjectDefinitions(
+				objectDefinitionA.getObjectDefinitionId(),
+				objectDefinitionBB.getObjectDefinitionId()));
+
 		TreeTestUtil.deleteObjectDefinitionHierarchy(
 			_objectDefinitionLocalService,
 			new String[] {"C_AAAA", "C_AAA", "C_AA", "C_A"},
+			_objectEntryLocalService);
+		TreeTestUtil.deleteObjectDefinitionHierarchy(
+			_objectDefinitionLocalService, new String[] {"C_B", "C_BB"},
 			_objectEntryLocalService);
 	}
 
@@ -1350,20 +1412,13 @@ public class ObjectRelationshipLocalServiceTest {
 			long objectDefinitionId1, long objectDefinitionId2)
 		throws Exception {
 
-		ObjectRelationship objectRelationship =
-			_objectRelationshipLocalService.addObjectRelationship(
-				StringUtil.randomId(), TestPropsValues.getUserId(),
-				objectDefinitionId1, objectDefinitionId2, 0,
-				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				StringUtil.randomId(), false,
-				ObjectRelationshipConstants.TYPE_ONE_TO_MANY, null);
-
-		return _objectRelationshipLocalService.updateObjectRelationship(
-			objectRelationship.getExternalReferenceCode(),
-			objectRelationship.getObjectRelationshipId(), 0,
-			objectRelationship.getDeletionType(), true,
-			objectRelationship.getLabelMap(), null);
+		return _objectRelationshipLocalService.addObjectRelationship(
+			StringUtil.randomId(), TestPropsValues.getUserId(),
+			objectDefinitionId1, objectDefinitionId2, 0,
+			ObjectRelationshipConstants.DELETION_TYPE_CASCADE, true,
+			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+			StringUtil.randomId(), false,
+			ObjectRelationshipConstants.TYPE_ONE_TO_MANY, null);
 	}
 
 	private ObjectRelationship _bindObjectRelationship(
