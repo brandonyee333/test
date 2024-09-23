@@ -1525,6 +1525,7 @@ public class EmailNotificationTypeTest extends BaseNotificationTypeTest {
 						accountEntryObjectDefinition.getObjectDefinitionId(),
 						objectDefinition.getObjectDefinitionId(), 0,
 						ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+						false,
 						LocalizedMapUtil.getLocalizedMap(
 							RandomTestUtil.randomString()),
 						"relationship", false,
