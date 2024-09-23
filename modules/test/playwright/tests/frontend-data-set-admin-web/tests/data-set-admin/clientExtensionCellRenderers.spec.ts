@@ -1,0 +1,2 @@
+AssertTheCellRendererIsDisplayed
+CanAssertClientExtensionInDropdown
