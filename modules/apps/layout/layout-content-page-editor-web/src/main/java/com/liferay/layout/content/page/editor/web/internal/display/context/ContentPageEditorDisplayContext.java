@@ -302,6 +302,10 @@ public class ContentPageEditorDisplayContext {
 					LanguageResources.getResourceBundle(
 						themeDisplay.getLocale()))
 			).put(
+				"copyItemsURL",
+				getFragmentEntryActionURL(
+					"/layout_content_page_editor/copy_items")
+			).put(
 				"createLayoutPageTemplateEntryURL",
 				getFragmentEntryActionURL(
 					"/layout_content_page_editor" +
@@ -584,6 +588,11 @@ public class ContentPageEditorDisplayContext {
 				"moveItemURL",
 				getFragmentEntryActionURL(
 					"/layout_content_page_editor/move_fragment_entry_link")
+			).put(
+				"moveStepperFragmentEntryLinkURL",
+				getFragmentEntryActionURL(
+					"/layout_content_page_editor" +
+						"/move_stepper_fragment_entry_link")
 			).put(
 				"paddingOptions",
 				() -> {

@@ -26,7 +26,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
@@ -59,17 +58,19 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.felix.cm.PersistenceManager;
@@ -154,8 +155,36 @@ public class UpgradeReport {
 		return messagesPrinters;
 	}
 
+	private Set<String> _getPropertiesFilePathStrings() {
+		Set<String> propertiesFilePathStrings = new TreeSet<>();
+
+		for (String loadedSource : PropsUtil.getLoadedSources()) {
+			try {
+				URI uri = new URI(loadedSource);
+
+				if (StringUtil.equals("file", uri.getScheme())) {
+					String propertiesFilePathString = String.valueOf(
+						Paths.get(uri));
+
+					if (FileUtil.exists(propertiesFilePathString)) {
+						propertiesFilePathStrings.add(propertiesFilePathString);
+					}
+				}
+			}
+			catch (Exception exception) {
+				if (_log.isWarnEnabled()) {
+					_log.warn(exception);
+				}
+			}
+		}
+
+		return propertiesFilePathStrings;
+	}
+
 	private Map<String, Object> _getReportData(
 		UpgradeRecorder upgradeRecorder) {
+
+		Set<String> propertiesFilePathStrings = _getPropertiesFilePathStrings();
 
 		return LinkedHashMapBuilder.<String, Object>put(
 			"execution.date",
@@ -272,6 +301,95 @@ public class UpgradeReport {
 					StringPool.PERIOD, db.getMinorVersion());
 			}
 		).put(
+			"document.library",
+			LinkedHashMapBuilder.put(
+				"root.directory",
+				() -> {
+					if (StringUtil.equals(
+							PropsValues.DL_STORE_IMPL,
+							"com.liferay.portal.store.file.system." +
+								"AdvancedFileSystemStore")) {
+
+						_rootDir = _getRootDir(
+							_CONFIGURATION_PID_ADVANCED_FILE_SYSTEM_STORE);
+					}
+					else if (StringUtil.equals(
+								PropsValues.DL_STORE_IMPL,
+								"com.liferay.portal.store.file.system." +
+									"FileSystemStore")) {
+
+						_rootDir = _getRootDir(
+							_CONFIGURATION_PID_FILE_SYSTEM_STORE);
+
+						if (_rootDir == null) {
+							_rootDir =
+								PropsValues.LIFERAY_HOME +
+									"/data/document_library";
+						}
+					}
+
+					if (_rootDir != null) {
+						return _rootDir;
+					}
+
+					return "Undefined";
+				}
+			).put(
+				"storage.implementation", PropsValues.DL_STORE_IMPL
+			).put(
+				"storage.size",
+				() -> {
+					if (PropsValues.UPGRADE_REPORT_DL_STORAGE_SIZE_TIMEOUT ==
+							0) {
+
+						return "Disabled";
+					}
+
+					if (!StringUtil.endsWith(
+							PropsValues.DL_STORE_IMPL, "FileSystemStore")) {
+
+						return "Check externally";
+					}
+
+					if (_rootDir == null) {
+						return "Unable to determine. Document library " +
+							"\"rootDir\" was not set.";
+					}
+
+					_dlSize = 0;
+
+					try {
+						_dlSizeThread.start();
+						_dlSizeThread.join(
+							PropsValues.UPGRADE_REPORT_DL_STORAGE_SIZE_TIMEOUT *
+								Time.SECOND);
+					}
+					catch (Exception exception) {
+						_log.error(
+							"Unable to determine the document library size",
+							exception);
+
+						return "Unable to determine";
+					}
+
+					if (_dlSizeThread.isAlive()) {
+						if (_log.isInfoEnabled()) {
+							_log.info(
+								"Unable to determine the document library " +
+									"size. Increase the timeout or check it " +
+										"manually.");
+						}
+
+						return "Unable to determine";
+					}
+
+					return LanguageUtil.formatStorageSize(
+						_dlSize, LocaleUtil.US);
+				}
+			).build()
+		).put(
+			"liferay.home", PropsValues.LIFERAY_HOME
+		).put(
 			"jvm.arguments",
 			() -> {
 				List<String> jvmArguments = new ArrayList<>();
@@ -318,61 +436,12 @@ public class UpgradeReport {
 				return ListUtil.sort(jvmArguments);
 			}
 		).put(
-			"property",
+			"properties",
 			() -> {
-				if (StringUtil.equals(
-						PropsValues.DL_STORE_IMPL,
-						"com.liferay.portal.store.file.system." +
-							"AdvancedFileSystemStore")) {
+				Map<String, String> propertiesMap = new TreeMap<>();
 
-					_rootDir = _getRootDir(
-						_CONFIGURATION_PID_ADVANCED_FILE_SYSTEM_STORE);
-				}
-				else if (StringUtil.equals(
-							PropsValues.DL_STORE_IMPL,
-							"com.liferay.portal.store.file.system." +
-								"FileSystemStore")) {
-
-					_rootDir = _getRootDir(
-						_CONFIGURATION_PID_FILE_SYSTEM_STORE);
-
-					if (_rootDir == null) {
-						_rootDir =
-							PropsValues.LIFERAY_HOME + "/data/document_library";
-					}
-				}
-
-				return LinkedHashMapBuilder.<String, Object>put(
-					"liferay.home", PropsValues.LIFERAY_HOME
-				).put(
-					"locales", Arrays.toString(PropsValues.LOCALES)
-				).put(
-					"locales.enabled",
-					Arrays.toString(PropsValues.LOCALES_ENABLED)
-				).put(
-					PropsKeys.DL_STORE_IMPL, PropsValues.DL_STORE_IMPL
-				).put(
-					"rootDir", (_rootDir != null) ? _rootDir : "Undefined"
-				).build();
-			}
-		).put(
-			"properties.set.by.user",
-			() -> {
-				Map<String, Properties> propertiesMap = new LinkedHashMap<>();
-
-				for (String loadedSource : PropsUtil.getLoadedSources()) {
-					URI uri = new URI(loadedSource);
-
-					String propertiesFilePathString = StringPool.BLANK;
-
-					if (StringUtil.equals("file", uri.getScheme())) {
-						propertiesFilePathString = String.valueOf(
-							Paths.get(uri));
-					}
-
-					if (!FileUtil.exists(propertiesFilePathString)) {
-						continue;
-					}
+				for (String propertiesFilePathString :
+						propertiesFilePathStrings) {
 
 					Properties properties = new Properties();
 
@@ -392,14 +461,14 @@ public class UpgradeReport {
 						continue;
 					}
 
-					propertiesMap.put(propertiesFilePathString, properties);
+					for (String key : properties.stringPropertyNames()) {
+						propertiesMap.put(key, PropsUtil.get(key));
+					}
 				}
 
 				String envPrefix = "LIFERAY_";
 
 				Map<String, String> env = System.getenv();
-
-				Properties properties = new Properties();
 
 				for (Map.Entry<String, String> entry : env.entrySet()) {
 					String key = entry.getKey();
@@ -408,64 +477,26 @@ public class UpgradeReport {
 						continue;
 					}
 
-					properties.setProperty(
+					propertiesMap.put(
 						EnvPropertiesUtil.decode(
 							StringUtil.toLowerCase(
 								key.substring(envPrefix.length()))),
 						entry.getValue());
 				}
 
-				propertiesMap.put(
-					"Properties set with environment variables", properties);
+				List<PropertyPrinter> propertyPrinters = new ArrayList<>();
 
-				return new PropertiesPrinter(propertiesMap);
+				for (Map.Entry<String, String> entry :
+						propertiesMap.entrySet()) {
+
+					propertyPrinters.add(
+						new PropertyPrinter(entry.getKey(), entry.getValue()));
+				}
+
+				return propertyPrinters;
 			}
 		).put(
-			"document.library.storage.size",
-			() -> {
-				if (PropsValues.UPGRADE_REPORT_DL_STORAGE_SIZE_TIMEOUT == 0) {
-					return "Disabled";
-				}
-
-				if (!StringUtil.endsWith(
-						PropsValues.DL_STORE_IMPL, "FileSystemStore")) {
-
-					return "Check externally";
-				}
-
-				if (_rootDir == null) {
-					return "Unable to determine. Document library " +
-						"\"rootDir\" was not set";
-				}
-
-				_dlSize = 0;
-
-				try {
-					_dlSizeThread.start();
-					_dlSizeThread.join(
-						PropsValues.UPGRADE_REPORT_DL_STORAGE_SIZE_TIMEOUT *
-							Time.SECOND);
-				}
-				catch (Exception exception) {
-					_log.error(
-						"Unable to determine the document library size",
-						exception);
-
-					return "Unable to determine";
-				}
-
-				if (_dlSizeThread.isAlive()) {
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Unable to determine the document library size. " +
-								"Increase the timeout or check it manually.");
-					}
-
-					return "Unable to determine";
-				}
-
-				return LanguageUtil.formatStorageSize(_dlSize, LocaleUtil.US);
-			}
+			"properties.files", propertiesFilePathStrings
 		).put(
 			"tables.initial.final.rows",
 			() -> {
@@ -689,11 +720,6 @@ public class UpgradeReport {
 	}
 
 	private String _getReportHeader(String key) {
-		if (key.startsWith("property.")) {
-			return StringUtil.replaceFirst(
-				StringUtil.upperCaseFirstLetter(key), '.', ' ');
-		}
-
 		if (key.startsWith("tables.")) {
 			return String.format(
 				TablePrinter.FORMAT, "Table Name", "Initial Rows",
@@ -826,12 +852,12 @@ public class UpgradeReport {
 
 			String key = entry1.getKey();
 
-			if (value instanceof List<?>) {
+			if (value instanceof Collection<?>) {
 				String reportHeader = _getReportHeader(key);
 
 				sb.append(reportHeader);
 
-				List<Object> objects = (List<Object>)value;
+				Collection<Object> objects = (Collection<Object>)value;
 
 				if (objects.isEmpty()) {
 					sb.append(": Nothing registered\n");
@@ -845,7 +871,7 @@ public class UpgradeReport {
 							StringPool.NULL, StringPool.BLANK));
 					sb.append(StringPool.NEW_LINE);
 
-					for (Object object : (List<Object>)value) {
+					for (Object object : (Collection<Object>)value) {
 						sb.append(object.toString());
 						sb.append(StringPool.NEW_LINE);
 					}
@@ -996,64 +1022,27 @@ public class UpgradeReport {
 
 	}
 
-	private class PropertiesPrinter {
+	private class PropertyPrinter {
 
-		public PropertiesPrinter(Map<String, Properties> propertiesMap) {
-			_propertiesMap = propertiesMap;
-		}
+		public PropertyPrinter(String key, String value) {
+			_key = key;
 
-		@Override
-		public String toString() {
-			StringBundler sb = new StringBundler();
+			if (ArrayUtil.contains(
+					PropsValues.ADMIN_OBFUSCATED_PROPERTIES, key)) {
 
-			sb.append(StringPool.NEW_LINE);
-			sb.append(StringPool.NEW_LINE);
-
-			for (Map.Entry<String, Properties> filePropertiesEntry :
-					_propertiesMap.entrySet()) {
-
-				String source = filePropertiesEntry.getKey();
-
-				Properties properties = filePropertiesEntry.getValue();
-
-				sb.append(source);
-
-				sb.append(StringPool.NEW_LINE);
-
-				sb.append(
-					ListUtil.toString(
-						Collections.nCopies(source.length(), StringPool.MINUS),
-						StringPool.NULL, StringPool.BLANK));
-
-				sb.append(StringPool.NEW_LINE);
-
-				for (Map.Entry<Object, Object> propertyEntry :
-						properties.entrySet()) {
-
-					sb.append(propertyEntry.getKey());
-					sb.append(StringPool.COLON);
-					sb.append(StringPool.SPACE);
-
-					if (ArrayUtil.contains(
-							PropsValues.ADMIN_OBFUSCATED_PROPERTIES,
-							String.valueOf(propertyEntry.getKey()))) {
-
-						sb.append(StringPool.EIGHT_STARS);
-					}
-					else {
-						sb.append(propertyEntry.getValue());
-					}
-
-					sb.append(StringPool.NEW_LINE);
-				}
-
-				sb.append(StringPool.NEW_LINE);
+				_value = StringPool.EIGHT_STARS;
 			}
-
-			return sb.toString();
+			else {
+				_value = value;
+			}
 		}
 
-		private final Map<String, Properties> _propertiesMap;
+		public String toString() {
+			return _key + StringPool.EQUAL + _value;
+		}
+
+		private final String _key;
+		private final String _value;
 
 	}
 

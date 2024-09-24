@@ -7,6 +7,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 
 import i18n from '../i18n';
+import {Liferay} from '../liferay/liferay';
 import {removeHTMLTags} from '../utils/string';
 
 const baseContentSchema = z.object({
@@ -33,6 +34,18 @@ const contentMediaTypeVideo = z.object({
 	headerVideoUrl: z.string().url().min(1),
 });
 
+const resources = z.object({
+	free: z.number(),
+	limit: z.number(),
+	used: z.number(),
+});
+
+const rootProjectPlanUsage = z.object({
+	cpu: resources,
+	instance: resources,
+	memory: resources,
+});
+
 const zodSchema = {
 	accountCreator: z.object({
 		accounts: z.any().array().optional(),
@@ -57,6 +70,20 @@ const zodSchema = {
 		phoneNumber: z
 			.string()
 			.min(1, {message: 'Please enter a phone number to continue.'}),
+	}),
+	analyticsProvisioning: z.object({
+		_refAllowedEmailDomains: z.array(z.any()),
+		_refIncidentReportContacts: z.array(z.any()),
+		allowedEmailDomains: z.array(z.string()).min(1),
+		dataCenterLocation: z.string(),
+		friendlyWorkspaceURL: z.string().min(3),
+		incidentReportContacts: z.array(z.string().email()).min(1),
+		region: z.string(),
+		timezone: z.string(),
+		workspaceName: z.string().min(3),
+		workspaceOwnerEmail: z
+			.string()
+			.default(Liferay.ThemeDisplay.getUserEmailAddress()),
 	}),
 	appPublishing: {
 		build: z.object({
@@ -129,6 +156,23 @@ const zodSchema = {
 				skuId: z.number(),
 			})
 			.optional(),
+	}),
+	installProductSchema: z.object({
+		environment: z.object({
+			isExtensionEnvironment: z.boolean(),
+			projectId: z.string(),
+		}),
+		project: z.object({
+			availabilityToProduct: z.boolean(),
+			environments: z.array(
+				z.object({
+					isExtensionEnvironment: z.boolean(),
+					projectId: z.string(),
+				})
+			),
+			rootProjectId: z.string(),
+			rootProjectPlanUsage,
+		}),
 	}),
 	invitedNewMember: z.object({
 		emailAddress: z
@@ -204,6 +248,6 @@ const zodSchema = {
 	},
 };
 
-export {zodResolver};
+export {z, zodResolver};
 
 export default zodSchema;

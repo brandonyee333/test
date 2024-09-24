@@ -46,6 +46,7 @@ import {
 } from '../../../../../app/contexts/StoreContext';
 import selectCanUpdatePageStructure from '../../../../../app/selectors/selectCanUpdatePageStructure';
 import moveItem from '../../../../../app/thunks/moveItem';
+import moveStepper from '../../../../../app/thunks/moveStepper';
 import updateItemConfig from '../../../../../app/thunks/updateItemConfig';
 import canBeRenamed from '../../../../../app/utils/canBeRenamed';
 import {deepEqual} from '../../../../../app/utils/checkDeepEqual';
@@ -216,14 +217,21 @@ function StructureTreeNodeContent({
 
 	const {handlerRef, isDraggingSource: itemIsDraggingSource} = useDragItem(
 		{...item, fieldTypes, fragmentEntryType, isWidget},
-		(parentItemId, position) =>
-			dispatch(
-				moveItem({
-					itemId: node.id,
-					parentItemId,
-					position,
-				})
-			)
+		(parentItemId, position) => {
+			const thunk = fieldTypes?.includes('stepper')
+				? moveStepper({
+						itemId: node.id,
+						parentItemId,
+						position,
+					})
+				: moveItem({
+						itemId: node.id,
+						parentItemId,
+						position,
+					});
+
+			dispatch(thunk);
+		}
 	);
 
 	const {
@@ -693,8 +701,8 @@ function computeHover({
 			droppable: checkAllowedChild(
 				sourceItem,
 				targetItem,
-				layoutDataRef,
-				fragmentEntryLinksRef
+				layoutDataRef.current,
+				fragmentEntryLinksRef.current
 			),
 			elevate: null,
 			targetPositionWithMiddle,
@@ -714,8 +722,8 @@ function computeHover({
 			droppable: checkAllowedChild(
 				sourceItem,
 				targetItem,
-				layoutDataRef,
-				fragmentEntryLinksRef
+				layoutDataRef.current,
+				fragmentEntryLinksRef.current
 			),
 			elevate: true,
 			targetPositionWithMiddle,

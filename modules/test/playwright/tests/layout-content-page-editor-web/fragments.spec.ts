@@ -200,7 +200,7 @@ test.describe('Content Display Fragment', () => {
 				name: fragmentEntryName,
 			});
 
-			// Create a content page with Wem Site's Apple fragment
+			// Create a content page with created fragment
 
 			const fragmentName = getRandomString();
 
@@ -333,7 +333,7 @@ test.describe('Content Display Fragment', () => {
 				name: fragmentEntryName,
 			});
 
-			// Create a content page with Wem Site's Apple fragment
+			// Create a content page with created fragment
 
 			const fragmentName = getRandomString();
 
@@ -863,7 +863,7 @@ test.describe('HTML Fragment', () => {
 				name: fragmentEntryName,
 			});
 
-			// Create a content page with Wem Site's Apple fragment
+			// Create a content page with created fragment
 
 			const fragmentName = getRandomString();
 
@@ -893,6 +893,16 @@ test.describe('HTML Fragment', () => {
 			});
 
 			await expect(page.getByText('test html')).toBeAttached();
+
+			// Remove the page
+
+			await apiHelpers.jsonWebServicesLayout.deleteLayout(layout.id);
+
+			// Delete data
+
+			await apiHelpers.jsonWebServicesFragmentCollection.deleteFragmentCollection(
+				fragmentCollectionId
+			);
 		}
 	);
 
@@ -1549,7 +1559,7 @@ test.describe('Tags Fragment', () => {
 			title: getRandomString(),
 		});
 
-		// Create two tags in Wem Site
+		// Create two tags in Page Management Site
 
 		for (const tagName of ['Dogs', 'Cats']) {
 			await apiHelpers.headlessAdminTaxonomy.postSiteKeyword({

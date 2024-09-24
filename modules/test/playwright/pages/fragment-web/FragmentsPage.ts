@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-or-later OR LicenseRef-Liferay-DXP-EULA-2.0.0-2023-06
  */
 
-import {Page} from '@playwright/test';
+import {FrameLocator, Page, expect} from '@playwright/test';
 
+import {clickAndExpectToBeVisible} from '../../utils/clickAndExpectToBeVisible';
 import fillAndClickOutside from '../../utils/fillAndClickOutside';
 import {PORTLET_URLS} from '../../utils/portletUrls';
 import {waitForSuccessAlert} from '../../utils/waitForSuccessAlert';
@@ -12,8 +13,13 @@ import {waitForSuccessAlert} from '../../utils/waitForSuccessAlert';
 export class FragmentsPage {
 	readonly page: Page;
 
+	readonly selectFragmentIFrame: FrameLocator;
+
 	constructor(page: Page) {
 		this.page = page;
+		this.selectFragmentIFrame = page.frameLocator(
+			'iframe[title="Select Fragment"]'
+		);
 	}
 
 	async goto(siteUrl?: Site['friendlyUrlPath']) {
@@ -34,6 +40,65 @@ export class FragmentsPage {
 			.locator('.sheet-title')
 			.getByText(name, {exact: true})
 			.waitFor();
+	}
+
+	async selectDefaultFormFragment({
+		fieldType,
+		fragmentCollectionName,
+		fragmentName,
+		siteName,
+	}: {
+		fieldType: string;
+		fragmentCollectionName: string;
+		fragmentName: string;
+		siteName: string;
+	}) {
+		await clickAndExpectToBeVisible({
+			autoClick: true,
+			target: this.page
+				.locator('.dropdown-menu')
+				.getByRole('menuitem', {name: 'Configuration'}),
+			trigger: this.page.getByLabel('Options'),
+		});
+
+		await clickAndExpectToBeVisible({
+			autoClick: true,
+			target: this.selectFragmentIFrame
+				.locator('.nav-link')
+				.filter({hasText: siteName}),
+			timeout: 3000,
+			trigger: this.page
+				.getByRole('row', {name: fieldType})
+				.getByRole('button'),
+		});
+
+		await this.selectFragmentIFrame
+			.getByRole('link', {
+				exact: true,
+				name: fragmentCollectionName,
+			})
+			.waitFor({state: 'visible', timeout: 10000});
+
+		await this.selectFragmentIFrame
+			.getByRole('link', {
+				exact: true,
+				name: fragmentCollectionName,
+			})
+			.click();
+
+		await this.selectFragmentIFrame
+			.locator('.card-body')
+			.getByLabel(fragmentName)
+			.waitFor({state: 'visible', timeout: 10000});
+
+		await this.selectFragmentIFrame
+			.locator('.card-body')
+			.getByLabel(fragmentName)
+			.click();
+
+		await expect(
+			this.page.getByRole('row', {name: fieldType}).locator('input')
+		).toHaveValue(fragmentName);
 	}
 
 	async copyFragment(title: string) {
@@ -79,10 +144,13 @@ export class FragmentsPage {
 	}
 
 	async clickAction(action: string, title: string) {
-		const actionsPath = '//p[@title="' + title + '"]/../..';
-
-		await this.page.locator(actionsPath).getByLabel('More actions').click();
-		await this.page.getByRole('menuitem', {name: action}).click();
+		await clickAndExpectToBeVisible({
+			autoClick: true,
+			target: this.page.getByRole('menuitem', {name: action}),
+			trigger: this.page
+				.locator(`//p[@title="${title}"]/../..`)
+				.getByLabel('More actions'),
+		});
 	}
 
 	async createFragmentSet(name: string) {

@@ -56,11 +56,15 @@ export class PageEditorPage {
 		this.undoHistory = page.locator('.page-editor__undo-history');
 	}
 
-	async goto(layout: Layout, siteUrl?: Site['friendlyUrlPath']) {
+	async goto(
+		layout: Layout,
+		siteUrl?: Site['friendlyUrlPath'],
+		doAsUserId?: string
+	) {
 		await this.page.goto('/');
 
 		await this.page.goto(
-			`/web${siteUrl || '/guest'}${layout.friendlyUrlPath}?p_l_mode=edit`
+			`/web${siteUrl || '/guest'}${layout.friendlyUrlPath || layout.friendlyURL}?p_l_mode=edit${doAsUserId ? '&doAsUserId=' + doAsUserId : ''}`
 		);
 	}
 
@@ -356,6 +360,14 @@ export class PageEditorPage {
 			.waitFor({state: 'hidden'});
 	}
 
+	async copyFragment(fragmentId: string) {
+		await this.selectFragment(fragmentId);
+
+		await this.page.keyboard.press('Shift+Control+C');
+
+		await this.waitForChangesSaved();
+	}
+
 	async createExperience(name: string) {
 		await this.openExperienceSelector();
 
@@ -364,6 +376,8 @@ export class PageEditorPage {
 		const nameInput = this.page.getByPlaceholder('Experience Name');
 
 		await nameInput.waitFor();
+
+		await expect(nameInput).toHaveAttribute('required');
 
 		await fillAndClickOutside(this.page, nameInput, name);
 
@@ -378,6 +392,14 @@ export class PageEditorPage {
 			'Success:The experience was created successfully.',
 			{autoClose: false}
 		);
+	}
+
+	async cutFragment(fragmentId: string) {
+		await this.selectFragment(fragmentId);
+
+		await this.page.keyboard.press('Shift+Control+X');
+
+		await this.waitForChangesSaved();
 	}
 
 	async deleteExperience(name: string) {
@@ -426,7 +448,7 @@ export class PageEditorPage {
 	async duplicateFragment(fragmentId: string) {
 		await this.selectFragment(fragmentId);
 
-		await this.page.keyboard.press('Control+D');
+		await this.page.keyboard.press('Alt+Control+D');
 
 		await this.waitForChangesSaved();
 	}
@@ -648,6 +670,16 @@ export class PageEditorPage {
 	}
 
 	async hideFragment(fragmentId: string, isDesktop = true) {
+		await this.clickFragmentOption(fragmentId, 'Hide Fragment', isDesktop);
+
+		await this.waitForChangesSaved();
+	}
+
+	async clickFragmentOption(
+		fragmentId: string,
+		name: string,
+		isDesktop = true
+	) {
 		await this.selectFragment(fragmentId, isDesktop);
 
 		await this.page
@@ -655,12 +687,7 @@ export class PageEditorPage {
 			.getByRole('button', {name: 'Options'})
 			.click();
 
-		await this.page
-			.locator('.dropdown-menu.show')
-			.getByText('Hide Fragment')
-			.click();
-
-		await this.waitForChangesSaved();
+		await this.page.locator('.dropdown-menu.show').getByText(name).click();
 	}
 
 	async isActive(fragmentId: string, isDesktop = true) {
@@ -774,6 +801,14 @@ export class PageEditorPage {
 		await this.page
 			.getByRole('menuitem', {exact: true, name: 'Configuration'})
 			.click();
+	}
+
+	async pasteFragment(fragmentId: string) {
+		await this.selectFragment(fragmentId);
+
+		await this.page.keyboard.press('Shift+Control+V');
+
+		await this.waitForChangesSaved();
 	}
 
 	async publishPage() {
@@ -1074,7 +1109,7 @@ export class PageEditorPage {
 	}
 
 	async waitForChangesSaved() {
-		await this.page.getByLabel('Saved').waitFor();
+		await this.page.getByLabel('Saved', {exact: true}).waitFor();
 
 		await this.page
 			.getByText(

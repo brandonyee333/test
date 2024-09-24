@@ -36,6 +36,9 @@ public interface CommerceOrderCheckoutConfiguration {
 	)
 	public boolean hideShippingPriceZero();
 
+	@Meta.AD(deflt = "false", name = "multishipping-enabled", required = false)
+	public boolean multishippingEnabled();
+
 	@Meta.AD(
 		deflt = "false", name = "show-separate-order-items", required = false
 	)

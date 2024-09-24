@@ -7,9 +7,17 @@ export function getRandomID() {
 	try {
 		return crypto.randomUUID();
 	}
-	catch (error) {
+	catch {
 		return `liferay-${Math.random()}`.replace('.', '-');
 	}
+}
+
+export function normalizeURLProtocol(url = '') {
+	if (window.location.href.startsWith('https')) {
+		return url;
+	}
+
+	return url.replace('https', 'http');
 }
 
 export function removeUnnecessaryURLString(str: string) {

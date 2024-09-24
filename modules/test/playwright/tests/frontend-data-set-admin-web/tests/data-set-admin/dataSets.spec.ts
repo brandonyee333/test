@@ -16,7 +16,6 @@ export const test = mergeTests(
 	dataSetManagerApiHelpersTest,
 	dataSetsPageTest,
 	featureFlagsTest({
-		'LPD-25230': true,
 		'LPS-164563': true,
 	}),
 	loginTest(),
@@ -203,7 +202,7 @@ test('Create parameterized data set', async ({dataSetsPage, page}) => {
 
 test(
 	'Assert endpoint with resolved paramater is available as an option',
-	{tag: '@LPD-25230'},
+	{tag: '@LPD-31177'},
 	async ({dataSetsPage}) => {
 		const cartDataSetConfig = {
 			name: 'Carts',

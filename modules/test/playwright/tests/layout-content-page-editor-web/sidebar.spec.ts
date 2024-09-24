@@ -191,12 +191,16 @@ test.describe('Fragments Panel', () => {
 		pageManagementSite,
 	}) => {
 
-		// Create unpublished fragment inside Imported fragment set
+		// Create unpublished fragment inside Page Management fragment set
 
 		await fragmentsPage.goto(pageManagementSite.friendlyUrlPath);
 
 		const unpublishedFragmentName = getRandomString();
-		await fragmentsPage.createFragment('Imported', unpublishedFragmentName);
+
+		await fragmentsPage.createFragment(
+			'Page Management Fragments',
+			unpublishedFragmentName
+		);
 
 		// Create content page and go to edit mode
 
@@ -215,13 +219,21 @@ test.describe('Fragments Panel', () => {
 		await page
 			.getByRole('menuitem', {
 				exact: true,
-				name: 'Imported',
+				name: 'Page Management Fragments',
 			})
 			.click();
 
 		await expect(page.getByText('Apple')).toBeVisible();
 
 		await expect(page.getByText(unpublishedFragmentName)).not.toBeVisible();
+
+		// Delete unpublished fragment
+
+		await fragmentsPage.goto(pageManagementSite.friendlyUrlPath);
+
+		await fragmentsPage.gotoFragmentSet('Page Management Fragments');
+
+		await fragmentsPage.deleteFragment(unpublishedFragmentName);
 	});
 
 	test('Can remove search text when pressing backspace', async ({

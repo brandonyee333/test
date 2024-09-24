@@ -4,84 +4,43 @@
  */
 
 import OAuth2Client from './OAuth2Client';
-
-export type ConsoleProjectsUsage = {
-	userEmail: string;
-	userProjects: ConsoleUserProject[];
-};
-
-export type ConsoleUserProject = {
-	environments: string[];
-	rootProjectId: string;
-	rootProjectPlanUsage: {
-		cpu: ConsoleCPU;
-		instance: ConsoleCPU;
-		memory: ConsoleCPU;
-	};
-};
-
-type ConsoleCPU = {
-	limit: number;
-	used: number;
-};
-
-export type LicenseKey = {
-	active: boolean;
-	complimentary: boolean;
-	createDate: string;
-	description: string;
-	expirationDate: string;
-	hostName: string;
-	id: number;
-	ipAddresses: string;
-	key: string;
-	keyType: string;
-	licenseType: string;
-	macAddresses: string;
-	modifiedDate: string;
-	modifiedUserName: string;
-	modifiedUserUuid: string;
-	orderId: string;
-	owner: string;
-	productId: string;
-	productName: string;
-	productVersion: string;
-	startDate: string;
-	userName: string;
-	userUuid: string;
-};
-
-type LicenseTypePayload = {
-	licenseEntry: {
-		description: string;
-		hostName: string;
-		ipAddresses: string;
-		macAddresses: string;
-		orderId: string;
-		productId?: string;
-		productPurchaseKey: string;
-		productVersion: string;
-	};
-	skuId: number;
-	type: string;
-};
-
-export type SubscriptionsType = {
-	endDate?: string;
-	name: string;
-	perpetual: boolean;
-	productPurchasedKey: string;
-	productVersion: string;
-	provisionedCount: number;
-	purchasedCount: number;
-	startDate: string;
-};
+import {
+	ConsoleProjectsUsage,
+	LicenseKey,
+	LicenseTypePayload,
+	ProjectDataSource,
+	SubscriptionsType,
+} from './types';
 
 export default class MarketplaceSpringBootOAuth2 extends OAuth2Client {
 	constructor() {
 		super(
 			'liferay-marketplace-etc-spring-boot-oauth-application-user-agent'
 		);
+	}
+
+	async getAnalyticsProject(projectId: string): Promise<AnalyticsProject> {
+		const response = await this.oAuth2Client.fetch(
+			`/analytics/project/${projectId}`
+		);
+
+		return response.json() as Promise<AnalyticsProject>;
+	}
+
+	async getAnalyticsProjectDataSourceToken(projectId: string) {
+		const response = await this.oAuth2Client.fetch(
+			`/analytics/project/${projectId}/data-source/token`
+		);
+
+		return response.text() as Promise<string>;
+	}
+
+	async getAnalyticsProjectDataSource(projectId: string) {
+		const response = await this.oAuth2Client.fetch(
+			`/analytics/project/${projectId}/data-source`
+		);
+
+		return response.json() as Promise<ProjectDataSource>;
 	}
 
 	async getAnalyticsPages(
@@ -92,6 +51,31 @@ export default class MarketplaceSpringBootOAuth2 extends OAuth2Client {
 		);
 
 		return response.json() as Promise<AnalyticsViews>;
+	}
+
+	async provisioningAnalyticsCloud(
+		orderId: number,
+		data: unknown
+	): Promise<{groupId: number}> {
+		const response = await this.oAuth2Client.fetch(
+			`/analytics/provisioning/${orderId}`,
+			{
+				body: JSON.stringify(data),
+				method: 'POST',
+			}
+		);
+
+		return response.json();
+	}
+
+	async provisioningCloudApp(
+		orderId: number,
+		data: {orderItemId: number; projectId: string}
+	): Promise<any> {
+		return this.oAuth2Client.fetch(`/console/provisioning/${orderId}`, {
+			body: JSON.stringify(data),
+			method: 'POST',
+		});
 	}
 
 	async provisioningTrial(orderId: number): Promise<any> {
