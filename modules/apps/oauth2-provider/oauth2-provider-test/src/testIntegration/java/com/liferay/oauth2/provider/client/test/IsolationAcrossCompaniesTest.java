@@ -61,7 +61,7 @@ public class IsolationAcrossCompaniesTest extends BaseClientTestCase {
 
 			Response response = builder.get();
 
-			Assert.assertEquals(403, response.getStatus());
+			Assert.assertEquals(401, response.getStatus());
 		}
 	}
 
@@ -87,7 +87,7 @@ public class IsolationAcrossCompaniesTest extends BaseClientTestCase {
 
 			Response response = builder.get();
 
-			Assert.assertEquals(403, response.getStatus());
+			Assert.assertEquals(401, response.getStatus());
 		}
 	}
 
