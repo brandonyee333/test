@@ -1578,6 +1578,14 @@ public class ObjectRelationshipLocalServiceImpl
 					"scope");
 		}
 
+		if ((objectDefinition1.getRootObjectDefinitionId() != 0) &&
+			(objectDefinition1.getRootObjectDefinitionId() ==
+				objectDefinition2.getObjectDefinitionId())) {
+
+			throw new ObjectRelationshipEdgeException(
+				"Object definitions in a root context must not form a cycle");
+		}
+
 		ObjectRelationship existingObjectRelationship =
 			objectRelationshipPersistence.fetchByODI2_E(
 				objectDefinition2.getObjectDefinitionId(), true);
