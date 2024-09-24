@@ -1570,6 +1570,14 @@ public class ObjectRelationshipLocalServiceImpl
 					"object definitions to be an edge of a root context");
 		}
 
+		if (!StringUtil.equals(
+				objectDefinition1.getScope(), objectDefinition2.getScope())) {
+
+			throw new ObjectRelationshipEdgeException(
+				"Object definitions in a root context must have the same " +
+					"scope");
+		}
+
 		ObjectRelationship existingObjectRelationship =
 			objectRelationshipPersistence.fetchByODI2_E(
 				objectDefinition2.getObjectDefinitionId(), true);
