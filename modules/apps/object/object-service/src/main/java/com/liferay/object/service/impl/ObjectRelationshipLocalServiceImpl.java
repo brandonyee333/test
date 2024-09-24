@@ -1570,6 +1570,16 @@ public class ObjectRelationshipLocalServiceImpl
 					"object definitions to be an edge of a root context");
 		}
 
+		ObjectRelationship existingObjectRelationship =
+			objectRelationshipPersistence.fetchByODI2_E(
+				objectDefinition2.getObjectDefinitionId(), true);
+
+		if (existingObjectRelationship != null) {
+			throw new ObjectRelationshipEdgeException(
+				"Objects definitions in a root context must not have more " +
+					"than one parent");
+		}
+
 		_validateObjectEntries(
 			objectDefinition1, objectDefinition2, objectRelationship);
 	}
