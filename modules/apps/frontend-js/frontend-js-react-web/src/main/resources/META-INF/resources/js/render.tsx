@@ -92,9 +92,14 @@ export default function render(
 
 		delete renderData.hasBodyContent;
 
+		const {__reactDOMFlushSync, __useReact16, ...componentProps} =
+			renderData;
+
 		let root: any;
 
-		if (!USE_REACT_16) {
+		const useReact16 = USE_REACT_16 || __useReact16;
+
+		if (!useReact16) {
 			root = createRoot(container);
 		}
 
@@ -122,7 +127,7 @@ export default function render(
 					 * can be found.
 					 */
 					try {
-						if (USE_REACT_16) {
+						if (useReact16) {
 							ReactDOM.unmountComponentAtNode(container);
 						}
 						else {
@@ -142,8 +147,6 @@ export default function render(
 			}
 		);
 
-		const {__reactDOMFlushSync, ...componentProps} = renderData;
-
 		const App = (
 			<LiferayProvider spritemap={spritemap}>
 				{
@@ -156,7 +159,7 @@ export default function render(
 			</LiferayProvider>
 		);
 
-		if (USE_REACT_16) {
+		if (useReact16) {
 
 			// eslint-disable-next-line @liferay/portal/no-react-dom-render
 			ReactDOM.render(App, container);
