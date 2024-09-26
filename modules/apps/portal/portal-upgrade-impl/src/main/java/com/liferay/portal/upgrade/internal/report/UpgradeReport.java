@@ -105,10 +105,8 @@ public class UpgradeReport {
 		}
 
 		_executionDate = _getExecutionDate();
-
 		_executionTime =
 			(DBUpgrader.getUpgradeTime() / Time.SECOND) + " seconds";
-
 		_rootDir = _getRootDir();
 
 		Map<String, Object> reportData = _getReportData(upgradeRecorder);

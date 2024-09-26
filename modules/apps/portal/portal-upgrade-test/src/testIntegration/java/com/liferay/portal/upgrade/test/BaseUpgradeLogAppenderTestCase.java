@@ -933,25 +933,25 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 	private void _assertRenameUpgradeReport(String reportFileName)
 		throws Exception {
 
-		File reportFile1 = _getReportFile(reportFileName);
+		File reportFile = _getReportFile(reportFileName);
 
-		Assert.assertTrue(reportFile1.exists());
+		Assert.assertTrue(reportFile.exists());
 
-		long reportFile1LastModified = reportFile1.lastModified();
+		long reportFile1LastModified = reportFile.lastModified();
 
 		_appender.start();
 
 		_appender.stop();
 
-		File reportFile2 = _getReportFile(reportFileName);
+		reportFile = _getReportFile(
+			reportFileName + "." + reportFile1LastModified);
 
-		Assert.assertTrue(
-			_getReportFile(
-				reportFileName + "." + reportFile1LastModified
-			).exists());
-		Assert.assertTrue(reportFile2.exists());
-		Assert.assertTrue(
-			reportFile2.lastModified() != reportFile1LastModified);
+		Assert.assertTrue(reportFile.exists());
+
+		reportFile = _getReportFile(reportFileName);
+
+		Assert.assertTrue(reportFile.exists());
+		Assert.assertTrue(reportFile.lastModified() != reportFile1LastModified);
 	}
 
 	private void _assertReport(String testString) throws Exception {
@@ -1003,15 +1003,13 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 
 		Assert.assertTrue(reportFile.exists());
 
-		String reportFileAbsolutePath = reportFile.getAbsolutePath();
+		String pathString = reportFile.getAbsolutePath();
 
-		Assert.assertTrue(reportFileAbsolutePath.contains(_upgradeReportDir));
-
+		Assert.assertTrue(pathString.contains(_upgradeReportDir));
 		Assert.assertTrue(
 			StringUtil.contains(
 				String.valueOf(logCapture.getLogEntries()),
-				"Upgrade report generated in " + reportFileAbsolutePath,
-				StringPool.BLANK));
+				"Upgrade report generated in " + pathString, StringPool.BLANK));
 	}
 
 	private void _assertUpgradeReportDirectoryWriteProtected(
@@ -1033,7 +1031,6 @@ public abstract class BaseUpgradeLogAppenderTestCase {
 		reportFile = _getReportFile(reportFileName);
 
 		Assert.assertTrue(reportFile.exists());
-
 		Assert.assertTrue(
 			StringUtil.contains(
 				String.valueOf(logCapture.getLogEntries()),
