@@ -55,15 +55,6 @@ public class CPDefinitionSpecificationOptionValueLocalServiceImpl
 
 		CPDefinition cpDefinition = _cpDefinitionPersistence.findByPrimaryKey(
 			cpDefinitionId);
-		User user = _userLocalService.getUser(serviceContext.getUserId());
-
-		long cpDefinitionSpecificationOptionValueId =
-			counterLocalService.increment();
-
-		CPDefinitionSpecificationOptionValue
-			cpDefinitionSpecificationOptionValue =
-				cpDefinitionSpecificationOptionValuePersistence.create(
-					cpDefinitionSpecificationOptionValueId);
 
 		if (CPDefinitionLocalServiceCircularDependencyUtil.isVersionable(
 				cpDefinitionId)) {
@@ -74,6 +65,16 @@ public class CPDefinitionSpecificationOptionValueLocalServiceImpl
 
 			cpDefinitionId = cpDefinition.getCPDefinitionId();
 		}
+
+		User user = _userLocalService.getUser(serviceContext.getUserId());
+
+		long cpDefinitionSpecificationOptionValueId =
+			counterLocalService.increment();
+
+		CPDefinitionSpecificationOptionValue
+			cpDefinitionSpecificationOptionValue =
+				cpDefinitionSpecificationOptionValuePersistence.create(
+					cpDefinitionSpecificationOptionValueId);
 
 		cpDefinitionSpecificationOptionValue.setExternalReferenceCode(
 			externalReferenceCode);
