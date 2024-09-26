@@ -210,6 +210,10 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		JspCompilationContext jspCompilationContext,
 		ErrorDispatcher errorDispatcher, boolean suppressLogging) {
 
+		_errorDispatcher = errorDispatcher;
+		_jspCompilationContext = jspCompilationContext;
+		_jspRuntimeContext = jspCompilationContext.getRuntimeContext();
+
 		_compilerOptions.add("-XDuseUnsharedTable");
 		_compilerOptions.add("-proc:none");
 
@@ -288,12 +292,6 @@ public class JspCompiler extends Jsr199JavaCompiler {
 		_initClassPath();
 		_initTLDMappings(
 			servletContext, jspCompilationContext.getTagFileJarUrls());
-
-		_jspCompilationContext = jspCompilationContext;
-
-		_errorDispatcher = errorDispatcher;
-
-		_jspRuntimeContext = jspCompilationContext.getRuntimeContext();
 	}
 
 	@Override
