@@ -24,10 +24,10 @@ import org.osgi.service.component.annotations.Component;
 public class TypeNameSelectionFDSFilter extends BaseSelectionFDSFilter {
 
 	public TypeNameSelectionFDSFilter(
-		Map<Long, String> typeNamesMap, long selectedTypeName) {
+		long selectedTypeName, Map<Long, String> typeNamesMap) {
 
-		_typeNamesMap = typeNamesMap;
 		_selectedTypeName = selectedTypeName;
+		_typeNamesMap = typeNamesMap;
 	}
 
 	@Override
