@@ -18,8 +18,6 @@
 		module="{Main} from portal-workflow-metrics-web"
 		props='<%=
 			HashMapBuilder.<String, Object>put(
-				"__useReact16", true
-			).put(
 				"defaultDelta", PropsValues.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA
 			).put(
 				"deltaValues", PropsValues.SEARCH_CONTAINER_PAGE_DELTA_VALUES
