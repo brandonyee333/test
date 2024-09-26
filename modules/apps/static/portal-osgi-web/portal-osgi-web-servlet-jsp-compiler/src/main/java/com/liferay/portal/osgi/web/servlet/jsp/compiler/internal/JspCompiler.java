@@ -350,9 +350,9 @@ public class JspCompiler extends Jsr199JavaCompiler {
 	}
 
 	@Override
-	public void setExtdirs(String exts) {
+	public void setExtdirs(String extdirs) {
 		_compilerOptions.add("-extdirs");
-		_compilerOptions.add(exts);
+		_compilerOptions.add(extdirs);
 	}
 
 	@Override
