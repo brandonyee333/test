@@ -84,7 +84,6 @@ public class CTEntryModelDocumentContributor
 		if (ctCollection != null) {
 			document.addKeywordSortable(
 				"ctCollectionName", ctCollection.getName());
-
 			document.addKeyword("ctCollectionStatus", ctCollection.getStatus());
 			document.addLocalizedKeyword(
 				"ctCollectionStatusLabel",
