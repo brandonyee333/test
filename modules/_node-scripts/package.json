@@ -7,12 +7,12 @@
 		"sha256": "f4f028ede881f713241a1bca9a40598a67e5d696d81ab73924c772645da17719"
 	},
 	"dependencies": {
-		"@babel/preset-env": "7.24.7",
+		"@babel/preset-env": "7.27.1",
 		"@babel/preset-react": "7.24.7",
 		"@liferay/jest-junit-reporter": "^1.2.0",
 		"@testing-library/dom": "8.11.1",
 		"@testing-library/jest-dom": "4.2.4",
-		"@testing-library/react": "12.1.2",
+		"@testing-library/react": "16.0.0",
 		"@testing-library/react-hooks": "3.4.2",
 		"@testing-library/user-event": "4.2.4",
 		"@types/jest": "26.0.14",
